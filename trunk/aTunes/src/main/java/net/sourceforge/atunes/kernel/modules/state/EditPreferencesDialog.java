@@ -35,7 +35,6 @@ import javax.swing.ListModel;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -43,7 +42,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * General characteristics of the preference dialog
  */
-public final class EditPreferencesDialog extends AbstractCustomDialog implements IDialog {
+public final class EditPreferencesDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = -4759149194433605946L;
 

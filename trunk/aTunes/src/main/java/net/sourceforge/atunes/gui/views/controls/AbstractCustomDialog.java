@@ -51,14 +51,11 @@ public abstract class AbstractCustomDialog extends JDialog implements IDialog {
      * @param height
      */
     public AbstractCustomDialog(IFrame frame, int width, int height) {
-        super(frame.getFrame());
-		setSize(width, height);
-        setLocationRelativeTo(frame.getFrame().getWidth() == 0 ? null : frame.getFrame());
-        initializeDialog(true, CloseAction.DISPOSE);
+    	this(frame, width, height, true, CloseAction.DISPOSE);
     }
 
     /**
-     * Instantiates a new custom modal dialog.
+     * Instantiates a new custom dialog.
      * 
      * @param frame
      * @param width

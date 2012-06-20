@@ -25,15 +25,26 @@ import java.io.File;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.filechooser.FileSystemView;
 
 import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
 
 class FileSystemListCellRendererCode extends AbstractListCellRendererCode<JLabel, File> {
+	
+	private FileSystemView fileSystemView;
+	
+	/**
+	 * @param fileSystemView
+	 */
+	public FileSystemListCellRendererCode(FileSystemView fileSystemView) {
+		this.fileSystemView = fileSystemView;
+	}
+	
     @Override
     public JComponent getComponent(JLabel superComponent, JList list, File value, int index, boolean isSelected, boolean cellHasFocus) {
-    	superComponent.setText(CustomFileSelectionDialog.fsView.getSystemDisplayName(value));
-    	superComponent.setIcon(CustomFileSelectionDialog.fsView.getSystemIcon(value));
+    	superComponent.setText(fileSystemView.getSystemDisplayName(value));
+    	superComponent.setIcon(fileSystemView.getSystemIcon(value));
     	superComponent.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
     	return superComponent;
     }

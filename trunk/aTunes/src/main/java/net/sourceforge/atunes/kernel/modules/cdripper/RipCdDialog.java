@@ -41,7 +41,6 @@ import javax.swing.JTextField;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
@@ -50,7 +49,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The dialog for ripping cds
  */
-public final class RipCdDialog extends AbstractCustomDialog implements IDialog {
+public final class RipCdDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 1987727841297807350L;
 

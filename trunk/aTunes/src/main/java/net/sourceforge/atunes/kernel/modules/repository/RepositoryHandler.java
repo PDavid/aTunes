@@ -653,12 +653,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	indeterminateDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
         
         IBackgroundWorker<List<ILocalAudioObject>> worker = backgroundWorkerFactory.getWorker();
-        worker.setActionsAfterBackgroundStarted(new Runnable() {
-        	@Override
-        	public void run() {
-                indeterminateDialog.showDialog();
-        	}
-        });
+        worker.setActionsAfterBackgroundStarted(new ShowIndeterminateDialogRunnable(indeterminateDialog));
         ImportFoldersToRepositoryCallable callable = Context.getBean(ImportFoldersToRepositoryCallable.class);
         callable.setFolders(folders);
         worker.setBackgroundActions(callable);

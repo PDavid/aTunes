@@ -70,6 +70,9 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
 		this.playListHandler = playListHandler;
 	}
     
+    /**
+     * Constructor
+     */
     public AddAlbumWithSelectedArtistsAction() {
         super(I18nUtils.getString("ADD_ALBUM_ARTIST_TO_PLAYLIST"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_ALBUM_ARTIST_TOOLTIP"));
@@ -101,6 +104,7 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
     
 	private void showAddArtistDragDialog(IArtist currentArtist) {
 		IArtistAlbumSelectorDialog dialog = dialogFactory.newDialog(IArtistAlbumSelectorDialog.class);
+		dialog.setArtist(currentArtist);
 		dialog.showDialog();
     	IAlbum album = dialog.getAlbum(); 
     	if (album != null) {

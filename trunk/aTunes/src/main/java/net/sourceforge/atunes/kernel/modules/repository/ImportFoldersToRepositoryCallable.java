@@ -67,7 +67,7 @@ public class ImportFoldersToRepositoryCallable implements Callable<List<ILocalAu
 	}
 
 	@Override
-	public List<ILocalAudioObject> call() throws Exception {
+	public List<ILocalAudioObject> call() {
 	    return getSongsForFolders(folders, new ImportFoldersLoaderListener(progressDialog), localAudioObjectValidator);
 	}
 

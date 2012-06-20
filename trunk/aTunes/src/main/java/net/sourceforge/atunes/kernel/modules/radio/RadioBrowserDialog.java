@@ -33,7 +33,6 @@ import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -44,7 +43,7 @@ import org.jdesktop.swingx.JXTreeTable;
 /**
  * The Class RadioBrowserDialog.
  */
-public final class RadioBrowserDialog extends AbstractCustomDialog implements IDialog {
+public final class RadioBrowserDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 8523236886848649698L;
 

@@ -80,7 +80,7 @@ public final class CustomFileSelectionDialog extends AbstractCustomDialog implem
 	private static final long serialVersionUID = -1612490779910952274L;
 
     /** The fs view. */
-    static transient FileSystemView fsView = FileSystemView.getFileSystemView();
+    private transient FileSystemView fileSystemView = FileSystemView.getFileSystemView();
 
     /** The file system tree. */
     private JTree fileSystemTree;
@@ -102,6 +102,13 @@ public final class CustomFileSelectionDialog extends AbstractCustomDialog implem
 
     /** The selected files. */
     private File[] selectedFiles;
+    
+    /**
+     * @return file system view
+     */
+    public FileSystemView getFileSystemView() {
+		return fileSystemView;
+	}
     
     /**
      * Instantiates a new file selection dialog.
@@ -181,7 +188,7 @@ public final class CustomFileSelectionDialog extends AbstractCustomDialog implem
      * @return the files
      */
     File[] getFiles(File f) {
-        File[] files = fsView.getFiles(f, true);
+        File[] files = fileSystemView.getFiles(f, true);
         List<File> list = new ArrayList<File>();
         for (File element : files) {
             if (!directoryOnly) {
@@ -213,7 +220,7 @@ public final class CustomFileSelectionDialog extends AbstractCustomDialog implem
      * Sets the list renderer.
      */
     private void setListRenderer() {
-        fileSystemList.setCellRenderer(getLookAndFeel().getListCellRenderer(new FileSystemListCellRendererCode()));
+        fileSystemList.setCellRenderer(getLookAndFeel().getListCellRenderer(new FileSystemListCellRendererCode(fileSystemView)));
     }
 
     /**
@@ -224,8 +231,8 @@ public final class CustomFileSelectionDialog extends AbstractCustomDialog implem
      */
     void setSelectionText(File f) {
         String displayName;
-        if (!fsView.isFileSystem(f)) {
-            displayName = fsView.getSystemDisplayName(f);
+        if (!fileSystemView.isFileSystem(f)) {
+            displayName = fileSystemView.getSystemDisplayName(f);
         } else {
             displayName = f.getAbsolutePath();
         }
@@ -237,18 +244,18 @@ public final class CustomFileSelectionDialog extends AbstractCustomDialog implem
      */
 
     private void setTree() {
-        File[] roots = fsView.getRoots();
+        File[] roots = fileSystemView.getRoots();
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();
 
         for (File f : roots) {
-            DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(new CustomFileSelectionDialogDirectory(f));
+            DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(new CustomFileSelectionDialogDirectory(f, fileSystemView));
             root.add(treeNode);
-            File[] files = fsView.getFiles(f, true);
+            File[] files = fileSystemView.getFiles(f, true);
             Arrays.sort(files);
             for (File f2 : files) {
-                if (fsView.isTraversable(f2)) {
-                    DefaultMutableTreeNode treeNode2 = new DefaultMutableTreeNode(new CustomFileSelectionDialogDirectory(f2));
+                if (fileSystemView.isTraversable(f2)) {
+                    DefaultMutableTreeNode treeNode2 = new DefaultMutableTreeNode(new CustomFileSelectionDialogDirectory(f2, fileSystemView));
                     treeNode.add(treeNode2);
                     treeNode2.add(new DefaultMutableTreeNode("Dummy node"));
                 }
@@ -272,7 +279,7 @@ public final class CustomFileSelectionDialog extends AbstractCustomDialog implem
      * Sets the tree renderer.
      */
     private void setTreeRenderer() {
-        fileSystemTree.setCellRenderer(getLookAndFeel().getTreeCellRenderer(new FileSystemTreeCellRendererCode()));
+        fileSystemTree.setCellRenderer(getLookAndFeel().getTreeCellRenderer(new FileSystemTreeCellRendererCode(fileSystemView)));
     }
 
     @Override

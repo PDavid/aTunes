@@ -22,6 +22,8 @@ package net.sourceforge.atunes.gui.views.dialogs.fileSelection;
 
 import java.io.File;
 
+import javax.swing.filechooser.FileSystemView;
+
 /**
  * The Class Directory.
  */
@@ -29,14 +31,15 @@ class CustomFileSelectionDialogDirectory {
 
     /** The file. */
     private File file;
+    
+    private FileSystemView fileSystemView;
 
     /**
      * Instantiates a new directory.
-     * 
      * @param file
-     *            the file
+     * @param fileSystemView
      */
-    CustomFileSelectionDialogDirectory(File file) {
+    CustomFileSelectionDialogDirectory(File file, FileSystemView fileSystemView) {
         this.file = file;
     }
     
@@ -49,6 +52,6 @@ class CustomFileSelectionDialogDirectory {
 
     @Override
     public String toString() {
-        return CustomFileSelectionDialog.fsView.getSystemDisplayName(file);
+        return fileSystemView.getSystemDisplayName(file);
     }
 }

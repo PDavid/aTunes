@@ -39,7 +39,6 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.model.IArtist;
-import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -49,7 +48,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  *
  */
-public final class CoverNavigatorDialog extends AbstractCustomDialog implements IDialog {
+public final class CoverNavigatorDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = -1744765531225480303L;
 

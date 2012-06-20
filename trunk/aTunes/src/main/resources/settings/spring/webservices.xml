@@ -25,11 +25,6 @@
 		<property name="defaultLyricsEngines">
 			<list>
 				<bean class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsEngineInfo">
-					<constructor-arg value="LyrDB"/>
-					<constructor-arg value="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyrDBEngine"/>
-					<constructor-arg value="true"/>
-				</bean>
-				<bean class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsEngineInfo">
 					<constructor-arg value="LyricWiki"/>
 					<constructor-arg value="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricWikiEngine"/>
 					<constructor-arg value="true"/>
@@ -37,7 +32,7 @@
 				<bean class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsEngineInfo">
 					<constructor-arg value="LyricsDirectory"/>
 					<constructor-arg value="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsDirectoryEngine"/>
-					<constructor-arg value="false"/>
+					<constructor-arg value="true"/>
 				</bean>
 				<bean class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsEngineInfo">
 					<constructor-arg value="LyrcEngine"/>
@@ -47,6 +42,11 @@
 				<bean class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsEngineInfo">
 					<constructor-arg value="Winampcn"/>
 					<constructor-arg value="net.sourceforge.atunes.kernel.modules.webservices.lyrics.WinampcnEngine"/>
+					<constructor-arg value="false"/>
+				</bean>
+				<bean class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsEngineInfo">
+					<constructor-arg value="LyrDB"/>
+					<constructor-arg value="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyrDBEngine"/>
 					<constructor-arg value="false"/>
 				</bean>
 			</list>

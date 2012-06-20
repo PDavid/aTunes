@@ -35,7 +35,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -80,7 +79,7 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
      * @param frame
      */
     public RipperProgressDialog(IFrame frame) {
-        super(frame, 420, 200, true, CloseAction.NOTHING);
+        super(frame, 420, 200);
     }
 
     @Override

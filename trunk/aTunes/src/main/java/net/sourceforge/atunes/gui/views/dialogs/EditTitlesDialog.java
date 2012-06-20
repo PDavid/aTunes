@@ -30,7 +30,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -38,7 +37,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class EditTitlesDialog.
  */
-public final class EditTitlesDialog extends AbstractCustomDialog implements IDialog {
+public final class EditTitlesDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = -7937735545263913179L;
 

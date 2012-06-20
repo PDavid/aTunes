@@ -85,7 +85,7 @@ public class GetSimilarArtistAudioObjectsCallable implements Callable<List<IAudi
 	}
 	
 	@Override
-	public List<IAudioObject> call() throws Exception {
+	public List<IAudioObject> call() {
 		List<IAudioObject> newTracks = new ArrayList<IAudioObject>(); 
 		// First get artist from which select songs
 		List<IArtist> artistsList = getSimilarArtistList(0, artistName);
