@@ -17,6 +17,13 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>${basedir}/src/main/resources/</directory>
+			<outputDirectory />
+			<includes>
+				<include>settings/**/**.*</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>${basedir}/win_tools</directory>
 			<outputDirectory>/win_tools</outputDirectory>
 			<includes>

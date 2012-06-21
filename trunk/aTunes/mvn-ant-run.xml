@@ -182,7 +182,6 @@
 				<exclude name="**/*.icns" />
 				<exclude name="**/atunes.png" />
 				<exclude name="**/shortcutSpec.xml" />
-				<exclude name="**/settings/**" />
 				<exclude name="**/translations/**" />
 				<exclude name="**/build_tools/**" />
 				<exclude name="**/atunes" />
