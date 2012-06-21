@@ -75,6 +75,8 @@ public class XineEngine extends AbstractPlayerEngine {
     		}
     	} catch (Exception e) {
     		Logger.info("Xine not available: ", e.getMessage());
+    	} catch (UnsatisfiedLinkError e) {
+			Logger.info("Xine not available: ", e.getMessage());
     	}
     	return false;
     }
