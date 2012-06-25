@@ -73,6 +73,11 @@ public final class ApplicationArguments implements Serializable, IApplicationArg
     private static final String NO_UPDATE = "no-update";
     
     /**
+     * Simulates CD ripper process (useful to test application in Mac OS X where cd ripping is not supported at this moment)
+     */
+    private static final String SIMULATE_CD = "simulate-cd";
+    
+    /**
      * Original arguments passed to application
      */
     private List<String> originalArguments;
@@ -92,6 +97,11 @@ public final class ApplicationArguments implements Serializable, IApplicationArg
 
     /** Defines if aTunes should not try to update (for Linux packages). */
     private boolean noUpdate;
+    
+    /**
+     * Defines if aTunes will simulate cd ripper
+     */
+    private boolean simulateCD;
     
     /**
      * @return the debug
@@ -116,6 +126,14 @@ public final class ApplicationArguments implements Serializable, IApplicationArg
 	public boolean isNoUpdate() {
         return noUpdate;
     }
+    
+    /**
+     * @return thr simulateCd argument
+     */
+    @Override
+    public boolean isSimulateCD() {
+		return simulateCD;
+	}
 
     /**
      * Finds USE_CONFIG_FOLDER at argument list and gets value.
@@ -184,6 +202,7 @@ public final class ApplicationArguments implements Serializable, IApplicationArg
         checkAndSave(arguments, USE_CONFIG_FOLDER);
         checkAndSave(arguments, USE_REPOSITORY_CONFIG_FOLDER);
         checkAndSave(arguments, NO_UPDATE);
+        checkAndSave(arguments, SIMULATE_CD);
         checkAndSave(arguments, Constants.COMMAND_PREFIX);
         
         // Set debug
@@ -192,6 +211,8 @@ public final class ApplicationArguments implements Serializable, IApplicationArg
     	ignoreLookAndFeel = arguments.contains(ApplicationArguments.IGNORE_LOOK_AND_FEEL);
         // Set no update
     	noUpdate = arguments.contains(ApplicationArguments.NO_UPDATE);
+    	// Set simulate cd
+    	simulateCD = arguments.contains(ApplicationArguments.SIMULATE_CD);
     }
 
     /**

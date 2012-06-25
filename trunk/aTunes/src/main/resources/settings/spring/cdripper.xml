@@ -26,6 +26,7 @@
 	<bean class="net.sourceforge.atunes.kernel.modules.cdripper.NeroAacEncoder" parent="abstractEncoder" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.cdripper.OggEncoder" parent="abstractEncoder" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.cdripper.WavEncoder" parent="abstractEncoder" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.cdripper.FakeEncoder" parent="abstractEncoder" scope="prototype"/>
 
 
 </beans>

@@ -99,4 +99,10 @@ public interface IApplicationArguments {
 	 */
 	public String getSavedCommands(ICommandHandler commandHandler);
 
+	/**
+	 * Returns if app must simulate cd ripper
+	 * @return
+	 */
+	boolean isSimulateCD();
+
 }

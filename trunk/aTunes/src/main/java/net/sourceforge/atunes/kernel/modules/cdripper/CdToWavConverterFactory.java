@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IOSManager;
 
 final class CdToWavConverterFactory {
@@ -27,18 +28,21 @@ final class CdToWavConverterFactory {
 	private CdToWavConverterFactory() {}
 	
     /**
-     * creates a new CdToWavConverter-object. The implementation depends on the
-     * users OS.
+     * creates a new CdToWavConverter-object. The implementation depends on the users OS.
+     * @param applicationArguments
      * @param osManager
      * @return
      */
-    public static AbstractCdToWavConverter createNewConverterForOS(IOSManager osManager) {
+    public static AbstractCdToWavConverter createNewConverterForOS(IApplicationArguments applicationArguments, IOSManager osManager) {
     	AbstractCdToWavConverter osConverter = null;
-    	if (osManager.isMacOsX()) {
+    	if (applicationArguments.isSimulateCD()) {
+    		osConverter = new FakeCDToWavConverter();
+    	} else if (osManager.isMacOsX()) {
     		osConverter = new Cdparanoia();
     	} else if (osManager.isWindows()) {
     		osConverter = new Cdda2wav(osManager);
     	}
+    	
     	if (osConverter != null) {
     		return osConverter;
     	} else if (Cdda2wav.pTestTool(osManager)) {

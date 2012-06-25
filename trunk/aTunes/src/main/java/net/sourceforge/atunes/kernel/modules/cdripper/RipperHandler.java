@@ -39,6 +39,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -55,6 +56,11 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.sanselan.ImageWriteException;
 
+/**
+ * Responsible of rip cds
+ * @author alex
+ *
+ */
 public final class RipperHandler extends AbstractHandler implements IRipperHandler {
 
     private static final String SEPARATOR = " - ";
@@ -97,6 +103,15 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
 	private IUnknownObjectChecker unknownObjectChecker;
 	
 	private IDialogFactory dialogFactory;
+	
+	private IApplicationArguments applicationArguments;
+	
+	/**
+	 * @param applicationArguments
+	 */
+	public void setApplicationArguments(IApplicationArguments applicationArguments) {
+		this.applicationArguments = applicationArguments;
+	}
 	
 	/**
 	 * @param dialogFactory
@@ -295,6 +310,12 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
                     Logger.error(e);
                 }
             }
+            
+            // Add simulator
+            if (applicationArguments.isSimulateCD()) {
+            	Encoder fakeEncoder = getBean(FakeEncoder.class);
+            	availableEncoders.put(fakeEncoder.getFormatName(), fakeEncoder);
+            }
 
             Logger.info("Available encoders: ", availableEncoders.keySet());
         }
@@ -461,7 +482,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         	}
         });
 
-        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(getOsManager(), stateRipper, this, dialog, webServicesHandler, unknownObjectChecker);
+        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(getOsManager(), stateRipper, this, dialog, webServicesHandler, unknownObjectChecker, applicationArguments);
         getCdInfoAndStartRipping.execute();
     }
 
@@ -472,7 +493,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
      * @return Returns true if cdda2wav/icedax is present, false otherwise
      */
     boolean testTools() {
-        if (!CdToWavConverterTest.testTools(getOsManager())) {
+        if (!CdToWavConverterTest.testTools(applicationArguments, getOsManager())) {
             Logger.error("Error testing \"cdda2wav\" or \"cdparanoia\". Check program is installed");
             SwingUtilities.invokeLater(new ShowErrorDialogRunnable());
             return false;

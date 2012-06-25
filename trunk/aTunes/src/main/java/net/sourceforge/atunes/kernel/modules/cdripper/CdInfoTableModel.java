@@ -119,6 +119,9 @@ class CdInfoTableModel extends AbstractTableModel {
             }
             return artistNames.get(rowIndex);
         } else if (columnIndex == 4) {
+        	if (rowIndex > cdInfo.getDurations().size() - 1) {
+        		return "";
+        	}
             return cdInfo.getDurations().get(rowIndex);
         } else {
             if (rowIndex > composerNames.size() - 1) {
@@ -126,7 +129,6 @@ class CdInfoTableModel extends AbstractTableModel {
                 return "";
             }
             return composerNames.get(rowIndex);
-
         }
     }
 

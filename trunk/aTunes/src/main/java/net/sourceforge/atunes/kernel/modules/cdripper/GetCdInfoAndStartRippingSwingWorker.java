@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IOSManager;
@@ -44,6 +45,7 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	private IWebServicesHandler webServicesHandler;
 	private IStateRipper stateRipper;
 	private IUnknownObjectChecker unknownObjectChecker;
+	private IApplicationArguments applicationArguments;
 
 	/**
 	 * @param osManager
@@ -52,14 +54,16 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	 * @param dialog
 	 * @param webServicesHandler
 	 * @param unknownObjectChecker
+	 * @param applicationArguments
 	 */
-	GetCdInfoAndStartRippingSwingWorker(IOSManager osManager, IStateRipper stateRipper, RipperHandler ripperHandler, RipCdDialog dialog, IWebServicesHandler webServicesHandler, IUnknownObjectChecker unknownObjectChecker) {
+	GetCdInfoAndStartRippingSwingWorker(IOSManager osManager, IStateRipper stateRipper, RipperHandler ripperHandler, RipCdDialog dialog, IWebServicesHandler webServicesHandler, IUnknownObjectChecker unknownObjectChecker, IApplicationArguments applicationArguments) {
 		this.osManager = osManager;
 		this.stateRipper = stateRipper;
 		this.ripperHandler = ripperHandler;
 		this.dialog = dialog;
 		this.webServicesHandler = webServicesHandler;
 		this.unknownObjectChecker = unknownObjectChecker;
+		this.applicationArguments = applicationArguments;
 	}
 
 	@Override
@@ -67,7 +71,7 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	    if (!this.ripperHandler.testTools()) {
 	        return null;
 	    }
-	    CdRipper ripper = new CdRipper(osManager, unknownObjectChecker);
+	    CdRipper ripper = new CdRipper(applicationArguments, osManager, unknownObjectChecker);
 	    ripper.setNoCdListener(new NoCdListener() {
 	        @Override
 	        public void noCd() {
@@ -117,6 +121,7 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	            stateRipper.setEncoderQuality(dialog.getQuality());
 	            stateRipper.setCdRipperFileNamePattern(dialog.getFileNamePattern());
 	        }
+	        // TODO: Add error message id cdInfo returns null
 	    } catch (InterruptedException e) {
 	    	this.ripperHandler.getRipCdDialogController().getComponentControlled().setVisible(false);
 	        Logger.error(e);

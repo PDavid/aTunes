@@ -31,6 +31,11 @@ import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Abstract encoder
+ * @author alex
+ *
+ */
 public abstract class AbstractEncoder implements Encoder {
 
 	private String album;
@@ -109,6 +114,9 @@ public abstract class AbstractEncoder implements Encoder {
         this.album = album;
     }
     
+    /**
+     * @return album
+     */
     public final String getAlbum() {
 		return album;
 	}
@@ -118,6 +126,9 @@ public abstract class AbstractEncoder implements Encoder {
         this.albumArtist = albumArtist;
     }
     
+    /**
+     * @return album artist
+     */
     public final String getAlbumArtist() {
 		return albumArtist;
 	}
@@ -127,6 +138,9 @@ public abstract class AbstractEncoder implements Encoder {
         this.genre = genre;
     }
 
+    /**
+     * @return genre
+     */
     public final String getGenre() {
 		return genre;
 	}
@@ -146,14 +160,23 @@ public abstract class AbstractEncoder implements Encoder {
         this.year = year;
     }
 
+    /**
+     * @return progress listener
+     */
     public final ProgressListener getListener() {
 		return listener;
 	}
     
+    /**
+     * @return year
+     */
     public final int getYear() {
 		return year;
 	}
     
+    /**
+     * @return quality
+     */
     public final String getQuality() {
 		return quality;
 	}
