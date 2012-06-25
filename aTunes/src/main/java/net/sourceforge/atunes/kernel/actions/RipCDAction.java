@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IRipperHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -35,6 +36,15 @@ public class RipCDAction extends CustomAbstractAction {
     private static final long serialVersionUID = -362457188090138933L;
 
     private IRipperHandler ripperHandler;
+    
+    private IApplicationArguments applicationArguments;
+    
+    /**
+     * @param applicationArguments
+     */
+    public void setApplicationArguments(IApplicationArguments applicationArguments) {
+		this.applicationArguments = applicationArguments;
+	}
     
     /**
      * @param ripperHandler
@@ -52,8 +62,8 @@ public class RipCDAction extends CustomAbstractAction {
     }
 
     @Override
-    public void setEnabled(boolean newValue) {    	
-    	super.setEnabled(ripperHandler.isRipSupported() && newValue);
+    public boolean isEnabled() {
+    	return (applicationArguments.isSimulateCD() || ripperHandler.isRipSupported()) && super.isEnabled();
     }
     
     @Override

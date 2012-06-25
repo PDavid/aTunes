@@ -23,6 +23,7 @@ aTunes 2.2.0
 - "Create playlist with top tracks" action added to repository navigation view
 - Play list selector using buttons or combo box
 - Similar Artist Mode [ patch by Laurent Cathala ]
+- New argument "simulate-cd" for CD ripper testing purposes
 - FIX: Use last.fm API to obtain last.fm loved tracks
 - FIX: Detection of radio audio streams blocks playing
 

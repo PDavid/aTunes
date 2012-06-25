@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -57,12 +58,14 @@ class CdRipper {
 
     /**
      * Instantiates a new cd ripper.
+     * @param applicationArguments
      * @param osManager
+     * @param unknownObjectChecker
      */
-    CdRipper(IOSManager osManager, IUnknownObjectChecker unknownObjectChecker) {
+    CdRipper(IApplicationArguments applicationArguments, IOSManager osManager, IUnknownObjectChecker unknownObjectChecker) {
     	this.osManager = osManager;
     	this.unknownObjectChecker = unknownObjectChecker;
-        cdToWavConverter = CdToWavConverterFactory.createNewConverterForOS(osManager);
+        cdToWavConverter = CdToWavConverterFactory.createNewConverterForOS(applicationArguments, osManager);
     }
 
     /**

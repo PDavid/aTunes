@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IOSManager;
 
 final class CdToWavConverterTest {
@@ -28,10 +29,14 @@ final class CdToWavConverterTest {
 
 	/**
 	 * Test cd to wav converter given the os manager
+	 * @param applicationArguments
 	 * @param osManager
 	 * @return
 	 */
-	static boolean testTools(IOSManager osManager) {
+	static boolean testTools(IApplicationArguments applicationArguments, IOSManager osManager) {
+		if (applicationArguments.isSimulateCD()) {
+			return true;
+		}
 		if (osManager.isMacOsX()) {
 			return Cdparanoia.pTestTool(osManager);
 		} else if (osManager.isWindows()) {

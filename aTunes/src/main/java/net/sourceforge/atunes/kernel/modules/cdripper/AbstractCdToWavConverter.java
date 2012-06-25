@@ -50,7 +50,9 @@ public abstract class AbstractCdToWavConverter {
      * Destroys the ripping process.
      */
     public void stop() {
-        process.destroy();
+    	if (process != null) {
+    		process.destroy();
+    	}
     }
 
     /*
@@ -61,6 +63,9 @@ public abstract class AbstractCdToWavConverter {
 
     public abstract boolean cdda2wav(int track, File file, boolean useParanoia);
 
+    /**
+     * @return cd information retrieved with converter
+     */
     public abstract CDInfo retrieveDiscInformation();
 
     /*

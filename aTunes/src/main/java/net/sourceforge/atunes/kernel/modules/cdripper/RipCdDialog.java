@@ -509,9 +509,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
     /**
      * Update artist names.
-     * 
-     * @param names
-     *            the names
+     * @param cdInfo
      */
     public void updateArtistNames(CDInfo cdInfo) {
         // Fill names of artists
