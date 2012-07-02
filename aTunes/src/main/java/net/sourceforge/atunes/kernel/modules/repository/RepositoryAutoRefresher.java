@@ -65,6 +65,9 @@ public class RepositoryAutoRefresher implements Runnable {
 		this.repositoryHandler = repositoryHandler;
 	}
 	
+	/**
+	 * Starts auto refresh
+	 */
     public void start() {
     	stop();
     	if (stateRepository.getAutoRepositoryRefreshTime() > 0) {
@@ -75,6 +78,9 @@ public class RepositoryAutoRefresher implements Runnable {
     	}
     }
     
+    /**
+     * Stops auto refresh
+     */
     public void stop() {
     	if (task != null) {
     		Logger.info("Cancelling previous pending task for automatically refresh repository");

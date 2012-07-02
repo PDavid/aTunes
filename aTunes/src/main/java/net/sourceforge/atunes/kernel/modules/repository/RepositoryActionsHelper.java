@@ -87,7 +87,7 @@ public class RepositoryActionsHelper {
      * 
      * @param enable
      */
-    void enableRepositoryActions(boolean enable) {
+    public void enableRepositoryActions(boolean enable) {
         selectRepositoryAction.setEnabled(enable);
         refreshFolderFromNavigatorAction.setEnabled(enable);
         importToRepositoryAction.setEnabled(enable);

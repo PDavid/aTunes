@@ -43,6 +43,9 @@ public class SelectRepositoryAction extends CustomAbstractAction {
 		this.repositoryHandler = repositoryHandler;
 	}
     
+    /**
+     * Default constructor 
+     */
     public SelectRepositoryAction() {
         super(StringUtils.getString(I18nUtils.getString("SELECT_REPOSITORY"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SELECT_REPOSITORY"));
@@ -52,5 +55,4 @@ public class SelectRepositoryAction extends CustomAbstractAction {
     protected void executeAction() {
         repositoryHandler.selectRepository();
     }
-
 }

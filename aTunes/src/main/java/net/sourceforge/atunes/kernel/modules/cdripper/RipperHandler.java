@@ -37,6 +37,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
+import net.sourceforge.atunes.kernel.modules.repository.RepositoryAutoRefresher;
 import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IApplicationArguments;
@@ -94,6 +95,15 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
 	private IDialogFactory dialogFactory;
 	
 	private IApplicationArguments applicationArguments;
+
+    private RepositoryAutoRefresher repositoryRefresher;
+    
+    /**
+     * @param repositoryRefresher
+     */
+    public void setRepositoryRefresher(RepositoryAutoRefresher repositoryRefresher) {
+		this.repositoryRefresher = repositoryRefresher;
+	}
 	
 	/**
 	 * @param applicationArguments
@@ -197,6 +207,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         interrupted = true;
         ripper.stop();
         Logger.info("Process cancelled");
+        repositoryRefresher.start();
     }
 
     /* (non-Javadoc)
@@ -307,6 +318,9 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
 
     @Override
 	public void importSongs(String folder, CDMetadata metadata, final String format, final String quality1, final boolean useParanoia) {
+    	// Disable repository refresh
+        repositoryRefresher.stop();
+        
         // Disable import cd option in menu
         getBean(RipCDAction.class).setEnabled(false);
 
@@ -367,6 +381,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
                 notifyFinishImport(filesImported, folderFile);
                 // Enable import cd option in menu
                 getBean(RipCDAction.class).setEnabled(true);
+                repositoryRefresher.start();
             }
         }.execute();
 
