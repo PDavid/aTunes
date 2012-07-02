@@ -21,9 +21,8 @@
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.File;
-import java.util.List;
 
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
+import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -31,41 +30,32 @@ final class EncodeFileRunnable implements Runnable {
 	
 	private final CdRipper ripper;
 	private final int trackNumber;
-	private final List<String> artistNames;
-	private final List<String> composerNames;
 	private final boolean ripResultFinal;
 	private final File resultFileTemp;
 	private final File infFileTemp;
-	private final List<String> titles;
 	private final File wavFileTemp;
-	private final IUnknownObjectChecker unknownObjectChecker;
+	private final CDMetadata metadata;
 
 	/**
 	 * @param ripper
 	 * @param trackNumber
-	 * @param artistNames
-	 * @param composerNames
+	 * @param metadata
 	 * @param ripResultFinal
 	 * @param resultFileTemp
 	 * @param infFileTemp
-	 * @param titles
 	 * @param wavFileTemp
 	 * @param unknownObjectChecker
 	 */
-	EncodeFileRunnable(CdRipper ripper, int trackNumber, List<String> artistNames,
-			List<String> composerNames, boolean ripResultFinal,
-			File resultFileTemp, File infFileTemp, List<String> titles,
-			File wavFileTemp, IUnknownObjectChecker unknownObjectChecker) {
+	EncodeFileRunnable(CdRipper ripper, int trackNumber, CDMetadata metadata, boolean ripResultFinal,
+			File resultFileTemp, File infFileTemp,
+			File wavFileTemp) {
 		this.ripper = ripper;
 		this.trackNumber = trackNumber;
-		this.artistNames = artistNames;
-		this.composerNames = composerNames;
+		this.metadata = metadata;
 		this.ripResultFinal = ripResultFinal;
 		this.resultFileTemp = resultFileTemp;
 		this.infFileTemp = infFileTemp;
-		this.titles = titles;
 		this.wavFileTemp = wavFileTemp;
-		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	@Override
@@ -94,10 +84,14 @@ final class EncodeFileRunnable implements Runnable {
 	 * @return
 	 */
 	private boolean callToEncode() {
-		return ripper.getEncoder().encode(wavFileTemp, resultFileTemp,
-		        (titles != null && titles.size() >= trackNumber ? titles.get(trackNumber - 1) : null), trackNumber,
-		        artistNames.size() > trackNumber - 1 ? artistNames.get(trackNumber - 1) : unknownObjectChecker.getUnknownArtist(),
-		        composerNames.size() > trackNumber - 1 ? composerNames.get(trackNumber - 1) : "");
+		boolean encodeOK = ripper.getEncoder().encode(wavFileTemp, resultFileTemp);
+		if (encodeOK) {
+			boolean tagOK = ripper.getEncoder().setTag(resultFileTemp, trackNumber, metadata);
+			if (!tagOK) {
+				return false;
+			}
+		}
+        return encodeOK;
 	}
 
 	/**

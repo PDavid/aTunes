@@ -39,20 +39,20 @@ import net.sourceforge.atunes.utils.StringUtils;
 public class FlacEncoder extends AbstractEncoder {
 
     /** The format name of this encoder */
-    public static final String FORMAT_NAME = "FLAC";
-    public static final String FLAC = "flac";
-    public static final String OUTPUT = "-o";
-    public static final String FORCE = "-f";
-    public static final String ADD_TAG = "-t";
-    public static final String APPEND = "-a";
-    public static final String TITLE = "TITLE=";
-    public static final String ARTIST = "ARTIST=";
-    public static final String ALBUM = "ALBUM=";
-    public static final String TRACK = "TRACKNUMBER=";
-    public static final String QUALITY = "-q";
-    public static final String VERSION = "--version";
-    static final String[] FLAC_QUALITY = { "-0", "-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8" };
-    static final String DEFAULT_FLAC_QUALITY = "-5";
+    private static final String FORMAT_NAME = "FLAC";
+    private static final String FLAC = "flac";
+    private static final String OUTPUT = "-o";
+    private static final String FORCE = "-f";
+    private static final String ADD_TAG = "-t";
+    private static final String APPEND = "-a";
+    private static final String TITLE = "TITLE=";
+    private static final String ARTIST = "ARTIST=";
+    private static final String ALBUM = "ALBUM=";
+    private static final String TRACK = "TRACKNUMBER=";
+    private static final String QUALITY = "-q";
+    private static final String VERSION = "--version";
+    private static final String[] FLAC_QUALITY = { "-0", "-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8" };
+    private static final String DEFAULT_FLAC_QUALITY = "-5";
 
     private Process process;
     
@@ -90,26 +90,8 @@ public class FlacEncoder extends AbstractEncoder {
         }
     }
 
-    /**
-     * Encode the wav file and tags it using entagged.
-     * 
-     * @param wavFile
-     *            The filename and path of the wav file that should be encoded
-     * @param title
-     *            The title of the song (only title, not artist and album)
-     * @param trackNumber
-     *            The track number of the song
-     * @param file
-     *            the ogg file
-     * @param artist
-     *            the artist
-     * @param composer
-     *            the composer
-     * 
-     * @return Returns true if encoding was successfull, false otherwise.
-     */
     @Override
-    public boolean encode(File wavFile, File file, String title, int trackNumber, String artist, String composer) {
+    public boolean encode(File wavFile, File file) {
         Logger.info(StringUtils.getString("Flac encoding process started... ", wavFile.getName(), " -> ", file.getName()));
         BufferedReader stdInput = null;
         try {
@@ -157,13 +139,6 @@ public class FlacEncoder extends AbstractEncoder {
             if (code != 0) {
                 Logger.error(StringUtils.getString("Process returned code ", code));
                 return false;
-            }
-
-            // Gather the info and write the tag
-            boolean tagOk = setTag(file, title, trackNumber, artist, composer);
-            
-            if (!tagOk) {
-            	return false;
             }
             
             Logger.info("Encoded ok!!");

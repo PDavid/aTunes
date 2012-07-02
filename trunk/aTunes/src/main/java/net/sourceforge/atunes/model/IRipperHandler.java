@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -78,34 +77,13 @@ public interface IRipperHandler extends IHandler {
 
 	/**
 	 * Controls the import process for ripping audio CD's.
-	 * 
 	 * @param folder
-	 *            The folder where the files should be saved
-	 * @param artist
-	 *            Artist name (whole CD)
-	 * @param album
-	 *            Album name
-	 * @param year
-	 *            Release year
-	 * @param genre
-	 *            Album genre
-	 * @param tracks
-	 *            List of the track numbers
-	 * @param trckNames
-	 *            List of the track names
+	 * @param metadata
 	 * @param format
-	 *            Format in which the files should converted
 	 * @param quality1
-	 *            Quality setting to be used
-	 * @param artistNames
-	 *            the artist names
-	 * @param composerNames
-	 *            the composer names
+	 * @param useParanoia
 	 */
-	public void importSongs(String folder, final String artist,
-			final String album, final int year, final String genre,
-			final List<Integer> tracks, final List<String> trckNames,
-			final List<String> artistNames, final List<String> composerNames,
+	public void importSongs(String folder, CDMetadata metadata,
 			final String format, final String quality1,
 			final boolean useParanoia);
 
@@ -119,11 +97,4 @@ public interface IRipperHandler extends IHandler {
 	 * @return
 	 */
 	public boolean isRipSupported();
-
-	/**
-	 * File name patterns available to use when ripping 
-	 * @return
-	 */
-	public String[] getFilenamePatterns();
-
 }

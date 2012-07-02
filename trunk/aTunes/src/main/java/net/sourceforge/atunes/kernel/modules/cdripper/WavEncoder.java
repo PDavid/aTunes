@@ -33,26 +33,8 @@ public class WavEncoder extends AbstractEncoder {
     /** The format name of this encoder */
     public static final String FORMAT_NAME = "WAV";
 
-    /**
-     * Encode the wav file and tags it using entagged.
-     * 
-     * @param wavFile
-     *            The filename and path of the wav file that should be encoded
-     * @param wavFile2
-     *            The name of the new file to be created
-     * @param title
-     *            The title of the song (only title, not artist and album)
-     * @param trackNumber
-     *            The track number of the song
-     * @param artists
-     *            the artists
-     * @param composer
-     *            the composer
-     * 
-     * @return Returns true if encoding was successfull, false otherwise.
-     */
     @Override
-    public boolean encode(File wavFile, File wavFile2, String title, int trackNumber, String artists, String composer) {
+    public boolean encode(File wavFile, File wavFile2) {
         Logger.info(StringUtils.getString("Wav encoding started... ", wavFile.getName(), " -> ", wavFile2.getName()));
         try {
             if (wavFile.renameTo(wavFile2)) {

@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.pattern;
 
+import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 final class ArtistFirstCharPattern extends AbstractPattern {
@@ -34,5 +35,11 @@ final class ArtistFirstCharPattern extends AbstractPattern {
 	@Override
 	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
 	    return audioFile.getArtist().substring(0, 1);
+	}
+	
+	@Override
+	public String getCDMetadataStringValue(CDMetadata metadata, int trackNumber) {
+		String artist = metadata.getArtist(trackNumber);
+		return artist != null ? artist.substring(0, 1) : null;
 	}
 }

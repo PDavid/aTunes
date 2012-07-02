@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.pattern;
 
+import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -120,7 +121,7 @@ public abstract class AbstractPattern {
 
     /**
      * Returns a string, result of apply this pattern to an audio file object
-     * 
+     * @param sourceString
      * @param audioFile
      * @return
      */
@@ -132,10 +133,37 @@ public abstract class AbstractPattern {
     }
 
     /**
+     * Returns a string, result of apply this pattern to a cd track
+     * @param sourceString
+     * @param metadata
+     * @param trackNumber
+     * @return
+     */
+    public final String applyPattern(String sourceString, CDMetadata metadata, int trackNumber) {
+        if (!pattern.equals(Patterns.getAnyPattern().getPattern())) {
+        	String replace = getCDMetadataStringValue(metadata, trackNumber);
+        	if (replace == null) {
+        		replace = "";
+        	}
+            return sourceString.replaceAll(pattern, replace);
+        }
+        return sourceString;
+    }
+
+    /**
      * Returns string value of an LocalAudioObject to do transformation
      * 
      * @param audioFile
      * @return
      */
     public abstract String getAudioFileStringValue(ILocalAudioObject audioFile);
+    
+    /**
+     * Returns string value of an LocalAudioObject to do transformation
+     * @param metadata
+     * @param trackNumber
+     * @return
+     */
+    public abstract String getCDMetadataStringValue(CDMetadata metadata, int trackNumber);
+
 }

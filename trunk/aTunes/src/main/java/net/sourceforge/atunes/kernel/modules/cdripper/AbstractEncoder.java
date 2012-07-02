@@ -23,11 +23,13 @@ package net.sourceforge.atunes.kernel.modules.cdripper;
 import java.io.File;
 import java.util.Arrays;
 
+import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ITagHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -38,17 +40,9 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public abstract class AbstractEncoder implements Encoder {
 
-	private String album;
-	
-    private String albumArtist;
-    
-    private String genre;
-	
 	private String extensionOfEncodedFiles;
 	
     private ProgressListener listener;
-    
-    private int year;
     
     private String quality;
 
@@ -63,6 +57,8 @@ public abstract class AbstractEncoder implements Encoder {
 	private IOSManager osManager;
 	
 	private ITagHandler tagHandler;
+	
+	private IUnknownObjectChecker unknownObjectChecker;
 
 	/**
 	 * @param extensionOfEncodedFiles
@@ -75,6 +71,13 @@ public abstract class AbstractEncoder implements Encoder {
 		this.availableQualities = Arrays.copyOf(availableQualities, availableQualities.length);
 		this.defaultQuality = defaultQuality;
 		this.formatName = formatName;
+	}
+	
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
 	}
 	
 	/**
@@ -110,42 +113,6 @@ public abstract class AbstractEncoder implements Encoder {
 	}
 	
     @Override
-    public final void setAlbum(String album) {
-        this.album = album;
-    }
-    
-    /**
-     * @return album
-     */
-    public final String getAlbum() {
-		return album;
-	}
-    
-    @Override
-    public final void setAlbumArtist(String albumArtist) {
-        this.albumArtist = albumArtist;
-    }
-    
-    /**
-     * @return album artist
-     */
-    public final String getAlbumArtist() {
-		return albumArtist;
-	}
-
-    @Override
-    public final void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    /**
-     * @return genre
-     */
-    public final String getGenre() {
-		return genre;
-	}
-    
-    @Override
     public final void setListener(ProgressListener listener) {
         this.listener = listener;
     }
@@ -155,23 +122,11 @@ public abstract class AbstractEncoder implements Encoder {
         this.quality = quality;
     }
 
-    @Override
-    public final void setYear(int year) {
-        this.year = year;
-    }
-
     /**
      * @return progress listener
      */
     public final ProgressListener getListener() {
 		return listener;
-	}
-    
-    /**
-     * @return year
-     */
-    public final int getYear() {
-		return year;
 	}
     
     /**
@@ -196,29 +151,22 @@ public abstract class AbstractEncoder implements Encoder {
         return formatName;
     }
     
-    /**
-     * Sets tag of file once has been encoded
-     * @param file
-     * @param title
-     * @param trackNumber
-     * @param artist
-     * @param composer
-     * @param localAudioObjectFactory
-     * @return
-     */
-    final boolean setTag(File file, String title, int trackNumber, String artist, String composer) {
+    @Override
+    public boolean setTag(File file, int trackNumber, CDMetadata metadata) {
         try {
             ILocalAudioObject audiofile = localAudioObjectFactory.getLocalAudioObject(file);
             ITag tag = tagHandler.getNewTag();
 
-            tag.setAlbum(getAlbum());
-            tag.setAlbumArtist(getAlbumArtist());
-            tag.setArtist(artist);
-            tag.setYear(getYear());
-            tag.setGenre(getGenre());
-            tag.setTitle(title);
-            tag.setComposer(composer);
+            tag.setAlbum(metadata.getAlbum());
+            tag.setAlbumArtist(metadata.getAlbumArtist());
+            String artist = metadata.getArtist(trackNumber);
+            tag.setArtist(artist != null ? artist : unknownObjectChecker.getUnknownArtist());
+            tag.setYear(metadata.getYear());
+            tag.setGenre(metadata.getGenre());
+            tag.setTitle(metadata.getTitle(trackNumber));
+            tag.setComposer(metadata.getComposer(trackNumber));
             tag.setTrackNumber(trackNumber);
+            tag.setDiscNumber(metadata.getDisc());
 
             tagHandler.setTag(audiofile, tag);
 
@@ -227,5 +175,6 @@ public abstract class AbstractEncoder implements Encoder {
             Logger.error(StringUtils.getString("Tag Process execution caused exception ", e));
             return false;
         }
-    }
+    }    
 }
+

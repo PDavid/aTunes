@@ -22,6 +22,8 @@ package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.File;
 
+import net.sourceforge.atunes.model.CDMetadata;
+
 
 /**
  * Interface to implement by components responsible of transform a file of an audio object to another file with a different format
@@ -36,23 +38,11 @@ public interface Encoder {
 	
     /**
      * Encode.
-     * 
      * @param originalFile
-     *            the original file
      * @param encodedFile
-     *            the encoded file
-     * @param title
-     *            the title
-     * @param trackNumber
-     *            the track number
-     * @param artist
-     *            the artist
-     * @param composer
-     *            the composer
-     * 
-     * @return true, if successful
+     * @return
      */
-    boolean encode(File originalFile, File encodedFile, String title, int trackNumber, String artist, String composer);
+    boolean encode(File originalFile, File encodedFile);
 
     /**
      * Gets the extension of encoded files.
@@ -60,30 +50,6 @@ public interface Encoder {
      * @return the extension of encoded files
      */
     String getExtensionOfEncodedFiles();
-
-    /**
-     * Sets the album.
-     * 
-     * @param album
-     *            the new album
-     */
-    void setAlbum(String album);
-
-    /**
-     * Sets the artist.
-     * 
-     * @param artist
-     *            the new artist
-     */
-    void setAlbumArtist(String artist);
-
-    /**
-     * Sets the genre.
-     * 
-     * @param genre
-     *            the new genre
-     */
-    void setGenre(String genre);
 
     /**
      * Sets the listener.
@@ -100,14 +66,6 @@ public interface Encoder {
      *            the new quality
      */
     void setQuality(String quality);
-
-    /**
-     * Sets the year.
-     * 
-     * @param year
-     *            the new year
-     */
-    void setYear(int year);
 
     /**
      * Stop.
@@ -135,4 +93,12 @@ public interface Encoder {
      */
     String getFormatName();
 
+	/**
+	 * Sets tag to encoded file
+	 * @param file
+	 * @param trackNumber
+	 * @param metadata
+	 * @return
+	 */
+	boolean setTag(File file, int trackNumber, CDMetadata metadata);
 }

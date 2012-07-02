@@ -21,10 +21,14 @@
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.utils.Logger;
+
+import org.apache.commons.io.FileUtils;
 
 /**
  * Fake cd to wav converter used for simulation
@@ -36,19 +40,27 @@ public class FakeCDToWavConverter extends AbstractCdToWavConverter {
 	@Override
 	public boolean cdda2wav(int track, File file) {
 		Logger.info("Converting with fake wav converter: Track ", track, " File ", file.getAbsolutePath());
-		return waitConversion();
+		return waitConversion(file);
 	}
 
 	@Override
 	public boolean cdda2wav(int track, File file, boolean useParanoia) {
 		Logger.info("Converting with fake wav converter: Track ", track, " File ", file.getAbsolutePath(), " useParanoia ", useParanoia);
-		return waitConversion();
+		return waitConversion(file);
 	}
 
 	/**
-	 * @return
+	 * @param file
+	 * @return true
 	 */
-	private boolean waitConversion() {
+	private boolean waitConversion(File file) {
+		// Create file
+		try {
+			FileUtils.touch(file);
+		} catch (IOException e) {
+			Logger.error(e);
+		}
+		
 		// Simulate converting to wav for an amount of time
 		for (int i = 0; i <= 10; i++) {
 			final int progress = i * 10; 
@@ -77,10 +89,18 @@ public class FakeCDToWavConverter extends AbstractCdToWavConverter {
 		fakeCdInfo.setGenre("Pop");
 		fakeCdInfo.setID("1");
 		fakeCdInfo.setTracks(9);
-		fakeCdInfo.setTitles(new ArrayList<String>());
-		fakeCdInfo.setArtists(new ArrayList<String>());
-		fakeCdInfo.setComposers(new ArrayList<String>());
-		fakeCdInfo.setDurations(new ArrayList<String>());
+		fakeCdInfo.setTitles(getEmptyList(0));
+		fakeCdInfo.setArtists(getEmptyList(9));
+		fakeCdInfo.setComposers(getEmptyList(9));
+		fakeCdInfo.setDurations(getEmptyList(9));
 		return fakeCdInfo;
+	}
+	
+	private List<String> getEmptyList(int items) {
+		List<String> list = new ArrayList<String>();
+		for (int i = 0; i < items; i++) {
+			list.add("");
+		}
+		return list;
 	}
 }

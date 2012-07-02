@@ -27,51 +27,60 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.IApplicationArguments;
+import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateRipper;
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
-final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void> {
+/**
+ * Performs cd ripping in background
+ * @author alex
+ *
+ */
+public final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void> {
 
-	private IOSManager osManager;
 	private RipperHandler ripperHandler;
 	private RipCdDialog dialog;
 	private IWebServicesHandler webServicesHandler;
 	private IStateRipper stateRipper;
-	private IUnknownObjectChecker unknownObjectChecker;
-	private IApplicationArguments applicationArguments;
 
 	/**
-	 * @param osManager
 	 * @param stateRipper
-	 * @param ripperHandler
-	 * @param dialog
-	 * @param webServicesHandler
-	 * @param unknownObjectChecker
-	 * @param applicationArguments
 	 */
-	GetCdInfoAndStartRippingSwingWorker(IOSManager osManager, IStateRipper stateRipper, RipperHandler ripperHandler, RipCdDialog dialog, IWebServicesHandler webServicesHandler, IUnknownObjectChecker unknownObjectChecker, IApplicationArguments applicationArguments) {
-		this.osManager = osManager;
+	public void setStateRipper(IStateRipper stateRipper) {
 		this.stateRipper = stateRipper;
-		this.ripperHandler = ripperHandler;
-		this.dialog = dialog;
-		this.webServicesHandler = webServicesHandler;
-		this.unknownObjectChecker = unknownObjectChecker;
-		this.applicationArguments = applicationArguments;
 	}
-
+	
+	/**
+	 * @param ripperHandler
+	 */
+	public void setRipperHandler(RipperHandler ripperHandler) {
+		this.ripperHandler = ripperHandler;
+	}
+	
+	/**
+	 * @param webServicesHandler
+	 */
+	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
+	
+	/**
+	 * @param dialog
+	 */
+	public void setDialog(RipCdDialog dialog) {
+		this.dialog = dialog;
+	}
+	
 	@Override
 	protected CDInfo doInBackground() {
 	    if (!this.ripperHandler.testTools()) {
 	        return null;
 	    }
-	    CdRipper ripper = new CdRipper(applicationArguments, osManager, unknownObjectChecker);
+	    CdRipper ripper = Context.getBean(CdRipper.class);
 	    ripper.setNoCdListener(new NoCdListener() {
 	        @Override
 	        public void noCd() {
@@ -103,23 +112,13 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	        if (cdInfo != null) {
 	        	this.ripperHandler.getRipCdDialogController().showCdInfo(cdInfo, this.ripperHandler.getRepositoryHandler().getPathForNewAudioFilesRipped(), this.ripperHandler.getRepositoryHandler().getRepositoryPath());
 	            if (!this.ripperHandler.getRipCdDialogController().isCancelled()) {
-	                String artist = this.ripperHandler.getRipCdDialogController().getArtist();
-	                String album = this.ripperHandler.getRipCdDialogController().getAlbum();
-	                int year = this.ripperHandler.getRipCdDialogController().getYear();
-	                String genre = this.ripperHandler.getRipCdDialogController().getGenre();
-	                String folder = this.ripperHandler.getRipCdDialogController().getFolder();
-	                List<Integer> tracks = dialog.getTracksSelected();
-	                List<String> trckNames = dialog.getTrackNames();
-	                List<String> artistNames = dialog.getArtistNames();
-	                List<String> composerNames = dialog.getComposerNames();
-	                this.ripperHandler.importSongs(folder, artist, album, year, genre, tracks, trckNames, artistNames, composerNames, dialog.getFormat().getSelectedItem().toString(), dialog
-	                        .getQuality(), dialog.getUseCdErrorCorrection().isSelected());
+	            	String folder = this.ripperHandler.getRipCdDialogController().getFolder();
+	                this.ripperHandler.importSongs(folder, getMetadata(), dialog.getFormat().getSelectedItem().toString(), dialog.getQuality(), dialog.getUseCdErrorCorrection().isSelected());
 	            }
 	            // Even if canceling, save these settings
 	            stateRipper.setUseCdErrorCorrection(dialog.getUseCdErrorCorrection().isSelected());
 	            stateRipper.setEncoder(dialog.getFormat().getSelectedItem().toString());
 	            stateRipper.setEncoderQuality(dialog.getQuality());
-	            stateRipper.setCdRipperFileNamePattern(dialog.getFileNamePattern());
 	        }
 	        // TODO: Add error message id cdInfo returns null
 	    } catch (InterruptedException e) {
@@ -129,6 +128,23 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	    	this.ripperHandler.getRipCdDialogController().getComponentControlled().setVisible(false);
 	        Logger.error(e);
 	    }
+	}
+
+	/**
+	 * @return
+	 */
+	private CDMetadata getMetadata() {
+		CDMetadata metadata = new CDMetadata();
+		metadata.setAlbumArtist(this.ripperHandler.getRipCdDialogController().getArtist());
+		metadata.setAlbum(this.ripperHandler.getRipCdDialogController().getAlbum());
+		metadata.setYear(this.ripperHandler.getRipCdDialogController().getYear());
+		metadata.setGenre(this.ripperHandler.getRipCdDialogController().getGenre());
+		metadata.setDisc(this.ripperHandler.getRipCdDialogController().getDiscNumber());
+		metadata.setTracks(dialog.getTracksSelected());
+		metadata.setTrackNames(dialog.getTrackNames());
+		metadata.setArtistNames(dialog.getArtistNames());
+		metadata.setComposerNames(dialog.getComposerNames());
+		return metadata;
 	}
 	
 	private void tryToGetGenre(CDInfo cdInfo) {

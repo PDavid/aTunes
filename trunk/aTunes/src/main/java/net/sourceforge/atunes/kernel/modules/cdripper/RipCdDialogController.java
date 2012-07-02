@@ -50,6 +50,7 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
     private int year;
     private String genre;
     private String folder;
+    private int discNumber;
     
     private IOSManager osManager;
     
@@ -98,7 +99,6 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
         getComponentControlled().getCancel().addActionListener(listener);
         getComponentControlled().getFolderSelectionButton().addActionListener(listener);
         getComponentControlled().getFormat().addActionListener(listener);
-        getComponentControlled().getFilePattern().addActionListener(listener);
         getComponentControlled().getFolderName().addKeyListener(listener);
         getComponentControlled().getTitlesButton().addActionListener(listener);
         getComponentControlled().getArtistTextField().addKeyListener(listener);
@@ -122,7 +122,21 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
     String getArtist() {
         return artist;
     }
-
+    
+    /**
+     * @return disc number
+     */
+    int getDiscNumber() {
+		return discNumber;
+	}
+    
+    /**
+     * @param discNumber
+     */
+    void setDiscNumber(int discNumber) {
+		this.discNumber = discNumber;
+	}
+    
     /**
      * Gets the folder.
      * 
@@ -151,9 +165,9 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
     }
 
     /**
-     * Checks if is cancelled.
+     * Checks if is canceled.
      * 
-     * @return the cancelled
+     * @return the canceled
      */
     boolean isCancelled() {
         return cancelled;
@@ -196,7 +210,7 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
     void setArtist(String artist) {
         this.artist = artist;
     }
-
+    
     /**
      * Sets the cancelled.
      * 
@@ -258,8 +272,7 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
     }
 
     /**
-     * Show cd info.
-     * 
+     * Show cd info and let user select settings
      * @param cdInfo
      * @param path
      * @param repositoryPath
@@ -274,8 +287,6 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
         getComponentControlled().getFormat().setSelectedItem(ripperHandler.getEncoderName());
         getComponentControlled().getQualityComboBox().setSelectedItem(stateRipper.getEncoderQuality());
         getComponentControlled().getUseCdErrorCorrection().setSelected(stateRipper.isUseCdErrorCorrection());
-        getComponentControlled().getFilePattern().setModel(new DefaultComboBoxModel(ripperHandler.getFilenamePatterns()));
-        getComponentControlled().getFilePattern().setSelectedItem(stateRipper.getCdRipperFileNamePattern());
         setFolder(null);
         getComponentControlled().setTableData(cdInfo);
         getComponentControlled().updateTrackNames(cdInfo.getTitles());

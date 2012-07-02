@@ -85,18 +85,4 @@ public interface IStateRipper {
 	 * @param flacEncoderQuality
 	 */
 	public void setFlacEncoderQuality(String flacEncoderQuality);
-
-	/**
-	 * File name pattern
-	 * @return
-	 */
-	public String getCdRipperFileNamePattern();
-
-	/**
-	 * File name pattern
-	 * @param cdRipperFileNamePattern
-	 */
-	public void setCdRipperFileNamePattern(String cdRipperFileNamePattern);
-
-
 }
