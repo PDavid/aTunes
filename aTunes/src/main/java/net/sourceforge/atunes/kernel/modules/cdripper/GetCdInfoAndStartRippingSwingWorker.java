@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingUtilities;

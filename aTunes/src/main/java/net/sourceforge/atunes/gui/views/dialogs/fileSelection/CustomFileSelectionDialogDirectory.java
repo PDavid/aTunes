@@ -41,6 +41,7 @@ class CustomFileSelectionDialogDirectory {
      */
     CustomFileSelectionDialogDirectory(File file, FileSystemView fileSystemView) {
         this.file = file;
+        this.fileSystemView = fileSystemView;
     }
     
     /**

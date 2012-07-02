@@ -98,39 +98,54 @@ class CdInfoTableModel extends AbstractTableModel {
         if (columnIndex == 0) {
             return tracksSelected.get(rowIndex);
         } else if (columnIndex == 1) {
-            if (rowIndex > trackNames.size() - 1) {
-                trackNames.add(rowIndex, StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1)));
-                return StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1));
-            }
-            if (rowIndex < trackNames.size()) {
-                return trackNames.get(rowIndex);
-            }
-
-            trackNames.add(rowIndex, StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1)));
-            return StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1));
-
+            return getTrackNameValue(rowIndex);
         } else if (columnIndex == 2) {
-            if (rowIndex > artistNames.size() - 1) {
-                // TODO if cdda2wav is modified for detecting song artist modify here
-                if (cdInfo.getArtist() != null) {
-                    return cdInfo.getArtist();
-                }
-                return unknownObjectChecker.getUnknownArtist();
-            }
-            return artistNames.get(rowIndex);
+            return getArtistNameValue(rowIndex);
         } else if (columnIndex == 4) {
-        	if (rowIndex > cdInfo.getDurations().size() - 1) {
-        		return "";
-        	}
-            return cdInfo.getDurations().get(rowIndex);
+        	return getDurationValue(rowIndex);
         } else {
-            if (rowIndex > composerNames.size() - 1) {
-                composerNames.add(rowIndex, "");
-                return "";
-            }
-            return composerNames.get(rowIndex);
+            return getComposerValue(rowIndex);
         }
     }
+
+	private Object getTrackNameValue(int rowIndex) {
+		if (rowIndex > trackNames.size() - 1) {
+		    trackNames.add(rowIndex, StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1)));
+		    return StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1));
+		}
+		if (rowIndex < trackNames.size()) {
+		    return trackNames.get(rowIndex);
+		}
+
+		trackNames.add(rowIndex, StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1)));
+		return StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1));
+	}
+
+	private Object getArtistNameValue(int rowIndex) {
+		if (rowIndex > artistNames.size() - 1) {
+		    // TODO if cdda2wav is modified for detecting song artist modify here
+		    if (cdInfo.getArtist() != null) {
+		        return cdInfo.getArtist();
+		    }
+		    return unknownObjectChecker.getUnknownArtist();
+		}
+		return artistNames.get(rowIndex);
+	}
+
+	private Object getDurationValue(int rowIndex) {
+		if (rowIndex > cdInfo.getDurations().size() - 1) {
+			return "";
+		}
+		return cdInfo.getDurations().get(rowIndex);
+	}
+
+	private Object getComposerValue(int rowIndex) {
+		if (rowIndex > composerNames.size() - 1) {
+		    composerNames.add(rowIndex, "");
+		    return "";
+		}
+		return composerNames.get(rowIndex);
+	}
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
