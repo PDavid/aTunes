@@ -20,19 +20,35 @@
 
 package net.sourceforge.atunes.kernel.modules.pattern;
 
+import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 final class ArtistPattern extends AbstractPattern {
 	
+	private IUnknownObjectChecker unknownObjectChecker;
+	
 	/**
-	 * Default constructor
+	 * @param unknownObjectChecker
 	 */
-	ArtistPattern() {
+	ArtistPattern(IUnknownObjectChecker unknownObjectChecker) {
 		super('A', "ARTIST", true, true);
+		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	@Override
 	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
 	    return audioFile.getArtist();
+	}
+	
+	@Override
+	public String getCDMetadataStringValue(CDMetadata metadata, int trackNumber) {
+		String artist = metadata.getArtist(trackNumber);
+		// If track has not artist, then use album artist
+		if (artist == null) {
+			artist = metadata.getAlbumArtist();
+		}
+		// If still null then use unknown artist
+		return artist != null ? artist : unknownObjectChecker.getUnknownArtist();
 	}
 }

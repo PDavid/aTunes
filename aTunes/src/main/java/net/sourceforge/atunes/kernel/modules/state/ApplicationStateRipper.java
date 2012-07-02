@@ -93,14 +93,4 @@ public class ApplicationStateRipper implements IStateRipper {
 	public void setFlacEncoderQuality(String flacEncoderQuality) {
     	this.stateStore.storePreference(Preferences.FLAC_ENCODER_QUALITY, flacEncoderQuality);
     }
-
-    @Override
-	public String getCdRipperFileNamePattern() {
-    	return (String) this.stateStore.retrievePreference(Preferences.CD_RIPPER_FILENAME_PATTERN, null);
-    }
-
-    @Override
-	public void setCdRipperFileNamePattern(String cdRipperFileNamePattern) {
-    	this.stateStore.storePreference(Preferences.CD_RIPPER_FILENAME_PATTERN, cdRipperFileNamePattern);
-    }
 }

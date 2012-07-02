@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.pattern;
 
+import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 final class AnyPattern extends AbstractPattern {
@@ -36,4 +37,10 @@ final class AnyPattern extends AbstractPattern {
         // This is a dummy pattern
         return null;
     }
+	
+	@Override
+	public String getCDMetadataStringValue(CDMetadata metadata, int trackNumber) {
+        // This is a dummy pattern
+		return null;
+	}
 }

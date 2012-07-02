@@ -26,7 +26,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 public final class Patterns {
 
@@ -47,7 +49,7 @@ public final class Patterns {
         patterns.add(ANY_PATTERN);
 
         patterns.add(new TitlePattern());
-        patterns.add(new ArtistPattern());
+        patterns.add(new ArtistPattern(Context.getBean(IUnknownObjectChecker.class)));
         patterns.add(new AlbumPattern());
         patterns.add(new AlbumArtistPattern());
         patterns.add(new TrackPattern());

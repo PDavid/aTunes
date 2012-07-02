@@ -23,10 +23,8 @@ package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 import java.util.List;
 
 import junit.framework.Assert;
-import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
 import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.IStateContext;
-import net.sourceforge.atunes.model.IStateCore;
 
 import org.junit.Test;
 import org.mockito.Mockito;

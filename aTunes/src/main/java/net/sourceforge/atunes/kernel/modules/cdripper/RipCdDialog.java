@@ -53,7 +53,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 1987727841297807350L;
 
-    private JTextField artistTextField;
+    private JTextField albumArtistTextField;
     private JTextField albumTextField;
     private JTextField yearTextField;
     private JComboBox genreComboBox;
@@ -61,7 +61,6 @@ public final class RipCdDialog extends AbstractCustomDialog {
     private JComboBox format;
     private JLabel qualityLabel;
     private JComboBox quality;
-    private JComboBox filePattern;
     private JTextField folderName;
     private JButton folderSelectionButton;
     private JCheckBox useCdErrorCorrection;
@@ -69,6 +68,8 @@ public final class RipCdDialog extends AbstractCustomDialog {
     private JButton cancel;
     private CdInfoTableModel tableModel;
     private IUnknownObjectChecker unknownObjectChecker;
+
+	private CustomTextField discNumberField;
     
     /**
      * @param unknownObjectChecker
@@ -82,7 +83,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
      * @param frame
      */
     public RipCdDialog(IFrame frame) {
-        super(frame, 650, 450);
+        super(frame, 800, 700);
     }
     
     @Override
@@ -92,6 +93,13 @@ public final class RipCdDialog extends AbstractCustomDialog {
         add(getContent(getLookAndFeel()));
     }
 
+    /**
+     * @return
+     */
+    public CustomTextField getDiscNumberField() {
+		return discNumberField;
+	}
+    
     /**
      * Gets the album text field.
      * 
@@ -125,7 +133,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
      * @return the artist text field
      */
     public JTextField getArtistTextField() {
-        return artistTextField;
+        return albumArtistTextField;
     }
 
     /**
@@ -153,76 +161,90 @@ public final class RipCdDialog extends AbstractCustomDialog {
     private JPanel getBasicPanel() {
         JPanel basicPanel = new JPanel(new GridBagLayout());
 
-        JLabel artistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
-        artistTextField = new CustomTextField();
+        JLabel albumArtistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
+        albumArtistTextField = new CustomTextField();
+        
         JLabel albumLabel = new JLabel(I18nUtils.getString("ALBUM"));
         albumTextField = new CustomTextField();
-        JLabel yearLabel = new JLabel();
-        yearLabel.setText(I18nUtils.getString("YEAR"));
+        
+        JLabel cdLabel = new JLabel(I18nUtils.getString("DISC_NUMBER"));
+        discNumberField = new CustomTextField();
+        
+        JLabel yearLabel = new JLabel(I18nUtils.getString("YEAR"));
         yearTextField = new CustomTextField();
+        
         JLabel genreLabel = new JLabel(I18nUtils.getString("GENRE"));
-
         genreComboBox = new JComboBox();
         genreComboBox.setEditable(true);
+        
         titlesButton = new JButton(I18nUtils.getString("GET_TITLES"));
         
-        arrangeBasicPanel(basicPanel, artistLabel, albumLabel, yearLabel, genreLabel);
+        arrangeBasicPanel(basicPanel, albumArtistLabel, albumLabel, yearLabel, genreLabel, cdLabel);
         
         return basicPanel;
     }
 
 	/**
 	 * @param basicPanel
-	 * @param artistLabel
+	 * @param albumArtistLabel
 	 * @param albumLabel
 	 * @param yearLabel
 	 * @param genreLabel
+	 * @param cdLabel
 	 */
-	private void arrangeBasicPanel(JPanel basicPanel, JLabel artistLabel, JLabel albumLabel, JLabel yearLabel, JLabel genreLabel) {
+	private void arrangeBasicPanel(JPanel basicPanel, JLabel albumArtistLabel, JLabel albumLabel, JLabel yearLabel, JLabel genreLabel, JLabel cdLabel) {
 		GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(5, 10, 5, 10);
         
         c.gridx = 0;
         c.gridy = 0;
-        c.weightx = 0;
-        basicPanel.add(artistLabel, c);
+        c.weightx = 0.25;
+        basicPanel.add(albumArtistLabel, c);
+        
         c.gridx = 1;
-        c.weightx = 0.9;
-        basicPanel.add(artistTextField, c);
-        
-        c.gridx = 2;
-        c.weightx = 0;
-        basicPanel.add(genreLabel, c);
-        c.gridx = 3;
-        c.weightx = 0.1;
-        basicPanel.add(genreComboBox, c);
-        
+        basicPanel.add(albumArtistTextField, c);
+
         c.gridx = 0;
         c.gridy = 1;
-        c.weightx = 0;
         basicPanel.add(albumLabel, c);
-        
+
         c.gridx = 1;
-        c.weightx = 0.9;
         basicPanel.add(albumTextField, c);
-        
-        c.gridx = 2;
-        c.weightx = 0;
-        basicPanel.add(yearLabel, c);
-        
-        c.gridx = 3;
-        c.weightx = 0.1;
-        basicPanel.add(yearTextField, c);
 
         c.gridx = 0;
         c.gridy = 2;
+        basicPanel.add(genreLabel, c);
+
+        c.gridx = 1;
+        basicPanel.add(genreComboBox, c);
+
+        c.gridx = 2;
+        c.gridy = 0;
+        basicPanel.add(cdLabel, c);
+
+        c.gridx = 3;
+        basicPanel.add(discNumberField, c);
+
+        c.gridx = 2;
+        c.gridy = 1;
+        basicPanel.add(yearLabel, c);
+
+        c.gridx = 3;
+        basicPanel.add(yearTextField, c);
+        
+        c.gridx = 2;
+        c.gridy = 2;
+        basicPanel.add(titlesButton, c);
+
+        c.gridx = 0;
+        c.gridy = 3;
         c.weightx = 0;
         c.gridwidth = 4;
         c.anchor = GridBagConstraints.CENTER;
         c.fill = GridBagConstraints.NONE;
         c.insets = new Insets(15, 0, 0, 0);
-        basicPanel.add(titlesButton, c);
+        
 	}
     
 	private JPanel getAdvancedPanel() {
@@ -234,9 +256,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 		qualityLabel = new JLabel(I18nUtils.getString("QUALITY"));
 
 		quality = new JComboBox(new String[] {});
-		JLabel filePatternLabel = new JLabel(I18nUtils.getString("FILEPATTERN"));
 
-		filePattern = new JComboBox();
 		JLabel dir = new JLabel(I18nUtils.getString("FOLDER"));
 
 		folderName = new CustomTextField();
@@ -295,7 +315,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
-        c.weighty = 0.8;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(20, 20, 10, 20);
         panel.add(scrollPane, c);
@@ -305,7 +325,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
         tabbedPane.add(getAdvancedPanel(), I18nUtils.getString("ADVANCED"));
         
         c.gridy = 1;
-        c.weighty = 0.2;
+        c.weighty = 0.5;
         c.insets = new Insets(0, 20, 5, 20);
         c.anchor = GridBagConstraints.WEST;
         panel.add(tabbedPane, c);
@@ -363,24 +383,6 @@ public final class RipCdDialog extends AbstractCustomDialog {
         table.setDefaultRenderer(String.class, iLookAndFeel.getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode(iLookAndFeel)));
 		return table;
 	}
-
-    /**
-     * Returns the filename pattern selected in the CD ripper dialog.
-     * 
-     * @return Filename pattern
-     */
-    public String getFileNamePattern() {
-        return (String) filePattern.getSelectedItem();
-    }
-
-    /**
-     * Gets the file pattern.
-     * 
-     * @return the file pattern
-     */
-    public JComboBox getFilePattern() {
-        return filePattern;
-    }
 
     /**
      * Gets the folder name.

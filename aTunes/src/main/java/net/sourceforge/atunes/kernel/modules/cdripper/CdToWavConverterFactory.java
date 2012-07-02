@@ -23,9 +23,31 @@ package net.sourceforge.atunes.kernel.modules.cdripper;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IOSManager;
 
-final class CdToWavConverterFactory {
+/**
+ * Creates a cd to wav converter
+ * @author alex
+ *
+ */
+public final class CdToWavConverterFactory {
 	
-	private CdToWavConverterFactory() {}
+	private IApplicationArguments applicationArguments;
+	
+	private IOSManager osManager;
+	
+	/**
+	 * @param applicationArguments
+	 */
+	public void setApplicationArguments(
+			IApplicationArguments applicationArguments) {
+		this.applicationArguments = applicationArguments;
+	}
+	
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
 	
     /**
      * creates a new CdToWavConverter-object. The implementation depends on the users OS.
@@ -33,7 +55,7 @@ final class CdToWavConverterFactory {
      * @param osManager
      * @return
      */
-    public static AbstractCdToWavConverter createNewConverterForOS(IApplicationArguments applicationArguments, IOSManager osManager) {
+    public AbstractCdToWavConverter createNewConverterForOS() {
     	AbstractCdToWavConverter osConverter = null;
     	if (applicationArguments.isSimulateCD()) {
     		osConverter = new FakeCDToWavConverter();
@@ -51,6 +73,4 @@ final class CdToWavConverterFactory {
             return new Cdparanoia();
         }
     }
-
-
 }

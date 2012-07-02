@@ -27,6 +27,15 @@
 	<bean class="net.sourceforge.atunes.kernel.modules.cdripper.OggEncoder" parent="abstractEncoder" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.cdripper.WavEncoder" parent="abstractEncoder" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.cdripper.FakeEncoder" parent="abstractEncoder" scope="prototype"/>
+	
+	
+	<bean class="net.sourceforge.atunes.kernel.modules.cdripper.GetCdInfoAndStartRippingSwingWorker" scope="prototype"/>
 
+	<bean class="net.sourceforge.atunes.kernel.modules.cdripper.CdRipper" scope="prototype"/>
+	<bean id="cdToWavConverterFactory" class="net.sourceforge.atunes.kernel.modules.cdripper.CdToWavConverterFactory" scope="prototype"/>
+	<bean id="cdToWavConverter" factory-bean="cdToWavConverterFactory" factory-method="createNewConverterForOS"/>
+	
+	<bean id="cdRipperFileNameCreator" class="net.sourceforge.atunes.kernel.modules.cdripper.CdRipperFileNameCreator" scope="prototype"/>
+	
 
 </beans>

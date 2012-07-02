@@ -26,7 +26,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +37,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
+import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IDialogFactory;
@@ -47,7 +47,6 @@ import net.sourceforge.atunes.model.IRipperHandler;
 import net.sourceforge.atunes.model.IRipperProgressDialog;
 import net.sourceforge.atunes.model.IStateRipper;
 import net.sourceforge.atunes.model.ITaskService;
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -63,12 +62,6 @@ import org.apache.sanselan.ImageWriteException;
  */
 public final class RipperHandler extends AbstractHandler implements IRipperHandler {
 
-    private static final String SEPARATOR = " - ";
-
-	private static final String[] FILENAMEPATTERN = { StringUtils.getString(CdRipper.TRACK_NUMBER, SEPARATOR, CdRipper.TITLE_PATTERN),
-            StringUtils.getString(CdRipper.ARTIST_PATTERN, SEPARATOR, CdRipper.ALBUM_PATTERN, SEPARATOR, CdRipper.TRACK_NUMBER, SEPARATOR, CdRipper.TITLE_PATTERN),
-            StringUtils.getString(CdRipper.ARTIST_PATTERN, SEPARATOR, CdRipper.TITLE_PATTERN) };
-
     private CdRipper ripper;
     private volatile boolean interrupted;
     private boolean folderCreated;
@@ -79,8 +72,6 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     private IIndeterminateProgressDialog indeterminateProgressDialog;
     
     private IRepositoryHandler repositoryHandler;
-    
-    private IWebServicesHandler webServicesHandler;
     
     /**
      * Map of available encoders in the system: key is format name, value is
@@ -100,8 +91,6 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     
     private IStateRipper stateRipper;
     
-	private IUnknownObjectChecker unknownObjectChecker;
-	
 	private IDialogFactory dialogFactory;
 	
 	private IApplicationArguments applicationArguments;
@@ -120,13 +109,6 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
 		this.dialogFactory = dialogFactory;
 	}
 	
-	/**
-	 * @param unknownObjectChecker
-	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
-	}
-    
     /**
      * @param stateRipper
      */
@@ -185,13 +167,6 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
      */
     public void setTaskService(ITaskService taskService) {
 		this.taskService = taskService;
-	}
-    
-    /**
-     * @param webServicesHandler
-     */
-    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
-		this.webServicesHandler = webServicesHandler;
 	}
     
     @Override
@@ -330,11 +305,8 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     	return getAvailableEncoders().keySet();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#importSongs(java.lang.String, java.lang.String, java.lang.String, int, java.lang.String, java.util.List, java.util.List, java.util.List, java.util.List, java.lang.String, java.lang.String, boolean)
-	 */
     @Override
-	public void importSongs(String folder, final String artist, final String album, final int year, final String genre, final List<Integer> tracks, final List<String> trckNames, final List<String> artistNames, final List<String> composerNames, final String format, final String quality1, final boolean useParanoia) {
+	public void importSongs(String folder, CDMetadata metadata, final String format, final String quality1, final boolean useParanoia) {
         // Disable import cd option in menu
         getBean(RipCDAction.class).setEnabled(false);
 
@@ -354,12 +326,8 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         encoder.setQuality(quality1);
 
         ripper.setEncoder(encoder);
-        ripper.setArtist(artist);
-        ripper.setAlbum(album);
-        ripper.setYear(year);
-        ripper.setGenre(genre);
-        ripper.setFileNamePattern(stateRipper.getCdRipperFileNamePattern());
-
+        ripper.setCdMetadata(metadata);
+        
         final IRipperProgressDialog dialog = getBean(IRipperProgressDialog.class);
         dialog.addCancelAction(new ActionListener() {
 			
@@ -373,26 +341,24 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         if (albumInfo != null) {
             ImageIcon cover = getBean(IWebServicesHandler.class).getAlbumImage(albumInfo);
             dialog.setCover(cover);
-            savePicture(cover, folderFile, artist, album);
+            savePicture(cover, folderFile, metadata.getAlbumArtist(), metadata.getAlbum());
         }
 
-        dialog.setArtistAndAlbum(artist, album);
+        dialog.setArtistAndAlbum(metadata.getAlbumArtist(), metadata.getAlbum());
 
-        dialog.setTotalProgressBarLimits(0, tracks.size());
+        dialog.setTotalProgressBarLimits(0, metadata.getTracks().size());
         dialog.setTotalProgressValue(0);
 
         final List<File> filesImported = new ArrayList<File>();
 
         ripper.setDecoderListener(new DecoderProgressListener(dialog));
-
         ripper.setEncoderListener(new EncoderProgressListener(dialog));
-
         ripper.setTotalProgressListener(new TotalProgressListener(dialog, filesImported));
 
         new SwingWorker<Boolean, Void>() {
             @Override
             protected Boolean doInBackground() {
-                return ripper.ripTracks(tracks, trckNames, folderFile, artistNames, composerNames, useParanoia);
+                return ripper.ripTracks(folderFile, useParanoia);
             }
 
             @Override
@@ -482,8 +448,9 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         	}
         });
 
-        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(getOsManager(), stateRipper, this, dialog, webServicesHandler, unknownObjectChecker, applicationArguments);
-        getCdInfoAndStartRipping.execute();
+        GetCdInfoAndStartRippingSwingWorker cdInfoAndStartRippingSwingWorker = getBean(GetCdInfoAndStartRippingSwingWorker.class);
+        cdInfoAndStartRippingSwingWorker.setDialog(dialog);
+        cdInfoAndStartRippingSwingWorker.execute();
     }
 
     /**
@@ -519,13 +486,5 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
 	@Override
 	public boolean isRipSupported() {
 		return getOsManager().isRipSupported();
-	}
-	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#getFilenamePatterns()
-	 */
-	@Override
-	public String[] getFilenamePatterns() {
-		return Arrays.copyOf(FILENAMEPATTERN, FILENAMEPATTERN.length);
 	}
 }

@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.pattern;
 
+import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -34,7 +35,20 @@ final class TrackPattern extends AbstractPattern {
 
 	@Override
 	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-	    String track = String.valueOf(audioFile.getTrackNumber());
+		return formatTrackNumber(audioFile.getTrackNumber());
+	}
+	
+	@Override
+	public String getCDMetadataStringValue(CDMetadata metadata, int trackNumber) {
+	    return formatTrackNumber(trackNumber);
+	}
+
+	/**
+	 * @param trackNumber
+	 * @return
+	 */
+	private String formatTrackNumber(int trackNumber) {
+		String track = String.valueOf(trackNumber);
 	    return track.length() < 2 ? StringUtils.getString("0", track) : track;
 	}
 }

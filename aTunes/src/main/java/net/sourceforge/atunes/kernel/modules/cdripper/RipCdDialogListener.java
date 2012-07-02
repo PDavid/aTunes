@@ -33,7 +33,6 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRipperHandler;
-import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -56,11 +55,11 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
 
     /**
      * Instantiates a new rip cd dialog listener.
-     * 
      * @param ripCdDialog
      * @param ripCdDialogController
      * @param osManager
      * @param repositoryHandler
+     * @param ripperHandler
      */
     public RipCdDialogListener(RipCdDialog ripCdDialog, RipCdDialogController ripCdDialogController, IOSManager osManager, IRepositoryHandler repositoryHandler, IRipperHandler ripperHandler) {
         this.ripCdDialog = ripCdDialog;
@@ -79,7 +78,12 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
             try {
                 ripCdDialogController.setYear(Integer.parseInt(ripCdDialog.getYearTextField().getText()));
             } catch (NumberFormatException ex) {
-                ripCdDialogController.setYear(DateUtils.getCurrentYear());
+                ripCdDialogController.setYear(0);
+            }
+            try {
+                ripCdDialogController.setDiscNumber(Integer.parseInt(ripCdDialog.getDiscNumberField().getText()));
+            } catch (NumberFormatException ex) {
+                ripCdDialogController.setDiscNumber(1);
             }
             ripCdDialogController.setGenre(ripCdDialog.getGenreComboBox().getSelectedItem().toString());
             ripCdDialogController.setFolder(ripCdDialog.getFolderName().getText());

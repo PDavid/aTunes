@@ -21,27 +21,22 @@
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.File;
-import java.text.DecimalFormat;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.model.IApplicationArguments;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
-import net.sourceforge.atunes.utils.FileNameUtils;
+import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-class CdRipper {
-
-    static final String ARTIST_PATTERN = "%A";
-    static final String ALBUM_PATTERN = "%L";
-    static final String TITLE_PATTERN = "%T";
-    static final String TRACK_NUMBER = "%N";
+/**
+ * Responsible of rip cds
+ * @author alex
+ *
+ */
+public class CdRipper {
 
     private AbstractCdToWavConverter cdToWavConverter;
     private Encoder encoder;
@@ -49,25 +44,32 @@ class CdRipper {
     private boolean interrupted;
     /** ExecutorService for file encoding. */
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private String artist;
-    private String album;
-    private String fileNamePattern;
-    private IOSManager osManager;
     
-    private IUnknownObjectChecker unknownObjectChecker;
+    private CdRipperFileNameCreator cdRipperFileNameCreator;
+    
+    private CDMetadata cdMetadata;
+    
+    /**
+     * @param cdMetadata
+     */
+    public void setCdMetadata(CDMetadata cdMetadata) {
+		this.cdMetadata = cdMetadata;
+	}
+    
+    /**
+     * @param cdRipperFileNameCreator
+     */
+    public void setCdRipperFileNameCreator(CdRipperFileNameCreator cdRipperFileNameCreator) {
+		this.cdRipperFileNameCreator = cdRipperFileNameCreator;
+	}
 
     /**
-     * Instantiates a new cd ripper.
-     * @param applicationArguments
-     * @param osManager
-     * @param unknownObjectChecker
+     * @param cdToWavConverter
      */
-    CdRipper(IApplicationArguments applicationArguments, IOSManager osManager, IUnknownObjectChecker unknownObjectChecker) {
-    	this.osManager = osManager;
-    	this.unknownObjectChecker = unknownObjectChecker;
-        cdToWavConverter = CdToWavConverterFactory.createNewConverterForOS(applicationArguments, osManager);
-    }
-
+    public void setCdToWavConverter(AbstractCdToWavConverter cdToWavConverter) {
+		this.cdToWavConverter = cdToWavConverter;
+	}
+    
     /**
      * @return if process has been interrupted
      */
@@ -104,59 +106,14 @@ class CdRipper {
     }
 
     /**
-     * This prepares the filename for the encoder.
-     * 
-     * @param titles
-     *            the titles
-     * @param trackNumber
-     *            the track number
-     * @param extension
-     *            the extension
-     * 
-     * @return the file name
-     */
-    private String getFileName(List<String> titles, int trackNumber, String extension) {
-        DecimalFormat df = new DecimalFormat("00");
-        if (fileNamePattern == null) {
-            return StringUtils.getString("track", trackNumber, '.', extension);
-        }
-        String result = StringUtils.getString(fileNamePattern, '.', extension);
-        result = result.replaceAll(ARTIST_PATTERN, artist);
-        result = result.replaceAll(ALBUM_PATTERN, album);
-        result = result.replaceAll(TRACK_NUMBER, df.format(trackNumber));
-        if (titles.size() > trackNumber - 1) {
-            // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
-            result = result.replaceAll(TITLE_PATTERN, titles.get(trackNumber - 1).replace("\\", "\\\\").replace("$", "\\$"));
-        } else {
-            result = result.replaceAll(TITLE_PATTERN, StringUtils.getString("track", trackNumber));
-        }
-        // Replace known illegal characters. 
-        result = FileNameUtils.getValidFileName(result, osManager);
-        return result;
-    }
-
-    /**
      * Rip tracks.
-     * 
-     * @param tracks
-     *            the tracks
-     * @param titles
-     *            the titles
      * @param folder
-     *            the folder
-     * @param artistNames
-     *            the artist names
-     * @param composerNames
-     *            the composer names
      * @param useParanoia
-     *            whether to use the paranoia mode of cdda2wav to correct CD
-     *            errors (slow!)
-     * @return true, if successful
+     * @return true if successful
      */
-
-    boolean ripTracks(List<Integer> tracks, final List<String> titles, File folder, final List<String> artistNames, final List<String> composerNames, boolean useParanoia) {
+    boolean ripTracks(File folder, boolean useParanoia) {
         String extension = encoder != null ? encoder.getExtensionOfEncodedFiles() : "wav";
-        Logger.info(StringUtils.getString("Running cd ripping of ", tracks.size(), " to ", extension, "..."));
+        Logger.info(StringUtils.getString("Running cd ripping of ", cdMetadata.getTracks().size(), " to ", extension, "..."));
         long t0 = System.currentTimeMillis();
         if (!checkFolder(folder)) {
         	Logger.error(StringUtils.getString("Folder ", folder, " not found or not a directory"));
@@ -174,9 +131,8 @@ class CdRipper {
 
         File resultFile = null;
 
-        for (int i = 0; i < tracks.size(); i++) {
-            resultFile = ripTrack(tracks, titles, folder, artistNames,
-					composerNames, useParanoia, extension, resultFile, i);
+        for (int i = 0; i < cdMetadata.getTracks().size(); i++) {
+            resultFile = ripTrack(folder, useParanoia, extension, resultFile, i);
         }
         long t1 = System.currentTimeMillis();
         Logger.info(StringUtils.getString("Process finished in ", (t1 - t0) / 1000.0, " seconds"));
@@ -184,34 +140,24 @@ class CdRipper {
     }
 
 	/**
-	 * @param tracks
-	 * @param titles
 	 * @param folder
-	 * @param artistNames
-	 * @param composerNames
 	 * @param useParanoia
 	 * @param extension
 	 * @param resultFile
 	 * @param i
 	 * @return
 	 */
-	private File ripTrack(List<Integer> tracks, final List<String> titles,
-			File folder, final List<String> artistNames,
-			final List<String> composerNames, boolean useParanoia,
-			String extension, File resultFile, int i) {
+	private File ripTrack(File folder, boolean useParanoia, String extension, File resultFile, int i) {
 		
 		File result = resultFile;
 		
 		if (!interrupted) {
-		    final int trackNumber = tracks.get(i);
+		    final int trackNumber = cdMetadata.getTracks().get(i);
 		    File wavFile = new File(StringUtils.getString(folder.getAbsolutePath(), "/track", trackNumber, ".wav"));
-		    final boolean ripResultFinal;
 
 		    if (encoder != null) {
-		    	result = new File(StringUtils.getString(folder.getAbsolutePath(), '/', getFileName(titles, trackNumber, extension)));
+		    	result = new File(StringUtils.getString(folder.getAbsolutePath(), '/', cdRipperFileNameCreator.getFileName(cdMetadata, trackNumber, extension)));
 		    }
-		    final File resultFileTemp = result;
-		    final File wavFileTemp = wavFile;
 		    final File infFileTemp = new File(StringUtils.getString(folder.getAbsolutePath(), "/track", trackNumber, ".inf"));
 
 		    boolean ripResult = false;
@@ -222,23 +168,20 @@ class CdRipper {
 		            ripResult = cdToWavConverter.cdda2wav(trackNumber, wavFile);
 		        }
 		    }
-		    ripResultFinal = ripResult;
 
 		    /*
 		     * Start encoding process, we use a thread so encoding and
 		     * ripping can happen in parallel. This allows to import CD's
 		     * faster.
 		     */
-		    Runnable encodeFile = new EncodeFileRunnable(this, trackNumber, artistNames, composerNames,
-					ripResultFinal, resultFileTemp, infFileTemp, titles,
-					wavFileTemp, unknownObjectChecker);
+		    Runnable encodeFile = new EncodeFileRunnable(this, trackNumber, cdMetadata, ripResult, result, infFileTemp, wavFile);
 
 		    executorService.execute(encodeFile);
 		    /*
 		     * If it is the last track that is ripped, wait for encoder to
 		     * finish. This allows the progress dialog to stay visible.
 		     */
-		    if (i == tracks.size() - 1) {
+		    if (i == cdMetadata.getTracks().size() - 1) {
 		        executorService.shutdown();
 		        try {
 		            executorService.awaitTermination(100, TimeUnit.MINUTES);
@@ -259,40 +202,6 @@ class CdRipper {
 		}
 		return result;
 	}
-
-    /**
-     * Sets the album.
-     * 
-     * @param album
-     *            the new album
-     */
-    void setAlbum(String album) {
-        if (album == null || album.equals("")) {
-            this.album = unknownObjectChecker.getUnknownAlbum();
-        } else {
-            this.album = album;
-        }
-        if (encoder != null) {
-            encoder.setAlbum(this.album);
-        }
-    }
-
-    /**
-     * Sets the artist.
-     * 
-     * @param artist
-     *            the new artist
-     */
-    void setArtist(String artist) {
-        if (artist == null || artist.equals("")) {
-            this.artist = unknownObjectChecker.getUnknownArtist();
-        } else {
-            this.artist = artist;
-        }
-        if (encoder != null) {
-            encoder.setAlbumArtist(this.artist);
-        }
-    }
 
     /**
      * Sets the decoder listener.
@@ -327,28 +236,6 @@ class CdRipper {
     }
 
     /**
-     * Sets the file name pattern.
-     * 
-     * @param fileNamePattern
-     *            the new file name pattern
-     */
-    void setFileNamePattern(String fileNamePattern) {
-        this.fileNamePattern = fileNamePattern;
-    }
-
-    /**
-     * Sets the genre.
-     * 
-     * @param genre
-     *            the new genre
-     */
-    void setGenre(String genre) {
-        if (encoder != null) {
-            encoder.setGenre(genre);
-        }
-    }
-
-    /**
      * Sets the no cd listener.
      * 
      * @param listener
@@ -366,18 +253,6 @@ class CdRipper {
      */
     void setTotalProgressListener(ProgressListener listener) {
         this.listener = listener;
-    }
-
-    /**
-     * Sets the year.
-     * 
-     * @param year
-     *            the new year
-     */
-    void setYear(int year) {
-        if (encoder != null) {
-            encoder.setYear(year);
-        }
     }
 
     /**

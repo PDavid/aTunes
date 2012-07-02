@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -93,27 +94,8 @@ public class OggEncoder extends AbstractEncoder {
     	super("ogg", OGG_QUALITIES, DEFAULT_OGG_QUALITY, FORMAT_NAME);
 	}
     
-    /**
-     * Encode the wav file and tags it using entagged.
-     * 
-     * @param wavFile
-     *            The filename and path of the wav file that should be encoded
-     * @param oggFile
-     *            The name of the new file to be created
-     * @param title
-     *            The title of the song (only title, not artist and album)
-     * @param trackNumber
-     *            The track number of the song
-     * @param artist
-     *            the artist
-     * @param composer
-     *            the composer
-     * 
-     * @return Returns true if encoding was successfull, false otherwise.
-     */
-
     @Override
-    public boolean encode(File wavFile, File oggFile, String title, int trackNumber, String artist, String composer) {
+    public boolean encode(File wavFile, File oggFile) {
         Logger.info(StringUtils.getString("Ogg encoding process started... ", wavFile.getName(), " -> ", oggFile.getName()));
         BufferedReader stdInput = null;
         try {
@@ -136,16 +118,8 @@ public class OggEncoder extends AbstractEncoder {
                 return false;
             }
 
-            // Gather the info and write the tag
-            boolean tagOk = setTag(oggFile, title, trackNumber, artist, composer);
-            
-            if (!tagOk) {
-            	return false;
-            }
-
             Logger.info("Encoded ok!!");
             return true;
-
         } catch (IOException e) {
             Logger.error(StringUtils.getString("Process execution caused exception ", e));
             return false;

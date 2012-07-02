@@ -25,8 +25,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Extracts patterns from strings
+ * @author alex
+ *
+ */
 public final class PatternMatcher {
 	
 	private PatternMatcher() {}
@@ -194,5 +200,20 @@ public final class PatternMatcher {
 		} else {
 			return value.substring(valueIndex);
 		}
+	}
+
+	/**
+	 * Creates a String using a pattern string and information about a cd track
+	 * @param cdMetadata
+	 * @param trackNumber
+	 * @param patternString
+	 * @return
+	 */
+	public static String translateToPattern(CDMetadata cdMetadata, int trackNumber, String patternString) {
+		String result = patternString;
+		for (AbstractPattern pattern : Patterns.getPatterns()) {
+			result = pattern.applyPattern(result, cdMetadata, trackNumber);
+		}
+		return result;
 	}
 }

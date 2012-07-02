@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.pattern;
 
+import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 final class YearPattern extends AbstractPattern {
@@ -34,5 +35,11 @@ final class YearPattern extends AbstractPattern {
 	@Override
 	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
 	    return audioFile.getYear();
+	}
+	
+	@Override
+	public String getCDMetadataStringValue(CDMetadata metadata, int trackNumber) {
+		int year = metadata.getYear();
+		return year > 0 ? String.valueOf(year) : null;
 	}
 }
