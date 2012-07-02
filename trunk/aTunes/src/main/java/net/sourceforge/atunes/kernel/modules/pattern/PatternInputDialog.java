@@ -246,9 +246,13 @@ public final class PatternInputDialog extends AbstractCustomDialog {
         auxPanel.add(okButton);
         auxPanel.add(cancelButton);
 
-        JPanel panel = new JPanel(new GridBagLayout());
+        arrangeDialog(textArea, patternPreviewPanel, availablePatternsPanel, okButton, auxPanel);
+    }
 
-        GridBagConstraints c = new GridBagConstraints();
+	private void arrangeDialog(JTextArea textArea, JPanel patternPreviewPanel,
+			JPanel availablePatternsPanel, JButton okButton, JPanel auxPanel) {
+		JPanel panel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
@@ -280,7 +284,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
         panel.add(auxPanel, c);
         add(panel);
         getRootPane().setDefaultButton(okButton);
-    }
+	}
 
     /**
      * Updated preview

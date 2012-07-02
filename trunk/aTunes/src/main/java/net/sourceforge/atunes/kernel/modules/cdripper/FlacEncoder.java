@@ -43,13 +43,6 @@ public class FlacEncoder extends AbstractEncoder {
     private static final String FLAC = "flac";
     private static final String OUTPUT = "-o";
     private static final String FORCE = "-f";
-    private static final String ADD_TAG = "-t";
-    private static final String APPEND = "-a";
-    private static final String TITLE = "TITLE=";
-    private static final String ARTIST = "ARTIST=";
-    private static final String ALBUM = "ALBUM=";
-    private static final String TRACK = "TRACKNUMBER=";
-    private static final String QUALITY = "-q";
     private static final String VERSION = "--version";
     private static final String[] FLAC_QUALITY = { "-0", "-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8" };
     private static final String DEFAULT_FLAC_QUALITY = "-5";
