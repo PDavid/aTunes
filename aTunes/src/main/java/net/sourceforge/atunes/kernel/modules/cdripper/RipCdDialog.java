@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -34,7 +35,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -272,25 +272,30 @@ public final class RipCdDialog extends AbstractCustomDialog {
 		advancedPanel.add(formatLabel, c);
 		c.gridx = 1;
 		advancedPanel.add(format, c);
-		
+
 		c.gridx = 2;
+		c.weightx = 0.5;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridwidth = 3;
+		advancedPanel.add(useCdErrorCorrection, c);
+
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weightx = 0;
+		c.gridwidth = 1;
 		advancedPanel.add(qualityLabel, c);
-		c.gridx = 3;
+		c.gridx = 1;
 		advancedPanel.add(quality, c);
+				
+		c.gridx = 2;
+		advancedPanel.add(dir, c);
+		
+		c.gridx = 3;
+		c.insets = new Insets(0, 0, 0, 0);
+		advancedPanel.add(folderName, c);
 		
 		c.gridx = 4;
-		advancedPanel.add(useCdErrorCorrection, c);
-		
-		c.gridx = 1;
-		c.gridy = 1;
-		advancedPanel.add(dir, c);
-		c.gridx = 2;
-		c.weightx = 0.8;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		advancedPanel.add(folderName, c);
-		c.gridx = 3;
 		c.fill = GridBagConstraints.NONE;
-		c.weightx = 0;
 		advancedPanel.add(folderSelectionButton, c);
 		
 		return advancedPanel;
@@ -319,19 +324,18 @@ public final class RipCdDialog extends AbstractCustomDialog {
         c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(20, 20, 10, 20);
         panel.add(scrollPane, c);
-        
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.add(getBasicPanel(), I18nUtils.getString("BASIC"));
-        tabbedPane.add(getAdvancedPanel(), I18nUtils.getString("ADVANCED"));
-        
+
         c.gridy = 1;
-        c.weighty = 0.5;
-        c.insets = new Insets(0, 20, 5, 20);
-        c.anchor = GridBagConstraints.WEST;
-        panel.add(tabbedPane, c);
-                
-        c.gridy = 2;
         c.weighty = 0;
+        c.insets = new Insets(20, 20, 0, 20);
+        c.anchor = GridBagConstraints.WEST;
+        panel.add(getBasicPanel(), c);
+
+        c.gridy = 2;
+        c.anchor = GridBagConstraints.WEST;
+        panel.add(getAdvancedPanel(), c);
+
+        c.gridy = 3;
         c.anchor = GridBagConstraints.CENTER;
         panel.add(getOkCancelPanel(), c);
 
