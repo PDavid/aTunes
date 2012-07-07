@@ -318,6 +318,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
         c.gridy = 3;
         c.anchor = GridBagConstraints.CENTER;
+        c.insets = new Insets(0, 0, 20, 0);
         panel.add(getOkCancelPanel(), c);
 
         return panel;
