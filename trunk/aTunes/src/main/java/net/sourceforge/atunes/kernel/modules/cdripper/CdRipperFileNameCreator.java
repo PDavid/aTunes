@@ -20,11 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
-import net.sourceforge.atunes.kernel.modules.pattern.PatternMatcher;
+import net.sourceforge.atunes.kernel.modules.pattern.PatternToFileTranslator;
 import net.sourceforge.atunes.model.CDMetadata;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateRepository;
-import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -36,13 +34,13 @@ public class CdRipperFileNameCreator {
 	
 	private IStateRepository stateRepository;
 	
-	private IOSManager osManager;
+	private PatternToFileTranslator patternToFileTranslator;
 	
 	/**
-	 * @param osManager
+	 * @param patternToFileTranslator
 	 */
-	public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
+	public void setPatternToFileTranslator(PatternToFileTranslator patternToFileTranslator) {
+		this.patternToFileTranslator = patternToFileTranslator;
 	}
 	
 	/**
@@ -65,10 +63,8 @@ public class CdRipperFileNameCreator {
     	if (StringUtils.isEmpty(fileNamePattern)) {
     		result = StringUtils.getString("track", trackNumber, '.', extension);
     	} else {
-    		result = StringUtils.getString(PatternMatcher.translateToPattern(cdMetadata, trackNumber, fileNamePattern), '.', extension);
+    		result = StringUtils.getString(patternToFileTranslator.translateFromPatternToFileName(cdMetadata, trackNumber, fileNamePattern), '.', extension);
     	}
-    	// Replace known illegal characters. 
-        result = FileNameUtils.getValidFileName(result, osManager);
         return result;
 	}
 }

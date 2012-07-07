@@ -24,17 +24,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRipperHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * The listener interface for receiving ripCdDialog events.
@@ -47,25 +41,17 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
     /** The rip cd dialog controller. */
     private RipCdDialogController ripCdDialogController;
     
-    private IOSManager osManager;
-    
-    private IRepositoryHandler repositoryHandler;
-    
     private IRipperHandler ripperHandler;
 
     /**
      * Instantiates a new rip cd dialog listener.
      * @param ripCdDialog
      * @param ripCdDialogController
-     * @param osManager
-     * @param repositoryHandler
      * @param ripperHandler
      */
-    public RipCdDialogListener(RipCdDialog ripCdDialog, RipCdDialogController ripCdDialogController, IOSManager osManager, IRepositoryHandler repositoryHandler, IRipperHandler ripperHandler) {
+    public RipCdDialogListener(RipCdDialog ripCdDialog, RipCdDialogController ripCdDialogController, IRipperHandler ripperHandler) {
         this.ripCdDialog = ripCdDialog;
         this.ripCdDialogController = ripCdDialogController;
-        this.osManager = osManager;
-        this.repositoryHandler = repositoryHandler;
         this.ripperHandler = ripperHandler;
     }
 
@@ -86,20 +72,10 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
                 ripCdDialogController.setDiscNumber(1);
             }
             ripCdDialogController.setGenre(ripCdDialog.getGenreComboBox().getSelectedItem().toString());
-            ripCdDialogController.setFolder(ripCdDialog.getFolderName().getText());
             ripCdDialog.setVisible(false);
         } else if (e.getSource() == ripCdDialog.getCancel()) {
             ripCdDialogController.setCancelled(true);
             ripCdDialog.setVisible(false);
-        } else if (e.getSource() == ripCdDialog.getFolderSelectionButton()) {
-            JFileChooser chooser = new JFileChooser();
-            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            int returnVal = chooser.showDialog(ripCdDialog, I18nUtils.getString("SELECT_FOLDER"));
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File selectedPath = chooser.getSelectedFile();
-                ripCdDialog.getFolderName().setText(selectedPath.getAbsolutePath());
-                ripCdDialogController.setFolderNameEdited(true);
-            }
         } else if (e.getSource() == ripCdDialog.getFormat()) {
             // Fill quality combo
             String[] qualities = ripperHandler.getEncoderQualities((String) ripCdDialog.getFormat().getSelectedItem());
@@ -114,32 +90,16 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if (e.getSource() == ripCdDialog.getFolderName() || e.getSource() == ripCdDialog.getAlbumTextField()) {
-            ripCdDialogController.setFolderNameEdited(true);
-        }
-
         if (e.getSource() == ripCdDialog.getArtistTextField() || e.getSource() == ripCdDialog.getAlbumTextField()) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
                     String artist = ripCdDialog.getArtistTextField().getText();
                     String album = ripCdDialog.getAlbumTextField().getText();
-                    String repositoryPath = repositoryHandler.getRepositoryPath();
                     boolean enabled = !artist.equals("") && !album.equals("");
                     ripCdDialog.getTitlesButton().setEnabled(enabled);
-                    if (!ripCdDialogController.isFolderNameEdited()) {
-                        if (enabled) {
-                            ripCdDialog.getFolderName().setText(
-                                    StringUtils.getString(repositoryPath, osManager.getFileSeparator(), artist, osManager.getFileSeparator(), album));
-                        } else if (artist.equals("")) {
-                            ripCdDialog.getFolderName().setText(StringUtils.getString(repositoryPath, osManager.getFileSeparator(), album));
-                        } else {
-                            ripCdDialog.getFolderName().setText(StringUtils.getString(repositoryPath, osManager.getFileSeparator(), artist));
-                        }
-                    }
                 }
             });
         }
     }
-
 }

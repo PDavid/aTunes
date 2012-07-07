@@ -41,4 +41,5 @@ final class AlbumPattern extends AbstractPattern {
 	public String getCDMetadataStringValue(CDMetadata metadata, int trackNumber) {
 		return metadata.getAlbum();
 	}
+	
 }

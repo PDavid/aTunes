@@ -77,13 +77,12 @@ public interface IRipperHandler extends IHandler {
 
 	/**
 	 * Controls the import process for ripping audio CD's.
-	 * @param folder
 	 * @param metadata
 	 * @param format
 	 * @param quality1
 	 * @param useParanoia
 	 */
-	public void importSongs(String folder, CDMetadata metadata,
+	public void importSongs(CDMetadata metadata,
 			final String format, final String quality1,
 			final boolean useParanoia);
 

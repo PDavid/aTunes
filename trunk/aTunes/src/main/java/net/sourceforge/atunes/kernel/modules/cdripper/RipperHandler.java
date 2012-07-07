@@ -98,6 +98,15 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
 
     private RepositoryAutoRefresher repositoryRefresher;
     
+    private CdRipperFolderNameCreator cdRipperFolderNameCreator;
+    
+    /**
+     * @param cdRipperFolderNameCreator
+     */
+    public void setCdRipperFolderNameCreator(CdRipperFolderNameCreator cdRipperFolderNameCreator) {
+		this.cdRipperFolderNameCreator = cdRipperFolderNameCreator;
+	}
+    
     /**
      * @param repositoryRefresher
      */
@@ -317,22 +326,18 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     }
 
     @Override
-	public void importSongs(String folder, CDMetadata metadata, final String format, final String quality1, final boolean useParanoia) {
+	public void importSongs(CDMetadata metadata, final String format, final String quality1, final boolean useParanoia) {
+        final File folder = cdRipperFolderNameCreator.getFolder(metadata);
+        if (folder == null) {
+        	Logger.error("Could not create folder to import cd");
+        	return;
+        }
+
     	// Disable repository refresh
         repositoryRefresher.stop();
         
         // Disable import cd option in menu
         getBean(RipCDAction.class).setEnabled(false);
-
-        final File folderFile = new File(folder);
-        if (!folderFile.exists()) {
-            if (folderFile.mkdirs()) {
-                folderCreated = true;
-            } else {
-                Logger.error("Folder could not be created");
-                return;
-            }
-        }
 
         // Prepares commands for the encoder
         // Get encoder to be used
@@ -355,7 +360,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         if (albumInfo != null) {
             ImageIcon cover = getBean(IWebServicesHandler.class).getAlbumImage(albumInfo);
             dialog.setCover(cover);
-            savePicture(cover, folderFile, metadata.getAlbumArtist(), metadata.getAlbum());
+            savePicture(cover, folder, metadata.getAlbumArtist(), metadata.getAlbum());
         }
 
         dialog.setArtistAndAlbum(metadata.getAlbumArtist(), metadata.getAlbum());
@@ -372,13 +377,13 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         new SwingWorker<Boolean, Void>() {
             @Override
             protected Boolean doInBackground() {
-                return ripper.ripTracks(folderFile, useParanoia);
+                return ripper.ripTracks(folder, useParanoia);
             }
 
             @Override
             protected void done() {
             	dialog.hideDialog();
-                notifyFinishImport(filesImported, folderFile);
+                notifyFinishImport(filesImported, folder);
                 // Enable import cd option in menu
                 getBean(RipCDAction.class).setEnabled(true);
                 repositoryRefresher.start();
@@ -490,7 +495,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
      */
     RipCdDialogController getRipCdDialogController() {
         if (ripCdDialogController == null) {
-            ripCdDialogController = new RipCdDialogController(dialogFactory.newDialog(RipCdDialog.class), stateRipper, getOsManager(), repositoryHandler, this);
+            ripCdDialogController = new RipCdDialogController(dialogFactory.newDialog(RipCdDialog.class), stateRipper, this);
         }
         return ripCdDialogController;
     }

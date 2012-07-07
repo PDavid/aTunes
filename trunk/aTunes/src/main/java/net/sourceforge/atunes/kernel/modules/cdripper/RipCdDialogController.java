@@ -30,11 +30,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.tags.Genres;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateRipper;
-import net.sourceforge.atunes.utils.FileNameUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
@@ -42,19 +38,13 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
 
     // Default encoder "quality" settings.
 
-    private boolean folderNameEdited;
     private boolean cancelled;
     private boolean encoderSettingChanged;
     private String artist;
     private String album;
     private int year;
     private String genre;
-    private String folder;
     private int discNumber;
-    
-    private IOSManager osManager;
-    
-    private IRepositoryHandler repositoryHandler;
     
     private RipperHandler ripperHandler;
     
@@ -65,15 +55,11 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * 
      * @param dialogControlled
      * @param stateRipper
-     * @param osManager
-     * @param repositoryHandler
      * @param ripperHandler
      */
-    RipCdDialogController(RipCdDialog dialogControlled, IStateRipper stateRipper, IOSManager osManager, IRepositoryHandler repositoryHandler, RipperHandler ripperHandler) {
+    RipCdDialogController(RipCdDialog dialogControlled, IStateRipper stateRipper, RipperHandler ripperHandler) {
         super(dialogControlled);
         this.stateRipper = stateRipper;
-        this.osManager = osManager;
-        this.repositoryHandler = repositoryHandler;
         this.ripperHandler = ripperHandler;
         addBindings();
     }
@@ -94,12 +80,10 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
         // Add autocompletion
         AutoCompleteDecorator.decorate(getComponentControlled().getGenreComboBox());
 
-        RipCdDialogListener listener = new RipCdDialogListener(getComponentControlled(), this, osManager, repositoryHandler, ripperHandler);
+        RipCdDialogListener listener = new RipCdDialogListener(getComponentControlled(), this, ripperHandler);
         getComponentControlled().getOk().addActionListener(listener);
         getComponentControlled().getCancel().addActionListener(listener);
-        getComponentControlled().getFolderSelectionButton().addActionListener(listener);
         getComponentControlled().getFormat().addActionListener(listener);
-        getComponentControlled().getFolderName().addKeyListener(listener);
         getComponentControlled().getTitlesButton().addActionListener(listener);
         getComponentControlled().getArtistTextField().addKeyListener(listener);
         getComponentControlled().getAlbumTextField().addKeyListener(listener);
@@ -138,15 +122,6 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
 	}
     
     /**
-     * Gets the folder.
-     * 
-     * @return the folder
-     */
-    String getFolder() {
-        return FileNameUtils.getValidFolderName(folder, osManager);
-    }
-
-    /**
      * Gets the genre.
      * 
      * @return the genre
@@ -180,15 +155,6 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      */
     boolean isEncoderSettingChanged() {
         return encoderSettingChanged;
-    }
-
-    /**
-     * Checks if is folder name edited.
-     * 
-     * @return the folderNameEdited
-     */
-    boolean isFolderNameEdited() {
-        return folderNameEdited;
     }
 
     /**
@@ -232,26 +198,6 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
     }
 
     /**
-     * Sets the folder.
-     * 
-     * @param folder
-     *            the folder to set
-     */
-    void setFolder(String folder) {
-        this.folder = folder;
-    }
-
-    /**
-     * Sets the folder name edited.
-     * 
-     * @param folderNameEdited
-     *            the folderNameEdited to set
-     */
-    void setFolderNameEdited(boolean folderNameEdited) {
-        this.folderNameEdited = folderNameEdited;
-    }
-
-    /**
      * Sets the genre.
      * 
      * @param genre
@@ -274,20 +220,16 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
     /**
      * Show cd info and let user select settings
      * @param cdInfo
-     * @param path
-     * @param repositoryPath
      */
-    void showCdInfo(CDInfo cdInfo, String path, String repositoryPath) {
+    void showCdInfo(CDInfo cdInfo) {
         showArtist(cdInfo);
         showAlbum(cdInfo);
         showYear();
         showGenre(cdInfo);
-        showFolder(cdInfo, path, repositoryPath);
         enableGetTitlesButton(cdInfo);
         getComponentControlled().getFormat().setSelectedItem(ripperHandler.getEncoderName());
         getComponentControlled().getQualityComboBox().setSelectedItem(stateRipper.getEncoderQuality());
         getComponentControlled().getUseCdErrorCorrection().setSelected(stateRipper.isUseCdErrorCorrection());
-        setFolder(null);
         getComponentControlled().setTableData(cdInfo);
         getComponentControlled().updateTrackNames(cdInfo.getTitles());
         getComponentControlled().updateArtistNames(cdInfo);
@@ -301,17 +243,6 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
 
 	private void enableGetTitlesButton(CDInfo cdInfo) {
 		getComponentControlled().getTitlesButton().setEnabled(artistAndAlbumRetrieved(cdInfo));
-	}
-
-	private void showFolder(CDInfo cdInfo, String path, String repositoryPath) {
-		// Creates folders when information is coming from cdda2wav
-        if (artistAndAlbumRetrieved(cdInfo)) {
-            getComponentControlled().getFolderName().setText(
-                    StringUtils.getString(repositoryPath, osManager.getFileSeparator(), cdInfo.getArtist(),
-                    		osManager.getFileSeparator(), cdInfo.getAlbum()));
-        } else {
-            getComponentControlled().getFolderName().setText(path);
-        }
 	}
 
 	private void showGenre(CDInfo cdInfo) {

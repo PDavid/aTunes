@@ -43,4 +43,5 @@ final class AnyPattern extends AbstractPattern {
         // This is a dummy pattern
 		return null;
 	}
+	
 }
