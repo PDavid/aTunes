@@ -127,7 +127,7 @@ public class ExportAction extends CustomAbstractAction {
 		 }
 	 }
 
-	 private static class ExportProcessListener implements IProcessListener {
+	 private static class ExportProcessListener implements IProcessListener<List<File>> {
 
 		 private IDialogFactory dialogFactory;
 
@@ -144,7 +144,7 @@ public class ExportAction extends CustomAbstractAction {
 		 }
 
 		 @Override
-		 public void processFinished(final boolean ok) {
+		 public void processFinished(final boolean ok, List<File> result) {
 			 SwingUtilities.invokeLater(new Runnable() {
 				 @Override
 				 public void run() {

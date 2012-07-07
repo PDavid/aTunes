@@ -24,25 +24,25 @@ package net.sourceforge.atunes.model;
 /**
  * A Process represents a task to be done in background. While task is being
  * executed it updates a progress dialog.
- * 
- * @author fleax
- * 
+ * @author alex
+ *
+ * @param <T>
  */
-public interface IProcess {
+public interface IProcess<T> {
 
 	/**
 	 * Adds a listener to this process
 	 * 
 	 * @param listener
 	 */
-	public void addProcessListener(IProcessListener listener);
+	public void addProcessListener(IProcessListener<T> listener);
 
 	/**
 	 * Removes a listener of this process
 	 * 
 	 * @param listener
 	 */
-	public void removeProcessListener(IProcessListener listener);
+	public void removeProcessListener(IProcessListener<T> listener);
 
 	/**
 	 * Executes this process

@@ -43,7 +43,7 @@ import org.apache.sanselan.ImageWriteException;
 /**
  * The Class GetCoversProcess.
  */
-public class GetCoversProcess extends AbstractProcess {
+public class GetCoversProcess extends AbstractProcess<Void> {
 
     /** The artist. */
     private IArtist artist;
@@ -122,5 +122,10 @@ public class GetCoversProcess extends AbstractProcess {
      */
     private boolean hasCoverDownloaded(IAlbum album) {
         return new File(AudioFilePictureUtils.getFileNameForCover(((ILocalAudioObject)album.getAudioObjects().get(0)), osManager)).exists();
+    }
+    
+    @Override
+    protected Void getProcessResult() {
+    	return null;
     }
 }

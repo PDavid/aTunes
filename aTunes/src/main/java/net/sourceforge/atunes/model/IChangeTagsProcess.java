@@ -30,7 +30,7 @@ import java.util.Collection;
  * @author fleax
  * 
  */
-public interface IChangeTagsProcess extends IProcess {
+public interface IChangeTagsProcess extends IProcess<Void> {
 
 	/**
 	 * @param filesToChange

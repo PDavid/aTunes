@@ -20,6 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
+import java.io.File;
+import java.util.List;
+
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.model.IProcessListener;
@@ -29,7 +32,7 @@ import net.sourceforge.atunes.model.IProcessListener;
  * @author alex
  *
  */
-public class ImportToRepositoryProcessListener implements IProcessListener {
+public class ImportToRepositoryProcessListener implements IProcessListener<List<File>> {
 
 	private ImportToRepositoryProcessFinishedRunnable importToRepositoryProcessFinishedRunnable;
 	
@@ -46,7 +49,7 @@ public class ImportToRepositoryProcessListener implements IProcessListener {
     }
 
     @Override
-    public void processFinished(final boolean ok) {
+    public void processFinished(final boolean ok, List<File> result) {
     	importToRepositoryProcessFinishedRunnable.setOk(ok);
         SwingUtilities.invokeLater(importToRepositoryProcessFinishedRunnable);
     }

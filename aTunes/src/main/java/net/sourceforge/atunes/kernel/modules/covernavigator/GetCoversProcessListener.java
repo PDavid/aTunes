@@ -27,7 +27,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.utils.Logger;
 
-final class GetCoversProcessListener implements IProcessListener {
+final class GetCoversProcessListener implements IProcessListener<Void> {
 
 	private final CoverNavigatorController controller;
 	
@@ -44,7 +44,7 @@ final class GetCoversProcessListener implements IProcessListener {
 	}
 
 	@Override
-	public void processFinished(boolean ok) {
+	public void processFinished(boolean ok, Void result) {
 	    update();
 	}
 

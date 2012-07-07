@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  *
  */
-public class LoadPlayListProcess extends AbstractProcess {
+public class LoadPlayListProcess extends AbstractProcess<Void> {
 
     private List<String> filenamesToLoad;
     
@@ -98,5 +98,10 @@ public class LoadPlayListProcess extends AbstractProcess {
         // If canceled loaded files are added anyway
         SwingUtilities.invokeLater(new AddToPlayListRunnable(songsLoaded, playListHandler, playListName));
         return true;
+    }
+    
+    @Override
+    protected Void getProcessResult() {
+    	return null;
     }
 }

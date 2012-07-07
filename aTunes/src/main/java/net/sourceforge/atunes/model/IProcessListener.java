@@ -25,16 +25,17 @@ package net.sourceforge.atunes.model;
  * or canceled
  * 
  * @author fleax
- * 
+ *
+ * @param <T>
  */
-public interface IProcessListener {
+public interface IProcessListener<T> {
 
     /**
      * Called when process ends
-     * 
      * @param ok
+     * @param result
      */
-    public void processFinished(boolean ok);
+    public void processFinished(boolean ok, T result);
 
     /**
      * Called when process is canceled

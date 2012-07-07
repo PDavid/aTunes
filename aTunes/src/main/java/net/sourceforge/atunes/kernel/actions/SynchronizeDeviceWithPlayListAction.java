@@ -210,10 +210,10 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		        // Copy elements to device if necessary, otherwise show message and finish
 		        if (!files.get("ADD").isEmpty()) {
 		            // The process will show message when finish
-		        	deviceHandler.copyFilesToDevice(files.get("ADD"), new IProcessListener() {
+		        	deviceHandler.copyFilesToDevice(files.get("ADD"), new IProcessListener<Void>() {
 						
 						@Override
-						public void processFinished(boolean ok) {
+						public void processFinished(boolean ok, Void result) {
 							showMessage(filesRemoved, true);
 						}
 						

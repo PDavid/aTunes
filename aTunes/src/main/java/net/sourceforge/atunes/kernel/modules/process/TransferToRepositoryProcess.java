@@ -20,7 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.process;
 
+import java.io.File;
 import java.util.Collection;
+import java.util.List;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessListener;
@@ -36,12 +38,12 @@ public class TransferToRepositoryProcess extends AbstractLocalAudioObjectTransfe
 
 	private IRepositoryHandler repositoryHandler;
 	
-	private IProcessListener importToRepositoryProcessListener;
+	private IProcessListener<List<File>> importToRepositoryProcessListener;
 	
 	/**
 	 * @param importToRepositoryProcessListener
 	 */
-	public void setImportToRepositoryProcessListener(IProcessListener importToRepositoryProcessListener) {
+	public void setImportToRepositoryProcessListener(IProcessListener<List<File>> importToRepositoryProcessListener) {
 		this.importToRepositoryProcessListener = importToRepositoryProcessListener;
 	}
 	

@@ -37,7 +37,7 @@ import net.sourceforge.atunes.utils.Logger;
  * @author fleax
  * 
  */
-public abstract class AbstractChangeTagProcess extends AbstractProcess implements IChangeTagsProcess {
+public abstract class AbstractChangeTagProcess extends AbstractProcess<Void> implements IChangeTagsProcess {
 
     /**
      * List of LocalAudioObject objects to change
@@ -145,5 +145,10 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess implement
     @Override
 	public void setFilesToChange(Collection<ILocalAudioObject> filesToChange) {
         this.filesToChange = filesToChange;
+    }
+    
+    @Override
+    protected Void getProcessResult() {
+    	return null;
     }
 }

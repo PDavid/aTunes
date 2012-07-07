@@ -108,7 +108,7 @@ public class ImportFoldersToRepositoryActionsWithBackgroundResult implements IAc
 		process.setFolders(folders);
 		process.setDestination(path);
 		process.initialize(tagAttributesReviewed);
-		process.addProcessListener(new ImportFilesProcessListener(process, repositoryHandler, dialogFactory));
+		process.addProcessListener(new ImportFilesProcessListener(repositoryHandler, dialogFactory));
 		process.execute();
 	}
 
