@@ -109,10 +109,9 @@ public final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInf
 	    try {
 	        cdInfo = get();
 	        if (cdInfo != null) {
-	        	this.ripperHandler.getRipCdDialogController().showCdInfo(cdInfo, this.ripperHandler.getRepositoryHandler().getPathForNewAudioFilesRipped(), this.ripperHandler.getRepositoryHandler().getRepositoryPath());
+	        	this.ripperHandler.getRipCdDialogController().showCdInfo(cdInfo);
 	            if (!this.ripperHandler.getRipCdDialogController().isCancelled()) {
-	            	String folder = this.ripperHandler.getRipCdDialogController().getFolder();
-	                this.ripperHandler.importSongs(folder, getMetadata(), dialog.getFormat().getSelectedItem().toString(), dialog.getQuality(), dialog.getUseCdErrorCorrection().isSelected());
+	                this.ripperHandler.importSongs(getMetadata(), dialog.getFormat().getSelectedItem().toString(), dialog.getQuality(), dialog.getUseCdErrorCorrection().isSelected());
 	            }
 	            // Even if canceling, save these settings
 	            stateRipper.setUseCdErrorCorrection(dialog.getUseCdErrorCorrection().isSelected());

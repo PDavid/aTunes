@@ -99,13 +99,6 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	public int getFoldersCount();
 
 	/**
-	 * Gets the path for new audio files ripped.
-	 * 
-	 * @return the path for new audio files ripped
-	 */
-	public String getPathForNewAudioFilesRipped();
-
-	/**
 	 * Returns repository root folder that contains file.
 	 * 
 	 * @param file

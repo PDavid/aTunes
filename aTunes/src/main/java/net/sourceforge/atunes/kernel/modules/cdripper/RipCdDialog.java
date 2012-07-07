@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -61,8 +60,6 @@ public final class RipCdDialog extends AbstractCustomDialog {
     private JComboBox format;
     private JLabel qualityLabel;
     private JComboBox quality;
-    private JTextField folderName;
-    private JButton folderSelectionButton;
     private JCheckBox useCdErrorCorrection;
     private JButton ok;
     private JButton cancel;
@@ -257,11 +254,6 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
 		quality = new JComboBox(new String[] {});
 
-		JLabel dir = new JLabel(I18nUtils.getString("FOLDER"));
-
-		folderName = new CustomTextField();
-		folderSelectionButton = new JButton("...");
-
 		useCdErrorCorrection = new JCheckBox(I18nUtils.getString("USE_CD_ERROR_CORRECTION"));
 
 		GridBagConstraints c = new GridBagConstraints();
@@ -287,17 +279,6 @@ public final class RipCdDialog extends AbstractCustomDialog {
 		c.gridx = 1;
 		advancedPanel.add(quality, c);
 				
-		c.gridx = 2;
-		advancedPanel.add(dir, c);
-		
-		c.gridx = 3;
-		c.insets = new Insets(0, 0, 0, 0);
-		advancedPanel.add(folderName, c);
-		
-		c.gridx = 4;
-		c.fill = GridBagConstraints.NONE;
-		advancedPanel.add(folderSelectionButton, c);
-		
 		return advancedPanel;
 	}
 	
@@ -387,24 +368,6 @@ public final class RipCdDialog extends AbstractCustomDialog {
         table.setDefaultRenderer(String.class, iLookAndFeel.getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode(iLookAndFeel)));
 		return table;
 	}
-
-    /**
-     * Gets the folder name.
-     * 
-     * @return the folder name
-     */
-    public JTextField getFolderName() {
-        return folderName;
-    }
-
-    /**
-     * Gets the folder selection button.
-     * 
-     * @return the folder selection button
-     */
-    public JButton getFolderSelectionButton() {
-        return folderSelectionButton;
-    }
 
     /**
      * Gets the format.

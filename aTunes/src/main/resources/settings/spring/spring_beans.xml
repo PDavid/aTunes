@@ -19,6 +19,7 @@
 	<import resource="lookandfeel.xml" />
 	<import resource="navigator.xml" />
 	<import resource="os.xml" />
+	<import resource="patterns.xml" />
 	<import resource="player.xml" />
 	<import resource="playlist.xml" />
 	<import resource="process.xml" />

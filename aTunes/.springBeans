@@ -8,6 +8,7 @@
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
 		<config>src/main/resources/settings/spring/spring_beans.xml</config>
+		<config>src/main/resources/settings/spring/patterns.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -16,6 +17,7 @@
 			<incomplete>false</incomplete>
 			<configs>
 				<config>src/main/resources/settings/spring/spring_beans.xml</config>
+				<config>src/main/resources/settings/spring/patterns.xml</config>
 			</configs>
 		</configSet>
 	</configSets>

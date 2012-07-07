@@ -133,24 +133,6 @@ public abstract class AbstractPattern {
     }
 
     /**
-     * Returns a string, result of apply this pattern to a cd track
-     * @param sourceString
-     * @param metadata
-     * @param trackNumber
-     * @return
-     */
-    public final String applyPattern(String sourceString, CDMetadata metadata, int trackNumber) {
-        if (!pattern.equals(Patterns.getAnyPattern().getPattern())) {
-        	String replace = getCDMetadataStringValue(metadata, trackNumber);
-        	if (replace == null) {
-        		replace = "";
-        	}
-            return sourceString.replaceAll(pattern, replace);
-        }
-        return sourceString;
-    }
-
-    /**
      * Returns string value of an LocalAudioObject to do transformation
      * 
      * @param audioFile
@@ -165,5 +147,4 @@ public abstract class AbstractPattern {
      * @return
      */
     public abstract String getCDMetadataStringValue(CDMetadata metadata, int trackNumber);
-
 }

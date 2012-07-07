@@ -53,14 +53,12 @@ import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.ViewMode;
-import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FilenameUtils;
-import org.joda.time.DateTime;
 
 /**
  * The repository handler.
@@ -104,8 +102,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	
 	private IStateRepository stateRepository;
 	
-	private IUnknownObjectChecker unknownObjectChecker;
-	
     private IBackgroundWorkerFactory backgroundWorkerFactory;
     
     private IDialogFactory dialogFactory;
@@ -124,14 +120,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
     
-	/**
-	 * @param unknownObjectChecker
-	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
-	}
-
-	
 	/**
 	 * @param stateRepository
 	 */
@@ -349,11 +337,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     @Override
 	public int getFoldersCount() {
         return repository.getRepositoryFolders().size();
-    }
-
-    @Override
-	public String getPathForNewAudioFilesRipped() {
-        return StringUtils.getString(getRepositoryPath(), getOsManager().getFileSeparator(), unknownObjectChecker.getUnknownAlbum(), " - ", DateUtils.toPathString(new DateTime()));
     }
 
     @Override
