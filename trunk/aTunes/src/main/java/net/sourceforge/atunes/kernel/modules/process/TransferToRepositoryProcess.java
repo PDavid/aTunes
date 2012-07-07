@@ -20,12 +20,30 @@
 
 package net.sourceforge.atunes.kernel.modules.process;
 
+import java.util.Collection;
+
+import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * A process to copy files to repository
+ * @author alex
+ *
+ */
 public class TransferToRepositoryProcess extends AbstractLocalAudioObjectTransferProcess {
 
 	private IRepositoryHandler repositoryHandler;
+	
+	private IProcessListener importToRepositoryProcessListener;
+	
+	/**
+	 * @param importToRepositoryProcessListener
+	 */
+	public void setImportToRepositoryProcessListener(IProcessListener importToRepositoryProcessListener) {
+		this.importToRepositoryProcessListener = importToRepositoryProcessListener;
+	}
 	
     /**
      * @param repositoryHandler
@@ -42,5 +60,11 @@ public class TransferToRepositoryProcess extends AbstractLocalAudioObjectTransfe
     @Override
     protected String getDestination() {
         return repositoryHandler.getRepositoryPath();
+    }
+    
+    @Override
+    public void setFilesToTransfer(Collection<ILocalAudioObject> filesToTransfer) {
+    	super.setFilesToTransfer(filesToTransfer);
+    	addProcessListener(importToRepositoryProcessListener);
     }
 }
