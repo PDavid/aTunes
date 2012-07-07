@@ -41,16 +41,17 @@ import net.sourceforge.atunes.utils.Logger;
  * 
  * Note: it is not implemented using a SwingWorker since with that progress
  * dialog is not updated synchronized
- * 
- * @author fleax
- * 
+ *
+ * @author alex
+ *
+ * @param <T>
  */
-public abstract class AbstractProcess implements Runnable, IProcess {
+public abstract class AbstractProcess<T> implements Runnable, IProcess<T> {
 
     /**
      * List of listeners notified when Process ends or is canceled
      */
-    private volatile List<IProcessListener> listeners;
+    private volatile List<IProcessListener<T>> listeners;
 
     /**
      * Flag indicating if process has been canceled
@@ -83,9 +84,9 @@ public abstract class AbstractProcess implements Runnable, IProcess {
      * @param listener
      */
     @Override
-	public final void addProcessListener(IProcessListener listener) {
+	public final void addProcessListener(IProcessListener<T> listener) {
         if (listeners == null) {
-            listeners = new CopyOnWriteArrayList<IProcessListener>();
+            listeners = new CopyOnWriteArrayList<IProcessListener<T>>();
         }
         listeners.add(listener);
     }
@@ -96,7 +97,7 @@ public abstract class AbstractProcess implements Runnable, IProcess {
      * @param listener
      */
     @Override
-	public final void removeProcessListener(IProcessListener listener) {
+	public final void removeProcessListener(IProcessListener<T> listener) {
         if (listeners != null) {
             listeners.remove(listener);
         }
@@ -226,15 +227,20 @@ public abstract class AbstractProcess implements Runnable, IProcess {
     /**
      * Code of the process
      * 
-     * @return <code>true</code> if process is executed succesfully,
+     * @return <code>true</code> if process is executed successfully,
      *         <code>false</code>otherwise
      */
     protected abstract boolean runProcess();
 
     /**
-     * Code to be executed after process cancelation
+     * Code to be executed after process cancellation
      */
     protected abstract void runCancel();
+    
+    /**
+     * @return process result
+     */
+    protected abstract T getProcessResult();
 
     /**
      * Returns process size
@@ -268,14 +274,20 @@ public abstract class AbstractProcess implements Runnable, IProcess {
 
 	    // Notify all listeners
 	    if (listeners != null && !listeners.isEmpty()) {
-	        for (IProcessListener listener : listeners) {
+	        for (IProcessListener<T> listener : listeners) {
 	            if (canceled) {
 	                listener.processCanceled();
 	            } else {
-	                listener.processFinished(ok);
+	                listener.processFinished(ok, getProcessResult());
 	            }
 	        }
 	    }
 	}
-
+	
+	/**
+	 * @return
+	 */
+	protected IDialogFactory getDialogFactory() {
+		return dialogFactory;
+	}
 }

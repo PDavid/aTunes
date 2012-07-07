@@ -20,30 +20,28 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.process.ImportFilesProcess;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-final class ImportFilesProcessListener implements IProcessListener {
+public final class ImportFilesProcessListener implements IProcessListener<List<File>> {
 	
-	private final ImportFilesProcess process;
 	private final IRepositoryHandler repositoryHandler;
 	private final IDialogFactory dialogFactory;
 	
 	/**
-	 * @param process
 	 * @param repositoryHandler
 	 * @param dialogFactory
 	 */
-	ImportFilesProcessListener(ImportFilesProcess process, IRepositoryHandler repositoryHandler, IDialogFactory dialogFactory) {
-		this.process = process;
+	ImportFilesProcessListener(IRepositoryHandler repositoryHandler, IDialogFactory dialogFactory) {
 		this.repositoryHandler = repositoryHandler;
 		this.dialogFactory = dialogFactory;
 	}
@@ -54,7 +52,7 @@ final class ImportFilesProcessListener implements IProcessListener {
 	}
 
 	@Override
-	public void processFinished(final boolean ok) {
+	public void processFinished(final boolean ok, List<File> result) {
 		if (!ok) {
 			try {
 				SwingUtilities.invokeAndWait(new Runnable() {
@@ -70,7 +68,7 @@ final class ImportFilesProcessListener implements IProcessListener {
 			}
 		} else {
 			// If import is ok then add files to repository
-			repositoryHandler.addFilesAndRefresh(process.getFilesTransferred());
+			repositoryHandler.addFilesAndRefresh(result);
 		}
 	}
 }

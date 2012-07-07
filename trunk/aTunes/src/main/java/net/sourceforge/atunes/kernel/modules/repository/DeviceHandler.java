@@ -79,27 +79,21 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class DeviceHandler extends AbstractHandler implements IDeviceHandler {
 
-    private final class CopyFilesToDeviceProcessListener implements IProcessListener {
+    private final class CopyFilesToDeviceProcessListener implements IProcessListener<List<File>> {
     	
-		private final ILocalAudioObjectTransferProcess process;
-
-		private CopyFilesToDeviceProcessListener(ILocalAudioObjectTransferProcess process) {
-			this.process = process;
-		}
-
 		@Override
 		public void processCanceled() {
 		    // Nothing to do
 		}
 
 		@Override
-		public void processFinished(final boolean ok) {
+		public void processFinished(final boolean ok, final List<File> result) {
 		    SwingUtilities.invokeLater(new Runnable() {
 
 		        @Override
 		        public void run() {
 		            refreshDevice();
-		            filesCopiedToDevice = process.getFilesTransferred().size();
+		            filesCopiedToDevice = result.size();
 		            if (!ok) {
 		            	dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
 		            }
@@ -352,7 +346,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 		final ILocalAudioObjectTransferProcess process = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("transferToDeviceProcess");
         process.setFilesToTransfer(collection);
         process.setDestination(deviceRepository.getRepositoryFolders().get(0).getAbsolutePath());
-        process.addProcessListener(new CopyFilesToDeviceProcessListener(process));
+        process.addProcessListener(new CopyFilesToDeviceProcessListener());
         // Add this listener second so when this is called filesCopiedToDevice has been updated
         if (listener != null) {
             process.addProcessListener(listener);

@@ -30,7 +30,7 @@ import java.util.List;
  * @author alex
  *
  */
-public interface ILocalAudioObjectTransferProcess extends IProcess {
+public interface ILocalAudioObjectTransferProcess extends IProcess<List<File>> {
 
 	/**
 	 * Sets the files to transfer by this process
