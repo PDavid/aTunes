@@ -18,53 +18,55 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.process;
+package net.sourceforge.atunes.kernel.modules.repository;
 
-import java.util.Collection;
-
-import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IProcessListener;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * A process to copy files to repository
+ * Runnable to execute when import finishes
  * @author alex
  *
  */
-public class TransferToRepositoryProcess extends AbstractLocalAudioObjectTransferProcess {
+public final class ImportToRepositoryProcessFinishedRunnable implements Runnable {
+	
+    private boolean ok;
 
-	private IRepositoryHandler repositoryHandler;
-	
-	private IProcessListener importToRepositoryProcessListener;
-	
-	/**
-	 * @param importToRepositoryProcessListener
-	 */
-	public void setImportToRepositoryProcessListener(IProcessListener importToRepositoryProcessListener) {
-		this.importToRepositoryProcessListener = importToRepositoryProcessListener;
+    private IDialogFactory dialogFactory;
+    
+    private IRepositoryHandler repositoryHandler;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
-	
+    
     /**
      * @param repositoryHandler
      */
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
-
-    @Override
-    public String getProgressDialogTitle() {
-        return I18nUtils.getString("COPYING_TO_REPOSITORY");
-    }
-
-    @Override
-    protected String getDestination() {
-        return repositoryHandler.getRepositoryPath();
-    }
+    
+    /**
+     * @param ok
+     */
+    public void setOk(boolean ok) {
+		this.ok = ok;
+	}
     
     @Override
-    public void setFilesToTransfer(Collection<ILocalAudioObject> filesToTransfer) {
-    	super.setFilesToTransfer(filesToTransfer);
-    	addProcessListener(importToRepositoryProcessListener);
+    public void run() {
+        // Force a refresh of repository to add new songs
+        repositoryHandler.refreshRepository();
+
+        if (!ok) {
+        	// Show error message
+        	dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
+        }
     }
 }

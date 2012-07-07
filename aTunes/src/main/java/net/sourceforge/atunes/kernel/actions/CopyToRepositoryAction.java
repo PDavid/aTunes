@@ -22,48 +22,30 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.IProcessFactory;
-import net.sourceforge.atunes.model.IProcessListener;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Action to copy files to repository
+ * @author alex
+ *
+ */
 public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
     private static final long serialVersionUID = 2416674807979541242L;
 
-    private IRepositoryHandler repositoryHandler;
-
     private IProcessFactory processFactory;
-    
-    private IDialogFactory dialogFactory;
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
-    
+        
     /**
      * @param processFactory
      */
     public void setProcessFactory(IProcessFactory processFactory) {
 		this.processFactory = processFactory;
-	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
 	}
     
     /**
@@ -78,7 +60,6 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
     protected void executeAction(List<ILocalAudioObject> objects) {
         ILocalAudioObjectTransferProcess importer = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("transferToRepositoryProcess");
         importer.setFilesToTransfer(objects);
-        importer.addProcessListener(new ImportProcessListener());
         importer.execute();
     }
 
@@ -90,33 +71,5 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         return !selection.isEmpty();
-    }
-    
-    private class ImportProcessListener implements IProcessListener {
-        private final class ImportProcessFinishedRunnable implements Runnable {
-            private final boolean ok;
-
-            private ImportProcessFinishedRunnable(boolean ok) {
-                this.ok = ok;
-            }
-
-            @Override
-            public void run() {
-                if (!ok) {
-                	dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
-                }
-                // Force a refresh of repository to add new songs
-                repositoryHandler.refreshRepository();
-            }
-        }
-
-        @Override
-        public void processCanceled() { /* Nothing to do */
-        }
-
-        @Override
-        public void processFinished(final boolean ok) {
-            SwingUtilities.invokeLater(new ImportProcessFinishedRunnable(ok));
-        }
-    }
+    }    
 }
