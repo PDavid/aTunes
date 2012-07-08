@@ -23,15 +23,13 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
-final class AlbumPattern extends AbstractPattern {
+/**
+ * Pattern for album
+ * @author alex
+ *
+ */
+public final class AlbumPattern extends AbstractPattern {
 	
-	/**
-	 * Default constructor
-	 */
-	AlbumPattern() {
-		super('L', "ALBUM", true, true);
-	}
-
 	@Override
 	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
 	    return audioFile.getAlbum();
@@ -41,5 +39,4 @@ final class AlbumPattern extends AbstractPattern {
 	public String getCDMetadataStringValue(CDMetadata metadata, int trackNumber) {
 		return metadata.getAlbum();
 	}
-	
 }

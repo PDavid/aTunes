@@ -42,6 +42,8 @@ import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
+import net.sourceforge.atunes.kernel.modules.pattern.PatternMatcher;
+import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -76,6 +78,24 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
     private List<ILocalAudioObject> filesToLoad;
     
     private IDialogFactory dialogFactory;
+    
+    private Patterns patterns;
+    
+    private PatternMatcher patternMatcher;
+    
+    /**
+     * @param patternMatcher
+     */
+    public void setPatternMatcher(PatternMatcher patternMatcher) {
+		this.patternMatcher = patternMatcher;
+	}
+    
+    /**
+     * @param patterns
+     */
+    public void setPatterns(Patterns patterns) {
+		this.patterns = patterns;
+	}
     
     /**
      * Instantiates a new ReviewImportDialog
@@ -158,7 +178,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
         final JButton fillTagsFromFolderName = new JButton(StringUtils.getString(I18nUtils.getString("FILL_TAGS_FROM_FOLDER_NAME"), "..."));
         // Disabled as initially there is no row selected
         fillTagsFromFolderName.setEnabled(false);
-        fillTagsFromFolderName.addActionListener(new FillTagsFromFolderNameActionListener(this, dialogFactory));
+        fillTagsFromFolderName.addActionListener(new FillTagsFromFolderNameActionListener(this, dialogFactory, patterns, patternMatcher));
 
         treeTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override

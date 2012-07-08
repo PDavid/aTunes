@@ -23,15 +23,13 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
-final class ArtistFirstCharPattern extends AbstractPattern {
+/**
+ * Pattern for first artist char
+ * @author alex
+ *
+ */
+public final class ArtistFirstCharPattern extends AbstractPattern {
 	
-	/**
-	 * Default constructor
-	 */
-	ArtistFirstCharPattern() {
-		super('S', "ARTIST_FIRST_CHAR", false, false);
-	}
-
 	@Override
 	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
 	    return audioFile.getArtist().substring(0, 1);

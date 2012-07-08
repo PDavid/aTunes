@@ -48,6 +48,15 @@ public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSel
     
     private IDialogFactory dialogFactory;
     
+    private Patterns patterns;
+    
+    /**
+     * @param patterns
+     */
+    public void setPatterns(Patterns patterns) {
+		this.patterns = patterns;
+	}
+    
     /**
      * @param dialogFactory
      */
@@ -74,7 +83,7 @@ public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSel
     protected void executeAction(List<ILocalAudioObject> objects) {
         // Show pattern input dialog
         PatternInputDialog inputDialog = dialogFactory.newDialog("nonMassivePatternInputDialog", PatternInputDialog.class);
-        inputDialog.show(Patterns.getRecognitionPatterns(), objects.get(0).getFile().getParentFile().getAbsolutePath());
+        inputDialog.show(patterns.getRecognitionPatterns(), objects.get(0).getFile().getParentFile().getAbsolutePath());
         String pattern = inputDialog.getResult();
 
         // If user entered a pattern apply to files

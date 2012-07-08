@@ -34,8 +34,15 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PatternMatcher {
 	
-	private PatternMatcher() {}
-
+	private Patterns patterns;
+	
+	/**
+	 * @param patterns
+	 */
+	public void setPatterns(Patterns patterns) {
+		this.patterns = patterns;
+	}
+	
 	/**
 	 * Returns a map containing string values result of matching a pattern
 	 * against a string
@@ -45,7 +52,7 @@ public final class PatternMatcher {
 	 * @param onlyMassiveRecognitionPatterns
 	 * @return
 	 */
-	public static Map<String, String> getPatternMatches(String pattern, String value, boolean onlyMassiveRecognitionPatterns) {
+	public Map<String, String> getPatternMatches(String pattern, String value, boolean onlyMassiveRecognitionPatterns) {
 		Map<String, String> matches = new HashMap<String, String>();
 
 		if (pattern == null || value == null) {
@@ -89,7 +96,7 @@ public final class PatternMatcher {
 	 * @param patternsString
 	 * @return
 	 */
-	private static List<String> getNonPatternSequences(String patternsString) {
+	private List<String> getNonPatternSequences(String patternsString) {
 		String[] nonPatternSequencesArray = patternsString.split(StringUtils.getString(AbstractPattern.PATTERN_NAME_FIRST_CHAR, '.'));
 		List<String> nonPatternSequences = new ArrayList<String>();
 		for (String nonPatternSequence : nonPatternSequencesArray) {
@@ -105,7 +112,7 @@ public final class PatternMatcher {
 	 * @param i
 	 * @return
 	 */
-	private static String getNextNonPatternSequence(List<String> nonPatternSequences, int i) {
+	private String getNextNonPatternSequence(List<String> nonPatternSequences, int i) {
 		String nonPatternSequence = null;
 		if (i < nonPatternSequences.size()) {
 			nonPatternSequence = nonPatternSequences.get(i);
@@ -119,11 +126,11 @@ public final class PatternMatcher {
 	 * @param matched
 	 * @return
 	 */
-	private static int updateIndex(String nonPatternSequence, int stringIndex, String matched) {
+	private int updateIndex(String nonPatternSequence, int stringIndex, String matched) {
 		return stringIndex + matched.length() + (nonPatternSequence != null ? nonPatternSequence.length() : 0);
 	}
 
-	private static boolean checkAndAddMatch(String matchedPattern, String matchedValue, Map<String, String> matches) {
+	private boolean checkAndAddMatch(String matchedPattern, String matchedValue, Map<String, String> matches) {
 		// Force upper case patterns
 		String match = matchedPattern.toUpperCase();
 
@@ -141,9 +148,9 @@ public final class PatternMatcher {
 	 * @param matches
 	 * @return
 	 */
-	private static Map<String, String> processPatternsFound(boolean onlyMassiveRecognitionPatterns, Map<String, String> matches) {
+	private Map<String, String> processPatternsFound(boolean onlyMassiveRecognitionPatterns, Map<String, String> matches) {
 		Map<String, String> result = new HashMap<String, String>();
-		List<AbstractPattern> patternsToBeUsed = onlyMassiveRecognitionPatterns ? Patterns.getMassiveRecognitionPatterns() : Patterns.getPatterns();
+		List<AbstractPattern> patternsToBeUsed = onlyMassiveRecognitionPatterns ? patterns.getMassiveRecognitionPatterns() : patterns.getPatternsList();
 		for (AbstractPattern p : patternsToBeUsed) {
 			if (matches.containsKey(p.getPattern())) {
 				result.put(p.getName(), matches.get(p.getPattern()));
@@ -157,9 +164,9 @@ public final class PatternMatcher {
 	 * @param matchedPattern
 	 * @param matchedValue
 	 */
-	private static void addMatch(Map<String, String> matches, String matchedPattern, String matchedValue) {
+	private void addMatch(Map<String, String> matches, String matchedPattern, String matchedValue) {
 		// Ignore ? pattern
-		if (!matchedPattern.equals(Patterns.getAnyPattern().getPattern())) {
+		if (!matchedPattern.equals(patterns.getAnyPattern().getPattern())) {
 			matches.put(matchedPattern, matchedValue.trim());
 		}
 	}
@@ -169,12 +176,12 @@ public final class PatternMatcher {
 	 * @param matchedPattern
 	 * @return
 	 */
-	private static boolean isDuplicatedPattern(Map<String, String> matches,
+	private boolean isDuplicatedPattern(Map<String, String> matches,
 			String matchedPattern) {
-		return !matchedPattern.equals(Patterns.getAnyPattern().getPattern()) && matches.containsKey(matchedPattern);
+		return !matchedPattern.equals(patterns.getAnyPattern().getPattern()) && matches.containsKey(matchedPattern);
 	}
 
-	private static String getMatchedPattern(String patternsString, String nonPatternSequence, int patternsStringIndex) {
+	private String getMatchedPattern(String patternsString, String nonPatternSequence, int patternsStringIndex) {
 		if (nonPatternSequence != null) {
 			// Get index of current non pattern sequence
 			int indexAtPatternsString = patternsString.indexOf(nonPatternSequence, patternsStringIndex);
@@ -185,7 +192,7 @@ public final class PatternMatcher {
 		}
 	}
 
-	private static String getMatchedValue(String value, String nonPatternSequence, int valueIndex) {
+	private String getMatchedValue(String value, String nonPatternSequence, int valueIndex) {
 		if (nonPatternSequence != null) {
 			int indexAtValueString = value.indexOf(nonPatternSequence, valueIndex);
 			// If value string ended without finding non pattern sequence, then the next pattern is substring

@@ -89,6 +89,15 @@ public final class DevicePanel extends AbstractPreferencesPanel {
     
     private IStateDevice stateDevice;
     
+    private Patterns patterns;
+    
+    /**
+     * @param patterns
+     */
+    public void setPatterns(Patterns patterns) {
+		this.patterns = patterns;
+	}
+    
     /**
      * @param stateDevice
      */
@@ -167,7 +176,7 @@ public final class DevicePanel extends AbstractPreferencesPanel {
         group2.add(folderPathCustomizedRadioButton);
 
         JTable availablePatternsTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
-        availablePatternsTable.setModel(new AvailablePatternsTableModel(Patterns.getPatterns()));
+        availablePatternsTable.setModel(new AvailablePatternsTableModel(patterns.getPatternsList()));
 
         JPanel patternsPanel = new JPanel(new BorderLayout());
         patternsPanel.setPreferredSize(new Dimension(250, 200));

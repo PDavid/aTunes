@@ -40,6 +40,24 @@ public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess 
     /** The files and tags. */
     private Map<ILocalAudioObject, Map<String, Object>> filesAndTags;
     
+    private Patterns patterns;
+    
+    private PatternMatcher patternMatcher;
+    
+    /**
+     * @param patternMatcher
+     */
+    public void setPatternMatcher(PatternMatcher patternMatcher) {
+		this.patternMatcher = patternMatcher;
+	}
+    
+    /**
+     * @param patterns
+     */
+    public void setPatterns(Patterns patterns) {
+		this.patterns = patterns;
+	}
+    
     /**
      * @param pattern
      */
@@ -53,8 +71,8 @@ public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess 
         if (filesAndTags == null) {
             filesAndTags = new HashMap<ILocalAudioObject, Map<String, Object>>();
             for (ILocalAudioObject file : getFilesToChange()) {
-                Map<String, String> matches = PatternMatcher.getPatternMatches(pattern, file.getNameWithoutExtension(), false);
-                Map<String, Object> editTagInfo = Patterns.getEditTagInfoFromMatches(matches);
+                Map<String, String> matches = patternMatcher.getPatternMatches(pattern, file.getNameWithoutExtension(), false);
+                Map<String, Object> editTagInfo = patterns.getEditTagInfoFromMatches(matches);
                 filesAndTags.put(file, editTagInfo);
             }
         }

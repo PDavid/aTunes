@@ -69,20 +69,33 @@ public abstract class AbstractPattern {
     private boolean recognitionPattern = false;
 
     /**
-     * Private constructor
-     * 
      * @param patternChar
-     * @param name
-     * @param recognitionPattern
-     * @param massiveRecognitionPattern
      */
-    protected AbstractPattern(char patternChar, String name, boolean recognitionPattern, boolean massiveRecognitionPattern) {
+    public final void setPatternChar(char patternChar) {
         // Force upper case
         this.pattern = StringUtils.getString(PATTERN_NAME_FIRST_CHAR, patternChar).toUpperCase();
-        this.name = name;
-        this.recognitionPattern = recognitionPattern;
-        this.massiveRecognitionPattern = massiveRecognitionPattern;
     }
+    
+    /**
+     * @param name
+     */
+    public final void setName(String name) {
+		this.name = name;
+	}
+    
+    /**
+     * @param recognitionPattern
+     */
+    public final void setRecognitionPattern(boolean recognitionPattern) {
+		this.recognitionPattern = recognitionPattern;
+	}
+    
+    /**
+     * @param massiveRecognitionPattern
+     */
+    public final void setMassiveRecognitionPattern(boolean massiveRecognitionPattern) {
+		this.massiveRecognitionPattern = massiveRecognitionPattern;
+	}
 
     /**
      * @return
@@ -117,19 +130,6 @@ public abstract class AbstractPattern {
      */
     public final String getDescription() {
         return I18nUtils.getString(name);
-    }
-
-    /**
-     * Returns a string, result of apply this pattern to an audio file object
-     * @param sourceString
-     * @param audioFile
-     * @return
-     */
-    public final String applyPattern(String sourceString, ILocalAudioObject audioFile) {
-        if (!pattern.equals(Patterns.getAnyPattern().getPattern())) {
-            return sourceString.replaceAll(pattern, getAudioFileStringValue(audioFile));
-        }
-        return sourceString;
     }
 
     /**

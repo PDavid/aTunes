@@ -23,15 +23,13 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
-final class TitlePattern extends AbstractPattern {
+/**
+ * Pattern for title
+ * @author alex
+ *
+ */
+public final class TitlePattern extends AbstractPattern {
 	
-	/**
-	 * Default constructor
-	 */
-	TitlePattern() {
-		super('T', "TITLE", true, false);
-	}
-
 	@Override
 	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
 	    return audioFile.getTitleOrFileName();

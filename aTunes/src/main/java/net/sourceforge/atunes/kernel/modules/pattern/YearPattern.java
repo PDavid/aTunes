@@ -23,15 +23,13 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
-final class YearPattern extends AbstractPattern {
+/**
+ * Pattern for year
+ * @author alex
+ *
+ */
+public final class YearPattern extends AbstractPattern {
 	
-	/**
-	 * Default constructor
-	 */
-	YearPattern() {
-		super('Y', "YEAR", true, true);
-	}
-
 	@Override
 	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
 	    return audioFile.getYear();

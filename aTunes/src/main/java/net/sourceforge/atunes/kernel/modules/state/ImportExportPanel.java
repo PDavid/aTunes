@@ -94,6 +94,15 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
     
     private IStateRepository stateRepository;
     
+    private Patterns patterns;
+    
+    /**
+     * @param patterns
+     */
+    public void setPatterns(Patterns patterns) {
+		this.patterns = patterns;
+	}
+    
     /**
      * @param stateRepository
      */
@@ -162,7 +171,7 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
         group2.add(folderPathCustomizedRadioButton);
 
         JTable availablePatternsTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
-        availablePatternsTable.setModel(new AvailablePatternsTableModel(Patterns.getPatterns()));
+        availablePatternsTable.setModel(new AvailablePatternsTableModel(patterns.getPatternsList()));
 
         JPanel patternsPanel = getPatternsPanel(availablePatternsTable);
 

@@ -23,15 +23,13 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
-final class AnyPattern extends AbstractPattern {
+/**
+ * Pattern that represents any string
+ * @author alex
+ *
+ */
+public final class AnyPattern extends AbstractPattern {
 	
-	/**
-	 * Default constructor
-	 */
-	AnyPattern() {
-		super('?', "ANY", true, true);
-	}
-
 	@Override
     public String getAudioFileStringValue(ILocalAudioObject audioFile) {
         // This is a dummy pattern

@@ -23,15 +23,13 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
-final class DiscNumberPattern extends AbstractPattern {
+/**
+ * Pattern for disc number
+ * @author alex
+ *
+ */
+public final class DiscNumberPattern extends AbstractPattern {
 	
-	/**
-	 * Default constructor
-	 */
-	DiscNumberPattern() {
-		super('D', "DISC_NUMBER", true, true);
-	}
-
 	@Override
 	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
 	    return String.valueOf(audioFile.getDiscNumber());

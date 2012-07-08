@@ -77,7 +77,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 
 		    if (result != null && !result.trim().equals("")) {
 		        // Upper case all patterns found in result
-		        for (AbstractPattern pattern : Patterns.getPatterns()) {
+		        for (AbstractPattern pattern : patterns.getPatternsList()) {
 		            result = result.replace(pattern.getPattern().toLowerCase(), pattern.getPattern());
 		        }
 
@@ -130,6 +130,24 @@ public final class PatternInputDialog extends AbstractCustomDialog {
     private IStateRepository stateRepository;
     
     private boolean massiveRecognition;
+    
+    private Patterns patterns;
+    
+    private PatternMatcher patternMatcher;
+    
+    /**
+     * @param patternMatcher
+     */
+    public void setPatternMatcher(PatternMatcher patternMatcher) {
+		this.patternMatcher = patternMatcher;
+	}
+    
+    /**
+     * @param patterns
+     */
+    public void setPatterns(Patterns patterns) {
+		this.patterns = patterns;
+	}
     
     /**
      * @param stateRepository
@@ -292,7 +310,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
      * @param massiveRecognition
      */
     void previewPattern(boolean massiveRecognition) {
-        Map<String, String> matches = PatternMatcher.getPatternMatches(((JTextField) patternComboBox.getEditor().getEditorComponent()).getText(), previewString,
+        Map<String, String> matches = patternMatcher.getPatternMatches(((JTextField) patternComboBox.getEditor().getEditorComponent()).getText(), previewString,
                 massiveRecognition);
 
         String[][] data = new String[matches.size()][2];

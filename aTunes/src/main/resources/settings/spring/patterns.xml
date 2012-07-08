@@ -7,4 +7,105 @@
 	<bean id="patternToFileTranslator" class="net.sourceforge.atunes.kernel.modules.pattern.PatternToFileTranslator"/>
 
 
+	<bean id="abstractPattern" class="net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern" scope="prototype" abstract="true"/>
+	
+	<bean id="albumArtistPattern" class="net.sourceforge.atunes.kernel.modules.pattern.AlbumArtistPattern" parent="abstractPattern" scope="prototype">
+		<property name="patternChar" value="R"/>
+		<property name="name" value="ALBUM_ARTIST"/>
+		<property name="recognitionPattern" value="true"/>
+		<property name="massiveRecognitionPattern" value="true"/>
+	</bean>
+
+	<bean id="albumPattern" class="net.sourceforge.atunes.kernel.modules.pattern.AlbumPattern" parent="abstractPattern" scope="prototype">
+		<property name="patternChar" value="L"/>
+		<property name="name" value="ALBUM"/>
+		<property name="recognitionPattern" value="true"/>
+		<property name="massiveRecognitionPattern" value="true"/>
+	</bean>
+
+	<bean id="anyPattern" class="net.sourceforge.atunes.kernel.modules.pattern.AnyPattern" parent="abstractPattern" scope="prototype">
+		<property name="patternChar" value="?"/>
+		<property name="name" value="ANY"/>
+		<property name="recognitionPattern" value="true"/>
+		<property name="massiveRecognitionPattern" value="true"/>
+	</bean>
+
+	<bean id="artistFirstCharPattern" class="net.sourceforge.atunes.kernel.modules.pattern.ArtistFirstCharPattern" parent="abstractPattern" scope="prototype">
+		<property name="patternChar" value="S"/>
+		<property name="name" value="ARTIST_FIRST_CHAR"/>
+		<property name="recognitionPattern" value="false"/>
+		<property name="massiveRecognitionPattern" value="false"/>
+	</bean>
+
+	<bean id="artistPattern" class="net.sourceforge.atunes.kernel.modules.pattern.ArtistPattern" parent="abstractPattern" scope="prototype">
+		<property name="patternChar" value="A"/>
+		<property name="name" value="ARTIST"/>
+		<property name="recognitionPattern" value="true"/>
+		<property name="massiveRecognitionPattern" value="true"/>
+	</bean>
+
+	<bean id="composerPattern" class="net.sourceforge.atunes.kernel.modules.pattern.ComposerPattern" parent="abstractPattern" scope="prototype">
+		<property name="patternChar" value="C"/>
+		<property name="name" value="COMPOSER"/>
+		<property name="recognitionPattern" value="true"/>
+		<property name="massiveRecognitionPattern" value="true"/>
+	</bean>
+
+	<bean id="discNumberPattern" class="net.sourceforge.atunes.kernel.modules.pattern.DiscNumberPattern" parent="abstractPattern" scope="prototype">
+		<property name="patternChar" value="D"/>
+		<property name="name" value="DISC_NUMBER"/>
+		<property name="recognitionPattern" value="true"/>
+		<property name="massiveRecognitionPattern" value="true"/>
+	</bean>
+
+	<bean id="genrePattern" class="net.sourceforge.atunes.kernel.modules.pattern.GenrePattern" parent="abstractPattern" scope="prototype">
+		<property name="patternChar" value="G"/>
+		<property name="name" value="GENRE"/>
+		<property name="recognitionPattern" value="true"/>
+		<property name="massiveRecognitionPattern" value="true"/>
+	</bean>
+
+	<bean id="titlePattern" class="net.sourceforge.atunes.kernel.modules.pattern.TitlePattern" parent="abstractPattern" scope="prototype">
+		<property name="patternChar" value="T"/>
+		<property name="name" value="TITLE"/>
+		<property name="recognitionPattern" value="true"/>
+		<property name="massiveRecognitionPattern" value="false"/>
+	</bean>
+
+	<bean id="trackPattern" class="net.sourceforge.atunes.kernel.modules.pattern.TrackPattern" parent="abstractPattern" scope="prototype">
+		<property name="patternChar" value="N"/>
+		<property name="name" value="TRACK"/>
+		<property name="recognitionPattern" value="true"/>
+		<property name="massiveRecognitionPattern" value="false"/>
+	</bean>
+
+	<bean id="yearPattern" class="net.sourceforge.atunes.kernel.modules.pattern.YearPattern" parent="abstractPattern" scope="prototype">
+		<property name="patternChar" value="Y"/>
+		<property name="name" value="YEAR"/>
+		<property name="recognitionPattern" value="true"/>
+		<property name="massiveRecognitionPattern" value="true"/>
+	</bean>
+	
+	
+	<bean id="patterns" class="net.sourceforge.atunes.kernel.modules.pattern.Patterns" scope="prototype"/>
+	<bean id="patternMatcher" class="net.sourceforge.atunes.kernel.modules.pattern.PatternMatcher" scope="prototype"/>
+	
+	<bean id="patternsList" class="java.util.ArrayList" scope="prototype">
+		<constructor-arg>
+			<list>
+				<ref bean="albumArtistPattern"/>
+				<ref bean="albumPattern"/>
+				<ref bean="anyPattern"/>
+				<ref bean="artistFirstCharPattern"/>
+				<ref bean="artistPattern"/>
+				<ref bean="composerPattern"/>
+				<ref bean="discNumberPattern"/>
+				<ref bean="genrePattern"/>
+				<ref bean="titlePattern"/>
+				<ref bean="trackPattern"/>
+				<ref bean="yearPattern"/>
+			</list>
+		</constructor-arg>
+	</bean>
+
 </beans>

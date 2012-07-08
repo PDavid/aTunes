@@ -33,6 +33,15 @@ public class PatternToFileTranslator {
 	
 	private IOSManager osManager;
 	
+    private Patterns patterns;
+    
+    /**
+     * @param patterns
+     */
+    public void setPatterns(Patterns patterns) {
+		this.patterns = patterns;
+	}
+	
 	/**
 	 * @param osManager
 	 */
@@ -49,7 +58,7 @@ public class PatternToFileTranslator {
 	 */
 	public String translateFromPatternToFileName(CDMetadata cdMetadata, int trackNumber, String patternString) {
 		String result = patternString;
-		for (AbstractPattern pattern : Patterns.getPatterns()) {
+		for (AbstractPattern pattern : patterns.getPatternsList()) {
 			result = applyPattern(pattern, result, cdMetadata, trackNumber, true);
 		}
 		return result;
@@ -63,7 +72,7 @@ public class PatternToFileTranslator {
 	 */
 	public String translateFromPatternToFolderName(CDMetadata cdMetadata, String patternString) {
 		String result = patternString;
-		for (AbstractPattern pattern : Patterns.getPatterns()) {
+		for (AbstractPattern pattern : patterns.getPatternsList()) {
 			result = applyPattern(pattern, result, cdMetadata, 1, false);
 		}
 		return result;
@@ -79,7 +88,7 @@ public class PatternToFileTranslator {
      * @return
      */
     private String applyPattern(AbstractPattern pattern, String sourceString, CDMetadata metadata, int trackNumber, boolean file) {
-        if (!pattern.equals(Patterns.getAnyPattern())) {
+        if (!pattern.equals(patterns.getAnyPattern())) {
         	String replace = pattern.getCDMetadataStringValue(metadata, trackNumber);
         	if (replace == null) {
         		replace = "";

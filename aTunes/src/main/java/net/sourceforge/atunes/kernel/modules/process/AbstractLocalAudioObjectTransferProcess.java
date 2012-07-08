@@ -87,6 +87,15 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
     
     private IStateRepository stateRepository;
     
+    private Patterns patterns;
+    
+    /**
+     * @param patterns
+     */
+    public void setPatterns(Patterns patterns) {
+		this.patterns = patterns;
+	}
+    
     /**
      * @param stateRepository
      */
@@ -358,7 +367,7 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
      * @return Returns a (hopefully) valid filename
      */
     protected String getNewFileName(String pattern, ILocalAudioObject song, IOSManager osManager) {
-        String result = Patterns.applyPatternTransformations(pattern, song);
+        String result = patterns.applyPatternTransformations(pattern, song);
         // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
         result = result.replace("\\", "\\\\").replace("$", "\\$");
         result = StringUtils.getString(result, song.getFile().getName().substring(song.getFile().getName().lastIndexOf('.')));
@@ -377,7 +386,7 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
      * @return Returns a (hopefully) valid filename
      */
     protected String getNewFolderPath(String pattern, ILocalAudioObject song, IOSManager osManager) {
-        String result = Patterns.applyPatternTransformations(pattern, song);
+        String result = patterns.applyPatternTransformations(pattern, song);
         // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
         result = result.replace("\\", "\\\\").replace("$", "\\$");
         result = FileNameUtils.getValidFolderName(result, false, osManager);
