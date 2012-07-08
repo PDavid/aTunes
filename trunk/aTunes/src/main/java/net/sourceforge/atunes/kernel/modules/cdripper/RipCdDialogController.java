@@ -38,7 +38,11 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
 
     // Default encoder "quality" settings.
 
-    private boolean cancelled;
+	/**
+	 * Initially true (as user can press escape key)
+	 */
+    private boolean cancelled = true;
+    
     private boolean encoderSettingChanged;
     private String artist;
     private String album;
@@ -225,6 +229,7 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
         showArtist(cdInfo);
         showAlbum(cdInfo);
         showYear();
+        showDiscNumber();
         showGenre(cdInfo);
         enableGetTitlesButton(cdInfo);
         getComponentControlled().getFormat().setSelectedItem(ripperHandler.getEncoderName());
@@ -260,6 +265,11 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
 	private void showYear() {
 		setYear(0);
         getComponentControlled().getYearTextField().setText("");
+	}
+	
+	private void showDiscNumber() {
+		setDiscNumber(0);
+		getComponentControlled().getDiscNumberField().setText("");
 	}
 
 	private void showAlbum(CDInfo cdInfo) {

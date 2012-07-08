@@ -158,9 +158,16 @@ public abstract class AbstractEncoder implements Encoder {
             ITag tag = tagHandler.getNewTag();
 
             tag.setAlbum(metadata.getAlbum());
-            tag.setAlbumArtist(metadata.getAlbumArtist());
+            String albumArtist = metadata.getAlbumArtist();
             String artist = metadata.getArtist(trackNumber);
-            tag.setArtist(artist != null ? artist : unknownObjectChecker.getUnknownArtist());
+            tag.setAlbumArtist(albumArtist);
+            if (!StringUtils.isEmpty(artist)) {
+            	tag.setArtist(artist);
+            } else if (!StringUtils.isEmpty(albumArtist)) {
+            	tag.setArtist(albumArtist);
+            } else {
+            	tag.setArtist(unknownObjectChecker.getUnknownArtist());
+            }
             tag.setYear(metadata.getYear());
             tag.setGenre(metadata.getGenre());
             tag.setTitle(metadata.getTitle(trackNumber));

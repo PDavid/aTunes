@@ -50,7 +50,6 @@ import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IStatisticsHandler;
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.FileNameUtils;

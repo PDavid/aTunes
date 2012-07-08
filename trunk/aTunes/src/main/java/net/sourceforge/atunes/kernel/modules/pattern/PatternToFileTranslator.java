@@ -89,7 +89,7 @@ public class PatternToFileTranslator {
         	} else {
         		replace = FileNameUtils.getValidFolderName(replace, osManager);
         	}
-            return sourceString.replaceAll(pattern.getPattern(), replace);
+            return sourceString.replace(pattern.getPattern(), replace);
         }
         return sourceString;
     }

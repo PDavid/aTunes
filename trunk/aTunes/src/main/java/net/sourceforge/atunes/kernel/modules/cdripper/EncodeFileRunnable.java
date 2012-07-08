@@ -35,6 +35,7 @@ final class EncodeFileRunnable implements Runnable {
 	private final File infFileTemp;
 	private final File wavFileTemp;
 	private final CDMetadata metadata;
+	private final ProgressListener listener;
 
 	/**
 	 * @param ripper
@@ -44,11 +45,11 @@ final class EncodeFileRunnable implements Runnable {
 	 * @param resultFileTemp
 	 * @param infFileTemp
 	 * @param wavFileTemp
-	 * @param unknownObjectChecker
+	 * @param listener
 	 */
 	EncodeFileRunnable(CdRipper ripper, int trackNumber, CDMetadata metadata, boolean ripResultFinal,
 			File resultFileTemp, File infFileTemp,
-			File wavFileTemp) {
+			File wavFileTemp, ProgressListener listener) {
 		this.ripper = ripper;
 		this.trackNumber = trackNumber;
 		this.metadata = metadata;
@@ -56,6 +57,7 @@ final class EncodeFileRunnable implements Runnable {
 		this.resultFileTemp = resultFileTemp;
 		this.infFileTemp = infFileTemp;
 		this.wavFileTemp = wavFileTemp;
+		this.listener = listener;
 	}
 
 	@Override
@@ -63,6 +65,10 @@ final class EncodeFileRunnable implements Runnable {
 	    if (!ripper.isInterrupted() && ripResultFinal && ripper.getEncoder() != null) {
 	        if (!callToEncode()) {
 	        	Logger.error("Encoding unsuccessful");
+	        } else {
+	        	if (listener != null) {
+	        		listener.notifyFileFinished(resultFileTemp);
+	        	}
 	        }
 
 	        Logger.info("Deleting wav file...");
@@ -107,7 +113,7 @@ final class EncodeFileRunnable implements Runnable {
 	 * 
 	 */
 	private void deleteInfFileTemp() {
-		if (!infFileTemp.delete()) {
+		if (infFileTemp.exists() && !infFileTemp.delete()) {
 			Logger.error(StringUtils.getString(infFileTemp, " not deleted"));
 		}
 	}
@@ -116,7 +122,7 @@ final class EncodeFileRunnable implements Runnable {
 	 * 
 	 */
 	private void deleteWavFileTemp() {
-		if (!wavFileTemp.delete()) {
+		if (wavFileTemp.exists() && !wavFileTemp.delete()) {
 			Logger.error(StringUtils.getString(wavFileTemp, " not deleted"));
 		}
 	}

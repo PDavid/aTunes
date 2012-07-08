@@ -223,7 +223,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
 		command.add(fileName.getAbsolutePath());
 
 		/* Check that we've got somewhere to write the track to */
-		if (!fileName.getParentFile().mkdirs()) {
+		if (!fileName.getParentFile().exists() && !fileName.getParentFile().mkdirs()) {
 			Logger.error(StringUtils.getString(fileName.getParentFile(), " not created"));
 		}
 

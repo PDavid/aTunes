@@ -42,7 +42,6 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -64,23 +63,15 @@ public final class RipCdDialog extends AbstractCustomDialog {
     private JButton ok;
     private JButton cancel;
     private CdInfoTableModel tableModel;
-    private IUnknownObjectChecker unknownObjectChecker;
 
 	private CustomTextField discNumberField;
     
-    /**
-     * @param unknownObjectChecker
-     */
-    public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
-	}
-
     /**
      * Instantiates a new rip cd dialog.
      * @param frame
      */
     public RipCdDialog(IFrame frame) {
-        super(frame, 800, 700);
+        super(frame, 750, 650);
     }
     
     @Override
@@ -233,15 +224,6 @@ public final class RipCdDialog extends AbstractCustomDialog {
         c.gridx = 2;
         c.gridy = 2;
         basicPanel.add(titlesButton, c);
-
-        c.gridx = 0;
-        c.gridy = 3;
-        c.weightx = 0;
-        c.gridwidth = 4;
-        c.anchor = GridBagConstraints.CENTER;
-        c.fill = GridBagConstraints.NONE;
-        c.insets = new Insets(15, 0, 0, 0);
-        
 	}
     
 	private JPanel getAdvancedPanel() {
@@ -257,17 +239,17 @@ public final class RipCdDialog extends AbstractCustomDialog {
 		useCdErrorCorrection = new JCheckBox(I18nUtils.getString("USE_CD_ERROR_CORRECTION"));
 
 		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(5, 5, 5, 5);
+        c.insets = new Insets(5, 10, 5, 10);
 		
 		c.gridx = 0;
 		c.gridy = 0;
+		c.weightx = 0.5;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		advancedPanel.add(formatLabel, c);
 		c.gridx = 1;
 		advancedPanel.add(format, c);
 
 		c.gridx = 2;
-		c.weightx = 0.5;
-		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridwidth = 3;
 		advancedPanel.add(useCdErrorCorrection, c);
 
@@ -291,7 +273,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
     private JPanel getContent(ILookAndFeel iLookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
 
-        tableModel = new CdInfoTableModel(unknownObjectChecker);
+        tableModel = new CdInfoTableModel();
         
         JTable table = getTable(iLookAndFeel);
         JScrollPane scrollPane = iLookAndFeel.getTableScrollPane(table);
@@ -318,7 +300,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
         c.gridy = 3;
         c.anchor = GridBagConstraints.CENTER;
-        c.insets = new Insets(0, 0, 20, 0);
+        c.insets = new Insets(20, 0, 20, 0);
         panel.add(getOkCancelPanel(), c);
 
         return panel;
@@ -493,7 +475,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
                 if (cdInfo.getArtist() != null && !cdInfo.getArtist().trim().equals("")) {
                     names.add(cdInfo.getArtist());
                 } else {
-                    names.add(unknownObjectChecker.getUnknownArtist());
+                    names.add("");
                 }
             }
         }

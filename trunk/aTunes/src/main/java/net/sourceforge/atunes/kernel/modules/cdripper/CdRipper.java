@@ -174,7 +174,7 @@ public class CdRipper {
 		     * ripping can happen in parallel. This allows to import CD's
 		     * faster.
 		     */
-		    Runnable encodeFile = new EncodeFileRunnable(this, trackNumber, cdMetadata, ripResult, result, infFileTemp, wavFile);
+		    Runnable encodeFile = new EncodeFileRunnable(this, trackNumber, cdMetadata, ripResult, result, infFileTemp, wavFile, listener);
 
 		    executorService.execute(encodeFile);
 		    /*
