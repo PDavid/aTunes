@@ -34,10 +34,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IIconFactory;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRipperProgressDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -56,24 +55,6 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
     private JLabel encodeProgressValueLabel;
     private JButton cancelButton;
     
-    private ILookAndFeelManager lookAndFeelManager;
-    
-    private IIconFactory albumBigIcon;
-    
-    /**
-     * @param albumBigIcon
-     */
-    public void setAlbumBigIcon(IIconFactory albumBigIcon) {
-		this.albumBigIcon = albumBigIcon;
-	}
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-
     /**
      * Instantiates a new ripper progress dialog.
      * @param frame
@@ -101,7 +82,7 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
         
         JPanel panel = new JPanel(new GridBagLayout());
 
-        cover = new JLabel(albumBigIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
+        cover = new JLabel(Images.getImage(Images.APP_LOGO_90));
 
         JLabel totalProgressLabel = new JLabel(I18nUtils.getString("TOTAL_PROGRESS"));
         totalProgressBar = new JProgressBar();

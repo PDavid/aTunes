@@ -294,10 +294,10 @@ final class ReadCddaThread extends Thread {
 
             if (title != null) {
                 titles.add(title);
-                //TODO add Song artist
-                artists.add("");
-                composers.add("");
             }
+            //TODO add Song artist
+            artists.add("");
+            composers.add("");
         }
 	}
 }
