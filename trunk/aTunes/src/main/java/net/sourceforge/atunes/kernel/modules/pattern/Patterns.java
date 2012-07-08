@@ -26,67 +26,57 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 public final class Patterns {
 
     /**
      * All available patterns
      */
-    private static List<AbstractPattern> patterns;
+    private List<AbstractPattern> patternsList;
 
     /**
      * DUMMY PATTERN, USED TO MATCH ANYTHING
      */
-    private static final AbstractPattern ANY_PATTERN = new AnyPattern();
+    private AbstractPattern anyPattern;
     
-    static {
-        patterns = new ArrayList<AbstractPattern>();
+    /**
+     * @param anyPattern
+     */
+    public void setAnyPattern(AbstractPattern anyPattern) {
+		this.anyPattern = anyPattern;
+	}
 
-        // DUMMY PATTERN, USED TO MATCH ANYTHING
-        patterns.add(ANY_PATTERN);
-
-        patterns.add(new TitlePattern());
-        patterns.add(new ArtistPattern(Context.getBean(IUnknownObjectChecker.class)));
-        patterns.add(new AlbumPattern());
-        patterns.add(new AlbumArtistPattern());
-        patterns.add(new TrackPattern());
-        patterns.add(new GenrePattern());
-        patterns.add(new YearPattern());
-        patterns.add(new ComposerPattern());
-        patterns.add(new ArtistFirstCharPattern());
-        patterns.add(new DiscNumberPattern());
-    }
-    
-    private Patterns() {}
+    /**
+     * @param patternsList
+     */
+    public void setPatternsList(List<AbstractPattern> patternsList) {
+		this.patternsList = patternsList;
+	}
     
     /**
      * Returns "any" pattern
      * @return
      */
-    static AbstractPattern getAnyPattern() {
-    	return ANY_PATTERN;
+    AbstractPattern getAnyPattern() {
+    	return anyPattern;
     }
 
     /**
-     * Returns all available patterns
-     * 
      * @return
      */
-    public static List<AbstractPattern> getPatterns() {
-        return patterns;
-    }
-
+    public List<AbstractPattern> getPatternsList() {
+		return patternsList;
+	}
+    
     /**
      * Return only patterns used for massive recognition
      * 
      * @return
      */
-    public static List<AbstractPattern> getMassiveRecognitionPatterns() {
+    public List<AbstractPattern> getMassiveRecognitionPatterns() {
         List<AbstractPattern> result = new ArrayList<AbstractPattern>();
-        for (AbstractPattern p : patterns) {
+        for (AbstractPattern p : patternsList) {
             if (p.isMassiveRecognitionPattern()) {
                 result.add(p);
             }
@@ -99,9 +89,9 @@ public final class Patterns {
      * 
      * @return
      */
-    public static List<AbstractPattern> getRecognitionPatterns() {
+    public List<AbstractPattern> getRecognitionPatterns() {
         List<AbstractPattern> result = new ArrayList<AbstractPattern>();
-        for (AbstractPattern p : patterns) {
+        for (AbstractPattern p : patternsList) {
             if (p.isRecognitionPattern()) {
                 result.add(p);
             }
@@ -117,12 +107,26 @@ public final class Patterns {
      * @param song
      * @return
      */
-    public static String applyPatternTransformations(String pattern, ILocalAudioObject song) {
+    public String applyPatternTransformations(String pattern, ILocalAudioObject song) {
         String result = pattern;
-        for (AbstractPattern transform : patterns) {
-            result = transform.applyPattern(result, song);
+        for (AbstractPattern transform : patternsList) {
+            result = applyPattern(transform, result, song);
         }
         return result;
+    }
+
+    /**
+     * Returns a string, result of apply this pattern to an audio file object
+     * @param pattern
+     * @param sourceString
+     * @param audioFile
+     * @return
+     */
+    private String applyPattern(AbstractPattern pattern, String sourceString, ILocalAudioObject audioFile) {
+        if (!pattern.getPattern().equals(getAnyPattern().getPattern())) {
+            return sourceString.replace(pattern.getPattern(), pattern.getAudioFileStringValue(audioFile));
+        }
+        return sourceString;
     }
 
     /**
@@ -132,7 +136,7 @@ public final class Patterns {
      * @param matches
      * @return
      */
-    public static Map<String, Object> getEditTagInfoFromMatches(Map<String, String> matches) {
+    public Map<String, Object> getEditTagInfoFromMatches(Map<String, String> matches) {
         Map<String, Object> tagInfo = new HashMap<String, Object>();
         for (Entry<String, String> entry : matches.entrySet()) {
             tagInfo.put(entry.getKey(), entry.getValue());

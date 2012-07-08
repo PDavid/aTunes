@@ -24,18 +24,22 @@ import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
-final class ArtistPattern extends AbstractPattern {
+/**
+ * Pattern for artist
+ * @author alex
+ *
+ */
+public final class ArtistPattern extends AbstractPattern {
 	
 	private IUnknownObjectChecker unknownObjectChecker;
 	
 	/**
 	 * @param unknownObjectChecker
 	 */
-	ArtistPattern(IUnknownObjectChecker unknownObjectChecker) {
-		super('A', "ARTIST", true, true);
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
-
+	
 	@Override
 	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
 	    return audioFile.getArtist();

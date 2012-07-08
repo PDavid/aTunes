@@ -23,15 +23,13 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
-final class GenrePattern extends AbstractPattern {
+/**
+ * Pattern for genre
+ * @author alex
+ *
+ */
+public final class GenrePattern extends AbstractPattern {
 	
-	/**
-	 * Default constructor
-	 */
-	GenrePattern() {
-		super('G', "GENRE", true, true);
-	}
-
 	@Override
 	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
 	    return audioFile.getGenre();

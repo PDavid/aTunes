@@ -23,15 +23,13 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
-final class ComposerPattern extends AbstractPattern {
+/**
+ * Pattern for composer
+ * @author alex
+ *
+ */
+public final class ComposerPattern extends AbstractPattern {
 	
-	/**
-	 * Default constructor
-	 */
-	ComposerPattern() {
-		super('C', "COMPOSER", true, true);
-	}
-
 	@Override
 	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
 	    return audioFile.getComposer();

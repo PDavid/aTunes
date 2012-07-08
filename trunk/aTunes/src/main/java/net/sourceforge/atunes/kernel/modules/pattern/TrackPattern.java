@@ -24,15 +24,13 @@ import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
-final class TrackPattern extends AbstractPattern {
+/**
+ * Pattern for track
+ * @author alex
+ *
+ */
+public final class TrackPattern extends AbstractPattern {
 	
-	/**
-	 * Default constructor
-	 */
-	TrackPattern() {
-		super('N', "TRACK", true, false);
-	}
-
 	@Override
 	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
 		return formatTrackNumber(audioFile.getTrackNumber());

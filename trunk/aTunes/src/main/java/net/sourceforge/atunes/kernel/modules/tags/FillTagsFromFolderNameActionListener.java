@@ -41,14 +41,22 @@ final class FillTagsFromFolderNameActionListener implements ActionListener {
 	
 	private IDialogFactory dialogFactory;
 	
+	private Patterns patterns;
+	
+    private PatternMatcher patternMatcher;
+    
 	/**
 	 * @param dialog
 	 * @param dialogFactory
+	 * @param patterns
+	 * @param patternMatcher
 	 */
-	FillTagsFromFolderNameActionListener(ReviewImportDialog dialog, IDialogFactory dialogFactory) {
+	FillTagsFromFolderNameActionListener(ReviewImportDialog dialog, IDialogFactory dialogFactory, Patterns patterns, PatternMatcher patternMatcher) {
 		super();
 		this.dialog = dialog;
 		this.dialogFactory = dialogFactory;
+		this.patterns = patterns;
+		this.patternMatcher = patternMatcher;
 	}
 
 	@Override
@@ -58,12 +66,12 @@ final class FillTagsFromFolderNameActionListener implements ActionListener {
 	        PatternInputDialog inputDialog = dialogFactory.newDialog("massivePatternInputDialog", PatternInputDialog.class);
 	        Object node = selectedNodes[0].getLastPathComponent();
 	        Object folder = ((DefaultMutableTreeTableNode)node).getUserObject();
-	        inputDialog.show(Patterns.getMassiveRecognitionPatterns(), ((File)folder).getAbsolutePath());
+	        inputDialog.show(patterns.getMassiveRecognitionPatterns(), ((File)folder).getAbsolutePath());
 	        String pattern = inputDialog.getResult();
 	        for (TreePath treePath : selectedNodes) {
 	            node = treePath.getLastPathComponent();                        
 	            folder = ((DefaultMutableTreeTableNode)node).getUserObject();
-	            Map<String, String> matches = PatternMatcher.getPatternMatches(pattern, ((File)folder).getAbsolutePath(), true);
+	            Map<String, String> matches = patternMatcher.getPatternMatches(pattern, ((File)folder).getAbsolutePath(), true);
 	            for (Entry<String, String> entry : matches.entrySet()) {
 	                ((ReviewImportTreeTableModel) dialog.getTreeTable().getTreeTableModel()).setValueForColumn(dialog.getTreeTable().getRowForPath(treePath), entry.getKey(), entry.getValue());
 	            }
