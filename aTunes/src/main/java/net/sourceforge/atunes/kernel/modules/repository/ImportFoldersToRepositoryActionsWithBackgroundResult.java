@@ -29,14 +29,12 @@ import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IReviewImportDialog;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
 
 public class ImportFoldersToRepositoryActionsWithBackgroundResult implements IActionsWithBackgroundResult<List<ILocalAudioObject>> {
 
-	private IRepositoryHandler repositoryHandler;
 	private List<File> folders;
 	private String path;
 	private IProcessFactory processFactory;
@@ -45,18 +43,20 @@ public class ImportFoldersToRepositoryActionsWithBackgroundResult implements IAc
 	
 	private IDialogFactory dialogFactory;
 	
+	private ImportToRepositoryProcessListener importToRepositoryProcessListener;
+	
+	/**
+	 * @param importToRepositoryProcessListener
+	 */
+	public void setImportToRepositoryProcessListener(ImportToRepositoryProcessListener importToRepositoryProcessListener) {
+		this.importToRepositoryProcessListener = importToRepositoryProcessListener;
+	}
+	
 	/**
 	 * @param dialogFactory
 	 */
 	public void setDialogFactory(IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
-	}
-
-	/**
-	 * @param repositoryHandler
-	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class ImportFoldersToRepositoryActionsWithBackgroundResult implements IAc
 		process.setFolders(folders);
 		process.setDestination(path);
 		process.initialize(tagAttributesReviewed);
-		process.addProcessListener(new ImportFilesProcessListener(repositoryHandler, dialogFactory));
+		process.addProcessListener(importToRepositoryProcessListener);
 		process.execute();
 	}
 
