@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.List;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -106,8 +107,13 @@ final class PlayListTabController extends AbstractSimpleController<PlayListSelec
      * @param name
      *            the name
      */
-    void newPlayList(String name) {
-    	playListSelectorWrapper.newPlayList(name);
+    void newPlayList(final String name) {
+    	GuiUtils.callInEventDispatchThread(new Runnable() {
+    		@Override
+    		public void run() {
+    	    	playListSelectorWrapper.newPlayList(name);
+    		}
+    	});
     }
 
     /**

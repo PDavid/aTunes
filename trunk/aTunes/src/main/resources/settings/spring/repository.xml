@@ -40,6 +40,5 @@
 	<bean class="net.sourceforge.atunes.kernel.modules.repository.ImportFoldersToRepositoryActionsWithBackgroundResult" scope="prototype"/>
 	
 	<bean id="importToRepositoryProcessListener" class="net.sourceforge.atunes.kernel.modules.repository.ImportToRepositoryProcessListener" scope="prototype"/>
-	<bean id="importToRepositoryProcessFinishedRunnable" class="net.sourceforge.atunes.kernel.modules.repository.ImportToRepositoryProcessFinishedRunnable" scope="prototype"/>
 
 </beans>

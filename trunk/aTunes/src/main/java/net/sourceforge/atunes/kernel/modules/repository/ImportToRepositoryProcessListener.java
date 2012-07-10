@@ -21,11 +21,19 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
-
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IProcessListener;
+import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Listener for import to repository
@@ -34,15 +42,33 @@ import net.sourceforge.atunes.model.IProcessListener;
  */
 public class ImportToRepositoryProcessListener implements IProcessListener<List<File>> {
 
-	private ImportToRepositoryProcessFinishedRunnable importToRepositoryProcessFinishedRunnable;
+    private IDialogFactory dialogFactory;
+    
+    private IRepositoryHandler repositoryHandler;
+    
+	private IPlayListHandler playListHandler;
 	
 	/**
-	 * @param importToRepositoryProcessFinishedRunnable
+	 * @param playListHandler
 	 */
-	public void setImportToRepositoryProcessFinishedRunnable(ImportToRepositoryProcessFinishedRunnable importToRepositoryProcessFinishedRunnable) {
-		this.importToRepositoryProcessFinishedRunnable = importToRepositoryProcessFinishedRunnable;
+	public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
 	}
-	
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
     @Override
     public void processCanceled() { 
     	// Nothing to do
@@ -50,7 +76,27 @@ public class ImportToRepositoryProcessListener implements IProcessListener<List<
 
     @Override
     public void processFinished(final boolean ok, List<File> result) {
-    	importToRepositoryProcessFinishedRunnable.setOk(ok);
-        SwingUtilities.invokeLater(importToRepositoryProcessFinishedRunnable);
+        if (!ok) {
+        	// Show error message
+          	dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
+        } else {
+			// If import is ok then add files to repository
+			repositoryHandler.addFilesAndRefresh(result);
+			
+			// Create a playlist with imported files
+			List<ILocalAudioObject> audioObjects = new ArrayList<ILocalAudioObject>();
+			for (File file : result) {
+				ILocalAudioObject ao = repositoryHandler.getFileIfLoaded(file.getAbsolutePath());
+				if (ao != null) {
+					audioObjects.add(ao);
+				}
+			}
+			
+			Date now = new Date();
+			String dateString = DateFormat.getDateTimeInstance().format(now);
+			
+			String name = StringUtils.getString(I18nUtils.getString("FILES_IMPORTED"), " - ", dateString);
+			playListHandler.newPlayList(name, audioObjects);
+        }
     }
 }
