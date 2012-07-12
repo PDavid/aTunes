@@ -81,21 +81,12 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
 
 	@Override
 	public File selectFolder(String path) {
-		if (osManager.isMacOsX()) {
-			System.setProperty("apple.awt.fileDialogForDirectories", "true");
-		}
-		
 		File file = null;
-		if (!osManager.isMacOsX() && !osManager.isWindows()) {
-			file = selectFolderWithJFileChooser(path);
-		} else {
-			file = selectFolderWithFileChooser(path);
-		}
-		
 		if (osManager.isMacOsX()) {
-			System.setProperty("apple.awt.fileDialogForDirectories", "false");
+			file = selectFolderWithFileChooser(path);
+		} else {
+			file = selectFolderWithJFileChooser(path);
 		}
-		
 		return file;
 	}
 
@@ -110,7 +101,12 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
 		return dialog.getSelectedFile();
 	}
 	
+	/**
+	 * @param path
+	 * @return
+	 */
 	private File selectFolderWithFileChooser(String path) {
+		System.setProperty("apple.awt.fileDialogForDirectories", "true");
 		FileDialog dialog = new FileDialog(frame.getFrame());
 		System.setProperty("apple.awt.fileDialogForDirectories", "false");
 		dialog.setFilenameFilter(new FilenameFilter() {
