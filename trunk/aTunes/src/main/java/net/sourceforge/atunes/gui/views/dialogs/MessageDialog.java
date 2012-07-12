@@ -77,4 +77,10 @@ public class MessageDialog implements IMessageDialog {
     public void initialize() {
     	// Do nothing
     }
+    
+	@Override
+	@Deprecated
+	public void setTitle(String title) {
+		// Not used
+	}
 }

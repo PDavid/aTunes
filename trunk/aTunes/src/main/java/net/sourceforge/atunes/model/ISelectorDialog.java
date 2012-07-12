@@ -31,11 +31,6 @@ import javax.swing.ListCellRenderer;
 public interface ISelectorDialog extends IDialog {
 
 	/**
-	 * @param title
-	 */
-	public void setTitle(String title);
-	
-	/**
 	 * @param cellRenderer
 	 */
 	public void setCellRenderer(ListCellRenderer cellRenderer);
