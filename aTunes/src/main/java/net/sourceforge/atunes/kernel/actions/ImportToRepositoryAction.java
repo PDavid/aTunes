@@ -23,12 +23,10 @@ package net.sourceforge.atunes.kernel.actions;
 import java.io.File;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.views.dialogs.SelectorDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.ISelectorDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -44,11 +42,7 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
 
     private IRepositoryHandler repositoryHandler;
     
-    private IFrame frame;
-    
     private IDialogFactory dialogFactory;
-    
-    private ILookAndFeelManager lookAndFeelManager;
     
     /**
      * Default constructor
@@ -78,47 +72,41 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
             List<File> folders = dialog.getSelectedFolders();
             // If user selected folders...
             if (!folders.isEmpty()) {
-                String path;
-                String[] foldersList = new String[repositoryHandler.getFoldersCount()];
-                for (int i = 0; i < repositoryHandler.getFolders().size(); i++) {
-                    foldersList[i] = repositoryHandler.getFolders().get(i).getAbsolutePath();
-                }
-                // If repository folders are more than one then user must select where to import songs
-                if (foldersList.length > 1) {
-                    SelectorDialog selector = new SelectorDialog(frame.getFrame(), I18nUtils.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"),
-                            foldersList, null, lookAndFeelManager.getCurrentLookAndFeel());
-                    selector.setVisible(true);
-                    path = selector.getSelection();
-                    // If user closed dialog then select first entry
-                    if (path == null) {
-                        path = foldersList[0];
-                    }
-                } else {
-                    path = foldersList[0];
-                }
-                repositoryHandler.importFolders(folders, path);
+                repositoryHandler.importFolders(folders, getRepositoryPath());
             }
         }
     }
+
+	/**
+	 * @return repository path
+	 */
+	private String getRepositoryPath() {
+		String path;
+		String[] foldersList = new String[repositoryHandler.getFoldersCount()];
+		for (int i = 0; i < repositoryHandler.getFolders().size(); i++) {
+		    foldersList[i] = repositoryHandler.getFolders().get(i).getAbsolutePath();
+		}
+		// If repository folders are more than one then user must select where to import songs
+		if (foldersList.length > 1) {
+			ISelectorDialog selectorDialog = dialogFactory.newDialog(ISelectorDialog.class);
+			selectorDialog.setTitle(I18nUtils.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"));
+			selectorDialog.setOptions(foldersList);
+		    selectorDialog.showDialog();
+		    path = selectorDialog.getSelection();
+		    // If user closed dialog then select first entry
+		    if (path == null) {
+		        path = foldersList[0];
+		    }
+		} else {
+		    path = foldersList[0];
+		}
+		return path;
+	}
     
     /**
      * @param repositoryHandler
      */
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
-	}
-    
-    /**
-     * @param frame
-     */
-    public void setFrame(IFrame frame) {
-		this.frame = frame;
-	}
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
 	}
 }

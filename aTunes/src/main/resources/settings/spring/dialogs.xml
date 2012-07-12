@@ -5,7 +5,7 @@
 	default-autowire="byName" default-lazy-init="true" default-init-method="initialize">
 	
 	<bean id="dialogFactory" class="net.sourceforge.atunes.gui.DialogFactory"/>
-	<bean id="equalizerDialog" class="net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog" scope="prototype">
+	<bean id="equalizerDialog" class="net.sourceforge.atunes.kernel.modules.player.EqualizerDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean> 
 	<bean id="fileSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.fileSelection.CustomFileSelectionDialog" scope="prototype">
@@ -135,6 +135,10 @@
 	</bean>
 
 	<bean class="net.sourceforge.atunes.gui.views.dialogs.UpdateDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
+	
+	<bean class="net.sourceforge.atunes.gui.views.dialogs.SelectorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
 	

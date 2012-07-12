@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs;
+package net.sourceforge.atunes.kernel.modules.player;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -34,9 +34,11 @@ import javax.swing.JSlider;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IEqualizerDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.ISelectorDialog;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -81,8 +83,10 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 		    String[] names = playerHandler.getEqualizer().getPresetsNames();
 
 		    // Show selector
-		    SelectorDialog selector = new SelectorDialog(EqualizerDialog.this, I18nUtils.getString("LOAD_PRESET"), names, null, getLookAndFeel());
-		    selector.setVisible(true);
+		    ISelectorDialog selector = dialogFactory.newDialog(ISelectorDialog.class);
+		    selector.setTitle(I18nUtils.getString("LOAD_PRESET"));
+		    selector.setOptions(names);
+		    selector.showDialog();
 
 		    // Get result
 		    Integer[] presets = playerHandler.getEqualizer().getPresetByNameForShowInGUI(selector.getSelection());
@@ -99,6 +103,8 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
     private JSlider[] bands;
 
     private IPlayerHandler playerHandler;
+    
+    private IDialogFactory dialogFactory;
 
     /**
      * Draws the equalizer dialog.
@@ -109,6 +115,13 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
         // Width required by german translation
         super(frame, 510, 300);
     }
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * Initializes dialog
@@ -256,14 +269,6 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
         panel.add(auxPanel, c);
 	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IEqualizerDialog#showDialog()
-	 */
-    @Override
-	public void showDialog() {
-    	setVisible(true);
-    }
-    
     @Override
     public void setVisible(boolean b) {
         if (b) {
@@ -271,10 +276,4 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
         }
         super.setVisible(b);
     }
-
-    @Override
-    public void hideDialog() {
-    	setVisible(false);
-    }
-
 }
