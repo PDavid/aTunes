@@ -24,6 +24,8 @@ import java.awt.FileDialog;
 import java.io.File;
 import java.io.FilenameFilter;
 
+import javax.swing.JFileChooser;
+
 import net.sourceforge.atunes.model.IFolderSelectorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
@@ -82,10 +84,35 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
 		if (osManager.isMacOsX()) {
 			System.setProperty("apple.awt.fileDialogForDirectories", "true");
 		}
-		FileDialog dialog = new FileDialog(frame.getFrame());
+		
+		File file = null;
+		if (!osManager.isMacOsX() && !osManager.isWindows()) {
+			file = selectFolderWithJFileChooser(path);
+		} else {
+			file = selectFolderWithFileChooser(path);
+		}
+		
 		if (osManager.isMacOsX()) {
 			System.setProperty("apple.awt.fileDialogForDirectories", "false");
 		}
+		
+		return file;
+	}
+
+	/**
+	 * @param path
+	 * @return
+	 */
+	private File selectFolderWithJFileChooser(String path) {
+		JFileChooser dialog = new JFileChooser(path);
+		dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		dialog.showOpenDialog(frame.getFrame());
+		return dialog.getSelectedFile();
+	}
+	
+	private File selectFolderWithFileChooser(String path) {
+		FileDialog dialog = new FileDialog(frame.getFrame());
+		System.setProperty("apple.awt.fileDialogForDirectories", "false");
 		dialog.setFilenameFilter(new FilenameFilter() {
 			
 			@Override
@@ -102,6 +129,7 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
             return new File(parent + '/' + folder);
         }
         return null;
+
 	}
 
 	@Override
