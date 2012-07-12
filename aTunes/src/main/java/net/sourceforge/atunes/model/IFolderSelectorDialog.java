@@ -20,31 +20,24 @@
 
 package net.sourceforge.atunes.model;
 
-import javax.swing.ListCellRenderer;
-
+import java.io.File;
 
 /**
- * Dialog to select an option from a list
+ * Dialog to select a folder
  * @author alex
  *
  */
-public interface ISelectorDialog extends IDialog {
+public interface IFolderSelectorDialog extends IDialog {
 
 	/**
-	 * @param cellRenderer
+	 * @param path
+	 * @return selected folder
 	 */
-	public void setCellRenderer(ListCellRenderer cellRenderer);
-
+	File selectFolder(String path);
+	
 	/**
-	 * @param options
+	 * @param path
+	 * @return selected folder
 	 */
-	public void setOptions(String[] options);
-
-	/**
-	 * Gets the selection.
-	 * 
-	 * @return the selection
-	 */
-	public String getSelection();
-
+	File selectFolder(File path);
 }

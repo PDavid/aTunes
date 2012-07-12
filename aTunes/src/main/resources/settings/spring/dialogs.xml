@@ -141,5 +141,6 @@
 	<bean class="net.sourceforge.atunes.gui.views.dialogs.SelectorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-	
+
+	<bean class="net.sourceforge.atunes.gui.views.dialogs.FolderSelectorDialog" scope="prototype"/>
 </beans>

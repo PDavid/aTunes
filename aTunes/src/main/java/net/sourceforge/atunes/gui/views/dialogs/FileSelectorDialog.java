@@ -122,4 +122,11 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 	public void initialize() {
 		// do nothing
 	}
+	
+	@Override
+	@Deprecated
+	public void setTitle(String title) {
+		// Not used
+	}
+
 }

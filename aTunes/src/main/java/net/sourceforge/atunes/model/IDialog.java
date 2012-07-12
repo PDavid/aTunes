@@ -29,6 +29,11 @@ package net.sourceforge.atunes.model;
 public interface IDialog {
 	
 	/**
+	 * @param title
+	 */
+	public void setTitle(String title);
+	
+	/**
 	 * Shows dialog
 	 */
 	void showDialog();

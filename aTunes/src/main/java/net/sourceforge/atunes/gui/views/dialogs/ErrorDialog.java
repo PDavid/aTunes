@@ -101,4 +101,10 @@ public class ErrorDialog implements IErrorDialog {
     public void showDialog() {
     	throw new UnsupportedOperationException();
     }
+    
+	@Override
+	@Deprecated
+	public void setTitle(String title) {
+		// Not used
+	}
 }

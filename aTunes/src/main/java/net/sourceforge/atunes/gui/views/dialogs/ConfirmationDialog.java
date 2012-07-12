@@ -69,4 +69,10 @@ public class ConfirmationDialog implements IConfirmationDialog {
 	public void initialize() {
 		// Not used
 	}
+	
+	@Override
+	@Deprecated
+	public void setTitle(String title) {
+		// Not used
+	}
 }

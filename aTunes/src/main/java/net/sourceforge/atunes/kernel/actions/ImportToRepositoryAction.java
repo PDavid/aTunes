@@ -21,10 +21,11 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
+import net.sourceforge.atunes.model.IFolderSelectorDialog;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISelectorDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -38,44 +39,39 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class ImportToRepositoryAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -5708270585764283210L;
+	private static final long serialVersionUID = -5708270585764283210L;
 
-    private IRepositoryHandler repositoryHandler;
-    
-    private IDialogFactory dialogFactory;
-    
-    /**
-     * Default constructor
-     */
-    public ImportToRepositoryAction() {
-        super(StringUtils.getString(I18nUtils.getString("IMPORT"), "..."));
-        putValue(SHORT_DESCRIPTION, StringUtils.getString(I18nUtils.getString("IMPORT"), "..."));
-        setEnabled(false); // Initially disabled, will be enabled when repository is loaded
-    }
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
+	private IRepositoryHandler repositoryHandler;
+
+	private IDialogFactory dialogFactory;
+
+	/**
+	 * Default constructor
+	 */
+	public ImportToRepositoryAction() {
+		super(StringUtils.getString(I18nUtils.getString("IMPORT"), "..."));
+		putValue(SHORT_DESCRIPTION, StringUtils.getString(I18nUtils.getString("IMPORT"), "..."));
+		setEnabled(false); // Initially disabled, will be enabled when repository is loaded
+	}
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-    
-    @Override
-    protected void executeAction() {
-        // Now show dialog to select folders
-        IMultiFolderSelectionDialog dialog = (IMultiFolderSelectionDialog) dialogFactory.newDialog(IMultiFolderSelectionDialog.class);
-        dialog.setTitle(I18nUtils.getString("IMPORT"));
-        dialog.setText(I18nUtils.getString("SELECT_FOLDERS_TO_IMPORT"));
-        dialog.setSelectedFolders(null);
-        dialog.showDialog();
-        if (!dialog.isCancelled()) {
-            List<File> folders = dialog.getSelectedFolders();
-            // If user selected folders...
-            if (!folders.isEmpty()) {
-                repositoryHandler.importFolders(folders, getRepositoryPath());
-            }
-        }
-    }
+
+	@Override
+	protected void executeAction() {
+		IFolderSelectorDialog dialog = dialogFactory.newDialog(IFolderSelectorDialog.class);
+		dialog.setTitle(I18nUtils.getString("IMPORT"));
+		File folder = dialog.selectFolder((String)null);
+		if (folder != null) {
+			List<File> folders = new ArrayList<File>();
+			folders.add(folder);
+			repositoryHandler.importFolders(folders, getRepositoryPath());
+		}
+	}
 
 	/**
 	 * @return repository path
@@ -84,29 +80,29 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
 		String path;
 		String[] foldersList = new String[repositoryHandler.getFoldersCount()];
 		for (int i = 0; i < repositoryHandler.getFolders().size(); i++) {
-		    foldersList[i] = repositoryHandler.getFolders().get(i).getAbsolutePath();
+			foldersList[i] = repositoryHandler.getFolders().get(i).getAbsolutePath();
 		}
 		// If repository folders are more than one then user must select where to import songs
 		if (foldersList.length > 1) {
 			ISelectorDialog selectorDialog = dialogFactory.newDialog(ISelectorDialog.class);
 			selectorDialog.setTitle(I18nUtils.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"));
 			selectorDialog.setOptions(foldersList);
-		    selectorDialog.showDialog();
-		    path = selectorDialog.getSelection();
-		    // If user closed dialog then select first entry
-		    if (path == null) {
-		        path = foldersList[0];
-		    }
+			selectorDialog.showDialog();
+			path = selectorDialog.getSelection();
+			// If user closed dialog then select first entry
+			if (path == null) {
+				path = foldersList[0];
+			}
 		} else {
-		    path = foldersList[0];
+			path = foldersList[0];
 		}
 		return path;
 	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 }
