@@ -20,9 +20,13 @@
 
 package net.sourceforge.atunes;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.StringUtils;
 
 public class ApplicationPropertiesLogger {
 	
@@ -50,13 +54,22 @@ public class ApplicationPropertiesLogger {
      * @param osManager
      */
     public void logProgramProperties() {
-        Logger.info("Version: ", Constants.APP_NAME, " ", Constants.VERSION);
-        Logger.info("Running in Java Virtual Machine ", System.getProperty("java.version"));
-        Logger.info("Operating System: ", System.getProperty("os.name"), " ", System.getProperty("os.version"), " (", System.getProperty("os.arch"), ")");
-        Logger.info("Arguments = ", applicationArguments.getOriginalArguments());
-        Logger.info("Debug mode = ", applicationArguments.isDebug());
-        Logger.info("Execution path = ", osManager.getWorkingDirectory());
+    	for (Map.Entry<String, String> entry : getApplicationProperties().entrySet()) {
+    		Logger.info(entry.getKey(), ": ", entry.getValue());
+    	}
     }
-
-
+    
+    /**
+     * @return application properties
+     */
+    public Map<String, String> getApplicationProperties() {
+    	Map<String, String> properties = new HashMap<String, String>();
+        properties.put("Version", StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION));
+        properties.put("Java Virtual Machine", System.getProperty("java.version"));
+        properties.put("Operating System", StringUtils.getString(System.getProperty("os.name"), " ", System.getProperty("os.version"), " (", System.getProperty("os.arch"), ")"));
+        properties.put("Arguments", applicationArguments.getOriginalArguments().toString());
+        properties.put("Debug mode", Boolean.toString(applicationArguments.isDebug()));
+        properties.put("Execution path", osManager.getWorkingDirectory());
+    	return properties;
+    }
 }

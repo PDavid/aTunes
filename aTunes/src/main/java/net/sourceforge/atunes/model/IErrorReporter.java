@@ -20,30 +20,24 @@
 
 package net.sourceforge.atunes.model;
 
-import java.awt.Component;
-
 
 /**
- * Shows error messages
+ * Responsible of report information of an error
  * @author alex
  *
  */
-public interface IErrorDialog extends IDialog {
+public interface IErrorReporter {
 
 	/**
-	 * Show error dialog.
-	 * 
-	 * @param message
+	 * @param t
 	 */
-	public void showErrorDialog(final String message);
-
+	void reportError(ErrorReport t);
+	
 	/**
-	 * Show error dialog.
-	 * 
-	 * @param message
-	 *            the message
-	 * @param parent
-	 *            the parent
+	 * @param throwable
+	 * @param descriptionError
+	 * @param throwable
+	 * @return
 	 */
-	public void showErrorDialog(String message, Component parent);
+	ErrorReport createReport(String descriptionError, Throwable throwable);
 }

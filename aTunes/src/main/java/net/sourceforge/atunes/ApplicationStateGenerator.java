@@ -18,32 +18,35 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes;
 
-import java.awt.Component;
+import java.util.HashMap;
+import java.util.Map;
 
+import net.sourceforge.atunes.model.IApplicationStateGenerator;
 
 /**
- * Shows error messages
+ * Generates state of application
  * @author alex
  *
  */
-public interface IErrorDialog extends IDialog {
+public class ApplicationStateGenerator implements IApplicationStateGenerator {
 
+	private ApplicationPropertiesLogger applicationPropertiesLogger;
+	
 	/**
-	 * Show error dialog.
-	 * 
-	 * @param message
+	 * @param applicationPropertiesLogger
 	 */
-	public void showErrorDialog(final String message);
-
+	public void setApplicationPropertiesLogger(ApplicationPropertiesLogger applicationPropertiesLogger) {
+		this.applicationPropertiesLogger = applicationPropertiesLogger;
+	}
+	
 	/**
-	 * Show error dialog.
-	 * 
-	 * @param message
-	 *            the message
-	 * @param parent
-	 *            the parent
+	 * @return state
 	 */
-	public void showErrorDialog(String message, Component parent);
+	public Map<String, String> generateState() {
+		Map<String, String> state = new HashMap<String, String>();
+		state.putAll(applicationPropertiesLogger.getApplicationProperties());
+		return state;
+	}
 }

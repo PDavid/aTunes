@@ -20,30 +20,23 @@
 
 package net.sourceforge.atunes.model;
 
-import java.awt.Component;
-
-
 /**
- * Shows error messages
+ * A dialog to show exceptions
  * @author alex
  *
  */
-public interface IErrorDialog extends IDialog {
+public interface IExceptionDialog extends IDialog {
 
 	/**
-	 * Show error dialog.
-	 * 
-	 * @param message
+	 * Shows a exception report dialog
+	 * @param t
 	 */
-	public void showErrorDialog(final String message);
+	public void showExceptionDialog(Throwable t);
 
 	/**
-	 * Show error dialog.
-	 * 
-	 * @param message
-	 *            the message
-	 * @param parent
-	 *            the parent
+	 * Shows a exception report dialog
+	 * @param descriptionError
+	 * @param t
 	 */
-	public void showErrorDialog(String message, Component parent);
+	public void showExceptionDialog(String descriptionError, Throwable t);
 }

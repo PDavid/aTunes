@@ -41,7 +41,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IExceptionDialog;
 import net.sourceforge.atunes.model.IGeneralPurposePluginsHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -159,7 +159,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
     	if (problemsLoadingPlugins != null) {
     		for (Map.Entry<PluginFolder, PluginSystemException> pluginFolder : problemsLoadingPlugins.entrySet()) {
     			// Show a message with detailed information about the error
-    			dialogFactory.newDialog(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR"), pluginFolder.getValue());
+    			dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR"), pluginFolder.getValue());
     			
     			// Ask user to remove plugin folder
     			IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
@@ -169,7 +169,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
     				try {
 						FileUtils.deleteDirectory(pluginFolder.getKey());
 					} catch (IOException e) {
-						dialogFactory.newDialog(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), e);
+						dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), e);
 					}
     			}
     		}

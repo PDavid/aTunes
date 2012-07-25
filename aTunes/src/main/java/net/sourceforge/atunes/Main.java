@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IApplicationArguments;
@@ -37,12 +38,12 @@ public final class Main {
      * @param args
      */
     public static void main(String[] args) {
-        // Enable uncaught exception catching
-        Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
-        
         // Initialize Spring
     	Context.initialize();
 
+        // Enable uncaught exception catching
+        Thread.setDefaultUncaughtExceptionHandler(Context.getBean(UncaughtExceptionHandler.class));
+        
     	List<String> arguments = StringUtils.fromStringArrayToList(args);
     	
         // Save arguments, if application is restarted they will be necessary

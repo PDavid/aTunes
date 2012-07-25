@@ -20,30 +20,17 @@
 
 package net.sourceforge.atunes.model;
 
-import java.awt.Component;
-
+import java.util.Map;
 
 /**
- * Shows error messages
+ * Generates state with data from application
  * @author alex
  *
  */
-public interface IErrorDialog extends IDialog {
+public interface IApplicationStateGenerator {
 
 	/**
-	 * Show error dialog.
-	 * 
-	 * @param message
+	 * @return state
 	 */
-	public void showErrorDialog(final String message);
-
-	/**
-	 * Show error dialog.
-	 * 
-	 * @param message
-	 *            the message
-	 * @param parent
-	 *            the parent
-	 */
-	public void showErrorDialog(String message, Component parent);
+	Map<String, String> generateState();
 }
