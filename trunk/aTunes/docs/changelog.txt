@@ -24,6 +24,7 @@ aTunes 2.2.0
 - Play list selector using buttons or combo box
 - Similar Artist Mode [ patch by Laurent Cathala ]
 - New argument "simulate-cd" for CD ripper testing purposes
+- Added automated error reports
 - FIX: Use last.fm API to obtain last.fm loved tracks
 - FIX: Detection of radio audio streams blocks playing
 

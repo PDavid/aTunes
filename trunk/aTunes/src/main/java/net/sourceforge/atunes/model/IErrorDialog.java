@@ -46,13 +46,4 @@ public interface IErrorDialog extends IDialog {
 	 *            the parent
 	 */
 	public void showErrorDialog(String message, Component parent);
-
-	/**
-	 * Shows a exception report dialog
-	 * 
-	 * @param message
-	 * @param t
-	 */
-	public void showExceptionDialog(String message, Exception t);
-
 }

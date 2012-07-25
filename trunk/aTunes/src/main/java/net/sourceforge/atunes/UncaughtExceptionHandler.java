@@ -22,10 +22,26 @@ package net.sourceforge.atunes;
 
 import java.lang.reflect.InvocationTargetException;
 
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IExceptionDialog;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-final class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
+/**
+ * Captures unknown exceptions
+ * @author alex
+ *
+ */
+public final class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
+
+	private IDialogFactory dialogFactory;
+	
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 	
 	@Override
 	public void uncaughtException(Thread t, Throwable e) {
@@ -34,5 +50,7 @@ final class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler 
 		if (e instanceof InvocationTargetException && ((InvocationTargetException)e).getCause() != null) {
 			uncaughtException(t, ((InvocationTargetException)e).getCause());
 		}
+		
+		dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(e);
 	}
 }

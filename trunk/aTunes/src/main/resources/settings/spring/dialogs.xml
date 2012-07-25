@@ -51,6 +51,9 @@
 		<constructor-arg ref="frame"/>
 	</bean>
 	<bean id="errorDialog" class="net.sourceforge.atunes.gui.views.dialogs.ErrorDialog" scope="prototype"/>
+	<bean id="exceptionDialog" class="net.sourceforge.atunes.gui.views.dialogs.ExceptionDialog" scope="prototype">
+			<constructor-arg ref="frame"/>
+	</bean>
 	<bean id="confirmationDialog" class="net.sourceforge.atunes.gui.views.dialogs.ConfirmationDialog" scope="prototype"/>
 	<bean id="exportOptionsDialog" class="net.sourceforge.atunes.gui.views.dialogs.ExportOptionsDialog" scope="prototype">
 		<constructor-arg ref="frame"/>

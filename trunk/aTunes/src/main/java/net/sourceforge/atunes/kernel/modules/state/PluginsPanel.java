@@ -53,6 +53,7 @@ import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IExceptionDialog;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IStateCore;
@@ -340,7 +341,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 					sb.append(I18nUtils.getString("PLUGIN_CONFIGURATION_ERROR"));
 					sb.append(" ");
 					sb.append(plugin.getName());
-					dialogFactory.newDialog(IErrorDialog.class).showExceptionDialog(sb.toString(), t);
+					dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(sb.toString(), t);
 				}
 
 				restart = restart || pluginsHandler.pluginNeedsRestart(plugin);
@@ -413,7 +414,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 				Map<PluginFolder, PluginSystemException> problemsFound = PluginsPanel.this.pluginsHandler.uninstallPlugin(plugin);
 				if (problemsFound != null) {
 					for (Map.Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
-						dialogFactory.newDialog(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
+						dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
 					}
 				}
 			} catch (Exception e1) {
@@ -507,12 +508,12 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 					Map<PluginFolder, PluginSystemException> problemsFound = pluginsHandler.installPlugin(zipFile);
 					if (problemsFound != null) {
 						for (Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
-							dialogFactory.newDialog(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), pluginFolderEntry.getValue());
+							dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), pluginFolderEntry.getValue());
 						}
 					}
 
 				} catch (Exception e1) {
-					dialogFactory.newDialog(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), e1);
+					dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), e1);
 				}
 			}
 		}
