@@ -88,9 +88,6 @@ public class PlayAction extends CustomAbstractAction {
             // selected song equals to song being currently played -> pause
             playerHandler.playCurrentAudioObject(true);
         }
-        
-        throw new NullPointerException();
-        
     }
 
     @Override
