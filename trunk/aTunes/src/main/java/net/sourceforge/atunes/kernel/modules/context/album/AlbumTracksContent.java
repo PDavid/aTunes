@@ -27,9 +27,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.ContextInformationTableFactory;
 import net.sourceforge.atunes.kernel.modules.context.ITracksTableListener;
-import net.sourceforge.atunes.kernel.modules.context.TracksTableFactory;
-import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -47,15 +46,33 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
     
     private JScrollPane scrollPane;
     
+    private ContextInformationTableFactory contextInformationTableFactory;
+    
+    private ITracksTableListener contextTableURLOpener;
+    
+    /**
+     * @param contextTableURLOpener
+     */
+    public void setContextTableURLOpener(ITracksTableListener contextTableURLOpener) {
+		this.contextTableURLOpener = contextTableURLOpener;
+	}
+    
     @Override
     public String getContentName() {
         return I18nUtils.getString("SONGS");
     }
     
+    /**
+     * @param contextInformationTableFactory
+     */
+    public void setContextInformationTableFactory(ContextInformationTableFactory contextInformationTableFactory) {
+		this.contextInformationTableFactory = contextInformationTableFactory;
+	}
+    
     @Override
     public void updateContentFromDataSource(AlbumInfoDataSource source) {
    		tracksTable.setModel(new ContextTracksTableModel(source.getAlbumInfo()));
-   		scrollPane.setVisible(!CollectionUtils.isEmpty(source.getAlbumInfo().getTracks()));
+   		scrollPane.setVisible(source.getAlbumInfo() != null && !CollectionUtils.isEmpty(source.getAlbumInfo().getTracks()));
     }
     
     @Override
@@ -68,15 +85,7 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
     @Override
     public Component getComponent() {
         // Create components
-    	TracksTableFactory factory = new TracksTableFactory();
-    	factory.setLookAndFeelManager(getLookAndFeelManager());
-    	tracksTable = factory.getNewTracksTable(new ITracksTableListener() {
-			
-			@Override
-			public void trackSelected(ITrackInfo track) {
-                getDesktop().openURL(track.getUrl());
-			}
-		});
+    	tracksTable = contextInformationTableFactory.getNewTracksTable(contextTableURLOpener);
     	scrollPane = getLookAndFeelManager().getCurrentLookAndFeel().getTableScrollPane(tracksTable);
         scrollPane.setVisible(false);
     	scrollPane.setPreferredSize(new Dimension(100, 250));

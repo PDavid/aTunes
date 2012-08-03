@@ -30,8 +30,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.ContextInformationTableFactory;
 import net.sourceforge.atunes.kernel.modules.context.ITracksTableListener;
-import net.sourceforge.atunes.kernel.modules.context.TracksTableFactory;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -60,6 +60,17 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent<ArtistPo
     
     private IPlayListHandler playListHandler;
     
+    private ContextInformationTableFactory contextInformationTableFactory;
+    
+    private ITracksTableListener contextTableURLOpener;
+    
+    /**
+     * @param contextTableURLOpener
+     */
+    public void setContextTableURLOpener(ITracksTableListener contextTableURLOpener) {
+		this.contextTableURLOpener = contextTableURLOpener;
+	}
+    
     private class CreatePlaylistWithPopularTracksActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -77,6 +88,13 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent<ArtistPo
         	}
         }
     }
+    
+    /**
+     * @param contextInformationTableFactory
+     */
+    public void setContextInformationTableFactory(ContextInformationTableFactory contextInformationTableFactory) {
+		this.contextInformationTableFactory = contextInformationTableFactory;
+	}
 
     /**
      * Default constructor
@@ -113,15 +131,7 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent<ArtistPo
     @Override
     public Component getComponent() {
         // Create components
-    	TracksTableFactory factory = new TracksTableFactory();
-    	factory.setLookAndFeelManager(getLookAndFeelManager());
-    	tracksTable = factory.getNewTracksTable(new ITracksTableListener() {
-			
-			@Override
-			public void trackSelected(ITrackInfo track) {
-                getDesktop().openURL(track.getUrl());
-			}
-        });
+    	tracksTable = contextInformationTableFactory.getNewTracksTable(contextTableURLOpener);
         return tracksTable;
     }
     
