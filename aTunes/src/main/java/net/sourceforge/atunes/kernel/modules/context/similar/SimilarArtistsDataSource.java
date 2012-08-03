@@ -106,10 +106,16 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
         return null;
     }
 
+    /**
+     * @param webServicesHandler
+     */
     public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
     
+    /**
+     * @param repositoryHandler
+     */
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}

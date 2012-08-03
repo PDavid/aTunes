@@ -26,6 +26,10 @@ import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * @author alex
+ *
+ */
 public class SimilarArtistsContent extends AbstractContextPanelContent<SimilarArtistsDataSource> {
 
     private static final long serialVersionUID = 5041098100868186051L;
@@ -38,7 +42,11 @@ public class SimilarArtistsContent extends AbstractContextPanelContent<SimilarAr
 
     @Override
     public void updateContentFromDataSource(SimilarArtistsDataSource source) {
-    	similarArtistsTable.setModel(new SimilarArtistsTableModel(source.getSimilarArtistsInfo().getArtists()));
+    	if (source.getSimilarArtistsInfo() != null) {
+    		similarArtistsTable.setModel(new SimilarArtistsTableModel(source.getSimilarArtistsInfo().getArtists()));
+    	} else {
+    		similarArtistsTable.setModel(new SimilarArtistsTableModel(null));
+    	}
     }
     
     @Override

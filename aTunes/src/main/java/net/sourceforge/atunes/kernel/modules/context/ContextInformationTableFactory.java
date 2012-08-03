@@ -26,7 +26,12 @@ import javax.swing.ListSelectionModel;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
-public class TracksTableFactory {
+/**
+ * Creates a table to show context information
+ * @author alex
+ *
+ */
+public class ContextInformationTableFactory {
 
 	private ILookAndFeelManager lookAndFeelManager;
 	
