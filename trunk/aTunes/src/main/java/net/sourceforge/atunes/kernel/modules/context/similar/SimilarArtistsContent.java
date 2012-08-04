@@ -43,16 +43,16 @@ public class SimilarArtistsContent extends AbstractContextPanelContent<SimilarAr
     @Override
     public void updateContentFromDataSource(SimilarArtistsDataSource source) {
     	if (source.getSimilarArtistsInfo() != null) {
-    		similarArtistsTable.setModel(new SimilarArtistsTableModel(source.getSimilarArtistsInfo().getArtists()));
+            ((SimilarArtistsTableModel)similarArtistsTable.getModel()).setArtists(source.getSimilarArtistsInfo().getArtists());
     	} else {
-    		similarArtistsTable.setModel(new SimilarArtistsTableModel(null));
+            ((SimilarArtistsTableModel)similarArtistsTable.getModel()).setArtists(null);
     	}
     }
     
     @Override
     public void clearContextPanelContent() {
         super.clearContextPanelContent();
-        similarArtistsTable.setModel(new SimilarArtistsTableModel(null));
+        ((SimilarArtistsTableModel)similarArtistsTable.getModel()).setArtists(null);
     }
 
     @Override
@@ -60,6 +60,7 @@ public class SimilarArtistsContent extends AbstractContextPanelContent<SimilarAr
         // Create components
         similarArtistsTable = new SimilarArtistsContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
         similarArtistsTable.addContextRowPanel(new SimilarArtistTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel(), getDesktop()));
+        similarArtistsTable.setModel(new SimilarArtistsTableModel());
         return similarArtistsTable;
     }
 }

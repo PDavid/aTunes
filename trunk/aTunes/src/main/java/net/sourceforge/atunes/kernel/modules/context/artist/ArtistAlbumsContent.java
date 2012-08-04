@@ -44,13 +44,13 @@ public class ArtistAlbumsContent extends AbstractContextPanelContent<ArtistAlbum
 
     @Override
     public void updateContentFromDataSource(ArtistAlbumListImagesDataSource source) {
-        albumsTable.setModel(new ContextAlbumsTableModel(source.getAlbumList().getAlbums()));
+        ((ContextAlbumsTableModel)albumsTable.getModel()).setAlbums(source.getAlbumList().getAlbums());
     }
 
     @Override
     public void clearContextPanelContent() {
         super.clearContextPanelContent();
-        albumsTable.setModel(new ContextAlbumsTableModel(null));
+        ((ContextAlbumsTableModel)albumsTable.getModel()).setAlbums(null);
     }
 
     @Override
@@ -59,6 +59,7 @@ public class ArtistAlbumsContent extends AbstractContextPanelContent<ArtistAlbum
         albumsTable = new ContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
         albumsTable.addContextRowPanel(new AlbumsTableCellRendererCode((ArtistAlbumListImagesDataSource)getDataSource(), 
         		getLookAndFeelManager().getCurrentLookAndFeel(), getDesktop()));
+        albumsTable.setModel(new ContextAlbumsTableModel());
         return albumsTable;
     }
 
