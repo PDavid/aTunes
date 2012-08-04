@@ -37,6 +37,11 @@ import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Shows artist albums in flow
+ * @author alex
+ *
+ */
 public class ArtistAlbumsFlowContent extends AbstractContextPanelContent<ArtistAlbumListImagesDataSource> {
 
 	private ScrollableFlowPanel coversPanel;

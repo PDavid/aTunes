@@ -20,11 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.context.similar;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -32,34 +30,24 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class ContextArtistsTableModel.
  */
-public class SimilarArtistsTableModel implements TableModel {
-
-    /** The artists. */
-    private List<IArtistInfo> artists;
-
-    /** The listeners. */
-    private List<TableModelListener> listeners;
+public class SimilarArtistsTableModel extends DefaultTableModel {
 
     /**
-     * Instantiates a new audio scrobbler artists table model.
-     */
-    public SimilarArtistsTableModel(List<IArtistInfo> artists) {
-        this.artists = artists;
-        listeners = new ArrayList<TableModelListener>();
-    }
+	 * 
+	 */
+	private static final long serialVersionUID = 1310120443913287609L;
+	
+	/** The artists. */
+    private List<IArtistInfo> artists;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * javax.swing.table.TableModel#addTableModelListener(javax.swing.event.
-     * TableModelListener)
+    /**
+     * @param artists
      */
-    @Override
-    public void addTableModelListener(TableModelListener l) {
-        listeners.add(l);
-    }
-
+    public void setArtists(List<IArtistInfo> artists) {
+		this.artists = artists;
+		fireTableDataChanged();
+	}
+    
     /**
      * Gets the artist.
      * 
@@ -72,31 +60,16 @@ public class SimilarArtistsTableModel implements TableModel {
         return artists.get(index);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getColumnClass(int)
-     */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return IArtistInfo.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getColumnCount()
-     */
     @Override
     public int getColumnCount() {
         return 1;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getColumnName(int)
-     */
     @Override
     public String getColumnName(int columnIndex) {
         if (columnIndex == 0) {
@@ -105,55 +78,18 @@ public class SimilarArtistsTableModel implements TableModel {
         return "";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getRowCount()
-     */
     @Override
     public int getRowCount() {
         return artists != null ? artists.size() : 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getValueAt(int, int)
-     */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return artists.get(rowIndex);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#isCellEditable(int, int)
-     */
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return true; // For context button
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * javax.swing.table.TableModel#removeTableModelListener(javax.swing.event
-     * .TableModelListener)
-     */
-    @Override
-    public void removeTableModelListener(TableModelListener l) {
-        listeners.remove(l);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
-     */
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        // Nothing to do
     }
 }

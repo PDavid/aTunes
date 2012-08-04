@@ -20,33 +20,35 @@
 
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ContextAlbumsTableModel implements TableModel {
-
-    private List<IAlbumInfo> albums;
-    private List<TableModelListener> listeners;
+/**
+ * Table model for artist albums
+ * @author alex
+ *
+ */
+class ContextAlbumsTableModel extends DefaultTableModel {
 
     /**
-     * Instantiates a new audio scrobbler albums table model.
+	 * 
+	 */
+	private static final long serialVersionUID = 2224777412499576679L;
+	
+	private List<IAlbumInfo> albums;
+
+    /**
+     * @param albums
      */
-    public ContextAlbumsTableModel(List<IAlbumInfo> albums) {
-        this.albums = albums;
-        listeners = new ArrayList<TableModelListener>();
-    }
-
-    @Override
-    public void addTableModelListener(TableModelListener l) {
-        listeners.add(l);
-    }
-
+    public void setAlbums(List<IAlbumInfo> albums) {
+		this.albums = albums;
+		fireTableDataChanged();
+	}
+    
     /**
      * Gets the album.
      * 
@@ -87,15 +89,5 @@ public class ContextAlbumsTableModel implements TableModel {
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return true;
-    }
-
-    @Override
-    public void removeTableModelListener(TableModelListener l) {
-        listeners.remove(l);
-    }
-
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        // Nothing to do
     }
 }

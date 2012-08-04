@@ -20,11 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.context.album;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.kernel.modules.context.ITrackTableModel;
 import net.sourceforge.atunes.model.IAlbumInfo;
@@ -32,26 +28,27 @@ import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-class ContextTracksTableModel implements TableModel, ITrackTableModel {
-
-    private IAlbumInfo album;
-    private List<TableModelListener> listeners;
+/**
+ * Table model to show album tracks
+ * @author alex
+ *
+ */
+class ContextTracksTableModel extends DefaultTableModel implements ITrackTableModel {
 
     /**
-     * Instantiates a new audio scrobbler tracks table model.
-     * 
-     * @param album
-     *            the album
-     */
-    public ContextTracksTableModel(IAlbumInfo album) {
-        this.album = album;
-        listeners = new ArrayList<TableModelListener>();
-    }
+	 * 
+	 */
+	private static final long serialVersionUID = 7703905638405573814L;
+	
+	private IAlbumInfo album;
 
-    @Override
-    public void addTableModelListener(TableModelListener l) {
-        listeners.add(l);
-    }
+    /**
+     * @param album
+     */
+    public void setAlbum(IAlbumInfo album) {
+		this.album = album;
+		fireTableDataChanged();
+	}
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
@@ -97,15 +94,5 @@ class ContextTracksTableModel implements TableModel, ITrackTableModel {
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return false;
-    }
-
-    @Override
-    public void removeTableModelListener(TableModelListener l) {
-        listeners.remove(l);
-    }
-
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        // Nothing to do
     }
 }

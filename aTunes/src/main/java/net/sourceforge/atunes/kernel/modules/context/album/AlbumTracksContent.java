@@ -71,14 +71,14 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
     
     @Override
     public void updateContentFromDataSource(AlbumInfoDataSource source) {
-   		tracksTable.setModel(new ContextTracksTableModel(source.getAlbumInfo()));
+   		((ContextTracksTableModel)tracksTable.getModel()).setAlbum(source.getAlbumInfo());
    		scrollPane.setVisible(source.getAlbumInfo() != null && !CollectionUtils.isEmpty(source.getAlbumInfo().getTracks()));
     }
     
     @Override
     public void clearContextPanelContent() {
         super.clearContextPanelContent();
-        tracksTable.setModel(new ContextTracksTableModel(null));
+   		((ContextTracksTableModel)tracksTable.getModel()).setAlbum(null);
         scrollPane.setVisible(false);
     }
 
@@ -86,6 +86,7 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
     public Component getComponent() {
         // Create components
     	tracksTable = contextInformationTableFactory.getNewTracksTable(contextTableURLOpener);
+        tracksTable.setModel(new ContextTracksTableModel());
     	scrollPane = getLookAndFeelManager().getCurrentLookAndFeel().getTableScrollPane(tracksTable);
         scrollPane.setVisible(false);
     	scrollPane.setPreferredSize(new Dimension(100, 250));

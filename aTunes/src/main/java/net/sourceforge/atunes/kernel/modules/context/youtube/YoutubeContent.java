@@ -85,7 +85,7 @@ public class YoutubeContent extends AbstractContextPanelContent<YoutubeDataSourc
 
     @Override
     public void updateContentFromDataSource(YoutubeDataSource source) {
-        youtubeResultTable.setModel(new YoutubeResultTableModel(source.getVideos()));
+        ((YoutubeResultTableModel)youtubeResultTable.getModel()).setEntries(source.getVideos());
         moreResults.setEnabled(true);
         openYoutube.setEnabled(true);    	
     }
@@ -93,7 +93,7 @@ public class YoutubeContent extends AbstractContextPanelContent<YoutubeDataSourc
     @Override
     public void clearContextPanelContent() {
         super.clearContextPanelContent();
-        youtubeResultTable.setModel(new YoutubeResultTableModel(null));
+        ((YoutubeResultTableModel)youtubeResultTable.getModel()).setEntries(null);
         moreResults.setEnabled(false);
         openYoutube.setEnabled(false);
     }
@@ -102,6 +102,7 @@ public class YoutubeContent extends AbstractContextPanelContent<YoutubeDataSourc
     public Component getComponent() {
         // Create components
         youtubeResultTable = new ContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
+        youtubeResultTable.setModel(new YoutubeResultTableModel());
         youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel(), getDesktop()));
         return youtubeResultTable;
     }

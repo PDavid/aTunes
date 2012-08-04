@@ -20,12 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.context.youtube;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -36,26 +33,26 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author Tobias Melcher
  * 
  */
-public class YoutubeResultTableModel implements TableModel {
+public class YoutubeResultTableModel extends DefaultTableModel {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5171074894632274112L;
+	
+	/**
      * List of videos from a search at YouTube
      */
     private List<IVideoEntry> entries;
 
     /**
-     * Listeners of this table model
+     * @param entries
      */
-    private List<TableModelListener> listeners;
-
-    /**
-     * Default constructor
-     */
-    public YoutubeResultTableModel(List<IVideoEntry> entries) {
-        this.entries = entries;
-        listeners = new ArrayList<TableModelListener>();
-    }
-
+    public void setEntries(List<IVideoEntry> entries) {
+		this.entries = entries;
+		fireTableDataChanged();
+	}
+    
     /**
      * Add more results to this model. Fires a refresh
      * 
@@ -63,8 +60,7 @@ public class YoutubeResultTableModel implements TableModel {
      */
     public void addEntries(List<IVideoEntry> entriesToBeAdded) {
         entries.addAll(entriesToBeAdded);
-        // Refresh model
-        refresh();
+        fireTableDataChanged();
     }
 
     /**
@@ -72,8 +68,7 @@ public class YoutubeResultTableModel implements TableModel {
      */
     public void clearEntries() {
         entries.clear();
-        // Refresh model
-        refresh();
+        fireTableDataChanged();
     }
 
     /**
@@ -84,11 +79,6 @@ public class YoutubeResultTableModel implements TableModel {
      */
     public IVideoEntry getEntry(int row) {
         return entries.get(row);
-    }
-
-    @Override
-    public void addTableModelListener(TableModelListener listener) {
-        listeners.add(listener);
     }
 
     @Override
@@ -126,27 +116,4 @@ public class YoutubeResultTableModel implements TableModel {
     public boolean isCellEditable(int arg0, int arg1) {
         return true;
     }
-
-    @Override
-    public void removeTableModelListener(TableModelListener listener) {
-        listeners.remove(listener);
-    }
-
-    @Override
-    public void setValueAt(Object arg0, int arg1, int arg2) {
-        // Nothing to do
-    }
-
-    /**
-     * Fires a refresh by calling all table model listeners
-     */
-    private void refresh() {
-        TableModelEvent event;
-        event = new TableModelEvent(this, -1, -1, TableModelEvent.ALL_COLUMNS, TableModelEvent.UPDATE);
-
-        for (int i = 0; i < listeners.size(); i++) {
-            listeners.get(i).tableChanged(event);
-        }
-    }
-
 }

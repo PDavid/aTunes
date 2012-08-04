@@ -33,9 +33,9 @@
 		<property name="i18nKey" value="ADD_10_ARTISTS_MOST_PLAYED"/>
 	</bean>
 
-	<bean class="net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction"/>
+	<bean id="addBannedSongInLastFMAction" class="net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.AddFavoriteRadioAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction"/>
+	<bean id="addLovedSongInLastFMAction" class="net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction"/>
 	<bean id="addPodcastFeedAction" class="net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction"/>
 	<bean id="addRadioAction" class="net.sourceforge.atunes.kernel.actions.AddRadioAction"/>
 
