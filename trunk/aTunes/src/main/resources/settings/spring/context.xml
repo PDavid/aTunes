@@ -7,6 +7,7 @@
 
 	<bean id="contextInformationTableFactory" class="net.sourceforge.atunes.kernel.modules.context.ContextInformationTableFactory"/>
 	<bean id="contextTableURLOpener" class="net.sourceforge.atunes.kernel.modules.context.ContextTableURLOpener"/>
+	<bean id="createPlaylistWithPopularTracksActionListener" class="net.sourceforge.atunes.kernel.modules.context.artist.CreatePlaylistWithPopularTracksActionListener"/>
 
 
 	<!-- CONTEXT PANELS -->
