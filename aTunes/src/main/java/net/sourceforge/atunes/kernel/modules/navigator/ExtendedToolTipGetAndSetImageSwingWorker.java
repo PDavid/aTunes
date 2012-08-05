@@ -25,7 +25,6 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
@@ -40,7 +39,16 @@ public final class ExtendedToolTipGetAndSetImageSwingWorker extends SwingWorker<
     
     private NavigationController navigationController;
     
+    private IWebServicesHandler webServicesHandler;
+    
 	private Object currentObject;
+	
+	/**
+	 * @param webServicesHandler
+	 */
+	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
 
 	/**
 	 * @param currentObject
@@ -69,7 +77,7 @@ public final class ExtendedToolTipGetAndSetImageSwingWorker extends SwingWorker<
         if (currentObject instanceof ITreeObject) {
         	if (currentObject instanceof IArtist) {
         		IArtist a = (IArtist) currentObject;
-                return Context.getBean(IWebServicesHandler.class).getArtistImage(a.getName());
+                return webServicesHandler.getArtistImage(a.getName());
         	} else if (currentObject instanceof IAlbum) {
         		return audioObjectImageLocator.getImage((IAlbum)currentObject, ImageSize.SIZE_MAX);
         	}
