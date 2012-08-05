@@ -123,4 +123,9 @@ public class ArtistAlbumListImagesDataSource implements IContextInformationSourc
     public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
+    
+    @Override
+    public void cancel() {
+    }
+
 }

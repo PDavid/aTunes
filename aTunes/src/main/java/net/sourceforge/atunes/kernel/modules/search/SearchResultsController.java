@@ -43,6 +43,7 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
+import net.sourceforge.atunes.model.ITaskService;
 
 /**
  * Controller for the search result dialog.
@@ -61,20 +62,24 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
     
     private IAudioObjectComparator audioObjectComparator;
     
+    private ITaskService taskService;
+    
     /**
      * @param dialog
      * @param playListHandler
      * @param lookAndFeelManager
      * @param playerHandler
      * @param audioObjectComparator
+     * @param taskService
      */
-    SearchResultsController(SearchResultsDialog dialog, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IAudioObjectComparator audioObjectComparator) {
+    SearchResultsController(SearchResultsDialog dialog, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IAudioObjectComparator audioObjectComparator, ITaskService taskService) {
         super(dialog);
         this.columnSet = (IColumnSet) Context.getBean("searchResultsColumnSet");
         this.playListHandler = playListHandler;
         this.lookAndFeelManager = lookAndFeelManager;
         this.playerHandler = playerHandler;
         this.audioObjectComparator = audioObjectComparator;
+        this.taskService = taskService;
         addBindings();
     }
 
@@ -110,7 +115,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
         tableModel.setColumnSet(columnSet);
         table.setModel(tableModel);
 
-        SearchResultColumnModel columnModel = new SearchResultColumnModel(table, columnSet, lookAndFeelManager.getCurrentLookAndFeel());
+        SearchResultColumnModel columnModel = new SearchResultColumnModel(table, columnSet, lookAndFeelManager.getCurrentLookAndFeel(), taskService);
         table.setColumnModel(columnModel);
 
         // Set sorter

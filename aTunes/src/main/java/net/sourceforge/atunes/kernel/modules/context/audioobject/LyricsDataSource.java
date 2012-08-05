@@ -24,6 +24,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.ILyrics;
+import net.sourceforge.atunes.model.ILyricsRetrieveOperation;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -39,6 +40,8 @@ public class LyricsDataSource implements IContextInformationSource {
     private ILyrics lyrics;
     
     private IAudioObject audioObject;
+    
+    private ILyricsRetrieveOperation lyricsRetrieveOperation;
     
 	@Override
     public void getData(IAudioObject audioObject) {
@@ -75,7 +78,8 @@ public class LyricsDataSource implements IContextInformationSource {
         // Query internet service for lyrics
         else {
             if (!audioObject.getTitle().trim().isEmpty() && !audioObject.getArtist().trim().isEmpty() && !audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
-                lyricsData = lyricsService.getLyrics(audioObject.getArtist().trim(), audioObject.getTitle().trim());
+            	lyricsRetrieveOperation = lyricsService.getLyricsRetrieveOperation(audioObject.getArtist().trim(), audioObject.getTitle().trim());
+                lyricsData = lyricsRetrieveOperation.getLyrics();
             }
         }
 
@@ -92,4 +96,11 @@ public class LyricsDataSource implements IContextInformationSource {
     public void setLyricsService(ILyricsService lyricsService) {
 		this.lyricsService = lyricsService;
 	}
+    
+    @Override
+    public void cancel() {
+    	if (lyricsRetrieveOperation != null) {
+    		lyricsRetrieveOperation.cancelRetrieve();
+    	}
+    }
 }

@@ -108,7 +108,5 @@ public interface INetworkHandler extends IHandler {
 	 * @throws IOException
 	 *             If an IO exception occurs
 	 */
-	public String readURL(URLConnection connection, String charset)
-			throws IOException;
-
+	public String readURL(URLConnection connection, String charset) throws IOException;
 }

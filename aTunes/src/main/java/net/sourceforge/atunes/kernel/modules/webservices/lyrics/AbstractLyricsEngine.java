@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.net.URLConnection;
 
 import net.sourceforge.atunes.model.ILyrics;
+import net.sourceforge.atunes.model.ILyricsRetrieveOperation;
 import net.sourceforge.atunes.model.INetworkHandler;
 
 /**
@@ -54,17 +55,14 @@ public abstract class AbstractLyricsEngine {
 
     /**
      * Gets the connection.
-     * 
      * @param url
-     *            the url
-     * 
-     * @return the connection
-     * 
+     * @param operation
+     * @return
      * @throws IOException
-     *             Signals that an I/O exception has occurred.
      */
-    protected final URLConnection getConnection(String url) throws IOException {
-        return networkHandler.getConnection(url);
+    protected final URLConnection getConnection(String url, ILyricsRetrieveOperation operation) throws IOException {
+        URLConnection connection = networkHandler.getConnection(url);
+        return connection;
     }
 
     /**
@@ -86,15 +84,12 @@ public abstract class AbstractLyricsEngine {
 
     /**
      * Gets the lyrics for.
-     * 
      * @param artist
-     *            the artist
      * @param title
-     *            the title
-     * 
-     * @return the lyrics for
+     * @param operation
+     * @return
      */
-    public abstract ILyrics getLyricsFor(String artist, String title);
+    public abstract ILyrics getLyricsFor(String artist, String title, ILyricsRetrieveOperation operation);
 
     /**
      * Returns the name of this lyrics provider

@@ -46,7 +46,15 @@ public interface ILyricsService {
 	 * @return the lyrics
 	 */
 	public ILyrics getLyrics(String artist, String song);
-
+	
+	/**
+	 * Returns a lyrics retrieve operation to get lyrics
+	 * @param artist
+	 * @param song
+	 * @return
+	 */
+	public ILyricsRetrieveOperation getLyricsRetrieveOperation(String artist, String song);
+	
 	/**
 	 * Returns a map with lyric provider names and urls for adding new lyrics
 	 * for the specified title and artist
@@ -57,8 +65,7 @@ public interface ILyricsService {
 	 *            the title
 	 * @return a map with lyric provider names and urls for adding new lyrics
 	 */
-	public Map<String, String> getUrlsForAddingNewLyrics(String artist,
-			String title);
+	public Map<String, String> getUrlsForAddingNewLyrics(String artist, String title);
 
 	/**
 	 * Delegate method to clear cache

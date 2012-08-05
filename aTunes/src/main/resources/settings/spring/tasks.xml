@@ -9,6 +9,11 @@
 		<property name="poolSize" value="2"/>
 		<property name="threadSuffix" value="TaskService-"/>
 	</bean>
+
+	<bean id="contextTaskService" class="net.sourceforge.atunes.kernel.TaskService">
+		<property name="poolSize" value="2"/>
+		<property name="threadSuffix" value="ContextTaskService-"/>
+	</bean>
 	
 	<bean id="backgroundWorkerFactory" class="net.sourceforge.atunes.gui.SwingBackgroundWorkerFactory"/>
 

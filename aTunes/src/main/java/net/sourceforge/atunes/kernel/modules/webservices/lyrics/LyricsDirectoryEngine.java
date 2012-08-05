@@ -27,6 +27,7 @@ import java.util.List;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
 import net.sourceforge.atunes.model.ILyrics;
+import net.sourceforge.atunes.model.ILyricsRetrieveOperation;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -40,7 +41,7 @@ public class LyricsDirectoryEngine extends AbstractLyricsEngine {
     private static final String CHARSET = "UTF-8";
 
     @Override
-    public ILyrics getLyricsFor(String artist, String title) {
+    public ILyrics getLyricsFor(String artist, String title, ILyricsRetrieveOperation operation) {
         StringBuilder sb = new StringBuilder();
         sb.append(BASE_URL);
         sb.append(encodeString(getString(artist, title)));
@@ -48,7 +49,7 @@ public class LyricsDirectoryEngine extends AbstractLyricsEngine {
         sb.append(".html");
 
         try {
-            String html = readURL(getConnection(sb.toString()), CHARSET);
+            String html = readURL(getConnection(sb.toString(), operation), CHARSET);
 
             String lyrics = null;
             Source source = new Source(html);

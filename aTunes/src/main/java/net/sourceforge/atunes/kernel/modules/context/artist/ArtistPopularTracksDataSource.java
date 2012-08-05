@@ -72,4 +72,9 @@ public class ArtistPopularTracksDataSource implements IContextInformationSource 
     public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
+    
+    @Override
+    public void cancel() {
+    }
+
 }

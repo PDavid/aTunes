@@ -50,6 +50,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.PlayState;
 
 /**
@@ -72,6 +73,15 @@ public final class PlayListTable extends JTable implements IPlayListTable {
     private ILookAndFeelManager lookAndFeelManager;
     
     private AbstractColumnSetTableModel playListTableModel;
+    
+    private ITaskService taskService;
+    
+    /**
+     * @param taskService
+     */
+    public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
     
     /**
      * @param playListTableModel
@@ -113,7 +123,7 @@ public final class PlayListTable extends JTable implements IPlayListTable {
         setModel(playListTableModel);
 
         // Set column model
-        PlayListColumnModel columnModel = new PlayListColumnModel(this, playListHandler, lookAndFeelManager.getCurrentLookAndFeel());
+        PlayListColumnModel columnModel = new PlayListColumnModel(this, playListHandler, lookAndFeelManager.getCurrentLookAndFeel(), taskService);
         setColumnModel(columnModel);
 
         // Set sorter

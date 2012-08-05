@@ -20,27 +20,22 @@
 
 package net.sourceforge.atunes.model;
 
-import org.commonjukebox.plugins.model.PluginApi;
 
 /**
- * This interface must be implemented by classes responsible of retrieve data
- * used by a context panel
- * 
+ * An operation to retrieve lyrics, can be canceled
  * @author alex
- * 
+ *
  */
-@PluginApi
-public interface IContextInformationSource {
+public interface ILyricsRetrieveOperation {
 
-    /**
-     * This method must retrieve and store in object all information needed for given audio object
-     * @param audioObject
-     */
-    public void getData(IAudioObject audioObject);
-    
-    /**
-     * Cancels data source retrieve
-     */
-    public void cancel();
-    
+	/**
+	 * Public method to retrieve lyrics
+	 * @return the lyrics
+	 */
+	public ILyrics getLyrics();
+
+	/**
+	 * Cancels retrieve operation
+	 */
+	public void cancelRetrieve();
 }

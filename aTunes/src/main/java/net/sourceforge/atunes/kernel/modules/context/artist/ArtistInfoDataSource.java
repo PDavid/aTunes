@@ -187,4 +187,8 @@ public class ArtistInfoDataSource implements IContextInformationSource {
 		this.webServicesHandler = webServicesHandler;
 	}
 
+    @Override
+    public void cancel() {
+    }
+
 }

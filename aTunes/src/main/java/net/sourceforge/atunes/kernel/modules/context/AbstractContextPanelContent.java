@@ -78,13 +78,13 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
     /**
      * Task Service
      */
-    private ITaskService taskService;
+    private ITaskService contextTaskService;
 
     /**
-     * @param taskService
+     * @param contextTaskService
      */
-    public void setTaskService(ITaskService taskService) {
-		this.taskService = taskService;
+    public void setContextTaskService(ITaskService contextTaskService) {
+		this.contextTaskService = contextTaskService;
 	}
     
     /* (non-Javadoc)
@@ -101,11 +101,9 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
      * @param audioObject
      */
     private void callDataSource(IAudioObject audioObject) {
-    	cancelWorker();
-
         // Create a new worker and call it
         worker = new ContextInformationSwingWorker(this, this.dataSource, audioObject);
-        future = taskService.submitNow(this.getClass().getName(), worker);
+        future = contextTaskService.submitNow(this.getClass().getName(), worker);
     }
 
     /* (non-Javadoc)
@@ -123,7 +121,7 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
     		future.cancel(true);
     	}
         if (worker != null) {
-            worker.cancel(true);
+            worker.cancel();
         }
     }
 

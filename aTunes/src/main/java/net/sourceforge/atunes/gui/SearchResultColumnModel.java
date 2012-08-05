@@ -23,7 +23,6 @@ package net.sourceforge.atunes.gui;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ITaskService;
@@ -34,13 +33,13 @@ public class SearchResultColumnModel extends AbstractCommonColumnModel {
 
     /**
      * Instantiates a new play list column model.
-     * 
      * @param table
      * @param columnSet
-     * @param lookAndFeel 
+     * @param lookAndFeel
+     * @param taskService
      */
-    public SearchResultColumnModel(JTable table, IColumnSet columnSet, ILookAndFeel lookAndFeel) {
-        super(table, columnSet, Context.getBean(ITaskService.class), lookAndFeel);
+    public SearchResultColumnModel(JTable table, IColumnSet columnSet, ILookAndFeel lookAndFeel, ITaskService taskService) {
+        super(table, columnSet, taskService, lookAndFeel);
         enableColumnChange(true);
     }
 

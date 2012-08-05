@@ -37,12 +37,13 @@ public final class AlbumTableColumnModel extends AbstractCommonColumnModel {
 
 	private static final long serialVersionUID = 8480107980198328642L;
 
-
 	/**
 	 * @param table
+	 * @param lookAndFeel
+	 * @param taskService
 	 */
-	public AlbumTableColumnModel(JTable table, ILookAndFeel lookAndFeel) {
-        super(table, (IColumnSet) Context.getBean("albumColumnSet"), Context.getBean(ITaskService.class), lookAndFeel);
+	public AlbumTableColumnModel(JTable table, ILookAndFeel lookAndFeel, ITaskService taskService) {
+        super(table, (IColumnSet) Context.getBean("albumColumnSet"), taskService, lookAndFeel);
         enableColumnChange(true);
     }
 
