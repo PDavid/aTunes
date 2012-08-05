@@ -40,6 +40,7 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -56,7 +57,9 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
 	private IAlbum album;
 	
 	private IColumnSet albumColumnSet;
-
+	
+	private ITaskService taskService;
+	
     /**
      * Instantiates a new  dialog.
      * @param frame
@@ -65,6 +68,13 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
         super(frame, 600, 500);
     }
 
+    /**
+     * @param taskService
+     */
+    public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
+    
     @Override
     public void initialize() {
         setResizable(false);
@@ -98,7 +108,7 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
         albumTable.setModel(model);
         
         // Set column model
-        AlbumTableColumnModel columnModel = new AlbumTableColumnModel(albumTable, getLookAndFeel());
+        AlbumTableColumnModel columnModel = new AlbumTableColumnModel(albumTable, getLookAndFeel(), taskService);
         albumTable.setColumnModel(columnModel);
         
         // why ??? don't work without

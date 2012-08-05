@@ -29,6 +29,7 @@ import java.util.Map;
 
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
+import net.sourceforge.atunes.model.ILyricsRetrieveOperation;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IOSManager;
@@ -36,6 +37,11 @@ import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Service to retrieve lyrics
+ * @author alex
+ *
+ */
 public final class LyricsService implements ILyricsService {
 
     private List<LyricsEngineInfo> defaultLyricsEngines;
@@ -78,7 +84,7 @@ public final class LyricsService implements ILyricsService {
         this.lyricsEngines = loadEngines();
     }
     
-    private LyricsCache getLyricsCache() {
+    protected LyricsCache getLyricsCache() {
     	if (lyricsCache == null) {
     		Logger.debug("Initializing LyricsCache");
     		lyricsCache = new LyricsCache(osManager);
@@ -88,58 +94,19 @@ public final class LyricsService implements ILyricsService {
 
     @Override
 	public ILyrics getLyrics(String artist, String song) {
-        // Try to get from cache
-        ILyrics lyric = getLyricsCache().retrieveLyric(artist, song);
-        
-        // Discard stored lyrics containing HTML
-        if (lyric != null && lyric.getLyrics().contains("<") && lyric.getLyrics().contains(">")) {
-        	Logger.debug("Discarding lyrics. Seems to contain some HTML code: ");
-        	Logger.debug(lyric.getLyrics());
-        	lyric = null;
-        }
-        
-        if (lyric == null) {
-            // If any engine is loaded
-            if (lyricsEngines != null) {
-                // Ask for lyrics until a lyric is found in some engine
-                int i = 0;
-                while (i < lyricsEngines.size() && (lyric == null || lyric.getLyrics().trim().isEmpty())) {
-                    lyric = lyricsEngines.get(i).getLyricsFor(artist, song);
-                    if (lyric == null) {
-                    	Logger.info(StringUtils.getString("Lyrics for: ", artist, "/", song, " not found with engine: ", lyricsEngines.get(i).getLyricsProviderName()));
-                    } else {
-                    	Logger.debug("Engine: ", lyricsEngines.get(i).getLyricsProviderName(), " returned lyrics for: ", artist, "/", song);
-                    }
-                    
-                    i++;
-                }
-            }
-            
-            fixLyrics(lyric);
-            
-            getLyricsCache().storeLyric(artist, song, lyric);
-        }
-        // Return lyric
-        return lyric;
+    	return getLyricsRetrieveOperation(artist, song).getLyrics();
     }
     
-    
-    
-    /**
-     * Applies several common string manipulation to improve lyrics
-     * @param lyrics
-     */
-    private void fixLyrics(ILyrics lyrics) {
-        if (lyrics != null) {
-        	String lyricsString = lyrics.getLyrics()
-            						.replaceAll("'", "\'")
-            						.replaceAll("\n\n", "\n") // Remove duplicate \n            	
-            						.replaceAll("<.*>", "")   // Remove HTML
-            						.trim();
-            lyrics.setLyrics(lyricsString);
-        }
+    @Override
+    public ILyricsRetrieveOperation getLyricsRetrieveOperation(String artist, String song) {
+    	LyricsRetrieveOperation operation = new LyricsRetrieveOperation();
+    	operation.setArtist(artist);
+    	operation.setSong(song);
+    	operation.setLyricsCache(getLyricsCache());
+    	operation.setLyricsEngines(lyricsEngines);
+    	return operation;
     }
-
+    
     @Override
 	public Map<String, String> getUrlsForAddingNewLyrics(String artist, String title) {
         Map<String, String> result = new HashMap<String, String>();

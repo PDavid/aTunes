@@ -80,7 +80,6 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
-    
     @Override
     public void getData(IAudioObject audioObject) {
     	this.audioObject = audioObject;
@@ -320,4 +319,9 @@ public class AlbumInfoDataSource implements IContextInformationSource {
     public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
 		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
+    
+    @Override
+    public void cancel() {
+    }
+
 }

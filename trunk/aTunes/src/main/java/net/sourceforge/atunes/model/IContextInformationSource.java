@@ -38,4 +38,9 @@ public interface IContextInformationSource {
      */
     public void getData(IAudioObject audioObject);
     
+    /**
+     * Cancels data source retrieve
+     */
+    public void cancel();
+    
 }

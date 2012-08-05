@@ -31,6 +31,7 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import net.sourceforge.atunes.model.ILyrics;
+import net.sourceforge.atunes.model.ILyricsRetrieveOperation;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -63,16 +64,16 @@ public class WinampcnEngine extends AbstractLyricsEngine {
     private static final String LYRC_URL = "http://www.winampcn.com/lyrictransfer/lrc.aspx?id=%1&ti=%2";
 
     @Override
-    public ILyrics getLyricsFor(String artist, String title) {
+    public ILyrics getLyricsFor(String artist, String title, ILyricsRetrieveOperation operation) {
         String url = getUrl(artist, title);
         try {
-            String xml = readURL(getConnection(url), "gbk");
+            String xml = readURL(getConnection(url, operation), "gbk");
             String lyrcUrl = getMostPopularLyrcUrl(xml);
             if (lyrcUrl == null) {
                 return null;
             }                
 
-            String lyrics = readURL(getConnection(lyrcUrl), "gbk");
+            String lyrics = readURL(getConnection(lyrcUrl, operation), "gbk");
             lyrics = lyrics.replaceAll("\\[.+\\]", "");
             return lyrics == null || lyrics.isEmpty() ? null : new Lyrics(lyrics, lyrcUrl);
         } catch (IOException e) {

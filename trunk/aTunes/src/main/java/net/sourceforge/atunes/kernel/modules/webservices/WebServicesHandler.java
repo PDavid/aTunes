@@ -39,6 +39,11 @@ import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
+/**
+ * Responsible of interact with web services (last.fm, lyrics, etc)
+ * @author alex
+ *
+ */
 public class WebServicesHandler extends AbstractHandler implements IWebServicesHandler {
 
 	private LastFmService lastFmService;
@@ -47,14 +52,23 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	
 	private ITaskService taskService;
 	
+	/**
+	 * @param lastFmService
+	 */
 	public final void setLastFmService(LastFmService lastFmService) {
 		this.lastFmService = lastFmService;
 	}
 	
+	/**
+	 * @param lyricsService
+	 */
 	public final void setLyricsService(ILyricsService lyricsService) {
 		this.lyricsService = lyricsService;
 	}
 	
+	/**
+	 * @param taskService
+	 */
 	public void setTaskService(ITaskService taskService) {
 		this.taskService = taskService;
 	}

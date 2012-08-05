@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import net.sourceforge.atunes.model.ILyrics;
+import net.sourceforge.atunes.model.ILyricsRetrieveOperation;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -60,13 +61,13 @@ public class LyrcEngine extends AbstractLyricsEngine {
 		return t.matches("[A-Za-z]+");
 	}
 
-	private String getLyrics(String url, String artist, String title) {
+	private String getLyrics(String url, String artist, String title, ILyricsRetrieveOperation operation) {
 		try {
 			// read html return
-			String html = readURL(getConnection(url), "ISO-8859-1");
+			String html = readURL(getConnection(url, operation), "ISO-8859-1");
 
 			if (html.contains("Suggestions : <br>")) { // More than one possibility, find the best one
-				return getSuggestionsAndSelectOne(artist, title, html);
+				return getSuggestionsAndSelectOne(artist, title, html, operation);
 			} else {
 				return removeHtmlAndReturnLyrics(html);
 			}
@@ -113,9 +114,10 @@ public class LyrcEngine extends AbstractLyricsEngine {
 	 * @param artist
 	 * @param title
 	 * @param html
+	 * @param operation
 	 * @return
 	 */
-	private String getSuggestionsAndSelectOne(String artist, String title, String html) {
+	private String getSuggestionsAndSelectOne(String artist, String title, String html, ILyricsRetrieveOperation operation) {
 		String htmlProcessed = html.substring(html.indexOf("Suggestions : <br>"));
 		htmlProcessed = htmlProcessed.substring(0, htmlProcessed.indexOf("<br><br"));
 
@@ -127,16 +129,16 @@ public class LyrcEngine extends AbstractLyricsEngine {
 		List<String> tokensToFind = getArtistAndTitleTokens(artist, title);
 
 		// Now find at map, a string that contains all artist and song tokens. This will be the selected lyric
-		return selectFromSuggestions(suggestions, tokensToFind, artist, title);
+		return selectFromSuggestions(suggestions, tokensToFind, artist, title, operation);
 	}
 
-	private String selectFromSuggestions(Map<String, String> suggestions, List<String> tokensToFind, String artist, String title) {
+	private String selectFromSuggestions(Map<String, String> suggestions, List<String> tokensToFind, String artist, String title, ILyricsRetrieveOperation operation) {
 		for (Map.Entry<String, String> suggestion : suggestions.entrySet()) {
 			boolean matches = checkSuggestion(tokensToFind, suggestion);
 			if (matches) {
 				// We have found it, build url and call again
 				String auxUrl = SUGGESTIONS_URL.concat(suggestion.getValue());
-				return getLyrics(auxUrl, artist, title);
+				return getLyrics(auxUrl, artist, title, operation);
 			}
 		}
 		// If we reach this code, no suggestion was found, so return null
@@ -206,11 +208,11 @@ public class LyrcEngine extends AbstractLyricsEngine {
 	}
 
 	@Override
-	public ILyrics getLyricsFor(String artist, String title) {
+	public ILyrics getLyricsFor(String artist, String title, ILyricsRetrieveOperation operation) {
 		// Build url
 		String urlString = BASE_URL.replace(ARTIST_WILDCARD, encodeString(artist)).replace(SONG_WILDCARD, encodeString(title));
 		// Call method to find lyrics
-		String lyrics = getLyrics(urlString, artist, title);
+		String lyrics = getLyrics(urlString, artist, title, operation);
 		return lyrics != null ? new Lyrics(lyrics, urlString) : null;
 	}
 

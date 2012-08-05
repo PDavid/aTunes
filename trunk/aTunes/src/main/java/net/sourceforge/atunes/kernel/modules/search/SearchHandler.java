@@ -45,6 +45,7 @@ import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchResult;
 import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IStateCore;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.SearchIndexNotAvailableException;
 import net.sourceforge.atunes.model.SearchQuerySyntaxException;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -103,6 +104,15 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
 	
 	private IStateCore stateCore;
 	
+	private ITaskService taskService;
+	
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
+	
 	/**
 	 * @param dialogFactory
 	 */
@@ -143,7 +153,7 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
      */
     private SearchResultsController getSearchResultsController() {
         if (searchResultsController == null) {
-            searchResultsController = new SearchResultsController(dialogFactory.newDialog(SearchResultsDialog.class), getBean(IPlayListHandler.class), getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class), audioObjectComparator);
+            searchResultsController = new SearchResultsController(dialogFactory.newDialog(SearchResultsDialog.class), getBean(IPlayListHandler.class), getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class), audioObjectComparator, taskService);
         }
         return searchResultsController;
     }

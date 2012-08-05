@@ -202,4 +202,9 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
     public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
+    
+    @Override
+    public void cancel() {
+    }
+
 }

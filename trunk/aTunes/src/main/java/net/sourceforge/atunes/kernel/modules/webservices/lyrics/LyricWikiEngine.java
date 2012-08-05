@@ -27,6 +27,7 @@ import java.util.List;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
 import net.sourceforge.atunes.model.ILyrics;
+import net.sourceforge.atunes.model.ILyricsRetrieveOperation;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -94,10 +95,10 @@ public class LyricWikiEngine extends AbstractLyricsEngine {
     }
 
     @Override
-    public ILyrics getLyricsFor(String artist, String title) {
+    public ILyrics getLyricsFor(String artist, String title, ILyricsRetrieveOperation operation) {
         try {
             String url = getURL(artist, title);
-            String html = readURL(getConnection(url), RESPONSE_ENCODING);
+            String html = readURL(getConnection(url, operation), RESPONSE_ENCODING);
             String lyrics = extractLyrics(html);
             
             lyrics = reviewLyrics(lyrics);

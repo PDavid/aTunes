@@ -27,6 +27,7 @@ import java.util.UUID;
 import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricWikiEngine;
 import net.sourceforge.atunes.model.ILyrics;
+import net.sourceforge.atunes.model.ILyricsRetrieveOperation;
 import net.sourceforge.atunes.model.IStateCore;
 
 import org.junit.Assert;
@@ -47,7 +48,7 @@ public class LyricWikiEngineTest {
 
     @Test
     public void testGetLyricsFor() {
-        ILyrics lyrics = testedObject.getLyricsFor("Louis Armstrong", "We Have All The Time In The World");
+        ILyrics lyrics = testedObject.getLyricsFor("Louis Armstrong", "We Have All The Time In The World", mock(ILyricsRetrieveOperation.class));
         Assert.assertNotNull(lyrics);
         Assert.assertTrue(lyrics.getUrl().contains("lyrics.wikia.com"));
         Assert.assertTrue(lyrics.getLyrics().toLowerCase().contains("Time enough for life to unfold".toLowerCase()));
@@ -55,9 +56,9 @@ public class LyricWikiEngineTest {
 
     @Test
     public void testCaseInsensitivity() {
-        ILyrics lyrics1 = testedObject.getLyricsFor("Louis Armstrong", "We Have All The Time In The World");
-        ILyrics lyrics2 = testedObject.getLyricsFor("Louis armstrong", "We Have All The Time In The World");
-        ILyrics lyrics3 = testedObject.getLyricsFor("Louis Armstrong", "We Have All the Time In the world");
+        ILyrics lyrics1 = testedObject.getLyricsFor("Louis Armstrong", "We Have All The Time In The World", mock(ILyricsRetrieveOperation.class));
+        ILyrics lyrics2 = testedObject.getLyricsFor("Louis armstrong", "We Have All The Time In The World", mock(ILyricsRetrieveOperation.class));
+        ILyrics lyrics3 = testedObject.getLyricsFor("Louis Armstrong", "We Have All the Time In the world", mock(ILyricsRetrieveOperation.class));
 
         Assert.assertEquals(lyrics1, lyrics2);
         Assert.assertEquals(lyrics2, lyrics3);
@@ -66,7 +67,7 @@ public class LyricWikiEngineTest {
 
     @Test
     public void testGetLyricsForWhereArtistAndTitleNotExist() {
-        ILyrics lyrics = testedObject.getLyricsFor(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        ILyrics lyrics = testedObject.getLyricsFor(UUID.randomUUID().toString(), UUID.randomUUID().toString(), mock(ILyricsRetrieveOperation.class));
         Assert.assertEquals(null, lyrics);
     }
 }

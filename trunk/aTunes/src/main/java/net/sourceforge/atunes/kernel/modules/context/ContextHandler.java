@@ -81,6 +81,18 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     private IStatePlaylist statePlaylist;
     
     /**
+     * Task Service
+     */
+    private ITaskService contextTaskService;
+    
+    /**
+     * @param contextTaskService
+     */
+    public void setContextTaskService(ITaskService contextTaskService) {
+		this.contextTaskService = contextTaskService;
+	}
+
+    /**
      * @param statePlaylist
      */
     public void setStatePlaylist(IStatePlaylist statePlaylist) {
@@ -382,5 +394,10 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 				webServicesHandler.consolidateWebContent();
 			}
 		});
+	}
+	
+	@Override
+	public void applicationFinish() {
+		contextTaskService.shutdownService();
 	}
 }

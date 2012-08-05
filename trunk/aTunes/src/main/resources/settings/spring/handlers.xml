@@ -36,6 +36,9 @@
 	<bean id="notificationsHandler" class="net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler"/>
 	<bean id="filterHandler" class="net.sourceforge.atunes.kernel.modules.filter.FilterHandler"/>
 	<bean id="pluginsHandler" class="net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler"/>
-	<bean id="networkHandler" class="net.sourceforge.atunes.kernel.modules.network.NetworkHandler"/>
+	<bean id="networkHandler" class="net.sourceforge.atunes.kernel.modules.network.NetworkHandler">
+		<property name="connectTimeoutInSeconds" value="5"/>
+		<property name="readTimeoutInSeconds" value="10"/>
+	</bean>
 	<bean id="advancedPlayingModeHandler" class="net.sourceforge.atunes.kernel.modules.player.AdvancedPlayingModeHandler" />
 </beans>

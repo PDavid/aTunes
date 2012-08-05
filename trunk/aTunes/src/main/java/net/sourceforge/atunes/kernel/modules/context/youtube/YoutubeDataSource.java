@@ -65,4 +65,9 @@ public class YoutubeDataSource implements IContextInformationSource {
     public void setYoutubeService(YoutubeService youtubeService) {
 		this.youtubeService = youtubeService;
 	}
+    
+    @Override
+    public void cancel() {
+    }
+
 }

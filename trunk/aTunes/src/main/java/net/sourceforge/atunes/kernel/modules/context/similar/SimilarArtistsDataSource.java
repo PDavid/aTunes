@@ -119,4 +119,9 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
+    
+    @Override
+    public void cancel() {
+    }
+
 }

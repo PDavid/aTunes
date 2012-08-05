@@ -26,6 +26,7 @@ import java.io.StringReader;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.ILyrics;
+import net.sourceforge.atunes.model.ILyricsRetrieveOperation;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -49,18 +50,18 @@ public class LyrDBEngine extends AbstractLyricsEngine {
     private static final String LYRIC_URL = StringUtils.getString("http://www.lyrdb.com/getlyr.php?q=", LYRICS_ID_WILDCARD);
     
 	@Override
-	public ILyrics getLyricsFor(String artist, String title) {
+	public ILyrics getLyricsFor(String artist, String title, ILyricsRetrieveOperation operation) {
 		ILyrics lyrics = null;
 		try { 
 			// Build url and search
 			String urlString = SEARCH_URL.replace(QUERY_WILDCARD, StringUtils.getString(encodeString(artist), "|", encodeString(title))); // "|" can't be encoded
-			String searchResult = readURL(getConnection(urlString), "UTF-8");
+			String searchResult = readURL(getConnection(urlString, operation), "UTF-8");
 
 			// Parse result
 			BufferedReader br = new BufferedReader(new StringReader(searchResult));
 			String line = br.readLine();
 			while (line != null && lyrics == null) {
-				lyrics = retrieveSearchResult(line);
+				lyrics = retrieveSearchResult(line, operation);
 				line = br.readLine();
 			}
 			br.close();
@@ -74,16 +75,17 @@ public class LyrDBEngine extends AbstractLyricsEngine {
 	/**
 	 * Retrieves lyric for a search result
 	 * @param searchResult
+	 * @param operation
 	 * @return
 	 * @throws IOException
 	 */
-	private ILyrics retrieveSearchResult(String searchResult) throws IOException {
+	private ILyrics retrieveSearchResult(String searchResult, ILyricsRetrieveOperation operation) throws IOException {
 		int firstSlash = searchResult.indexOf('\\');
 		if (firstSlash != -1) {
 			String id = searchResult.substring(0, firstSlash);
 			// Build url for ID
 			String urlString = LYRIC_URL.replace(LYRICS_ID_WILDCARD, id);
-			String lyric = readURL(getConnection(urlString), "UTF-8");
+			String lyric = readURL(getConnection(urlString, operation), "UTF-8");
 			if (lyric != null) {	
 				// Remove carriage return
 				lyric = lyric.replace("\r\r", "");

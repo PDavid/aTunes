@@ -86,4 +86,12 @@ class ContextInformationSwingWorker extends SwingWorker<Void, Void> {
             Logger.error(e);
         }
     }
+    
+    /**
+     * Cancels data retrieve
+     */
+    void cancel() {
+    	cancel(true);
+    	dataSource.cancel();
+    }
 }

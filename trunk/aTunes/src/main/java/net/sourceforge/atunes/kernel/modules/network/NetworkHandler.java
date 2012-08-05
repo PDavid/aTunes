@@ -52,6 +52,24 @@ public class NetworkHandler extends AbstractHandler implements INetworkHandler {
 
 	private IStateCore stateCore;
 	
+	private int connectTimeoutInSeconds;
+	
+	private int readTimeoutInSeconds;
+	
+	/**
+	 * @param connectTimeoutInSeconds
+	 */
+	public void setConnectTimeoutInSeconds(int connectTimeoutInSeconds) {
+		this.connectTimeoutInSeconds = connectTimeoutInSeconds;
+	}
+	
+	/**
+	 * @param readTimeoutInSeconds
+	 */
+	public void setReadTimeoutInSeconds(int readTimeoutInSeconds) {
+		this.readTimeoutInSeconds = readTimeoutInSeconds;
+	}
+	
 	/**
 	 * @param stateCore
 	 */
@@ -125,8 +143,8 @@ public class NetworkHandler extends AbstractHandler implements INetworkHandler {
             connection = url.openConnection(proxy);
         }
         connection.setRequestProperty("User-agent", "");
-        connection.setConnectTimeout(60000);
-        connection.setReadTimeout(60000);
+        connection.setConnectTimeout(connectTimeoutInSeconds * 1000);
+        connection.setReadTimeout(readTimeoutInSeconds * 1000);
         return connection;
     }
 
@@ -178,7 +196,8 @@ public class NetworkHandler extends AbstractHandler implements INetworkHandler {
     public String readURL(URLConnection connection, int bytes) throws IOException {
         BufferedInputStream bis = null;
         try {
-        	bis = new BufferedInputStream(connection.getInputStream());
+        	InputStream input = connection.getInputStream();
+        	bis = new BufferedInputStream(input);
         	byte[] array = new byte[bytes];
         	int read = bis.read(array);
         	return read != -1 ? new String(array) : null;
