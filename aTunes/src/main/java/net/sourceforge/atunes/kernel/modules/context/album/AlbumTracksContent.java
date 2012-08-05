@@ -21,15 +21,12 @@
 package net.sourceforge.atunes.kernel.modules.context.album;
 
 import java.awt.Component;
-import java.awt.Dimension;
 
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationTableFactory;
 import net.sourceforge.atunes.kernel.modules.context.ITracksTableListener;
-import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -43,8 +40,6 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
     private static final long serialVersionUID = -5538266144953409867L;
 
     private JTable tracksTable;
-    
-    private JScrollPane scrollPane;
     
     private ContextInformationTableFactory contextInformationTableFactory;
     
@@ -72,14 +67,12 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
     @Override
     public void updateContentFromDataSource(AlbumInfoDataSource source) {
    		((ContextTracksTableModel)tracksTable.getModel()).setAlbum(source.getAlbumInfo());
-   		scrollPane.setVisible(source.getAlbumInfo() != null && !CollectionUtils.isEmpty(source.getAlbumInfo().getTracks()));
     }
     
     @Override
     public void clearContextPanelContent() {
         super.clearContextPanelContent();
    		((ContextTracksTableModel)tracksTable.getModel()).setAlbum(null);
-        scrollPane.setVisible(false);
     }
 
     @Override
@@ -87,9 +80,6 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
         // Create components
     	tracksTable = contextInformationTableFactory.getNewTracksTable(contextTableURLOpener);
         tracksTable.setModel(new ContextTracksTableModel());
-    	scrollPane = getLookAndFeelManager().getCurrentLookAndFeel().getTableScrollPane(tracksTable);
-        scrollPane.setVisible(false);
-    	scrollPane.setPreferredSize(new Dimension(100, 250));
-    	return scrollPane;
+        return tracksTable;
     }
 }

@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ import javax.swing.JTable;
 import javax.swing.JTree;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.gui.views.controls.FadeInPanel;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IContextHandler;
@@ -143,7 +145,6 @@ public abstract class AbstractContextPanel implements IContextPanel {
 			c.anchor = GridBagConstraints.NORTH;
 			panel.add(new JPanel(), c);
 
-
 			JScrollPane scrollPane = lookAndFeel.getScrollPane(panel);
 			scrollPane.getVerticalScrollBar().setUnitIncrement(50);
 			component = scrollPane;
@@ -165,8 +166,13 @@ public abstract class AbstractContextPanel implements IContextPanel {
 		if (content.isScrollNeeded()) {
 			componentToAdd = getContentWithScroll(lookAndFeel, componentToAdd);
 		}
-		content.setParentPanel(panel);
-		panel.add(componentToAdd, c);
+
+		FadeInPanel fadePanel = new FadeInPanel();
+		fadePanel.setLayout(new GridLayout(1, 1));
+		fadePanel.add(componentToAdd);
+		content.setParentPanel(fadePanel);
+		
+		panel.add(fadePanel, c);
 		c.gridy++;
 	}
 

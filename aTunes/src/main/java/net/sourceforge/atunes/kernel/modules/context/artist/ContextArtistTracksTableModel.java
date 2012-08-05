@@ -20,11 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.kernel.modules.context.ITrackTableModel;
 import net.sourceforge.atunes.model.IArtistTopTracks;
@@ -32,27 +28,23 @@ import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-class ContextArtistTracksTableModel implements TableModel, ITrackTableModel {
-
-    private IArtistTopTracks topTracks;
-    private List<TableModelListener> listeners;
+class ContextArtistTracksTableModel extends DefaultTableModel implements ITrackTableModel {
 
     /**
-     * Instantiates a new audio scrobbler artist tracks table model.
-     * 
-     * @param topTracks
-     *            the top tracks
-     */
-    public ContextArtistTracksTableModel(IArtistTopTracks topTracks) {
-        this.topTracks = topTracks;
-        listeners = new ArrayList<TableModelListener>();
-    }
+	 * 
+	 */
+	private static final long serialVersionUID = 2018166595041397084L;
+	
+	private IArtistTopTracks topTracks;
 
-    @Override
-    public void addTableModelListener(TableModelListener l) {
-        listeners.add(l);
-    }
-
+	/**
+	 * @param topTracks
+	 */
+	public void setTopTracks(IArtistTopTracks topTracks) {
+		this.topTracks = topTracks;
+		fireTableDataChanged();
+	}
+	
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return columnIndex == 0 ? Integer.class : String.class;
@@ -97,15 +89,5 @@ class ContextArtistTracksTableModel implements TableModel, ITrackTableModel {
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return false;
-    }
-
-    @Override
-    public void removeTableModelListener(TableModelListener l) {
-        listeners.remove(l);
-    }
-
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        // Nothing to do
     }
 }
