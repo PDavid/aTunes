@@ -28,12 +28,15 @@ import java.awt.Insets;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.ContextInformationTableFactory;
+import net.sourceforge.atunes.kernel.modules.context.ITracksTableListener;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -51,13 +54,36 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 	private static final long serialVersionUID = -5538266144953409867L;
 
 	private JLabel albumCoverLabel;
+	
 	private UrlLabel albumLabel;
+	
 	private UrlLabel artistLabel;
+	
 	private UrlLabel yearLabel;
+	
+    private JTable tracksTable;
+    
+    private ContextInformationTableFactory contextInformationTableFactory;
+    
+    private ITracksTableListener contextTableURLOpener;
 
 	@Override
 	public String getContentName() {
 		return I18nUtils.getString("INFO");
+	}
+	
+    /**
+     * @param contextTableURLOpener
+     */
+    public void setContextTableURLOpener(ITracksTableListener contextTableURLOpener) {
+		this.contextTableURLOpener = contextTableURLOpener;
+	}
+    
+    /**
+     * @param contextInformationTableFactory
+     */
+    public void setContextInformationTableFactory(ContextInformationTableFactory contextInformationTableFactory) {
+		this.contextInformationTableFactory = contextInformationTableFactory;
 	}
 
 	@Override
@@ -68,6 +94,7 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 		updateAlbum(album);
 		updateYear(album);
 		updateAlbumCover(source);
+   		((ContextTracksTableModel)tracksTable.getModel()).setAlbum(album);
 	}
 
 	/**
@@ -118,6 +145,7 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 		albumLabel.setText(null);
 		artistLabel.setText(null);
 		yearLabel.setText(null);
+   		((ContextTracksTableModel)tracksTable.getModel()).setAlbum(null);
 	}
 
 	@Override
@@ -131,6 +159,9 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 		artistLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		yearLabel = new UrlLabel(getDesktop());
 		yearLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+    	tracksTable = contextInformationTableFactory.getNewTracksTable(contextTableURLOpener);
+        tracksTable.setModel(new ContextTracksTableModel());
 
 		// Add components
 		return arrangeComponents();
@@ -153,6 +184,10 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 		panel.add(artistLabel, c);
 		c.gridy = 3;
 		panel.add(yearLabel, c);
+		c.gridy = 4;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.BOTH;
+		panel.add(tracksTable, c);
 		return panel;
 	}
 }
