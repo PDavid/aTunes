@@ -23,6 +23,7 @@ package net.sourceforge.atunes.gui.views.dialogs;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 
 import javax.swing.ImageIcon;
@@ -34,6 +35,7 @@ import javax.swing.ScrollPaneConstants;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
+import net.sourceforge.atunes.gui.views.controls.FadeInPanel;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -63,6 +65,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
     private static final Dimension IMAGE_DIMENSION = new Dimension(Constants.TOOLTIP_IMAGE_WIDTH + 200, Constants.TOOLTIP_IMAGE_HEIGHT + 10);
     private static final Dimension NO_IMAGE_DIMENSION = new Dimension(200, 65);
 
+    private FadeInPanel imagePanel;
     private JLabel image;
     private JLabel line1;
     private JLabel line2;
@@ -77,7 +80,11 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 
         setFocusableWindowState(false);
         JPanel container = new JPanel(new GridBagLayout());
+        
         image = new JLabel();
+        imagePanel = new FadeInPanel();
+        imagePanel.setLayout(new GridLayout(1, 1));
+        imagePanel.add(image);
         line1 = new JLabel();
         line2 = new JLabel();
         line3 = new JLabel();
@@ -87,7 +94,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
         c.gridy = 0;
         c.gridheight = 3;
         c.insets = new Insets(0, 5, 0, 0);
-        container.add(image, c);
+        container.add(imagePanel, c);
         c.gridx = 1;
         c.gridheight = 1;
         c.weightx = 1;
@@ -142,10 +149,10 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
         if (img != null) {
             // Add 50 to width to force images to fit height of tool tip as much as possible
             image.setIcon(ImageUtils.scaleImageBicubic(img.getImage(), Constants.TOOLTIP_IMAGE_WIDTH + 50, Constants.TOOLTIP_IMAGE_HEIGHT));
-            image.setVisible(true);
+            imagePanel.setVisible(true);
         } else {
             image.setIcon(null);
-            image.setVisible(false);
+            imagePanel.setVisible(false);
         }
     }
 
