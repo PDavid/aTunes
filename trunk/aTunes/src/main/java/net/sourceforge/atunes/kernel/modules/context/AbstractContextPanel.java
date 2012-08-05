@@ -61,23 +61,6 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public abstract class AbstractContextPanel implements IContextPanel {
 
-	private static final class ClearContextPanelContent implements Runnable {
-		
-		private final IContextPanelContent<?> content;
-
-		/**
-		 * @param content
-		 */
-		private ClearContextPanelContent(IContextPanelContent<?> content) {
-			this.content = content;
-		}
-
-		@Override
-		public void run() {
-			content.clearContextPanelContent();
-		}
-	}
-
 	private static final long serialVersionUID = 7870512266932745272L;
 
 	/**
@@ -236,12 +219,9 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	}
 
 	@Override
-	public Action getAction() {
+	public final Action getAction() {
 		return new AbstractAction() {
 
-			/**
-			 * 
-			 */
 			 private static final long serialVersionUID = -9078018024869169623L;
 
 			 @Override
