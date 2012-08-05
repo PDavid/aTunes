@@ -49,10 +49,6 @@ import org.apache.sanselan.ImageWriteException;
  * and optionally image too
  * 
  * @author alex
- * 
- */
-/**
- * @author alex
  *
  */
 public class AlbumInfoDataSource implements IContextInformationSource {

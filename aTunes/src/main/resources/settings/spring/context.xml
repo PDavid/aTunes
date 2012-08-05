@@ -35,7 +35,6 @@
 		<property name="contents">
 			<list>
 				<ref bean="albumBasicInfoContent" />
-				<ref bean="albumTracksContent" />
 			</list>
 		</property>
 	</bean>
@@ -119,12 +118,6 @@
 
 	<bean id="albumBasicInfoContent"
 		class="net.sourceforge.atunes.kernel.modules.context.album.AlbumBasicInfoContent"
-		parent="contextPanelContent">
-		<property name="dataSource" ref="albumInfoDataSource" />
-	</bean>
-
-	<bean id="albumTracksContent"
-		class="net.sourceforge.atunes.kernel.modules.context.album.AlbumTracksContent"
 		parent="contextPanelContent">
 		<property name="dataSource" ref="albumInfoDataSource" />
 	</bean>
