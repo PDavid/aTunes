@@ -41,7 +41,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * context data source
  * 
  * @author alex
- * 
+ * @param <T>
  */
 @PluginApi
 public abstract class AbstractContextPanelContent<T extends IContextInformationSource> implements IContextPanelContent<T> {

@@ -45,6 +45,11 @@ import org.commonjukebox.plugins.model.Plugin;
 import org.commonjukebox.plugins.model.PluginInfo;
 import org.commonjukebox.plugins.model.PluginListener;
 
+/**
+ * Responsible of showing context information
+ * @author alex
+ *
+ */
 public final class ContextHandler extends AbstractHandler implements PluginListener, IContextHandler {
 
     /**

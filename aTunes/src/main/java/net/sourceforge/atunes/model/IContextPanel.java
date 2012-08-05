@@ -79,11 +79,10 @@ public interface IContextPanel {
 	 * object This method must be called every time the current audio object of
 	 * the application changes and the panel is visible (the context tab showing
 	 * this panel is selected)
-	 * 
 	 * @param audioObject
+	 * @param forceUpdate
 	 */
-	public void updateContextPanel(final IAudioObject audioObject,
-			final boolean forceUpdate);
+	public void updateContextPanel(final IAudioObject audioObject, boolean forceUpdate);
 
 	/**
 	 * Removes all content from this context panel This method must be called

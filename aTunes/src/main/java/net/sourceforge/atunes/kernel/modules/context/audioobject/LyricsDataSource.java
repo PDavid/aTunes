@@ -27,6 +27,11 @@ import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Context data source to retrieve lyrics
+ * @author alex
+ *
+ */
 public class LyricsDataSource implements IContextInformationSource {
 
     private ILyricsService lyricsService;
