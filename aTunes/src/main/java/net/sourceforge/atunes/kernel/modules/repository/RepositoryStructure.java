@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RepositoryStructure<T> implements Serializable {
 
@@ -35,7 +35,7 @@ public class RepositoryStructure<T> implements Serializable {
 	private Map<String, T> structure;
 	
 	RepositoryStructure() {
-		this.structure = new HashMap<String, T>();
+		this.structure = new ConcurrentHashMap<String, T>();
 	}
 	
 	int count() {
