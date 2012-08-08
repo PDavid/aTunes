@@ -32,9 +32,11 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
@@ -75,6 +77,8 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	private IContextHandler contextHandler;
 
 	private ILookAndFeel lookAndFeel;
+	
+	private JProgressBar indeterminateProgressBar;
 
 	@Override
 	public final void updateContextPanel(final IAudioObject newAudioObject, final boolean forceUpdate) {
@@ -84,12 +88,29 @@ public abstract class AbstractContextPanel implements IContextPanel {
 		}
 
 		if (panelNeedsToBeUpdated(this.audioObject, newAudioObject)) {
+			GuiUtils.callInEventDispatchThreadAndWait(new Runnable() {
+				@Override
+				public void run() {
+					indeterminateProgressBar.setVisible(true);
+				}
+			});
 			Logger.debug("Updating panel: ", getContextPanelName());
+			ContextPanelContentUpdated updatesController = new ContextPanelContentUpdated(getContents().size(), new Runnable() {
+				@Override
+				public void run() {
+					GuiUtils.callInEventDispatchThreadAndWait(new Runnable() {
+						@Override
+						public void run() {
+							indeterminateProgressBar.setVisible(false);
+						}
+					});
+					contextHandler.finishedContextPanelUpdate();
+				}
+			});
 			for (IContextPanelContent<?> content : getContents()) {
 				clearContextPanelContent(content);
-				content.updateContextPanelContent(newAudioObject);
+				content.updateContextPanelContent(newAudioObject, updatesController);
 			}
-			contextHandler.finishedContextPanelUpdate();
 		}
 
 		this.audioObject = newAudioObject;
@@ -112,20 +133,27 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	public final Component getUIComponent(ILookAndFeel lookAndFeel) {
 		if (component == null) {
 			JPanel panel = new ContextPanelContainer(new GridBagLayout());
+			indeterminateProgressBar = new JProgressBar();
+			indeterminateProgressBar.setIndeterminate(true);
+			indeterminateProgressBar.setVisible(false);
+			indeterminateProgressBar.setBorder(BorderFactory.createEmptyBorder());
 			panel.setOpaque(false);
 			GridBagConstraints c = new GridBagConstraints();
-			c.gridx = 0;
-			c.gridy = 0;
 			c.weightx = 1;
 			c.fill = GridBagConstraints.HORIZONTAL;
 			c.insets = new Insets(10, 10, 10, 10);
+			c.gridy = 1;
 			for (IContextPanelContent<?> content : getContents()) {
 				addContextPanelContent(lookAndFeel, panel, c, content);
 			}
 
+			c.insets = new Insets(20, 30, 20, 30);
+			panel.add(indeterminateProgressBar, c);
+
 			// Add a dummy panel at the end
 			c.weighty = 1;
 			c.anchor = GridBagConstraints.NORTH;
+			c.gridy++;
 			panel.add(new JPanel(), c);
 
 			JScrollPane scrollPane = lookAndFeel.getScrollPane(panel);

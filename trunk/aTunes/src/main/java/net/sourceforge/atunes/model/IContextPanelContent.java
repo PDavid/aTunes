@@ -38,10 +38,10 @@ public interface IContextPanelContent<T extends IContextInformationSource> {
 	/**
 	 * Updates the context panel content with information of the given audio
 	 * object
-	 * 
 	 * @param audioObject
+	 * @param finishCallback
 	 */
-	public void updateContextPanelContent(IAudioObject audioObject);
+	public void updateContextPanelContent(IAudioObject audioObject, Runnable finishCallback);
 
 	/**
 	 * Removes content from the context panel content This method must clear all
