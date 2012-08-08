@@ -87,22 +87,19 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
 		this.contextTaskService = contextTaskService;
 	}
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#updateContextPanelContent(net.sourceforge.atunes.model.IAudioObject)
-	 */
     @Override
-	public final void updateContextPanelContent(IAudioObject audioObject) {
-        callDataSource(audioObject);
+	public final void updateContextPanelContent(IAudioObject audioObject, Runnable updateCallback) {
+        callDataSource(audioObject, updateCallback);
     }
 
     /**
      * Calls data source to get context information
-     * 
      * @param audioObject
+     * @param updateCallback
      */
-    private void callDataSource(IAudioObject audioObject) {
+    private void callDataSource(IAudioObject audioObject, Runnable updateCallback) {
         // Create a new worker and call it
-        worker = new ContextInformationSwingWorker(this, this.dataSource, audioObject);
+        worker = new ContextInformationSwingWorker(this, this.dataSource, audioObject, updateCallback);
         future = contextTaskService.submitNow(this.getClass().getName(), worker);
     }
 

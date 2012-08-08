@@ -53,17 +53,24 @@ class ContextInformationSwingWorker extends SwingWorker<Void, Void> {
      * audio object
      */
     private IAudioObject audioObject;
+    
+    /**
+     * To be executed at finish
+     */
+    private Runnable updateCallback;
 
     /**
      * Constructor used to create a new ContextInformationSwingWorker
      * @param content
      * @param dataSource
      * @param audioObject
+     * @param updateCallback
      */
-    ContextInformationSwingWorker(IContextPanelContent content, IContextInformationSource dataSource, IAudioObject audioObject) {
+    ContextInformationSwingWorker(IContextPanelContent content, IContextInformationSource dataSource, IAudioObject audioObject, Runnable updateCallback) {
         this.content = content;
         this.dataSource = dataSource;
         this.audioObject = audioObject;
+        this.updateCallback = updateCallback;
     }
 
     @Override
@@ -77,10 +84,15 @@ class ContextInformationSwingWorker extends SwingWorker<Void, Void> {
         super.done();
         try {
             content.updateContentFromDataSource(dataSource);
-            // Enable task pane so user can expand or collapse
-            content.getParentPanel().setEnabled(true);
-            // After update data expand content
-            content.getParentPanel().setVisible(true);
+            if (!isCancelled()) {
+            	// Enable task pane so user can expand or collapse
+            	content.getParentPanel().setEnabled(true);
+            	// After update data expand content
+            	content.getParentPanel().setVisible(true);
+
+            	// Callback
+            	updateCallback.run();
+            }
         } catch (CancellationException e) {
             // thrown when cancelled
             Logger.error(e);
