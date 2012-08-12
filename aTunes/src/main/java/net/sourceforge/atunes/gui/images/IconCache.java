@@ -29,6 +29,8 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.IIconCache;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -41,7 +43,7 @@ import org.apache.sanselan.ImageWriteException;
  * @author alex
  *
  */
-public class IconCache {
+public class IconCache implements IIconCache {
 
 	private IOSManager osManager;
 	
@@ -76,10 +78,12 @@ public class IconCache {
 	
 	/**
 	 * Returns icon for given color
+	 * @param icon
 	 * @param color
 	 * @return
 	 */
-	ImageIcon readIcon(CachedIconFactory icon, Color color) {
+	@Override
+	public ImageIcon readIcon(IIconFactory icon, Color color) {
 		String iconFileName = getIconFileName(icon, color);
 		if (iconsInMemory.containsKey(iconFileName)) {
 			return iconsInMemory.get(iconFileName);
@@ -100,10 +104,12 @@ public class IconCache {
 	
 	/**
 	 * Stores icon
-	 * @param color
 	 * @param icon
+	 * @param color
+	 * @param image
 	 */
-	void storeIcon(CachedIconFactory icon, Color color, ImageIcon image) {
+	@Override
+	public void storeIcon(IIconFactory icon, Color color, ImageIcon image) {
 		try {
 			iconsInMemory.put(getIconFileName(icon, color), image);
 			ImageUtils.writeImageToFile(image.getImage(), getIconFileName(icon, color));
@@ -120,7 +126,7 @@ public class IconCache {
 	 * @param color
 	 * @return
 	 */
-	private String getIconFileName(CachedIconFactory icon, Color color) {
+	private String getIconFileName(IIconFactory icon, Color color) {
 		return StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), iconsFolderName, osManager.getFileSeparator(), icon.getClass().getName(), "_", color.toString(), ".png");
 	}
 }

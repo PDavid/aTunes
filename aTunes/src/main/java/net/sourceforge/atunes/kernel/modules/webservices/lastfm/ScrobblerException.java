@@ -41,6 +41,9 @@ public class ScrobblerException extends Exception {
         super(StringUtils.getString("Error submitting to Last.fm. Cause: ", cause));
     }
 
+    /**
+     * @param status
+     */
     public ScrobblerException(int status) {
         super(StringUtils.getString("Error submitting to Last.fm. Status: ", Integer.valueOf(status)));
         this.status = status;
@@ -54,5 +57,4 @@ public class ScrobblerException extends Exception {
     public int getStatus() {
         return status;
     }
-
 }

@@ -20,12 +20,22 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 
+/**
+ * Data to submit to scrobbler
+ * @author alex
+ *
+ */
 public class SubmissionData {
 
     private String artist;
     private String title;
     private int startTime;
 
+    /**
+     * @param artist
+     * @param title
+     * @param startTime
+     */
     public SubmissionData(String artist, String title, int startTime) {
         this.artist = artist;
         this.startTime = startTime;
@@ -76,5 +86,4 @@ public class SubmissionData {
     public void setStartTime(int startTime) {
         this.startTime = startTime;
     }
-
 }
