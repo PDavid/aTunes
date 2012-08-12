@@ -46,17 +46,16 @@ import net.sourceforge.atunes.model.IWebServicesHandler;
  */
 public class WebServicesHandler extends AbstractHandler implements IWebServicesHandler {
 
-	private LastFmService lastFmService;
-	
 	private ILyricsService lyricsService;
 	
 	private ITaskService taskService;
 	
 	/**
-	 * @param lastFmService
+	 * @return last fm service
 	 */
-	public final void setLastFmService(LastFmService lastFmService) {
-		this.lastFmService = lastFmService;
+	private LastFmService getLastFmService() {
+		// use lazy initialization to speedup startup
+		return getBean(LastFmService.class);
 	}
 	
 	/**
@@ -74,13 +73,13 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	}
 
 	@Override
-	public void allHandlersInitialized() {
-        lastFmService.submitCacheToLastFm(taskService);
+	public void deferredInitialization() {
+        getLastFmService().submitCacheToLastFm(taskService);
 	}
-
+	
 	@Override
 	public void applicationFinish() {
-        lastFmService.finishService();
+        getLastFmService().finishService();
         lyricsService.finishService();
 	}
 
@@ -96,7 +95,7 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 
 	@Override
 	public boolean clearCache() {
-		boolean exception = lastFmService.clearCache();
+		boolean exception = getLastFmService().clearCache();
 		exception = lyricsService.clearCache() || exception;
 		return exception;
 	}
@@ -104,111 +103,111 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	@Override
 	public void submitNowPlayingInfo(IAudioObject audioObject) {
 		if (audioObject instanceof ILocalAudioObject) {
-			lastFmService.submitNowPlayingInfoToLastFm((ILocalAudioObject) audioObject, taskService);
+			getLastFmService().submitNowPlayingInfoToLastFm((ILocalAudioObject) audioObject, taskService);
 		}
 	}
 	
 	@Override
 	public void addBannedSong(IAudioObject audioObject) {
-		lastFmService.addBannedSong(audioObject);
+		getLastFmService().addBannedSong(audioObject);
 	}
 	
 	@Override
 	public void addLovedSong(IAudioObject audioObject) {
-		lastFmService.addLovedSong(audioObject);
+		getLastFmService().addLovedSong(audioObject);
 	}
 	
 	@Override
 	public IAlbumInfo getAlbum(String artist, String album) {
-		return lastFmService.getAlbum(artist, album);
+		return getLastFmService().getAlbum(artist, album);
 	}
 	
 	@Override
 	public IAlbumListInfo getAlbumList(String artist) {
-		return lastFmService.getAlbumList(artist);
+		return getLastFmService().getAlbumList(artist);
 	}
 	
 	@Override
 	public ImageIcon getAlbumImage(IAlbumInfo albumInfo) {
-		return lastFmService.getAlbumImage(albumInfo);
+		return getLastFmService().getAlbumImage(albumInfo);
 	}
 
 	@Override
 	public ImageIcon getAlbumThumbImage(IAlbumInfo albumInfo) {
-		return lastFmService.getAlbumThumbImage(albumInfo);
+		return getLastFmService().getAlbumThumbImage(albumInfo);
 	}
 	
 	@Override
 	public ImageIcon getAlbumImage(String artist, String album) {
-		return lastFmService.getAlbumImage(artist, album);
+		return getLastFmService().getAlbumImage(artist, album);
 	}
 
 	@Override
 	public ImageIcon getArtistImage(String artist) {
-		return lastFmService.getArtistImage(artist);
+		return getLastFmService().getArtistImage(artist);
 	}
 
 	@Override
 	public String getBioText(String artist) {
-		return lastFmService.getWikiText(artist);
+		return getLastFmService().getWikiText(artist);
 	}
 
 	@Override
 	public String getBioURL(String artist) {
-		return lastFmService.getWikiURL(artist);
+		return getLastFmService().getWikiURL(artist);
 	}
 	
 	@Override
 	public IArtistTopTracks getTopTracks(String artist) {
-		return lastFmService.getTopTracks(artist);
+		return getLastFmService().getTopTracks(artist);
 	}
 	
 	@Override
 	public String getTitleForAudioObject(IAudioObject f) {
 		if (f instanceof ILocalAudioObject) {
-			return lastFmService.getTitleForFile((ILocalAudioObject) f);
+			return getLastFmService().getTitleForFile((ILocalAudioObject) f);
 		}
 		return null;
 	}
 	
 	@Override
 	public List<ILovedTrack> getLovedTracks() {
-		return lastFmService.getLovedTracks();
+		return getLastFmService().getLovedTracks();
 	}
 	
 	@Override
 	public Boolean testLogin(String user, String password) {
-		return lastFmService.testLogin(user, password);
+		return getLastFmService().testLogin(user, password);
 	}
 	
 	@Override
 	public void submit(IAudioObject audioObject, long listened) {
-		lastFmService.submitToLastFm(audioObject, listened, taskService);
+		getLastFmService().submitToLastFm(audioObject, listened, taskService);
 	}
 	
 	@Override
 	public String getArtistTopTag(String artist) {
-		return lastFmService.getArtistTopTag(artist);
+		return getLastFmService().getArtistTopTag(artist);
 	}
 	
 	@Override
 	public ImageIcon getArtistThumbImage(IArtistInfo artist) {
-		return lastFmService.getArtistThumbImage(artist);
+		return getLastFmService().getArtistThumbImage(artist);
 	}
 
 	@Override
 	public ISimilarArtistsInfo getSimilarArtists(String artist) {
-		return lastFmService.getSimilarArtists(artist);
+		return getLastFmService().getSimilarArtists(artist);
 	}
 	
 	@Override
 	public int getTrackNumber(ILocalAudioObject audioObject) {
-		return lastFmService.getTrackNumberForFile(audioObject);
+		return getLastFmService().getTrackNumberForFile(audioObject);
 	}
 	
 	@Override
 	public void removeLovedSong(IAudioObject song) {
-		lastFmService.removeLovedSong(song);
+		getLastFmService().removeLovedSong(song);
 	}
 	
 	@Override
@@ -218,6 +217,6 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	
 	@Override
 	public void consolidateWebContent() {
-		lastFmService.flush();
+		getLastFmService().flush();
 	}
 }

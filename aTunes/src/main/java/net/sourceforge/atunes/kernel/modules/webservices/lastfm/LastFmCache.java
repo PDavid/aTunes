@@ -47,6 +47,11 @@ import net.sourceforge.atunes.utils.XMLSerializerService;
 
 import org.apache.commons.io.FileUtils;
 
+/**
+ * A cache of last.fm responses
+ * @author alex
+ *
+ */
 public class LastFmCache extends AbstractCache {
 
     private static final String ARTIST_WIKI = "ARTIST_WIKI";
