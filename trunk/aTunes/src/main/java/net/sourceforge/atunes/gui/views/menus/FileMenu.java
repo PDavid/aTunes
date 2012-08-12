@@ -27,13 +27,18 @@ import javax.swing.JSeparator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * File menu
+ * @author alex
+ *
+ */
 public class FileMenu extends JMenu {
 
 	private static final long serialVersionUID = -3624790857729577320L;
 
 	private IOSManager osManager;
 	
-	private Action selectRepositoryAction;
+	private Action addFolderToRepositoryAction;
 	private Action refreshRepositoryAction;
 	private Action importToRepositoryAction;
 	private Action exportAction;
@@ -45,12 +50,12 @@ public class FileMenu extends JMenu {
 	public FileMenu(String i18nKey) {
 		super(I18nUtils.getString(i18nKey));
 	}
-	
+
 	/**
-	 * @param selectRepositoryAction
+	 * @param addFolderToRepositoryAction
 	 */
-	public void setSelectRepositoryAction(Action selectRepositoryAction) {
-		this.selectRepositoryAction = selectRepositoryAction;
+	public void setAddFolderToRepositoryAction(Action addFolderToRepositoryAction) {
+		this.addFolderToRepositoryAction = addFolderToRepositoryAction;
 	}
 	
 	/**
@@ -92,7 +97,7 @@ public class FileMenu extends JMenu {
 	 * Initializes menu
 	 */
 	public void initialize() {
-        add(selectRepositoryAction);
+        add(addFolderToRepositoryAction);
         add(refreshRepositoryAction);
         add(new JSeparator());
         add(importToRepositoryAction);

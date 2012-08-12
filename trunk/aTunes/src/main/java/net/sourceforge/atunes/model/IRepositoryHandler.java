@@ -25,6 +25,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Responsible of managing repository
+ * @author alex
+ *
+ */
 public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener, IRepositoryListener {
 
 	/**
@@ -222,7 +227,7 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * 
 	 * @return true, if successful
 	 */
-	public boolean selectRepository();
+	public boolean addFolderToRepository();
 
 	/**
 	 * Adds a listener to be notified when an audio file is removed
@@ -304,5 +309,11 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * @param path
 	 */
 	void importFolders(final List<File> folders, final String path);
+	
+	/**
+	 * Tell handler to use these folders as repository
+	 * @param folders
+	 */
+	void setRepositoryFolders(List<File> folders);
 
 }

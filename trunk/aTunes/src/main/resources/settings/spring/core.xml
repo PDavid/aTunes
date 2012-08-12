@@ -69,7 +69,7 @@
 	</bean>
 
 	<bean id="generalPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.GeneralPanel" scope="prototype" init-method="initialize"/>
-	<bean id="repositoryPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.RepositoryPanel" scope="prototype"/>
+	<bean id="repositoryPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.RepositoryPanel" scope="prototype" init-method="initialize"/>
 	<bean id="playerPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.PlayerPanel" scope="prototype" init-method="initialize"/>
 	<bean id="navigatorPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.NavigatorPanel" scope="prototype" init-method="initialize"/>
 	<bean id="playListPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.PlayListPrefPanel" scope="prototype"/>

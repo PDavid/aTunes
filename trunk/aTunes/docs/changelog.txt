@@ -25,6 +25,7 @@ aTunes 2.2.0
 - Similar Artist Mode [ patch by Laurent Cathala ]
 - New argument "simulate-cd" for CD ripper testing purposes
 - Added automated error reports
+- Repository folders are now managed from preferences window
 - FIX: Use last.fm API to obtain last.fm loved tracks
 - FIX: Detection of radio audio streams blocks playing
 
