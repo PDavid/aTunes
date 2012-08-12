@@ -26,6 +26,7 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconCache;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -43,12 +44,12 @@ public abstract class CachedIconFactory implements Serializable, IIconFactory {
 
 	private IColorMutableImageIcon colorMutableIcon;
 	
-	private IconCache iconCache;
+	private IIconCache iconCache;
 	
 	/**
 	 * @param iconCache
 	 */
-	public void setIconCache(IconCache iconCache) {
+	public void setIconCache(IIconCache iconCache) {
 		this.iconCache = iconCache;
 	}
 	

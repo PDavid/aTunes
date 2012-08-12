@@ -27,13 +27,11 @@ import static org.mockito.Mockito.when;
 import java.awt.Color;
 
 import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.VolumeMaxImageIcon;
-import net.sourceforge.atunes.gui.images.VolumeMedImageIcon;
-import net.sourceforge.atunes.gui.images.VolumeMinImageIcon;
-import net.sourceforge.atunes.gui.images.VolumeMuteImageIcon;
-import net.sourceforge.atunes.gui.images.VolumeZeroImageIcon;
+import net.sourceforge.atunes.gui.images.CachedIconFactory;
 import net.sourceforge.atunes.gui.views.controls.VolumeIconCalculator;
+import net.sourceforge.atunes.model.IIconCache;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -65,11 +63,24 @@ public class MuteActionTest {
 		VolumeIconCalculator iconCalculator = new VolumeIconCalculator();
 		iconCalculator.setStatePlayer(state);
 		iconCalculator.setLookAndFeelManager(lookAndFeelManager);
-		iconCalculator.setVolumeMaxIcon(new VolumeMaxImageIcon());
-		iconCalculator.setVolumeMedIcon(new VolumeMedImageIcon());
-		iconCalculator.setVolumeMinIcon(new VolumeMinImageIcon());
-		iconCalculator.setVolumeMuteIcon(new VolumeMuteImageIcon());
-		iconCalculator.setVolumeZeroIcon(new VolumeZeroImageIcon());
+		CachedIconFactory iconFactory = new CachedIconFactory() {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -239625553538406706L;
+
+			@Override
+			protected ImageIcon createIcon(Color color) {
+				return null;
+			}
+		};
+		iconFactory.setIconCache(mock(IIconCache.class));
+		iconCalculator.setVolumeMaxIcon(iconFactory);
+		iconCalculator.setVolumeMedIcon(iconFactory);
+		iconCalculator.setVolumeMinIcon(iconFactory);
+		iconCalculator.setVolumeMuteIcon(iconFactory);
+		iconCalculator.setVolumeZeroIcon(iconFactory);
 		
 		sut.setVolumeIconCalculator(iconCalculator);
 	}
