@@ -8,12 +8,6 @@
 	<bean id="equalizerDialog" class="net.sourceforge.atunes.kernel.modules.player.EqualizerDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean> 
-	<bean id="fileSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.fileSelection.CustomFileSelectionDialog" scope="prototype">
-		<constructor-arg ref="frame"/>
-	</bean>
-	<bean id="multiFolderSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.fileSelection.MultiFolderSelectionDialog" scope="prototype">
-		<constructor-arg ref="frame"/>
-	</bean>
 	<bean id="progressDialog" class="net.sourceforge.atunes.gui.views.dialogs.ProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
