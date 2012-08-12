@@ -92,7 +92,7 @@ public class ApplicationStarter {
         }
 
         // Set log4j properties
-        Logger.loadProperties(applicationArguments.isDebug(), osManager);
+        Logger.loadProperties(applicationArguments.isDebug(), applicationArguments.isDebugLevelLog(), osManager);
 
         // First, look up for other instances running
         if (!applicationArguments.isMultipleInstance() && !multipleInstancesCheck.isFirstInstance()) {

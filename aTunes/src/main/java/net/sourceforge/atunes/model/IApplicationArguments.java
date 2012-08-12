@@ -34,6 +34,11 @@ public interface IApplicationArguments {
 	 * @return the debug
 	 */
 	public boolean isDebug();
+	
+	/**
+	 * @return if log must be in debug level
+	 */
+	public boolean isDebugLevelLog();
 
 	/**
 	 * @return the ignoreLookAndFeel

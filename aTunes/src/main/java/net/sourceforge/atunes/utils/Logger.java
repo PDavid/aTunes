@@ -42,6 +42,10 @@ public final class Logger {
     
     private static boolean debug;
     
+    /**
+     * sets debug level
+     * @param debug
+     */
     public static void setDebug(boolean debug) {
 		Logger.debug = debug;
 	}
@@ -159,12 +163,12 @@ public final class Logger {
     }
     
     /**
-     * Set log4j properties from file, and changes properties if debug mode.
-     * 
+     * Set log4j properties from file, and changes properties if debug mode or debug level
      * @param debug
-     *            the debug
+     * @param debugLevel
+     * @param osManager
      */
-    public static void loadProperties(boolean debug, IOSManager osManager) {
+    public static void loadProperties(boolean debug, boolean debugLevel, IOSManager osManager) {
     	PropertyResourceBundle bundle = null;
     	InputStream log4jProperties = Logger.class.getResourceAsStream(Constants.LOG4J_FILE);
     	Properties props = new Properties();
@@ -182,9 +186,11 @@ public final class Logger {
     				String value = bundle.getString(key);
 
     				// Change to DEBUG MODE if debug
-    				if (key.equals("log4j.rootLogger") && debug) {
+    				if (key.equals("log4j.rootLogger") && (debug || debugLevel)) {
     					value = value.replace("INFO", "DEBUG");
-    				} else if (key.equals("log4j.appender.A2.file")) {
+    				}
+    				
+    				if (key.equals("log4j.appender.A2.file") && !debug) {
     					value = StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), "aTunes.log");
     				}
 
@@ -199,6 +205,6 @@ public final class Logger {
     		props.put("log4j.appender.A.layout.ConversionPattern", "%-7p %m%n");
     	}
 		PropertyConfigurator.configure(props);
-		Logger.setDebug(debug);
+		Logger.setDebug(debug || debugLevel);
     }
 }

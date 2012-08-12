@@ -45,6 +45,11 @@ public final class ApplicationArguments implements Serializable, IApplicationArg
      */
     private static final String DEBUG = "debug";
 
+	/** 
+     * Debug constant This argument makes a big log file. 
+     */
+    private static final String DEBUG_LOG = "debug-log";
+
     /**
      * Ignore look and feel constant. This argument makes application use OS default Look And Feel.
      */
@@ -91,6 +96,11 @@ public final class ApplicationArguments implements Serializable, IApplicationArg
      * Defines if aTunes is running in debug mode. 
      */
     private boolean debug;
+
+    /** 
+     * Defines if aTunes is running in debug log level 
+     */
+    private boolean debugLevel;
 
     /** Defines if aTunes will ignore look and feel. */
     private boolean ignoreLookAndFeel;
@@ -197,6 +207,7 @@ public final class ApplicationArguments implements Serializable, IApplicationArg
     	originalArguments = arguments;
         savedArguments = new ArrayList<String>();
         checkAndSave(arguments, DEBUG);
+        checkAndSave(arguments, DEBUG_LOG);
         checkAndSave(arguments, IGNORE_LOOK_AND_FEEL);
         checkAndSave(arguments, ALLOW_MULTIPLE_INSTANCE);
         checkAndSave(arguments, USE_CONFIG_FOLDER);
@@ -207,6 +218,8 @@ public final class ApplicationArguments implements Serializable, IApplicationArg
         
         // Set debug
         debug = arguments.contains(ApplicationArguments.DEBUG);
+        // Set debug level
+        debugLevel = arguments.contains(ApplicationArguments.DEBUG_LOG);
         // Set ignore look and feel
     	ignoreLookAndFeel = arguments.contains(ApplicationArguments.IGNORE_LOOK_AND_FEEL);
         // Set no update
@@ -275,5 +288,10 @@ public final class ApplicationArguments implements Serializable, IApplicationArg
             }
         }
         return sb.toString().trim();
+    }
+    
+    @Override
+    public boolean isDebugLevelLog() {
+    	return debugLevel;
     }
 }
