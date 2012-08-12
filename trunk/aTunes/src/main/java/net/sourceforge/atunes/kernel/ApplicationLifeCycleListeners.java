@@ -32,6 +32,7 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.model.IApplicationLifeCycleListener;
 import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.Timer;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -78,7 +79,10 @@ public class ApplicationLifeCycleListeners implements ApplicationContextAware {
      */
     void applicationStarted() {
         for (IApplicationLifeCycleListener listener : listeners) {
+        	Timer t = new Timer();
+        	t.start();
        		listener.applicationStarted();
+       		Logger.debug(listener.getClass().getName(), ".applicationStarted: ", t.stop(), " seconds");
         }
     }
     
@@ -87,7 +91,10 @@ public class ApplicationLifeCycleListeners implements ApplicationContextAware {
      */
     void allHandlersInitialized() {
         for (IApplicationLifeCycleListener listener : listeners) {
+        	Timer t = new Timer();
+        	t.start();
        		listener.allHandlersInitialized();
+       		Logger.debug(listener.getClass().getName(), ".allHandlersInitialized: ", t.stop(), " seconds");
         }
     }
     
@@ -96,7 +103,10 @@ public class ApplicationLifeCycleListeners implements ApplicationContextAware {
      */
     void deferredInitialization() {
     	for (IApplicationLifeCycleListener listener : listeners) {
+        	Timer t = new Timer();
+        	t.start();
     		listener.deferredInitialization();
+       		Logger.debug(listener.getClass().getName(), ".deferredInitialization: ", t.stop(), " seconds");
     	}
     }
     
