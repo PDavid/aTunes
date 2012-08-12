@@ -4,6 +4,11 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	default-autowire="byName" default-lazy-init="true">
 
+	<bean class="net.sourceforge.atunes.gui.images.CachedIconFactory" abstract="true"/>
+	<bean id="iconCache" class="net.sourceforge.atunes.gui.images.IconCache" init-method="initialize">
+		<property name="iconsFolderName" value="icons"/>
+	</bean>
+
     <bean id="audioObjectGenericImageFactory" class="net.sourceforge.atunes.gui.images.AudioObjectGenericImage"/>
     
     <bean id="arrowLeftImageIcon" class="net.sourceforge.atunes.gui.images.ArrowLeftImageIcon"/>
