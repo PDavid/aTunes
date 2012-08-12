@@ -91,7 +91,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	
 	@Override
 	public void allHandlersInitialized() {
-		super.allHandlersInitialized();
 		playListPersistAllowed = true;
 	}
 

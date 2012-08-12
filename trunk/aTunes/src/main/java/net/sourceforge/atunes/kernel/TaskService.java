@@ -29,6 +29,11 @@ import net.sourceforge.atunes.model.ITaskService;
 
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 
+/**
+ * Responsible of executing tasks
+ * @author alex
+ *
+ */
 public class TaskService implements ITaskService {
 
 	/**

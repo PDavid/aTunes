@@ -92,6 +92,15 @@ public class ApplicationLifeCycleListeners implements ApplicationContextAware {
     }
     
     /**
+     * Called of deferred initialization
+     */
+    void deferredInitialization() {
+    	for (IApplicationLifeCycleListener listener : listeners) {
+    		listener.deferredInitialization();
+    	}
+    }
+    
+    /**
      * Executes actions needed before closing application, finished all
      * necessary modules and writes configuration.
      */

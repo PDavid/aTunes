@@ -30,6 +30,11 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.PlaybackState;
 
+/**
+ * An abstract handler
+ * @author alex
+ *
+ */
 public abstract class AbstractHandler implements IHandler {
 
 	private IFrame frame;
@@ -73,10 +78,11 @@ public abstract class AbstractHandler implements IHandler {
     protected Runnable getPreviousInitializationTask() {
         return null;
     }
+
+    @Override
+    public void deferredInitialization() {}
     
-    /**
-     * Code to be executed when all handlers have been initialized
-     */
+    @Override
     public void allHandlersInitialized() {}
 
     @Override
