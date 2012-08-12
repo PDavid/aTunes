@@ -107,20 +107,19 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
 	 */
 	private File selectFolderWithFileChooser(String path) {
 		System.setProperty("apple.awt.fileDialogForDirectories", "true");
-		FileDialog dialog = new FileDialog(frame.getFrame());
-		System.setProperty("apple.awt.fileDialogForDirectories", "false");
+		FileDialog dialog = new FileDialog(frame.getFrame(), title, FileDialog.LOAD);
 		dialog.setFilenameFilter(new FilenameFilter() {
 			
 			@Override
 			public boolean accept(File dir, String name) {
-				return new File(dir.getAbsolutePath() + "/" + name).isDirectory();
+				return false;
 			}
 		});
-		dialog.setTitle(title);
 		dialog.setDirectory(path);
         dialog.setVisible(true);
         String parent = dialog.getDirectory();
         String folder = dialog.getFile();
+		System.setProperty("apple.awt.fileDialogForDirectories", "false");
         if (parent != null && folder != null) {
             return new File(parent + '/' + folder);
         }

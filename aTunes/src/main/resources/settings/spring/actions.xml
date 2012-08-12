@@ -35,6 +35,7 @@
 
 	<bean id="addBannedSongInLastFMAction" class="net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.AddFavoriteRadioAction"/>
+	<bean id="addFolderToRepositoryAction" class="net.sourceforge.atunes.kernel.actions.AddFolderToRepositoryAction"/>
 	<bean id="addLovedSongInLastFMAction" class="net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction"/>
 	<bean id="addPodcastFeedAction" class="net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction"/>
 	<bean id="addRadioAction" class="net.sourceforge.atunes.kernel.actions.AddRadioAction"/>
@@ -201,7 +202,6 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.SaveM3UPlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SearchArtistAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SearchArtistAtAction"/>
-	<bean id="selectRepositoryAction" class="net.sourceforge.atunes.kernel.actions.SelectRepositoryAction"/>
 	
 	<bean id="setAsPlaylistFromDeviceNavigationView" class="net.sourceforge.atunes.kernel.actions.SetAsPlayListAction"/>
 	<bean id="setAsPlaylistFromFavoritesNavigationView" class="net.sourceforge.atunes.kernel.actions.SetAsPlayListAction"/>

@@ -64,6 +64,7 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
     public void initialize() {
         setResizable(true);
         setTitle(I18nUtils.getString("PREFERENCES"));
+        setMinimumSize(new Dimension(900, 700));
         add(getContent(getLookAndFeel()));
     }
     

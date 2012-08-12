@@ -28,9 +28,9 @@ import net.sourceforge.atunes.utils.StringUtils;
  * This action show a window to select folders to set as repository
  * 
  * @author fleax
- * 
+ *  
  */
-public class SelectRepositoryAction extends CustomAbstractAction {
+public class AddFolderToRepositoryAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 6921256152199287639L;
 
@@ -46,13 +46,13 @@ public class SelectRepositoryAction extends CustomAbstractAction {
     /**
      * Default constructor 
      */
-    public SelectRepositoryAction() {
-        super(StringUtils.getString(I18nUtils.getString("SELECT_REPOSITORY"), "..."));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SELECT_REPOSITORY"));
+    public AddFolderToRepositoryAction() {
+        super(StringUtils.getString(I18nUtils.getString("ADD_FOLDER_TO_REPOSITORY"), "..."));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_FOLDER_TO_REPOSITORY"));
     }
 
     @Override
     protected void executeAction() {
-        repositoryHandler.selectRepository();
+        repositoryHandler.addFolderToRepository();
     }
 }

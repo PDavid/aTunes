@@ -20,15 +20,35 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IFolderSelectorDialog;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateRepository;
+import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -54,7 +74,51 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
      */
     private JTextField commandAfterAccessRepository;
     
+    private JList repositoryFoldersList;
+    
     private IStateRepository stateRepository;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    private IRepositoryHandler repositoryHandler;
+    
+    private JButton addFolderButton;
+
+    private IDialogFactory dialogFactory;
+    
+    private JButton removeFolderButton;
+    
+    private List<File> repositoryFolders;
+    
+    private IOSManager osManager;
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
     
     /**
      * @param stateRepository
@@ -68,9 +132,47 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
      */
     public RepositoryPanel() {
         super(I18nUtils.getString("REPOSITORY"));
+    }
+    
+    /**
+     * Initializes panel
+     */
+    public void initialize() {
         refreshTime = new JComboBox(new Integer[] { 0, 5, 10, 15, 30, 60 });
         commandBeforeAccessRepository = new CustomTextField(20);
         commandAfterAccessRepository = new CustomTextField(20);
+        repositoryFoldersList = lookAndFeelManager.getCurrentLookAndFeel().getList();
+        repositoryFoldersList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        addFolderButton = new JButton(I18nUtils.getString("ADD"));
+        removeFolderButton = new JButton(I18nUtils.getString("REMOVE"));
+        repositoryFoldersList.addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent event) {
+				removeFolderButton.setEnabled(repositoryFoldersList.getSelectedIndex() != -1);
+			}
+		});
+        addFolderButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				IFolderSelectorDialog dialog = dialogFactory.newDialog(IFolderSelectorDialog.class);
+				dialog.setTitle(I18nUtils.getString("ADD_FOLDER_TO_REPOSITORY"));
+				File folder = dialog.selectFolder(osManager.getUserHome());
+				if (folder != null) {
+					repositoryFolders.add(folder);
+			        repositoryFoldersList.setListData(repositoryFolders.toArray());
+				}
+			}
+		});
+        removeFolderButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				repositoryFolders.remove(repositoryFoldersList.getSelectedIndex());
+		        repositoryFoldersList.setListData(repositoryFolders.toArray());
+			}
+		});
         setupPanel();
     }
 
@@ -91,7 +193,6 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
         add(refreshTime, c);
         c.gridx = 0;
         c.gridy = 1;
-        c.gridwidth = 0;
         c.weightx = 1;
         c.insets = new Insets(10, 10, 0, 0);
         add(new JLabel(I18nUtils.getString("COMMAND_BEFORE_REPOSITORY_ACCESS")), c);
@@ -101,12 +202,25 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
         c.gridx = 0;
         c.gridy = 2;
         c.weightx = 0;
-        c.weighty = 1;
-        c.anchor = GridBagConstraints.NORTHWEST;
         add(new JLabel(I18nUtils.getString("COMMAND_AFTER_REPOSITORY_ACCESS")), c);
         c.gridx = 1;
         c.weightx = 1;
         add(commandAfterAccessRepository, c);
+        c.gridx = 0;
+        c.gridy = 3;
+        c.insets = new Insets(20, 10, 0, 0);
+        JScrollPane scrollPane =  lookAndFeelManager.getCurrentLookAndFeel().getScrollPane(repositoryFoldersList);
+        scrollPane.setMinimumSize(new Dimension(400, 300));
+        scrollPane.setPreferredSize(new Dimension(400, 300));
+        add(scrollPane, c);
+        JPanel addRemovePanel = new JPanel(new GridLayout(1, 2, 5, 0));
+        addRemovePanel.add(addFolderButton);
+        addRemovePanel.add(removeFolderButton);
+        c.gridy = 4;
+        c.weighty = 1;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.insets = new Insets(10, 10, 0, 0);
+        add(addRemovePanel, c);
 	}
 
     @Override
@@ -114,7 +228,8 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
     	stateRepository.setAutoRepositoryRefreshTime((Integer) refreshTime.getSelectedItem());
     	stateRepository.setCommandBeforeAccessRepository(commandBeforeAccessRepository.getText());
     	stateRepository.setCommandAfterAccessRepository(commandAfterAccessRepository.getText());
-        return false;
+    	repositoryHandler.setRepositoryFolders(repositoryFolders);
+    	return false;
     }
 
     /**
@@ -150,10 +265,20 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
         setRefreshTime(stateRepository.getAutoRepositoryRefreshTime());
         setCommandBeforeAccessRepository(stateRepository.getCommandBeforeAccessRepository());
         setCommandAfterAccessRepository(stateRepository.getCommandAfterAccessRepository());
+        setRepositoryFolders();
     }
 
-    @Override
+    private void setRepositoryFolders() {
+    	repositoryFolders = new ArrayList<File>(repositoryHandler.getFolders());
+        repositoryFoldersList.setListData(repositoryFolders.toArray());
+        removeFolderButton.setEnabled(false);
+	}
+
+	@Override
     public void validatePanel() throws PreferencesValidationException {
+		if (CollectionUtils.isEmpty(repositoryFolders)) {
+			throw new PreferencesValidationException(I18nUtils.getString("REPOSITORY_MUST_CONTAIN_AT_LEAST_ONE_FOLDER"), null);
+		}
     }
 
     @Override

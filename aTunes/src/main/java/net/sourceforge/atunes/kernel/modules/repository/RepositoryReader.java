@@ -25,6 +25,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -37,10 +38,11 @@ import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IFolderSelectorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMessageDialog;
-import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
@@ -94,6 +96,15 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	private IStateRepository stateRepository;
 
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
+	
+	private IOSManager osManager;
+	
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
 	/**
 	 * @param dialogFactory
@@ -197,7 +208,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 		if (rep != null) {
 			if (!rep.exists()) {
 				askUserForRepository(rep);
-				if (!rep.exists() && !selectRepository(true)) {
+				if (!rep.exists() && !addFolderToRepository()) {
 					// select "old" repository if repository was not found and no new repository was selected
 					repository = rep;
 				} else if (rep.exists()) {
@@ -252,31 +263,22 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 			RepositorySelectionInfoDialog dialog = dialogFactory.newDialog(RepositorySelectionInfoDialog.class);
 			dialog.setVisible(true);
 			if (dialog.userAccepted()) {
-				repositoryHandler.selectRepository();
+				repositoryHandler.addFolderToRepository();
 			}
 		}
 	}
 
 	/**
-	 * Select repository.
-	 * 
-	 * @param repositoryNotFound
-	 *            the repository not found
-	 * 
+	 * Adds folder to repository
 	 * @return true, if successful
 	 */
-	boolean selectRepository(boolean repositoryNotFound) {
-		IMultiFolderSelectionDialog dialog = (IMultiFolderSelectionDialog) dialogFactory.newDialog(IMultiFolderSelectionDialog.class);
-		dialog.setTitle(I18nUtils.getString("SELECT_REPOSITORY"));
-		dialog.setText(I18nUtils.getString("SELECT_REPOSITORY_FOLDERS"));
-		dialog.setSelectedFolders((repository != null && !repositoryNotFound) ? repository.getRepositoryFolders() : null);
-		dialog.showDialog();
-		if (!dialog.isCancelled()) {
-			List<File> folders = dialog.getSelectedFolders();
-			if (!folders.isEmpty()) {
-				this.retrieve(folders);
-				return true;
-			}
+	boolean addFolderToRepository() {
+		IFolderSelectorDialog dialog = dialogFactory.newDialog(IFolderSelectorDialog.class);
+		dialog.setTitle(I18nUtils.getString("ADD_FOLDER_TO_REPOSITORY"));
+		File folder = dialog.selectFolder(osManager.getUserHome());
+		if (folder != null) {
+			this.retrieve(Collections.singletonList(folder));
+			return true;
 		}
 		return false;
 	}
@@ -530,5 +532,13 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 */
 	protected IRepositoryProgressDialog getProgressDialog() {
 		return repositoryProgressDialog;
+	}
+
+	/**
+	 * Creates new repository with given folders
+	 * @param folders
+	 */
+	protected void newRepositoryWithFolders(List<File> folders) {
+		retrieve(folders);
 	}
 }

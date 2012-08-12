@@ -20,8 +20,17 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
+/**
+ * Exception thrown when any preference is invalid
+ * @author alex
+ *
+ */
 public class PreferencesValidationException extends Exception {
 
+	/**
+	 * @param string
+	 * @param cause
+	 */
 	public PreferencesValidationException(String string, Throwable cause) {
 		super(string, cause);
 	}

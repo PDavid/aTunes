@@ -24,19 +24,19 @@ import javax.swing.Action;
 
 public class RepositoryActionsHelper {
 	
-	private Action selectRepositoryAction;
+	private Action addFolderToRepositoryAction;
 	private Action refreshRepositoryAction;
 	private Action importToRepositoryAction;
 	private Action exportAction;
 	private Action connectDeviceAction;
 	private Action ripCDAction;
 	private Action refreshFolderFromNavigatorAction;
-	
+
 	/**
-	 * @param selectRepositoryAction
+	 * @param addFolderToRepositoryAction
 	 */
-	public void setSelectRepositoryAction(Action selectRepositoryAction) {
-		this.selectRepositoryAction = selectRepositoryAction;
+	public void setAddFolderToRepositoryAction(Action addFolderToRepositoryAction) {
+		this.addFolderToRepositoryAction = addFolderToRepositoryAction;
 	}
 	
 	/**
@@ -88,7 +88,7 @@ public class RepositoryActionsHelper {
      * @param enable
      */
     public void enableRepositoryActions(boolean enable) {
-        selectRepositoryAction.setEnabled(enable);
+        addFolderToRepositoryAction.setEnabled(enable);
         refreshFolderFromNavigatorAction.setEnabled(enable);
         importToRepositoryAction.setEnabled(enable);
         exportAction.setEnabled(enable);

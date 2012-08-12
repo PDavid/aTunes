@@ -26,16 +26,16 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 
 import org.junit.Test;
 
-public class SelectRepositoryActionTest {
+public class AddFolderToRepositoryActionTest {
 
 	@Test
 	public void test() {
-		SelectRepositoryAction sut = new SelectRepositoryAction();
+		AddFolderToRepositoryAction sut = new AddFolderToRepositoryAction();
 		IRepositoryHandler repositoryHandler = mock(IRepositoryHandler.class);
 		sut.setRepositoryHandler(repositoryHandler);
 		
 		sut.executeAction();
 		
-		verify(repositoryHandler).selectRepository();
+		verify(repositoryHandler).addFolderToRepository();
 	}
 }

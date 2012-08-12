@@ -105,6 +105,8 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     
     private IDialogFactory dialogFactory;
     
+    private List<File> foldersSelectedFromPreferences;
+    
     /**
      * @param dialogFactory
      */
@@ -226,7 +228,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	
     @Override
     public void applicationStateChanged() {
-    	if (caseSensitiveTrees != stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    	// User changed repository folders
+    	if (foldersSelectedFromPreferences != null) {
+    		repositoryReader.newRepositoryWithFolders(foldersSelectedFromPreferences);
+    		foldersSelectedFromPreferences = null;
+    	} else if (caseSensitiveTrees != stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		caseSensitiveTrees = stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure();
     		refreshRepository();
     	}
@@ -496,8 +502,8 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     }
 
     @Override
-	public boolean selectRepository() {
-        return repositoryReader.selectRepository(false);
+	public boolean addFolderToRepository() {
+        return repositoryReader.addFolderToRepository();
     }
 
     @Override
@@ -646,4 +652,9 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         worker.setActionsWhenDone(actionsWhenDone);
         worker.execute();
     }
+	
+	@Override
+	public void setRepositoryFolders(List<File> folders) {
+		foldersSelectedFromPreferences = folders;
+	}
 }
