@@ -21,6 +21,11 @@
 package net.sourceforge.atunes.model;
 
 
+/**
+ * Interface for handlers
+ * @author alex
+ *
+ */
 public interface IHandler extends IApplicationLifeCycleListener, 
 								  IStateChangeListener,
 								  IPlayListEventListener,

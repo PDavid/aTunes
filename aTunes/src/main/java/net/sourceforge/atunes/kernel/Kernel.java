@@ -164,7 +164,7 @@ public final class Kernel implements IKernel, ApplicationContextAware {
             
             context.getBean(ApplicationLifeCycleListeners.class).applicationFinish();
             
-            context.getBean(ITaskService.class).shutdownService();
+            context.getBean("taskService", ITaskService.class).shutdownService();
             
         } finally {
             Logger.info(StringUtils.getString("Application finished (", StringUtils.toString(finishTimer.stop(), 3), " seconds)"));
@@ -180,6 +180,12 @@ public final class Kernel implements IKernel, ApplicationContextAware {
     void callActionsAfterStart() {
     	context.getBean(ApplicationLifeCycleListeners.class).applicationStarted();
     	context.getBean(ApplicationLifeCycleListeners.class).allHandlersInitialized();
+    	context.getBean("taskService", ITaskService.class).submitOnce("Deferred handler initialization", 5, new Runnable() {
+    		@Override
+    		public void run() {
+    			context.getBean(ApplicationLifeCycleListeners.class).deferredInitialization();
+    		}
+    	});
     }
 
     /**

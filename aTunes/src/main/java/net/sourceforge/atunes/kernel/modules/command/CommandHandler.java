@@ -39,6 +39,11 @@ import net.sourceforge.atunes.utils.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * Responsible of managing remote commands
+ * @author alex
+ *
+ */
 public final class CommandHandler extends AbstractHandler implements ICommandHandler, ApplicationContextAware {
 
     /**
@@ -63,7 +68,11 @@ public final class CommandHandler extends AbstractHandler implements ICommandHan
 	}
 
     @Override
-    public void allHandlersInitialized() {
+    public void deferredInitialization() {
+    	Map<String, RemoteAction> actions = context.getBeansOfType(RemoteAction.class);
+    	for (Map.Entry<String, RemoteAction> action : actions.entrySet()) {
+    		Logger.debug("Initializing command: ", action.getKey());
+    	}
         runCommands(applicationArguments.getSavedCommands(this));
     }
 
@@ -120,13 +129,5 @@ public final class CommandHandler extends AbstractHandler implements ICommandHan
         } else {
             return "Bad command name of format, type \"command:help\" for assistance.";
         }
-    }
-
-    @Override
-    protected void initHandler() {
-    	Map<String, RemoteAction> actions = context.getBeansOfType(RemoteAction.class);
-    	for (Map.Entry<String, RemoteAction> action : actions.entrySet()) {
-    		Logger.debug("Initializing command: ", action.getKey());
-    	}
     }
 }

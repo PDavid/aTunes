@@ -42,6 +42,12 @@ public interface IApplicationLifeCycleListener {
     public void allHandlersInitialized();
     
     /**
+     * Code to be executed when application completely started
+     * Put here code not needed by startup process
+     */
+    public void deferredInitialization();
+    
+    /**
      * Code to ask each component to interact with user after app starts
      * @return order to interact with user or -1 if no user interaction needed
      */
