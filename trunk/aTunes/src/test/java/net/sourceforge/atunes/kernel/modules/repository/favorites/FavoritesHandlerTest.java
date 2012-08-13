@@ -48,7 +48,7 @@ public class FavoritesHandlerTest {
 		sut = new FavoritesHandler();
 		sut.setStateContext(mock(IStateContext.class));
 		sut.setStateHandler(stateHandler);
-		sut.getPreviousInitializationTask().run();
+		sut.getInitializationTask().getInitializationTask().run();
 	}
 	
 	@Test

@@ -26,6 +26,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IHandler;
+import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.PlaybackState;
@@ -40,6 +41,15 @@ public abstract class AbstractHandler implements IHandler {
 	private IFrame frame;
 	
 	private IOSManager osManager;
+	
+	private IHandlerBackgroundInitializationTask initializationTask;
+
+	/**
+	 * @param initializationTask
+	 */
+	public void setInitializationTask(IHandlerBackgroundInitializationTask initializationTask) {
+		this.initializationTask = initializationTask;
+	}
 	
 	/**
 	 * @param osManager
@@ -68,17 +78,12 @@ public abstract class AbstractHandler implements IHandler {
 	public void setFrame(IFrame frame) {
 		this.frame = frame;
 	}
-	
-    /**
-     * Returns a task to be executed before initialize handler By default
-     * handlers do not define any task
-     * 
-     * @return
-     */
-    protected Runnable getPreviousInitializationTask() {
-        return null;
-    }
 
+	@Override
+	public final IHandlerBackgroundInitializationTask getInitializationTask() {
+		return initializationTask;
+	}
+	
     @Override
     public void deferredInitialization() {}
     
@@ -105,15 +110,6 @@ public abstract class AbstractHandler implements IHandler {
     
     @Override
     public void audioObjectsRemoved(List<IPlayListAudioObject> audioObjectsRemoved) {}
-    
-    @Override
-    public int requestUserInteraction() {
-    	// By default no user interaction is requested
-    	return -1;
-    }
-    
-    @Override
-    public void doUserInteraction() {}
     
     @Override
     public void applicationFinish() {}

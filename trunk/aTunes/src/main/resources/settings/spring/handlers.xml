@@ -7,6 +7,10 @@
 	
 	<bean class="net.sourceforge.atunes.kernel.HandlerInitializer"/>
 	
+	<bean id="repositoryHandler" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler">
+		<property name="initializationTask" ref="repositoryInitializationTask"/>
+	</bean>
+	
 	<bean id="updateHandler" class="net.sourceforge.atunes.kernel.modules.updates.UpdateHandler">
 		<property name="updatesURL" value="http://www.atunes.org/latest.xml"></property>
 	</bean>
@@ -15,19 +19,38 @@
 	<bean id="webServicesHandler" class="net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler"/>
 	<bean id="generalPurposePluginsHandler" class="net.sourceforge.atunes.kernel.modules.plugins.GeneralPurposePluginsHandler"/>
 	<bean id="systemTrayHandler" class="net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler"/>
-	<bean id="statisticsHandler" class="net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler"/>
+	<bean id="statisticsHandler" class="net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler">
+		<property name="initializationTask">
+			<bean class="net.sourceforge.atunes.kernel.modules.statistics.StatisticsInitializationTask" scope="prototype"/>
+		</property>
+	</bean>
 	<bean id="smartPlayListHandler" class="net.sourceforge.atunes.kernel.modules.playlist.SmartPlayListHandler"/>
 	<bean id="uiHandler" class="net.sourceforge.atunes.kernel.modules.ui.UIHandler"/>
 	<bean id="contextHandler" class="net.sourceforge.atunes.kernel.modules.context.ContextHandler"/>
-	<bean id="playListHandler" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler"/>
+	<bean id="playListHandler" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler">
+		<property name="initializationTask">
+			<bean class="net.sourceforge.atunes.kernel.modules.playlist.PlayListHandlerInitializationTask" scope="prototype"/>
+		</property>
+	</bean>
 	<bean id="navigationHandler" class="net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler"/>
-	<bean id="podcastFeedHandler" class="net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler"/>
+	<bean id="podcastFeedHandler" class="net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler">
+		<property name="initializationTask">
+			<bean class="net.sourceforge.atunes.kernel.modules.podcast.PodcastsInitializationTask" scope="prototype"/>
+		</property>
+	</bean>
 	<bean id="stateHandler" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler"/>
-	<bean id="favoritesHandler" class="net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler"/>
+	<bean id="favoritesHandler" class="net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler">
+		<property name="initializationTask">
+			<bean class="net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesInitializationTask" scope="prototype"/>
+		</property>
+	</bean>
 	<bean id="searchHandler" class="net.sourceforge.atunes.kernel.modules.search.SearchHandler"/>
-	<bean id="repositoryHandler" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler"/>
 	<bean id="deviceHandler" class="net.sourceforge.atunes.kernel.modules.repository.DeviceHandler"/>
-	<bean id="radioHandler" class="net.sourceforge.atunes.kernel.modules.radio.RadioHandler"/>
+	<bean id="radioHandler" class="net.sourceforge.atunes.kernel.modules.radio.RadioHandler">
+		<property name="initializationTask">
+			<bean class="net.sourceforge.atunes.kernel.modules.radio.RadioInitializationTask" scope="prototype"/>
+		</property>	
+	</bean>
 	<bean id="playerHandler" class="net.sourceforge.atunes.kernel.modules.player.PlayerHandler"/>
 	<bean id="ripperHandler" class="net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler"/>
 	<bean id="commandHandler" class="net.sourceforge.atunes.kernel.modules.command.CommandHandler"/>

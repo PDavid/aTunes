@@ -32,6 +32,10 @@ public interface IHandler extends IApplicationLifeCycleListener,
 								  IFavoritesListener,
 								  IDeviceListener,
 								  IPlaybackStateListener,
-								  IWindowListener {
+								  IWindowListener {	
 	
+	/**
+	 * @return initialization task for this handler
+	 */
+	IHandlerBackgroundInitializationTask getInitializationTask();
 }

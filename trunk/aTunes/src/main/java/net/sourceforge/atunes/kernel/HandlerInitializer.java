@@ -22,14 +22,32 @@ package net.sourceforge.atunes.kernel;
 
 import java.util.Collection;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;
+import net.sourceforge.atunes.model.ITaskService;
+import net.sourceforge.atunes.utils.StringUtils;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * Initializes handlers
+ * @author alex
+ *
+ */
 public class HandlerInitializer implements ApplicationContextAware {
 	
 	private Collection<AbstractHandler> handlers;
+	
+	private ITaskService taskService;
+	
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
 
     /**
      * initializes all defined handlers
@@ -37,10 +55,22 @@ public class HandlerInitializer implements ApplicationContextAware {
      */
     void initializeHandlers() {
         for (AbstractHandler handler : handlers) {
-            Runnable task = handler.getPreviousInitializationTask();
-            if (task != null) {
-                task.run();
-            }
+        	IHandlerBackgroundInitializationTask task = handler.getInitializationTask();
+        	if (task != null) {
+                final Runnable initializationTask = task.getInitializationTask();
+                if (initializationTask != null) {
+                	final Runnable afterTask = task.getInitializationCompletedTask();
+                	taskService.submitNow(StringUtils.getString(handler.getClass().getName(), ".InitializationTask"), new Runnable() {
+                		@Override
+                		public void run() {
+                			initializationTask.run();
+                			if (afterTask != null) {
+                				GuiUtils.callInEventDispatchThread(afterTask);
+                			}
+                		}            		
+                	});
+                }
+        	}
         }
 
         // Initialize handlers

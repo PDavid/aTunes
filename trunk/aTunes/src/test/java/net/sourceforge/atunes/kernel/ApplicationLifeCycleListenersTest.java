@@ -21,24 +21,16 @@
 package net.sourceforge.atunes.kernel;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.sourceforge.atunes.model.IApplicationLifeCycleListener;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InOrder;
 
 public class ApplicationLifeCycleListenersTest {
 
@@ -85,42 +77,5 @@ public class ApplicationLifeCycleListenersTest {
 		verify(mock1).applicationFinish();
 		verify(mock2).applicationFinish();
 		verify(mock3).applicationFinish();
-	}
-	
-	@Test(expected=IllegalStateException.class)
-	public void getUserInteraction1() {
-		when(mock1.requestUserInteraction()).thenReturn(1);
-		when(mock2.requestUserInteraction()).thenReturn(1);
-		when(mock3.requestUserInteraction()).thenReturn(2);
-		
-		sut.getUserInteractionRequests();
-	}
-
-	@Test
-	public void getUserInteraction2() {
-		when(mock1.requestUserInteraction()).thenReturn(1);
-		when(mock2.requestUserInteraction()).thenReturn(2);
-		when(mock3.requestUserInteraction()).thenReturn(-1);
-		
-		Map<Integer, IApplicationLifeCycleListener> requests = sut.getUserInteractionRequests();
-		assertEquals(2, requests.size());
-		assertTrue(requests.containsKey(1));
-		assertTrue(requests.containsKey(2));
-		assertEquals(mock1, requests.get(1));
-		assertEquals(mock2, requests.get(2));
-	}
-	
-	@Test
-	public void doUserInteraction() {
-		Map<Integer, IApplicationLifeCycleListener> requests = new HashMap<Integer, IApplicationLifeCycleListener>();
-		requests.put(1, mock2);
-		requests.put(2, mock1);
-		requests.put(-1, mock3);
-		sut.doUserInteraction(requests);
-		
-		InOrder order = inOrder(mock2, mock1);
-		order.verify(mock2).doUserInteraction();
-		order.verify(mock1).doUserInteraction();
-		verify(mock3, never()).doUserInteraction();
 	}
 }

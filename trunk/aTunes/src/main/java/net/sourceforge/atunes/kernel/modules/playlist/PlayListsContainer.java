@@ -28,6 +28,11 @@ import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Container holding playlists
+ * @author alex
+ *
+ */
 public final class PlayListsContainer implements IPlayListsContainer {
 
     /** The play lists currently opened. */
@@ -173,7 +178,7 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	@Override
 	public IPlayList getCurrentPlayList(boolean visible) {
         if (getPlayListsCount() == 0) {
-            return null;
+            return new VoidPlayList();
         }
 
         if (visible) {

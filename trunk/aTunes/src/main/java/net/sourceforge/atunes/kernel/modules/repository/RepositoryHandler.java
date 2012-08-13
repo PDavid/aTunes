@@ -45,8 +45,6 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRepositoryTransaction;
-import net.sourceforge.atunes.model.ISearchHandler;
-import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IStatisticsHandler;
@@ -72,8 +70,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	
 	private INavigationHandler navigationHandler;
 	
-	private ISearchHandler searchHandler;
-	
 	private IStateHandler stateHandler;
 	
 	private IRepository repository;
@@ -90,8 +86,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	private IRepositoryTransaction transaction;
 	
 	private ShowRepositoryDataHelper showRepositoryDataHelper;
-	
-	private ISearchableObject repositorySearchableObject;
 	
 	private PersistRepositoryTask persistRepositoryTask;
 	
@@ -150,13 +144,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	}
 	
 	/**
-	 * @param repositorySearchableObject
-	 */
-	public void setRepositorySearchableObject(ISearchableObject repositorySearchableObject) {
-		this.repositorySearchableObject = repositorySearchableObject;
-	}
-	
-	/**
 	 * @param voidRepository
 	 */
 	public void setVoidRepository(VoidRepository voidRepository) {
@@ -198,13 +185,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		this.stateHandler = stateHandler;
 	}
     
-    /**
-     * @param searchHandler
-     */
-    public void setSearchHandler(ISearchHandler searchHandler) {
-		this.searchHandler = searchHandler;
-	}
-
 	/**
 	 * @param statisticsHandler
 	 */
@@ -249,24 +229,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	caseSensitiveTrees = stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure();
         addAudioFilesRemovedListener(this);
     }
-
-    @Override
-    public void allHandlersInitialized() {
-    	repositoryReader.applyRepositoryFromCache();
-        searchHandler.registerSearchableObject(repositorySearchableObject);
-        repositoryRefresher.start();
-    }
     
-    @Override
-    public int requestUserInteraction() {
-    	return 2;
-    }
-    
-    @Override
-    public void doUserInteraction() {
-    	repositoryReader.testRepositoryRetrievedFromCache();
-    }
-
     @Override
 	public void addFilesAndRefresh(final List<File> files) {
     	getBean(AddFilesTask.class).execute(repository, files);
@@ -409,11 +372,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	repositoryReader.notifyCancel();
     }
 
-    @Override
-    protected Runnable getPreviousInitializationTask() {
-        return getBean(PreviousInitializationTask.class);
-    }
-    
     @Override
 	public void refreshFile(ILocalAudioObject file) {
     	localAudioObjectRefresher.refreshFile(repository, file);
