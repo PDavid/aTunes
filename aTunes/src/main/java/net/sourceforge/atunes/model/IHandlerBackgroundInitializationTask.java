@@ -20,22 +20,23 @@
 
 package net.sourceforge.atunes.model;
 
-
 /**
- * Interface for handlers
+ * A task to be performed in background while starting handlers
  * @author alex
  *
  */
-public interface IHandler extends IApplicationLifeCycleListener, 
-								  IStateChangeListener,
-								  IPlayListEventListener,
-								  IFavoritesListener,
-								  IDeviceListener,
-								  IPlaybackStateListener,
-								  IWindowListener {	
+public interface IHandlerBackgroundInitializationTask {
 	
-	/**
-	 * @return initialization task for this handler
-	 */
-	IHandlerBackgroundInitializationTask getInitializationTask();
+    /**
+     * Returns a task to be executed in background while continue starting application
+     * @return runnable task
+     */
+    Runnable getInitializationTask();
+    
+    /**
+     * Task to do after initialization task completed
+     * @return runnable task
+     */
+    Runnable getInitializationCompletedTask();
+
 }

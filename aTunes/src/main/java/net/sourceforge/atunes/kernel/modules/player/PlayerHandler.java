@@ -215,15 +215,6 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     @Override
     public void allHandlersInitialized() {
     	initialize();
-    }
-    
-    @Override
-    public int requestUserInteraction() {
-    	return 1;
-    }
-    
-    @Override
-    public void doUserInteraction() {
         if (playerEngine instanceof VoidPlayerEngine) {
             manageNoPlayerEngine(getOsManager(), getFrame());
         }

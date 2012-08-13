@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.radio;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import net.sourceforge.atunes.Constants;
@@ -46,15 +45,8 @@ import net.sourceforge.atunes.utils.XMLSerializerService;
  */
 public final class RadioHandler extends AbstractHandler implements IRadioHandler {
 
-    private static final Comparator<IRadio> COMPARATOR = new Comparator<IRadio>() {
-        @Override
-        public int compare(IRadio o1, IRadio o2) {
-            return o1.getName().compareToIgnoreCase(o2.getName());
-        }
-    };
-
-    private List<IRadio> radios;
-    private List<IRadio> presetRadios;
+    private List<IRadio> radios = new ArrayList<IRadio>();
+    private List<IRadio> presetRadios = new ArrayList<IRadio>();
     private List<IRadio> retrievedPresetRadios = new ArrayList<IRadio>();
     private boolean noNewStations = true;
 
@@ -137,7 +129,7 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
             getRadios().add(radio);
             radioListDirty = true;
         }
-        Collections.sort(getRadios(), COMPARATOR);
+        Collections.sort(getRadios(), new RadioComparator());
         getBean(INavigationHandler.class).refreshView(radioNavigationView);
     }
 
@@ -155,28 +147,6 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
         } else {
             Logger.info("Radio list is clean");
         }
-    }
-
-    @Override
-    protected Runnable getPreviousInitializationTask() {
-        return new Runnable() {
-            /**
-             * Read radio stations lists. We use different files, one for
-             * presets which is not modified by the user and a second one for
-             * all the user modifications.
-             */
-            @Override
-            public void run() {
-                radios = getBean(IStateHandler.class).retrieveRadioCache();
-                if (radios == null) {
-                	radios = new ArrayList<IRadio>();
-                }
-                presetRadios = getBean(IStateHandler.class).retrieveRadioPreset();
-                if (presetRadios == null) {
-                	presetRadios = new ArrayList<IRadio>();
-                }
-            }
-        };
     }
 
     @Override
@@ -207,7 +177,6 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
     @Override
 	public List<String> sortRadioLabels() {
         List<String> result = new ArrayList<String>();
-        List<String> newResult = new ArrayList<String>();
         // Read labels from user radios
         for (IRadio radio : getRadios()) {
             String label = radio.getLabel();
@@ -222,27 +191,9 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
                 result.add(label);
             }
         }
-
-        newResult.add(result.get(0));
-        // Sort labels, currently in reversed order
-        for (String label : result) {
-            int i = 0;
-            while (i < newResult.size()) {
-                int n = label.compareTo(newResult.get(i));
-                if (n < 0) {
-                    newResult.add(i, label);
-                    i = result.size();
-                } else if (i == newResult.size() - 1) {
-                    if (newResult.get(i) != label) {
-                        newResult.add(label);
-                    }
-                    i = result.size();
-                } else {
-                    i = i + 1;
-                }
-            }
-        }
-        return newResult;
+        
+        Collections.sort(result);
+        return result;
     }
 
     @Override
@@ -336,5 +287,19 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
 		dialog.setRadio(radio);
 		dialog.showDialog();
 		return dialog.getRadio();
+	}
+	
+	/**
+	 * @param radios
+	 */
+	void setRadios(List<IRadio> radios) {
+		this.radios = radios;
+	}
+	
+	/**
+	 * @param presetRadios
+	 */
+	void setPresetRadios(List<IRadio> presetRadios) {
+		this.presetRadios = presetRadios;
 	}
 }

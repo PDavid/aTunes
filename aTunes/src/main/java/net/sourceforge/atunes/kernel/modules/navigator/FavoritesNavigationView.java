@@ -91,6 +91,9 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 		this.favoriteIcon = favoriteIcon;
 	}
 
+    /**
+     * @param repositoryHandler
+     */
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}

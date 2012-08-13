@@ -18,29 +18,28 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository;
+package net.sourceforge.atunes.kernel.modules.statistics;
 
+import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;
 import net.sourceforge.atunes.model.IStateHandler;
-import net.sourceforge.atunes.model.IStateRepository;
+import net.sourceforge.atunes.model.IStatistics;
 
-public final class PreviousInitializationTask implements Runnable {
+/**
+ * Reads statistics
+ * @author alex
+ *
+ */
+public final class StatisticsInitializationTask implements IHandlerBackgroundInitializationTask {
 	
-	private RepositoryReader repositoryReader;
+	private StatisticsHandler statisticsHandler;
 	
 	private IStateHandler stateHandler;
 	
-	private IStateRepository stateRepository;
-	
 	/**
-	 * @param stateRepository
+	 * @param statisticsHandler
 	 */
-	public void setStateRepository(IStateRepository stateRepository) {
-		this.stateRepository = stateRepository;
-	}
-	
-
-	public void setRepositoryReader(RepositoryReader repositoryReader) {
-		this.repositoryReader = repositoryReader;
+	public void setStatisticsHandler(StatisticsHandler statisticsHandler) {
+		this.statisticsHandler = statisticsHandler;
 	}
 	
 	/**
@@ -51,9 +50,20 @@ public final class PreviousInitializationTask implements Runnable {
 	}
 	
 	@Override
-	public void run() {
-	    // This is the first access to repository, so execute the command defined by user
-	    new LoadRepositoryCommandExecutor().execute(stateRepository.getCommandBeforeAccessRepository());
-	    repositoryReader.setRepositoryRetrievedFromCache(stateHandler.retrieveRepositoryCache());
+	public Runnable getInitializationTask() {
+		return new Runnable() {
+			@Override
+			public void run() {
+			    IStatistics statistics = stateHandler.retrieveStatisticsCache();
+			    if (statistics != null) {
+			    	statisticsHandler.setStatistics(statistics);
+			    }
+			}
+		};
+	}
+	
+	@Override
+	public Runnable getInitializationCompletedTask() {
+		return null;
 	}
 }

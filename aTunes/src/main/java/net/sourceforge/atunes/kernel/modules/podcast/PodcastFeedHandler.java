@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CancellationException;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
@@ -63,9 +62,12 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PodcastFeedHandler extends AbstractHandler implements IPodcastFeedHandler {
 
+    /**
+     * Time in seconds between two podcast retrieval checks
+     */
     public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180;
 
-    private List<IPodcastFeed> podcastFeeds;
+    private List<IPodcastFeed> podcastFeeds = new ArrayList<IPodcastFeed>();
 
     /**
      * Flag indicating if podcast list needs to be written to disk
@@ -146,6 +148,9 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 		this.taskService = taskService;
 	}
     
+    /**
+     * @param stateHandler
+     */
     public void setStateHandler(IStateHandler stateHandler) {
 		this.stateHandler = stateHandler;
 	}
@@ -231,23 +236,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
             Logger.info("Podcast list is clean");
         }
 
-    }
-
-    @Override
-    protected Runnable getPreviousInitializationTask() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                podcastFeeds = stateHandler.retrievePodcastFeedCache();
-                if (podcastFeeds == null) {
-                	/*
-                     * java.util.concurrent.CopyOnWriteArrayList instead of e.g.
-                     * java.util.ArrayList to avoid ConcurrentModificationException
-                     */
-                	podcastFeeds = new CopyOnWriteArrayList<IPodcastFeed>();
-                }
-            }
-        };
     }
 
     @Override
@@ -521,5 +509,12 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 			podcastFeedEntryDownloaderExecutorService = Executors.newCachedThreadPool();
 		}
 		return podcastFeedEntryDownloaderExecutorService;
+	}
+	
+	/**
+	 * @param podcastFeeds
+	 */
+	void setPodcastFeeds(List<IPodcastFeed> podcastFeeds) {
+		this.podcastFeeds = podcastFeeds;
 	}
 }

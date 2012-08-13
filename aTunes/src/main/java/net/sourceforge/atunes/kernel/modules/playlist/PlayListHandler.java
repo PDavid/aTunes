@@ -50,7 +50,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 public final class PlayListHandler extends AbstractHandler implements IPlayListHandler {
 
     /** Play lists stored */
-    private IListOfPlayLists playListsRetrievedFromCache;
+    private IListOfPlayLists playListsRetrievedFromCache = new ListOfPlayLists();
     
     /** The play list tab controller. */
     private PlayListTabController playListTabController;
@@ -194,32 +194,9 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         // Add audio file removed listener
         getBean(IRepositoryHandler.class).addAudioFilesRemovedListener(this);
     }
-
+    
     @Override
     public void applicationStarted() {
-    	// Playlists need to be loaded before other handlers access them in allHandlersInitialized
-        // Get playlists from application cache
-        final IListOfPlayLists listOfPlayLists = playListsRetrievedFromCache;
-
-        // Set selected play list as default 
-        int selected = listOfPlayLists.getSelectedPlayList();
-        if (selected < 0 || selected >= listOfPlayLists.getPlayLists().size()) {
-            selected = 0;
-        }
-
-        // Add playlists
-        playListsContainer.clear();
-        for (IPlayList playlist : listOfPlayLists.getPlayLists()) {
-        	addNewPlayList(playListNameCreator.getNameForPlaylist(playListsContainer, playlist), playlist);
-        }
-        // Initially active play list and visible play list are the same
-        playListsContainer.setActivePlayListIndex(selected);
-        playListsContainer.setVisiblePlayListIndex(selected);
-        playListTabController.forceSwitchTo(selected);
-
-        setPlayList(playListsContainer.getPlayListAt(selected));
-
-        playListsRetrievedFromCache = null;
     }
     
     @Override
@@ -432,11 +409,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void playListsChanged(boolean definition, boolean contents) {
     	playListPersistor.persistPlayLists(listOfPlayListsCreator.getListOfPlayLists(playListsContainer), definition, contents);
-    }
-
-    @Override
-    protected Runnable getPreviousInitializationTask() {
-        return new PreviousInitializationTaskRunnable(this);
     }
 
     @Override
@@ -663,4 +635,33 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     public void windowDeiconified() {
 		scrollPlayList(false);
     }
+
+	/**
+	 * Called after initialization task completed
+	 */
+	void initializationTaskCompleted() {
+		// Playlists need to be loaded before other handlers access them in allHandlersInitialized
+		// Get playlists from application cache
+		final IListOfPlayLists listOfPlayLists = playListsRetrievedFromCache;
+
+		// Set selected play list as default 
+		int selected = listOfPlayLists.getSelectedPlayList();
+		if (selected < 0 || selected >= listOfPlayLists.getPlayLists().size()) {
+			selected = 0;
+		}
+
+		// Add playlists
+		playListsContainer.clear();
+		for (IPlayList playlist : listOfPlayLists.getPlayLists()) {
+			addNewPlayList(playListNameCreator.getNameForPlaylist(playListsContainer, playlist), playlist);
+		}
+		// Initially active play list and visible play list are the same
+		playListsContainer.setActivePlayListIndex(selected);
+		playListsContainer.setVisiblePlayListIndex(selected);
+		playListTabController.forceSwitchTo(selected);
+
+		setPlayList(playListsContainer.getPlayListAt(selected));
+
+		playListsRetrievedFromCache = null;
+	}
 }

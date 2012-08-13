@@ -40,9 +40,14 @@ import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.RankList;
 
+/**
+ * Responsible of managing statistics about listening habits of user
+ * @author alex
+ *
+ */
 public final class StatisticsHandler extends AbstractHandler implements IStatisticsHandler {
 
-    private IStatistics statistics;
+    private IStatistics statistics = new Statistics();
     
     private StatsDialogController controller;
     
@@ -99,11 +104,6 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     public void setStateHandler(IStateHandler stateHandler) {
 		this.stateHandler = stateHandler;
 	}
-
-    @Override
-    protected Runnable getPreviousInitializationTask() {
-        return new StatisticsLoadTask(this, stateHandler);
-    }
 
     /**
      * Fill stats.

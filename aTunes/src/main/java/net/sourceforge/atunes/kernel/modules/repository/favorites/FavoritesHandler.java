@@ -61,7 +61,7 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 	private FavoritesListeners favoritesListeners;
 
 	/** The favorites. */
-	private IFavorites favorites;
+	private IFavorites favorites = new Favorites();
 
 	private IStateContext stateContext;
 
@@ -223,20 +223,6 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 	}
 
 	@Override
-	protected Runnable getPreviousInitializationTask() {
-		return new Runnable() {
-
-			@Override
-			public void run() {
-				favorites = stateHandler.retrieveFavoritesCache();
-				if (favorites == null) {
-					favorites = new Favorites();
-				}
-			}
-		};
-	}
-
-	@Override
 	public List<ILocalAudioObject> getFavoriteSongs() {
 		return favorites.getAllFavoriteSongs();
 	}
@@ -327,5 +313,12 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 		if (!toRemove.isEmpty()) {
 			removeSongsFromFavorites(toRemove);
 		}
+	}
+	
+	/**
+	 * @param favorites
+	 */
+	void setFavorites(IFavorites favorites) {
+		this.favorites = favorites;
 	}
 }

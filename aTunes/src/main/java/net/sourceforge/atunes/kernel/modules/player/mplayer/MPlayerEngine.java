@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumSet;
-import java.util.List;
 
 import javax.swing.SwingUtilities;
 
@@ -89,15 +88,12 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     	InputStream in = null;
     	try {
     		// Processes in Windows need to read input stream, if not process is blocked
-    		// so read input stream and show in log
+    		// so read input stream
         	String command = getOsManager().getPlayerEngineCommand(this);
         	if (command != null) {
         		Process testEngineProcess = new ProcessBuilder(command).start();
         		in = testEngineProcess.getInputStream();
-        		List<String> lines = IOUtils.readLines(in);
-        		for (String line : lines) {
-        			Logger.debug(line);
-        		}
+        		IOUtils.readLines(in);
         		int rc = testEngineProcess.waitFor();
         		return rc == 0;
         	}

@@ -18,32 +18,15 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.statistics;
+package net.sourceforge.atunes.kernel.modules.radio;
 
-import net.sourceforge.atunes.model.IStateHandler;
-import net.sourceforge.atunes.model.IStatistics;
+import java.util.Comparator;
 
-final class StatisticsLoadTask implements Runnable {
-	
-	private final StatisticsHandler statisticsHandler;
-	
-	private final IStateHandler stateHandler;
-	
-	/**
-	 * @param statisticsHandler
-	 * @param stateHandler
-	 */
-	StatisticsLoadTask(StatisticsHandler statisticsHandler, IStateHandler stateHandler) {
-		this.statisticsHandler = statisticsHandler;
-		this.stateHandler = stateHandler;
-	}
+import net.sourceforge.atunes.model.IRadio;
 
+final class RadioComparator implements Comparator<IRadio> {
 	@Override
-	public void run() {
-	    IStatistics statistics = stateHandler.retrieveStatisticsCache();
-	    if (statistics == null) {
-	    	statistics = new Statistics();
-	    }
-	    this.statisticsHandler.setStatistics(statistics);
-	}
+    public int compare(IRadio o1, IRadio o2) {
+        return o1.getName().compareToIgnoreCase(o2.getName());
+    }
 }

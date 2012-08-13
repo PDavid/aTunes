@@ -100,10 +100,6 @@ public final class Kernel implements IKernel, ApplicationContextAware {
         initializeUI();
         context.getBean(HandlerInitializer.class).initializeHandlers();
         createUI();
-
-        // Call user interaction
-        context.getBean(ApplicationLifeCycleListeners.class).doUserInteraction(
-        		context.getBean(ApplicationLifeCycleListeners.class).getUserInteractionRequests());
     }
     
     /**
