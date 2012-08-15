@@ -29,6 +29,7 @@ import net.sourceforge.atunes.kernel.actions.SaveM3UPlayListAction;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IListOfPlayLists;
@@ -83,6 +84,15 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private PlayListCreator playListCreator;
     
     private PlayListInformationInStatusBar playListInformationInStatusBar;
+    
+    private IContextHandler contextHandler;
+    
+    /**
+     * @param contextHandler
+     */
+    public void setContextHandler(IContextHandler contextHandler) {
+		this.contextHandler = contextHandler;
+	}
     
     /**
      * @param playListInformationInStatusBar
@@ -284,9 +294,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     	getBean(SaveM3UPlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
         getBean(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
         playListInformationInStatusBar.showPlayListInformation(playList);
-        if (isActivePlayListVisible()) {
-        	playListEventListeners.selectedAudioObjectHasChanged(playList.getCurrentAudioObject());
-        }
+
         // Update table model
         playListController.setVisiblePlayList(getCurrentPlayList(true));
         playListController.refreshPlayList();
@@ -663,5 +671,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 		setPlayList(playListsContainer.getPlayListAt(selected));
 
 		playListsRetrievedFromCache = null;
+		
+		// update information in context panel
+		contextHandler.retrieveInfoAndShowInPanel(getCurrentAudioObjectFromCurrentPlayList());
 	}
 }

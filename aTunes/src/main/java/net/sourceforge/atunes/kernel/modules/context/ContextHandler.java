@@ -130,13 +130,6 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     	getFrame().showContextPanel(stateContext.isUseContext());
     }
     
-    @Override
-    public void allHandlersInitialized() {
-    	if (stateContext.isUseContext()) {
-    		retrieveInfoAndShowInPanel(playListHandler.getCurrentAudioObjectFromVisiblePlayList());
-    	}
-    }
-    
     /**
      * Called when user changes context tab
      */
@@ -170,9 +163,6 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         }
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextHandler#retrieveInfoAndShowInPanel(net.sourceforge.atunes.model.IAudioObject)
-	 */
     @Override
 	public void retrieveInfoAndShowInPanel(IAudioObject ao) {
         boolean audioObjectModified = false;
