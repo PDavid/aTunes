@@ -23,6 +23,11 @@ package net.sourceforge.atunes.model;
 import java.util.List;
 
 
+/**
+ * Responsible of managing playlists
+ * @author alex
+ *
+ */
 public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 
 	/**
@@ -68,7 +73,7 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 
 	/**
 	 * Returns <code>true</code> if given index is current index
-	 * 
+	 * @param index
 	 * @return the currentPlayListIndex
 	 */
 	public boolean isVisiblePlayList(int index);
@@ -111,6 +116,7 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	 *            the index of playlist where add audio objects
 	 * @param audioObjects
 	 *            the audio objects
+	 * @param visible
 	 */
 	public void addToPlayList(int location, List<? extends IAudioObject> audioObjects, boolean visible);
 
@@ -329,11 +335,9 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public String getCurrentVisiblePlayListName();
 
 	/**
-	 * Called to sabe playlists
-	 * @param definition
-	 * @param contents
+	 * Called to save play lists
 	 */
-	public void playListsChanged(boolean definition, boolean contents);
+	public void playListsChanged();
 
 	/**
 	 * Select given interval in play list

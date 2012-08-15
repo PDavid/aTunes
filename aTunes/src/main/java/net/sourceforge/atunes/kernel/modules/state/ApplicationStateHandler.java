@@ -26,7 +26,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.IObjectDataStore;
@@ -34,7 +33,6 @@ import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IStateHandler;
-import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.model.IStatistics;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -52,16 +50,12 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	private boolean playListPersistAllowed = false;
 	
 	private XMLSerializerService xmlSerializerService;
-	
-	private IStatePlayer statePlayer;
-	
+		
 	private IObjectDataStore<IRepository> repositoryObjectDataStore;
 	
 	private IObjectDataStore<IRepository> deviceObjectDataStore;
 	
-	private IObjectDataStore<IListOfPlayLists> playListDefinitionObjectDataStore;
-	
-	private IObjectDataStore<List<List<IAudioObject>>> playListContentsObjectDataStore;
+	private IObjectDataStore<IListOfPlayLists> playListObjectDataStore;
 	
 	private IObjectDataStore<IFavorites> favoritesObjectDataStore;
 	
@@ -87,19 +81,12 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	public void setDeviceObjectDataStore(IObjectDataStore<IRepository> deviceObjectDataStore) {
 		this.deviceObjectDataStore = deviceObjectDataStore;
 	}
-	
+
 	/**
-	 * @param playListContentsObjectDataStore
+	 * @param playListObjectDataStore
 	 */
-	public void setPlayListContentsObjectDataStore(IObjectDataStore<List<List<IAudioObject>>> playListContentsObjectDataStore) {
-		this.playListContentsObjectDataStore = playListContentsObjectDataStore;
-	}
-	
-	/**
-	 * @param playListDefinitionObjectDataStore
-	 */
-	public void setPlayListDefinitionObjectDataStore(IObjectDataStore<IListOfPlayLists> playListDefinitionObjectDataStore) {
-		this.playListDefinitionObjectDataStore = playListDefinitionObjectDataStore;
+	public void setPlayListObjectDataStore(IObjectDataStore<IListOfPlayLists> playListObjectDataStore) {
+		this.playListObjectDataStore = playListObjectDataStore;
 	}
 	
 	/**
@@ -107,13 +94,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 */
 	public void setRepositoryObjectDataStore(IObjectDataStore<IRepository> repositoryObjectDataStore) {
 		this.repositoryObjectDataStore = repositoryObjectDataStore;
-	}
-	
-	/**
-	 * @param statePlayer
-	 */
-	public void setStatePlayer(IStatePlayer statePlayer) {
-		this.statePlayer = statePlayer;
 	}
 	
 	/**
@@ -139,17 +119,12 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     }
 
     @Override
-	public void persistPlayListsDefinition(IListOfPlayLists listOfPlayLists) {
+	public void persistPlayLists(IListOfPlayLists listOfPlayLists) {
     	if (!playListPersistAllowed) {
     		Logger.debug("Persist play list definition not allowed yet");
     	} else {
-    		playListDefinitionObjectDataStore.write(listOfPlayLists);
+    		playListObjectDataStore.write(listOfPlayLists);
     	}
-    }
-
-    @Override
-	public void persistPlayListsContents(List<List<IAudioObject>> playListsContents) {
-    	playListContentsObjectDataStore.write(playListsContents);
     }
 
     @Override
@@ -204,17 +179,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 
     @Override
     public IListOfPlayLists retrievePlayListsCache() {
-    	// First get list of playlists
-    	IListOfPlayLists listOfPlayLists = playListDefinitionObjectDataStore.read();
-    	if (listOfPlayLists != null) {
-    		Logger.info(StringUtils.getString("List of playlists loaded"));
-
-    		// Then read contents
-    		List<List<IAudioObject>> contents = playListContentsObjectDataStore.read();
-    		Logger.info(StringUtils.getString("Playlists contents loaded"));
-    		listOfPlayLists.setContents(contents, statePlayer);
-    	}
-    	return listOfPlayLists;
+    	return playListObjectDataStore.read();
     }
 
     @SuppressWarnings("unchecked")

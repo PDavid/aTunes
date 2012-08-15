@@ -226,7 +226,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
 	public void newPlayList(String nameOfNewPlayList, List<? extends IAudioObject> audioObjects) {
         addNewPlayList(nameOfNewPlayList, playListCreator.getNewPlayList(nameOfNewPlayList, audioObjects));
-        playListsChanged(true, true);
+        playListsChanged();
     }
     
     private void addNewPlayList(String name, IPlayList playList) {
@@ -407,8 +407,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      * Called when play lists needs to be persisted
      */
     @Override
-    public void playListsChanged(boolean definition, boolean contents) {
-    	playListPersistor.persistPlayLists(listOfPlayListsCreator.getListOfPlayLists(playListsContainer), definition, contents);
+    public void playListsChanged() {
+    	playListPersistor.persistPlayLists(listOfPlayListsCreator.getListOfPlayLists(playListsContainer));
     }
 
     @Override
@@ -431,7 +431,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         addToPlaybackHistory(audioObject);
         playListController.updatePlayList();
         playListController.scrollPlayList(false);
-        playListsChanged(true, false);
+        playListsChanged();
 	};
 
     @Override
@@ -600,12 +600,12 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
 	@Override
 	public void audioObjectsAdded(List<IPlayListAudioObject> audioObjectsAdded) {
-		playListsChanged(true, true);
+		playListsChanged();
 	}
 	
 	@Override
 	public void audioObjectsRemoved(List<IPlayListAudioObject> audioObjectsRemoved) {		
-		playListsChanged(true, true);
+		playListsChanged();
 	}
 	
 	@Override
@@ -617,7 +617,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
 	@Override
 	public void playListCleared() {
-		playListsChanged(true, true);
+		playListsChanged();
 	}
 	
 	@Override
