@@ -154,7 +154,7 @@ public class Year implements IYear {
      */
     @Override
 	public Map<String, IArtist> getArtistObjects() {
-    	return new ArtistStructureBuilder().getArtistObjects(audioFiles);
+    	return new ArtistStructureBuilder().getArtistObjects(getAudioObjects());
     }
 
     /**
@@ -162,12 +162,11 @@ public class Year implements IYear {
      */
     @Override
 	public Set<String> getArtistSet() {
-    	return new ArtistStructureBuilder().getArtistSet(audioFiles);
+    	return new ArtistStructureBuilder().getArtistSet(getAudioObjects());
     }
     
     @Override
     public int size() {
     	return audioFiles.size();
     }
-
 }
