@@ -44,20 +44,20 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 
     private static final long serialVersionUID = -1139001443603556703L;
 
-    private ITag tag;
-    private int duration;
-	private long bitrate;
-    private int frequency;
-    private long readTime;
-    private int stars;
+    ITag tag;
+    int duration;
+	long bitrate;
+    int frequency;
+    long readTime;
+    int stars;
     
     /** The file on disk. */
-    private String filePath;
+    String filePath;
 
     /**
 	 * Default constructor for serialization
 	 */
-	public AudioFile() {
+	AudioFile() {
 	}
 
     /**

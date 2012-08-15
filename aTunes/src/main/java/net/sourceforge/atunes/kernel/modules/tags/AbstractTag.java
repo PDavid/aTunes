@@ -37,43 +37,43 @@ public abstract class AbstractTag implements Serializable, ITag {
     private static final long serialVersionUID = -4044670497563446883L;
 
     /** The title. */
-    private String title;
+    String title;
 
     /** The artist. */
-    private String artist;
+    String artist;
 
     /** The album. */
-    private String album;
+    String album;
 
     /** The year. */
-    private int year;
+    int year;
 
     /** The date. */
-    private BaseDateTime date;
+    BaseDateTime date;
 
     /** The comment. */
-    private String comment;
+    String comment;
 
     /** The genre. */
-    private String genre;
+    String genre;
 
     /** The lyrics. */
-    private String lyrics;
+    String lyrics;
 
     /** The composer. */
-    private String composer;
+    String composer;
 
     /** The album artist. */
-    private String albumArtist;
+    String albumArtist;
 
     /** The track number. */
-    private int trackNumber;
+    int trackNumber;
 
     /** The disc number */
-    private int discNumber;
+    int discNumber;
 
     /** If this tag has an internal image */
-    private boolean internalImage;
+    boolean internalImage;
 
     @Override
 	public String getAlbum() {

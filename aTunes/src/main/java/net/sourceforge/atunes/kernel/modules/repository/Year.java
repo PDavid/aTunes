@@ -41,15 +41,15 @@ public class Year implements IYear {
     private static final long serialVersionUID = -8560986690062265343L;
 
     /** Year value. */
-    private String year;
+    String year;
 
     /** List of songs of this year. */
-    private List<ILocalAudioObject> audioFiles;
+    List<ILocalAudioObject> audioFiles;
 
     /**
 	 * Default constructor for serialization
 	 */
-	public Year() {
+	Year() {
 	}
 
     /**

@@ -52,47 +52,47 @@ public class Repository implements Serializable, IRepository {
     /**
      * Root folders of repository
      */
-    private List<File> folders;
+    List<File> folders;
     
     /**
      *  The total size in bytes of all files 
      */
-    private long totalSizeInBytes;
+    long totalSizeInBytes;
     
     /** 
      * The total duration in seconds of all files 
      */
-    private long totalDurationInSeconds;
+    long totalDurationInSeconds;
     
     /**
      * File structure
      */
-    private RepositoryStructure<ILocalAudioObject> filesStructure;
+    RepositoryStructure<ILocalAudioObject> filesStructure;
     
     /**
      * Artists structure
      */
-    private RepositoryStructure<IArtist> artistsStructure;
+    RepositoryStructure<IArtist> artistsStructure;
     
     /**
      * Folders structure
      */
-    private RepositoryStructure<IFolder> foldersStructure;
+    RepositoryStructure<IFolder> foldersStructure;
     
     /**
      * Genres structure
      */
-    private RepositoryStructure<IGenre> genresStructure;
+    RepositoryStructure<IGenre> genresStructure;
     
     /**
      *  Year structure
      */
-    private RepositoryStructure<IYear> yearStructure;
+    RepositoryStructure<IYear> yearStructure;
     
     /**
      * State
      */
-    private transient IStateRepository stateRepository;
+    transient IStateRepository stateRepository;
     
     /**
      * Instantiates a new repository.

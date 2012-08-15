@@ -47,15 +47,15 @@ public class Artist implements IArtist {
 	private static final long serialVersionUID = 2528917861599275619L;
 
 	/** Name of the artist. */
-    private String name;
+    String name;
 
     /** List of IAlbum objects, indexed by name. */
-    private Map<String, IAlbum> albums;
+    Map<String, IAlbum> albums;
 
     /**
 	 * Default constructor for serialization
 	 */
-	public Artist() {
+	Artist() {
 	}
 
 	/**
