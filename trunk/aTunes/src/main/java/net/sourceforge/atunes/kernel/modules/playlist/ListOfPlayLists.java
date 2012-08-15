@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IStatePlayer;
@@ -103,21 +102,13 @@ public class ListOfPlayLists implements IListOfPlayLists {
     }
 
     /**
-     * Fills contents of a list of playlists
-     * 
-     * @param contents
-     * @param state
+     * @param statePlayer
      */
-    @Override
-	public void setContents(List<List<IAudioObject>> contents, IStatePlayer statePlayer) {
-    	if (playLists.size() != contents.size()) {
-    		throw new IllegalArgumentException("Invalid play list contents");
+    void setStatePlayer(IStatePlayer statePlayer) {
+    	for (IPlayList pl : playLists) {
+    		PlayList playList = (PlayList) pl;
+    		playList.setStatePlayer(statePlayer);
+    		playList.setMode(PlayListMode.getPlayListMode(playList, statePlayer));
     	}
-        for (int i = 0; i < playLists.size(); i++) {
-        	PlayList pl = (PlayList) getPlayLists().get(i);
-			pl.setStatePlayer(statePlayer);
-            pl.setContent(contents.get(i));
-            pl.setMode(PlayListMode.getPlayListMode(pl, statePlayer));
-        }
     }
 }

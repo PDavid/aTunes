@@ -26,6 +26,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IObjectDataStore;
+import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.KryoSerializerService;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -35,11 +36,20 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author alex
  *
  */
-public class PlayListDefinitionObjectDataStore implements IObjectDataStore<IListOfPlayLists> {
+public class PlayListObjectDataStore implements IObjectDataStore<IListOfPlayLists> {
 	
 	private KryoSerializerService kryoSerializerService;
 	
 	private IOSManager osManager;
+	
+	private IStatePlayer statePlayer;
+
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
 	
 	/**
 	 * @param osManager
@@ -58,7 +68,11 @@ public class PlayListDefinitionObjectDataStore implements IObjectDataStore<IList
 	@Override
 	public IListOfPlayLists read() {
 		try {
-			return (IListOfPlayLists) kryoSerializerService.readObjectFromFile(getFileName(), ListOfPlayLists.class);
+			ListOfPlayLists listOfPlayLists = (ListOfPlayLists) kryoSerializerService.readObjectFromFile(getFileName(), ListOfPlayLists.class);
+			if (listOfPlayLists != null) {
+				listOfPlayLists.setStatePlayer(statePlayer);
+			}
+			return listOfPlayLists;
 		} catch (IOException e) {
 			Logger.error(e);
 		}

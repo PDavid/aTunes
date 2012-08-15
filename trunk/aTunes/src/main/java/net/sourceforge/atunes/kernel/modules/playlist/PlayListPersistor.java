@@ -20,16 +20,17 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Future;
 
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IListOfPlayLists;
-import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.ITaskService;
 
+/**
+ * Responsible of call to persist methods
+ * @author alex
+ *
+ */
 public class PlayListPersistor {
 	
 	private ITaskService taskService;
@@ -55,39 +56,18 @@ public class PlayListPersistor {
     /**
      * Called when play lists needs to be persisted
      */
-    void persistPlayLists(final IListOfPlayLists listOfPlayLists, boolean definition, boolean contents) {
-    	
-    	// If content must be saved then do in a task service, otherwise persist definition immediately
-    	if (definition && !contents) {
-    		stateHandler.persistPlayListsDefinition(listOfPlayLists);
-    	} else {
-    		// Wait 5 seconds and persist play list 
-    		if (persistPlayListFuture != null) {
-    			persistPlayListFuture.cancel(false);
-    		}
+    void persistPlayLists(final IListOfPlayLists listOfPlayLists) {
+		// Wait 5 seconds and persist play list 
+		if (persistPlayListFuture != null) {
+			persistPlayListFuture.cancel(false);
+		}
 
-    		persistPlayListFuture = taskService.submitOnce("Persist PlayList", 5, new Runnable() {
-    			@Override
-    			public void run() {
-    				// Store play list definition
-    				stateHandler.persistPlayListsDefinition(listOfPlayLists);
-    				// Store play list contents
-    				stateHandler.persistPlayListsContents(getPlayListsContents(listOfPlayLists.getPlayLists()));
-    			}
-    		});
-    	}
-    }
-    
-    /**
-     * Returns content of all play lists
-     * 
-     * @return
-     */
-    private List<List<IAudioObject>> getPlayListsContents(List<IPlayList> playLists) {
-        List<List<IAudioObject>> result = new ArrayList<List<IAudioObject>>(playLists.size());
-        for (IPlayList playList : playLists) {
-            result.add(playList.getAudioObjectsList());
-        }
-        return result;
+		persistPlayListFuture = taskService.submitOnce("Persist PlayList", 2, new Runnable() {
+			@Override
+			public void run() {
+				// Store play list definition
+				stateHandler.persistPlayLists(listOfPlayLists);
+			}
+		});
     }
 }

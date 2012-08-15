@@ -146,7 +146,7 @@ public class PlayListRemover implements ApplicationContextAware {
 			// Refresh table
 			playListController.refreshPlayList();
 
-    		playListHandler.playListsChanged(true, true);
+    		playListHandler.playListsChanged();
 		}
     }
 	

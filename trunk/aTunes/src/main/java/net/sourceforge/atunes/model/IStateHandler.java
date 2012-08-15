@@ -46,17 +46,10 @@ public interface IStateHandler extends IHandler {
 	public void persistStatisticsCache(IStatistics statistics);
 
 	/**
-	 * Stores play lists definition
+	 * Stores play lists
+	 * @param listOfPlayLists
 	 */
-	public void persistPlayListsDefinition(IListOfPlayLists listOfPlayLists);
-
-	/**
-	 * Stores play lists contents
-	 * 
-	 * @param playListsContents
-	 */
-	public void persistPlayListsContents(
-			List<List<IAudioObject>> playListsContents);
+	public void persistPlayLists(IListOfPlayLists listOfPlayLists);
 
 	/**
 	 * Stores podcast feeds.
@@ -149,7 +142,7 @@ public interface IStateHandler extends IHandler {
 
 	/**
 	 * Reads device cache.
-	 * 
+	 * @param deviceId
 	 * @return The retrieved device
 	 */
 	public IRepository retrieveDeviceCache(String deviceId);
