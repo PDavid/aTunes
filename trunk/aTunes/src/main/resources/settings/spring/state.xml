@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName" default-lazy-init="true">
+	
+	<bean id="repositoryObjectDataStore" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryObjectDataStore"/>
+	<bean id="deviceObjectDataStore" class="net.sourceforge.atunes.kernel.modules.repository.DeviceObjectDataStore"/>
+	<bean id="favoritesObjectDataStore" class="net.sourceforge.atunes.kernel.modules.favorites.FavoritesObjectDataStore"/>
+	<bean id="statisticsObjectDataStore" class="net.sourceforge.atunes.kernel.modules.statistics.StatisticsObjectDataStore"/>
+	<bean id="podcastObjectDataStore" class="net.sourceforge.atunes.kernel.modules.podcast.PodcastObjectDataStore"/>
+	<bean id="playListObjectDataStore" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListObjectDataStore"/>
+	
+
+
+</beans>

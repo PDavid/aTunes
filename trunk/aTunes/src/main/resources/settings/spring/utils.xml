@@ -83,6 +83,9 @@
 				<value>net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists</value>
 				<value>net.sourceforge.atunes.kernel.modules.playlist.PlayList</value>
 				<value>net.sourceforge.atunes.utils.PointedList</value>
+				<value>net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed</value>
+				<value>net.sourceforge.atunes.model.FeedType</value>
+				<value>net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry</value>
 			</list>
 		</property>
 	</bean>
