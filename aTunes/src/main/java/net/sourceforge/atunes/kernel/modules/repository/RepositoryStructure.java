@@ -25,6 +25,12 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Stores data organized by type T
+ * @author alex
+ *
+ * @param <T>
+ */
 public class RepositoryStructure<T> implements Serializable {
 
 	/**

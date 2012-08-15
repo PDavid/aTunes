@@ -30,6 +30,11 @@ import net.sourceforge.atunes.model.IStatistics;
 import net.sourceforge.atunes.model.IStatisticsAlbum;
 import net.sourceforge.atunes.model.RankList;
 
+/**
+ * Stores statistics about what user listens to
+ * @author alex
+ *
+ */
 public class Statistics implements Serializable, IStatistics {
 
     private static final long serialVersionUID = -3603927907730394505L;

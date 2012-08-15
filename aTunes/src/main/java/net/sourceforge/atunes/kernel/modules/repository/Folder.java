@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.data;
+package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class Folder implements IFolder {
 	private static final long serialVersionUID = 7175829016580923961L;
 
 	/** Name of the folder. */
-    private String name;
+    public String name;
 
     /** List of files in this folder. */
     private List<ILocalAudioObject> files;
@@ -58,6 +58,12 @@ public class Folder implements IFolder {
     private IFolder parentFolder;
 
     /**
+	 * Default constructor for serialization
+	 */
+	public Folder() {
+	}
+
+    /**
      * Constructor.
      * 
      * @param name
@@ -66,7 +72,7 @@ public class Folder implements IFolder {
     public Folder(String name) {
         this.name = name;
     }
-
+    
     /**
      * Adds a file to this folder.
      * 

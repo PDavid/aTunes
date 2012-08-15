@@ -22,7 +22,7 @@ package net.sourceforge.atunes.model;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
+import net.sourceforge.atunes.kernel.modules.repository.Folder;
 
 import org.junit.Assert;
 import org.junit.Before;

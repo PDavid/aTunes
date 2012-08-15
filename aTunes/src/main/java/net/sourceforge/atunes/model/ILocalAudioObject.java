@@ -21,9 +21,15 @@
 package net.sourceforge.atunes.model;
 
 import java.io.File;
+import java.io.Serializable;
 
 
-public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioObject> {
+/**
+ * An audio object located in disk
+ * @author alex
+ *
+ */
+public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioObject>, Serializable {
 	
 	/**
 	 * Returns file containing audio object

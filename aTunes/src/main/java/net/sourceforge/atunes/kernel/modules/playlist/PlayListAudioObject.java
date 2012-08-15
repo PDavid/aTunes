@@ -26,6 +26,11 @@ import java.util.List;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
 
+/**
+ * An audio object in a position of play list
+ * @author alex
+ *
+ */
 public class PlayListAudioObject implements IPlayListAudioObject {
 
     private IAudioObject audioObject;

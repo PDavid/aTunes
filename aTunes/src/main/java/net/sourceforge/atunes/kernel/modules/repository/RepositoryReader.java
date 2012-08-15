@@ -25,7 +25,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -277,7 +276,10 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 		dialog.setTitle(I18nUtils.getString("ADD_FOLDER_TO_REPOSITORY"));
 		File folder = dialog.selectFolder(osManager.getUserHome());
 		if (folder != null) {
-			this.retrieve(Collections.singletonList(folder));
+			// Need to use an array list instead of Collections.singletonList for Kryo serialization
+			List<File> folders = new ArrayList<File>();
+			folders.add(folder);
+			retrieve(folders);
 			return true;
 		}
 		return false;

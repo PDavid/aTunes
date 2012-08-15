@@ -37,6 +37,16 @@ public class StatisticsAlbum implements Serializable, IStatisticsAlbum {
 
     private String album;
 
+    /**
+     * No arg constructor for serialization 
+     */
+    StatisticsAlbum() {
+	}
+    
+    /**
+     * @param artist
+     * @param album
+     */
     public StatisticsAlbum(String artist, String album) {
         this.artist = artist;
         this.album = album;

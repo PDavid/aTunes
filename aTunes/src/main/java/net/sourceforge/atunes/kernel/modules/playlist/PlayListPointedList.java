@@ -25,15 +25,29 @@ import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.PointedList;
 
 class PlayListPointedList extends PointedList<IAudioObject> {
-    private static final long serialVersionUID = -6966402482637754615L;
+    
+	private static final long serialVersionUID = -6966402482637754615L;
 
     private transient IStatePlayer statePlayer;
     
+    /**
+     * No args constructor for serialization 
+     */
+    PlayListPointedList() {
+	}
+    
+    /**
+     * @param statePlayer
+     */
     PlayListPointedList(IStatePlayer statePlayer) {
         super();
         this.statePlayer = statePlayer;
     }
 
+    /**
+     * @param pointedList
+     * @param statePlayer
+     */
     PlayListPointedList(PointedList<IAudioObject> pointedList, IStatePlayer statePlayer) {
         super(pointedList);
         this.statePlayer = statePlayer;

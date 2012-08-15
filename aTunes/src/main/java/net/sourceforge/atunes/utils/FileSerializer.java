@@ -18,48 +18,29 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.utils;
 
 import java.io.File;
 
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.Serializer;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
+
 /**
- * Shows a dialog to select files or folders
+ * Kryo serializer for files
  * @author alex
  *
  */
-public interface ICustomFileSelectionDialog extends IDialog {
-
-	/**
-	 * Sets title
-	 * @param title
-	 */
-	void setTitle(String title);
+class FileSerializer extends Serializer<File> {
 	
-	/**
-	 * Only selects folders, not files
-	 * @param directoryOnly
-	 */
-	void setDirectoryOnly(boolean directoryOnly);
+	@Override
+	public File read(Kryo kryo, Input input, Class<File> fileClass) {
+		return new File(input.readString());
+	}
 	
-	/**
-	 * Gets the selected dir.
-	 * 
-	 * @return the selected dir
-	 */
-	File getSelectedDir();
-
-	/**
-	 * Gets the selected files.
-	 * 
-	 * @return the selected files
-	 */
-	File[] getSelectedFiles();
-
-	/**
-	 * Checks if is canceled.
-	 * 
-	 * @return true, if is canceled
-	 */
-	boolean isCanceled();
-
+	@Override
+	public void write(Kryo kryo, Output output, File file) {
+		output.writeString(file.getAbsolutePath());
+	}
 }

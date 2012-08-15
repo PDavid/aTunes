@@ -490,12 +490,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	return repositoryReader.isWorking();
     }
 
-    @Override
-	public String getRepositoryConfigurationFolder() {
-        String customRepositoryConfigFolder = getOsManager().getCustomRepositoryConfigFolder();
-        return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : getOsManager().getUserConfigFolder();
-    }
-    
 	@Override
 	public void repositoryChanged(final IRepository repository) {
 		persistRepositoryTask.persist(repository);

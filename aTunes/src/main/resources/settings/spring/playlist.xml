@@ -27,4 +27,7 @@
 	<bean id="playListInformationInStatusBar" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListInformationInStatusBar"/>
 	
 	<bean class="net.sourceforge.atunes.kernel.modules.playlist.PlayListRemoverFromDevice" scope="prototype"/>
+	
+	<bean id="playListContentsObjectDataStore" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListContentsObjectDataStore"/>
+	<bean id="playListDefinitionObjectDataStore" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListDefinitionObjectDataStore"/>
 </beans>

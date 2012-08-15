@@ -40,6 +40,11 @@ import net.sourceforge.atunes.model.InconsistentRepositoryException;
 import net.sourceforge.atunes.utils.StringUtils;
 
 
+/**
+ * Stores information about collection of local audio files
+ * @author alex
+ *
+ */
 public class Repository implements Serializable, IRepository {
 
     private static final long serialVersionUID = -8278937514875788175L;

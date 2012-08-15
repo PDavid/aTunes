@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.data;
+package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +48,12 @@ public class Album implements IAlbum {
 
     /** List of songs of this album. */
     private Set<ILocalAudioObject> audioFiles;
+
+    /**
+	 * Default constructor for serialization
+	 */
+	public Album() {
+	}
 
     /**
      * Constructor.

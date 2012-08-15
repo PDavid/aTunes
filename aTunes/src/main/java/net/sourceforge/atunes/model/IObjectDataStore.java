@@ -18,30 +18,39 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.actions;
+package net.sourceforge.atunes.model;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+/**
+ * Responsible of storing data objects
+ * @author alex
+ *
+ * @param <T>
+ */
+public interface IObjectDataStore<T> {
 
-import java.util.Arrays;
+	/**
+	 * Writes object to data store
+	 * @param id
+	 * @param object
+	 */
+	void write(String id, T object);
+	
+	/**
+	 * Reads object from data store
+	 * @param id
+	 * @return object read
+	 */
+	T read(String id);
 
-import net.sourceforge.atunes.kernel.modules.repository.Folder;
-import net.sourceforge.atunes.model.IFolder;
-import net.sourceforge.atunes.model.IRepositoryHandler;
-
-import org.junit.Test;
-
-public class RefreshFolderFromNavigatorActionTest {
-
-	@Test
-	public void test() {
-		RefreshFolderFromNavigatorAction sut = new RefreshFolderFromNavigatorAction();
-		IRepositoryHandler repositoryHandler = mock(IRepositoryHandler.class);
-		sut.setRepositoryHandler(repositoryHandler);
-		
-		IFolder f = new Folder("a");
-		sut.executeAction(Arrays.asList(f));
-		
-		verify(repositoryHandler).refreshFolders(Arrays.asList(f));
-	}
+	/**
+	 * Writes object to data store
+	 * @param object
+	 */
+	void write(T object);
+	
+	/**
+	 * Reads object from data store
+	 * @return object read
+	 */
+	T read();
 }

@@ -69,6 +69,12 @@ public class XMLSerializerService {
         }
     }
 
+    /**
+     * Reads an object from a file
+     * @param inputStream
+     * @return
+     * @throws IOException
+     */
     public Object readObjectFromFile(InputStream inputStream) throws IOException {
         InputStreamReader inputStreamReader = null;
         try {

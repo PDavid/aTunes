@@ -22,11 +22,6 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Album;
-import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
-import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
-import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;

@@ -25,17 +25,17 @@
 				<entry key="SongStats" value="net.sourceforge.atunes.kernel.modules.statistics.AudioObjectStats"/>
 				<entry key="RankList" value="net.sourceforge.atunes.model.RankList"/>
 				<entry key="StatisticsAlbum" value="net.sourceforge.atunes.kernel.modules.statistics.StatisticsAlbum"/>
-				<entry key="AudioFile" value="net.sourceforge.atunes.kernel.modules.repository.data.AudioFile"/>
+				<entry key="AudioFile" value="net.sourceforge.atunes.kernel.modules.repository.AudioFile"/>
 				<entry key="Radio" value="net.sourceforge.atunes.kernel.modules.radio.Radio"/>
 				<entry key="PodcastFeed" value="net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed"/>
 				<entry key="PodcastFeedEntry" value="net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry"/>
-				<entry key="Artist" value="net.sourceforge.atunes.kernel.modules.repository.data.Artist"/>
-				<entry key="Album" value="net.sourceforge.atunes.kernel.modules.repository.data.Album"/>
-				<entry key="Folder" value="net.sourceforge.atunes.kernel.modules.repository.data.Folder"/>
-				<entry key="Genre" value="net.sourceforge.atunes.kernel.modules.repository.data.Genre"/>
+				<entry key="Artist" value="net.sourceforge.atunes.kernel.modules.repository.Artist"/>
+				<entry key="Album" value="net.sourceforge.atunes.kernel.modules.repository.Album"/>
+				<entry key="Folder" value="net.sourceforge.atunes.kernel.modules.repository.Folder"/>
+				<entry key="Genre" value="net.sourceforge.atunes.kernel.modules.repository.Genre"/>
 				<entry key="DefaultTag" value="net.sourceforge.atunes.kernel.modules.tags.DefaultTag"/>
 				<entry key="PlayList" value="net.sourceforge.atunes.kernel.modules.playlist.PlayList"/>
-				<entry key="Favorites" value="net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites"/>
+				<entry key="Favorites" value="net.sourceforge.atunes.kernel.modules.favorites.Favorites"/>
 			</map>
 		</property>
 		<property name="omitFields">
@@ -58,6 +58,28 @@
 					</list>
 				</entry>
 			</map>
+		</property>
+	</bean>
+	
+	<bean id="kryoSerializerService" class="net.sourceforge.atunes.utils.KryoSerializerService"/>
+	
+	<bean id="kryoFactory" class="net.sourceforge.atunes.utils.KryoFactory">
+		<property name="classes">
+			<list>
+				<value>net.sourceforge.atunes.kernel.modules.repository.Folder</value>
+     			<value>net.sourceforge.atunes.kernel.modules.repository.Repository</value>
+				<value>net.sourceforge.atunes.kernel.modules.repository.RepositoryStructure</value>
+				<value>net.sourceforge.atunes.kernel.modules.repository.AudioFile</value>
+				<value>net.sourceforge.atunes.kernel.modules.repository.Artist</value>
+				<value>net.sourceforge.atunes.kernel.modules.repository.Album</value>
+				<value>net.sourceforge.atunes.kernel.modules.repository.Genre</value>
+				<value>net.sourceforge.atunes.kernel.modules.tags.DefaultTag</value>
+				<value>net.sourceforge.atunes.kernel.modules.favorites.Favorites</value>
+				<value>net.sourceforge.atunes.kernel.modules.statistics.Statistics</value>
+				<value>net.sourceforge.atunes.kernel.modules.statistics.StatisticsAlbum</value>
+				<value>net.sourceforge.atunes.kernel.modules.statistics.AudioObjectStats</value>
+				<value>net.sourceforge.atunes.model.RankList</value>
+			</list>
 		</property>
 	</bean>
 	
