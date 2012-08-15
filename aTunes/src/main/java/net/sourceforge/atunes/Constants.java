@@ -134,7 +134,7 @@ public final class Constants {
     public static final String PRESET_RADIO_CACHE = "preset_radios.xml";
 
     /** File where podcast feeds are stored. */
-    public static final String PODCAST_FEED_CACHE = "podcastFeeds.xml";
+    public static final String PODCAST_FEED_CACHE = "podcastFeeds.dat";
 
     /** Port number for multiple instances socket communication. */
     public static final int MULTIPLE_INSTANCES_SOCKET = 7777;

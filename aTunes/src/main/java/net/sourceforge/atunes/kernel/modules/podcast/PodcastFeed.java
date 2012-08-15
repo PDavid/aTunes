@@ -34,13 +34,19 @@ public class PodcastFeed implements IPodcastFeed {
 
     private static final long serialVersionUID = 1416452911272034086L;
 
-    private String name;
-    private String url;
-    private FeedType feedType;
-    private List<IPodcastFeedEntry> podcastFeedEntries;
-    private boolean hasNewEntries;
+    String name;
+    String url;
+    FeedType feedType;
+    List<IPodcastFeedEntry> podcastFeedEntries;
+    boolean hasNewEntries;
     /** If the name should be retrieved from the feed */
-    private boolean retrieveNameFromFeed;
+    boolean retrieveNameFromFeed;
+    
+    /**
+     * No arg constructor for serialization
+     */
+    PodcastFeed() {
+	}
 
     /**
      * Constructor.

@@ -41,9 +41,4 @@
 	
 	<bean id="importToRepositoryProcessListener" class="net.sourceforge.atunes.kernel.modules.repository.ImportToRepositoryProcessListener" scope="prototype"/>
 	
-	<bean id="repositoryObjectDataStore" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryObjectDataStore"/>
-	<bean id="deviceObjectDataStore" class="net.sourceforge.atunes.kernel.modules.repository.DeviceObjectDataStore"/>
-	<bean id="favoritesObjectDataStore" class="net.sourceforge.atunes.kernel.modules.favorites.FavoritesObjectDataStore"/>
-	<bean id="statisticsObjectDataStore" class="net.sourceforge.atunes.kernel.modules.statistics.StatisticsObjectDataStore"/>
-
 </beans>

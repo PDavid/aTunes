@@ -9,6 +9,7 @@
 	<configs>
 		<config>src/main/resources/settings/spring/spring_beans.xml</config>
 		<config>src/main/resources/settings/spring/patterns.xml</config>
+		<config>src/main/resources/settings/spring/state.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -18,6 +19,7 @@
 			<configs>
 				<config>src/main/resources/settings/spring/spring_beans.xml</config>
 				<config>src/main/resources/settings/spring/patterns.xml</config>
+				<config>src/main/resources/settings/spring/state.xml</config>
 			</configs>
 		</configSet>
 	</configSets>

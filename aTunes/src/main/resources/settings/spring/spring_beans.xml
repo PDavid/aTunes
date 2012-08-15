@@ -24,6 +24,7 @@
 	<import resource="playlist.xml" />
 	<import resource="process.xml" />
 	<import resource="repository.xml" />
+	<import resource="state.xml" />
 	<import resource="tasks.xml" />
 	<import resource="treecelldecorators.xml" />
 	<import resource="treegenerators.xml" />

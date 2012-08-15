@@ -37,16 +37,22 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
     private static final long serialVersionUID = 4185336290582212484L;
 
-    private String title;
-    private String author;
-    private String url;
-    private String description;
-    private int duration;
-    private BaseDateTime date;
-    private IPodcastFeed podcastFeed;
-    private boolean listened;
-    private boolean downloaded;
-    private boolean old;
+    String title;
+    String author;
+    String url;
+    String description;
+    int duration;
+    BaseDateTime date;
+    IPodcastFeed podcastFeed;
+    boolean listened;
+    boolean downloaded;
+    boolean old;
+    
+    /**
+     * No arg constructor for serialization 
+     */
+    PodcastFeedEntry() {
+	}
 
     /**
      * Constructor.

@@ -44,11 +44,6 @@ import net.sourceforge.atunes.utils.XMLSerializerService;
  */
 public final class ApplicationStateHandler extends AbstractHandler implements IStateHandler {
 	
-	/**
-	 * After all handlers have been initialized it's possible to persist play list, not before (to prevent saved play lists to be stored again)
-	 */
-	private boolean playListPersistAllowed = false;
-	
 	private XMLSerializerService xmlSerializerService;
 		
 	private IObjectDataStore<IRepository> repositoryObjectDataStore;
@@ -60,6 +55,15 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	private IObjectDataStore<IFavorites> favoritesObjectDataStore;
 	
 	private IObjectDataStore<IStatistics> statisticsObjectDataStore;
+	
+	private IObjectDataStore<List<IPodcastFeed>> podcastObjectDataStore;
+	
+	/**
+	 * @param podcastObjectDataStore
+	 */
+	public void setPodcastObjectDataStore(IObjectDataStore<List<IPodcastFeed>> podcastObjectDataStore) {
+		this.podcastObjectDataStore = podcastObjectDataStore;
+	}
 	
 	/**
 	 * @param statisticsObjectDataStore
@@ -103,11 +107,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 		this.xmlSerializerService = xmlSerializerService;
 	}
 	
-	@Override
-	public void allHandlersInitialized() {
-		playListPersistAllowed = true;
-	}
-
     @Override
 	public void persistFavoritesCache(IFavorites favorites) {
     	favoritesObjectDataStore.write(favorites);
@@ -120,21 +119,12 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 
     @Override
 	public void persistPlayLists(IListOfPlayLists listOfPlayLists) {
-    	if (!playListPersistAllowed) {
-    		Logger.debug("Persist play list definition not allowed yet");
-    	} else {
-    		playListObjectDataStore.write(listOfPlayLists);
-    	}
+   		playListObjectDataStore.write(listOfPlayLists);
     }
 
     @Override
 	public void persistPodcastFeedCache(List<IPodcastFeed> podcastFeeds) {
-        try {
-            xmlSerializerService.writeObjectToFile(podcastFeeds, StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
-        } catch (IOException e) {
-            Logger.error("Could not persist podcast feeds");
-            Logger.debug(e);
-        }
+    	podcastObjectDataStore.write(podcastFeeds);
     }
 
     @Override
@@ -182,17 +172,9 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     	return playListObjectDataStore.read();
     }
 
-    @SuppressWarnings("unchecked")
 	@Override
     public List<IPodcastFeed> retrievePodcastFeedCache() {
-        try {
-            return (List<IPodcastFeed>) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
-        } catch (FileNotFoundException e) {
-        	Logger.info(e.getMessage());
-        } catch (IOException e) {
-            Logger.error(e);
-        }
-    	return null;
+    	return podcastObjectDataStore.read();
     }
 
     @SuppressWarnings("unchecked")

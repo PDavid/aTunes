@@ -28,5 +28,4 @@
 	
 	<bean class="net.sourceforge.atunes.kernel.modules.playlist.PlayListRemoverFromDevice" scope="prototype"/>
 	
-	<bean id="playListObjectDataStore" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListObjectDataStore"/>
 </beans>
