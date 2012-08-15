@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.favorites;
+package net.sourceforge.atunes.kernel.modules.favorites;
 
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;

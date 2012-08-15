@@ -39,9 +39,9 @@
 		</property>
 	</bean>
 	<bean id="stateHandler" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler"/>
-	<bean id="favoritesHandler" class="net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler">
+	<bean id="favoritesHandler" class="net.sourceforge.atunes.kernel.modules.favorites.FavoritesHandler">
 		<property name="initializationTask">
-			<bean class="net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesInitializationTask" scope="prototype"/>
+			<bean class="net.sourceforge.atunes.kernel.modules.favorites.FavoritesInitializationTask" scope="prototype"/>
 		</property>
 	</bean>
 	<bean id="searchHandler" class="net.sourceforge.atunes.kernel.modules.search.SearchHandler"/>

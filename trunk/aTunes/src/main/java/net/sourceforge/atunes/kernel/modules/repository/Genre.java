@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.data;
+package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +44,12 @@ public class Genre implements IGenre {
 
     /** List of objects of this genre. */
     private List<ILocalAudioObject> audioFiles;
+
+    /**
+	 * Default constructor for serialization
+	 */
+	public Genre() {
+	}
 
     /**
      * Constructor.

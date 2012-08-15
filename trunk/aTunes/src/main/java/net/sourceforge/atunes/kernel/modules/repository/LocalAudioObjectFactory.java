@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectReader;

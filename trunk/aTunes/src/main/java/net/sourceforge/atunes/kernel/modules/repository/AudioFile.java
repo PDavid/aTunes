@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.data;
+package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 import java.io.Serializable;
@@ -53,6 +53,12 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     
     /** The file on disk. */
     private String filePath;
+
+    /**
+	 * Default constructor for serialization
+	 */
+	public AudioFile() {
+	}
 
     /**
      * Instantiates a new audio file

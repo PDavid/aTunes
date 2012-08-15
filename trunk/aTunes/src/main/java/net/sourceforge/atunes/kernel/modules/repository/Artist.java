@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.data;
+package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +53,12 @@ public class Artist implements IArtist {
     private Map<String, IAlbum> albums;
 
     /**
+	 * Default constructor for serialization
+	 */
+	public Artist() {
+	}
+
+	/**
      * Constructor.
      * 
      * @param name

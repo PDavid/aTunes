@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.data;
+package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +47,14 @@ public class Year implements IYear {
     private List<ILocalAudioObject> audioFiles;
 
     /**
+	 * Default constructor for serialization
+	 */
+	public Year() {
+	}
+
+    /**
      * Constructor.
-     * 
-     * @param name
-     *            the name
+     * @param year
      */
     public Year(String year) {
         this.year = year;

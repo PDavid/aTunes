@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
+import net.sourceforge.atunes.kernel.modules.repository.Folder;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 

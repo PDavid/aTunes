@@ -60,6 +60,11 @@ public class PlayList implements IPlayList {
     private PointedList<IAudioObject> audioObjects;
     
     private transient IStatePlayer statePlayer;
+    
+    /**
+     * No args constructor for serialization
+     */
+    PlayList() {}
 
     /**
      * Default constructor
@@ -96,7 +101,7 @@ public class PlayList implements IPlayList {
     }
 
 	/**
-	 * @param state
+	 * @param statePlayer
 	 */
 	public void setStatePlayer(IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;

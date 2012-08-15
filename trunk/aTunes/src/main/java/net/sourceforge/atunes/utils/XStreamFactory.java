@@ -25,6 +25,11 @@ import java.util.Map;
 
 import com.thoughtworks.xstream.XStream;
 
+/**
+ * A factory of xstream
+ * @author alex
+ *
+ */
 public class XStreamFactory {
 	
 	private XStream xstream;

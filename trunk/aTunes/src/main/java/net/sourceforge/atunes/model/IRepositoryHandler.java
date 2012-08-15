@@ -185,10 +185,8 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	public void refreshFile(ILocalAudioObject file);
 
 	/**
-	 * Refreshes a folder
-	 * 
-	 * @param file
-	 *            the file
+	 * Refreshes a list of folder
+	 * @param folders
 	 */
 	public void refreshFolders(List<IFolder> folders);
 
@@ -240,13 +238,6 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * When a repository load in progress, executes task in background, hidding progress to user
 	 */
 	public void doInBackground();
-
-	/**
-	 * Returns folder where repository configuration is stored
-	 * 
-	 * @return
-	 */
-	public String getRepositoryConfigurationFolder();
 
 	/**
 	 * Starts a transaction

@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.data;
+package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.util.HashMap;
 import java.util.HashSet;

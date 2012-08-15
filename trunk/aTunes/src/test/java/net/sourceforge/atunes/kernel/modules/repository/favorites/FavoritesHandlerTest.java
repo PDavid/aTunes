@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import net.sourceforge.atunes.kernel.modules.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IStateContext;
@@ -48,7 +49,6 @@ public class FavoritesHandlerTest {
 		sut = new FavoritesHandler();
 		sut.setStateContext(mock(IStateContext.class));
 		sut.setStateHandler(stateHandler);
-		sut.getInitializationTask().getInitializationTask().run();
 	}
 	
 	@Test

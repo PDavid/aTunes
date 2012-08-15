@@ -50,10 +50,10 @@ import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
-import net.sourceforge.atunes.model.ICustomFileSelectionDialog;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IFolderSelectorDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.IMessageDialog;
@@ -263,19 +263,14 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         copyFilesToDevice(new ArrayList<ILocalAudioObject>(songsSelected.values()));
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#connectDevice()
-	 */
     @Override
 	public void connectDevice() {
-    	ICustomFileSelectionDialog dialog = getBean(ICustomFileSelectionDialog.class);
-    	dialog.setDirectoryOnly(true);
+    	IFolderSelectorDialog dialog = dialogFactory.newDialog(IFolderSelectorDialog.class);
         dialog.setTitle(I18nUtils.getString("SELECT_DEVICE"));
-        dialog.showDialog();
-        if (!dialog.isCanceled()) {
-            File dir = dialog.getSelectedDir();
+        File folder = dialog.selectFolder(getOsManager().getUserHome());
+        if (folder != null) {
             getFrame().showProgressBar(true, null);
-            retrieveDevice(dir);
+            retrieveDevice(folder);
         }
     }
 
