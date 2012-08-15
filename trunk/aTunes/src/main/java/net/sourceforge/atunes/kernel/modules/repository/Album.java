@@ -41,18 +41,18 @@ public class Album implements IAlbum {
     private static final long serialVersionUID = -1481314950918557022L;
 
     /** Name of the album. */
-    private String name;
+    String name;
 
     /** Name of the artist. */
-    private IArtist artist;
+    IArtist artist;
 
     /** List of songs of this album. */
-    private Set<ILocalAudioObject> audioFiles;
+    Set<ILocalAudioObject> audioFiles;
 
     /**
 	 * Default constructor for serialization
 	 */
-	public Album() {
+	Album() {
 	}
 
     /**

@@ -73,12 +73,16 @@
 				<value>net.sourceforge.atunes.kernel.modules.repository.Artist</value>
 				<value>net.sourceforge.atunes.kernel.modules.repository.Album</value>
 				<value>net.sourceforge.atunes.kernel.modules.repository.Genre</value>
+				<value>net.sourceforge.atunes.kernel.modules.repository.Year</value>
 				<value>net.sourceforge.atunes.kernel.modules.tags.DefaultTag</value>
 				<value>net.sourceforge.atunes.kernel.modules.favorites.Favorites</value>
 				<value>net.sourceforge.atunes.kernel.modules.statistics.Statistics</value>
 				<value>net.sourceforge.atunes.kernel.modules.statistics.StatisticsAlbum</value>
 				<value>net.sourceforge.atunes.kernel.modules.statistics.AudioObjectStats</value>
 				<value>net.sourceforge.atunes.model.RankList</value>
+				<value>net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists</value>
+				<value>net.sourceforge.atunes.kernel.modules.playlist.PlayList</value>
+				<value>net.sourceforge.atunes.utils.PointedList</value>
 			</list>
 		</property>
 	</bean>

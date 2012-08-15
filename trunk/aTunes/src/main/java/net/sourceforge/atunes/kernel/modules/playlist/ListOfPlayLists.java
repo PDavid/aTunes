@@ -39,10 +39,13 @@ public class ListOfPlayLists implements IListOfPlayLists {
     private static final long serialVersionUID = -9098493526495642598L;
 
     /** The play lists. */
-    private List<IPlayList> playLists;
+    List<IPlayList> playLists;
 
     /** The selected play list. */
-    private int selectedPlayListIndex;
+    int selectedPlayListIndex;
+    
+    ListOfPlayLists() {
+	}
     
     /**
      * Returns a list of playlists with an empty playlist.

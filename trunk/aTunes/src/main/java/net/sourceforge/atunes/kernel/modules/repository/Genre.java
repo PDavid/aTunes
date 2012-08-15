@@ -40,15 +40,15 @@ public class Genre implements IGenre {
     private static final long serialVersionUID = -6552057266561177152L;
 
     /** Name of the genre. */
-    private String name;
+    String name;
 
     /** List of objects of this genre. */
-    private List<ILocalAudioObject> audioFiles;
+    List<ILocalAudioObject> audioFiles;
 
     /**
 	 * Default constructor for serialization
 	 */
-	public Genre() {
+	Genre() {
 	}
 
     /**

@@ -52,12 +52,12 @@ public class PlayList implements IPlayList {
     /**
      * Name of play list as shown on play list tabs.
      */
-    private String name;
+    String name;
 
     /**
      * Pointed List of audio objects of this play list
      */
-    private PointedList<IAudioObject> audioObjects;
+    PointedList<IAudioObject> audioObjects;
     
     private transient IStatePlayer statePlayer;
     

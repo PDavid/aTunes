@@ -46,21 +46,21 @@ public class Folder implements IFolder {
 	private static final long serialVersionUID = 7175829016580923961L;
 
 	/** Name of the folder. */
-    public String name;
+    String name;
 
     /** List of files in this folder. */
-    private List<ILocalAudioObject> files;
+    List<ILocalAudioObject> files;
 
     /** List of folders in this folder, indexed by name. */
-    private Map<String, IFolder> folders;
+    Map<String, IFolder> folders;
 
     /** Folder that contains this folder. */
-    private IFolder parentFolder;
+    IFolder parentFolder;
 
     /**
 	 * Default constructor for serialization
 	 */
-	public Folder() {
+	Folder() {
 	}
 
     /**

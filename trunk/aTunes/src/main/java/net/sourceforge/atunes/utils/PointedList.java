@@ -27,6 +27,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * A list of objects with a pointer
+ * @author alex
+ *
+ * @param <T>
+ */
 public class PointedList<T> implements Serializable {
 
     private static final long serialVersionUID = 5516540213103483594L;
@@ -34,12 +40,12 @@ public class PointedList<T> implements Serializable {
     /**
      * List with objects
      */
-    private List<T> list = null;
+    List<T> list = null;
 
     /**
      * Pointer to object or null. Initially first object is pointed
      */
-    private Integer pointer = 0;
+    Integer pointer = 0;
 
     /**
      * Default constructor
@@ -72,7 +78,7 @@ public class PointedList<T> implements Serializable {
 
     /**
      * Returns next object
-     * 
+     * @param index 
      * @return the next object
      */
     public T getNextObject(int index) {
@@ -81,7 +87,7 @@ public class PointedList<T> implements Serializable {
 
     /**
      * Returns previous object
-     * 
+     * @param index
      * @return the previous object
      */
     public T getPreviousObject(int index) {
@@ -136,10 +142,17 @@ public class PointedList<T> implements Serializable {
         }
     }
 
+    /**
+     * @param element
+     */
     public void add(T element) {
         add(getList().size(), element);
     }
 
+    /**
+     * @param index
+     * @param element
+     */
     public void add(int index, T element) {
         getList().add(index, element);
         if (size() > 1 && this.pointer != null && index <= this.pointer) {
@@ -147,6 +160,11 @@ public class PointedList<T> implements Serializable {
         }
     }
 
+    /**
+     * @param index
+     * @param c
+     * @return
+     */
     public boolean addAll(int index, Collection<? extends T> c) {
         boolean result = getList().addAll(index, c);
         if (size() > 1 && this.pointer != null && index <= this.pointer) {
@@ -155,6 +173,10 @@ public class PointedList<T> implements Serializable {
         return result;
     }
 
+    /**
+     * @param index
+     * @return
+     */
     public T remove(int index) {
         if (index < 0 || getList().size() <= index) {
             return null;
@@ -174,11 +196,19 @@ public class PointedList<T> implements Serializable {
         return getList().remove(index);
     }
 
+    /**
+     * Empty list
+     */
     public void clear() {
         this.pointer = 0;
         getList().clear();
     }
 
+    /**
+     * Replaces an element in a position
+     * @param index
+     * @param newObject
+     */
     public void replace(int index, T newObject) {
         if (index < 0 || getList().size() <= index || newObject == null) {
             return;
@@ -328,6 +358,10 @@ public class PointedList<T> implements Serializable {
         return this.list;
     }
 
+    /**
+     * @param object
+     * @return true if object in list
+     */
     public boolean contains(T object) {
         return getList().contains(object);
     }

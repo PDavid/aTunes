@@ -38,7 +38,7 @@ public class RepositoryStructure<T> implements Serializable {
 	 */
 	private static final long serialVersionUID = 3802494024307120854L;
 
-	private Map<String, T> structure;
+	Map<String, T> structure;
 	
 	RepositoryStructure() {
 		this.structure = new ConcurrentHashMap<String, T>();
