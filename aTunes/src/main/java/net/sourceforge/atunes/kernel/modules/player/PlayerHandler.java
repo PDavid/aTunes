@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.player;
 
 import java.util.Collection;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -213,7 +214,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     }
     
     @Override
-    public void allHandlersInitialized() {
+    public void deferredInitialization() {
     	initialize();
         if (playerEngine instanceof VoidPlayerEngine) {
             manageNoPlayerEngine(getOsManager(), getFrame());
@@ -251,7 +252,12 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         }
         
         // Show advanced controls
-        playerControlsController.getComponentControlled().showAdvancedPlayerControls(stateUI.isShowAdvancedPlayerControls());
+        GuiUtils.callInEventDispatchThread(new Runnable() {
+        	@Override
+        	public void run() {
+                playerControlsController.getComponentControlled().showAdvancedPlayerControls(stateUI.isShowAdvancedPlayerControls());
+        	}
+        });
 
         // Init engine
         playerEngine.initializePlayerEngine();
