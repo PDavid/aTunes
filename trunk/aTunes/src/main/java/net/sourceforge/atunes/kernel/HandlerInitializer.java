@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.util.Collection;
+import java.util.List;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IFrame;
@@ -28,17 +28,14 @@ import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
 /**
  * Initializes handlers
  * @author alex
  *
  */
-public class HandlerInitializer implements ApplicationContextAware {
+public class HandlerInitializer {
 	
-	private Collection<AbstractHandler> handlers;
+	private List<AbstractHandler> handlers;
 	
 	private ITaskService taskService;
 	
@@ -85,8 +82,10 @@ public class HandlerInitializer implements ApplicationContextAware {
 		}
 	}
 	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.handlers = applicationContext.getBeansOfType(AbstractHandler.class).values();
+	/**
+	 * @param handlers
+	 */
+	public void setHandlers(List<AbstractHandler> handlers) {
+		this.handlers = handlers;
 	}
 }
