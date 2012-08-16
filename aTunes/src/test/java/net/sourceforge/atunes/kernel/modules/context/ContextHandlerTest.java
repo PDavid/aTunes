@@ -98,6 +98,7 @@ public class ContextHandlerTest {
 		// Act
 		sut.applicationStarted();		
 		sut.allHandlersInitialized();
+		sut.deferredInitialization();
 		
 		// Verify
 
@@ -107,11 +108,6 @@ public class ContextHandlerTest {
 		
 		// Context panel selected
 		verify(container, times(1)).setSelectedContextPanel("PANEL2");
-		
-		// Context information updated
-		verify(playListHandler, times(1)).getCurrentAudioObjectFromVisiblePlayList();
-		verify(p1, times(0)).updateContextPanel(ao, false);
-		verify(p2, times(1)).updateContextPanel(ao, false);
 	}
 	
 	@Test
@@ -125,6 +121,7 @@ public class ContextHandlerTest {
 		// Act
 		sut.applicationStarted();		
 		sut.allHandlersInitialized();
+		sut.deferredInitialization();
 		
 		// Verify
 
@@ -136,7 +133,6 @@ public class ContextHandlerTest {
 		verify(container, times(1)).setSelectedContextPanel("PANEL2");
 		
 		// Context information NOT updated
-		verify(playListHandler, times(0)).getCurrentAudioObjectFromVisiblePlayList();
 		verify(p1, times(0)).updateContextPanel(ao, false);
 		verify(p2, times(0)).updateContextPanel(ao, false);
 	}
@@ -150,12 +146,12 @@ public class ContextHandlerTest {
 		sut.setStateContext(state);
 		sut.applicationStarted();		
 		sut.allHandlersInitialized();
+		sut.deferredInitialization();
 		sut.showContextPanel(true);
 		
 		// Verify
 
 		// Context information updated
-		verify(playListHandler, times(1)).getCurrentAudioObjectFromVisiblePlayList();
 		verify(p1, times(0)).updateContextPanel(ao, false);
 		verify(p2, times(1)).updateContextPanel(ao, false);		
 	}
