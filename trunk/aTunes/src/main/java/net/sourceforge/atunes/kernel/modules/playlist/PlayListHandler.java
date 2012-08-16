@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.actions.SaveM3UPlayListAction;
@@ -643,6 +644,17 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     public void windowDeiconified() {
 		scrollPlayList(false);
     }
+	
+	@Override
+	public void deferredInitialization() {
+		// update information in context panel
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				contextHandler.retrieveInfoAndShowInPanel(getCurrentAudioObjectFromCurrentPlayList());
+			}
+		});
+	}
 
 	/**
 	 * Called after initialization task completed
@@ -670,9 +682,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
 		setPlayList(playListsContainer.getPlayListAt(selected));
 
-		playListsRetrievedFromCache = null;
-		
-		// update information in context panel
-		contextHandler.retrieveInfoAndShowInPanel(getCurrentAudioObjectFromCurrentPlayList());
+		playListsRetrievedFromCache = null;		
 	}
 }

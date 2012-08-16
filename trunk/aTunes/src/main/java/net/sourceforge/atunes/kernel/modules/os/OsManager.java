@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.OperatingSystemDetector;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IFrame;
@@ -314,8 +315,13 @@ public class OsManager implements IOSManager, ApplicationContextAware {
 	 * @see net.sourceforge.atunes.kernel.IOSManager#manageNoPlayerEngine()
 	 */
 	@Override
-	public void manageNoPlayerEngine(IFrame frame) {
-		adapter.manageNoPlayerEngine(frame);
+	public void manageNoPlayerEngine(final IFrame frame) {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				adapter.manageNoPlayerEngine(frame);
+			}
+		});
 	}
 	
 	/* (non-Javadoc)
