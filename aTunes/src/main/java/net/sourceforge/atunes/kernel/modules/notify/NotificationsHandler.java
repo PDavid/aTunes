@@ -80,6 +80,9 @@ public final class NotificationsHandler extends AbstractHandler implements INoti
 		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
     
+    /**
+     * @param lookAndFeelManager
+     */
     public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}

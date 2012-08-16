@@ -129,6 +129,15 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     
     private IDialogFactory dialogFactory;
     
+    private IRepositoryHandler repositoryHandler;
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
     /**
      * @param dialogFactory
      */
@@ -181,11 +190,11 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     @Override
     protected void initHandler() {
     	caseSensitiveTrees = stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure();
-    	getBean(IRepositoryHandler.class).addAudioFilesRemovedListener(this);
+    	repositoryHandler.addAudioFilesRemovedListener(this);
     }
 
     @Override
-    public void allHandlersInitialized() {
+    public void deferredInitialization() {
     	if (isDefaultDeviceLocationConfigured(stateDevice)) { 
     		// Start device monitor if necessary
     		deviceMonitor.startMonitor();
@@ -224,7 +233,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         long leaveFree = leaveFreeLong;
 
         // Get reference to Repository songs
-        List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>(getBean(IRepositoryHandler.class).getAudioFilesList());
+        List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>(repositoryHandler.getAudioFilesList());
 
         // Songs selected
         Map<Integer, ILocalAudioObject> songsSelected = new HashMap<Integer, ILocalAudioObject>();

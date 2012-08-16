@@ -177,7 +177,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 	}
 
     @Override
-    public void allHandlersInitialized() {
+    public void deferredInitialization() {
         startPodcastFeedEntryDownloadChecker();
         startPodcastFeedEntryRetriever();
     }

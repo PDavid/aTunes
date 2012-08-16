@@ -100,9 +100,9 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
 	}
     
     @Override
-    public void allHandlersInitialized() {
+    public void deferredInitialization() {
         if (!applicationArguments.isNoUpdate()) {
-        	taskService.submitOnce("Check updates", 5, new Runnable() {
+        	taskService.submitNow("Check updates", new Runnable() {
         		@Override
         		public void run() {
         			checkUpdates(false, false);
@@ -110,7 +110,7 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
         	});
         }
     }
-
+    
     /**
      * Used to check for new version.
      * @param alwaysInDialog

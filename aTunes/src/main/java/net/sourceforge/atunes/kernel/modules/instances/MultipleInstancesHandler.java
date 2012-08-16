@@ -65,7 +65,7 @@ public final class MultipleInstancesHandler extends AbstractHandler implements I
     }
 
     @Override
-    public void allHandlersInitialized() {
+    public void deferredInitialization() {
     	if (getOsManager().isMultipleInstancesSupported() && !applicationArguments.isMultipleInstance()) {
     		startListening();
     	}
