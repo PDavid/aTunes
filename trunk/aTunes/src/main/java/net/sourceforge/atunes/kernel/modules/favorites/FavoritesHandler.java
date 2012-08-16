@@ -99,7 +99,7 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 	}
 
 	@Override
-	public void allHandlersInitialized() {
+	public void deferredInitialization() {
 		getBean(ISearchHandler.class).registerSearchableObject(FavoritesSearchableObject.getInstance());
 	}
 

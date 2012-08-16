@@ -66,7 +66,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
 	}
 
     @Override
-    public void allHandlersInitialized() {
+    public void deferredInitialization() {
         hotkeys = AbstractHotkeys.createInstance(this, getBean(IOSManager.class));
         IHotkeysConfig hc = stateCore.getHotkeysConfig();
         hotkeysConfig = hc != null ? hc : new DefaultHotkeysConfig();
