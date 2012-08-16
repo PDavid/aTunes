@@ -5,7 +5,42 @@
 	
 	default-autowire="byName" default-lazy-init="true" default-init-method="registerHandler">
 	
-	<bean class="net.sourceforge.atunes.kernel.HandlerInitializer"/>
+	<bean class="net.sourceforge.atunes.kernel.HandlerInitializer">
+		<property name="handlers">
+			<list>
+			<!--  Put here handlers in desired initialization order --> 
+				<ref bean="repositoryHandler"/>
+				<ref bean="playListHandler"/>
+				<ref bean="updateHandler"/>
+				<ref bean="fullScreenHandler"/>
+				<ref bean="tagHandler"/>
+				<ref bean="webServicesHandler"/>
+				<ref bean="generalPurposePluginsHandler"/>
+				<ref bean="systemTrayHandler"/>
+				<ref bean="statisticsHandler"/>
+				<ref bean="smartPlayListHandler"/>
+				<ref bean="uiHandler"/>
+				<ref bean="contextHandler"/>
+				<ref bean="navigationHandler"/>
+				<ref bean="podcastFeedHandler"/>
+				<ref bean="stateHandler"/>
+				<ref bean="favoritesHandler"/>
+				<ref bean="searchHandler"/>
+				<ref bean="deviceHandler"/>
+				<ref bean="radioHandler"/>
+				<ref bean="playerHandler"/>
+				<ref bean="ripperHandler"/>
+				<ref bean="commandHandler"/>
+				<ref bean="hotkeyHandler"/>
+				<ref bean="multipleInstancesHandler"/>
+				<ref bean="notificationsHandler"/>
+				<ref bean="filterHandler"/>
+				<ref bean="pluginsHandler"/>
+				<ref bean="networkHandler"/>
+				<ref bean="advancedPlayingModeHandler"/>
+			</list>
+		</property>
+	</bean>
 	
 	<bean id="repositoryHandler" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler">
 		<property name="initializationTask" ref="repositoryInitializationTask"/>
