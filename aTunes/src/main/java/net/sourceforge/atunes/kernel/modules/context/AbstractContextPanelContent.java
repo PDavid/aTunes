@@ -108,8 +108,10 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
 	 */
     @Override
 	public void clearContextPanelContent() {
-        parentPanel.setEnabled(false);
-        parentPanel.setVisible(false);
+    	if (parentPanel != null) {
+    		parentPanel.setEnabled(false);
+    		parentPanel.setVisible(false);
+    	}
         cancelWorker();
     }
     
