@@ -107,9 +107,13 @@ public interface INavigationHandler extends IHandler {
 	 */
 	public void updateViewTable();
 
-	public List<? extends IAudioObject> getAudioObjectsForTreeNode(
-			Class<? extends INavigationView> class1,
-			DefaultMutableTreeNode objectDragged);
+	/**
+	 * Return audio objects for selected treeNode
+	 * @param class1
+	 * @param objectDragged
+	 * @return
+	 */
+	public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends INavigationView> class1, DefaultMutableTreeNode objectDragged);
 
 	/**
 	 * Returns selected audio object in navigation table
@@ -123,6 +127,11 @@ public interface INavigationHandler extends IHandler {
 	 */
 	public List<IAudioObject> getSelectedAudioObjectsInNavigationTable();
 
+	/**
+	 * Returns audio object in given table row
+	 * @param row
+	 * @return
+	 */
 	public IAudioObject getAudioObjectInNavigationTable(int row);
 
 	/**

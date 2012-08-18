@@ -230,8 +230,8 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	}
 
 	@Override
-	public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends INavigationView> class1, DefaultMutableTreeNode objectDragged) {
-		return getNavigationController().getAudioObjectsForTreeNode(class1, objectDragged);
+	public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends INavigationView> view, DefaultMutableTreeNode node) {
+		return getNavigationController().getAudioObjectsForTreeNode(view, node);
 	}
 
 	@Override

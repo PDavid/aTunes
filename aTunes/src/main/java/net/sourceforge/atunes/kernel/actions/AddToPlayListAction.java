@@ -28,6 +28,11 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Adds objects to play list
+ * @author alex
+ *
+ */
 public class AddToPlayListAction extends AbstractActionOverSelectedObjects<IAudioObject> {
 
     private static final long serialVersionUID = 1625697867534974341L;
@@ -41,6 +46,9 @@ public class AddToPlayListAction extends AbstractActionOverSelectedObjects<IAudi
 		this.playListHandler = playListHandler;
 	}
     
+    /**
+     * Default constructor
+     */
     public AddToPlayListAction() {
         super(I18nUtils.getString("ADD_TO_PLAYLIST"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_TO_PLAYLIST"));

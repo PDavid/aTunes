@@ -33,6 +33,12 @@ import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
+/**
+ * An action called after selecting audio objects which are parameters of action
+ * @author alex
+ *
+ * @param <T>
+ */
 @PluginApi
 public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> extends CustomAbstractAction {
 
@@ -42,11 +48,18 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
 
     private Class<?> clazz;
     
+    /**
+     * @param name
+     */
     public AbstractActionOverSelectedObjects(String name) {
         super(name);
         clazz = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
+    /**
+     * @param name
+     * @param icon
+     */
     public AbstractActionOverSelectedObjects(String name, Icon icon) {
         super(name, icon);
         clazz = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];        

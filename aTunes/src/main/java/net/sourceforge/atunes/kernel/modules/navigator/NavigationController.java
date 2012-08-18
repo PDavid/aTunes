@@ -72,6 +72,11 @@ import net.sourceforge.atunes.model.ITreeObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * Controller to manage
+ * @author alex
+ *
+ */
 public final class NavigationController implements IAudioFilesRemovedListener, IController, ApplicationContextAware {
 
     private INavigationTreePanel navigationTreePanel;
@@ -117,9 +122,6 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
 		this.stateNavigation = stateNavigation;
 	}
     
-    /* (non-Javadoc)
-     * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
-     */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
     	timer = new Timer(0, applicationContext.getBean(ExtendedToolTipActionListener.class));
@@ -203,6 +205,9 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
         repositoryHandler.addAudioFilesRemovedListener(this);
     }
 
+    /**
+     * @return navigation tree panel
+     */
     protected INavigationTreePanel getNavigationTreePanel() {
         return navigationTreePanel;
     }
