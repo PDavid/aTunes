@@ -64,6 +64,11 @@ import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Navigation view which shows repository objects
+ * @author alex
+ *
+ */
 public class RepositoryNavigationView extends AbstractNavigationView {
 
     private static final String REPOSITORY = "REPOSITORY";
@@ -334,6 +339,9 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         return StringUtils.getString(I18nUtils.getString(REPOSITORY), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
     
+    /**
+     * @param repositoryHandler
+     */
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}

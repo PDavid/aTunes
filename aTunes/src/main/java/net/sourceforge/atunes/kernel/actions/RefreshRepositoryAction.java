@@ -46,6 +46,9 @@ public class RefreshRepositoryAction extends CustomAbstractAction {
 		this.repositoryHandler = repositoryHandler;
 	}
     
+    /**
+     * Default constructor
+     */
     public RefreshRepositoryAction() {
         super(I18nUtils.getString("REFRESH_REPOSITORY"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH_REPOSITORY"));
@@ -57,5 +60,4 @@ public class RefreshRepositoryAction extends CustomAbstractAction {
     protected void executeAction() {
     	repositoryHandler.refreshRepository();
     }
-
 }
