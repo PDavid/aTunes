@@ -316,6 +316,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 		backgroundLoad = false;
 		IRepository oldRepository = repository;
 		repository = new Repository(folders, stateRepository);
+		// Change repository to allow user start listening objects while loading
 		repositoryHandler.setRepository(repository);
 		currentLoader = Context.getBean(RepositoryReadLoader.class);
 		currentLoader.setRepositoryLoaderListener(this);
@@ -428,7 +429,6 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 		filesLoaded = 0;
 		IRepository oldRepository = repository;
 		repository = new Repository(oldRepository.getRepositoryFolders(), stateRepository);
-		repositoryHandler.setRepository(repository);
 		currentLoader = Context.getBean(RepositoryRefreshLoader.class);
 		currentLoader.setRepositoryLoaderListener(this);
 		currentLoader.start(new RepositoryTransaction(repository, repositoryHandler), oldRepository.getRepositoryFolders(), oldRepository, repository);
