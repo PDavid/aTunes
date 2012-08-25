@@ -343,11 +343,11 @@ public final class PatternInputDialog extends AbstractCustomDialog {
         this.previewString = previewString;
         patternComboBox.setSelectedIndex(-1);
 
-        String[][] patterns = new String[availablePatterns.size()][2];
+        String[][] patternsMatrix = new String[availablePatterns.size()][2];
         int i = 0;
         for (AbstractPattern p : availablePatterns) {
-            patterns[i][0] = p.getPattern();
-            patterns[i][1] = p.getDescription();
+            patternsMatrix[i][0] = p.getPattern();
+            patternsMatrix[i][1] = p.getDescription();
             i++;
         }
         // Disable autoresize, as we will control it
@@ -356,7 +356,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
         DefaultTableModel patternPreviewTableModel = new PatternPreviewDefaultTableModel(new String[0][2], PREVIEW_COLUMN_NAMES);
         patternPreviewTable.setModel(patternPreviewTableModel);
 
-        DefaultTableModel availablePatternsTableModel = new AvailablePatternsDefaultTableModel(patterns, new String[] { I18nUtils.getString("PATTERN"),
+        DefaultTableModel availablePatternsTableModel = new AvailablePatternsDefaultTableModel(patternsMatrix, new String[] { I18nUtils.getString("PATTERN"),
                 I18nUtils.getString("DESCRIPTION") });
         availablePatternsTable.setModel(availablePatternsTableModel);
         setVisible(true);

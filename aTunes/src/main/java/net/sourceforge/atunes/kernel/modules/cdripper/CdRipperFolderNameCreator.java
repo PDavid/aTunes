@@ -40,45 +40,45 @@ import org.joda.time.DateTime;
  *
  */
 public class CdRipperFolderNameCreator {
-	
+
 	private IRepositoryHandler repositoryHandler;
-	
+
 	private IStateRepository stateRepository;
-	
+
 	private IUnknownObjectChecker unknownObjectChecker;
-	
+
 	private IOSManager osManager;
-	
+
 	private PatternToFileTranslator patternToFileTranslator;
-	
+
 	/**
 	 * @param patternToFileTranslator
 	 */
 	public void setPatternToFileTranslator(PatternToFileTranslator patternToFileTranslator) {
 		this.patternToFileTranslator = patternToFileTranslator;
 	}
-	
+
 	/**
 	 * @param osManager
 	 */
 	public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	/**
 	 * @param unknownObjectChecker
 	 */
 	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
-	
+
 	/**
 	 * @param stateRepository
 	 */
 	public void setStateRepository(IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
 	}
-	
+
 	/**
 	 * @param repositoryHandler
 	 */
@@ -92,22 +92,20 @@ public class CdRipperFolderNameCreator {
 	 * @return
 	 */
 	File getFolder(CDMetadata metadata) {
-    	String folderNamePattern = stateRepository.getImportExportFolderPathPattern();
-    	String folder = null;
-    	if (StringUtils.isEmpty(folderNamePattern)) {
-    		folder = StringUtils.getString(unknownObjectChecker.getUnknownAlbum(), " - ", DateUtils.toPathString(new DateTime()));
-    	} else {
-    		folder = patternToFileTranslator.translateFromPatternToFolderName(metadata, folderNamePattern);
-    	}
+		String folderNamePattern = stateRepository.getImportExportFolderPathPattern();
+		String folder = null;
+		if (StringUtils.isEmpty(folderNamePattern)) {
+			folder = StringUtils.getString(unknownObjectChecker.getUnknownAlbum(), " - ", DateUtils.toPathString(new DateTime()));
+		} else {
+			folder = patternToFileTranslator.translateFromPatternToFolderName(metadata, folderNamePattern);
+		}
 
-    	// Build absolute path with repository path
-        File folderFile = new File(StringUtils.getString(repositoryHandler.getRepositoryPath(), osManager.getFileSeparator(), folder));
-        if (!folderFile.exists()) {
-            if (!folderFile.mkdirs()) {
-                Logger.error("Folder ", folderFile.getAbsolutePath(), " could not be created");
-                return null;
-            }
-        }
-    	return folderFile;
+		// Build absolute path with repository path
+		File folderFile = new File(StringUtils.getString(repositoryHandler.getRepositoryPath(), osManager.getFileSeparator(), folder));
+		if (!folderFile.exists() && !folderFile.mkdirs()) {
+			Logger.error("Folder ", folderFile.getAbsolutePath(), " could not be created");
+			return null;
+		}
+		return folderFile;
 	}
 }

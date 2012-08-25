@@ -37,6 +37,14 @@ import net.sourceforge.atunes.model.IOSManager;
  */
 public class FolderSelectorDialog implements IFolderSelectorDialog {
 
+	private static final class RejectAllFilesFileFilter implements
+			FilenameFilter {
+		@Override
+		public boolean accept(File dir, String name) {
+			return false;
+		}
+	}
+
 	private IFrame frame;
 	
 	private String title;
@@ -108,13 +116,7 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
 	private File selectFolderWithFileChooser(String path) {
 		System.setProperty("apple.awt.fileDialogForDirectories", "true");
 		FileDialog dialog = new FileDialog(frame.getFrame(), title, FileDialog.LOAD);
-		dialog.setFilenameFilter(new FilenameFilter() {
-			
-			@Override
-			public boolean accept(File dir, String name) {
-				return false;
-			}
-		});
+		dialog.setFilenameFilter(new RejectAllFilesFileFilter());
 		dialog.setDirectory(path);
         dialog.setVisible(true);
         String parent = dialog.getDirectory();

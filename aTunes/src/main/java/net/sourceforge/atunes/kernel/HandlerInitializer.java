@@ -35,6 +35,26 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class HandlerInitializer {
 	
+	private static final class CallInitializationTaskRunnable implements
+			Runnable {
+		private final Runnable afterTask;
+		private final Runnable initializationTask;
+
+		private CallInitializationTaskRunnable(Runnable afterTask,
+				Runnable initializationTask) {
+			this.afterTask = afterTask;
+			this.initializationTask = initializationTask;
+		}
+
+		@Override
+		public void run() {
+			initializationTask.run();
+			if (afterTask != null) {
+				GuiUtils.callInEventDispatchThread(afterTask);
+			}
+		}
+	}
+
 	private List<AbstractHandler> handlers;
 	
 	private ITaskService taskService;
@@ -57,15 +77,7 @@ public class HandlerInitializer {
                 final Runnable initializationTask = task.getInitializationTask();
                 if (initializationTask != null) {
                 	final Runnable afterTask = task.getInitializationCompletedTask();
-                	taskService.submitNow(StringUtils.getString(handler.getClass().getName(), ".InitializationTask"), new Runnable() {
-                		@Override
-                		public void run() {
-                			initializationTask.run();
-                			if (afterTask != null) {
-                				GuiUtils.callInEventDispatchThread(afterTask);
-                			}
-                		}            		
-                	});
+                	taskService.submitNow(StringUtils.getString(handler.getClass().getName(), ".InitializationTask"), new CallInitializationTaskRunnable(afterTask, initializationTask));
                 }
         	}
         }

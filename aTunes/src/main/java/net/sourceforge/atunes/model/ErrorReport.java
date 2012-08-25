@@ -91,16 +91,15 @@ public class ErrorReport {
     	sb.append("\n---------------------------------------------\n");
     	sb.append(getStateString(state));
     	sb.append("\n---------------------------------------------\n");
-    	sb.append(getThrowableString(throwable));
+    	sb.append(getThrowableString());
     	return sb.toString();
 	}
 	
 	/**
 	 * Returns string information about throwable
-	 * @param throwble
 	 * @return
 	 */
-	private String getThrowableString(Throwable throwble) {
+	private String getThrowableString() {
 		List<String> values = new ArrayList<String>();
 		values.add(StringUtils.getString(throwable.getClass().getCanonicalName(), ": ", throwable.getMessage()));
 		for (StackTraceElement ste : throwable.getStackTrace()) {

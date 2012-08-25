@@ -180,22 +180,7 @@ public final class Logger {
     			e.printStackTrace();
     		}
     		if (bundle != null) {
-    			Enumeration<String> keys = bundle.getKeys();
-    			while (keys.hasMoreElements()) {
-    				String key = keys.nextElement();
-    				String value = bundle.getString(key);
-
-    				// Change to DEBUG MODE if debug
-    				if (key.equals("log4j.rootLogger") && (debug || debugLevel)) {
-    					value = value.replace("INFO", "DEBUG");
-    				}
-    				
-    				if (key.equals("log4j.appender.A2.file") && !debug) {
-    					value = StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), "aTunes.log");
-    				}
-
-    				props.setProperty(key, value);
-    			}
+    			changeProperties(debug, debugLevel, osManager, bundle, props);
     		}
     	} else {
     		// Load default debug log4j properties
@@ -207,4 +192,25 @@ public final class Logger {
 		PropertyConfigurator.configure(props);
 		Logger.setDebug(debug || debugLevel);
     }
+
+	private static void changeProperties(boolean debug, boolean debugLevel,
+			IOSManager osManager, PropertyResourceBundle bundle,
+			Properties props) {
+		Enumeration<String> keys = bundle.getKeys();
+		while (keys.hasMoreElements()) {
+			String key = keys.nextElement();
+			String value = bundle.getString(key);
+
+			// Change to DEBUG MODE if debug
+			if (key.equals("log4j.rootLogger") && (debug || debugLevel)) {
+				value = value.replace("INFO", "DEBUG");
+			}
+			
+			if (key.equals("log4j.appender.A2.file") && !debug) {
+				value = StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), "aTunes.log");
+			}
+
+			props.setProperty(key, value);
+		}
+	}
 }

@@ -96,10 +96,10 @@ public class MailErrorReporter implements IErrorReporter, Runnable {
 	
 	@Override
 	public ErrorReport createReport(String descriptionError, Throwable throwable) {
-		ErrorReport report = new ErrorReport();
-		report.setState(applicationStateGenerator.generateState());
-		report.setThrowable(throwable);
-		report.setErrorDescrition(descriptionError);
-		return report;
+		ErrorReport result = new ErrorReport();
+		result.setState(applicationStateGenerator.generateState());
+		result.setThrowable(throwable);
+		result.setErrorDescrition(descriptionError);
+		return result;
 	}
 }
