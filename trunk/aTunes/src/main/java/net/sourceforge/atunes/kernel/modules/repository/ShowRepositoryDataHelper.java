@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.TimeUtils;
 
 public class ShowRepositoryDataHelper {
 
@@ -70,6 +71,6 @@ public class ShowRepositoryDataHelper {
      */
     private String getToolTip(long size, long sizeInBytes, long duration) {
         return StringUtils.getString(getText(size), " - ", 
-        		StringUtils.fromByteToMegaOrGiga(sizeInBytes), " - ", StringUtils.fromSecondsToHoursAndDays(duration));
+        		StringUtils.fromByteToMegaOrGiga(sizeInBytes), " - ", TimeUtils.secondsToDaysHoursMinutesSeconds(duration));
     }
 }

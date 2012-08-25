@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.TimeUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
 import org.joda.time.base.BaseDateTime;
@@ -390,7 +391,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	
 	@Override
 	public String getAudioObjectDescription() {
-		return StringUtils.getString(getTitleOrFileName(), " - ", getArtist(), " (", StringUtils.seconds2String(getDuration()), ")");
+		return StringUtils.getString(getTitleOrFileName(), " - ", getArtist(), " (", TimeUtils.secondsToHoursMinutesSeconds(getDuration()), ")");
 	}
 	
 	/**

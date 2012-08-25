@@ -45,6 +45,7 @@ import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.TimeUtils;
 
 /**
  * The properties dialog for podcast feed entries.
@@ -237,7 +238,7 @@ public final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertie
 		artistLabel.setText(getHtmlFormatted(I18nUtils.getString("ARTIST"), StringUtils.isEmpty(entry.getArtist()) ? "-" : entry.getArtist()));
 		urlLabel.setText(getHtmlFormatted(I18nUtils.getString("URL"), entry.getUrl()));
 		if (entry.getDuration() > 0) {
-			durationLabel.setText(getHtmlFormatted(I18nUtils.getString("DURATION"), StringUtils.seconds2String(entry.getDuration())));
+			durationLabel.setText(getHtmlFormatted(I18nUtils.getString("DURATION"), TimeUtils.secondsToHoursMinutesSeconds(entry.getDuration())));
 		} else {
 			durationLabel.setText(getHtmlFormatted(I18nUtils.getString("DURATION"), "-"));
 		}

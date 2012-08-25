@@ -26,7 +26,7 @@ import java.lang.management.ManagementFactory;
 public final class JavaUptimeStatistic extends JavaVirtualMachineStatistic {
 	@Override
 	public String getValue() {
-		return StringUtils.fromSecondsToHoursAndDays(ManagementFactory.getRuntimeMXBean().getUptime() / 1000);
+		return TimeUtils.secondsToDaysHoursMinutesSeconds(ManagementFactory.getRuntimeMXBean().getUptime() / 1000);
 	}
 
 	@Override

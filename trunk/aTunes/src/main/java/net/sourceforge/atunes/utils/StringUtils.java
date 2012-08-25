@@ -45,15 +45,6 @@ public final class StringUtils {
     /** Gigabyte 1024 Megabytes. */
     private static final long GIGABYTE = MEGABYTE * 1024;
 
-    /** Seconds in a minute. */
-    private static final long SECONDS_MINUTE = 60;
-
-    /** Seconds in an hour. */
-    private static final long SECONDS_HOUR = 3600;
-
-    /** Seconds in a day. */
-    private static final long SECONDS_DAY = 86400;
-
     /**
      * Given an amount of bytes, return a string representation in Bytes,
      * Kilobytes, Megabytes or Gigabytes Examples: Given 1024 bytes -> "1KB"
@@ -73,36 +64,6 @@ public final class StringUtils {
             return StringUtils.getString(toString((double) size / MEGABYTE, 2), " MB");
         } else {
             return StringUtils.getString(toString((double) size / GIGABYTE, 2), " GB");
-        }
-    }
-
-    /**
-     * Given an amount of seconds, returns a string representation in minutes,
-     * hours and days.
-     * 
-     * @param s
-     *            seconds
-     * 
-     * @return a string representation in minutes, hours and days
-     */
-
-    public static String fromSecondsToHoursAndDays(long s) {
-        long seconds = s;
-
-        long days = seconds / SECONDS_DAY;
-        seconds = seconds % SECONDS_DAY;
-        long hours = seconds / SECONDS_HOUR;
-        seconds = seconds % SECONDS_HOUR;
-        long minutes = seconds / SECONDS_MINUTE;
-        seconds = seconds % SECONDS_MINUTE;
-
-        String hoursMinutesSeconds = StringUtils.getString(hours, ":", (minutes < 10 ? "0" : ""), minutes, ":", (seconds < 10 ? "0" : ""), seconds);
-        if (days == 1) {
-            return StringUtils.getString(days, " ", I18nUtils.getString("DAY"), " ", hoursMinutesSeconds);
-        } else if (days > 1) {
-            return StringUtils.getString(days, " ", I18nUtils.getString("DAYS"), " ", hoursMinutesSeconds);
-        } else {
-            return hoursMinutesSeconds;
         }
     }
 
@@ -271,51 +232,6 @@ public final class StringUtils {
         }
 
         return result;
-    }
-
-    /**
-     * Return a string representation of a given amount of microseconds.
-     * 
-     * @param micros
-     *            the microseconds
-     * 
-     * @return the string
-     */
-    public static String microseconds2String(long micros) {
-        long aux = micros / 1000000;
-        int minutes = (int) aux / 60;
-        aux = aux % 60;
-        return getString(minutes, ":", (aux < 10 ? "0" : ""), aux);
-    }
-
-    /**
-     * Return a string representation of a given amount of milliseconds.
-     * 
-     * @param millis
-     *            the milliseconds
-     * 
-     * @return the string
-     */
-    public static String milliseconds2String(long millis) {
-        long aux = millis / 1000;
-        int minutes = (int) aux / 60;
-        aux = aux % 60;
-        return getString(minutes, ":", (aux < 10 ? "0" : ""), aux);
-    }
-
-    /**
-     * Return a string representation of a given amount of seconds.
-     * 
-     * @param s
-     *            seconds
-     * 
-     * @return the string
-     */
-    public static String seconds2String(long s) {
-        long seconds = s;
-        int minutes = (int) seconds / 60;
-        seconds = seconds % 60;
-        return getString(minutes, ":", (seconds < 10 ? "0" : ""), seconds);
     }
     
     /**

@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.TimeUtils;
 
 final class PodcastDurationColumn extends AbstractColumn<String> {
     /**
@@ -36,7 +36,7 @@ final class PodcastDurationColumn extends AbstractColumn<String> {
 
     @Override
     public String getValueFor(IAudioObject audioObject) {
-        return StringUtils.seconds2String(audioObject.getDuration());
+        return TimeUtils.secondsToHoursMinutesSeconds(audioObject.getDuration());
     }
 
     @Override

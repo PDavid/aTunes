@@ -29,7 +29,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.TimeUtils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -134,7 +134,7 @@ public final class YoutubeResultXmlAnalyzer {
 		    if (durationNode != null) {
 		        String duration = ((Element) durationNode).getAttribute("seconds");
 		        if (duration != null) {
-		            entry.setDuration(StringUtils.seconds2String(Long.parseLong(duration)));
+		            entry.setDuration(TimeUtils.secondsToHoursMinutesSeconds(Long.parseLong(duration)));
 		        }
 		    }
 		}
