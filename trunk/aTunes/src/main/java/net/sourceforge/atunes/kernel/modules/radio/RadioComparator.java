@@ -20,11 +20,18 @@
 
 package net.sourceforge.atunes.kernel.modules.radio;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import net.sourceforge.atunes.model.IRadio;
 
-final class RadioComparator implements Comparator<IRadio> {
+final class RadioComparator implements Comparator<IRadio>, Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1175861744133703864L;
+
 	@Override
     public int compare(IRadio o1, IRadio o2) {
         return o1.getName().compareToIgnoreCase(o2.getName());

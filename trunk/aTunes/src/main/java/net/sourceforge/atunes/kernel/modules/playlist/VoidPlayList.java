@@ -33,6 +33,11 @@ import net.sourceforge.atunes.model.IPlayList;
  */
 class VoidPlayList implements IPlayList {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3581989108482549526L;
+
 	@Override
 	public void moveRowTo(int sourceRow, int targetRow) {
 	}

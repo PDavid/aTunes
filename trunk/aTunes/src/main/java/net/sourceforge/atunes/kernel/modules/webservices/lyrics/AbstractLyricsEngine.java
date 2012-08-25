@@ -61,8 +61,7 @@ public abstract class AbstractLyricsEngine {
      * @throws IOException
      */
     protected final URLConnection getConnection(String url, ILyricsRetrieveOperation operation) throws IOException {
-        URLConnection connection = networkHandler.getConnection(url);
-        return connection;
+        return networkHandler.getConnection(url);
     }
 
     /**

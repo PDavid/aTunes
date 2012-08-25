@@ -80,15 +80,7 @@ public class LyricsRetrieveOperation implements ILyricsRetrieveOperation {
 	
 	@Override
 	public ILyrics getLyrics() {
-        // Try to get from cache
-        ILyrics lyric = lyricsCache.retrieveLyric(artist, song);
-        
-        // Discard stored lyrics containing HTML
-        if (lyric != null && lyric.getLyrics().contains("<") && lyric.getLyrics().contains(">")) {
-        	Logger.debug("Discarding lyrics. Seems to contain some HTML code: ");
-        	Logger.debug(lyric.getLyrics());
-        	lyric = null;
-        }
+        ILyrics lyric = getLyricFromCache();
         
         if (lyric == null) {
             // If any engine is loaded
@@ -114,6 +106,19 @@ public class LyricsRetrieveOperation implements ILyricsRetrieveOperation {
         }
         // Return lyric
         return lyric;
+	}
+
+	private ILyrics getLyricFromCache() {
+		// Try to get from cache
+        ILyrics lyric = lyricsCache.retrieveLyric(artist, song);
+        
+        // Discard stored lyrics containing HTML
+        if (lyric != null && lyric.getLyrics().contains("<") && lyric.getLyrics().contains(">")) {
+        	Logger.debug("Discarding lyrics. Seems to contain some HTML code: ");
+        	Logger.debug(lyric.getLyrics());
+        	lyric = null;
+        }
+		return lyric;
 	}
 	
     /**
