@@ -82,5 +82,4 @@ public class CustomTextField extends JTextField {
     public CustomTextField(Document doc, String text, int columns) {
         super(doc, text, columns);
     }
-
 }
