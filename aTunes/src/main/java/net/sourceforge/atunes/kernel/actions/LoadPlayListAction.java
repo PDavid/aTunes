@@ -27,6 +27,7 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.modules.process.LoadPlayListProcess;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDialogFactory;
@@ -64,7 +65,7 @@ public class LoadPlayListAction extends CustomAbstractAction {
     public LoadPlayListAction() {
         super(StringUtils.getString(I18nUtils.getString("LOAD"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("LOAD_PLAYLIST_TOOLTIP"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, GuiUtils.getCtrlOrMetaActionEventMask()));
     }
 
     /**

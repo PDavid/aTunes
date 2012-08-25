@@ -23,6 +23,8 @@ package net.sourceforge.atunes.gui.views.controls;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
+import net.sourceforge.atunes.gui.GuiUtils;
+
 /**
  * Custom text field with edition popup
  * 
@@ -31,55 +33,64 @@ import javax.swing.text.Document;
  */
 public class CustomTextField extends JTextField {
 
-    private static final long serialVersionUID = 3642106434825237789L;
+	private static final long serialVersionUID = 3642106434825237789L;
 
-    {
-        new EditionPopUpMenu(this);
-    }
+	{
+		new EditionPopUpMenu(this);
+	}
 
-    /**
-     * Default constructor
-     */
-    public CustomTextField() {
-        super();
-    }
+	/**
+	 * Default constructor
+	 */
+	public CustomTextField() {
+		super();
+		initialize();
+	}
 
-    /**
-     * Constructor with number of columns
-     * 
-     * @param columns
-     */
-    public CustomTextField(int columns) {
-        super(columns);
-    }
+	/**
+	 * Constructor with number of columns
+	 * 
+	 * @param columns
+	 */
+	public CustomTextField(int columns) {
+		super(columns);
+		initialize();
+	}
 
-    /**
-     * Constructor with text
-     * 
-     * @param text
-     */
-    public CustomTextField(String text) {
-        super(text);
-    }
+	/**
+	 * Constructor with text
+	 * 
+	 * @param text
+	 */
+	public CustomTextField(String text) {
+		super(text);
+		initialize();
+	}
 
-    /**
-     * Constructor with text and columns
-     * 
-     * @param text
-     * @param columns
-     */
-    public CustomTextField(String text, int columns) {
-        super(text, columns);
-    }
+	/**
+	 * Constructor with text and columns
+	 * 
+	 * @param text
+	 * @param columns
+	 */
+	public CustomTextField(String text, int columns) {
+		super(text, columns);
+		initialize();
+	}
 
-    /**
-     * Constructor with document, text and columns
-     * 
-     * @param doc
-     * @param text
-     * @param columns
-     */
-    public CustomTextField(Document doc, String text, int columns) {
-        super(doc, text, columns);
-    }
+	/**
+	 * Constructor with document, text and columns
+	 * 
+	 * @param doc
+	 * @param text
+	 * @param columns
+	 */
+	public CustomTextField(Document doc, String text, int columns) {
+		super(doc, text, columns);
+		initialize();
+	}
+
+	private void initialize() {
+		GuiUtils.initializeTextField(this);
+	}
 }

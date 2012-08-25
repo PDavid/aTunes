@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
@@ -62,7 +63,7 @@ public class ClearPlayListAction extends CustomAbstractAction {
     public ClearPlayListAction() {
         super(I18nUtils.getString("CLEAR"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TOOLTIP"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, ActionEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, GuiUtils.getCtrlOrMetaActionEventMask()));
     }
 
     @Override

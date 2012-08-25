@@ -27,6 +27,7 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
@@ -89,7 +90,7 @@ public class SaveM3UPlayListAction extends CustomAbstractAction {
 	public SaveM3UPlayListAction() {
 		super(StringUtils.getString(I18nUtils.getString("SAVE_M3U"), "..."));
 		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SAVE_M3U_PLAYLIST_TOOLTIP"));
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, GuiUtils.getCtrlOrMetaActionEventMask()));
 	}
 
 	@Override

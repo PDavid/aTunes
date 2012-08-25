@@ -28,6 +28,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.utils.ClipboardFacade;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -47,7 +48,7 @@ class TextComponentPasteAction extends AbstractAction {
     public TextComponentPasteAction(JTextComponent textComponent) {
         super(I18nUtils.getString("PASTE"));
         this.textComponent = textComponent;
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, GuiUtils.getCtrlOrMetaActionEventMask()));
     }
 
     @Override

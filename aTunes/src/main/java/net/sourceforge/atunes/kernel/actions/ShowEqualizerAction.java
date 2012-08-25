@@ -25,6 +25,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IEqualizerDialog;
@@ -65,7 +66,7 @@ public class ShowEqualizerAction extends ActionWithColorMutableIcon {
      */
     public ShowEqualizerAction() {
         super(I18nUtils.getString("EQUALIZER"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, GuiUtils.getCtrlOrMetaActionEventMask()));
     }
 
     @Override

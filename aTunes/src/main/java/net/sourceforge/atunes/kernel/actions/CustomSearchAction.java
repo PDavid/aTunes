@@ -25,6 +25,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -50,7 +51,7 @@ public class CustomSearchAction extends CustomAbstractAction {
     CustomSearchAction() {
         super(I18nUtils.getString("SEARCH"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SEARCH"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D, GuiUtils.getCtrlOrMetaActionEventMask()));
     }
 
     @Override

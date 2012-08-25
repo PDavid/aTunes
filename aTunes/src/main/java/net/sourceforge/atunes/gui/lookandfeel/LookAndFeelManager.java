@@ -52,82 +52,82 @@ import org.commonjukebox.plugins.model.PluginListener;
 
 public final class LookAndFeelManager implements PluginListener, ILookAndFeelManager {
 
-    private static final boolean USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE = false;
-    private static final boolean USE_FONT_SMOOTHING_DEFAULT_VALUE = true;
+	private static final boolean USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE = false;
+	private static final boolean USE_FONT_SMOOTHING_DEFAULT_VALUE = true;
 
-    /**
-     * Current look and feel
-     */
-    private ILookAndFeel currentLookAndFeel;
+	/**
+	 * Current look and feel
+	 */
+	private ILookAndFeel currentLookAndFeel;
 
-    /**
-     * Map containing look and feels
-     */
-    private Map<String, Class<? extends ILookAndFeel>> lookAndFeels;
+	/**
+	 * Map containing look and feels
+	 */
+	private Map<String, Class<? extends ILookAndFeel>> lookAndFeels;
 
-    /**
-     * Default look and feel
-     */
-    private Class<? extends ILookAndFeel> defaultLookAndFeelClass;
-    
-    /**
-     * Look and Feel change listeners
-     */
-    private List<ILookAndFeelChangeListener> changeListeners;
-    
-    private IFontBeanFactory fontBeanFactory;
-    
-    private IApplicationArguments applicationArguments;
+	/**
+	 * Default look and feel
+	 */
+	private Class<? extends ILookAndFeel> defaultLookAndFeelClass;
 
-    /**
-     * @param osManager
-     */
-    public LookAndFeelManager(IOSManager osManager) {
-        lookAndFeels = osManager.getLookAndFeels();
-        defaultLookAndFeelClass = osManager.getDefaultLookAndFeel();
-    }
-    
-    /**
-     * @param applicationArguments
-     */
-    public void setApplicationArguments(IApplicationArguments applicationArguments) {
+	/**
+	 * Look and Feel change listeners
+	 */
+	private List<ILookAndFeelChangeListener> changeListeners;
+
+	private IFontBeanFactory fontBeanFactory;
+
+	private IApplicationArguments applicationArguments;
+
+	/**
+	 * @param osManager
+	 */
+	public LookAndFeelManager(IOSManager osManager) {
+		lookAndFeels = osManager.getLookAndFeels();
+		defaultLookAndFeelClass = osManager.getDefaultLookAndFeel();
+	}
+
+	/**
+	 * @param applicationArguments
+	 */
+	public void setApplicationArguments(IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
-    
-    /**
-     * @param fontBeanFactory
-     */
-    public void setFontBeanFactory(IFontBeanFactory fontBeanFactory) {
+
+	/**
+	 * @param fontBeanFactory
+	 */
+	public void setFontBeanFactory(IFontBeanFactory fontBeanFactory) {
 		this.fontBeanFactory = fontBeanFactory;
 	}
 
-    @Override
-    public void pluginActivated(PluginInfo plugin) {
-        try {
-        	ILookAndFeel laf = (ILookAndFeel) Context.getBean(IPluginsHandler.class).getNewInstance(plugin);
-            lookAndFeels.put(laf.getName(), laf.getClass());
-        } catch (PluginSystemException e) {
-            Logger.error(e);
-        }
-    }
+	@Override
+	public void pluginActivated(PluginInfo plugin) {
+		try {
+			ILookAndFeel laf = (ILookAndFeel) Context.getBean(IPluginsHandler.class).getNewInstance(plugin);
+			lookAndFeels.put(laf.getName(), laf.getClass());
+		} catch (PluginSystemException e) {
+			Logger.error(e);
+		}
+	}
 
-    @Override
-    public void pluginDeactivated(PluginInfo arg0, Collection<Plugin> instances) {
-        for (Plugin instance : instances) {
-            lookAndFeels.remove(((ILookAndFeel) instance).getName());
-        }
-    }
+	@Override
+	public void pluginDeactivated(PluginInfo arg0, Collection<Plugin> instances) {
+		for (Plugin instance : instances) {
+			lookAndFeels.remove(((ILookAndFeel) instance).getName());
+		}
+	}
 
-    @Override
+	@Override
 	public void setLookAndFeel(LookAndFeelBean bean, IStateCore stateCore, IStateUI stateUI, IOSManager osManager) {
-        if (applicationArguments.isIgnoreLookAndFeel()) {
-            return;
-        }
-        
-        LookAndFeelBean lookAndFeelBean = bean;
-        if (lookAndFeelBean == null || lookAndFeelBean.getName() == null) {
-            lookAndFeelBean = new LookAndFeelBean();
-            ILookAndFeel defaultLookAndFeel = null;
+		if (applicationArguments.isIgnoreLookAndFeel()) {
+			return;
+		}
+
+		LookAndFeelBean lookAndFeelBean = bean;
+		if (lookAndFeelBean == null || lookAndFeelBean.getName() == null) {
+			lookAndFeelBean = new LookAndFeelBean();
+			ILookAndFeel defaultLookAndFeel = null;
 			try {
 				defaultLookAndFeel = defaultLookAndFeelClass.newInstance();
 			} catch (InstantiationException e) {
@@ -135,19 +135,19 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
 			} catch (IllegalAccessException e) {
 				Logger.error(e);
 			}
-            lookAndFeelBean.setName(defaultLookAndFeel.getName());
-            lookAndFeelBean.setSkin(defaultLookAndFeel.getDefaultSkin());
-            if (stateUI.getLookAndFeel() == null) {
-                stateUI.setLookAndFeel(lookAndFeelBean);
-            }
-        }
+			lookAndFeelBean.setName(defaultLookAndFeel.getName());
+			lookAndFeelBean.setSkin(defaultLookAndFeel.getDefaultSkin());
+			if (stateUI.getLookAndFeel() == null) {
+				stateUI.setLookAndFeel(lookAndFeelBean);
+			}
+		}
 
-        Class<? extends ILookAndFeel> currentLookAndFeelClass = lookAndFeels.get(lookAndFeelBean.getName());
-        if (currentLookAndFeelClass == null) {
-            currentLookAndFeelClass = defaultLookAndFeelClass;
-        }
+		Class<? extends ILookAndFeel> currentLookAndFeelClass = lookAndFeels.get(lookAndFeelBean.getName());
+		if (currentLookAndFeelClass == null) {
+			currentLookAndFeelClass = defaultLookAndFeelClass;
+		}
 
-        try {
+		try {
 			currentLookAndFeel = currentLookAndFeelClass.newInstance();
 			currentLookAndFeel.setOsManager(osManager);
 		} catch (InstantiationException e) {
@@ -155,174 +155,174 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
 		} catch (IllegalAccessException e) {
 			Logger.error(e);
 		}
-		
-        currentLookAndFeel.initializeLookAndFeel();
-        currentLookAndFeel.setLookAndFeel(lookAndFeelBean.getSkin());        
-        initializeFonts(currentLookAndFeel, stateCore, stateUI);
-        ColorDefinitions.initColors();
-    }
-    
-    /**
-     * Initializes fonts for look and feel
-     * @param lookAndFeel
-     * @param state
-     * @param stateUI
-     */
-    private void initializeFonts(ILookAndFeel lookAndFeel, IStateCore stateCore, IStateUI stateUI) {
-		FontSettings fontSettings = stateUI.getFontSettings();
-		if (lookAndFeel.supportsCustomFontSettings() && fontSettings != null && !fontSettings.isUseFontSmoothingSettingsFromOs()) {
-			if (fontSettings.isUseFontSmoothing()) {
-				System.setProperty("awt.useSystemAAFontSettings", "lcd");
-			} else {
-				System.setProperty("awt.useSystemAAFontSettings", "false");
-			}
-		} else {
-			System.setProperty("awt.useSystemAAFontSettings", "lcd");
-		}
 
-
-    	Font font = UIManager.getFont("Label.font");
-    	if (lookAndFeel.supportsCustomFontSettings()) {
-    		if (fontSettings != null) {
-    			font = fontSettings.getFont().toFont();
-    		} else {
-    			/*
-    			 * Get appropriate font for the currently selected language. For
-    			 * Chinese or Japanese we should use default font.
-    			 */
-    			if ("zh".equals(stateCore.getLocale().getLanguage()) || "ja".equals(stateCore.getLocale().getLanguage())) {
-    				font = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-    			} else {
-    				font = UIManager.getFont("Label.font");
-    			}
-    			stateUI.setFontSettings(new FontSettings(fontBeanFactory.getFontBean(font), USE_FONT_SMOOTHING_DEFAULT_VALUE, USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE));
-    		}
-    	}
-		lookAndFeel.setBaseFont(font);
-		lookAndFeel.initializeFonts(font);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#getAvailableLookAndFeels()
-	 */
-    @Override
-	public List<String> getAvailableLookAndFeels() {
-        return new ArrayList<String>(lookAndFeels.keySet());
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#getAvailableSkins(java.lang.String)
-	 */
-    @Override
-	public List<String> getAvailableSkins(String lookAndFeelName) {
-    	Class<? extends ILookAndFeel> clazz = lookAndFeels.get(lookAndFeelName);
-    	if (clazz != null) {
-    		ILookAndFeel lookAndFeel = null;
-			try {
-				lookAndFeel = clazz.newInstance();
-			} catch (InstantiationException e) {
-				Logger.error(e);
-			} catch (IllegalAccessException e) {
-				Logger.error(e);
-			}
-    		if (lookAndFeel != null) {
-    			return lookAndFeel.getSkins() != null ? lookAndFeel.getSkins() : new ArrayList<String>();
-    		}
-    	}
-        return new ArrayList<String>();
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#getCurrentLookAndFeelName()
-	 */
-    @Override
-	public String getCurrentLookAndFeelName() {
-        return currentLookAndFeel.getName();
-    }
-
-    @Override
-	public void applySkin(String selectedSkin, IStateCore stateCore, IStateUI stateUI, IOSManager osManager) {
-        LookAndFeelBean bean = new LookAndFeelBean();
-        bean.setName(currentLookAndFeel.getName());
-        bean.setSkin(selectedSkin);
-        setLookAndFeel(bean, stateCore, stateUI, osManager);
-        for (Window window : Window.getWindows()) {
-            SwingUtilities.updateComponentTreeUI(window);
-        }
-        // Notify listeners
-        for (ILookAndFeelChangeListener listener : getChangeListeners()) {
-        	listener.lookAndFeelChanged();
-        }
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#getCurrentLookAndFeel()
-	 */
-    @Override
-	public ILookAndFeel getCurrentLookAndFeel() {
-        return currentLookAndFeel;
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#getDefaultSkin(java.lang.String)
-	 */
-    @Override
-	public String getDefaultSkin(String lookAndFeelName) {
-    	Class<? extends ILookAndFeel> clazz = lookAndFeels.get(lookAndFeelName);
-    	if (clazz != null) {
-    		ILookAndFeel lookAndFeel = null;
-    		try {
-				lookAndFeel = clazz.newInstance();
-			} catch (InstantiationException e) {
-				Logger.error(e);
-			} catch (IllegalAccessException e) {
-				Logger.error(e);
-			}
-    		if (lookAndFeel != null) {
-    			return lookAndFeel.getDefaultSkin();
-    		}
-    	}
-        return null;
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#getDefaultLookAndFeel()
-	 */
-    @Override
-	public ILookAndFeel getDefaultLookAndFeel() {
-        try {
-			return defaultLookAndFeelClass.newInstance();
-		} catch (InstantiationException e) {
-			Logger.error(e);
-		} catch (IllegalAccessException e) {
-			Logger.error(e);
-		}
-		return null;
-    }
-
-	/**
-	 * @return the changeListeners
-	 */
-	protected List<ILookAndFeelChangeListener> getChangeListeners() {
-		if (changeListeners == null) {
-			changeListeners = new ArrayList<ILookAndFeelChangeListener>();
-		}
-		return changeListeners;
+		currentLookAndFeel.initializeLookAndFeel();
+		currentLookAndFeel.setLookAndFeel(lookAndFeelBean.getSkin());        
+		initializeFonts(currentLookAndFeel, stateCore, stateUI);
+		ColorDefinitions.initColors();
 	}
-	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#addLookAndFeelChangeListener(net.sourceforge.atunes.model.ILookAndFeelChangeListener)
-	 */
-	@Override
-	public void addLookAndFeelChangeListener(ILookAndFeelChangeListener listener) {
-		getChangeListeners().add(listener);
-	}
-	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#removeLookAndFeelChangeListener(net.sourceforge.atunes.model.ILookAndFeelChangeListener)
-	 */
-	@Override
-	public void removeLookAndFeelChangeListener(ILookAndFeelChangeListener listener) {
-		getChangeListeners().remove(listener);
-	}
+
+	 /**
+	  * Initializes fonts for look and feel
+	  * @param lookAndFeel
+	  * @param state
+	  * @param stateUI
+	  */
+	 private void initializeFonts(ILookAndFeel lookAndFeel, IStateCore stateCore, IStateUI stateUI) {
+		 FontSettings fontSettings = stateUI.getFontSettings();
+		 if (lookAndFeel.supportsCustomFontSettings() && fontSettings != null && !fontSettings.isUseFontSmoothingSettingsFromOs()) {
+			 if (fontSettings.isUseFontSmoothing()) {
+				 System.setProperty("awt.useSystemAAFontSettings", "lcd");
+			 } else {
+				 System.setProperty("awt.useSystemAAFontSettings", "false");
+			 }
+		 } else {
+			 System.setProperty("awt.useSystemAAFontSettings", "lcd");
+		 }
+
+
+		 Font font = UIManager.getFont("Label.font");
+		 if (lookAndFeel.supportsCustomFontSettings()) {
+			 if (fontSettings != null) {
+				 font = fontSettings.getFont().toFont();
+			 } else {
+				 /*
+				  * Get appropriate font for the currently selected language. For
+				  * Chinese or Japanese we should use default font.
+				  */
+				 if ("zh".equals(stateCore.getLocale().getLanguage()) || "ja".equals(stateCore.getLocale().getLanguage())) {
+					 font = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+				 } else {
+					 font = UIManager.getFont("Label.font");
+				 }
+				 stateUI.setFontSettings(new FontSettings(fontBeanFactory.getFontBean(font), USE_FONT_SMOOTHING_DEFAULT_VALUE, USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE));
+			 }
+		 }
+		 lookAndFeel.setBaseFont(font);
+		 lookAndFeel.initializeFonts(font);
+	 }
+
+	 /* (non-Javadoc)
+	  * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#getAvailableLookAndFeels()
+	  */
+	 @Override
+	 public List<String> getAvailableLookAndFeels() {
+		 return new ArrayList<String>(lookAndFeels.keySet());
+	 }
+
+	 /* (non-Javadoc)
+	  * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#getAvailableSkins(java.lang.String)
+	  */
+	 @Override
+	 public List<String> getAvailableSkins(String lookAndFeelName) {
+		 Class<? extends ILookAndFeel> clazz = lookAndFeels.get(lookAndFeelName);
+		 if (clazz != null) {
+			 ILookAndFeel lookAndFeel = null;
+			 try {
+				 lookAndFeel = clazz.newInstance();
+			 } catch (InstantiationException e) {
+				 Logger.error(e);
+			 } catch (IllegalAccessException e) {
+				 Logger.error(e);
+			 }
+			 if (lookAndFeel != null) {
+				 return lookAndFeel.getSkins() != null ? lookAndFeel.getSkins() : new ArrayList<String>();
+			 }
+		 }
+		 return new ArrayList<String>();
+	 }
+
+	 /* (non-Javadoc)
+	  * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#getCurrentLookAndFeelName()
+	  */
+	 @Override
+	 public String getCurrentLookAndFeelName() {
+		 return currentLookAndFeel.getName();
+	 }
+
+	 @Override
+	 public void applySkin(String selectedSkin, IStateCore stateCore, IStateUI stateUI, IOSManager osManager) {
+		 LookAndFeelBean bean = new LookAndFeelBean();
+		 bean.setName(currentLookAndFeel.getName());
+		 bean.setSkin(selectedSkin);
+		 setLookAndFeel(bean, stateCore, stateUI, osManager);
+		 for (Window window : Window.getWindows()) {
+			 SwingUtilities.updateComponentTreeUI(window);
+		 }
+		 // Notify listeners
+		 for (ILookAndFeelChangeListener listener : getChangeListeners()) {
+			 listener.lookAndFeelChanged();
+		 }
+	 }
+
+	 /* (non-Javadoc)
+	  * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#getCurrentLookAndFeel()
+	  */
+	 @Override
+	 public ILookAndFeel getCurrentLookAndFeel() {
+		 return currentLookAndFeel;
+	 }
+
+	 /* (non-Javadoc)
+	  * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#getDefaultSkin(java.lang.String)
+	  */
+	 @Override
+	 public String getDefaultSkin(String lookAndFeelName) {
+		 Class<? extends ILookAndFeel> clazz = lookAndFeels.get(lookAndFeelName);
+		 if (clazz != null) {
+			 ILookAndFeel lookAndFeel = null;
+			 try {
+				 lookAndFeel = clazz.newInstance();
+			 } catch (InstantiationException e) {
+				 Logger.error(e);
+			 } catch (IllegalAccessException e) {
+				 Logger.error(e);
+			 }
+			 if (lookAndFeel != null) {
+				 return lookAndFeel.getDefaultSkin();
+			 }
+		 }
+		 return null;
+	 }
+
+	 /* (non-Javadoc)
+	  * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#getDefaultLookAndFeel()
+	  */
+	 @Override
+	 public ILookAndFeel getDefaultLookAndFeel() {
+		 try {
+			 return defaultLookAndFeelClass.newInstance();
+		 } catch (InstantiationException e) {
+			 Logger.error(e);
+		 } catch (IllegalAccessException e) {
+			 Logger.error(e);
+		 }
+		 return null;
+	 }
+
+	 /**
+	  * @return the changeListeners
+	  */
+	 protected List<ILookAndFeelChangeListener> getChangeListeners() {
+		 if (changeListeners == null) {
+			 changeListeners = new ArrayList<ILookAndFeelChangeListener>();
+		 }
+		 return changeListeners;
+	 }
+
+	 /* (non-Javadoc)
+	  * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#addLookAndFeelChangeListener(net.sourceforge.atunes.model.ILookAndFeelChangeListener)
+	  */
+	 @Override
+	 public void addLookAndFeelChangeListener(ILookAndFeelChangeListener listener) {
+		 getChangeListeners().add(listener);
+	 }
+
+	 /* (non-Javadoc)
+	  * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#removeLookAndFeelChangeListener(net.sourceforge.atunes.model.ILookAndFeelChangeListener)
+	  */
+	 @Override
+	 public void removeLookAndFeelChangeListener(ILookAndFeelChangeListener listener) {
+		 getChangeListeners().remove(listener);
+	 }
 }
