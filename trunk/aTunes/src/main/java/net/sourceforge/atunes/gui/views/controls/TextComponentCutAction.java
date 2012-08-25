@@ -28,6 +28,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.utils.ClipboardFacade;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -47,7 +48,7 @@ class TextComponentCutAction extends AbstractAction {
     public TextComponentCutAction(JTextComponent textComponent) {
         super(I18nUtils.getString("CUT"));
         this.textComponent = textComponent;
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, GuiUtils.getCtrlOrMetaActionEventMask()));
     }
 
     @Override

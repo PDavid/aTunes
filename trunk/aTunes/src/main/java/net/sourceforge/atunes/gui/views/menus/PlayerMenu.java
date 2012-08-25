@@ -28,6 +28,7 @@ import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayerMenu extends JMenu {
@@ -37,7 +38,7 @@ public class PlayerMenu extends JMenu {
 
 		private PlayActionFromMenuBar() {
 			super(I18nUtils.getString("PLAY"));
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, GuiUtils.getCtrlOrMetaActionEventMask()));
 		}
 
 		@Override

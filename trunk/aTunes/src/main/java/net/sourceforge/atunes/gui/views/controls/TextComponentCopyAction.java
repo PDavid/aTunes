@@ -28,6 +28,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.utils.ClipboardFacade;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -46,7 +47,7 @@ class TextComponentCopyAction extends AbstractAction {
     public TextComponentCopyAction(JTextComponent textComponent) {
         super(I18nUtils.getString("COPY"));
         this.textComponent = textComponent;
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C, GuiUtils.getCtrlOrMetaActionEventMask()));
     }
 
     @Override
