@@ -37,6 +37,7 @@ final class MPlayerConstants {
     static final String CACHE_MIN = "-cache-min";
     static final String CACHE_FILL_SIZE_IN_PERCENT = "7.0";
     static final String PREFER_IPV4 = "-prefer-ipv4";
+    static final String VOLUME = "-volume";
 
     private MPlayerConstants() {}
 
