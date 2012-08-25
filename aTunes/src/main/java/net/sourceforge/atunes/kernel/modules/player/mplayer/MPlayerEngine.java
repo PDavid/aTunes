@@ -153,7 +153,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
             	mPlayerPositionThread = new MPlayerPositionThread(this);
             	mPlayerPositionThread.start();
             	commandWriter.sendGetDurationCommand();
-            	setVolume(getStatePlayer().getVolume());
             }
 
         } catch (Exception e) {

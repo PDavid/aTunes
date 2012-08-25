@@ -178,6 +178,7 @@ public class MPlayerProcessBuilder {
 		prepareCache(command, isRemoteAudio);
 		prepareNormalization(command);
 		prepareEqualizer(audioObject, command);
+		prepareVolume(command);
 		return command;
 	}
 
@@ -341,5 +342,13 @@ public class MPlayerProcessBuilder {
 			}
 		}
 		return eqString.toString();
+	}
+	
+	/**
+	 * @param command
+	 */
+	private void prepareVolume(List<String> command) {
+		command.add(MPlayerConstants.VOLUME);
+		command.add(Integer.toString(statePlayer.isMuteEnabled() ? 0 : statePlayer.getVolume()));
 	}
 }

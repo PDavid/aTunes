@@ -30,6 +30,7 @@ aTunes 2.2.0
 - Use Kryo as serialization library
 - FIX: Use last.fm API to obtain last.fm loved tracks
 - FIX: Detection of radio audio streams blocks playing
+- FIX: Start mplayer process with volume argument
 
 aTunes 2.1.1
 ------------
