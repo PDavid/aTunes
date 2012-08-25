@@ -25,7 +25,7 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.TimeUtils;
 
 public class LengthColumn extends AbstractColumn<String> {
 
@@ -53,7 +53,7 @@ public class LengthColumn extends AbstractColumn<String> {
         if (audioObject instanceof IPodcastFeedEntry && ((IPodcastFeedEntry) audioObject).getDuration() <= 0) {
             return "-";
         }
-        return StringUtils.seconds2String(audioObject.getDuration());
+        return TimeUtils.secondsToHoursMinutesSeconds(audioObject.getDuration());
     }
 
 }

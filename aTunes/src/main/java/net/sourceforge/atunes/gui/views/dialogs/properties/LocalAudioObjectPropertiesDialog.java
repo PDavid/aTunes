@@ -45,6 +45,7 @@ import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.TimeUtils;
 
 /**
  * The properties dialog for audio files
@@ -301,7 +302,7 @@ public final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertie
 		fileNameLabel.fillText(file);
 		pathLabel.fillText(file);
 
-		durationLabel.setText(getHtmlFormatted(I18nUtils.getString("DURATION"), StringUtils.seconds2String(file.getDuration())));
+		durationLabel.setText(getHtmlFormatted(I18nUtils.getString("DURATION"), TimeUtils.secondsToHoursMinutesSeconds(file.getDuration())));
 		trackLabel.setText(getHtmlFormatted(I18nUtils.getString("TRACK"), file.getTrackNumber() > 0 ? String.valueOf(file.getTrackNumber()) : "-"));
 		discNumberLabel.setText(getHtmlFormatted(I18nUtils.getString("DISC_NUMBER"), file.getDiscNumber() > 0 ? String.valueOf(file.getDiscNumber()) : "-"));
 		genreLabel.setText(getHtmlFormatted(I18nUtils.getString("GENRE"), StringUtils.isEmpty(file.getGenre()) ? "-" : file.getGenre()));

@@ -34,6 +34,7 @@ import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.PointedList;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.TimeUtils;
 
 /**
  * This class represents a play list.
@@ -419,7 +420,7 @@ public class PlayList implements IPlayList {
         for (IAudioObject song : this.audioObjects.getList()) {
             seconds += song.getDuration();
         }
-        return StringUtils.fromSecondsToHoursAndDays(seconds);
+        return TimeUtils.secondsToDaysHoursMinutesSeconds(seconds);
     }
 
     /**

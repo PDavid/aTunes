@@ -51,6 +51,7 @@ import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.TimeUtils;
 
 /**
  * Reads repository
@@ -397,7 +398,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 			@Override
 			public void run() {
 				if (repositoryProgressDialog != null) {
-					repositoryProgressDialog.setRemainingTime(StringUtils.getString(I18nUtils.getString("REMAINING_TIME"), ":   ", StringUtils.milliseconds2String(millis)));
+					repositoryProgressDialog.setRemainingTime(StringUtils.getString(I18nUtils.getString("REMAINING_TIME"), ":   ", TimeUtils.millisecondsToHoursMinutesSeconds(millis)));
 				}
 			}
 		});

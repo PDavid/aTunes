@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.views.controls;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -41,6 +42,7 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.IProgressSlider;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.TimeUtils;
 
 public class ProgressSlider extends JPanel implements IProgressSlider {
 
@@ -75,6 +77,8 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
     public void initialize() {
         time = new JLabel();
         time.setHorizontalAlignment(SwingConstants.RIGHT);
+        // Need enough space to show time for long audio objects
+        time.setPreferredSize(new Dimension(100, 0));
 
         progressBar = new JSlider();
         progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
@@ -91,6 +95,8 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
         
         remainingTime = new JLabel();
         remainingTime.setHorizontalAlignment(SwingConstants.LEFT);
+        // Need enough space to show time for long audio objects
+        remainingTime.setPreferredSize(new Dimension(100, 0));
 
         setLayout();
     }
@@ -124,9 +130,9 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 	private void showControls(long time, long remainingTime, boolean showDeterminateControls, boolean showIndeterminateControls) {
 		if (showDeterminateControls && !showIndeterminateControls) {
 			this.time.setVisible(true);
-	        this.time.setText(time > 0 ? StringUtils.milliseconds2String(time) : "");
+	        this.time.setText(time > 0 ? TimeUtils.millisecondsToHoursMinutesSeconds(time) : "");
 	       	this.remainingTime.setVisible(true);
-	        this.remainingTime.setText(remainingTime > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(remainingTime)) : "");
+	        this.remainingTime.setText(remainingTime > 0 ? StringUtils.getString("- ", TimeUtils.millisecondsToHoursMinutesSeconds(remainingTime)) : "");
 	       	this.progressBar.setVisible(true);
 	       	this.indeterminateProgressBar.setVisible(false);
 		} else {
@@ -143,18 +149,18 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 	private void setLayout() {
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
-        c.weightx = 0.1;
+        c.weightx = 0;
         c.insets = new Insets(0, 0, 3, 0);
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
         add(time, c);
         c.gridx = 1;
-        c.weightx = 0.8;
+        c.weightx = 1;
         c.insets = new Insets(0, 0, 0, 0);
         c.weighty = 1;
         add(getProgressBarPanel(), c);
         c.gridx = 2;
-        c.weightx = 0.1;
+        c.weightx = 0;
         c.insets = new Insets(0, 0, 3, 0);
         add(remainingTime, c);
     }
