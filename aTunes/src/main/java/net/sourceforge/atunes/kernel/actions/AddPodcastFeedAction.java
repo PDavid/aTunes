@@ -39,6 +39,9 @@ public class AddPodcastFeedAction extends CustomAbstractAction {
 
     private IPodcastFeedHandler podcastFeedHandler;
     
+    /**
+     * Default constructor
+     */
     public AddPodcastFeedAction() {
         super(I18nUtils.getString("ADD_PODCAST_FEED"));
     }
@@ -59,5 +62,4 @@ public class AddPodcastFeedAction extends CustomAbstractAction {
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
         return true;
     }
-
 }
