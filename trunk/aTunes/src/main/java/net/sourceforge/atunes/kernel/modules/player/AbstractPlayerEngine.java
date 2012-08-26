@@ -359,15 +359,8 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
     	GuiUtils.callInEventDispatchThread(new ApplyUserSelectionRunnable(this, ignorePlaybackError));
     }
 
-    /**
-     * Seek function: play current audio object from milliseconds defined by parameter
-     * 
-     * @param milliseconds
-     *            
-     * 
-     */
     @Override
-	public final void seekCurrentAudioObject(long milliseconds) {
+	public final void seekCurrentAudioObject(long milliseconds, int perCent) {
         // If paused first resume and then seek
         if (paused) {
             paused = false;
@@ -377,7 +370,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
             }
         }
 
-        seekTo(milliseconds);
+        seekTo(milliseconds, perCent);
     }
 
     /**
@@ -621,7 +614,8 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
         
         finishPlayer();        
         playCurrentAudioObject(true);
-        seekCurrentAudioObject(position);
+    	float perCent = (((float) playerHandler.getCurrentAudioObjectPlayedTime()) / playerHandler.getCurrentAudioObjectLength()) * 100.0f;
+        seekCurrentAudioObject(position, Math.round(perCent)); 
         
         // Enable playback state listeners again
         setCallToPlaybackStateListenersDisabled(false);

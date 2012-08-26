@@ -57,7 +57,7 @@ class VoidPlayerEngine extends AbstractPlayerEngine {
 	}
 
 	@Override
-	public void seekTo(long milliseconds) {
+	public void seekTo(long milliseconds, int perCent) {
 	}
 
 	@Override
