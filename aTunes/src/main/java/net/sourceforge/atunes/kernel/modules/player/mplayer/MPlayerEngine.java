@@ -224,8 +224,8 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    public void seekTo(long position) {
-        commandWriter.sendSeekCommand(position);
+    public void seekTo(long position, int perCent) {
+        commandWriter.sendSeekCommandPerCent(perCent);
     }
 
     @Override

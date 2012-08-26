@@ -182,8 +182,8 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     }
 
     @Override
-	public final void seekCurrentAudioObject(long milliseconds) {
-    	playerEngine.seekCurrentAudioObject(milliseconds);
+	public final void seekCurrentAudioObject(long milliseconds, int perCent) {
+    	playerEngine.seekCurrentAudioObject(milliseconds, perCent);
     }
 
     @Override

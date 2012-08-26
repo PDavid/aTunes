@@ -27,12 +27,21 @@ import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IProgressSlider;
 
 
+/**
+ * Listener for seek operation in progress slider
+ * @author alex
+ *
+ */
 public class ProgressBarSeekListener extends MouseAdapter {
 
 	private IProgressSlider progressBar;
 	
 	private IPlayerHandler playerHandler;
 	
+	/**
+	 * @param progressBar
+	 * @param playerHandler
+	 */
 	public ProgressBarSeekListener(IProgressSlider progressBar, IPlayerHandler playerHandler) {
 		super();
 		this.progressBar = progressBar;
@@ -47,9 +56,11 @@ public class ProgressBarSeekListener extends MouseAdapter {
         	long temp = (long) progressBar.getMaximum() * (e.getX() - 5);
         	int value = (int) (temp / (progressBar.getProgressBarWidth() - 10));
         	
+        	float perCent = (((float) value) / playerHandler.getCurrentAudioObjectLength()) * 100.0f;
+        	
         	// Force new value to avoid jump to next major tick
         	progressBar.setValue(value);
-        	playerHandler.seekCurrentAudioObject(value);
+        	playerHandler.seekCurrentAudioObject(value, Math.round(perCent));
         }
 	}
 }

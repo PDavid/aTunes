@@ -99,19 +99,18 @@ public interface IPlayerEngine {
 	 * @param ok
 	 *            <code>true</code> if playback finishes ok, <code>false</code>
 	 *            otherwise
-	 * @param messages
-	 *            Messages when playback finishes with error
+	 * @param errorMessages
+	 * 				Messages when playback finishes with error
 	 */
 	void currentAudioObjectFinished(boolean ok, final String... errorMessages);
 
 	/**
-	 * Seek function: play current audio object from milliseconds defined by parameter
+	 * Seek function: play current audio object from milliseconds or percent defined by parameter
 	 * 
 	 * @param milliseconds
-	 *            
-	 * 
+	 * @param perCent 
 	 */
-	void seekCurrentAudioObject(long milliseconds);
+	void seekCurrentAudioObject(long milliseconds, int perCent);
 
 	/**
 	 * Lower volume
@@ -272,12 +271,11 @@ public interface IPlayerEngine {
 
     /**
      * This method must be implemented by player engines. Applies a seek
-     * operation in player engine
-     * 
+     * operation in player engine. Engine can use milliseconds or perCent
      * @param milliseconds
-     *           
+     * @param perCent
      */
-    void seekTo(long milliseconds);
+    void seekTo(long milliseconds, int perCent);
 
     /**
      * Returns the name of this engine

@@ -113,14 +113,18 @@ class MPlayerCommandWriter {
 
     /**
      * Send seek command.
-     * 
-     * @param perCent
-     *            the per cent
+     * @param milliseconds
      */
-
-    void sendSeekCommand(long milliseconds) {
+    void sendSeekCommandMilliseconds(long milliseconds) {
         sendCommand(StringUtils.getString("seek ", milliseconds / 1000, " 2"));
         sendPauseCommand();
+    }
+
+    /**
+     * Send seek command 
+     */
+    void sendSeekCommandPerCent(int perCent) {
+        sendCommand(StringUtils.getString("seek ", perCent, " 1"));
     }
 
     /**

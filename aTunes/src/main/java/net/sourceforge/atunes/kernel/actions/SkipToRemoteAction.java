@@ -59,7 +59,7 @@ public class SkipToRemoteAction extends RemoteAction {
                 if (perc < 0 || perc > 100) {
                 	throw new NumberFormatException();
                 }
-                playerHandler.seekCurrentAudioObject((long) ((perc/100.0) * playerHandler.getCurrentAudioObjectLength()));
+                playerHandler.seekCurrentAudioObject((long) ((perc/100.0) * playerHandler.getCurrentAudioObjectLength()), perc);
                 return "OK";
             } catch (NumberFormatException ex) {
                 return StringUtils.getString("Bad number format: ", parameters.get(0));
