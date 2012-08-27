@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
@@ -29,6 +28,10 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * @author alex
+ *
+ */
 public class PlayPreviousAudioObjectAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -1177020643937370678L;
@@ -47,6 +50,10 @@ public class PlayPreviousAudioObjectAction extends CustomAbstractAction {
      */
     public PlayPreviousAudioObjectAction() {
     	super(I18nUtils.getString("PREVIOUS"));
+    }
+    
+    @Override
+    public void initialize() {
     	putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, GuiUtils.getCtrlOrMetaActionEventMask()));
     }
 

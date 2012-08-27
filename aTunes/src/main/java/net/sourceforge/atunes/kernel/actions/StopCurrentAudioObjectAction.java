@@ -46,6 +46,10 @@ public class StopCurrentAudioObjectAction extends CustomAbstractAction {
      */
     public StopCurrentAudioObjectAction() {
     	super(I18nUtils.getString("STOP"));
+    }
+    
+    @Override
+    protected void initialize() {
     	putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, GuiUtils.getCtrlOrMetaActionEventMask()));
     }
 
