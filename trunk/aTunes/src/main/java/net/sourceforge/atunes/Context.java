@@ -56,6 +56,7 @@ public final class Context {
 	 * @param beanType
 	 * @return
 	 */
+	@Deprecated
 	public static <T> T getBean(Class<T> beanType) {
 		return context.getBean(beanType);
 	}
@@ -65,6 +66,7 @@ public final class Context {
 	 * @param name
 	 * @return
 	 */
+	@Deprecated
 	public static Object getBean(String name) {
 		return context.getBean(name);
 	}
@@ -76,6 +78,7 @@ public final class Context {
 	 * @param clazz
 	 * @return
 	 */
+	@Deprecated
 	public static <T> T getBean(String name, Class<T> clazz) {
 		return context.getBean(name, clazz);
 	}
@@ -86,6 +89,7 @@ public final class Context {
 	 * @param beanType
 	 * @return
 	 */
+	@Deprecated
 	public static <T> Collection<T> getBeans(Class<T> beanType) {
 		return context.getBeansOfType(beanType).values();
 	}

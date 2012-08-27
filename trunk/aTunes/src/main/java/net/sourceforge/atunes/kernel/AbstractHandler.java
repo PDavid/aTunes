@@ -143,6 +143,7 @@ public abstract class AbstractHandler implements IHandler {
 	 * @param beanType
 	 * @return
 	 */
+    @Deprecated
 	protected <T> T getBean(Class<T> beanType) {
 		return Context.getBean(beanType);
 	}
@@ -152,6 +153,7 @@ public abstract class AbstractHandler implements IHandler {
 	 * @param name
 	 * @return
 	 */
+    @Deprecated
 	protected Object getBean(String name) {
 		return Context.getBean(name);
 	}
