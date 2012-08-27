@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.model;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +56,7 @@ public interface IDeviceHandler extends IHandler, IRepositoryLoaderListener, IAu
 	 * @param listener
 	 *            A listener to be notified
 	 */
-	public void copyFilesToDevice(Collection<ILocalAudioObject> collection,
-			IProcessListener listener);
+	public void copyFilesToDevice(Collection<ILocalAudioObject> collection, IProcessListener<List<File>> listener);
 
 	/**
 	 * Gets the device songs.
