@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
@@ -60,8 +59,15 @@ public class ClearPlayListAction extends CustomAbstractAction {
 		this.playListHandler = playListHandler;
 	}
     
+    /**
+     * Default constructor
+     */
     public ClearPlayListAction() {
         super(I18nUtils.getString("CLEAR"));
+    }
+    
+    @Override
+    protected void initialize() {
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, GuiUtils.getCtrlOrMetaActionEventMask()));
     }

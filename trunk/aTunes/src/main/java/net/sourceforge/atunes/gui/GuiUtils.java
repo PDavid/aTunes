@@ -102,7 +102,7 @@ public final class GuiUtils {
 
 	/** The set window opaque method. */
 	private static Method setWindowOpaqueMethod;
-
+	
 	static {
 		try {
 			Class<?> awtUtilities = Class.forName("com.sun.awt.AWTUtilities");

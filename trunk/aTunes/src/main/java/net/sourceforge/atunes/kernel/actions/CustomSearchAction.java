@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
@@ -48,8 +47,15 @@ public class CustomSearchAction extends CustomAbstractAction {
 		this.searchHandler = searchHandler;
 	}
     
-    CustomSearchAction() {
+    /**
+     * Default constructor
+     */
+    public CustomSearchAction() {
         super(I18nUtils.getString("SEARCH"));
+    }
+    
+    @Override
+    protected void initialize() {
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SEARCH"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D, GuiUtils.getCtrlOrMetaActionEventMask()));
     }

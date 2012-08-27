@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
@@ -50,8 +49,15 @@ public class ShufflePlayListAction extends CustomAbstractAction {
 		this.playListHandler = playListHandler;
 	}
     
+    /**
+     * Default constructor
+     */
     public ShufflePlayListAction() {
         super(I18nUtils.getString("SHUFFLE_PLAYLIST"));
+    }
+    
+    @Override
+    protected void initialize() {
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHUFFLE_PLAYLIST"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_M, GuiUtils.getCtrlOrMetaActionEventMask()));
         setEnabled(false);
