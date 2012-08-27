@@ -42,6 +42,8 @@ import net.sourceforge.atunes.gui.views.controls.SecondaryControl;
 import net.sourceforge.atunes.gui.views.controls.SecondaryToggleControl;
 import net.sourceforge.atunes.gui.views.controls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.VolumeSlider;
+import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IProgressSlider;
@@ -73,6 +75,15 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
     private SecondaryPlayerControlsBuilder secondaryPlayerControlsBuilder;
     
     private Dimension secondaryControlSize;
+    
+    private IBeanFactory beanFactory;
+    
+    /**
+     * @param beanFactory
+     */
+    public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
     
     /**
      * Instantiates a new player controls panel.
@@ -222,7 +233,7 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
         PreviousButton previousButton = new PreviousButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
         playButton = new PlayPauseButton(PlayerControlsSize.PLAY_BUTTON_SIZE, lookAndFeelManager);
         StopButton stopButton = new StopButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
-        NextButton nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
+        NextButton nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager, beanFactory.getBean("nextAction", Action.class), beanFactory.getBean("nextIcon", IIconFactory.class));
         volumeButton.setText("");
         JPanel panel = getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, lookAndFeelManager);
         // add a small border to separate from other components

@@ -74,7 +74,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
      */
     SearchResultsController(SearchResultsDialog dialog, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IAudioObjectComparator audioObjectComparator, ITaskService taskService) {
         super(dialog);
-        this.columnSet = (IColumnSet) Context.getBean("searchResultsColumnSet");
+        this.columnSet = Context.getBean("searchResultsColumnSet", IColumnSet.class);
         this.playListHandler = playListHandler;
         this.lookAndFeelManager = lookAndFeelManager;
         this.playerHandler = playerHandler;

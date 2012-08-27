@@ -26,7 +26,6 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 
 public final class FullScreenPlayPauseButton extends JButton {
@@ -41,11 +40,13 @@ public final class FullScreenPlayPauseButton extends JButton {
 
 	/**
 	 * Instantiates a new play pause button.
-	 * 
 	 * @param size
+	 * @param playIcon
+	 * @param pauseIcon
+	 * @param action
 	 */
-	public FullScreenPlayPauseButton(Dimension size, ImageIcon playIcon, ImageIcon pauseIcon) {
-		super(Context.getBean("playAction", Action.class));
+	public FullScreenPlayPauseButton(Dimension size, ImageIcon playIcon, ImageIcon pauseIcon, Action action) {
+		super(action);
 		// Force size of button
 		setPreferredSize(size);
 		setMinimumSize(size);

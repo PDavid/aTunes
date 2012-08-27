@@ -48,7 +48,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
      * @param taskService
      */
     public PlayListColumnModel(IPlayListTable playList, IPlayListHandler playListHandler, ILookAndFeel lookAndFeel, ITaskService taskService) {
-        super(playList.getSwingComponent(), (IColumnSet) Context.getBean("playListColumnSet"), taskService, lookAndFeel);
+        super(playList.getSwingComponent(), Context.getBean("playListColumnSet", IColumnSet.class), taskService, lookAndFeel);
         this.playListHandler = playListHandler;
         enableColumnChange(true);
     }

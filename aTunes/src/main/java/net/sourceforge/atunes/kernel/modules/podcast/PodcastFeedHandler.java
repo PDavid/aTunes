@@ -275,7 +275,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 	private void startPodcastFeedEntryDownloadChecker() {
     	// Start only if podcast feeds created
     	if (!CollectionUtils.isEmpty(getPodcastFeeds())) {
-    		scheduledPodcastFeedEntryDownloadCheckerFuture = taskService.submitPeriodically("PodcastFeedEntryDownloadChecker", 30, 30, new PodcastFeedEntryDownloadChecker((ITable)getBean("navigationTable"), this));
+    		scheduledPodcastFeedEntryDownloadCheckerFuture = taskService.submitPeriodically("PodcastFeedEntryDownloadChecker", 30, 30, new PodcastFeedEntryDownloadChecker((ITable)getBean("navigationTable", ITable.class), this));
     	} else {
     		Logger.debug("Not scheduling PodcastFeedEntryDownloadChecker");
     	}
@@ -338,7 +338,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         final IProgressDialog d = dialogFactory.newDialog("transferDialog", IProgressDialog.class);
         d.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
         d.setIcon(rssMediumIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
-        final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, (ITable)getBean("navigationTable"), this, networkHandler);
+        final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, (ITable)getBean("navigationTable", ITable.class), this, networkHandler);
         synchronized (runningDownloads) {
             runningDownloads.add(downloadPodcastFeedEntry);
         }
@@ -478,7 +478,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     @Override
 	public void deleteDownloadedPodcastFeedEntry(final IPodcastFeedEntry podcastFeedEntry) {
         File f = new File(getDownloadPath(podcastFeedEntry));
-        new DeleteDownloadedPodcastFeedEntryWorker(f, podcastFeedEntry, (ITable)getBean("navigationTable")).execute();
+        new DeleteDownloadedPodcastFeedEntryWorker(f, podcastFeedEntry, (ITable)getBean("navigationTable", ITable.class)).execute();
     }
 
     /* (non-Javadoc)

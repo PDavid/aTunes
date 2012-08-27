@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -47,6 +48,7 @@ import net.sourceforge.atunes.gui.views.controls.FullScreenNextButton;
 import net.sourceforge.atunes.gui.views.controls.FullScreenPlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.FullScreenPreviousButton;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
@@ -105,6 +107,15 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	private JMenuItem removeBackground;
 
 	private JMenuItem exitFullScreen;
+	
+	private IBeanFactory beanFactory;
+	
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
     
     /**
      * @param screenSize
@@ -280,9 +291,9 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         JPanel buttonsPanel = new JPanel(new FlowLayout());
         buttonsPanel.setOpaque(false);
         
-        previousButton = new FullScreenPreviousButton(getPlayerIconSize(), getPlayerIconResized(Images.getImage(Images.PREVIOUS_FULL_SCREEN)));
-        playButton = new FullScreenPlayPauseButton(getMainPlayerIconSize(), getMainPlayerIconResized(Images.getImage(Images.PLAY_FULL_SCREEN)), getMainPlayerIconResized(Images.getImage(Images.PAUSE_FULL_SCREEN)));
-        nextButton = new FullScreenNextButton(getPlayerIconSize(), getPlayerIconResized(Images.getImage(Images.NEXT_FULL_SCREEN)));
+        previousButton = new FullScreenPreviousButton(getPlayerIconSize(), getPlayerIconResized(Images.getImage(Images.PREVIOUS_FULL_SCREEN)), beanFactory.getBean("previousAction", Action.class));
+        playButton = new FullScreenPlayPauseButton(getMainPlayerIconSize(), getMainPlayerIconResized(Images.getImage(Images.PLAY_FULL_SCREEN)), getMainPlayerIconResized(Images.getImage(Images.PAUSE_FULL_SCREEN)), beanFactory.getBean("playAction", Action.class));
+        nextButton = new FullScreenNextButton(getPlayerIconSize(), getPlayerIconResized(Images.getImage(Images.NEXT_FULL_SCREEN)), beanFactory.getBean("nextAction", Action.class));
         
         buttonsPanel.add(previousButton);
         buttonsPanel.add(playButton);
