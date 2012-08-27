@@ -84,12 +84,12 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
 	private IAudioObjectDuplicateFinder audioObjectDuplicateFinder;
 	
 	private IDialogFactory dialogFactory;
-	
+
 	/**
-	 * @param dialog
+	 * @param dialogFactory
 	 */
-	public void setDialog(IIndeterminateProgressDialog dialog) {
-		this.dialog = dialog;
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
 	
 	/**
