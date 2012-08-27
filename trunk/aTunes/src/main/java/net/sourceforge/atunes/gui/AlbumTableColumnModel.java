@@ -43,7 +43,7 @@ public final class AlbumTableColumnModel extends AbstractCommonColumnModel {
 	 * @param taskService
 	 */
 	public AlbumTableColumnModel(JTable table, ILookAndFeel lookAndFeel, ITaskService taskService) {
-        super(table, (IColumnSet) Context.getBean("albumColumnSet"), taskService, lookAndFeel);
+        super(table, Context.getBean("albumColumnSet", IColumnSet.class), taskService, lookAndFeel);
         enableColumnChange(true);
     }
 

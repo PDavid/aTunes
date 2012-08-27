@@ -25,7 +25,6 @@ import java.awt.Dimension;
 import javax.swing.Action;
 import javax.swing.JButton;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
@@ -36,29 +35,34 @@ public final class NextButton extends JButton implements ILookAndFeelChangeListe
     private static final long serialVersionUID = -4939372038840047335L;
 
 	private ILookAndFeel lookAndFeel;
+	
+	private IIconFactory icon;
     
     /**
      * Instantiates a new next button.
-     * 
+    /**
      * @param size
      * @param lookAndFeelManager
+     * @param action
+     * @param icon
      */
-    public NextButton(Dimension size, ILookAndFeelManager lookAndFeelManager) {
-        super(Context.getBean("nextAction", Action.class));
+    public NextButton(Dimension size, ILookAndFeelManager lookAndFeelManager, Action action, IIconFactory icon) {
+        super(action);
         this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
+        this.icon = icon;
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
         setFocusable(false);
         setText(null);
-        setIcon(Context.getBean("nextIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
+        setIcon(icon.getIcon(lookAndFeel.getPaintForSpecialControls()));
         lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
         lookAndFeelManager.addLookAndFeelChangeListener(this);
     }    
     
     @Override
     public void lookAndFeelChanged() {
-        setIcon(Context.getBean("nextIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
+        setIcon(icon.getIcon(lookAndFeel.getPaintForSpecialControls()));
     }
     
     

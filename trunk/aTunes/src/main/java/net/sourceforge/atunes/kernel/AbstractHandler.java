@@ -147,14 +147,16 @@ public abstract class AbstractHandler implements IHandler {
 	protected <T> T getBean(Class<T> beanType) {
 		return Context.getBean(beanType);
 	}
-	
+
 	/**
-	 * Delegate method to get beans
+	 * Returns bean with given name and type
+	 * @param <T>
 	 * @param name
+	 * @param clazz
 	 * @return
 	 */
-    @Deprecated
-	protected Object getBean(String name) {
-		return Context.getBean(name);
+	@Deprecated
+	protected <T> T getBean(String name, Class<T> clazz) {
+		return Context.getBean(name, clazz);
 	}
 }

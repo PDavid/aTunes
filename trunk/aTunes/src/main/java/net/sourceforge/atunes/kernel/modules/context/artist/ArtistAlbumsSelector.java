@@ -34,6 +34,6 @@ public final class ArtistAlbumsSelector {
 	 * @return
 	 */
 	public static IContextPanelContent<?> getContextPanelContent(IStateContext stateContext) {
-		return (IContextPanelContent<?>) Context.getBean(stateContext.isShowContextAlbumsInGrid() ?  "artistAlbumsFlowContent" : "artistAlbumsContent");
+		return Context.getBean(stateContext.isShowContextAlbumsInGrid() ?  "artistAlbumsFlowContent" : "artistAlbumsContent", IContextPanelContent.class);
 	}
 }

@@ -26,8 +26,6 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import net.sourceforge.atunes.Context;
-
 public final class FullScreenPreviousButton extends JButton {
 
     private static final long serialVersionUID = -5415683019365261871L;
@@ -37,9 +35,10 @@ public final class FullScreenPreviousButton extends JButton {
      * 
      * @param size
      * @param lookAndFeelManager
+     * @param action
      */
-    public FullScreenPreviousButton(Dimension size, ImageIcon icon) {
-        super(Context.getBean("previousAction", Action.class));
+    public FullScreenPreviousButton(Dimension size, ImageIcon icon, Action action) {
+        super(action);
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);

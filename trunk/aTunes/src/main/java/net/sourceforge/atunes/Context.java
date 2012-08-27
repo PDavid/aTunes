@@ -21,7 +21,6 @@
 package net.sourceforge.atunes;
 
 import java.io.File;
-import java.util.Collection;
 
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -62,16 +61,6 @@ public final class Context {
 	}
 	
 	/**
-	 * Returns bean with given name
-	 * @param name
-	 * @return
-	 */
-	@Deprecated
-	public static Object getBean(String name) {
-		return context.getBean(name);
-	}
-
-	/**
 	 * Returns bean with given name and type
 	 * @param <T>
 	 * @param name
@@ -81,16 +70,5 @@ public final class Context {
 	@Deprecated
 	public static <T> T getBean(String name, Class<T> clazz) {
 		return context.getBean(name, clazz);
-	}
-
-	/**
-	 * Returns all beans of a given type
-	 * @param <T>
-	 * @param beanType
-	 * @return
-	 */
-	@Deprecated
-	public static <T> Collection<T> getBeans(Class<T> beanType) {
-		return context.getBeansOfType(beanType).values();
 	}
 }
