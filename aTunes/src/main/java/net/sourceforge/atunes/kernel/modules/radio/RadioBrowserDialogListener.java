@@ -55,10 +55,12 @@ final class RadioBrowserDialogListener extends MouseAdapter {
         if (e.getSource() == radioBrowserDialog.getTreeTable()) {
             JXTreeTable treeTable = radioBrowserDialog.getTreeTable();
             if (e.getClickCount() == 2) {
-                IRadio radio = (IRadio) ((DefaultMutableTreeTableNode) treeTable.getPathForLocation(e.getX(), e.getY()).getLastPathComponent()).getUserObject();
-                radioHandler.addRadio(radio);
+            	Object objectSelected = ((DefaultMutableTreeTableNode) treeTable.getPathForLocation(e.getX(), e.getY()).getLastPathComponent()).getUserObject();
+            	if (objectSelected instanceof IRadio) {
+            		// User selected a radio (not a label node or row)
+            		radioHandler.addRadio((IRadio) objectSelected);
+            	}
             }
-
         }
     }
 }
