@@ -34,7 +34,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class ErrorReport {
 
-	private String errorDescrition;
+	private String errorDescription;
 	
 	private Throwable throwable;
 	
@@ -44,16 +44,16 @@ public class ErrorReport {
 	 * @return the errorDescrition
 	 */
 	public String getErrorDescrition() {
-		return errorDescrition;
+		return errorDescription;
 	}
 
 	/**
-	 * @param errorDescrition the errorDescrition to set
+	 * @param errorDescription
 	 */
-	public void setErrorDescrition(String errorDescrition) {
-		this.errorDescrition = errorDescrition;
+	public void setErrorDescription(String errorDescription) {
+		this.errorDescription = errorDescription;
 	}
-
+	
 	/**
 	 * @return the throwable
 	 */
@@ -87,7 +87,7 @@ public class ErrorReport {
     	StringBuilder sb = new StringBuilder();
     	sb.append("ERROR REPORT\n");
     	sb.append("\n---------------------------------------------\n");
-    	sb.append(StringUtils.getString("Message: ", StringUtils.isEmpty(errorDescrition) ? "Unknown error" : errorDescrition));
+    	sb.append(StringUtils.getString("Message: ", StringUtils.isEmpty(errorDescription) ? "Unknown error" : errorDescription));
     	sb.append("\n---------------------------------------------\n");
     	sb.append(getStateString(state));
     	sb.append("\n---------------------------------------------\n");
