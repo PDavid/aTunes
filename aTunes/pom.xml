@@ -49,7 +49,7 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>https://atunes.svn.sourceforge.net/svnroot/atunes/trunk/aTunes/</connection>
+		<connection>scm:svn:https://atunes.svn.sourceforge.net/svnroot/atunes/trunk/aTunes</connection>
 		<url>http://atunes.svn.sourceforge.net/viewvc/atunes/</url>
 	</scm>
 
@@ -70,6 +70,14 @@
 							<goal>jar</goal>
 						</goals>
 						<configuration>
+							<archive>
+								<manifest>
+									<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+								</manifest>
+								<manifestEntries>
+									<Implementation-Build>${buildNumber}</Implementation-Build>
+								</manifestEntries>
+							</archive>
 							<finalName>aTunes</finalName>
 							<excludes>
 								<exclude>**/spring/</exclude>
@@ -249,6 +257,26 @@
 						<version>1.8.2</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.1</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>true</doCheck>
+					<doUpdate>false</doUpdate>
+					<providerImplementations>
+						<svn>javasvn</svn>
+					</providerImplementations>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -99,7 +99,7 @@ public class MailErrorReporter implements IErrorReporter, Runnable {
 		ErrorReport result = new ErrorReport();
 		result.setState(applicationStateGenerator.generateState());
 		result.setThrowable(throwable);
-		result.setErrorDescrition(descriptionError);
+		result.setErrorDescription(descriptionError);
 		return result;
 	}
 }

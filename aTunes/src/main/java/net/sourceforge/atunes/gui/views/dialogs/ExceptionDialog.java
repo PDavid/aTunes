@@ -44,6 +44,11 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Dialog used to show an exception
+ * @author alex
+ *
+ */
 public class ExceptionDialog extends AbstractCustomDialog implements IExceptionDialog {
 	
 	private static final int BORDER = 10;
@@ -74,6 +79,7 @@ public class ExceptionDialog extends AbstractCustomDialog implements IExceptionD
 	
     /**
      * Default constructor
+     * @param frame
      */
     public ExceptionDialog(IFrame frame) {
     	super(frame, WIDTH, HEIGHT, false, CloseAction.DISPOSE);

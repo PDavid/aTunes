@@ -28,6 +28,11 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Writes in log properties
+ * @author alex
+ *
+ */
 public class ApplicationPropertiesLogger {
 	
 	private IApplicationArguments applicationArguments;
@@ -65,6 +70,7 @@ public class ApplicationPropertiesLogger {
     public Map<String, String> getApplicationProperties() {
     	Map<String, String> properties = new HashMap<String, String>();
         properties.put("Version", StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION));
+        properties.put("Build number", Integer.toString(BuildNumber.getBuildNumber()));
         properties.put("Java Virtual Machine", System.getProperty("java.version"));
         properties.put("Operating System", StringUtils.getString(System.getProperty("os.name"), " ", System.getProperty("os.version"), " (", System.getProperty("os.arch"), ")"));
         properties.put("Arguments", applicationArguments.getOriginalArguments().toString());
