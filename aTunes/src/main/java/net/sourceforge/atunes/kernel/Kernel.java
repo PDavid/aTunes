@@ -176,7 +176,7 @@ public final class Kernel implements IKernel {
     void callActionsAfterStart() {
     	beanFactory.getBean(ApplicationLifeCycleListeners.class).applicationStarted();
     	beanFactory.getBean(ApplicationLifeCycleListeners.class).allHandlersInitialized();
-    	beanFactory.getBean("taskService", ITaskService.class).submitOnce("Deferred handler initialization", 5, new Runnable() {
+    	beanFactory.getBean("taskService", ITaskService.class).submitOnce("Deferred handler initialization", 3, new Runnable() {
     		@Override
     		public void run() {
     			beanFactory.getBean(ApplicationLifeCycleListeners.class).deferredInitialization();
