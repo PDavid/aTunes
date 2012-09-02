@@ -22,6 +22,11 @@ package net.sourceforge.atunes.kernel;
 
 import net.sourceforge.atunes.model.OperatingSystem;
 
+/**
+ * Detects in which operating system is running
+ * @author alex
+ *
+ */
 public final class OperatingSystemDetector {
 
 	private OperatingSystemDetector() {}

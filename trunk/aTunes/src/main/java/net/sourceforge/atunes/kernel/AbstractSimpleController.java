@@ -24,6 +24,12 @@ import java.awt.Component;
 
 import net.sourceforge.atunes.model.IController;
 
+/**
+ * Base controller for UI components
+ * @author alex
+ *
+ * @param <T>
+ */
 public abstract class AbstractSimpleController<T extends Component> implements IController {
 
     private T componentControlled;

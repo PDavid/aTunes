@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel;
 
 import java.util.List;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IHandler;
 import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;
@@ -43,6 +43,15 @@ public abstract class AbstractHandler implements IHandler {
 	private IOSManager osManager;
 	
 	private IHandlerBackgroundInitializationTask initializationTask;
+	
+	private IBeanFactory beanFactory;
+	
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param initializationTask
@@ -143,9 +152,8 @@ public abstract class AbstractHandler implements IHandler {
 	 * @param beanType
 	 * @return
 	 */
-    @Deprecated
 	protected <T> T getBean(Class<T> beanType) {
-		return Context.getBean(beanType);
+    	return beanFactory.getBean(beanType);
 	}
 
 	/**
@@ -155,8 +163,7 @@ public abstract class AbstractHandler implements IHandler {
 	 * @param clazz
 	 * @return
 	 */
-	@Deprecated
 	protected <T> T getBean(String name, Class<T> clazz) {
-		return Context.getBean(name, clazz);
+		return beanFactory.getBean(name, clazz);
 	}
 }
