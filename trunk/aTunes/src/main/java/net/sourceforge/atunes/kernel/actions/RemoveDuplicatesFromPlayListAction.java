@@ -113,6 +113,9 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
 		this.playListHandler = playListHandler;
 	}
     
+    /**
+     * Default constructor
+     */
     public RemoveDuplicatesFromPlayListAction() {
         super(I18nUtils.getString("REMOVE_DUPLICATES"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_DUPLICATES"));
