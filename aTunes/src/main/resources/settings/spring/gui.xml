@@ -100,4 +100,5 @@
     
     <bean id="covers" class="net.sourceforge.atunes.kernel.modules.fullscreen.CoverFlow" scope="prototype" init-method="initialize"/>
     <bean id="fullScreenCoverImageRetriever" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenCoverImageRetriever"/>
+	
 </beans>

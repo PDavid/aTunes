@@ -271,7 +271,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<doCheck>true</doCheck>
+					<doCheck>false</doCheck>
 					<doUpdate>false</doUpdate>
 					<providerImplementations>
 						<svn>javasvn</svn>
