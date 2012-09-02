@@ -214,8 +214,12 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     }
     
     @Override
-    public void deferredInitialization() {
+    public void applicationStarted() {
     	initialize();
+    }
+    
+    @Override
+    public void deferredInitialization() {
         if (playerEngine instanceof VoidPlayerEngine) {
             manageNoPlayerEngine(getOsManager(), getFrame());
         }
