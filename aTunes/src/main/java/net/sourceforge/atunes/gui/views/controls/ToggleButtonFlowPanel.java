@@ -222,7 +222,7 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 
 	/**
 	 * Sets button identified by index
-	 * @param buttonName
+	 * @param index
 	 */
 	public void setSelectedButton(int index) {
 		ToggleButtonOfFlowPanel button = this.buttons.get(index);
