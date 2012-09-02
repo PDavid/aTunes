@@ -28,6 +28,11 @@ import net.sourceforge.atunes.utils.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * Calls listeners when state changes
+ * @author alex
+ *
+ */
 public class StateChangeListeners implements ApplicationContextAware {
 
 	private Collection<IStateChangeListener> listeners;
