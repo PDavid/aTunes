@@ -139,6 +139,7 @@
 	<bean id="editTitlesAction" class="net.sourceforge.atunes.kernel.actions.EditTitlesAction"/>
 	<bean id="exitAction" class="net.sourceforge.atunes.kernel.actions.ExitAction"/>
 	<bean id="exportAction" class="net.sourceforge.atunes.kernel.actions.ExportAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ExportPlayListAction"/>
 	<bean id="expandTreesAction" class="net.sourceforge.atunes.kernel.actions.ExpandTreesAction"/>
 	
 	<bean id="extractPictureFromDeviceNavigationView" class="net.sourceforge.atunes.kernel.actions.ExtractPictureAction"/>
