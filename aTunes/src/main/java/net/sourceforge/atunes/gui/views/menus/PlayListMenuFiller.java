@@ -38,6 +38,7 @@ import net.sourceforge.atunes.kernel.actions.ClearPlayListAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedAlbumsAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedArtistsAction;
 import net.sourceforge.atunes.kernel.actions.ExportPlayListAction;
+import net.sourceforge.atunes.kernel.actions.ExportPlayListSelectionAction;
 import net.sourceforge.atunes.kernel.actions.LoadPlayListAction;
 import net.sourceforge.atunes.kernel.actions.MoveAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.MoveDownAction;
@@ -148,6 +149,7 @@ public final class PlayListMenuFiller implements ApplicationContextAware {
         objects.add(context.getBean(ClearPlayListAction.class));
         objects.add(new JSeparator());
         objects.add(context.getBean(ExportPlayListAction.class));
+        objects.add(context.getBean(ExportPlayListSelectionAction.class));
         objects.add(context.getBean(SavePlayListAction.class));
         objects.add(context.getBean(SaveM3UPlayListAction.class));
         objects.add(context.getBean(LoadPlayListAction.class));

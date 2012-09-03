@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class ExportPlayListAction extends AbstractExportAction {
+public class ExportPlayListSelectionAction extends AbstractExportAction {
 
 	private static final long serialVersionUID = -6661702915765846089L;
 
@@ -44,9 +44,9 @@ public class ExportPlayListAction extends AbstractExportAction {
 	/**
 	 * Constructor
 	 */
-	public ExportPlayListAction() {
-		super(StringUtils.getString(I18nUtils.getString("EXPORT_PLAYLIST"), "..."));
-		putValue(SHORT_DESCRIPTION, StringUtils.getString(I18nUtils.getString("EXPORT_PLAYLIST"), "..."));
+	public ExportPlayListSelectionAction() {
+		super(StringUtils.getString(I18nUtils.getString("EXPORT_PLAYLIST_SELECTION"), "..."));
+		putValue(SHORT_DESCRIPTION, StringUtils.getString(I18nUtils.getString("EXPORT_PLAYLIST_SELECTION"), "..."));
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class ExportPlayListAction extends AbstractExportAction {
 	public List<ILocalAudioObject> getAudioObjectsToExport() {
 		LocalAudioObjectFilter filter = new LocalAudioObjectFilter();
 		// Get only LocalAudioObject objects of current play list
-		return filter.getLocalAudioObjects(playListHandler.getCurrentPlayList(true).getAudioObjectsList());
+		return filter.getLocalAudioObjects(playListHandler.getSelectedAudioObjects());
 	}
 
 	@Override
