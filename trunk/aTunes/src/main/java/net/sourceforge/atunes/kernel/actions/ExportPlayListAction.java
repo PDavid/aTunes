@@ -20,21 +20,11 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.io.File;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
-
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IErrorDialog;
-import net.sourceforge.atunes.model.IFolderSelectorDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IProcessFactory;
-import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -45,17 +35,11 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class ExportPlayListAction extends CustomAbstractAction {
+public class ExportPlayListAction extends AbstractExportAction {
 
 	private static final long serialVersionUID = -6661702915765846089L;
 
-	private IDialogFactory dialogFactory;
-
-	private IOSManager osManager;
-
 	private IPlayListHandler playListHandler;
-
-	private IProcessFactory processFactory;
 
 	/**
 	 * Constructor
@@ -66,79 +50,17 @@ public class ExportPlayListAction extends CustomAbstractAction {
 	}
 
 	/**
-	 * @param processFactory
-	 */
-	public void setProcessFactory(IProcessFactory processFactory) {
-		this.processFactory = processFactory;
-	}
-
-	/**
 	 * @param playListHandler
 	 */
 	public void setPlayListHandler(IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
 
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
-	}
-
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
-
 	@Override
-	protected void executeAction() {
-		IFolderSelectorDialog dialog = dialogFactory.newDialog(IFolderSelectorDialog.class);
-		dialog.setTitle(I18nUtils.getString("SELECT_FOLDER_TO_EXPORT"));
-		File selectedFolder = dialog.selectFolder(osManager.getUserHome());
-		if (selectedFolder != null) {
-			LocalAudioObjectFilter filter = new LocalAudioObjectFilter();
-			// Get only LocalAudioObject objects of current play list
-			List<ILocalAudioObject> songs = filter.getLocalAudioObjects(playListHandler.getCurrentPlayList(true).getAudioObjectsList());
-			ILocalAudioObjectTransferProcess process = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("exportFilesProcess");
-			process.setDestination(selectedFolder.getAbsolutePath());
-			process.setFilesToTransfer(songs);
-			ExportProcessListener listener = new ExportProcessListener();
-			listener.setDialogFactory(dialogFactory);
-			process.addProcessListener(listener);
-			process.execute();
-		}
-	}
-
-	private static class ExportProcessListener implements IProcessListener<List<File>> {
-
-		private IDialogFactory dialogFactory;
-
-		/**
-		 * @param dialogFactory
-		 */
-		public void setDialogFactory(IDialogFactory dialogFactory) {
-			this.dialogFactory = dialogFactory;
-		}
-
-		@Override
-		public void processCanceled() { 
-			// Nothing to do
-		}
-
-		@Override
-		public void processFinished(final boolean ok, List<File> result) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if (!ok) {
-						dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
-					}
-				}
-			});
-		}
+	public List<ILocalAudioObject> getAudioObjectsToExport() {
+		LocalAudioObjectFilter filter = new LocalAudioObjectFilter();
+		// Get only LocalAudioObject objects of current play list
+		return filter.getLocalAudioObjects(playListHandler.getCurrentPlayList(true).getAudioObjectsList());
 	}
 
 	@Override

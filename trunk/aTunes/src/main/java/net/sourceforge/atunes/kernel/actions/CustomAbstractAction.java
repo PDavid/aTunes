@@ -31,6 +31,11 @@ import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
+/**
+ * Abstract action common to all app actions
+ * @author alex
+ *
+ */
 @PluginApi
 public abstract class CustomAbstractAction extends javax.swing.AbstractAction {
 
