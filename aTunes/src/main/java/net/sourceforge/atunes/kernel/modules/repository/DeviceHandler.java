@@ -457,7 +457,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
 	 @Override
 	 public boolean isDevicePath(String path) {
-		 if (path.contains(devicePath.toString())) {
+		 if (isDeviceConnected() && path.contains(devicePath.toString())) {
 			 return true;
 		 }
 		 return false;
@@ -582,7 +582,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	  * @param path
 	  *            Device path (absolute)
 	  */
-	 private void setDevicePath(File path) {
+	 protected final void setDevicePath(File path) {
 		 devicePath = path;
 	 }
 
