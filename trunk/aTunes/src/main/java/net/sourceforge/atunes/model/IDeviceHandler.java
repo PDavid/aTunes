@@ -26,6 +26,11 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * Manages device
+ * @author alex
+ *
+ */
 public interface IDeviceHandler extends IHandler, IRepositoryLoaderListener, IAudioFilesRemovedListener {
 
 	/**

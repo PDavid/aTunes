@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
+import junit.framework.Assert;
 import net.sourceforge.atunes.model.IBeanFactory;
 
 import org.junit.Test;
@@ -41,5 +42,15 @@ public class DeviceHandlerTest {
 		handler.refreshDevice();
 		
 		verifyZeroInteractions(loader);
+	}
+	
+	@Test
+	public void testFileInDevicePathIfNotConnected() {
+		DeviceHandler handler = new DeviceHandler();
+		// device is not connected
+		
+		Assert.assertFalse(handler.isDevicePath(null));
+		Assert.assertFalse(handler.isDevicePath(""));
+		Assert.assertFalse(handler.isDevicePath("file"));
 	}
 }
