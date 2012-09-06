@@ -56,24 +56,29 @@ import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteSongA
 import net.sourceforge.atunes.kernel.actions.ShowPlayListItemInfoAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
-public final class PlayListMenuFiller implements ApplicationContextAware {
+/**
+ * Builds a play list menu
+ * @author alex
+ *
+ */
+public final class PlayListMenuFiller {
 
 	private IPlayListTable playListTable;
 	
 	private IPlayListHandler playListHandler;
 	
-	private ApplicationContext context;
+	private IBeanFactory beanFactory;
 	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 	
 	/**
@@ -132,9 +137,9 @@ public final class PlayListMenuFiller implements ApplicationContextAware {
     private List<Object> getComponents(IPlayListTable table) {
         List<Object> objects = new ArrayList<Object>();
         
-        objects.add(context.getBean(ShowPlayListItemInfoAction.class));
+        objects.add(beanFactory.getBean(ShowPlayListItemInfoAction.class));
         
-        OpenFolderAction openFolderAction = context.getBean(OpenFolderAction.class);
+        OpenFolderAction openFolderAction = beanFactory.getBean(OpenFolderAction.class);
         openFolderAction.setAudioObjectsSource(table);
         objects.add(openFolderAction);
         
@@ -142,30 +147,29 @@ public final class PlayListMenuFiller implements ApplicationContextAware {
         objects.add(new EditTagMenu(true, table));
         objects.add(getFavoritesMenu());
         objects.add(new JSeparator());
-        objects.add(context.getBean(AutoScrollPlayListAction.class));
+        objects.add(beanFactory.getBean(AutoScrollPlayListAction.class));
         objects.add(getMoveMenu());
-        objects.add(context.getBean(RemoveFromPlayListAction.class));
-        objects.add(context.getBean(RemoveDuplicatesFromPlayListAction.class));
-        objects.add(context.getBean(ClearPlayListAction.class));
+        objects.add(beanFactory.getBean(RemoveFromPlayListAction.class));
+        objects.add(beanFactory.getBean(RemoveDuplicatesFromPlayListAction.class));
+        objects.add(beanFactory.getBean(ClearPlayListAction.class));
         objects.add(new JSeparator());
-        objects.add(context.getBean(ExportPlayListAction.class));
-        objects.add(context.getBean(ExportPlayListSelectionAction.class));
-        objects.add(context.getBean(SavePlayListAction.class));
-        objects.add(context.getBean(SaveM3UPlayListAction.class));
-        objects.add(context.getBean(LoadPlayListAction.class));
+        objects.add(getExportMenu());
+        objects.add(beanFactory.getBean(SavePlayListAction.class));
+        objects.add(beanFactory.getBean(SaveM3UPlayListAction.class));
+        objects.add(beanFactory.getBean(LoadPlayListAction.class));
         objects.add(new JSeparator());
         objects.add(getSmartPlayListMenu());
         objects.add(new JSeparator());
         
-        AbstractActionOverSelectedObjects<IAudioObject> createPlayListWithSelectedArtistsAction = context.getBean(CreatePlayListWithSelectedArtistsAction.class);
+        AbstractActionOverSelectedObjects<IAudioObject> createPlayListWithSelectedArtistsAction = beanFactory.getBean(CreatePlayListWithSelectedArtistsAction.class);
         createPlayListWithSelectedArtistsAction.setAudioObjectsSource(table);
         objects.add(createPlayListWithSelectedArtistsAction);
         
-        AbstractActionOverSelectedObjects<IAudioObject> createPlayListWithSelectedAlbumAction = context.getBean(CreatePlayListWithSelectedAlbumsAction.class);
+        AbstractActionOverSelectedObjects<IAudioObject> createPlayListWithSelectedAlbumAction = beanFactory.getBean(CreatePlayListWithSelectedAlbumsAction.class);
         createPlayListWithSelectedAlbumAction.setAudioObjectsSource(table);
         objects.add(createPlayListWithSelectedAlbumAction);
         
-        AbstractActionOverSelectedObjects<IAudioObject> addAlbumWithSelectedArtistsAction = context.getBean(AddAlbumWithSelectedArtistsAction.class);
+        AbstractActionOverSelectedObjects<IAudioObject> addAlbumWithSelectedArtistsAction = beanFactory.getBean(AddAlbumWithSelectedArtistsAction.class);
         addAlbumWithSelectedArtistsAction.setAudioObjectsSource(table);
         objects.add(addAlbumWithSelectedArtistsAction);
         return objects;
@@ -177,25 +181,25 @@ public final class PlayListMenuFiller implements ApplicationContextAware {
      */
     private JMenu getSmartPlayListMenu() {
         JMenu smartPlayList = new JMenu(I18nUtils.getString("SMART_PLAYLIST"));
-        smartPlayList.add((AbstractAction)context.getBean("addRandomSongsAction10"));
-        smartPlayList.add((AbstractAction)context.getBean("addRandomSongsAction50"));
-        smartPlayList.add((AbstractAction)context.getBean("addRandomSongsAction100"));
+        smartPlayList.add(beanFactory.getBean("addRandomSongsAction10", AbstractAction.class));
+        smartPlayList.add(beanFactory.getBean("addRandomSongsAction50", AbstractAction.class));
+        smartPlayList.add(beanFactory.getBean("addRandomSongsAction100", AbstractAction.class));
         smartPlayList.add(new JSeparator());
-        smartPlayList.add((AbstractAction)context.getBean("addSongsMostPlayedAction10"));
-        smartPlayList.add((AbstractAction)context.getBean("addSongsMostPlayedAction50"));
-        smartPlayList.add((AbstractAction)context.getBean("addSongsMostPlayedAction100"));
+        smartPlayList.add(beanFactory.getBean("addSongsMostPlayedAction10", AbstractAction.class));
+        smartPlayList.add(beanFactory.getBean("addSongsMostPlayedAction50", AbstractAction.class));
+        smartPlayList.add(beanFactory.getBean("addSongsMostPlayedAction100", AbstractAction.class));
         smartPlayList.add(new JSeparator());
-        smartPlayList.add((AbstractAction)context.getBean("addAlbumMostPlayedAction1"));
-        smartPlayList.add((AbstractAction)context.getBean("addAlbumMostPlayedAction5"));
-        smartPlayList.add((AbstractAction)context.getBean("addAlbumMostPlayedAction10"));
+        smartPlayList.add(beanFactory.getBean("addAlbumMostPlayedAction1", AbstractAction.class));
+        smartPlayList.add(beanFactory.getBean("addAlbumMostPlayedAction5", AbstractAction.class));
+        smartPlayList.add(beanFactory.getBean("addAlbumMostPlayedAction10", AbstractAction.class));
         smartPlayList.add(new JSeparator());
-        smartPlayList.add((AbstractAction)context.getBean("addArtistsMostPlayedAction1"));
-        smartPlayList.add((AbstractAction)context.getBean("addArtistsMostPlayedAction5"));
-        smartPlayList.add((AbstractAction)context.getBean("addArtistsMostPlayedAction10"));
+        smartPlayList.add(beanFactory.getBean("addArtistsMostPlayedAction1", AbstractAction.class));
+        smartPlayList.add(beanFactory.getBean("addArtistsMostPlayedAction5", AbstractAction.class));
+        smartPlayList.add(beanFactory.getBean("addArtistsMostPlayedAction10", AbstractAction.class));
         smartPlayList.add(new JSeparator());
-        smartPlayList.add((AbstractAction)context.getBean("addUnplayedSongsAction10"));
-        smartPlayList.add((AbstractAction)context.getBean("addUnplayedSongsAction50"));
-        smartPlayList.add((AbstractAction)context.getBean("addUnplayedSongsAction100"));
+        smartPlayList.add(beanFactory.getBean("addUnplayedSongsAction10", AbstractAction.class));
+        smartPlayList.add(beanFactory.getBean("addUnplayedSongsAction50", AbstractAction.class));
+        smartPlayList.add(beanFactory.getBean("addUnplayedSongsAction100", AbstractAction.class));
         return smartPlayList;
     }
     
@@ -205,9 +209,9 @@ public final class PlayListMenuFiller implements ApplicationContextAware {
      */
     private JMenu getFavoritesMenu() {
         JMenu favorites = new JMenu(I18nUtils.getString("FAVORITES"));
-        favorites.add(context.getBean(SetPlayListSelectionAsFavoriteSongAction.class));
-        favorites.add(context.getBean(SetPlayListSelectionAsFavoriteAlbumAction.class));
-        favorites.add(context.getBean(SetPlayListSelectionAsFavoriteArtistAction.class));
+        favorites.add(beanFactory.getBean(SetPlayListSelectionAsFavoriteSongAction.class));
+        favorites.add(beanFactory.getBean(SetPlayListSelectionAsFavoriteAlbumAction.class));
+        favorites.add(beanFactory.getBean(SetPlayListSelectionAsFavoriteArtistAction.class));
         return favorites;
     }
     
@@ -217,15 +221,25 @@ public final class PlayListMenuFiller implements ApplicationContextAware {
      */
     private JMenu getMoveMenu() {
         JMenu move = new JMenu(I18nUtils.getString("MOVE"));
-        move.add(context.getBean(MoveAfterCurrentAudioObjectAction.class));
+        move.add(beanFactory.getBean(MoveAfterCurrentAudioObjectAction.class));
         move.add(new JSeparator());
-        move.add(context.getBean(MoveToTopAction.class));
-        move.add(context.getBean(MoveUpAction.class));
-        move.add(context.getBean(MoveDownAction.class));
-        move.add(context.getBean(MoveToBottomAction.class));
+        move.add(beanFactory.getBean(MoveToTopAction.class));
+        move.add(beanFactory.getBean(MoveUpAction.class));
+        move.add(beanFactory.getBean(MoveDownAction.class));
+        move.add(beanFactory.getBean(MoveToBottomAction.class));
         move.add(new JSeparator());
-        move.add(context.getBean(ShufflePlayListAction.class));
+        move.add(beanFactory.getBean(ShufflePlayListAction.class));
         return move;
+    }
+    
+    /**
+     * @return export menu
+     */
+    private JMenu getExportMenu() {
+    	JMenu export = new JMenu(I18nUtils.getString("EXPORT"));
+    	export.add(beanFactory.getBean(ExportPlayListAction.class));
+    	export.add(beanFactory.getBean(ExportPlayListSelectionAction.class));
+        return export;
     }
 
     /**
