@@ -37,7 +37,7 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
-import net.sourceforge.atunes.model.ErrorReport;
+import net.sourceforge.atunes.model.IErrorReport;
 import net.sourceforge.atunes.model.IErrorReporter;
 import net.sourceforge.atunes.model.IExceptionDialog;
 import net.sourceforge.atunes.model.IFrame;
@@ -99,7 +99,7 @@ public class ExceptionDialog extends AbstractCustomDialog implements IExceptionD
      * Shows a exception report dialog
      * @param t
      */
-    private void showDialog(final ErrorReport errorReport) {
+    private void showDialog(final IErrorReport errorReport) {
     	JPanel panel = new JPanel(new GridBagLayout());
     	panel.setBorder(BorderFactory.createEmptyBorder(BORDER, BORDER, BORDER, BORDER));
     	JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));

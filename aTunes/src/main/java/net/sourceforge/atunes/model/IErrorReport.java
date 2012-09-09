@@ -20,24 +20,43 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.Map;
 
 /**
- * Responsible of report information of an error
+ * Description of an error
  * @author alex
  *
  */
-public interface IErrorReporter {
+public interface IErrorReport {
 
 	/**
-	 * @param t
+	 * @return the errorDescrition
 	 */
-	void reportError(IErrorReport t);
-	
+	public String getErrorDescrition();
+
 	/**
-	 * @param throwable
-	 * @param descriptionError
-	 * @param throwable
-	 * @return
+	 * @param errorDescription
 	 */
-	IErrorReport createReport(String descriptionError, Throwable throwable);
+	public void setErrorDescription(String errorDescription);
+
+	/**
+	 * @return the throwable
+	 */
+	public Throwable getThrowable();
+
+	/**
+	 * @param throwable the throwable to set
+	 */
+	public void setThrowable(Throwable throwable);
+
+	/**
+	 * @return the state
+	 */
+	public Map<String, String> getState();
+
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(Map<String, String> state);
+
 }
