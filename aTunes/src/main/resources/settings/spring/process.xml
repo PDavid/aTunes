@@ -26,5 +26,7 @@
 	<bean id="setTrackNumberProcess" class="net.sourceforge.atunes.kernel.modules.process.SetTrackNumberProcess" parent="abstractChangeTagProcess" scope="prototype"/>
 	<bean id="transferToDeviceProcess" class="net.sourceforge.atunes.kernel.modules.process.TransferToDeviceProcess" parent="abstractLocalAudioObjectTransferProcess" scope="prototype"/>
 	<bean id="transferToRepositoryProcess" class="net.sourceforge.atunes.kernel.modules.process.TransferToRepositoryProcess" parent="abstractLocalAudioObjectTransferProcess" scope="prototype"/>
+	
+	<bean id="audioObjectExporter" class="net.sourceforge.atunes.kernel.modules.process.AudioObjectExporter"/>
 
 </beans>

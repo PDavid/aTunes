@@ -42,6 +42,11 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.INavigationView;
 
+/**
+ * Panel containing navigator
+ * @author alex
+ *
+ */
 public final class NavigationTreePanel extends JPanel implements INavigationTreePanel {
 
     private static final long serialVersionUID = -2900418193013495812L;

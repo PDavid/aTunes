@@ -49,9 +49,6 @@
 			<constructor-arg ref="frame"/>
 	</bean>
 	<bean id="confirmationDialog" class="net.sourceforge.atunes.gui.views.dialogs.ConfirmationDialog" scope="prototype"/>
-	<bean id="exportOptionsDialog" class="net.sourceforge.atunes.gui.views.dialogs.ExportOptionsDialog" scope="prototype">
-		<constructor-arg ref="frame"/>
-	</bean>
 	<bean id="messageDialog" class="net.sourceforge.atunes.gui.views.dialogs.MessageDialog" scope="prototype"/>
 	<bean id="fileSelectorDialog" class="net.sourceforge.atunes.gui.views.dialogs.FileSelectorDialog" scope="prototype"/>
 	<bean id="radioDialog" class="net.sourceforge.atunes.gui.views.dialogs.RadioDialog" scope="prototype">

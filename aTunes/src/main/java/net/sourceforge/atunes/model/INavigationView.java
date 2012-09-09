@@ -29,6 +29,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+/**
+ * A view of navigator to show a content (repository, favorites, radios, etc)
+ * @author alex
+ *
+ */
 public interface INavigationView extends IAudioObjectsSource, ITreeObjectsSource {
 
 	/**

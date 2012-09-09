@@ -28,6 +28,7 @@ aTunes 2.2.0
 - Repository folders are now managed from preferences window
 - Improvements in startup performance (asynchronous load of data)
 - Use Kryo as serialization library
+- Export action moved to navigator and playlist
 - FIX: Use last.fm API to obtain last.fm loved tracks
 - FIX: Detection of radio audio streams blocks playing
 - FIX: Start mplayer process with volume argument

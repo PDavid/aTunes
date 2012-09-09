@@ -26,6 +26,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Filters for of audio objects
+ * @author alex
+ *
+ */
 public class LocalAudioObjectFilter {
 
     /**

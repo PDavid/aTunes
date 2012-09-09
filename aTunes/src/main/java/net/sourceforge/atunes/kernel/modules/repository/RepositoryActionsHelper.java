@@ -22,12 +22,16 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import javax.swing.Action;
 
+/**
+ * Enables or disables actions related to repository
+ * @author alex
+ *
+ */
 public class RepositoryActionsHelper {
 	
 	private Action addFolderToRepositoryAction;
 	private Action refreshRepositoryAction;
 	private Action importToRepositoryAction;
-	private Action exportAction;
 	private Action connectDeviceAction;
 	private Action ripCDAction;
 	private Action refreshFolderFromNavigatorAction;
@@ -52,13 +56,6 @@ public class RepositoryActionsHelper {
 	 */
 	public void setImportToRepositoryAction(Action importToRepositoryAction) {
 		this.importToRepositoryAction = importToRepositoryAction;
-	}
-	
-	/**
-	 * @param exportAction
-	 */
-	public void setExportAction(Action exportAction) {
-		this.exportAction = exportAction;
 	}
 	
 	/**
@@ -91,7 +88,6 @@ public class RepositoryActionsHelper {
         addFolderToRepositoryAction.setEnabled(enable);
         refreshFolderFromNavigatorAction.setEnabled(enable);
         importToRepositoryAction.setEnabled(enable);
-        exportAction.setEnabled(enable);
         connectDeviceAction.setEnabled(enable);
         ripCDAction.setEnabled(enable);
         refreshRepositoryAction.setEnabled(enable);

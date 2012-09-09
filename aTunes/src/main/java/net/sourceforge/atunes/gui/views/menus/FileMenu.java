@@ -41,7 +41,6 @@ public class FileMenu extends JMenu {
 	private Action addFolderToRepositoryAction;
 	private Action refreshRepositoryAction;
 	private Action importToRepositoryAction;
-	private Action exportAction;
 	private Action exitAction;
 	
 	/**
@@ -73,13 +72,6 @@ public class FileMenu extends JMenu {
 	}
 	
 	/**
-	 * @param exportAction
-	 */
-	public void setExportAction(Action exportAction) {
-		this.exportAction = exportAction;
-	}
-	
-	/**
 	 * @param exitAction
 	 */
 	public void setExitAction(Action exitAction) {
@@ -101,7 +93,6 @@ public class FileMenu extends JMenu {
         add(refreshRepositoryAction);
         add(new JSeparator());
         add(importToRepositoryAction);
-        add(exportAction);
         if (!osManager.areMenuEntriesDelegated()) {
         	add(new JSeparator());
         	add(exitAction);
