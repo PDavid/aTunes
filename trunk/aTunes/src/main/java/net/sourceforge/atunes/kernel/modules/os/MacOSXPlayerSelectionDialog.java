@@ -39,9 +39,10 @@ import javax.swing.JRadioButton;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
+import net.sourceforge.atunes.gui.views.controls.CustomFileChooser;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
@@ -75,6 +76,15 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	private JRadioButton automaticSearch;
 	
 	private IDesktop desktop;
+	
+	private IBeanFactory beanFactory;
+	
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param osManager
@@ -254,8 +264,7 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 */
 	private JPanel getEnterPlayerEnginePanel() {
 		SimpleTextPane instructions = new SimpleTextPane(I18nUtils.getString("MAC_PLAYER_ENGINE_ENTER_PATH"), getLookAndFeelManager());
-
-		final CustomJFileChooser locationFileChooser = new CustomJFileChooser(this, 0, JFileChooser.FILES_ONLY, osManager);
+		final CustomFileChooser locationFileChooser = new CustomFileChooser(I18nUtils.getString("ENTER_PLAYER_ENGINE_PATH"), this, 0, JFileChooser.FILES_ONLY, osManager, beanFactory);
 		JButton previousButton = new JButton(I18nUtils.getString("PREVIOUS"));
 		previousButton.addActionListener(new MacOSXPlayerSelectionDialogGoToFirstPanelListener(panelContainer, FIRST_PANEL));
 		final JButton finishButton = new JButton(I18nUtils.getString("FINISH"));

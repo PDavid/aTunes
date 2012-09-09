@@ -38,20 +38,26 @@ import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
+import net.sourceforge.atunes.gui.views.controls.CustomFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateDevice;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Panel for setup
+ * @author alex
+ *
+ */
 public final class DevicePanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = 3331810461314007217L;
 
     /** The location file chooser. */
-    private CustomJFileChooser locationFileChooser;
+    private CustomFileChooser locationFileChooser;
 
     /**
      * The radio button used to select no changes in file names when copying to
@@ -90,6 +96,15 @@ public final class DevicePanel extends AbstractPreferencesPanel {
     private IStateDevice stateDevice;
     
     private Patterns patterns;
+    
+	private IBeanFactory beanFactory;
+	
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
     
     /**
      * @param patterns
@@ -131,7 +146,7 @@ public final class DevicePanel extends AbstractPreferencesPanel {
      */
     public void initialize() {
         JLabel label = new JLabel(I18nUtils.getString("DEVICE_DEFAULT_LOCATION"));
-        locationFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY, osManager);
+        locationFileChooser = new CustomFileChooser(I18nUtils.getString("DEVICE_DEFAULT_LOCATION"), this, 20, JFileChooser.DIRECTORIES_ONLY, osManager, beanFactory);
 
         JPanel fileNamePanel = new JPanel(new GridBagLayout());
         fileNamePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,10,0), I18nUtils.getString("FILE_NAME")));

@@ -34,28 +34,32 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
 
+import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IFileSelectorDialog;
+import net.sourceforge.atunes.model.IFolderSelectorDialog;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * A custom file chooser with text field and button that opens the chooser.
  */
-public final class CustomJFileChooser extends JPanel {
+public final class CustomFileChooser extends JPanel {
 
     private static final long serialVersionUID = 4713483251093570020L;
 
     private JTextField textField;
     private String result;
-
+    
     /**
      * Instantiates a new custom file chooser.
-     * 
+     * @param title
      * @param parent
      * @param length
      * @param type
      * @param osManager
+     * @param beanFactory
      */
-    public CustomJFileChooser(final Component parent, int length, final int type, IOSManager osManager) {
+    public CustomFileChooser(final String title, final Component parent, int length, final int type, IOSManager osManager, final IBeanFactory beanFactory) {
         super(new GridBagLayout());
         // Use user home by default
         final File defaultFolder = new File(osManager.getUserHome());
@@ -65,18 +69,22 @@ public final class CustomJFileChooser extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                JFileChooser chooser = new JFileChooser(textField.getText());
-                chooser.setFileSelectionMode(type);
-                chooser.setSelectedFile(defaultFolder);
+                File selected = null;
                 if (type == JFileChooser.DIRECTORIES_ONLY) {
-                    chooser.setDialogTitle(I18nUtils.getString("SELECT_FOLDER"));
+                	IFolderSelectorDialog dialog = beanFactory.getBean(IDialogFactory.class).newDialog(IFolderSelectorDialog.class);
+                	dialog.setTitle(title);
+                	selected = dialog.selectFolder(defaultFolder);
+                } else {
+                	IFileSelectorDialog dialog = beanFactory.getBean(IDialogFactory.class).newDialog(IFileSelectorDialog.class);
+                	dialog.setTitle(title);
+                	selected = dialog.loadFile(defaultFolder);
                 }
-                if (chooser.showDialog(parent, null) == JFileChooser.APPROVE_OPTION) {
-                    result = chooser.getSelectedFile().getAbsolutePath();
-                    textField.setText(result);
+            	if (selected != null) {
+            		result = selected.getAbsolutePath();
                 } else {
                     result = null;
                 }
+                textField.setText(result);
             }
         });
 
