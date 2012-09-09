@@ -31,4 +31,14 @@ public class ExportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
     public String getProgressDialogTitle() {
         return I18nUtils.getString("EXPORTING");
     }
+    
+    @Override
+    protected String getFileNamePattern() {
+    	return getStateRepository().getExportFileNamePattern();
+    }
+    
+    @Override
+    protected String getFolderPathPattern() {
+    	return getStateRepository().getExportFolderPathPattern();
+    }
 }

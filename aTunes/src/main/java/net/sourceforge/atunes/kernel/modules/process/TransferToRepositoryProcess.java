@@ -69,4 +69,15 @@ public class TransferToRepositoryProcess extends AbstractLocalAudioObjectTransfe
     	super.setFilesToTransfer(filesToTransfer);
     	addProcessListener(importToRepositoryProcessListener);
     }
+    
+    
+    @Override
+    protected String getFileNamePattern() {
+    	return getStateRepository().getImportFileNamePattern();
+    }
+    
+    @Override
+    protected String getFolderPathPattern() {
+    	return getStateRepository().getImportFolderPathPattern();
+    }
 }

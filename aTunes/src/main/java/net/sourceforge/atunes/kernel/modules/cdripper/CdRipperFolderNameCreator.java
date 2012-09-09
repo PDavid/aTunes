@@ -92,7 +92,7 @@ public class CdRipperFolderNameCreator {
 	 * @return
 	 */
 	File getFolder(CDMetadata metadata) {
-		String folderNamePattern = stateRepository.getImportExportFolderPathPattern();
+		String folderNamePattern = stateRepository.getImportFolderPathPattern();
 		String folder = null;
 		if (StringUtils.isEmpty(folderNamePattern)) {
 			folder = StringUtils.getString(unknownObjectChecker.getUnknownAlbum(), " - ", DateUtils.toPathString(new DateTime()));

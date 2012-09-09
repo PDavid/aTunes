@@ -24,14 +24,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
@@ -42,20 +40,23 @@ import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
-public final class ImportExportPanel extends AbstractPreferencesPanel {
+/**
+ * Preferences for export
+ * @author alex
+ *
+ */
+public final class ExportPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = 3331810461314007217L;
 
     /**
-     * The radio button used to select no changes in file names when importing /
-     * exporting
+     * The radio button used to select no changes in file names when exporting
      */
     private JRadioButton fileNameNoChangeRadioButton;
 
     /**
-     * The radio button used to rename files when importing / exporting to a
+     * The radio button used to rename files when exporting to a
      * custom name
      */
     private JRadioButton fileNameCustomizedRadioButton;
@@ -64,13 +65,12 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
     private JTextField fileNamePatternTextField;
 
     /**
-     * The radio button used to select no changes in folder name when importing
-     * / exporting
+     * The radio button used to select no changes in folder name when exporting
      */
     private JRadioButton folderPathNoChangeRadioButton;
 
     /**
-     * The radio button used to set folder when importing / exporting to a
+     * The radio button used to set folder when exporting to a
      * custom pattern
      */
     private JRadioButton folderPathCustomizedRadioButton;
@@ -78,18 +78,6 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
     /** Text Field used to define custom folder path */
     private JTextField folderPathPatternTextField;
 
-    /** Check box to enable tag revision before importing */
-    private JCheckBox reviewTagsBeforeImportCheckBox;
-
-    /** Check box to apply changes in tags to original files before copy them */
-    private JCheckBox applyChangesToSourceFilesCheckBox;
-
-    /** Check box to enable track number auto complete when importing */
-    private JCheckBox setTrackNumberWhenImportingCheckBox;
-
-    /** Check box to enable title auto complete when importing */
-    private JCheckBox setTitlesWhenImportingCheckBox;
-    
     private ILookAndFeelManager lookAndFeelManager;
     
     private IStateRepository stateRepository;
@@ -118,10 +106,10 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
 	}
 
     /**
-     * Instantiates a new import / export panel.
+     * Instantiates a new export panel.
      */
-    public ImportExportPanel() {
-        super(StringUtils.getString(I18nUtils.getString("IMPORT"), "/", I18nUtils.getString("EXPORT")));
+    public ExportPanel() {
+        super(I18nUtils.getString("EXPORT"));
     }
     
     /**
@@ -175,21 +163,7 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
 
         JPanel patternsPanel = getPatternsPanel(availablePatternsTable);
 
-        reviewTagsBeforeImportCheckBox = new JCheckBox(I18nUtils.getString("REVIEW_TAGS_BEFORE_IMPORTING"));
-        reviewTagsBeforeImportCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                applyChangesToSourceFilesCheckBox.setEnabled(((JCheckBox) e.getSource()).isSelected());
-            }
-        });
-        applyChangesToSourceFilesCheckBox = new JCheckBox(I18nUtils.getString("APPLY_CHANGES_TO_SOURCE_FILES"));
-        setTrackNumberWhenImportingCheckBox = new JCheckBox(I18nUtils.getString("AUTO_SET_TRACK_NUMBER"));
-        setTitlesWhenImportingCheckBox = new JCheckBox(I18nUtils.getString("AUTO_SET_TITLE"));
-
-        
-        JPanel specificImportOptions = getSpecificImportOptionsPanel();
-
-        arrangePanel(fileNamePanel, folderPathPanel, patternsPanel, specificImportOptions);
+        arrangePanel(fileNamePanel, folderPathPanel, patternsPanel);
     }
 
 	/**
@@ -205,26 +179,12 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
 	}
 
 	/**
-	 * @return
-	 */
-	private JPanel getSpecificImportOptionsPanel() {
-		JPanel specificImportOptions = new JPanel(new GridLayout(4, 1));
-        specificImportOptions.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,10,0), I18nUtils.getString("SPECIFIC_IMPORT_OPTIONS")));
-        specificImportOptions.add(reviewTagsBeforeImportCheckBox);
-        specificImportOptions.add(applyChangesToSourceFilesCheckBox);
-        specificImportOptions.add(setTrackNumberWhenImportingCheckBox);
-        specificImportOptions.add(setTitlesWhenImportingCheckBox);
-		return specificImportOptions;
-	}
-
-	/**
 	 * @param fileNamePanel
 	 * @param folderPathPanel
 	 * @param patternsPanel
-	 * @param specificImportOptions
 	 */
 	private void arrangePanel(JPanel fileNamePanel, JPanel folderPathPanel,
-			JPanel patternsPanel, JPanel specificImportOptions) {
+			JPanel patternsPanel) {
 		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -272,50 +232,38 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 1;
+        c.weighty = 1;
         c.gridheight = 1;
         add(folderPathPanel, c);
-
-        c.gridy = 2;
-        c.weighty = 1;
-        add(specificImportOptions, c);
 	}
 
     @Override
     public boolean applyPreferences() {
         String fileNamePattern = fileNameNoChangeRadioButton.isSelected() ? "" : fileNamePatternTextField.getText();
-        stateRepository.setImportExportFileNamePattern(fileNamePattern == null || fileNamePattern.trim().equals("") ? null : fileNamePattern);
+        stateRepository.setExportFileNamePattern(fileNamePattern == null || fileNamePattern.trim().equals("") ? null : fileNamePattern);
         String folderPathPattern = folderPathNoChangeRadioButton.isSelected() ? "" : folderPathPatternTextField.getText();
-        stateRepository.setImportExportFolderPathPattern(folderPathPattern == null || folderPathPattern.equals("") ? null : folderPathPattern);
-        stateRepository.setReviewTagsBeforeImport(reviewTagsBeforeImportCheckBox.isSelected());
-        stateRepository.setApplyChangesToSourceFilesBeforeImport(applyChangesToSourceFilesCheckBox.isSelected());
-        stateRepository.setSetTrackNumbersWhenImporting(setTrackNumberWhenImportingCheckBox.isSelected());
-        stateRepository.setSetTitlesWhenImporting(setTitlesWhenImportingCheckBox.isSelected());
+        stateRepository.setExportFolderPathPattern(folderPathPattern == null || folderPathPattern.equals("") ? null : folderPathPattern);
         return false;
     }
 
     @Override
     public void updatePanel() {
-        if (stateRepository.getImportExportFileNamePattern() == null || stateRepository.getImportExportFileNamePattern().trim().equals("")) {
+        if (stateRepository.getExportFileNamePattern() == null || stateRepository.getExportFileNamePattern().trim().equals("")) {
             fileNameNoChangeRadioButton.setSelected(true);
             fileNamePatternTextField.setEnabled(false);
         } else {
             fileNameCustomizedRadioButton.setSelected(true);
             fileNamePatternTextField.setEnabled(true);
-            fileNamePatternTextField.setText(stateRepository.getImportExportFileNamePattern());
+            fileNamePatternTextField.setText(stateRepository.getExportFileNamePattern());
         }
-        if (stateRepository.getImportExportFolderPathPattern() == null || stateRepository.getImportExportFolderPathPattern().trim().equals("")) {
+        if (stateRepository.getExportFolderPathPattern() == null || stateRepository.getExportFolderPathPattern().trim().equals("")) {
             folderPathNoChangeRadioButton.setSelected(true);
             folderPathPatternTextField.setEnabled(false);
         } else {
             folderPathCustomizedRadioButton.setSelected(true);
             folderPathPatternTextField.setEnabled(true);
-            folderPathPatternTextField.setText(stateRepository.getImportExportFolderPathPattern());
+            folderPathPatternTextField.setText(stateRepository.getExportFolderPathPattern());
         }
-        reviewTagsBeforeImportCheckBox.setSelected(stateRepository.isReviewTagsBeforeImport());
-        applyChangesToSourceFilesCheckBox.setEnabled(stateRepository.isReviewTagsBeforeImport());
-        applyChangesToSourceFilesCheckBox.setSelected(stateRepository.isApplyChangesToSourceFilesBeforeImport());
-        setTrackNumberWhenImportingCheckBox.setSelected(stateRepository.isSetTrackNumbersWhenImporting());
-        setTitlesWhenImportingCheckBox.setSelected(stateRepository.isSetTitlesWhenImporting());
     }
 
     @Override
@@ -331,5 +279,4 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
     public void dialogVisibilityChanged(boolean visible) {
         // Do nothing
     }
-
 }

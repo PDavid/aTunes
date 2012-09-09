@@ -75,4 +75,14 @@ public class TransferToDeviceProcess extends AbstractLocalAudioObjectTransferPro
     public String getName(ILocalAudioObject file, boolean isMp3Device) {
         return getName(file, isMp3Device, stateDevice.getDeviceFileNamePattern());
     }
+    
+    @Override
+    protected String getFileNamePattern() {
+    	return stateDevice.getDeviceFileNamePattern();
+    }
+    
+    @Override
+    protected String getFolderPathPattern() {
+    	return stateDevice.getDeviceFolderPathPattern();
+    }
 }

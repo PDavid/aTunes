@@ -58,7 +58,7 @@ public class CdRipperFileNameCreator {
 	 * @return
 	 */
 	String getFileName(CDMetadata cdMetadata, int trackNumber, String extension) {
-    	String fileNamePattern = stateRepository.getImportExportFileNamePattern();
+    	String fileNamePattern = stateRepository.getImportFileNamePattern();
     	String result;
     	if (StringUtils.isEmpty(fileNamePattern)) {
     		result = StringUtils.getString("track", trackNumber, '.', extension);

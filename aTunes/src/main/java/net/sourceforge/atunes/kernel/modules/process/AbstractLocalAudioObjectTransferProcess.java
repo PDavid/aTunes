@@ -299,8 +299,13 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
      * @return
      */
     protected String getDirectory(ILocalAudioObject song, File destination, boolean isMp3Device) {
-        return getDirectory(song, destination, isMp3Device, stateRepository.getImportExportFolderPathPattern());
+        return getDirectory(song, destination, isMp3Device, getFolderPathPattern());
     }
+    
+    /**
+     * @return folder path pattern
+     */
+    protected abstract String getFolderPathPattern();
 
     /**
      * Prepares the directory structure in which the song will be written.
@@ -329,8 +334,13 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
      * @return
      */
     protected String getName(ILocalAudioObject file, boolean isMp3Device) {
-        return getName(file, isMp3Device, stateRepository.getImportExportFileNamePattern());
+        return getName(file, isMp3Device, getFileNamePattern());
     }
+    
+    /**
+     * @return file name pattern to use
+     */
+    protected abstract String getFileNamePattern();
 
     /**
      * Returns a valid name to transfer the file given as argument. It applies
