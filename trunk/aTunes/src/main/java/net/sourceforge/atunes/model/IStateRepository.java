@@ -65,28 +65,52 @@ public interface IStateRepository {
 	public void setLastRepositoryFolders(List<String> lastRepositoryFolders);
 
 	/**
-	 * File name pattern in import / export
+	 * File name pattern in import
 	 * @return
 	 */
-	public String getImportExportFileNamePattern();
+	public String getImportFileNamePattern();
 
 	/**
-	 * File name pattern in import / export
-	 * @param importExportFileNamePattern
-	 */
-	public void setImportExportFileNamePattern(String importExportFileNamePattern);
-	
-	/**
-	 * Folder path pattern in import / export
+	 * File name pattern in export
 	 * @return
 	 */
-	public String getImportExportFolderPathPattern();
+	public String getExportFileNamePattern();
 
 	/**
-	 * Folder path pattern in import / export
-	 * @param importExportFolderPathPattern
+	 * File name pattern in import
+	 * @param importFileNamePattern
 	 */
-	public void setImportExportFolderPathPattern(String importExportFolderPathPattern);
+	public void setImportFileNamePattern(String importFileNamePattern);
+
+	/**
+	 * File name pattern in export
+	 * @param exportFileNamePattern
+	 */
+	public void setExportFileNamePattern(String exportFileNamePattern);
+
+	/**
+	 * Folder path pattern in import
+	 * @return
+	 */
+	public String getImportFolderPathPattern();
+
+	/**
+	 * Folder path pattern in export
+	 * @return
+	 */
+	public String getExportFolderPathPattern();
+
+	/**
+	 * Folder path pattern in import
+	 * @param importFolderPathPattern
+	 */
+	public void setImportFolderPathPattern(String importFolderPathPattern);
+
+	/**
+	 * Folder path pattern in export
+	 * @param exportFolderPathPattern
+	 */
+	public void setExportFolderPathPattern(String exportFolderPathPattern);
 
 	/**
 	 * Review tags before start import

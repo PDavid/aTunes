@@ -79,23 +79,43 @@ public class ApplicationStateRepository implements IStateRepository {
     }
 
     @Override
-	public String getImportExportFileNamePattern() {
-    	return (String) this.stateStore.retrievePreference(Preferences.IMPORT_EXPORT_FILENAME_PATTERN, null);
+	public String getImportFileNamePattern() {
+    	return (String) this.stateStore.retrievePreference(Preferences.IMPORT_FILENAME_PATTERN, null);
     }
 
     @Override
-	public void setImportExportFileNamePattern(String importExportFileNamePattern) {
-    	this.stateStore.storePreference(Preferences.IMPORT_EXPORT_FILENAME_PATTERN, importExportFileNamePattern);
+	public void setImportFileNamePattern(String importFileNamePattern) {
+    	this.stateStore.storePreference(Preferences.IMPORT_FILENAME_PATTERN, importFileNamePattern);
     }
 
     @Override
-	public String getImportExportFolderPathPattern() {
-    	return (String) this.stateStore.retrievePreference(Preferences.IMPORT_EXPORT_FOLDER_PATH_PATTERN, null);
+	public String getImportFolderPathPattern() {
+    	return (String) this.stateStore.retrievePreference(Preferences.IMPORT_FOLDER_PATH_PATTERN, null);
     }
 
     @Override
-	public void setImportExportFolderPathPattern(String importExportFolderPathPattern) {
-    	this.stateStore.storePreference(Preferences.IMPORT_EXPORT_FOLDER_PATH_PATTERN, importExportFolderPathPattern);
+	public void setImportFolderPathPattern(String importFolderPathPattern) {
+    	this.stateStore.storePreference(Preferences.IMPORT_FOLDER_PATH_PATTERN, importFolderPathPattern);
+    }
+
+    @Override
+	public String getExportFileNamePattern() {
+    	return (String) this.stateStore.retrievePreference(Preferences.EXPORT_FILENAME_PATTERN, null);
+    }
+
+    @Override
+	public void setExportFileNamePattern(String exportFileNamePattern) {
+    	this.stateStore.storePreference(Preferences.EXPORT_FILENAME_PATTERN, exportFileNamePattern);
+    }
+
+    @Override
+	public String getExportFolderPathPattern() {
+    	return (String) this.stateStore.retrievePreference(Preferences.EXPORT_FOLDER_PATH_PATTERN, null);
+    }
+
+    @Override
+	public void setExportFolderPathPattern(String exportFolderPathPattern) {
+    	this.stateStore.storePreference(Preferences.EXPORT_FOLDER_PATH_PATTERN, exportFolderPathPattern);
     }
 
     @Override

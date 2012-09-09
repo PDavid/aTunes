@@ -57,7 +57,7 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
      * @param frame
      */
     public EditPreferencesDialog(IFrame frame) {
-        super(frame, 800, 600);
+        super(frame, 900, 700);
     }
 
     @Override
@@ -98,7 +98,7 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
         list = new JList();
         list.setCellRenderer(lookAndFeel.getListCellRenderer(new PreferencesListCellRendererCode()));
         JScrollPane scrollPane = lookAndFeel.getListScrollPane(list);
-        scrollPane.setMinimumSize(new Dimension(130, 0));
+        scrollPane.setMinimumSize(new Dimension(200, 0));
         options = new JPanel();
         ok = new JButton(I18nUtils.getString("OK"));
         cancel = new JButton(I18nUtils.getString("CANCEL"));

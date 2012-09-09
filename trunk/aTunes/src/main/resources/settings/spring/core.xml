@@ -65,7 +65,8 @@
 				<ref bean="devicePreferencesPanel"/>
 				<ref bean="radioPreferencesPanel"/>
 				<ref bean="podcastFeedPreferencesPanel"/>
-				<ref bean="importExportPreferencesPanel"/>
+				<ref bean="importPreferencesPanel"/>
+				<ref bean="exportPreferencesPanel"/>
 			</list>
 		</constructor-arg>
 	</bean>
@@ -82,7 +83,8 @@
 	<bean id="devicePreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.DevicePanel" scope="prototype" init-method="initialize"/>
 	<bean id="radioPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.RadioPanel" scope="prototype"/>
 	<bean id="podcastFeedPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.PodcastFeedPanel" scope="prototype" init-method="initialize"/>
-	<bean id="importExportPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.ImportExportPanel" scope="prototype" init-method="initialize"/>
+	<bean id="importPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.ImportPanel" scope="prototype" init-method="initialize"/>
+	<bean id="exportPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.ExportPanel" scope="prototype" init-method="initialize"/>
 	<bean id="pluginsPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.PluginsPanel" scope="prototype" init-method="initialize"/>
 	
 	<bean id="editPreferencesDialogController" class="net.sourceforge.atunes.kernel.modules.state.EditPreferencesDialogController" scope="prototype" init-method="initialize">

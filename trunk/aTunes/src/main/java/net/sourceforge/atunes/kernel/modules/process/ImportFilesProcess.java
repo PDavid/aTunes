@@ -133,8 +133,8 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 
         String songPath = song.getFile().getParentFile().getAbsolutePath();
         String songRelativePath = songPath.replaceFirst(baseFolder.getAbsolutePath().replace("\\", "\\\\").replace("$", "\\$"), "");
-        if (getStateRepository().getImportExportFolderPathPattern() != null) {
-            songRelativePath = FileNameUtils.getValidFolderName(getNewFolderPath(getStateRepository().getImportExportFolderPathPattern(), song, getOsManager()), getOsManager());
+        if (getStateRepository().getImportFolderPathPattern() != null) {
+            songRelativePath = FileNameUtils.getValidFolderName(getNewFolderPath(getStateRepository().getImportFolderPathPattern(), song, getOsManager()), getOsManager());
         }
         return new File(StringUtils.getString(destinationBaseFolder.getAbsolutePath(), getOsManager().getFileSeparator(), songRelativePath));
     }
@@ -174,8 +174,8 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
     private File importFile(File destination, ILocalAudioObject file, List<Exception> thrownExceptions) {
         File destDir = getDirectory(file, destination);
         String newName;
-        if (getStateRepository().getImportExportFileNamePattern() != null) {
-            newName = getNewFileName(getStateRepository().getImportExportFileNamePattern(), file, getOsManager());
+        if (getStateRepository().getImportFileNamePattern() != null) {
+            newName = getNewFileName(getStateRepository().getImportFileNamePattern(), file, getOsManager());
         } else {
             newName = FileNameUtils.getValidFileName(file.getFile().getName().replace("\\", "\\\\").replace("$", "\\$"), false, getOsManager());
         }
@@ -300,5 +300,15 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
                 }
             }
         }
+    }
+    
+    @Override
+    protected String getFileNamePattern() {
+    	return getStateRepository().getImportFileNamePattern();
+    }
+    
+    @Override
+    protected String getFolderPathPattern() {
+    	return getStateRepository().getImportFolderPathPattern();
     }
 }
