@@ -48,6 +48,9 @@
 			</list>
 		</property>
 	</bean>
+	<bean id="repositoryNavigationViewTreePopupMenu" class="net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationViewTreePopupMenu" init-method="initialize"/>
+	<bean id="repositoryNavigationViewTablePopupMenu" class="net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationViewTablePopupMenu" init-method="initialize"/>
+	
 
 	<bean id="favoritesNavigationView"
 		class="net.sourceforge.atunes.kernel.modules.navigator.FavoritesNavigationView"
@@ -62,6 +65,8 @@
 			</list>
 		</property>
 	</bean>
+	<bean id="favoritesNavigationViewTreePopupMenu" class="net.sourceforge.atunes.kernel.modules.navigator.FavoritesNavigationViewTreePopupMenu" init-method="initialize"/>
+	<bean id="favoritesNavigationViewTablePopupMenu" class="net.sourceforge.atunes.kernel.modules.navigator.FavoritesNavigationViewTablePopupMenu" init-method="initialize"/>
 
 	<bean id="deviceNavigationView"
 		class="net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView"

@@ -20,33 +20,18 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.List;
 
 /**
- * Dialog to show export options
+ * Responsible of export a set of audio objects
  * @author alex
  *
  */
-public interface IExportOptionsDialog extends IDialog {
-
+public interface IAudioObjectExporter {
+	
 	/**
-	 * Gets the export location.
-	 * 
-	 * @return the export location
+	 * Exports audio objects
+	 * @param audioObjects
 	 */
-	String getExportLocation();
-
-	/**
-	 * Returns if dialog has been canceled
-	 * @return the cancel
-	 */
-	boolean isCancel();
-
-	/**
-	 * Returns <code>true</code> if user selected to export current navigator
-	 * selection, <code>false</code> otherwise (then selected current play list)
-	 * 
-	 * @return
-	 */
-	boolean isExportNavigatorSelection();
-
+	void exportAudioObject(List<ILocalAudioObject> audioObjects);
 }

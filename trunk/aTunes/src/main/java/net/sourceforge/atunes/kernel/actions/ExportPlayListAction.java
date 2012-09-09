@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectExporter;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -35,11 +35,13 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class ExportPlayListAction extends AbstractExportAction {
+public class ExportPlayListAction extends CustomAbstractAction {
 
 	private static final long serialVersionUID = -6661702915765846089L;
 
 	private IPlayListHandler playListHandler;
+	
+	private IAudioObjectExporter audioObjectExporter;
 
 	/**
 	 * Constructor
@@ -55,12 +57,19 @@ public class ExportPlayListAction extends AbstractExportAction {
 	public void setPlayListHandler(IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-
+	
+	/**
+	 * @param audioObjectExporter
+	 */
+	public void setAudioObjectExporter(IAudioObjectExporter audioObjectExporter) {
+		this.audioObjectExporter = audioObjectExporter;
+	}
+	
 	@Override
-	public List<ILocalAudioObject> getAudioObjectsToExport() {
+	protected void executeAction() {
 		LocalAudioObjectFilter filter = new LocalAudioObjectFilter();
 		// Get only LocalAudioObject objects of current play list
-		return filter.getLocalAudioObjects(playListHandler.getCurrentPlayList(true).getAudioObjectsList());
+		audioObjectExporter.exportAudioObject(filter.getLocalAudioObjects(playListHandler.getCurrentPlayList(true).getAudioObjectsList()));
 	}
 
 	@Override

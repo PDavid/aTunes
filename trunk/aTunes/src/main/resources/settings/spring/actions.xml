@@ -138,11 +138,12 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.EditTagPlaylistAction" scope="prototype"/>
 	<bean id="editTitlesAction" class="net.sourceforge.atunes.kernel.actions.EditTitlesAction"/>
 	<bean id="exitAction" class="net.sourceforge.atunes.kernel.actions.ExitAction"/>
-	
+
+	<bean id="exportNavigatorSelectionFromRepositoryViewAction" class="net.sourceforge.atunes.kernel.actions.ExportNavigatorSelectionAction"/>	
+	<bean id="exportNavigatorSelectionFromFavoritesViewAction" class="net.sourceforge.atunes.kernel.actions.ExportNavigatorSelectionAction"/>	
 	<bean class="net.sourceforge.atunes.kernel.actions.ExportPlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ExportPlayListSelectionAction"/>
 	
-	<bean id="exportAction" class="net.sourceforge.atunes.kernel.actions.ExportAction"/>
 	<bean id="expandTreesAction" class="net.sourceforge.atunes.kernel.actions.ExpandTreesAction"/>
 	
 	<bean id="extractPictureFromDeviceNavigationView" class="net.sourceforge.atunes.kernel.actions.ExtractPictureAction"/>
