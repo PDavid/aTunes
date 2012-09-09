@@ -31,7 +31,7 @@ public interface IErrorReporter {
 	/**
 	 * @param t
 	 */
-	void reportError(ErrorReport t);
+	void reportError(IErrorReport t);
 	
 	/**
 	 * @param throwable
@@ -39,5 +39,5 @@ public interface IErrorReporter {
 	 * @param throwable
 	 * @return
 	 */
-	ErrorReport createReport(String descriptionError, Throwable throwable);
+	IErrorReport createReport(String descriptionError, Throwable throwable);
 }

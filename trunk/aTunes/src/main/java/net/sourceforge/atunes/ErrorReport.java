@@ -18,13 +18,14 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.sourceforge.atunes.model.IErrorReport;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -32,7 +33,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author alex
  *
  */
-public class ErrorReport {
+public class ErrorReport implements IErrorReport {
 
 	private String errorDescription;
 	
@@ -43,6 +44,7 @@ public class ErrorReport {
 	/**
 	 * @return the errorDescrition
 	 */
+	@Override
 	public String getErrorDescrition() {
 		return errorDescription;
 	}
@@ -50,6 +52,7 @@ public class ErrorReport {
 	/**
 	 * @param errorDescription
 	 */
+	@Override
 	public void setErrorDescription(String errorDescription) {
 		this.errorDescription = errorDescription;
 	}
@@ -57,6 +60,7 @@ public class ErrorReport {
 	/**
 	 * @return the throwable
 	 */
+	@Override
 	public Throwable getThrowable() {
 		return throwable;
 	}
@@ -64,6 +68,7 @@ public class ErrorReport {
 	/**
 	 * @param throwable the throwable to set
 	 */
+	@Override
 	public void setThrowable(Throwable throwable) {
 		this.throwable = throwable;
 	}
@@ -71,6 +76,7 @@ public class ErrorReport {
 	/**
 	 * @return the state
 	 */
+	@Override
 	public Map<String, String> getState() {
 		return state;
 	}
@@ -78,6 +84,7 @@ public class ErrorReport {
 	/**
 	 * @param state the state to set
 	 */
+	@Override
 	public void setState(Map<String, String> state) {
 		this.state = state;
 	}

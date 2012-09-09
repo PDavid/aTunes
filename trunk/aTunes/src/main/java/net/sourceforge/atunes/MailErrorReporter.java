@@ -22,8 +22,8 @@ package net.sourceforge.atunes;
 
 import java.io.IOException;
 
-import net.sourceforge.atunes.model.ErrorReport;
 import net.sourceforge.atunes.model.IApplicationStateGenerator;
+import net.sourceforge.atunes.model.IErrorReport;
 import net.sourceforge.atunes.model.IErrorReporter;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.ITaskService;
@@ -45,7 +45,7 @@ public class MailErrorReporter implements IErrorReporter, Runnable {
 	
 	private ITaskService taskService;
 
-	private ErrorReport report;
+	private IErrorReport report;
 	
 	private String url;
 	
@@ -78,7 +78,7 @@ public class MailErrorReporter implements IErrorReporter, Runnable {
 	}
 	
 	@Override
-	public void reportError(ErrorReport errorReport) {
+	public void reportError(IErrorReport errorReport) {
 		this.report = errorReport;
 		taskService.submitNow("Report Error", this);
 	}
@@ -95,8 +95,8 @@ public class MailErrorReporter implements IErrorReporter, Runnable {
 	}
 	
 	@Override
-	public ErrorReport createReport(String descriptionError, Throwable throwable) {
-		ErrorReport result = new ErrorReport();
+	public IErrorReport createReport(String descriptionError, Throwable throwable) {
+		IErrorReport result = new ErrorReport();
 		result.setState(applicationStateGenerator.generateState());
 		result.setThrowable(throwable);
 		result.setErrorDescription(descriptionError);
