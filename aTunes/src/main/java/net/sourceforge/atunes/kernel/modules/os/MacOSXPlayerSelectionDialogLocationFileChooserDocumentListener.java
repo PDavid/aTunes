@@ -26,7 +26,7 @@ import javax.swing.JButton;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
+import net.sourceforge.atunes.gui.views.controls.CustomFileChooser;
 
 /**
  * Updates finish button depending on content of player engine location file chooser
@@ -36,13 +36,13 @@ import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 final class MacOSXPlayerSelectionDialogLocationFileChooserDocumentListener implements DocumentListener {
 	
 	private final JButton finishButton;
-	private final CustomJFileChooser locationFileChooser;
+	private final CustomFileChooser locationFileChooser;
 
 	/**
 	 * @param finishButton
 	 * @param locationFileChooser
 	 */
-	public MacOSXPlayerSelectionDialogLocationFileChooserDocumentListener(JButton finishButton, CustomJFileChooser locationFileChooser) {
+	public MacOSXPlayerSelectionDialogLocationFileChooserDocumentListener(JButton finishButton, CustomFileChooser locationFileChooser) {
 		this.finishButton = finishButton;
 		this.locationFileChooser = locationFileChooser;
 	}

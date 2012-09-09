@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.os;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
+import net.sourceforge.atunes.gui.views.controls.CustomFileChooser;
 import net.sourceforge.atunes.model.IOSManager;
 
 /**
@@ -35,7 +35,7 @@ final class MacOSXPlayerSelectionDialogEnterPlayerEngineFinishButtonListener imp
 	
 	private final MacOSXPlayerSelectionDialog dialog;
 	
-	private final CustomJFileChooser locationFileChooser;
+	private final CustomFileChooser locationFileChooser;
 
 	private final IOSManager osManager;
 	
@@ -44,7 +44,7 @@ final class MacOSXPlayerSelectionDialogEnterPlayerEngineFinishButtonListener imp
 	 * @param osManager
 	 * @param locationFileChooser
 	 */
-	public MacOSXPlayerSelectionDialogEnterPlayerEngineFinishButtonListener(MacOSXPlayerSelectionDialog dialog, IOSManager osManager, CustomJFileChooser locationFileChooser) {
+	public MacOSXPlayerSelectionDialogEnterPlayerEngineFinishButtonListener(MacOSXPlayerSelectionDialog dialog, IOSManager osManager, CustomFileChooser locationFileChooser) {
 		this.dialog = dialog;
 		this.locationFileChooser = locationFileChooser;
 		this.osManager = osManager;
