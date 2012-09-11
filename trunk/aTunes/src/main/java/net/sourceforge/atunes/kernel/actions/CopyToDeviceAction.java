@@ -36,6 +36,11 @@ import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Copies audio objects to device
+ * @author alex
+ *
+ */
 public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudioObject> {
 
     private static final long serialVersionUID = -7689483210176624995L;
@@ -85,6 +90,9 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
 		this.podcastFeedHandler = podcastFeedHandler;
 	}
     
+    /**
+     * Default constructor
+     */
     public CopyToDeviceAction() {
         super(I18nUtils.getString("COPY_TO_DEVICE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_TO_DEVICE"));

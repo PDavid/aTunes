@@ -36,15 +36,6 @@ public final class StringUtils {
     private StringUtils() {
     }
 
-    /** Kilobyte 1024 bytes. */
-    private static final long KILOBYTE = 1024;
-
-    /** Megabyte 1024 Kilobytes. */
-    private static final long MEGABYTE = KILOBYTE * 1024;
-
-    /** Gigabyte 1024 Megabytes. */
-    private static final long GIGABYTE = MEGABYTE * 1024;
-
     /**
      * Given an amount of bytes, return a string representation in Bytes,
      * Kilobytes, Megabytes or Gigabytes Examples: Given 1024 bytes -> "1KB"
@@ -56,14 +47,14 @@ public final class StringUtils {
      * @return String representation in Bytes, Kilobytes, Megabytes or Gigabytes
      */
     public static String fromByteToMegaOrGiga(long size) {
-        if (size < KILOBYTE) {
+        if (size < FileUtils.KILOBYTE) {
             return StringUtils.getString(String.valueOf(size), " Bytes");
-        } else if (size < MEGABYTE) {
-            return StringUtils.getString(toString((double) size / KILOBYTE, 2), " KB");
-        } else if (size < GIGABYTE) {
-            return StringUtils.getString(toString((double) size / MEGABYTE, 2), " MB");
+        } else if (size < FileUtils.MEGABYTE) {
+            return StringUtils.getString(toString((double) size / FileUtils.KILOBYTE, 2), " KB");
+        } else if (size < FileUtils.GIGABYTE) {
+            return StringUtils.getString(toString((double) size / FileUtils.MEGABYTE, 2), " MB");
         } else {
-            return StringUtils.getString(toString((double) size / GIGABYTE, 2), " GB");
+            return StringUtils.getString(toString((double) size / FileUtils.GIGABYTE, 2), " GB");
         }
     }
 
