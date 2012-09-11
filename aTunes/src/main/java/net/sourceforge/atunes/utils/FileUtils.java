@@ -30,11 +30,21 @@ import java.io.FileNotFoundException;
  */
 public final class FileUtils {
 	
+    /** Kilobyte 1024 bytes. */
+    public static final long KILOBYTE = 1024;
+
+    /** Megabyte 1024 Kilobytes. */
+    public static final long MEGABYTE = KILOBYTE * 1024;
+
+    /** Gigabyte 1024 Megabytes. */
+    public static final long GIGABYTE = MEGABYTE * 1024;
+
 	private FileUtils() {}
 
     /**
      * Sets write permissions if is not writable.
-     * @throws FileNotFoundException 
+     * @param file
+     * @throws FileNotFoundException
      */
     public static void setWritable(File file) throws FileNotFoundException {
     	if (file == null) {
@@ -51,5 +61,4 @@ public final class FileUtils {
             file.getParentFile().setWritable(true);
     	}
     }
-
 }
