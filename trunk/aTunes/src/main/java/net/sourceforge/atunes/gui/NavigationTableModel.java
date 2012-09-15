@@ -28,6 +28,7 @@ import java.util.List;
 import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * The Class NavigationTableModel.
@@ -49,11 +50,6 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
         super();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getRowCount()
-     */
     @Override
     public int getRowCount() {
         return audioObjects != null ? audioObjects.size() : 0;
@@ -96,12 +92,6 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getValueAt(int, int)
-     */
-
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         IAudioObject audioObject = getAudioObjectAt(rowIndex);
@@ -111,11 +101,6 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
         return getColumn(columnIndex).getValueFor(audioObject);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#isCellEditable(int, int)
-     */
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return false;
@@ -132,11 +117,6 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
         refresh(TableModelEvent.INSERT);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
-     */
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         // Nothing to do
@@ -144,7 +124,10 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
 
     @Override
     public void sort(Comparator<IAudioObject> comparator) {
+    	net.sourceforge.atunes.utils.Timer t = new net.sourceforge.atunes.utils.Timer();
+    	t.start();
         Collections.sort(this.audioObjects, comparator);
+        Logger.debug("Navigation table sort: ", t.stop(), " seconds");
         refresh(TableModelEvent.UPDATE);
     }
 }

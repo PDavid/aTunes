@@ -22,10 +22,18 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
+/**
+ * Column to show album artist
+ * @author alex
+ *
+ */
 public class AlbumArtistColumn extends AbstractColumn<String> {
 
     private static final long serialVersionUID = -1105793722315426353L;
 
+    /**
+     * Default constructor
+     */
     public AlbumArtistColumn() {
         super("ALBUM_ARTIST");
         setVisible(false);
@@ -38,6 +46,14 @@ public class AlbumArtistColumn extends AbstractColumn<String> {
             return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
         }
         return ao1.getAlbumArtist().compareTo(ao2.getAlbumArtist());
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+        if (ao1.getAlbumArtist().equals(ao2.getAlbumArtist())) {
+            return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
+        }
+        return ao2.getAlbumArtist().compareTo(ao1.getAlbumArtist());
     }
 
     @Override

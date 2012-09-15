@@ -27,6 +27,10 @@ import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * @author alex
+ *
+ */
 public abstract class AbstractColumnSetTableModel extends AbstractCommonTableModel {
 
     private IColumnSet columnSet;

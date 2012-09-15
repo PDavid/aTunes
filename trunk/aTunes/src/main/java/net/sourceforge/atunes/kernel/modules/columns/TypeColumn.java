@@ -27,6 +27,11 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 
+/**
+ * Column to show audio object type icon
+ * @author alex
+ *
+ */
 public class TypeColumn extends AbstractColumn<IColorMutableImageIcon> {
 
     private static final long serialVersionUID = -3060341777429113749L;
@@ -40,6 +45,9 @@ public class TypeColumn extends AbstractColumn<IColorMutableImageIcon> {
 		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
 	}
 
+    /**
+     * Constructor
+     */
     public TypeColumn() {
         super("TYPE");
         setResizable(false);
@@ -51,6 +59,11 @@ public class TypeColumn extends AbstractColumn<IColorMutableImageIcon> {
     @Override
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return 0;
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return 0;
     }
 
     @Override

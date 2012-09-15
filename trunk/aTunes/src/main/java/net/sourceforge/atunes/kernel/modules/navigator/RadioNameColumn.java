@@ -49,4 +49,9 @@ final class RadioNameColumn extends AbstractColumn<String> {
     	}
     	return o1.getTitleOrFileName().compareTo(o2.getTitleOrFileName());
     }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
+    }
 }

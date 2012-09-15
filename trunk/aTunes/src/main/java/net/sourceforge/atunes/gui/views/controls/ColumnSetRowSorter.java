@@ -33,6 +33,11 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
 
+/**
+ * Calls sort on column model when user clicks a column header
+ * @author alex
+ *
+ */
 public final class ColumnSetRowSorter {
 
     private JTable table;

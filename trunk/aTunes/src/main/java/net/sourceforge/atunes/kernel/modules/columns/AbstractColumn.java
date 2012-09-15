@@ -30,12 +30,14 @@ import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
  * This class represents a column
- * 
- * @author fleax
+ * @author alex
+ *
+ * @param <T>
  */
 public abstract class AbstractColumn<T> implements IColumn<T> {
 
@@ -72,7 +74,7 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
      * Last sort order used for this column
      */
     private transient ColumnSort columnSort;
-
+    
     /**
      * Constructor with columnId, headerText and columnClass.
      * 
@@ -135,13 +137,6 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 	public String getColumnName() {
         return columnName;
     }
-
-    /**
-     * Compares two objects in ascending order
-     * 
-     * @return
-     */
-    protected abstract int ascendingCompare(IAudioObject o1, IAudioObject o2);
 
     @Override
 	public String getHeaderText() {
@@ -229,7 +224,8 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
     }
 
     @Override
-	public Comparator<IAudioObject> getComparator(boolean changeSort) {
+	public final Comparator<IAudioObject> getComparator(boolean changeSort) {
+    	Logger.debug("Returning comparator for column: ", this.getClass().getName());
         if (columnSort == null) {
             columnSort = ColumnSort.ASCENDING;
         } else if (columnSort == ColumnSort.ASCENDING && changeSort) {
@@ -237,13 +233,12 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
         } else if (columnSort == ColumnSort.DESCENDING && changeSort) {
             columnSort = ColumnSort.ASCENDING;
         }
-
-        return new Comparator<IAudioObject>() {
-            @Override
-            public int compare(IAudioObject o1, IAudioObject o2) {
-                return columnSort == ColumnSort.ASCENDING ? ascendingCompare(o1, o2) : -ascendingCompare(o1, o2);
-            }
-        };
+        
+        if (columnSort.equals(ColumnSort.ASCENDING)) {
+        	return new AscendingColumnSortComparator(this);
+        } else {
+        	return new DescendingColumnSortComparator(this);
+        }
     }
 
     @Override
@@ -299,4 +294,21 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 		}
 		return true;
 	}
+	
+    /**
+     * Compares two objects in ascending order
+     * @param ao1
+     * @param ao2
+     * @return
+     */
+    protected abstract int ascendingCompare(IAudioObject ao1, IAudioObject ao2);
+
+    /**
+     * Compares two objects in descending order
+     * @param ao1
+     * @param ao2
+     * @return
+     */
+    protected abstract int descendingCompare(IAudioObject ao1, IAudioObject ao2);
+
 }

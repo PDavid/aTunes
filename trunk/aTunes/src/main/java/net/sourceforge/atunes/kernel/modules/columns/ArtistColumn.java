@@ -25,46 +25,80 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.gui.TextAndIcon;
 import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IIconFactory;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
-public class ArtistColumn extends AbstractColumn<TextAndIcon> implements ApplicationContextAware {
+/**
+ * Column to show artist
+ * @author alex
+ *
+ */
+public class ArtistColumn extends AbstractColumn<TextAndIcon> {
 
     private static final long serialVersionUID = 8144686293055648148L;
 
     private IIconFactory artistFavoriteIcon;
 
-    private transient ApplicationContext context;
+    private transient IBeanFactory beanFactory;
     
     private transient IFavoritesHandler favoritesHandler;
     
+    /**
+     * Default constructor
+     */
     public ArtistColumn() {
         super("ARTIST");
         setVisible(true);
         setUsedForFilter(true);
         setColumnSort(ColumnSort.ASCENDING); // Column sets are ordered by default by this column
     }
+
+    /**
+     * @param beanFactory
+     */
+    public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
     
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-    	this.context = applicationContext;
-    }
-
-    @Override
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	if (ao1.getArtist().equals(ao2.getArtist())) {
-        	if (ao1.getAlbum().equals(ao2.getAlbum())) {
-        		if (ao1.getDiscNumber() == ao2.getDiscNumber()) {
-        			return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
-        		}
-        		return Integer.valueOf(ao1.getDiscNumber()).compareTo(ao2.getDiscNumber());
-        	}
-        	return ao1.getAlbum().compareTo(ao2.getAlbum());
-    	}
-        return ao1.getArtist().compareTo(ao2.getArtist());
+    	int artist = ao1.getArtist().compareTo(ao2.getArtist());
+    	if (artist != 0) {
+    		return artist;
+    	} else {
+    		int album = ao1.getAlbum().compareTo(ao2.getAlbum());
+    		if (album != 0) {
+    			return album;
+    		} else {
+    			int disc = ao2.getDiscNumber() - ao1.getDiscNumber();
+    			if (disc != 0) {
+    				return disc;
+    			} else {
+    				return - ao2.getTrackNumber() + ao1.getTrackNumber();
+    			}
+    		}
+    	}    	
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	int artist = ao2.getArtist().compareTo(ao1.getArtist());
+    	if (artist != 0) {
+    		return artist;
+    	} else {
+    		int album = ao1.getAlbum().compareTo(ao2.getAlbum());
+    		if (album != 0) {
+    			return album;
+    		} else {
+    			int disc = ao2.getDiscNumber() - ao1.getDiscNumber();
+    			if (disc != 0) {
+    				return disc;
+    			} else {
+    				return - ao2.getTrackNumber() + ao1.getTrackNumber();
+    			}
+    		}
+    	}    	
     }
 
     @Override
@@ -86,7 +120,7 @@ public class ArtistColumn extends AbstractColumn<TextAndIcon> implements Applica
      */
     private IFavoritesHandler getFavoritesHandler() {
     	if (favoritesHandler == null) {
-    		favoritesHandler = context.getBean(IFavoritesHandler.class);
+    		favoritesHandler = beanFactory.getBean(IFavoritesHandler.class);
     	}
     	return favoritesHandler;
     }

@@ -25,10 +25,18 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 
+/**
+ * Column to show path
+ * @author alex
+ *
+ */
 public class PathColumn extends AbstractColumn<String> {
 
     private static final long serialVersionUID = 2053462205073873545L;
 
+    /**
+     * Default constructor
+     */
     public PathColumn() {
         super("LOCATION");
         setWidth(350);
@@ -47,6 +55,11 @@ public class PathColumn extends AbstractColumn<String> {
             p2 = ((ILocalAudioObject) ao2).getFile().getParentFile().getAbsolutePath();
         }
         return p1.compareTo(p2);
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
     }
 
     @Override
