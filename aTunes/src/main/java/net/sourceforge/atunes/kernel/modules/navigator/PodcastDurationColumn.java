@@ -43,4 +43,9 @@ final class PodcastDurationColumn extends AbstractColumn<String> {
     protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
         return Integer.valueOf(o1.getDuration()).compareTo(Integer.valueOf(o2.getDuration()));
     }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
+    }
 }

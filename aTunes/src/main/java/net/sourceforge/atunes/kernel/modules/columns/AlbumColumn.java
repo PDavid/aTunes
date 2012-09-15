@@ -24,72 +24,93 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.TextAndIcon;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IIconFactory;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+/**
+ * Column to show album
+ * @author alex
+ *
+ */
+public class AlbumColumn extends AbstractColumn<TextAndIcon> {
 
-public class AlbumColumn extends AbstractColumn<TextAndIcon> implements ApplicationContextAware {
+	private static final long serialVersionUID = -6162621108007788707L;
 
-    private static final long serialVersionUID = -6162621108007788707L;
+	private IIconFactory albumFavoriteIcon;
 
-    private IIconFactory albumFavoriteIcon;
-    
-    private transient ApplicationContext context;
-    
-    private transient IFavoritesHandler favoritesHandler;
+	private transient IBeanFactory beanFactory;
 
-    public AlbumColumn() {
-        super("ALBUM");
-        setVisible(true);
-        setUsedForFilter(true);
-    }
-    
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-    	this.context = applicationContext;
-    }
+	private transient IFavoritesHandler favoritesHandler;
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        if (ao1.getAlbum().equals(ao2.getAlbum())) {
-            if (ao1.getDiscNumber() == ao2.getDiscNumber()) {
-                return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
-            }
-            return Integer.valueOf(ao1.getDiscNumber()).compareTo(ao2.getDiscNumber());
-        }
-        return ao1.getAlbum().compareTo(ao2.getAlbum());
-    }
-
-    @Override
-    public TextAndIcon getValueFor(IAudioObject audioObject) {
-    	if (getFavoritesHandler().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum())) {
-            return new TextAndIcon(audioObject.getAlbum(), albumFavoriteIcon.getColorMutableIcon(), SwingConstants.LEFT);
-    	} else {
-    		return new TextAndIcon(audioObject.getAlbum(), null, SwingConstants.LEFT);
-    	}
-    }
-
-    @Override
-    public String getValueForFilter(IAudioObject audioObject) {
-        return audioObject.getAlbum();
-    }
-    
-    /**
-     * @return favorites handler
-     */
-    private IFavoritesHandler getFavoritesHandler() {
-    	if (favoritesHandler == null) {
-    		favoritesHandler = context.getBean(IFavoritesHandler.class);
-    	}
-    	return favoritesHandler;
-    }
-    
-    /**
-     * @param albumFavoriteIcon
-     */
-    public void setAlbumFavoriteIcon(IIconFactory albumFavoriteIcon) {
-		this.albumFavoriteIcon = albumFavoriteIcon;
+	/**
+	 * Default constructor
+	 */
+	public AlbumColumn() {
+		super("ALBUM");
+		setVisible(true);
+		setUsedForFilter(true);
 	}
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+
+	@Override
+	protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
+		int album = ao1.getAlbum().compareTo(ao2.getAlbum());
+		if (album == 0) {
+			if (ao1.getDiscNumber() == ao2.getDiscNumber()) {
+				return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
+			}
+			return Integer.valueOf(ao1.getDiscNumber()).compareTo(ao2.getDiscNumber());
+		}
+		return album;
+	}
+	
+	@Override
+	protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+		int album = ao2.getAlbum().compareTo(ao1.getAlbum());
+		if (album == 0) {
+			if (ao1.getDiscNumber() == ao2.getDiscNumber()) {
+				return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
+			}
+			return Integer.valueOf(ao1.getDiscNumber()).compareTo(ao2.getDiscNumber());
+		}
+		return album;
+	}
+
+	@Override
+	public TextAndIcon getValueFor(IAudioObject audioObject) {
+		if (getFavoritesHandler().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum())) {
+			return new TextAndIcon(audioObject.getAlbum(), albumFavoriteIcon.getColorMutableIcon(), SwingConstants.LEFT);
+		} else {
+			return new TextAndIcon(audioObject.getAlbum(), null, SwingConstants.LEFT);
+		}
+	}
+
+	@Override
+	public String getValueForFilter(IAudioObject audioObject) {
+		return audioObject.getAlbum();
+	}
+
+	/**
+	 * @return favorites handler
+	 */
+	 private IFavoritesHandler getFavoritesHandler() {
+		 if (favoritesHandler == null) {
+			 favoritesHandler = beanFactory.getBean(IFavoritesHandler.class);
+		 }
+		 return favoritesHandler;
+	 }
+
+	 /**
+	  * @param albumFavoriteIcon
+	  */
+	 public void setAlbumFavoriteIcon(IIconFactory albumFavoriteIcon) {
+		 this.albumFavoriteIcon = albumFavoriteIcon;
+	 }
 }

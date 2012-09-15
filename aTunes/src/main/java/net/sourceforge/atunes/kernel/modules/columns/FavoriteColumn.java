@@ -22,21 +22,27 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
-public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> implements ApplicationContextAware {
+/**
+ * Column to show favorite
+ * @author alex
+ *
+ */
+public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> {
 
     private static final long serialVersionUID = -4652512586792166062L;
     
-    private transient ApplicationContext context;
+    private transient IBeanFactory beanFactory;
     
     private transient IFavoritesHandler favoritesHandler;
 
+    /**
+     * Default constructor
+     */
     public FavoriteColumn() {
         super("FAVORITES");
         setResizable(false);
@@ -47,6 +53,11 @@ public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> implemen
     @Override
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return 0;
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return 0;
     }
 
     @Override
@@ -70,15 +81,17 @@ public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> implemen
     public String getHeaderText() {
         return "";
     }
-    
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-    	this.context = applicationContext;
-    }
+
+    /**
+     * @param beanFactory
+     */
+    public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
     
     private IFavoritesHandler getFavoritesHandler() {
     	if (favoritesHandler == null) {
-    		favoritesHandler = context.getBean(IFavoritesHandler.class);
+    		favoritesHandler = beanFactory.getBean(IFavoritesHandler.class);
     	}
 		return favoritesHandler;
 	}

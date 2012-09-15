@@ -23,11 +23,18 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
+/**
+ * Column to show file name
+ * @author alex
+ *
+ */
 public class FileNameColumn extends AbstractColumn<String> {
-
     
     private static final long serialVersionUID = -6243616734204965925L;
 
+    /**
+     * Default constructor
+     */
     public FileNameColumn() {
         super("FILE");
         setWidth(250);
@@ -42,6 +49,11 @@ public class FileNameColumn extends AbstractColumn<String> {
     	}
     	return 0;
     }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
+    }
 
     @Override
     public String getValueFor(IAudioObject audioObject) {
@@ -50,5 +62,4 @@ public class FileNameColumn extends AbstractColumn<String> {
     	}
     	return null;
     }
-
 }

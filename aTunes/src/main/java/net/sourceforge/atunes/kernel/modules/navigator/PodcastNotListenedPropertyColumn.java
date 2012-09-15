@@ -50,4 +50,9 @@ final class PodcastNotListenedPropertyColumn extends AbstractColumn<AudioObjectP
     	}
     	return 0;
     }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
+    }
 }

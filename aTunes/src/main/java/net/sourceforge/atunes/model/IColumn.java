@@ -259,5 +259,4 @@ public interface IColumn<T> extends Serializable, Comparable<IColumn<?>> {
 	 * @return the columnSort
 	 */
 	public ColumnSort getColumnSort();
-
 }

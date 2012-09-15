@@ -22,11 +22,19 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
+/**
+ * Column to show title
+ * @author alex
+ *
+ */
 public class TitleColumn extends AbstractColumn<String> {
 
  
     private static final long serialVersionUID = -4113331298039010230L;
 
+    /**
+     * Default constructor
+     */
     public TitleColumn() {
         super("TITLE");
         setVisible(true);
@@ -36,6 +44,11 @@ public class TitleColumn extends AbstractColumn<String> {
     @Override
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return ao1.getTitleOrFileName().compareTo(ao2.getTitleOrFileName());
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
     }
 
     @Override
@@ -47,5 +60,4 @@ public class TitleColumn extends AbstractColumn<String> {
     public String getValueForFilter(IAudioObject audioObject) {
         return audioObject.getTitle();
     }
-
 }

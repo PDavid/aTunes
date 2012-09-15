@@ -24,10 +24,18 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
+/**
+ * Column to show track number
+ * @author alex
+ *
+ */
 public class TrackColumn extends AbstractColumn<Integer> {
 
     private static final long serialVersionUID = 6114834986452693757L;
 
+    /**
+     * Constructor
+     */
     public TrackColumn() {
         super("TRACK");
         setWidth(40);
@@ -37,9 +45,14 @@ public class TrackColumn extends AbstractColumn<Integer> {
 
     @Override
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
+    	return ao2.getTrackNumber() - ao1.getTrackNumber();
     }
 
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
+    }
+    
     @Override
     public Integer getValueFor(IAudioObject audioObject) {
         // Return track number or null, otherwise problems while comparing arise

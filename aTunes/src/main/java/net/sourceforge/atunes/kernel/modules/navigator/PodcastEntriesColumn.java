@@ -42,4 +42,9 @@ final class PodcastEntriesColumn extends AbstractColumn<String> {
     protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
         return o1.getTitleOrFileName().compareTo(o2.getTitleOrFileName());
     }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
+    }
 }

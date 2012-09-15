@@ -27,11 +27,19 @@ import net.sourceforge.atunes.model.IAudioObject;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+/**
+ * Column to show date
+ * @author alex
+ *
+ */
 public class DateColumn extends AbstractColumn<String> {
 
     private static final long serialVersionUID = 6832826017182272636L;
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.mediumDateTime();
 
+    /**
+     * Default constructor
+     */
     public DateColumn() {
         super("DATE");
         setAlignment(SwingConstants.CENTER);
@@ -48,6 +56,11 @@ public class DateColumn extends AbstractColumn<String> {
         } else {
             return ao1.getDate().compareTo(ao2.getDate());
         }
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
     }
 
     @Override

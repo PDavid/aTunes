@@ -25,10 +25,18 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Column to show frequency
+ * @author alex
+ *
+ */
 public class FrequencyColumn extends AbstractColumn<String> {
 
     private static final long serialVersionUID = -198950195313638217L;
 
+    /**
+     * Default constructor
+     */
     public FrequencyColumn() {
         super("FREQUENCY");
         setWidth(100);
@@ -39,6 +47,11 @@ public class FrequencyColumn extends AbstractColumn<String> {
     @Override
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return Integer.valueOf(ao1.getFrequency()).compareTo(Integer.valueOf(ao2.getFrequency()));
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
     }
 
     @Override

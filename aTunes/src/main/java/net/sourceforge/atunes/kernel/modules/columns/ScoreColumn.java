@@ -35,6 +35,11 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
+/**
+ * Column showing score
+ * @author alex
+ *
+ */
 public class ScoreColumn extends AbstractColumn<Integer> {
 
     private final class ScoreColumnCellEditorRenderer extends AbstractListCellRendererCode<JLabel, Integer> {
@@ -60,22 +65,37 @@ public class ScoreColumn extends AbstractColumn<Integer> {
     
     private final transient ScoreColumnCellEditorRenderer editor = new ScoreColumnCellEditorRenderer();
     
+    /**
+     * @param star1Icon
+     */
     public void setStar1Icon(IIconFactory star1Icon) {
 		this.star1Icon = star1Icon;
 	}
     
+    /**
+     * @param star2Icon
+     */
     public void setStar2Icon(IIconFactory star2Icon) {
 		this.star2Icon = star2Icon;
 	}
     
+    /**
+     * @param star3Icon
+     */
     public void setStar3Icon(IIconFactory star3Icon) {
 		this.star3Icon = star3Icon;
 	}
     
+    /**
+     * @param star4Icon
+     */
     public void setStar4Icon(IIconFactory star4Icon) {
 		this.star4Icon = star4Icon;
 	}
     
+    /**
+     * @param star5Icon
+     */
     public void setStar5Icon(IIconFactory star5Icon) {
 		this.star5Icon = star5Icon;
 	}
@@ -87,6 +107,9 @@ public class ScoreColumn extends AbstractColumn<Integer> {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
+    /**
+     * Default constructor
+     */
     public ScoreColumn() {
         super("SCORE");
         setWidth(100);
@@ -116,6 +139,11 @@ public class ScoreColumn extends AbstractColumn<Integer> {
     @Override
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return -((Integer) ao1.getStars()).compareTo(ao2.getStars());
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
     }
 
     @Override

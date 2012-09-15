@@ -51,6 +51,9 @@ public class ColumnSets implements PluginListener {
      */
     private static ColumnSets instance = new ColumnSets();
 
+    /**
+     * @return
+     */
     public static ColumnSets getInstance() {
         return instance;
     }

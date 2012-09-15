@@ -68,6 +68,7 @@ import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -337,7 +338,10 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
 
         IColumn<?> columnSorted = columnSet.getSortedColumn();
         if (columnSorted != null) {
+        	net.sourceforge.atunes.utils.Timer t = new net.sourceforge.atunes.utils.Timer();
+        	t.start();
             Collections.sort(audioObjects, columnSorted.getComparator(false));
+            Logger.debug("Navigation table sort: ", t.stop(), " seconds");
         }
         return audioObjects;
     }

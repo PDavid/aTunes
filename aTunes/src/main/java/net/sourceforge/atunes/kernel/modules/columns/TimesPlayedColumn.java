@@ -29,6 +29,11 @@ import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 
+/**
+ * Column to show how many times audio object has been played
+ * @author alex
+ *
+ */
 public class TimesPlayedColumn extends AbstractColumn<String> {
     
     private static final long serialVersionUID = 7879150472122090859L;
@@ -42,6 +47,9 @@ public class TimesPlayedColumn extends AbstractColumn<String> {
 		this.statisticsHandler = statisticsHandler;
 	}
     
+    /**
+     * Default constructor
+     */
     public TimesPlayedColumn() {
         super("TIMES_PLAYED");
         setWidth(100);
@@ -62,6 +70,11 @@ public class TimesPlayedColumn extends AbstractColumn<String> {
             times2 = stats2 != null ? stats2.getTimesPlayed() : 0;
         }
         return ((Integer) times1).compareTo(times2);
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
     }
 
     @Override

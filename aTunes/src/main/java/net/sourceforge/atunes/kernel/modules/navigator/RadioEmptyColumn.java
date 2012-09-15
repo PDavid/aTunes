@@ -38,6 +38,11 @@ final class RadioEmptyColumn extends AbstractColumn<AudioObjectProperty> {
     protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
         return 0;
     }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return 0;
+    }
 
     @Override
     public AudioObjectProperty getValueFor(IAudioObject audioObject) {

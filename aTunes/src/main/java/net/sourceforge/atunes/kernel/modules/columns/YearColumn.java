@@ -24,11 +24,18 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
+/**
+ * Column to show year
+ * @author alex
+ *
+ */
 public class YearColumn extends AbstractColumn<String> {
-
 
     private static final long serialVersionUID = -8016584284036796639L;
 
+    /**
+     * Constructor
+     */
     public YearColumn() {
         super("YEAR");
         setWidth(100);
@@ -40,6 +47,11 @@ public class YearColumn extends AbstractColumn<String> {
     @Override
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return ao1.getYear().compareTo(ao2.getYear());
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
     }
 
     @Override

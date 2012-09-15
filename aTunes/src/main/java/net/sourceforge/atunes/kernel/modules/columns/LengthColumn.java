@@ -27,11 +27,18 @@ import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.TimeUtils;
 
+/**
+ * Column to show length
+ * @author alex
+ *
+ */
 public class LengthColumn extends AbstractColumn<String> {
 
-   
     private static final long serialVersionUID = -4428276519530619107L;
 
+    /**
+     * Default constructor
+     */
     public LengthColumn() {
         super("DURATION");
         setWidth(100);
@@ -42,6 +49,11 @@ public class LengthColumn extends AbstractColumn<String> {
     @Override
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return Long.valueOf(ao1.getDuration()).compareTo(Long.valueOf(ao2.getDuration()));
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
     }
 
     @Override

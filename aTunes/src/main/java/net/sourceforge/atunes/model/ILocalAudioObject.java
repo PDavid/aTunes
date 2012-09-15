@@ -102,4 +102,9 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
 	 * @param currentTimeMillis
 	 */
 	void setReadTime(long currentTimeMillis);
+	
+	/**
+	 * @return size in bytes
+	 */
+	long getSize();
 }

@@ -22,11 +22,19 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
+/**
+ * Column to show play / pause / stop icon
+ * @author alex
+ *
+ */
 public class PlayingColumn extends AbstractColumn<Integer> {
 
     
     private static final long serialVersionUID = -5604736587749167043L;
 
+    /**
+     * Constructor
+     */
     public PlayingColumn() {
         super("PLAYING");
         setResizable(false);
@@ -37,6 +45,11 @@ public class PlayingColumn extends AbstractColumn<Integer> {
     @Override
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return 0;
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return 0;
     }
 
     @Override

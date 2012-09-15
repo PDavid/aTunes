@@ -26,11 +26,19 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Column to show size
+ * @author alex
+ *
+ */
 public class SizeColumn extends AbstractColumn<String> {
 
     
     private static final long serialVersionUID = 6971729868799630776L;
 
+    /**
+     * Constructor
+     */
     public SizeColumn() {
         super("SIZE");
         setWidth(100);
@@ -43,18 +51,23 @@ public class SizeColumn extends AbstractColumn<String> {
         long l1 = 0;
         long l2 = 0;
         if (ao1 instanceof ILocalAudioObject) {
-            l1 = ((ILocalAudioObject) ao1).getFile().length();
+            l1 = ((ILocalAudioObject) ao1).getSize();
         }
         if (ao2 instanceof ILocalAudioObject) {
-            l2 = ((ILocalAudioObject) ao2).getFile().length();
+            l2 = ((ILocalAudioObject) ao2).getSize();
         }
         return Long.valueOf(l1).compareTo(l2);
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
     }
 
     @Override
     public String getValueFor(IAudioObject audioObject) {
         if (audioObject instanceof ILocalAudioObject) {
-        	return StringUtils.fromByteToMegaOrGiga(((ILocalAudioObject) audioObject).getFile().length());
+        	return StringUtils.fromByteToMegaOrGiga(((ILocalAudioObject) audioObject).getSize());
         }
         return null;
     }

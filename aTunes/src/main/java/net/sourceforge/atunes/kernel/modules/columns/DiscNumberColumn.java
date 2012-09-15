@@ -24,10 +24,18 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
+/**
+ * Column to show disc number
+ * @author alex
+ *
+ */
 public class DiscNumberColumn extends AbstractColumn<Integer> {
 
     private static final long serialVersionUID = -6226391762384061708L;
 
+    /**
+     * Default constructor
+     */
     public DiscNumberColumn() {
         super("DISC_NUMBER");
         setWidth(40);
@@ -39,11 +47,15 @@ public class DiscNumberColumn extends AbstractColumn<Integer> {
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return Integer.valueOf(ao1.getDiscNumber()).compareTo(ao2.getDiscNumber());
     }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
+    }
 
     @Override
     public Integer getValueFor(IAudioObject audioObject) {
         // Return disc number
         return audioObject.getDiscNumber() > 0 ? audioObject.getDiscNumber() : null;
     }
-
 }

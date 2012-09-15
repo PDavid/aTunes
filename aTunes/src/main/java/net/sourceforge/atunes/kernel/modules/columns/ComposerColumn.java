@@ -22,11 +22,18 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
+/**
+ * Column to show composer
+ * @author alex
+ *
+ */
 public class ComposerColumn extends AbstractColumn<String> {
 
-    
     private static final long serialVersionUID = -927958183654730193L;
 
+    /**
+     * Default constructor 
+     */
     public ComposerColumn() {
         super("COMPOSER");
         setVisible(true);
@@ -36,6 +43,11 @@ public class ComposerColumn extends AbstractColumn<String> {
     @Override
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         return ao1.getComposer().compareTo(ao2.getComposer());
+    }
+    
+    @Override
+    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+    	return - ascendingCompare(ao1, ao2);
     }
 
     @Override
@@ -47,5 +59,4 @@ public class ComposerColumn extends AbstractColumn<String> {
     public String getValueForFilter(IAudioObject audioObject) {
         return audioObject.getComposer();
     }
-
 }
