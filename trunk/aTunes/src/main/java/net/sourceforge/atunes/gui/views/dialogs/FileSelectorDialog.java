@@ -160,7 +160,7 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 				
 				@Override
 				public String getDescription() {
-					return null;
+					return fileFilter.toString();
 				}
 				
 				@Override

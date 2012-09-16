@@ -23,6 +23,8 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.io.File;
 import java.io.FilenameFilter;
 
+import net.sourceforge.atunes.utils.I18nUtils;
+
 /**
  * A file filter for all supported play lists files
  * @author alex
@@ -44,5 +46,10 @@ final class AllAcceptedPlaylistsFileFilter implements FilenameFilter {
 	@Override
 	public boolean accept(File dir, String name) {
 		return m3uFilter.accept(dir, name) || filter.accept(dir, name);
+	}
+	
+	@Override
+	public String toString() {
+		return I18nUtils.getString("PLAYLIST");
 	}
 }
