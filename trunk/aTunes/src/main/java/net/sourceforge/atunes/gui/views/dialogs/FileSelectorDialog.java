@@ -24,15 +24,44 @@ import java.awt.FileDialog;
 import java.io.File;
 import java.io.FilenameFilter;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+
+import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFileSelectorDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Dialog to select file
+ * @author alex
+ *
+ */
 public class FileSelectorDialog implements IFileSelectorDialog {
 
 	private IFrame frame;
 	
 	private FilenameFilter fileFilter;
+	
+	private IOSManager osManager;
+	
+	private IDialogFactory dialogFactory;
+	
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
+	
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
 	
 	/**
 	 * @param fileFilter
@@ -85,6 +114,14 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 		return getFile(path, I18nUtils.getString("SAVE"), FileDialog.SAVE);
 	}
 	
+	private File getFile(String path, String title, int mode) {
+		if (osManager.isMacOsX()) {
+			return getFileWithFileDialog(path, title, mode);
+		} else {
+			return getFileWithJFileChooser(path, title, mode);
+		}
+	}
+
 	/**
 	 * Opens file dialog to get file
 	 * @param path
@@ -92,7 +129,7 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 	 * @param mode
 	 * @return
 	 */
-	private File getFile(String path, String title, int mode) {
+	private File getFileWithFileDialog(String path, String title, int mode) {
 		FileDialog dialog = new FileDialog(frame.getFrame(), title, mode);
 		dialog.setDirectory(path);
         if (fileFilter != null) {
@@ -105,6 +142,57 @@ public class FileSelectorDialog implements IFileSelectorDialog {
             // Get selected file
             return new File(dir + "/" + file);
         }
+        return null;
+	}
+	
+	
+	/**
+	 * Opens file dialog to get file
+	 * @param path
+	 * @param title
+	 * @param mode
+	 * @return
+	 */
+	private File getFileWithJFileChooser(String path, String title, int mode) {
+		JFileChooser dialog = new JFileChooser(path);
+		if (fileFilter != null) {
+        	dialog.setFileFilter(new FileFilter() {
+				
+				@Override
+				public String getDescription() {
+					return null;
+				}
+				
+				@Override
+				public boolean accept(File f) {
+					return fileFilter.accept(f.getParentFile(), f.getName());
+				}
+			});
+        }
+		int userResponse;
+		if (mode == FileDialog.LOAD) {
+			userResponse = dialog.showOpenDialog(frame.getFrame());
+		} else {
+			userResponse = dialog.showSaveDialog(frame.getFrame());
+		}
+		if (userResponse == JFileChooser.APPROVE_OPTION) {
+			File file = dialog.getSelectedFile();
+			if (mode == FileDialog.SAVE) {
+	            // If file exists ask user to confirm
+	            boolean canWrite = !file.exists();
+	            if (!canWrite) {
+					IConfirmationDialog confirmationDialog = dialogFactory.newDialog(IConfirmationDialog.class);
+					confirmationDialog.setMessage(I18nUtils.getString("OVERWRITE_FILE"));
+					confirmationDialog.showDialog();
+					canWrite = confirmationDialog.userAccepted();
+	            }
+	            if (!canWrite) {
+	            	// User rejected to overwrite file so ask again to select a file
+	            	file = getFileWithJFileChooser(path, title, mode);
+	            }
+			}
+			return file;
+		}
         return null;
 	}
 	
@@ -128,5 +216,4 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 	public void setTitle(String title) {
 		// Not used
 	}
-
 }

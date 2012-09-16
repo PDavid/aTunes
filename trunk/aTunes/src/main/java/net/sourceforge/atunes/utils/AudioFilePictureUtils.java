@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.utils;
 
-import java.awt.Component;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -29,9 +28,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -54,43 +50,6 @@ public final class AudioFilePictureUtils {
 	private AudioFilePictureUtils() {
     }
     
-    /**
-     * Export picture.
-     * 
-     * @param song
-     *            the song
-     */
-    public static void exportPicture(ILocalAudioObject song, Component parent) {
-        try {
-            JFileChooser fileChooser = new JFileChooser();
-            FileFilter filter = new FileFilter() {
-                @Override
-                public boolean accept(File f) {
-                    return f.isDirectory() || f.getName().toUpperCase().endsWith("PNG");
-                }
-
-                @Override
-                public String getDescription() {
-                    return "PNG files";
-                }
-            };
-            fileChooser.setFileFilter(filter);
-            if (fileChooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-                if (!file.getName().toUpperCase().endsWith("PNG")) {
-                    file = new File(StringUtils.getString(file.getAbsolutePath(), ".png"));
-                }
-                if (!file.exists() || (file.exists() && JOptionPane.showConfirmDialog(null, I18nUtils.getString("OVERWRITE_FILE")) == JOptionPane.OK_OPTION)) {
-                    savePictureToFile(song, file);
-                }
-            }
-        } catch (IOException e) {
-            Logger.error(e);
-        } catch (ImageWriteException e) {
-            Logger.error(e);
-		}
-    }
-
     /**
      * Gets the external picture.
      * 
@@ -222,7 +181,7 @@ public final class AudioFilePictureUtils {
      *             Signals that an I/O exception has occurred.
      * @throws ImageWriteException 
      */
-    private static void savePictureToFile(ILocalAudioObject song, File file) throws IOException, ImageWriteException {
+    public static void savePictureToFile(ILocalAudioObject song, File file) throws IOException, ImageWriteException {
         ImageIcon image = getInsidePicture(song, -1, -1);
         ImageUtils.writeImageToFile(image.getImage(), file.getAbsolutePath());
     }
