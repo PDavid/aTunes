@@ -23,9 +23,16 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.io.File;
 import java.io.FilenameFilter;
 
+import net.sourceforge.atunes.utils.StringUtils;
+
 final class PlayListM3UFileFilter implements FilenameFilter {
 	@Override
 	public boolean accept(File dir, String name) {
 		return name.toLowerCase().endsWith(PlayListIO.PLAYLIST_M3U_FILE_EXTENSION);
+	}
+	
+	@Override
+	public String toString() {
+		return StringUtils.getString(".", PlayListIO.PLAYLIST_M3U_FILE_EXTENSION);
 	}
 }

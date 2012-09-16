@@ -81,6 +81,11 @@ public class ExtractPictureAction extends AbstractActionOverSelectedObjects<ILoc
 			public boolean accept(File dir, String name) {
 				return name.toUpperCase().endsWith("PNG");
 			}
+			
+			@Override
+			public String toString() {
+				return ".png";
+			}
 		};
 		dialog.setFileFilter(filter);
 		

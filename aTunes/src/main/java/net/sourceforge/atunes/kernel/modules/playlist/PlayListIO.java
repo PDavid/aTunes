@@ -44,6 +44,9 @@ public final class PlayListIO implements IPlayListIOService {
     /** The Constant M3U_FILE_EXTENSION. */
     public static final String PLAYLIST_M3U_FILE_EXTENSION = "m3u";
 
+    /**
+     * Extension for playlists generated with aTunes
+     */
     public static final String PLAYLIST_FILE_EXTENSION = "atu";
     
     private static final String HTTP_PREFIX = "http://";
