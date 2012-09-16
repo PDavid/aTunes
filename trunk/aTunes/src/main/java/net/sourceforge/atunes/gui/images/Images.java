@@ -49,6 +49,7 @@ public final class Images {
     public static final String PLAY_TRAY_ICON_MAC = "playTrayIconMac.png";
     public static final String PAUSE_TRAY_ICON_MAC = "pauseTrayIconMac.png";
     public static final String PREVIOUS_FULL_SCREEN = "previousFullScreen.png";
+    public static final String PROJECT_SUPPORT = "project-support.jpg";
     public static final String NEXT_FULL_SCREEN = "nextFullScreen.png";
     public static final String PLAY_FULL_SCREEN = "playFullScreen.png";
     public static final String PAUSE_FULL_SCREEN = "pauseFullScreen.png";

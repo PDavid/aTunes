@@ -91,4 +91,14 @@
 		<constructor-arg ref="editPreferencesDialog"/>
 	</bean>
 	
+	
+	<bean class="net.sourceforge.atunes.kernel.StartCounter" init-method="initialize">
+		<property name="counterFile" value="counter.properties"/>
+		<property name="counterProperty" value="counter"/>
+		<property name="counterLevelNeededToFireAction" value="10"/>
+		<property name="actionToFire" ref="makeDonationAction"/>
+	</bean>
+	
+	
+	
 </beans>

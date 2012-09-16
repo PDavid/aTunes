@@ -249,6 +249,7 @@ public abstract class OperatingSystemAdapter {
 
 	/**
 	 * Manages when no player engine is available
+	 * @param frame
 	 */
 	public void manageNoPlayerEngine(IFrame frame) {
 		// By default no management is done, only an error message

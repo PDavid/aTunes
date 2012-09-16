@@ -30,6 +30,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.OperatingSystemDetector;
 import net.sourceforge.atunes.model.IApplicationArguments;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
@@ -40,10 +41,12 @@ import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
-public class OsManager implements IOSManager, ApplicationContextAware {
+/**
+ * Holds information about specific Operating System data
+ * @author alex
+ *
+ */
+public class OsManager implements IOSManager {
 
 	/**
 	 * Current OS
@@ -53,12 +56,14 @@ public class OsManager implements IOSManager, ApplicationContextAware {
 	private OperatingSystemAdapter adapter;
 
 	private IApplicationArguments applicationArguments;
+
+	private IBeanFactory beanFactory;
 	
-	private ApplicationContext context;
-	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 	
     /**
@@ -74,13 +79,13 @@ public class OsManager implements IOSManager, ApplicationContextAware {
     public void initialize() {
     	osType = OperatingSystemDetector.getOperatingSystem();
     	if (osType.isLinux()) {
-    		adapter = context.getBean(LinuxOperatingSystem.class);
+    		adapter = beanFactory.getBean(LinuxOperatingSystem.class);
     	} else if (osType.isMacOsX()) {
-    		adapter = context.getBean(MacOSXOperatingSystem.class);
+    		adapter = beanFactory.getBean(MacOSXOperatingSystem.class);
     	} else if (osType.isSolaris()) {
-    		adapter = context.getBean(SolarisOperatingSystem.class);
+    		adapter = beanFactory.getBean(SolarisOperatingSystem.class);
     	} else {
-    		adapter = context.getBean(WindowsOperatingSystem.class);
+    		adapter = beanFactory.getBean(WindowsOperatingSystem.class);
     	}    	
 		adapter.setSystemType(osType);
     }

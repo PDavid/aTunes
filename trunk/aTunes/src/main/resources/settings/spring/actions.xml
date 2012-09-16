@@ -159,6 +159,7 @@
 	<bean id="importLovedTracksFromLastFMAction" class="net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction"/>
 	<bean id="importToRepositoryAction" class="net.sourceforge.atunes.kernel.actions.ImportToRepositoryAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.LoadPlayListAction"/>
+	<bean id="makeDonationAction" class="net.sourceforge.atunes.kernel.actions.MakeDonationAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MarkPodcastEntryListenedAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MarkPodcastListenedAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveAfterCurrentAudioObjectAction"/>

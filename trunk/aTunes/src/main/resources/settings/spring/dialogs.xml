@@ -137,4 +137,9 @@
 	</bean>
 
 	<bean class="net.sourceforge.atunes.gui.views.dialogs.FolderSelectorDialog" scope="prototype"/>
+	
+	<bean class="net.sourceforge.atunes.gui.views.dialogs.MakeDonationDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+		<property name="donationUrl" value="http://sourceforge.net/donate/index.php?group_id=161929"/>
+	</bean>
 </beans>
