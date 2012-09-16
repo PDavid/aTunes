@@ -37,8 +37,7 @@ import net.sourceforge.atunes.model.IOSManager;
  */
 public class FolderSelectorDialog implements IFolderSelectorDialog {
 
-	private static final class RejectAllFilesFileFilter implements
-			FilenameFilter {
+	private static final class RejectAllFilesFileFilter implements FilenameFilter {
 		@Override
 		public boolean accept(File dir, String name) {
 			return false;

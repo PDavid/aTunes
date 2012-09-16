@@ -28,7 +28,6 @@ import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFileSelectorDialog;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -104,17 +103,7 @@ public class SaveM3UPlayListAction extends CustomAbstractAction {
 			// If filename have incorrect extension, add it
 			file = playListIOService.checkM3UPlayListFileName(file);
 
-			// If file does not exist, or exist and overwrite is confirmed, then write file
-			boolean canWrite = !file.exists();
-			if (!canWrite) {
-				IConfirmationDialog confirmationDialog = dialogFactory.newDialog(IConfirmationDialog.class);
-				confirmationDialog.setMessage(I18nUtils.getString("OVERWRITE_FILE"));
-				confirmationDialog.showDialog();
-				canWrite = confirmationDialog.userAccepted();
-			}
-			if (canWrite) {
-				playListIOService.writeM3U(playListHandler.getCurrentPlayList(true), file);
-			}
+			playListIOService.writeM3U(playListHandler.getCurrentPlayList(true), file);
 		}
 	}
 

@@ -20,27 +20,53 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IFileSelectorDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.StringUtils;
 
+import org.apache.sanselan.ImageWriteException;
+
+/**
+ * Extracts a picture of an audio object
+ * @author alex
+ *
+ */
 public class ExtractPictureAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
     private static final long serialVersionUID = -8618297820141610193L;
 
-    private IFrame frame;
+    private IDialogFactory dialogFactory;
+    
+    private IOSManager osManager;
     
     /**
-     * @param frame
+     * @param osManager
      */
-    public void setFrame(IFrame frame) {
-		this.frame = frame;
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
     
+    /**
+     * Default constructor
+     */
     public ExtractPictureAction() {
         super(I18nUtils.getString("EXTRACT_PICTURE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EXTRACT_PICTURE"));
@@ -48,8 +74,29 @@ public class ExtractPictureAction extends AbstractActionOverSelectedObjects<ILoc
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
+    	IFileSelectorDialog dialog = dialogFactory.newDialog(IFileSelectorDialog.class);
+    	FilenameFilter filter = new FilenameFilter() {
+			
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.toUpperCase().endsWith("PNG");
+			}
+		};
+		dialog.setFileFilter(filter);
+		
+		File selectedFile = dialog.saveFile(osManager.getUserHome());
+        if (!selectedFile.getName().toUpperCase().endsWith("PNG")) {
+        	selectedFile = new File(StringUtils.getString(selectedFile.getAbsolutePath(), ".png"));
+        }
+
         // Export only first picture
-        AudioFilePictureUtils.exportPicture(objects.get(0), frame.getFrame());
+        try {
+			AudioFilePictureUtils.savePictureToFile(objects.get(0), selectedFile);
+		} catch (ImageWriteException e) {
+			Logger.error(e);
+		} catch (IOException e) {
+			Logger.error(e);
+		}
     }
 
     @Override
