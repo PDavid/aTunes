@@ -34,6 +34,9 @@ public class ExitAction extends CustomAbstractAction {
 
     private IKernel kernel;
     
+    /**
+     * @param kernel
+     */
     public void setKernel(IKernel kernel) {
 		this.kernel = kernel;
 	}

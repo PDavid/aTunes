@@ -27,6 +27,11 @@ import javax.swing.JSeparator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Help menu
+ * @author alex
+ *
+ */
 public class HelpMenu extends JMenu {
 
 	private static final long serialVersionUID = -3624790857729577320L;
@@ -39,6 +44,14 @@ public class HelpMenu extends JMenu {
 	private Action showLogAction;
 	private Action checkUpdatesAction;
 	private Action showAboutAction;
+	private Action makeDonationAction;
+	
+	/**
+	 * @param makeDonationAction
+	 */
+	public void setMakeDonationAction(Action makeDonationAction) {
+		this.makeDonationAction = makeDonationAction;
+	}
 	
 	/**
 	 * @param i18nKey
@@ -103,6 +116,8 @@ public class HelpMenu extends JMenu {
         add(goToWebSiteAction);
         add(goToWikiAction);
         add(reportBugOrFeatureRequestAction);
+        add(new JSeparator());
+        add(makeDonationAction);
         add(new JSeparator());
         add(showLogAction);
         add(checkUpdatesAction);

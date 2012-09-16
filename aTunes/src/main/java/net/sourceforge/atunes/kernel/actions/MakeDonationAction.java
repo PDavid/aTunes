@@ -18,31 +18,39 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.columns;
+package net.sourceforge.atunes.kernel.actions;
 
-import java.util.Comparator;
-
-import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.gui.views.dialogs.MakeDonationDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * Sorts ascending depending on column
+ * Action to make a donation
  * @author alex
  *
  */
-class AscendingColumnSortComparator implements Comparator<IAudioObject> {
-
-	private AbstractColumn<?> column;
+public class MakeDonationAction extends CustomAbstractAction {
 	
 	/**
-	 * @param column
+	 * 
 	 */
-	public AscendingColumnSortComparator(AbstractColumn<?> column) {
-		this.column = column;
+	private static final long serialVersionUID = -9125170460288897027L;
+	
+	private IDialogFactory dialogFactory;
+
+	MakeDonationAction() {
+		super(I18nUtils.getString("MAKE_DONATION"));
+	}
+	
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
 	
 	@Override
-	public int compare(IAudioObject o1, IAudioObject o2) {
-		return column.ascendingCompare(o1, o2);
+	protected void executeAction() {
+		dialogFactory.newDialog(MakeDonationDialog.class).showDialog();
 	}
-
 }

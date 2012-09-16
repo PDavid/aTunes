@@ -182,6 +182,7 @@ public final class Kernel implements IKernel {
     			beanFactory.getBean(ApplicationLifeCycleListeners.class).deferredInitialization();
     		}
     	});
+    	beanFactory.getBean(StartCounter.class).checkCounter();
     }
 
     /**
