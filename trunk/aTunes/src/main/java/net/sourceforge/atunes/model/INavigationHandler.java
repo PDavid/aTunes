@@ -65,8 +65,7 @@ public interface INavigationHandler extends IHandler {
 	/**
 	 * Refreshes given view. To avoid unnecessary actions, given view is only
 	 * refreshed if it's the current view
-	 * 
-	 * @param navigationViewClass
+	 * @param navigationView
 	 */
 	public void refreshView(INavigationView navigationView);
 

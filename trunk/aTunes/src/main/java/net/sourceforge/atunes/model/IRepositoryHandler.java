@@ -177,12 +177,10 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	public void notifyCancel();
 
 	/**
-	 * Refreshes a file after being modified
-	 * 
+	 * Refreshes files after being modified
 	 * @param file
-	 *            the file
 	 */
-	public void refreshFile(ILocalAudioObject file);
+	public void refreshFiles(List<ILocalAudioObject> file);
 
 	/**
 	 * Refreshes a list of folder
@@ -240,16 +238,6 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	public void doInBackground();
 
 	/**
-	 * Starts a transaction
-	 */
-	public void startTransaction();
-
-	/**
-	 * Ends a transaction
-	 */
-	public void endTransaction();
-
-	/**
 	 * Returns data to show in tree
 	 * @param viewMode
 	 * @return
@@ -285,7 +273,7 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * @return
 	 */
 	public IFolder getFolder(String path);
-	
+
 	/**
 	 * Returns audio objects given its artist and titles
 	 * @param artist
@@ -293,18 +281,32 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * @return
 	 */
 	public List<ILocalAudioObject> getAudioObjectsByTitle(String artist, List<String> titles);
-	
+
 	/**
 	 * Imports folders to repository
 	 * @param folders
 	 * @param path
 	 */
 	void importFolders(final List<File> folders, final String path);
-	
+
 	/**
 	 * Tell handler to use these folders as repository
 	 * @param folders
 	 */
 	void setRepositoryFolders(List<File> folders);
+
+	/**
+	 * Updates repository state when a folder is moved to another location
+	 * @param sourceFolder
+	 * @param destination
+	 */
+	public void folderMoved(IFolder sourceFolder, File destination);
+
+	/**
+	 * Sets stars of an audio object
+	 * @param audioObject
+	 * @param value
+	 */
+	public void setStars(IAudioObject audioObject, Integer value);
 
 }

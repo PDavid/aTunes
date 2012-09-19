@@ -115,7 +115,7 @@ public class AddArtistTopTracksToPlayListAction extends AbstractActionOverSelect
 	@Override
 	protected void executeAction(List<IArtist> objects) {
 		IBackgroundWorker<Map<String, List<ILocalAudioObject>>> worker = backgroundWorkerFactory.getWorker();
-		worker.setActionsAfterBackgroundStarted(new Runnable() {
+		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 			@Override
 			public void run() {
 				dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);

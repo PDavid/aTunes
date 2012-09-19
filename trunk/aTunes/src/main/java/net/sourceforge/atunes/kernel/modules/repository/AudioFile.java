@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 import net.sourceforge.atunes.Context;
@@ -55,7 +56,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	int frequency;
 	long readTime;
 	int stars;
-	
+
 	private transient long fileSize;
 
 	/** The file on disk. */
@@ -73,7 +74,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	 * @param file
 	 *            the file
 	 */
-	public AudioFile(File file) {
+	public AudioFile(final File file) {
 		setFile(file);
 	}
 
@@ -83,12 +84,12 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	 * @param fileName
 	 *            the file name
 	 */
-	public AudioFile(String fileName) {
+	public AudioFile(final String fileName) {
 		this.filePath = fileName;
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (!(o instanceof AudioFile)) {
 			return false;
 		}
@@ -214,6 +215,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	 * 
 	 * @return the tag
 	 */
+	@Override
 	public ITag getTag() {
 		return tag;
 	}
@@ -283,6 +285,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	 * 
 	 * @return true, if is up to date
 	 */
+	@Override
 	public boolean isUpToDate() {
 		if (filePath == null) {
 			return false;
@@ -295,9 +298,10 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	 * 
 	 * @param file
 	 *            the file of this audio file
+	 * @throws IOException
 	 */
 	@Override
-	public void setFile(File file) {
+	public void setFile(final File file) {
 		if (file == null) {
 			throw new IllegalArgumentException();
 		}
@@ -311,7 +315,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	 *            the stars to set
 	 */
 	@Override
-	public void setStars(int stars) {
+	public void setStars(final int stars) {
 		this.stars = stars;
 	}
 
@@ -321,7 +325,8 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	 * @param tag
 	 *            the new tag
 	 */
-	public void setTag(ITag tag) {
+	@Override
+	public void setTag(final ITag tag) {
 		this.tag = tag;
 	}
 
@@ -336,7 +341,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	}
 
 	@Override
-	public int compareTo(ILocalAudioObject o) {
+	public int compareTo(final ILocalAudioObject o) {
 		if (getFile() == null || o.getFile() == null) {
 			return 0;
 		}
@@ -355,21 +360,24 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	 * Sets duration
 	 * @param duration
 	 */
-	public void setDuration(int duration) {
+	@Override
+	public void setDuration(final int duration) {
 		this.duration = duration;
 	}
 
 	/**
 	 * @param bitrate the bitrate to set
 	 */
-	public void setBitrate(long bitrate) {
+	@Override
+	public void setBitrate(final long bitrate) {
 		this.bitrate = bitrate;
 	}
 
 	/**
 	 * @param frequency the frequency to set
 	 */
-	public void setFrequency(int frequency) {
+	@Override
+	public void setFrequency(final int frequency) {
 		this.frequency = frequency;
 	}
 
@@ -382,10 +390,11 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	 * Updates time when object if read
 	 * @param readTime
 	 */
-	public void setReadTime(long readTime) {
+	@Override
+	public void setReadTime(final long readTime) {
 		this.readTime = readTime;
 	}
-	
+
 	@Override
 	public long getSize() {
 		if (fileSize == 0) {

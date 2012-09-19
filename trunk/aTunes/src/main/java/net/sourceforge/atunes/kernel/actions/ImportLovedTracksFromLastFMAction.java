@@ -87,7 +87,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
         IBackgroundWorker<List<ILocalAudioObject>> worker = backgroundWorkerFactory.getWorker();
-        worker.setActionsAfterBackgroundStarted(new Runnable() {
+        worker.setActionsBeforeBackgroundStarts(new Runnable() {
         	@Override
         	public void run() {
         		dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);

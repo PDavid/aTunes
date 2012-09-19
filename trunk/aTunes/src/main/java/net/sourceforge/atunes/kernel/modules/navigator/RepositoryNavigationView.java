@@ -36,7 +36,6 @@ import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITreeObject;
-import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -133,7 +132,6 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     	getTreeGeneratorFactory().getTreeGenerator(viewMode).selectArtist(getTree(), artist);
 	}
     
-    @SuppressWarnings("unchecked")
     @Override
     protected void refreshTree(ViewMode viewMode, String treeFilter) {
         debug("Refreshing ", this.getClass().getName());
@@ -148,7 +146,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         List<ITreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(tree, root);
         
         // Build treeN
-        getTreeGeneratorFactory().getTreeGenerator(viewMode).buildTree(REPOSITORY, this, (Map<String, IYear>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
+        getTreeGeneratorFactory().getTreeGenerator(viewMode).buildTree(REPOSITORY, this, getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
         
         getTree().expandRow(0);
     }

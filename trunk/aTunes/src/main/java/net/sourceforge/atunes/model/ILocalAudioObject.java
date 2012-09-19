@@ -30,7 +30,7 @@ import java.io.Serializable;
  *
  */
 public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioObject>, Serializable {
-	
+
 	/**
 	 * Returns file containing audio object
 	 * @return
@@ -42,42 +42,42 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
 	 * @return
 	 */
 	boolean isUpToDate();
-	
-    /**
-     * Gets the tag.
-     * 
-     * @return the tag
-     */
-    ITag getTag();
-    
-    /**
-     * Sets the tag.
-     * 
-     * @param tag
-     *            the new tag
-     */
-    void setTag(ITag tag);
-    
-    /**
-     * Gets the name without extension.
-     * 
-     * @return the name without extension
-     */
-    String getNameWithoutExtension();
-    
-    /**
-     * Sets the file of this audio file
-     * 
-     * @param file
-     */
-    void setFile(File file);
 
-    /**
-     * Checks for internal picture.
-     * 
-     * @return true, if successful
-     */
-    boolean hasInternalPicture();
+	/**
+	 * Gets the tag.
+	 * 
+	 * @return the tag
+	 */
+	ITag getTag();
+
+	/**
+	 * Sets the tag.
+	 * 
+	 * @param tag
+	 *            the new tag
+	 */
+	void setTag(ITag tag);
+
+	/**
+	 * Gets the name without extension.
+	 * 
+	 * @return the name without extension
+	 */
+	String getNameWithoutExtension();
+
+	/**
+	 * Sets the file of this audio file
+	 * 
+	 * @param file
+	 */
+	void setFile(File file);
+
+	/**
+	 * Checks for internal picture.
+	 * 
+	 * @return true, if successful
+	 */
+	boolean hasInternalPicture();
 
 	/**
 	 * Sets duration
@@ -102,7 +102,7 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
 	 * @param currentTimeMillis
 	 */
 	void setReadTime(long currentTimeMillis);
-	
+
 	/**
 	 * @return size in bytes
 	 */

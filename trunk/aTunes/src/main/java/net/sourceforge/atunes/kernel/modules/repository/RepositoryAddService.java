@@ -27,37 +27,60 @@ import java.util.Set;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
+/**
+ * Adds files to repository
+ * @author alex
+ *
+ */
 public class RepositoryAddService {
-	
+
 	private ILocalAudioObjectFactory localAudioObjectFactory;
 
 	private IStateNavigation stateNavigation;
-	
+
 	private IUnknownObjectChecker unknownObjectChecker;
-	
+
+	private RepositoryHandler repositoryHandler;
+
+	private ILocalAudioObjectValidator localAudioObjectValidator;
+
+	/**
+	 * @param localAudioObjectValidator
+	 */
+	public void setLocalAudioObjectValidator(final ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final RepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
-	
 	/**
 	 * @param stateNavigation
 	 */
-	public void setStateNavigation(IStateNavigation stateNavigation) {
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
 		this.stateNavigation = stateNavigation;
 	}
-	
+
 	/**
 	 * @param localAudioObjectFactory
 	 */
-	public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
+	public void setLocalAudioObjectFactory(final ILocalAudioObjectFactory localAudioObjectFactory) {
 		this.localAudioObjectFactory = localAudioObjectFactory;
 	}
 
@@ -68,13 +91,31 @@ public class RepositoryAddService {
 	 * @param files
 	 * @param localAudioObjectFactory
 	 */
-	public void addToRepository(IRepository rep, List<File> files) {
+	public void addFilesToRepository(final IRepository rep, final List<File> files) {
+		repositoryHandler.startTransaction();
+
 		// Get folders where files are
 		Set<File> folders = getFoldersOfFiles(files);
 		RepositoryFiller filler = new RepositoryFiller(rep, stateNavigation, unknownObjectChecker);
 		for (File folder : folders) {
 			addFilesFromFolder(rep, files, filler, folder);
-		}		
+		}
+
+		repositoryHandler.endTransaction();
+	}
+
+	/**
+	 * Add folders to repository No transaction is created
+	 * @param rep
+	 * @param folders
+	 */
+	protected void addFoldersToRepositoryInsideTransaction(final IRepository rep, final List<File> folders) {
+		RepositoryFiller filler = new RepositoryFiller(rep, stateNavigation, unknownObjectChecker);
+		for (File folder : folders) {
+			if (folder.isDirectory()) {
+				addFilesFromFolder(rep, filler, folder);
+			}
+		}
 	}
 
 	/**
@@ -83,7 +124,7 @@ public class RepositoryAddService {
 	 * @param filler
 	 * @param folder
 	 */
-	private void addFilesFromFolder(IRepository repository, List<File> files, RepositoryFiller filler, File folder) {
+	private void addFilesFromFolder(final IRepository repository, final List<File> files, final RepositoryFiller filler, final File folder) {
 		String repositoryPath = getRepositoryPathForFolder(repository, folder);
 		int firstChar = repositoryPath.length() + 1;
 
@@ -96,11 +137,32 @@ public class RepositoryAddService {
 	}
 
 	/**
+	 * Adds all files and subfolders
+	 * @param repository
+	 * @param files
+	 * @param filler
+	 * @param folder
+	 */
+	private void addFilesFromFolder(final IRepository repository, final RepositoryFiller filler, final File folder) {
+		String repositoryPath = getRepositoryPathForFolder(repository, folder);
+		int firstChar = repositoryPath.length() + 1;
+
+		for (File f : folder.listFiles()) {
+			if (f.isDirectory()) {
+				addFilesFromFolder(repository, filler, f);
+			} else if (localAudioObjectValidator.isValidAudioFile(f)) {
+				ILocalAudioObject audioObject = localAudioObjectFactory.getLocalAudioObject(f);
+				filler.addAudioFile(audioObject, getRepositoryFolderContaining(repository, folder), getRelativePath(firstChar, audioObject));
+			}
+		}
+	}
+
+	/**
 	 * @param firstChar
 	 * @param audioObject
 	 * @return
 	 */
-	private String getRelativePath(int firstChar, ILocalAudioObject audioObject) {
+	private String getRelativePath(final int firstChar, final ILocalAudioObject audioObject) {
 		String pathToFile = audioObject.getUrl().replace('\\', '/');
 		int lastChar = pathToFile.lastIndexOf('/') + 1;
 		String relativePath;
@@ -117,8 +179,9 @@ public class RepositoryAddService {
 	 * @param folder
 	 * @return
 	 */
-	private String getRepositoryPathForFolder(IRepository rep, File folder) {
-		String repositoryPath = getRepositoryFolderContaining(rep, folder).getAbsolutePath().replace('\\', '/');
+	private String getRepositoryPathForFolder(final IRepository rep, final File folder) {
+		String repositoryPath;
+		repositoryPath = getRepositoryFolderContaining(rep, folder).getAbsolutePath().replace('\\', '/');
 		if (repositoryPath.endsWith("/")) {
 			repositoryPath = repositoryPath.substring(0, repositoryPath.length() - 2);
 		}
@@ -129,7 +192,7 @@ public class RepositoryAddService {
 	 * @param files
 	 * @return
 	 */
-	private Set<File> getFoldersOfFiles(List<File> files) {
+	private Set<File> getFoldersOfFiles(final List<File> files) {
 		Set<File> folders = new HashSet<File>();
 		for (File file : files) {
 			folders.add(file.getParentFile());
@@ -147,7 +210,7 @@ public class RepositoryAddService {
 	 * 
 	 * @return the repository folder containing
 	 */
-	private File getRepositoryFolderContaining(IRepository rep, File folder) {
+	private File getRepositoryFolderContaining(final IRepository rep, final File folder) {
 		String path = folder.getAbsolutePath();
 		for (File f : rep.getRepositoryFolders()) {
 			if (path.startsWith(f.getAbsolutePath())) {

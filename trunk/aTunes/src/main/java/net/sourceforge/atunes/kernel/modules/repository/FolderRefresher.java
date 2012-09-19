@@ -28,7 +28,6 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepository;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -37,58 +36,58 @@ import net.sourceforge.atunes.utils.Logger;
  *
  */
 public class FolderRefresher {
-	
+
 	private IOSManager osManager;
-	
-	private IRepositoryHandler repositoryHandler;
-	
+
+	private RepositoryHandler repositoryHandler;
+
 	private LocalAudioObjectRefresher localAudioObjectRefresher;
-	
+
 	private RepositoryAddService repositoryAddService;
 
 	private ILocalAudioObjectLocator localAudioObjectLocator;
-	
+
 	/**
 	 * @param localAudioObjectLocator
 	 */
-	public void setLocalAudioObjectLocator(ILocalAudioObjectLocator localAudioObjectLocator) {
+	public void setLocalAudioObjectLocator(final ILocalAudioObjectLocator localAudioObjectLocator) {
 		this.localAudioObjectLocator = localAudioObjectLocator;
 	}
-	
+
 	/**
 	 * @param repositoryAddService
 	 */
-	public void setRepositoryAddService(RepositoryAddService repositoryAddService) {
+	public void setRepositoryAddService(final RepositoryAddService repositoryAddService) {
 		this.repositoryAddService = repositoryAddService;
 	}
-	
+
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final RepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
-	
+
 	/**
 	 * @param localAudioObjectRefresher
 	 */
-	public void setLocalAudioObjectRefresher(LocalAudioObjectRefresher localAudioObjectRefresher) {
+	public void setLocalAudioObjectRefresher(final LocalAudioObjectRefresher localAudioObjectRefresher) {
 		this.localAudioObjectRefresher = localAudioObjectRefresher;
 	}
-	
+
 	/**
 	 * Refreshes folder
 	 * @param repository
 	 * @param folders
 	 */
-	public void refreshFolders(IRepository repository, List<IFolder> folders) {
+	public void refreshFolders(final IRepository repository, final List<IFolder> folders) {
 		repositoryHandler.startTransaction();
 		for (IFolder folder : folders) {
 			refreshFolder(repository, folder);
@@ -100,7 +99,7 @@ public class FolderRefresher {
 	 * @param repository
 	 * @param folder
 	 */
-	private void refreshFolder(IRepository repository, IFolder folder) {
+	private void refreshFolder(final IRepository repository, final IFolder folder) {
 		removeOrRefresh(repository, folder);
 		addNewFiles(repository, folder);
 	}
@@ -109,13 +108,13 @@ public class FolderRefresher {
 	 * @param repository
 	 * @param folder
 	 */
-	private void addNewFiles(IRepository repository, IFolder folder) {
+	private void addNewFiles(final IRepository repository, final IFolder folder) {
 		// Add new files
 		List<ILocalAudioObject> allObjects = localAudioObjectLocator.locateLocalAudioObjectsInFolder(folder.getFolderPath(osManager), null);
 		for (ILocalAudioObject ao : allObjects) {
 			if (repository.getFile(ao.getFile().getAbsolutePath()) == null) {
 				Logger.debug("Adding file: ", ao.getFile().getAbsolutePath());
-				repositoryAddService.addToRepository(repository, Collections.singletonList(ao.getFile()));
+				repositoryAddService.addFilesToRepository(repository, Collections.singletonList(ao.getFile()));
 			}
 		}
 	}
@@ -124,8 +123,8 @@ public class FolderRefresher {
 	 * @param repository
 	 * @param folder
 	 */
-	private void removeOrRefresh(IRepository repository, IFolder folder) {
-		// Remove o refresh previous files		
+	private void removeOrRefresh(final IRepository repository, final IFolder folder) {
+		// Remove o refresh previous files
 		List<ILocalAudioObject> aos = folder.getAudioObjects();
 		for (ILocalAudioObject ao : aos) {
 			if (ao.getFile().exists()) {
