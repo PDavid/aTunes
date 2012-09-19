@@ -27,13 +27,17 @@ import java.util.concurrent.Callable;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Adds to repository a list of files (used after an import to update repository)
+ * @author alex
+ *
+ */
 public class AddFilesTask {
 
 	private IFrame frame;
@@ -42,53 +46,44 @@ public class AddFilesTask {
 
 	private ShowRepositoryDataHelper showRepositoryDataHelper;
 
-	private INavigationHandler navigationHandler;
-
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
-	
+
 	private RepositoryAddService repositoryAddService;
-	
+
 	/**
 	 * @param repositoryAddService
 	 */
-	public void setRepositoryAddService(RepositoryAddService repositoryAddService) {
+	public void setRepositoryAddService(final RepositoryAddService repositoryAddService) {
 		this.repositoryAddService = repositoryAddService;
 	}
-	
+
 	/**
 	 * @param backgroundWorkerFactory
 	 */
 	public void setBackgroundWorkerFactory(
-			IBackgroundWorkerFactory backgroundWorkerFactory) {
+			final IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
-	}
-
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
 	}
 
 	/**
 	 * @param showRepositoryDataHelper
 	 */
 	public void setShowRepositoryDataHelper(
-			ShowRepositoryDataHelper showRepositoryDataHelper) {
+			final ShowRepositoryDataHelper showRepositoryDataHelper) {
 		this.showRepositoryDataHelper = showRepositoryDataHelper;
 	}
 
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
 	/**
 	 * @param frame
 	 */
-	public void setFrame(IFrame frame) {
+	public void setFrame(final IFrame frame) {
 		this.frame = frame;
 	}
 
@@ -99,7 +94,7 @@ public class AddFilesTask {
 	 */
 	public void execute(final IRepository repository, final List<File> files) {
 		IBackgroundWorker<Void> worker = backgroundWorkerFactory.getWorker();
-		worker.setActionsAfterBackgroundStarted(new Runnable() {
+		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 
 			@Override
 			public void run() {
@@ -111,22 +106,19 @@ public class AddFilesTask {
 
 			@Override
 			public Void call() {
-				repositoryHandler.startTransaction();
-				repositoryAddService.addToRepository(repository, files);
-				repositoryHandler.endTransaction();
+				repositoryAddService.addFilesToRepository(repository, files);
 				return null;
 			}
 		});
 		worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
 
 			@Override
-			public void call(Void result) {
+			public void call(final Void result) {
 				frame.hideProgressBar();
 				showRepositoryDataHelper.showRepositoryAudioFileNumber(
 						repositoryHandler.getAudioFilesList().size(),
 						repositoryHandler.getRepositoryTotalSize(),
 						repository.getTotalDurationInSeconds());
-				navigationHandler.repositoryReloaded();
 				Logger.info("Repository refresh done");
 			}
 		});

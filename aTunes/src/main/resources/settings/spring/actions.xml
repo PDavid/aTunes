@@ -164,6 +164,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.MarkPodcastListenedAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveAfterCurrentAudioObjectAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveDownAction"/>
+	<bean id="moveFolderFromNavigatorAction" class="net.sourceforge.atunes.kernel.actions.MoveFolderFromNavigatorAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveToBottomAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveToTopAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveUpAction"/>

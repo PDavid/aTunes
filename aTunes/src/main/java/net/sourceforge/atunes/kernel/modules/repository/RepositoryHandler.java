@@ -29,10 +29,12 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
@@ -63,378 +65,404 @@ import org.apache.commons.io.FilenameUtils;
 public final class RepositoryHandler extends AbstractHandler implements IRepositoryHandler {
 
 	private RepositoryReader repositoryReader;
-	
+
 	private boolean caseSensitiveTrees;
-	
+
 	private IStatisticsHandler statisticsHandler;
-	
+
 	private INavigationHandler navigationHandler;
-	
+
 	private IStateHandler stateHandler;
-	
+
 	private IRepository repository;
-	
+
 	private VoidRepository voidRepository;
-	
-    private RepositoryAutoRefresher repositoryRefresher;
-    
-    /** Listeners notified when an audio file is removed */
-    private List<IAudioFilesRemovedListener> audioFilesRemovedListeners = new ArrayList<IAudioFilesRemovedListener>();
+
+	private RepositoryAutoRefresher repositoryRefresher;
+
+	/** Listeners notified when an audio file is removed */
+	private final List<IAudioFilesRemovedListener> audioFilesRemovedListeners = new ArrayList<IAudioFilesRemovedListener>();
 
 	private IFavoritesHandler favoritesHandler;
-	
+
 	private IRepositoryTransaction transaction;
-	
+
 	private ShowRepositoryDataHelper showRepositoryDataHelper;
-	
+
 	private PersistRepositoryTask persistRepositoryTask;
-	
+
 	private LocalAudioObjectRefresher localAudioObjectRefresher;
-	
+
 	private RepositoryRemover repositoryRemover;
-	
+
 	private IStateRepository stateRepository;
-	
-    private IBackgroundWorkerFactory backgroundWorkerFactory;
-    
-    private IDialogFactory dialogFactory;
-    
-    private List<File> foldersSelectedFromPreferences;
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
+
+	private IBackgroundWorkerFactory backgroundWorkerFactory;
+
+	private IDialogFactory dialogFactory;
+
+	private List<File> foldersSelectedFromPreferences;
+
+	private RepositoryAddService repositoryAddService;
+
+	/**
+	 * @param repositoryAddService
+	 */
+	public void setRepositoryAddService(
+			final RepositoryAddService repositoryAddService) {
+		this.repositoryAddService = repositoryAddService;
+	}
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-    
-    /**
-     * @param backgroundWorkerFactory
-     */
-    public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
+
+	/**
+	 * @param backgroundWorkerFactory
+	 */
+	public void setBackgroundWorkerFactory(final IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
-    
+
 	/**
 	 * @param stateRepository
 	 */
-	public void setStateRepository(IStateRepository stateRepository) {
+	public void setStateRepository(final IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
 	}
-	
+
 	/**
 	 * @param repositoryRemover
 	 */
-	public void setRepositoryRemover(RepositoryRemover repositoryRemover) {
+	public void setRepositoryRemover(final RepositoryRemover repositoryRemover) {
 		this.repositoryRemover = repositoryRemover;
 	}
-	
+
 	/**
 	 * @param localAudioObjectRefresher
 	 */
-	public void setLocalAudioObjectRefresher(LocalAudioObjectRefresher localAudioObjectRefresher) {
+	public void setLocalAudioObjectRefresher(final LocalAudioObjectRefresher localAudioObjectRefresher) {
 		this.localAudioObjectRefresher = localAudioObjectRefresher;
 	}
-	
+
 	/**
 	 * @param persistRepositoryTask
 	 */
-	public void setPersistRepositoryTask(PersistRepositoryTask persistRepositoryTask) {
+	public void setPersistRepositoryTask(final PersistRepositoryTask persistRepositoryTask) {
 		this.persistRepositoryTask = persistRepositoryTask;
 	}
-	
+
 	/**
 	 * @param voidRepository
 	 */
-	public void setVoidRepository(VoidRepository voidRepository) {
+	public void setVoidRepository(final VoidRepository voidRepository) {
 		this.voidRepository = voidRepository;
 	}
-	
+
 	/**
 	 * @param showRepositoryDataHelper
 	 */
-	public void setShowRepositoryDataHelper(ShowRepositoryDataHelper showRepositoryDataHelper) {
+	public void setShowRepositoryDataHelper(final ShowRepositoryDataHelper showRepositoryDataHelper) {
 		this.showRepositoryDataHelper = showRepositoryDataHelper;
 	}
-	
+
 	/**
 	 * @param repository
 	 */
-	void setRepository(IRepository repository) {
+	void setRepository(final IRepository repository) {
 		this.repository = repository;
 	}
-	
+
 	/**
 	 * @param repositoryReader
 	 */
-	public void setRepositoryReader(RepositoryReader repositoryReader) {
+	public void setRepositoryReader(final RepositoryReader repositoryReader) {
 		this.repositoryReader = repositoryReader;
 	}
-    
+
 	/**
 	 * @param favoritesHandler
 	 */
-	public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
+	public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
 		this.favoritesHandler = favoritesHandler;
 	}
-	
-    /**
-     * @param stateHandler
-     */
-    public void setStateHandler(IStateHandler stateHandler) {
+
+	/**
+	 * @param stateHandler
+	 */
+	public void setStateHandler(final IStateHandler stateHandler) {
 		this.stateHandler = stateHandler;
 	}
-    
+
 	/**
 	 * @param statisticsHandler
 	 */
-	public void setStatisticsHandler(IStatisticsHandler statisticsHandler) {
+	public void setStatisticsHandler(final IStatisticsHandler statisticsHandler) {
 		this.statisticsHandler = statisticsHandler;
 	}
-	
+
 	/**
 	 * @param navigationHandler
 	 */
-	public void setNavigationHandler(INavigationHandler navigationHandler) {
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-	
+
 	/**
 	 * @param repositoryRefresher
 	 */
-	public void setRepositoryRefresher(RepositoryAutoRefresher repositoryRefresher) {
+	public void setRepositoryRefresher(final RepositoryAutoRefresher repositoryRefresher) {
 		this.repositoryRefresher = repositoryRefresher;
 	}
-	
-    @Override
-    public void applicationStateChanged() {
-    	// User changed repository folders
-    	if (foldersSelectedFromPreferences != null) {
-    		repositoryReader.newRepositoryWithFolders(foldersSelectedFromPreferences);
-    		foldersSelectedFromPreferences = null;
-    	} else if (caseSensitiveTrees != stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-    		caseSensitiveTrees = stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure();
-    		refreshRepository();
-    	}
-    	// Reschedule repository refresher
-    	repositoryRefresher.start();
-    }
 
-    @Override
-    protected void initHandler() {
-    	// Initially use void repository until one is loaded or selected
-    	this.repository = this.voidRepository;
-    	
-        // Add itself as listener
-    	caseSensitiveTrees = stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure();
-        addAudioFilesRemovedListener(this);
-    }
-    
-    @Override
+	@Override
+	public void applicationStateChanged() {
+		// User changed repository folders
+		if (foldersSelectedFromPreferences != null) {
+			repositoryReader.newRepositoryWithFolders(foldersSelectedFromPreferences);
+			foldersSelectedFromPreferences = null;
+		} else if (caseSensitiveTrees != stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+			caseSensitiveTrees = stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure();
+			refreshRepository();
+		}
+		// Reschedule repository refresher
+		repositoryRefresher.start();
+	}
+
+	@Override
+	protected void initHandler() {
+		// Initially use void repository until one is loaded or selected
+		this.repository = this.voidRepository;
+
+		// Add itself as listener
+		caseSensitiveTrees = stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure();
+		addAudioFilesRemovedListener(this);
+	}
+
+	@Override
 	public void addFilesAndRefresh(final List<File> files) {
-    	getBean(AddFilesTask.class).execute(repository, files);
-    }
+		getBean(AddFilesTask.class).execute(repository, files);
+	}
 
-    /**
-     * Finish.
-     */
-    public void applicationFinish() {
-        repositoryRefresher.stop();
-        if (!isRepositoryVoid()) {
-            // Only store repository if it's dirty
-            if (transactionPending()) {
-            	stateHandler.persistRepositoryCache(repository);
-            } else {
-                Logger.info("Repository is clean");
-            }
+	/**
+	 * Finish.
+	 */
+	@Override
+	public void applicationFinish() {
+		repositoryRefresher.stop();
+		if (!isRepositoryVoid()) {
+			// Only store repository if it's dirty
+			if (transactionPending()) {
+				stateHandler.persistRepositoryCache(repository);
+			} else {
+				Logger.info("Repository is clean");
+			}
 
-            // Execute command after last access to repository
-            new LoadRepositoryCommandExecutor().execute(stateRepository.getCommandAfterAccessRepository());
-        }
-    }
+			// Execute command after last access to repository
+			new LoadRepositoryCommandExecutor().execute(stateRepository.getCommandAfterAccessRepository());
+		}
+	}
 
-    @Override
+	@Override
 	public List<File> getFolders() {
-    	return repository.getRepositoryFolders();
-    }
+		return repository.getRepositoryFolders();
+	}
 
-    @Override
+	@Override
 	public List<IAlbum> getAlbums() {
-        List<IAlbum> result = new ArrayList<IAlbum>();
-        Collection<IArtist> artists = repository.getArtists();
-        for (IArtist a : artists) {
-        	result.addAll(a.getAlbums().values());
-        }
-        Collections.sort(result);
-        return result;
-    }
+		List<IAlbum> result = new ArrayList<IAlbum>();
+		Collection<IArtist> artists = repository.getArtists();
+		for (IArtist a : artists) {
+			result.addAll(a.getAlbums().values());
+		}
+		Collections.sort(result);
+		return result;
+	}
 
-    @Override
+	@Override
 	public List<IArtist> getArtists() {
-        List<IArtist> result = new ArrayList<IArtist>();
-        result.addAll(repository.getArtists());
-        Collections.sort(result);
-        return result;
-    }
-    
-    @Override
-	public IArtist getArtist(String name) {
-    	return repository.getArtist(name);
-    }
-    
-    @Override
-	public void removeArtist(IArtist artist) {
-    	repository.removeArtist(artist);
-    }
+		List<IArtist> result = new ArrayList<IArtist>();
+		result.addAll(repository.getArtists());
+		Collections.sort(result);
+		return result;
+	}
 
-    @Override
-	public IGenre getGenre(String genre) {
-    	return repository.getGenre(genre);
-    }
-    
-    @Override
-	public void removeGenre(IGenre genre) {
-    	repository.removeGenre(genre);
-    }
-    
-    @Override
-	public ILocalAudioObject getFileIfLoaded(String fileName) {
-        return repository.getFile(fileName);
-    }
+	@Override
+	public IArtist getArtist(final String name) {
+		return repository.getArtist(name);
+	}
 
-    @Override
+	@Override
+	public void removeArtist(final IArtist artist) {
+		repository.removeArtist(artist);
+	}
+
+	@Override
+	public IGenre getGenre(final String genre) {
+		return repository.getGenre(genre);
+	}
+
+	@Override
+	public void removeGenre(final IGenre genre) {
+		repository.removeGenre(genre);
+	}
+
+	@Override
+	public ILocalAudioObject getFileIfLoaded(final String fileName) {
+		return repository.getFile(fileName);
+	}
+
+	@Override
 	public int getFoldersCount() {
-        return repository.getRepositoryFolders().size();
-    }
+		return repository.getRepositoryFolders().size();
+	}
 
-    @Override
-	public File getRepositoryFolderContainingFile(ILocalAudioObject file) {
-        for (File folder : repository.getRepositoryFolders()) {
-            if (file.getUrl().startsWith(folder.getAbsolutePath())) {
-                return folder;
-            }
-        }
-        return null;
-    }
+	@Override
+	public File getRepositoryFolderContainingFile(final ILocalAudioObject file) {
+		for (File folder : repository.getRepositoryFolders()) {
+			if (file.getUrl().startsWith(folder.getAbsolutePath())) {
+				return folder;
+			}
+		}
+		return null;
+	}
 
-    @Override
+	@Override
 	public String getRepositoryPath() {
-        // TODO: Remove this method as now more than one folder can be added to repository
-        return repository.getRepositoryFolders().size() > 0 ? repository.getRepositoryFolders().get(0).getAbsolutePath() : "";
-    }
+		// TODO: Remove this method as now more than one folder can be added to repository
+		return repository.getRepositoryFolders().size() > 0 ? repository.getRepositoryFolders().get(0).getAbsolutePath() : "";
+	}
 
-    @Override
+	@Override
 	public long getRepositoryTotalSize() {
-        return repository.getTotalSizeInBytes();
-    }
+		return repository.getTotalSizeInBytes();
+	}
 
-    @Override
+	@Override
 	public int getNumberOfFiles() {
-        return repository.countFiles();
-    }
+		return repository.countFiles();
+	}
 
-    @Override
+	@Override
 	public Collection<ILocalAudioObject> getAudioFilesList() {
-    	return repository.getFiles();
-    }
+		return repository.getFiles();
+	}
 
-    @Override
-	public List<ILocalAudioObject> getAudioFilesForAlbums(Map<String, IAlbum> albums) {
-        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
-        for (Map.Entry<String, IAlbum> entry : albums.entrySet()) {
-            result.addAll(entry.getValue().getAudioObjects());
-        }
-        return result;
-    }
+	@Override
+	public List<ILocalAudioObject> getAudioFilesForAlbums(final Map<String, IAlbum> albums) {
+		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
+		for (Map.Entry<String, IAlbum> entry : albums.entrySet()) {
+			result.addAll(entry.getValue().getAudioObjects());
+		}
+		return result;
+	}
 
-    @Override
-	public List<ILocalAudioObject> getAudioFilesForArtists(Map<String, IArtist> artists) {
-        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
-        for (Map.Entry<String, IArtist> entry : artists.entrySet()) {
-            result.addAll(entry.getValue().getAudioObjects());
-        }
-        return result;
-    }
-    
-    @Override
-	public boolean isRepository(File folder) {
-        String path = folder.getAbsolutePath();
-        for (File folders : repository.getRepositoryFolders()) {
-            if (path.startsWith(folders.getAbsolutePath())) {
-                return true;
-            }
-        }
-        return false;
-    }
+	@Override
+	public List<ILocalAudioObject> getAudioFilesForArtists(final Map<String, IArtist> artists) {
+		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
+		for (Map.Entry<String, IArtist> entry : artists.entrySet()) {
+			result.addAll(entry.getValue().getAudioObjects());
+		}
+		return result;
+	}
 
-    @Override
+	@Override
+	public boolean isRepository(final File folder) {
+		String path = folder.getAbsolutePath();
+		for (File folders : repository.getRepositoryFolders()) {
+			if (path.startsWith(folders.getAbsolutePath())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
 	public void notifyCancel() {
-    	repositoryReader.notifyCancel();
-    }
+		repositoryReader.notifyCancel();
+	}
 
-    @Override
-	public void refreshFile(ILocalAudioObject file) {
-    	localAudioObjectRefresher.refreshFile(repository, file);
-    }
+	@Override
+	public void refreshFiles(final List<ILocalAudioObject> files) {
+		startTransaction();
+		for (ILocalAudioObject file : files) {
+			localAudioObjectRefresher.refreshFile(repository, file);
+		}
+		endTransaction();
+	}
 
-    @Override
-	public void refreshFolders(List<IFolder> folders) {
-    	getBean(RefreshFoldersTask.class).execute(repository, folders);
-    }
+	@Override
+	public void refreshFolders(final List<IFolder> folders) {
+		getBean(RefreshFoldersTask.class).execute(repository, folders);
+	}
 
-    @Override
+	@Override
 	public void refreshRepository() {
-        if (!isRepositoryVoid()) {
-            repositoryReader.refresh();
-        }
-    }
+		if (!isRepositoryVoid()) {
+			repositoryReader.refresh();
+		}
+	}
 
-    @Override
-	public void removeFolders(List<IFolder> foldersToRemove) {
-        for (IFolder folder : foldersToRemove) {
+	@Override
+	public void removeFolders(final List<IFolder> foldersToRemove) {
+		startTransaction();
+		removeFoldersInsideTransaction(foldersToRemove);
+		endTransaction();
+	}
 
-            // Remove content
-            remove(folder.getAudioObjects());
+	private void removeFoldersInsideTransaction(final List<IFolder> foldersToRemove) {
+		if (foldersToRemove == null || foldersToRemove.isEmpty()) {
+			return;
+		}
 
-            // Remove from model
-            if (folder.getParentFolder() != null) {
-                folder.getParentFolder().removeFolder(folder);
-            }
+		for (IFolder folder : foldersToRemove) {
 
-            // Update navigator
-            navigationHandler.repositoryReloaded();
-        }
-    }
+			// Remove content
+			remove(folder.getAudioObjects());
 
-    @Override
-	public void remove(List<ILocalAudioObject> filesToRemove) {
-        if (filesToRemove == null || filesToRemove.isEmpty()) {
-            return;
-        }
+			// Remove from model
+			if (folder.getParentFolder() != null) {
+				folder.getParentFolder().removeFolder(folder);
+			}
+		}
+	}
 
-        for (ILocalAudioObject fileToRemove : filesToRemove) {
-            repositoryRemover.deleteFile(fileToRemove);
-        }
+	@Override
+	public void remove(final List<ILocalAudioObject> filesToRemove) {
+		if (filesToRemove == null || filesToRemove.isEmpty()) {
+			return;
+		}
 
-        // Notify listeners
-        for (IAudioFilesRemovedListener listener : audioFilesRemovedListeners) {
-            listener.audioFilesRemoved(filesToRemove);
-        }
-    }
+		startTransaction();
 
-    @Override
-	public void rename(ILocalAudioObject audioFile, String name) {
-        File file = audioFile.getFile();
-        String extension = FilenameUtils.getExtension(file.getAbsolutePath());
-        File newFile = new File(StringUtils.getString(file.getParentFile().getAbsolutePath() + "/" + FileNameUtils.getValidFileName(name, getOsManager()) + "." + extension));
-        boolean succeeded = file.renameTo(newFile);
-        if (succeeded) {
-        	renameFile(audioFile, file, newFile);
-            navigationHandler.repositoryReloaded();
-            statisticsHandler.updateFileName(audioFile, file.getAbsolutePath(), newFile.getAbsolutePath());
-        }
-    }
-    
+		for (ILocalAudioObject fileToRemove : filesToRemove) {
+			repositoryRemover.deleteFile(fileToRemove);
+		}
+
+		// Notify listeners
+		for (IAudioFilesRemovedListener listener : audioFilesRemovedListeners) {
+			listener.audioFilesRemoved(filesToRemove);
+		}
+
+		endTransaction();
+	}
+
+	@Override
+	public void rename(final ILocalAudioObject audioFile, final String name) {
+		File file = audioFile.getFile();
+		String extension = FilenameUtils.getExtension(file.getAbsolutePath());
+		File newFile = new File(StringUtils.getString(file.getParentFile().getAbsolutePath() + "/" + FileNameUtils.getValidFileName(name, getOsManager()) + "." + extension));
+		boolean succeeded = file.renameTo(newFile);
+		if (succeeded) {
+			renameFile(audioFile, file, newFile);
+			navigationHandler.repositoryReloaded();
+			statisticsHandler.updateFileName(audioFile, file.getAbsolutePath(), newFile.getAbsolutePath());
+		}
+	}
+
 	/**
 	 * Renames a file in repository
 	 * 
@@ -442,118 +470,115 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	 * @param oldFile
 	 * @param newFile
 	 */
-	private void renameFile(ILocalAudioObject audioFile, File oldFile, File newFile) {
-    	startTransaction(); 
+	private void renameFile(final ILocalAudioObject audioFile, final File oldFile, final File newFile) {
+		startTransaction();
 		audioFile.setFile(newFile);
 		repository.removeFile(oldFile);
 		repository.putFile(audioFile);
-    	endTransaction();
+		endTransaction();
 	}
 
-	
+
 	/**
 	 * Returns if Repository is void (not yet loaded or selected)
 	 * @return
 	 */
 	private boolean isRepositoryVoid() {
-        return repository instanceof VoidRepository;
-    }
+		return repository instanceof VoidRepository;
+	}
 
-    @Override
+	@Override
 	public boolean addFolderToRepository() {
-        return repositoryReader.addFolderToRepository();
-    }
+		return repositoryReader.addFolderToRepository();
+	}
 
-    @Override
-	public void addAudioFilesRemovedListener(IAudioFilesRemovedListener listener) {
-        audioFilesRemovedListeners.add(listener);
-    }
+	@Override
+	public void addAudioFilesRemovedListener(final IAudioFilesRemovedListener listener) {
+		audioFilesRemovedListeners.add(listener);
+	}
 
-    @Override
-    public void audioFilesRemoved(List<ILocalAudioObject> audioFiles) {
-        // Update status bar
-    	showRepositoryDataHelper.showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
-    }
+	@Override
+	public void audioFilesRemoved(final List<ILocalAudioObject> audioFiles) {
+		// Update status bar
+		showRepositoryDataHelper.showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+	}
 
-    @Override
+	@Override
 	public void doInBackground() {
-    	repositoryReader.doInBackground();
-    }
+		repositoryReader.doInBackground();
+	}
 
-    /**
-     * Returns <code>true</code>if there is a loader reading or refreshing
-     * repository
-     * 
-     * @return
-     */
-    protected boolean isLoaderWorking() {
-    	return repositoryReader.isWorking();
-    }
+	/**
+	 * Returns <code>true</code>if there is a loader reading or refreshing
+	 * repository
+	 * 
+	 * @return
+	 */
+	protected boolean isLoaderWorking() {
+		return repositoryReader.isWorking();
+	}
 
 	@Override
 	public void repositoryChanged(final IRepository repository) {
 		persistRepositoryTask.persist(repository);
 		favoritesHandler.updateFavorites(repository);
+		// Update navigator
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				navigationHandler.repositoryReloaded();
+			}
+		});
 	}
 
-	@Override
-	public void startTransaction() {
-		startRepositoryTransaction();
-	}
-	
-	@Override
-	public void endTransaction() {
-		endRepositoryTransaction();
-	}
-	
-	private void startRepositoryTransaction() {
+	protected final void startTransaction() {
 		this.transaction = new RepositoryTransaction(repository, this);
 	}
-	
-	private void endRepositoryTransaction() {
+
+	protected final void endTransaction() {
 		if (this.transaction != null) {
 			this.transaction.finishTransaction();
 		}
 	}
-	
+
 	private boolean transactionPending() {
 		return this.transaction != null && this.transaction.isPending();
 	}
 
 	@Override
-	public Map<String, ?> getDataForView(ViewMode viewMode) {
+	public Map<String, ?> getDataForView(final ViewMode viewMode) {
 		return viewMode.getDataForView(repository);
 	}
 
 	@Override
-	public ILocalAudioObject getFile(String fileName) {
+	public ILocalAudioObject getFile(final String fileName) {
 		return repository.getFile(fileName);
 	}
 
 	@Override
-	public IYear getYear(String year) {
+	public IYear getYear(final String year) {
 		return repository.getYear(year);
 	}
 
 	@Override
-	public void removeYear(IYear year) {
+	public void removeYear(final IYear year) {
 		repository.removeYear(year);
 	}
 
 	@Override
-	public void removeFile(ILocalAudioObject file) {
+	public void removeFile(final ILocalAudioObject file) {
 		repository.removeFile(file);
 		repository.removeSizeInBytes(file.getFile().length());
 		repository.removeDurationInSeconds(file.getDuration());
 	}
 
 	@Override
-	public IFolder getFolder(String path) {
+	public IFolder getFolder(final String path) {
 		return repository.getFolder(path);
 	}
 
 	@Override
-	public List<ILocalAudioObject> getAudioObjectsByTitle(String artistName, List<String> titlesList) {
+	public List<ILocalAudioObject> getAudioObjectsByTitle(final String artistName, final List<String> titlesList) {
 		if (StringUtils.isEmpty(artistName)) {
 			throw new IllegalArgumentException("Invalid artist name");
 		}
@@ -576,7 +601,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	 * @param artist
 	 * @return
 	 */
-	private Map<String, ILocalAudioObject> getNormalizedAudioObjectsTitles(IArtist artist) {
+	private Map<String, ILocalAudioObject> getNormalizedAudioObjectsTitles(final IArtist artist) {
 		List<ILocalAudioObject> audioObjects = artist.getAudioObjects();
 		Map<String, ILocalAudioObject> titles = new HashMap<String, ILocalAudioObject>();
 		for (ILocalAudioObject lao : audioObjects) {
@@ -589,24 +614,44 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 
 	@Override
 	public void importFolders(final List<File> folders, final String path) {
-    	final IIndeterminateProgressDialog indeterminateDialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
-    	indeterminateDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
-        
-        IBackgroundWorker<List<ILocalAudioObject>> worker = backgroundWorkerFactory.getWorker();
-        worker.setActionsAfterBackgroundStarted(new ShowIndeterminateDialogRunnable(indeterminateDialog));
-        ImportFoldersToRepositoryCallable callable = Context.getBean(ImportFoldersToRepositoryCallable.class);
-        callable.setFolders(folders);
-        worker.setBackgroundActions(callable);
-        ImportFoldersToRepositoryActionsWithBackgroundResult actionsWhenDone = Context.getBean(ImportFoldersToRepositoryActionsWithBackgroundResult.class);
-        actionsWhenDone.setFolders(folders);
-        actionsWhenDone.setPath(path);
-        actionsWhenDone.setIndeterminateDialog(indeterminateDialog);
-        worker.setActionsWhenDone(actionsWhenDone);
-        worker.execute();
-    }
-	
+		final IIndeterminateProgressDialog indeterminateDialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
+		indeterminateDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
+
+		IBackgroundWorker<List<ILocalAudioObject>> worker = backgroundWorkerFactory.getWorker();
+		worker.setActionsBeforeBackgroundStarts(new ShowIndeterminateDialogRunnable(indeterminateDialog));
+		ImportFoldersToRepositoryCallable callable = Context.getBean(ImportFoldersToRepositoryCallable.class);
+		callable.setFolders(folders);
+		worker.setBackgroundActions(callable);
+		ImportFoldersToRepositoryActionsWithBackgroundResult actionsWhenDone = Context.getBean(ImportFoldersToRepositoryActionsWithBackgroundResult.class);
+		actionsWhenDone.setFolders(folders);
+		actionsWhenDone.setPath(path);
+		actionsWhenDone.setIndeterminateDialog(indeterminateDialog);
+		worker.setActionsWhenDone(actionsWhenDone);
+		worker.execute();
+	}
+
 	@Override
-	public void setRepositoryFolders(List<File> folders) {
+	public void setRepositoryFolders(final List<File> folders) {
 		foldersSelectedFromPreferences = folders;
+	}
+
+	@Override
+	public void folderMoved(final IFolder sourceFolder, final File destination) {
+		startTransaction();
+		removeFoldersInsideTransaction(Collections.singletonList(sourceFolder));
+		repositoryAddService.addFoldersToRepositoryInsideTransaction(repository, Collections.singletonList(destination));
+		showRepositoryDataHelper.showRepositoryAudioFileNumber(repository.getFiles().size(), repository.getTotalSizeInBytes(), repository.getTotalDurationInSeconds());
+		endTransaction();
+	}
+
+	@Override
+	public void setStars(final IAudioObject audioObject, final Integer value) {
+		// Open repository transaction
+		startTransaction();
+
+		audioObject.setStars(value);
+
+		// End repository transaction
+		endTransaction();
 	}
 }

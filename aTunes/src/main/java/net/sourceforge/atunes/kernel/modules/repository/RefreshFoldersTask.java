@@ -28,66 +28,61 @@ import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IRepository;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Refresh a list of folders from repository
+ * @author alex
+ *
+ */
 public final class RefreshFoldersTask {
-	
+
 	private RepositoryReader repositoryReader;
-	
-	private IRepositoryHandler repositoryHandler;
-	
+
 	private FolderRefresher folderRefresher;
-	
+
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
-	
+
 	private IFrame frame;
-	
+
 	private RepositoryActionsHelper repositoryActions;
-	
+
 	/**
 	 * @param frame
 	 */
-	public void setFrame(IFrame frame) {
+	public void setFrame(final IFrame frame) {
 		this.frame = frame;
 	}
-	
+
 	/**
 	 * @param repositoryActions
 	 */
-	public void setRepositoryActions(RepositoryActionsHelper repositoryActions) {
+	public void setRepositoryActions(final RepositoryActionsHelper repositoryActions) {
 		this.repositoryActions = repositoryActions;
 	}
-	
+
 	/**
 	 * @param backgroundWorkerFactory
 	 */
-	public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
+	public void setBackgroundWorkerFactory(final IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
 
 	/**
-	 * @param repositoryHandler
-	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-	
-	/**
 	 * @param repositoryReader
 	 */
-	public void setRepositoryReader(RepositoryReader repositoryReader) {
+	public void setRepositoryReader(final RepositoryReader repositoryReader) {
 		this.repositoryReader = repositoryReader;
 	}
-	
+
 	/**
 	 * @param folderRefresher
 	 */
-	public void setFolderRefresher(FolderRefresher folderRefresher) {
+	public void setFolderRefresher(final FolderRefresher folderRefresher) {
 		this.folderRefresher = folderRefresher;
 	}
-	
+
 	/**
 	 * Executes task to refresh folders of repository
 	 * @param repository
@@ -95,27 +90,25 @@ public final class RefreshFoldersTask {
 	 */
 	public void execute(final IRepository repository, final List<IFolder> folders) {
 		IBackgroundWorker<Void> worker = backgroundWorkerFactory.getWorker();
-		worker.setActionsAfterBackgroundStarted(new Runnable() {
+		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 			@Override
 			public void run() {
-		    	frame.showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
-		    	repositoryActions.enableRepositoryActions(false);
+				frame.showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
+				repositoryActions.enableRepositoryActions(false);
 			}
 		});
 		worker.setBackgroundActions(new Callable<Void>() {
-			
+
 			@Override
 			public Void call() {
-				repositoryHandler.startTransaction();
 				folderRefresher.refreshFolders(repository, folders);
-		        repositoryHandler.endTransaction();
 				return null;
 			}
 		});
 		worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
-			
+
 			@Override
-			public void call(Void result) {
+			public void call(final Void result) {
 				repositoryReader.notifyFinishRefresh(null);
 			}
 		});

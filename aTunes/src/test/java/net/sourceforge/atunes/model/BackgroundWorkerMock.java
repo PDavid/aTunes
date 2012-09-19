@@ -59,7 +59,7 @@ public class BackgroundWorkerMock<T> implements IBackgroundWorker<T> {
 	}
 	
 	@Override
-	public void setActionsAfterBackgroundStarted(Runnable afterStartActions) {
+	public void setActionsBeforeBackgroundStarts(Runnable afterStartActions) {
 		this.afterStartActions = afterStartActions;
 	}
 

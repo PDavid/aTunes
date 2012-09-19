@@ -52,182 +52,180 @@ import net.sourceforge.atunes.utils.StringUtils;
 public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 
 	private IIndeterminateProgressDialog dialog;
-	
+
 	private static final long serialVersionUID = -1885495996370465881L;
-	
+
 	private IDeviceHandler deviceHandler;
-	
+
 	private IPlayListHandler playListHandler;
-	
+
 	private IRepositoryHandler repositoryHandler;
-	
-    private IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter;
-    
-    private IStateDevice stateDevice;
-    
-    private IDialogFactory dialogFactory;
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
+
+	private IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter;
+
+	private IStateDevice stateDevice;
+
+	private IDialogFactory dialogFactory;
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-    
-    /**
-     * @param stateDevice
-     */
-    public void setStateDevice(IStateDevice stateDevice) {
+
+	/**
+	 * @param stateDevice
+	 */
+	public void setStateDevice(final IStateDevice stateDevice) {
 		this.stateDevice = stateDevice;
 	}
 
-    /**
-     * @param playListLocalAudioObjectFilter
-     */
-    public void setPlayListLocalAudioObjectFilter(IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter) {
+	/**
+	 * @param playListLocalAudioObjectFilter
+	 */
+	public void setPlayListLocalAudioObjectFilter(final IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter) {
 		this.playListLocalAudioObjectFilter = playListLocalAudioObjectFilter;
 	}
-    
+
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
-	
+
 	/**
 	 * @param playListHandler
 	 */
-	public void setPlayListHandler(IPlayListHandler playListHandler) {
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-	
+
 	/**
 	 * @param deviceHandler
 	 */
-	public void setDeviceHandler(IDeviceHandler deviceHandler) {
+	public void setDeviceHandler(final IDeviceHandler deviceHandler) {
 		this.deviceHandler = deviceHandler;
 	}
-	
-    /**
-     * Default constructor
-     */
-    public SynchronizeDeviceWithPlayListAction() {
-        super(I18nUtils.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
-        setEnabled(false);
-    }
 
-    @Override
-    protected void executeAction() {
-        SwingWorker<Map<String, List<ILocalAudioObject>>, Void> worker = new SynchronizeDeviceWithPlayListSwingWorker();
-        worker.execute();
-        
-        SwingUtilities.invokeLater(new Runnable() {
-        	@Override
-        	public void run() {
-        		dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
-        		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
-        		dialog.showDialog();
-        	}
-        });
-    }
-    
-	private void showMessage(final int filesRemoved, final boolean added) {
-	    // Show message
-	    SwingUtilities.invokeLater(new Runnable() {
-	        @Override
-	        public void run() {
-	        	dialogFactory.newDialog(IMessageDialog.class).showMessage(
-	                    StringUtils.getString(I18nUtils.getString("SYNCHRONIZATION_FINISHED"), " ", I18nUtils.getString("ADDED"), 
-	                    		": ", added ? deviceHandler.getFilesCopiedToDevice() : 0, " ", 
-	                    				I18nUtils.getString("REMOVED"), ": ", filesRemoved));
-	        }
-	    });
+	/**
+	 * Default constructor
+	 */
+	public SynchronizeDeviceWithPlayListAction() {
+		super(I18nUtils.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
+		setEnabled(false);
 	}
-	
-    private final class SynchronizeDeviceWithPlayListSwingWorker extends SwingWorker<Map<String, List<ILocalAudioObject>>, Void> {
-    	
+
+	@Override
+	protected void executeAction() {
+		SwingWorker<Map<String, List<ILocalAudioObject>>, Void> worker = new SynchronizeDeviceWithPlayListSwingWorker();
+		worker.execute();
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
+				dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
+				dialog.showDialog();
+			}
+		});
+	}
+
+	private void showMessage(final int filesRemoved, final boolean added) {
+		// Show message
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				dialogFactory.newDialog(IMessageDialog.class).showMessage(
+						StringUtils.getString(I18nUtils.getString("SYNCHRONIZATION_FINISHED"), " ", I18nUtils.getString("ADDED"),
+								": ", added ? deviceHandler.getFilesCopiedToDevice() : 0, " ",
+										I18nUtils.getString("REMOVED"), ": ", filesRemoved));
+			}
+		});
+	}
+
+	private final class SynchronizeDeviceWithPlayListSwingWorker extends SwingWorker<Map<String, List<ILocalAudioObject>>, Void> {
+
 		private int filesRemoved = 0;
 
 		@Override
 		protected Map<String, List<ILocalAudioObject>> doInBackground() {
-		    // Get play list elements
-		    List<ILocalAudioObject> playListObjects;
-		    LocalAudioObjectFilter filter = new LocalAudioObjectFilter();
-		    if (SynchronizeDeviceWithPlayListAction.this.stateDevice.isAllowRepeatedSongsInDevice()) {
-		        // Repeated songs allowed, filter only if have same artist and album
-		        playListObjects = filter.filterRepeatedObjectsWithAlbums(playListLocalAudioObjectFilter.getObjects(playListHandler.getCurrentPlayList(true)));
-		    } else {
-		        // Repeated songs not allows, filter even if have different album
-		        playListObjects = filter.filterRepeatedObjects(playListLocalAudioObjectFilter.getObjects(playListHandler.getCurrentPlayList(true)));
-		    }
+			// Get play list elements
+			List<ILocalAudioObject> playListObjects;
+			LocalAudioObjectFilter filter = new LocalAudioObjectFilter();
+			if (SynchronizeDeviceWithPlayListAction.this.stateDevice.isAllowRepeatedSongsInDevice()) {
+				// Repeated songs allowed, filter only if have same artist and album
+				playListObjects = filter.filterRepeatedObjectsWithAlbums(playListLocalAudioObjectFilter.getObjects(playListHandler.getCurrentPlayList(true)));
+			} else {
+				// Repeated songs not allows, filter even if have different album
+				playListObjects = filter.filterRepeatedObjects(playListLocalAudioObjectFilter.getObjects(playListHandler.getCurrentPlayList(true)));
+			}
 
-		    // Get elements present in play list and not in device -> objects to be copied to device
-		    List<ILocalAudioObject> objectsToCopyToDevice = deviceHandler.getElementsNotPresentInDevice(playListObjects);
+			// Get elements present in play list and not in device -> objects to be copied to device
+			List<ILocalAudioObject> objectsToCopyToDevice = deviceHandler.getElementsNotPresentInDevice(playListObjects);
 
-		    // Get elements present in device and not in play list -> objects to be removed from device
-		    List<ILocalAudioObject> objectsToRemoveFromDevice = deviceHandler.getElementsNotPresentInList(playListObjects);
+			// Get elements present in device and not in play list -> objects to be removed from device
+			List<ILocalAudioObject> objectsToRemoveFromDevice = deviceHandler.getElementsNotPresentInList(playListObjects);
 
-		    Map<String, List<ILocalAudioObject>> result = new HashMap<String, List<ILocalAudioObject>>();
-		    result.put("ADD", objectsToCopyToDevice);
-		    result.put("REMOVE", objectsToRemoveFromDevice);
-		    filesRemoved = objectsToRemoveFromDevice.size();
-		    return result;
+			Map<String, List<ILocalAudioObject>> result = new HashMap<String, List<ILocalAudioObject>>();
+			result.put("ADD", objectsToCopyToDevice);
+			result.put("REMOVE", objectsToRemoveFromDevice);
+			filesRemoved = objectsToRemoveFromDevice.size();
+			return result;
 		}
 
 		@Override
 		protected void done() {
-		    try {
-		        Map<String, List<ILocalAudioObject>> files = get();
+			try {
+				Map<String, List<ILocalAudioObject>> files = get();
 
-		        dialog.hideDialog();
+				dialog.hideDialog();
 
-		        // Remove elements from device
-		        final List<ILocalAudioObject> filesToRemove = files.get("REMOVE");
-		        repositoryHandler.startTransaction();
-		        repositoryHandler.remove(filesToRemove);
-		        repositoryHandler.endTransaction();
-		        SynchronizeDeviceWithPlayListAction.this.setEnabled(false);
-		        new SwingWorker<Void, Void>() {
-		            @Override
-		            protected Void doInBackground() {
-		                for (ILocalAudioObject audioFile : filesToRemove) {
-		                    File file = audioFile.getFile();
-		                    if (file != null && !file.delete()) {
-	                        	Logger.error(StringUtils.getString(file, " not deleted"));
-		                    }
-		                }
-		                return null;
-		            }
+				// Remove elements from device
+				final List<ILocalAudioObject> filesToRemove = files.get("REMOVE");
+				repositoryHandler.remove(filesToRemove);
+				SynchronizeDeviceWithPlayListAction.this.setEnabled(false);
+				new SwingWorker<Void, Void>() {
+					@Override
+					protected Void doInBackground() {
+						for (ILocalAudioObject audioFile : filesToRemove) {
+							File file = audioFile.getFile();
+							if (file != null && !file.delete()) {
+								Logger.error(StringUtils.getString(file, " not deleted"));
+							}
+						}
+						return null;
+					}
 
-		            @Override
-		            protected void done() {
-		                SynchronizeDeviceWithPlayListAction.this.setEnabled(true);
-		            }
-		        }.execute();
+					@Override
+					protected void done() {
+						SynchronizeDeviceWithPlayListAction.this.setEnabled(true);
+					}
+				}.execute();
 
-		        // Copy elements to device if necessary, otherwise show message and finish
-		        if (!files.get("ADD").isEmpty()) {
-		            // The process will show message when finish
-		        	deviceHandler.copyFilesToDevice(files.get("ADD"), new IProcessListener<List<File>>() {
-						
+				// Copy elements to device if necessary, otherwise show message and finish
+				if (!files.get("ADD").isEmpty()) {
+					// The process will show message when finish
+					deviceHandler.copyFilesToDevice(files.get("ADD"), new IProcessListener<List<File>>() {
+
 						@Override
-						public void processFinished(boolean ok, List<File> result) {
+						public void processFinished(final boolean ok, final List<File> result) {
 							showMessage(filesRemoved, true);
 						}
-						
+
 						@Override
 						public void processCanceled() {
 						}
 					});
-		        } else {
-		            showMessage(filesRemoved, false);
-		        }
-		    } catch (InterruptedException e) {
-		        Logger.error(e);
-		    } catch (ExecutionException e) {
-		        Logger.error(e);
+				} else {
+					showMessage(filesRemoved, false);
+				}
+			} catch (InterruptedException e) {
+				Logger.error(e);
+			} catch (ExecutionException e) {
+				Logger.error(e);
 			}
 		}
 	}

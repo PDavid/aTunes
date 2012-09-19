@@ -37,45 +37,48 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class OpenFolderAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    private static final long serialVersionUID = 1682289345922375850L;
+	private static final long serialVersionUID = 1682289345922375850L;
 
-    private IOSManager osManager;
-    
-    private IDesktop desktop;
-    
-    /**
-     * @param osManager
-     */
-    public void setOsManager(IOSManager osManager) {
+	private IOSManager osManager;
+
+	private IDesktop desktop;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-    
-    /**
-     * @param desktop
-     */
-    public void setDesktop(IDesktop desktop) {
+
+	/**
+	 * @param desktop
+	 */
+	public void setDesktop(final IDesktop desktop) {
 		this.desktop = desktop;
 	}
-    
-    public OpenFolderAction() {
-        super(I18nUtils.getString("OPEN_FOLDER"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("OPEN_FOLDER"));
-    }
 
-    @Override
-    protected void executeAction(List<ILocalAudioObject> objects) {
-        HashSet<File> foldersToOpen = new HashSet<File>();
+	/**
+	 * Default constructor
+	 */
+	public OpenFolderAction() {
+		super(I18nUtils.getString("OPEN_FOLDER"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("OPEN_FOLDER"));
+	}
 
-        // Get folders ...
-        for (ILocalAudioObject ao : objects) {
-            if (!foldersToOpen.contains(ao.getFile().getParentFile())) {
-                foldersToOpen.add(ao.getFile().getParentFile());
-            }
-        }
+	@Override
+	protected void executeAction(final List<ILocalAudioObject> objects) {
+		HashSet<File> foldersToOpen = new HashSet<File>();
 
-        // ... then open
-        for (File folder : foldersToOpen) {
-        	desktop.openFile(folder, osManager);
-        }
-    }
+		// Get folders ...
+		for (ILocalAudioObject ao : objects) {
+			if (!foldersToOpen.contains(ao.getFile().getParentFile())) {
+				foldersToOpen.add(ao.getFile().getParentFile());
+			}
+		}
+
+		// ... then open
+		for (File folder : foldersToOpen) {
+			desktop.openFile(folder, osManager);
+		}
+	}
 }

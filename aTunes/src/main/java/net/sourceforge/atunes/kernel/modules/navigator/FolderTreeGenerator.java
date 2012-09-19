@@ -29,7 +29,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -48,6 +47,15 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class FolderTreeGenerator implements ITreeGenerator {
 
 	private INavigationViewSorter folderSorter;
+	
+	private IOSManager osManager;
+	
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
 	
 	/**
 	 * @param folderSorter
@@ -106,7 +114,7 @@ public class FolderTreeGenerator implements ITreeGenerator {
     		if (folderNode != null) {
     			IFolder f = (IFolder) folderNode.getUserObject();
 				String searchPath = filePath.substring(f.getName().length()+1);
-				String[] paths = searchPath.split(Context.getBean(IOSManager.class).getFileSeparator());
+				String[] paths = searchPath.split(osManager.getFileSeparator());
 				TreePath treePath = getTreePathForLevel(paths, 0, folderNode);
 				if (treePath != null) {
 					tree.setSelectionPath(treePath);

@@ -34,6 +34,7 @@ import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 
 /**
  * Column showing score
@@ -42,146 +43,155 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
  */
 public class ScoreColumn extends AbstractColumn<Integer> {
 
-    private final class ScoreColumnCellEditorRenderer extends AbstractListCellRendererCode<JLabel, Integer> {
+	private final class ScoreColumnCellEditorRenderer extends AbstractListCellRendererCode<JLabel, Integer> {
 
 		@Override
-		public JComponent getComponent(JLabel superComponent, JList list, Integer value, int index, boolean isSelected, boolean cellHasFocus) {
-		    setLabel(superComponent, value);
-		    return superComponent;
+		public JComponent getComponent(final JLabel superComponent, final JList list, final Integer value, final int index, final boolean isSelected, final boolean cellHasFocus) {
+			setLabel(superComponent, value);
+			return superComponent;
 		}
 	}
 
 	private static final long serialVersionUID = -2673502888298485650L;
-    
-    private transient ILookAndFeelManager lookAndFeelManager;
-    
-    private IIconFactory star1Icon;
-    private IIconFactory star2Icon;
-    private IIconFactory star3Icon;
-    private IIconFactory star4Icon;
-    private IIconFactory star5Icon;
-    
-    private static final Integer[] STARS = new Integer[] { 0, 1, 2, 3, 4, 5 };
-    
-    private final transient ScoreColumnCellEditorRenderer editor = new ScoreColumnCellEditorRenderer();
-    
-    /**
-     * @param star1Icon
-     */
-    public void setStar1Icon(IIconFactory star1Icon) {
+
+	private transient ILookAndFeelManager lookAndFeelManager;
+
+	private IIconFactory star1Icon;
+	private IIconFactory star2Icon;
+	private IIconFactory star3Icon;
+	private IIconFactory star4Icon;
+	private IIconFactory star5Icon;
+
+	private static final Integer[] STARS = new Integer[] { 0, 1, 2, 3, 4, 5 };
+
+	private IRepositoryHandler repositoryHandler;
+
+	private final transient ScoreColumnCellEditorRenderer editor = new ScoreColumnCellEditorRenderer();
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+
+	/**
+	 * @param star1Icon
+	 */
+	public void setStar1Icon(final IIconFactory star1Icon) {
 		this.star1Icon = star1Icon;
 	}
-    
-    /**
-     * @param star2Icon
-     */
-    public void setStar2Icon(IIconFactory star2Icon) {
+
+	/**
+	 * @param star2Icon
+	 */
+	public void setStar2Icon(final IIconFactory star2Icon) {
 		this.star2Icon = star2Icon;
 	}
-    
-    /**
-     * @param star3Icon
-     */
-    public void setStar3Icon(IIconFactory star3Icon) {
+
+	/**
+	 * @param star3Icon
+	 */
+	public void setStar3Icon(final IIconFactory star3Icon) {
 		this.star3Icon = star3Icon;
 	}
-    
-    /**
-     * @param star4Icon
-     */
-    public void setStar4Icon(IIconFactory star4Icon) {
+
+	/**
+	 * @param star4Icon
+	 */
+	public void setStar4Icon(final IIconFactory star4Icon) {
 		this.star4Icon = star4Icon;
 	}
-    
-    /**
-     * @param star5Icon
-     */
-    public void setStar5Icon(IIconFactory star5Icon) {
+
+	/**
+	 * @param star5Icon
+	 */
+	public void setStar5Icon(final IIconFactory star5Icon) {
 		this.star5Icon = star5Icon;
 	}
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
-    /**
-     * Default constructor
-     */
-    public ScoreColumn() {
-        super("SCORE");
-        setWidth(100);
-        setVisible(true);
-        setEditable(true);
-    }
+	/**
+	 * Default constructor
+	 */
+	public ScoreColumn() {
+		super("SCORE");
+		setWidth(100);
+		setVisible(true);
+		setEditable(true);
+	}
 
-    @Override
-    public TableCellEditor getCellEditor() {
-        JComboBox comboBox = new JComboBox(STARS);
-        comboBox.setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(editor));
-        return new DefaultCellEditor(comboBox);
-    }
+	@Override
+	public TableCellEditor getCellEditor() {
+		JComboBox comboBox = new JComboBox(STARS);
+		comboBox.setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(editor));
+		return new DefaultCellEditor(comboBox);
+	}
 
-    @Override
-    public TableCellRenderer getCellRenderer() {
-        return lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new AbstractTableCellRendererCode<JLabel, Integer>(lookAndFeelManager.getCurrentLookAndFeel()) {
+	@Override
+	public TableCellRenderer getCellRenderer() {
+		return lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new AbstractTableCellRendererCode<JLabel, Integer>(lookAndFeelManager.getCurrentLookAndFeel()) {
 
-            @Override
-            public JLabel getComponent(JLabel superComponent, JTable t, Integer value, boolean isSelected, boolean hasFocus, int row, int column) {
-                setLabel(superComponent, value);
-                return superComponent;
-            }
-        });
-    }
+			@Override
+			public JLabel getComponent(final JLabel superComponent, final JTable t, final Integer value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+				setLabel(superComponent, value);
+				return superComponent;
+			}
+		});
+	}
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        return -((Integer) ao1.getStars()).compareTo(ao2.getStars());
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return -((Integer) ao1.getStars()).compareTo(ao2.getStars());
+	}
 
-    @Override
-    public Integer getValueFor(IAudioObject audioObject) {
-        return audioObject.getStars();
-    }
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
 
-    @Override
-    public void setValueFor(IAudioObject audioObject, Object value) {
-        audioObject.setStars((Integer) value);
-    }
+	@Override
+	public Integer getValueFor(final IAudioObject audioObject) {
+		return audioObject.getStars();
+	}
 
-    /**
-     * Sets proper icon and text
-     * 
-     * @param label
-     * @param score
-     */
-    private void setLabel(JLabel label, Integer score) {
-        label.setText(null);
-        IIconFactory icon = score != null ? getIcon(score) : null;
-    	// TODO: ICONOS Sacar a un renderer
-        label.setIcon(icon != null ? icon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(label, false)) : null);
-    }
-    
-    /**
-     * Returns icon for score
-     * @param score
-     * @return
-     */
-    private IIconFactory getIcon(int score) {
-    	switch (score) {
-			case 1: return star1Icon;
-			case 2: return star2Icon;
-			case 3: return star3Icon;
-			case 4: return star4Icon;
-			case 5: return star5Icon;
+	@Override
+	public void setValueFor(final IAudioObject audioObject, final Object value) {
+		repositoryHandler.setStars(audioObject, (Integer)value);
+	}
+
+	/**
+	 * Sets proper icon and text
+	 * 
+	 * @param label
+	 * @param score
+	 */
+	private void setLabel(final JLabel label, final Integer score) {
+		label.setText(null);
+		IIconFactory icon = score != null ? getIcon(score) : null;
+		// TODO: ICONOS Sacar a un renderer
+		label.setIcon(icon != null ? icon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(label, false)) : null);
+	}
+
+	/**
+	 * Returns icon for score
+	 * @param score
+	 * @return
+	 */
+	private IIconFactory getIcon(final int score) {
+		switch (score) {
+		case 1: return star1Icon;
+		case 2: return star2Icon;
+		case 3: return star3Icon;
+		case 4: return star4Icon;
+		case 5: return star5Icon;
 		}
-    	return null;
-    }
+		return null;
+	}
 }

@@ -62,6 +62,8 @@ public class RepositoryNavigationViewTreePopupMenu extends JPopupMenu {
 
     private AbstractActionOverSelectedTreeObjects<IFolder> refreshFolderFromNavigatorAction;
     
+    private AbstractActionOverSelectedTreeObjects<IFolder> moveFolderFromNavigatorAction;
+    
     private Action editTitlesAction;
     
     private IBeanFactory beanFactory;
@@ -86,9 +88,12 @@ public class RepositoryNavigationViewTreePopupMenu extends JPopupMenu {
         openFolderFromRepositoryNavigationView.setAudioObjectsSource(repositoryNavigationView);
         add(openFolderFromRepositoryNavigationView);
         
+        moveFolderFromNavigatorAction.setTreeObjectsSource(repositoryNavigationView);
+        add(moveFolderFromNavigatorAction);
+
         refreshFolderFromNavigatorAction.setTreeObjectsSource(repositoryNavigationView);
         add(refreshFolderFromNavigatorAction);
-        
+                
         add(new JSeparator());
         add(new EditTagMenu(false, repositoryNavigationView));
         add(editTitlesAction);
@@ -178,5 +183,13 @@ public class RepositoryNavigationViewTreePopupMenu extends JPopupMenu {
 	 */
 	public void setRepositoryNavigationView(INavigationView repositoryNavigationView) {
 		this.repositoryNavigationView = repositoryNavigationView;
+	}
+	
+	/**
+	 * @param moveFolderFromNavigatorAction
+	 */
+	public void setMoveFolderFromNavigatorAction(
+			AbstractActionOverSelectedTreeObjects<IFolder> moveFolderFromNavigatorAction) {
+		this.moveFolderFromNavigatorAction = moveFolderFromNavigatorAction;
 	}
 }

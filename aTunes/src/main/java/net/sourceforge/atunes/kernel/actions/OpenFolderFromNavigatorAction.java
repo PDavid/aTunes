@@ -44,80 +44,83 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class OpenFolderFromNavigatorAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    private static final long serialVersionUID = 8251208528513562627L;
+	private static final long serialVersionUID = 8251208528513562627L;
 
-    private INavigationHandler navigationHandler;
-    
-    private IDesktop desktop;
-    
-    private IOSManager osManager;
-    
-    public OpenFolderFromNavigatorAction() {
-        super(I18nUtils.getString("OPEN_FOLDER"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("OPEN_FOLDER"));
-    }
-    
-    /**
-     * @param osManager
-     */
-    public void setOsManager(IOSManager osManager) {
+	private INavigationHandler navigationHandler;
+
+	private IDesktop desktop;
+
+	private IOSManager osManager;
+
+	/**
+	 * Default constructor
+	 */
+	public OpenFolderFromNavigatorAction() {
+		super(I18nUtils.getString("OPEN_FOLDER"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("OPEN_FOLDER"));
+	}
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-    
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-    
-    /**
-     * @param desktop
-     */
-    public void setDesktop(IDesktop desktop) {
+
+	/**
+	 * @param desktop
+	 */
+	public void setDesktop(final IDesktop desktop) {
 		this.desktop = desktop;
 	}
-    
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        List<IAudioObject> filesSelectedInNavigator = navigationHandler.getFilesSelectedInNavigator();
-        return sameParentFile(new LocalAudioObjectFilter().getLocalAudioObjects(filesSelectedInNavigator));
-    }
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return sameParentFile(new LocalAudioObjectFilter().getLocalAudioObjects(selection));
-    }
-    
-    /**
-     * Checks if a collection of files have the same parent file.
-     * 
-     * @param c
-     *            collection of files
-     * @return if a collection of files have the same parent file
-     */
-    private boolean sameParentFile(Collection<? extends ILocalAudioObject> c) {
-        Set<File> set = new HashSet<File>();
-        for (ILocalAudioObject af : c) {
-            set.add(af.getFile().getParentFile());
-        }
-        return set.size() == 1;
-    }
-    
-    @Override
-    protected void executeAction(List<ILocalAudioObject> objects) {
-        HashSet<File> foldersToOpen = new HashSet<File>();
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<DefaultMutableTreeNode> selection) {
+		List<IAudioObject> filesSelectedInNavigator = navigationHandler.getFilesSelectedInNavigator();
+		return sameParentFile(new LocalAudioObjectFilter().getLocalAudioObjects(filesSelectedInNavigator));
+	}
 
-        // Get folders ...
-        for (ILocalAudioObject ao : objects) {
-            if (!foldersToOpen.contains(ao.getFile().getParentFile())) {
-                foldersToOpen.add(ao.getFile().getParentFile());
-            }
-        }
+	@Override
+	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
+		return sameParentFile(new LocalAudioObjectFilter().getLocalAudioObjects(selection));
+	}
 
-        // ... then open
-        for (File folder : foldersToOpen) {
-        	desktop.openFile(folder, osManager);
-        }
-    }
+	/**
+	 * Checks if a collection of files have the same parent file.
+	 * 
+	 * @param c
+	 *            collection of files
+	 * @return if a collection of files have the same parent file
+	 */
+	private boolean sameParentFile(final Collection<? extends ILocalAudioObject> c) {
+		Set<File> set = new HashSet<File>();
+		for (ILocalAudioObject af : c) {
+			set.add(af.getFile().getParentFile());
+		}
+		return set.size() == 1;
+	}
+
+	@Override
+	protected void executeAction(final List<ILocalAudioObject> objects) {
+		HashSet<File> foldersToOpen = new HashSet<File>();
+
+		// Get folders ...
+		for (ILocalAudioObject ao : objects) {
+			if (!foldersToOpen.contains(ao.getFile().getParentFile())) {
+				foldersToOpen.add(ao.getFile().getParentFile());
+			}
+		}
+
+		// ... then open
+		for (File folder : foldersToOpen) {
+			desktop.openFile(folder, osManager);
+		}
+	}
 }

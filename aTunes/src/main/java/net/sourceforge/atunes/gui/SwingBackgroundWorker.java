@@ -22,50 +22,44 @@ package net.sourceforge.atunes.gui;
 
 import java.util.concurrent.Callable;
 
-import javax.swing.SwingUtilities;
-
 import net.sourceforge.atunes.model.IBackgroundWorker;
 
 /**
  * Implementation of a IBackgroundWorker using Swing
  * @author alex
- *
+ * @param <T>
  */
 public class SwingBackgroundWorker<T> implements IBackgroundWorker<T> {
 
 	private Callable<T> backgroundActions;
-	
-	private Runnable graphicalActionsAfterStart;
-	
+
+	private Runnable graphicalActionsBeforeStart;
+
 	private IActionsWithBackgroundResult<T> graphicalActionsWhenDone;
-	
+
 	private BackgroundSwingWorker<T> backgroundSwingWorker;
 
 	@Override
-	public void setBackgroundActions(Callable<T> backgroundActions) {
+	public void setBackgroundActions(final Callable<T> backgroundActions) {
 		this.backgroundActions = backgroundActions;
 	}
-	
+
 	@Override
-	public void setActionsAfterBackgroundStarted(Runnable afterStartActions) {
-		this.graphicalActionsAfterStart = afterStartActions;
+	public void setActionsBeforeBackgroundStarts(final Runnable afterStartActions) {
+		this.graphicalActionsBeforeStart = afterStartActions;
 	}
-	
+
 	@Override
-	public void setActionsWhenDone(IActionsWithBackgroundResult<T> graphicalActionsWhenDone) {
+	public void setActionsWhenDone(final IActionsWithBackgroundResult<T> graphicalActionsWhenDone) {
 		this.graphicalActionsWhenDone = graphicalActionsWhenDone;
 	}
-	
+
 	@Override
 	public void execute() {
-		backgroundSwingWorker = new BackgroundSwingWorker<T>(backgroundActions, graphicalActionsWhenDone);
+		backgroundSwingWorker = new BackgroundSwingWorker<T>(graphicalActionsBeforeStart, backgroundActions, graphicalActionsWhenDone);
 		backgroundSwingWorker.execute();
-		
-		if (graphicalActionsAfterStart != null) {
-			SwingUtilities.invokeLater(graphicalActionsAfterStart);
-		}
 	}
-	
+
 	@Override
 	public boolean isDone() {
 		return backgroundSwingWorker != null ? backgroundSwingWorker.isDone() : false;

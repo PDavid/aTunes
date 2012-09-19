@@ -26,7 +26,6 @@ import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 
 /**
  * The playlist table model.
@@ -35,124 +34,109 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
  */
 public class PlayListTableModel extends AbstractColumnSetTableModel {
 
-    /**
-     * Reference to the visible play list
-     */
-    private IPlayList visiblePlayList = null;
-    
-    private IPlayListHandler playListHandler;
-    
-    private IRepositoryHandler repositoryHandler;
+	/**
+	 * Reference to the visible play list
+	 */
+	private IPlayList visiblePlayList = null;
 
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+	private IPlayListHandler playListHandler;
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
+
+	/**
+	 * Return row count.
+	 * 
+	 * @return the row count
+	 */
+	@Override
+	public int getRowCount() {
+		if (visiblePlayList != null) {
+			return visiblePlayList.size();
+		}
+		return 0;
 	}
 
-    /**
-     * Return row count.
-     * 
-     * @return the row count
-     */
-    @Override
-    public int getRowCount() {
-        if (visiblePlayList != null) {
-            return visiblePlayList.size();
-        }
-        return 0;
-    }
+	/**
+	 * Returns value of a row and column.
+	 * 
+	 * @param rowIndex
+	 *            the row index
+	 * @param colIndex
+	 *            the col index
+	 * 
+	 * @return the value at
+	 */
+	@Override
+	public Object getValueAt(final int rowIndex, final int colIndex) {
+		// Call Column method to get value from AudioFile
+		if (visiblePlayList != null) {
+			return getColumn(colIndex).getValueFor(visiblePlayList.get(rowIndex));
+		}
+		return null;
+	}
 
-    /**
-     * Returns value of a row and column.
-     * 
-     * @param rowIndex
-     *            the row index
-     * @param colIndex
-     *            the col index
-     * 
-     * @return the value at
-     */
-    @Override
-    public Object getValueAt(int rowIndex, int colIndex) {
-        // Call Column method to get value from AudioFile
-        if (visiblePlayList != null) {
-            return getColumn(colIndex).getValueFor(visiblePlayList.get(rowIndex));
-        }
-        return null;
-    }
+	/**
+	 * Returns if a cell is editable.
+	 * 
+	 * @param rowIndex
+	 *            the row index
+	 * @param columnIndex
+	 *            the column index
+	 * 
+	 * @return true, if checks if is cell editable
+	 */
+	@Override
+	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
+		return getColumn(columnIndex).isEditable();
+	}
 
-    /**
-     * Returns if a cell is editable.
-     * 
-     * @param rowIndex
-     *            the row index
-     * @param columnIndex
-     *            the column index
-     * 
-     * @return true, if checks if is cell editable
-     */
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return getColumn(columnIndex).isEditable();
-    }
+	/**
+	 * Sets value for a cell
+	 * 
+	 * @param aValue
+	 *            the a value
+	 * @param rowIndex
+	 *            the row index
+	 * @param columnIndex
+	 *            the column index
+	 */
+	@Override
+	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
+		// AudioFile
+		IAudioObject audioObject = visiblePlayList.get(rowIndex);
 
-    /**
-     * Sets value for a cell
-     * 
-     * @param aValue
-     *            the a value
-     * @param rowIndex
-     *            the row index
-     * @param columnIndex
-     *            the column index
-     */
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-    	// Open repository transaction
-    	repositoryHandler.startTransaction();
-    	
-        // AudioFile
-        IAudioObject audioObject = visiblePlayList.get(rowIndex);
+		// Call column set value
+		getColumn(columnIndex).setValueFor(audioObject, aValue);
 
-        // Call column set value
-        getColumn(columnIndex).setValueFor(audioObject, aValue);
+		// After changing audio object refresh playlist, as the same object can be duplicated
+		playListHandler.refreshPlayList();
+	}
 
-        // After changing audio object refresh playlist, as the same object can be duplicated
-        playListHandler.refreshPlayList();
+	/**
+	 * @param visiblePlayList
+	 *            the visiblePlayList to set
+	 */
+	public void setVisiblePlayList(final IPlayList visiblePlayList) {
+		this.visiblePlayList = visiblePlayList;
+	}
 
-        // End repository transaction
-        repositoryHandler.endTransaction();
-    }
+	@Override
+	public void sort(final Comparator<IAudioObject> comparator) {
+		// If comparator is null, do nothing
+		if (comparator == null) {
+			return;
+		}
 
-    /**
-     * @param visiblePlayList
-     *            the visiblePlayList to set
-     */
-    public void setVisiblePlayList(IPlayList visiblePlayList) {
-        this.visiblePlayList = visiblePlayList;
-    }
+		// If current play list is empty, don't sort
+		if (visiblePlayList == null || visiblePlayList.isEmpty()) {
+			return;
+		}
 
-    @Override
-    public void sort(Comparator<IAudioObject> comparator) {
-        // If comparator is null, do nothing
-        if (comparator == null) {
-            return;
-        }
-
-        // If current play list is empty, don't sort
-        if (visiblePlayList == null || visiblePlayList.isEmpty()) {
-            return;
-        }
-
-        visiblePlayList.sort(comparator);
-    }
+		visiblePlayList.sort(comparator);
+	}
 }

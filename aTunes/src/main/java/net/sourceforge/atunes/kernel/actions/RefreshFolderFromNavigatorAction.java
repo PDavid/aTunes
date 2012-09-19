@@ -58,6 +58,9 @@ public class RefreshFolderFromNavigatorAction extends AbstractActionOverSelected
 		this.repositoryHandler = repositoryHandler;
 	}
 	
+	/**
+	 * Default constructor
+	 */
 	public RefreshFolderFromNavigatorAction() {
         super(I18nUtils.getString("REFRESH_FOLDER"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH_FOLDER"));
@@ -86,5 +89,4 @@ public class RefreshFolderFromNavigatorAction extends AbstractActionOverSelected
 
         return true;
     }
-    
 }

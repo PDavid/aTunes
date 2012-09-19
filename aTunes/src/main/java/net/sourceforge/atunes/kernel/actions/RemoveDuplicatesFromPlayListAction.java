@@ -121,7 +121,7 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
         IBackgroundWorker<List<Integer>> worker = backgroundWorkerFactory.getWorker();
-        worker.setActionsAfterBackgroundStarted(new Runnable() {
+        worker.setActionsBeforeBackgroundStarts(new Runnable() {
         	@Override
         	public void run() {
         		dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
