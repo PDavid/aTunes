@@ -48,100 +48,100 @@ import org.jaudiotagger.tag.datatype.Artwork;
 public final class AudioFilePictureUtils {
 
 	private AudioFilePictureUtils() {
-    }
-    
-    /**
-     * Gets the external picture.
-     * 
-     * @param audioObject
-     * @param index
-     * @param width
-     * @param height
-     * @param osManager
-     * @return
-     */
-    public static ImageIcon getExternalPicture(IAudioObject audioObject, int width, int height, IOSManager osManager) {
-    	if (!(audioObject instanceof ILocalAudioObject)) {
-    		return null;
-    	}
-    	
-    	ILocalAudioObject file = (ILocalAudioObject) audioObject;
+	}
 
-        // Try first to get picture with file name "ARTIST_ALBUM_COVER" pattern
-        String coverFileName = getFileNameForCover(file, osManager);
-        ImageIcon image = null;
-        if (coverFileName != null && new File(coverFileName).exists()) {
-            image = new ImageIcon(coverFileName);
-        }
-        if (image != null) {
-            if (width == -1 || height == -1) {
-                return image;
-            }
-            int maxSize = (image.getIconWidth() > image.getIconHeight()) ? image.getIconWidth() : image.getIconHeight();
-            int newWidth = (int) ((float) image.getIconWidth() / (float) maxSize * width);
-            int newHeight = (int) ((float) image.getIconHeight() / (float) maxSize * height);
-            return ImageUtils.scaleImageBicubic(image.getImage(), newWidth, newHeight);
-        }
-        return image;
-    }
+	/**
+	 * Gets the external picture.
+	 * 
+	 * @param audioObject
+	 * @param index
+	 * @param width
+	 * @param height
+	 * @param osManager
+	 * @return
+	 */
+	public static ImageIcon getExternalPicture(final IAudioObject audioObject, final int width, final int height, final IOSManager osManager) {
+		if (!(audioObject instanceof ILocalAudioObject)) {
+			return null;
+		}
 
-    /**
-     * Returns a file name to save an external image associated to an audio
-     * file.
-     * 
-     * @param file
-     * @param osManager
-     * @return
-     */
-    public static String getFileNameForCover(ILocalAudioObject file, IOSManager osManager) {
-        if (file == null || file.getFile() == null) {
-            return null;
-        }
-        return StringUtils.getString(file.getFile().getParentFile().getAbsolutePath(), osManager.getFileSeparator(), file.getArtist(), '_', file.getAlbum(), "_Cover.", ImageUtils.FILES_EXTENSION);
-    }
+		ILocalAudioObject file = (ILocalAudioObject) audioObject;
 
-    /**
-     * Returns image stored into audio file, if exists.
-     * 
-     * @param audioObject
-     *            the audioObject
-     * @param width
-     *            Width in pixels or -1 to keep original width
-     * @param height
-     *            Height in pixels or -1 to keep original height
-     * 
-     * @return the inside picture
-     */
-    public static ImageIcon getInsidePicture(IAudioObject audioObject, int width, int height) {
-    	if (!(audioObject instanceof ILocalAudioObject)) {
-    		return null;
-    	}
-    	
-    	ILocalAudioObject file = (ILocalAudioObject) audioObject;
-    	if (file.getFile() == null) {
-    		return null;
-    	}
-    	Logger.debug("Getting internal image to file: ", file.getFile().getAbsolutePath());
-        try {
-            org.jaudiotagger.tag.Tag tag = AudioFileIO.read(file.getFile()).getTag();
-            if (tag == null) {
-                return null;
-            }
-            Artwork artwork = tag.getFirstArtwork();
-            byte[] imageRawData = artwork != null ? artwork.getBinaryData() : null;
+		// Try first to get picture with file name "ARTIST_ALBUM_COVER" pattern
+		String coverFileName = getFileNameForCover(file, osManager);
+		ImageIcon image = null;
+		if (coverFileName != null && new File(coverFileName).exists()) {
+			image = new ImageIcon(coverFileName);
+		}
+		if (image != null) {
+			if (width == -1 || height == -1) {
+				return image;
+			}
+			int maxSize = (image.getIconWidth() > image.getIconHeight()) ? image.getIconWidth() : image.getIconHeight();
+			int newWidth = (int) ((float) image.getIconWidth() / (float) maxSize * width);
+			int newHeight = (int) ((float) image.getIconHeight() / (float) maxSize * height);
+			return ImageUtils.scaleImageBicubic(image.getImage(), newWidth, newHeight);
+		}
+		return image;
+	}
 
-            if (imageRawData != null) {
-                return processInternalPicture(width, height, imageRawData);
-            }
-            return null;
-        } catch (FileNotFoundException e) {
-        	Logger.error(StringUtils.getString("File not found: ", file.getFile().getAbsolutePath()));
-            return null;
-        } catch (Exception e) {
-        	Logger.error(e);
-            return null;
-        }
-    }
+	/**
+	 * Returns a file name to save an external image associated to an audio
+	 * file.
+	 * 
+	 * @param file
+	 * @param osManager
+	 * @return
+	 */
+	public static String getFileNameForCover(final ILocalAudioObject file, final IOSManager osManager) {
+		if (file == null || file.getFile() == null) {
+			return null;
+		}
+		return StringUtils.getString(net.sourceforge.atunes.utils.FileUtils.getPath(file.getFile().getParentFile()), osManager.getFileSeparator(), file.getArtist(), '_', file.getAlbum(), "_Cover.", ImageUtils.FILES_EXTENSION);
+	}
+
+	/**
+	 * Returns image stored into audio file, if exists.
+	 * 
+	 * @param audioObject
+	 *            the audioObject
+	 * @param width
+	 *            Width in pixels or -1 to keep original width
+	 * @param height
+	 *            Height in pixels or -1 to keep original height
+	 * 
+	 * @return the inside picture
+	 */
+	public static ImageIcon getInsidePicture(final IAudioObject audioObject, final int width, final int height) {
+		if (!(audioObject instanceof ILocalAudioObject)) {
+			return null;
+		}
+
+		ILocalAudioObject file = (ILocalAudioObject) audioObject;
+		if (file.getFile() == null) {
+			return null;
+		}
+		Logger.debug("Getting internal image to file: ", net.sourceforge.atunes.utils.FileUtils.getPath(file.getFile()));
+		try {
+			org.jaudiotagger.tag.Tag tag = AudioFileIO.read(file.getFile()).getTag();
+			if (tag == null) {
+				return null;
+			}
+			Artwork artwork = tag.getFirstArtwork();
+			byte[] imageRawData = artwork != null ? artwork.getBinaryData() : null;
+
+			if (imageRawData != null) {
+				return processInternalPicture(width, height, imageRawData);
+			}
+			return null;
+		} catch (FileNotFoundException e) {
+			Logger.error(StringUtils.getString("File not found: ", net.sourceforge.atunes.utils.FileUtils.getPath(file.getFile())));
+			return null;
+		} catch (Exception e) {
+			Logger.error(e);
+			return null;
+		}
+	}
 
 	/**
 	 * @param width
@@ -149,41 +149,41 @@ public final class AudioFilePictureUtils {
 	 * @param imageRawData
 	 * @throws IOException
 	 */
-	private static ImageIcon processInternalPicture(int width, int height, byte[] imageRawData) throws IOException {
+	private static ImageIcon processInternalPicture(final int width, final int height, final byte[] imageRawData) throws IOException {
 		BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
 		if (bi != null) {
-		    ImageIcon imageIcon = new ImageIcon(bi);
-		    if (width != -1 || height != -1) {
-		        int maxSize = (imageIcon.getIconWidth() > imageIcon.getIconHeight()) ? imageIcon.getIconWidth() : imageIcon.getIconHeight();
-		        int newWidth = (int) ((float) imageIcon.getIconWidth() / (float) maxSize * width);
-		        int newHeight = (int) ((float) imageIcon.getIconHeight() / (float) maxSize * height);
+			ImageIcon imageIcon = new ImageIcon(bi);
+			if (width != -1 || height != -1) {
+				int maxSize = (imageIcon.getIconWidth() > imageIcon.getIconHeight()) ? imageIcon.getIconWidth() : imageIcon.getIconHeight();
+				int newWidth = (int) ((float) imageIcon.getIconWidth() / (float) maxSize * width);
+				int newHeight = (int) ((float) imageIcon.getIconHeight() / (float) maxSize * height);
 
-		        BufferedImage resizedImage = ImageUtils.toBufferedImage(ImageUtils.scaleImageBicubic(imageIcon.getImage(), newWidth, newHeight).getImage());
-		        if (resizedImage != null) {
-		            return new ImageIcon(resizedImage);
-		        }
-		    } else {
-		        return new ImageIcon(bi);
-		    }
+				BufferedImage resizedImage = ImageUtils.toBufferedImage(ImageUtils.scaleImageBicubic(imageIcon.getImage(), newWidth, newHeight).getImage());
+				if (resizedImage != null) {
+					return new ImageIcon(resizedImage);
+				}
+			} else {
+				return new ImageIcon(bi);
+			}
 		}
 		return null;
 	}
 
-    /**
-     * Saves and internal image of an audio file to a file.
-     * 
-     * @param song
-     *            the song
-     * @param file
-     *            the file
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     * @throws ImageWriteException 
-     */
-    public static void savePictureToFile(ILocalAudioObject song, File file) throws IOException, ImageWriteException {
-        ImageIcon image = getInsidePicture(song, -1, -1);
-        ImageUtils.writeImageToFile(image.getImage(), file.getAbsolutePath());
-    }
+	/**
+	 * Saves and internal image of an audio file to a file.
+	 * 
+	 * @param song
+	 *            the song
+	 * @param file
+	 *            the file
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws ImageWriteException
+	 */
+	public static void savePictureToFile(final ILocalAudioObject song, final File file) throws IOException, ImageWriteException {
+		ImageIcon image = getInsidePicture(song, -1, -1);
+		ImageUtils.writeImageToFile(image.getImage(), net.sourceforge.atunes.utils.FileUtils.getPath(file));
+	}
 
 }

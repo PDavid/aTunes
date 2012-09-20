@@ -27,6 +27,7 @@ import net.sourceforge.atunes.kernel.modules.tray.CommonPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.springframework.context.ApplicationContext;
@@ -35,23 +36,23 @@ import org.springframework.context.ApplicationContextAware;
 public class LinuxOperatingSystem extends OperatingSystemAdapter implements ApplicationContextAware {
 
 	private ApplicationContext context;
-	
+
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
+	public void setApplicationContext(final ApplicationContext applicationContext) {
 		this.context = applicationContext;
 	}
-	
+
 	/**
-     * Name of the Linux command
-     */
-    private static final String COMMAND_LINUX = "aTunes.sh";
-    
-    /**
-     * Command to be executed on Linux systems to launch mplayer. Mplayer should
-     * be in $PATH
-     */
-    private static final String MPLAYER_LINUX_COMMAND = "mplayer";
-    
+	 * Name of the Linux command
+	 */
+	private static final String COMMAND_LINUX = "aTunes.sh";
+
+	/**
+	 * Command to be executed on Linux systems to launch mplayer. Mplayer should
+	 * be in $PATH
+	 */
+	private static final String MPLAYER_LINUX_COMMAND = "mplayer";
+
 	@Override
 	public String getAppDataFolder() {
 		return StringUtils.getString(getUserHome(), "/.atunes");
@@ -59,38 +60,38 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter implements Appl
 
 	@Override
 	public String getLaunchCommand() {
-		return new File(StringUtils.getString("./", COMMAND_LINUX)).getAbsolutePath();
+		return FileUtils.getPath(new File(StringUtils.getString("./", COMMAND_LINUX)));
 	}
-	
+
 	@Override
 	public String getLaunchParameters() {
 		return null;
 	}
-	
+
 	@Override
-	public boolean isPlayerEngineSupported(IPlayerEngine engine) {
+	public boolean isPlayerEngineSupported(final IPlayerEngine engine) {
 		return true; // all supported
 	}
-	
+
 	@Override
-	public String getPlayerEngineCommand(IPlayerEngine engine) {
+	public String getPlayerEngineCommand(final IPlayerEngine engine) {
 		return engine instanceof MPlayerEngine ? MPLAYER_LINUX_COMMAND : null;
 	}
-	
+
 	@Override
 	public boolean areTrayIconsSupported() {
 		return true;
 	}
-	
+
 	@Override
-	public void setupFrame(IFrame frame) {
+	public void setupFrame(final IFrame frame) {
 	}
-	
+
 	@Override
 	public boolean areMenuEntriesDelegated() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isClosingMainWindowClosesApplication() {
 		return true;
@@ -100,12 +101,12 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter implements Appl
 	public boolean isRipSupported() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isMultipleInstancesSupported() {
 		return true;
 	}
-	
+
 	@Override
 	public IPlayerTrayIconsHandler getPlayerTrayIcons() {
 		return context.getBean(CommonPlayerTrayIconsHandler.class);

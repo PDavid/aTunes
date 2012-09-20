@@ -36,22 +36,22 @@ import net.sourceforge.atunes.model.IDialogFactory;
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 
 final class FillTagsFromFolderNameActionListener implements ActionListener {
-	
-	private ReviewImportDialog dialog;
-	
-	private IDialogFactory dialogFactory;
-	
-	private Patterns patterns;
-	
-    private PatternMatcher patternMatcher;
-    
+
+	private final ReviewImportDialog dialog;
+
+	private final IDialogFactory dialogFactory;
+
+	private final Patterns patterns;
+
+	private final PatternMatcher patternMatcher;
+
 	/**
 	 * @param dialog
 	 * @param dialogFactory
 	 * @param patterns
 	 * @param patternMatcher
 	 */
-	FillTagsFromFolderNameActionListener(ReviewImportDialog dialog, IDialogFactory dialogFactory, Patterns patterns, PatternMatcher patternMatcher) {
+	FillTagsFromFolderNameActionListener(final ReviewImportDialog dialog, final IDialogFactory dialogFactory, final Patterns patterns, final PatternMatcher patternMatcher) {
 		super();
 		this.dialog = dialog;
 		this.dialogFactory = dialogFactory;
@@ -60,22 +60,22 @@ final class FillTagsFromFolderNameActionListener implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-	    TreePath[] selectedNodes = dialog.getTreeTable().getTreeSelectionModel().getSelectionPaths();
-	    if (selectedNodes.length > 0) {
-	        PatternInputDialog inputDialog = dialogFactory.newDialog("massivePatternInputDialog", PatternInputDialog.class);
-	        Object node = selectedNodes[0].getLastPathComponent();
-	        Object folder = ((DefaultMutableTreeTableNode)node).getUserObject();
-	        inputDialog.show(patterns.getMassiveRecognitionPatterns(), ((File)folder).getAbsolutePath());
-	        String pattern = inputDialog.getResult();
-	        for (TreePath treePath : selectedNodes) {
-	            node = treePath.getLastPathComponent();                        
-	            folder = ((DefaultMutableTreeTableNode)node).getUserObject();
-	            Map<String, String> matches = patternMatcher.getPatternMatches(pattern, ((File)folder).getAbsolutePath(), true);
-	            for (Entry<String, String> entry : matches.entrySet()) {
-	                ((ReviewImportTreeTableModel) dialog.getTreeTable().getTreeTableModel()).setValueForColumn(dialog.getTreeTable().getRowForPath(treePath), entry.getKey(), entry.getValue());
-	            }
-	        }
-	    }
+	public void actionPerformed(final ActionEvent e) {
+		TreePath[] selectedNodes = dialog.getTreeTable().getTreeSelectionModel().getSelectionPaths();
+		if (selectedNodes.length > 0) {
+			PatternInputDialog inputDialog = dialogFactory.newDialog("massivePatternInputDialog", PatternInputDialog.class);
+			Object node = selectedNodes[0].getLastPathComponent();
+			Object folder = ((DefaultMutableTreeTableNode)node).getUserObject();
+			inputDialog.show(patterns.getMassiveRecognitionPatterns(), net.sourceforge.atunes.utils.FileUtils.getPath(((File)folder)));
+			String pattern = inputDialog.getResult();
+			for (TreePath treePath : selectedNodes) {
+				node = treePath.getLastPathComponent();
+				folder = ((DefaultMutableTreeTableNode)node).getUserObject();
+				Map<String, String> matches = patternMatcher.getPatternMatches(pattern, net.sourceforge.atunes.utils.FileUtils.getPath(((File)folder)), true);
+				for (Entry<String, String> entry : matches.entrySet()) {
+					((ReviewImportTreeTableModel) dialog.getTreeTable().getTreeTableModel()).setValueForColumn(dialog.getTreeTable().getRowForPath(treePath), entry.getKey(), entry.getValue());
+				}
+			}
+		}
 	}
 }

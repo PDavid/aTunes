@@ -39,6 +39,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ViewMode;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -158,7 +159,7 @@ public class MoveFolderFromNavigatorAction extends AbstractActionOverSelectedTre
 					public void call(final Boolean result) {
 						repositoryActions.enableRepositoryActions(true);
 						if (result) {
-							repositoryHandler.folderMoved(sourceFolder, new File(StringUtils.getString(destination.getAbsolutePath(), osManager.getFileSeparator(), sourceFile.getName())));
+							repositoryHandler.folderMoved(sourceFolder, new File(StringUtils.getString(FileUtils.getPath(destination), osManager.getFileSeparator(), sourceFile.getName())));
 							indeterminateDialog.hideDialog();
 						} else {
 							indeterminateDialog.hideDialog();
@@ -184,7 +185,8 @@ public class MoveFolderFromNavigatorAction extends AbstractActionOverSelectedTre
 		// and destination is not the folder itself
 		File source = sourceFolder.getFolderPath(osManager);
 		File sourceParent = source.getParentFile();
-		return !source.getAbsolutePath().equals(destination.getAbsolutePath()) && !sourceParent.getAbsolutePath().equals(destination.getAbsolutePath());
+		return !FileUtils.getPath(source).equals(FileUtils.getPath(destination)) &&
+		!FileUtils.getPath(sourceParent).equals(FileUtils.getPath(destination));
 	}
 
 	@Override

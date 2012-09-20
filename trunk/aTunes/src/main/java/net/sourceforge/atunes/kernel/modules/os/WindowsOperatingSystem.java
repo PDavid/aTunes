@@ -33,44 +33,50 @@ import net.sourceforge.atunes.kernel.modules.tray.CommonPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * Windows operating system adapter
+ * @author alex
+ *
+ */
 public class WindowsOperatingSystem extends OperatingSystemAdapter implements ApplicationContextAware {
-	
+
 	private ApplicationContext context;
-	
+
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
+	public void setApplicationContext(final ApplicationContext applicationContext) {
 		this.context = applicationContext;
 	}
 
 	/**
-     * Name of the Windows command
-     */
-    private static final String COMMAND_WINDOWS = "aTunes.exe";
-    
-    /** Directory where Windows binaries are found (i.e. mplayer, lame, etc) */
-    public static final String WINDOWS_TOOLS_DIR = "win_tools";
+	 * Name of the Windows command
+	 */
+	private static final String COMMAND_WINDOWS = "aTunes.exe";
 
-    /**
-     * Command to be executed on Windows systems to launch mplayer. Mplayer is
-     * in "win_tools" dir, inside aTunes package
-     */
-    private static final String MPLAYER_WIN_COMMAND = WINDOWS_TOOLS_DIR + "/mplayer.exe";
+	/** Directory where Windows binaries are found (i.e. mplayer, lame, etc) */
+	public static final String WINDOWS_TOOLS_DIR = "win_tools";
 
-    private static final String WINOPTPRIORITY = "-priority";
-    
-    private static final String WINOPTPRIORITY_DEFAULT = "abovenormal";
-    
-    private Dimension screenSize;
-    
-    /**
-     * @param screenSize
-     */
-    public void setScreenSize(Dimension screenSize) {
+	/**
+	 * Command to be executed on Windows systems to launch mplayer. Mplayer is
+	 * in "win_tools" dir, inside aTunes package
+	 */
+	private static final String MPLAYER_WIN_COMMAND = WINDOWS_TOOLS_DIR + "/mplayer.exe";
+
+	private static final String WINOPTPRIORITY = "-priority";
+
+	private static final String WINOPTPRIORITY_DEFAULT = "abovenormal";
+
+	private Dimension screenSize;
+
+	/**
+	 * @param screenSize
+	 */
+	public void setScreenSize(final Dimension screenSize) {
 		this.screenSize = screenSize;
 	}
 
@@ -81,9 +87,9 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter implements Ap
 
 	@Override
 	public String getLaunchCommand() {
-		return new File(StringUtils.getString("./", COMMAND_WINDOWS)).getAbsolutePath();
+		return FileUtils.getPath(new File(StringUtils.getString("./", COMMAND_WINDOWS)));
 	}
-	
+
 	@Override
 	public String getLaunchParameters() {
 		return null;
@@ -93,31 +99,31 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter implements Ap
 	public boolean areShadowBordersForToolTipsSupported() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean usesShortPathNames() {
 		return true;
 	}
-	
+
 	@Override
-	public void setFullScreen(Window window, boolean fullscreen, IFrame frame) {
+	public void setFullScreen(final Window window, final boolean fullscreen, final IFrame frame) {
 		if (getSystemType().isOldWindows() && fullscreen) {
 			window.setSize(screenSize.width, screenSize.height);
 		}
 	}
-	
+
 	@Override
-	public boolean isPlayerEngineSupported(IPlayerEngine engine) {
+	public boolean isPlayerEngineSupported(final IPlayerEngine engine) {
 		return engine instanceof XineEngine ? false : true; // Xine is not supported
 	}
-	
+
 	@Override
-	public String getPlayerEngineCommand(IPlayerEngine engine) {		
+	public String getPlayerEngineCommand(final IPlayerEngine engine) {
 		return engine instanceof MPlayerEngine ? MPLAYER_WIN_COMMAND : null;
 	}
-	
+
 	@Override
-	public Collection<String> getPlayerEngineParameters(IPlayerEngine engine) {
+	public Collection<String> getPlayerEngineParameters(final IPlayerEngine engine) {
 		if (engine instanceof MPlayerEngine) {
 			List<String> parameters = new ArrayList<String>(2);
 			parameters.add(WINOPTPRIORITY);
@@ -127,26 +133,26 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter implements Ap
 			return super.getPlayerEngineParameters(engine);
 		}
 	}
-	
+
 	@Override
 	public String getExternalToolsPath() {
 		return StringUtils.getString(WINDOWS_TOOLS_DIR, getFileSeparator());
 	}
-	
+
 	@Override
 	public boolean areTrayIconsSupported() {
 		return true;
 	}
 
 	@Override
-	public void setupFrame(IFrame frame) {
+	public void setupFrame(final IFrame frame) {
 	}
-	
+
 	@Override
 	public boolean areMenuEntriesDelegated() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isClosingMainWindowClosesApplication() {
 		return true;

@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.utils.FileUtils;
 
 class FilePathProvider extends AbstractFieldProvider {
 
@@ -30,7 +31,7 @@ class FilePathProvider extends AbstractFieldProvider {
 	}
 
 	@Override
-	public String getClearValue(ILocalAudioObject file) {
-		return file.getFile().getAbsolutePath();
+	public String getClearValue(final ILocalAudioObject file) {
+		return FileUtils.getPath(file.getFile());
 	}
 }

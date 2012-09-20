@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFolderSelectorDialog;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISelectorDialog;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -57,7 +58,7 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
 
@@ -80,7 +81,7 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
 		String path;
 		String[] foldersList = new String[repositoryHandler.getFoldersCount()];
 		for (int i = 0; i < repositoryHandler.getFolders().size(); i++) {
-			foldersList[i] = repositoryHandler.getFolders().get(i).getAbsolutePath();
+			foldersList[i] = FileUtils.getPath(repositoryHandler.getFolders().get(i));
 		}
 		// If repository folders are more than one then user must select where to import songs
 		if (foldersList.length > 1) {
@@ -102,7 +103,7 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 }

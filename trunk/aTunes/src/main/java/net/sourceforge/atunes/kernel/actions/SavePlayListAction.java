@@ -33,6 +33,7 @@ import net.sourceforge.atunes.model.IFileSelectorDialog;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IStatePlaylist;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -44,71 +45,71 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class SavePlayListAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -303252911138284095L;
+	private static final long serialVersionUID = -303252911138284095L;
 
-    private IPlayListHandler playListHandler;
-    
-    private IPlayListIOService playListIOService;
-    
-    private IStatePlaylist statePlaylist;
-    
-    private IDialogFactory dialogFactory;
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
+	private IPlayListHandler playListHandler;
+
+	private IPlayListIOService playListIOService;
+
+	private IStatePlaylist statePlaylist;
+
+	private IDialogFactory dialogFactory;
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-    
-    /**
-     * @param statePlaylist
-     */
-    public void setStatePlaylist(IStatePlaylist statePlaylist) {
+
+	/**
+	 * @param statePlaylist
+	 */
+	public void setStatePlaylist(final IStatePlaylist statePlaylist) {
 		this.statePlaylist = statePlaylist;
 	}
-    
-    /**
-     * @param playListIOService
-     */
-    public void setPlayListIOService(IPlayListIOService playListIOService) {
+
+	/**
+	 * @param playListIOService
+	 */
+	public void setPlayListIOService(final IPlayListIOService playListIOService) {
 		this.playListIOService = playListIOService;
 	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    /**
-     * Default constructor
-     */
-    public SavePlayListAction() {
-        super(StringUtils.getString(I18nUtils.getString("SAVE"), "..."));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SAVE_PLAYLIST_TOOLTIP"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, GuiUtils.getCtrlOrMetaActionEventMask()));
-    }
 
-    @Override
-    protected void executeAction() {
-    	IFileSelectorDialog dialog = dialogFactory.newDialog(IFileSelectorDialog.class);
-    	dialog.setFileFilter(playListIOService.getPlaylistFileFilter());
-    	File file = dialog.saveFile(statePlaylist.getSavePlaylistPath());
-    	if (file != null) {
+	/**
+	 * Default constructor
+	 */
+	public SavePlayListAction() {
+		super(StringUtils.getString(I18nUtils.getString("SAVE"), "..."));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SAVE_PLAYLIST_TOOLTIP"));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, GuiUtils.getCtrlOrMetaActionEventMask()));
+	}
 
-            statePlaylist.setSavePlaylistPath(file.getParentFile().getAbsolutePath());
+	@Override
+	protected void executeAction() {
+		IFileSelectorDialog dialog = dialogFactory.newDialog(IFileSelectorDialog.class);
+		dialog.setFileFilter(playListIOService.getPlaylistFileFilter());
+		File file = dialog.saveFile(statePlaylist.getSavePlaylistPath());
+		if (file != null) {
 
-            // If filename have incorrect extension, add it
-            file = playListIOService.checkPlayListFileName(file);
+			statePlaylist.setSavePlaylistPath(FileUtils.getPath(file.getParentFile()));
 
-           	playListIOService.write(playListHandler.getCurrentPlayList(true), file);
-        }
-    }
+			// If filename have incorrect extension, add it
+			file = playListIOService.checkPlayListFileName(file);
 
-    @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return !playListHandler.getCurrentPlayList(true).isEmpty();
-    }
+			playListIOService.write(playListHandler.getCurrentPlayList(true), file);
+		}
+	}
+
+	@Override
+	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
+		return !playListHandler.getCurrentPlayList(true).isEmpty();
+	}
 }

@@ -29,6 +29,7 @@ import javax.swing.JFileChooser;
 import net.sourceforge.atunes.model.IFolderSelectorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.utils.FileUtils;
 
 /**
  * Dialog to select folder
@@ -39,38 +40,39 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
 
 	private static final class RejectAllFilesFileFilter implements FilenameFilter {
 		@Override
-		public boolean accept(File dir, String name) {
+		public boolean accept(final File dir, final String name) {
 			return false;
 		}
 	}
 
 	private IFrame frame;
-	
+
 	private String title;
-	
+
 	private IOSManager osManager;
-	
+
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	/**
 	 * @param title
 	 */
-	public void setTitle(String title) {
+	@Override
+	public void setTitle(final String title) {
 		this.title = title;
 	}
-	
+
 	/**
 	 * @param frame
 	 */
-	public void setFrame(IFrame frame) {
+	public void setFrame(final IFrame frame) {
 		this.frame = frame;
 	}
-	
+
 	@Override
 	public void showDialog() {
 		throw new UnsupportedOperationException();
@@ -87,7 +89,7 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
 	}
 
 	@Override
-	public File selectFolder(String path) {
+	public File selectFolder(final String path) {
 		File file = null;
 		if (osManager.isMacOsX()) {
 			file = selectFolderWithFileChooser(path);
@@ -101,35 +103,35 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
 	 * @param path
 	 * @return
 	 */
-	private File selectFolderWithJFileChooser(String path) {
+	private File selectFolderWithJFileChooser(final String path) {
 		JFileChooser dialog = new JFileChooser(path);
 		dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		dialog.showOpenDialog(frame.getFrame());
 		return dialog.getSelectedFile();
 	}
-	
+
 	/**
 	 * @param path
 	 * @return
 	 */
-	private File selectFolderWithFileChooser(String path) {
+	private File selectFolderWithFileChooser(final String path) {
 		System.setProperty("apple.awt.fileDialogForDirectories", "true");
 		FileDialog dialog = new FileDialog(frame.getFrame(), title, FileDialog.LOAD);
 		dialog.setFilenameFilter(new RejectAllFilesFileFilter());
 		dialog.setDirectory(path);
-        dialog.setVisible(true);
-        String parent = dialog.getDirectory();
-        String folder = dialog.getFile();
+		dialog.setVisible(true);
+		String parent = dialog.getDirectory();
+		String folder = dialog.getFile();
 		System.setProperty("apple.awt.fileDialogForDirectories", "false");
-        if (parent != null && folder != null) {
-            return new File(parent + '/' + folder);
-        }
-        return null;
+		if (parent != null && folder != null) {
+			return new File(parent + '/' + folder);
+		}
+		return null;
 
 	}
 
 	@Override
-	public File selectFolder(File path) {
-		return selectFolder(path.getAbsolutePath());
+	public File selectFolder(final File path) {
+		return selectFolder(FileUtils.getPath(path));
 	}
 }

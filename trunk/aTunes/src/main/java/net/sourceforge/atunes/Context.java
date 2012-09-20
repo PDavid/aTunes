@@ -27,28 +27,33 @@ import net.sourceforge.atunes.utils.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+/**
+ * Initializes and gives access to Spring context
+ * @author alex
+ *
+ */
 public final class Context {
 
 	private static final String SPRING_BEANS_XML = "/settings/spring/spring_beans.xml";
-	
+
 	private static ApplicationContext context;
-	
+
 	private Context() {
 	}
-	
+
 	/**
 	 * Initializes Spring with bean definition files
 	 */
 	public static void initialize() {
 		File springBeans = ResourceLocator.getFile(SPRING_BEANS_XML);
 		if (springBeans != null) {
-			context = new ClassPathXmlApplicationContext(StringUtils.getString("file:" + springBeans.getAbsolutePath()));
+			context = new ClassPathXmlApplicationContext(StringUtils.getString("file:" + net.sourceforge.atunes.utils.FileUtils.getPath(springBeans)));
 		} else {
 			// Use classpath
 			context = new ClassPathXmlApplicationContext(SPRING_BEANS_XML);
 		}
 	}
-	
+
 	/**
 	 * Returns bean of type
 	 * @param <T>
@@ -56,10 +61,10 @@ public final class Context {
 	 * @return
 	 */
 	@Deprecated
-	public static <T> T getBean(Class<T> beanType) {
+	public static <T> T getBean(final Class<T> beanType) {
 		return context.getBean(beanType);
 	}
-	
+
 	/**
 	 * Returns bean with given name and type
 	 * @param <T>
@@ -68,7 +73,7 @@ public final class Context {
 	 * @return
 	 */
 	@Deprecated
-	public static <T> T getBean(String name, Class<T> clazz) {
+	public static <T> T getBean(final String name, final Class<T> clazz) {
 		return context.getBean(name, clazz);
 	}
 }

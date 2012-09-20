@@ -30,56 +30,57 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.ClosingUtils;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 class PlayListWriter {
-	
-	private IOSManager osManager;
-	
-	private IRepositoryHandler repositoryHandler;
-	
+
+	private final IOSManager osManager;
+
+	private final IRepositoryHandler repositoryHandler;
+
 	/**
 	 * @param osManager
 	 * @param repositoryHandler
 	 */
-	public PlayListWriter(IOSManager osManager, IRepositoryHandler repositoryHandler) {
+	public PlayListWriter(final IOSManager osManager, final IRepositoryHandler repositoryHandler) {
 		this.osManager = osManager;
 		this.repositoryHandler = repositoryHandler;
 	}
 
-    /**
-     * Writes a play list to a file using paths relative to repository
-     * 
-     * @param playlist
-     * @param file
-     * @return
-     */
-	boolean write(IPlayList playlist, File file) {
-        FileWriter writer = null;
-        try {
-            if (file.exists() && !file.delete()) {
-            	Logger.error(StringUtils.getString(file, " not deleted"));
-            }
-            writer = new FileWriter(file);
-        	List<File> repositoryFolders = repositoryHandler.getFolders();
-            for (int i = 0; i < playlist.size(); i++) {
-            	IAudioObject f = playlist.get(i);
-                writer.append(StringUtils.getString(getRelativePath(repositoryFolders, f), osManager.getLineTerminator()));
-            }
-            writer.flush();
-            return true;
-        } catch (IOException e) {
-            return false;
-        } finally {
-            ClosingUtils.close(writer);
-        }
-    }
-	
-	private String getRelativePath(List<File> repositoryFolders, IAudioObject f) {
+	/**
+	 * Writes a play list to a file using paths relative to repository
+	 * 
+	 * @param playlist
+	 * @param file
+	 * @return
+	 */
+	boolean write(final IPlayList playlist, final File file) {
+		FileWriter writer = null;
+		try {
+			if (file.exists() && !file.delete()) {
+				Logger.error(StringUtils.getString(file, " not deleted"));
+			}
+			writer = new FileWriter(file);
+			List<File> repositoryFolders = repositoryHandler.getFolders();
+			for (int i = 0; i < playlist.size(); i++) {
+				IAudioObject f = playlist.get(i);
+				writer.append(StringUtils.getString(getRelativePath(repositoryFolders, f), osManager.getLineTerminator()));
+			}
+			writer.flush();
+			return true;
+		} catch (IOException e) {
+			return false;
+		} finally {
+			ClosingUtils.close(writer);
+		}
+	}
+
+	private String getRelativePath(final List<File> repositoryFolders, final IAudioObject f) {
 		String url = f.getUrl();
 		for (File repositoryFolder : repositoryFolders) {
-			url = url.replaceAll(repositoryFolder.getAbsolutePath(), "");
+			url = url.replaceAll(FileUtils.getPath(repositoryFolder), "");
 		}
 		return url;
 	}

@@ -32,6 +32,7 @@ import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFileSelectorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -42,79 +43,79 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class FileSelectorDialog implements IFileSelectorDialog {
 
 	private IFrame frame;
-	
+
 	private FilenameFilter fileFilter;
-	
+
 	private IOSManager osManager;
-	
+
 	private IDialogFactory dialogFactory;
-	
+
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-	
+
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	/**
 	 * @param fileFilter
 	 */
 	@Override
-	public void setFileFilter(FilenameFilter fileFilter) {
+	public void setFileFilter(final FilenameFilter fileFilter) {
 		this.fileFilter = fileFilter;
 	}
-	
+
 	/**
 	 * @param frame
 	 */
-	public void setFrame(IFrame frame) {
+	public void setFrame(final IFrame frame) {
 		this.frame = frame;
 	}
-	
+
 	/**
 	 * Selects a file
 	 * @param path
 	 * @return
 	 */
 	@Override
-	public File loadFile(String path) {
+	public File loadFile(final String path) {
 		return getFile(path, I18nUtils.getString("LOAD"), FileDialog.LOAD);
-    }
-	
+	}
+
 	/**
 	 * Selects a file
 	 * @param path
 	 * @return
 	 */
 	@Override
-	public File loadFile(File path) {
+	public File loadFile(final File path) {
 		if (path == null) {
 			throw new IllegalArgumentException("Null path");
 		}
-		return loadFile(path.getAbsolutePath());
+		return loadFile(FileUtils.getPath(path));
 	}
-	
+
 	@Override
-	public File saveFile(File path) {
+	public File saveFile(final File path) {
 		if (path == null) {
 			throw new IllegalArgumentException("Null path");
 		}
-		return saveFile(path.getAbsolutePath());
+		return saveFile(FileUtils.getPath(path));
 	}
-	
+
 	@Override
-	public File saveFile(String path) {
+	public File saveFile(final String path) {
 		return getFile(path, I18nUtils.getString("SAVE"), FileDialog.SAVE);
 	}
-	
-	private File getFile(String path, String title, int mode) {
+
+	private File getFile(final String path, final String title, final int mode) {
 		if (osManager.isMacOsX()) {
 			return getFileWithFileDialog(path, title, mode);
 		} else {
@@ -129,23 +130,23 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 	 * @param mode
 	 * @return
 	 */
-	private File getFileWithFileDialog(String path, String title, int mode) {
+	private File getFileWithFileDialog(final String path, final String title, final int mode) {
 		FileDialog dialog = new FileDialog(frame.getFrame(), title, mode);
 		dialog.setDirectory(path);
-        if (fileFilter != null) {
-        	dialog.setFilenameFilter(fileFilter);
-        }
-        dialog.setVisible(true);
-        String file = dialog.getFile();
-        String dir = dialog.getDirectory();
-        if (file != null) {
-            // Get selected file
-            return new File(dir + "/" + file);
-        }
-        return null;
+		if (fileFilter != null) {
+			dialog.setFilenameFilter(fileFilter);
+		}
+		dialog.setVisible(true);
+		String file = dialog.getFile();
+		String dir = dialog.getDirectory();
+		if (file != null) {
+			// Get selected file
+			return new File(dir + "/" + file);
+		}
+		return null;
 	}
-	
-	
+
+
 	/**
 	 * Opens file dialog to get file
 	 * @param path
@@ -153,22 +154,22 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 	 * @param mode
 	 * @return
 	 */
-	private File getFileWithJFileChooser(String path, String title, int mode) {
+	private File getFileWithJFileChooser(final String path, final String title, final int mode) {
 		JFileChooser dialog = new JFileChooser(path);
 		if (fileFilter != null) {
-        	dialog.setFileFilter(new FileFilter() {
-				
+			dialog.setFileFilter(new FileFilter() {
+
 				@Override
 				public String getDescription() {
 					return fileFilter.toString();
 				}
-				
+
 				@Override
-				public boolean accept(File f) {
+				public boolean accept(final File f) {
 					return fileFilter.accept(f.getParentFile(), f.getName());
 				}
 			});
-        }
+		}
 		int userResponse;
 		if (mode == FileDialog.LOAD) {
 			userResponse = dialog.showOpenDialog(frame.getFrame());
@@ -178,42 +179,42 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 		if (userResponse == JFileChooser.APPROVE_OPTION) {
 			File file = dialog.getSelectedFile();
 			if (mode == FileDialog.SAVE) {
-	            // If file exists ask user to confirm
-	            boolean canWrite = !file.exists();
-	            if (!canWrite) {
+				// If file exists ask user to confirm
+				boolean canWrite = !file.exists();
+				if (!canWrite) {
 					IConfirmationDialog confirmationDialog = dialogFactory.newDialog(IConfirmationDialog.class);
 					confirmationDialog.setMessage(I18nUtils.getString("OVERWRITE_FILE"));
 					confirmationDialog.showDialog();
 					canWrite = confirmationDialog.userAccepted();
-	            }
-	            if (!canWrite) {
-	            	// User rejected to overwrite file so ask again to select a file
-	            	file = getFileWithJFileChooser(path, title, mode);
-	            }
+				}
+				if (!canWrite) {
+					// User rejected to overwrite file so ask again to select a file
+					file = getFileWithJFileChooser(path, title, mode);
+				}
 			}
 			return file;
 		}
-        return null;
+		return null;
 	}
-	
+
 	@Override
 	public void hideDialog() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public void showDialog() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public void initialize() {
 		// do nothing
 	}
-	
+
 	@Override
 	@Deprecated
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		// Not used
 	}
 }

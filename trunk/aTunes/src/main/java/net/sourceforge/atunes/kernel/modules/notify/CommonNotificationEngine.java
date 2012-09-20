@@ -38,70 +38,76 @@ import net.sourceforge.atunes.utils.ImageUtils;
 
 import org.apache.commons.io.FileUtils;
 
+/**
+ * Common code for notifications
+ * @author alex
+ *
+ */
 public abstract class CommonNotificationEngine implements INotificationEngine {
 
 	private Boolean available;
-	
-	private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
-	
-	private ITemporalDiskStorage diskStorage;
-	
-	private ILookAndFeelManager lookAndFeelManager;
-	
-	private IAudioObjectImageLocator audioObjectImageLocator;
-	
+
+	private final IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
+
+	private final ITemporalDiskStorage diskStorage;
+
+	private final ILookAndFeelManager lookAndFeelManager;
+
+	private final IAudioObjectImageLocator audioObjectImageLocator;
+
 	/**
 	 * @param audioObjectGenericImageFactory
 	 * @param diskStorage
 	 * @param lookAndFeelManager
 	 * @param audioObjectImageLocator
 	 */
-	public CommonNotificationEngine(IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage, ILookAndFeelManager lookAndFeelManager, IAudioObjectImageLocator audioObjectImageLocator) {
+	public CommonNotificationEngine(final IAudioObjectGenericImageFactory audioObjectGenericImageFactory, final ITemporalDiskStorage diskStorage, final ILookAndFeelManager lookAndFeelManager, final IAudioObjectImageLocator audioObjectImageLocator) {
 		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
 		this.diskStorage = diskStorage;
 		this.lookAndFeelManager = lookAndFeelManager;
 		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
-	
+
 	/**
 	 * @return if engine is available
 	 */
+	@Override
 	public final boolean isEngineAvailable() {
 		if (available == null) {
 			available = testEngineAvailable();
 		}
 		return available;
 	}
-	
+
 	/**
 	 * Stores audio object in a temporal folder so it can be used from third-party notification engines
 	 * @param audioObject
 	 * @param osManager
 	 * @return
 	 */
-	protected final String getTemporalImage(IAudioObject audioObject, IOSManager osManager) {
+	protected final String getTemporalImage(final IAudioObject audioObject, final IOSManager osManager) {
 		ImageIcon imageForAudioObject = audioObjectImageLocator.getImage(audioObject, ImageSize.SIZE_200);
 		if (imageForAudioObject == null) {
 			imageForAudioObject = audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.MEDIUM).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
 		}
-		return diskStorage.addImage(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()).getAbsolutePath();
+		return net.sourceforge.atunes.utils.FileUtils.getPath(diskStorage.addImage(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()));
 	}
-	
+
 	/**
 	 * Removes temporal image
 	 * @param path
 	 */
-	protected final void removeTemporalImage(String path) {
+	protected final void removeTemporalImage(final String path) {
 		FileUtils.deleteQuietly(new File(path));
 	}
-	
+
 	/**
 	 * @return audio object generic image factory
 	 */
 	protected final IAudioObjectGenericImageFactory getAudioObjectGenericImageFactory() {
 		return audioObjectGenericImageFactory;
 	}
-	
+
 	/**
 	 * Test if engine is available
 	 * @return

@@ -136,63 +136,64 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	@Override
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
 
 	/**
 	 * @param stateDevice
 	 */
-	public void setStateDevice(IStateDevice stateDevice) {
+	public void setStateDevice(final IStateDevice stateDevice) {
 		this.stateDevice = stateDevice;
 	}
 
 	/**
 	 * @param stateRepository
 	 */
-	public void setStateRepository(IStateRepository stateRepository) {
+	public void setStateRepository(final IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
 	}
 
 	/**
 	 * @param deviceNavigationView
 	 */
-	public void setDeviceNavigationView(INavigationView deviceNavigationView) {
+	public void setDeviceNavigationView(final INavigationView deviceNavigationView) {
 		this.deviceNavigationView = deviceNavigationView;
 	}
 
 	/**
 	 * @param navigationHandler
 	 */
-	public void setNavigationHandler(INavigationHandler navigationHandler) {
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
 
 	/**
 	 * @param processFactory
 	 */
-	public void setProcessFactory(IProcessFactory processFactory) {
+	public void setProcessFactory(final IProcessFactory processFactory) {
 		this.processFactory = processFactory;
 	}
 
 	/**
 	 * @param deviceMonitor
 	 */
-	public void setDeviceMonitor(DeviceMonitor deviceMonitor) {
+	public void setDeviceMonitor(final DeviceMonitor deviceMonitor) {
 		this.deviceMonitor = deviceMonitor;
 	}
 
@@ -204,7 +205,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
 	@Override
 	public void deferredInitialization() {
-		if (isDefaultDeviceLocationConfigured(stateDevice)) { 
+		if (isDefaultDeviceLocationConfigured(stateDevice)) {
 			// Start device monitor if necessary
 			deviceMonitor.startMonitor();
 		}
@@ -229,12 +230,12 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	 * @param state
 	 * @return
 	 */
-	private boolean isDefaultDeviceLocationConfigured(IStateDevice state) {
+	private boolean isDefaultDeviceLocationConfigured(final IStateDevice state) {
 		return state.getDefaultDeviceLocation() != null && !state.getDefaultDeviceLocation().isEmpty();
 	}
 
 	@Override
-	public void fillWithRandomSongs(long leaveFreeLong) {
+	public void fillWithRandomSongs(final long leaveFreeLong) {
 		long leaveFree = leaveFreeLong;
 
 		// Get reference to Repository songs
@@ -289,12 +290,12 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	}
 
 	@Override
-	public void copyFilesToDevice(Collection<ILocalAudioObject> collection) {
+	public void copyFilesToDevice(final Collection<ILocalAudioObject> collection) {
 		copyFilesToDevice(collection, null);
 	}
 
 	@Override
-	public void copyFilesToDevice(Collection<ILocalAudioObject> collectionToCopy, IProcessListener<List<File>> listener) {
+	public void copyFilesToDevice(final Collection<ILocalAudioObject> collectionToCopy, final IProcessListener<List<File>> listener) {
 		Collection<ILocalAudioObject> collection = collectionToCopy;
 		filesCopiedToDevice = 0;
 		if (collection.isEmpty()) {
@@ -333,7 +334,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	 * @param collection
 	 * @return
 	 */
-	private long getSize(Collection<ILocalAudioObject> collection) {
+	private long getSize(final Collection<ILocalAudioObject> collection) {
 		long size = 0;
 		for (ILocalAudioObject file : collection) {
 			size = size + file.getFile().length();
@@ -365,10 +366,10 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	 * @param collection
 	 * @param listener
 	 */
-	private void runProcessToCopyFiles(Collection<ILocalAudioObject> collection, IProcessListener<List<File>> listener) {
+	private void runProcessToCopyFiles(final Collection<ILocalAudioObject> collection, final IProcessListener<List<File>> listener) {
 		final ILocalAudioObjectTransferProcess process = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("transferToDeviceProcess");
 		process.setFilesToTransfer(collection);
-		process.setDestination(deviceRepository.getRepositoryFolders().get(0).getAbsolutePath());
+		process.setDestination(net.sourceforge.atunes.utils.FileUtils.getPath(deviceRepository.getRepositoryFolders().get(0)));
 		process.addProcessListener(new CopyFilesToDeviceProcessListener());
 		// Add this listener second so when this is called filesCopiedToDevice has been updated
 		if (listener != null) {
@@ -414,7 +415,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	 *            the location
 	 */
 	@Override
-	public void deviceDisconnected(String location) {
+	public void deviceDisconnected(final String location) {
 		// Persist device metadata
 		beanFactory.getBean(IStateHandler.class).persistDeviceCache(deviceId, deviceRepository);
 
@@ -430,7 +431,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 				beanFactory.getBean(SynchronizeDeviceWithPlayListAction.class).setEnabled(false);
 				beanFactory.getBean(CopyPlayListToDeviceAction.class).setEnabled(false);
 				getFrame().showDeviceInfo(false);
-				dialogFactory.newDialog(IMessageDialog.class).showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"));		    
+				dialogFactory.newDialog(IMessageDialog.class).showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"));
 			}
 		});
 
@@ -440,6 +441,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	/**
 	 * Called when closing application
 	 */
+	@Override
 	public void applicationFinish() {
 		if (isDeviceConnected()) {
 			// Persist device metadata
@@ -476,7 +478,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	}
 
 	@Override
-	public boolean isDevicePath(String path) {
+	public boolean isDevicePath(final String path) {
 		if (isDeviceConnected() && path.contains(devicePath.toString())) {
 			return true;
 		}
@@ -484,7 +486,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	}
 
 	@Override
-	public void notifyCurrentPath(String path) {
+	public void notifyCurrentPath(final String path) {
 		// Nothing to do
 	}
 
@@ -494,7 +496,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	 * @param loader
 	 *            the loader
 	 */
-	private void notifyDeviceReload(IRepositoryLoader loader) {
+	private void notifyDeviceReload(final IRepositoryLoader loader) {
 		getFrame().hideProgressBar();
 		navigationHandler.refreshView(deviceNavigationView);
 
@@ -526,24 +528,24 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	}
 
 	@Override
-	public void notifyFilesInRepository(int files) {
+	public void notifyFilesInRepository(final int files) {
 		// Nothing to do
 	}
 
 	@Override
-	public void notifyFinishRead(IRepositoryLoader loader) {
+	public void notifyFinishRead(final IRepositoryLoader loader) {
 		Logger.debug("Device read done");
 		notifyDeviceReload(loader);
 	}
 
 	@Override
-	public void notifyFinishRefresh(IRepositoryLoader loader) {
+	public void notifyFinishRefresh(final IRepositoryLoader loader) {
 		Logger.debug("Device refresh done");
 		notifyDeviceReload(loader);
 	}
 
 	@Override
-	public void notifyRemainingTime(long time) {
+	public void notifyRemainingTime(final long time) {
 		// Nothing to do
 	}
 
@@ -571,7 +573,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	 * @param path
 	 *            the path
 	 */
-	private void retrieveDevice(File path) {
+	private void retrieveDevice(final File path) {
 		Logger.info(StringUtils.getString("Reading device mounted on ", path));
 
 		setDevicePath(path);
@@ -602,12 +604,12 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	 * @param path
 	 *            Device path (absolute)
 	 */
-	protected final void setDevicePath(File path) {
+	protected final void setDevicePath(final File path) {
 		devicePath = path;
 	}
 
 	@Override
-	public ILocalAudioObject getFileIfLoaded(String fileName) {
+	public ILocalAudioObject getFileIfLoaded(final String fileName) {
 		return deviceRepository == null ? null : deviceRepository.getFile(fileName);
 	}
 
@@ -646,14 +648,14 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	}
 
 	@Override
-	public void audioFilesRemoved(List<ILocalAudioObject> audioFiles) {
+	public void audioFilesRemoved(final List<ILocalAudioObject> audioFiles) {
 		if (!isDeviceConnected()) {
 			return;
 		}
 
 		boolean refresh = false;
 		for (ILocalAudioObject af : audioFiles) {
-			if (isDevicePath(af.getFile().getAbsolutePath())) {
+			if (isDevicePath(net.sourceforge.atunes.utils.FileUtils.getPath(af.getFile()))) {
 				refresh = true;
 				break;
 			}
@@ -669,7 +671,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	}
 
 	@Override
-	public List<ILocalAudioObject> getElementsNotPresentInDevice(List<ILocalAudioObject> list) {
+	public List<ILocalAudioObject> getElementsNotPresentInDevice(final List<ILocalAudioObject> list) {
 		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
 		if (list != null && !list.isEmpty()) {
 			for (ILocalAudioObject af : list) {
@@ -686,7 +688,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	 * @param af
 	 * @return
 	 */
-	private boolean isElementNotPresentInDevice(ILocalAudioObject af) {
+	private boolean isElementNotPresentInDevice(final ILocalAudioObject af) {
 		String artist = af.getAlbumArtist() != null && !af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist();
 		String album = af.getAlbum();
 		String title = af.getTitle();
@@ -729,7 +731,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	}
 
 	@Override
-	public List<ILocalAudioObject> getElementsNotPresentInList(List<ILocalAudioObject> list) {
+	public List<ILocalAudioObject> getElementsNotPresentInList(final List<ILocalAudioObject> list) {
 		// Start with all device
 		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>(getAudioFilesList());
 
@@ -741,7 +743,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 		return result;
 	}
 
-	private boolean isElementNotPresentInList(ILocalAudioObject af) {
+	private boolean isElementNotPresentInList(final ILocalAudioObject af) {
 		String artist = af.getAlbumArtist() != null && !af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist();
 		String album = af.getAlbum();
 		String title = af.getTitle();
@@ -778,15 +780,15 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
 	@Override
 	public String getDeviceLocation() {
-		return deviceRepository != null ? deviceRepository.getRepositoryFolders().get(0).getAbsolutePath() : null;
+		return deviceRepository != null ? net.sourceforge.atunes.utils.FileUtils.getPath(deviceRepository.getRepositoryFolders().get(0)) : null;
 	}
 
 	@Override
-	public void notifyCurrentAlbum(String artist, String album) {
+	public void notifyCurrentAlbum(final String artist, final String album) {
 	}
 
 	@Override
-	public IArtist getArtist(String name) {
+	public IArtist getArtist(final String name) {
 		if (deviceRepository != null) {
 			return deviceRepository.getArtist(name);
 		}
@@ -794,7 +796,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	}
 
 	@Override
-	public Map<String, ?> getDataForView(ViewMode viewMode) {
+	public Map<String, ?> getDataForView(final ViewMode viewMode) {
 		return viewMode.getDataForView(deviceRepository);
 	}
 }

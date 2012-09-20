@@ -38,14 +38,14 @@ import org.apache.commons.io.FileUtils;
 public class FakeCDToWavConverter extends AbstractCdToWavConverter {
 
 	@Override
-	public boolean cdda2wav(int track, File file) {
-		Logger.info("Converting with fake wav converter: Track ", track, " File ", file.getAbsolutePath());
+	public boolean cdda2wav(final int track, final File file) {
+		Logger.info("Converting with fake wav converter: Track ", track, " File ", net.sourceforge.atunes.utils.FileUtils.getPath(file));
 		return waitConversion(file);
 	}
 
 	@Override
-	public boolean cdda2wav(int track, File file, boolean useParanoia) {
-		Logger.info("Converting with fake wav converter: Track ", track, " File ", file.getAbsolutePath(), " useParanoia ", useParanoia);
+	public boolean cdda2wav(final int track, final File file, final boolean useParanoia) {
+		Logger.info("Converting with fake wav converter: Track ", track, " File ", net.sourceforge.atunes.utils.FileUtils.getPath(file), " useParanoia ", useParanoia);
 		return waitConversion(file);
 	}
 
@@ -53,17 +53,17 @@ public class FakeCDToWavConverter extends AbstractCdToWavConverter {
 	 * @param file
 	 * @return true
 	 */
-	private boolean waitConversion(File file) {
+	private boolean waitConversion(final File file) {
 		// Create file
 		try {
 			FileUtils.touch(file);
 		} catch (IOException e) {
 			Logger.error(e);
 		}
-		
+
 		// Simulate converting to wav for an amount of time
 		for (int i = 0; i <= 10; i++) {
-			final int progress = i * 10; 
+			final int progress = i * 10;
 			try {
 				Thread.sleep(200);
 				GuiUtils.callInEventDispatchThread(new Runnable() {
@@ -95,8 +95,8 @@ public class FakeCDToWavConverter extends AbstractCdToWavConverter {
 		fakeCdInfo.setDurations(getEmptyList(9));
 		return fakeCdInfo;
 	}
-	
-	private List<String> getEmptyList(int items) {
+
+	private List<String> getEmptyList(final int items) {
 		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < items; i++) {
 			list.add("");

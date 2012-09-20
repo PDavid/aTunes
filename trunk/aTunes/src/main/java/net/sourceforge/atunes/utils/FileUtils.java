@@ -22,6 +22,7 @@ package net.sourceforge.atunes.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * File utilities
@@ -29,36 +30,54 @@ import java.io.FileNotFoundException;
  *
  */
 public final class FileUtils {
-	
-    /** Kilobyte 1024 bytes. */
-    public static final long KILOBYTE = 1024;
 
-    /** Megabyte 1024 Kilobytes. */
-    public static final long MEGABYTE = KILOBYTE * 1024;
+	/** Kilobyte 1024 bytes. */
+	public static final long KILOBYTE = 1024;
 
-    /** Gigabyte 1024 Megabytes. */
-    public static final long GIGABYTE = MEGABYTE * 1024;
+	/** Megabyte 1024 Kilobytes. */
+	public static final long MEGABYTE = KILOBYTE * 1024;
+
+	/** Gigabyte 1024 Megabytes. */
+	public static final long GIGABYTE = MEGABYTE * 1024;
 
 	private FileUtils() {}
 
-    /**
-     * Sets write permissions if is not writable.
-     * @param file
-     * @throws FileNotFoundException
-     */
-    public static void setWritable(File file) throws FileNotFoundException {
-    	if (file == null) {
-    		throw new IllegalArgumentException("File is null");
-    	} else if (!file.exists()) {
-    		throw new FileNotFoundException(file.getAbsolutePath());
-    	}
-        // Set write permission on file
-        if (!file.canWrite()) {
-            file.setWritable(true);
-        }
-        // Set write permission on parent
-        if (!file.getParentFile().canWrite()) {
-            file.getParentFile().setWritable(true);
-    	}
-    }
+	/**
+	 * Sets write permissions if is not writable.
+	 * @param file
+	 * @throws FileNotFoundException
+	 */
+	public static void setWritable(final File file) throws FileNotFoundException {
+		if (file == null) {
+			throw new IllegalArgumentException("File is null");
+		} else if (!file.exists()) {
+			throw new FileNotFoundException(net.sourceforge.atunes.utils.FileUtils.getPath(file));
+		}
+		// Set write permission on file
+		if (!file.canWrite()) {
+			file.setWritable(true);
+		}
+		// Set write permission on parent
+		if (!file.getParentFile().canWrite()) {
+			file.getParentFile().setWritable(true);
+		}
+	}
+
+	/**
+	 * Returns path of a file. This is a utility method to use the same way to retrieve path
+	 * @param file
+	 * @return
+	 */
+	public static String getPath(final File file) {
+		if (file == null) {
+			throw new IllegalArgumentException("File is null");
+		}
+		try {
+			return file.getCanonicalPath();
+		} catch (IOException e) {
+			Logger.error("Error retrieving path of file: ", net.sourceforge.atunes.utils.FileUtils.getPath(file));
+			Logger.error(e);
+			return net.sourceforge.atunes.utils.FileUtils.getPath(file);
+		}
+	}
 }

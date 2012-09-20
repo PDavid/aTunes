@@ -44,21 +44,21 @@ import org.jaudiotagger.tag.TagException;
 public final class TagReader implements ILocalAudioObjectReader {
 
 	@Override
-	public void readAudioObject(ILocalAudioObject ao, boolean readAudioProperties) {
-    	AudioFile f = getAudioFile(ao.getFile());
+	public void readAudioObject(final ILocalAudioObject ao, final boolean readAudioProperties) {
+		AudioFile f = getAudioFile(ao.getFile());
 		if (f != null) {
 			// Set audio properties
 			setAudioProperties(ao, readAudioProperties, f);
 			// Set tag
 			setTag(ao, f);
 		}
-    }
+	}
 
 	/**
 	 * @param ao
 	 * @param f
 	 */
-	private void setTag(ILocalAudioObject ao, AudioFile f) {
+	private void setTag(final ILocalAudioObject ao, final AudioFile f) {
 		Tag tag = f.getTag();
 		if (tag != null) {
 			ao.setTag(new DefaultTag(tag));
@@ -71,7 +71,7 @@ public final class TagReader implements ILocalAudioObjectReader {
 	 * @param readAudioProperties
 	 * @param f
 	 */
-	private void setAudioProperties(ILocalAudioObject ao, boolean readAudioProperties, AudioFile f) {
+	private void setAudioProperties(final ILocalAudioObject ao, final boolean readAudioProperties, final AudioFile f) {
 		if (readAudioProperties) {
 			AudioHeader header = f.getAudioHeader();
 			if (header != null) {
@@ -81,30 +81,30 @@ public final class TagReader implements ILocalAudioObjectReader {
 			}
 		}
 	}
-	
+
 	/**
 	 * Reads file with jaudiotagger
 	 * @param file
 	 * @return
 	 */
-	private AudioFile getAudioFile(File file) {
-    	AudioFile audioFile = null;
+	private AudioFile getAudioFile(final File file) {
+		AudioFile audioFile = null;
 		try {
 			audioFile = AudioFileIO.read(file);
 		} catch (CannotReadException e) {
-			Logger.error(file.getAbsolutePath());
-            Logger.error(e);
+			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
+			Logger.error(e);
 		} catch (IOException e) {
-			Logger.error(file.getAbsolutePath());
+			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
 			Logger.error(e);
 		} catch (TagException e) {
-			Logger.error(file.getAbsolutePath());
+			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
 			Logger.error(e);
 		} catch (ReadOnlyFileException e) {
-			Logger.error(file.getAbsolutePath());
+			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
 			Logger.error(e);
 		} catch (InvalidAudioFrameException e) {
-			Logger.error(file.getAbsolutePath());
+			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
 			Logger.error(e);
 		}
 		return audioFile;

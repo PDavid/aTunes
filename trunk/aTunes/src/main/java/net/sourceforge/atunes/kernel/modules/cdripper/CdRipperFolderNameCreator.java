@@ -29,6 +29,7 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.DateUtils;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -54,35 +55,35 @@ public class CdRipperFolderNameCreator {
 	/**
 	 * @param patternToFileTranslator
 	 */
-	public void setPatternToFileTranslator(PatternToFileTranslator patternToFileTranslator) {
+	public void setPatternToFileTranslator(final PatternToFileTranslator patternToFileTranslator) {
 		this.patternToFileTranslator = patternToFileTranslator;
 	}
 
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	/**
 	 * @param stateRepository
 	 */
-	public void setStateRepository(IStateRepository stateRepository) {
+	public void setStateRepository(final IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
 	}
 
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
@@ -91,7 +92,7 @@ public class CdRipperFolderNameCreator {
 	 * @param metadata
 	 * @return
 	 */
-	File getFolder(CDMetadata metadata) {
+	File getFolder(final CDMetadata metadata) {
 		String folderNamePattern = stateRepository.getImportFolderPathPattern();
 		String folder = null;
 		if (StringUtils.isEmpty(folderNamePattern)) {
@@ -103,7 +104,7 @@ public class CdRipperFolderNameCreator {
 		// Build absolute path with repository path
 		File folderFile = new File(StringUtils.getString(repositoryHandler.getRepositoryPath(), osManager.getFileSeparator(), folder));
 		if (!folderFile.exists() && !folderFile.mkdirs()) {
-			Logger.error("Folder ", folderFile.getAbsolutePath(), " could not be created");
+			Logger.error("Folder ", FileUtils.getPath(folderFile), " could not be created");
 			return null;
 		}
 		return folderFile;

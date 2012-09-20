@@ -30,35 +30,41 @@ import net.sourceforge.atunes.kernel.modules.tray.CommonPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * Solaris operating system adapter
+ * @author alex
+ *
+ */
 public class SolarisOperatingSystem extends OperatingSystemAdapter implements ApplicationContextAware {
-	
+
 	private ApplicationContext context;
-	
+
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
+	public void setApplicationContext(final ApplicationContext applicationContext) {
 		this.context = applicationContext;
 	}
 
 	/**
-     * Name of the Solaris command
-     */
-    private static final String COMMAND_SOLARIS = "aTunes.sh";
-    
-    /**
-     * Command to be executed on Solaris systems to launch mplayer. Note the
-     * workaround with the options - Java6 on Solaris Express appears to require
-     * these options added separately.
-     */
-    private static final String MPLAYER_SOLARIS_COMMAND = "mplayer";
-    
-    private static final String MPLAYER_SOLARISOPTAO = "-ao";
-    
-    private static final String MPLAYER_SOLARISOPTTYPE = "sun"; 
+	 * Name of the Solaris command
+	 */
+	private static final String COMMAND_SOLARIS = "aTunes.sh";
+
+	/**
+	 * Command to be executed on Solaris systems to launch mplayer. Note the
+	 * workaround with the options - Java6 on Solaris Express appears to require
+	 * these options added separately.
+	 */
+	private static final String MPLAYER_SOLARIS_COMMAND = "mplayer";
+
+	private static final String MPLAYER_SOLARISOPTAO = "-ao";
+
+	private static final String MPLAYER_SOLARISOPTTYPE = "sun";
 
 	@Override
 	public String getAppDataFolder() {
@@ -67,26 +73,26 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter implements Ap
 
 	@Override
 	public String getLaunchCommand() {
-		return new File(StringUtils.getString("./", COMMAND_SOLARIS)).getAbsolutePath();
+		return FileUtils.getPath(new File(StringUtils.getString("./", COMMAND_SOLARIS)));
 	}
-	
+
 	@Override
 	public String getLaunchParameters() {
 		return null;
 	}
-	
+
 	@Override
-	public boolean isPlayerEngineSupported(IPlayerEngine engine) {
+	public boolean isPlayerEngineSupported(final IPlayerEngine engine) {
 		return true; // all supported
 	}
-	
+
 	@Override
-	public String getPlayerEngineCommand(IPlayerEngine engine) {
+	public String getPlayerEngineCommand(final IPlayerEngine engine) {
 		return engine instanceof MPlayerEngine ? MPLAYER_SOLARIS_COMMAND : null;
 	}
-	
+
 	@Override
-	public Collection<String> getPlayerEngineParameters(IPlayerEngine engine) {
+	public Collection<String> getPlayerEngineParameters(final IPlayerEngine engine) {
 		if (engine instanceof MPlayerEngine) {
 			List<String> parameters = new ArrayList<String>(2);
 			parameters.add(MPLAYER_SOLARISOPTAO);
@@ -96,21 +102,21 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter implements Ap
 			return super.getPlayerEngineParameters(engine);
 		}
 	}
-	
+
 	@Override
 	public boolean areTrayIconsSupported() {
 		return true;
 	}
 
 	@Override
-	public void setupFrame(IFrame frame) {
+	public void setupFrame(final IFrame frame) {
 	}
 
 	@Override
 	public boolean areMenuEntriesDelegated() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isClosingMainWindowClosesApplication() {
 		return true;
@@ -120,7 +126,7 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter implements Ap
 	public boolean isRipSupported() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isMultipleInstancesSupported() {
 		return true;

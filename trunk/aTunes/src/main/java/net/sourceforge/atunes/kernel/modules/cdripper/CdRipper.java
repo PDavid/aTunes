@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.model.CDMetadata;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -38,106 +39,106 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class CdRipper {
 
-    private AbstractCdToWavConverter cdToWavConverter;
-    private Encoder encoder;
-    private ProgressListener listener;
-    private boolean interrupted;
-    /** ExecutorService for file encoding. */
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
-    
-    private CdRipperFileNameCreator cdRipperFileNameCreator;
-    
-    private CDMetadata cdMetadata;
-    
-    /**
-     * @param cdMetadata
-     */
-    public void setCdMetadata(CDMetadata cdMetadata) {
+	private AbstractCdToWavConverter cdToWavConverter;
+	private Encoder encoder;
+	private ProgressListener listener;
+	private boolean interrupted;
+	/** ExecutorService for file encoding. */
+	private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+	private CdRipperFileNameCreator cdRipperFileNameCreator;
+
+	private CDMetadata cdMetadata;
+
+	/**
+	 * @param cdMetadata
+	 */
+	public void setCdMetadata(final CDMetadata cdMetadata) {
 		this.cdMetadata = cdMetadata;
 	}
-    
-    /**
-     * @param cdRipperFileNameCreator
-     */
-    public void setCdRipperFileNameCreator(CdRipperFileNameCreator cdRipperFileNameCreator) {
+
+	/**
+	 * @param cdRipperFileNameCreator
+	 */
+	public void setCdRipperFileNameCreator(final CdRipperFileNameCreator cdRipperFileNameCreator) {
 		this.cdRipperFileNameCreator = cdRipperFileNameCreator;
 	}
 
-    /**
-     * @param cdToWavConverter
-     */
-    public void setCdToWavConverter(AbstractCdToWavConverter cdToWavConverter) {
+	/**
+	 * @param cdToWavConverter
+	 */
+	public void setCdToWavConverter(final AbstractCdToWavConverter cdToWavConverter) {
 		this.cdToWavConverter = cdToWavConverter;
 	}
-    
-    /**
-     * @return if process has been interrupted
-     */
-    protected boolean isInterrupted() {
-    	return interrupted;
-    }
-    
-    /**
-     * @return encoder used
-     */
-    protected Encoder getEncoder() {
+
+	/**
+	 * @return if process has been interrupted
+	 */
+	protected boolean isInterrupted() {
+		return interrupted;
+	}
+
+	/**
+	 * @return encoder used
+	 */
+	protected Encoder getEncoder() {
 		return encoder;
 	}
-    
-    /**
-     * Check folder.
-     * 
-     * @param folder
-     *            the folder
-     * 
-     * @return true, if successful
-     */
-    private boolean checkFolder(File folder) {
-        return folder.exists() && folder.isDirectory();
-    }
 
-    /**
-     * Gets the cD info.
-     * 
-     * @return the cD info
-     */
-    CDInfo getCDInfo() {
-        return cdToWavConverter.retrieveDiscInformation();
-    }
+	/**
+	 * Check folder.
+	 * 
+	 * @param folder
+	 *            the folder
+	 * 
+	 * @return true, if successful
+	 */
+	private boolean checkFolder(final File folder) {
+		return folder.exists() && folder.isDirectory();
+	}
 
-    /**
-     * Rip tracks.
-     * @param folder
-     * @param useParanoia
-     * @return true if successful
-     */
-    boolean ripTracks(File folder, boolean useParanoia) {
-        String extension = encoder != null ? encoder.getExtensionOfEncodedFiles() : "wav";
-        Logger.info(StringUtils.getString("Running cd ripping of ", cdMetadata.getTracks().size(), " to ", extension, "..."));
-        long t0 = System.currentTimeMillis();
-        if (!checkFolder(folder)) {
-        	Logger.error(StringUtils.getString("Folder ", folder, " not found or not a directory"));
-            return false;
-        }
+	/**
+	 * Gets the cD info.
+	 * 
+	 * @return the cD info
+	 */
+	CDInfo getCDInfo() {
+		return cdToWavConverter.retrieveDiscInformation();
+	}
 
-        if (listener != null) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    listener.notifyProgress(0);
-                }
-            });
-        }
+	/**
+	 * Rip tracks.
+	 * @param folder
+	 * @param useParanoia
+	 * @return true if successful
+	 */
+	boolean ripTracks(final File folder, final boolean useParanoia) {
+		String extension = encoder != null ? encoder.getExtensionOfEncodedFiles() : "wav";
+		Logger.info(StringUtils.getString("Running cd ripping of ", cdMetadata.getTracks().size(), " to ", extension, "..."));
+		long t0 = System.currentTimeMillis();
+		if (!checkFolder(folder)) {
+			Logger.error(StringUtils.getString("Folder ", folder, " not found or not a directory"));
+			return false;
+		}
 
-        File resultFile = null;
+		if (listener != null) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					listener.notifyProgress(0);
+				}
+			});
+		}
 
-        for (int i = 0; i < cdMetadata.getTracks().size(); i++) {
-            resultFile = ripTrack(folder, useParanoia, extension, resultFile, i);
-        }
-        long t1 = System.currentTimeMillis();
-        Logger.info(StringUtils.getString("Process finished in ", (t1 - t0) / 1000.0, " seconds"));
-        return true;
-    }
+		File resultFile = null;
+
+		for (int i = 0; i < cdMetadata.getTracks().size(); i++) {
+			resultFile = ripTrack(folder, useParanoia, extension, resultFile, i);
+		}
+		long t1 = System.currentTimeMillis();
+		Logger.info(StringUtils.getString("Process finished in ", (t1 - t0) / 1000.0, " seconds"));
+		return true;
+	}
 
 	/**
 	 * @param folder
@@ -147,122 +148,122 @@ public class CdRipper {
 	 * @param i
 	 * @return
 	 */
-	private File ripTrack(File folder, boolean useParanoia, String extension, File resultFile, int i) {
-		
+	private File ripTrack(final File folder, final boolean useParanoia, final String extension, final File resultFile, final int i) {
+
 		File result = resultFile;
-		
+
 		if (!interrupted) {
-		    final int trackNumber = cdMetadata.getTracks().get(i);
-		    File wavFile = new File(StringUtils.getString(folder.getAbsolutePath(), "/track", trackNumber, ".wav"));
+			final int trackNumber = cdMetadata.getTracks().get(i);
+			File wavFile = new File(StringUtils.getString(FileUtils.getPath(folder), "/track", trackNumber, ".wav"));
 
-		    if (encoder != null) {
-		    	result = new File(StringUtils.getString(folder.getAbsolutePath(), '/', cdRipperFileNameCreator.getFileName(cdMetadata, trackNumber, extension)));
-		    }
-		    final File infFileTemp = new File(StringUtils.getString(folder.getAbsolutePath(), "/track", trackNumber, ".inf"));
+			if (encoder != null) {
+				result = new File(StringUtils.getString(FileUtils.getPath(folder), '/', cdRipperFileNameCreator.getFileName(cdMetadata, trackNumber, extension)));
+			}
+			final File infFileTemp = new File(StringUtils.getString(FileUtils.getPath(folder), "/track", trackNumber, ".inf"));
 
-		    boolean ripResult = false;
-		    if (!interrupted) {
-		        if (useParanoia) {
-		            ripResult = cdToWavConverter.cdda2wav(trackNumber, wavFile, true);
-		        } else {
-		            ripResult = cdToWavConverter.cdda2wav(trackNumber, wavFile);
-		        }
-		    }
+			boolean ripResult = false;
+			if (!interrupted) {
+				if (useParanoia) {
+					ripResult = cdToWavConverter.cdda2wav(trackNumber, wavFile, true);
+				} else {
+					ripResult = cdToWavConverter.cdda2wav(trackNumber, wavFile);
+				}
+			}
 
-		    /*
-		     * Start encoding process, we use a thread so encoding and
-		     * ripping can happen in parallel. This allows to import CD's
-		     * faster.
-		     */
-		    Runnable encodeFile = new EncodeFileRunnable(this, trackNumber, cdMetadata, ripResult, result, infFileTemp, wavFile, listener);
+			/*
+			 * Start encoding process, we use a thread so encoding and
+			 * ripping can happen in parallel. This allows to import CD's
+			 * faster.
+			 */
+			Runnable encodeFile = new EncodeFileRunnable(this, trackNumber, cdMetadata, ripResult, result, infFileTemp, wavFile, listener);
 
-		    executorService.execute(encodeFile);
-		    /*
-		     * If it is the last track that is ripped, wait for encoder to
-		     * finish. This allows the progress dialog to stay visible.
-		     */
-		    if (i == cdMetadata.getTracks().size() - 1) {
-		        executorService.shutdown();
-		        try {
-		            executorService.awaitTermination(100, TimeUnit.MINUTES);
-		        } catch (InterruptedException e) {
-		        	Logger.error(e);
-		        }
-		    }
+			executorService.execute(encodeFile);
+			/*
+			 * If it is the last track that is ripped, wait for encoder to
+			 * finish. This allows the progress dialog to stay visible.
+			 */
+			if (i == cdMetadata.getTracks().size() - 1) {
+				executorService.shutdown();
+				try {
+					executorService.awaitTermination(100, TimeUnit.MINUTES);
+				} catch (InterruptedException e) {
+					Logger.error(e);
+				}
+			}
 
-		    if (listener != null) {
-		        final int iHelp = i;
-		        SwingUtilities.invokeLater(new Runnable() {
-		            @Override
-		            public void run() {
-		                listener.notifyProgress(iHelp + 1);
-		            }
-		        });
-		    }
+			if (listener != null) {
+				final int iHelp = i;
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						listener.notifyProgress(iHelp + 1);
+					}
+				});
+			}
 		}
 		return result;
 	}
 
-    /**
-     * Sets the decoder listener.
-     * 
-     * @param listener
-     *            the new decoder listener
-     */
-    void setDecoderListener(ProgressListener listener) {
-        cdToWavConverter.setListener(listener);
-    }
+	/**
+	 * Sets the decoder listener.
+	 * 
+	 * @param listener
+	 *            the new decoder listener
+	 */
+	void setDecoderListener(final ProgressListener listener) {
+		cdToWavConverter.setListener(listener);
+	}
 
-    /**
-     * Sets the encoder.
-     * 
-     * @param encoder
-     *            the new encoder
-     */
-    void setEncoder(Encoder encoder) {
-        this.encoder = encoder;
-    }
+	/**
+	 * Sets the encoder.
+	 * 
+	 * @param encoder
+	 *            the new encoder
+	 */
+	void setEncoder(final Encoder encoder) {
+		this.encoder = encoder;
+	}
 
-    /**
-     * Sets the encoder listener.
-     * 
-     * @param listener
-     *            the new encoder listener
-     */
-    void setEncoderListener(ProgressListener listener) {
-        if (encoder != null) {
-            encoder.setListener(listener);
-        }
-    }
+	/**
+	 * Sets the encoder listener.
+	 * 
+	 * @param listener
+	 *            the new encoder listener
+	 */
+	void setEncoderListener(final ProgressListener listener) {
+		if (encoder != null) {
+			encoder.setListener(listener);
+		}
+	}
 
-    /**
-     * Sets the no cd listener.
-     * 
-     * @param listener
-     *            the new no cd listener
-     */
-    void setNoCdListener(NoCdListener listener) {
-        cdToWavConverter.setNoCdListener(listener);
-    }
+	/**
+	 * Sets the no cd listener.
+	 * 
+	 * @param listener
+	 *            the new no cd listener
+	 */
+	void setNoCdListener(final NoCdListener listener) {
+		cdToWavConverter.setNoCdListener(listener);
+	}
 
-    /**
-     * Sets the total progress listener.
-     * 
-     * @param listener
-     *            the new total progress listener
-     */
-    void setTotalProgressListener(ProgressListener listener) {
-        this.listener = listener;
-    }
+	/**
+	 * Sets the total progress listener.
+	 * 
+	 * @param listener
+	 *            the new total progress listener
+	 */
+	void setTotalProgressListener(final ProgressListener listener) {
+		this.listener = listener;
+	}
 
-    /**
-     * Stop.
-     */
-    void stop() {
-        interrupted = true;
-        cdToWavConverter.stop();
-        if (encoder != null) {
-            encoder.stop();
-        }
-    }
+	/**
+	 * Stop.
+	 */
+	void stop() {
+		interrupted = true;
+		cdToWavConverter.stop();
+		if (encoder != null) {
+			encoder.stop();
+		}
+	}
 }

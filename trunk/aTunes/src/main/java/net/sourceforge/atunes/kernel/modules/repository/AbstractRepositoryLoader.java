@@ -55,15 +55,15 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 	private ILocalAudioObjectFactory localAudioObjectFactory;
 	private FileFilter validLocalAudioObjectFileFilter;
 	private DirectoryFileFilter directoryFileFilter;
-	
+
 	private IRepositoryTransaction transaction;
-	
+
 	private IUnknownObjectChecker unknownObjectChecker;
-	
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
@@ -76,7 +76,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 	 * @param repository
 	 */
 	@Override
-	public void start(IRepositoryTransaction transaction, List<File> folders, IRepository oldRepository, IRepository repository) {
+	public void start(final IRepositoryTransaction transaction, final List<File> folders, final IRepository oldRepository, final IRepository repository) {
 		this.transaction = transaction;
 		this.folders = folders;
 		this.oldRepository = oldRepository;
@@ -87,33 +87,33 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 		}
 		execute();
 	}
-	
+
 	/**
 	 * @return
 	 */
 	protected final List<File> getFolders() {
 		return folders;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	protected final int getFilesLoaded() {
 		return filesLoaded;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	protected final boolean isInterrupt() {
 		return interrupt;
 	}
-	
+
 	/**
-	 * Executes this loader 
+	 * Executes this loader
 	 */
 	protected abstract void execute();
-	
+
 	/**
 	 * Use this method to call some specific actions before loading repository
 	 */
@@ -129,21 +129,21 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 	/**
 	 * @param stateNavigation
 	 */
-	public void setStateNavigation(IStateNavigation stateNavigation) {
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
 		this.stateNavigation = stateNavigation;
 	}
-	
+
 	/**
 	 * @param localAudioObjectFactory
 	 */
-	public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
+	public void setLocalAudioObjectFactory(final ILocalAudioObjectFactory localAudioObjectFactory) {
 		this.localAudioObjectFactory = localAudioObjectFactory;
 	}
-	
+
 	/**
 	 * @param validLocalAudioObjectFileFilter
 	 */
-	public void setValidLocalAudioObjectFileFilter(FileFilter validLocalAudioObjectFileFilter) {
+	public void setValidLocalAudioObjectFileFilter(final FileFilter validLocalAudioObjectFileFilter) {
 		this.validLocalAudioObjectFileFilter = validLocalAudioObjectFileFilter;
 	}
 
@@ -154,10 +154,10 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 	 *            the listener
 	 */
 	@Override
-	public void setRepositoryLoaderListener(IRepositoryLoaderListener listener) {
+	public void setRepositoryLoaderListener(final IRepositoryLoaderListener listener) {
 		this.listener = listener;
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -183,7 +183,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 
 		RepositoryFiller filler = new RepositoryFiller(repository, stateNavigation, unknownObjectChecker);
 		for (File folder : folders) {
-			String fastRepositoryPath = folder.getAbsolutePath().replace('\\', '/');
+			String fastRepositoryPath = net.sourceforge.atunes.utils.FileUtils.getPath(folder).replace('\\', '/');
 			if (fastRepositoryPath.endsWith("/")) {
 				fastRepositoryPath = fastRepositoryPath.substring(0, fastRepositoryPath.length() - 2);
 			}
@@ -201,83 +201,83 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 	 * @param relativeTo
 	 * @param dir
 	 */
-	private void navigateDir(RepositoryFiller filler, File relativeTo, File dir) {
-        if (!interrupt) {
-            // Process directories
-            processDirectories(filler, dir, relativeTo);
-            
-            // Process audio files
-            processAudioFiles(filler, dir, relativeTo);            
-        }
-    }
-	
+	private void navigateDir(final RepositoryFiller filler, final File relativeTo, final File dir) {
+		if (!interrupt) {
+			// Process directories
+			processDirectories(filler, dir, relativeTo);
+
+			// Process audio files
+			processAudioFiles(filler, dir, relativeTo);
+		}
+	}
+
 	/**
 	 * Process directory
 	 * @param filler
 	 * @param dir
 	 * @param relativeTo
 	 */
-	private void processDirectories(RepositoryFiller filler, File dir, File relativeTo) {
-        // Directories
-        File[] dirs = dir.listFiles(directoryFileFilter);
-        
-        // Process directories
-        if (dirs != null) {
-        	for (File directory : dirs) {
-        		navigateDir(filler, relativeTo, directory);
-        	}
-        }
+	private void processDirectories(final RepositoryFiller filler, final File dir, final File relativeTo) {
+		// Directories
+		File[] dirs = dir.listFiles(directoryFileFilter);
+
+		// Process directories
+		if (dirs != null) {
+			for (File directory : dirs) {
+				navigateDir(filler, relativeTo, directory);
+			}
+		}
 	}
-	
+
 	/**
 	 * Process audio files in a directory
 	 * @param filler
 	 * @param dir
 	 * @param relativeTo
 	 */
-	private void processAudioFiles(RepositoryFiller filler, File dir, File relativeTo) {
-        // Get audio files
-        File[] audiofiles = dir.listFiles(validLocalAudioObjectFileFilter);
-        
-        // Process audio files
-        if (audiofiles != null && audiofiles.length > 0) {
-            String pathToFile = dir.getAbsolutePath().replace('\\', '/');
-            int lastChar = pathToFile.lastIndexOf('/') + 1;
-            final String relativePath;
-            if (fastFirstChar <= lastChar) {
-                relativePath = pathToFile.substring(fastFirstChar);
-            } else {
-                relativePath = ".";
-            }
+	private void processAudioFiles(final RepositoryFiller filler, final File dir, final File relativeTo) {
+		// Get audio files
+		File[] audiofiles = dir.listFiles(validLocalAudioObjectFileFilter);
 
-            notifyCurrentPath(relativePath);
+		// Process audio files
+		if (audiofiles != null && audiofiles.length > 0) {
+			String pathToFile = net.sourceforge.atunes.utils.FileUtils.getPath(dir).replace('\\', '/');
+			int lastChar = pathToFile.lastIndexOf('/') + 1;
+			final String relativePath;
+			if (fastFirstChar <= lastChar) {
+				relativePath = pathToFile.substring(fastFirstChar);
+			} else {
+				relativePath = ".";
+			}
 
-        	for (File audiofile : audiofiles) {
-        		if (!interrupt) {
-        			processAudioFile(audiofile, filler, relativeTo, relativePath);
-        		}
-        	}
-        	
-        	notifyCurrentProgress();        	
-        }
+			notifyCurrentPath(relativePath);
+
+			for (File audiofile : audiofiles) {
+				if (!interrupt) {
+					processAudioFile(audiofile, filler, relativeTo, relativePath);
+				}
+			}
+
+			notifyCurrentProgress();
+		}
 	}
-	
+
 	/**
 	 * Actions needed to notify current relative path
 	 * @param relativePath
 	 */
 	protected abstract void notifyCurrentPath(String relativePath);
-	
+
 	/**
 	 * Actions needed to notify current progress
 	 */
 	protected abstract void notifyCurrentProgress();
-	
+
 	/**
 	 * Actions needed to notify each file loaded
 	 */
 	protected abstract void notifyFileLoaded();
-	
+
 	/**
 	 * Actions needed to notify current album being loaded
 	 * @param artist
@@ -285,7 +285,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 	 */
 	protected abstract void notifyCurrentAlbum(String artist, String album);
 
-	
+
 	/**
 	 * Processes a single audio file
 	 * @param audiofile
@@ -293,7 +293,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 	 * @param relativeTo
 	 * @param relativePath
 	 */
-	private void processAudioFile(File audiofile, RepositoryFiller filler, File relativeTo, String relativePath) {
+	private void processAudioFile(final File audiofile, final RepositoryFiller filler, final File relativeTo, final String relativePath) {
 		ILocalAudioObject audio = null;
 
 		// If a previous repository exists, check if file already was loaded.
@@ -303,7 +303,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 		if (oldRepository == null) {
 			audio = localAudioObjectFactory.getLocalAudioObject(audiofile);
 		} else {
-			ILocalAudioObject oldAudioFile = oldRepository.getFile(audiofile.getAbsolutePath());
+			ILocalAudioObject oldAudioFile = oldRepository.getFile(net.sourceforge.atunes.utils.FileUtils.getPath(audiofile));
 			if (oldAudioFile != null && oldAudioFile.isUpToDate()) {
 				audio = oldAudioFile;
 			} else {
@@ -324,7 +324,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 		transaction.finishTransaction();
 		notifyFinishLoader();
 	}
-	
+
 	/**
 	 * Actions needed when process finished
 	 */

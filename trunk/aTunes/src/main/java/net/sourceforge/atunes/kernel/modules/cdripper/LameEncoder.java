@@ -30,6 +30,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.utils.ClosingUtils;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -38,123 +39,123 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class LameEncoder extends AbstractEncoder {
 
-    /** The format name of this encoder */
-    public static final String FORMAT_NAME = "MP3";
-    public static final String LAME = "lame";
-    public static final String QUALITY = "-b";
-    public static final String PRESET = "--preset";
-    public static final String TITLE = "--tt";
-    public static final String ARTIST = "--ta";
-    public static final String ALBUM = "--tl";
-    public static final String TRACK = "--tn";
-    public static final String VERSION = "--version";
-    static final String[] MP3_QUALITIES = { "insane", "extreme", "medium", "standard", "128", "160", "192", "224", "256", "320" };
-    static final String MP3_DEFAULT_QUALITY = "medium";
+	/** The format name of this encoder */
+	public static final String FORMAT_NAME = "MP3";
+	public static final String LAME = "lame";
+	public static final String QUALITY = "-b";
+	public static final String PRESET = "--preset";
+	public static final String TITLE = "--tt";
+	public static final String ARTIST = "--ta";
+	public static final String ALBUM = "--tl";
+	public static final String TRACK = "--tn";
+	public static final String VERSION = "--version";
+	static final String[] MP3_QUALITIES = { "insane", "extreme", "medium", "standard", "128", "160", "192", "224", "256", "320" };
+	static final String MP3_DEFAULT_QUALITY = "medium";
 
-    private Process process;
+	private Process process;
 
-    /**
-     * Creates a new lame encoder
-     */
-    public LameEncoder() {
-    	super("mp3", MP3_QUALITIES, MP3_DEFAULT_QUALITY, FORMAT_NAME);
+	/**
+	 * Creates a new lame encoder
+	 */
+	public LameEncoder() {
+		super("mp3", MP3_QUALITIES, MP3_DEFAULT_QUALITY, FORMAT_NAME);
 	}
-    
-    @Override
-    public boolean testEncoder() {
-        if (getOsManager().isWindows()) {
-            return true;
-        }
 
-        BufferedReader stdInput = null;
-        try {
-            Process p = new ProcessBuilder(StringUtils.getString(getOsManager().getExternalToolsPath(), LAME), VERSION).start();
-            stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	@Override
+	public boolean testEncoder() {
+		if (getOsManager().isWindows()) {
+			return true;
+		}
 
-            String line = null;
-            while ((line = stdInput.readLine()) != null) {
-            	Logger.debug(line);
-            }
+		BufferedReader stdInput = null;
+		try {
+			Process p = new ProcessBuilder(StringUtils.getString(getOsManager().getExternalToolsPath(), LAME), VERSION).start();
+			stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
-            int code = p.waitFor();
-            if (code != 0) {
-                return false;
-            }
-            return true;
-        } catch (IOException e) {
-            return false;
-        } catch (InterruptedException e) {
-            return false;
+			String line = null;
+			while ((line = stdInput.readLine()) != null) {
+				Logger.debug(line);
+			}
+
+			int code = p.waitFor();
+			if (code != 0) {
+				return false;
+			}
+			return true;
+		} catch (IOException e) {
+			return false;
+		} catch (InterruptedException e) {
+			return false;
 		} finally {
-            ClosingUtils.close(stdInput);
-        }
-    }
+			ClosingUtils.close(stdInput);
+		}
+	}
 
-    @Override
-    public boolean encode(File wavFile, File mp3File) {
-        Logger.info(StringUtils.getString("Mp3 encoding process started... ", wavFile.getName(), " -> ", mp3File.getName()));
-        BufferedReader stdInput = null;
-        try {
-            // Prepare and execute the lame command
-            List<String> command = createCommand(wavFile, mp3File);
-            process = new ProcessBuilder(command).start();
-            stdInput = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-            String s = null;
-            int percent = -1;
-            while ((s = stdInput.readLine()) != null) {
-                percent = processOutput(s, percent);
-            }
+	@Override
+	public boolean encode(final File wavFile, final File mp3File) {
+		Logger.info(StringUtils.getString("Mp3 encoding process started... ", wavFile.getName(), " -> ", mp3File.getName()));
+		BufferedReader stdInput = null;
+		try {
+			// Prepare and execute the lame command
+			List<String> command = createCommand(wavFile, mp3File);
+			process = new ProcessBuilder(command).start();
+			stdInput = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			String s = null;
+			int percent = -1;
+			while ((s = stdInput.readLine()) != null) {
+				percent = processOutput(s, percent);
+			}
 
-            int code = process.waitFor();
-            if (code != 0) {
-                Logger.error(StringUtils.getString("Process returned code ", code));
-                return false;
-            }
-            Logger.info("Encoded ok!!");
-            return true;
-        } catch (IOException e) {
-            Logger.error(StringUtils.getString("Process execution caused exception ", e));
-            Logger.error(e);
-            return false;
-        } catch (InterruptedException e) {
-            Logger.error(StringUtils.getString("Process execution caused exception ", e));
-            Logger.error(e);
-            return false;
+			int code = process.waitFor();
+			if (code != 0) {
+				Logger.error(StringUtils.getString("Process returned code ", code));
+				return false;
+			}
+			Logger.info("Encoded ok!!");
+			return true;
+		} catch (IOException e) {
+			Logger.error(StringUtils.getString("Process execution caused exception ", e));
+			Logger.error(e);
+			return false;
+		} catch (InterruptedException e) {
+			Logger.error(StringUtils.getString("Process execution caused exception ", e));
+			Logger.error(e);
+			return false;
 		} finally {
-            ClosingUtils.close(stdInput);
-        }
-    }
+			ClosingUtils.close(stdInput);
+		}
+	}
 
 	/**
 	 * @param s
 	 * @param percent
 	 * @return
 	 */
-	private int processOutput(String s, int percent) {
+	private int processOutput(final String s, final int percent) {
 		int percentResult = percent;
 		if (getListener() != null) {
-		    if (s.matches(".*\\(..%\\).*")) {
-		        int aux = Integer.parseInt((s.substring(s.indexOf('(') + 1, s.indexOf('%'))).trim());
-		        if (aux != percentResult) {
-		            percentResult = aux;
-		            final int percentHelp = percentResult;
+			if (s.matches(".*\\(..%\\).*")) {
+				int aux = Integer.parseInt((s.substring(s.indexOf('(') + 1, s.indexOf('%'))).trim());
+				if (aux != percentResult) {
+					percentResult = aux;
+					final int percentHelp = percentResult;
 
-		            SwingUtilities.invokeLater(new Runnable() {
-		                @Override
-		                public void run() {
-		                	getListener().notifyProgress(percentHelp);
-		                }
-		            });
-		        }
-		    } else if (s.matches(".*\\(100%\\).*") && percentResult != 100) {
-		    	percentResult = 100;
-		    	SwingUtilities.invokeLater(new Runnable() {
-		    		@Override
-		    		public void run() {
-		    			getListener().notifyProgress(100);
-		    		}
-		    	});
-		    }
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							getListener().notifyProgress(percentHelp);
+						}
+					});
+				}
+			} else if (s.matches(".*\\(100%\\).*") && percentResult != 100) {
+				percentResult = 100;
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						getListener().notifyProgress(100);
+					}
+				});
+			}
 		}
 		return percentResult;
 	}
@@ -164,26 +165,26 @@ public class LameEncoder extends AbstractEncoder {
 	 * @param mp3File
 	 * @return
 	 */
-	private List<String> createCommand(File wavFile, File mp3File) {
+	private List<String> createCommand(final File wavFile, final File mp3File) {
 		List<String> command = new ArrayList<String>();
 		command.add(StringUtils.getString(getOsManager().getExternalToolsPath(), LAME));
 		// Presets don't need the -b option, but --preset, so check if preset is used
 		if (getQuality().contains("insane") || getQuality().contains("extreme") || getQuality().contains("medium") || getQuality().contains("standard")) {
-		    command.add(PRESET);
+			command.add(PRESET);
 		} else {
-		    command.add(QUALITY);
+			command.add(QUALITY);
 		}
 		command.add(getQuality());
 
-		command.add(wavFile.getAbsolutePath());
-		command.add(mp3File.getAbsolutePath());
+		command.add(FileUtils.getPath(wavFile));
+		command.add(FileUtils.getPath(mp3File));
 		return command;
 	}
 
-    @Override
-    public void stop() {
-        if (process != null) {
-            process.destroy();
-        }
-    }
+	@Override
+	public void stop() {
+		if (process != null) {
+			process.destroy();
+		}
+	}
 }

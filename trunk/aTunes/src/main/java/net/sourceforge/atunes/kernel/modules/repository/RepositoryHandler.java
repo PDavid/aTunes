@@ -323,7 +323,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	@Override
 	public File getRepositoryFolderContainingFile(final ILocalAudioObject file) {
 		for (File folder : repository.getRepositoryFolders()) {
-			if (file.getUrl().startsWith(folder.getAbsolutePath())) {
+			if (file.getUrl().startsWith(net.sourceforge.atunes.utils.FileUtils.getPath(folder))) {
 				return folder;
 			}
 		}
@@ -333,7 +333,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	@Override
 	public String getRepositoryPath() {
 		// TODO: Remove this method as now more than one folder can be added to repository
-		return repository.getRepositoryFolders().size() > 0 ? repository.getRepositoryFolders().get(0).getAbsolutePath() : "";
+		return repository.getRepositoryFolders().size() > 0 ? net.sourceforge.atunes.utils.FileUtils.getPath(repository.getRepositoryFolders().get(0)) : "";
 	}
 
 	@Override
@@ -371,9 +371,9 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 
 	@Override
 	public boolean isRepository(final File folder) {
-		String path = folder.getAbsolutePath();
+		String path = net.sourceforge.atunes.utils.FileUtils.getPath(folder);
 		for (File folders : repository.getRepositoryFolders()) {
-			if (path.startsWith(folders.getAbsolutePath())) {
+			if (path.startsWith(net.sourceforge.atunes.utils.FileUtils.getPath(folders))) {
 				return true;
 			}
 		}
@@ -453,13 +453,13 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	@Override
 	public void rename(final ILocalAudioObject audioFile, final String name) {
 		File file = audioFile.getFile();
-		String extension = FilenameUtils.getExtension(file.getAbsolutePath());
-		File newFile = new File(StringUtils.getString(file.getParentFile().getAbsolutePath() + "/" + FileNameUtils.getValidFileName(name, getOsManager()) + "." + extension));
+		String extension = FilenameUtils.getExtension(net.sourceforge.atunes.utils.FileUtils.getPath(file));
+		File newFile = new File(StringUtils.getString(net.sourceforge.atunes.utils.FileUtils.getPath(file.getParentFile()) + "/" + FileNameUtils.getValidFileName(name, getOsManager()) + "." + extension));
 		boolean succeeded = file.renameTo(newFile);
 		if (succeeded) {
 			renameFile(audioFile, file, newFile);
 			navigationHandler.repositoryReloaded();
-			statisticsHandler.updateFileName(audioFile, file.getAbsolutePath(), newFile.getAbsolutePath());
+			statisticsHandler.updateFileName(audioFile, net.sourceforge.atunes.utils.FileUtils.getPath(file), net.sourceforge.atunes.utils.FileUtils.getPath(newFile));
 		}
 	}
 
