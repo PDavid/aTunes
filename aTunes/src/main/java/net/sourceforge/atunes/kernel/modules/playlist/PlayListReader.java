@@ -29,58 +29,59 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.ClosingUtils;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.Timer;
 
 import org.apache.commons.io.IOUtils;
 
 class PlayListReader {
-	
-	private IRepositoryHandler repositoryHandler;
-	
+
+	private final IRepositoryHandler repositoryHandler;
+
 	/**
 	 * @param repositoryHandler
 	 */
-	PlayListReader(IRepositoryHandler repositoryHandler) {
+	PlayListReader(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
-    /**
-     * This function reads the filenames from the playlist file, trying to find 
-     * the ones present in repository, which are returned in a list
-     * 
-     * @param file
-     *            The playlist file
-     * 
-     * @return Returns an List of files of the playlist as String.
-     */
-	List<String> read(File file) {
+	/**
+	 * This function reads the filenames from the playlist file, trying to find
+	 * the ones present in repository, which are returned in a list
+	 * 
+	 * @param file
+	 *            The playlist file
+	 * 
+	 * @return Returns an List of files of the playlist as String.
+	 */
+	List<String> read(final File file) {
 		Timer t = new Timer();
 		t.start();
 		FileReader fr = null;
-        try {
-        	List<File> repositoryFolders = repositoryHandler.getFolders();
-    		fr = new FileReader(file);
-    		List<String> fileContent = IOUtils.readLines(fr);
-    		List<String> result = new ArrayList<String>();
-    		for (String line : fileContent) {
-    			String fullPath = getFileIfExistsInRepository(repositoryFolders, line); 
-    			if (fullPath != null) {
-    				result.add(fullPath);
-    			}
-    		}
-    		Logger.debug("Time to read playlist file: ", t.stop(), " seconds");
-    		return result;
-        } catch (IOException e) {
-            return Collections.emptyList();
-        } finally {
-            ClosingUtils.close(fr);
-        }
-    }
-	
-	private String getFileIfExistsInRepository(List<File> repositoryFolders, String relativeFile) {
+		try {
+			List<File> repositoryFolders = repositoryHandler.getFolders();
+			fr = new FileReader(file);
+			List<String> fileContent = IOUtils.readLines(fr);
+			List<String> result = new ArrayList<String>();
+			for (String line : fileContent) {
+				String fullPath = getFileIfExistsInRepository(repositoryFolders, line);
+				if (fullPath != null) {
+					result.add(fullPath);
+				}
+			}
+			Logger.debug("Time to read playlist file: ", t.stop(), " seconds");
+			return result;
+		} catch (IOException e) {
+			return Collections.emptyList();
+		} finally {
+			ClosingUtils.close(fr);
+		}
+	}
+
+	private String getFileIfExistsInRepository(final List<File> repositoryFolders, final String relativeFile) {
 		for (File repositoryFolder : repositoryFolders) {
-			String filePath = repositoryFolder.getAbsolutePath() + relativeFile;
+			String filePath = FileUtils.getPath(repositoryFolder) + relativeFile;
 			if (new File(filePath).exists()) {
 				return filePath;
 			}

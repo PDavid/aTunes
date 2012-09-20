@@ -96,84 +96,84 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	private IStateRepository stateRepository;
 
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
-	
+
 	private IOSManager osManager;
-	
+
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 		this.repositoryProgressDialog = dialogFactory.newDialog(IRepositoryProgressDialog.class);
 	}
-	
+
 	/**
 	 * @param backgroundWorkerFactory
 	 */
-	public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
+	public void setBackgroundWorkerFactory(final IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
 
 	/**
 	 * @param stateRepository
 	 */
-	public void setStateRepository(IStateRepository stateRepository) {
+	public void setStateRepository(final IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
 	}
 
 	/**
 	 * @param showRepositoryDataHelper
 	 */
-	public void setShowRepositoryDataHelper(ShowRepositoryDataHelper showRepositoryDataHelper) {
+	public void setShowRepositoryDataHelper(final ShowRepositoryDataHelper showRepositoryDataHelper) {
 		this.showRepositoryDataHelper = showRepositoryDataHelper;
 	}
 
 	/**
 	 * @param repositoryActions
 	 */
-	public void setRepositoryActions(RepositoryActionsHelper repositoryActions) {
+	public void setRepositoryActions(final RepositoryActionsHelper repositoryActions) {
 		this.repositoryActions = repositoryActions;
 	}
 
 	/**
 	 * @param webServicesHandler
 	 */
-	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+	public void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
 
 	/**
 	 * @param navigationHandler
 	 */
-	public void setNavigationHandler(INavigationHandler navigationHandler) {
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
 
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(RepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final RepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
 	/**
 	 * @param frame
 	 */
-	public void setFrame(IFrame frame) {
+	public void setFrame(final IFrame frame) {
 		this.frame = frame;
 	}
 
 	/**
 	 * @param repositoryRetrievedFromCache
 	 */
-	void setRepositoryRetrievedFromCache(IRepository repositoryRetrievedFromCache) {
+	void setRepositoryRetrievedFromCache(final IRepository repositoryRetrievedFromCache) {
 		this.repositoryRetrievedFromCache = repositoryRetrievedFromCache;
 	}
 
@@ -242,7 +242,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 		} while (I18nUtils.getString("RETRY").equals(selection) && !rep.exists());
 	}
 
-	private void applyExistingRepository(IRepository rep) {
+	private void applyExistingRepository(final IRepository rep) {
 		repository = rep;
 		repositoryReadCompleted();
 	}
@@ -286,7 +286,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 		return false;
 	}
 
-	private boolean retrieve(List<File> folders) {
+	private boolean retrieve(final List<File> folders) {
 		repositoryActions.enableRepositoryActions(false);
 		// Start with indeterminate dialog
 		repositoryProgressDialog.showDialog();
@@ -313,7 +313,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 * @param folders
 	 *            the folders
 	 */
-	private void readRepository(List<File> folders) {
+	private void readRepository(final List<File> folders) {
 		backgroundLoad = false;
 		IRepository oldRepository = repository;
 		repository = new Repository(folders, stateRepository);
@@ -351,7 +351,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	}
 
 	@Override
-	public void notifyFilesInRepository(int totalFiles) {
+	public void notifyFilesInRepository(final int totalFiles) {
 		// When total files has been calculated change to determinate progress bar
 		repositoryProgressDialog.setProgressBarIndeterminate(false);
 		repositoryProgressDialog.setTotalFiles(totalFiles);
@@ -360,7 +360,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	}
 
 	@Override
-	public void notifyFinishRead(IRepositoryLoader loader) {
+	public void notifyFinishRead(final IRepositoryLoader loader) {
 		repositoryProgressDialog.setButtonsEnabled(false);
 		repositoryProgressDialog.setCurrentTask(I18nUtils.getString("STORING_REPOSITORY_INFORMATION"));
 		repositoryProgressDialog.setProgressText("");
@@ -369,7 +369,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 		// Save folders: if repository config is lost application can reload data without asking user to select folders again
 		List<String> repositoryFolders = new ArrayList<String>();
 		for (File folder : repository.getRepositoryFolders()) {
-			repositoryFolders.add(folder.getAbsolutePath());
+			repositoryFolders.add(net.sourceforge.atunes.utils.FileUtils.getPath(folder));
 		}
 		stateRepository.setLastRepositoryFolders(repositoryFolders);
 
@@ -381,7 +381,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	}
 
 	@Override
-	public void notifyFinishRefresh(IRepositoryLoader loader) {
+	public void notifyFinishRefresh(final IRepositoryLoader loader) {
 		repositoryActions.enableRepositoryActions(true);
 
 		frame.hideProgressBar();
@@ -453,7 +453,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 
 				coverWorker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<ImageIcon>() {
 					@Override
-					public void call(ImageIcon result) {
+					public void call(final ImageIcon result) {
 						repositoryProgressDialog.setImage(result != null ? result.getImage() : null);
 					}
 				});
@@ -488,7 +488,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 			frame.showProgressBar(false, StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
 			frame.getProgressBar().addMouseListener(new MouseAdapter() {
 				@Override
-				public void mouseClicked(MouseEvent e) {
+				public void mouseClicked(final MouseEvent e) {
 					backgroundLoad = false;
 					frame.hideProgressBar();
 					repositoryProgressDialog.showDialog();
@@ -541,7 +541,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 * Creates new repository with given folders
 	 * @param folders
 	 */
-	protected void newRepositoryWithFolders(List<File> folders) {
+	protected void newRepositoryWithFolders(final List<File> folders) {
 		retrieve(folders);
 	}
 }

@@ -305,7 +305,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 		if (file == null) {
 			throw new IllegalArgumentException();
 		}
-		this.filePath = file.getAbsolutePath();
+		this.filePath = net.sourceforge.atunes.utils.FileUtils.getPath(file);
 	}
 
 	/**

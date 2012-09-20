@@ -35,7 +35,7 @@ import org.apache.commons.io.FileUtils;
  *
  */
 public class FakeEncoder extends AbstractEncoder {
-	
+
 	/**
 	 * Default constructor
 	 */
@@ -44,21 +44,21 @@ public class FakeEncoder extends AbstractEncoder {
 	}
 
 	@Override
-	public boolean encode(File originalFile, File encodedFile) {
+	public boolean encode(final File originalFile, final File encodedFile) {
 		Logger.info("Encoding with fake encoder");
-		Logger.info("Original file: ", originalFile.getAbsolutePath());
-		Logger.info("Encoded file: ", encodedFile.getAbsolutePath());
-		
+		Logger.info("Original file: ", net.sourceforge.atunes.utils.FileUtils.getPath(originalFile));
+		Logger.info("Encoded file: ", net.sourceforge.atunes.utils.FileUtils.getPath(encodedFile));
+
 		// Create file
 		try {
 			FileUtils.touch(encodedFile);
 		} catch (IOException e1) {
 			Logger.error(e1);
 		}
-		
+
 		// Simulate encoding to wav for an amount of time
 		for (int i = 0; i <= 10; i++) {
-			final int progress = i * 10; 
+			final int progress = i * 10;
 			try {
 				Thread.sleep(200);
 				GuiUtils.callInEventDispatchThread(new Runnable() {
@@ -74,9 +74,9 @@ public class FakeEncoder extends AbstractEncoder {
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean setTag(File file, int trackNumber, CDMetadata metadata) {
+	public boolean setTag(final File file, final int trackNumber, final CDMetadata metadata) {
 		Logger.info("Title: ", metadata.getTitle(trackNumber));
 		Logger.info("Track number: ", trackNumber);
 		Logger.info("Artist: ", metadata.getArtist(trackNumber));
@@ -84,11 +84,11 @@ public class FakeEncoder extends AbstractEncoder {
 		Logger.info("Disc number: ", metadata.getDisc());
 		return true;
 	}
-	
+
 	@Override
 	public void stop() {
 	}
-	
+
 	@Override
 	public boolean testEncoder() {
 		return true;

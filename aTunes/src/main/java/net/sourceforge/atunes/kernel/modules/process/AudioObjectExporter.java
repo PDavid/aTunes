@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.utils.CollectionUtils;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -52,31 +53,31 @@ public class AudioObjectExporter implements IAudioObjectExporter {
 	/**
 	 * @param processFactory
 	 */
-	public final void setProcessFactory(IProcessFactory processFactory) {
+	public final void setProcessFactory(final IProcessFactory processFactory) {
 		this.processFactory = processFactory;
 	}
 
 	/**
 	 * @param osManager
 	 */
-	public final void setOsManager(IOSManager osManager) {
+	public final void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
 	/**
 	 * @param dialogFactory
 	 */
-	public final void setDialogFactory(IDialogFactory dialogFactory) {
+	public final void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
 
 	@Override
-	public void exportAudioObject(List<ILocalAudioObject> audioObjects) {
+	public void exportAudioObject(final List<ILocalAudioObject> audioObjects) {
 		if (!CollectionUtils.isEmpty(audioObjects)) {
 			File selectedFolder = selectExportFolder();
 			if (selectedFolder != null) {
 				ILocalAudioObjectTransferProcess process = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("exportFilesProcess");
-				process.setDestination(selectedFolder.getAbsolutePath());
+				process.setDestination(FileUtils.getPath(selectedFolder));
 				process.setFilesToTransfer(audioObjects);
 				ExportProcessListener listener = new ExportProcessListener();
 				listener.setDialogFactory(dialogFactory);

@@ -24,6 +24,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.utils.FileUtils;
 
 /**
  * Column to show path
@@ -32,47 +33,47 @@ import net.sourceforge.atunes.model.IRadio;
  */
 public class PathColumn extends AbstractColumn<String> {
 
-    private static final long serialVersionUID = 2053462205073873545L;
+	private static final long serialVersionUID = 2053462205073873545L;
 
-    /**
-     * Default constructor
-     */
-    public PathColumn() {
-        super("LOCATION");
-        setWidth(350);
-        setVisible(false);
-        setUsedForFilter(true);
-    }
+	/**
+	 * Default constructor
+	 */
+	public PathColumn() {
+		super("LOCATION");
+		setWidth(350);
+		setVisible(false);
+		setUsedForFilter(true);
+	}
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        String p1 = "";
-        String p2 = "";
-        if (ao1 instanceof ILocalAudioObject) {
-            p1 = ((ILocalAudioObject) ao1).getFile().getParentFile().getAbsolutePath();
-        }
-        if (ao2 instanceof ILocalAudioObject) {
-            p2 = ((ILocalAudioObject) ao2).getFile().getParentFile().getAbsolutePath();
-        }
-        return p1.compareTo(p2);
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		String p1 = "";
+		String p2 = "";
+		if (ao1 instanceof ILocalAudioObject) {
+			p1 = FileUtils.getPath(((ILocalAudioObject) ao1).getFile().getParentFile());
+		}
+		if (ao2 instanceof ILocalAudioObject) {
+			p2 = FileUtils.getPath(((ILocalAudioObject) ao2).getFile().getParentFile());
+		}
+		return p1.compareTo(p2);
+	}
 
-    @Override
-    public String getValueFor(IAudioObject audioObject) {
-        if (audioObject instanceof IRadio) {
-            return ((IRadio) audioObject).getUrl();
-        }
-        if (audioObject instanceof IPodcastFeedEntry) {
-            return ((IPodcastFeedEntry) audioObject).getUrl();
-        }
-        if (audioObject instanceof ILocalAudioObject) {
-        	return ((ILocalAudioObject) audioObject).getFile().getParentFile().getAbsolutePath();
-        }
-        return null;
-    }
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
+
+	@Override
+	public String getValueFor(final IAudioObject audioObject) {
+		if (audioObject instanceof IRadio) {
+			return ((IRadio) audioObject).getUrl();
+		}
+		if (audioObject instanceof IPodcastFeedEntry) {
+			return ((IPodcastFeedEntry) audioObject).getUrl();
+		}
+		if (audioObject instanceof ILocalAudioObject) {
+			return FileUtils.getPath(((ILocalAudioObject) audioObject).getFile().getParentFile());
+		}
+		return null;
+	}
 }

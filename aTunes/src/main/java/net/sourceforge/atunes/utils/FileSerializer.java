@@ -33,14 +33,14 @@ import com.esotericsoftware.kryo.io.Output;
  *
  */
 class FileSerializer extends Serializer<File> {
-	
+
 	@Override
-	public File read(Kryo kryo, Input input, Class<File> fileClass) {
+	public File read(final Kryo kryo, final Input input, final Class<File> fileClass) {
 		return new File(input.readString());
 	}
-	
+
 	@Override
-	public void write(Kryo kryo, Output output, File file) {
-		output.writeString(file.getAbsolutePath());
+	public void write(final Kryo kryo, final Output output, final File file) {
+		output.writeString(net.sourceforge.atunes.utils.FileUtils.getPath(file));
 	}
 }

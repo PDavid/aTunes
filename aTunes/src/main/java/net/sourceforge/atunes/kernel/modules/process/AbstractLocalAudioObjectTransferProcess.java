@@ -58,353 +58,354 @@ import org.apache.commons.io.FileUtils;
  */
 public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractProcess<List<File>> implements ILocalAudioObjectTransferProcess {
 
-    /**
-     * The files to be transferred.
-     */
-    private Collection<ILocalAudioObject> filesToTransfer;
-    
-    /**
-     * List of files transferred. Used if process is canceled to delete these
-     * files
-     */
-    private List<File> filesTransferred;
+	/**
+	 * The files to be transferred.
+	 */
+	private Collection<ILocalAudioObject> filesToTransfer;
 
-    /**
-     * The dialog used to show the progress of this process
-     */
-    private IProgressDialog progressDialog;
+	/**
+	 * List of files transferred. Used if process is canceled to delete these
+	 * files
+	 */
+	private final List<File> filesTransferred;
 
-    /**
-     * User selection if an error occurs while transferring
-     */
-    private String userSelectionWhenErrors = null;
+	/**
+	 * The dialog used to show the progress of this process
+	 */
+	private IProgressDialog progressDialog;
 
-    private IOSManager osManager;
-    
-    private IProgressDialog transferDialog;
-    
-    private String destination;
-    
-    private IStateRepository stateRepository;
-    
-    private Patterns patterns;
-    
-    /**
-     * @param patterns
-     */
-    public void setPatterns(Patterns patterns) {
+	/**
+	 * User selection if an error occurs while transferring
+	 */
+	private String userSelectionWhenErrors = null;
+
+	private IOSManager osManager;
+
+	private IProgressDialog transferDialog;
+
+	private String destination;
+
+	private IStateRepository stateRepository;
+
+	private Patterns patterns;
+
+	/**
+	 * @param patterns
+	 */
+	public void setPatterns(final Patterns patterns) {
 		this.patterns = patterns;
 	}
-    
-    /**
-     * @param stateRepository
-     */
-    public void setStateRepository(IStateRepository stateRepository) {
+
+	/**
+	 * @param stateRepository
+	 */
+	public void setStateRepository(final IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
 	}
-    
-    /**
-     * @return
-     */
-    protected IStateRepository getStateRepository() {
+
+	/**
+	 * @return
+	 */
+	protected IStateRepository getStateRepository() {
 		return stateRepository;
 	}
-    
-    /**
-     * @param collection
-     */
-    public AbstractLocalAudioObjectTransferProcess() {
-        this.filesTransferred = new ArrayList<File>();
-    }
-    
-    /**
-     * Destination of transfer
-     * @param destination
-     */
-    public void setDestination(String destination) {
+
+	/**
+	 * @param collection
+	 */
+	public AbstractLocalAudioObjectTransferProcess() {
+		this.filesTransferred = new ArrayList<File>();
+	}
+
+	/**
+	 * Destination of transfer
+	 * @param destination
+	 */
+	@Override
+	public void setDestination(final String destination) {
 		this.destination = destination;
 	}
-    
-    /**
-     * @return
-     */
-    protected Collection<ILocalAudioObject> getFilesToTransfer() {
+
+	/**
+	 * @return
+	 */
+	protected Collection<ILocalAudioObject> getFilesToTransfer() {
 		return filesToTransfer;
 	}
 
-    /**
-     * @param transferDialog
-     */
-    public void setTransferDialog(IProgressDialog transferDialog) {
+	/**
+	 * @param transferDialog
+	 */
+	public void setTransferDialog(final IProgressDialog transferDialog) {
 		this.transferDialog = transferDialog;
 	}
-    
-    /**
-     * Sets the files to transfer by this process
-     * @param filesToTransfer
-     */
-    @Override
-	public void setFilesToTransfer(Collection<ILocalAudioObject> filesToTransfer) {
+
+	/**
+	 * Sets the files to transfer by this process
+	 * @param filesToTransfer
+	 */
+	@Override
+	public void setFilesToTransfer(final Collection<ILocalAudioObject> filesToTransfer) {
 		this.filesToTransfer = filesToTransfer;
 	}
-    
-    /**
-     * @param osManager
-     */
-    public void setOsManager(IOSManager osManager) {
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
-    @Override
-    protected long getProcessSize() {
-        // Get size of files
-        long totalBytes = 0;
-        for (ILocalAudioObject file : this.filesToTransfer) {
-            totalBytes = totalBytes + file.getFile().length();
-        }
-        return totalBytes;
-    }
+	@Override
+	protected long getProcessSize() {
+		// Get size of files
+		long totalBytes = 0;
+		for (ILocalAudioObject file : this.filesToTransfer) {
+			totalBytes = totalBytes + file.getFile().length();
+		}
+		return totalBytes;
+	}
 
-    @Override
-    protected IProgressDialog getProgressDialog() {
-        if (progressDialog == null) {
-            progressDialog = transferDialog;
-            progressDialog.setTitle(getProgressDialogTitle());
-            progressDialog.setInfoText(getProgressDialogInformation());
-            progressDialog.setCurrentProgress(0);
-            progressDialog.setProgressBarValue(0);
-            progressDialog.addCancelButtonActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    cancelProcess();
-                    progressDialog.disableCancelButton();
-                }
-            });
-        }
-        return progressDialog;
-    }
+	@Override
+	protected IProgressDialog getProgressDialog() {
+		if (progressDialog == null) {
+			progressDialog = transferDialog;
+			progressDialog.setTitle(getProgressDialogTitle());
+			progressDialog.setInfoText(getProgressDialogInformation());
+			progressDialog.setCurrentProgress(0);
+			progressDialog.setProgressBarValue(0);
+			progressDialog.addCancelButtonActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(final ActionEvent e) {
+					cancelProcess();
+					progressDialog.disableCancelButton();
+				}
+			});
+		}
+		return progressDialog;
+	}
 
-    @Override
-    protected boolean runProcess() {
-        boolean errors = false;
-        File destinationFile = new File(getDestination());
-        long bytesTransferred = 0;
-        boolean ignoreAllErrors = false;
-        Logger.info(StringUtils.getString("Transferring ", this.filesToTransfer.size(), " files to ", destinationFile));
-        for (Iterator<ILocalAudioObject> it = this.filesToTransfer.iterator(); it.hasNext() && !isCanceled();) {
-        	ILocalAudioObject file = it.next();
-            final List<Exception> thrownExceptions = new ArrayList<Exception>();
-            File transferredFile = transferAudioFile(destinationFile, file, thrownExceptions);
-            filesTransferred.add(transferredFile);
-            if (!thrownExceptions.isEmpty()) {
-                for (Exception e : thrownExceptions) {
-                    Logger.error(e);
-                }
-                if (!ignoreAllErrors) {
-                    try {
-                        SwingUtilities.invokeAndWait(new Runnable() {
-                            @Override
-                            public void run() {
-                                userSelectionWhenErrors = (String) getDialogFactory().newDialog(IMessageDialog.class)
-                                        .showMessage(StringUtils.getString(I18nUtils.getString("ERROR"), ": ", thrownExceptions.get(0).getMessage()), I18nUtils.getString("ERROR"),
-                                                JOptionPane.ERROR_MESSAGE,
-                                                new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("IGNORE_ALL"), I18nUtils.getString("CANCEL") });
-                            }
-                        });
-                    } catch (InterruptedException e1) {
-                        // Do nothing
-                    } catch (InvocationTargetException e1) {
-                        // Do nothing
-                    }
-                    if (I18nUtils.getString("IGNORE_ALL").equals(userSelectionWhenErrors)) {
-                        // Don't display more error messages
-                        ignoreAllErrors = true;
-                    } else if (I18nUtils.getString("CANCEL").equals(userSelectionWhenErrors)) {
-                        // Only in this case set errors to true to force refresh in other case
-                        errors = true;
+	@Override
+	protected boolean runProcess() {
+		boolean errors = false;
+		File destinationFile = new File(getDestination());
+		long bytesTransferred = 0;
+		boolean ignoreAllErrors = false;
+		Logger.info(StringUtils.getString("Transferring ", this.filesToTransfer.size(), " files to ", destinationFile));
+		for (Iterator<ILocalAudioObject> it = this.filesToTransfer.iterator(); it.hasNext() && !isCanceled();) {
+			ILocalAudioObject file = it.next();
+			final List<Exception> thrownExceptions = new ArrayList<Exception>();
+			File transferredFile = transferAudioFile(destinationFile, file, thrownExceptions);
+			filesTransferred.add(transferredFile);
+			if (!thrownExceptions.isEmpty()) {
+				for (Exception e : thrownExceptions) {
+					Logger.error(e);
+				}
+				if (!ignoreAllErrors) {
+					try {
+						SwingUtilities.invokeAndWait(new Runnable() {
+							@Override
+							public void run() {
+								userSelectionWhenErrors = (String) getDialogFactory().newDialog(IMessageDialog.class)
+								.showMessage(StringUtils.getString(I18nUtils.getString("ERROR"), ": ", thrownExceptions.get(0).getMessage()), I18nUtils.getString("ERROR"),
+										JOptionPane.ERROR_MESSAGE,
+										new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("IGNORE_ALL"), I18nUtils.getString("CANCEL") });
+							}
+						});
+					} catch (InterruptedException e1) {
+						// Do nothing
+					} catch (InvocationTargetException e1) {
+						// Do nothing
+					}
+					if (I18nUtils.getString("IGNORE_ALL").equals(userSelectionWhenErrors)) {
+						// Don't display more error messages
+						ignoreAllErrors = true;
+					} else if (I18nUtils.getString("CANCEL").equals(userSelectionWhenErrors)) {
+						// Only in this case set errors to true to force refresh in other case
+						errors = true;
 
-                        // Don't continue
-                        break;
-                    }
-                }
-            }
-            // Add size to bytes transferred
-            bytesTransferred += file.getFile().length();
-            setCurrentProgress(bytesTransferred);
-        }
-        Logger.info("Transfer process done");
-        return !errors;
-    }
+						// Don't continue
+						break;
+					}
+				}
+			}
+			// Add size to bytes transferred
+			bytesTransferred += file.getFile().length();
+			setCurrentProgress(bytesTransferred);
+		}
+		Logger.info("Transfer process done");
+		return !errors;
+	}
 
-    @Override
-    protected void runCancel() {
-        // Remove all transferred files
-        for (File f : this.filesTransferred) {
-            if (f.delete()) {
-            	Logger.info(f, " deleted");
-            } else {
-            	Logger.error(StringUtils.getString(f, " not deleted"));
-            }
-        }
-    }
+	@Override
+	protected void runCancel() {
+		// Remove all transferred files
+		for (File f : this.filesTransferred) {
+			if (f.delete()) {
+				Logger.info(f, " deleted");
+			} else {
+				Logger.error(StringUtils.getString(f, " not deleted"));
+			}
+		}
+	}
 
-    /**
-     * Return destination of all files to be transferred
-     * 
-     * @return
-     */
-    protected String getDestination() {
-    	return destination;
-    }
+	/**
+	 * Return destination of all files to be transferred
+	 * 
+	 * @return
+	 */
+	protected String getDestination() {
+		return destination;
+	}
 
-    /**
-     * Transfers a file to a destination
-     * 
-     * @param destination
-     * @param file
-     * @param list
-     *            to add exceptions thrown
-     * @return
-     * @throws IOException
-     */
-    protected File transferAudioFile(File destination, ILocalAudioObject file, List<Exception> thrownExceptions) {
-        String destDir = getDirectory(file, destination, false);
-        String newName = getName(file, false);
-        File destFile = new File(StringUtils.getString(destDir, osManager.getFileSeparator(), newName));
+	/**
+	 * Transfers a file to a destination
+	 * 
+	 * @param destination
+	 * @param file
+	 * @param list
+	 *            to add exceptions thrown
+	 * @return
+	 * @throws IOException
+	 */
+	protected File transferAudioFile(final File destination, final ILocalAudioObject file, final List<Exception> thrownExceptions) {
+		String destDir = getDirectory(file, destination, false);
+		String newName = getName(file, false);
+		File destFile = new File(StringUtils.getString(destDir, osManager.getFileSeparator(), newName));
 
-        try {
-            // Now that we (supposedly) have a valid filename write file
-            FileUtils.copyFile(file.getFile(), destFile);
-        } catch (IOException e) {
-            thrownExceptions.add(e);
-        }
-        return destFile;
-    }
+		try {
+			// Now that we (supposedly) have a valid filename write file
+			FileUtils.copyFile(file.getFile(), destFile);
+		} catch (IOException e) {
+			thrownExceptions.add(e);
+		}
+		return destFile;
+	}
 
-    /**
-     * @return the filesTransferred
-     */
-    @Override
+	/**
+	 * @return the filesTransferred
+	 */
+	@Override
 	public List<File> getFilesTransferred() {
-        return filesTransferred;
-    }
+		return filesTransferred;
+	}
 
-    /**
-     * Returns directory structure using import export folder pattern
-     * 
-     * @param song
-     * @param destination
-     * @param isMp3Device
-     * @param data.osManager
-     * @return
-     */
-    protected String getDirectory(ILocalAudioObject song, File destination, boolean isMp3Device) {
-        return getDirectory(song, destination, isMp3Device, getFolderPathPattern());
-    }
-    
-    /**
-     * @return folder path pattern
-     */
-    protected abstract String getFolderPathPattern();
+	/**
+	 * Returns directory structure using import export folder pattern
+	 * 
+	 * @param song
+	 * @param destination
+	 * @param isMp3Device
+	 * @param data.osManager
+	 * @return
+	 */
+	protected String getDirectory(final ILocalAudioObject song, final File destination, final boolean isMp3Device) {
+		return getDirectory(song, destination, isMp3Device, getFolderPathPattern());
+	}
 
-    /**
-     * Prepares the directory structure in which the song will be written.
-     * 
-     * @param song
-     * @param destination
-     * @param isMp3Device
-     * @param pattern
-     * @return Returns the directory structure with full path where the file
-     *         will be written
-     */
-    protected String getDirectory(ILocalAudioObject song, File destination, boolean isMp3Device, String pattern) {
-        String songRelativePath = "";
-        if (pattern != null) {
-            songRelativePath = FileNameUtils.getValidFolderName(getNewFolderPath(pattern, song, osManager), isMp3Device, osManager);
-        }
-        return StringUtils.getString(destination.getAbsolutePath(), osManager.getFileSeparator(), songRelativePath);
-    }
+	/**
+	 * @return folder path pattern
+	 */
+	protected abstract String getFolderPathPattern();
 
-    /**
-     * Returns a valid name to transfer the file using import export file name
-     * pattern
-     * 
-     * @param file
-     * @param isMp3Device
-     * @return
-     */
-    protected String getName(ILocalAudioObject file, boolean isMp3Device) {
-        return getName(file, isMp3Device, getFileNamePattern());
-    }
-    
-    /**
-     * @return file name pattern to use
-     */
-    protected abstract String getFileNamePattern();
+	/**
+	 * Prepares the directory structure in which the song will be written.
+	 * 
+	 * @param song
+	 * @param destination
+	 * @param isMp3Device
+	 * @param pattern
+	 * @return Returns the directory structure with full path where the file
+	 *         will be written
+	 */
+	protected String getDirectory(final ILocalAudioObject song, final File destination, final boolean isMp3Device, final String pattern) {
+		String songRelativePath = "";
+		if (pattern != null) {
+			songRelativePath = FileNameUtils.getValidFolderName(getNewFolderPath(pattern, song, osManager), isMp3Device, osManager);
+		}
+		return StringUtils.getString(net.sourceforge.atunes.utils.FileUtils.getPath(destination), osManager.getFileSeparator(), songRelativePath);
+	}
 
-    /**
-     * Returns a valid name to transfer the file given as argument. It applies
-     * pattern replace given as argument
-     * 
-     * @param file
-     * @param isMp3Device
-     * @param pattern
-     * @return
-     */
-    protected String getName(ILocalAudioObject file, boolean isMp3Device, String pattern) {
-        String newName;
-        if (pattern != null) {
-            newName = getNewFileName(pattern, file, osManager);
-        } else {
-            newName = FileNameUtils.getValidFileName(file.getFile().getName().replace("\\", "\\\\").replace("$", "\\$"), isMp3Device, osManager);
-        }
-        return newName;
-    }
+	/**
+	 * Returns a valid name to transfer the file using import export file name
+	 * pattern
+	 * 
+	 * @param file
+	 * @param isMp3Device
+	 * @return
+	 */
+	protected String getName(final ILocalAudioObject file, final boolean isMp3Device) {
+		return getName(file, isMp3Device, getFileNamePattern());
+	}
 
-    
-    protected IOSManager getOsManager() {
+	/**
+	 * @return file name pattern to use
+	 */
+	protected abstract String getFileNamePattern();
+
+	/**
+	 * Returns a valid name to transfer the file given as argument. It applies
+	 * pattern replace given as argument
+	 * 
+	 * @param file
+	 * @param isMp3Device
+	 * @param pattern
+	 * @return
+	 */
+	protected String getName(final ILocalAudioObject file, final boolean isMp3Device, final String pattern) {
+		String newName;
+		if (pattern != null) {
+			newName = getNewFileName(pattern, file, osManager);
+		} else {
+			newName = FileNameUtils.getValidFileName(file.getFile().getName().replace("\\", "\\\\").replace("$", "\\$"), isMp3Device, osManager);
+		}
+		return newName;
+	}
+
+
+	protected IOSManager getOsManager() {
 		return osManager;
 	}
-    
-    /**
-     * Prepares the filename in order to write it.
-     * 
-     * @param pattern
-     *            Filename pattern
-     * @param song
-     *            Song file to be written
-     * 
-     * @return Returns a (hopefully) valid filename
-     */
-    protected String getNewFileName(String pattern, ILocalAudioObject song, IOSManager osManager) {
-        String result = patterns.applyPatternTransformations(pattern, song);
-        // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
-        result = result.replace("\\", "\\\\").replace("$", "\\$");
-        result = StringUtils.getString(result, song.getFile().getName().substring(song.getFile().getName().lastIndexOf('.')));
-        result = FileNameUtils.getValidFileName(result, osManager);
-        return result;
-    }
 
-    /**
-     * Prepares the folder path in order to write it.
-     * 
-     * @param pattern
-     *            Folder path pattern
-     * @param song
-     *            Song file to be written
-     * 
-     * @return Returns a (hopefully) valid filename
-     */
-    protected String getNewFolderPath(String pattern, ILocalAudioObject song, IOSManager osManager) {
-        String result = patterns.applyPatternTransformations(pattern, song);
-        // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
-        result = result.replace("\\", "\\\\").replace("$", "\\$");
-        result = FileNameUtils.getValidFolderName(result, false, osManager);
-        return result;
-    }
+	/**
+	 * Prepares the filename in order to write it.
+	 * 
+	 * @param pattern
+	 *            Filename pattern
+	 * @param song
+	 *            Song file to be written
+	 * 
+	 * @return Returns a (hopefully) valid filename
+	 */
+	protected String getNewFileName(final String pattern, final ILocalAudioObject song, final IOSManager osManager) {
+		String result = patterns.applyPatternTransformations(pattern, song);
+		// We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
+		result = result.replace("\\", "\\\\").replace("$", "\\$");
+		result = StringUtils.getString(result, song.getFile().getName().substring(song.getFile().getName().lastIndexOf('.')));
+		result = FileNameUtils.getValidFileName(result, osManager);
+		return result;
+	}
 
-    @Override
-    protected List<File> getProcessResult() {
-    	return filesTransferred;
-    }
+	/**
+	 * Prepares the folder path in order to write it.
+	 * 
+	 * @param pattern
+	 *            Folder path pattern
+	 * @param song
+	 *            Song file to be written
+	 * 
+	 * @return Returns a (hopefully) valid filename
+	 */
+	protected String getNewFolderPath(final String pattern, final ILocalAudioObject song, final IOSManager osManager) {
+		String result = patterns.applyPatternTransformations(pattern, song);
+		// We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
+		result = result.replace("\\", "\\\\").replace("$", "\\$");
+		result = FileNameUtils.getValidFolderName(result, false, osManager);
+		return result;
+	}
+
+	@Override
+	protected List<File> getProcessResult() {
+		return filesTransferred;
+	}
 }

@@ -45,89 +45,89 @@ import net.sourceforge.atunes.model.IOSManager;
  */
 public final class CustomFileChooser extends JPanel {
 
-    private static final long serialVersionUID = 4713483251093570020L;
+	private static final long serialVersionUID = 4713483251093570020L;
 
-    private JTextField textField;
-    private String result;
-    
-    /**
-     * Instantiates a new custom file chooser.
-     * @param title
-     * @param parent
-     * @param length
-     * @param type
-     * @param osManager
-     * @param beanFactory
-     */
-    public CustomFileChooser(final String title, final Component parent, int length, final int type, IOSManager osManager, final IBeanFactory beanFactory) {
-        super(new GridBagLayout());
-        // Use user home by default
-        final File defaultFolder = new File(osManager.getUserHome());
-        textField = new CustomTextField(defaultFolder.getAbsolutePath(), length);
-        JButton button = new JButton("...");
+	private final JTextField textField;
+	private String result;
 
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                File selected = null;
-                if (type == JFileChooser.DIRECTORIES_ONLY) {
-                	IFolderSelectorDialog dialog = beanFactory.getBean(IDialogFactory.class).newDialog(IFolderSelectorDialog.class);
-                	dialog.setTitle(title);
-                	selected = dialog.selectFolder(defaultFolder);
-                } else {
-                	IFileSelectorDialog dialog = beanFactory.getBean(IDialogFactory.class).newDialog(IFileSelectorDialog.class);
-                	dialog.setTitle(title);
-                	selected = dialog.loadFile(defaultFolder);
-                }
-            	if (selected != null) {
-            		result = selected.getAbsolutePath();
-                } else {
-                    result = null;
-                }
-                textField.setText(result);
-            }
-        });
+	/**
+	 * Instantiates a new custom file chooser.
+	 * @param title
+	 * @param parent
+	 * @param length
+	 * @param type
+	 * @param osManager
+	 * @param beanFactory
+	 */
+	public CustomFileChooser(final String title, final Component parent, final int length, final int type, final IOSManager osManager, final IBeanFactory beanFactory) {
+		super(new GridBagLayout());
+		// Use user home by default
+		final File defaultFolder = new File(osManager.getUserHome());
+		textField = new CustomTextField(net.sourceforge.atunes.utils.FileUtils.getPath(defaultFolder), length);
+		JButton button = new JButton("...");
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        add(textField, c);
-        c.gridx = 1;
-        c.weightx = 0;
-        c.fill = GridBagConstraints.NONE;
-        c.insets = new Insets(0, 2, 0, 0);
-        add(button, c);
-    }
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent arg0) {
+				File selected = null;
+				if (type == JFileChooser.DIRECTORIES_ONLY) {
+					IFolderSelectorDialog dialog = beanFactory.getBean(IDialogFactory.class).newDialog(IFolderSelectorDialog.class);
+					dialog.setTitle(title);
+					selected = dialog.selectFolder(defaultFolder);
+				} else {
+					IFileSelectorDialog dialog = beanFactory.getBean(IDialogFactory.class).newDialog(IFileSelectorDialog.class);
+					dialog.setTitle(title);
+					selected = dialog.loadFile(defaultFolder);
+				}
+				if (selected != null) {
+					result = net.sourceforge.atunes.utils.FileUtils.getPath(selected);
+				} else {
+					result = null;
+				}
+				textField.setText(result);
+			}
+		});
 
-    /**
-     * Gets the result.
-     * 
-     * @return the result
-     */
-    public String getResult() {
-        result = textField.getText();
-        return result;
-    }
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		add(textField, c);
+		c.gridx = 1;
+		c.weightx = 0;
+		c.fill = GridBagConstraints.NONE;
+		c.insets = new Insets(0, 2, 0, 0);
+		add(button, c);
+	}
 
-    /**
-     * Sets the text.
-     * 
-     * @param text
-     *            the new text
-     */
-    public void setText(String text) {
-        textField.setText(text);
-        result = text;
-    }
-    
-    /**
-     * Adds a document listener to text field
-     * @param listener
-     */
-    public void addDocumentListener(DocumentListener listener) {
-    	this.textField.getDocument().addDocumentListener(listener);
-    }
+	/**
+	 * Gets the result.
+	 * 
+	 * @return the result
+	 */
+	public String getResult() {
+		result = textField.getText();
+		return result;
+	}
+
+	/**
+	 * Sets the text.
+	 * 
+	 * @param text
+	 *            the new text
+	 */
+	public void setText(final String text) {
+		textField.setText(text);
+		result = text;
+	}
+
+	/**
+	 * Adds a document listener to text field
+	 * @param listener
+	 */
+	public void addDocumentListener(final DocumentListener listener) {
+		this.textField.getDocument().addDocumentListener(listener);
+	}
 
 }

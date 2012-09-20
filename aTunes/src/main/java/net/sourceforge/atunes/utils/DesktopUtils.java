@@ -51,7 +51,7 @@ public final class DesktopUtils implements IDesktop {
 	private static final class OpenFile implements Callable<Void> {
 		private final File fileToOpen;
 
-		private OpenFile(File fileToOpen) {
+		private OpenFile(final File fileToOpen) {
 			this.fileToOpen = fileToOpen;
 		}
 
@@ -74,7 +74,7 @@ public final class DesktopUtils implements IDesktop {
 	private static final class OpenBrowser implements Callable<Void> {
 		private final URI uri;
 
-		private OpenBrowser(URI uri) {
+		private OpenBrowser(final URI uri) {
 			this.uri = uri;
 		}
 
@@ -90,94 +90,94 @@ public final class DesktopUtils implements IDesktop {
 	}
 
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
-	
+
 	/**
 	 * @param backgroundWorkerFactory
 	 */
-	public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
+	public void setBackgroundWorkerFactory(final IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
-	
-    /* (non-Javadoc)
+
+	/* (non-Javadoc)
 	 * @see net.sourceforge.atunes.utils.IDesktop#openSearch(net.sourceforge.atunes.model.ISearch, java.lang.String)
 	 */
-    @Override
-	public void openSearch(ISearch search, String query) {
-        if (search != null) {
-            try {
-                browse(search.getURL(query).toURI());
-            } catch (MalformedURLException e) {
-                Logger.error(e);
-            } catch (URISyntaxException e) {
-                Logger.error(e);
-            }
-        }
-    }
+	@Override
+	public void openSearch(final ISearch search, final String query) {
+		if (search != null) {
+			try {
+				browse(search.getURL(query).toURI());
+			} catch (MalformedURLException e) {
+				Logger.error(e);
+			} catch (URISyntaxException e) {
+				Logger.error(e);
+			}
+		}
+	}
 
-    /* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see net.sourceforge.atunes.utils.IDesktop#openURL(java.lang.String)
 	 */
-    @Override
-	public void openURL(String url) {
-        if (isDesktopSupported()) {
-            try {
-                openURI(new URL(url).toURI());
-            } catch (MalformedURLException e) {
-                Logger.error(e);
-            } catch (URISyntaxException e) {
-                Logger.error(e);
-            }
-        }
-    }
+	@Override
+	public void openURL(final String url) {
+		if (isDesktopSupported()) {
+			try {
+				openURI(new URL(url).toURI());
+			} catch (MalformedURLException e) {
+				Logger.error(e);
+			} catch (URISyntaxException e) {
+				Logger.error(e);
+			}
+		}
+	}
 
-    /* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see net.sourceforge.atunes.utils.IDesktop#openFile(java.io.File, net.sourceforge.atunes.model.IOSManager)
 	 */
-    @Override
-	public void openFile(File file, IOSManager osManager) {
-        if (isDesktopSupported()) {
-            final File fileToOpen;
-            /*
-             * Needed for UNC filenames with spaces ->
-             * http://bugs.sun.com/view_bug.do?bug_id=6550588
-             */
-            if (osManager.usesShortPathNames()) {
-                fileToOpen = new File(FileNameUtils.getShortPathNameW(file.getAbsolutePath(), osManager));
-            } else {
-                fileToOpen = file;
-            }
-            IBackgroundWorker<Void> backgroundWorker = backgroundWorkerFactory.getWorker();
-            backgroundWorker.setBackgroundActions(new OpenFile(fileToOpen));
-            backgroundWorker.execute();
-        }
-    }
-    
-    /**
-     * Returns if desktop actions are supported
-     * @return
-     */
-    private boolean isDesktopSupported() {
-    	return Desktop.isDesktopSupported();
-    }
-    
-    /**
-     * Starts web browser with specified URI.
-     * @param uri
-     *            URI
-     */
-    private void openURI(URI uri) {
-    	browse(uri);
-    }
+	@Override
+	public void openFile(final File file, final IOSManager osManager) {
+		if (isDesktopSupported()) {
+			final File fileToOpen;
+			/*
+			 * Needed for UNC filenames with spaces ->
+			 * http://bugs.sun.com/view_bug.do?bug_id=6550588
+			 */
+			if (osManager.usesShortPathNames()) {
+				fileToOpen = new File(FileNameUtils.getShortPathNameW(net.sourceforge.atunes.utils.FileUtils.getPath(file), osManager));
+			} else {
+				fileToOpen = file;
+			}
+			IBackgroundWorker<Void> backgroundWorker = backgroundWorkerFactory.getWorker();
+			backgroundWorker.setBackgroundActions(new OpenFile(fileToOpen));
+			backgroundWorker.execute();
+		}
+	}
 
-    /**
-     * Opens desktop browser with given address
-     * @param uri
-     */
-    private void browse(final URI uri) {
-    	if (isDesktopSupported()) {
-            IBackgroundWorker<Void> backgroundWorker = backgroundWorkerFactory.getWorker();
-            backgroundWorker.setBackgroundActions(new OpenBrowser(uri));
-            backgroundWorker.execute();
-    	}
-    }
+	/**
+	 * Returns if desktop actions are supported
+	 * @return
+	 */
+	private boolean isDesktopSupported() {
+		return Desktop.isDesktopSupported();
+	}
+
+	/**
+	 * Starts web browser with specified URI.
+	 * @param uri
+	 *            URI
+	 */
+	private void openURI(final URI uri) {
+		browse(uri);
+	}
+
+	/**
+	 * Opens desktop browser with given address
+	 * @param uri
+	 */
+	private void browse(final URI uri) {
+		if (isDesktopSupported()) {
+			IBackgroundWorker<Void> backgroundWorker = backgroundWorkerFactory.getWorker();
+			backgroundWorker.setBackgroundActions(new OpenBrowser(uri));
+			backgroundWorker.execute();
+		}
+	}
 }

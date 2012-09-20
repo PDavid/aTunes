@@ -29,81 +29,87 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IStateUI;
+import net.sourceforge.atunes.utils.FileUtils;
 
+/**
+ * Controller for full screen window
+ * @author alex
+ *
+ */
 public class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
 
 	private FullScreenWindowFactory fullScreenWindowFactory;
-	
+
 	private IStateUI stateUI;
-	
+
 	/**
 	 * @param stateUI
 	 */
-	public void setStateUI(IStateUI stateUI) {
+	public void setStateUI(final IStateUI stateUI) {
 		this.stateUI = stateUI;
 	}
-	
+
 	/**
 	 * @param fullScreenWindowFactory
 	 */
-	public void setFullScreenWindowFactory(FullScreenWindowFactory fullScreenWindowFactory) {
+	public void setFullScreenWindowFactory(final FullScreenWindowFactory fullScreenWindowFactory) {
 		this.fullScreenWindowFactory = fullScreenWindowFactory;
 	}
-	
+
 	/**
 	 * Initializes controller
 	 */
 	public void initialize() {
 		final FullScreenWindow window = fullScreenWindowFactory.getFullScreenWindow();
-        setComponentControlled(window);
-        
-        KeyListener keyAdapter = new FullScreenKeyAdapter(window);
-        
-        window.addKeyListener(keyAdapter);
-        window.getOptions().addKeyListener(keyAdapter);
-        
-        MouseListener clickListener = new FullScreenMouseListener(window);
-        window.addMouseListener(clickListener);
-        setClickListener(clickListener);
-        
-        MouseMotionListener moveListener = new FullScreenMouseMotionAdapter(window);
-        window.addMouseMotionListener(moveListener);
-        window.getCovers().addMouseMotionListener(moveListener);
+		setComponentControlled(window);
 
-        window.getSelectBackground().addActionListener(new SelectBackgroundActionListener(this));
-        
-        window.getRemoveBackground().addActionListener(new RemoveBackgroundActionListener(window, stateUI));
+		KeyListener keyAdapter = new FullScreenKeyAdapter(window);
 
-        FullScreenShowMenuMouseAdapter optionsAdapter = new FullScreenShowMenuMouseAdapter(window.getOptions());
-        window.getBackgroundPanel().addMouseListener(optionsAdapter);
-        window.getCovers().addMouseListener(optionsAdapter);
+		window.addKeyListener(keyAdapter);
+		window.getOptions().addKeyListener(keyAdapter);
 
-        window.getExitFullScreen().addActionListener(new ExitFullScreenActionListener(window));
+		MouseListener clickListener = new FullScreenMouseListener(window);
+		window.addMouseListener(clickListener);
+		setClickListener(clickListener);
 
-        setBackground();
+		MouseMotionListener moveListener = new FullScreenMouseMotionAdapter(window);
+		window.addMouseMotionListener(moveListener);
+		window.getCovers().addMouseMotionListener(moveListener);
+
+		window.getSelectBackground().addActionListener(new SelectBackgroundActionListener(this));
+
+		window.getRemoveBackground().addActionListener(new RemoveBackgroundActionListener(window, stateUI));
+
+		FullScreenShowMenuMouseAdapter optionsAdapter = new FullScreenShowMenuMouseAdapter(window.getOptions());
+		window.getBackgroundPanel().addMouseListener(optionsAdapter);
+		window.getCovers().addMouseListener(optionsAdapter);
+
+		window.getExitFullScreen().addActionListener(new ExitFullScreenActionListener(window));
+
+		setBackground();
 
 	}
 
 	private void setBackground() {
-        File backgroundFile = null;
-        if (stateUI.getFullScreenBackground() != null) {
-            backgroundFile = new File(stateUI.getFullScreenBackground());
-            if (!backgroundFile.exists()) {
-                backgroundFile = null;
-            }
-        }
-        getComponentControlled().setBackground(backgroundFile);
+		File backgroundFile = null;
+		if (stateUI.getFullScreenBackground() != null) {
+			backgroundFile = new File(stateUI.getFullScreenBackground());
+			if (!backgroundFile.exists()) {
+				backgroundFile = null;
+			}
+		}
+		getComponentControlled().setBackground(backgroundFile);
 	}
-	
-	void setBackground(File file) {
+
+	void setBackground(final File file) {
 		getComponentControlled().setBackground(file);
-		stateUI.setFullScreenBackground(file.getAbsolutePath());
+		stateUI.setFullScreenBackground(FileUtils.getPath(file));
 	}
-	
+
 	/**
 	 * @param clickListener
 	 */
-	private void setClickListener(MouseListener clickListener) {
+	private void setClickListener(final MouseListener clickListener) {
 		getComponentControlled().getCovers().addMouseListener(clickListener);
 		getComponentControlled().getOptions().addMouseListener(clickListener);
 		getComponentControlled().getPreviousButton().addMouseListener(clickListener);
@@ -117,12 +123,12 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 	void toggleVisibility() {
 		getComponentControlled().setVisible(!getComponentControlled().isVisible());
 	}
-	
+
 	/**
 	 * Sets the audio object.
 	 * @param objects
 	 */
-	void setAudioObjects(List<IAudioObject> objects) {
+	void setAudioObjects(final List<IAudioObject> objects) {
 		getComponentControlled().setAudioObjects(objects);
 	}
 
@@ -130,7 +136,7 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 	 * Sets the playing
 	 * @param playing
 	 */
-	void setPlaying(boolean playing) {
+	void setPlaying(final boolean playing) {
 		getComponentControlled().setPlaying(playing);
 	}
 

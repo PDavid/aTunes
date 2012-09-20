@@ -33,6 +33,7 @@ import net.sourceforge.atunes.model.IFileSelectorDialog;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IStatePlaylist;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -57,28 +58,28 @@ public class SaveM3UPlayListAction extends CustomAbstractAction {
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
 
 	/**
 	 * @param statePlaylist
 	 */
-	public void setStatePlaylist(IStatePlaylist statePlaylist) {
+	public void setStatePlaylist(final IStatePlaylist statePlaylist) {
 		this.statePlaylist = statePlaylist;
 	}
 
 	/**
 	 * @param playListIOService
 	 */
-	public void setPlayListIOService(IPlayListIOService playListIOService) {
+	public void setPlayListIOService(final IPlayListIOService playListIOService) {
 		this.playListIOService = playListIOService;
 	}
 
 	/**
 	 * @param playListHandler
 	 */
-	public void setPlayListHandler(IPlayListHandler playListHandler) {
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
 
@@ -98,7 +99,7 @@ public class SaveM3UPlayListAction extends CustomAbstractAction {
 		File file = dialog.saveFile(statePlaylist.getSavePlaylistPath());
 		if (file != null) {
 
-			statePlaylist.setSavePlaylistPath(file.getParentFile().getAbsolutePath());
+			statePlaylist.setSavePlaylistPath(FileUtils.getPath(file.getParentFile()));
 
 			// If filename have incorrect extension, add it
 			file = playListIOService.checkM3UPlayListFileName(file);
@@ -108,7 +109,7 @@ public class SaveM3UPlayListAction extends CustomAbstractAction {
 	}
 
 	@Override
-	public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
+	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
 		return !playListHandler.getCurrentPlayList(true).isEmpty();
 	}
 }

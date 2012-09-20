@@ -181,7 +181,7 @@ public class RepositoryAddService {
 	 */
 	private String getRepositoryPathForFolder(final IRepository rep, final File folder) {
 		String repositoryPath;
-		repositoryPath = getRepositoryFolderContaining(rep, folder).getAbsolutePath().replace('\\', '/');
+		repositoryPath = net.sourceforge.atunes.utils.FileUtils.getPath(getRepositoryFolderContaining(rep, folder)).replace('\\', '/');
 		if (repositoryPath.endsWith("/")) {
 			repositoryPath = repositoryPath.substring(0, repositoryPath.length() - 2);
 		}
@@ -211,9 +211,9 @@ public class RepositoryAddService {
 	 * @return the repository folder containing
 	 */
 	private File getRepositoryFolderContaining(final IRepository rep, final File folder) {
-		String path = folder.getAbsolutePath();
+		String path = net.sourceforge.atunes.utils.FileUtils.getPath(folder);
 		for (File f : rep.getRepositoryFolders()) {
-			if (path.startsWith(f.getAbsolutePath())) {
+			if (path.startsWith(net.sourceforge.atunes.utils.FileUtils.getPath(f))) {
 				return f;
 			}
 		}

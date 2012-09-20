@@ -67,261 +67,261 @@ import org.commonjukebox.plugins.model.PluginListener;
 
 public class PluginsHandler extends AbstractHandler implements PluginListener, IPluginsHandler {
 
-    /**
-     * Plugins factory
-     */
-    private PluginsFactory factory;
+	/**
+	 * Plugins factory
+	 */
+	private PluginsFactory factory;
 
-    private static Set<PluginType> pluginTypes;
-    
-    private IStateCore stateCore;
-    
-    private IDialogFactory dialogFactory;
-    
-    static {
-        pluginTypes = new HashSet<PluginType>();
-        pluginTypes.add(new PluginType(IPlaybackStateListener.class.getName(), (PluginListener) Context.getBean(IPlayerHandler.class), false));
-        pluginTypes.add(new PluginType(AbstractColumn.class.getName(), ColumnSets.getInstance(), false));
-        pluginTypes.add(new PluginType(AbstractNavigationView.class.getName(), (PluginListener) Context.getBean(INavigationHandler.class), false));
-        pluginTypes.add(new PluginType(AbstractContextPanel.class.getName(), (PluginListener) Context.getBean(IContextHandler.class), false));
-        pluginTypes.add(new PluginType(AbstractLookAndFeel.class.getName(), (PluginListener) Context.getBean(ILookAndFeelManager.class), false));
-        pluginTypes.add(new PluginType(AbstractGeneralPurposePlugin.class.getName(), (PluginListener) Context.getBean(IGeneralPurposePluginsHandler.class), false));
-    }
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
+	private static Set<PluginType> pluginTypes;
+
+	private IStateCore stateCore;
+
+	private IDialogFactory dialogFactory;
+
+	static {
+		pluginTypes = new HashSet<PluginType>();
+		pluginTypes.add(new PluginType(IPlaybackStateListener.class.getName(), (PluginListener) Context.getBean(IPlayerHandler.class), false));
+		pluginTypes.add(new PluginType(AbstractColumn.class.getName(), ColumnSets.getInstance(), false));
+		pluginTypes.add(new PluginType(AbstractNavigationView.class.getName(), (PluginListener) Context.getBean(INavigationHandler.class), false));
+		pluginTypes.add(new PluginType(AbstractContextPanel.class.getName(), (PluginListener) Context.getBean(IContextHandler.class), false));
+		pluginTypes.add(new PluginType(AbstractLookAndFeel.class.getName(), (PluginListener) Context.getBean(ILookAndFeelManager.class), false));
+		pluginTypes.add(new PluginType(AbstractGeneralPurposePlugin.class.getName(), Context.getBean(IGeneralPurposePluginsHandler.class), false));
+	}
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
 
-    /**
-     * @param stateCore
-     */
-    public void setStateCore(IStateCore stateCore) {
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(final IStateCore stateCore) {
 		this.stateCore = stateCore;
 	}
-    
-    /**
-     * Initializes all plugins found in plugins dir
-     */
-    private void initPlugins() {
-        try {
-            factory = new PluginsFactory();
 
-            PluginSystemLogger.addHandler(new PluginsLoggerHandler());
-            PluginSystemLogger.setLevel(Level.ALL);
+	/**
+	 * Initializes all plugins found in plugins dir
+	 */
+	private void initPlugins() {
+		try {
+			factory = new PluginsFactory();
 
-            // User plugins folder
-            factory.setPluginsRepository(getUserPluginsFolder());
-            
-            // Temporal plugins folder
-            factory.setTemporalPluginRepository(getTemporalPluginsFolder());
+			PluginSystemLogger.addHandler(new PluginsLoggerHandler());
+			PluginSystemLogger.setLevel(Level.ALL);
 
-        } catch (PluginSystemException e) {
-            Logger.error(e);
-        } catch (IOException e) {
-            Logger.error(e);
+			// User plugins folder
+			factory.setPluginsRepository(getUserPluginsFolder());
+
+			// Temporal plugins folder
+			factory.setTemporalPluginRepository(getTemporalPluginsFolder());
+
+		} catch (PluginSystemException e) {
+			Logger.error(e);
+		} catch (IOException e) {
+			Logger.error(e);
 		}
-    }
+	}
 
-    @Override
-    protected void initHandler() {
-    	if (stateCore.isPluginsEnabled()) {
-    		initPlugins();
-    	} else {
-    		Logger.info("Plugins are disabled");
-    	}
-    }
+	@Override
+	protected void initHandler() {
+		if (stateCore.isPluginsEnabled()) {
+			initPlugins();
+		} else {
+			Logger.info("Plugins are disabled");
+		}
+	}
 
-    @Override
-    public void applicationStarted() {
-    	if (!stateCore.isPluginsEnabled()) {
-    		return;
-    	}
-    	
-        addPluginListeners();
+	@Override
+	public void applicationStarted() {
+		if (!stateCore.isPluginsEnabled()) {
+			return;
+		}
 
-        Timer t = new Timer();
-        t.start();
+		addPluginListeners();
 
-        Map<PluginFolder, PluginSystemException> problemsLoadingPlugins = null;
-        try {
-        	// PLUGINS MUST BE STARTED WHEN APPLICATION IS STARTED, OTHERWISE THEY CAN TRY TO ACCESS TO COMPONENTS NOT CREATED OR INITIALIZED YET
+		Timer t = new Timer();
+		t.start();
+
+		Map<PluginFolder, PluginSystemException> problemsLoadingPlugins = null;
+		try {
+			// PLUGINS MUST BE STARTED WHEN APPLICATION IS STARTED, OTHERWISE THEY CAN TRY TO ACCESS TO COMPONENTS NOT CREATED OR INITIALIZED YET
 			problemsLoadingPlugins = factory.start(getPluginClassNames(), false, "net.sourceforge.atunes");
 		} catch (PluginSystemException e) {
 			Logger.error(e);
 		}
 
-        Logger.info(StringUtils.getString("Found ", factory.getPlugins().size(), " plugins (", t.stop(), " seconds)"));
-        Logger.info(StringUtils.getString("Problems loading ", problemsLoadingPlugins != null ? problemsLoadingPlugins.size() : 0, " plugins"));
+		Logger.info(StringUtils.getString("Found ", factory.getPlugins().size(), " plugins (", t.stop(), " seconds)"));
+		Logger.info(StringUtils.getString("Problems loading ", problemsLoadingPlugins != null ? problemsLoadingPlugins.size() : 0, " plugins"));
 
-    	if (problemsLoadingPlugins != null) {
-    		for (Map.Entry<PluginFolder, PluginSystemException> pluginFolder : problemsLoadingPlugins.entrySet()) {
-    			// Show a message with detailed information about the error
-    			dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR"), pluginFolder.getValue());
-    			
-    			// Ask user to remove plugin folder
-    			IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
-    			dialog.setMessage(I18nUtils.getString("PLUGIN_LOAD_ERROR_REMOVE_CONFIRMATION"));
-    			dialog.showDialog();
-    			if (dialog.userAccepted()) {
-    				try {
+		if (problemsLoadingPlugins != null) {
+			for (Map.Entry<PluginFolder, PluginSystemException> pluginFolder : problemsLoadingPlugins.entrySet()) {
+				// Show a message with detailed information about the error
+				dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR"), pluginFolder.getValue());
+
+				// Ask user to remove plugin folder
+				IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
+				dialog.setMessage(I18nUtils.getString("PLUGIN_LOAD_ERROR_REMOVE_CONFIRMATION"));
+				dialog.showDialog();
+				if (dialog.userAccepted()) {
+					try {
 						FileUtils.deleteDirectory(pluginFolder.getKey());
 					} catch (IOException e) {
 						dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), e);
 					}
-    			}
-    		}
-    	}
-    }
+				}
+			}
+		}
+	}
 
-    /**
-     * Return class names of all plugin types
-     * 
-     * @return
-     */
-    private Set<String> getPluginClassNames() {
-        Set<String> result = new HashSet<String>();
-        for (PluginType pluginType : pluginTypes) {
-            result.add(pluginType.getClassType());
-        }
-        return result;
-    }
+	/**
+	 * Return class names of all plugin types
+	 * 
+	 * @return
+	 */
+	private Set<String> getPluginClassNames() {
+		Set<String> result = new HashSet<String>();
+		for (PluginType pluginType : pluginTypes) {
+			result.add(pluginType.getClassType());
+		}
+		return result;
+	}
 
-    /**
-     * Registers plugin listeners of every plugin type This class is registered
-     * for all plugin types
-     */
-    private void addPluginListeners() {
-        for (PluginType pluginType : pluginTypes) {
-            factory.addPluginListener(pluginType.getClassType(), this);
-            factory.addPluginListener(pluginType.getClassType(), pluginType.getListener());
-        }
-    }
+	/**
+	 * Registers plugin listeners of every plugin type This class is registered
+	 * for all plugin types
+	 */
+	private void addPluginListeners() {
+		for (PluginType pluginType : pluginTypes) {
+			factory.addPluginListener(pluginType.getClassType(), this);
+			factory.addPluginListener(pluginType.getClassType(), pluginType.getListener());
+		}
+	}
 
-    @Override
+	@Override
 	public List<PluginInfo> getAvailablePlugins() {
-    	if (stateCore.isPluginsEnabled()) {
-    		return this.factory.getPlugins();
-    	}
-    	return null;
-    }
+		if (stateCore.isPluginsEnabled()) {
+			return this.factory.getPlugins();
+		}
+		return null;
+	}
 
-    /**
-     * Return path to plugins folder, which is inside user config folder.
-     * 
-     * @return the plugins folder
-     */
-    private String getUserPluginsFolder() {
-        String userConfigFolder = getOsManager().getUserConfigFolder();
-        String pluginsFolder = StringUtils.getString(userConfigFolder, getOsManager().getFileSeparator(), Constants.PLUGINS_DIR);
-        File pluginFile = new File(pluginsFolder);
-        if (!pluginFile.exists() && !pluginFile.mkdir()) {
-            return userConfigFolder;
-        }
-        return pluginsFolder;
-    }
-    
-    /**
-     * Returns path to temporal plugins folder
-     * @return path to temporal plugins folder
-     * @throws IOException
-     */
-    private String getTemporalPluginsFolder() throws IOException {
-    	String temporalPluginsFolder = StringUtils.getString(getOsManager().getTempFolder(), getOsManager().getFileSeparator(), Constants.PLUGINS_DIR);
-    	File temporalPluginsFile = new File(temporalPluginsFolder);
-    	if (!temporalPluginsFile.exists() && !temporalPluginsFile.mkdirs()) {
-    		throw new IOException(StringUtils.getString("Can't create temporal plugins folder: ", temporalPluginsFolder));
-    	}
-    	return temporalPluginsFolder;
-    }
+	/**
+	 * Return path to plugins folder, which is inside user config folder.
+	 * 
+	 * @return the plugins folder
+	 */
+	private String getUserPluginsFolder() {
+		String userConfigFolder = getOsManager().getUserConfigFolder();
+		String pluginsFolder = StringUtils.getString(userConfigFolder, getOsManager().getFileSeparator(), Constants.PLUGINS_DIR);
+		File pluginFile = new File(pluginsFolder);
+		if (!pluginFile.exists() && !pluginFile.mkdir()) {
+			return userConfigFolder;
+		}
+		return pluginsFolder;
+	}
 
-    @Override
-	public Map<PluginFolder, PluginSystemException> installPlugin(File zipFile) throws PluginSystemException {
-        try {
-        	return factory.installPlugin(zipFile);
-        } catch (PluginSystemException e) {
-            Logger.error(e);
-            throw e;
-        }
-    }
+	/**
+	 * Returns path to temporal plugins folder
+	 * @return path to temporal plugins folder
+	 * @throws IOException
+	 */
+	private String getTemporalPluginsFolder() throws IOException {
+		String temporalPluginsFolder = StringUtils.getString(getOsManager().getTempFolder(), getOsManager().getFileSeparator(), Constants.PLUGINS_DIR);
+		File temporalPluginsFile = new File(temporalPluginsFolder);
+		if (!temporalPluginsFile.exists() && !temporalPluginsFile.mkdirs()) {
+			throw new IOException(StringUtils.getString("Can't create temporal plugins folder: ", temporalPluginsFolder));
+		}
+		return temporalPluginsFolder;
+	}
 
-    @Override
-	public Map<PluginFolder, PluginSystemException> uninstallPlugin(PluginInfo plugin) throws IOException, PluginSystemException {
-        // Only remove plugins if are contained in a separate folder under user plugins folder
-        File pluginLocation = plugin.getPluginFolder();
-        if (pluginLocation.getParent().equals(new File(getUserPluginsFolder()).getAbsolutePath())) {
-            try {
-                return factory.uninstallPlugin(plugin);
-            } catch (PluginSystemException e) {
-                Logger.error(e);
-                throw e;
-            }
-        }
-        return new HashMap<PluginFolder, PluginSystemException>();
-    }
+	@Override
+	public Map<PluginFolder, PluginSystemException> installPlugin(final File zipFile) throws PluginSystemException {
+		try {
+			return factory.installPlugin(zipFile);
+		} catch (PluginSystemException e) {
+			Logger.error(e);
+			throw e;
+		}
+	}
 
-    @Override
-	public void setPluginActive(PluginInfo plugin, boolean active) {
-        try {
-            if (active) {
-                activatePlugin(plugin);
-            } else {
-            	deactivatePlugin(plugin);
-            }
-        } catch (PluginSystemException e) {
-            Logger.error(e);
-        }
-    }
+	@Override
+	public Map<PluginFolder, PluginSystemException> uninstallPlugin(final PluginInfo plugin) throws IOException, PluginSystemException {
+		// Only remove plugins if are contained in a separate folder under user plugins folder
+		File pluginLocation = plugin.getPluginFolder();
+		if (pluginLocation.getParent().equals(net.sourceforge.atunes.utils.FileUtils.getPath(new File(getUserPluginsFolder())))) {
+			try {
+				return factory.uninstallPlugin(plugin);
+			} catch (PluginSystemException e) {
+				Logger.error(e);
+				throw e;
+			}
+		}
+		return new HashMap<PluginFolder, PluginSystemException>();
+	}
 
-    @Override
-    public void pluginActivated(PluginInfo plugin) {
-        Logger.info(StringUtils.getString("Plugin activated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
-    }
+	@Override
+	public void setPluginActive(final PluginInfo plugin, final boolean active) {
+		try {
+			if (active) {
+				activatePlugin(plugin);
+			} else {
+				deactivatePlugin(plugin);
+			}
+		} catch (PluginSystemException e) {
+			Logger.error(e);
+		}
+	}
 
-    @Override
-    public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
-        Logger.info(StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
-    }
+	@Override
+	public void pluginActivated(final PluginInfo plugin) {
+		Logger.info(StringUtils.getString("Plugin activated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
+	}
 
-    @Override
-	public boolean pluginNeedsRestart(PluginInfo plugin) {
-        for (PluginType pluginType : pluginTypes) {
-            if (plugin.getPluginType().equals(pluginType.getClassType())) {
-                return pluginType.isApplicationNeedsRestart();
-            }
-        }
-        return false;
-    }
+	@Override
+	public void pluginDeactivated(final PluginInfo plugin, final Collection<Plugin> createdInstances) {
+		Logger.info(StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
+	}
 
-    @Override
-	public Plugin getNewInstance(PluginInfo pluginInfo) throws PluginSystemException {
-    	return factory.getNewInstance(pluginInfo);
-    }
-    
-    @Override
-	public void activatePlugin(PluginInfo plugin) throws PluginSystemException {
-    	factory.activatePlugin(plugin);
-    }
-    
-    @Override
-	public void deactivatePlugin(PluginInfo plugin) throws PluginSystemException {
-    	factory.deactivatePlugin(plugin);
-    }
+	@Override
+	public boolean pluginNeedsRestart(final PluginInfo plugin) {
+		for (PluginType pluginType : pluginTypes) {
+			if (plugin.getPluginType().equals(pluginType.getClassType())) {
+				return pluginType.isApplicationNeedsRestart();
+			}
+		}
+		return false;
+	}
 
-    @Override
-	public void validateConfiguration(PluginInfo plugin, PluginConfiguration configuration) throws InvalidPluginConfigurationException {
-    	factory.validateConfiguration(plugin, configuration);
-    }
-    
-    @Override
-	public void setConfiguration(PluginInfo plugin, PluginConfiguration configuration) throws PluginSystemException {
-    	factory.setConfiguration(plugin, configuration);
-    }
-    
-    @Override
-	public PluginConfiguration getConfiguration(PluginInfo plugin) throws PluginSystemException {
-    	return factory.getConfiguration(plugin);
-    }
+	@Override
+	public Plugin getNewInstance(final PluginInfo pluginInfo) throws PluginSystemException {
+		return factory.getNewInstance(pluginInfo);
+	}
+
+	@Override
+	public void activatePlugin(final PluginInfo plugin) throws PluginSystemException {
+		factory.activatePlugin(plugin);
+	}
+
+	@Override
+	public void deactivatePlugin(final PluginInfo plugin) throws PluginSystemException {
+		factory.deactivatePlugin(plugin);
+	}
+
+	@Override
+	public void validateConfiguration(final PluginInfo plugin, final PluginConfiguration configuration) throws InvalidPluginConfigurationException {
+		factory.validateConfiguration(plugin, configuration);
+	}
+
+	@Override
+	public void setConfiguration(final PluginInfo plugin, final PluginConfiguration configuration) throws PluginSystemException {
+		factory.setConfiguration(plugin, configuration);
+	}
+
+	@Override
+	public PluginConfiguration getConfiguration(final PluginInfo plugin) throws PluginSystemException {
+		return factory.getConfiguration(plugin);
+	}
 }
