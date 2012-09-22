@@ -35,50 +35,50 @@ import net.sourceforge.atunes.model.IPlayListTable;
  */
 public final class PlayListListener extends MouseAdapter implements ListSelectionListener {
 
-    private IPlayListTable table;
-    private PlayListController controller;
-    private PlayListMenuFiller playListMenuFiller;
+	private final IPlayListTable table;
+	private final PlayListController controller;
+	private final PlayListMenuFiller playListMenuFiller;
 
-    /**
-     * Instantiates a new play list listener.
-     * @param table
-     * @param controller
-     * @param playListMenuFiller
-     */
-    protected PlayListListener(IPlayListTable table, PlayListController controller, PlayListMenuFiller playListMenuFiller) {
-        this.table = table;
-        this.controller = controller;
-        this.playListMenuFiller = playListMenuFiller;
-    }
+	/**
+	 * Instantiates a new play list listener.
+	 * @param table
+	 * @param controller
+	 * @param playListMenuFiller
+	 */
+	protected PlayListListener(final IPlayListTable table, final PlayListController controller, final PlayListMenuFiller playListMenuFiller) {
+		this.table = table;
+		this.controller = controller;
+		this.playListMenuFiller = playListMenuFiller;
+	}
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if (e.getSource().equals(table)) {
-            if (e.getClickCount() == 2) {
-                controller.playSelectedAudioObject();
-            } else if (e.getClickCount() == 1 && GuiUtils.isSecondaryMouseButton(e)) {
-                int[] currentlySelected = table.getSelectedRows();
-                int selected = table.rowAtPoint(e.getPoint());
-                boolean found = false;
-                int i = 0;
-                while (!found && i < currentlySelected.length) {
-                    if (currentlySelected[i] == selected) {
-                        found = true;
-                    }
-                    i++;
-                }
-                if (!found) {
-                    table.getSelectionModel().setSelectionInterval(selected, selected);
-                }
+	@Override
+	public void mouseClicked(final MouseEvent e) {
+		if (e.getSource().equals(table)) {
+			if (e.getClickCount() == 2 && !GuiUtils.isSecondaryMouseButton(e)) {
+				controller.playSelectedAudioObject();
+			} else if (GuiUtils.isSecondaryMouseButton(e)) {
+				int[] currentlySelected = table.getSelectedRows();
+				int selected = table.rowAtPoint(e.getPoint());
+				boolean found = false;
+				int i = 0;
+				while (!found && i < currentlySelected.length) {
+					if (currentlySelected[i] == selected) {
+						found = true;
+					}
+					i++;
+				}
+				if (!found) {
+					table.getSelectionModel().setSelectionInterval(selected, selected);
+				}
 
-                table.getMenu().show(e.getComponent(), e.getX(), e.getY());
-            }
-        }
-    }
+				table.getMenu().show(e.getComponent(), e.getX(), e.getY());
+			}
+		}
+	}
 
-    @Override
-    public void valueChanged(ListSelectionEvent e) {
-    	playListMenuFiller.updatePlayListMenuItems();
-    }
+	@Override
+	public void valueChanged(final ListSelectionEvent e) {
+		playListMenuFiller.updatePlayListMenuItems();
+	}
 
 }
