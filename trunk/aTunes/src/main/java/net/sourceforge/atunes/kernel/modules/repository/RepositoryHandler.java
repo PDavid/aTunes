@@ -437,7 +437,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		}
 
 		startTransaction();
+		removeInsideTransaction(filesToRemove);
+		endTransaction();
+	}
 
+	private void removeInsideTransaction(final List<ILocalAudioObject> filesToRemove) {
 		for (ILocalAudioObject fileToRemove : filesToRemove) {
 			repositoryRemover.deleteFile(fileToRemove);
 		}
@@ -446,8 +450,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		for (IAudioFilesRemovedListener listener : audioFilesRemovedListeners) {
 			listener.audioFilesRemoved(filesToRemove);
 		}
-
-		endTransaction();
 	}
 
 	@Override
