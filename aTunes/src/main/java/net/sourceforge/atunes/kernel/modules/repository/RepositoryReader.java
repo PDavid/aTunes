@@ -279,7 +279,10 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 		if (folder != null) {
 			// Need to use an array list instead of Collections.singletonList for Kryo serialization
 			List<File> folders = new ArrayList<File>();
+			// Add new folder
 			folders.add(folder);
+			// Add previous folders
+			folders.addAll(repositoryHandler.getFolders());
 			retrieve(folders);
 			return true;
 		}
