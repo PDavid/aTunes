@@ -186,9 +186,10 @@ public class RepositoryRemover {
 		IFolder f = getFolderForFile(file, osManager, repositoryHandler);
 		if (f != null) {
 			f.removeAudioFile(file);
-			// If folder is empty, remove too
-			if (f.isEmpty()) {
+			// Remove all empty parent folders
+			while (f != null && f.isEmpty()) {
 				f.getParentFolder().removeFolder(f);
+				f = f.getParentFolder();
 			}
 		}
 	}
