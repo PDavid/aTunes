@@ -124,13 +124,6 @@ public interface IPlayerHandler extends IHandler {
 	public void volumeUp();
 
 	/**
-	 * Returns the equalizer of this player engine
-	 * 
-	 * @return the equalizer of this player engine
-	 */
-	public IEqualizer getEqualizer();
-
-	/**
 	 * Returns current audio object
 	 * @return
 	 */
@@ -177,11 +170,12 @@ public interface IPlayerHandler extends IHandler {
 	public void setCurrentAudioObjectTimePlayed(long actualPlayedTime,
 			long currentAudioObjectLength);
 
-    /**
-     * This method must be implemented by player engines. Method to apply
-     * equalizer values in player engine
+	/**
+	 * This method must be implemented by player engines. Method to apply
+	 * equalizer values in player engine
+	 * @param enabled
 	 * @param eqSettings
 	 */
-	public void applyEqualization(float[] eqSettings);
+	public void applyEqualization(boolean enabled, float[] eqSettings);
 
 }

@@ -30,6 +30,16 @@ import javax.swing.JSlider;
 public interface IEqualizer {
 
 	/**
+	 * @return if equalizer enabled
+	 */
+	public boolean isEnabled();
+
+	/**
+	 * @param enabled
+	 */
+	public void setEnabled(boolean enabled);
+
+	/**
 	 * Gets the presets names.
 	 * 
 	 * @return the presets
@@ -48,11 +58,10 @@ public interface IEqualizer {
 
 	/**
 	 * Gets preset from GUI and sets into application state.
-	 * 
+	 * @param enabled if equalizer is enabled or disabled
 	 * @param bands
-	 *            the bands
 	 */
-	public void setEqualizerFromGUI(JSlider[] bands);
+	public void setEqualizerFromGUI(boolean enabled, JSlider[] bands);
 
 	/**
 	 * Returns bands transformed in [-32,32] scale to be shown in GUI.

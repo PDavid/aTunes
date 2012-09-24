@@ -52,243 +52,243 @@ import org.libxinejna.XineEventListener;
  */
 public class XineEngine extends AbstractPlayerEngine {
 
-    private XineController xineController;
-    private Timer durationUpdater;
-    private final Object xineLock = new Object();
-    
-    private IEqualizer equalizer;
-    
-    /**
-     * @param equalizer
-     */
-    public void setEqualizer(IEqualizer equalizer) {
+	private XineController xineController;
+	private Timer durationUpdater;
+	private final Object xineLock = new Object();
+
+	private IEqualizer equalizer;
+
+	/**
+	 * @param equalizer
+	 */
+	public void setEqualizer(final IEqualizer equalizer) {
 		this.equalizer = equalizer;
 	}
 
-    @Override
-    public boolean isEngineAvailable() {
-    	try {
-    		String v = Xine.getLibXineVersion();
-    		info(StringUtils.getString("Engine version: ", v));
-    		if (v != null && v.trim().length() > 0) {
-    			return true;
-    		}
-    	} catch (Exception e) {
-    		Logger.info("Xine not available: ", e.getMessage());
-    	} catch (UnsatisfiedLinkError e) {
+	@Override
+	public boolean isEngineAvailable() {
+		try {
+			String v = Xine.getLibXineVersion();
+			info(StringUtils.getString("Engine version: ", v));
+			if (v != null && v.trim().length() > 0) {
+				return true;
+			}
+		} catch (Exception e) {
 			Logger.info("Xine not available: ", e.getMessage());
-    	}
-    	return false;
-    }
+		} catch (UnsatisfiedLinkError e) {
+			Logger.info("Xine not available: ", e.getMessage());
+		}
+		return false;
+	}
 
-    @Override
-    public void pausePlayback() {
-        if (xineController != null) {
-            xineController.pause();
-        }
-    }
+	@Override
+	public void pausePlayback() {
+		if (xineController != null) {
+			xineController.pause();
+		}
+	}
 
-    @Override
-    public void resumePlayback() {
-        if (xineController != null) {
-            xineController.resume();
-        }
-    }
+	@Override
+	public void resumePlayback() {
+		if (xineController != null) {
+			xineController.resume();
+		}
+	}
 
-    @Override
-    public void startPlayback(final IAudioObject audioObjectToPlay, final IAudioObject audioObject) {
+	@Override
+	public void startPlayback(final IAudioObject audioObjectToPlay, final IAudioObject audioObject) {
 
-    	if (audioObjectToPlay.getUrl() == null) {
-    		handlePlayerEngineError(new FileNotFoundException(audioObjectToPlay.getTitleOrFileName()));
-    	} else {
+		if (audioObjectToPlay.getUrl() == null) {
+			handlePlayerEngineError(new FileNotFoundException(audioObjectToPlay.getTitleOrFileName()));
+		} else {
 
-    		boolean valid = true;
+			boolean valid = true;
 
-    		if (xineController == null) {
-    			info("Creating xineController for playback");
-    			xineController = Xine.getXine().createController();
-    			xineController.registerXineEventListener(new XineListener());
-    		} else {
-    			info("Stopping before new playback");
-    			internalStop();
-    		}
-    		info("Opening stream and setting xine params");
+			if (xineController == null) {
+				info("Creating xineController for playback");
+				xineController = Xine.getXine().createController();
+				xineController.registerXineEventListener(new XineListener());
+			} else {
+				info("Stopping before new playback");
+				internalStop();
+			}
+			info("Opening stream and setting xine params");
 
-    		xineController.open(audioObjectToPlay.getUrl());
+			xineController.open(audioObjectToPlay.getUrl());
 
-    		xineController.setVolume(getStatePlayer().getVolume());
+			xineController.setVolume(getStatePlayer().getVolume());
 
-    		// Apply equalizer
-    		applyEqualization(equalizer.getEqualizerValues());
+			// Apply equalizer
+			applyEqualization(equalizer.isEnabled(), equalizer.getEqualizerValues());
 
-    		String errorMessage = null;
-    		int streamLength = xineController.getStreamLength();
-    		if (audioObjectToPlay instanceof IPodcastFeedEntry || audioObjectToPlay instanceof IRadio) {
-    			if (!xineController.hasAudio()) {
-    				info("No audio found, go to next track");
-    				valid = false;
-    				errorMessage = StringUtils.getString(I18nUtils.getString("FILE_NOT_FOUND"), ": ", audioObjectToPlay.getUrl());
-    			} else {
-    				// logic from init() of PodcastFeedEntryMPlayerOutputReader
-    				long duration = audioObjectToPlay.getDuration() * 1000L;
-    				setCurrentAudioObjectLength(duration);
-    				notifyRadioOrPodcastFeedEntryStarted();
-    			}
-    		} else {
-    			// Check if stream length is 0 which may indicate a wrong audio object, and then skip
-    			if (streamLength <= 0) {
-    				valid = false;
-    				errorMessage = StringUtils.getString(I18nUtils.getString("ERROR"), ": ", audioObjectToPlay.getUrl());
-    			}
-    			setCurrentAudioObjectLength(streamLength);
-    		}
+			String errorMessage = null;
+			int streamLength = xineController.getStreamLength();
+			if (audioObjectToPlay instanceof IPodcastFeedEntry || audioObjectToPlay instanceof IRadio) {
+				if (!xineController.hasAudio()) {
+					info("No audio found, go to next track");
+					valid = false;
+					errorMessage = StringUtils.getString(I18nUtils.getString("FILE_NOT_FOUND"), ": ", audioObjectToPlay.getUrl());
+				} else {
+					// logic from init() of PodcastFeedEntryMPlayerOutputReader
+					long duration = audioObjectToPlay.getDuration() * 1000L;
+					setCurrentAudioObjectLength(duration);
+					notifyRadioOrPodcastFeedEntryStarted();
+				}
+			} else {
+				// Check if stream length is 0 which may indicate a wrong audio object, and then skip
+				if (streamLength <= 0) {
+					valid = false;
+					errorMessage = StringUtils.getString(I18nUtils.getString("ERROR"), ": ", audioObjectToPlay.getUrl());
+				}
+				setCurrentAudioObjectLength(streamLength);
+			}
 
-    		if (valid) {
-    			startPlayback(0);
-    			info("Starting duration thread");
-    			durationUpdater = new Timer(250, new DurationUpdaterActionListener(audioObjectToPlay));
-    			durationUpdater.start();
-    		} else {
-    			currentAudioObjectFinished(false, errorMessage);
-    		}
-    	}
-    }
+			if (valid) {
+				startPlayback(0);
+				info("Starting duration thread");
+				durationUpdater = new Timer(250, new DurationUpdaterActionListener(audioObjectToPlay));
+				durationUpdater.start();
+			} else {
+				currentAudioObjectFinished(false, errorMessage);
+			}
+		}
+	}
 
-    protected void setTime(int time) {
-        super.setCurrentAudioObjectPlayedTime(time);
-    }
+	protected void setTime(final int time) {
+		super.setCurrentAudioObjectPlayedTime(time);
+	}
 
-    @Override
-    public void stopPlayback(final boolean userStopped, boolean useFadeAway) {
-        if (xineController == null) {
-            return;
-        }
-        stopDurationUpdater();
-        if (useFadeAway) {
-            info("Fading away...");
-            new FadeAwayThread("FadeAway").start();
-        } else {
-            info("Stopping without fade");
-            internalStop();
-        }
-    }
+	@Override
+	public void stopPlayback(final boolean userStopped, final boolean useFadeAway) {
+		if (xineController == null) {
+			return;
+		}
+		stopDurationUpdater();
+		if (useFadeAway) {
+			info("Fading away...");
+			new FadeAwayThread("FadeAway").start();
+		} else {
+			info("Stopping without fade");
+			internalStop();
+		}
+	}
 
-    @Override
-    public void seekTo(long milliseconds, int perCent) {
-        if (xineController != null) {
-            startPlayback(milliseconds);
-        }
-    }
+	@Override
+	public void seekTo(final long milliseconds, final int perCent) {
+		if (xineController != null) {
+			startPlayback(milliseconds);
+		}
+	}
 
-    @Override
-    public void finishPlayer() {
-        info("Finishing");
-        try {
-            if (xineController != null) {
-                synchronized (xineLock) {
-                    stopDurationUpdater();
-                    xineController.dispose();
-                    xineController = null;
-                }
-            }
-            Xine.getXine().dispose();
-        } catch (UnsatisfiedLinkError le) {
-            info("Error catched: " + le);
-        } catch (Exception e) {
-            info("Error catched: " + e);
-        }
-    }
+	@Override
+	public void finishPlayer() {
+		info("Finishing");
+		try {
+			if (xineController != null) {
+				synchronized (xineLock) {
+					stopDurationUpdater();
+					xineController.dispose();
+					xineController = null;
+				}
+			}
+			Xine.getXine().dispose();
+		} catch (UnsatisfiedLinkError le) {
+			info("Error catched: " + le);
+		} catch (Exception e) {
+			info("Error catched: " + e);
+		}
+	}
 
-    @Override
-    public boolean isEnginePlaying() {
-        if (xineController != null) {
-            synchronized (xineLock) {
-                return xineController.isPlaying();
-            }
-        }
-        return false;
-    }
+	@Override
+	public boolean isEnginePlaying() {
+		if (xineController != null) {
+			synchronized (xineLock) {
+				return xineController.isPlaying();
+			}
+		}
+		return false;
+	}
 
-    @Override
-    public void applyMuteState(boolean mute) {
-        if (mute) {
-            setVolume(0);
-        } else {
-            setVolume(getStatePlayer().getVolume());
-        }
-    }
+	@Override
+	public void applyMuteState(final boolean mute) {
+		if (mute) {
+			setVolume(0);
+		} else {
+			setVolume(getStatePlayer().getVolume());
+		}
+	}
 
-    @Override
-    public void setVolume(int volume) {
-        if (xineController != null) {
-            xineController.setVolume(volume);
-        }
-    }
+	@Override
+	public void setVolume(final int volume) {
+		if (xineController != null) {
+			xineController.setVolume(volume);
+		}
+	}
 
-    protected void internalStop() {
-        info("Internal stop");
-        if (xineController != null) {
-            stopDurationUpdater();
-            if (xineController.isPlaying() || xineController.isPaused()) {
-                synchronized (xineLock) {
-                    xineController.stop();
-                }
-            }
-        }
-    }
+	protected void internalStop() {
+		info("Internal stop");
+		if (xineController != null) {
+			stopDurationUpdater();
+			if (xineController.isPlaying() || xineController.isPaused()) {
+				synchronized (xineLock) {
+					xineController.stop();
+				}
+			}
+		}
+	}
 
-    private void startPlayback(final long milliseconds) {
-        info("Starting playback");
-        try {
-            xineController.start(0, (int) milliseconds);
-        } catch (Exception e) {
-            info("Xine encountered an error: " + e);
-            currentAudioObjectFinished(false, "Xine encountered an error: ", e.getMessage());
-        }
-    }
+	private void startPlayback(final long milliseconds) {
+		info("Starting playback");
+		try {
+			xineController.start(0, (int) milliseconds);
+		} catch (Exception e) {
+			info("Xine encountered an error: " + e);
+			currentAudioObjectFinished(false, "Xine encountered an error: ", e.getMessage());
+		}
+	}
 
-    private void stopDurationUpdater() {
-        if (durationUpdater != null) {
-            durationUpdater.stop();
-            durationUpdater = null;
-        }
-    }
+	private void stopDurationUpdater() {
+		if (durationUpdater != null) {
+			durationUpdater.stop();
+			durationUpdater = null;
+		}
+	}
 
-    protected void info(String info) {
-        Logger.info("Xine: ", info);
-    }
+	protected void info(final String info) {
+		Logger.info("Xine: ", info);
+	}
 
-    protected void error(Exception o) {
-        Logger.error(o);
-    }
+	protected void error(final Exception o) {
+		Logger.error(o);
+	}
 
-    private final class FadeAwayThread extends Thread {
-		private FadeAwayThread(String name) {
+	private final class FadeAwayThread extends Thread {
+		private FadeAwayThread(final String name) {
 			super(name);
 		}
 
 		@Override
 		public void run() {
-		    // xineController.getVolume() always returns 0 ??
-		    // Using volume value from app instead of xine
-		    int vol = XineEngine.this.getStatePlayer().getVolume();
-		    int i = 0;
-		    while (i < 50 && vol > 0) {
-		        vol = vol - 2;
-		        vol = vol < 0 ? 0 : vol;
-		        xineController.setVolume(vol);
-		        try {
-		            Thread.sleep(25);
-		        } catch (InterruptedException e) {
-		        	Logger.error(e);
-		        }
-		        i++;
-		    }
+			// xineController.getVolume() always returns 0 ??
+			// Using volume value from app instead of xine
+			int vol = XineEngine.this.getStatePlayer().getVolume();
+			int i = 0;
+			while (i < 50 && vol > 0) {
+				vol = vol - 2;
+				vol = vol < 0 ? 0 : vol;
+				xineController.setVolume(vol);
+				try {
+					Thread.sleep(25);
+				} catch (InterruptedException e) {
+					Logger.error(e);
+				}
+				i++;
+			}
 
-		    internalStop();
-		    // Volume restored after stop
-		    // If we don't do this, volume is 0 in next audio object
-		    xineController.setVolume(XineEngine.this.getStatePlayer().getVolume());
+			internalStop();
+			// Volume restored after stop
+			// If we don't do this, volume is 0 in next audio object
+			xineController.setVolume(XineEngine.this.getStatePlayer().getVolume());
 		}
 	}
 
@@ -296,105 +296,106 @@ public class XineEngine extends AbstractPlayerEngine {
 		private final IAudioObject audioObjectToPlay;
 		private int prevPosition;
 
-		private DurationUpdaterActionListener(IAudioObject audioObjectToPlay) {
+		private DurationUpdaterActionListener(final IAudioObject audioObjectToPlay) {
 			this.audioObjectToPlay = audioObjectToPlay;
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e) {
-		    if (isEnginePlaying()) {
-		        int s = -1;
-		        synchronized (xineLock) {
-		            s = xineController.getStreamPos();
-		        }
-		        // TODO perform better checks. May be >= is better here, but there is some bug with seek
-		        if (s >= 0) {
-		            prevPosition = s;
-		            setTime(prevPosition);
-		            //if ((audioObjectToPlay instanceof PodcastFeedEntry || audioObjectToPlay instanceof Radio) && s < 1000) {
-		            if (s < 1000) {
-		                Context.getBean(IUIHandler.class).updateTitleBar(audioObjectToPlay);
-		            }
-		        }
-		    }
+		public void actionPerformed(final ActionEvent e) {
+			if (isEnginePlaying()) {
+				int s = -1;
+				synchronized (xineLock) {
+					s = xineController.getStreamPos();
+				}
+				// TODO perform better checks. May be >= is better here, but there is some bug with seek
+				if (s >= 0) {
+					prevPosition = s;
+					setTime(prevPosition);
+					//if ((audioObjectToPlay instanceof PodcastFeedEntry || audioObjectToPlay instanceof Radio) && s < 1000) {
+					if (s < 1000) {
+						Context.getBean(IUIHandler.class).updateTitleBar(audioObjectToPlay);
+					}
+				}
+			}
 		}
 	}
 
 	protected class XineListener implements XineEventListener {
 
-        public void handleXineEvent(int eventID, byte[] data) {
-            if (eventID == 1) {
-                try {
-                    SwingUtilities.invokeAndWait(new Runnable() {
-                        @Override
-                        public void run() {
-                            currentAudioObjectFinished(true);
-                        }
-                    });
-                } catch (InterruptedException e) {
-                    error(e);
-                } catch (InvocationTargetException e) {
-                    error(e);
-                }
-            }
-        }
-    }
+		@Override
+		public void handleXineEvent(final int eventID, final byte[] data) {
+			if (eventID == 1) {
+				try {
+					SwingUtilities.invokeAndWait(new Runnable() {
+						@Override
+						public void run() {
+							currentAudioObjectFinished(true);
+						}
+					});
+				} catch (InterruptedException e) {
+					error(e);
+				} catch (InvocationTargetException e) {
+					error(e);
+				}
+			}
+		}
+	}
 
-    @Override
-    public boolean supportsCapability(PlayerEngineCapability capability) {
-        return EnumSet.of(PlayerEngineCapability.EQUALIZER, PlayerEngineCapability.EQUALIZER_CHANGE, PlayerEngineCapability.STREAMING).contains(capability);
-    }
+	@Override
+	public boolean supportsCapability(final PlayerEngineCapability capability) {
+		return EnumSet.of(PlayerEngineCapability.EQUALIZER, PlayerEngineCapability.EQUALIZER_CHANGE, PlayerEngineCapability.STREAMING).contains(capability);
+	}
 
-    @Override
-    public void applyEqualization(float[] values) {
-        if (xineController != null && values != null) {
-            float[] transformedValues = transformEqualizerValues(values);
-            for (int i = 0, p = 18; i < transformedValues.length; i++, p++) {
-                xineController.setParam(p, (int) transformedValues[i]);
-            }
-        }
-    }
+	@Override
+	public void applyEqualization(final boolean enabled, final float[] values) {
+		if (xineController != null && values != null && enabled) {
+			float[] transformedValues = transformEqualizerValues(values);
+			for (int i = 0, p = 18; i < transformedValues.length; i++, p++) {
+				xineController.setParam(p, (int) transformedValues[i]);
+			}
+		}
+	}
 
-    @Override
-    public float[] transformEqualizerValues(float[] eq) {
-        if (eq == null) {
-            return new float[0];
-        }
-        float[] result = new float[eq.length];
-        float one = 100f / 12f;
-        for (int i = 0; i < eq.length; i++) {
-            if (eq[i] == 0) {
-                result[i] = 0;
-            } else {
-                result[i] = (int) (one * eq[i]);
-            }
-        }
-        return result;
-    }
+	@Override
+	public float[] transformEqualizerValues(final float[] eq) {
+		if (eq == null) {
+			return new float[0];
+		}
+		float[] result = new float[eq.length];
+		float one = 100f / 12f;
+		for (int i = 0; i < eq.length; i++) {
+			if (eq[i] == 0) {
+				result[i] = 0;
+			} else {
+				result[i] = (int) (one * eq[i]);
+			}
+		}
+		return result;
+	}
 
-    @Override
-    public String getEngineName() {
-        return "Xine";
-    }
+	@Override
+	public String getEngineName() {
+		return "Xine";
+	}
 
-    @Override
-    public void destroyPlayer() {
-        if (xineController != null) {
-            synchronized (xineLock) {
-                stopDurationUpdater();
-                xineController.dispose();
-                xineController = null;
-            }
-        }
-        Xine.getXine().dispose();
-    }
+	@Override
+	public void destroyPlayer() {
+		if (xineController != null) {
+			synchronized (xineLock) {
+				stopDurationUpdater();
+				xineController.dispose();
+				xineController = null;
+			}
+		}
+		Xine.getXine().dispose();
+	}
 
-    @Override
-    public void applyNormalization() {
-        // TODO normalization must be applied here
-    }
-    
-    @Override
-    public void initializePlayerEngine() {
-    }
+	@Override
+	public void applyNormalization() {
+		// TODO normalization must be applied here
+	}
+
+	@Override
+	public void initializePlayerEngine() {
+	}
 }

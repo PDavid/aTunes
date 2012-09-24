@@ -26,7 +26,6 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
@@ -54,334 +53,320 @@ import org.commonjukebox.plugins.model.PluginListener;
  */
 public final class PlayerHandler extends AbstractHandler implements PluginListener, IPlayerHandler {
 
-    /**
-     * The player engine
-     */
-    private IPlayerEngine playerEngine = new VoidPlayerEngine();
+	/**
+	 * The player engine
+	 */
+	private IPlayerEngine playerEngine = new VoidPlayerEngine();
 
-    /**
-     * The current playback state
-     */
-    private PlaybackState playbackState;
+	/**
+	 * The current playback state
+	 */
+	private PlaybackState playbackState;
 
-    /**
-     * Controller
-     */
-    private PlayerControlsController playerControlsController;
-    
-    private IEqualizer equalizer;
-    
-    private Volume volumeController;
-    
-    private IStateUI stateUI;
-    
-    private IStatePlayer statePlayer;
-    
-    /**
-     * @param statePlayer
-     */
-    public void setStatePlayer(IStatePlayer statePlayer) {
+	/**
+	 * Controller
+	 */
+	private PlayerControlsController playerControlsController;
+
+	private Volume volumeController;
+
+	private IStateUI stateUI;
+
+	private IStatePlayer statePlayer;
+
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(final IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;
 	}
-    
-    /**
-     * @param stateUI
-     */
-    public void setStateUI(IStateUI stateUI) {
+
+	/**
+	 * @param stateUI
+	 */
+	public void setStateUI(final IStateUI stateUI) {
 		this.stateUI = stateUI;
 	}
 
-    /**
-     * @param volumeController
-     */
-    public void setVolumeController(Volume volumeController) {
+	/**
+	 * @param volumeController
+	 */
+	public void setVolumeController(final Volume volumeController) {
 		this.volumeController = volumeController;
 	}
-        
-    /**
-     * @param playerControlsController
-     */
-    public void setPlayerControlsController(
-			PlayerControlsController playerControlsController) {
+
+	/**
+	 * @param playerControlsController
+	 */
+	public void setPlayerControlsController(
+			final PlayerControlsController playerControlsController) {
 		this.playerControlsController = playerControlsController;
 	}
-    
-    /**
-     * @param equalizer
-     */
-    public void setEqualizer(IEqualizer equalizer) {
-		this.equalizer = equalizer;
+
+	@Override
+	public void applicationStateChanged() {
+		// Show advanced controls
+		playerControlsController.getComponentControlled().showAdvancedPlayerControls(stateUI.isShowAdvancedPlayerControls());
 	}
-    
-    @Override
-    public void applicationStateChanged() {
-    	// Show advanced controls
-    	playerControlsController.getComponentControlled().showAdvancedPlayerControls(stateUI.isShowAdvancedPlayerControls());
-    }
 
-    @Override
+	@Override
 	public boolean isEnginePlaying() {
-        return playerEngine.isEnginePlaying();
-    }
+		return playerEngine.isEnginePlaying();
+	}
 
-    @Override
-	public void setVolume(int perCent) {
-    	playerEngine.setVolume(perCent);
-        playerControlsController.setVolume(perCent);
-    }
+	@Override
+	public void setVolume(final int perCent) {
+		playerEngine.setVolume(perCent);
+		playerControlsController.setVolume(perCent);
+	}
 
-    @Override
-	public void applyMuteState(boolean state) {
-    	playerEngine.applyMuteState(state);
-    }
+	@Override
+	public void applyMuteState(final boolean state) {
+		playerEngine.applyMuteState(state);
+	}
 
-    @Override
+	@Override
 	public void applyNormalization() {
-    	playerEngine.applyNormalization();
-    }
+		playerEngine.applyNormalization();
+	}
 
-    @Override
-	public boolean supportsCapability(PlayerEngineCapability capability) {
-        return playerEngine.supportsCapability(capability);
-    }
+	@Override
+	public boolean supportsCapability(final PlayerEngineCapability capability) {
+		return playerEngine.supportsCapability(capability);
+	}
 
-    @Override
-    public void applyEqualization(float[] values) {
-    	playerEngine.applyEqualization(values);
-    }
+	@Override
+	public void applyEqualization(final boolean enabled, final float[] values) {
+		playerEngine.applyEqualization(enabled, values);
+	}
 
-    /**
-     * This method must be implemented by player engines. Transform values
-     * retrieved from equalizer dialog to values for player engine
-     * 
-     * @param values
-     * @return
-     */
-    float[] transformEqualizerValues(float[] values) {
-        return playerEngine.transformEqualizerValues(values);
-    }
+	/**
+	 * This method must be implemented by player engines. Transform values
+	 * retrieved from equalizer dialog to values for player engine
+	 * 
+	 * @param values
+	 * @return
+	 */
+	float[] transformEqualizerValues(final float[] values) {
+		return playerEngine.transformEqualizerValues(values);
+	}
 
-    @Override
-	public final void playCurrentAudioObject(boolean buttonPressed) {
-    	playerEngine.playCurrentAudioObject(buttonPressed);
-    }
+	@Override
+	public final void playCurrentAudioObject(final boolean buttonPressed) {
+		playerEngine.playCurrentAudioObject(buttonPressed);
+	}
 
-    @Override
-	public final void stopCurrentAudioObject(boolean userStopped) {
-    	playerEngine.stopCurrentAudioObject(userStopped);
-    }
+	@Override
+	public final void stopCurrentAudioObject(final boolean userStopped) {
+		playerEngine.stopCurrentAudioObject(userStopped);
+	}
 
-    @Override
+	@Override
 	public final void playPreviousAudioObject() {
-    	playerEngine.playPreviousAudioObject();
-    }
+		playerEngine.playPreviousAudioObject();
+	}
 
-    @Override
+	@Override
 	public final void playNextAudioObject() {
-    	playerEngine.playNextAudioObject(false);
-    }
+		playerEngine.playNextAudioObject(false);
+	}
 
-    @Override
-	public final void seekCurrentAudioObject(long milliseconds, int perCent) {
-    	playerEngine.seekCurrentAudioObject(milliseconds, perCent);
-    }
+	@Override
+	public final void seekCurrentAudioObject(final long milliseconds, final int perCent) {
+		playerEngine.seekCurrentAudioObject(milliseconds, perCent);
+	}
 
-    @Override
+	@Override
 	public final void volumeDown() {
-    	playerEngine.volumeDown();
-    }
+		playerEngine.volumeDown();
+	}
 
-    @Override
+	@Override
 	public final void volumeUp() {
-    	playerEngine.volumeUp();
-    }
+		playerEngine.volumeUp();
+	}
 
-    @Override
-    public void applicationFinish() {
-        // Stop must be called explicitly to avoid playback after user closed app
-        stopCurrentAudioObject(true);
-        playerEngine.finishPlayer();
-    }
+	@Override
+	public void applicationFinish() {
+		// Stop must be called explicitly to avoid playback after user closed app
+		stopCurrentAudioObject(true);
+		playerEngine.finishPlayer();
+	}
 
-    @Override
-	public IEqualizer getEqualizer() {
-        return equalizer;
-    }
-
-    @Override
+	@Override
 	public IAudioObject getAudioObject() {
-    	return playerEngine.getAudioObject();
-    }
-    
-    @Override
-    public void applicationStarted() {
-    	initialize();
-    }
-    
-    @Override
-    public void deferredInitialization() {
-        if (playerEngine instanceof VoidPlayerEngine) {
-            manageNoPlayerEngine(getOsManager(), getFrame());
-        }
-    }
-    
+		return playerEngine.getAudioObject();
+	}
+
+	@Override
+	public void applicationStarted() {
+		initialize();
+	}
+
+	@Override
+	public void deferredInitialization() {
+		if (playerEngine instanceof VoidPlayerEngine) {
+			manageNoPlayerEngine(getOsManager(), getFrame());
+		}
+	}
+
 	/**
 	 * Called when no player engine is available
 	 * @param osManager
 	 * @param frame
 	 */
-	private void manageNoPlayerEngine(IOSManager osManager, IFrame frame) {
+	private void manageNoPlayerEngine(final IOSManager osManager, final IFrame frame) {
 		// Delegate to specific OS code
 		osManager.manageNoPlayerEngine(frame);
 	}
-	
-    /**
-     * Initializes all related to player engine
-     */
-    private void initialize() {
-    	IPlayerEngine selectedPlayerEngine = getBean(PlayerEngineSelector.class).selectPlayerEngine();
-    	if (selectedPlayerEngine != null) {
-    		playerEngine = selectedPlayerEngine;
-    		Logger.info("Selected player engine: ", playerEngine);
-    	}
-    	
-        // Set volume on visual components
-    	volumeController.setVolume(statePlayer.getVolume(), false);
 
-        // Mute
-        applyMuteState(statePlayer.isMuteEnabled());
-    	
-        if (statePlayer.isPlayAtStartup()) {
-            playCurrentAudioObject(true);
-        }
-        
-        // Show advanced controls
-        GuiUtils.callInEventDispatchThread(new Runnable() {
-        	@Override
-        	public void run() {
-                playerControlsController.getComponentControlled().showAdvancedPlayerControls(stateUI.isShowAdvancedPlayerControls());
-        	}
-        });
+	/**
+	 * Initializes all related to player engine
+	 */
+	private void initialize() {
+		IPlayerEngine selectedPlayerEngine = getBean(PlayerEngineSelector.class).selectPlayerEngine();
+		if (selectedPlayerEngine != null) {
+			playerEngine = selectedPlayerEngine;
+			Logger.info("Selected player engine: ", playerEngine);
+		}
 
-        // Init engine
-        playerEngine.initializePlayerEngine();
-    	
-        // Add a shutdown hook to perform some actions before killing the JVM
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+		// Set volume on visual components
+		volumeController.setVolume(statePlayer.getVolume(), false);
 
-            @Override
-            public void run() {
-                Logger.debug("Final check for Zombie player engines");
-                playerEngine.destroyPlayer();
-                Logger.debug("Closing player ...");
-            }
+		// Mute
+		applyMuteState(statePlayer.isMuteEnabled());
 
-        }));        
-    }
+		if (statePlayer.isPlayAtStartup()) {
+			playCurrentAudioObject(true);
+		}
 
-    @Override
-    public void pluginActivated(PluginInfo plugin) {
-        try {
-            IPlaybackStateListener listener = (IPlaybackStateListener) getBean(IPluginsHandler.class).getNewInstance(plugin);
-            getBean(PlaybackStateListeners.class).addPlaybackStateListener(listener);
-        } catch (PluginSystemException e) {
-            Logger.error(e);
-        }
-    }
+		// Show advanced controls
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				playerControlsController.getComponentControlled().showAdvancedPlayerControls(stateUI.isShowAdvancedPlayerControls());
+			}
+		});
 
-    @Override
-    public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
-        Logger.info(StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
-        for (Plugin createdInstance : createdInstances) {
-        	getBean(PlaybackStateListeners.class).removePlaybackStateListener((IPlaybackStateListener) createdInstance);
-        }
-    }
+		// Init engine
+		playerEngine.initializePlayerEngine();
 
-    @Override
-    public void playbackStateChanged(PlaybackState newState, IAudioObject currentAudioObject) {
-    	if (playbackState == null || !playbackState.equals(newState)) {
-    		this.playbackState = newState;
-    		Logger.debug("Playback state changed to:", newState);
-    		submitAudioObjectIfNecessary(newState, currentAudioObject);
-    		stopPlayerEngineIfNecessary(newState);
-    	}
-    }
+		// Add a shutdown hook to perform some actions before killing the JVM
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				Logger.debug("Final check for Zombie player engines");
+				playerEngine.destroyPlayer();
+				Logger.debug("Closing player ...");
+			}
+
+		}));
+	}
+
+	@Override
+	public void pluginActivated(final PluginInfo plugin) {
+		try {
+			IPlaybackStateListener listener = (IPlaybackStateListener) getBean(IPluginsHandler.class).getNewInstance(plugin);
+			getBean(PlaybackStateListeners.class).addPlaybackStateListener(listener);
+		} catch (PluginSystemException e) {
+			Logger.error(e);
+		}
+	}
+
+	@Override
+	public void pluginDeactivated(final PluginInfo plugin, final Collection<Plugin> createdInstances) {
+		Logger.info(StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
+		for (Plugin createdInstance : createdInstances) {
+			getBean(PlaybackStateListeners.class).removePlaybackStateListener((IPlaybackStateListener) createdInstance);
+		}
+	}
+
+	@Override
+	public void playbackStateChanged(final PlaybackState newState, final IAudioObject currentAudioObject) {
+		if (playbackState == null || !playbackState.equals(newState)) {
+			this.playbackState = newState;
+			Logger.debug("Playback state changed to:", newState);
+			submitAudioObjectIfNecessary(newState, currentAudioObject);
+			stopPlayerEngineIfNecessary(newState);
+		}
+	}
 
 	/**
 	 * @param newState
 	 * @param currentAudioObject
 	 */
-	private void submitAudioObjectIfNecessary(PlaybackState newState, IAudioObject currentAudioObject) {
-		if (isSubmissionNeeded(newState, currentAudioObject)) { 
-			getBean(IWebServicesHandler.class).submit((ILocalAudioObject) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
+	private void submitAudioObjectIfNecessary(final PlaybackState newState, final IAudioObject currentAudioObject) {
+		if (isSubmissionNeeded(newState, currentAudioObject)) {
+			getBean(IWebServicesHandler.class).submit(currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
 			getBean(IStatisticsHandler.class).updateAudioObjectStatistics(currentAudioObject);
 			playerEngine.setSubmissionState(SubmissionState.SUBMITTED);
 		}
 	}
-	
-	private boolean isSubmissionNeeded(PlaybackState newState, IAudioObject currentAudioObject) {
+
+	private boolean isSubmissionNeeded(final PlaybackState newState, final IAudioObject currentAudioObject) {
 		if (isStateForSubmission(newState) && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof ILocalAudioObject) {
 			return true;
 		}
 		return false;
 	}
-	
-	private boolean isStateForSubmission(PlaybackState newState) {
-		return newState == PlaybackState.PLAY_FINISHED || 
-		       newState == PlaybackState.PLAY_INTERRUPTED || 
-		       newState == PlaybackState.STOPPED;
+
+	private boolean isStateForSubmission(final PlaybackState newState) {
+		return newState == PlaybackState.PLAY_FINISHED ||
+		newState == PlaybackState.PLAY_INTERRUPTED ||
+		newState == PlaybackState.STOPPED;
 	}
 
 	/**
 	 * @param newState
 	 */
-	private void stopPlayerEngineIfNecessary(PlaybackState newState) {
+	private void stopPlayerEngineIfNecessary(final PlaybackState newState) {
 		if (newState == PlaybackState.STOPPED) {
 			playerEngine.setCurrentAudioObjectPlayedTime(0);
 			playerEngine.interruptPlayAudioObjectThread();
 		}
 	}
 
-    @Override
-	public PlaybackState getPlaybackState() {
-        return playbackState;
-    }
-
-    @Override
-	public long getCurrentAudioObjectPlayedTime() {
-        return playerEngine.getCurrentAudioObjectPlayedTime();
-    }
-
-    @Override
-	public long getCurrentAudioObjectLength() {
-        return playerEngine.getCurrentAudioObjectLength();
-    }
-    
 	@Override
-	public void setPlaying(boolean playing) {
+	public PlaybackState getPlaybackState() {
+		return playbackState;
+	}
+
+	@Override
+	public long getCurrentAudioObjectPlayedTime() {
+		return playerEngine.getCurrentAudioObjectPlayedTime();
+	}
+
+	@Override
+	public long getCurrentAudioObjectLength() {
+		return playerEngine.getCurrentAudioObjectLength();
+	}
+
+	@Override
+	public void setPlaying(final boolean playing) {
 		playerControlsController.setPlaying(playing);
 	}
 
 	@Override
-	public void setAudioObjectLength(long currentLength) {
-		playerControlsController.setAudioObjectLength(currentLength);		
+	public void setAudioObjectLength(final long currentLength) {
+		playerControlsController.setAudioObjectLength(currentLength);
 	}
 
 	@Override
-	public void setCurrentAudioObjectTimePlayed(long actualPlayedTime, long currentAudioObjectLength) {
+	public void setCurrentAudioObjectTimePlayed(final long actualPlayedTime, final long currentAudioObjectLength) {
 		playerControlsController.setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
 	}
 
 	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {
+	public void selectedAudioObjectChanged(final IAudioObject audioObject) {
 		playerControlsController.updatePlayerControls(audioObject);
 	}
 
 	@Override
 	public void initializeAndCheck() {
 		initialize();
-        if (playerEngine instanceof VoidPlayerEngine) {
-        	manageNoPlayerEngine(getOsManager(), getFrame());
-        }
+		if (playerEngine instanceof VoidPlayerEngine) {
+			manageNoPlayerEngine(getOsManager(), getFrame());
+		}
 	}
 }

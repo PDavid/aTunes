@@ -30,6 +30,7 @@ aTunes 2.2.0
 - Use Kryo as serialization library
 - Export action moved to navigator and playlist
 - New action to move folders in repository
+- Option to enable or disable equalizer, instead of selecting "none"
 - FIX: Use last.fm API to obtain last.fm loved tracks
 - FIX: Detection of radio audio streams blocks playing
 - FIX: Start mplayer process with volume argument
