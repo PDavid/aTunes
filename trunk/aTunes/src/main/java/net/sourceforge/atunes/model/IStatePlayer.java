@@ -20,6 +20,11 @@
 
 package net.sourceforge.atunes.model;
 
+/**
+ * State of player
+ * @author alex
+ *
+ */
 public interface IStatePlayer {
 
 	/**
@@ -45,7 +50,7 @@ public interface IStatePlayer {
 	 * @param repeat
 	 */
 	public void setRepeat(boolean repeat);
-	
+
 	/**
 	 * Play when app starts
 	 * @return
@@ -78,6 +83,7 @@ public interface IStatePlayer {
 
 	/**
 	 * Similar Artist mode
+	 * @return
 	 */
 	public boolean isSimilarArtistMode();
 
@@ -86,7 +92,7 @@ public interface IStatePlayer {
 	 * @param similarArtistMode
 	 */
 	public void setSimilarArtistMode(boolean similarArtistMode);
-	
+
 
 	/**
 	 * Sound normalization
@@ -153,7 +159,7 @@ public interface IStatePlayer {
 	 * @param muteEnabled
 	 */
 	public void setMuteEnabled(boolean muteEnabled);
-	
+
 	/**
 	 * Player engine
 	 * @return
@@ -165,6 +171,15 @@ public interface IStatePlayer {
 	 * @param playerEngine
 	 */
 	public void setPlayerEngine(String playerEngine);
-	
 
+	/**
+	 * @return if equalizer is enabled
+	 */
+	public boolean isEqualizerEnabled();
+
+	/**
+	 * Enables equalizer
+	 * @param enabled
+	 */
+	public void setEqualizerEnabled(boolean enabled);
 }

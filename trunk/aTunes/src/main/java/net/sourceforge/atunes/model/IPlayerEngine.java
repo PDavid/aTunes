@@ -108,7 +108,7 @@ public interface IPlayerEngine {
 	 * Seek function: play current audio object from milliseconds or percent defined by parameter
 	 * 
 	 * @param milliseconds
-	 * @param perCent 
+	 * @param perCent
 	 */
 	void seekCurrentAudioObject(long milliseconds, int perCent);
 
@@ -148,140 +148,140 @@ public interface IPlayerEngine {
 	 */
 	long getCurrentAudioObjectLength();
 
-    /**
-     * Starts playing next audio object from play list
-     * 
-     * @param audioObjectFinished
-     *            <code>true</code> if this method is called because current
-     *            audio object has finished, <code>false</code> if this method
-     *            is called because user has pressed the "NEXT" button
-     * 
-     */
-    void playNextAudioObject(boolean audioObjectFinished);
-    
-    /**
-     * This method must be implemented by player engines. Method to apply
-     * equalizer values in player engine
-     * 
-     * @param values
-     */
-    void applyEqualization(float[] values);
+	/**
+	 * Starts playing next audio object from play list
+	 * 
+	 * @param audioObjectFinished
+	 *            <code>true</code> if this method is called because current
+	 *            audio object has finished, <code>false</code> if this method
+	 *            is called because user has pressed the "NEXT" button
+	 * 
+	 */
+	void playNextAudioObject(boolean audioObjectFinished);
 
-    /**
-     * This method must be implemented by player engines. Transform values
-     * retrieved from equalizer dialog to values for player engine
-     * 
-     * @param values
-     * @return
-     */
-    float[] transformEqualizerValues(float[] values);
+	/**
+	 * This method must be implemented by player engines. Method to apply
+	 * equalizer values in player engine
+	 * @param enabled
+	 * @param values
+	 */
+	void applyEqualization(boolean enabled, float[] values);
 
-    /**
-     * Starts playing previous audio object from play list
-     */
-    void playPreviousAudioObject();
+	/**
+	 * This method must be implemented by player engines. Transform values
+	 * retrieved from equalizer dialog to values for player engine
+	 * 
+	 * @param values
+	 * @return
+	 */
+	float[] transformEqualizerValues(float[] values);
 
-    /**
-     * This method must be implemented by player engines It's called when
-     * application finishes
-     */
-    void finishPlayer();
+	/**
+	 * Starts playing previous audio object from play list
+	 */
+	void playPreviousAudioObject();
 
-    /**
-     * Actions to initialize engine. This method is called just after selecting
-     * an available player engine.
-     */
-    void initializePlayerEngine();
+	/**
+	 * This method must be implemented by player engines It's called when
+	 * application finishes
+	 */
+	void finishPlayer();
 
-    /**
-     * Destroys player resources
-     */
-    void destroyPlayer();
+	/**
+	 * Actions to initialize engine. This method is called just after selecting
+	 * an available player engine.
+	 */
+	void initializePlayerEngine();
+
+	/**
+	 * Destroys player resources
+	 */
+	void destroyPlayer();
 
 	/**
 	 * @param submissionState the submissionState to set
 	 */
 	void setSubmissionState(SubmissionState submissionState);
-	
+
 	/**
 	 * @return the submissionState
 	 */
 	SubmissionState getSubmissionState();
-	
-    /**
-     * Sets the time played for the current audio object as playback advances
-     * 
-     * @param playedTime
-     *            played time in milliseconds (ms)
-     */
-    void setCurrentAudioObjectPlayedTime(long playedTime);
+
+	/**
+	 * Sets the time played for the current audio object as playback advances
+	 * 
+	 * @param playedTime
+	 *            played time in milliseconds (ms)
+	 */
+	void setCurrentAudioObjectPlayedTime(long playedTime);
 
 	/**
 	 * Interrupts playing thread
 	 */
 	void interruptPlayAudioObjectThread();
 
-    /**
-     * This method must be implemented by player engines. This method must check
-     * system to determine if player engine is available (check for libraries or
-     * commands)
-     * 
-     * @return <code>true</code> if engine is available in the system and can be
-     *         used to play, <code>false</code> otherwise
-     */
-    boolean isEngineAvailable();
+	/**
+	 * This method must be implemented by player engines. This method must check
+	 * system to determine if player engine is available (check for libraries or
+	 * commands)
+	 * 
+	 * @return <code>true</code> if engine is available in the system and can be
+	 *         used to play, <code>false</code> otherwise
+	 */
+	boolean isEngineAvailable();
 
-    /**
-     * play this audio object
-     * 
-     * @param audioObjectToPlay
-     *            audio object to play. May be cashed to temp dirs or the same
-     *            as audioObject.
-     * @param audioObject
-     *            original audio object to update statistics
-     */
-    void startPlayback(IAudioObject audioObjectToPlay, IAudioObject audioObject);
+	/**
+	 * play this audio object
+	 * 
+	 * @param audioObjectToPlay
+	 *            audio object to play. May be cashed to temp dirs or the same
+	 *            as audioObject.
+	 * @param audioObject
+	 *            original audio object to update statistics
+	 */
+	void startPlayback(IAudioObject audioObjectToPlay, IAudioObject audioObject);
 
-    /**
-     * This method must be implemented by player engines. This method pauses
-     * playback of current audio object without stopping it. Resuming after this
-     * called should continue playback from the position when paused
-     */
-    void pausePlayback();
+	/**
+	 * This method must be implemented by player engines. This method pauses
+	 * playback of current audio object without stopping it. Resuming after this
+	 * called should continue playback from the position when paused
+	 */
+	void pausePlayback();
 
-    /**
-     * This method must be implemented by player engines. This method resumes
-     * playback of current audio object previously paused. Call this method
-     * should continue playback from the position when paused
-     */
-    void resumePlayback();
+	/**
+	 * This method must be implemented by player engines. This method resumes
+	 * playback of current audio object previously paused. Call this method
+	 * should continue playback from the position when paused
+	 */
+	void resumePlayback();
 
-    /**
-     * This method must be implemented by player engines. Stop playing current
-     * song
-     * 
-     * @param userStopped
-     *            {@code true} if stopped by user input, {@code false}
-     *            otherwise.
-     * @param useFadeAway
-     *            if {@code true} - fade away then stop. Stop immediately
-     *            otherwise.
-     */
-    void stopPlayback(boolean userStopped, boolean useFadeAway);
+	/**
+	 * This method must be implemented by player engines. Stop playing current
+	 * song
+	 * 
+	 * @param userStopped
+	 *            {@code true} if stopped by user input, {@code false}
+	 *            otherwise.
+	 * @param useFadeAway
+	 *            if {@code true} - fade away then stop. Stop immediately
+	 *            otherwise.
+	 */
+	void stopPlayback(boolean userStopped, boolean useFadeAway);
 
-    /**
-     * This method must be implemented by player engines. Applies a seek
-     * operation in player engine. Engine can use milliseconds or perCent
-     * @param milliseconds
-     * @param perCent
-     */
-    void seekTo(long milliseconds, int perCent);
+	/**
+	 * This method must be implemented by player engines. Applies a seek
+	 * operation in player engine. Engine can use milliseconds or perCent
+	 * @param milliseconds
+	 * @param perCent
+	 */
+	void seekTo(long milliseconds, int perCent);
 
-    /**
-     * Returns the name of this engine
-     * 
-     * @return the name of this engine
-     */
-    String getEngineName();
+	/**
+	 * Returns the name of this engine
+	 * 
+	 * @return the name of this engine
+	 */
+	String getEngineName();
 
 }

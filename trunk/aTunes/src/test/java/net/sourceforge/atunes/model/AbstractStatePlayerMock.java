@@ -21,104 +21,104 @@
 package net.sourceforge.atunes.model;
 
 public class AbstractStatePlayerMock implements IStatePlayer {
-	
+
 	@Override
 	public float[] getEqualizerSettings() {
 		return null;
 	}
-	
+
 	@Override
 	public String getPlayerEngine() {
 		return null;
 	}
-	
+
 	@Override
 	public int getVolume() {
 		return 0;
 	}
-	
+
 	@Override
 	public boolean isCacheFilesBeforePlaying() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isMuteEnabled() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isPlayAtStartup() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isRepeat() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isShuffle() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isUseFadeAway() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isUseNormalisation() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isUseShortPathNames() {
 		return false;
 	}
-	
+
 	@Override
-	public void setCacheFilesBeforePlaying(boolean cacheFilesBeforePlaying) {
+	public void setCacheFilesBeforePlaying(final boolean cacheFilesBeforePlaying) {
 	}
-	
+
 	@Override
-	public void setEqualizerSettings(float[] equalizerSettings) {
+	public void setEqualizerSettings(final float[] equalizerSettings) {
 	}
-	
+
 	@Override
-	public void setMuteEnabled(boolean muteEnabled) {
+	public void setMuteEnabled(final boolean muteEnabled) {
 	}
-	
+
 	@Override
-	public void setPlayAtStartup(boolean playAtStartup) {
+	public void setPlayAtStartup(final boolean playAtStartup) {
 	}
-	
+
 	@Override
-	public void setPlayerEngine(String playerEngine) {
+	public void setPlayerEngine(final String playerEngine) {
 	}
-	
+
 	@Override
-	public void setRepeat(boolean repeat) {
+	public void setRepeat(final boolean repeat) {
 	}
-	
+
 	@Override
-	public void setShuffle(boolean shuffle) {
+	public void setShuffle(final boolean shuffle) {
 	}
-	
+
 	@Override
-	public void setUseFadeAway(boolean useFadeAway) {
+	public void setUseFadeAway(final boolean useFadeAway) {
 	}
-	
+
 	@Override
-	public void setUseNormalisation(boolean useNormalisation) {
+	public void setUseNormalisation(final boolean useNormalisation) {
 	}
-	
+
 	@Override
-	public void setUseShortPathNames(boolean useShortPathNames) {
+	public void setUseShortPathNames(final boolean useShortPathNames) {
 	}
-	
+
 	@Override
-	public void setVolume(int volume) {
+	public void setVolume(final int volume) {
 	}
 
 	@Override
@@ -127,6 +127,15 @@ public class AbstractStatePlayerMock implements IStatePlayer {
 	}
 
 	@Override
-	public void setSimilarArtistMode(boolean similarArtistMode) {
+	public void setSimilarArtistMode(final boolean similarArtistMode) {
+	}
+
+	@Override
+	public boolean isEqualizerEnabled() {
+		return false;
+	}
+
+	@Override
+	public void setEqualizerEnabled(final boolean enabled) {
 	}
 }

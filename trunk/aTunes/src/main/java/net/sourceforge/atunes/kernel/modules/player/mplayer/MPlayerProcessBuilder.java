@@ -42,116 +42,116 @@ import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 public class MPlayerProcessBuilder {
-	
-    private static final String[] PLAYLISTS = { "m3u", "pls", "asx", "wax", "b4s", "kpl", "wvx", "ram", "rm", "smil" };
+
+	private static final String[] PLAYLISTS = { "m3u", "pls", "asx", "wax", "b4s", "kpl", "wvx", "ram", "rm", "smil" };
 
 	private IStatePlayer statePlayer;
-	
+
 	private IOSManager osManager;
-	
+
 	private IPodcastFeedHandler podcastFeedHandler;
-	
+
 	private MPlayerEngine engine;
-	
+
 	private INetworkHandler networkHandler;
-	
+
 	private IEqualizer equalizer;
-	
+
 	private IStateCore stateCore;
-	
+
 	private IStatePodcast statePodcast;
-	
+
 	/**
 	 * @param statePodcast
 	 */
-	public void setStatePodcast(IStatePodcast statePodcast) {
+	public void setStatePodcast(final IStatePodcast statePodcast) {
 		this.statePodcast = statePodcast;
 	}
-	
+
 	/**
 	 * @param stateCore
 	 */
-	public void setStateCore(IStateCore stateCore) {
+	public void setStateCore(final IStateCore stateCore) {
 		this.stateCore = stateCore;
 	}
-	
+
 	/**
 	 * @param statePlayer
 	 */
-	public void setStatePlayer(IStatePlayer statePlayer) {
+	public void setStatePlayer(final IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;
 	}
-	
+
 	/**
 	 * @param equalizer
 	 */
-	public void setEqualizer(IEqualizer equalizer) {
+	public void setEqualizer(final IEqualizer equalizer) {
 		this.equalizer = equalizer;
 	}
-	
+
 	/**
 	 * @param networkHandler
 	 */
-	public void setNetworkHandler(INetworkHandler networkHandler) {
+	public void setNetworkHandler(final INetworkHandler networkHandler) {
 		this.networkHandler = networkHandler;
 	}
-	
+
 	/**
 	 * @param podcastFeedHandler
 	 */
-	public void setPodcastFeedHandler(IPodcastFeedHandler podcastFeedHandler) {
+	public void setPodcastFeedHandler(final IPodcastFeedHandler podcastFeedHandler) {
 		this.podcastFeedHandler = podcastFeedHandler;
 	}
-	
+
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	/**
 	 * @param engine
 	 */
-	public void setEngine(MPlayerEngine engine) {
+	public void setEngine(final MPlayerEngine engine) {
 		this.engine = engine;
 	}
-	
+
 	/**
 	 * Returns if audio object is remote or not
 	 * @param audioObject
 	 * @return
 	 */
-	private boolean isRemoteAudio(IAudioObject audioObject) {
-        return !(audioObject instanceof ILocalAudioObject || 
-        		(audioObject instanceof IPodcastFeedEntry && statePodcast.isUseDownloadedPodcastFeedEntries() && ((IPodcastFeedEntry) audioObject).isDownloaded()));
+	private boolean isRemoteAudio(final IAudioObject audioObject) {
+		return !(audioObject instanceof ILocalAudioObject ||
+				(audioObject instanceof IPodcastFeedEntry && statePodcast.isUseDownloadedPodcastFeedEntries() && ((IPodcastFeedEntry) audioObject).isDownloaded()));
 	}
-	
-    /**
-     * Returns a mplayer process to play an audiofile.
-     * 
-     * @param audioObject
-     *            audio object which should be played
-     * 
-     * @return mplayer process
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    public Process getProcess(IAudioObject audioObject) throws IOException {
-        boolean isRemoteAudio = isRemoteAudio(audioObject);
 
-        String url = getUrlToPlay(audioObject, isRemoteAudio);
-        
-        if (url == null) {
-        	engine.handlePlayerEngineError(new FileNotFoundException(audioObject.getTitleOrFileName()));
-        	return null;
-        } else {
-            List<String> command = prepareCommand(audioObject, isRemoteAudio, url);
-        	Logger.debug((Object[]) command.toArray(new String[command.size()]));
-        	return new ProcessBuilder().command(command).start();
-        }
-    }
+	/**
+	 * Returns a mplayer process to play an audiofile.
+	 * 
+	 * @param audioObject
+	 *            audio object which should be played
+	 * 
+	 * @return mplayer process
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public Process getProcess(final IAudioObject audioObject) throws IOException {
+		boolean isRemoteAudio = isRemoteAudio(audioObject);
+
+		String url = getUrlToPlay(audioObject, isRemoteAudio);
+
+		if (url == null) {
+			engine.handlePlayerEngineError(new FileNotFoundException(audioObject.getTitleOrFileName()));
+			return null;
+		} else {
+			List<String> command = prepareCommand(audioObject, isRemoteAudio, url);
+			Logger.debug((Object[]) command.toArray(new String[command.size()]));
+			return new ProcessBuilder().command(command).start();
+		}
+	}
 
 	/**
 	 * @param audioObject
@@ -160,7 +160,7 @@ public class MPlayerProcessBuilder {
 	 * @return
 	 * @throws IOException
 	 */
-	private List<String> prepareCommand(IAudioObject audioObject, boolean isRemoteAudio, String url) throws IOException {
+	private List<String> prepareCommand(final IAudioObject audioObject, final boolean isRemoteAudio, final String url) throws IOException {
 		List<String> command = new ArrayList<String>();
 		prepareBasicCommand(audioObject, command, isRemoteAudio);
 
@@ -188,86 +188,86 @@ public class MPlayerProcessBuilder {
 	 * @param isRemoteAudio
 	 * @return
 	 */
-	private String getUrlToPlay(IAudioObject audioObject, boolean isRemoteAudio) {
+	private String getUrlToPlay(final IAudioObject audioObject, final boolean isRemoteAudio) {
 		String url;
-        if (audioObject instanceof IPodcastFeedEntry && !isRemoteAudio) {
-            url = podcastFeedHandler.getDownloadPath((IPodcastFeedEntry) audioObject);
-        } else {
-            url = audioObject.getUrl();
-        }
+		if (audioObject instanceof IPodcastFeedEntry && !isRemoteAudio) {
+			url = podcastFeedHandler.getDownloadPath((IPodcastFeedEntry) audioObject);
+		} else {
+			url = audioObject.getUrl();
+		}
 		return url;
 	}
-    
-    /**
-     * Returns true if audio object needs short path names
-     * @param audioObject
-     * @param isRemoteAudio
-     * @return
-     */
-    private boolean needsShortPathName(IAudioObject audioObject, boolean isRemoteAudio) {
-    	// First check state and OS
-    	if (!statePlayer.isUseShortPathNames() || !osManager.usesShortPathNames()) {
-    		return false;
-    	}
-    	
-    	// local audio objects and downloaded podcasts
-        return audioObject instanceof ILocalAudioObject || (audioObject instanceof IPodcastFeedEntry && !isRemoteAudio);
-    }
+
+	/**
+	 * Returns true if audio object needs short path names
+	 * @param audioObject
+	 * @param isRemoteAudio
+	 * @return
+	 */
+	private boolean needsShortPathName(final IAudioObject audioObject, final boolean isRemoteAudio) {
+		// First check state and OS
+		if (!statePlayer.isUseShortPathNames() || !osManager.usesShortPathNames()) {
+			return false;
+		}
+
+		// local audio objects and downloaded podcasts
+		return audioObject instanceof ILocalAudioObject || (audioObject instanceof IPodcastFeedEntry && !isRemoteAudio);
+	}
 
 	/**
 	 * @param audioObject
 	 * @param command
 	 * @param isRemoteAudio
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	private void prepareBasicCommand(IAudioObject audioObject, List<String> command, boolean isRemoteAudio) throws IOException {
+	private void prepareBasicCommand(final IAudioObject audioObject, final List<String> command, final boolean isRemoteAudio) throws IOException {
 		command.add(osManager.getPlayerEngineCommand(engine));
-        command.addAll(osManager.getPlayerEngineParameters(engine));
-        command.add(MPlayerConstants.QUIET);
-        command.add(MPlayerConstants.SLAVE);
+		command.addAll(osManager.getPlayerEngineParameters(engine));
+		command.add(MPlayerConstants.QUIET);
+		command.add(MPlayerConstants.SLAVE);
 
-        // PREFER_IPV4 for radios and podcast entries
-        if (isRemoteAudio) {
-            command.add(MPlayerConstants.PREFER_IPV4);
-        }
-        
-        // If a radio has a playlist url add playlist command
-        if (audioObject instanceof IRadio && hasPlaylistUrl((IRadio) audioObject, networkHandler)) {
-            command.add(MPlayerConstants.PLAYLIST);
-        }
+		// PREFER_IPV4 for radios and podcast entries
+		if (isRemoteAudio) {
+			command.add(MPlayerConstants.PREFER_IPV4);
+		}
+
+		// If a radio has a playlist url add playlist command
+		if (audioObject instanceof IRadio && hasPlaylistUrl((IRadio) audioObject, networkHandler)) {
+			command.add(MPlayerConstants.PLAYLIST);
+		}
 	}
-	
-	private boolean hasPlaylistUrl(IRadio radio, INetworkHandler networkHandler) {
-        // First check based on URL end (extension)
-        for (String pl : PLAYLISTS) {
-            if (radio.getUrl().trim().toLowerCase().endsWith(pl)) {
-                return true;
-            }
-        }
 
-        // WORKAROUND: If URL has no extension, then try to get from content, read a number of bytes, as URL can be audio stream
-        try {
-            String radioContent = networkHandler.readURL(networkHandler.getConnection(radio.getUrl()), 1000);
-            for (String pl : PLAYLISTS) {
-                if (radioContent.trim().toLowerCase().contains(pl)) {
-                    return true;
-                }
-            }
+	private boolean hasPlaylistUrl(final IRadio radio, final INetworkHandler networkHandler) {
+		// First check based on URL end (extension)
+		for (String pl : PLAYLISTS) {
+			if (radio.getUrl().trim().toLowerCase().endsWith(pl)) {
+				return true;
+			}
+		}
 
-        } catch (UnknownHostException e) {
-            return false;
-        } catch (IOException e) {
-            return false;
-        }
+		// WORKAROUND: If URL has no extension, then try to get from content, read a number of bytes, as URL can be audio stream
+		try {
+			String radioContent = networkHandler.readURL(networkHandler.getConnection(radio.getUrl()), 1000);
+			for (String pl : PLAYLISTS) {
+				if (radioContent.trim().toLowerCase().contains(pl)) {
+					return true;
+				}
+			}
 
-        return false;
-    }
+		} catch (UnknownHostException e) {
+			return false;
+		} catch (IOException e) {
+			return false;
+		}
+
+		return false;
+	}
 
 	/**
 	 * @param command
 	 * @param url
 	 */
-	private void prepareProxy(List<String> command, String url) {
+	private void prepareProxy(final List<String> command, final String url) {
 		// proxy
 		StringBuilder proxy = new StringBuilder();
 		IProxyBean proxyBean = stateCore.getProxy();
@@ -297,7 +297,7 @@ public class MPlayerProcessBuilder {
 	 * @param command
 	 * @param isRemoteAudio
 	 */
-	private void prepareCache(List<String> command, boolean isRemoteAudio) {
+	private void prepareCache(final List<String> command, final boolean isRemoteAudio) {
 		if (isRemoteAudio) {
 			command.add(MPlayerConstants.CACHE);
 			command.add(MPlayerConstants.CACHE_SIZE);
@@ -309,7 +309,7 @@ public class MPlayerProcessBuilder {
 	/**
 	 * @param command
 	 */
-	private void prepareNormalization(List<String> command) {
+	private void prepareNormalization(final List<String> command) {
 		if (statePlayer.isUseNormalisation()) {
 			command.add(MPlayerConstants.AUDIO_FILTER);
 			command.add(MPlayerConstants.VOLUME_NORM);
@@ -320,12 +320,16 @@ public class MPlayerProcessBuilder {
 	 * @param audioObject
 	 * @param command
 	 */
-	private void prepareEqualizer(IAudioObject audioObject, List<String> command) {
+	private void prepareEqualizer(final IAudioObject audioObject, final List<String> command) {
 		// Build equalizer command. Mplayer uses 10 bands
-		float[] equalizerValues = equalizer.getEqualizerValues();
-		if (audioObject instanceof ILocalAudioObject && equalizerValues != null && equalizerValues.length != 0) {
-			command.add(MPlayerConstants.AUDIO_FILTER);
-			command.add(prepareEqualizerString(equalizerValues));
+		boolean enabled = equalizer.isEnabled();
+		if (enabled) {
+			Logger.debug("Equalizer enabled");
+			float[] equalizerValues = equalizer.getEqualizerValues();
+			if (audioObject instanceof ILocalAudioObject && equalizerValues != null && equalizerValues.length != 0) {
+				command.add(MPlayerConstants.AUDIO_FILTER);
+				command.add(prepareEqualizerString(equalizerValues));
+			}
 		}
 	}
 
@@ -333,7 +337,7 @@ public class MPlayerProcessBuilder {
 	 * @param equalizer
 	 * @return
 	 */
-	private String prepareEqualizerString(float[] equalizer) {
+	private String prepareEqualizerString(final float[] equalizer) {
 		StringBuilder eqString = new StringBuilder(MPlayerConstants.EQUALIZER);
 		for (int i = 0; i <= 9; i++) {
 			eqString.append(equalizer[i]);
@@ -343,11 +347,11 @@ public class MPlayerProcessBuilder {
 		}
 		return eqString.toString();
 	}
-	
+
 	/**
 	 * @param command
 	 */
-	private void prepareVolume(List<String> command) {
+	private void prepareVolume(final List<String> command) {
 		command.add(MPlayerConstants.VOLUME);
 		command.add(Integer.toString(statePlayer.isMuteEnabled() ? 0 : statePlayer.getVolume()));
 	}

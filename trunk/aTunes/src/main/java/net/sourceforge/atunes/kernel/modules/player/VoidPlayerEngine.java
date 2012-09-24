@@ -41,7 +41,7 @@ class VoidPlayerEngine extends AbstractPlayerEngine {
 	}
 
 	@Override
-	public void startPlayback(IAudioObject audioObjectToPlay, IAudioObject audioObject) {
+	public void startPlayback(final IAudioObject audioObjectToPlay, final IAudioObject audioObject) {
 	}
 
 	@Override
@@ -53,19 +53,19 @@ class VoidPlayerEngine extends AbstractPlayerEngine {
 	}
 
 	@Override
-	public void stopPlayback(boolean userStopped, boolean useFadeAway) {
+	public void stopPlayback(final boolean userStopped, final boolean useFadeAway) {
 	}
 
 	@Override
-	public void seekTo(long milliseconds, int perCent) {
+	public void seekTo(final long milliseconds, final int perCent) {
 	}
 
 	@Override
-	public void setVolume(int perCent) {
+	public void setVolume(final int perCent) {
 	}
 
 	@Override
-	public void applyMuteState(boolean state) {
+	public void applyMuteState(final boolean state) {
 	}
 
 	@Override
@@ -73,16 +73,16 @@ class VoidPlayerEngine extends AbstractPlayerEngine {
 	}
 
 	@Override
-	public boolean supportsCapability(PlayerEngineCapability capability) {
+	public boolean supportsCapability(final PlayerEngineCapability capability) {
 		return false;
 	}
 
 	@Override
-	public void applyEqualization(float[] values) {
+	public void applyEqualization(final boolean enabled, final float[] values) {
 	}
 
 	@Override
-	public float[] transformEqualizerValues(float[] values) {
+	public float[] transformEqualizerValues(final float[] values) {
 		return new float[0];
 	}
 
