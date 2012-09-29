@@ -93,19 +93,19 @@ public final class TagReader implements ILocalAudioObjectReader {
 			audioFile = AudioFileIO.read(file);
 		} catch (CannotReadException e) {
 			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
-			Logger.error(e);
+			Logger.error(e.getMessage());
 		} catch (IOException e) {
 			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
-			Logger.error(e);
+			Logger.error(e.getMessage());
 		} catch (TagException e) {
 			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
-			Logger.error(e);
+			Logger.error(e.getMessage());
 		} catch (ReadOnlyFileException e) {
 			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
-			Logger.error(e);
+			Logger.error(e.getMessage());
 		} catch (InvalidAudioFrameException e) {
 			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
-			Logger.error(e);
+			Logger.error(e.getMessage());
 		}
 		return audioFile;
 	}
