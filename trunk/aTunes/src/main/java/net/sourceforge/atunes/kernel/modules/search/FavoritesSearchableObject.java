@@ -20,77 +20,75 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearchResult;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.SimpleFSDirectory;
 
+/**
+ * Searchable object for favorites
+ * @author alex
+ *
+ */
 public final class FavoritesSearchableObject extends AbstractCommonAudioFileSearchableObject {
 
-    /**
-     * Singleton instance of this class
-     */
-    private static FavoritesSearchableObject instance = new FavoritesSearchableObject();
+	private FSDirectory indexDirectory;
 
-    private FSDirectory indexDirectory;
+	private IOSManager osManager;
 
-    /**
-     * Default constructor
-     */
-    private FavoritesSearchableObject() {
-        // Nothing to do
-    }
+	private IFavoritesHandler favoritesHandler;
 
-    /**
-     * Returns singleton instance of RepositorySearchableObject
-     * 
-     * @return
-     */
-    public static FavoritesSearchableObject getInstance() {
-        return instance;
-    }
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
-    @Override
-    public String getSearchableObjectName() {
-        return I18nUtils.getString("FAVORITES");
-    }
+	/**
+	 * @param favoritesHandler
+	 */
+	public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
+		this.favoritesHandler = favoritesHandler;
+	}
 
-    @Override
-    public FSDirectory getIndexDirectory() throws IOException {
-        if (indexDirectory == null) {
-            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(), "/", Constants.FAVORITES_INDEX_DIR)));
-        }
-        return indexDirectory;
-    }
+	@Override
+	public String getSearchableObjectName() {
+		return I18nUtils.getString("FAVORITES");
+	}
 
-    @Override
-    public List<IAudioObject> getSearchResult(List<ISearchResult> rawSearchResults) {
-        List<IAudioObject> result = new ArrayList<IAudioObject>();
-        for (ISearchResult rawSearchResult : rawSearchResults) {
-        	ILocalAudioObject audioFile = Context.getBean(IFavoritesHandler.class).getFavoriteSongsMap().get(rawSearchResult.getObject().get("url"));
-            if (audioFile != null) {
-                result.add(audioFile);
-            }
-        }
-        return result;
-    }
+	@Override
+	public FSDirectory getIndexDirectory() throws IOException {
+		if (indexDirectory == null) {
+			indexDirectory = new SimpleFSDirectory(osManager.getFile(osManager.getUserConfigFolder(), Constants.FAVORITES_INDEX_DIR));
+		}
+		return indexDirectory;
+	}
 
-    @Override
-    public List<IAudioObject> getElementsToIndex() {
-        return new ArrayList<IAudioObject>(Context.getBean(IFavoritesHandler.class).getFavoriteSongsMap().values());
-    }
+	@Override
+	public List<IAudioObject> getSearchResult(final List<ISearchResult> rawSearchResults) {
+		List<IAudioObject> result = new ArrayList<IAudioObject>();
+		for (ISearchResult rawSearchResult : rawSearchResults) {
+			ILocalAudioObject audioFile = favoritesHandler.getFavoriteSongsMap().get(rawSearchResult.getObject().get("url"));
+			if (audioFile != null) {
+				result.add(audioFile);
+			}
+		}
+		return result;
+	}
 
+	@Override
+	public List<IAudioObject> getElementsToIndex() {
+		return new ArrayList<IAudioObject>(favoritesHandler.getFavoriteSongsMap().values());
+	}
 }

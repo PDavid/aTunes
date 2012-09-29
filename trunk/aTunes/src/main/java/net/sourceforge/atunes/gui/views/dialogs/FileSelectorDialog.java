@@ -141,7 +141,7 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 		String dir = dialog.getDirectory();
 		if (file != null) {
 			// Get selected file
-			return new File(dir + "/" + file);
+			return osManager.getFile(dir, file);
 		}
 		return null;
 	}

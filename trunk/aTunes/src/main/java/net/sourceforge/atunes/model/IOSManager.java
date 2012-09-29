@@ -177,6 +177,7 @@ public interface IOSManager {
 
 	/**
 	 * Manages when no player engine is available
+	 * @param frame
 	 */
 	public void manageNoPlayerEngine(IFrame frame);
 
@@ -224,7 +225,7 @@ public interface IOSManager {
 	 * @return
 	 */
 	public boolean isRipSupported();
-	
+
 	/**
 	 * Returns if OS allows to run more than one instance of application
 	 * @return
@@ -290,5 +291,19 @@ public interface IOSManager {
 	 * @return
 	 */
 	public boolean areTrayIconsColorsSupported();
+
+	/**
+	 * @param folder
+	 * @param name
+	 * @return file object
+	 */
+	public File getFile(String folder, String name);
+
+	/**
+	 * @param folder
+	 * @param name
+	 * @return file path
+	 */
+	public String getFilePath(String folder, String name);
 
 }

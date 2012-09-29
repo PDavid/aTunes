@@ -52,44 +52,44 @@ public class OsManager implements IOSManager {
 	 * Current OS
 	 */
 	private OperatingSystem osType;
-	
+
 	private OperatingSystemAdapter adapter;
 
 	private IApplicationArguments applicationArguments;
 
 	private IBeanFactory beanFactory;
-	
+
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
-	
-    /**
-     * @param applicationArguments
-     */
-    public void setApplicationArguments(IApplicationArguments applicationArguments) {
-    	this.applicationArguments = applicationArguments;
+
+	/**
+	 * @param applicationArguments
+	 */
+	public void setApplicationArguments(final IApplicationArguments applicationArguments) {
+		this.applicationArguments = applicationArguments;
 	}
-	
-    /**
-     *  Initializes os manager 
-     */
-    public void initialize() {
-    	osType = OperatingSystemDetector.getOperatingSystem();
-    	if (osType.isLinux()) {
-    		adapter = beanFactory.getBean(LinuxOperatingSystem.class);
-    	} else if (osType.isMacOsX()) {
-    		adapter = beanFactory.getBean(MacOSXOperatingSystem.class);
-    	} else if (osType.isSolaris()) {
-    		adapter = beanFactory.getBean(SolarisOperatingSystem.class);
-    	} else {
-    		adapter = beanFactory.getBean(WindowsOperatingSystem.class);
-    	}    	
+
+	/**
+	 *  Initializes os manager
+	 */
+	public void initialize() {
+		osType = OperatingSystemDetector.getOperatingSystem();
+		if (osType.isLinux()) {
+			adapter = beanFactory.getBean(LinuxOperatingSystem.class);
+		} else if (osType.isMacOsX()) {
+			adapter = beanFactory.getBean(MacOSXOperatingSystem.class);
+		} else if (osType.isSolaris()) {
+			adapter = beanFactory.getBean(SolarisOperatingSystem.class);
+		} else {
+			adapter = beanFactory.getBean(WindowsOperatingSystem.class);
+		}
 		adapter.setSystemType(osType);
-    }
-    
+	}
+
 	@Override
 	public final String getUserConfigFolder() {
 		// Get path depending on parameters
@@ -101,39 +101,39 @@ public class OsManager implements IOSManager {
 			userConfigFolder = StringUtils.getString(System.getProperty("java.io.tmpdir"), getFileSeparator(), "atunes");
 			Logger.error("Using ", userConfigFolder, " as config folder");
 		}
-		
+
 		return userConfigFolder;
 	}
-	
+
 	/**
 	 * Test if path is valid
 	 * @param path
 	 * @return
 	 */
-	private boolean isValidConfigFolder(String path) {
+	private boolean isValidConfigFolder(final String path) {
 		File folder = new File(path);
-		
+
 		// If folder does not exist, try to create
 		if (!folder.exists() && !folder.mkdirs()) {
 			Logger.error("Can't create folder ", path);
 			return false;
 		}
-		
+
 		// Folder exists, check if can write
 		if (!folder.canWrite()) {
 			Logger.error("Can't write folder ", path);
 			return false;
 		}
-		
+
 		// Also check if it's a directory
 		if (!folder.isDirectory()) {
 			Logger.error(path, " is not a directory");
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Returns folder path where application stores its configuration
 	 * @param useWorkDir
@@ -143,182 +143,122 @@ public class OsManager implements IOSManager {
 		if (applicationArguments.isDebug()) {
 			return "./debug";
 		} else if (applicationArguments.getUserConfigFolder() != null) {
-            return applicationArguments.getUserConfigFolder();
-        } else {
-        	return adapter.getAppDataFolder();
-        }
+			return applicationArguments.getUserConfigFolder();
+		} else {
+			return adapter.getAppDataFolder();
+		}
 	}
-		
-    @Override
-	public File getFileFromUserConfigFolder(String name) {
-        String userConfigFolder = getUserConfigFolder();
-        if (userConfigFolder.equals(".")) {
-            return new File(name);
-        }
-        return new File(StringUtils.getString(userConfigFolder, "/", name));
-    }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getTempFolder()
-	 */
-    @Override
+	@Override
+	public File getFileFromUserConfigFolder(final String name) {
+		String userConfigFolder = getUserConfigFolder();
+		if (userConfigFolder.equals(".")) {
+			return new File(name);
+		}
+		return new File(StringUtils.getString(userConfigFolder, "/", name));
+	}
+
+	@Override
 	public String getTempFolder() {
-        String userConfigFolder = getUserConfigFolder();
-        String tempFolder = StringUtils.getString(userConfigFolder, adapter.getFileSeparator(), Constants.TEMP_DIR);
-        File tempFile = new File(tempFolder);
-        if (!tempFile.exists() && !tempFile.mkdir()) {
-            return userConfigFolder;
-        }
-        return tempFolder;
-    }
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getWorkingDirectory()
-	 */
-    @Override
+		String userConfigFolder = getUserConfigFolder();
+		String tempFolder = StringUtils.getString(userConfigFolder, adapter.getFileSeparator(), Constants.TEMP_DIR);
+		File tempFile = new File(tempFolder);
+		if (!tempFile.exists() && !tempFile.mkdir()) {
+			return userConfigFolder;
+		}
+		return tempFolder;
+	}
+
+	@Override
 	public String getWorkingDirectory() {
-        return System.getProperty("user.dir");
-    }
+		return System.getProperty("user.dir");
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getCustomRepositoryConfigFolder()
-	 */
-    @Override
+	@Override
 	public String getCustomRepositoryConfigFolder() {
-        return applicationArguments.getRepositoryConfigFolder();
-    }
+		return applicationArguments.getRepositoryConfigFolder();
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getLaunchCommand()
-	 */
-    @Override
+	@Override
 	public String getLaunchCommand() {
-    	return adapter.getLaunchCommand();
-    }
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getLaunchParameters()
-	 */
-    @Override
-	public String getLaunchParameters() {
-    	return adapter.getLaunchParameters();
-    }
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#setupFrame(net.sourceforge.atunes.model.IFrame)
-	 */
-    @Override
-	public void setupFrame(IFrame frame) {
-    	adapter.setupFrame(frame);
-    }
+		return adapter.getLaunchCommand();
+	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#areShadowBordersForToolTipsSupported()
-	 */
+	@Override
+	public String getLaunchParameters() {
+		return adapter.getLaunchParameters();
+	}
+
+	@Override
+	public void setupFrame(final IFrame frame) {
+		adapter.setupFrame(frame);
+	}
+
 	@Override
 	public boolean areShadowBordersForToolTipsSupported() {
 		return adapter.areShadowBordersForToolTipsSupported();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getUserHome()
-	 */
 	@Override
 	public String getUserHome() {
 		return adapter.getUserHome();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getFileSeparator()
-	 */
 	@Override
 	public String getFileSeparator() {
 		return adapter.getFileSeparator();
 	}
-	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#usesShortPathNames()
-	 */
+
 	@Override
 	public boolean usesShortPathNames() {
 		return adapter.usesShortPathNames();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#setFullScreen(java.awt.Window, boolean, net.sourceforge.atunes.model.IFrame)
-	 */
 	@Override
-	public void setFullScreen(Window window, boolean fullscreen, IFrame frame) {
+	public void setFullScreen(final Window window, final boolean fullscreen, final IFrame frame) {
 		adapter.setFullScreen(window, fullscreen, frame);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getLineTerminator()
-	 */
 	@Override
 	public String getLineTerminator() {
 		return adapter.getSystemLineTerminator();
 	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#is64Bit()
-	 */
 	@Override
 	public boolean is64Bit() {
 		return adapter.is64Bit();
 	}
-	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#isPlayerEngineSupported(net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine)
-	 */
+
 	@Override
-	public boolean isPlayerEngineSupported(IPlayerEngine engine) {
-		return adapter.isPlayerEngineSupported(engine); 
+	public boolean isPlayerEngineSupported(final IPlayerEngine engine) {
+		return adapter.isPlayerEngineSupported(engine);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getPlayerEngineCommand(net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine)
-	 */
 	@Override
-	public String getPlayerEngineCommand(IPlayerEngine engine) {
+	public String getPlayerEngineCommand(final IPlayerEngine engine) {
 		return adapter.getPlayerEngineCommand(engine);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getPlayerEngineParameters(net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine)
-	 */
 	@Override
-	public Collection<String> getPlayerEngineParameters(IPlayerEngine engine) {
+	public Collection<String> getPlayerEngineParameters(final IPlayerEngine engine) {
 		return adapter.getPlayerEngineParameters(engine);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getExternalToolsPath()
-	 */
 	@Override
 	public Object getExternalToolsPath() {
 		return adapter.getExternalToolsPath();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getLookAndFeels()
-	 */
 	@Override
 	public Map<String, Class<? extends ILookAndFeel>> getLookAndFeels() {
 		return adapter.getSupportedLookAndFeels();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getDefaultLookAndFeel()
-	 */
 	@Override
 	public Class<? extends ILookAndFeel> getDefaultLookAndFeel() {
 		return adapter.getDefaultLookAndFeel();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#manageNoPlayerEngine()
-	 */
 	@Override
 	public void manageNoPlayerEngine(final IFrame frame) {
 		GuiUtils.callInEventDispatchThread(new Runnable() {
@@ -328,138 +268,106 @@ public class OsManager implements IOSManager {
 			}
 		});
 	}
-	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#playerEngineFound()
-	 */
+
 	@Override
 	public void playerEngineFound() {
 		adapter.playerEngineFound();
 	}
-	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getOSProperty(java.lang.String)
-	 */
+
 	@Override
-	public String getOSProperty(String key) {
+	public String getOSProperty(final String key) {
 		return adapter.getOsProperties().getProperty(key);
 	}
-	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#setOSProperty(java.lang.String, java.lang.String)
-	 */
+
 	@Override
-	public void setOSProperty(String key, String value) {
+	public void setOSProperty(final String key, final String value) {
 		Properties p = adapter.getOsProperties();
 		p.setProperty(key, value);
 		adapter.setOsProperties(p);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#areTrayIconsSupported()
-	 */
 	@Override
 	public boolean areTrayIconsSupported() {
 		return adapter.areTrayIconsSupported();
 	}
-	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#areMenuEntriesDelegated()
-	 */
+
 	@Override
 	public boolean areMenuEntriesDelegated() {
 		return adapter.areMenuEntriesDelegated();
 	}
-	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#isClosingMainWindowClosesApplication()
-	 */
+
 	@Override
 	public boolean isClosingMainWindowClosesApplication() {
 		return adapter.isClosingMainWindowClosesApplication();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#isRipSupported()
-	 */
 	@Override
 	public boolean isRipSupported() {
 		return adapter.isRipSupported();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#isWindowsVista()
-	 */
 	@Override
 	public boolean isWindowsVista() {
 		return osType.isWindowsVista();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#isWindows7()
-	 */
 	@Override
 	public boolean isWindows7() {
 		return osType.isWindows7();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#isOldWindows()
-	 */
 	@Override
 	public boolean isOldWindows() {
 		return osType.isOldWindows();
 	}
-	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#isLinux()
-	 */
+
 	@Override
 	public boolean isLinux() {
 		return osType.isLinux();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#isMacOsX()
-	 */
 	@Override
 	public boolean isMacOsX() {
 		return osType.isMacOsX();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#isSolaris()
-	 */
 	@Override
 	public boolean isSolaris() {
 		return osType.isSolaris();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#isWindows()
-	 */
 	@Override
 	public boolean isWindows() {
 		return osType.isWindows();
 	}
-	
+
 	@Override
 	public boolean isMultipleInstancesSupported() {
 		return adapter.isMultipleInstancesSupported();
 	}
-	
+
 	@Override
 	public ITrayIcon getTrayIcon() {
 		return adapter.getTrayIcon();
 	}
-	
+
 	@Override
 	public IPlayerTrayIconsHandler getPlayerTrayIcons() {
 		return adapter.getPlayerTrayIcons();
 	}
-	
+
 	@Override
 	public boolean areTrayIconsColorsSupported() {
 		return adapter.areTrayIconsColorsSupported();
+	}
+
+	@Override
+	public File getFile(final String folder, final String name) {
+		return new File(getFilePath(folder, name));
+	}
+
+	@Override
+	public String getFilePath(final String folder, final String name) {
+		return StringUtils.getString(folder, getFileSeparator(), name);
 	}
 }

@@ -33,6 +33,7 @@ import net.sourceforge.atunes.model.IRepositoryTransaction;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.DirectoryFileFilter;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.Timer;
@@ -183,10 +184,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 
 		RepositoryFiller filler = new RepositoryFiller(repository, stateNavigation, unknownObjectChecker);
 		for (File folder : folders) {
-			String fastRepositoryPath = net.sourceforge.atunes.utils.FileUtils.getPath(folder).replace('\\', '/');
-			if (fastRepositoryPath.endsWith("/")) {
-				fastRepositoryPath = fastRepositoryPath.substring(0, fastRepositoryPath.length() - 2);
-			}
+			String fastRepositoryPath = FileUtils.getNormalizedPath(folder);
 			fastFirstChar = fastRepositoryPath.length() + 1;
 
 			if (folder.exists()) {
@@ -241,7 +239,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 
 		// Process audio files
 		if (audiofiles != null && audiofiles.length > 0) {
-			String pathToFile = net.sourceforge.atunes.utils.FileUtils.getPath(dir).replace('\\', '/');
+			String pathToFile = FileUtils.getNormalizedPath(dir);
 			int lastChar = pathToFile.lastIndexOf('/') + 1;
 			final String relativePath;
 			if (fastFirstChar <= lastChar) {
