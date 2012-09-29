@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
+import net.sourceforge.atunes.utils.FileUtils;
 
 /**
  * Adds files to repository
@@ -163,7 +164,7 @@ public class RepositoryAddService {
 	 * @return
 	 */
 	private String getRelativePath(final int firstChar, final ILocalAudioObject audioObject) {
-		String pathToFile = audioObject.getUrl().replace('\\', '/');
+		String pathToFile = audioObject.getUrl();
 		int lastChar = pathToFile.lastIndexOf('/') + 1;
 		String relativePath;
 		if (firstChar < lastChar) {
@@ -180,12 +181,7 @@ public class RepositoryAddService {
 	 * @return
 	 */
 	private String getRepositoryPathForFolder(final IRepository rep, final File folder) {
-		String repositoryPath;
-		repositoryPath = net.sourceforge.atunes.utils.FileUtils.getPath(getRepositoryFolderContaining(rep, folder)).replace('\\', '/');
-		if (repositoryPath.endsWith("/")) {
-			repositoryPath = repositoryPath.substring(0, repositoryPath.length() - 2);
-		}
-		return repositoryPath;
+		return FileUtils.getNormalizedPath(getRepositoryFolderContaining(rep, folder));
 	}
 
 	/**

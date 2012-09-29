@@ -53,6 +53,7 @@ import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.FileNameUtils;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -456,7 +457,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	public void rename(final ILocalAudioObject audioFile, final String name) {
 		File file = audioFile.getFile();
 		String extension = FilenameUtils.getExtension(net.sourceforge.atunes.utils.FileUtils.getPath(file));
-		File newFile = new File(StringUtils.getString(net.sourceforge.atunes.utils.FileUtils.getPath(file.getParentFile()) + "/" + FileNameUtils.getValidFileName(name, getOsManager()) + "." + extension));
+		File newFile = getOsManager().getFile(FileUtils.getPath(file.getParentFile()), StringUtils.getString(FileNameUtils.getValidFileName(name, getOsManager()), ".",  extension));
 		boolean succeeded = file.renameTo(newFile);
 		if (succeeded) {
 			renameFile(audioFile, file, newFile);

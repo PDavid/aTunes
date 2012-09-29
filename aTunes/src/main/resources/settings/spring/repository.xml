@@ -41,4 +41,7 @@
 	
 	<bean id="importToRepositoryProcessListener" class="net.sourceforge.atunes.kernel.modules.repository.ImportToRepositoryProcessListener" scope="prototype"/>
 	
+	
+	<bean id="favoritesSearchableObject" class="net.sourceforge.atunes.kernel.modules.search.FavoritesSearchableObject"/>
+	
 </beans>

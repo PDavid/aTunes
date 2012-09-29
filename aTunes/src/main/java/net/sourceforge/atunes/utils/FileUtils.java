@@ -51,7 +51,7 @@ public final class FileUtils {
 		if (file == null) {
 			throw new IllegalArgumentException("File is null");
 		} else if (!file.exists()) {
-			throw new FileNotFoundException(net.sourceforge.atunes.utils.FileUtils.getPath(file));
+			throw new FileNotFoundException(getPath(file));
 		}
 		// Set write permission on file
 		if (!file.canWrite()) {
@@ -72,12 +72,29 @@ public final class FileUtils {
 		if (file == null) {
 			throw new IllegalArgumentException("File is null");
 		}
+		String path = null;
 		try {
-			return file.getCanonicalPath();
+			path = file.getCanonicalPath();
 		} catch (IOException e) {
-			Logger.error("Error retrieving path of file: ", net.sourceforge.atunes.utils.FileUtils.getPath(file));
+			path = file.getAbsolutePath();
+			Logger.error("Error retrieving path of file: ", path);
 			Logger.error(e);
-			return net.sourceforge.atunes.utils.FileUtils.getPath(file);
 		}
+		return path;
+	}
+
+	/**
+	 * Returns path of a file. This is a utility method to use the same way to retrieve path
+	 * @param file
+	 * @return
+	 */
+	public static String getNormalizedPath(final File file) {
+		String path = getPath(file);
+		// Basic replace
+		path = path.replace('\\', '/');
+		if (path.endsWith("/")) {
+			path = path.substring(0, path.length() - 2);
+		}
+		return path;
 	}
 }

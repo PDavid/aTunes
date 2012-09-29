@@ -20,77 +20,75 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearchResult;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.SimpleFSDirectory;
 
+/**
+ * Searchable object for device
+ * @author alex
+ *
+ */
 public final class DeviceSearchableObject extends AbstractCommonAudioFileSearchableObject {
 
-    /**
-     * Singleton instance of this class
-     */
-    private static DeviceSearchableObject instance = new DeviceSearchableObject();
+	private FSDirectory indexDirectory;
 
-    private FSDirectory indexDirectory;
+	private IOSManager osManager;
 
-    /**
-     * Default constructor
-     */
-    private DeviceSearchableObject() {
-        // Nothing to do
-    }
+	private IDeviceHandler deviceHandler;
 
-    /**
-     * Returns singleton instance of RepositorySearchableObject
-     * 
-     * @return
-     */
-    public static DeviceSearchableObject getInstance() {
-        return instance;
-    }
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
-    @Override
-    public String getSearchableObjectName() {
-        return I18nUtils.getString("DEVICE");
-    }
+	/**
+	 * @param deviceHandler
+	 */
+	public void setDeviceHandler(final IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
 
-    @Override
-    public synchronized FSDirectory getIndexDirectory() throws IOException {
-        if (indexDirectory == null) {
-            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(), "/", Constants.DEVICE_INDEX_DIR)));
-        }
-        return indexDirectory;
-    }
+	@Override
+	public String getSearchableObjectName() {
+		return I18nUtils.getString("DEVICE");
+	}
 
-    @Override
-    public List<IAudioObject> getSearchResult(List<ISearchResult> rawSearchResults) {
-        List<IAudioObject> result = new ArrayList<IAudioObject>();
-        for (ISearchResult rawSearchResult : rawSearchResults) {
-        	ILocalAudioObject audioFile = Context.getBean(IDeviceHandler.class).getFileIfLoaded(rawSearchResult.getObject().get("url"));
-            if (audioFile != null) {
-                result.add(audioFile);
-            }
-        }
-        return result;
-    }
+	@Override
+	public synchronized FSDirectory getIndexDirectory() throws IOException {
+		if (indexDirectory == null) {
+			indexDirectory = new SimpleFSDirectory(osManager.getFile(osManager.getUserConfigFolder(), Constants.DEVICE_INDEX_DIR));
+		}
+		return indexDirectory;
+	}
 
-    @Override
-    public List<IAudioObject> getElementsToIndex() {
-        return new ArrayList<IAudioObject>(Context.getBean(IDeviceHandler.class).getAudioFilesList());
-    }
+	@Override
+	public List<IAudioObject> getSearchResult(final List<ISearchResult> rawSearchResults) {
+		List<IAudioObject> result = new ArrayList<IAudioObject>();
+		for (ISearchResult rawSearchResult : rawSearchResults) {
+			ILocalAudioObject audioFile = deviceHandler.getFileIfLoaded(rawSearchResult.getObject().get("url"));
+			if (audioFile != null) {
+				result.add(audioFile);
+			}
+		}
+		return result;
+	}
 
+	@Override
+	public List<IAudioObject> getElementsToIndex() {
+		return new ArrayList<IAudioObject>(deviceHandler.getAudioFilesList());
+	}
 }

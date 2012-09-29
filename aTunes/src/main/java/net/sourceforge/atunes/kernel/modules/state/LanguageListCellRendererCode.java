@@ -33,31 +33,36 @@ import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Renderer for language flags
+ * @author alex
+ *
+ */
 public class LanguageListCellRendererCode extends AbstractListCellRendererCode<JLabel, Locale> {
 
-	private IStateCore stateCore;
-	
-    LanguageListCellRendererCode(IStateCore stateCore) {
+	private final IStateCore stateCore;
+
+	LanguageListCellRendererCode(final IStateCore stateCore) {
 		super();
 		this.stateCore = stateCore;
 	}
 
 	@Override
-    public JComponent getComponent(JLabel c, JList list, Locale displayingLocale, int index, boolean isSelected, boolean cellHasFocus) {
-        Locale currentLocale = stateCore.getLocale().getLocale();
+	public JComponent getComponent(final JLabel c, final JList list, final Locale displayingLocale, final int index, final boolean isSelected, final boolean cellHasFocus) {
+		Locale currentLocale = stateCore.getLocale().getLocale();
 
-        String name = displayingLocale.getDisplayName(currentLocale);
-        name = StringUtils.getString(String.valueOf(name.charAt(0)).toUpperCase(currentLocale), name.substring(1));
-        c.setText(name);
+		String name = displayingLocale.getDisplayName(currentLocale);
+		name = StringUtils.getString(String.valueOf(name.charAt(0)).toUpperCase(currentLocale), name.substring(1));
+		c.setText(name);
 
-        // The name of flag file should be flag_<locale>.png
-        // if the name of bundle is MainBundle_<locale>.properties
-        String flag = StringUtils.getString("flag_", displayingLocale.toString(), ".png");
-        
-        URL flagURL = GeneralPanel.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag));
-        if (flagURL != null) {
-        	c.setIcon(new ImageIcon(flagURL));
-        }
-        return c;
-    }
+		// The name of flag file should be flag_<locale>.png
+		// if the name of bundle is MainBundle_<locale>.properties
+		String flagFile = StringUtils.getString("flag_", displayingLocale.toString(), ".png");
+
+		URL flagURL = GeneralPanel.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flagFile));
+		if (flagURL != null) {
+			c.setIcon(new ImageIcon(flagURL));
+		}
+		return c;
+	}
 }

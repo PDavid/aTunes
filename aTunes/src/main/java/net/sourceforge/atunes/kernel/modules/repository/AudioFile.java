@@ -28,6 +28,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.TimeUtils;
 
@@ -305,7 +306,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 		if (file == null) {
 			throw new IllegalArgumentException();
 		}
-		this.filePath = net.sourceforge.atunes.utils.FileUtils.getPath(file);
+		this.filePath = FileUtils.getNormalizedPath(file);
 	}
 
 	/**

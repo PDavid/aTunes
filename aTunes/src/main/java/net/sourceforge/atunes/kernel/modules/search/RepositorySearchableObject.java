@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,60 +31,64 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearchResult;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.SimpleFSDirectory;
 
+/**
+ * Searchable object for repository
+ * @author alex
+ *
+ */
 public final class RepositorySearchableObject extends AbstractCommonAudioFileSearchableObject {
 
-    private FSDirectory indexDirectory;
-    
-    private IOSManager osManager;
-    
-    private IRepositoryHandler repositoryHandler;
-    
-    /**
-     * @param osManager
-     */
-    public void setOsManager(IOSManager osManager) {
+	private FSDirectory indexDirectory;
+
+	private IOSManager osManager;
+
+	private IRepositoryHandler repositoryHandler;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
-    @Override
-    public String getSearchableObjectName() {
-        return I18nUtils.getString("REPOSITORY");
-    }
+	@Override
+	public String getSearchableObjectName() {
+		return I18nUtils.getString("REPOSITORY");
+	}
 
-    @Override
-    public FSDirectory getIndexDirectory() throws IOException {
-        if (indexDirectory == null) {
-            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(osManager.getUserConfigFolder(), "/", Constants.REPOSITORY_INDEX_DIR)));
-        }
-        return indexDirectory;
-    }
+	@Override
+	public FSDirectory getIndexDirectory() throws IOException {
+		if (indexDirectory == null) {
+			indexDirectory = new SimpleFSDirectory(osManager.getFile(osManager.getUserConfigFolder(), Constants.REPOSITORY_INDEX_DIR));
+		}
+		return indexDirectory;
+	}
 
-    @Override
-    public List<IAudioObject> getSearchResult(List<ISearchResult> rawSearchResults) {
-        List<IAudioObject> result = new ArrayList<IAudioObject>();
-        for (ISearchResult rawSearchResult : rawSearchResults) {
-        	ILocalAudioObject audioFile = repositoryHandler.getFileIfLoaded(rawSearchResult.getObject().get("url"));
-            if (audioFile != null) {
-                result.add(audioFile);
-            }
-        }
-        return result;
-    }
+	@Override
+	public List<IAudioObject> getSearchResult(final List<ISearchResult> rawSearchResults) {
+		List<IAudioObject> result = new ArrayList<IAudioObject>();
+		for (ISearchResult rawSearchResult : rawSearchResults) {
+			ILocalAudioObject audioFile = repositoryHandler.getFileIfLoaded(rawSearchResult.getObject().get("url"));
+			if (audioFile != null) {
+				result.add(audioFile);
+			}
+		}
+		return result;
+	}
 
-    @Override
-    public List<IAudioObject> getElementsToIndex() {
-        return new ArrayList<IAudioObject>(repositoryHandler.getAudioFilesList());
-    }
+	@Override
+	public List<IAudioObject> getElementsToIndex() {
+		return new ArrayList<IAudioObject>(repositoryHandler.getAudioFilesList());
+	}
 }
