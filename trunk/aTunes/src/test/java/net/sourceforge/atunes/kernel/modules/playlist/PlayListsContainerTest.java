@@ -79,8 +79,8 @@ public class PlayListsContainerTest {
 
 	@Test
 	public void testGetCurrentPlayList() {
-		assertEquals(playList2, sut.getCurrentPlayList(false));
-		assertEquals(playList3, sut.getCurrentPlayList(true));
+		assertEquals(playList2, sut.getActivePlayList());
+		assertEquals(playList3, sut.getVisiblePlayList());
 	}
 
 	@Test

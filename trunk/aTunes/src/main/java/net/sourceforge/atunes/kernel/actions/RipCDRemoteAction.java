@@ -30,18 +30,27 @@ import java.util.List;
  */
 public class RipCDRemoteAction extends RemoteAction {
 
-    private static final long serialVersionUID = -362457188090138933L;
+	private static final long serialVersionUID = -362457188090138933L;
 
-    /**
-     * Default constructor
-     */
-    public RipCDRemoteAction() {
-        super("cdripper");
-    }
+	private CustomAbstractAction ripCDAction;
 
-    @Override
-    public String runCommand(List<String> parameters) {
-    	callAction(RipCDAction.class);
-    	return "OK";
-    }
+	/**
+	 * @param ripCDAction
+	 */
+	public void setRipCDAction(final CustomAbstractAction ripCDAction) {
+		this.ripCDAction = ripCDAction;
+	}
+
+	/**
+	 * Default constructor
+	 */
+	public RipCDRemoteAction() {
+		super("cdripper");
+	}
+
+	@Override
+	public String runCommand(final List<String> parameters) {
+		callAction(ripCDAction);
+		return "OK";
+	}
 }

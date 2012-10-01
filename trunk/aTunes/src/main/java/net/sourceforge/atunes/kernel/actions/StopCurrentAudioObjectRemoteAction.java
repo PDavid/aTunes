@@ -22,20 +22,34 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
+/**
+ * Remote action to stop current audio object
+ * @author alex
+ *
+ */
 public class StopCurrentAudioObjectRemoteAction extends RemoteAction {
 
-    private static final long serialVersionUID = -1177020643937370678L;
+	private static final long serialVersionUID = -1177020643937370678L;
 
-    /**
-     * Default constructor
-     */
-    public StopCurrentAudioObjectRemoteAction() {
-    	super("stop");
-    }
+	private CustomAbstractAction stopAction;
 
-    @Override
-    public String runCommand(List<String> parameters) {
-    	callAction(StopCurrentAudioObjectAction.class);
-    	return "OK";
-    }
+	/**
+	 * @param stopAction
+	 */
+	public void setStopAction(final CustomAbstractAction stopAction) {
+		this.stopAction = stopAction;
+	}
+
+	/**
+	 * Default constructor
+	 */
+	public StopCurrentAudioObjectRemoteAction() {
+		super("stop");
+	}
+
+	@Override
+	public String runCommand(final List<String> parameters) {
+		callAction(stopAction);
+		return "OK";
+	}
 }

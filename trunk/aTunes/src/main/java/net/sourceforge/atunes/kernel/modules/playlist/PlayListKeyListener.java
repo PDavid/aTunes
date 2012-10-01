@@ -42,17 +42,10 @@ public final class PlayListKeyListener extends KeyAdapter {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // FIX: ENTER key event is also fired from "PlayAction" which is associated to Play menu item
-        // If user presses enter -> Play selected song
-        //		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-        //			controller.playSelectedAudioObject();
-        //		}
-
+        // FIX: ENTER key event can't be used as it's also fired from "PlayAction" which is associated to Play menu item
         // If user presses SPACE -> Pause actually playing song
         if (e.getKeyChar() == KeyEvent.VK_SPACE) {
-        	playerHandler.playCurrentAudioObject(true);
+        	playerHandler.resumeOrPauseCurrentAudioObject();
         }
-
     }
-
 }

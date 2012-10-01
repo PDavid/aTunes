@@ -85,7 +85,7 @@ public final class NavigationTableMouseListener extends MouseAdapter {
                 int[] selRow = navigationTable.getSelectedRows();
                 List<IAudioObject> songs = ((NavigationTableModel) navigationTable.getModel()).getAudioObjectsAt(selRow);
                 if (songs != null && songs.size() >= 1) {
-                	Context.getBean(IPlayListHandler.class).addToPlayList(songs);
+                	Context.getBean(IPlayListHandler.class).addToVisiblePlayList(songs);
                 }
             }
         }

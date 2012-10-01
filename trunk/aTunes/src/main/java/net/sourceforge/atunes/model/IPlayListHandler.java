@@ -24,7 +24,7 @@ import java.util.List;
 
 
 /**
- * Responsible of managing playlists
+ * Responsible of managing play lists
  * @author alex
  *
  */
@@ -93,38 +93,48 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public IAudioObject getCurrentAudioObjectFromCurrentPlayList();
 
 	/**
-	 * Returns visible play list or active play list. Can return null while
+	 * Returns active play list. Can return null while
 	 * application starts as there is no play list added yet
-	 * 
-	 * @param visible
-	 * @return
+	 * @return active play list
 	 */
-	public IPlayList getCurrentPlayList(boolean visible);
+	public IPlayList getActivePlayList();
 
 	/**
-	 * Adds audio objects to play list at the end
+	 * Returns visible play list. Can return null while
+	 * application starts as there is no play list added yet
+	 * @return visible play list
+	 */
+	public IPlayList getVisiblePlayList();
+
+	/**
+	 * Adds audio objects to visible play list at the end
 	 * 
 	 * @param audioObjects
 	 *            the audio objects
 	 */
-	public void addToPlayList(List<? extends IAudioObject> audioObjects);
+	public void addToVisiblePlayList(List<? extends IAudioObject> audioObjects);
 
 	/**
-	 * Adds audio objects to play list at given location
-	 * 
+	 * Adds audio objects to visible play list at given location
 	 * @param location
-	 *            the index of playlist where add audio objects
 	 * @param audioObjects
 	 *            the audio objects
-	 * @param visible
 	 */
-	public void addToPlayList(int location, List<? extends IAudioObject> audioObjects, boolean visible);
+	public void addToVisiblePlayList(int location, List<? extends IAudioObject> audioObjects);
 
 	/**
-	 * Adds audio objects to active play list
+	 * Adds audio objects to active play list at the end
 	 * @param audioObjects
 	 */
 	public void addToActivePlayList(List<? extends IAudioObject> audioObjects);
+
+	/**
+	 * Adds audio objects to active play list at the given location
+	 * @param location
+	 * @param audioObjects
+	 *            the audio objects
+	 */
+	public void addToActivePlayList(int location, List<? extends IAudioObject> audioObjects);
 
 	/**
 	 * Removes all audio objects from visible play list.
@@ -202,7 +212,7 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public IAudioObject getPreviousAudioObject();
 
 	/**
-	 * Returns the index of an audio object in a playlist.
+	 * Returns the index of an audio object in a play list.
 	 * 
 	 * @param aObject
 	 *            The audio object you need the index of
@@ -212,7 +222,7 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public int getIndexOfAudioObject(IAudioObject aObject);
 
 	/**
-	 * Returns the audio object at the given index in the playlist.
+	 * Returns the audio object at the given index in the play list.
 	 * 
 	 * @param index
 	 *            The index of the audio object
@@ -246,7 +256,7 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public boolean isCurrentVisibleRowPlaying(int row);
 
 	/**
-	 * Returns the index of the current audio object in visible playlist
+	 * Returns the index of the current audio object in visible play list
 	 * @return
 	 */
 	public int getCurrentAudioObjectIndexInVisiblePlayList();
@@ -274,7 +284,7 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public List<IAudioObject> getPlayListContent(int index);
 
 	/**
-	 * Close current playlist
+	 * Close current play list
 	 */
 	public void closeCurrentPlaylist();
 
@@ -300,7 +310,7 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public void moveDown();
 
 	/**
-	 * Move selection botton
+	 * Move selection bottom
 	 */
 	public void moveToBottom();
 

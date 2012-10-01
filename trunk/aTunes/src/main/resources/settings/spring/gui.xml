@@ -39,7 +39,7 @@
 	
 	<bean id="playListPopupMenu" class="net.sourceforge.atunes.gui.views.menus.PlayListPopupMenu" init-method="initialize"/>
 	
-	<bean id="playListMenuFiller" class="net.sourceforge.atunes.gui.views.menus.PlayListMenuFiller"/>
+	<bean id="playListMenuFiller" class="net.sourceforge.atunes.gui.views.menus.PlayListMenuFiller" scope="prototype"/>
 	
 	<bean id="contextPanelsContainer" class="net.sourceforge.atunes.gui.views.panels.ContextPanelContainer" init-method="initialize"/>
 	

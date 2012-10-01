@@ -111,7 +111,7 @@ public class AddToPlayListRemoteAction extends RemoteAction {
 		if(playNow) {
 			playNowAction.playNow(file);
 		} else {
-			playListHandler.addToPlayList(Collections.singletonList(file));
+			playListHandler.addToVisiblePlayList(Collections.singletonList(file));
 		}
 	}
 }

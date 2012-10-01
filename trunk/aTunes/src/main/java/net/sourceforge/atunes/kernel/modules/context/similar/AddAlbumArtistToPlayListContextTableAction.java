@@ -69,7 +69,7 @@ final class AddAlbumArtistToPlayListContextTableAction extends ContextTableActio
     	dialog.showDialog();
     	IAlbum album = dialog.getAlbum();
     	if (album != null) {
-    		Context.getBean(IPlayListHandler.class).addToPlayList(album.getAudioObjects());
+    		Context.getBean(IPlayListHandler.class).addToVisiblePlayList(album.getAudioObjects());
     	}
     }
 }

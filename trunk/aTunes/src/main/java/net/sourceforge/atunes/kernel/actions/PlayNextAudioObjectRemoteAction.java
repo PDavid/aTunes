@@ -22,20 +22,34 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
+/**
+ * Action to remote call next audio object
+ * @author alex
+ *
+ */
 public class PlayNextAudioObjectRemoteAction extends RemoteAction {
 
-    private static final long serialVersionUID = 2012440550238196002L;
+	private static final long serialVersionUID = 2012440550238196002L;
 
-    /**
-     * Default constructor
-     */
-    public PlayNextAudioObjectRemoteAction() {
-    	super("next");
-    }
-    
-    @Override
-    public String runCommand(List<String> parameters) {
-    	callAction(PlayNextAudioObjectAction.class);
-    	return "OK";
-    }
+	private CustomAbstractAction nextAction;
+
+	/**
+	 * @param nextAction
+	 */
+	public void setNextAction(final CustomAbstractAction nextAction) {
+		this.nextAction = nextAction;
+	}
+
+	/**
+	 * Default constructor
+	 */
+	public PlayNextAudioObjectRemoteAction() {
+		super("next");
+	}
+
+	@Override
+	public String runCommand(final List<String> parameters) {
+		callAction(nextAction);
+		return "OK";
+	}
 }

@@ -22,20 +22,34 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
+/**
+ * Remote action to show OSD
+ * @author alex
+ *
+ */
 public class ShowOSDRemoteAction extends RemoteAction {
 
-    private static final long serialVersionUID = 646318992035897920L;
+	private static final long serialVersionUID = 646318992035897920L;
 
-    /**
-     * Default constructor
-     */
-    public ShowOSDRemoteAction() {
-    	super("showOSD");
+	private CustomAbstractAction showOSDAction;
+
+	/**
+	 * @param showOSDAction
+	 */
+	public void setShowOSDAction(final CustomAbstractAction showOSDAction) {
+		this.showOSDAction = showOSDAction;
 	}
-    
-    @Override
-    public String runCommand(List<String> parameters) {
-    	callAction(ShowOSDAction.class);
-    	return "OK";
-    }
+
+	/**
+	 * Default constructor
+	 */
+	public ShowOSDRemoteAction() {
+		super("showOSD");
+	}
+
+	@Override
+	public String runCommand(final List<String> parameters) {
+		callAction(showOSDAction);
+		return "OK";
+	}
 }

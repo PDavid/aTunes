@@ -97,14 +97,14 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
 	 */
 	private List<IAudioObject> getAudioObjectsToShow(IAudioObject current) {
         List<IAudioObject> objects = new ArrayList<IAudioObject>(6);
-        objects.add(playListHandler.getCurrentPlayList(false).getPreviousAudioObject(2));
-        objects.add(playListHandler.getCurrentPlayList(false).getPreviousAudioObject(1));
+        objects.add(playListHandler.getActivePlayList().getPreviousAudioObject(2));
+        objects.add(playListHandler.getActivePlayList().getPreviousAudioObject(1));
         objects.add(current);
-        objects.add(playListHandler.getCurrentPlayList(false).getNextAudioObject(1));
-        objects.add(playListHandler.getCurrentPlayList(false).getNextAudioObject(2));
+        objects.add(playListHandler.getActivePlayList().getNextAudioObject(1));
+        objects.add(playListHandler.getActivePlayList().getNextAudioObject(2));
         
         // This object is not shown, but image is prefetched
-        objects.add(playListHandler.getCurrentPlayList(false).getNextAudioObject(3));
+        objects.add(playListHandler.getActivePlayList().getNextAudioObject(3));
         return objects;
 	}
 	

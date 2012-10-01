@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.context.youtube;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.model.IDesktop;
@@ -33,9 +32,12 @@ final class OpenYoutubeVideoAction extends ContextTableAction<IVideoEntry> {
 	 * 
 	 */
 	private static final long serialVersionUID = -7758596564970276630L;
+	
+	private IPlayerHandler playerHandler;
 
-	OpenYoutubeVideoAction(String name, ContextTable table, IDesktop desktop) {
+	OpenYoutubeVideoAction(String name, ContextTable table, IDesktop desktop, IPlayerHandler playerHandler) {
 		super(name, table, desktop);
+		this.playerHandler = playerHandler;
 	}
 
 	@Override
@@ -43,8 +45,8 @@ final class OpenYoutubeVideoAction extends ContextTableAction<IVideoEntry> {
 	     //open youtube url
 		getDesktop().openURL(entry.getUrl());
 	    // When playing a video in web browser automatically pause current song
-	    if (Context.getBean(IPlayerHandler.class).isEnginePlaying()) {
-	        Context.getBean(IPlayerHandler.class).playCurrentAudioObject(true);
+	    if (playerHandler.isEnginePlaying()) {
+	        playerHandler.resumeOrPauseCurrentAudioObject();
 	    }
 	}
 

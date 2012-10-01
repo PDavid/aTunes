@@ -22,20 +22,34 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
+/**
+ * Remote action to call play
+ * @author alex
+ *
+ */
 public class PlayRemoteAction extends RemoteAction {
 
-    private static final long serialVersionUID = -1122746023245126869L;
+	private static final long serialVersionUID = -1122746023245126869L;
 
-    /**
-     * Default constructor
-     */
-    public PlayRemoteAction() {
-        super("play");
-    }
-    
-    @Override
-    public String runCommand(List<String> parameters) {
-    	callAction(PlayAction.class);
-    	return "OK";
-    }
+	private CustomAbstractAction playAction;
+
+	/**
+	 * @param playAction
+	 */
+	public void setPlayAction(final CustomAbstractAction playAction) {
+		this.playAction = playAction;
+	}
+
+	/**
+	 * Default constructor
+	 */
+	public PlayRemoteAction() {
+		super("play");
+	}
+
+	@Override
+	public String runCommand(final List<String> parameters) {
+		callAction(playAction);
+		return "OK";
+	}
 }

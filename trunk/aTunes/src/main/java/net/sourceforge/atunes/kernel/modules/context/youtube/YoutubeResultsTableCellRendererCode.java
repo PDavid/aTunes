@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -39,14 +40,17 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<IV
 	
 	private IDesktop desktop;
 	
+	private IPlayerHandler playerHandler;
+	
 	/**
-	 * Renderer for youtube results 
 	 * @param lookAndFeel
 	 * @param desktop
+	 * @param playerHandler
 	 */
-	public YoutubeResultsTableCellRendererCode(ILookAndFeel lookAndFeel, IDesktop desktop) {
+	public YoutubeResultsTableCellRendererCode(ILookAndFeel lookAndFeel, IDesktop desktop, IPlayerHandler playerHandler) {
 		super(lookAndFeel);
 		this.desktop = desktop;
+		this.playerHandler = playerHandler;
 	}
 
 	@Override
@@ -63,7 +67,7 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<IV
 	@Override
 	public List<ContextTableAction<IVideoEntry>> getActions() {
 		List<ContextTableAction<IVideoEntry>> actions = new ArrayList<ContextTableAction<IVideoEntry>>();
-		actions.add(new OpenYoutubeVideoAction(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE"), getTable(), desktop));
+		actions.add(new OpenYoutubeVideoAction(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE"), getTable(), desktop, playerHandler));
 		
 		// DOWNLOAD NOT WORKING AS API HAS CHANGED AND MP4 FILES ARE NOT AVAILABLE
 		// SEE BUG 3405858

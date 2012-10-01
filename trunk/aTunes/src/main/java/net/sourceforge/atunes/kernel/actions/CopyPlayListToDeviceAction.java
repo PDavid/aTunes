@@ -74,6 +74,6 @@ public class CopyPlayListToDeviceAction extends CustomAbstractAction {
         // Copy only LocalAudioObject objects
     	deviceHandler.copyFilesToDevice(
     			playListObjectFilter.getObjects(
-    					playListHandler.getCurrentPlayList(true)));
+    					playListHandler.getVisiblePlayList()));
     }
 }

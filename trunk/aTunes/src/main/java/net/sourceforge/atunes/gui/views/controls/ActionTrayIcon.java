@@ -38,70 +38,73 @@ import net.sourceforge.atunes.gui.GuiUtils;
  */
 public class ActionTrayIcon extends TrayIcon {
 
-    /**
-     * @param image
-     * @param tooltip
-     * @param popup
-     */
-    public ActionTrayIcon(Image image, String tooltip, PopupMenu popup, Action action) {
-        super(image, tooltip, popup);
-        addListener(action);
-    }
+	/**
+	 * @param image
+	 * @param tooltip
+	 * @param popup
+	 * @param action
+	 */
+	public ActionTrayIcon(final Image image, final String tooltip, final PopupMenu popup, final Action action) {
+		super(image, tooltip, popup);
+		addListener(action);
+	}
 
-    /**
-     * @param image
-     * @param tooltip
-     */
-    public ActionTrayIcon(Image image, String tooltip, Action action) {
-        super(image, tooltip);
-        addListener(action);
-    }
+	/**
+	 * @param image
+	 * @param tooltip
+	 * @param action
+	 */
+	public ActionTrayIcon(final Image image, final String tooltip, final Action action) {
+		super(image, tooltip);
+		addListener(action);
+	}
 
-    /**
-     * @param image
-     */
-    public ActionTrayIcon(Image image, Action action) {
-        super(image);
-        addListener(action);
-    }
+	/**
+	 * @param image
+	 * @param action
+	 */
+	public ActionTrayIcon(final Image image, final Action action) {
+		super(image);
+		addListener(action);
+	}
 
-    /**
-     * Binds mouse listener to action
-     * 
-     * @param action
-     */
-    private void addListener(Action action) {
-        addMouseListener(new ActionMouseListener(action));
-    }
+	/**
+	 * Binds mouse listener to action
+	 * 
+	 * @param action
+	 */
+	private void addListener(final Action action) {
+		addMouseListener(new ActionMouseListener(action));
+	}
 
-    /**
-     * Mouse adapter to fire actions
-     * 
-     * @author fleax
-     * 
-     */
-    private static class ActionMouseListener extends MouseAdapter {
+	/**
+	 * Mouse adapter to fire actions
+	 * 
+	 * @author fleax
+	 * 
+	 */
+	private static class ActionMouseListener extends MouseAdapter {
 
-        /**
-         * Action to perform
-         */
-        private Action action;
+		/**
+		 * Action to perform
+		 */
+		private final Action action;
 
-        /**
-         * Creates a new instance
-         * 
-         * @param action
-         */
-        public ActionMouseListener(Action action) {
-            this.action = action;
-        }
+		/**
+		 * Creates a new instance
+		 * 
+		 * @param action
+		 */
+		public ActionMouseListener(final Action action) {
+			this.action = action;
+		}
 
-        
-        @Override
-        public void mousePressed(MouseEvent e) {
-            if (GuiUtils.isPrimaryMouseButton(e)) {
-                action.actionPerformed(null);
-            }
-        }
-    }
+
+		@Override
+		public void mousePressed(final MouseEvent e) {
+			if (GuiUtils.isPrimaryMouseButton(e)) {
+				action.actionPerformed(null);
+			}
+		}
+	}
 }

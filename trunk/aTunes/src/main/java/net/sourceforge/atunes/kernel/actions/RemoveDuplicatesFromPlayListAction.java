@@ -49,7 +49,7 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
 			Callable<List<Integer>> {
 		@Override
 		public List<Integer> call() {
-			IPlayList playList = playListHandler.getCurrentPlayList(true);
+			IPlayList playList = playListHandler.getVisiblePlayList();
 			List<IAudioObject> audioObjectsToCheck = new ArrayList<IAudioObject>();
 			for (int i = 0; i < playList.size(); i++) {
 				audioObjectsToCheck.add(playList.get(i));

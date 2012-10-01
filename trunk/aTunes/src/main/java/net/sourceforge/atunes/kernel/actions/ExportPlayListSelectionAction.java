@@ -74,6 +74,6 @@ public class ExportPlayListSelectionAction extends CustomAbstractAction {
 	
 	@Override
 	public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-		return !playListHandler.getCurrentPlayList(true).isEmpty();
+		return !playListHandler.getVisiblePlayList().isEmpty();
 	}
 }

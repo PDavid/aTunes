@@ -24,72 +24,78 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 
+import net.sourceforge.atunes.gui.images.CachedIconFactory;
 import net.sourceforge.atunes.gui.images.NextTrayImageIcon;
 import net.sourceforge.atunes.gui.images.PauseTrayImageIcon;
 import net.sourceforge.atunes.gui.images.PlayTrayImageIcon;
 import net.sourceforge.atunes.gui.images.PreviousTrayImageIcon;
 import net.sourceforge.atunes.gui.images.StopTrayImageIcon;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IStateUI;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+/**
+ * Return icons for tray icons
+ * @author alex
+ *
+ */
+public class CommonPlayerTrayIconsHandler implements IPlayerTrayIconsHandler {
 
-public class CommonPlayerTrayIconsHandler implements IPlayerTrayIconsHandler, ApplicationContextAware {
-	
 	private IStateUI stateUI;
-	
-	private ApplicationContext context;
-	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
-	
-    /**
-     * @param stateUI
-     */
-    public void setStateUI(IStateUI stateUI) {
+
+	/**
+	 * @param stateUI
+	 */
+	public void setStateUI(final IStateUI stateUI) {
 		this.stateUI = stateUI;
 	}
-    
+
 	@Override
-	public Image getNextIcon(Dimension iconSize) {
-    	Color color = stateUI.getTrayPlayerIconsColor().getColor();
-    	NextTrayImageIcon nextTrayIcon = context.getBean(NextTrayImageIcon.class);
-    	nextTrayIcon.setSize(iconSize);
-    	return nextTrayIcon.getIcon(color).getImage();
+	public Image getNextIcon(final Dimension iconSize) {
+		NextTrayImageIcon nextTrayIcon = beanFactory.getBean(NextTrayImageIcon.class);
+		nextTrayIcon.setSize(iconSize);
+		return getIcon(nextTrayIcon);
 	}
-	
+
 	@Override
-	public Image getPauseIcon(Dimension iconSize) {
-    	Color color = stateUI.getTrayPlayerIconsColor().getColor();
-    	PauseTrayImageIcon pauseTrayIcon = context.getBean(PauseTrayImageIcon.class);
-    	pauseTrayIcon.setSize(iconSize);
-    	return pauseTrayIcon.getIcon(color).getImage();
+	public Image getPauseIcon(final Dimension iconSize) {
+		PauseTrayImageIcon pauseTrayIcon = beanFactory.getBean(PauseTrayImageIcon.class);
+		pauseTrayIcon.setSize(iconSize);
+		return getIcon(pauseTrayIcon);
 	}
-	
+
 	@Override
-	public Image getPlayIcon(Dimension iconSize) {
-    	Color color = stateUI.getTrayPlayerIconsColor().getColor();
-    	PlayTrayImageIcon playTrayIcon = context.getBean(PlayTrayImageIcon.class);
-    	playTrayIcon.setSize(iconSize);
-    	return playTrayIcon.getIcon(color).getImage();
+	public Image getPlayIcon(final Dimension iconSize) {
+		PlayTrayImageIcon playTrayIcon = beanFactory.getBean(PlayTrayImageIcon.class);
+		playTrayIcon.setSize(iconSize);
+		return getIcon(playTrayIcon);
 	}
-	
+
 	@Override
-	public Image getPreviousIcon(Dimension iconSize) {
-    	Color color = stateUI.getTrayPlayerIconsColor().getColor();
-    	PreviousTrayImageIcon previousTrayIcon = context.getBean(PreviousTrayImageIcon.class);
-    	previousTrayIcon.setSize(iconSize);
-    	return previousTrayIcon.getIcon(color).getImage();
+	public Image getPreviousIcon(final Dimension iconSize) {
+		PreviousTrayImageIcon previousTrayIcon = beanFactory.getBean(PreviousTrayImageIcon.class);
+		previousTrayIcon.setSize(iconSize);
+		return getIcon(previousTrayIcon);
 	}
-	
+
 	@Override
-	public Image getStopIcon(Dimension iconSize) {
-    	Color color = stateUI.getTrayPlayerIconsColor().getColor();
-    	StopTrayImageIcon stopTrayIcon = context.getBean(StopTrayImageIcon.class);
-    	stopTrayIcon.setSize(iconSize);
-    	return stopTrayIcon.getIcon(color).getImage();
+	public Image getStopIcon(final Dimension iconSize) {
+		StopTrayImageIcon stopTrayIcon = beanFactory.getBean(StopTrayImageIcon.class);
+		stopTrayIcon.setSize(iconSize);
+		return getIcon(stopTrayIcon);
+	}
+
+	private Image getIcon(final CachedIconFactory iconFactory) {
+		Color color = stateUI.getTrayPlayerIconsColor().getColor();
+		return iconFactory.getIcon(color).getImage();
 	}
 }

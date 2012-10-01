@@ -60,7 +60,7 @@ public final class PlayerApi {
      * Plays or pauses current object
      */
     public static void play() {
-        Context.getBean(IPlayerHandler.class).playCurrentAudioObject(true);
+        Context.getBean(IPlayerHandler.class).resumeOrPauseCurrentAudioObject();
     }
 
     /**

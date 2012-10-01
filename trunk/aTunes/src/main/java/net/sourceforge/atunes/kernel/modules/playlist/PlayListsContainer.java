@@ -172,17 +172,20 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	}
 
 	/**
-	 * Returns visible or active play list
-	 * @param visible
+	 * Returns visible play list
 	 */
 	@Override
-	public IPlayList getCurrentPlayList(boolean visible) {
+	public IPlayList getVisiblePlayList() {
         if (getPlayListsCount() == 0) {
             return new VoidPlayList();
         }
-
-        if (visible) {
-            return playLists.get(visiblePlayListIndex);
+        return playLists.get(visiblePlayListIndex);
+	}
+	
+	@Override
+	public IPlayList getActivePlayList() {
+        if (getPlayListsCount() == 0) {
+            return new VoidPlayList();
         }
         return playLists.get(activePlayListIndex);
 	}
@@ -229,7 +232,7 @@ public final class PlayListsContainer implements IPlayListsContainer {
         } else {
             // Store original play list without filter
             if (nonFilteredPlayList == null) {
-				nonFilteredPlayList = getCurrentPlayList(true).copyPlayList();
+				nonFilteredPlayList = getVisiblePlayList().copyPlayList();
             }
 
             // Create a new play list by filtering elements

@@ -76,12 +76,21 @@ public interface IPlayerEngine {
 	boolean supportsCapability(PlayerEngineCapability capability);
 
 	/**
-	 * Starts playing current audio object from play list
-	 * 
-	 * @param buttonPressed
-	 *            TODO: Add more javadoc
+	 * Starts playing or pauses current audio object from play list
 	 */
-	void playCurrentAudioObject(boolean buttonPressed);
+	void playCurrentAudioObject();
+
+	/**
+	 * Starts playing audio object in given position of visible play list
+	 * @param position
+	 */
+	void playAudioObjectInPlayListPositionOfVisiblePlayList(int position);
+
+	/**
+	 * Starts playing audio object in active play list
+	 * @param position
+	 */
+	void playAudioObjectInPlayListPositionOfActivePlayList(int position);
 
 	/**
 	 * Stops playing current audio object
@@ -284,4 +293,10 @@ public interface IPlayerEngine {
 	 */
 	String getEngineName();
 
+	/**
+	 * Checks if play back is paused.
+	 * 
+	 * @return true, if is paused
+	 */
+	boolean isEnginePaused();
 }

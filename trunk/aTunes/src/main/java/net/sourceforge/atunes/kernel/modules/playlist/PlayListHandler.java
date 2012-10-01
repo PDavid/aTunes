@@ -51,11 +51,11 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PlayListHandler extends AbstractHandler implements IPlayListHandler {
 
-    /** Play lists stored */
-    private IListOfPlayLists playListsRetrievedFromCache = new ListOfPlayLists();
-    
-    /** The play list tab controller. */
-    private PlayListTabController playListTabController;
+	/** Play lists stored */
+	private IListOfPlayLists playListsRetrievedFromCache = new ListOfPlayLists();
+
+	/** The play list tab controller. */
+	private PlayListTabController playListTabController;
 
 	/**
 	 * Play list Controller
@@ -63,543 +63,552 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private PlayListController playListController;
 
 	private IPlayerHandler playerHandler;
-	
+
 	private PlayListEventListeners playListEventListeners;
 
 	private IFilter playListFilter;
-	
+
 	private IFilterHandler filterHandler;
-	
+
 	private PlayListNameCreator playListNameCreator;
-	
+
 	private PlayListPersistor playListPersistor;
-	
+
 	private ListOfPlayListsCreator listOfPlayListsCreator;
-	
+
 	private IPlayListsContainer playListsContainer;
-	
+
 	private IStatePlayer statePlayer;
-	
-    private IStatePlaylist statePlaylist;
-    
-    private PlayListCreator playListCreator;
-    
-    private PlayListInformationInStatusBar playListInformationInStatusBar;
-    
-    private IContextHandler contextHandler;
-    
-    /**
-     * @param contextHandler
-     */
-    public void setContextHandler(IContextHandler contextHandler) {
+
+	private IStatePlaylist statePlaylist;
+
+	private PlayListCreator playListCreator;
+
+	private PlayListInformationInStatusBar playListInformationInStatusBar;
+
+	private IContextHandler contextHandler;
+
+	/**
+	 * @param contextHandler
+	 */
+	public void setContextHandler(final IContextHandler contextHandler) {
 		this.contextHandler = contextHandler;
 	}
-    
-    /**
-     * @param playListInformationInStatusBar
-     */
-    public void setPlayListInformationInStatusBar(PlayListInformationInStatusBar playListInformationInStatusBar) {
+
+	/**
+	 * @param playListInformationInStatusBar
+	 */
+	public void setPlayListInformationInStatusBar(final PlayListInformationInStatusBar playListInformationInStatusBar) {
 		this.playListInformationInStatusBar = playListInformationInStatusBar;
 	}
-    
-    /**
-     * @param playListCreator
-     */
-    public void setPlayListCreator(PlayListCreator playListCreator) {
+
+	/**
+	 * @param playListCreator
+	 */
+	public void setPlayListCreator(final PlayListCreator playListCreator) {
 		this.playListCreator = playListCreator;
 	}
-    
-    /**
-     * @param statePlaylist
-     */
-    public void setStatePlaylist(IStatePlaylist statePlaylist) {
+
+	/**
+	 * @param statePlaylist
+	 */
+	public void setStatePlaylist(final IStatePlaylist statePlaylist) {
 		this.statePlaylist = statePlaylist;
 	}
 
 	/**
 	 * @param statePlayer
 	 */
-	public void setStatePlayer(IStatePlayer statePlayer) {
+	public void setStatePlayer(final IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;
 	}
-	
+
 	/**
 	 * @param playListsContainer
 	 */
-	public void setPlayListsContainer(IPlayListsContainer playListsContainer) {
+	public void setPlayListsContainer(final IPlayListsContainer playListsContainer) {
 		this.playListsContainer = playListsContainer;
 	}
-	
+
 	/**
 	 * @param playListTabController
 	 */
-	public void setPlayListTabController(PlayListTabController playListTabController) {
+	public void setPlayListTabController(final PlayListTabController playListTabController) {
 		this.playListTabController = playListTabController;
 	}
-	
+
 	/**
 	 * @param playListController
 	 */
-	public void setPlayListController(PlayListController playListController) {
+	public void setPlayListController(final PlayListController playListController) {
 		this.playListController = playListController;
 	}
-	
+
 	/**
 	 * @param listOfPlayListsCreator
 	 */
-	public void setListOfPlayListsCreator(ListOfPlayListsCreator listOfPlayListsCreator) {
+	public void setListOfPlayListsCreator(final ListOfPlayListsCreator listOfPlayListsCreator) {
 		this.listOfPlayListsCreator = listOfPlayListsCreator;
 	}
-	
+
 	/**
 	 * @param playListPersistor
 	 */
-	public void setPlayListPersistor(PlayListPersistor playListPersistor) {
+	public void setPlayListPersistor(final PlayListPersistor playListPersistor) {
 		this.playListPersistor = playListPersistor;
 	}
-	
+
 	/**
 	 * @param playListNameCreator
 	 */
-	public void setPlayListNameCreator(PlayListNameCreator playListNameCreator) {
+	public void setPlayListNameCreator(final PlayListNameCreator playListNameCreator) {
 		this.playListNameCreator = playListNameCreator;
 	}
-	
+
 	/**
 	 * @param filterHandler
 	 */
-	public void setFilterHandler(IFilterHandler filterHandler) {
+	public void setFilterHandler(final IFilterHandler filterHandler) {
 		this.filterHandler = filterHandler;
 	}
-	
+
 	/**
 	 * @param playListFilter
 	 */
-	public void setPlayListFilter(IFilter playListFilter) {
+	public void setPlayListFilter(final IFilter playListFilter) {
 		this.playListFilter = playListFilter;
 	}
 
 	/**
 	 * @param playListsRetrievedFromCache
 	 */
-	public void setPlayListsRetrievedFromCache(IListOfPlayLists playListsRetrievedFromCache) {
+	public void setPlayListsRetrievedFromCache(final IListOfPlayLists playListsRetrievedFromCache) {
 		this.playListsRetrievedFromCache = playListsRetrievedFromCache;
 	}
-	
-    /**
-     * @param playListEventListeners
-     */
-    public void setPlayListEventListeners(PlayListEventListeners playListEventListeners) {
+
+	/**
+	 * @param playListEventListeners
+	 */
+	public void setPlayListEventListeners(final PlayListEventListeners playListEventListeners) {
 		this.playListEventListeners = playListEventListeners;
 	}
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
+
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
-    
-    @Override
-    protected void initHandler() {
-        // Add audio file removed listener
-        getBean(IRepositoryHandler.class).addAudioFilesRemovedListener(this);
-    }
-    
-    @Override
-    public void applicationStarted() {
-    }
-    
-    @Override
-    public void allHandlersInitialized() {
-        // Create drag and drop listener
-    	playListController.enableDragAndDrop();
-    }
 
-    /**
-     * Sets visible play list as active
-     */
-    @Override
-    public void setVisiblePlayListActive() {
-    	playListsContainer.setVisiblePlayListActive();
-    }
+	@Override
+	protected void initHandler() {
+		// Add audio file removed listener
+		getBean(IRepositoryHandler.class).addAudioFilesRemovedListener(this);
+	}
 
-    @Override
+	@Override
+	public void applicationStarted() {
+	}
+
+	@Override
+	public void allHandlersInitialized() {
+		// Create drag and drop listener
+		playListController.enableDragAndDrop();
+	}
+
+	/**
+	 * Sets visible play list as active
+	 */
+	@Override
+	public void setVisiblePlayListActive() {
+		playListsContainer.setVisiblePlayListActive();
+	}
+
+	@Override
 	public int getPlayListCount() {
-        return this.playListsContainer.getPlayListsCount();
-    }
+		return this.playListsContainer.getPlayListsCount();
+	}
 
-    @Override
-	public void newPlayList(List<IAudioObject> audioObjects) {
-        newPlayList(playListNameCreator.getNameForPlaylist(playListsContainer, null), audioObjects);
-    }
+	@Override
+	public void newPlayList(final List<IAudioObject> audioObjects) {
+		newPlayList(playListNameCreator.getNameForPlaylist(playListsContainer, null), audioObjects);
+	}
 
-    @Override
-	public void newPlayList(String nameOfNewPlayList, List<? extends IAudioObject> audioObjects) {
-        addNewPlayList(nameOfNewPlayList, playListCreator.getNewPlayList(nameOfNewPlayList, audioObjects));
-        playListsChanged();
-    }
-    
-    private void addNewPlayList(String name, IPlayList playList) {
-        playListsContainer.addPlayList(playList);
-        playListTabController.newPlayList(name);    	
-    }
+	@Override
+	public void newPlayList(final String nameOfNewPlayList, final List<? extends IAudioObject> audioObjects) {
+		addNewPlayList(nameOfNewPlayList, playListCreator.getNewPlayList(nameOfNewPlayList, audioObjects));
+		playListsChanged();
+	}
 
-    @Override
-	public void renameCurrentVisiblePlayList(String newName) {
-        if (newName != null) {
-            int index = playListTabController.getSelectedPlayListIndex();
-            playListsContainer.getPlayListAt(index).setName(newName);
-            playListTabController.renamePlayList(index, newName);
-        }
-    }
-    
-    @Override
-    public String getCurrentVisiblePlayListName() {
-        return playListTabController.getPlayListName(playListTabController.getSelectedPlayListIndex());
-    }
-    
-    @Override
-	public void switchToPlaylist(int index) {
-        // If play list is the same, do nothing, except if this method is called when deleting a play list
-        if (index == playListsContainer.getVisiblePlayListIndex()) {
-            return;
-        }
+	private void addNewPlayList(final String name, final IPlayList playList) {
+		playListsContainer.addPlayList(playList);
+		playListTabController.newPlayList(name);
+	}
 
-        //don't stop player if user has setup the option
-        if (statePlaylist.isStopPlayerOnPlayListSwitch()) {
-            playerHandler.stopCurrentAudioObject(false);
-        }
+	@Override
+	public void renameCurrentVisiblePlayList(final String newName) {
+		if (newName != null) {
+			int index = playListTabController.getSelectedPlayListIndex();
+			playListsContainer.getPlayListAt(index).setName(newName);
+			playListTabController.renamePlayList(index, newName);
+		}
+	}
 
-        // Remove filter from current play list before change play list
-        setFilter(null);
+	@Override
+	public String getCurrentVisiblePlayListName() {
+		return playListTabController.getPlayListName(playListTabController.getSelectedPlayListIndex());
+	}
 
-        playListsContainer.setVisiblePlayListIndex(index);
+	@Override
+	public void switchToPlaylist(final int index) {
+		// If play list is the same, do nothing, except if this method is called when deleting a play list
+		if (index == playListsContainer.getVisiblePlayListIndex()) {
+			return;
+		}
 
-        IPlayList newSelectedPlayList = playListsContainer.getPlayListAt(index);
+		//don't stop player if user has setup the option
+		if (statePlaylist.isStopPlayerOnPlayListSwitch()) {
+			playerHandler.stopCurrentAudioObject(false);
+		}
 
-        // Set selection interval to none
-        playListController.clearSelection();
+		// Remove filter from current play list before change play list
+		setFilter(null);
 
-        setPlayList(newSelectedPlayList);
-    }
+		playListsContainer.setVisiblePlayListIndex(index);
 
-    /**
-     * Sets the play list.
-     * 
-     * @param playList
-     *            the new play list
-     */
-    void setPlayList(IPlayList playList) {
-    	getBean(SavePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
-    	getBean(SaveM3UPlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
-        getBean(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
-        playListInformationInStatusBar.showPlayListInformation(playList);
+		IPlayList newSelectedPlayList = playListsContainer.getPlayListAt(index);
 
-        // Update table model
-        playListController.setVisiblePlayList(getCurrentPlayList(true));
-        playListController.refreshPlayList();
-        
-        // If playlist is active then perform an auto scroll
-        if (isActivePlayListVisible()) {
-            playListController.scrollPlayList(false);
-        }
-    }
+		// Set selection interval to none
+		playListController.clearSelection();
 
-    @Override
-	public boolean isVisiblePlayList(int index) {
-        return playListsContainer.getVisiblePlayListIndex() == index;
-    }
+		setPlayList(newSelectedPlayList);
+	}
 
-    @Override
+	/**
+	 * Sets the play list.
+	 * 
+	 * @param playList
+	 *            the new play list
+	 */
+	void setPlayList(final IPlayList playList) {
+		getBean(SavePlayListAction.class).setEnabled(!getVisiblePlayList().isEmpty());
+		getBean(SaveM3UPlayListAction.class).setEnabled(!getVisiblePlayList().isEmpty());
+		getBean(ShufflePlayListAction.class).setEnabled(!getVisiblePlayList().isEmpty());
+		playListInformationInStatusBar.showPlayListInformation(playList);
+
+		// Update table model
+		playListController.setVisiblePlayList(getVisiblePlayList());
+		playListController.refreshPlayList();
+
+		// If playlist is active then perform an auto scroll
+		if (isActivePlayListVisible()) {
+			playListController.scrollPlayList(false);
+		}
+	}
+
+	@Override
+	public boolean isVisiblePlayList(final int index) {
+		return playListsContainer.getVisiblePlayListIndex() == index;
+	}
+
+	@Override
 	public IAudioObject getCurrentAudioObjectFromVisiblePlayList() {
-        if (getCurrentPlayList(true) != null) {
-            return getCurrentPlayList(true).getCurrentAudioObject();
-        }
-        return null;
-    }
+		if (getVisiblePlayList() != null) {
+			return getVisiblePlayList().getCurrentAudioObject();
+		}
+		return null;
+	}
 
-    @Override
+	@Override
 	public IAudioObject getCurrentAudioObjectFromCurrentPlayList() {
-        if (getCurrentPlayList(false) != null) {
-            return getCurrentPlayList(false).getCurrentAudioObject();
-        }
-        return null;
-    }
+		if (getActivePlayList() != null) {
+			return getActivePlayList().getCurrentAudioObject();
+		}
+		return null;
+	}
 
-    @Override
-	public IPlayList getCurrentPlayList(boolean visible) {
-    	return playListsContainer.getCurrentPlayList(visible);
-    }
+	@Override
+	public IPlayList getActivePlayList() {
+		return playListsContainer.getActivePlayList();
+	}
 
-    @Override
-	public void addToPlayList(List<? extends IAudioObject> audioObjects) {
-        addToPlayList(getCurrentPlayList(true).size(), audioObjects, true);
-    }
+	@Override
+	public IPlayList getVisiblePlayList() {
+		return playListsContainer.getVisiblePlayList();
+	}
 
-    @Override
-	public void addToPlayList(int location, List<? extends IAudioObject> audioObjects, boolean visible) {
-        // If null or empty, nothing to do
-    	if (CollectionUtils.isEmpty(audioObjects)) {
-            return;
-        }
+	@Override
+	public void addToVisiblePlayList(final List<? extends IAudioObject> audioObjects) {
+		addToPlayList(getVisiblePlayList().size(), audioObjects, getVisiblePlayList());
+	}
 
-        // Get play list
-        IPlayList playList = getCurrentPlayList(visible);
+	@Override
+	public void addToVisiblePlayList(final int location, final List<? extends IAudioObject> audioObjects) {
+		addToPlayList(location, audioObjects, getVisiblePlayList());
+	}
 
-        // If play list is filtered remove filter
-        if (isFiltered()) {
-            setFilter(null);
-        }
+	@Override
+	public void addToActivePlayList(final List<? extends IAudioObject> audioObjects) {
+		addToPlayList(getActivePlayList().size(), audioObjects, getActivePlayList());
+	}
 
-        int newLocation = location;
-        // Add audio objects to play list
-        if (location < 0 || location > playList.size()) {
-            newLocation = playList.size();
-        }
-        playList.add(newLocation, audioObjects);
+	@Override
+	public void addToActivePlayList(final int location, final List<? extends IAudioObject> audioObjects) {
+		addToPlayList(location, audioObjects, getActivePlayList());
+	}
 
-        setSelectedItemAfterAddToPlayList(audioObjects, playList);
+	private void addToPlayList(final int location, final List<? extends IAudioObject> audioObjects, final IPlayList playList) {
+		// If null or empty, nothing to do
+		if (CollectionUtils.isEmpty(audioObjects)) {
+			return;
+		}
 
-        getBean(SavePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
-        getBean(SaveM3UPlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
-        getBean(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
+		// If play list is filtered remove filter
+		if (isFiltered()) {
+			setFilter(null);
+		}
 
-        // Update play list number in status bar
-        playListInformationInStatusBar.showPlayListInformation(playList);
+		int newLocation = location;
+		// Add audio objects to play list
+		if (location < 0 || location > playList.size()) {
+			newLocation = playList.size();
+		}
+		playList.add(newLocation, audioObjects);
 
-        // Update play list table
-        playListController.refreshPlayList();
+		setSelectedItemAfterAddToPlayList(audioObjects, playList);
 
-        Logger.info(StringUtils.getString(audioObjects.size(), " audio objects added to play list"));
-    }
+		getBean(SavePlayListAction.class).setEnabled(!getVisiblePlayList().isEmpty());
+		getBean(SaveM3UPlayListAction.class).setEnabled(!getVisiblePlayList().isEmpty());
+		getBean(ShufflePlayListAction.class).setEnabled(!getVisiblePlayList().isEmpty());
+
+		// Update play list number in status bar
+		playListInformationInStatusBar.showPlayListInformation(playList);
+
+		// Update play list table
+		playListController.refreshPlayList();
+
+		Logger.info(StringUtils.getString(audioObjects.size(), " audio objects added to play list"));
+	}
 
 	/**
 	 * @param audioObjects
 	 * @param playList
 	 */
-	private void setSelectedItemAfterAddToPlayList(List<? extends IAudioObject> audioObjects, IPlayList playList) {
+	private void setSelectedItemAfterAddToPlayList(final List<? extends IAudioObject> audioObjects, final IPlayList playList) {
 		// If active play list was empty, then set audio object as selected for play
-        if (isActivePlayListVisible() && playList.size() == audioObjects.size()) {
-            int selectedAudioObject = 0;
+		if (isActivePlayListVisible() && playList.size() == audioObjects.size()) {
+			int selectedAudioObject = 0;
 
-            // If stopPlayerWhenPlayListClear property is disabled try to locate audio object in play list. If it's not available then stop playing
-            if (!statePlaylist.isStopPlayerOnPlayListClear() && playerHandler.isEnginePlaying()) {
-                int index = playList.indexOf(playerHandler.getAudioObject());
-                if (index != -1) {
-                    selectedAudioObject = index;
-                } else {
-                    playerHandler.stopCurrentAudioObject(false);
-                }
-            } else if (statePlayer.isShuffle()) {
-                // If shuffle enabled, select a random audio object
-                selectedAudioObject = playList.getRandomPosition();
-            }
+			// If stopPlayerWhenPlayListClear property is disabled try to locate audio object in play list. If it's not available then stop playing
+			if (!statePlaylist.isStopPlayerOnPlayListClear() && playerHandler.isEnginePlaying()) {
+				int index = playList.indexOf(playerHandler.getAudioObject());
+				if (index != -1) {
+					selectedAudioObject = index;
+				} else {
+					playerHandler.stopCurrentAudioObject(false);
+				}
+			} else if (statePlayer.isShuffle()) {
+				// If shuffle enabled, select a random audio object
+				selectedAudioObject = playList.getRandomPosition();
+			}
 
-            playListEventListeners.selectedAudioObjectHasChanged(audioObjects.get(selectedAudioObject));
-            playList.setCurrentAudioObjectIndex(selectedAudioObject);
-        }
+			playListEventListeners.selectedAudioObjectHasChanged(audioObjects.get(selectedAudioObject));
+			playList.setCurrentAudioObjectIndex(selectedAudioObject);
+		}
 	}
 
-    @Override
-	public void addToActivePlayList(List<? extends IAudioObject> audioObjects) {
-        IPlayList playList = getCurrentPlayList(false);
-        addToPlayList(playList.getCurrentAudioObjectIndex() + 1, audioObjects, false);
-    }
-
-    @Override
+	@Override
 	public void clearPlayList() {
-    	getBean(PlayListRemover.class).clearPlayList();
-    }
+		getBean(PlayListRemover.class).clearPlayList();
+	}
 
-    /**
-     * Called when play lists needs to be persisted
-     */
-    @Override
-    public void playListsChanged() {
-    	playListPersistor.persistPlayLists(listOfPlayListsCreator.getListOfPlayLists(playListsContainer));
-    }
-
-    @Override
-	public void moveRowTo(int sourceRow, int targetRow) {
-        getCurrentPlayList(true).moveRowTo(sourceRow, targetRow);
-    }
-    
-    @Override
-    public void setSelectionInterval(int start, int end) {
-    	playListController.setSelectionInterval(start, end);
-    }
-    
-    @Override
-	public void removeAudioObjects(int[] rows) {
-    	getBean(PlayListRemover.class).removeAudioObjects(rows);
-    }
+	/**
+	 * Called when play lists needs to be persisted
+	 */
+	@Override
+	public void playListsChanged() {
+		playListPersistor.persistPlayLists(listOfPlayListsCreator.getListOfPlayLists(playListsContainer));
+	}
 
 	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {
-        addToPlaybackHistory(audioObject);
-        playListController.updatePlayList();
-        playListController.scrollPlayList(false);
-        playListsChanged();
+	public void moveRowTo(final int sourceRow, final int targetRow) {
+		getVisiblePlayList().moveRowTo(sourceRow, targetRow);
+	}
+
+	@Override
+	public void setSelectionInterval(final int start, final int end) {
+		playListController.setSelectionInterval(start, end);
+	}
+
+	@Override
+	public void removeAudioObjects(final int[] rows) {
+		getBean(PlayListRemover.class).removeAudioObjects(rows);
+	}
+
+	@Override
+	public void selectedAudioObjectChanged(final IAudioObject audioObject) {
+		addToPlaybackHistory(audioObject);
+		playListController.updatePlayList();
+		playListController.scrollPlayList(false);
+		playListsChanged();
 	};
 
-    @Override
-	public void shuffle() {
-        IPlayList currentPlaylist = getCurrentPlayList(true);
-
-        // If current play list is empty, don't shuffle
-        if (currentPlaylist.isEmpty()) {
-            return;
-        }
-
-        currentPlaylist.shuffle();
-    }
-
-    @Override
-	public boolean isActivePlayListVisible() {
-        return getCurrentPlayList(true) == getCurrentPlayList(false);
-    }
-
-    @Override
-	public boolean isFiltered() {
-        return playListsContainer.isFiltered();
-    }
-
-    @Override
-	public void setFilter(String filter) {
-    	playListsContainer.setFilter(filter);
-    }
-
-    @Override
-	public final void setPositionToPlayInVisiblePlayList(int pos) {
-        getCurrentPlayList(true).setCurrentAudioObjectIndex(pos);
-    }
-
-    @Override
-	public final void resetCurrentPlayList() {
-        getCurrentPlayList(false).reset();
-    }
-
-    @Override
-	public IAudioObject getNextAudioObject() {
-        return getCurrentPlayList(false).moveToNextAudioObject();
-    }
-
-    @Override
-	public IAudioObject getPreviousAudioObject() {
-        return getCurrentPlayList(false).moveToPreviousAudioObject();
-    }
-
-    @Override
-	public int getIndexOfAudioObject(IAudioObject aObject) {
-        return getCurrentPlayList(false).indexOf(aObject);
-    }
-
-    @Override
-	public IAudioObject getAudioObjectAtIndex(int index) {
-        return getCurrentPlayList(false).getNextAudioObject(index);
-    }
-
-    @Override
-	public void changeSelectedAudioObjectToIndex(int index) {
-        playListController.changeSelectedAudioObjectToIndex(index);
-    }
-
-    @Override
-	public List<IAudioObject> getSelectedAudioObjects() {
-        List<IAudioObject> audioObjects = new ArrayList<IAudioObject>();
-        int[] selectedRows = playListController.getSelectedRows();
-        if (selectedRows.length > 0) {
-            for (int element : selectedRows) {
-                IAudioObject file = getCurrentPlayList(true).get(element);
-                if (file != null) {
-                    audioObjects.add(file);
-                }
-            }
-        }
-        return audioObjects;
-    }
-    
-    @Override
-	public boolean isCurrentVisibleRowPlaying(int row) {
-        return getCurrentPlayList(true).getCurrentAudioObjectIndex() == row && isActivePlayListVisible();
-    }
-
-    @Override
-	public int getCurrentAudioObjectIndexInVisiblePlayList() {
-        return getCurrentPlayList(true).getCurrentAudioObjectIndex();
-    }
-
-    @Override
-	public void addToPlaybackHistory(IAudioObject object) {
-        getCurrentPlayList(false).addToPlaybackHistory(object);
-        Logger.debug("Added to history: ", object.getTitle());
-    }
-
-    @Override
-    public void audioFilesRemoved(List<ILocalAudioObject> audioFiles) {
-    	getBean(PlayListRemover.class).removeAudioFiles(audioFiles);
-    }
-
-    @Override
-    public void applicationStateChanged() {
-        if (statePlaylist.isAutoScrollPlayListEnabled()) {
-            playListController.scrollPlayList(true);
-        }
-        playListTabController.showPlayListSelectorComboBox();
-    }
-
-    @Override
-	public String getPlayListNameAtIndex(int index) {
-        return playListsContainer.getPlayListAt(index).getName();
-    }
-
-    @Override
-	public List<IAudioObject> getPlayListContent(int index) {
-        if (index >= this.playListsContainer.getPlayListsCount() || index < 0) {
-            throw new IllegalArgumentException(new StringBuilder().append("Invalid play list index ").append(index).toString());
-        }
-        return playListsContainer.getPlayListAt(index).getAudioObjectsList();
-    }
-    
-    @Override
-	public void closeCurrentPlaylist() {
-    	getBean(PlayListRemover.class).closeCurrentPlaylist();
-    }
-    
-    @Override
-	public void closeOtherPlaylists() {
-    	getBean(PlayListRemover.class).closeOtherPlaylists();
-    }
-    
 	@Override
-	public void scrollPlayList(boolean isUserAction) {
-		playListController.scrollPlayList(isUserAction);		
+	public void shuffle() {
+		IPlayList currentPlaylist = getVisiblePlayList();
+
+		// If current play list is empty, don't shuffle
+		if (currentPlaylist.isEmpty()) {
+			return;
+		}
+
+		currentPlaylist.shuffle();
+	}
+
+	@Override
+	public boolean isActivePlayListVisible() {
+		return getVisiblePlayList() == getActivePlayList();
+	}
+
+	@Override
+	public boolean isFiltered() {
+		return playListsContainer.isFiltered();
+	}
+
+	@Override
+	public void setFilter(final String filter) {
+		playListsContainer.setFilter(filter);
+	}
+
+	@Override
+	public final void setPositionToPlayInVisiblePlayList(final int pos) {
+	}
+
+	@Override
+	public final void resetCurrentPlayList() {
+		getActivePlayList().reset();
+	}
+
+	@Override
+	public IAudioObject getNextAudioObject() {
+		return getActivePlayList().moveToNextAudioObject();
+	}
+
+	@Override
+	public IAudioObject getPreviousAudioObject() {
+		return getActivePlayList().moveToPreviousAudioObject();
+	}
+
+	@Override
+	public int getIndexOfAudioObject(final IAudioObject aObject) {
+		return getActivePlayList().indexOf(aObject);
+	}
+
+	@Override
+	public IAudioObject getAudioObjectAtIndex(final int index) {
+		return getActivePlayList().getNextAudioObject(index);
+	}
+
+	@Override
+	public void changeSelectedAudioObjectToIndex(final int index) {
+		playListController.changeSelectedAudioObjectToIndex(index);
+	}
+
+	@Override
+	public List<IAudioObject> getSelectedAudioObjects() {
+		List<IAudioObject> audioObjects = new ArrayList<IAudioObject>();
+		int[] selectedRows = playListController.getSelectedRows();
+		if (selectedRows.length > 0) {
+			for (int element : selectedRows) {
+				IAudioObject file = getVisiblePlayList().get(element);
+				if (file != null) {
+					audioObjects.add(file);
+				}
+			}
+		}
+		return audioObjects;
+	}
+
+	@Override
+	public boolean isCurrentVisibleRowPlaying(final int row) {
+		return getVisiblePlayList().getCurrentAudioObjectIndex() == row && isActivePlayListVisible();
+	}
+
+	@Override
+	public int getCurrentAudioObjectIndexInVisiblePlayList() {
+		return getVisiblePlayList().getCurrentAudioObjectIndex();
+	}
+
+	@Override
+	public void addToPlaybackHistory(final IAudioObject object) {
+		getActivePlayList().addToPlaybackHistory(object);
+		Logger.debug("Added to history: ", object.getTitle());
+	}
+
+	@Override
+	public void audioFilesRemoved(final List<ILocalAudioObject> audioFiles) {
+		getBean(PlayListRemover.class).removeAudioFiles(audioFiles);
+	}
+
+	@Override
+	public void applicationStateChanged() {
+		if (statePlaylist.isAutoScrollPlayListEnabled()) {
+			playListController.scrollPlayList(true);
+		}
+		playListTabController.showPlayListSelectorComboBox();
+	}
+
+	@Override
+	public String getPlayListNameAtIndex(final int index) {
+		return playListsContainer.getPlayListAt(index).getName();
+	}
+
+	@Override
+	public List<IAudioObject> getPlayListContent(final int index) {
+		if (index >= this.playListsContainer.getPlayListsCount() || index < 0) {
+			throw new IllegalArgumentException(new StringBuilder().append("Invalid play list index ").append(index).toString());
+		}
+		return playListsContainer.getPlayListAt(index).getAudioObjectsList();
+	}
+
+	@Override
+	public void closeCurrentPlaylist() {
+		getBean(PlayListRemover.class).closeCurrentPlaylist();
+	}
+
+	@Override
+	public void closeOtherPlaylists() {
+		getBean(PlayListRemover.class).closeOtherPlaylists();
+	}
+
+	@Override
+	public void scrollPlayList(final boolean isUserAction) {
+		playListController.scrollPlayList(isUserAction);
 	}
 
 	@Override
 	public void refreshPlayList() {
-		playListController.refreshPlayList();		
+		playListController.refreshPlayList();
 	}
 
 	@Override
 	public void moveDown() {
-		playListController.moveDown(getCurrentPlayList(true));		
+		playListController.moveDown(getVisiblePlayList());
 	}
 
 	@Override
 	public void moveToBottom() {
-		playListController.moveToBottom(getCurrentPlayList(true));
+		playListController.moveToBottom(getVisiblePlayList());
 	}
 
 	@Override
 	public void moveToTop() {
-		playListController.moveToTop(getCurrentPlayList(true));
+		playListController.moveToTop(getVisiblePlayList());
 	}
 
 	@Override
 	public void moveUp() {
-		playListController.moveUp(getCurrentPlayList(true));		
+		playListController.moveUp(getVisiblePlayList());
 	}
 
 	@Override
@@ -608,43 +617,43 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	}
 
 	@Override
-	public void audioObjectsAdded(List<IPlayListAudioObject> audioObjectsAdded) {
+	public void audioObjectsAdded(final List<IPlayListAudioObject> audioObjectsAdded) {
 		playListsChanged();
 	}
-	
+
 	@Override
-	public void audioObjectsRemoved(List<IPlayListAudioObject> audioObjectsRemoved) {		
+	public void audioObjectsRemoved(final List<IPlayListAudioObject> audioObjectsRemoved) {
 		playListsChanged();
 	}
-	
+
 	@Override
 	public void reapplyFilter() {
-        if (isFiltered()) {
-            setFilter(filterHandler.getFilterText(playListFilter));
-        }
+		if (isFiltered()) {
+			setFilter(filterHandler.getFilterText(playListFilter));
+		}
 	}
 
 	@Override
 	public void playListCleared() {
 		playListsChanged();
 	}
-	
+
 	@Override
 	public void favoritesChanged() {
-        // Update playlist to remove favorite icon
-        refreshPlayList();
+		// Update playlist to remove favorite icon
+		refreshPlayList();
 	}
-	
+
 	@Override
-	public void deviceDisconnected(String location) {
-		getBean(PlayListRemoverFromDevice.class).removeAudioObjectsOfDevice(getCurrentPlayList(true), location);
+	public void deviceDisconnected(final String location) {
+		getBean(PlayListRemoverFromDevice.class).removeAudioObjectsOfDevice(getVisiblePlayList(), location);
 	}
-	
+
 	@Override
-    public void windowDeiconified() {
+	public void windowDeiconified() {
 		scrollPlayList(false);
-    }
-	
+	}
+
 	@Override
 	public void deferredInitialization() {
 		// update information in context panel
@@ -664,7 +673,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 		// Get playlists from application cache
 		final IListOfPlayLists listOfPlayLists = playListsRetrievedFromCache;
 
-		// Set selected play list as default 
+		// Set selected play list as default
 		int selected = listOfPlayLists.getSelectedPlayList();
 		if (selected < 0 || selected >= listOfPlayLists.getPlayLists().size()) {
 			selected = 0;
@@ -682,6 +691,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
 		setPlayList(playListsContainer.getPlayListAt(selected));
 
-		playListsRetrievedFromCache = null;		
+		playListsRetrievedFromCache = null;
 	}
 }

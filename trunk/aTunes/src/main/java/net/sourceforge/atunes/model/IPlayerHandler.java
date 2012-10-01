@@ -41,6 +41,14 @@ public interface IPlayerHandler extends IHandler {
 	public boolean isEnginePlaying();
 
 	/**
+	 * Checks if engine is currently paused (<code>true</code>) or not (
+	 * <code>false</code>)
+	 * 
+	 * @return <code>true</code> if engine is currently paused
+	 */
+	public boolean isEnginePaused();
+
+	/**
 	 * This method must be implemented by player engines. Applies volume value
 	 * in player engine
 	 * 
@@ -79,12 +87,15 @@ public interface IPlayerHandler extends IHandler {
 	public boolean supportsCapability(PlayerEngineCapability capability);
 
 	/**
-	 * Starts playing current audio object from play list
-	 * 
-	 * @param buttonPressed
-	 *            TODO: Add more javadoc
+	 * Starts playing or pauses current audio object from play list
 	 */
-	public void playCurrentAudioObject(boolean buttonPressed);
+	public void resumeOrPauseCurrentAudioObject();
+
+	/**
+	 * Starts playing audio object in given position of visible play list
+	 * @param position
+	 */
+	public void playAudioObjectInPlayListPositionOfVisiblePlayList(int position);
 
 	/**
 	 * Stops playing current audio object
@@ -177,5 +188,10 @@ public interface IPlayerHandler extends IHandler {
 	 * @param eqSettings
 	 */
 	public void applyEqualization(boolean enabled, float[] eqSettings);
+
+	/**
+	 * Starts play back of current audio object in active play list
+	 */
+	public void startPlayingAudioObjectInActivePlayList();
 
 }

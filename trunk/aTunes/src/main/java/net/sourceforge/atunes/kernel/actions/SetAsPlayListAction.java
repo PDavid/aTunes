@@ -52,7 +52,7 @@ public class SetAsPlayListAction extends AbstractActionOverSelectedObjects<IAudi
     @Override
     protected void executeAction(List<IAudioObject> objects) {
         playListHandler.clearPlayList();
-        playListHandler.addToPlayList(objects);
+        playListHandler.addToVisiblePlayList(objects);
     }
 
     @Override

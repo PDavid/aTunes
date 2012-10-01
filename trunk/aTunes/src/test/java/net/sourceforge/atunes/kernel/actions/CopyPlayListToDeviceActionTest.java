@@ -54,7 +54,7 @@ public class CopyPlayListToDeviceActionTest {
 		
 		sut.executeAction();
 		
-		verify(playListHandler).getCurrentPlayList(true);
+		verify(playListHandler).getVisiblePlayList();
 		verify(deviceHandler).copyFilesToDevice(aos);
 	}
 }

@@ -22,20 +22,34 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
+/**
+ * Action to remote call to previous audio object
+ * @author alex
+ *
+ */
 public class PlayPreviousAudioObjectRemoteAction extends RemoteAction {
 
-    private static final long serialVersionUID = -1177020643937370678L;
+	private static final long serialVersionUID = -1177020643937370678L;
 
-    /**
-     * Default constructor
-     */
-    public PlayPreviousAudioObjectRemoteAction() {
-    	super("previous");
-    }
-    
-    @Override
-    public String runCommand(List<String> parameters) {
-    	callAction(PlayPreviousAudioObjectAction.class);
-    	return "OK";
-    }
+	private CustomAbstractAction previousAction;
+
+	/**
+	 * @param previousAction
+	 */
+	public void setPreviousAction(final CustomAbstractAction previousAction) {
+		this.previousAction = previousAction;
+	}
+
+	/**
+	 * Default constructor
+	 */
+	public PlayPreviousAudioObjectRemoteAction() {
+		super("previous");
+	}
+
+	@Override
+	public String runCommand(final List<String> parameters) {
+		callAction(previousAction);
+		return "OK";
+	}
 }

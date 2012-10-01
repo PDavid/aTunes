@@ -69,11 +69,11 @@ public class ExportPlayListAction extends CustomAbstractAction {
 	protected void executeAction() {
 		LocalAudioObjectFilter filter = new LocalAudioObjectFilter();
 		// Get only LocalAudioObject objects of current play list
-		audioObjectExporter.exportAudioObject(filter.getLocalAudioObjects(playListHandler.getCurrentPlayList(true).getAudioObjectsList()));
+		audioObjectExporter.exportAudioObject(filter.getLocalAudioObjects(playListHandler.getVisiblePlayList().getAudioObjectsList()));
 	}
 
 	@Override
 	public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-		return !playListHandler.getCurrentPlayList(true).isEmpty();
+		return !playListHandler.getVisiblePlayList().isEmpty();
 	}
 }

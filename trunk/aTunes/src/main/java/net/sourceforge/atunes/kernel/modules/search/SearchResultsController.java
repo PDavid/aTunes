@@ -153,7 +153,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
         if (selectedResults == null) {
             return;
         }
-        playListHandler.addToPlayList(selectedResults);
+        playListHandler.addToVisiblePlayList(selectedResults);
     }
 
     /**

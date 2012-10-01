@@ -29,6 +29,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -74,6 +75,15 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
 	private IStatePlayer statePlayer;
 
+	private IPlayListHandler playListHandler;
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
 	/**
 	 * @param statePlayer
 	 */
@@ -115,6 +125,11 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	}
 
 	@Override
+	public boolean isEnginePaused() {
+		return playerEngine.isEnginePaused();
+	}
+
+	@Override
 	public void setVolume(final int perCent) {
 		playerEngine.setVolume(perCent);
 		playerControlsController.setVolume(perCent);
@@ -152,8 +167,19 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	}
 
 	@Override
-	public final void playCurrentAudioObject(final boolean buttonPressed) {
-		playerEngine.playCurrentAudioObject(buttonPressed);
+	public final void resumeOrPauseCurrentAudioObject() {
+		playerEngine.playCurrentAudioObject();
+	}
+
+	@Override
+	public void playAudioObjectInPlayListPositionOfVisiblePlayList(final int position) {
+		playListHandler.getVisiblePlayList().setCurrentAudioObjectIndex(position);
+		playerEngine.playAudioObjectInPlayListPositionOfVisiblePlayList(position);
+	}
+
+	@Override
+	public void startPlayingAudioObjectInActivePlayList() {
+		playerEngine.playAudioObjectInPlayListPositionOfActivePlayList(playListHandler.getActivePlayList().getCurrentAudioObjectIndex());
 	}
 
 	@Override
@@ -237,7 +263,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 		applyMuteState(statePlayer.isMuteEnabled());
 
 		if (statePlayer.isPlayAtStartup()) {
-			playCurrentAudioObject(true);
+			resumeOrPauseCurrentAudioObject();
 		}
 
 		// Show advanced controls

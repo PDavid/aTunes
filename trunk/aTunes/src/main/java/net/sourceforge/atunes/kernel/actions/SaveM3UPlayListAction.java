@@ -104,12 +104,12 @@ public class SaveM3UPlayListAction extends CustomAbstractAction {
 			// If filename have incorrect extension, add it
 			file = playListIOService.checkM3UPlayListFileName(file);
 
-			playListIOService.writeM3U(playListHandler.getCurrentPlayList(true), file);
+			playListIOService.writeM3U(playListHandler.getVisiblePlayList(), file);
 		}
 	}
 
 	@Override
 	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
-		return !playListHandler.getCurrentPlayList(true).isEmpty();
+		return !playListHandler.getVisiblePlayList().isEmpty();
 	}
 }

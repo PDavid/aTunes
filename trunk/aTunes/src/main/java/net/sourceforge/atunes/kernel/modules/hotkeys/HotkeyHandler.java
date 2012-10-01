@@ -189,7 +189,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
             break;
         }
         case HotkeyConstants.HOTKEY_PAUSE: {
-            getBean(IPlayerHandler.class).playCurrentAudioObject(true);
+            getBean(IPlayerHandler.class).resumeOrPauseCurrentAudioObject();
             break;
         }
         case HotkeyConstants.HOTKEY_STOP: {

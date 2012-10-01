@@ -157,10 +157,10 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 			LocalAudioObjectFilter filter = new LocalAudioObjectFilter();
 			if (SynchronizeDeviceWithPlayListAction.this.stateDevice.isAllowRepeatedSongsInDevice()) {
 				// Repeated songs allowed, filter only if have same artist and album
-				playListObjects = filter.filterRepeatedObjectsWithAlbums(playListLocalAudioObjectFilter.getObjects(playListHandler.getCurrentPlayList(true)));
+				playListObjects = filter.filterRepeatedObjectsWithAlbums(playListLocalAudioObjectFilter.getObjects(playListHandler.getVisiblePlayList()));
 			} else {
 				// Repeated songs not allows, filter even if have different album
-				playListObjects = filter.filterRepeatedObjects(playListLocalAudioObjectFilter.getObjects(playListHandler.getCurrentPlayList(true)));
+				playListObjects = filter.filterRepeatedObjects(playListLocalAudioObjectFilter.getObjects(playListHandler.getVisiblePlayList()));
 			}
 
 			// Get elements present in play list and not in device -> objects to be copied to device

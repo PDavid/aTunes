@@ -90,7 +90,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         audioObjectComparator.sort(songsSelected);
 
         // Add to playlist
-        playListHandler.addToPlayList(songsSelected);
+        playListHandler.addToVisiblePlayList(songsSelected);
     }
 
     @Override
@@ -110,7 +110,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         audioObjectComparator.sort(songsSelected);
 
         // Add to playlist
-        playListHandler.addToPlayList(songsSelected);
+        playListHandler.addToVisiblePlayList(songsSelected);
     }
 
     @Override
@@ -137,7 +137,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         audioObjectComparator.sort(songsSelected);
 
         // Add to playlist
-        playListHandler.addToPlayList(songsSelected);
+        playListHandler.addToVisiblePlayList(songsSelected);
     }
 
     @Override
@@ -149,7 +149,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         audioObjectComparator.sort(songsSelected);
 
         // Add to playlist
-        playListHandler.addToPlayList(songsSelected);
+        playListHandler.addToVisiblePlayList(songsSelected);
     }
 
     @Override
@@ -163,7 +163,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         if (count > 0) {
             List<IAudioObject> audioObjects = new ArrayList<IAudioObject>(unplayedSongs.subList(0, count));
             audioObjectComparator.sort(audioObjects);
-            playListHandler.addToPlayList(audioObjects);
+            playListHandler.addToVisiblePlayList(audioObjects);
         }
     }
 }

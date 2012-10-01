@@ -30,19 +30,28 @@ import java.util.List;
  */
 public class FullScreenRemoteAction extends RemoteAction {
 
-    private static final long serialVersionUID = 916565212685861604L;
+	private static final long serialVersionUID = 916565212685861604L;
 
-    /**
-     * Default constructor
-     */
-    public FullScreenRemoteAction() {
-        super("fullscreen");
-        setSynchronousResponse(false);
-    }
-    
-    @Override
-    public String runCommand(List<String> parameters) {
-    	callAction(FullScreenAction.class);
-    	return "OK";
-    }
+	private CustomAbstractAction fullScreenAction;
+
+	/**
+	 * @param fullScreenAction
+	 */
+	public void setFullScreenAction(final CustomAbstractAction fullScreenAction) {
+		this.fullScreenAction = fullScreenAction;
+	}
+
+	/**
+	 * Default constructor
+	 */
+	public FullScreenRemoteAction() {
+		super("fullscreen");
+		setSynchronousResponse(false);
+	}
+
+	@Override
+	public String runCommand(final List<String> parameters) {
+		callAction(fullScreenAction);
+		return "OK";
+	}
 }
