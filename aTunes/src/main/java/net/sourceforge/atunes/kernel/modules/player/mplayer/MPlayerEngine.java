@@ -167,7 +167,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 			return;
 		}
 
-		if (useFadeAway && !isPaused()) {
+		if (useFadeAway && !isEnginePaused()) {
 			// If there is a fade away process working don't create
 			// a new process
 			if (currentFadeAwayRunnable != null) {
@@ -236,7 +236,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
 	@Override
 	public boolean isEnginePlaying() {
-		return process != null && !isPaused();
+		return process != null && !isEnginePaused();
 	}
 
 	@Override
@@ -247,7 +247,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 		setVolume(getStatePlayer().getVolume());
 
 		// MPlayer bug: paused, demute, muted -> starts playing
-		if (isPaused() && !mute) {
+		if (isEnginePaused() && !mute) {
 			commandWriter.sendPauseCommand();
 			Logger.debug("MPlayer bug (paused, demute, muted -> starts playing) workaround applied");
 		}
@@ -257,7 +257,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 	public void setVolume(final int volume) {
 		// MPlayer bug: paused, volume change -> starts playing
 		// If is paused, volume will be sent to mplayer when user resumes playback
-		if (!isPaused() && !isMuteEnabled()) {
+		if (!isEnginePaused() && !isMuteEnabled()) {
 			commandWriter.sendVolumeCommand(volume);
 		}
 	}
@@ -315,7 +315,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 	 * @return true, if is paused
 	 */
 	protected boolean isPlaybackPaused() {
-		return isPaused();
+		return isEnginePaused();
 	}
 
 	protected void notifyRadioOrPodcastFeedEntry() {

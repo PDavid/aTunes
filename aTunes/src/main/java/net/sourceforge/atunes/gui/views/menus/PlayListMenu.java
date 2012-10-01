@@ -22,32 +22,39 @@ package net.sourceforge.atunes.gui.views.menus;
 
 import javax.swing.JMenu;
 
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * "Playlist" application menu
+ * @author alex
+ *
+ */
 public class PlayListMenu extends JMenu {
 
 	private static final long serialVersionUID = -3624790857729577320L;
 
-	private PlayListMenuFiller playListMenuFiller;
-	
+	private IBeanFactory beanFactory;
+
 	/**
-	 * @param i18nKey
+	 * @param beanFactory
 	 */
-	public PlayListMenu(String i18nKey) {
-		super(I18nUtils.getString(i18nKey));
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	/**
-	 * @param playListMenuFiller
+	 * @param i18nKey
 	 */
-	public void setPlayListMenuFiller(PlayListMenuFiller playListMenuFiller) {
-		this.playListMenuFiller = playListMenuFiller;
+	public PlayListMenu(final String i18nKey) {
+		super(I18nUtils.getString(i18nKey));
 	}
-	
+
+
 	/**
 	 * Initializes menu
 	 */
 	public void initialize() {
-		playListMenuFiller.fillMenu(this);
+		beanFactory.getBean(PlayListMenuFiller.class).fillMenu(this);
 	}
 }

@@ -63,7 +63,7 @@ public final class PlayListApi {
      */
     public static List<IAudioObject> getCurrentPlayList() {
         List<IAudioObject> result = new ArrayList<IAudioObject>();
-        IPlayList playlist = Context.getBean(IPlayListHandler.class).getCurrentPlayList(false);
+        IPlayList playlist = Context.getBean(IPlayListHandler.class).getActivePlayList();
         for (int i = 0; i < playlist.size(); i++) {
             result.add(playlist.get(i));
         }
@@ -86,6 +86,6 @@ public final class PlayListApi {
      * @param objects
      */
     public static void add(List<IAudioObject> objects) {
-        Context.getBean(IPlayListHandler.class).addToPlayList(objects);
+        Context.getBean(IPlayListHandler.class).addToVisiblePlayList(objects);
     }
 }

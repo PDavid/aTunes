@@ -39,141 +39,146 @@ import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
 import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
 import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction;
+import net.sourceforge.atunes.model.IBeanFactory;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+/**
+ * Responsible of filling tray menu with tray icons
+ * @author alex
+ *
+ */
+public class CommonTrayIconFiller implements ITrayIconFiller {
 
-public class CommonTrayIconFiller implements ITrayIconFiller, ApplicationContextAware {
-	
-	private ApplicationContext context;
-	
 	private JMenuItem playMenuItem;
-	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
-		
+
 	@Override
-	public void fillTrayIcon(TrayIcon trayIcon) {
+	public void fillTrayIcon(final TrayIcon trayIcon) {
 		if (trayIcon instanceof JTrayIcon) {
 			JPopupMenu popupmenu = ((JTrayIcon)trayIcon).getJTrayIconPopup();
 
 			popupmenu.add(getPlayMenuItem());
 			popupmenu.add(getStopMenuItem());
 			popupmenu.add(getPreviousMenuItem());
-	        popupmenu.add(getNextMenuItem());
-	        popupmenu.add(new JSeparator());
-	        popupmenu.add(getMuteCheckBoxMenuItem());
-	        popupmenu.add(new JSeparator());
-	        popupmenu.add(getShuffleCheckBoxMenuItem());
-	        popupmenu.add(getRepeatCheckBoxMenuItem());
-	        popupmenu.add(new JSeparator());
-	        popupmenu.add(getShowOSDCheckBoxMenuItem());
-	        popupmenu.add(new JSeparator());
-	        popupmenu.add(getAboutMenuItem());
-	        popupmenu.add(new JSeparator());
-	        popupmenu.add(getExitMenuItem());
-			
+			popupmenu.add(getNextMenuItem());
+			popupmenu.add(new JSeparator());
+			popupmenu.add(getMuteCheckBoxMenuItem());
+			popupmenu.add(new JSeparator());
+			popupmenu.add(getShuffleCheckBoxMenuItem());
+			popupmenu.add(getRepeatCheckBoxMenuItem());
+			popupmenu.add(new JSeparator());
+			popupmenu.add(getShowOSDCheckBoxMenuItem());
+			popupmenu.add(new JSeparator());
+			popupmenu.add(getAboutMenuItem());
+			popupmenu.add(new JSeparator());
+			popupmenu.add(getExitMenuItem());
+
 			GuiUtils.applyComponentOrientation(popupmenu);
 		}
 	}
-	
+
 	@Override
-	public void setPlayMenuItemText(String text) {
+	public void setPlayMenuItemText(final String text) {
 		playMenuItem.setText(text);
 	}
-	
+
 	/**
-     * Getter of play menu item
-     * 
-     * @return
-     */
-    private JMenuItem getPlayMenuItem() {
-        if (playMenuItem == null) {
-            playMenuItem = new JMenuItem(context.getBean(PlayAction.class));
-        }
-        return playMenuItem;
-    }
-	
-    /**
-     * Getter of stop menu item
-     * 
-     * @return
-     */
-    private JMenuItem getStopMenuItem() {
-        return new JMenuItem(context.getBean(StopCurrentAudioObjectAction.class));
-    }
+	 * Getter of play menu item
+	 * 
+	 * @return
+	 */
+	private JMenuItem getPlayMenuItem() {
+		if (playMenuItem == null) {
+			playMenuItem = new JMenuItem(beanFactory.getBean(PlayAction.class));
+		}
+		return playMenuItem;
+	}
 
-    /**
-     * Getter of previous menu item
-     * 
-     * @return
-     */
-    private JMenuItem getPreviousMenuItem() {
-        return new JMenuItem(context.getBean(PlayPreviousAudioObjectAction.class));
-    }
+	/**
+	 * Getter of stop menu item
+	 * 
+	 * @return
+	 */
+	private JMenuItem getStopMenuItem() {
+		return new JMenuItem(beanFactory.getBean(StopCurrentAudioObjectAction.class));
+	}
 
-    /**
-     * Getter for next menu item
-     * 
-     * @return
-     */
-    private JMenuItem getNextMenuItem() {
-        return new JMenuItem(context.getBean(PlayNextAudioObjectAction.class));
-    }
+	/**
+	 * Getter of previous menu item
+	 * 
+	 * @return
+	 */
+	private JMenuItem getPreviousMenuItem() {
+		return new JMenuItem(beanFactory.getBean(PlayPreviousAudioObjectAction.class));
+	}
 
-    /**
-     * Getter for mute menu item
-     * 
-     * @return
-     */
-    private JCheckBoxMenuItem getMuteCheckBoxMenuItem() {
-        JCheckBoxMenuItem mute = new JCheckBoxMenuItem(context.getBean(MuteAction.class));
-        mute.setIcon(null);
-        return mute;
-    }
+	/**
+	 * Getter for next menu item
+	 * 
+	 * @return
+	 */
+	private JMenuItem getNextMenuItem() {
+		return new JMenuItem(beanFactory.getBean(PlayNextAudioObjectAction.class));
+	}
 
-    /**
-     * Getter for shuffle menu item
-     * 
-     * @return
-     */
-    private JCheckBoxMenuItem getShuffleCheckBoxMenuItem() {
-        return new JCheckBoxMenuItem(context.getBean(ShuffleModeAction.class));
-    }
+	/**
+	 * Getter for mute menu item
+	 * 
+	 * @return
+	 */
+	private JCheckBoxMenuItem getMuteCheckBoxMenuItem() {
+		JCheckBoxMenuItem mute = new JCheckBoxMenuItem(beanFactory.getBean(MuteAction.class));
+		mute.setIcon(null);
+		return mute;
+	}
 
-    /**
-     * Getter for repeat menu item
-     */
-    private JCheckBoxMenuItem getRepeatCheckBoxMenuItem() {
-        return new JCheckBoxMenuItem(context.getBean(RepeatModeAction.class));
-    }
+	/**
+	 * Getter for shuffle menu item
+	 * 
+	 * @return
+	 */
+	private JCheckBoxMenuItem getShuffleCheckBoxMenuItem() {
+		return new JCheckBoxMenuItem(beanFactory.getBean(ShuffleModeAction.class));
+	}
 
-    /**
-     * Getter for showOSD menu item
-     * 
-     * @return
-     */
-    private JCheckBoxMenuItem getShowOSDCheckBoxMenuItem() {
-        return new JCheckBoxMenuItem(context.getBean(ToggleOSDSettingAction.class));
-    }
+	/**
+	 * Getter for repeat menu item
+	 */
+	private JCheckBoxMenuItem getRepeatCheckBoxMenuItem() {
+		return new JCheckBoxMenuItem(beanFactory.getBean(RepeatModeAction.class));
+	}
 
-    /**
-     * Getter for about menu item
-     * 
-     * @return
-     */
-    private JMenuItem getAboutMenuItem() {
-        return new JMenuItem(context.getBean(ShowAboutAction.class));
-    }
+	/**
+	 * Getter for showOSD menu item
+	 * 
+	 * @return
+	 */
+	private JCheckBoxMenuItem getShowOSDCheckBoxMenuItem() {
+		return new JCheckBoxMenuItem(beanFactory.getBean(ToggleOSDSettingAction.class));
+	}
 
-    /**
-     * Getter for exit menu item
-     * 
-     * @return
-     */
-    private JMenuItem getExitMenuItem() {
-        return new JMenuItem(context.getBean(ExitAction.class));
-    }
+	/**
+	 * Getter for about menu item
+	 * 
+	 * @return
+	 */
+	private JMenuItem getAboutMenuItem() {
+		return new JMenuItem(beanFactory.getBean(ShowAboutAction.class));
+	}
+
+	/**
+	 * Getter for exit menu item
+	 * 
+	 * @return
+	 */
+	private JMenuItem getExitMenuItem() {
+		return new JMenuItem(beanFactory.getBean(ExitAction.class));
+	}
 }

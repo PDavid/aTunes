@@ -187,7 +187,7 @@ public final class EditTagDialogActionListener implements ActionListener {
 
 		List<ILocalAudioObject> nextFile = new ArrayList<ILocalAudioObject>();
 		boolean validAudioFile = false;
-		int length = playListHandler.getCurrentPlayList(true).size();
+		int length = playListHandler.getVisiblePlayList().size();
 		// Before moving down check if we need to jump an audio object like a radio stream
 		while (!validAudioFile) {
 		    // Reaching the end of the playlist

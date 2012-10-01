@@ -63,7 +63,7 @@ public class MoveAfterCurrentAudioObjectAction extends CustomAbstractAction {
 
 	@Override
 	protected void executeAction() {
-        IPlayList currentPlayList = playListHandler.getCurrentPlayList(true);
+        IPlayList currentPlayList = playListHandler.getVisiblePlayList();
         List<IAudioObject> selectedAudioObjects = playListHandler.getSelectedAudioObjects();
         
         //Recurse backwards to move the elements to the correct position

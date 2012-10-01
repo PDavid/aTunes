@@ -104,12 +104,12 @@ public class SavePlayListAction extends CustomAbstractAction {
 			// If filename have incorrect extension, add it
 			file = playListIOService.checkPlayListFileName(file);
 
-			playListIOService.write(playListHandler.getCurrentPlayList(true), file);
+			playListIOService.write(playListHandler.getVisiblePlayList(), file);
 		}
 	}
 
 	@Override
 	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
-		return !playListHandler.getCurrentPlayList(true).isEmpty();
+		return !playListHandler.getVisiblePlayList().isEmpty();
 	}
 }

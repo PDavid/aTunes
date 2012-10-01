@@ -125,10 +125,10 @@ class InternalImportProcessor {
 
 		if (!audioObjectsToAdd.isEmpty()) {
 			audioObjectComparator.sort(audioObjectsToAdd);
-			playListHandler.addToPlayList(dropRow, audioObjectsToAdd, true);
+			playListHandler.addToVisiblePlayList(dropRow, audioObjectsToAdd);
 			// Keep selected rows: if drop row is the bottom of play list (-1) then select last row
 			if (dropRow == -1) {
-				dropRow = playListHandler.getCurrentPlayList(true).size() - audioObjectsToAdd.size();
+				dropRow = playListHandler.getVisiblePlayList().size() - audioObjectsToAdd.size();
 			}
 			playListTable.getSelectionModel().addSelectionInterval(dropRow, dropRow + audioObjectsToAdd.size() - 1);
 		}
@@ -164,7 +164,7 @@ class InternalImportProcessor {
     	dialog.showDialog();
     	IAlbum album = dialog.getAlbum();
     	if (album != null) {
-    		playListHandler.addToPlayList(album.getAudioObjects());
+    		playListHandler.addToVisiblePlayList(album.getAudioObjects());
     	}
     }
 	
@@ -188,7 +188,7 @@ class InternalImportProcessor {
 
         List<Integer> rowsToKeepSelected = new ArrayList<Integer>();
 
-        boolean dropAtEnd = targetRow == playListHandler.getCurrentPlayList(true).size() - 1;
+        boolean dropAtEnd = targetRow == playListHandler.getVisiblePlayList().size() - 1;
 
         int rowMovedCounter = 0;
         // Move every row
@@ -196,7 +196,7 @@ class InternalImportProcessor {
             // Calculate drop row, since targetRow is the row where to drop the first row (baseRow)
             int dropRow = targetRow + (rowDragged.getRowPosition() - baseRow);
             if (dropAtEnd) {
-                dropRow = playListHandler.getCurrentPlayList(true).size() - (rowMovedCounter + 1);
+                dropRow = playListHandler.getVisiblePlayList().size() - (rowMovedCounter + 1);
             }
             rowsToKeepSelected.add(dropRow);
             playListHandler.moveRowTo(rowDragged.getRowPosition(), dropRow);

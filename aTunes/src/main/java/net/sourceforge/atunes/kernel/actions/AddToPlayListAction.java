@@ -56,7 +56,7 @@ public class AddToPlayListAction extends AbstractActionOverSelectedObjects<IAudi
 
     @Override
     protected void executeAction(List<IAudioObject> objects) {
-    	playListHandler.addToPlayList(objects);
+    	playListHandler.addToVisiblePlayList(objects);
     }
 
     @Override

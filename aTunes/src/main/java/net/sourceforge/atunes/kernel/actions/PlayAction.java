@@ -22,77 +22,48 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import net.sourceforge.atunes.gui.views.controls.FullScreenPlayPauseButton;
-import net.sourceforge.atunes.gui.views.controls.PlayPauseButton;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Causes player to start or pause play back
+ * @author alex
+ *
+ */
 public class PlayAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -1122746023245126869L;
+	private static final long serialVersionUID = -1122746023245126869L;
 
-    private IPlayListHandler playListHandler;
-    
-    private IPlayerHandler playerHandler;
-    
-    private IPlayListTable playListTable;
+	private IPlayerHandler playerHandler;
 
-    /**
-     * @param playListTable
-     */
-    public void setPlayListTable(IPlayListTable playListTable) {
-		this.playListTable = playListTable;
-	}
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
+
+	/**
+	 * Default constructor
+	 */
+	public PlayAction() {
+		super(I18nUtils.getString("PLAY"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY"));
 	}
-    
-    /**
-     * Default constructor
-     */
-    public PlayAction() {
-        super(I18nUtils.getString("PLAY"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY"));
-    }
 
-    @Override
-    protected void executeAction() {
-        int selAudioObject = playListTable.getSelectedRow();
-        int currPlayingAudioObject = playListHandler.getIndexOfAudioObject(playerHandler.getAudioObject());
+	@Override
+	protected void executeAction() {
+		if (playerHandler.isEnginePlaying() || playerHandler.isEnginePaused()) {
+			playerHandler.resumeOrPauseCurrentAudioObject();
+		} else {
+			playerHandler.startPlayingAudioObjectInActivePlayList();
+		}
+	}
 
-        if (selAudioObject != currPlayingAudioObject) {
-            // another song selected to play
-            if (getSource() == null || getSource().getClass().equals(PlayPauseButton.class) || getSource().getClass().equals(FullScreenPlayPauseButton.class)) {
-                // action is from PlayPauseButton (or system tray)  or full screen -> pause
-                playerHandler.playCurrentAudioObject(true);
-            } else {
-                // play another song
-            	playListHandler.setPositionToPlayInVisiblePlayList(selAudioObject);
-                playerHandler.playCurrentAudioObject(false);
-            }
-        } else {
-            // selected song equals to song being currently played -> pause
-            playerHandler.playCurrentAudioObject(true);
-        }
-    }
-
-    @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        // Play action is always enabled even if play list or selection are empty, because this action is used in play button
-        return true;
-    }
+	@Override
+	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
+		// Play action is always enabled even if play list or selection are empty, because this action is used in play button
+		return true;
+	}
 }

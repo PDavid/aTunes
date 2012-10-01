@@ -48,23 +48,28 @@ public interface IPlayListsContainer {
 	int getVisiblePlayListIndex();
 
 	/**
-	 * Adds playlist
+	 * Adds play list
 	 * @param position
 	 * @param playList
 	 */
 	void addPlayList(int position, IPlayList playList);
 
 	/**
-	 * Clear playlist
+	 * Clear play list
 	 */
 	void clear();
 
 	/**
-	 * Returns visible or active play list
-	 * @param visible
+	 * Returns visible play list
 	 * @return
 	 */
-	IPlayList getCurrentPlayList(boolean visible);
+	IPlayList getVisiblePlayList();
+
+	/**
+	 * Returns active play list
+	 * @return
+	 */
+	IPlayList getActivePlayList();
 
 	/**
 	 * Adds play list

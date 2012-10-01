@@ -28,12 +28,12 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public abstract class RemoteAction implements ICommand {
 
-    private static final class CallToggleAction implements Runnable {
-    	
+	private static final class CallToggleAction implements Runnable {
+
 		private final Class<? extends CustomAbstractAction> actionClass;
 		private final boolean value;
 
-		private CallToggleAction(Class<? extends CustomAbstractAction> actionClass, boolean value) {
+		private CallToggleAction(final Class<? extends CustomAbstractAction> actionClass, final boolean value) {
 			this.actionClass = actionClass;
 			this.value = value;
 		}
@@ -52,70 +52,78 @@ public abstract class RemoteAction implements ICommand {
 	private static final long serialVersionUID = 34587011817746442L;
 
 	private boolean synchronousResponse = false;
-    
-    private ICommandHandler commandHandler;
-    
-    private String commandName;
-    
-    /**
-     * @param commandName
-     */
-    public RemoteAction(String commandName) {
-    	this.commandName = commandName;
-    	setSynchronousResponse(true); // all commands are synchronous by default
+
+	private ICommandHandler commandHandler;
+
+	private final String commandName;
+
+	/**
+	 * @param commandName
+	 */
+	public RemoteAction(final String commandName) {
+		this.commandName = commandName;
+		setSynchronousResponse(true); // all commands are synchronous by default
 	}
-    
-    /**
-     * Initializes action if needed
-     * All initialization needed retrieving values from <code>getState</code> must be done here
-     * Must call super.initialize() when overriding
-     * @param state
-     */
-    protected void initialize() {  
-    	if (StringUtils.isEmpty(commandName)) {
-    		throw new IllegalArgumentException("Remote action must have a command");
-        }
-    	commandHandler.registerCommand(this);
-    }
-    
-    /**
-     * @param commandHandler
-     */
-    public void setCommandHandler(ICommandHandler commandHandler) {
+
+	/**
+	 * Initializes action if needed
+	 * All initialization needed retrieving values from <code>getState</code> must be done here
+	 * Must call super.initialize() when overriding
+	 * @param state
+	 */
+	protected void initialize() {
+		if (StringUtils.isEmpty(commandName)) {
+			throw new IllegalArgumentException("Remote action must have a command");
+		}
+		commandHandler.registerCommand(this);
+	}
+
+	/**
+	 * @param commandHandler
+	 */
+	public void setCommandHandler(final ICommandHandler commandHandler) {
 		this.commandHandler = commandHandler;
 	}
 
-    @Override
-    public final boolean isSynchronousResponse() {
-        return synchronousResponse;
-    }
-    
-    /**
-     * Sets if action needs a synchronous response
-     * @param sync
-     */
-    protected final void setSynchronousResponse(boolean sync) {
-    	this.synchronousResponse = sync;
-    }
-    
-    /**
-     * Calls an action of application
-     * @param actionClass
-     */
-    protected final void callAction(Class<? extends CustomAbstractAction> actionClass) {
-    	Context.getBean(actionClass).actionPerformed(null);
-    }
+	@Override
+	public final boolean isSynchronousResponse() {
+		return synchronousResponse;
+	}
 
-    /**
-     * Calls an action of application
-     * @param actionClass
-     */
-    protected final void callToggleAction(final Class<? extends CustomAbstractAction> actionClass, final boolean value) {
-    	GuiUtils.callInEventDispatchThread(new CallToggleAction(actionClass, value));
-    }
+	/**
+	 * Sets if action needs a synchronous response
+	 * @param sync
+	 */
+	protected final void setSynchronousResponse(final boolean sync) {
+		this.synchronousResponse = sync;
+	}
 
-    @Override
-    public final String getCommandName() {
-    	return commandName;
-    }
+	/**
+	 * Calls an action of application
+	 * @param actionClass
+	 */
+	protected final void callActidon(final Class<? extends CustomAbstractAction> actionClass) {
+		Context.getBean(actionClass).actionPerformed(null);
+	}
+
+	/**
+	 * Calls an action of application
+	 * @param actionClass
+	 */
+	protected final void callAction(final CustomAbstractAction action) {
+		action.actionPerformed(null);
+	}
+
+	/**
+	 * Calls an action of application
+	 * @param actionClass
+	 */
+	protected final void callToggleAction(final Class<? extends CustomAbstractAction> actionClass, final boolean value) {
+		GuiUtils.callInEventDispatchThread(new CallToggleAction(actionClass, value));
+	}
+
+	@Override
+	public final String getCommandName() {
+		return commandName;
+	}
 }

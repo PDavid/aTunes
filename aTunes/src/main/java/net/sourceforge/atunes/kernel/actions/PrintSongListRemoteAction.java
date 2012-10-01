@@ -112,7 +112,7 @@ public class PrintSongListRemoteAction extends RemoteAction {
     }
     
     private String processPlaylistParameter() {
-        Collection<IAudioObject> playlistObjects = playListHandler.getCurrentPlayList(false).getAudioObjectsList();
+        Collection<IAudioObject> playlistObjects = playListHandler.getActivePlayList().getAudioObjectsList();
         if (playlistObjects.isEmpty()) {
         	return "Playlist is empty";
         } else {

@@ -33,6 +33,7 @@ import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -55,6 +56,15 @@ public class YoutubeContent extends AbstractContextPanelContent<YoutubeDataSourc
     private YoutubeService youtubeService;
     
     private IContextHandler contextHandler;
+    
+    private IPlayerHandler playerHandler;
+
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
     
     /**
      * Default constructor
@@ -103,7 +113,7 @@ public class YoutubeContent extends AbstractContextPanelContent<YoutubeDataSourc
         // Create components
         youtubeResultTable = new ContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
         youtubeResultTable.setModel(new YoutubeResultTableModel());
-        youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel(), getDesktop()));
+        youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel(), getDesktop(), playerHandler));
         return youtubeResultTable;
     }
 

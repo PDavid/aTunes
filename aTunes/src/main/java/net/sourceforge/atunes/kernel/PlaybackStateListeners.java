@@ -24,29 +24,42 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.PlaybackState;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 /**
  * Holds references to PlaybackStateListener instances
  * @author fleax
  *
  */
-public class PlaybackStateListeners implements ApplicationContextAware {
+public class PlaybackStateListeners {
 
 	private Collection<IPlaybackStateListener> listeners;
 	
+	private IBeanFactory beanFactory;
+	
+	/**
+	 * Set method used for tests
+	 * @param listeners
+	 */
 	protected void setListeners(Collection<IPlaybackStateListener> listeners) {
 		this.listeners = listeners;
 	}
 	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+	
+	/**
+	 * Initialization
+	 */
+	public void initialize() {
 		// Clone listeners as list can be modified when adding plugins
-		listeners = new ArrayList<IPlaybackStateListener>(applicationContext.getBeansOfType(IPlaybackStateListener.class).values());
+		this.listeners = new ArrayList<IPlaybackStateListener>(beanFactory.getBeans(IPlaybackStateListener.class));
 	}
 	
     /**

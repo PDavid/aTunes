@@ -108,7 +108,7 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
 		dialog.showDialog();
     	IAlbum album = dialog.getAlbum(); 
     	if (album != null) {
-    		playListHandler.addToPlayList(album.getAudioObjects());
+    		playListHandler.addToVisiblePlayList(album.getAudioObjects());
     	}
     }
 }

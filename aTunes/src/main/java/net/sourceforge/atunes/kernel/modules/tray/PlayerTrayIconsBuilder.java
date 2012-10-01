@@ -33,57 +33,63 @@ import net.sourceforge.atunes.model.IOSManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * Returns tray icon components
+ * @author alex
+ *
+ */
 public class PlayerTrayIconsBuilder implements ApplicationContextAware {
-	
-	private ApplicationContext context; 
-	
+
+	private ApplicationContext context;
+
 	private IOSManager osManager;
-	
+
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
+	public void setApplicationContext(final ApplicationContext applicationContext) {
 		this.context = applicationContext;
 	}
-	
-    /**
-     * Getter for previousIcon
-     * 
-     * @param trayIconSize
-     * @return
-     */
-    public TrayIcon getPreviousTrayIcon(Dimension trayIconSize) {
-    	return new ActionTrayIcon(osManager.getPlayerTrayIcons().getPreviousIcon(trayIconSize), context.getBean(PlayPreviousAudioObjectAction.class));
-    }
-    
-    /**
-     * Returns play tray icon
-     * @param trayIconSize
-     * @return
-     */
-    public TrayIcon getPlayTrayIcon(Dimension trayIconSize) {
-        return new ActionTrayIcon(osManager.getPlayerTrayIcons().getPlayIcon(trayIconSize), context.getBean(PlayAction.class));
-    }
-    
-    /**
-     * Returns stop tray icon
-     * @param trayIconSize
-     * @return
-     */
-    public TrayIcon getStopTrayIcon(Dimension trayIconSize) {
-        return new ActionTrayIcon(osManager.getPlayerTrayIcons().getStopIcon(trayIconSize), context.getBean(StopCurrentAudioObjectAction.class));
-    }
+
+	/**
+	 * Getter for previousIcon
+	 * 
+	 * @param trayIconSize
+	 * @return
+	 */
+	public TrayIcon getPreviousTrayIcon(final Dimension trayIconSize) {
+		return new ActionTrayIcon(osManager.getPlayerTrayIcons().getPreviousIcon(trayIconSize), context.getBean(PlayPreviousAudioObjectAction.class));
+	}
+
+	/**
+	 * Returns play tray icon
+	 * @param trayIconSize
+	 * @return
+	 */
+	public TrayIcon getPlayTrayIcon(final Dimension trayIconSize) {
+		return new ActionTrayIcon(osManager.getPlayerTrayIcons().getPlayIcon(trayIconSize), context.getBean(PlayAction.class));
+	}
+
+	/**
+	 * Returns stop tray icon
+	 * @param trayIconSize
+	 * @return
+	 */
+	public TrayIcon getStopTrayIcon(final Dimension trayIconSize) {
+		return new ActionTrayIcon(osManager.getPlayerTrayIcons().getStopIcon(trayIconSize), context.getBean(StopCurrentAudioObjectAction.class));
+	}
 
 	/**
 	 * Returns next tray icon
 	 * @param trayIconSize
+	 * @return
 	 */
-	public TrayIcon getNextTrayIcon(Dimension trayIconSize) {
-        return new ActionTrayIcon(osManager.getPlayerTrayIcons().getNextIcon(trayIconSize), context.getBean(PlayNextAudioObjectAction.class));
+	public TrayIcon getNextTrayIcon(final Dimension trayIconSize) {
+		return new ActionTrayIcon(osManager.getPlayerTrayIcons().getNextIcon(trayIconSize), context.getBean(PlayNextAudioObjectAction.class));
 	}
 }

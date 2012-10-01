@@ -47,7 +47,7 @@ final class RefreshTagAfterModifyRunnable implements Runnable {
 	    // update Swing components if necessary
 	    boolean playListContainsRefreshedFile = false;
 	    for (ILocalAudioObject lao : this.audioFilesEditing) {
-	        if (playListHandler.getCurrentPlayList(true).contains(lao)) {
+	        if (playListHandler.getVisiblePlayList().contains(lao)) {
 	            playListContainsRefreshedFile = true;
 	        }
 

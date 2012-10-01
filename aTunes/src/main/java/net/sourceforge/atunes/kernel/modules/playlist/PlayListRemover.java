@@ -227,7 +227,7 @@ public class PlayListRemover implements ApplicationContextAware {
 	}
 
 	void removeAudioObjects(int[] rows) {
-        IPlayList currentPlayList = playListHandler.getCurrentPlayList(true);
+        IPlayList currentPlayList = playListHandler.getVisiblePlayList();
         IAudioObject playingAudioObject = currentPlayList.getCurrentAudioObject();
         boolean hasToBeRemoved = false;
         for (int element : rows) {
@@ -289,7 +289,7 @@ public class PlayListRemover implements ApplicationContextAware {
     		playListsContainer.getPlayListAt(i).remove(audioFiles);
         }
         // Update status bar
-    	playListInformationInStatusBar.showPlayListInformation(playListHandler.getCurrentPlayList(true));
+    	playListInformationInStatusBar.showPlayListInformation(playListHandler.getVisiblePlayList());
     }
 
 	/**
@@ -302,7 +302,7 @@ public class PlayListRemover implements ApplicationContextAware {
         // Set selection interval to none
         playListController.clearSelection();
 
-        IPlayList playList = playListHandler.getCurrentPlayList(true);
+        IPlayList playList = playListHandler.getVisiblePlayList();
         if (!playList.isEmpty()) {
             // Clear play list
             playList.clear();

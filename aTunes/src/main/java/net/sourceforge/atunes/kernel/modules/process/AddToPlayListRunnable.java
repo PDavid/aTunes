@@ -48,7 +48,7 @@ class AddToPlayListRunnable implements Runnable {
     public void run() {
         if (songsLoaded.size() >= 1) {
         	playListHandler.clearPlayList();
-        	playListHandler.addToPlayList(songsLoaded);
+        	playListHandler.addToVisiblePlayList(songsLoaded);
         	playListHandler.renameCurrentVisiblePlayList(playListName);
         }
     }

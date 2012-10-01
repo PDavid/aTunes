@@ -234,7 +234,7 @@
 	<bean id="showNavigationTableAction" class="net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction"/>
 	<bean id="showNavigationTreeAction" class="net.sourceforge.atunes.kernel.actions.ShowNavigationTreeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.ShowOSDAction"/>
+	<bean id="showOSDAction" class="net.sourceforge.atunes.kernel.actions.ShowOSDAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowPlayListItemInfoAction"/>
 	<bean id="showRadioBrowserAction" class="net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction"/>
 	<bean id="showStatsAction" class="net.sourceforge.atunes.kernel.actions.ShowStatsAction"/>

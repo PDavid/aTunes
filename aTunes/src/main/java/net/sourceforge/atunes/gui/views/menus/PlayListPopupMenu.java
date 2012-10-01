@@ -23,25 +23,31 @@ package net.sourceforge.atunes.gui.views.menus;
 import javax.swing.JPopupMenu;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IBeanFactory;
 
+/**
+ * Play list popup menu
+ * @author alex
+ *
+ */
 public class PlayListPopupMenu extends JPopupMenu {
 
 	private static final long serialVersionUID = -3624790857729577320L;
 
-	private PlayListMenuFiller playListMenuFiller;
-	
+	private IBeanFactory beanFactory;
+
 	/**
-	 * @param playListMenuFiller
+	 * @param beanFactory
 	 */
-	public void setPlayListMenuFiller(PlayListMenuFiller playListMenuFiller) {
-		this.playListMenuFiller = playListMenuFiller;
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
-	
+
 	/**
 	 * Initializes menu
 	 */
 	public void initialize() {
-		playListMenuFiller.fillPopUpMenu(this);
-        GuiUtils.applyComponentOrientation(this);
+		beanFactory.getBean(PlayListMenuFiller.class).fillPopUpMenu(this);
+		GuiUtils.applyComponentOrientation(this);
 	}
 }

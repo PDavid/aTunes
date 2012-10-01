@@ -24,8 +24,6 @@ import java.awt.CheckboxMenuItem;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -41,24 +39,29 @@ import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
 import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
 import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+/**
+ * Responsible of filling tray menu with tray icons
+ * @author alex
+ *
+ */
+public class MacTrayIconFiller implements ITrayIconFiller {
 
-public class MacTrayIconFiller implements ITrayIconFiller, ApplicationContextAware {
-	
-	private ApplicationContext context;
-	
 	private MenuItem playMenuItem;
-	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
-		
+
 	@Override
-	public void fillTrayIcon(TrayIcon trayIcon) {
+	public void fillTrayIcon(final TrayIcon trayIcon) {
 		PopupMenu popupmenu = trayIcon.getPopupMenu();
 
 		popupmenu.add(getPlayMenuItem());
@@ -77,162 +80,156 @@ public class MacTrayIconFiller implements ITrayIconFiller, ApplicationContextAwa
 		popupmenu.addSeparator();
 		popupmenu.add(getExitMenuItem());
 	}
-	
+
 	@Override
-	public void setPlayMenuItemText(String text) {
+	public void setPlayMenuItemText(final String text) {
 		playMenuItem.setLabel(text);
 	}
-	
+
 	/**
-     * Getter of play menu item
-     * 
-     * @return
-     */
-    private MenuItem getPlayMenuItem() {
-        if (playMenuItem == null) {
-            playMenuItem = new MenuItem(I18nUtils.getString("PLAY"));
-            playMenuItem.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					context.getBean(PlayAction.class).actionPerformed(null);
-				}
-			});
-        }
-        return playMenuItem;
-    }
-	
-    /**
-     * Getter of stop menu item
-     * 
-     * @return
-     */
-    private MenuItem getStopMenuItem() {
-        MenuItem mi = new MenuItem(I18nUtils.getString("STOP"));
-        mi.addActionListener(context.getBean(StopCurrentAudioObjectAction.class));
-        return mi;
-    }
+	 * Getter of play menu item
+	 * 
+	 * @return
+	 */
+	private MenuItem getPlayMenuItem() {
+		if (playMenuItem == null) {
+			playMenuItem = new MenuItem(I18nUtils.getString("PLAY"));
+			playMenuItem.addActionListener(beanFactory.getBean(PlayAction.class));
+		}
+		return playMenuItem;
+	}
 
-    /**
-     * Getter of previous menu item
-     * 
-     * @return
-     */
-    private MenuItem getPreviousMenuItem() {
-        MenuItem mi = new MenuItem(I18nUtils.getString("PREVIOUS"));
-        mi.addActionListener(context.getBean(PlayPreviousAudioObjectAction.class));
-        return mi;
-    }
+	/**
+	 * Getter of stop menu item
+	 * 
+	 * @return
+	 */
+	private MenuItem getStopMenuItem() {
+		MenuItem mi = new MenuItem(I18nUtils.getString("STOP"));
+		mi.addActionListener(beanFactory.getBean(StopCurrentAudioObjectAction.class));
+		return mi;
+	}
 
-    /**
-     * Getter for next menu item
-     * 
-     * @return
-     */
-    private MenuItem getNextMenuItem() {
-        MenuItem mi = new MenuItem(I18nUtils.getString("NEXT"));
-        mi.addActionListener(context.getBean(PlayNextAudioObjectAction.class));
-        return mi;
-    }
+	/**
+	 * Getter of previous menu item
+	 * 
+	 * @return
+	 */
+	private MenuItem getPreviousMenuItem() {
+		MenuItem mi = new MenuItem(I18nUtils.getString("PREVIOUS"));
+		mi.addActionListener(beanFactory.getBean(PlayPreviousAudioObjectAction.class));
+		return mi;
+	}
 
-    /**
-     * Getter for mute menu item
-     * 
-     * @return
-     */
-    private CheckboxMenuItem getMuteCheckBoxMenuItem() {
-        CheckboxMenuItem mute = new CheckboxMenuItem(I18nUtils.getString("MUTE"));
-        mute.addItemListener(new ItemListener() {
-			
+	/**
+	 * Getter for next menu item
+	 * 
+	 * @return
+	 */
+	private MenuItem getNextMenuItem() {
+		MenuItem mi = new MenuItem(I18nUtils.getString("NEXT"));
+		mi.addActionListener(beanFactory.getBean(PlayNextAudioObjectAction.class));
+		return mi;
+	}
+
+	/**
+	 * Getter for mute menu item
+	 * 
+	 * @return
+	 */
+	private CheckboxMenuItem getMuteCheckBoxMenuItem() {
+		CheckboxMenuItem mute = new CheckboxMenuItem(I18nUtils.getString("MUTE"));
+		mute.addItemListener(new ItemListener() {
+
 			@Override
-			public void itemStateChanged(ItemEvent arg0) {
-				AbstractAction action = context.getBean(MuteAction.class);
+			public void itemStateChanged(final ItemEvent arg0) {
+				AbstractAction action = beanFactory.getBean(MuteAction.class);
 				action.putValue(AbstractAction.SELECTED_KEY, !(Boolean) action.getValue(AbstractAction.SELECTED_KEY));
 				action.actionPerformed(null);
 			}
 		});
-        boolean selected = (Boolean) context.getBean(MuteAction.class).getValue(AbstractAction.SELECTED_KEY);
-        mute.setState(selected);
-        return mute;
-    }
+		boolean selected = (Boolean) beanFactory.getBean(MuteAction.class).getValue(AbstractAction.SELECTED_KEY);
+		mute.setState(selected);
+		return mute;
+	}
 
-    /**
-     * Getter for shuffle menu item
-     * 
-     * @return
-     */
-    private CheckboxMenuItem getShuffleCheckBoxMenuItem() {
-        CheckboxMenuItem mi = new CheckboxMenuItem(I18nUtils.getString("SHUFFLE"));
-        mi.addItemListener(new ItemListener() {
-        	@Override
-        	public void itemStateChanged(ItemEvent e) {
-				AbstractAction action = context.getBean(ShuffleModeAction.class);
+	/**
+	 * Getter for shuffle menu item
+	 * 
+	 * @return
+	 */
+	private CheckboxMenuItem getShuffleCheckBoxMenuItem() {
+		CheckboxMenuItem mi = new CheckboxMenuItem(I18nUtils.getString("SHUFFLE"));
+		mi.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(final ItemEvent e) {
+				AbstractAction action = beanFactory.getBean(ShuffleModeAction.class);
 				action.putValue(AbstractAction.SELECTED_KEY, !(Boolean) action.getValue(AbstractAction.SELECTED_KEY));
 				action.actionPerformed(null);
-        	}
-        });
-        boolean selected = (Boolean) context.getBean(ShuffleModeAction.class).getValue(AbstractAction.SELECTED_KEY);
-        mi.setState(selected);
-        return mi;
-    }
+			}
+		});
+		boolean selected = (Boolean) beanFactory.getBean(ShuffleModeAction.class).getValue(AbstractAction.SELECTED_KEY);
+		mi.setState(selected);
+		return mi;
+	}
 
-    /**
-     * Getter for repeat menu item
-     */
-    private CheckboxMenuItem getRepeatCheckBoxMenuItem() {
-        CheckboxMenuItem mi = new CheckboxMenuItem(I18nUtils.getString("REPEAT"));
-        mi.addItemListener(new ItemListener() {
-        	@Override
-        	public void itemStateChanged(ItemEvent e) {
-				AbstractAction action = context.getBean(RepeatModeAction.class);
+	/**
+	 * Getter for repeat menu item
+	 */
+	private CheckboxMenuItem getRepeatCheckBoxMenuItem() {
+		CheckboxMenuItem mi = new CheckboxMenuItem(I18nUtils.getString("REPEAT"));
+		mi.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(final ItemEvent e) {
+				AbstractAction action = beanFactory.getBean(RepeatModeAction.class);
 				action.putValue(AbstractAction.SELECTED_KEY, !(Boolean) action.getValue(AbstractAction.SELECTED_KEY));
 				action.actionPerformed(null);
-        	}
-        });
-        boolean selected = (Boolean) context.getBean(RepeatModeAction.class).getValue(AbstractAction.SELECTED_KEY);
-        mi.setState(selected);
-        return mi;
-    }
+			}
+		});
+		boolean selected = (Boolean) beanFactory.getBean(RepeatModeAction.class).getValue(AbstractAction.SELECTED_KEY);
+		mi.setState(selected);
+		return mi;
+	}
 
-    /**
-     * Getter for showOSD menu item
-     * 
-     * @return
-     */
-    private CheckboxMenuItem getShowOSDCheckBoxMenuItem() {
-        CheckboxMenuItem mi = new CheckboxMenuItem(I18nUtils.getString("SHOW_OSD"));
-        mi.addItemListener(new ItemListener() {
-        	@Override
-        	public void itemStateChanged(ItemEvent e) {
-				AbstractAction action = context.getBean(ToggleOSDSettingAction.class);
+	/**
+	 * Getter for showOSD menu item
+	 * 
+	 * @return
+	 */
+	private CheckboxMenuItem getShowOSDCheckBoxMenuItem() {
+		CheckboxMenuItem mi = new CheckboxMenuItem(I18nUtils.getString("SHOW_OSD"));
+		mi.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(final ItemEvent e) {
+				AbstractAction action = beanFactory.getBean(ToggleOSDSettingAction.class);
 				action.putValue(AbstractAction.SELECTED_KEY, !(Boolean) action.getValue(AbstractAction.SELECTED_KEY));
 				action.actionPerformed(null);
-        	}
-        });
-        boolean selected = (Boolean) context.getBean(ToggleOSDSettingAction.class).getValue(AbstractAction.SELECTED_KEY);
-        mi.setState(selected);
-        return mi;
-    }
+			}
+		});
+		boolean selected = (Boolean) beanFactory.getBean(ToggleOSDSettingAction.class).getValue(AbstractAction.SELECTED_KEY);
+		mi.setState(selected);
+		return mi;
+	}
 
-    /**
-     * Getter for about menu item
-     * 
-     * @return
-     */
-    private MenuItem getAboutMenuItem() {
-        MenuItem mi = new MenuItem(I18nUtils.getString("ABOUT"));
-        mi.addActionListener(context.getBean(ShowAboutAction.class));
-        return mi;
-    }
+	/**
+	 * Getter for about menu item
+	 * 
+	 * @return
+	 */
+	private MenuItem getAboutMenuItem() {
+		MenuItem mi = new MenuItem(I18nUtils.getString("ABOUT"));
+		mi.addActionListener(beanFactory.getBean(ShowAboutAction.class));
+		return mi;
+	}
 
-    /**
-     * Getter for exit menu item
-     * 
-     * @return
-     */
-    private MenuItem getExitMenuItem() {
-        MenuItem mi = new MenuItem(I18nUtils.getString("EXIT"));
-        mi.addActionListener(context.getBean(ExitAction.class));
-        return mi;
-    }
+	/**
+	 * Getter for exit menu item
+	 * 
+	 * @return
+	 */
+	private MenuItem getExitMenuItem() {
+		MenuItem mi = new MenuItem(I18nUtils.getString("EXIT"));
+		mi.addActionListener(beanFactory.getBean(ExitAction.class));
+		return mi;
+	}
 }

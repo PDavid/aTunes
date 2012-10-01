@@ -130,7 +130,7 @@ public class AddArtistTopTracksToPlayListAction extends AbstractActionOverSelect
 			public void call(Map<String, List<ILocalAudioObject>> topTracksByArtist) {
 				for (Map.Entry<String, List<ILocalAudioObject>> artistTopTracks : topTracksByArtist.entrySet()) {
 	    			// Add songs to play list
-	    			playListHandler.addToPlayList(artistTopTracks.getValue());
+	    			playListHandler.addToVisiblePlayList(artistTopTracks.getValue());
 				}
 				dialog.hideDialog();
 			}

@@ -81,13 +81,12 @@ public class PlayNowAction extends CustomAbstractAction {
 	void playNow(IAudioObject audioObject) {
         // Play now feature plays selected song immediately. If song is added to play list, then is automatically selected.
         // If not, it's added to play list    	
-        if (!playListHandler.getCurrentPlayList(true).contains(audioObject)) {
+        if (!playListHandler.getVisiblePlayList().contains(audioObject)) {
             List<IAudioObject> list = new ArrayList<IAudioObject>();
             list.add(audioObject);
             addToPlayListAndPlay(list);
         } else {
-        	playListHandler.setPositionToPlayInVisiblePlayList(playListHandler.getCurrentPlayList(true).indexOf(audioObject));
-            playerHandler.playCurrentAudioObject(false);
+        	playerHandler.playAudioObjectInPlayListPositionOfVisiblePlayList(playListHandler.getVisiblePlayList().indexOf(audioObject));
         }
     }
 	
@@ -96,9 +95,8 @@ public class PlayNowAction extends CustomAbstractAction {
             return;
         }
 
-        int playListCurrentSize = playListHandler.getCurrentPlayList(true).size();
-        playListHandler.addToPlayList(audioObjects);
-        playListHandler.setPositionToPlayInVisiblePlayList(playListCurrentSize);
-        playerHandler.playCurrentAudioObject(false);
+        int playListCurrentSize = playListHandler.getVisiblePlayList().size();
+        playListHandler.addToVisiblePlayList(audioObjects);
+    	playerHandler.playAudioObjectInPlayListPositionOfVisiblePlayList(playListCurrentSize);
     }
 }

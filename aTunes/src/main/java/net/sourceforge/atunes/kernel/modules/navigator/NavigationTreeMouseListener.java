@@ -113,7 +113,7 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
             if (selRow != -1 && e.getClickCount() == 2) {
             	DefaultMutableTreeNode node = (DefaultMutableTreeNode) selPath.getLastPathComponent();
             	List<? extends IAudioObject> songs = controller.getAudioObjectsForTreeNode(currentView.getClass(), node);
-            	Context.getBean(IPlayListHandler.class).addToPlayList(songs);
+            	Context.getBean(IPlayListHandler.class).addToVisiblePlayList(songs);
             }
         }
         

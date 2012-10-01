@@ -34,27 +34,36 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class VolumeDownRemoteAction extends RemoteAction {
 
-    private static final long serialVersionUID = 8731458163463902477L;
+	private static final long serialVersionUID = 8731458163463902477L;
 
-    private IStatePlayer statePlayer;
-    
-    /**
-     * @param statePlayer
-     */
-    public void setStatePlayer(IStatePlayer statePlayer) {
-        this.statePlayer = statePlayer;
-    }
-    
-    /**
-     * Default constructor
-     */
-    public VolumeDownRemoteAction() {
-        super("volDOWN");
-    }
+	private IStatePlayer statePlayer;
 
-    @Override
-    public String runCommand(List<String> parameters) {
-    	callAction(VolumeDownAction.class);
-    	return StringUtils.getString(statePlayer.getVolume(), '%');
-    }
+	private CustomAbstractAction volumeDownAction;
+
+	/**
+	 * @param volumeDownAction
+	 */
+	public void setVolumeDownAction(final CustomAbstractAction volumeDownAction) {
+		this.volumeDownAction = volumeDownAction;
+	}
+
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(final IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
+
+	/**
+	 * Default constructor
+	 */
+	public VolumeDownRemoteAction() {
+		super("volDOWN");
+	}
+
+	@Override
+	public String runCommand(final List<String> parameters) {
+		callAction(volumeDownAction);
+		return StringUtils.getString(statePlayer.getVolume(), '%');
+	}
 }

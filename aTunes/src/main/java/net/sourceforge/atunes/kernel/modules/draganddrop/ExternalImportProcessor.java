@@ -101,10 +101,10 @@ public class ExternalImportProcessor {
             if (!CollectionUtils.isEmpty(filesToAdd)) {
             	audioObjectComparator.sort(filesToAdd);
                 int dropRow = playListTable.rowAtPoint(support.getDropLocation().getDropPoint());
-                playListHandler.addToPlayList(dropRow, filesToAdd, true);
+                playListHandler.addToVisiblePlayList(dropRow, filesToAdd);
                 // Keep selected rows: if drop row is the bottom of play list (-1) then select last row
                 if (dropRow == -1) {
-                    dropRow = playListHandler.getCurrentPlayList(true).size() - filesToAdd.size();
+                    dropRow = playListHandler.getVisiblePlayList().size() - filesToAdd.size();
                 }
                 playListTable.getSelectionModel().addSelectionInterval(dropRow, dropRow + filesToAdd.size() - 1);
             }
