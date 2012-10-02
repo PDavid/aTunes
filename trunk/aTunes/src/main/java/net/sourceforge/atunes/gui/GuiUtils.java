@@ -53,7 +53,6 @@ import javax.swing.text.StyleConstants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.Logger;
@@ -102,7 +101,7 @@ public final class GuiUtils {
 
 	/** The set window opaque method. */
 	private static Method setWindowOpaqueMethod;
-	
+
 	static {
 		try {
 			Class<?> awtUtilities = Class.forName("com.sun.awt.AWTUtilities");
@@ -130,7 +129,7 @@ public final class GuiUtils {
 	 *            the root pane
 	 * 
 	 */
-	public static void addCloseActionWithEscapeKey(final Window window, JRootPane rootPane) {
+	public static void addCloseActionWithEscapeKey(final Window window, final JRootPane rootPane) {
 		// Handle escape key to close the window
 
 		KeyStroke escape = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
@@ -138,7 +137,7 @@ public final class GuiUtils {
 			private static final long serialVersionUID = 0L;
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				window.setVisible(false);
 			}
 		};
@@ -154,7 +153,7 @@ public final class GuiUtils {
 	 * @param rootPane
 	 *            the root pane
 	 */
-	public static void addDisposeActionWithEscapeKey(final Window window, JRootPane rootPane) {
+	public static void addDisposeActionWithEscapeKey(final Window window, final JRootPane rootPane) {
 		// Handle escape key to close the window
 
 		KeyStroke escape = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
@@ -162,7 +161,7 @@ public final class GuiUtils {
 			private static final long serialVersionUID = 0L;
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				window.dispose();
 			}
 		};
@@ -170,7 +169,7 @@ public final class GuiUtils {
 		rootPane.getActionMap().put(ESCAPE2, disposeAction);
 	}
 
-	public static void addAppIcons(Window w) {
+	public static void addAppIcons(final Window w) {
 		w.setIconImages(Arrays.asList(Images.getImage(Images.APP_LOGO_16).getImage(), Images.getImage(Images.APP_LOGO_32).getImage(), Images.getImage(Images.APP_LOGO_90)
 				.getImage()));
 	}
@@ -181,7 +180,7 @@ public final class GuiUtils {
 	 * @param containers
 	 *            One or more containers
 	 */
-	public static void applyComponentOrientation(Container... containers) {
+	public static void applyComponentOrientation(final Container... containers) {
 		if (componentOrientation == null) {
 			setComponentOrientation();
 		}
@@ -196,7 +195,7 @@ public final class GuiUtils {
 	 * @param tree
 	 *            the tree
 	 */
-	public static void collapseTree(JTree tree) {
+	public static void collapseTree(final JTree tree) {
 		for (int i = tree.getRowCount() - 1; i > 0; i--) {
 			tree.collapseRow(i);
 		}
@@ -209,7 +208,7 @@ public final class GuiUtils {
 	 * @param tree
 	 *            A tree
 	 */
-	public static void expandTree(JTree tree) {
+	public static void expandTree(final JTree tree) {
 		for (int i = 1; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);
 		}
@@ -285,7 +284,7 @@ public final class GuiUtils {
 	 * @param borderColor
 	 *            the borderColor to set
 	 */
-	public static void setBorderColor(Color borderColor) {
+	public static void setBorderColor(final Color borderColor) {
 		GuiUtils.borderColor = borderColor;
 	}
 
@@ -312,7 +311,7 @@ public final class GuiUtils {
 	 * @param mask
 	 *            A mask
 	 */
-	public static void setWindowShape(Window window, Shape mask) {
+	public static void setWindowShape(final Window window, final Shape mask) {
 		if (setWindowShapeMethod != null) {
 			try {
 				setWindowShapeMethod.invoke(null, window, mask);
@@ -345,7 +344,7 @@ public final class GuiUtils {
 	 *            Opacity from 0 to 1
 	 */
 
-	public static void setWindowOpacity(Window window, float opacity) {
+	public static void setWindowOpacity(final Window window, final float opacity) {
 		if (setWindowOpacityMethod != null) {
 			try {
 				setWindowOpacityMethod.invoke(null, window, opacity);
@@ -377,7 +376,7 @@ public final class GuiUtils {
 	 * @param opaque
 	 *            If the window should be opaque
 	 */
-	public static void setWindowOpaque(Window window, boolean opaque) {
+	public static void setWindowOpaque(final Window window, final boolean opaque) {
 		if (setWindowOpaqueMethod != null) {
 			try {
 				setWindowOpaqueMethod.invoke(null, window, opaque);
@@ -417,7 +416,7 @@ public final class GuiUtils {
 	 * @param y
 	 * @return
 	 */
-	public static GraphicsDevice getGraphicsDeviceForLocation(int x, int y) {
+	public static GraphicsDevice getGraphicsDeviceForLocation(final int x, final int y) {
 		GraphicsEnvironment localGraphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		for (int i = 0; i < getNumberOfScreenDevices(); i++) {
 			GraphicsDevice graphicsDevice = localGraphicsEnvironment.getScreenDevices()[i];
@@ -434,12 +433,8 @@ public final class GuiUtils {
 	 * @param p
 	 * @return
 	 */
-	public static GraphicsDevice getGraphicsDeviceForLocation(Point p) {
+	public static GraphicsDevice getGraphicsDeviceForLocation(final Point p) {
 		return getGraphicsDeviceForLocation(p.x, p.y);
-	}
-
-	public static ComponentOrientationTableCellRendererCode getComponentOrientationTableCellRendererCode(ILookAndFeel lookAndFeel) {
-		return new ComponentOrientationTableCellRendererCode(lookAndFeel);
 	}
 
 	/**
@@ -447,7 +442,7 @@ public final class GuiUtils {
 	 * @param e
 	 * @return
 	 */
-	public static boolean isPrimaryMouseButton(MouseEvent e) {
+	public static boolean isPrimaryMouseButton(final MouseEvent e) {
 		return SwingUtilities.isLeftMouseButton(e) && !e.isControlDown();
 	}
 
@@ -456,7 +451,7 @@ public final class GuiUtils {
 	 * @param e
 	 * @return
 	 */
-	public static boolean isSecondaryMouseButton(MouseEvent e) {
+	public static boolean isSecondaryMouseButton(final MouseEvent e) {
 		if (!Context.getBean(IOSManager.class).isMacOsX()) {
 			return SwingUtilities.isRightMouseButton(e);
 		} else {
@@ -485,7 +480,7 @@ public final class GuiUtils {
 	 * Executes a code in Event Dispatch Thread
 	 * @param runnable
 	 */
-	public static void callInEventDispatchThread(Runnable runnable) {
+	public static void callInEventDispatchThread(final Runnable runnable) {
 		if (!EventQueue.isDispatchThread()) {
 			SwingUtilities.invokeLater(runnable);
 		} else {
@@ -497,7 +492,7 @@ public final class GuiUtils {
 	 * Executes a code in Event Dispatch Thread, waiting for finalization
 	 * @param runnable
 	 */
-	public static void callInEventDispatchThreadAndWait(Runnable runnable) {
+	public static void callInEventDispatchThreadAndWait(final Runnable runnable) {
 		if (!EventQueue.isDispatchThread()) {
 			try {
 				SwingUtilities.invokeAndWait(runnable);
@@ -511,7 +506,7 @@ public final class GuiUtils {
 		}
 	}
 
-	public static void initializeTextField(CustomTextField customTextField) {
+	public static void initializeTextField(final CustomTextField customTextField) {
 		if (Context.getBean(IOSManager.class).isMacOsX()) {
 			JTextComponent.loadKeymap(customTextField.getKeymap(), MAC_OS_BINDINGS, customTextField.getActions());
 		}

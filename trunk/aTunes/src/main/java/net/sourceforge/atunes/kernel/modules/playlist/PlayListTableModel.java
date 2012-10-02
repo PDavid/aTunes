@@ -75,7 +75,7 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
 	public Object getValueAt(final int rowIndex, final int colIndex) {
 		// Call Column method to get value from AudioFile
 		if (visiblePlayList != null) {
-			return getColumn(colIndex).getValueFor(visiblePlayList.get(rowIndex));
+			return getColumn(colIndex).getValueFor(visiblePlayList.get(rowIndex), rowIndex);
 		}
 		return null;
 	}

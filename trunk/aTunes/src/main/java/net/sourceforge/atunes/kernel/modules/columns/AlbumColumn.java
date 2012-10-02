@@ -55,12 +55,12 @@ public class AlbumColumn extends AbstractColumn<TextAndIcon> {
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
 	@Override
-	protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
 		int album = ao1.getAlbum().compareTo(ao2.getAlbum());
 		if (album == 0) {
 			if (ao1.getDiscNumber() == ao2.getDiscNumber()) {
@@ -70,9 +70,9 @@ public class AlbumColumn extends AbstractColumn<TextAndIcon> {
 		}
 		return album;
 	}
-	
+
 	@Override
-	protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
 		int album = ao2.getAlbum().compareTo(ao1.getAlbum());
 		if (album == 0) {
 			if (ao1.getDiscNumber() == ao2.getDiscNumber()) {
@@ -84,7 +84,7 @@ public class AlbumColumn extends AbstractColumn<TextAndIcon> {
 	}
 
 	@Override
-	public TextAndIcon getValueFor(IAudioObject audioObject) {
+	public TextAndIcon getValueFor(final IAudioObject audioObject, final int row) {
 		if (getFavoritesHandler().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum())) {
 			return new TextAndIcon(audioObject.getAlbum(), albumFavoriteIcon.getColorMutableIcon(), SwingConstants.LEFT);
 		} else {
@@ -93,24 +93,24 @@ public class AlbumColumn extends AbstractColumn<TextAndIcon> {
 	}
 
 	@Override
-	public String getValueForFilter(IAudioObject audioObject) {
+	public String getValueForFilter(final IAudioObject audioObject, final int row) {
 		return audioObject.getAlbum();
 	}
 
 	/**
 	 * @return favorites handler
 	 */
-	 private IFavoritesHandler getFavoritesHandler() {
-		 if (favoritesHandler == null) {
-			 favoritesHandler = beanFactory.getBean(IFavoritesHandler.class);
-		 }
-		 return favoritesHandler;
-	 }
+	private IFavoritesHandler getFavoritesHandler() {
+		if (favoritesHandler == null) {
+			favoritesHandler = beanFactory.getBean(IFavoritesHandler.class);
+		}
+		return favoritesHandler;
+	}
 
-	 /**
-	  * @param albumFavoriteIcon
-	  */
-	 public void setAlbumFavoriteIcon(IIconFactory albumFavoriteIcon) {
-		 this.albumFavoriteIcon = albumFavoriteIcon;
-	 }
+	/**
+	 * @param albumFavoriteIcon
+	 */
+	public void setAlbumFavoriteIcon(final IIconFactory albumFavoriteIcon) {
+		this.albumFavoriteIcon = albumFavoriteIcon;
+	}
 }

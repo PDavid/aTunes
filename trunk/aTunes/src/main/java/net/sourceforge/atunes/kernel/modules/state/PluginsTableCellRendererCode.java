@@ -24,18 +24,19 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.ImageUtils;
 
 import org.commonjukebox.plugins.model.PluginInfo;
 
-class PluginsTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, PluginInfo> {
-	public PluginsTableCellRendererCode(ILookAndFeel lookAndFeel) {
-		super(lookAndFeel);
-	}
+/**
+ * Renderer for plugins table
+ * @author alex
+ *
+ */
+public class PluginsTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, PluginInfo> {
 
 	@Override
-	public JLabel getComponent(JLabel c, JTable table, PluginInfo value, boolean isSelected, boolean hasFocus, int row, int column) {
+	public JLabel getComponent(final JLabel c, final JTable table, final PluginInfo value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
 		c.setText(value.getName());
 		if (value.getIcon() != null) {
 			c.setIcon(ImageUtils.scaleImageBicubic(value.getIcon(), PluginsPanel.CELL_HEIGHT - 5, PluginsPanel.CELL_HEIGHT - 5));

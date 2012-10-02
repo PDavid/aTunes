@@ -24,29 +24,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
-
+/**
+ * Renderer for ImageIcon objects
+ * @author alex
+ *
+ */
 public class ImageIconTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, ImageIcon> {
 
-    private AbstractCommonColumnModel model;
+	@Override
+	public JLabel getComponent(final JLabel c, final JTable table, final ImageIcon value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+		c.setText(null);
+		c.setIcon(value);
 
-    /**
-     * @param model
-     * @param lookAndFeel
-     */
-    public ImageIconTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
-    	super(lookAndFeel);
-        this.model = model;
-    }
-
-    @Override
-    public JLabel getComponent(JLabel c, JTable table, ImageIcon value, boolean isSelected, boolean hasFocus, int row, int column) {
-        c.setText(null);
-        c.setIcon(value);
-
-        // Get alignment from model
-        c.setHorizontalAlignment(model.getColumnAlignment(column));
-        return c;
-    }
-
+		// Get alignment from model
+		c.setHorizontalAlignment(getModel().getColumnAlignment(column));
+		return c;
+	}
 }

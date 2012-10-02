@@ -35,61 +35,61 @@ import net.sourceforge.atunes.model.IStatisticsHandler;
  *
  */
 public class TimesPlayedColumn extends AbstractColumn<String> {
-    
-    private static final long serialVersionUID = 7879150472122090859L;
 
-    private transient IStatisticsHandler statisticsHandler;
-    
-    /**
-     * @param statisticsHandler
-     */
-    public void setStatisticsHandler(IStatisticsHandler statisticsHandler) {
+	private static final long serialVersionUID = 7879150472122090859L;
+
+	private transient IStatisticsHandler statisticsHandler;
+
+	/**
+	 * @param statisticsHandler
+	 */
+	public void setStatisticsHandler(final IStatisticsHandler statisticsHandler) {
 		this.statisticsHandler = statisticsHandler;
 	}
-    
-    /**
-     * Default constructor
-     */
-    public TimesPlayedColumn() {
-        super("TIMES_PLAYED");
-        setWidth(100);
-        setVisible(false);
-        setAlignment(SwingConstants.CENTER);
-    }
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        int times1 = 0;
-        int times2 = 0;
-        if (ao1 instanceof ILocalAudioObject) {
-            IAudioObjectStatistics stats1 = statisticsHandler.getAudioObjectStatistics(ao1);
-            times1 = stats1 != null ? stats1.getTimesPlayed() : 0;
-        }
-        if (ao2 instanceof ILocalAudioObject) {
-            IAudioObjectStatistics stats2 = statisticsHandler.getAudioObjectStatistics(ao2);
-            times2 = stats2 != null ? stats2.getTimesPlayed() : 0;
-        }
-        return ((Integer) times1).compareTo(times2);
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
+	/**
+	 * Default constructor
+	 */
+	public TimesPlayedColumn() {
+		super("TIMES_PLAYED");
+		setWidth(100);
+		setVisible(false);
+		setAlignment(SwingConstants.CENTER);
+	}
 
-    @Override
-    public String getValueFor(IAudioObject audioObject) {
-        if (audioObject instanceof IRadio) {
-            return "";
-        }
-        if (audioObject instanceof IPodcastFeedEntry) {
-            return "";
-        }
-        // Return times played
-        IAudioObjectStatistics stats = statisticsHandler.getAudioObjectStatistics(audioObject);
-        if (stats != null && stats.getTimesPlayed() > 0) {
-            return Integer.toString(stats.getTimesPlayed());
-        }
-        return "";
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		int times1 = 0;
+		int times2 = 0;
+		if (ao1 instanceof ILocalAudioObject) {
+			IAudioObjectStatistics stats1 = statisticsHandler.getAudioObjectStatistics(ao1);
+			times1 = stats1 != null ? stats1.getTimesPlayed() : 0;
+		}
+		if (ao2 instanceof ILocalAudioObject) {
+			IAudioObjectStatistics stats2 = statisticsHandler.getAudioObjectStatistics(ao2);
+			times2 = stats2 != null ? stats2.getTimesPlayed() : 0;
+		}
+		return ((Integer) times1).compareTo(times2);
+	}
+
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
+
+	@Override
+	public String getValueFor(final IAudioObject audioObject, final int row) {
+		if (audioObject instanceof IRadio) {
+			return "";
+		}
+		if (audioObject instanceof IPodcastFeedEntry) {
+			return "";
+		}
+		// Return times played
+		IAudioObjectStatistics stats = statisticsHandler.getAudioObjectStatistics(audioObject);
+		if (stats != null && stats.getTimesPlayed() > 0) {
+			return Integer.toString(stats.getTimesPlayed());
+		}
+		return "";
+	}
 }

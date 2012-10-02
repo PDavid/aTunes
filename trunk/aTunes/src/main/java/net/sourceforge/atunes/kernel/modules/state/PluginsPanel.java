@@ -103,47 +103,47 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	private Map<PluginInfo, Boolean> pluginsActivation;
 
 	private IPluginsHandler pluginsHandler;
-	
+
 	private ILookAndFeelManager lookAndFeelManager;
-	
+
 	private IDesktop desktop;
-	
+
 	private IStateCore stateCore;
-	
+
 	private IDialogFactory dialogFactory;
-	
+
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-	
+
 	/**
 	 * @param stateCore
 	 */
-	public void setStateCore(IStateCore stateCore) {
+	public void setStateCore(final IStateCore stateCore) {
 		this.stateCore = stateCore;
 	}
-	
+
 	/**
 	 * @param pluginsHandler
 	 */
-	public void setPluginsHandler(IPluginsHandler pluginsHandler) {
+	public void setPluginsHandler(final IPluginsHandler pluginsHandler) {
 		this.pluginsHandler = pluginsHandler;
 	}
-	
+
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
-	
+
 	/**
 	 * @param desktop
 	 */
-	public void setDesktop(IDesktop desktop) {
+	public void setDesktop(final IDesktop desktop) {
 		this.desktop = desktop;
 	}
 
@@ -153,7 +153,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	public PluginsPanel() {
 		super(I18nUtils.getString("PLUGINS"));
 	}
-	
+
 	/**
 	 * Initializes panel
 	 */
@@ -161,7 +161,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		enabledPluginBox = new JCheckBox(I18nUtils.getString("ENABLED_PLUGINS"));
 		JPanel mainPanel = new JPanel(new GridBagLayout());
 		mainPanel.setVisible(stateCore.isPluginsEnabled());
-		
+
 		pluginsTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
 		pluginsTable.setRowHeight(CELL_HEIGHT);
 		pluginsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -176,7 +176,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		final JLabel pluginAuthorLabel = new JLabel();
 		final UrlLabel pluginUrlLabel = new UrlLabel(desktop);
 
-		pluginsTable.setDefaultRenderer(PluginInfo.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new PluginsTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
+		pluginsTable.setDefaultRenderer(PluginInfo.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new PluginsTableCellRendererCode()));
 
 		pluginsTable.getSelectionModel().addListSelectionListener(new PluginsTableListSelectionListener(pluginLocationLabel,
 				pluginUrlLabel, pluginClassNameLabel, pluginAuthorLabel,
@@ -186,7 +186,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		pluginPreferencesButton.setEnabled(false);
 
 		pluginPreferencesButton.addActionListener(new PluginPreferencesActionListener());
-		
+
 		JButton installNewPluginButton = new JButton(StringUtils.getString(I18nUtils.getString("INSTALL"), "..."));
 		installNewPluginButton.addActionListener(new InstallNewPluginActionListener());
 
@@ -214,11 +214,11 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	 * @param pluginUrlLabel
 	 * @param installNewPluginButton
 	 */
-	private void arrangePanel(JPanel mainPanel, JScrollPane scrollPane,
-			JPanel pluginDetailPanel, final JLabel pluginNameLabel,
+	private void arrangePanel(final JPanel mainPanel, final JScrollPane scrollPane,
+			final JPanel pluginDetailPanel, final JLabel pluginNameLabel,
 			final JLabel pluginVersionLabel, final JLabel pluginClassNameLabel,
 			final JLabel pluginLocationLabel, final JLabel pluginAuthorLabel,
-			final UrlLabel pluginUrlLabel, JButton installNewPluginButton) {
+			final UrlLabel pluginUrlLabel, final JButton installNewPluginButton) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -284,7 +284,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	 * @param pluginAuthorLabel
 	 * @param pluginUrlLabel
 	 */
-	private void arrangePluginDetailPanel(JPanel pluginDetailPanel,
+	private void arrangePluginDetailPanel(final JPanel pluginDetailPanel,
 			final JLabel pluginNameLabel, final JLabel pluginVersionLabel,
 			final JLabel pluginClassNameLabel,
 			final JLabel pluginLocationLabel, final JLabel pluginAuthorLabel,
@@ -326,7 +326,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	 * @param restartNeeded
 	 * @return
 	 */
-	private boolean writePluginsConfiguration(boolean restartNeeded) {
+	private boolean writePluginsConfiguration(final boolean restartNeeded) {
 		boolean restart = restartNeeded;
 		try {
 			// if any plugin has been modified then write configuration
@@ -370,7 +370,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	 * 
 	 * @param enabled
 	 */
-	private void setPluginsEnabled(boolean enabled) {
+	private void setPluginsEnabled(final boolean enabled) {
 		enabledPluginBox.setSelected(enabled);
 	}
 
@@ -393,9 +393,9 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	}
 
 	@Override
-	public void dialogVisibilityChanged(boolean visible) {
+	public void dialogVisibilityChanged(final boolean visible) {
 		if (visible) {
-			// Initialize plugins modified 
+			// Initialize plugins modified
 			pluginsModified = new HashMap<PluginInfo, PluginConfiguration>();
 			pluginsActivation = new HashMap<PluginInfo, Boolean>();
 			// Select first plugin
@@ -407,7 +407,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 	private final class UninstallPluginActionListener implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			int row = pluginsTable.getSelectedRow();
 			PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
 			try {
@@ -425,9 +425,9 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	}
 
 	private final class PluginPreferencesActionListener implements
-			ActionListener {
+	ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			int row = pluginsTable.getSelectedRow();
 			PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
 			PluginConfiguration configuration = ((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(row);
@@ -448,7 +448,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	}
 
 	private final class PluginsTableListSelectionListener implements
-			ListSelectionListener {
+	ListSelectionListener {
 		private final JLabel pluginLocationLabel;
 		private final UrlLabel pluginUrlLabel;
 		private final JLabel pluginClassNameLabel;
@@ -456,10 +456,10 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		private final JLabel pluginVersionLabel;
 		private final JLabel pluginNameLabel;
 
-		private PluginsTableListSelectionListener(JLabel pluginLocationLabel,
-				UrlLabel pluginUrlLabel, JLabel pluginClassNameLabel,
-				JLabel pluginAuthorLabel, JLabel pluginVersionLabel,
-				JLabel pluginNameLabel) {
+		private PluginsTableListSelectionListener(final JLabel pluginLocationLabel,
+				final UrlLabel pluginUrlLabel, final JLabel pluginClassNameLabel,
+				final JLabel pluginAuthorLabel, final JLabel pluginVersionLabel,
+				final JLabel pluginNameLabel) {
 			this.pluginLocationLabel = pluginLocationLabel;
 			this.pluginUrlLabel = pluginUrlLabel;
 			this.pluginClassNameLabel = pluginClassNameLabel;
@@ -469,7 +469,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		}
 
 		@Override
-		public void valueChanged(ListSelectionEvent e) {
+		public void valueChanged(final ListSelectionEvent e) {
 			// Enable preferences button if plugin has any configuration and update detail panel
 			if (pluginsTable.getSelectedRow() != -1) {
 				PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(pluginsTable.getSelectedRow());
@@ -488,11 +488,11 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	private final class InstallNewPluginActionListener implements
 	ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			JFileChooser fileChooser = new JFileChooser();
 			FileFilter filter = new FileFilter() {
 				@Override
-				public boolean accept(File f) {
+				public boolean accept(final File f) {
 					return f.isDirectory() || f.getName().toUpperCase().endsWith("ZIP");
 				}
 
@@ -523,27 +523,27 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 		private List<PluginInfo> plugins;
 
-		private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+		private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-		public PluginsTableModel(List<PluginInfo> plugins) {
+		public PluginsTableModel(final List<PluginInfo> plugins) {
 			super();
 			this.plugins = plugins;
 			// Sort plugins by name
 			Collections.sort(this.plugins, new Comparator<PluginInfo>() {
 				@Override
-				public int compare(PluginInfo o1, PluginInfo o2) {
+				public int compare(final PluginInfo o1, final PluginInfo o2) {
 					return o1.getName().compareToIgnoreCase(o2.getName());
 				}
 			});
 		}
 
 		@Override
-		public void addTableModelListener(TableModelListener l) {
+		public void addTableModelListener(final TableModelListener l) {
 			listeners.add(l);
 		}
 
 		@Override
-		public Class<?> getColumnClass(int columnIndex) {
+		public Class<?> getColumnClass(final int columnIndex) {
 			switch (columnIndex) {
 			case 0:
 				return Boolean.class;
@@ -561,7 +561,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		}
 
 		@Override
-		public String getColumnName(int columnIndex) {
+		public String getColumnName(final int columnIndex) {
 			switch (columnIndex) {
 			case 0:
 				return I18nUtils.getString("ACTIVE");
@@ -579,7 +579,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		}
 
 		@Override
-		public Object getValueAt(int rowIndex, int columnIndex) {
+		public Object getValueAt(final int rowIndex, final int columnIndex) {
 			switch (columnIndex) {
 			case 0:
 				return (pluginsActivation.containsKey(this.plugins.get(rowIndex)) ? pluginsActivation.get(this.plugins.get(rowIndex)) : this.plugins.get(rowIndex).isActive());
@@ -592,17 +592,17 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		}
 
 		@Override
-		public boolean isCellEditable(int rowIndex, int columnIndex) {
+		public boolean isCellEditable(final int rowIndex, final int columnIndex) {
 			return columnIndex == 0;
 		}
 
 		@Override
-		public void removeTableModelListener(TableModelListener l) {
+		public void removeTableModelListener(final TableModelListener l) {
 			listeners.remove(l);
 		}
 
 		@Override
-		public void setValueAt(Object value, int rowIndex, int columnIndex) {
+		public void setValueAt(final Object value, final int rowIndex, final int columnIndex) {
 			if (columnIndex == 0) {
 				// If value changed then add to map
 				if (((Boolean) value) != this.plugins.get(rowIndex).isActive()) {
@@ -614,7 +614,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 			}
 		}
 
-		public PluginConfiguration getPluginConfigurationAt(int row) {
+		public PluginConfiguration getPluginConfigurationAt(final int row) {
 			try {
 				return pluginsHandler.getConfiguration(this.plugins.get(row));
 			} catch (PluginSystemException e) {
@@ -623,7 +623,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 			}
 		}
 
-		public PluginInfo getPluginAt(int row) {
+		public PluginInfo getPluginAt(final int row) {
 			return this.plugins.get(row);
 		}
 

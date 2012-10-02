@@ -41,9 +41,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.model.ArtistViewMode;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialog;
@@ -52,6 +54,11 @@ import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Preferences of navigator
+ * @author alex
+ *
+ */
 public final class NavigatorPanel extends AbstractPreferencesPanel {
 
 	private static final long serialVersionUID = -4315748284461119970L;
@@ -87,31 +94,40 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	 * Table model to select tag attributes
 	 */
 	private TagAttributesTableModel tagAttributesTableModel;
-	
+
 	private ILookAndFeelManager lookAndFeelManager;
-	
+
 	private IStateRepository stateRepository;
-	
+
 	private IStateNavigation stateNavigation;
-	
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+
 	/**
 	 * @param stateNavigation
 	 */
-	public void setStateNavigation(IStateNavigation stateNavigation) {
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
 		this.stateNavigation = stateNavigation;
 	}
-	
+
 	/**
 	 * @param stateRepository
 	 */
-	public void setStateRepository(IStateRepository stateRepository) {
+	public void setStateRepository(final IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
 	}
-	
+
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
@@ -121,7 +137,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	public NavigatorPanel() {
 		super(I18nUtils.getString("NAVIGATOR"));
 	}
-	
+
 	/**
 	 * Initializes panel
 	 */
@@ -132,7 +148,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		extendedToolTipDelay = new JComboBox(new Integer[] { 1, 2, 3, 4, 5 });
 		showExtendedToolTip.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(final ActionEvent arg0) {
 				label.setEnabled(showExtendedToolTip.isSelected());
 				extendedToolTipDelay.setEnabled(showExtendedToolTip.isSelected());
 			}
@@ -154,7 +170,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		highlightElementsWithIncompleteBasicTags = new JCheckBox(I18nUtils.getString("HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS"));
 		highlightElementsWithIncompleteBasicTags.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
@@ -197,7 +213,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		table.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setDefaultRenderer(String.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
-				GuiUtils.getComponentOrientationTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
+				beanFactory.getBean(ComponentOrientationTableCellRendererCode.class)));
 		return table;
 	}
 
@@ -205,7 +221,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	 * @param label
 	 * @param artistViewPanel
 	 */
-	private void arrangePanel(final JLabel label, JPanel artistViewPanel) {
+	private void arrangePanel(final JLabel label, final JPanel artistViewPanel) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -245,9 +261,9 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 
 	@Override
 	public boolean applyPreferences() {
-		
+
 		boolean refresh = false;
-		
+
 		stateNavigation.setShowFavoritesInNavigator(showFavorites.isSelected());
 		stateNavigation.setShowExtendedTooltip(showExtendedToolTip.isSelected());
 		stateNavigation.setExtendedTooltipDelay((Integer) extendedToolTipDelay.getSelectedItem());
@@ -265,11 +281,11 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		}else {
 			newArtistViewState = ArtistViewMode.BOTH;
 		}
-		
+
 		if (!newArtistViewState.equals(stateNavigation.getArtistViewMode())) {
 			stateNavigation.setArtistViewMode(newArtistViewState);
 			Context.getBean(IDialogFactory.class).newDialog(IMessageDialog.class).showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"),this);
-			 Context.getBean(IRepositoryHandler.class).refreshRepository();
+			Context.getBean(IRepositoryHandler.class).refreshRepository();
 		}
 
 		return refresh;
@@ -282,7 +298,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	 *            the new album tool tip delay
 	 */
 
-	public void setAlbumToolTipDelay(int time) {
+	public void setAlbumToolTipDelay(final int time) {
 		extendedToolTipDelay.setSelectedItem(time);
 	}
 
@@ -292,7 +308,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	 * @param show
 	 *            the new show album tool tip
 	 */
-	public void setShowAlbumToolTip(boolean show) {
+	public void setShowAlbumToolTip(final boolean show) {
 		showExtendedToolTip.setSelected(show);
 	}
 
@@ -302,7 +318,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	 * @param show
 	 *            the new show favorites
 	 */
-	private void setShowFavorites(boolean show) {
+	private void setShowFavorites(final boolean show) {
 		showFavorites.setSelected(show);
 	}
 
@@ -312,7 +328,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	 * @param use
 	 *            the new use smart tag view sorting
 	 */
-	private void setUseSmartTagViewSorting(boolean use) {
+	private void setUseSmartTagViewSorting(final boolean use) {
 		useSmartTagViewSorting.setSelected(use);
 	}
 
@@ -322,7 +338,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	 * @param use
 	 *            the new se person names artist tag view sorting
 	 */
-	private void setUsePersonNamesArtistTagViewSorting(boolean use) {
+	private void setUsePersonNamesArtistTagViewSorting(final boolean use) {
 		useArtistNamesSorting.setSelected(use);
 	}
 
@@ -330,7 +346,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	 * Set the keys of repository structures artist and genre to case sensitive or not.
 	 * @param value
 	 */
-	private void setKeyAlwaysCaseSensitiveInRepositoryStructure(boolean value)
+	private void setKeyAlwaysCaseSensitiveInRepositoryStructure(final boolean value)
 	{
 		useCaseSensitiveInTree.setSelected(value);
 	}
@@ -342,7 +358,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	 * @param highlightFoldersWithIncompleteBasicTags
 	 *            the highlightFoldersWithIncompleteBasicTags to set
 	 */
-	private void setHighlightFoldersWithIncompleteBasicTags(boolean highlightFoldersWithIncompleteBasicTags) {
+	private void setHighlightFoldersWithIncompleteBasicTags(final boolean highlightFoldersWithIncompleteBasicTags) {
 		this.highlightElementsWithIncompleteBasicTags.setSelected(highlightFoldersWithIncompleteBasicTags);
 		highlightTagAttributesScrollPane.setEnabled(highlightFoldersWithIncompleteBasicTags);
 		highlighTagAttributesTable.setEnabled(highlightFoldersWithIncompleteBasicTags);
@@ -361,11 +377,11 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		setArtistViewMode(stateNavigation.getArtistViewMode());
 	}
 
-	private void setArtistViewMode(ArtistViewMode artistViewMode) {
+	private void setArtistViewMode(final ArtistViewMode artistViewMode) {
 		if (ArtistViewMode.ARTIST.equals(artistViewMode)) {
 			useOnlyArtist.setSelected(true);
 		} else if (ArtistViewMode.ARTIST_OF_ALBUM.equals(artistViewMode)) {
-			useOnlyArtistOfAlbum.setSelected(true);	
+			useOnlyArtistOfAlbum.setSelected(true);
 		} else {
 			useBothArtist.setSelected(true);
 		}
@@ -377,7 +393,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	}
 
 	@Override
-	public void dialogVisibilityChanged(boolean visible) {
+	public void dialogVisibilityChanged(final boolean visible) {
 		// Do nothing
 	}
 

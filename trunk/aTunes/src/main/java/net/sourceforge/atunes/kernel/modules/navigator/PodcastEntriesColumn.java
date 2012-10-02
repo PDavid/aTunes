@@ -24,27 +24,27 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.IAudioObject;
 
 final class PodcastEntriesColumn extends AbstractColumn<String> {
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = -1788596965509543581L;
+	private static final long serialVersionUID = -1788596965509543581L;
 
-    PodcastEntriesColumn(String name) {
-        super(name);
-    }
+	PodcastEntriesColumn(final String name) {
+		super(name);
+	}
 
-    @Override
-    public String getValueFor(IAudioObject audioObject) {
-        return audioObject.getTitleOrFileName();
-    }
+	@Override
+	public String getValueFor(final IAudioObject audioObject, final int row) {
+		return audioObject.getTitleOrFileName();
+	}
 
-    @Override
-    protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-        return o1.getTitleOrFileName().compareTo(o2.getTitleOrFileName());
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
+		return o1.getTitleOrFileName().compareTo(o2.getTitleOrFileName());
+	}
+
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
 }

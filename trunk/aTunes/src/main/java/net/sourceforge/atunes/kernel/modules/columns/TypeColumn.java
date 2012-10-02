@@ -34,50 +34,50 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
  */
 public class TypeColumn extends AbstractColumn<IColorMutableImageIcon> {
 
-    private static final long serialVersionUID = -3060341777429113749L;
-    
-    private transient IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
-    
-    /**
-     * @param audioObjectGenericImageFactory
-     */
-    public void setAudioObjectGenericImageFactory(IAudioObjectGenericImageFactory audioObjectGenericImageFactory) {
+	private static final long serialVersionUID = -3060341777429113749L;
+
+	private transient IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
+
+	/**
+	 * @param audioObjectGenericImageFactory
+	 */
+	public void setAudioObjectGenericImageFactory(final IAudioObjectGenericImageFactory audioObjectGenericImageFactory) {
 		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
 	}
 
-    /**
-     * Constructor
-     */
-    public TypeColumn() {
-        super("TYPE");
-        setResizable(false);
-        setWidth(20);
-        setVisible(true);
-        setAlignment(SwingConstants.CENTER);
-    }
+	/**
+	 * Constructor
+	 */
+	public TypeColumn() {
+		super("TYPE");
+		setResizable(false);
+		setWidth(20);
+		setVisible(true);
+		setAlignment(SwingConstants.CENTER);
+	}
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        return 0;
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return 0;
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return 0;
+	}
 
-    @Override
-    public boolean isSortable() {
-        return false;
-    }
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return 0;
+	}
 
-    @Override
-    public IColorMutableImageIcon getValueFor(IAudioObject audioObject) {
-    	return this.audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.SMALL);
-    }
+	@Override
+	public boolean isSortable() {
+		return false;
+	}
 
-    @Override
-    public String getHeaderText() {
-        return "";
-    }
+	@Override
+	public IColorMutableImageIcon getValueFor(final IAudioObject audioObject, final int row) {
+		return this.audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.SMALL);
+	}
+
+	@Override
+	public String getHeaderText() {
+		return "";
+	}
 }

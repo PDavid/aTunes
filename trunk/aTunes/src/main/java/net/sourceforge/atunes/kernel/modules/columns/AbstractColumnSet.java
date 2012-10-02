@@ -30,7 +30,6 @@ import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
-import net.sourceforge.atunes.model.IFrame;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -43,265 +42,253 @@ import org.commonjukebox.plugins.model.PluginApi;
 @SuppressWarnings("rawtypes")
 public abstract class AbstractColumnSet implements IColumnSet {
 
-    /** Available columns */
+	/** Available columns */
 	private List<IColumn<?>> availableColumns;
 
-    /** Column map for direct access */
-    private Map<Class<? extends IColumn>, IColumn> columnMap;
+	/** Column map for direct access */
+	private Map<Class<? extends IColumn>, IColumn> columnMap;
 
-    /** The current visible columns. */
-    private List<Class<? extends IColumn<?>>> currentColumns;
+	/** The current visible columns. */
+	private List<Class<? extends IColumn<?>>> currentColumns;
 
-    private IFrame frame;
-    
 	private List<IColumn<?>> allowedColumns;
-	
-	/**
-	 * @return
-	 */
-	public IFrame getFrame() {
-		return frame;
-	}
-	
+
 	/**
 	 * @param allowedColumns
 	 */
-	public final void setAllowedColumns(List<IColumn<?>> allowedColumns) {
+	public final void setAllowedColumns(final List<IColumn<?>> allowedColumns) {
 		this.allowedColumns = allowedColumns;
 		int order = 0;
 		for (IColumn column : this.allowedColumns) {
 			column.setOrder(order++);
 		}
 	}
-	
-    /**
-     * Returns a list of columns allowed to be used in this column set
-     * @return
-     */
-    protected final List<IColumn<?>> getAllowedColumns() {
-        return allowedColumns;
-    }
-    
-    /**
-     * Default constructor
-     */
-    public AbstractColumnSet() {
-        ColumnSets.registerColumnSet(this);
-    }
-    
-    @Override
-	public final void setFrame(IFrame frame) {
-		this.frame = frame;
+
+	/**
+	 * Returns a list of columns allowed to be used in this column set
+	 * @return
+	 */
+	protected final List<IColumn<?>> getAllowedColumns() {
+		return allowedColumns;
 	}
 
-    /**
-     * Gets the available columns.
-     * 
-     * @return the available columns
-     */
-    private List<IColumn<?>> getAvailableColumns() {
-        if (availableColumns == null) {
-            // Try to get configuration saved
-            Map<String, ColumnBean> columnsBeans = getColumnsConfiguration();
+	/**
+	 * Default constructor
+	 */
+	public AbstractColumnSet() {
+		ColumnSets.registerColumnSet(this);
+	}
 
-            availableColumns = getAllowedColumns();
-            columnMap = new HashMap<Class<? extends IColumn>, IColumn>();
-            for (IColumn c : availableColumns) {
-                columnMap.put(c.getClass(), c);
-            }
+	/**
+	 * Gets the available columns.
+	 * 
+	 * @return the available columns
+	 */
+	private List<IColumn<?>> getAvailableColumns() {
+		if (availableColumns == null) {
+			// Try to get configuration saved
+			Map<String, ColumnBean> columnsBeans = getColumnsConfiguration();
 
-            // Apply configuration
-            if (columnsBeans != null) {
-                for (IColumn column : availableColumns) {
-                    ColumnBean bean = columnsBeans.get(column.getClass().getName());
-                    if (bean != null) {
-                        column.applyColumnBean(bean);
-                    }
-                }
-            }
-        }
-        return availableColumns;
-    }
+			availableColumns = getAllowedColumns();
+			columnMap = new HashMap<Class<? extends IColumn>, IColumn>();
+			for (IColumn c : availableColumns) {
+				columnMap.put(c.getClass(), c);
+			}
 
-    @Override
+			// Apply configuration
+			if (columnsBeans != null) {
+				for (IColumn column : availableColumns) {
+					ColumnBean bean = columnsBeans.get(column.getClass().getName());
+					if (bean != null) {
+						column.applyColumnBean(bean);
+					}
+				}
+			}
+		}
+		return availableColumns;
+	}
+
+	@Override
 	public final void saveColumnSet() {
-        // Get ColumnsBean from default columns and store it
-        HashMap<String, ColumnBean> newColumnsBeans = new HashMap<String, ColumnBean>();
-        for (IColumn column : getAvailableColumns()) {
-            newColumnsBeans.put(column.getClass().getName(), column.getColumnBean());
-        }
-        setColumnsConfiguration(newColumnsBeans);
-    }
+		// Get ColumnsBean from default columns and store it
+		HashMap<String, ColumnBean> newColumnsBeans = new HashMap<String, ColumnBean>();
+		for (IColumn column : getAvailableColumns()) {
+			newColumnsBeans.put(column.getClass().getName(), column.getColumnBean());
+		}
+		setColumnsConfiguration(newColumnsBeans);
+	}
 
-    @Override
+	@Override
 	public final int getVisibleColumnCount() {
-        int visibleColumns = 0;
-        for (IColumn c : getAvailableColumns()) {
-            if (c.isVisible()) {
-                visibleColumns++;
-            }
-        }
-        return visibleColumns;
-    }
+		int visibleColumns = 0;
+		for (IColumn c : getAvailableColumns()) {
+			if (c.isVisible()) {
+				visibleColumns++;
+			}
+		}
+		return visibleColumns;
+	}
 
 	@Override
 	public final List<IColumn<?>> getColumnsOrdered() {
-        List<IColumn<?>> result = new ArrayList<IColumn<?>>(getAvailableColumns());
-        Collections.sort(result);
-        return result;
-    }
+		List<IColumn<?>> result = new ArrayList<IColumn<?>>(getAvailableColumns());
+		Collections.sort(result);
+		return result;
+	}
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	@Override
 	public final void setCurrentColumns() {
-        int columnNumber = getVisibleColumnCount();
-        if (columnNumber == 0) {
-            return;
-        }
+		int columnNumber = getVisibleColumnCount();
+		if (columnNumber == 0) {
+			return;
+		}
 
-        currentColumns = new ArrayList<Class<? extends IColumn<?>>>();
+		currentColumns = new ArrayList<Class<? extends IColumn<?>>>();
 
-        for (IColumn<?> c : getColumnsOrdered()) {
-            if (c.isVisible()) {
-                currentColumns.add((Class<? extends IColumn<?>>) c.getClass());
-            }
-        }
-    }
+		for (IColumn<?> c : getColumnsOrdered()) {
+			if (c.isVisible()) {
+				currentColumns.add((Class<? extends IColumn<?>>) c.getClass());
+			}
+		}
+	}
 
-    /**
-     * Returns columns used for filtering
-     * 
-     * @return
-     */
-    private List<IColumn> getColumnsForFilter() {
-        List<IColumn> columnsForFilter = new ArrayList<IColumn>();
-        for (IColumn c : getAvailableColumns()) {
-            if (c.isVisible() && c.isUsedForFilter()) {
-                columnsForFilter.add(c);
-            }
-        }
-        return columnsForFilter;
-    }
+	/**
+	 * Returns columns used for filtering
+	 * 
+	 * @return
+	 */
+	private List<IColumn> getColumnsForFilter() {
+		List<IColumn> columnsForFilter = new ArrayList<IColumn>();
+		for (IColumn c : getAvailableColumns()) {
+			if (c.isVisible() && c.isUsedForFilter()) {
+				columnsForFilter.add(c);
+			}
+		}
+		return columnsForFilter;
+	}
 
-    @Override
-	public final Class<? extends IColumn<?>> getColumnId(int colIndex) {
-        if (currentColumns == null) {
-            setCurrentColumns();
-        }
-        return currentColumns.get(colIndex);
-    }
+	@Override
+	public final Class<? extends IColumn<?>> getColumnId(final int colIndex) {
+		if (currentColumns == null) {
+			setCurrentColumns();
+		}
+		return currentColumns.get(colIndex);
+	}
 
-    @Override
+	@Override
 	public List<IColumn<?>> getColumnsForSelection() {
-        return new ArrayList<IColumn<?>>(getAvailableColumns());
-    }
+		return new ArrayList<IColumn<?>>(getAvailableColumns());
+	}
 
-    @Override
-	public IColumn<?> getColumn(Class<? extends IColumn<?>> columnClass) {
-        return columnMap.get(columnClass);
-    }
+	@Override
+	public IColumn<?> getColumn(final Class<? extends IColumn<?>> columnClass) {
+		return columnMap.get(columnClass);
+	}
 
-    @Override
-	public List<IAudioObject> filterAudioObjects(List<IAudioObject> audioObjects, String filter) {
-        List<IAudioObject> result = new ArrayList<IAudioObject>();
-        List<IColumn> columnsForFilter = getColumnsForFilter();
-        String lowerCaseFilter = filter.toLowerCase();
+	@Override
+	public List<IAudioObject> filterAudioObjects(final List<IAudioObject> audioObjects, final String filter) {
+		List<IAudioObject> result = new ArrayList<IAudioObject>();
+		List<IColumn> columnsForFilter = getColumnsForFilter();
+		String lowerCaseFilter = filter.toLowerCase();
 
-        for (IAudioObject audioObject : audioObjects) {
-            if (filterAudioObject(audioObject, columnsForFilter, lowerCaseFilter)) {
-                result.add(audioObject);
-            }
-        }
+		for (int position = 0; position < audioObjects.size(); position++) {
+			IAudioObject audioObject = audioObjects.get(position);
+			if (filterAudioObject(audioObject, columnsForFilter, lowerCaseFilter, position)) {
+				result.add(audioObject);
+			}
+		}
 
-        return result;
-    }
+		return result;
+	}
 
-    /**
-     * Returns <code>true</code> if given audio object passes the given filter
-     * for at least one column
-     * 
-     * @param audioObject
-     * @param columns
-     * @return
-     */
-    private boolean filterAudioObject(IAudioObject audioObject, List<IColumn> columns, String filter) {
-        boolean passed = false;
-        int i = 0;
-        while (!passed && i < columns.size()) {
-            String value = columns.get(i++).getValueForFilter(audioObject);
-            if (value != null) {
-                passed = value.toLowerCase().contains(filter);
-            }
-        }
-        return passed;
-    }
+	/**
+	 * Returns <code>true</code> if given audio object passes the given filter
+	 * for at least one column
+	 * @param audioObject
+	 * @param columns
+	 * @param filter
+	 * @param position
+	 * @return
+	 */
+	private boolean filterAudioObject(final IAudioObject audioObject, final List<IColumn> columns, final String filter, final int position) {
+		boolean passed = false;
+		int i = 0;
+		while (!passed && i < columns.size()) {
+			String value = columns.get(i++).getValueForFilter(audioObject, position);
+			if (value != null) {
+				passed = value.toLowerCase().contains(filter);
+			}
+		}
+		return passed;
+	}
 
-    /**
-     * Called to add a new available column
-     * 
-     * @param column
-     */
-    protected final void addNewColumn(IColumn column) {
-        column.setOrder(getAvailableColumns().size());
-        getAvailableColumns().add(column);
-        columnMap.put(column.getClass(), column);
+	/**
+	 * Called to add a new available column
+	 * 
+	 * @param column
+	 */
+	protected final void addNewColumn(final IColumn column) {
+		column.setOrder(getAvailableColumns().size());
+		getAvailableColumns().add(column);
+		columnMap.put(column.getClass(), column);
 
-        // Apply configuration if column has been previously used
-        boolean needRefresh = false;
-        Map<String, ColumnBean> columnsBeans = getColumnsConfiguration();
-        if (columnsBeans != null) {
-            ColumnBean bean = columnsBeans.get(column.getClass().getName());
-            if (bean != null) {
-                column.applyColumnBean(bean);
-                needRefresh = true;
-            }
-        }
+		// Apply configuration if column has been previously used
+		boolean needRefresh = false;
+		Map<String, ColumnBean> columnsBeans = getColumnsConfiguration();
+		if (columnsBeans != null) {
+			ColumnBean bean = columnsBeans.get(column.getClass().getName());
+			if (bean != null) {
+				column.applyColumnBean(bean);
+				needRefresh = true;
+			}
+		}
 
-        // Refresh columns if necessary
-        if (needRefresh) {
-            refreshColumns();
-        }
-    }
+		// Refresh columns if necessary
+		if (needRefresh) {
+			refreshColumns();
+		}
+	}
 
-    @Override
-	public void removeColumn(Class<?> columnClass) {
-        IColumn column = columnMap.get(columnClass);
-        columnMap.remove(columnClass);
-        getAvailableColumns().remove(column);
-        refreshColumns();
-    }
+	@Override
+	public void removeColumn(final Class<?> columnClass) {
+		IColumn column = columnMap.get(columnClass);
+		columnMap.remove(columnClass);
+		getAvailableColumns().remove(column);
+		refreshColumns();
+	}
 
-    @Override
+	@Override
 	public IColumn<?> getSortedColumn() {
-        if (currentColumns != null) {
-            for (Class<? extends IColumn<?>> columnClass : currentColumns) {
-                IColumn<?> column = getColumn(columnClass);
-                if (column.getColumnSort() != null) {
-                    return column;
-                }
-            }
-        }
-        return null;
-    }
+		if (currentColumns != null) {
+			for (Class<? extends IColumn<?>> columnClass : currentColumns) {
+				IColumn<?> column = getColumn(columnClass);
+				if (column.getColumnSort() != null) {
+					return column;
+				}
+			}
+		}
+		return null;
+	}
 
-    /**
-     * Returns existing column configuration for this column set
-     * 
-     * @return
-     */
-    protected abstract Map<String, ColumnBean> getColumnsConfiguration();
+	/**
+	 * Returns existing column configuration for this column set
+	 * 
+	 * @return
+	 */
+	protected abstract Map<String, ColumnBean> getColumnsConfiguration();
 
-    /**
-     * Saves column configuration of this column set
-     * 
-     * @param columnsConfiguration
-     */
-    protected abstract void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration);
+	/**
+	 * Saves column configuration of this column set
+	 * 
+	 * @param columnsConfiguration
+	 */
+	protected abstract void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration);
 
-    /**
-     * Method called to refresh columns when a plugin is activated or
-     * deactivated
-     */
-    protected abstract void refreshColumns();
+	/**
+	 * Method called to refresh columns when a plugin is activated or
+	 * deactivated
+	 */
+	protected abstract void refreshColumns();
 
 }

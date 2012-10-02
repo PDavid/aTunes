@@ -34,39 +34,46 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.table.TableCellEditor;
 
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.model.ILookAndFeel;
 
+/**
+ * Renderer for context table rows
+ * @author alex
+ *
+ * @param <T>
+ */
 public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererCode<JComponent, T> implements TableCellEditor {
-	
-	private Class<?> clazz;
-	
+
+	private final Class<?> clazz;
+
 	private ContextTable table;
-	
+
+	/**
+	 * @param lookAndFeel
+	 */
 	@SuppressWarnings("unchecked")
-	public ContextTableRowPanel(ILookAndFeel lookAndFeel) {
-		super(lookAndFeel);
+	public ContextTableRowPanel() {
 		this.clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
-	
+
 	/**
 	 * Binds as renderer and editor to table
 	 * @param table
 	 */
-	public void bind(ContextTable table) {
+	public void bind(final ContextTable table) {
 		this.table = table;
-        this.table.setDefaultRenderer(clazz, getLookAndFeel().getTableCellRenderer(this));
-        this.table.setDefaultEditor(clazz, this);
+		this.table.setDefaultRenderer(clazz, getLookAndFeel().getTableCellRenderer(this));
+		this.table.setDefaultEditor(clazz, this);
 	}
-	
+
 	/**
 	 * @return
 	 */
 	protected ContextTable getTable() {
 		return table;
 	}
-	
+
 	@Override
-	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+	public Component getTableCellEditorComponent(final JTable table, final Object value, final boolean isSelected, final int row, final int column) {
 		return table.getDefaultRenderer(clazz).getTableCellRendererComponent(table, value, isSelected, true, row, column);
 	}
 
@@ -75,7 +82,7 @@ public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererC
 	}
 
 	@Override
-	public boolean stopCellEditing() {  
+	public boolean stopCellEditing() {
 		return true;
 	}
 
@@ -85,36 +92,39 @@ public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererC
 	}
 
 	@Override
-	public boolean isCellEditable(EventObject anEvent) {
+	public boolean isCellEditable(final EventObject anEvent) {
 		return true;
 	}
 
 	@Override
-	public boolean shouldSelectCell(EventObject anEvent) {
+	public boolean shouldSelectCell(final EventObject anEvent) {
 		return true;
 	}
 
 	@Override
-	public void addCellEditorListener(CellEditorListener l) {
+	public void addCellEditorListener(final CellEditorListener l) {
 	}
 
 	@Override
-	public void removeCellEditorListener(CellEditorListener l) {
+	public void removeCellEditorListener(final CellEditorListener l) {
 	}
-	    
-	protected JPanel getPanelForTableRenderer(ImageIcon image, 
-		     String text, 
-		     Color backgroundColor, 
-		     Color foregroundColor, 
-		     int imageMaxWidth, 
-		     int imageMaxHeight,
-		     boolean hasFocus) {
-		
+
+	protected JPanel getPanelForTableRenderer(final ImageIcon image,
+			final String text,
+			final Color backgroundColor,
+			final Color foregroundColor,
+			final int imageMaxWidth,
+			final int imageMaxHeight,
+			final boolean hasFocus) {
+
 		return new ContextTableRowPanelFactory<T>().getPanelForTableRenderer(this.getActions(), table, image, text, backgroundColor, foregroundColor, imageMaxWidth, imageMaxHeight, hasFocus);
 	}
-	
-    @Override
-    public abstract JComponent getComponent(JComponent superComponent, JTable t, T value, boolean isSelected, boolean hasFocus, int row, int column);
-    
-    public abstract List<ContextTableAction<T>> getActions();
+
+	@Override
+	public abstract JComponent getComponent(JComponent superComponent, JTable t, T value, boolean isSelected, boolean hasFocus, int row, int column);
+
+	/**
+	 * @return list of actions available in this row
+	 */
+	public abstract List<ContextTableAction<T>> getActions();
 }

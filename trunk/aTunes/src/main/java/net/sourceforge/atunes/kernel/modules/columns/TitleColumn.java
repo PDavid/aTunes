@@ -29,35 +29,35 @@ import net.sourceforge.atunes.model.IAudioObject;
  */
 public class TitleColumn extends AbstractColumn<String> {
 
- 
-    private static final long serialVersionUID = -4113331298039010230L;
 
-    /**
-     * Default constructor
-     */
-    public TitleColumn() {
-        super("TITLE");
-        setVisible(true);
-        setUsedForFilter(true);
-    }
+	private static final long serialVersionUID = -4113331298039010230L;
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        return ao1.getTitleOrFileName().compareTo(ao2.getTitleOrFileName());
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
+	/**
+	 * Default constructor
+	 */
+	public TitleColumn() {
+		super("TITLE");
+		setVisible(true);
+		setUsedForFilter(true);
+	}
 
-    @Override
-    public String getValueFor(IAudioObject audioObject) {
-        return audioObject.getTitleOrFileName();
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return ao1.getTitleOrFileName().compareTo(ao2.getTitleOrFileName());
+	}
 
-    @Override
-    public String getValueForFilter(IAudioObject audioObject) {
-        return audioObject.getTitle();
-    }
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
+
+	@Override
+	public String getValueFor(final IAudioObject audioObject, final int row) {
+		return audioObject.getTitleOrFileName();
+	}
+
+	@Override
+	public String getValueForFilter(final IAudioObject audioObject, final int row) {
+		return audioObject.getTitle();
+	}
 }

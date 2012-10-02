@@ -32,36 +32,36 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class BitrateColumn extends AbstractColumn<String> {
 
-    
-    private static final long serialVersionUID = 7541146903350085592L;
 
-    /**
-     * Default constructor
-     */
-    public BitrateColumn() {
-        super("BITRATE");
-        setWidth(100);
-        setVisible(false);
-        setAlignment(SwingConstants.CENTER);
-    }
+	private static final long serialVersionUID = 7541146903350085592L;
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        return Long.valueOf(ao1.getBitrate()).compareTo(Long.valueOf(ao2.getBitrate()));
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
+	/**
+	 * Default constructor
+	 */
+	public BitrateColumn() {
+		super("BITRATE");
+		setWidth(100);
+		setVisible(false);
+		setAlignment(SwingConstants.CENTER);
+	}
 
-    @Override
-    public String getValueFor(IAudioObject audioObject) {
-        // Return bitrate
-        if (audioObject.getBitrate() > 0) {
-            return StringUtils.getString(Long.toString(audioObject.getBitrate()), " Kbps");
-        }
-        return "";
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return Long.valueOf(ao1.getBitrate()).compareTo(Long.valueOf(ao2.getBitrate()));
+	}
+
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
+
+	@Override
+	public String getValueFor(final IAudioObject audioObject, final int row) {
+		// Return bitrate
+		if (audioObject.getBitrate() > 0) {
+			return StringUtils.getString(Long.toString(audioObject.getBitrate()), " Kbps");
+		}
+		return "";
+	}
 
 }

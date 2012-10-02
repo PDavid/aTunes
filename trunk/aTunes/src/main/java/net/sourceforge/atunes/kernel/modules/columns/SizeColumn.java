@@ -33,43 +33,43 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class SizeColumn extends AbstractColumn<String> {
 
-    
-    private static final long serialVersionUID = 6971729868799630776L;
 
-    /**
-     * Constructor
-     */
-    public SizeColumn() {
-        super("SIZE");
-        setWidth(100);
-        setVisible(false);
-        setAlignment(SwingConstants.CENTER);
-    }
+	private static final long serialVersionUID = 6971729868799630776L;
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        long l1 = 0;
-        long l2 = 0;
-        if (ao1 instanceof ILocalAudioObject) {
-            l1 = ((ILocalAudioObject) ao1).getSize();
-        }
-        if (ao2 instanceof ILocalAudioObject) {
-            l2 = ((ILocalAudioObject) ao2).getSize();
-        }
-        return Long.valueOf(l1).compareTo(l2);
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
+	/**
+	 * Constructor
+	 */
+	public SizeColumn() {
+		super("SIZE");
+		setWidth(100);
+		setVisible(false);
+		setAlignment(SwingConstants.CENTER);
+	}
 
-    @Override
-    public String getValueFor(IAudioObject audioObject) {
-        if (audioObject instanceof ILocalAudioObject) {
-        	return StringUtils.fromByteToMegaOrGiga(((ILocalAudioObject) audioObject).getSize());
-        }
-        return null;
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		long l1 = 0;
+		long l2 = 0;
+		if (ao1 instanceof ILocalAudioObject) {
+			l1 = ((ILocalAudioObject) ao1).getSize();
+		}
+		if (ao2 instanceof ILocalAudioObject) {
+			l2 = ((ILocalAudioObject) ao2).getSize();
+		}
+		return Long.valueOf(l1).compareTo(l2);
+	}
+
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
+
+	@Override
+	public String getValueFor(final IAudioObject audioObject, final int row) {
+		if (audioObject instanceof ILocalAudioObject) {
+			return StringUtils.fromByteToMegaOrGiga(((ILocalAudioObject) audioObject).getSize());
+		}
+		return null;
+	}
 
 }

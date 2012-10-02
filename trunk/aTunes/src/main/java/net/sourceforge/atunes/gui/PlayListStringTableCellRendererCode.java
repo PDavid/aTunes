@@ -23,28 +23,34 @@ package net.sourceforge.atunes.gui;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayListHandler;
 
-final class PlayListStringTableCellRendererCode extends StringTableCellRendererCode {
+/**
+ * Renderer for play list strings
+ * @author alex
+ *
+ */
+public final class PlayListStringTableCellRendererCode extends StringTableCellRendererCode {
 
 	private IPlayListHandler playListHandler;
-	
-    PlayListStringTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel, IPlayListHandler playListHandler) {
-        super(model, lookAndFeel);
-        this.playListHandler = playListHandler;
-    }
 
-    @Override
-    public JLabel getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    	JLabel c = super.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
-    	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-    		if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
-    			 ((JLabel) c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
-    		} else if (getLookAndFeel().getPlayListFont() != null) {
-                ((JLabel) c).setFont(getLookAndFeel().getPlayListFont());
-    		}
-    	}
-        return c;
-    }
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
+	@Override
+	public JLabel getComponent(final JLabel c, final JTable t, final String value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+		if (playListHandler.isCurrentVisibleRowPlaying(row)) {
+			if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
+				(c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
+			} else if (getLookAndFeel().getPlayListFont() != null) {
+				(c).setFont(getLookAndFeel().getPlayListFont());
+			}
+		}
+		c.setHorizontalAlignment(getModel().getColumnAlignment(column));
+		return c;
+	}
 }

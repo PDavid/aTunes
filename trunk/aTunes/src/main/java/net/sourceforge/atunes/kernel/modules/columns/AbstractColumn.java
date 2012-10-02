@@ -41,230 +41,230 @@ import net.sourceforge.atunes.utils.ReflectionUtils;
  */
 public abstract class AbstractColumn<T> implements IColumn<T> {
 
-    private static final long serialVersionUID = 7407756833207959017L;
+	private static final long serialVersionUID = 7407756833207959017L;
 
-    /** Header text of column. */
-    private String columnName;
+	/** Header text of column. */
+	private String columnName;
 
-    /** Resizable. */
-    private boolean resizable = true;
+	/** Resizable. */
+	private boolean resizable = true;
 
-    /** Width of column. */
-    private int width = 150;
+	/** Width of column. */
+	private int width = 150;
 
-    /** Class of data. */
-    private Class<?> columnClass;
+	/** Class of data. */
+	private Class<?> columnClass;
 
-    /** Visible column. */
-    private boolean visible;
+	/** Visible column. */
+	private boolean visible;
 
-    /** Order. */
-    private int order;
+	/** Order. */
+	private int order;
 
-    /** Text alignment. */
-    private int alignment = GuiUtils.getComponentOrientationAsSwingConstant();
+	/** Text alignment. */
+	private int alignment = GuiUtils.getComponentOrientationAsSwingConstant();
 
-    /** Editable flag. */
-    private boolean editable = false;
+	/** Editable flag. */
+	private boolean editable = false;
 
-    /** Indicates if this column can be used to filter objects */
-    private boolean usedForFilter = false;
+	/** Indicates if this column can be used to filter objects */
+	private boolean usedForFilter = false;
 
-    /**
-     * Last sort order used for this column
-     */
-    private transient ColumnSort columnSort;
-    
-    /**
-     * Constructor with columnId, headerText and columnClass.
-     * 
-     * @param columnId
-     *            the column id
-     * @param name
-     *            the header text
-     * @param columnClass
-     *            the column class
-     */
-    public AbstractColumn(String name) {
-        this.columnName = name;
-        this.columnClass = (Class<?>) ReflectionUtils.getTypeArgumentsOfParameterizedType(this.getClass())[0];
-    }
+	/**
+	 * Last sort order used for this column
+	 */
+	private transient ColumnSort columnSort;
 
-    @Override
-	public void applyColumnBean(ColumnBean bean) {
-        order = bean.getOrder();
-        width = bean.getWidth();
-        visible = bean.isVisible();
-        columnSort = bean.getSort();
-    }
+	/**
+	 * Constructor with columnId, headerText and columnClass.
+	 * 
+	 * @param columnId
+	 *            the column id
+	 * @param name
+	 *            the header text
+	 * @param columnClass
+	 *            the column class
+	 */
+	public AbstractColumn(final String name) {
+		this.columnName = name;
+		this.columnClass = (Class<?>) ReflectionUtils.getTypeArgumentsOfParameterizedType(this.getClass())[0];
+	}
 
-    @Override
-    public int compareTo(IColumn<?> o) {
-        return Integer.valueOf(order).compareTo(o.getOrder());
-    }
-    
-    @Override
+	@Override
+	public void applyColumnBean(final ColumnBean bean) {
+		order = bean.getOrder();
+		width = bean.getWidth();
+		visible = bean.isVisible();
+		columnSort = bean.getSort();
+	}
+
+	@Override
+	public int compareTo(final IColumn<?> o) {
+		return Integer.valueOf(order).compareTo(o.getOrder());
+	}
+
+	@Override
 	public int getAlignment() {
-        return alignment;
-    }
+		return alignment;
+	}
 
-    @Override
+	@Override
 	public TableCellEditor getCellEditor() {
-        return null;
-    }
+		return null;
+	}
 
-    @Override
+	@Override
 	public TableCellRenderer getCellRenderer() {
-        return null;
-    }
+		return null;
+	}
 
-    @Override
+	@Override
 	public ColumnBean getColumnBean() {
-        ColumnBean bean = new ColumnBean();
-        bean.setOrder(order);
-        bean.setWidth(width);
-        bean.setVisible(visible);
-        bean.setSort(columnSort);
-        return bean;
-    }
+		ColumnBean bean = new ColumnBean();
+		bean.setOrder(order);
+		bean.setWidth(width);
+		bean.setVisible(visible);
+		bean.setSort(columnSort);
+		return bean;
+	}
 
-    @Override
+	@Override
 	public Class<?> getColumnClass() {
-        return columnClass;
-    }
+		return columnClass;
+	}
 
-    @Override
+	@Override
 	public String getColumnName() {
-        return columnName;
-    }
+		return columnName;
+	}
 
-    @Override
+	@Override
 	public String getHeaderText() {
-        return columnName;
-    }
+		return columnName;
+	}
 
-    @Override
+	@Override
 	public int getOrder() {
-        return order;
-    }
+		return order;
+	}
 
-    @Override
+	@Override
 	public int getWidth() {
-        return width;
-    }
+		return width;
+	}
 
-    @Override
+	@Override
 	public boolean isEditable() {
-        return editable;
-    }
+		return editable;
+	}
 
-    @Override
+	@Override
 	public boolean isSortable() {
-        return true;
-    }
+		return true;
+	}
 
-    @Override
+	@Override
 	public boolean isResizable() {
-        return resizable;
-    }
+		return resizable;
+	}
 
-    @Override
+	@Override
 	public boolean isVisible() {
-        return visible;
-    }
+		return visible;
+	}
 
-    @Override
-	public void setAlignment(int alignment) {
-        this.alignment = alignment;
-    }
+	@Override
+	public void setAlignment(final int alignment) {
+		this.alignment = alignment;
+	}
 
-    @Override
-	public void setColumnClass(Class<?> columnClass) {
-        this.columnClass = columnClass;
-    }
+	@Override
+	public void setColumnClass(final Class<?> columnClass) {
+		this.columnClass = columnClass;
+	}
 
-    @Override
-	public void setEditable(boolean editable) {
-        this.editable = editable;
-    }
+	@Override
+	public void setEditable(final boolean editable) {
+		this.editable = editable;
+	}
 
-    @Override
-	public void setColumnName(String headerText) {
-        this.columnName = headerText;
-    }
+	@Override
+	public void setColumnName(final String headerText) {
+		this.columnName = headerText;
+	}
 
-    @Override
-	public void setOrder(int order) {
-        this.order = order;
-    }
+	@Override
+	public void setOrder(final int order) {
+		this.order = order;
+	}
 
-    @Override
-	public void setResizable(boolean resizable) {
-        this.resizable = resizable;
-    }
+	@Override
+	public void setResizable(final boolean resizable) {
+		this.resizable = resizable;
+	}
 
-    @Override
-	public void setValueFor(IAudioObject audioObject, Object value) {
-        // Does nothing, should be overrided
-    }
+	@Override
+	public void setValueFor(final IAudioObject audioObject, final Object value) {
+		// Does nothing, should be overrided
+	}
 
-    @Override
-	public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
+	@Override
+	public void setVisible(final boolean visible) {
+		this.visible = visible;
+	}
 
-    @Override
-	public void setWidth(int width) {
-        this.width = width;
-    }
+	@Override
+	public void setWidth(final int width) {
+		this.width = width;
+	}
 
-    @Override
-    public String toString() {
-        return columnName;
-    }
+	@Override
+	public String toString() {
+		return columnName;
+	}
 
-    @Override
-	public final Comparator<IAudioObject> getComparator(boolean changeSort) {
-    	Logger.debug("Returning comparator for column: ", this.getClass().getName());
-        if (columnSort == null) {
-            columnSort = ColumnSort.ASCENDING;
-        } else if (columnSort == ColumnSort.ASCENDING && changeSort) {
-            columnSort = ColumnSort.DESCENDING;
-        } else if (columnSort == ColumnSort.DESCENDING && changeSort) {
-            columnSort = ColumnSort.ASCENDING;
-        }
-        
-        if (columnSort.equals(ColumnSort.ASCENDING)) {
-        	return new AscendingColumnSortComparator(this);
-        } else {
-        	return new DescendingColumnSortComparator(this);
-        }
-    }
+	@Override
+	public final Comparator<IAudioObject> getComparator(final boolean changeSort) {
+		Logger.debug("Returning comparator for column: ", this.getClass().getName());
+		if (columnSort == null) {
+			columnSort = ColumnSort.ASCENDING;
+		} else if (columnSort == ColumnSort.ASCENDING && changeSort) {
+			columnSort = ColumnSort.DESCENDING;
+		} else if (columnSort == ColumnSort.DESCENDING && changeSort) {
+			columnSort = ColumnSort.ASCENDING;
+		}
 
-    @Override
+		if (columnSort.equals(ColumnSort.ASCENDING)) {
+			return new AscendingColumnSortComparator(this);
+		} else {
+			return new DescendingColumnSortComparator(this);
+		}
+	}
+
+	@Override
 	public boolean isUsedForFilter() {
-        return usedForFilter;
-    }
+		return usedForFilter;
+	}
 
-    @Override
-	public void setUsedForFilter(boolean usedForFilter) {
-        this.usedForFilter = usedForFilter;
-    }
+	@Override
+	public void setUsedForFilter(final boolean usedForFilter) {
+		this.usedForFilter = usedForFilter;
+	}
 
-    @Override
-	public String getValueForFilter(IAudioObject audioObject) {
-        return getValueFor(audioObject).toString();
-    }
+	@Override
+	public String getValueForFilter(final IAudioObject audioObject, final int row) {
+		return getValueFor(audioObject, row).toString();
+	}
 
-    @Override
-	public void setColumnSort(ColumnSort columnSort) {
-        this.columnSort = columnSort;
-    }
+	@Override
+	public void setColumnSort(final ColumnSort columnSort) {
+		this.columnSort = columnSort;
+	}
 
-    @Override
+	@Override
 	public ColumnSort getColumnSort() {
-        return columnSort;
-    }
+		return columnSort;
+	}
 
 	@Override
 	public int hashCode() {
@@ -275,7 +275,7 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -294,21 +294,21 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 		}
 		return true;
 	}
-	
-    /**
-     * Compares two objects in ascending order
-     * @param ao1
-     * @param ao2
-     * @return
-     */
-    protected abstract int ascendingCompare(IAudioObject ao1, IAudioObject ao2);
 
-    /**
-     * Compares two objects in descending order
-     * @param ao1
-     * @param ao2
-     * @return
-     */
-    protected abstract int descendingCompare(IAudioObject ao1, IAudioObject ao2);
+	/**
+	 * Compares two objects in ascending order
+	 * @param ao1
+	 * @param ao2
+	 * @return
+	 */
+	protected abstract int ascendingCompare(IAudioObject ao1, IAudioObject ao2);
+
+	/**
+	 * Compares two objects in descending order
+	 * @param ao1
+	 * @param ao2
+	 * @return
+	 */
+	protected abstract int descendingCompare(IAudioObject ao1, IAudioObject ao2);
 
 }

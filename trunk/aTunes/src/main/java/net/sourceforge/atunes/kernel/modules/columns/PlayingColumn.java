@@ -21,49 +21,72 @@
 package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListTable;
+import net.sourceforge.atunes.model.PlayState;
 
 /**
  * Column to show play / pause / stop icon
  * @author alex
  *
  */
-public class PlayingColumn extends AbstractColumn<Integer> {
+public class PlayingColumn extends AbstractColumn<PlayState> {
 
-    
-    private static final long serialVersionUID = -5604736587749167043L;
+	private IPlayListHandler playListHandler;
 
-    /**
-     * Constructor
-     */
-    public PlayingColumn() {
-        super("PLAYING");
-        setResizable(false);
-        setWidth(16);
-        setVisible(true);
-    }
+	private static final long serialVersionUID = -5604736587749167043L;
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        return 0;
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return 0;
-    }
+	private IPlayListTable playListTable;
 
-    @Override
-    public boolean isSortable() {
-        return false;
-    }
+	/**
+	 * @param playListTable
+	 */
+	public void setPlayListTable(final IPlayListTable playListTable) {
+		this.playListTable = playListTable;
+	}
 
-    @Override
-    public Integer getValueFor(IAudioObject audioObject) {
-        return null;
-    }
+	/**
+	 * Constructor
+	 */
+	public PlayingColumn() {
+		super("PLAYING");
+		setResizable(false);
+		setWidth(160);
+		setVisible(true);
+	}
 
-    @Override
-    public String getHeaderText() {
-        return "";
-    }
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return 0;
+	}
+
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return 0;
+	}
+
+	@Override
+	public boolean isSortable() {
+		return false;
+	}
+
+	@Override
+	public PlayState getValueFor(final IAudioObject audioObject, final int row) {
+		if (playListHandler.isCurrentVisibleRowPlaying(row)) {
+			return playListTable.getPlayState();
+		}
+		return null;
+	}
+
+	@Override
+	public String getHeaderText() {
+		return "";
+	}
 }

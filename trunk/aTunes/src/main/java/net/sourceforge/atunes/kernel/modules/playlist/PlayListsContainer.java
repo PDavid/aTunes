@@ -35,51 +35,51 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PlayListsContainer implements IPlayListsContainer {
 
-    /** The play lists currently opened. */
-    private List<IPlayList> playLists = new ArrayList<IPlayList>();
-    
-    /** Stores original play list without filter. */
-    private IPlayList nonFilteredPlayList;
+	/** The play lists currently opened. */
+	private final List<IPlayList> playLists = new ArrayList<IPlayList>();
 
-    /** Index of the active play list */
-    private int activePlayListIndex = 0;
+	/** Stores original play list without filter. */
+	private IPlayList nonFilteredPlayList;
 
-    /** Index of the visible play list: can be different of active play list */
-    private int visiblePlayListIndex = 0;
-    
-    private IStatePlayer statePlayer;
-    
-    private PlayListHandler playListHandler;
-    
-    private IPlayListController playListController;
-    
+	/** Index of the active play list */
+	private int activePlayListIndex = 0;
+
+	/** Index of the visible play list: can be different of active play list */
+	private int visiblePlayListIndex = 0;
+
+	private IStatePlayer statePlayer;
+
+	private PlayListHandler playListHandler;
+
+	private IPlayListController playListController;
+
 	private IColumnSet playListColumnSet;
-	
+
 	/**
 	 * @param playListColumnSet
 	 */
-	public void setPlayListColumnSet(IColumnSet playListColumnSet) {
+	public void setPlayListColumnSet(final IColumnSet playListColumnSet) {
 		this.playListColumnSet = playListColumnSet;
 	}
-    
-    /**
-     * @param playListController
-     */
-    public void setPlayListController(IPlayListController playListController) {
+
+	/**
+	 * @param playListController
+	 */
+	public void setPlayListController(final IPlayListController playListController) {
 		this.playListController = playListController;
 	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(PlayListHandler playListHandler) {
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final PlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    /**
-     * @param statePlayer
-     */
-    public void setStatePlayer(IStatePlayer statePlayer) {
+
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(final IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;
 	}
 
@@ -88,9 +88,9 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	 */
 	@Override
 	public void setVisiblePlayListActive() {
-        activePlayListIndex = visiblePlayListIndex;
+		activePlayListIndex = visiblePlayListIndex;
 	}
-	
+
 	/**
 	 * Returns number of play lists
 	 * @return
@@ -99,7 +99,7 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	public int getPlayListsCount() {
 		return playLists.size();
 	}
-	
+
 	/**
 	 * Index of visible play list
 	 * @return
@@ -108,7 +108,7 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	public int getVisiblePlayListIndex() {
 		return visiblePlayListIndex;
 	}
-	
+
 	/**
 	 * Index of active play list
 	 * @return
@@ -117,23 +117,23 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	public int getActivePlayListIndex() {
 		return activePlayListIndex;
 	}
-	
+
 	/**
 	 * @param activePlayListIndex
 	 */
 	@Override
-	public void setActivePlayListIndex(int activePlayListIndex) {
+	public void setActivePlayListIndex(final int activePlayListIndex) {
 		if (activePlayListIndex < 0 || activePlayListIndex >= playLists.size()) {
 			throw new IllegalArgumentException(StringUtils.getString("Wrong activePlayListIndex: ", activePlayListIndex));
 		}
 		this.activePlayListIndex = activePlayListIndex;
 	}
-	
+
 	/**
 	 * @param visiblePlayListIndex
 	 */
 	@Override
-	public void setVisiblePlayListIndex(int visiblePlayListIndex) {
+	public void setVisiblePlayListIndex(final int visiblePlayListIndex) {
 		if (visiblePlayListIndex < 0 || visiblePlayListIndex >= playLists.size()) {
 			throw new IllegalArgumentException(StringUtils.getString("Wrong visiblePlayListIndex: ", visiblePlayListIndex));
 		}
@@ -145,7 +145,7 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	 * @param index
 	 */
 	@Override
-	public void removePlayList(int index) {
+	public void removePlayList(final int index) {
 		playLists.remove(index);
 	}
 
@@ -155,7 +155,7 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	 * @return
 	 */
 	@Override
-	public IPlayList getPlayListAt(int i) {
+	public IPlayList getPlayListAt(final int i) {
 		if (i < 0 || i >= playLists.size()) {
 			throw new IllegalArgumentException(StringUtils.getString("Wrong index ", i));
 		}
@@ -167,8 +167,8 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	 * @param newPlayList
 	 */
 	@Override
-	public void addPlayList(IPlayList newPlayList) {
-        playLists.add(newPlayList);
+	public void addPlayList(final IPlayList newPlayList) {
+		playLists.add(newPlayList);
 	}
 
 	/**
@@ -176,22 +176,22 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	 */
 	@Override
 	public IPlayList getVisiblePlayList() {
-        if (getPlayListsCount() == 0) {
-            return new VoidPlayList();
-        }
-        return playLists.get(visiblePlayListIndex);
+		if (getPlayListsCount() == 0) {
+			return new VoidPlayList();
+		}
+		return playLists.get(visiblePlayListIndex);
 	}
-	
+
 	@Override
 	public IPlayList getActivePlayList() {
-        if (getPlayListsCount() == 0) {
-            return new VoidPlayList();
-        }
-        return playLists.get(activePlayListIndex);
+		if (getPlayListsCount() == 0) {
+			return new VoidPlayList();
+		}
+		return playLists.get(activePlayListIndex);
 	}
 
 	/**
-	 * Clear play lists 
+	 * Clear play lists
 	 */
 	@Override
 	public void clear() {
@@ -204,7 +204,7 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	 * @param playList
 	 */
 	@Override
-	public void addPlayList(int position, IPlayList playList) {
+	public void addPlayList(final int position, final IPlayList playList) {
 		playLists.add(position, playList);
 	}
 
@@ -212,55 +212,55 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	public IPlayList getNonFilteredPlayList() {
 		return nonFilteredPlayList;
 	}
-	
-    @Override
+
+	@Override
 	public boolean isFiltered() {
-        return nonFilteredPlayList != null;
-    }
+		return nonFilteredPlayList != null;
+	}
 
-    @Override
-    public void setFilter(String filter) {
-        String filterText = filter;
+	@Override
+	public void setFilter(final String filter) {
+		String filterText = filter;
 
-        // If filter is null, remove previous filter
-        if (filterText == null) {
-            // If play list was filtered, back to non-filtered play list
-            if (nonFilteredPlayList != null) {
-                setPlayListAfterFiltering(nonFilteredPlayList);
-                nonFilteredPlayList = null;
-            }
-        } else {
-            // Store original play list without filter
-            if (nonFilteredPlayList == null) {
+		// If filter is null, remove previous filter
+		if (filterText == null) {
+			// If play list was filtered, back to non-filtered play list
+			if (nonFilteredPlayList != null) {
+				setPlayListAfterFiltering(nonFilteredPlayList);
+				nonFilteredPlayList = null;
+			}
+		} else {
+			// Store original play list without filter
+			if (nonFilteredPlayList == null) {
 				nonFilteredPlayList = getVisiblePlayList().copyPlayList();
-            }
+			}
 
-            // Create a new play list by filtering elements
-            PlayList newPlayList = new PlayList(playListColumnSet.filterAudioObjects(nonFilteredPlayList.getAudioObjectsList(), filterText), statePlayer);
-            setPlayListAfterFiltering(newPlayList);
-        }
-    }
+			// Create a new play list by filtering elements
+			PlayList newPlayList = new PlayList(playListColumnSet.filterAudioObjects(nonFilteredPlayList.getAudioObjectsList(), filterText), statePlayer);
+			setPlayListAfterFiltering(newPlayList);
+		}
+	}
 
-    /**
-     * Sets the play list after filtering.
-     * 
-     * @param playList
-     *            the new play list after filtering
-     */
-    private void setPlayListAfterFiltering(IPlayList playList) {
-        removePlayList(getVisiblePlayListIndex());
-        addPlayList(getVisiblePlayListIndex(), playList);
+	/**
+	 * Sets the play list after filtering.
+	 * 
+	 * @param playList
+	 *            the new play list after filtering
+	 */
+	private void setPlayListAfterFiltering(final IPlayList playList) {
+		removePlayList(getVisiblePlayListIndex());
+		addPlayList(getVisiblePlayListIndex(), playList);
 
-        // Set selection interval to none
-        playListController.clearSelection();
+		// Set selection interval to none
+		playListController.clearSelection();
 
-        playListHandler.setPlayList(playList);
+		playListHandler.setPlayList(playList);
 
-        // Update table model
-        playListController.setVisiblePlayList(playList);
-        playListController.refreshPlayList();
+		// Update table model
+		playListController.setVisiblePlayList(playList);
+		playListController.refreshPlayList();
 
-        playListController.scrollPlayList(false);
-    }
+		playListController.scrollPlayList(false);
+	}
 
 }

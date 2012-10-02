@@ -29,37 +29,37 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
  *
  */
 public class FileNameColumn extends AbstractColumn<String> {
-    
-    private static final long serialVersionUID = -6243616734204965925L;
 
-    /**
-     * Default constructor
-     */
-    public FileNameColumn() {
-        super("FILE");
-        setWidth(250);
-        setVisible(false);
-        setUsedForFilter(true);
-    }
+	private static final long serialVersionUID = -6243616734204965925L;
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	if (ao1 instanceof ILocalAudioObject) {
-    		return ((ILocalAudioObject) ao1).getFile().getName().compareTo(((ILocalAudioObject) ao2).getFile().getName());
-    	}
-    	return 0;
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
+	/**
+	 * Default constructor
+	 */
+	public FileNameColumn() {
+		super("FILE");
+		setWidth(250);
+		setVisible(false);
+		setUsedForFilter(true);
+	}
 
-    @Override
-    public String getValueFor(IAudioObject audioObject) {
-    	if (audioObject instanceof ILocalAudioObject) { 
-    		return ((ILocalAudioObject) audioObject).getFile().getName();
-    	}
-    	return null;
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		if (ao1 instanceof ILocalAudioObject) {
+			return ((ILocalAudioObject) ao1).getFile().getName().compareTo(((ILocalAudioObject) ao2).getFile().getName());
+		}
+		return 0;
+	}
+
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
+
+	@Override
+	public String getValueFor(final IAudioObject audioObject, final int row) {
+		if (audioObject instanceof ILocalAudioObject) {
+			return ((ILocalAudioObject) audioObject).getFile().getName();
+		}
+		return null;
+	}
 }

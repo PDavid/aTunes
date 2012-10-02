@@ -23,26 +23,17 @@ package net.sourceforge.atunes.gui;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+/**
+ * Simple cell renderer for strings
+ * @author alex
+ *
+ */
+public class StringTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, String> {
 
-public class StringTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
-
-    private AbstractCommonColumnModel model;
-
-    /**
-     * @param model
-     * @param lookAndFeel
-     */
-    public StringTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
-    	super(lookAndFeel);
-        this.model = model;
-    }
-
-    @Override
-    public JLabel getComponent(JLabel c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        // Get alignment from model
-        c.setHorizontalAlignment(model.getColumnAlignment(column));
-        return c;
-    }
-
+	@Override
+	public JLabel getComponent(final JLabel c, final JTable table, final String value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+		// Get alignment from model
+		c.setHorizontalAlignment(getModel().getColumnAlignment(column));
+		return c;
+	}
 }

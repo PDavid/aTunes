@@ -24,6 +24,7 @@ import java.awt.Component;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -32,35 +33,44 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class SimilarArtistsContent extends AbstractContextPanelContent<SimilarArtistsDataSource> {
 
-    private static final long serialVersionUID = 5041098100868186051L;
-    private ContextTable similarArtistsTable;
+	private static final long serialVersionUID = 5041098100868186051L;
+	private ContextTable similarArtistsTable;
 
-    @Override
-    public String getContentName() {
-        return I18nUtils.getString("SIMILAR");
-    }
+	private IBeanFactory beanFactory;
 
-    @Override
-    public void updateContentFromDataSource(SimilarArtistsDataSource source) {
-    	if (source.getSimilarArtistsInfo() != null) {
-            ((SimilarArtistsTableModel)similarArtistsTable.getModel()).setArtists(source.getSimilarArtistsInfo().getArtists());
-    	} else {
-            ((SimilarArtistsTableModel)similarArtistsTable.getModel()).setArtists(null);
-    	}
-    }
-    
-    @Override
-    public void clearContextPanelContent() {
-        super.clearContextPanelContent();
-        ((SimilarArtistsTableModel)similarArtistsTable.getModel()).setArtists(null);
-    }
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
-    @Override
-    public Component getComponent() {
-        // Create components
-        similarArtistsTable = new SimilarArtistsContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
-        similarArtistsTable.addContextRowPanel(new SimilarArtistTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel(), getDesktop()));
-        similarArtistsTable.setModel(new SimilarArtistsTableModel());
-        return similarArtistsTable;
-    }
+	@Override
+	public String getContentName() {
+		return I18nUtils.getString("SIMILAR");
+	}
+
+	@Override
+	public void updateContentFromDataSource(final SimilarArtistsDataSource source) {
+		if (source.getSimilarArtistsInfo() != null) {
+			((SimilarArtistsTableModel)similarArtistsTable.getModel()).setArtists(source.getSimilarArtistsInfo().getArtists());
+		} else {
+			((SimilarArtistsTableModel)similarArtistsTable.getModel()).setArtists(null);
+		}
+	}
+
+	@Override
+	public void clearContextPanelContent() {
+		super.clearContextPanelContent();
+		((SimilarArtistsTableModel)similarArtistsTable.getModel()).setArtists(null);
+	}
+
+	@Override
+	public Component getComponent() {
+		// Create components
+		similarArtistsTable = new SimilarArtistsContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
+		similarArtistsTable.addContextRowPanel(beanFactory.getBean(SimilarArtistTableCellRendererCode.class));
+		similarArtistsTable.setModel(new SimilarArtistsTableModel());
+		return similarArtistsTable;
+	}
 }

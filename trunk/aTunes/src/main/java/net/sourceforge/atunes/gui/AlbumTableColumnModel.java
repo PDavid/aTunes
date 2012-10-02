@@ -20,13 +20,9 @@
 
 package net.sourceforge.atunes.gui;
 
-import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IColumnSet;
-import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ITaskService;
 
 /**
  * Column model used for table displaying album information
@@ -37,25 +33,30 @@ public final class AlbumTableColumnModel extends AbstractCommonColumnModel {
 
 	private static final long serialVersionUID = 8480107980198328642L;
 
-	/**
-	 * @param table
-	 * @param lookAndFeel
-	 * @param taskService
-	 */
-	public AlbumTableColumnModel(JTable table, ILookAndFeel lookAndFeel, ITaskService taskService) {
-        super(table, Context.getBean("albumColumnSet", IColumnSet.class), taskService, lookAndFeel);
-        enableColumnChange(true);
-    }
+	private IColumnSet albumColumnSet;
 
-   
+	/**
+	 * @param albumColumnSet
+	 */
+	public void setAlbumColumnSet(final IColumnSet albumColumnSet) {
+		this.albumColumnSet = albumColumnSet;
+	}
+
+	/**
+	 * Initialization needed
+	 */
+	public void initialize() {
+		setColumnSet(albumColumnSet);
+		enableColumnChange(true);
+	}
+
 	@Override
 	protected void reapplyFilter() {
 	}
-	
+
 	@Override
-    public void addColumn(TableColumn aColumn) {
-        super.addColumn(aColumn);
-        updateColumnSettings(aColumn);
-    }
-	
+	public void addColumn(final TableColumn aColumn) {
+		super.addColumn(aColumn);
+		updateColumnSettings(aColumn);
+	}
 }

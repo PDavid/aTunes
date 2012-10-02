@@ -45,7 +45,6 @@ import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchResult;
 import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IStateCore;
-import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.SearchIndexNotAvailableException;
 import net.sourceforge.atunes.model.SearchQuerySyntaxException;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -117,8 +116,6 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
 
 	private IStateCore stateCore;
 
-	private ITaskService taskService;
-
 	private DeviceSearchableObject deviceSearchableObject;
 
 	/**
@@ -127,13 +124,6 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
 	public void setDeviceSearchableObject(
 			final DeviceSearchableObject deviceSearchableObject) {
 		this.deviceSearchableObject = deviceSearchableObject;
-	}
-
-	/**
-	 * @param taskService
-	 */
-	public void setTaskService(final ITaskService taskService) {
-		this.taskService = taskService;
 	}
 
 	/**
@@ -176,7 +166,7 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
 	 */
 	private SearchResultsController getSearchResultsController() {
 		if (searchResultsController == null) {
-			searchResultsController = new SearchResultsController(dialogFactory.newDialog(SearchResultsDialog.class), getBean(IPlayListHandler.class), getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class), audioObjectComparator, taskService);
+			searchResultsController = new SearchResultsController(getBeanFactory(), dialogFactory.newDialog(SearchResultsDialog.class), getBean(IPlayListHandler.class), getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class), audioObjectComparator);
 		}
 		return searchResultsController;
 	}

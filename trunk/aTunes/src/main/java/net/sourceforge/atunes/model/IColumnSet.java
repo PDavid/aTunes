@@ -30,8 +30,6 @@ import java.util.List;
  */
 public interface IColumnSet {
 
-	public void setFrame(IFrame frame);
-
 	/**
 	 * Store current column settings.
 	 */

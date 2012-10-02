@@ -27,27 +27,27 @@ import javax.swing.JTable;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IIconFactory;
-import net.sourceforge.atunes.model.ILookAndFeel;
 
+/**
+ * Renderer for properties of audio objects in navigation table
+ * @author alex
+ *
+ */
 public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, AudioObjectProperty> {
 
-    public PropertyTableCellRendererCode(ILookAndFeel lookAndFeel) {
-		super(lookAndFeel);
-	}
-
 	@Override
-    public JLabel getComponent(JLabel comp, JTable table, AudioObjectProperty val, boolean isSelected, boolean hasFocus, int row, int column) {
-        ImageIcon icon = null;
-        if (val == AudioObjectProperty.FAVORITE) {
-            icon = Context.getBean("favoriteIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
-        } else if (val == AudioObjectProperty.NOT_LISTENED_ENTRY) {
-            icon = Context.getBean("newIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
-        } else if (val == AudioObjectProperty.DOWNLOADED_ENTRY) {
-            icon = Context.getBean("downloadIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
-        }
-        comp.setIcon(icon);
-        comp.setText(null);
-        return comp;
-    }
+	public JLabel getComponent(final JLabel comp, final JTable table, final AudioObjectProperty val, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+		ImageIcon icon = null;
+		if (val == AudioObjectProperty.FAVORITE) {
+			icon = Context.getBean("favoriteIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
+		} else if (val == AudioObjectProperty.NOT_LISTENED_ENTRY) {
+			icon = Context.getBean("newIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
+		} else if (val == AudioObjectProperty.DOWNLOADED_ENTRY) {
+			icon = Context.getBean("downloadIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
+		}
+		comp.setIcon(icon);
+		comp.setText(null);
+		return comp;
+	}
 
 }

@@ -26,33 +26,33 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 
 final class PodcastNotListenedPropertyColumn extends AbstractColumn<AudioObjectProperty> {
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    PodcastNotListenedPropertyColumn(String name) {
-        super(name);
-    }
+	PodcastNotListenedPropertyColumn(final String name) {
+		super(name);
+	}
 
-    @Override
-    public AudioObjectProperty getValueFor(IAudioObject audioObject) {
-    	if (audioObject instanceof IPodcastFeedEntry) {
-    		return ((IPodcastFeedEntry) audioObject).isListened() ? AudioObjectProperty.NO_PROPERTIES : AudioObjectProperty.NOT_LISTENED_ENTRY;
-    	}
-    	return AudioObjectProperty.NOT_LISTENED_ENTRY;
-    }
+	@Override
+	public AudioObjectProperty getValueFor(final IAudioObject audioObject, final int row) {
+		if (audioObject instanceof IPodcastFeedEntry) {
+			return ((IPodcastFeedEntry) audioObject).isListened() ? AudioObjectProperty.NO_PROPERTIES : AudioObjectProperty.NOT_LISTENED_ENTRY;
+		}
+		return AudioObjectProperty.NOT_LISTENED_ENTRY;
+	}
 
-    @Override
-    protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-    	if (o1 instanceof IPodcastFeedEntry && o2 instanceof IPodcastFeedEntry) {
-    		return Boolean.valueOf(((IPodcastFeedEntry) o1).isListened()).compareTo(Boolean.valueOf(((IPodcastFeedEntry) o2).isListened()));
-    	}
-    	return 0;
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
+		if (o1 instanceof IPodcastFeedEntry && o2 instanceof IPodcastFeedEntry) {
+			return Boolean.valueOf(((IPodcastFeedEntry) o1).isListened()).compareTo(Boolean.valueOf(((IPodcastFeedEntry) o2).isListened()));
+		}
+		return 0;
+	}
+
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
 }

@@ -23,25 +23,16 @@ package net.sourceforge.atunes.gui;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
-
 /**
  * Cell renderer to apply component orientation
  * @author alex
  *
  */
 public class ComponentOrientationTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
-	
-    /**
-     * @param lookAndFeel
-     */
-    public ComponentOrientationTableCellRendererCode(ILookAndFeel lookAndFeel) {
-		super(lookAndFeel);
-	}
 
 	@Override
-    public JLabel getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    	GuiUtils.applyComponentOrientation(superComponent);
-    	return superComponent;
-    }
+	public JLabel getComponent(final JLabel superComponent, final JTable t, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+		GuiUtils.applyComponentOrientation(superComponent);
+		return superComponent;
+	}
 }
