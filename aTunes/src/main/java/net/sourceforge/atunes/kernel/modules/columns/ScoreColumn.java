@@ -136,7 +136,7 @@ public class ScoreColumn extends AbstractColumn<Integer> {
 
 	@Override
 	public TableCellRenderer getCellRenderer() {
-		return lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new AbstractTableCellRendererCode<JLabel, Integer>(lookAndFeelManager.getCurrentLookAndFeel()) {
+		return lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new AbstractTableCellRendererCode<JLabel, Integer>() {
 
 			@Override
 			public JLabel getComponent(final JLabel superComponent, final JTable t, final Integer value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
@@ -157,7 +157,7 @@ public class ScoreColumn extends AbstractColumn<Integer> {
 	}
 
 	@Override
-	public Integer getValueFor(final IAudioObject audioObject) {
+	public Integer getValueFor(final IAudioObject audioObject, final int row) {
 		return audioObject.getStars();
 	}
 

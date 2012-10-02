@@ -20,38 +20,32 @@
 
 package net.sourceforge.atunes.gui;
 
-import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
-import net.sourceforge.atunes.model.IColumnSet;
-import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ITaskService;
-
+/**
+ * Column model for search results
+ * @author alex
+ *
+ */
 public class SearchResultColumnModel extends AbstractCommonColumnModel {
 
-    private static final long serialVersionUID = -2211160302611944001L;
+	private static final long serialVersionUID = -2211160302611944001L;
 
-    /**
-     * Instantiates a new play list column model.
-     * @param table
-     * @param columnSet
-     * @param lookAndFeel
-     * @param taskService
-     */
-    public SearchResultColumnModel(JTable table, IColumnSet columnSet, ILookAndFeel lookAndFeel, ITaskService taskService) {
-        super(table, columnSet, taskService, lookAndFeel);
-        enableColumnChange(true);
-    }
+	/**
+	 * Initialization needed
+	 */
+	public void initialize() {
+		enableColumnChange(true);
+	}
 
-    @Override
-    protected void reapplyFilter() {
-        // Nothing to do    	
-    }
+	@Override
+	protected void reapplyFilter() {
+		// Nothing to do
+	}
 
-    @Override
-    public void addColumn(TableColumn aColumn) {
-        super.addColumn(aColumn);
-        updateColumnSettings(aColumn);
-    }
-
+	@Override
+	public void addColumn(final TableColumn aColumn) {
+		super.addColumn(aColumn);
+		updateColumnSettings(aColumn);
+	}
 }

@@ -25,17 +25,12 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.model.ILookAndFeel;
 
 class RightAlignmentTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
-	
-    public RightAlignmentTableCellRendererCode(ILookAndFeel lookAndFeel) {
-		super(lookAndFeel);
-	}
 
 	@Override
-    public JLabel getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    	superComponent.setHorizontalAlignment(SwingConstants.RIGHT);
-    	return superComponent;
-    }
+	public JLabel getComponent(final JLabel superComponent, final JTable t, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+		superComponent.setHorizontalAlignment(SwingConstants.RIGHT);
+		return superComponent;
+	}
 }

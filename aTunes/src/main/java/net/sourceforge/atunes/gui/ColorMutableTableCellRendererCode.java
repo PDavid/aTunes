@@ -26,7 +26,6 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeel;
 
 /**
  * Cell renderer for color mutable icons
@@ -35,25 +34,14 @@ import net.sourceforge.atunes.model.ILookAndFeel;
  */
 public class ColorMutableTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, IColorMutableImageIcon> {
 
-    private AbstractCommonColumnModel model;
-
-    /**
-     * @param model
-     * @param lookAndFeel
-     */
-    public ColorMutableTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
-    	super(lookAndFeel);
-        this.model = model;
-    }
-
-    @Override
-    public JLabel getComponent(JLabel c, JTable table, IColorMutableImageIcon value, boolean isSelected, boolean hasFocus, int row, int column) {
-        c.setText(null);
-        Color color = getLookAndFeel().getPaintForColorMutableIcon(c, isSelected);
-        if (value != null) {
-        	c.setIcon(value.getIcon(color));
-        }
-        c.setHorizontalAlignment(model.getColumnAlignment(column));
-        return c;
-    }
+	@Override
+	public JLabel getComponent(final JLabel c, final JTable table, final IColorMutableImageIcon value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+		c.setText(null);
+		Color color = getLookAndFeel().getPaintForColorMutableIcon(c, isSelected);
+		if (value != null) {
+			c.setIcon(value.getIcon(color));
+		}
+		c.setHorizontalAlignment(getModel().getColumnAlignment(column));
+		return c;
+	}
 }

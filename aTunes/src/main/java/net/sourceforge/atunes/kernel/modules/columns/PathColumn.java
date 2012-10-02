@@ -64,7 +64,7 @@ public class PathColumn extends AbstractColumn<String> {
 	}
 
 	@Override
-	public String getValueFor(final IAudioObject audioObject) {
+	public String getValueFor(final IAudioObject audioObject, final int row) {
 		if (audioObject instanceof IRadio) {
 			return ((IRadio) audioObject).getUrl();
 		}

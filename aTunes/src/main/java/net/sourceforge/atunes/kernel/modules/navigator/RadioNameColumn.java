@@ -25,33 +25,33 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IRadio;
 
 final class RadioNameColumn extends AbstractColumn<String> {
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 3613237620716484881L;
+	private static final long serialVersionUID = 3613237620716484881L;
 
-    RadioNameColumn(String name) {
-        super(name);
-    }
+	RadioNameColumn(final String name) {
+		super(name);
+	}
 
-    @Override
-    public String getValueFor(IAudioObject audioObject) {
-    	if (audioObject instanceof IRadio) {
-    		return ((IRadio) audioObject).getName();
-    	}
-        return null;
-    }
+	@Override
+	public String getValueFor(final IAudioObject audioObject, final int row) {
+		if (audioObject instanceof IRadio) {
+			return ((IRadio) audioObject).getName();
+		}
+		return null;
+	}
 
-    @Override
-    protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-    	if (o1 instanceof IRadio && o2 instanceof IRadio) {
-    		return ((IRadio) o1).getName().compareTo(((IRadio) o2).getName());
-    	}
-    	return o1.getTitleOrFileName().compareTo(o2.getTitleOrFileName());
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
+		if (o1 instanceof IRadio && o2 instanceof IRadio) {
+			return ((IRadio) o1).getName().compareTo(((IRadio) o2).getName());
+		}
+		return o1.getTitleOrFileName().compareTo(o2.getTitleOrFileName());
+	}
+
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
 }

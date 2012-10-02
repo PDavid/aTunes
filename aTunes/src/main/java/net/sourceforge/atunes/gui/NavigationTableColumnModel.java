@@ -23,55 +23,61 @@ package net.sourceforge.atunes.gui;
 
 import javax.swing.table.TableColumn;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITableCellRendererCode;
-import net.sourceforge.atunes.model.ITagHandler;
-import net.sourceforge.atunes.model.ITaskService;
 
+/**
+ * Column model for navigation table
+ * @author alex
+ *
+ */
 public final class NavigationTableColumnModel extends AbstractCommonColumnModel {
 
-    private static final long serialVersionUID = 1071222881574684439L;
+	private static final long serialVersionUID = 1071222881574684439L;
 
-    private INavigationHandler navigationHandler;
-    
-    private ITagHandler tagHandler;
-    
-    private IStateNavigation stateNavigation;
-    
-    /**
-     * @param table
-     * @param state
-     * @param navigationHandler
-     * @param taskService
-     * @param lookAndFeel
-     * @param tagHandler
-     */
-    public NavigationTableColumnModel(ITable table, IStateNavigation stateNavigation, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeel lookAndFeel, ITagHandler tagHandler) {
-        super(table.getSwingComponent(), taskService, lookAndFeel);
-        this.stateNavigation = stateNavigation;
-        this.navigationHandler = navigationHandler;
-        this.tagHandler = tagHandler;
-        enableColumnChange(true);
-    }
+	private INavigationHandler navigationHandler;
 
-    @Override
-    public void addColumn(TableColumn aColumn) {
-        updateColumnSettings(aColumn);
-        super.addColumn(aColumn);
-    }
+	private ITable navigationTable;
 
-    @Override
-    protected void reapplyFilter() {
-    	navigationHandler.updateViewTable();
-    }
+	/**
+	 * @param navigationTable
+	 */
+	public void setNavigationTable(final ITable navigationTable) {
+		this.navigationTable = navigationTable;
+	}
 
-    @Override
-    public ITableCellRendererCode<?, ?> getRendererCodeFor(Class<?> clazz) {
-        ITableCellRendererCode<?, ?> renderer = super.getRendererCodeFor(clazz);
-        return new NavigationTableCellRendererCode(renderer, stateNavigation, getLookAndFeel(), navigationHandler, tagHandler);
-    }
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
 
+	/**
+	 * Initialization needed
+	 */
+	public void initialize() {
+		setTable(navigationTable.getSwingComponent());
+		enableColumnChange(true);
+	}
+
+	@Override
+	public void addColumn(final TableColumn aColumn) {
+		updateColumnSettings(aColumn);
+		super.addColumn(aColumn);
+	}
+
+	@Override
+	protected void reapplyFilter() {
+		navigationHandler.updateViewTable();
+	}
+
+	@Override
+	public ITableCellRendererCode<?, ?> getRendererCodeFor(final Class<?> clazz) {
+		ITableCellRendererCode<?, ?> renderer = super.getRendererCodeFor(clazz);
+		NavigationTableCellRendererCode navigationRenderer = getBeanFactory().getBean(NavigationTableCellRendererCode.class);
+		navigationRenderer.setRenderer(renderer);
+		return navigationRenderer;
+	}
 }

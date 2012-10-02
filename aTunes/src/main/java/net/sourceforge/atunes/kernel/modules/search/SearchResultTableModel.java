@@ -32,73 +32,73 @@ import net.sourceforge.atunes.model.IAudioObject;
  */
 public class SearchResultTableModel extends AbstractColumnSetTableModel {
 
-    private List<IAudioObject> results;
+	private List<IAudioObject> results;
 
-    /**
-     * Return row count.
-     * 
-     * @return the row count
-     */
-    @Override
-    public int getRowCount() {
-        return results != null ? results.size() : 0;
-    }
+	/**
+	 * Return row count.
+	 * 
+	 * @return the row count
+	 */
+	@Override
+	public int getRowCount() {
+		return results != null ? results.size() : 0;
+	}
 
-    /**
-     * Returns value of a row and column.
-     * 
-     * @param rowIndex
-     *            the row index
-     * @param colIndex
-     *            the col index
-     * 
-     * @return the value at
-     */
-    @Override
-    public Object getValueAt(int rowIndex, int colIndex) {
-        return results != null ? getColumn(colIndex).getValueFor(results.get(rowIndex)) : null;
-    }
+	/**
+	 * Returns value of a row and column.
+	 * 
+	 * @param rowIndex
+	 *            the row index
+	 * @param colIndex
+	 *            the col index
+	 * 
+	 * @return the value at
+	 */
+	@Override
+	public Object getValueAt(final int rowIndex, final int colIndex) {
+		return results != null ? getColumn(colIndex).getValueFor(results.get(rowIndex), rowIndex) : null;
+	}
 
-    /**
-     * Returns if a cell is editable.
-     * 
-     * @param rowIndex
-     *            the row index
-     * @param columnIndex
-     *            the column index
-     * 
-     * @return true, if checks if is cell editable
-     */
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
-    }
+	/**
+	 * Returns if a cell is editable.
+	 * 
+	 * @param rowIndex
+	 *            the row index
+	 * @param columnIndex
+	 *            the column index
+	 * 
+	 * @return true, if checks if is cell editable
+	 */
+	@Override
+	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
+		return false;
+	}
 
-    /**
-     * Sets value for a cell
-     * 
-     * @param aValue
-     *            the a value
-     * @param rowIndex
-     *            the row index
-     * @param columnIndex
-     *            the column index
-     */
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        // Nothing to do
-    }
+	/**
+	 * Sets value for a cell
+	 * 
+	 * @param aValue
+	 *            the a value
+	 * @param rowIndex
+	 *            the row index
+	 * @param columnIndex
+	 *            the column index
+	 */
+	@Override
+	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
+		// Nothing to do
+	}
 
-    /**
-     * @param results
-     *            the results to set
-     */
-    public void setResults(List<IAudioObject> results) {
-        this.results = results;
-    }
+	/**
+	 * @param results
+	 *            the results to set
+	 */
+	public void setResults(final List<IAudioObject> results) {
+		this.results = results;
+	}
 
-    @Override
-    public void sort(Comparator<IAudioObject> comparator) {
-        Collections.sort(this.results, comparator);
-    }
+	@Override
+	public void sort(final Comparator<IAudioObject> comparator) {
+		Collections.sort(this.results, comparator);
+	}
 }

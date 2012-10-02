@@ -36,103 +36,103 @@ import net.sourceforge.atunes.model.IAudioObject;
  */
 public final class AlbumTableModel extends AbstractColumnSetTableModel {
 
-   
-    /** The albums. */
-    private List<IAlbum> albums;
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getRowCount()
-     */
-    @Override
-    public int getRowCount() {
-        return albums != null ? albums.size() : 0;
-    }
 
-    /**
-     * Gets the album at.
-     * 
-     * @param row
-     *            the row
-     * 
-     * @return the album at
-     */
-    public IAlbum getAlbumAt(int row) {
-        return albums != null ? albums.get(row) : null;
-    }
+	/** The albums. */
+	private List<IAlbum> albums;
 
-    /**
-     * Gets the albums.
-     * 
-     * @return the albums
-     */
-    public List<IAlbum> getAlbums() {
-        return albums;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.table.TableModel#getRowCount()
+	 */
+	@Override
+	public int getRowCount() {
+		return albums != null ? albums.size() : 0;
+	}
 
-    /**
-     * Gets the album at.
-     * 
-     * @param rows
-     *            the rows
-     * 
-     * @return the album at
-     */
-    public List<IAlbum> getAlbumsAt(int[] rows) {
-        List<IAlbum> result = new ArrayList<IAlbum>();
-        for (int element : rows) {
-            result.add(albums.get(element));
-        }
-        return result;
-    }
+	/**
+	 * Gets the album at.
+	 * 
+	 * @param row
+	 *            the row
+	 * 
+	 * @return the album at
+	 */
+	public IAlbum getAlbumAt(final int row) {
+		return albums != null ? albums.get(row) : null;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getValueAt(int, int)
-     */
+	/**
+	 * Gets the albums.
+	 * 
+	 * @return the albums
+	 */
+	public List<IAlbum> getAlbums() {
+		return albums;
+	}
 
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-    	IAlbum album = getAlbumAt(rowIndex);
-    	if (album == null) {
-    		return null;
-    	}
-    	return getColumn(columnIndex).getValueFor(album.getAudioObjects().get(0));
-    }
+	/**
+	 * Gets the album at.
+	 * 
+	 * @param rows
+	 *            the rows
+	 * 
+	 * @return the album at
+	 */
+	public List<IAlbum> getAlbumsAt(final int[] rows) {
+		List<IAlbum> result = new ArrayList<IAlbum>();
+		for (int element : rows) {
+			result.add(albums.get(element));
+		}
+		return result;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#isCellEditable(int, int)
-     */
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
-    }
-
-    /**
-     * Sets the albums.
-     * 
-     * @param albums
-     *            
-     */
-    public void setAlbums(List<IAlbum> albums) {
-        this.albums = albums;
-        refresh(TableModelEvent.INSERT);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
-     */
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.table.TableModel#getValueAt(int, int)
+	 */
 
 	@Override
-	public void sort(Comparator<IAudioObject> comparator) {
+	public Object getValueAt(final int rowIndex, final int columnIndex) {
+		IAlbum album = getAlbumAt(rowIndex);
+		if (album == null) {
+			return null;
+		}
+		return getColumn(columnIndex).getValueFor(album.getAudioObjects().get(0), rowIndex);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.table.TableModel#isCellEditable(int, int)
+	 */
+	@Override
+	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
+		return false;
+	}
+
+	/**
+	 * Sets the albums.
+	 * 
+	 * @param albums
+	 * 
+	 */
+	public void setAlbums(final List<IAlbum> albums) {
+		this.albums = albums;
+		refresh(TableModelEvent.INSERT);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
+	 */
+	@Override
+	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
+	}
+
+	@Override
+	public void sort(final Comparator<IAudioObject> comparator) {
 	}
 }

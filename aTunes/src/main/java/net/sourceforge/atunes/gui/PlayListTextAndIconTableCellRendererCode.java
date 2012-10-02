@@ -23,28 +23,45 @@ package net.sourceforge.atunes.gui;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayListHandler;
 
-final class PlayListTextAndIconTableCellRendererCode extends TextAndIconTableCellRendererCode {
-	
-	private IPlayListHandler playListHandler;
-	
-    PlayListTextAndIconTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel, IPlayListHandler playListHandler) {
-        super(model, lookAndFeel);
-        this.playListHandler = playListHandler;
-    }
+/**
+ * Renderer for columns with text and icon
+ * @author alex
+ *
+ */
+public final class PlayListTextAndIconTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, TextAndIcon> {
 
-    @Override
-    public JLabel getComponent(JLabel superComponent, JTable table, TextAndIcon value, boolean isSelected, boolean hasFocus, int row, int column) {
-    	JLabel c = super.getComponent(superComponent, table, value, isSelected, hasFocus, row, column);
-    	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-    		if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
-    			 ((JLabel) c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
-    		} else if (getLookAndFeel().getPlayListFont() != null) {
-                ((JLabel) c).setFont(getLookAndFeel().getPlayListFont());
-    		}
-    	}
-        return c;
-    }
+	private IPlayListHandler playListHandler;
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
+	@Override
+	public JLabel getComponent(final JLabel c, final JTable table, final TextAndIcon value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+		if (value != null) {
+			c.setText(value.getText());
+			if (value.getIcon() != null) {
+				c.setIcon(value.getIcon().getIcon(getLookAndFeel().getPaintForColorMutableIcon(c, isSelected)));
+			} else {
+				c.setIcon(null);
+			}
+			c.setHorizontalTextPosition((value).getHorizontalTextPosition());
+		}
+		// Get alignment from model
+		c.setHorizontalAlignment(getModel().getColumnAlignment(column));
+
+		if (playListHandler.isCurrentVisibleRowPlaying(row)) {
+			if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
+				(c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
+			} else if (getLookAndFeel().getPlayListFont() != null) {
+				(c).setFont(getLookAndFeel().getPlayListFont());
+			}
+		}
+		return c;
+	}
 }

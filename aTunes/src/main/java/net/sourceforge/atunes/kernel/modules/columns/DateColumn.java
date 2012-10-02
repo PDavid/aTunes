@@ -34,50 +34,50 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class DateColumn extends AbstractColumn<String> {
 
-    private static final long serialVersionUID = 6832826017182272636L;
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.mediumDateTime();
+	private static final long serialVersionUID = 6832826017182272636L;
+	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.mediumDateTime();
 
-    /**
-     * Default constructor
-     */
-    public DateColumn() {
-        super("DATE");
-        setAlignment(SwingConstants.CENTER);
-        setVisible(false);
-        setUsedForFilter(true);
-    }
+	/**
+	 * Default constructor
+	 */
+	public DateColumn() {
+		super("DATE");
+		setAlignment(SwingConstants.CENTER);
+		setVisible(false);
+		setUsedForFilter(true);
+	}
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        if (ao1.getDate() == null) {
-            return 1;
-        } else if (ao2.getDate() == null) {
-            return -1;
-        } else {
-            return ao1.getDate().compareTo(ao2.getDate());
-        }
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		if (ao1.getDate() == null) {
+			return 1;
+		} else if (ao2.getDate() == null) {
+			return -1;
+		} else {
+			return ao1.getDate().compareTo(ao2.getDate());
+		}
+	}
 
-    @Override
-    public String getValueFor(IAudioObject audioObject) {
-        if (audioObject.getDate() != null) {
-            return DATE_FORMAT.print(audioObject.getDate());
-        } else {
-            return "";
-        }
-    }
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
 
-    @Override
-    public String getValueForFilter(IAudioObject audioObject) {
-    	if (audioObject != null) {
-    		return DATE_FORMAT.print(audioObject.getDate());
-    	} else {
-    		return "";
-    	}
-    }
+	@Override
+	public String getValueFor(final IAudioObject audioObject, final int row) {
+		if (audioObject.getDate() != null) {
+			return DATE_FORMAT.print(audioObject.getDate());
+		} else {
+			return "";
+		}
+	}
+
+	@Override
+	public String getValueForFilter(final IAudioObject audioObject, final int row) {
+		if (audioObject != null) {
+			return DATE_FORMAT.print(audioObject.getDate());
+		} else {
+			return "";
+		}
+	}
 }

@@ -31,31 +31,31 @@ import net.sourceforge.atunes.model.IAudioObject;
  */
 public class DiscNumberColumn extends AbstractColumn<Integer> {
 
-    private static final long serialVersionUID = -6226391762384061708L;
+	private static final long serialVersionUID = -6226391762384061708L;
 
-    /**
-     * Default constructor
-     */
-    public DiscNumberColumn() {
-        super("DISC_NUMBER");
-        setWidth(40);
-        setVisible(false);
-        setAlignment(SwingConstants.CENTER);
-    }
+	/**
+	 * Default constructor
+	 */
+	public DiscNumberColumn() {
+		super("DISC_NUMBER");
+		setWidth(40);
+		setVisible(false);
+		setAlignment(SwingConstants.CENTER);
+	}
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        return Integer.valueOf(ao1.getDiscNumber()).compareTo(ao2.getDiscNumber());
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return Integer.valueOf(ao1.getDiscNumber()).compareTo(ao2.getDiscNumber());
+	}
 
-    @Override
-    public Integer getValueFor(IAudioObject audioObject) {
-        // Return disc number
-        return audioObject.getDiscNumber() > 0 ? audioObject.getDiscNumber() : null;
-    }
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
+
+	@Override
+	public Integer getValueFor(final IAudioObject audioObject, final int row) {
+		// Return disc number
+		return audioObject.getDiscNumber() > 0 ? audioObject.getDiscNumber() : null;
+	}
 }

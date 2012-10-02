@@ -18,34 +18,36 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.navigator;
+package net.sourceforge.atunes.kernel.modules.context.artist;
 
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.model.AudioObjectProperty;
-import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.kernel.modules.context.ContextTable;
+import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
+import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.IDesktop;
 
-final class RadioEmptyColumn extends AbstractColumn<AudioObjectProperty> {
+final class OpenAlbumUrlAction extends ContextTableAction<IAlbumInfo> {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3613237620716484881L;
+	private static final long serialVersionUID = 4367597772680455920L;
 
-	RadioEmptyColumn(final String name) {
-		super(name);
+	OpenAlbumUrlAction(String name, ContextTable table,
+			IDesktop desktop) {
+		super(name, table, desktop);
 	}
 
 	@Override
-	protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
-		return 0;
+	protected void execute(IAlbumInfo object) {
+		getDesktop().openURL(object.getUrl());
 	}
 
 	@Override
-	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return 0;
+	protected IAlbumInfo getSelectedObject(int row) {
+		return  ((ContextAlbumsTableModel) getTable().getModel()).getAlbum(row);
 	}
 
 	@Override
-	public AudioObjectProperty getValueFor(final IAudioObject audioObject, final int row) {
-		return AudioObjectProperty.NO_PROPERTIES;
+	protected boolean isEnabledForObject(IAlbumInfo object) {
+		return true;
 	}
 }

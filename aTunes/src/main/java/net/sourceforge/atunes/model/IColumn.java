@@ -30,7 +30,7 @@ import javax.swing.table.TableCellRenderer;
 /**
  * Represents a column of a table
  * @author alex
- * @param <T> 
+ * @param <T>
  *
  */
 public interface IColumn<T> extends Serializable, Comparable<IColumn<?>> {
@@ -100,14 +100,12 @@ public interface IColumn<T> extends Serializable, Comparable<IColumn<?>> {
 	public int getOrder();
 
 	/**
-	 * Returns value for a column of an audiofile.
-	 * 
+	 * Returns value for a column of an audio object in given row
 	 * @param audioObject
-	 *            the audio object
-	 * 
-	 * @return the value for
+	 * @param row
+	 * @return
 	 */
-	public T getValueFor(IAudioObject audioObject);
+	public T getValueFor(IAudioObject audioObject, int row);
 
 	/**
 	 * Gets the width.
@@ -243,11 +241,11 @@ public interface IColumn<T> extends Serializable, Comparable<IColumn<?>> {
 	/**
 	 * Returns string used to filter by this column. By default it performs a
 	 * <code>toString</code> over object returned by <code>getValueFor</code>
-	 * 
 	 * @param audioObject
+	 * @param row
 	 * @return
 	 */
-	public String getValueForFilter(IAudioObject audioObject);
+	public String getValueForFilter(IAudioObject audioObject, int row);
 
 	/**
 	 * @param columnSort

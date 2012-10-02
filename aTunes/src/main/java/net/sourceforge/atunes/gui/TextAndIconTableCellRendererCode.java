@@ -23,31 +23,27 @@ package net.sourceforge.atunes.gui;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
-
+/**
+ * Renderer for text and icon
+ * @author alex
+ *
+ */
 public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, TextAndIcon> {
 
-    private AbstractCommonColumnModel model;
-
-    public TextAndIconTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
-    	super(lookAndFeel);
-        this.model = model;
-    }
-
-    @Override
-    public JLabel getComponent(JLabel c, JTable table, TextAndIcon value, boolean isSelected, boolean hasFocus, int row, int column) {
-    	if (value != null) {
-    		c.setText(value.getText());
-    		if (value.getIcon() != null) {
-    			c.setIcon(value.getIcon().getIcon(getLookAndFeel().getPaintForColorMutableIcon(c, isSelected)));
-    		} else {
-    			c.setIcon(null);
-    		}        
-    		c.setHorizontalTextPosition(((TextAndIcon) value).getHorizontalTextPosition());
-    	}
-        // Get alignment from model
-        c.setHorizontalAlignment(model.getColumnAlignment(column));
-        return c;
-    }
+	@Override
+	public JLabel getComponent(final JLabel c, final JTable table, final TextAndIcon value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+		if (value != null) {
+			c.setText(value.getText());
+			if (value.getIcon() != null) {
+				c.setIcon(value.getIcon().getIcon(getLookAndFeel().getPaintForColorMutableIcon(c, isSelected)));
+			} else {
+				c.setIcon(null);
+			}
+			c.setHorizontalTextPosition((value).getHorizontalTextPosition());
+		}
+		// Get alignment from model
+		c.setHorizontalAlignment(getModel().getColumnAlignment(column));
+		return c;
+	}
 
 }

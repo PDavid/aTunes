@@ -24,6 +24,7 @@ import java.awt.Component;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -34,33 +35,42 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ArtistAlbumsContent extends AbstractContextPanelContent<ArtistAlbumListImagesDataSource> {
 
-    private static final long serialVersionUID = -5538266144953409867L;
-    private ContextTable albumsTable;
+	private static final long serialVersionUID = -5538266144953409867L;
+	private ContextTable albumsTable;
 
-    @Override
-    public String getContentName() {
-        return I18nUtils.getString("ALBUMS");
-    }
+	private IBeanFactory beanFactory;
 
-    @Override
-    public void updateContentFromDataSource(ArtistAlbumListImagesDataSource source) {
-        ((ContextAlbumsTableModel)albumsTable.getModel()).setAlbums(source.getAlbumList().getAlbums());
-    }
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
-    @Override
-    public void clearContextPanelContent() {
-        super.clearContextPanelContent();
-        ((ContextAlbumsTableModel)albumsTable.getModel()).setAlbums(null);
-    }
+	@Override
+	public String getContentName() {
+		return I18nUtils.getString("ALBUMS");
+	}
 
-    @Override
-    public Component getComponent() {
-        // Create components
-        albumsTable = new ContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
-        albumsTable.addContextRowPanel(new AlbumsTableCellRendererCode((ArtistAlbumListImagesDataSource)getDataSource(), 
-        		getLookAndFeelManager().getCurrentLookAndFeel(), getDesktop()));
-        albumsTable.setModel(new ContextAlbumsTableModel());
-        return albumsTable;
-    }
+	@Override
+	public void updateContentFromDataSource(final ArtistAlbumListImagesDataSource source) {
+		((ContextAlbumsTableModel)albumsTable.getModel()).setAlbums(source.getAlbumList().getAlbums());
+	}
 
+	@Override
+	public void clearContextPanelContent() {
+		super.clearContextPanelContent();
+		((ContextAlbumsTableModel)albumsTable.getModel()).setAlbums(null);
+	}
+
+	@Override
+	public Component getComponent() {
+		// Create components
+		albumsTable = new ContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
+		AlbumsTableCellRendererCode renderer = beanFactory.getBean(AlbumsTableCellRendererCode.class);
+		renderer.setSource((ArtistAlbumListImagesDataSource)getDataSource());
+		albumsTable.addContextRowPanel(renderer);
+		albumsTable.setModel(new ContextAlbumsTableModel());
+		return albumsTable;
+	}
 }

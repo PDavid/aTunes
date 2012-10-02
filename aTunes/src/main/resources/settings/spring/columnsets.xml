@@ -4,29 +4,29 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	default-autowire="byName" default-lazy-init="true">
 
-	<bean id="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet" abstract="true" />
+	<bean id="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet" abstract="true" />
 		
-	<bean id="navigatorColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet">
+	<bean id="navigatorColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet">
 		<property name="allowedColumns" ref="noPlaylistColumnSetColumns"/>
 	</bean>
 	
-	<bean id="playListColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet">
+	<bean id="playListColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet">
 		<property name="allowedColumns" ref="playlistColumnSetColumns"/>
 	</bean>
 	
-	<bean id="albumColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.AlbumColumnSet">
+	<bean id="albumColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.columns.AlbumColumnSet">
 		<property name="allowedColumns" ref="albumColumnSetColumns"/>
 	</bean>
 	
-	<bean id="searchResultsColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet">
+	<bean id="searchResultsColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet">
 		<property name="allowedColumns" ref="noPlaylistColumnSetColumns"/>
 	</bean>
 
-	<bean id="podcastNavigationColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationColumnSet">
+	<bean id="podcastNavigationColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationColumnSet">
 		<property name="columnSetName" value="PodcastNavigationView" />
 	</bean>
 
-	<bean id="radioNavigationColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationColumnSet">
+	<bean id="radioNavigationColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationColumnSet">
 		<property name="columnSetName" value="RadioNavigationView" />
 	</bean>
 	

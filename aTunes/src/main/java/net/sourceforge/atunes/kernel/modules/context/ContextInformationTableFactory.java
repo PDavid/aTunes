@@ -23,7 +23,8 @@ package net.sourceforge.atunes.kernel.modules.context;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
@@ -34,34 +35,43 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 public class ContextInformationTableFactory {
 
 	private ILookAndFeelManager lookAndFeelManager;
-	
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
-	
+
 	/**
 	 * Returns a new table to show tracks information from context
 	 * @param listener
 	 * @return
 	 */
 	public JTable getNewTracksTable(final ITracksTableListener listener) {
-        final JTable tracksTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
-        tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tracksTable.setDefaultRenderer(String.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
-                GuiUtils.getComponentOrientationTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
+		final JTable tracksTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
+		tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tracksTable.setDefaultRenderer(String.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
+				beanFactory.getBean(ComponentOrientationTableCellRendererCode.class)));
 
-        tracksTable.setDefaultRenderer(Integer.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
-                GuiUtils.getComponentOrientationTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
+		tracksTable.setDefaultRenderer(Integer.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
+				beanFactory.getBean(ComponentOrientationTableCellRendererCode.class)));
 
-        tracksTable.getTableHeader().setReorderingAllowed(true);
-        tracksTable.getTableHeader().setResizingAllowed(false);
-        tracksTable.setColumnModel(new TracksDefaultTableColumnModel());
+		tracksTable.getTableHeader().setReorderingAllowed(true);
+		tracksTable.getTableHeader().setResizingAllowed(false);
+		tracksTable.setColumnModel(new TracksDefaultTableColumnModel());
 
-        tracksTable.getSelectionModel().addListSelectionListener(new TracksTableListSelectionListener(listener, tracksTable));
+		tracksTable.getSelectionModel().addListSelectionListener(new TracksTableListSelectionListener(listener, tracksTable));
 
-        return tracksTable;
+		return tracksTable;
 	}
 }

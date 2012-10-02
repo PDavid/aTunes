@@ -32,35 +32,35 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class FrequencyColumn extends AbstractColumn<String> {
 
-    private static final long serialVersionUID = -198950195313638217L;
+	private static final long serialVersionUID = -198950195313638217L;
 
-    /**
-     * Default constructor
-     */
-    public FrequencyColumn() {
-        super("FREQUENCY");
-        setWidth(100);
-        setVisible(false);
-        setAlignment(SwingConstants.CENTER);
-    }
+	/**
+	 * Default constructor
+	 */
+	public FrequencyColumn() {
+		super("FREQUENCY");
+		setWidth(100);
+		setVisible(false);
+		setAlignment(SwingConstants.CENTER);
+	}
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        return Integer.valueOf(ao1.getFrequency()).compareTo(Integer.valueOf(ao2.getFrequency()));
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return Integer.valueOf(ao1.getFrequency()).compareTo(Integer.valueOf(ao2.getFrequency()));
+	}
 
-    @Override
-    public String getValueFor(IAudioObject audioObject) {
-        // Return FREQUENCY
-        if (audioObject.getFrequency() > 0) {
-            return StringUtils.getString(Integer.toString(audioObject.getFrequency()), " Hz");
-        }
-        return "";
-    }
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
+
+	@Override
+	public String getValueFor(final IAudioObject audioObject, final int row) {
+		// Return FREQUENCY
+		if (audioObject.getFrequency() > 0) {
+			return StringUtils.getString(Integer.toString(audioObject.getFrequency()), " Hz");
+		}
+		return "";
+	}
 
 }

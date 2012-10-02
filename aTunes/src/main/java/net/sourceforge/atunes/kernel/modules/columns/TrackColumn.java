@@ -31,32 +31,32 @@ import net.sourceforge.atunes.model.IAudioObject;
  */
 public class TrackColumn extends AbstractColumn<Integer> {
 
-    private static final long serialVersionUID = 6114834986452693757L;
+	private static final long serialVersionUID = 6114834986452693757L;
 
-    /**
-     * Constructor
-     */
-    public TrackColumn() {
-        super("TRACK");
-        setWidth(40);
-        setVisible(true);
-        setAlignment(SwingConstants.CENTER);
-    }
+	/**
+	 * Constructor
+	 */
+	public TrackColumn() {
+		super("TRACK");
+		setWidth(40);
+		setVisible(true);
+		setAlignment(SwingConstants.CENTER);
+	}
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return ao2.getTrackNumber() - ao1.getTrackNumber();
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return ao2.getTrackNumber() - ao1.getTrackNumber();
+	}
 
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
-    
-    @Override
-    public Integer getValueFor(IAudioObject audioObject) {
-        // Return track number or null, otherwise problems while comparing arise
-        int track = audioObject.getTrackNumber();
-        return track > 0 ? track : null;
-    }
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
+
+	@Override
+	public Integer getValueFor(final IAudioObject audioObject, final int row) {
+		// Return track number or null, otherwise problems while comparing arise
+		int track = audioObject.getTrackNumber();
+		return track > 0 ? track : null;
+	}
 }

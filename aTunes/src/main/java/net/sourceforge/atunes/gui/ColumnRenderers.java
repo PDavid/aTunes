@@ -26,6 +26,7 @@ import javax.swing.JTable;
 import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.PlayState;
 
 /**
  * Common renderers for columns
@@ -35,35 +36,38 @@ import net.sourceforge.atunes.model.ILookAndFeel;
  */
 public final class ColumnRenderers {
 
-    private ColumnRenderers() {
+	private ColumnRenderers() {
 
-    }
+	}
 
-    /**
-     * Add renderers to table
-     * 
-     * @param jtable
-     * @param model
-     * @param lookAndFeel
-     */
-    public static void addRenderers(final JTable jtable, final AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
+	/**
+	 * Add renderers to table
+	 * 
+	 * @param jtable
+	 * @param model
+	 * @param lookAndFeel
+	 */
+	public static void addRenderers(final JTable jtable, final AbstractCommonColumnModel model, final ILookAndFeel lookAndFeel) {
 
-        // Integer renderer
-        jtable.setDefaultRenderer(Integer.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(Integer.class)));
+		// Integer renderer
+		jtable.setDefaultRenderer(Integer.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(Integer.class)));
 
-        // ImageIcon renderer
-        jtable.setDefaultRenderer(ImageIcon.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(ImageIcon.class)));
+		// ImageIcon renderer
+		jtable.setDefaultRenderer(ImageIcon.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(ImageIcon.class)));
 
-        // STRING renderer
-        jtable.setDefaultRenderer(String.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(String.class)));
+		// STRING renderer
+		jtable.setDefaultRenderer(String.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(String.class)));
 
-        // TextAndIcon renderer
-        jtable.setDefaultRenderer(TextAndIcon.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(TextAndIcon.class)));
+		// TextAndIcon renderer
+		jtable.setDefaultRenderer(TextAndIcon.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(TextAndIcon.class)));
 
-        // Property renderer
-        jtable.setDefaultRenderer(AudioObjectProperty.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(AudioObjectProperty.class)));
-        
-        // ColorMutableImageIcon
-        jtable.setDefaultRenderer(IColorMutableImageIcon.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(IColorMutableImageIcon.class)));
-    }
+		// Property renderer
+		jtable.setDefaultRenderer(AudioObjectProperty.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(AudioObjectProperty.class)));
+
+		// ColorMutableImageIcon
+		jtable.setDefaultRenderer(IColorMutableImageIcon.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(IColorMutableImageIcon.class)));
+
+		// PlayState renderer
+		jtable.setDefaultRenderer(PlayState.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(PlayState.class)));
+	}
 }

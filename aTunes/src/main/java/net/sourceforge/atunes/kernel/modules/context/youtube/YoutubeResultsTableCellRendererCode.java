@@ -30,45 +30,52 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.model.IDesktop;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Renderer for Youtube results in context panel
+ * @author alex
+ *
+ */
 public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<IVideoEntry> {
-	
+
 	private IDesktop desktop;
-	
+
 	private IPlayerHandler playerHandler;
-	
+
 	/**
-	 * @param lookAndFeel
 	 * @param desktop
+	 */
+	public void setDesktop(final IDesktop desktop) {
+		this.desktop = desktop;
+	}
+
+	/**
 	 * @param playerHandler
 	 */
-	public YoutubeResultsTableCellRendererCode(ILookAndFeel lookAndFeel, IDesktop desktop, IPlayerHandler playerHandler) {
-		super(lookAndFeel);
-		this.desktop = desktop;
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
 
 	@Override
-    public JComponent getComponent(JComponent superComponent, JTable t, IVideoEntry value, boolean isSelected, boolean hasFocus, int row, int column) {
-        return getPanelForTableRenderer(value.getImage(), 
-        								StringUtils.getString("<html>", value.getName(), "<br>(", value.getDuration(), ")</html>"), 
-        								superComponent.getBackground(), 
-        								superComponent.getForeground(), 
-        								Constants.THUMB_IMAGE_WIDTH, 
-        								Constants.THUMB_IMAGE_HEIGHT, 
-        								hasFocus);
-    }
-	
+	public JComponent getComponent(final JComponent superComponent, final JTable t, final IVideoEntry value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+		return getPanelForTableRenderer(value.getImage(),
+				StringUtils.getString("<html>", value.getName(), "<br>(", value.getDuration(), ")</html>"),
+				superComponent.getBackground(),
+				superComponent.getForeground(),
+				Constants.THUMB_IMAGE_WIDTH,
+				Constants.THUMB_IMAGE_HEIGHT,
+				hasFocus);
+	}
+
 	@Override
 	public List<ContextTableAction<IVideoEntry>> getActions() {
 		List<ContextTableAction<IVideoEntry>> actions = new ArrayList<ContextTableAction<IVideoEntry>>();
 		actions.add(new OpenYoutubeVideoAction(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE"), getTable(), desktop, playerHandler));
-		
+
 		// DOWNLOAD NOT WORKING AS API HAS CHANGED AND MP4 FILES ARE NOT AVAILABLE
 		// SEE BUG 3405858
 

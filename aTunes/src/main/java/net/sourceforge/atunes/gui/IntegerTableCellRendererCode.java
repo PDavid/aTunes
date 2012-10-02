@@ -24,19 +24,17 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
-
+/**
+ * Renderer for integer
+ * @author alex
+ *
+ */
 public class IntegerTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Integer> {
 
-    public IntegerTableCellRendererCode(ILookAndFeel lookAndFeel) {
-		super(lookAndFeel);
-	}
-
 	@Override
-    public JLabel getComponent(JLabel c, JTable table, Integer value, boolean isSelected, boolean hasFocus, int row, int column) {
-        c.setText(value != null ? value.toString() : null);
-        c.setHorizontalAlignment(SwingConstants.CENTER);
-        return c;
-    }
-
+	public JLabel getComponent(final JLabel c, final JTable table, final Integer value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+		c.setText(value != null ? value.toString() : null);
+		c.setHorizontalAlignment(SwingConstants.CENTER);
+		return c;
+	}
 }

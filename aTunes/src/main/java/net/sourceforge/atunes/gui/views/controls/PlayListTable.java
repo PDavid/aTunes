@@ -47,10 +47,10 @@ import net.sourceforge.atunes.gui.PlayListColumnModel;
 import net.sourceforge.atunes.gui.TransferableList;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
-import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.PlayState;
 
 /**
@@ -58,179 +58,180 @@ import net.sourceforge.atunes.model.PlayState;
  */
 public final class PlayListTable extends JTable implements IPlayListTable {
 
-    private static final long serialVersionUID = 9209069236823917569L;
+	private static final long serialVersionUID = 9209069236823917569L;
 
-    private PlayState playState = PlayState.STOPPED;
-    private JPopupMenu playListPopupMenu;
+	private PlayState playState = PlayState.STOPPED;
+	private JPopupMenu playListPopupMenu;
 
-    /**
-     * Drag source for this play list to drag songs to device
-     */
-    private DragSource dragSource;
-    
-    private IPlayListHandler playListHandler;
-    
-    private ILookAndFeelManager lookAndFeelManager;
-    
-    private AbstractColumnSetTableModel playListTableModel;
-    
-    private ITaskService taskService;
-    
-    /**
-     * @param taskService
-     */
-    public void setTaskService(ITaskService taskService) {
-		this.taskService = taskService;
+	/**
+	 * Drag source for this play list to drag songs to device
+	 */
+	private DragSource dragSource;
+
+	private IPlayListHandler playListHandler;
+
+	private ILookAndFeelManager lookAndFeelManager;
+
+	private AbstractColumnSetTableModel playListTableModel;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
-    
-    /**
-     * @param playListTableModel
-     */
-    public void setPlayListTableModel(AbstractColumnSetTableModel playListTableModel) {
+
+	/**
+	 * @param playListTableModel
+	 */
+	public void setPlayListTableModel(final AbstractColumnSetTableModel playListTableModel) {
 		this.playListTableModel = playListTableModel;
 	}
 
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    /**
-     * @param playListPopupMenu
-     */
-    public void setPlayListPopupMenu(JPopupMenu playListPopupMenu) {
+
+	/**
+	 * @param playListPopupMenu
+	 */
+	public void setPlayListPopupMenu(final JPopupMenu playListPopupMenu) {
 		this.playListPopupMenu = playListPopupMenu;
 	}
-    
-    /**
-     * Initializes play list
-     */
-    public void initialize() {
-        lookAndFeelManager.getCurrentLookAndFeel().decorateTable(this);
-        setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        setDropMode(DropMode.ON);
 
-        // Set table model
-        setModel(playListTableModel);
+	/**
+	 * Initializes play list
+	 */
+	public void initialize() {
+		lookAndFeelManager.getCurrentLookAndFeel().decorateTable(this);
+		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		setDropMode(DropMode.ON);
 
-        // Set column model
-        PlayListColumnModel columnModel = new PlayListColumnModel(this, playListHandler, lookAndFeelManager.getCurrentLookAndFeel(), taskService);
-        setColumnModel(columnModel);
+		// Set table model
+		setModel(playListTableModel);
 
-        // Set sorter
-        new ColumnSetRowSorter(this, playListTableModel, columnModel);
+		// Set column model
+		PlayListColumnModel columnModel = beanFactory.getBean(PlayListColumnModel.class);
+		columnModel.setModel(playListTableModel);
+		setColumnModel(columnModel);
 
-        // Bind column set popup menu
-        new ColumnSetPopupMenu(this, columnModel);
+		// Set sorter
+		new ColumnSetRowSorter(this, playListTableModel, columnModel);
 
-        // Disable autoresize, as we will control it
-        setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		// Bind column set popup menu
+		new ColumnSetPopupMenu(this, columnModel);
 
-        // Set renderers
-        ColumnRenderers.addRenderers(this, columnModel, lookAndFeelManager.getCurrentLookAndFeel());
+		// Disable autoresize, as we will control it
+		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        // Remove enter key event, which moves selection down
-        getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "none");
+		// Set renderers
+		ColumnRenderers.addRenderers(this, columnModel, lookAndFeelManager.getCurrentLookAndFeel());
 
-        // Remove F2 key event
-        InputMap im = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        KeyStroke f2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
-        im.put(f2, "none");
+		// Remove enter key event, which moves selection down
+		getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "none");
 
-        // Create drag source and set listener
-        dragSource = new DragSource();
-        dragSource.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY, this);
+		// Remove F2 key event
+		InputMap im = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		KeyStroke f2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
+		im.put(f2, "none");
 
-        // Force minimum row height to 16 pixels to avoid icons height greater than row height
-        if (getRowHeight() < 16) {
-            setRowHeight(16);
-        }
-        
-        setOpaque(false);
-    }
+		// Create drag source and set listener
+		dragSource = new DragSource();
+		dragSource.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY, this);
+
+		// Force minimum row height to 16 pixels to avoid icons height greater than row height
+		if (getRowHeight() < 16) {
+			setRowHeight(16);
+		}
+
+		setOpaque(false);
+	}
 
 	/* (non-Javadoc)
 	 * @see net.sourceforge.atunes.gui.views.controls.playList.IPlayListTable#getMenu()
 	 */
 	@Override
 	public JPopupMenu getMenu() {
-        return playListPopupMenu;
-    }
+		return playListPopupMenu;
+	}
 
 	/* (non-Javadoc)
 	 * @see net.sourceforge.atunes.gui.views.controls.playList.IPlayListTable#getPlayState()
 	 */
 	@Override
 	public PlayState getPlayState() {
-        return playState;
-    }
+		return playState;
+	}
 
 	/* (non-Javadoc)
 	 * @see net.sourceforge.atunes.gui.views.controls.playList.IPlayListTable#setPlayState(net.sourceforge.atunes.model.PlayState)
 	 */
 	@Override
-	public void setPlayState(PlayState playState) {
-        this.playState = playState;
-        revalidate();
-        repaint();
-    }
+	public void setPlayState(final PlayState playState) {
+		this.playState = playState;
+		revalidate();
+		repaint();
+	}
 
-    @Override
-    public void dragDropEnd(DragSourceDropEvent dsde) {
-    }
+	@Override
+	public void dragDropEnd(final DragSourceDropEvent dsde) {
+	}
 
-    @Override
-    public void dragEnter(DragSourceDragEvent dsde) {
-    }
+	@Override
+	public void dragEnter(final DragSourceDragEvent dsde) {
+	}
 
-    @Override
-    public void dragExit(DragSourceEvent dse) {
-    }
+	@Override
+	public void dragExit(final DragSourceEvent dse) {
+	}
 
-    @Override
-    public void dragGestureRecognized(DragGestureEvent dge) {
-        // Only allow drag events initiated with left mouse button
-        InputEvent event = dge.getTriggerEvent();
-        if (!(event instanceof MouseEvent) || !GuiUtils.isPrimaryMouseButton((MouseEvent)event)) {
-            return;
-        }
+	@Override
+	public void dragGestureRecognized(final DragGestureEvent dge) {
+		// Only allow drag events initiated with left mouse button
+		InputEvent event = dge.getTriggerEvent();
+		if (!(event instanceof MouseEvent) || !GuiUtils.isPrimaryMouseButton((MouseEvent)event)) {
+			return;
+		}
 
-        // Get selected rows, add PlayListDragableRow objects to a list and start a drag event
-        List<Object> itemsToDrag = new ArrayList<Object>();
-        int[] selectedRows = getSelectedRows();
-        List<IAudioObject> selectedAudioObjects = playListHandler.getSelectedAudioObjects();
-        for (int i = 0; i < selectedAudioObjects.size(); i++) {
-            itemsToDrag.add(new PlayListDragableRow(selectedAudioObjects.get(i), selectedRows[i]));
-        }
-        TransferableList<Object> items = new TransferableList<Object>(itemsToDrag);
-        dragSource.startDrag(dge, DragSource.DefaultCopyDrop, items, this);
-    }
+		// Get selected rows, add PlayListDragableRow objects to a list and start a drag event
+		List<Object> itemsToDrag = new ArrayList<Object>();
+		int[] selectedRows = getSelectedRows();
+		List<IAudioObject> selectedAudioObjects = playListHandler.getSelectedAudioObjects();
+		for (int i = 0; i < selectedAudioObjects.size(); i++) {
+			itemsToDrag.add(new PlayListDragableRow(selectedAudioObjects.get(i), selectedRows[i]));
+		}
+		TransferableList<Object> items = new TransferableList<Object>(itemsToDrag);
+		dragSource.startDrag(dge, DragSource.DefaultCopyDrop, items, this);
+	}
 
-    @Override
-    public void dragOver(DragSourceDragEvent dsde) {
-    }
+	@Override
+	public void dragOver(final DragSourceDragEvent dsde) {
+	}
 
-    @Override
-    public void dropActionChanged(DragSourceDragEvent dsde) {
-    }
+	@Override
+	public void dropActionChanged(final DragSourceDragEvent dsde) {
+	}
 
-    @Override
-    public List<IAudioObject> getSelectedAudioObjects() {
-        return playListHandler.getSelectedAudioObjects();
-    }
-    
-    @Override
-    public JTable getSwingComponent() {
-    	return this;
-    }
-   
+	@Override
+	public List<IAudioObject> getSelectedAudioObjects() {
+		return playListHandler.getSelectedAudioObjects();
+	}
+
+	@Override
+	public JTable getSwingComponent() {
+		return this;
+	}
+
 }

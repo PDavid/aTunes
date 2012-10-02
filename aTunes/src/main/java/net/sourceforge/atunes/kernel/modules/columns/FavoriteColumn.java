@@ -34,65 +34,65 @@ import net.sourceforge.atunes.model.IRadio;
  */
 public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> {
 
-    private static final long serialVersionUID = -4652512586792166062L;
-    
-    private transient IBeanFactory beanFactory;
-    
-    private transient IFavoritesHandler favoritesHandler;
+	private static final long serialVersionUID = -4652512586792166062L;
 
-    /**
-     * Default constructor
-     */
-    public FavoriteColumn() {
-        super("FAVORITES");
-        setResizable(false);
-        setWidth(20);
-        setVisible(true);
-    }
+	private transient IBeanFactory beanFactory;
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        return 0;
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return 0;
-    }
+	private transient IFavoritesHandler favoritesHandler;
 
-    @Override
-    public boolean isSortable() {
-        return false;
-    }
+	/**
+	 * Default constructor
+	 */
+	public FavoriteColumn() {
+		super("FAVORITES");
+		setResizable(false);
+		setWidth(20);
+		setVisible(true);
+	}
 
-    @Override
-    public AudioObjectProperty getValueFor(IAudioObject audioObject) {
-        // Return image
-        if (audioObject instanceof IRadio) {
-            return null;
-        }
-        if (audioObject instanceof IPodcastFeedEntry) {
-            return null;
-        }
-        return getFavoritesHandler().getFavoriteSongsInfo().containsValue(audioObject) ? AudioObjectProperty.FAVORITE : null;
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return 0;
+	}
 
-    @Override
-    public String getHeaderText() {
-        return "";
-    }
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return 0;
+	}
 
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(IBeanFactory beanFactory) {
+	@Override
+	public boolean isSortable() {
+		return false;
+	}
+
+	@Override
+	public AudioObjectProperty getValueFor(final IAudioObject audioObject, final int row) {
+		// Return image
+		if (audioObject instanceof IRadio) {
+			return null;
+		}
+		if (audioObject instanceof IPodcastFeedEntry) {
+			return null;
+		}
+		return getFavoritesHandler().getFavoriteSongsInfo().containsValue(audioObject) ? AudioObjectProperty.FAVORITE : null;
+	}
+
+	@Override
+	public String getHeaderText() {
+		return "";
+	}
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
-    
-    private IFavoritesHandler getFavoritesHandler() {
-    	if (favoritesHandler == null) {
-    		favoritesHandler = beanFactory.getBean(IFavoritesHandler.class);
-    	}
+
+	private IFavoritesHandler getFavoritesHandler() {
+		if (favoritesHandler == null) {
+			favoritesHandler = beanFactory.getBean(IFavoritesHandler.class);
+		}
 		return favoritesHandler;
 	}
 }

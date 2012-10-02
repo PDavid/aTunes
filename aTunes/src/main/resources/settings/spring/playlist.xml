@@ -27,5 +27,4 @@
 	<bean id="playListInformationInStatusBar" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListInformationInStatusBar"/>
 	
 	<bean class="net.sourceforge.atunes.kernel.modules.playlist.PlayListRemoverFromDevice" scope="prototype"/>
-	
 </beans>

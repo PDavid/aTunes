@@ -37,97 +37,97 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public final class NavigationTableModel extends AbstractColumnSetTableModel {
 
-    /** The songs. */
-    private List<? extends IAudioObject> audioObjects;
+	/** The songs. */
+	private List<? extends IAudioObject> audioObjects;
 
-    /**
-     * Instantiates a new navigation table model.
-     * 
-     * @param controller
-     *            the controller
-     */
-    public NavigationTableModel() {
-        super();
-    }
+	/**
+	 * Instantiates a new navigation table model.
+	 * 
+	 * @param controller
+	 *            the controller
+	 */
+	public NavigationTableModel() {
+		super();
+	}
 
-    @Override
-    public int getRowCount() {
-        return audioObjects != null ? audioObjects.size() : 0;
-    }
+	@Override
+	public int getRowCount() {
+		return audioObjects != null ? audioObjects.size() : 0;
+	}
 
-    /**
-     * Gets the audio object at.
-     * 
-     * @param row
-     *            the row
-     * 
-     * @return the song at
-     */
-    public IAudioObject getAudioObjectAt(int row) {
-        return audioObjects != null ? audioObjects.get(row) : null;
-    }
+	/**
+	 * Gets the audio object at.
+	 * 
+	 * @param row
+	 *            the row
+	 * 
+	 * @return the song at
+	 */
+	public IAudioObject getAudioObjectAt(final int row) {
+		return audioObjects != null ? audioObjects.get(row) : null;
+	}
 
-    /**
-     * Gets the audio objects.
-     * 
-     * @return the audio objects
-     */
-    public List<? extends IAudioObject> getAudioObjects() {
-        return audioObjects;
-    }
+	/**
+	 * Gets the audio objects.
+	 * 
+	 * @return the audio objects
+	 */
+	public List<? extends IAudioObject> getAudioObjects() {
+		return audioObjects;
+	}
 
-    /**
-     * Gets the songs at.
-     * 
-     * @param rows
-     *            the rows
-     * 
-     * @return the songs at
-     */
-    public List<IAudioObject> getAudioObjectsAt(int[] rows) {
-        List<IAudioObject> result = new ArrayList<IAudioObject>();
-        for (int element : rows) {
-            result.add(getAudioObjectAt(element));
-        }
-        return result;
-    }
+	/**
+	 * Gets the songs at.
+	 * 
+	 * @param rows
+	 *            the rows
+	 * 
+	 * @return the songs at
+	 */
+	public List<IAudioObject> getAudioObjectsAt(final int[] rows) {
+		List<IAudioObject> result = new ArrayList<IAudioObject>();
+		for (int element : rows) {
+			result.add(getAudioObjectAt(element));
+		}
+		return result;
+	}
 
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        IAudioObject audioObject = getAudioObjectAt(rowIndex);
-        if (audioObject == null) {
-            return null;
-        }
-        return getColumn(columnIndex).getValueFor(audioObject);
-    }
+	@Override
+	public Object getValueAt(final int rowIndex, final int columnIndex) {
+		IAudioObject audioObject = getAudioObjectAt(rowIndex);
+		if (audioObject == null) {
+			return null;
+		}
+		return getColumn(columnIndex).getValueFor(audioObject, rowIndex);
+	}
 
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
-    }
+	@Override
+	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
+		return false;
+	}
 
-    /**
-     * Sets the songs.
-     * 
-     * @param songs
-     *            the new songs
-     */
-    public void setSongs(List<? extends IAudioObject> songs) {
-        this.audioObjects = songs;
-        refresh(TableModelEvent.INSERT);
-    }
+	/**
+	 * Sets the songs.
+	 * 
+	 * @param songs
+	 *            the new songs
+	 */
+	public void setSongs(final List<? extends IAudioObject> songs) {
+		this.audioObjects = songs;
+		refresh(TableModelEvent.INSERT);
+	}
 
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        // Nothing to do
-    }
+	@Override
+	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
+		// Nothing to do
+	}
 
-    @Override
-    public void sort(Comparator<IAudioObject> comparator) {
-    	net.sourceforge.atunes.utils.Timer t = new net.sourceforge.atunes.utils.Timer();
-    	t.start();
-        Collections.sort(this.audioObjects, comparator);
-        Logger.debug("Navigation table sort: ", t.stop(), " seconds");
-        refresh(TableModelEvent.UPDATE);
-    }
+	@Override
+	public void sort(final Comparator<IAudioObject> comparator) {
+		net.sourceforge.atunes.utils.Timer t = new net.sourceforge.atunes.utils.Timer();
+		t.start();
+		Collections.sort(this.audioObjects, comparator);
+		Logger.debug("Navigation table sort: ", t.stop(), " seconds");
+		refresh(TableModelEvent.UPDATE);
+	}
 }

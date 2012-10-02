@@ -29,34 +29,34 @@ import net.sourceforge.atunes.model.IAudioObject;
  */
 public class ComposerColumn extends AbstractColumn<String> {
 
-    private static final long serialVersionUID = -927958183654730193L;
+	private static final long serialVersionUID = -927958183654730193L;
 
-    /**
-     * Default constructor 
-     */
-    public ComposerColumn() {
-        super("COMPOSER");
-        setVisible(true);
-        setUsedForFilter(true);
-    }
+	/**
+	 * Default constructor
+	 */
+	public ComposerColumn() {
+		super("COMPOSER");
+		setVisible(true);
+		setUsedForFilter(true);
+	}
 
-    @Override
-    protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        return ao1.getComposer().compareTo(ao2.getComposer());
-    }
-    
-    @Override
-    protected int descendingCompare(IAudioObject ao1, IAudioObject ao2) {
-    	return - ascendingCompare(ao1, ao2);
-    }
+	@Override
+	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return ao1.getComposer().compareTo(ao2.getComposer());
+	}
 
-    @Override
-    public String getValueFor(IAudioObject audioObject) {
-        return audioObject.getComposer();
-    }
+	@Override
+	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+		return - ascendingCompare(ao1, ao2);
+	}
 
-    @Override
-    public String getValueForFilter(IAudioObject audioObject) {
-        return audioObject.getComposer();
-    }
+	@Override
+	public String getValueFor(final IAudioObject audioObject, final int row) {
+		return audioObject.getComposer();
+	}
+
+	@Override
+	public String getValueForFilter(final IAudioObject audioObject, final int row) {
+		return audioObject.getComposer();
+	}
 }

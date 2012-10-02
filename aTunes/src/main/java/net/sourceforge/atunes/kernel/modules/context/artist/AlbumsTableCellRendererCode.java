@@ -27,73 +27,52 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IDesktop;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
-	
-	private static final class OpenAlbumUrlAction extends ContextTableAction<IAlbumInfo> {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 4367597772680455920L;
-
-		private OpenAlbumUrlAction(String name, ContextTable table,
-				IDesktop desktop) {
-			super(name, table, desktop);
-		}
-
-		@Override
-		protected void execute(IAlbumInfo object) {
-			getDesktop().openURL(object.getUrl());
-		}
-
-		@Override
-		protected IAlbumInfo getSelectedObject(int row) {
-			return  ((ContextAlbumsTableModel) getTable().getModel()).getAlbum(row);
-		}
-
-		@Override
-		protected boolean isEnabledForObject(IAlbumInfo object) {
-			return true;
-		}
-	}
+/**
+ * Renderer for albums of an artist in context panel
+ * @author alex
+ *
+ */
+public class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
 
 	private IDesktop desktop;
-	
+
 	private ArtistAlbumListImagesDataSource source;
-	
+
 	/**
-	 * @param source
-	 * @param lookAndFeel
 	 * @param desktop
 	 */
-	public AlbumsTableCellRendererCode(ArtistAlbumListImagesDataSource source, ILookAndFeel lookAndFeel, IDesktop desktop) {
-		super(lookAndFeel);
-		this.source = source;
+	public void setDesktop(final IDesktop desktop) {
 		this.desktop = desktop;
 	}
 
+	/**
+	 * @param source
+	 */
+	public void setSource(final ArtistAlbumListImagesDataSource source) {
+		this.source = source;
+	}
+
 	@Override
-    public JComponent getComponent(JComponent superComponent, JTable table, IAlbumInfo value, boolean isSelected, boolean hasFocus, int row, int column) {
-        return getPanelForTableRenderer(source.getCovers().get(value), 
-        								StringUtils.getString("<html>", value.getTitle(), "</html>"), 
-        								superComponent.getBackground(),
-        								superComponent.getForeground(), 
-        								Constants.THUMB_IMAGE_WIDTH, 
-        								Constants.THUMB_IMAGE_HEIGHT,
-        								hasFocus);
-    }
-	
+	public JComponent getComponent(final JComponent superComponent, final JTable table, final IAlbumInfo value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+		return getPanelForTableRenderer(source.getCovers().get(value),
+				StringUtils.getString("<html>", value.getTitle(), "</html>"),
+				superComponent.getBackground(),
+				superComponent.getForeground(),
+				Constants.THUMB_IMAGE_WIDTH,
+				Constants.THUMB_IMAGE_HEIGHT,
+				hasFocus);
+	}
+
 	@Override
 	public List<ContextTableAction<IAlbumInfo>> getActions() {
 		ContextTableAction<IAlbumInfo> action = new OpenAlbumUrlAction(I18nUtils.getString("READ_MORE"), getTable(), desktop);
-		return Collections.singletonList(action);		
+		return Collections.singletonList(action);
 	}
 }

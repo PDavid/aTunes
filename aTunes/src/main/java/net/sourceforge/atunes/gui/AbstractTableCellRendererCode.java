@@ -24,38 +24,61 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ITableCellRendererCode;
 
+/**
+ * Table cell renderer
+ * @author alex
+ *
+ * @param <T>
+ * @param <U>
+ */
 public abstract class AbstractTableCellRendererCode<T extends JComponent, U> implements ITableCellRendererCode<T, U> {
 
-	private ILookAndFeel lookAndFeel;
-	
+	private ILookAndFeelManager lookAndFeelManager;
+
+	private AbstractCommonColumnModel model;
+
 	/**
-	 * @param lookAndFeel
+	 * @param lookAndFeelManager
 	 */
-	public AbstractTableCellRendererCode(ILookAndFeel lookAndFeel) {
-		this.lookAndFeel = lookAndFeel;
-	}
-	
-    /**
-     * @param superComponent
-     * @param t
-     * @param value
-     * @param isSelected
-     * @param hasFocus
-     * @param row
-     * @param column
-     * @return
-     */
-    @Override
-	public abstract T getComponent(T superComponent, JTable t, U value, boolean isSelected, boolean hasFocus, int row, int column);
-    
-    /**
-     * Access lookAndFeel
-     * @return
-     */
-    protected ILookAndFeel getLookAndFeel() {
-		return lookAndFeel;
+	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
+	/**
+	 * @param model
+	 */
+	public void setModel(final AbstractCommonColumnModel model) {
+		this.model = model;
+	}
+
+	/**
+	 * @return
+	 */
+	protected final AbstractCommonColumnModel getModel() {
+		return model;
+	}
+
+	/**
+	 * Access lookAndFeel
+	 * @return
+	 */
+	protected final ILookAndFeel getLookAndFeel() {
+		return lookAndFeelManager.getCurrentLookAndFeel();
+	}
+
+	/**
+	 * @param superComponent
+	 * @param t
+	 * @param value
+	 * @param isSelected
+	 * @param hasFocus
+	 * @param row
+	 * @param column
+	 * @return
+	 */
+	@Override
+	public abstract T getComponent(T superComponent, JTable t, U value, boolean isSelected, boolean hasFocus, int row, int column);
 }
