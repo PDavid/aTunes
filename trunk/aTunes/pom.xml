@@ -102,6 +102,9 @@
 				<version>2.10</version>
 				<configuration>
 					<parallel>classes</parallel>
+					<systemPropertyVariables>
+          				<java.awt.headless>true</java.awt.headless>
+      				</systemPropertyVariables>     
 				</configuration>
 			</plugin>
 			<plugin>
