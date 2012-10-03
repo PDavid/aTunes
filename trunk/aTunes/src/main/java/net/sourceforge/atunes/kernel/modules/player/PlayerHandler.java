@@ -62,7 +62,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	/**
 	 * The current playback state
 	 */
-	private PlaybackState playbackState;
+	private PlaybackState playbackState = PlaybackState.STOPPED;
 
 	/**
 	 * Controller

@@ -40,271 +40,239 @@ import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.IUIHandler;
-import net.sourceforge.atunes.model.PlayState;
 import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.JVMProperties;
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * Responsible of UI
+ * @author alex
+ */
 public final class UIHandler extends AbstractHandler implements IUIHandler {
 
-	private IPlayListTable playListTable;
-	
 	private IStateUI stateUI;
-	
+
 	private IStateCore stateCore;
-	
+
 	private IStateContext stateContext;
-	
+
 	private IDialogFactory dialogFactory;
-	
+
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-	
+
 	/**
 	 * @param stateContext
 	 */
-	public void setStateContext(IStateContext stateContext) {
+	public void setStateContext(final IStateContext stateContext) {
 		this.stateContext = stateContext;
 	}
-	
+
 	/**
 	 * @param stateCore
 	 */
-	public void setStateCore(IStateCore stateCore) {
+	public void setStateCore(final IStateCore stateCore) {
 		this.stateCore = stateCore;
 	}
-	
+
 	/**
 	 * @param stateUI
 	 */
-	public void setStateUI(IStateUI stateUI) {
+	public void setStateUI(final IStateUI stateUI) {
 		this.stateUI = stateUI;
 	}
-	
-	/**
-	 * @param playListTable
-	 */
-	public void setPlayListTable(IPlayListTable playListTable) {
-		this.playListTable = playListTable;
+
+	@Override
+	public void applicationStarted() {
+		IFrameState frameState = stateUI.getFrameState(getFrame().getClass());
+		getFrame().applicationStarted(frameState);
+
+		showStatusBar(stateUI.isShowStatusBar(), false);
+
+		if (!stateUI.isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
+			getFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		}
 	}
- 
-    @Override
-    public void applicationStarted() {
-    	IFrameState frameState = stateUI.getFrameState(getFrame().getClass());
-    	getFrame().applicationStarted(frameState);
-    	
-        showStatusBar(stateUI.isShowStatusBar(), false);
-        
-        if (!stateUI.isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
-        	getFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        }        
-    }
-    
-    @Override
-    public void allHandlersInitialized() {
-        getFrame().setVisible(true);
-    }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#finish()
-	 */
-    @Override
+	@Override
+	public void allHandlersInitialized() {
+		getFrame().setVisible(true);
+	}
+
+	@Override
 	public void finish() {
-        if (!stateUI.isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
-        	getBean(IKernel.class).finish();
-        }
-    }
+		if (!stateUI.isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
+			getBean(IKernel.class).finish();
+		}
+	}
 
-    @Override
-    public void applicationFinish() {
-        Window[] windows = Window.getWindows();
-        for (Window window : windows) {
-            window.setVisible(false);
-        }
-    }
+	@Override
+	public void applicationFinish() {
+		Window[] windows = Window.getWindows();
+		for (Window window : windows) {
+			window.setVisible(false);
+		}
+	}
 
-    /**
-     * Repaint.
-     */
-    private void repaint() {
-        getFrame().getFrame().invalidate();
-        getFrame().getFrame().validate();
-        getFrame().getFrame().repaint();
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#showFullFrame()
+	/**
+	 * Repaint.
 	 */
-    @Override
+	private void repaint() {
+		getFrame().getFrame().invalidate();
+		getFrame().getFrame().validate();
+		getFrame().getFrame().repaint();
+	}
+
+	@Override
 	public void showFullFrame() {
-    	getFrame().setVisible(true);
-    }
+		getFrame().setVisible(true);
+	}
 
-    /**
-     * Sets the playing.
-     * 
-     * @param playing
-     *            the new playing
-     */
-    private void setPlaying(boolean playing) {
-        getBean(IPlayerHandler.class).setPlaying(playing);
-        getBean(IFullScreenHandler.class).setPlaying(playing);
-        getBean(ISystemTrayHandler.class).setPlaying(playing);
-    }
-
-    /**
-     * Sets title bar text, adding app name and version.
-     * 
-     * @param text
-     *            the text
-     */
-    private void setTitleBar(String text) {
-        StringBuilder strBuilder = new StringBuilder();
-        if (!text.equals("")) {
-            strBuilder.append(text);
-            strBuilder.append(" - ");
-        }
-        strBuilder.append(Constants.APP_NAME);
-        strBuilder.append(" ");
-        strBuilder.append(Constants.VERSION.toShortString());
-
-        String result = strBuilder.toString();
-
-        getFrame().setTitle(result);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#showAboutDialog()
+	/**
+	 * Sets the playing.
+	 * 
+	 * @param playing
+	 *            the new playing
 	 */
-    @Override
+	private void setPlaying(final boolean playing) {
+		getBean(IPlayerHandler.class).setPlaying(playing);
+		getBean(IFullScreenHandler.class).setPlaying(playing);
+		getBean(ISystemTrayHandler.class).setPlaying(playing);
+	}
+
+	/**
+	 * Sets title bar text, adding app name and version.
+	 * 
+	 * @param text
+	 *            the text
+	 */
+	private void setTitleBar(final String text) {
+		StringBuilder strBuilder = new StringBuilder();
+		if (!text.equals("")) {
+			strBuilder.append(text);
+			strBuilder.append(" - ");
+		}
+		strBuilder.append(Constants.APP_NAME);
+		strBuilder.append(" ");
+		strBuilder.append(Constants.VERSION.toShortString());
+
+		String result = strBuilder.toString();
+
+		getFrame().setTitle(result);
+	}
+
+	@Override
 	public void showAboutDialog() {
-    	dialogFactory.newDialog(IAboutDialog.class).showDialog();
-    }
+		dialogFactory.newDialog(IAboutDialog.class).showDialog();
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#showStatusBar(boolean, boolean)
-	 */
-    @Override
-	public void showStatusBar(boolean show, boolean save) {
-    	if (save) {
-    		stateUI.setShowStatusBar(show);
-    	}
-        getFrame().showStatusBar(show);
-        repaint();
-    }
+	@Override
+	public void showStatusBar(final boolean show, final boolean save) {
+		if (save) {
+			stateUI.setShowStatusBar(show);
+		}
+		getFrame().showStatusBar(show);
+		repaint();
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#startVisualization()
-	 */
-    @Override
+	@Override
 	public void startVisualization() {
-        Logger.debug("Starting visualization");
+		Logger.debug("Starting visualization");
 
-        if (new JVMProperties().isJava6Update10OrLater()) {
-            FadingPopupFactory.install(getOsManager(), getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
-        }
+		if (new JVMProperties().isJava6Update10OrLater()) {
+			FadingPopupFactory.install(getOsManager(), getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
+		}
 
 		getFrame().setStateContext(stateContext);
 		getFrame().setStateUI(stateUI);
-        
-        IFrameState frameState = stateUI.getFrameState(getFrame().getClass());
-        ILocaleBean locale = stateCore.getLocale();
-        ILocaleBean oldLocale = stateCore.getOldLocale();
-        // Reset fame state if no frame state in state or if component orientation of locale has changed
-        if (frameState == null || locale == null || oldLocale != null
-                && !(ComponentOrientation.getOrientation(locale.getLocale()).equals(ComponentOrientation.getOrientation(oldLocale.getLocale())))) {
-            frameState = new FrameState();
-            stateUI.setFrameState(getFrame().getClass(), frameState);
-        }
-        getFrame().create(frameState);
 
-        JProgressBar progressBar = getFrame().getProgressBar();
-        if (progressBar != null) {
-            progressBar.setVisible(false);
-        }
+		IFrameState frameState = stateUI.getFrameState(getFrame().getClass());
+		ILocaleBean locale = stateCore.getLocale();
+		ILocaleBean oldLocale = stateCore.getOldLocale();
+		// Reset fame state if no frame state in state or if component orientation of locale has changed
+		if (frameState == null || locale == null || oldLocale != null
+				&& !(ComponentOrientation.getOrientation(locale.getLocale()).equals(ComponentOrientation.getOrientation(oldLocale.getLocale())))) {
+			frameState = new FrameState();
+			stateUI.setFrameState(getFrame().getClass(), frameState);
+		}
+		getFrame().create(frameState);
 
-        getFrame().showDeviceInfo(false);
-        setTitleBar("");
-        
-        Logger.debug("Start visualization done");
-    }
+		JProgressBar progressBar = getFrame().getProgressBar();
+		if (progressBar != null) {
+			progressBar.setVisible(false);
+		}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#toggleWindowVisibility()
-	 */
-    @Override
+		getFrame().showDeviceInfo(false);
+		setTitleBar("");
+
+		Logger.debug("Start visualization done");
+	}
+
+	@Override
 	public void toggleWindowVisibility() {
-        getFrame().setVisible(!getFrame().isVisible());
-        getFrame().getFrame().toFront();
-        getFrame().getFrame().setState(java.awt.Frame.NORMAL);
-    }
+		getFrame().setVisible(!getFrame().isVisible());
+		getFrame().getFrame().toFront();
+		getFrame().getFrame().setState(java.awt.Frame.NORMAL);
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#updateTitleBar(net.sourceforge.atunes.model.IAudioObject)
-	 */
-    @Override
-	public void updateTitleBar(IAudioObject song) {
-    	setTitleBar(song != null ? song.getAudioObjectDescription() : "");
-    }
+	@Override
+	public void updateTitleBar(final IAudioObject song) {
+		setTitleBar(song != null ? song.getAudioObjectDescription() : "");
+	}
 
-    @Override
-    public void playbackStateChanged(final PlaybackState newState, final IAudioObject currentAudioObject) {
-    	GuiUtils.callInEventDispatchThread(new Runnable() {
-    		@Override
-    		public void run() {
-    			playbackStateChangedEDT(newState, currentAudioObject);
-    		}
-    	});
-    }
+	@Override
+	public void playbackStateChanged(final PlaybackState newState, final IAudioObject currentAudioObject) {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				playbackStateChangedEDT(newState, currentAudioObject);
+			}
+		});
+	}
 
-    private void playbackStateChangedEDT(PlaybackState newState, IAudioObject currentAudioObject) {
-        if (newState == PlaybackState.PAUSED) {
-            // Pause
-            setPlaying(false);
-            setTitleBar("");
-            playListTable.setPlayState(PlayState.PAUSED);
+	private void playbackStateChangedEDT(final PlaybackState newState, final IAudioObject currentAudioObject) {
+		if (newState == PlaybackState.PAUSED) {
+			// Pause
+			setPlaying(false);
+			setTitleBar("");
 
-        } else if (newState == PlaybackState.RESUMING) {
-            // Resume
-            setPlaying(true);
-            updateTitleBar(getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
-            playListTable.setPlayState(PlayState.PLAYING);
+		} else if (newState == PlaybackState.RESUMING) {
+			// Resume
+			setPlaying(true);
+			updateTitleBar(getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
 
-        } else if (newState == PlaybackState.PLAYING) {
-            // Playing
-            updateTitleBar(currentAudioObject);
-            setPlaying(true);
-            playListTable.setPlayState(PlayState.PLAYING);
+		} else if (newState == PlaybackState.PLAYING) {
+			// Playing
+			updateTitleBar(currentAudioObject);
+			setPlaying(true);
 
-        } else if (newState == PlaybackState.STOPPED) {
-            // Stop
-            setPlaying(false);
-            setTitleBar("");
-            playListTable.setPlayState(PlayState.STOPPED);
-        }
-    }
+		} else if (newState == PlaybackState.STOPPED) {
+			// Stop
+			setPlaying(false);
+			setTitleBar("");
+		}
+	}
 
-    @Override
-    public void applicationStateChanged() {
-        // Once done graphic changes, repaint the window
-        repaint();
-    }
-    
-    @Override
-    public void windowIconified() {
+	@Override
+	public void applicationStateChanged() {
+		// Once done graphic changes, repaint the window
+		repaint();
+	}
+
+	@Override
+	public void windowIconified() {
 		if (stateUI.isShowSystemTray()) {
 			getFrame().setVisible(false);
 		}
-    }
+	}
 }
