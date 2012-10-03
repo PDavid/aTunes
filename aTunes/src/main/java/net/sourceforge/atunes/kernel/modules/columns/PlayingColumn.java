@@ -22,27 +22,27 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayListTable;
-import net.sourceforge.atunes.model.PlayState;
+import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.PlaybackState;
 
 /**
  * Column to show play / pause / stop icon
  * @author alex
  *
  */
-public class PlayingColumn extends AbstractColumn<PlayState> {
+public class PlayingColumn extends AbstractColumn<PlaybackState> {
 
 	private IPlayListHandler playListHandler;
 
+	private IPlayerHandler playerHandler;
+
 	private static final long serialVersionUID = -5604736587749167043L;
 
-	private IPlayListTable playListTable;
-
 	/**
-	 * @param playListTable
+	 * @param playerHandler
 	 */
-	public void setPlayListTable(final IPlayListTable playListTable) {
-		this.playListTable = playListTable;
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
 	}
 
 	/**
@@ -78,9 +78,9 @@ public class PlayingColumn extends AbstractColumn<PlayState> {
 	}
 
 	@Override
-	public PlayState getValueFor(final IAudioObject audioObject, final int row) {
+	public PlaybackState getValueFor(final IAudioObject audioObject, final int row) {
 		if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-			return playListTable.getPlayState();
+			return playerHandler.getPlaybackState();
 		}
 		return null;
 	}

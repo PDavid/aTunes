@@ -31,12 +31,11 @@ import javax.swing.JPopupMenu;
  * @author alex
  *
  */
-public interface IPlayListTable extends DragSourceListener, DragGestureListener, IAudioObjectsSource, ITable {
+public interface IPlayListTable extends DragSourceListener, DragGestureListener, IAudioObjectsSource, ITable, IPlaybackStateListener {
 
+	/**
+	 * @return pop up menu
+	 */
 	public JPopupMenu getMenu();
-
-	public PlayState getPlayState();
-
-	public void setPlayState(PlayState playState);
 
 }

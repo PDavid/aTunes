@@ -51,7 +51,7 @@ import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
-import net.sourceforge.atunes.model.PlayState;
+import net.sourceforge.atunes.model.PlaybackState;
 
 /**
  * The play list table.
@@ -60,7 +60,6 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 
 	private static final long serialVersionUID = 9209069236823917569L;
 
-	private PlayState playState = PlayState.STOPPED;
 	private JPopupMenu playListPopupMenu;
 
 	/**
@@ -159,28 +158,13 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 		setOpaque(false);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.controls.playList.IPlayListTable#getMenu()
-	 */
 	@Override
 	public JPopupMenu getMenu() {
 		return playListPopupMenu;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.controls.playList.IPlayListTable#getPlayState()
-	 */
 	@Override
-	public PlayState getPlayState() {
-		return playState;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.controls.playList.IPlayListTable#setPlayState(net.sourceforge.atunes.model.PlayState)
-	 */
-	@Override
-	public void setPlayState(final PlayState playState) {
-		this.playState = playState;
+	public void playbackStateChanged(final PlaybackState newState, final IAudioObject currentAudioObject) {
 		revalidate();
 		repaint();
 	}
@@ -233,5 +217,4 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 	public JTable getSwingComponent() {
 		return this;
 	}
-
 }

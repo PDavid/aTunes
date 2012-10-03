@@ -27,14 +27,14 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.model.IIconFactory;
-import net.sourceforge.atunes.model.PlayState;
+import net.sourceforge.atunes.model.PlaybackState;
 
 /**
  * Renderer for playback state column
  * @author alex
  *
  */
-public final class PlaybackStateTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, PlayState> {
+public final class PlaybackStateTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, PlaybackState> {
 
 	private IIconFactory playListPlayStateIcon;
 
@@ -64,7 +64,7 @@ public final class PlaybackStateTableCellRendererCode extends AbstractTableCellR
 	}
 
 	@Override
-	public JLabel getComponent(final JLabel c, final JTable t, final PlayState value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+	public JLabel getComponent(final JLabel c, final JTable t, final PlaybackState value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
 		c.setIcon(getPlayStateIcon(getLookAndFeel().getPaintForColorMutableIcon(c, isSelected), value));
 		return c;
 	}
@@ -74,17 +74,17 @@ public final class PlaybackStateTableCellRendererCode extends AbstractTableCellR
 	 * @param state
 	 * @return
 	 */
-	private ImageIcon getPlayStateIcon(final Color color, final PlayState value) {
+	private ImageIcon getPlayStateIcon(final Color color, final PlaybackState value) {
 		if (value != null) {
 			switch (value) {
 			case PLAYING:
 				return playListPlayStateIcon.getIcon(color);
-			case STOPPED:
-				return playListStopStateIcon.getIcon(color);
+			case RESUMING:
+				return playListPlayStateIcon.getIcon(color);
 			case PAUSED:
 				return playListPauseStateIcon.getIcon(color);
 			default:
-				return null;
+				return playListStopStateIcon.getIcon(color);
 			}
 		}
 		return null;

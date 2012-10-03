@@ -45,7 +45,7 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ITableCellRendererCode;
 import net.sourceforge.atunes.model.ITaskService;
-import net.sourceforge.atunes.model.PlayState;
+import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -396,7 +396,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	 */
 	public ITableCellRendererCode<?, ?> getRendererCodeFor(final Class<?> clazz) {
 		AbstractTableCellRendererCode<?, ?> renderer = null;
-		if (clazz.equals(PlayState.class)) {
+		if (clazz.equals(PlaybackState.class)) {
 			renderer = beanFactory.getBean(PlaybackStateTableCellRendererCode.class);
 		} else if (clazz.equals(Integer.class)) {
 			renderer = beanFactory.getBean(IntegerTableCellRendererCode.class);

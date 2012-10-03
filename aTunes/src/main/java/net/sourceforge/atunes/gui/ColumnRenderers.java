@@ -26,7 +26,7 @@ import javax.swing.JTable;
 import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.PlayState;
+import net.sourceforge.atunes.model.PlaybackState;
 
 /**
  * Common renderers for columns
@@ -68,6 +68,6 @@ public final class ColumnRenderers {
 		jtable.setDefaultRenderer(IColorMutableImageIcon.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(IColorMutableImageIcon.class)));
 
 		// PlayState renderer
-		jtable.setDefaultRenderer(PlayState.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(PlayState.class)));
+		jtable.setDefaultRenderer(PlaybackState.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(PlaybackState.class)));
 	}
 }
