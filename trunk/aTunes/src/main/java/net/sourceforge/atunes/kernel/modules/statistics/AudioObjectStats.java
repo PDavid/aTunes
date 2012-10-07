@@ -31,33 +31,33 @@ import org.joda.time.DateTime;
  */
 public class AudioObjectStats implements Serializable, IAudioObjectStatistics {
 
-    private static final long serialVersionUID = -2392613471327847012L;
+	private static final long serialVersionUID = -2392613471327847012L;
 
-    /** The last played. */
-    private DateTime lastPlayed;
+	/** The last played. */
+	DateTime lastPlayed;
 
-    /** The times played. */
-    private int timesPlayed;
+	/** The times played. */
+	int timesPlayed;
 
-    @Override
+	@Override
 	public DateTime getLastPlayed() {
-        return lastPlayed;
-    }
+		return lastPlayed;
+	}
 
-    @Override
+	@Override
 	public int getTimesPlayed() {
-        return timesPlayed;
-    }
+		return timesPlayed;
+	}
 
-    @Override
+	@Override
 	public void increaseStatistics() {
-        this.timesPlayed++;
-        this.lastPlayed = new DateTime();
-    }
+		this.timesPlayed++;
+		this.lastPlayed = new DateTime();
+	}
 
-    @Override
+	@Override
 	public void resetStatistics() {
-        lastPlayed = null;
-        timesPlayed = 0;
-    }
+		lastPlayed = null;
+		timesPlayed = 0;
+	}
 }

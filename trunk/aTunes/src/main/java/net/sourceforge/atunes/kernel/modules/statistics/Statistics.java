@@ -37,133 +37,133 @@ import net.sourceforge.atunes.model.RankList;
  */
 public class Statistics implements Serializable, IStatistics {
 
-    private static final long serialVersionUID = -3603927907730394505L;
+	private static final long serialVersionUID = -3603927907730394505L;
 
-    private int totalPlays;
-    private int differentAudioFilesPlayed;
-    /** The audio files ranking. The ranking contains URL of every audio file */
-    private RankList<String> audioFilesRanking;
-    private RankList<IStatisticsAlbum> albumsRanking;
-    /** The artists ranking. The ranking contains names of artists */
-    private RankList<String> artistsRanking;
-    private Map<String, IAudioObjectStatistics> audioFilesStats;
+	int totalPlays;
+	int differentAudioFilesPlayed;
+	/** The audio files ranking. The ranking contains URL of every audio file */
+	RankList<String> audioFilesRanking;
+	RankList<IStatisticsAlbum> albumsRanking;
+	/** The artists ranking. The ranking contains names of artists */
+	RankList<String> artistsRanking;
+	Map<String, IAudioObjectStatistics> audioFilesStats;
 
-    /**
-     * Instantiates a new repository stats.
-     */
-    public Statistics() {
-        audioFilesRanking = new RankList<String>();
-        albumsRanking = new RankList<IStatisticsAlbum>();
-        artistsRanking = new RankList<String>();
-        audioFilesStats = new HashMap<String, IAudioObjectStatistics>();
-    }
+	/**
+	 * Instantiates a new repository stats.
+	 */
+	public Statistics() {
+		audioFilesRanking = new RankList<String>();
+		albumsRanking = new RankList<IStatisticsAlbum>();
+		artistsRanking = new RankList<String>();
+		audioFilesStats = new HashMap<String, IAudioObjectStatistics>();
+	}
 
-    /**
-     * Gets the albums ranking.
-     * 
-     * @return the albums ranking
-     */
-    @Override
+	/**
+	 * Gets the albums ranking.
+	 * 
+	 * @return the albums ranking
+	 */
+	@Override
 	public RankList<IStatisticsAlbum> getAlbumsRanking() {
-        return albumsRanking;
-    }
+		return albumsRanking;
+	}
 
-    /**
-     * Gets the artists ranking.
-     * 
-     * @return the artists ranking
-     */
-    @Override
+	/**
+	 * Gets the artists ranking.
+	 * 
+	 * @return the artists ranking
+	 */
+	@Override
 	public RankList<String> getArtistsRanking() {
-        return artistsRanking;
-    }
+		return artistsRanking;
+	}
 
-    /**
-     * Gets the different audio files played.
-     * 
-     * @return the different audio files played
-     */
-    @Override
+	/**
+	 * Gets the different audio files played.
+	 * 
+	 * @return the different audio files played
+	 */
+	@Override
 	public int getDifferentAudioFilesPlayed() {
-        return differentAudioFilesPlayed;
-    }
+		return differentAudioFilesPlayed;
+	}
 
-    /**
-     * Gets the audio files ranking.
-     * 
-     * @return the audio files ranking
-     */
-    @Override
+	/**
+	 * Gets the audio files ranking.
+	 * 
+	 * @return the audio files ranking
+	 */
+	@Override
 	public RankList<String> getAudioFilesRanking() {
-        return audioFilesRanking;
-    }
+		return audioFilesRanking;
+	}
 
-    /**
-     * Gets the audio files stats.
-     * 
-     * @return the audio files stats
-     */
-    @Override
+	/**
+	 * Gets the audio files stats.
+	 * 
+	 * @return the audio files stats
+	 */
+	@Override
 	public Map<String, IAudioObjectStatistics> getAudioFilesStats() {
-        return audioFilesStats;
-    }
+		return audioFilesStats;
+	}
 
-    /**
-     * Gets the stats for file.
-     * 
-     * @param audioFile
-     *            the audio file
-     * 
-     * @return the stats for file
-     */
-    @Override
-	public IAudioObjectStatistics getStatsForAudioFile(IAudioObject audioFile) {
-        if (audioFile != null) {
-            return audioFilesStats.get(audioFile.getUrl());
-        }
-        return null;
-    }
+	/**
+	 * Gets the stats for file.
+	 * 
+	 * @param audioFile
+	 *            the audio file
+	 * 
+	 * @return the stats for file
+	 */
+	@Override
+	public IAudioObjectStatistics getStatsForAudioFile(final IAudioObject audioFile) {
+		if (audioFile != null) {
+			return audioFilesStats.get(audioFile.getUrl());
+		}
+		return null;
+	}
 
-    /**
-     * Gets the total plays.
-     * 
-     * @return the total plays
-     */
-    @Override
+	/**
+	 * Gets the total plays.
+	 * 
+	 * @return the total plays
+	 */
+	@Override
 	public int getTotalPlays() {
-        return totalPlays;
-    }
+		return totalPlays;
+	}
 
-    /**
-     * Sets the different audio files played.
-     * 
-     * @param differentAudioFilesPlayed
-     *            the new different audio files played
-     */
-    @Override
-	public void setDifferentAudioFilesPlayed(int differentAudioFilesPlayed) {
-        this.differentAudioFilesPlayed = differentAudioFilesPlayed;
-    }
+	/**
+	 * Sets the different audio files played.
+	 * 
+	 * @param differentAudioFilesPlayed
+	 *            the new different audio files played
+	 */
+	@Override
+	public void setDifferentAudioFilesPlayed(final int differentAudioFilesPlayed) {
+		this.differentAudioFilesPlayed = differentAudioFilesPlayed;
+	}
 
-    /**
-     * Sets the auio files stats.
-     * 
-     * @param audioFilesStats
-     *            the audio files stats
-     */
-    @Override
-	public void setAudioFilesStats(Map<String, IAudioObjectStatistics> audioFilesStats) {
-        this.audioFilesStats = audioFilesStats;
-    }
+	/**
+	 * Sets the auio files stats.
+	 * 
+	 * @param audioFilesStats
+	 *            the audio files stats
+	 */
+	@Override
+	public void setAudioFilesStats(final Map<String, IAudioObjectStatistics> audioFilesStats) {
+		this.audioFilesStats = audioFilesStats;
+	}
 
-    /**
-     * Sets the total plays.
-     * 
-     * @param totalPlays
-     *            the new total plays
-     */
-    @Override
-	public void setTotalPlays(int totalPlays) {
-        this.totalPlays = totalPlays;
-    }
+	/**
+	 * Sets the total plays.
+	 * 
+	 * @param totalPlays
+	 *            the new total plays
+	 */
+	@Override
+	public void setTotalPlays(final int totalPlays) {
+		this.totalPlays = totalPlays;
+	}
 }

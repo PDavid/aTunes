@@ -31,97 +31,97 @@ import net.sourceforge.atunes.model.IStatisticsAlbum;
  */
 public class StatisticsAlbum implements Serializable, IStatisticsAlbum {
 
-    private static final long serialVersionUID = -5304107353617114945L;
+	private static final long serialVersionUID = -5304107353617114945L;
 
-    private String artist;
+	String artist;
 
-    private String album;
+	String album;
 
-    /**
-     * No arg constructor for serialization 
-     */
-    StatisticsAlbum() {
+	/**
+	 * No arg constructor for serialization
+	 */
+	StatisticsAlbum() {
 	}
-    
-    /**
-     * @param artist
-     * @param album
-     */
-    public StatisticsAlbum(String artist, String album) {
-        this.artist = artist;
-        this.album = album;
-    }
 
-    /**
-     * @return the artist
-     */
-    @Override
+	/**
+	 * @param artist
+	 * @param album
+	 */
+	public StatisticsAlbum(final String artist, final String album) {
+		this.artist = artist;
+		this.album = album;
+	}
+
+	/**
+	 * @return the artist
+	 */
+	@Override
 	public String getArtist() {
-        return artist;
-    }
+		return artist;
+	}
 
-    /**
-     * @param artist
-     *            the artist to set
-     */
-    @Override
-	public void setArtist(String artist) {
-        this.artist = artist;
-    }
+	/**
+	 * @param artist
+	 *            the artist to set
+	 */
+	@Override
+	public void setArtist(final String artist) {
+		this.artist = artist;
+	}
 
-    /**
-     * @return the album
-     */
-    @Override
+	/**
+	 * @return the album
+	 */
+	@Override
 	public String getAlbum() {
-        return album;
-    }
+		return album;
+	}
 
-    /**
-     * @param album
-     *            the album to set
-     */
-    @Override
-	public void setAlbum(String album) {
-        this.album = album;
-    }
+	/**
+	 * @param album
+	 *            the album to set
+	 */
+	@Override
+	public void setAlbum(final String album) {
+		this.album = album;
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((album == null) ? 0 : album.hashCode());
-        result = prime * result + ((artist == null) ? 0 : artist.hashCode());
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((album == null) ? 0 : album.hashCode());
+		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
+		return result;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        StatisticsAlbum other = (StatisticsAlbum) obj;
-        if (album == null) {
-            if (other.album != null) {
-                return false;
-            }
-        } else if (!album.equals(other.album)) {
-            return false;
-        }
-        if (artist == null) {
-            if (other.artist != null) {
-                return false;
-            }
-        } else if (!artist.equals(other.artist)) {
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		StatisticsAlbum other = (StatisticsAlbum) obj;
+		if (album == null) {
+			if (other.album != null) {
+				return false;
+			}
+		} else if (!album.equals(other.album)) {
+			return false;
+		}
+		if (artist == null) {
+			if (other.artist != null) {
+				return false;
+			}
+		} else if (!artist.equals(other.artist)) {
+			return false;
+		}
+		return true;
+	}
 
 }
