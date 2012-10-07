@@ -80,7 +80,7 @@ class PlayListWriter {
 	private String getRelativePath(final List<File> repositoryFolders, final IAudioObject f) {
 		String url = f.getUrl();
 		for (File repositoryFolder : repositoryFolders) {
-			url = url.replaceAll(FileUtils.getPath(repositoryFolder), "");
+			url = url.replaceAll(FileUtils.getNormalizedPath(repositoryFolder), "");
 		}
 		return url;
 	}
