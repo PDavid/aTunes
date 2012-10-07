@@ -9,6 +9,9 @@ mkdir $DMG
 hdiutil attach $3 -mountpoint $DMG
 SetFile -a C $DMG
 
+#Include link to Applications
+ln -s /Applications $DMG/Applications
+
 echo "Umount dmg"
 hdiutil detach $DMG
 
