@@ -360,8 +360,10 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
 		// Get image from amazon if necessary
 		if (albumInfo != null) {
 			ImageIcon cover = getBean(IWebServicesHandler.class).getAlbumImage(albumInfo);
-			dialog.setCover(cover);
-			savePicture(cover, folder, metadata.getAlbumArtist(), metadata.getAlbum());
+			if (cover != null) {
+				dialog.setCover(cover);
+				savePicture(cover, folder, metadata.getAlbumArtist(), metadata.getAlbum());
+			}
 		}
 
 		dialog.setArtistAndAlbum(metadata.getAlbumArtist(), metadata.getAlbum());

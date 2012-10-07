@@ -42,77 +42,83 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * A dialog to show progress of ripping process
+ * @author alex
+ *
+ */
 public final class RipperProgressDialog extends AbstractCustomDialog implements IRipperProgressDialog {
 
-    private static final long serialVersionUID = -3891515847607545757L;
+	private static final long serialVersionUID = -3891515847607545757L;
 
-    private JLabel cover;
-    private JProgressBar totalProgressBar;
-    private JLabel totalProgressValueLabel;
-    private JProgressBar decodeProgressBar;
-    private JLabel decodeProgressValueLabel;
-    private JProgressBar encodeProgressBar;
-    private JLabel encodeProgressValueLabel;
-    private JButton cancelButton;
-    
-    /**
-     * Instantiates a new ripper progress dialog.
-     * @param frame
-     */
-    public RipperProgressDialog(IFrame frame) {
-        super(frame, 420, 200);
-    }
+	private JLabel cover;
+	private JProgressBar totalProgressBar;
+	private JLabel totalProgressValueLabel;
+	private JProgressBar decodeProgressBar;
+	private JLabel decodeProgressValueLabel;
+	private JProgressBar encodeProgressBar;
+	private JLabel encodeProgressValueLabel;
+	private JButton cancelButton;
 
-    @Override
-	public void addCancelAction(ActionListener action) {
-        cancelButton.addActionListener(action);
-    }
+	/**
+	 * Instantiates a new ripper progress dialog.
+	 * @param frame
+	 */
+	public RipperProgressDialog(final IFrame frame) {
+		super(frame, 420, 200);
+	}
 
-    @Override
-	public void setArtistAndAlbum(String artist, String album) {
-        setTitle(StringUtils.getString(I18nUtils.getString("RIPPING_CD"), " ", artist, " - ", album));
-    }
+	@Override
+	public void addCancelAction(final ActionListener action) {
+		cancelButton.addActionListener(action);
+	}
 
-    /**
-     * Sets the content.
-     */
-    public void initialize() {
-        setTitle(I18nUtils.getString("RIPPING_CD"));
-        setResizable(false);
-        
-        JPanel panel = new JPanel(new GridBagLayout());
+	@Override
+	public void setArtistAndAlbum(final String artist, final String album) {
+		setTitle(StringUtils.getString(I18nUtils.getString("RIPPING_CD"), " ", artist, " - ", album));
+	}
 
-        cover = new JLabel(Images.getImage(Images.APP_LOGO_90));
+	/**
+	 * Sets the content.
+	 */
+	@Override
+	public void initialize() {
+		setTitle(I18nUtils.getString("RIPPING_CD"));
+		setResizable(false);
 
-        JLabel totalProgressLabel = new JLabel(I18nUtils.getString("TOTAL_PROGRESS"));
-        totalProgressBar = new JProgressBar();
-        totalProgressBar.setPreferredSize(new Dimension(10, 12));
-        totalProgressValueLabel = new JLabel();
-        JLabel decodeProgressLabel = new JLabel(I18nUtils.getString("DECODING"));
-        decodeProgressBar = new JProgressBar();
-        decodeProgressBar.setPreferredSize(new Dimension(10, 12));
-        decodeProgressValueLabel = new JLabel();
-        JLabel encodeProgressLabel = new JLabel(I18nUtils.getString("ENCODING"));
-        encodeProgressBar = new JProgressBar();
-        encodeProgressBar.setPreferredSize(new Dimension(10, 12));
-        encodeProgressLabel.setBorder(BorderFactory.createEmptyBorder());
-        encodeProgressValueLabel = new JLabel();
-        cancelButton = new JButton(I18nUtils.getString("CANCEL"));
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
+		JPanel panel = new JPanel(new GridBagLayout());
 
-        setDecodeProgressBarLimits(0, 100);
-        setEncodeProgressBarLimits(0, 100);
+		cover = new JLabel(Images.getImage(Images.APP_LOGO_90));
 
-        arrangePanel(panel, totalProgressLabel, decodeProgressLabel,
+		JLabel totalProgressLabel = new JLabel(I18nUtils.getString("TOTAL_PROGRESS"));
+		totalProgressBar = new JProgressBar();
+		totalProgressBar.setPreferredSize(new Dimension(10, 12));
+		totalProgressValueLabel = new JLabel();
+		JLabel decodeProgressLabel = new JLabel(I18nUtils.getString("DECODING"));
+		decodeProgressBar = new JProgressBar();
+		decodeProgressBar.setPreferredSize(new Dimension(10, 12));
+		decodeProgressValueLabel = new JLabel();
+		JLabel encodeProgressLabel = new JLabel(I18nUtils.getString("ENCODING"));
+		encodeProgressBar = new JProgressBar();
+		encodeProgressBar.setPreferredSize(new Dimension(10, 12));
+		encodeProgressLabel.setBorder(BorderFactory.createEmptyBorder());
+		encodeProgressValueLabel = new JLabel();
+		cancelButton = new JButton(I18nUtils.getString("CANCEL"));
+		cancelButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				setVisible(false);
+			}
+		});
+
+		setDecodeProgressBarLimits(0, 100);
+		setEncodeProgressBarLimits(0, 100);
+
+		arrangePanel(panel, totalProgressLabel, decodeProgressLabel,
 				encodeProgressLabel);
 
-        add(panel);
-    }
+		add(panel);
+	}
 
 	/**
 	 * @param panel
@@ -120,26 +126,26 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
 	 * @param decodeProgressLabel
 	 * @param encodeProgressLabel
 	 */
-	private void arrangePanel(JPanel panel, JLabel totalProgressLabel,
-			JLabel decodeProgressLabel, JLabel encodeProgressLabel) {
+	private void arrangePanel(final JPanel panel, final JLabel totalProgressLabel,
+			final JLabel decodeProgressLabel, final JLabel encodeProgressLabel) {
 		GridBagConstraints c = new GridBagConstraints();
 
-        addCover(panel, c);
+		addCover(panel, c);
 
-        addTotalProgress(panel, totalProgressLabel, c);
+		addTotalProgress(panel, totalProgressLabel, c);
 
-        addDecodeProgress(panel, decodeProgressLabel, c);
+		addDecodeProgress(panel, decodeProgressLabel, c);
 
-        addEncodeProgress(panel, encodeProgressLabel, c);
+		addEncodeProgress(panel, encodeProgressLabel, c);
 
-        c.gridx = 0;
-        c.gridy = 6;
-        c.gridwidth = 3;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 1;
-        c.anchor = GridBagConstraints.CENTER;
-        c.insets = new Insets(10, 0, 5, 0);
-        panel.add(cancelButton, c);
+		c.gridx = 0;
+		c.gridy = 6;
+		c.gridwidth = 3;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(10, 0, 5, 0);
+		panel.add(cancelButton, c);
 	}
 
 	/**
@@ -147,26 +153,26 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
 	 * @param encodeProgressLabel
 	 * @param c
 	 */
-	private void addEncodeProgress(JPanel panel, JLabel encodeProgressLabel,
-			GridBagConstraints c) {
+	private void addEncodeProgress(final JPanel panel, final JLabel encodeProgressLabel,
+			final GridBagConstraints c) {
 		c.gridy = 4;
-        c.gridwidth = 1;
-        c.weightx = 0;
-        c.anchor = GridBagConstraints.WEST;
-        c.fill = GridBagConstraints.NONE;
-        c.insets = new Insets(3, 0, 0, 20);
-        panel.add(encodeProgressLabel, c);
-        c.gridx = 2;
-        c.weightx = 0;
-        c.anchor = GridBagConstraints.EAST;
-        panel.add(encodeProgressValueLabel, c);
-        c.gridx = 1;
-        c.gridy = 5;
-        c.gridwidth = 2;
-        c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(0, 0, 0, 20);
-        panel.add(encodeProgressBar, c);
+		c.gridwidth = 1;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.WEST;
+		c.fill = GridBagConstraints.NONE;
+		c.insets = new Insets(3, 0, 0, 20);
+		panel.add(encodeProgressLabel, c);
+		c.gridx = 2;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.EAST;
+		panel.add(encodeProgressValueLabel, c);
+		c.gridx = 1;
+		c.gridy = 5;
+		c.gridwidth = 2;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(0, 0, 0, 20);
+		panel.add(encodeProgressBar, c);
 	}
 
 	/**
@@ -174,26 +180,26 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
 	 * @param decodeProgressLabel
 	 * @param c
 	 */
-	private void addDecodeProgress(JPanel panel, JLabel decodeProgressLabel,
-			GridBagConstraints c) {
+	private void addDecodeProgress(final JPanel panel, final JLabel decodeProgressLabel,
+			final GridBagConstraints c) {
 		c.gridy = 2;
-        c.gridwidth = 1;
-        c.weightx = 0;
-        c.anchor = GridBagConstraints.WEST;
-        c.fill = GridBagConstraints.NONE;
-        c.insets = new Insets(3, 0, 0, 20);
-        panel.add(decodeProgressLabel, c);
-        c.gridx = 2;
-        c.weightx = 0;
-        c.anchor = GridBagConstraints.EAST;
-        panel.add(decodeProgressValueLabel, c);
-        c.gridx = 1;
-        c.gridy = 3;
-        c.gridwidth = 2;
-        c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(0, 0, 0, 20);
-        panel.add(decodeProgressBar, c);
+		c.gridwidth = 1;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.WEST;
+		c.fill = GridBagConstraints.NONE;
+		c.insets = new Insets(3, 0, 0, 20);
+		panel.add(decodeProgressLabel, c);
+		c.gridx = 2;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.EAST;
+		panel.add(decodeProgressValueLabel, c);
+		c.gridx = 1;
+		c.gridy = 3;
+		c.gridwidth = 2;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(0, 0, 0, 20);
+		panel.add(decodeProgressBar, c);
 	}
 
 	/**
@@ -201,134 +207,134 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
 	 * @param totalProgressLabel
 	 * @param c
 	 */
-	private void addTotalProgress(JPanel panel, JLabel totalProgressLabel,
-			GridBagConstraints c) {
+	private void addTotalProgress(final JPanel panel, final JLabel totalProgressLabel,
+			final GridBagConstraints c) {
 		c.gridx = 1;
-        c.weightx = 1;
-        c.gridy = 0;
-        c.gridheight = 1;
-        c.anchor = GridBagConstraints.WEST;
-        c.insets = new Insets(20, 0, 0, 20);
-        panel.add(totalProgressLabel, c);
-        c.gridx = 2;
-        c.weightx = 0;
-        c.anchor = GridBagConstraints.EAST;
-        panel.add(totalProgressValueLabel, c);
-        c.gridx = 1;
-        c.gridy = 1;
-        c.gridwidth = 2;
-        c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(0, 0, 0, 20);
-        panel.add(totalProgressBar, c);
+		c.weightx = 1;
+		c.gridy = 0;
+		c.gridheight = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.insets = new Insets(20, 0, 0, 20);
+		panel.add(totalProgressLabel, c);
+		c.gridx = 2;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.EAST;
+		panel.add(totalProgressValueLabel, c);
+		c.gridx = 1;
+		c.gridy = 1;
+		c.gridwidth = 2;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(0, 0, 0, 20);
+		panel.add(totalProgressBar, c);
 	}
 
 	/**
 	 * @param panel
 	 * @param c
 	 */
-	private void addCover(JPanel panel, GridBagConstraints c) {
+	private void addCover(final JPanel panel, final GridBagConstraints c) {
 		c.gridx = 0;
-        c.gridy = 0;
-        c.gridheight = 6;
-        c.insets = new Insets(10, 20, 0, 20);
-        panel.add(cover, c);
+		c.gridy = 0;
+		c.gridheight = 6;
+		c.insets = new Insets(10, 20, 0, 20);
+		panel.add(cover, c);
 	}
 
-    @Override
-	public void setCover(ImageIcon img) {
-        cover.setIcon(ImageUtils.resize(img, 90, 90));
-    }
+	@Override
+	public void setCover(final ImageIcon img) {
+		cover.setIcon(ImageUtils.resize(img, 90, 90));
+	}
 
-    /**
-     * Sets the decode progress bar limits.
-     * 
-     * @param min
-     *            the min
-     * @param max
-     *            the max
-     */
-    private void setDecodeProgressBarLimits(int min, int max) {
-        setLimits(decodeProgressBar, min, max);
-    }
+	/**
+	 * Sets the decode progress bar limits.
+	 * 
+	 * @param min
+	 *            the min
+	 * @param max
+	 *            the max
+	 */
+	private void setDecodeProgressBarLimits(final int min, final int max) {
+		setLimits(decodeProgressBar, min, max);
+	}
 
-    @Override
-	public void setDecodeProgressValue(int value) {
-        if (value < 0) {
-            decodeProgressBar.setIndeterminate(true);
-        } else {
-            decodeProgressBar.setIndeterminate(false);
-            decodeProgressBar.setValue(value);
-        }
+	@Override
+	public void setDecodeProgressValue(final int value) {
+		if (value < 0) {
+			decodeProgressBar.setIndeterminate(true);
+		} else {
+			decodeProgressBar.setIndeterminate(false);
+			decodeProgressBar.setValue(value);
+		}
 
-    }
+	}
 
-    @Override
-	public void setDecodeProgressValue(String value) {
-        decodeProgressValueLabel.setText(value);
-    }
+	@Override
+	public void setDecodeProgressValue(final String value) {
+		decodeProgressValueLabel.setText(value);
+	}
 
-    /**
-     * Sets the encode progress bar limits.
-     * 
-     * @param min
-     *            the min
-     * @param max
-     *            the max
-     */
-    private void setEncodeProgressBarLimits(int min, int max) {
-        setLimits(encodeProgressBar, min, max);
-    }
+	/**
+	 * Sets the encode progress bar limits.
+	 * 
+	 * @param min
+	 *            the min
+	 * @param max
+	 *            the max
+	 */
+	private void setEncodeProgressBarLimits(final int min, final int max) {
+		setLimits(encodeProgressBar, min, max);
+	}
 
-    @Override
-	public void setEncodeProgressValue(int value) {
-        if (value < 0) {
-            encodeProgressBar.setIndeterminate(true);
-        } else {
-            encodeProgressBar.setIndeterminate(false);
-            encodeProgressBar.setValue(value);
-        }
-    }
+	@Override
+	public void setEncodeProgressValue(final int value) {
+		if (value < 0) {
+			encodeProgressBar.setIndeterminate(true);
+		} else {
+			encodeProgressBar.setIndeterminate(false);
+			encodeProgressBar.setValue(value);
+		}
+	}
 
-    @Override
-	public void setEncodeProgressValue(String value) {
-        encodeProgressValueLabel.setText(value);
-    }
+	@Override
+	public void setEncodeProgressValue(final String value) {
+		encodeProgressValueLabel.setText(value);
+	}
 
-    /**
-     * Sets the limits.
-     * 
-     * @param progressBar
-     *            the progress bar
-     * @param min
-     *            the min
-     * @param max
-     *            the max
-     */
-    private void setLimits(JProgressBar progressBar, int min, int max) {
-        progressBar.setMinimum(min);
-        progressBar.setMaximum(max);
-    }
+	/**
+	 * Sets the limits.
+	 * 
+	 * @param progressBar
+	 *            the progress bar
+	 * @param min
+	 *            the min
+	 * @param max
+	 *            the max
+	 */
+	private void setLimits(final JProgressBar progressBar, final int min, final int max) {
+		progressBar.setMinimum(min);
+		progressBar.setMaximum(max);
+	}
 
-    @Override
-	public void setTotalProgressBarLimits(int min, int max) {
-        setLimits(totalProgressBar, min, max);
-    }
+	@Override
+	public void setTotalProgressBarLimits(final int min, final int max) {
+		setLimits(totalProgressBar, min, max);
+	}
 
-    @Override
-	public void setTotalProgressValue(int value) {
-        totalProgressBar.setValue(value);
-        totalProgressValueLabel.setText(StringUtils.getString(value, " / ", totalProgressBar.getMaximum()));
-    }
-    
-    @Override
-    public void showDialog() {
-    	setVisible(true);
-    }
-    
-    @Override
-    public void hideDialog() {
-    	setVisible(false);
-    	dispose();
-    }
+	@Override
+	public void setTotalProgressValue(final int value) {
+		totalProgressBar.setValue(value);
+		totalProgressValueLabel.setText(StringUtils.getString(value, " / ", totalProgressBar.getMaximum()));
+	}
+
+	@Override
+	public void showDialog() {
+		setVisible(true);
+	}
+
+	@Override
+	public void hideDialog() {
+		setVisible(false);
+		dispose();
+	}
 }
