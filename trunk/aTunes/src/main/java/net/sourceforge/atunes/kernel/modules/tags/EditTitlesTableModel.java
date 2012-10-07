@@ -32,122 +32,128 @@ import javax.swing.table.AbstractTableModel;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Table model for title edition when importing CD
+ * @author alex
+ *
+ */
 public final class EditTitlesTableModel extends AbstractTableModel {
 
-    private static final long serialVersionUID = -4440078678648669115L;
+	private static final long serialVersionUID = -4440078678648669115L;
 
-    /** The files. */
-    private List<ILocalAudioObject> files;
+	/** The files. */
+	private final List<ILocalAudioObject> files;
 
-    /** The new values. */
-    private Map<ILocalAudioObject, String> newValues;
+	/** The new values. */
+	private final Map<ILocalAudioObject, String> newValues;
 
-    /** The listeners. */
-    private List<TableModelListener> listeners;
+	/** The listeners. */
+	private final List<TableModelListener> listeners;
 
-    /**
-     * Instantiates a new edits the titles table model.
-     * 
-     * @param files
-     *            the files
-     */
-    public EditTitlesTableModel(List<ILocalAudioObject> files) {
-        this.files = files;
-        this.newValues = new HashMap<ILocalAudioObject, String>();
-        this.listeners = new ArrayList<TableModelListener>();
-    }
+	/**
+	 * Instantiates a new edits the titles table model.
+	 * 
+	 * @param files
+	 *            the files
+	 */
+	public EditTitlesTableModel(final List<ILocalAudioObject> files) {
+		this.files = files;
+		this.newValues = new HashMap<ILocalAudioObject, String>();
+		this.listeners = new ArrayList<TableModelListener>();
+	}
 
-    /**
-     * Adds the listener.
-     * 
-     * @param listener
-     *            the listener
-     */
-    public void addListener(TableModelListener listener) {
-        listeners.add(listener);
-    }
+	/**
+	 * Adds the listener.
+	 * 
+	 * @param listener
+	 *            the listener
+	 */
+	public void addListener(final TableModelListener listener) {
+		listeners.add(listener);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.table.TableModel#getColumnCount()
-     */
-    @Override
-    public int getColumnCount() {
-        return 2;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.table.TableModel#getColumnCount()
+	 */
+	@Override
+	public int getColumnCount() {
+		return 2;
+	}
 
-    @Override
-    public String getColumnName(int column) {
-        if (column == 0) {
-            return I18nUtils.getString("FILE");
-        }
-        return I18nUtils.getString("TITLE");
-    }
+	@Override
+	public String getColumnName(final int column) {
+		if (column == 0) {
+			return I18nUtils.getString("FILE");
+		}
+		return I18nUtils.getString("TITLE");
+	}
 
-    /**
-     * Gets the new values.
-     * 
-     * @return the new values
-     */
-    public Map<ILocalAudioObject, String> getNewValues() {
-        return newValues;
-    }
+	/**
+	 * Gets the new values.
+	 * 
+	 * @return the new values
+	 */
+	public Map<ILocalAudioObject, String> getNewValues() {
+		return newValues;
+	}
 
-    @Override
-    public int getRowCount() {
-        return files.size();
-    }
+	@Override
+	public int getRowCount() {
+		return files.size();
+	}
 
-    @Override
-    public String getValueAt(int rowIndex, int columnIndex) {
-    	ILocalAudioObject file = files.get(rowIndex);
-        if (columnIndex == 0) {
-            return file.getFile().getName();
-        }
-        if (newValues.containsKey(file)) {
-            return newValues.get(file);
-        }
-        return file.getTitle();
-    }
+	@Override
+	public String getValueAt(final int rowIndex, final int columnIndex) {
+		ILocalAudioObject file = files.get(rowIndex);
+		if (columnIndex == 0) {
+			return file.getFile().getName();
+		}
+		if (newValues.containsKey(file)) {
+			return newValues.get(file);
+		}
+		return file.getTitle();
+	}
 
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex == 1;
-    }
+	@Override
+	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
+		return columnIndex == 1;
+	}
 
-    /**
-     * Sets the titles.
-     * 
-     * @param titles
-     *            the new titles
-     */
-    public void setTitles(List<String> titles) {
-        for (int i = 0; i < files.size(); i++) {
-            newValues.put(files.get(i), titles.get(i));
-        }
+	/**
+	 * Sets the titles.
+	 * 
+	 * @param titles
+	 *            the new titles
+	 */
+	public void setTitles(final List<String> titles) {
+		for (int i = 0; i < files.size(); i++) {
+			String title = titles.size() > i ? titles.get(i) : "";
+			newValues.put(files.get(i), title);
+		}
 
-        TableModelEvent event;
-        event = new TableModelEvent(this, TableModelEvent.ALL_COLUMNS, TableModelEvent.UPDATE);
+		TableModelEvent event;
+		event = new TableModelEvent(this, TableModelEvent.ALL_COLUMNS, TableModelEvent.UPDATE);
 
-        for (int i = 0; i < listeners.size(); i++) {
-            listeners.get(i).tableChanged(event);
-        }
-    }
+		for (int i = 0; i < listeners.size(); i++) {
+			listeners.get(i).tableChanged(event);
+		}
+	}
 
-    /**
-     * Sets the value at.
-     * 
-     * @param aValue
-     *            the a value
-     * @param rowIndex
-     *            the row index
-     * @param columnIndex
-     *            the column index
-     */
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        newValues.put(files.get(rowIndex), (String) aValue);
-        fireTableCellUpdated(rowIndex, columnIndex);
-    }
+	/**
+	 * Sets the value at.
+	 * 
+	 * @param aValue
+	 *            the a value
+	 * @param rowIndex
+	 *            the row index
+	 * @param columnIndex
+	 *            the column index
+	 */
+	@Override
+	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
+		newValues.put(files.get(rowIndex), (String) aValue);
+		fireTableCellUpdated(rowIndex, columnIndex);
+	}
 }
