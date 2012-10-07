@@ -22,167 +22,163 @@ package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * This class represents a Rank: a list of objects, every one with an associate
  * counter. Objects are ordered by this counter. This class is used for
  * statistics
+ * @param <T>
  */
 public class RankList<T> implements Serializable {
 
-    private static final long serialVersionUID = -4404155415144124761L;
+	private static final long serialVersionUID = -4404155415144124761L;
 
-    /** Order of elements. */
-    private List<T> order;
+	/** Count of every object. */
+	final Map<T, Integer> count;
 
-    /** Count of every object. */
-    private Map<T, Integer> count;
+	/**
+	 * OLD list with order of objects
+	 * DEPRECATED: used only to keep compatibility with statistics of previous versions
+	 */
+	List<T> order;
 
-    /**
-     * Constructor.
-     */
-    public RankList() {
-        order = new ArrayList<T>();
-        count = new HashMap<T, Integer>();
-    }
+	/**
+	 * Constructor.
+	 */
+	public RankList() {
+		count = new HashMap<T, Integer>();
+	}
 
-    /**
-     * Adds an object to rank. If rank contains object, adds 1 to counter and
-     * updates rank order If not, adds object with count 1
-     * 
-     * @param obj
-     *            the obj
-     */
-    public void addItem(T obj) {
-    	if (obj == null) {
-    		return;
-    	}
-        if (order.contains(obj)) {
-            Integer previousCount = count.get(obj);
-            count.put(obj, previousCount + 1);
-            moveUpOnList(obj);
-        } else {
-            order.add(obj);
-            count.put(obj, 1);
-        }
-    }
+	/**
+	 * Adds an object to rank. If rank contains object, adds 1 to counter and
+	 * updates rank order If not, adds object with count 1
+	 * 
+	 * @param obj
+	 *            the obj
+	 */
+	public void addItem(final T obj) {
+		if (obj == null) {
+			return;
+		}
+		if (count.containsKey(obj)) {
+			Integer previousCount = count.get(obj);
+			count.put(obj, previousCount + 1);
+		} else {
+			count.put(obj, 1);
+		}
+	}
 
-    /**
-     * Returns count for a given object.
-     * 
-     * @param obj
-     *            the obj
-     * 
-     * @return the count
-     */
-    public Integer getCount(T obj) {
-        return count.get(obj);
-    }
+	/**
+	 * Returns count for a given object.
+	 * 
+	 * @param obj
+	 *            the obj
+	 * 
+	 * @return the count
+	 */
+	public Integer getCount(final T obj) {
+		return count.get(obj);
+	}
 
-    /**
-     * Returns the first n elements count of this rank.
-     * 
-     * @param n
-     *            the n
-     * 
-     * @return the n first element counts
-     */
-    public List<Integer> getNFirstElementCounts(int n) {
-        int aux = n;
-        if (aux <= -1 || aux > order.size()) {
-            aux = order.size();
-        }
-        List<Integer> result = new ArrayList<Integer>();
-        for (int i = 0; i < aux; i++) {
-            result.add(count.get(order.get(i)));
-        }
-        return result;
-    }
+	/**
+	 * Returns the first n elements count of this rank.
+	 * 
+	 * @param n
+	 *            the n
+	 * 
+	 * @return the n first element counts
+	 */
+	public List<Integer> getNFirstElementCounts(final int n) {
+		List<Entry<T, Integer>> list = getElementsSorted();
 
-    /**
-     * Returns the first n elements of this rank.
-     * 
-     * @param n
-     *            the n
-     * 
-     * @return the n first elements
-     */
-    public List<T> getNFirstElements(int n) {
-        if (n <= -1 || n > order.size()) {
-            return new ArrayList<T>(order);
-        }
-        return new ArrayList<T>(order.subList(0, n));
-    }
+		int aux = n;
+		if (aux <= -1 || aux > list.size()) {
+			aux = list.size();
+		}
+		List<Integer> result = new ArrayList<Integer>();
+		for (int i = 0; i < aux; i++) {
+			result.add(list.get(i).getValue());
+		}
+		return result;
+	}
 
-    /**
-     * Gets the order.
-     * 
-     * @return the order
-     */
-    public List<T> getOrder() {
-        return new ArrayList<T>(order);
-    }
+	/**
+	 * @return elements sorted
+	 */
+	private List<Entry<T, Integer>> getElementsSorted() {
+		List<Entry<T, Integer>> list = new ArrayList<Map.Entry<T,Integer>>(count.entrySet());
+		Collections.sort(list, new Comparator<Entry<T, Integer>>() {
+			@Override
+			public int compare(final Entry<T, Integer> o1, final Entry<T, Integer> o2) {
+				return - o1.getValue().compareTo(o2.getValue());
+			}
+		});
+		return list;
+	}
 
-    /**
-     * Updates order object.
-     * 
-     * @param obj
-     *            the obj
-     */
-    private void moveUpOnList(T obj) {
-        int index = order.indexOf(obj);
-        if (index > 0) {
-            int previousItemCount = count.get(order.get(index - 1));
-            int currentItemCount = count.get(order.get(index));
-            if (previousItemCount < currentItemCount) {
-                T previous = order.get(index - 1);
-                T current = order.get(index);
+	/**
+	 * Returns the first n elements of this rank.
+	 * 
+	 * @param n
+	 *            the n
+	 * 
+	 * @return the n first elements
+	 */
+	public List<T> getNFirstElements(final int n) {
+		List<Entry<T, Integer>> list = getElementsSorted();
 
-                order.remove(previous);
-                order.remove(current);
+		List<T> elements = new ArrayList<T>();
+		int aux = Math.min(n, list.size());
+		for (int i = 0; i < aux; i++) {
+			elements.add(list.get(i).getKey());
+		}
+		return elements;
+	}
 
-                order.add(index - 1, current);
-                order.add(index, previous);
+	/**
+	 * Gets the order.
+	 * 
+	 * @return the order
+	 */
+	public List<T> getOrder() {
+		return getNFirstElements(count.size());
+	}
 
-                moveUpOnList(obj);
-            }
-        }
-    }
+	/**
+	 * Replaces an object, keeping order and count.
+	 * 
+	 * @param oldItem
+	 *            the old item
+	 * @param newItem
+	 *            the new item
+	 */
+	public void replaceItem(final T oldItem, final T newItem) {
+		Integer count1 = this.count.get(oldItem);
+		if (count1 != null) {
+			this.count.remove(oldItem);
+			this.count.put(newItem, count1);
+		}
+	}
 
-    /**
-     * Replaces an object, keeping order and count.
-     * 
-     * @param oldItem
-     *            the old item
-     * @param newItem
-     *            the new item
-     */
-    public void replaceItem(T oldItem, T newItem) {
-        int order1 = this.order.indexOf(oldItem);
-        Integer count1 = this.count.get(oldItem);
-        if (order1 != -1 && count1 != null) {
-            this.order.remove(order1);
-            this.order.add(order1, newItem);
+	/**
+	 * Return the size of rank.
+	 * 
+	 * @return the int
+	 */
+	public int size() {
+		return count.size();
+	}
 
-            this.count.remove(oldItem);
-            this.count.put(newItem, count1);
-        }
-    }
-
-    /**
-     * Return the size of rank.
-     * 
-     * @return the int
-     */
-    public int size() {
-        return order.size();
-    }
-
-    public void clear() {
-        order.clear();
-        count.clear();
-    }
+	/**
+	 * Removes all data
+	 */
+	public void clear() {
+		count.clear();
+	}
 }
