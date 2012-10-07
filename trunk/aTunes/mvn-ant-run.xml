@@ -237,7 +237,7 @@
 		<echo message="${user}"/>
 		<echo message="Starting upload"/>
 		
-		<scp todir="${user}:${password}@frs.sourceforge.net:/home/frs/project/a/at/atunes/latest-builds">
+		<scp trust="true" todir="${user}:${password}@frs.sourceforge.net:/home/frs/project/a/at/atunes/latest-builds">
 		    <fileset dir="${basedir}/target/">
 		      <include name="*installer.*"/>
 		      <include name="*.dmg"/>
