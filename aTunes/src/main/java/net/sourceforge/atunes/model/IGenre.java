@@ -21,8 +21,6 @@
 package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
-import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -57,17 +55,4 @@ public interface IGenre extends ITreeObject<ILocalAudioObject>, Serializable {
 	 *            the a
 	 */
 	public void removeAudioObject(ILocalAudioObject a);
-
-	/**
-	 * Returns an structure of artists and albums containing songs of this genre
-	 * 
-	 * @return the artists
-	 */
-	public Map<String, IArtist> getArtistObjects();
-
-	/**
-	 * Returns all artists of this genre
-	 */
-	public Set<String> getArtistSet();
-
 }

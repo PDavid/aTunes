@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 import org.commonjukebox.plugins.model.PluginApi;
 import org.joda.time.base.BaseDateTime;
@@ -34,250 +35,235 @@ import org.joda.time.base.BaseDateTime;
 @PluginApi
 public final class Radio implements IRadio {
 
-    private static final long serialVersionUID = 3295941106814718559L;
+	private static final long serialVersionUID = 3295941106814718559L;
 
-    private String name;
-    private String url;
-    private String label;
-    private String genre;
-    private boolean isRemoved;
-    // Song infos from radio stream
-    private transient String artist;
-    private transient String title;
-    private transient boolean songInfoAvailable;
-    private long bitrate;
-    private int frequency;
+	private String name;
+	private String url;
+	private String label;
+	private String genre;
+	private boolean isRemoved;
+	// Song infos from radio stream
+	private transient String artist;
+	private transient String title;
+	private transient boolean songInfoAvailable;
+	private long bitrate;
+	private int frequency;
 
-    /**
-     * Instantiates a new radio.
-     * 
-     * @param name
-     *            the name
-     * @param url
-     *            the url
-     * @param label
-     *            the label
-     */
-    public Radio(String name, String url, String label) {
-        this.name = name;
-        this.url = url;
-        this.label = label;
-    }
+	/**
+	 * Instantiates a new radio.
+	 * 
+	 * @param name
+	 *            the name
+	 * @param url
+	 *            the url
+	 * @param label
+	 *            the label
+	 */
+	public Radio(final String name, final String url, final String label) {
+		this.name = name;
+		this.url = url;
+		this.label = label;
+	}
 
-    @Override
+	@Override
 	public void deleteSongInfo() {
-        artist = null;
-        title = null;
-        songInfoAvailable = false;
-    }
+		artist = null;
+		title = null;
+		songInfoAvailable = false;
+	}
 
-    @Override
-    public String getAlbum() {
-        return "";
-    }
+	@Override
+	public String getAlbum(final IUnknownObjectChecker unknownObjectChecker) {
+		return "";
+	}
 
-    @Override
-    public String getAlbumArtist() {
-        return "";
-    }
+	@Override
+	public String getAlbumArtist(final IUnknownObjectChecker unknownObjectChecker) {
+		return "";
+	}
 
-    @Override
-    public String getAlbumArtistOrArtist() {
-        return getAlbumArtist().isEmpty() ? getArtist() : getAlbumArtist();
-    }
+	@Override
+	public String getAlbumArtistOrArtist(final IUnknownObjectChecker unknownObjectChecker) {
+		return getArtist(unknownObjectChecker);
+	}
 
-    @Override
-    public String getArtist() {
-        return artist == null ? "" : artist;
-    }
+	@Override
+	public String getArtist(final IUnknownObjectChecker unknownObjectChecker) {
+		return artist == null ? "" : artist;
+	}
 
-    @Override
-    public List<IRadio> getAudioObjects() {
-        return Collections.singletonList((IRadio)this);
-    }
+	@Override
+	public List<IRadio> getAudioObjects() {
+		return Collections.singletonList((IRadio)this);
+	}
 
-    @Override
-    public long getBitrate() {
-        return bitrate;
-    }
+	@Override
+	public long getBitrate() {
+		return bitrate;
+	}
 
-    @Override
-    public String getComposer() {
-        return "";
-    }
+	@Override
+	public String getComposer() {
+		return "";
+	}
 
-    @Override
-    public int getDuration() {
-        return 0;
-    }
+	@Override
+	public int getDuration() {
+		return 0;
+	}
 
-    @Override
-    public int getFrequency() {
-        return frequency;
-    }
+	@Override
+	public int getFrequency() {
+		return frequency;
+	}
 
-    @Override
-    public String getGenre() {
-        if (genre != null) {
-            return genre;
-        }
-        return "";
-    }
+	@Override
+	public String getGenre(final IUnknownObjectChecker unknownObjectChecker) {
+		if (genre != null) {
+			return genre;
+		}
+		return "";
+	}
 
-    @Override
-    public String getLyrics() {
-        return "";
-    }
+	@Override
+	public String getLyrics() {
+		return "";
+	}
 
-    @Override
+	@Override
 	public String getName() {
-        return name;
-    }
+		return name;
+	}
 
-    @Override
-    public int getStars() {
-        return 0;
-    }
+	@Override
+	public int getStars() {
+		return 0;
+	}
 
-    @Override
-    public String getTitle() {
-        return title == null ? getName() : title;
-    }
+	@Override
+	public String getTitle() {
+		return title == null ? getName() : title;
+	}
 
-    @Override
-    public String getTitleOrFileName() {
-        return getTitle();
-    }
+	@Override
+	public String getTitleOrFileName() {
+		return getTitle();
+	}
 
-    @Override
-    public int getTrackNumber() {
-        return 0;
-    }
+	@Override
+	public int getTrackNumber() {
+		return 0;
+	}
 
-    @Override
-    public String getUrl() {
-        return url;
-    }
+	@Override
+	public String getUrl() {
+		return url;
+	}
 
-    @Override
-    public String getYear() {
-        return "";
-    }
+	@Override
+	public String getYear() {
+		return "";
+	}
 
-    @Override
-    public BaseDateTime getDate() {
-        return null;
-    }
+	@Override
+	public BaseDateTime getDate() {
+		return null;
+	}
 
-    @Override
+	@Override
 	public boolean isRemoved() {
-        return isRemoved;
-    }
+		return isRemoved;
+	}
 
-    @Override
+	@Override
 	public boolean isSongInfoAvailable() {
-        return songInfoAvailable;
-    }
+		return songInfoAvailable;
+	}
 
-    @Override
-	public void setArtist(String artist) {
-        this.artist = artist;
-    }
+	@Override
+	public void setArtist(final String artist) {
+		this.artist = artist;
+	}
 
-    @Override
-	public void setBitrate(long bitrate) {
-        this.bitrate = bitrate;
-    }
+	@Override
+	public void setBitrate(final long bitrate) {
+		this.bitrate = bitrate;
+	}
 
-    @Override
-	public void setFrequency(int frequency) {
-        this.frequency = frequency;
-    }
+	@Override
+	public void setFrequency(final int frequency) {
+		this.frequency = frequency;
+	}
 
-    @Override
-	public void setGenre(String genre) {
-        this.genre = genre;
-    }
+	@Override
+	public void setGenre(final String genre) {
+		this.genre = genre;
+	}
 
-    @Override
-	public void setName(String name) {
-        this.name = name;
-    }
+	@Override
+	public void setName(final String name) {
+		this.name = name;
+	}
 
-    @Override
-	public void setRemoved(boolean isRemoved) {
-        this.isRemoved = isRemoved;
-    }
+	@Override
+	public void setRemoved(final boolean isRemoved) {
+		this.isRemoved = isRemoved;
+	}
 
-    @Override
-	public void setSongInfoAvailable(boolean songInfoAvailable) {
-        this.songInfoAvailable = songInfoAvailable;
-    }
+	@Override
+	public void setSongInfoAvailable(final boolean songInfoAvailable) {
+		this.songInfoAvailable = songInfoAvailable;
+	}
 
-    @Override
-    public void setStars(int stars) {
-        // Nothing to do
-    }
+	@Override
+	public void setStars(final int stars) {
+		// Nothing to do
+	}
 
-    @Override
-	public void setTitle(String title) {
-        this.title = title;
-    }
+	@Override
+	public void setTitle(final String title) {
+		this.title = title;
+	}
 
-    @Override
-	public void setUrl(String url) {
-        this.url = url;
-    }
+	@Override
+	public void setUrl(final String url) {
+		this.url = url;
+	}
 
-    @Override
-    public String toString() {
-        return name;
-    }
+	@Override
+	public String toString() {
+		return name;
+	}
 
-    @Override
+	@Override
 	public String getLabel() {
-        return label;
-    }
+		return label;
+	}
 
-    @Override
-	public void setLabel(String label) {
-        this.label = label;
-    }
+	@Override
+	public void setLabel(final String label) {
+		this.label = label;
+	}
 
-    @Override
-    public boolean isSeekable() {
-        return false;
-    }
+	@Override
+	public boolean isSeekable() {
+		return false;
+	}
 
-    @Override
-    public int compareTo(IRadio o) {
-        return name.compareTo(o.getName());
-    }
+	@Override
+	public int compareTo(final IRadio o) {
+		return name.compareTo(o.getName());
+	}
 
-    @Override
-    public int getDiscNumber() {
-        return 0;
-    }
+	@Override
+	public int getDiscNumber() {
+		return 0;
+	}
 
-    @Override
-    public String getComment() {
-        return "";
-    }
-
-    @Override
-    public String getTooltip() {
-        return name;
-    }
-
-    @Override
-    public boolean isExtendedTooltipSupported() {
-        return false;
-    }
-
-    @Override
-    public boolean isExtendedTooltipImageSupported() {
-        return false;
-    }
+	@Override
+	public String getComment() {
+		return "";
+	}
 
 	@Override
 	public int hashCode() {
@@ -291,7 +277,7 @@ public final class Radio implements IRadio {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -328,14 +314,14 @@ public final class Radio implements IRadio {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public int size() {
 		return 1;
 	}
-	
+
 	@Override
-	public String getAudioObjectDescription() {
+	public String getAudioObjectDescription(final IUnknownObjectChecker unknownObjectChecker) {
 		return getTitle();
 	}
 }

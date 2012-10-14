@@ -98,7 +98,14 @@
 		<property name="counterLevelNeededToFireAction" value="10"/>
 		<property name="actionToFire" ref="makeDonationAction"/>
 	</bean>
-	
+
+	<bean id="searchableObject" class="net.sourceforge.atunes.kernel.modules.search.AbstractCommonAudioFileSearchableObject" abstract="true"/>	
+
+
+	<bean id="notificationEngine" class="net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine" abstract="true"/>
+	<bean id="defaultNotificationEngine" class="net.sourceforge.atunes.kernel.modules.notify.DefaultNotifications" parent="notificationEngine"/>
+	<bean id="growlNotificationEngine" class="net.sourceforge.atunes.kernel.modules.notify.GrowlNotificationEngine" parent="notificationEngine"/>
+	<bean id="libnotifyNotificationEngine" class="net.sourceforge.atunes.kernel.modules.notify.LibnotifyNotificationEngine" parent="notificationEngine"/>
 	
 	
 </beans>

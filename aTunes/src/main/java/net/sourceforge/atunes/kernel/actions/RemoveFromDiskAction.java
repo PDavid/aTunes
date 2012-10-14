@@ -36,13 +36,13 @@ import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -52,6 +52,10 @@ import org.apache.commons.io.FileUtils;
 
 /**
  * Removes elements from disk
+ * @author alex
+ *
+ */
+/**
  * @author alex
  *
  */
@@ -76,6 +80,16 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 	private INavigationView repositoryNavigationView;
 
 	private IDialogFactory dialogFactory;
+
+	private ILocalAudioObjectFilter localAudioObjectFilter;
+
+	/**
+	 * @param localAudioObjectFilter
+	 */
+	public void setLocalAudioObjectFilter(
+			final ILocalAudioObjectFilter localAudioObjectFilter) {
+		this.localAudioObjectFilter = localAudioObjectFilter;
+	}
 
 	/**
 	 * Constructor
@@ -136,7 +150,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 
 	private void fromOtherViews(final IRepositoryHandler repositoryHandler) {
 		final List<IAudioObject> files = navigationHandler.getFilesSelectedInNavigator();
-		repositoryHandler.remove(new LocalAudioObjectFilter().getLocalAudioObjects(files));
+		repositoryHandler.remove(localAudioObjectFilter.getLocalAudioObjects(files));
 
 		dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
 		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
@@ -146,7 +160,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 				dialog.showDialog();
 			}
 		});
-		new DeleteFilesWorker(dialog, new LocalAudioObjectFilter().getLocalAudioObjects(files)).execute();
+		new DeleteFilesWorker(dialog, localAudioObjectFilter.getLocalAudioObjects(files)).execute();
 	}
 
 	private void fromRepositoryOrDeviceView(final IRepositoryHandler repositoryHandler) {

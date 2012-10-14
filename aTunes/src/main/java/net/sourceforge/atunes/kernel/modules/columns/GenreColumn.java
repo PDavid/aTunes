@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 /**
  * Column to show genre
@@ -30,6 +31,16 @@ import net.sourceforge.atunes.model.IAudioObject;
 public class GenreColumn extends AbstractColumn<String> {
 
 	private static final long serialVersionUID = 1420893111015572964L;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	/**
 	 * Default constructor
@@ -42,40 +53,40 @@ public class GenreColumn extends AbstractColumn<String> {
 
 	@Override
 	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		if (ao1.getGenre().equals(ao2.getGenre())) {
-			if (ao1.getArtist().equals(ao2.getArtist())) {
-				if (ao1.getAlbum().equals(ao2.getAlbum())) {
+		if (ao1.getGenre(unknownObjectChecker).equals(ao2.getGenre(unknownObjectChecker))) {
+			if (ao1.getArtist(unknownObjectChecker).equals(ao2.getArtist(unknownObjectChecker))) {
+				if (ao1.getAlbum(unknownObjectChecker).equals(ao2.getAlbum(unknownObjectChecker))) {
 					return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
 				}
-				return ao1.getAlbum().compareTo(ao2.getAlbum());
+				return ao1.getAlbum(unknownObjectChecker).compareTo(ao2.getAlbum(unknownObjectChecker));
 			}
-			return ao1.getArtist().compareTo(ao2.getArtist());
+			return ao1.getArtist(unknownObjectChecker).compareTo(ao2.getArtist(unknownObjectChecker));
 		}
-		return ao1.getGenre().compareTo(ao2.getGenre());
+		return ao1.getGenre(unknownObjectChecker).compareTo(ao2.getGenre(unknownObjectChecker));
 	}
 
 	@Override
 	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		if (ao1.getGenre().equals(ao2.getGenre())) {
-			if (ao1.getArtist().equals(ao2.getArtist())) {
-				if (ao1.getAlbum().equals(ao2.getAlbum())) {
+		if (ao1.getGenre(unknownObjectChecker).equals(ao2.getGenre(unknownObjectChecker))) {
+			if (ao1.getArtist(unknownObjectChecker).equals(ao2.getArtist(unknownObjectChecker))) {
+				if (ao1.getAlbum(unknownObjectChecker).equals(ao2.getAlbum(unknownObjectChecker))) {
 					return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
 				}
-				return ao1.getAlbum().compareTo(ao2.getAlbum());
+				return ao1.getAlbum(unknownObjectChecker).compareTo(ao2.getAlbum(unknownObjectChecker));
 			}
-			return ao1.getArtist().compareTo(ao2.getArtist());
+			return ao1.getArtist(unknownObjectChecker).compareTo(ao2.getArtist(unknownObjectChecker));
 		}
-		return ao2.getGenre().compareTo(ao1.getGenre());
+		return ao2.getGenre(unknownObjectChecker).compareTo(ao1.getGenre(unknownObjectChecker));
 	}
 
 	@Override
 	public String getValueFor(final IAudioObject audioObject, final int row) {
 		// Return genre
-		return audioObject.getGenre();
+		return audioObject.getGenre(unknownObjectChecker);
 	}
 
 	@Override
 	public String getValueForFilter(final IAudioObject audioObject, final int row) {
-		return audioObject.getGenre();
+		return audioObject.getGenre(unknownObjectChecker);
 	}
 }

@@ -29,141 +29,106 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IFullScreenHandler;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStateUI;
-import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * Responsible of handling notifications
+ * @author alex
+ *
+ */
 public final class NotificationsHandler extends AbstractHandler implements INotificationsHandler {
 
-    private Map<String, INotificationEngine> engines;
-    
-    private INotificationEngine defaultEngine;
-    
-    private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
-    
-    private ITemporalDiskStorage temporalDiskStorage;
-    
-    private ILookAndFeelManager lookAndFeelManager;
-    
-    private IAudioObjectImageLocator audioObjectImageLocator;
-    
-    private IStateUI stateUI;
-    
-    private IStateCore stateCore;
-    
-    /**
-     * @param stateCore
-     */
-    public void setStateCore(IStateCore stateCore) {
+	private Map<String, INotificationEngine> engines;
+
+	private INotificationEngine defaultEngine;
+
+	private IStateUI stateUI;
+
+	private IStateCore stateCore;
+
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(final IStateCore stateCore) {
 		this.stateCore = stateCore;
 	}
-    
-    /**
-     * @param stateUI
-     */
-    public void setStateUI(IStateUI stateUI) {
+
+	/**
+	 * @param stateUI
+	 */
+	public void setStateUI(final IStateUI stateUI) {
 		this.stateUI = stateUI;
 	}
-    
-    /**
-     * @param audioObjectImageLocator
-     */
-    public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
-		this.audioObjectImageLocator = audioObjectImageLocator;
-	}
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-    
-    /**
-     * @param temporalDiskStorage
-     */
-    public void setTemporalDiskStorage(ITemporalDiskStorage temporalDiskStorage) {
-		this.temporalDiskStorage = temporalDiskStorage;
-	}
-    
-    /**
-     * @param audioObjectGenericImageFactory
-     */
-    public void setAudioObjectGenericImageFactory(IAudioObjectGenericImageFactory audioObjectGenericImageFactory) {
-		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
-	}
-    
-    private Map<String, INotificationEngine> getEngines() {
-    	if (engines == null) {
-    		Logger.debug("Initializing notification engines");
-    		engines = new HashMap<String, INotificationEngine>();
-        	// Add here any new notification engine
-        	addNotificationEngine(engines, getDefaultEngine());
-        	addNotificationEngine(engines, new LibnotifyNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage, lookAndFeelManager, audioObjectImageLocator));
-        	addNotificationEngine(engines, new GrowlNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage, lookAndFeelManager, audioObjectImageLocator));
-    	}
-    	return engines;
-    }
-    
-    /**
-     * Adds a new notification engine to map of notifications
-     * @param engine
-     */
-    private void addNotificationEngine(Map<String, INotificationEngine> engines, INotificationEngine engine) {
-    	engines.put(engine.getName(), engine);
-    }
 
-    /**
-     * @return notification engine to use
-     */
-    private INotificationEngine getNotificationEngine() {
-    	INotificationEngine engine = getEngines().get(stateCore.getNotificationEngine());
-    	if (engine == null) {
-    		engine = getDefaultEngine();
-    	}
-    	return engine;
-    }
-    
-    @Override
-    public void applicationFinish() {
-    	getNotificationEngine().disposeNotifications();
-    }
+	private Map<String, INotificationEngine> getEngines() {
+		if (engines == null) {
+			Logger.debug("Initializing notification engines");
+			engines = new HashMap<String, INotificationEngine>();
+			// Add here any new notification engine
+			addNotificationEngine(engines, getDefaultEngine());
+			addNotificationEngine(engines, getBean("libnotifyNotificationEngine", INotificationEngine.class));
+			addNotificationEngine(engines, getBean("growlNotificationEngine", INotificationEngine.class));
+		}
+		return engines;
+	}
 
-    @Override
-    public void applicationStateChanged() {
-    	getNotificationEngine().updateNotification(stateUI);
-    }
+	/**
+	 * Adds a new notification engine to map of notifications
+	 * @param engine
+	 */
+	private void addNotificationEngine(final Map<String, INotificationEngine> engines, final INotificationEngine engine) {
+		engines.put(engine.getName(), engine);
+	}
 
-    @Override
-	public void showNotification(IAudioObject audioObject) {
-    	// only show notification if not in full screen
-    	if (!getBean(IFullScreenHandler.class).isVisible()) {
-    		getNotificationEngine().showNotification(audioObject);
-    	}
-    }
+	/**
+	 * @return notification engine to use
+	 */
+	private INotificationEngine getNotificationEngine() {
+		INotificationEngine engine = getEngines().get(stateCore.getNotificationEngine());
+		if (engine == null) {
+			engine = getDefaultEngine();
+		}
+		return engine;
+	}
 
-    @Override
-    public void playbackStateChanged(PlaybackState newState, IAudioObject currentAudioObject) {
-        if (stateUI.isShowOSD() && newState == PlaybackState.PLAYING) {
-            // Playing
-            showNotification(currentAudioObject);
-        }
-    }
-    
+	@Override
+	public void applicationFinish() {
+		getNotificationEngine().disposeNotifications();
+	}
+
+	@Override
+	public void applicationStateChanged() {
+		getNotificationEngine().updateNotification(stateUI);
+	}
+
+	@Override
+	public void showNotification(final IAudioObject audioObject) {
+		// only show notification if not in full screen
+		if (!getBean(IFullScreenHandler.class).isVisible()) {
+			getNotificationEngine().showNotification(audioObject);
+		}
+	}
+
+	@Override
+	public void playbackStateChanged(final PlaybackState newState, final IAudioObject currentAudioObject) {
+		if (stateUI.isShowOSD() && newState == PlaybackState.PLAYING) {
+			// Playing
+			showNotification(currentAudioObject);
+		}
+	}
+
 	@Override
 	public List<String> getNotificationEngines() {
 		List<String> names = new ArrayList<String>(getEngines().keySet());
 		Collections.sort(names, new Comparator<String>() {
 			@Override
-			public int compare(String o1, String o2) {
+			public int compare(final String o1, final String o2) {
 				if (o1.equals(getDefaultEngine().getName())) {
 					return -1;
 				} else if (o2.equals(getDefaultEngine().getName())) {
@@ -171,19 +136,19 @@ public final class NotificationsHandler extends AbstractHandler implements INoti
 				}
 				return o1.compareTo(o2);
 			}
-		}); 
+		});
 		return names;
 	}
 
 	@Override
-	public INotificationEngine getNotificationEngine(String name) {
+	public INotificationEngine getNotificationEngine(final String name) {
 		return getEngines().get(name);
 	}
-	
+
 	@Override
 	public INotificationEngine getDefaultEngine() {
 		if (defaultEngine == null) {
-	    	defaultEngine = new DefaultNotifications(stateUI, getBean(ILookAndFeelManager.class), audioObjectGenericImageFactory, temporalDiskStorage, audioObjectImageLocator);
+			defaultEngine = getBean("defaultNotificationEngine", INotificationEngine.class);
 		}
 		return defaultEngine;
 	}

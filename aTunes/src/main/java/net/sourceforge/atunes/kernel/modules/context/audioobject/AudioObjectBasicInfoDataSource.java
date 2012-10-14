@@ -34,6 +34,7 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IStatisticsHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -50,161 +51,170 @@ import org.joda.time.format.DateTimeFormat;
  */
 public class AudioObjectBasicInfoDataSource implements IContextInformationSource {
 
-    private IWebServicesHandler webServicesHandler;
-    
-    private ILookAndFeelManager lookAndFeelManager;
-    
-    private IIconFactory rssMediumIcon;
-    
-    private IIconFactory radioMediumIcon;
-    
-    private IAudioObjectImageLocator audioObjectImageLocator;
-    
-    private IAudioObject audioObject;
-    
-    private ImageIcon image;
-    
-    private String title;
-    
-    private String artist;
-    
-    private String lastPlayDate;
-    
-    
-    /**
-     * @param audioObjectImageLocator
-     */
-    public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
+	private IWebServicesHandler webServicesHandler;
+
+	private ILookAndFeelManager lookAndFeelManager;
+
+	private IIconFactory rssMediumIcon;
+
+	private IIconFactory radioMediumIcon;
+
+	private IAudioObjectImageLocator audioObjectImageLocator;
+
+	private IAudioObject audioObject;
+
+	private ImageIcon image;
+
+	private String title;
+
+	private String artist;
+
+	private String lastPlayDate;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
+	/**
+	 * @param audioObjectImageLocator
+	 */
+	public void setAudioObjectImageLocator(final IAudioObjectImageLocator audioObjectImageLocator) {
 		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
-    
-    /**
-     * @param radioMediumIcon
-     */
-    public void setRadioMediumIcon(IIconFactory radioMediumIcon) {
+
+	/**
+	 * @param radioMediumIcon
+	 */
+	public void setRadioMediumIcon(final IIconFactory radioMediumIcon) {
 		this.radioMediumIcon = radioMediumIcon;
 	}
-    
-    /**
-     * @param rssMediumIcon
-     */
-    public void setRssMediumIcon(IIconFactory rssMediumIcon) {
+
+	/**
+	 * @param rssMediumIcon
+	 */
+	public void setRssMediumIcon(final IIconFactory rssMediumIcon) {
 		this.rssMediumIcon = rssMediumIcon;
 	}
-    
-    @Override
-    public void getData(IAudioObject audioObject) {
-    	this.audioObject = audioObject;
-    	this.image = getImageData(audioObject);
-    	if (audioObject instanceof ILocalAudioObject) {
-    		this.title = audioObject.getTitleOrFileName();
-    		this.artist = audioObject.getArtist();
-    		this.lastPlayDate = getLastPlayDateData(audioObject);
-    	} else if (audioObject instanceof IRadio) {
-    		this.title = ((IRadio) audioObject).getName();
-    		this.artist = ((IRadio) audioObject).getUrl();
-    	} else if (audioObject instanceof IPodcastFeedEntry) {
-    		this.title = ((IPodcastFeedEntry) audioObject).getTitle();
-    	}
-    }
-    
-    /**
-     * @return
-     */
-    public IAudioObject getAudioObject() {
+
+	@Override
+	public void getData(final IAudioObject audioObject) {
+		this.audioObject = audioObject;
+		this.image = getImageData(audioObject);
+		if (audioObject instanceof ILocalAudioObject) {
+			this.title = audioObject.getTitleOrFileName();
+			this.artist = audioObject.getArtist(unknownObjectChecker);
+			this.lastPlayDate = getLastPlayDateData(audioObject);
+		} else if (audioObject instanceof IRadio) {
+			this.title = ((IRadio) audioObject).getName();
+			this.artist = ((IRadio) audioObject).getUrl();
+		} else if (audioObject instanceof IPodcastFeedEntry) {
+			this.title = ((IPodcastFeedEntry) audioObject).getTitle();
+		}
+	}
+
+	/**
+	 * @return
+	 */
+	public IAudioObject getAudioObject() {
 		return audioObject;
 	}
-    
-    /**
-     * @return
-     */
-    public ImageIcon getImage() {
+
+	/**
+	 * @return
+	 */
+	public ImageIcon getImage() {
 		return image;
 	}
-    
-    /**
-     * @return
-     */
-    public String getTitle() {
+
+	/**
+	 * @return
+	 */
+	public String getTitle() {
 		return title;
 	}
-    
-    /**
-     * @return
-     */
-    public String getArtist() {
+
+	/**
+	 * @return
+	 */
+	public String getArtist() {
 		return artist;
 	}
-    
-    /**
-     * @return
-     */
-    public String getLastPlayDate() {
+
+	/**
+	 * @return
+	 */
+	public String getLastPlayDate() {
 		return lastPlayDate;
 	}
 
-    /**
-     * Returns image for audio object
-     * 
-     * @param audioObject
-     * @return
-     */
-    private ImageIcon getImageData(IAudioObject audioObject) {
-        if (audioObject instanceof ILocalAudioObject) {
-            ImageIcon localImage = audioObjectImageLocator.getImage(audioObject, Constants.ALBUM_IMAGE_SIZE);
-            if (localImage == null) {
-                ImageIcon albumImage = webServicesHandler.getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
-                if (albumImage != null) {
-                    localImage = ImageUtils.resize(albumImage, Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
-                }
-            }
-            return localImage;
-        } else if (audioObject instanceof IRadio) {
-            return radioMediumIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
-        } else if (audioObject instanceof IPodcastFeedEntry) {
-            return rssMediumIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
-        }
-        return null;
-    }
+	/**
+	 * Returns image for audio object
+	 * 
+	 * @param audioObject
+	 * @return
+	 */
+	private ImageIcon getImageData(final IAudioObject audioObject) {
+		if (audioObject instanceof ILocalAudioObject) {
+			ImageIcon localImage = audioObjectImageLocator.getImage(audioObject, Constants.ALBUM_IMAGE_SIZE);
+			if (localImage == null) {
+				ImageIcon albumImage = webServicesHandler.getAlbumImage(audioObject.getArtist(unknownObjectChecker), audioObject.getAlbum(unknownObjectChecker));
+				if (albumImage != null) {
+					localImage = ImageUtils.resize(albumImage, Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
+				}
+			}
+			return localImage;
+		} else if (audioObject instanceof IRadio) {
+			return radioMediumIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
+		} else if (audioObject instanceof IPodcastFeedEntry) {
+			return rssMediumIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
+		}
+		return null;
+	}
 
-    /**
-     * Return last play date for given audio object
-     * 
-     * @param audioObject
-     * @return
-     */
-    private String getLastPlayDateData(IAudioObject audioObject) {
-        // Get last date played
-        IAudioObjectStatistics stats = Context.getBean(IStatisticsHandler.class).getAudioObjectStatistics((ILocalAudioObject) audioObject);
-        if (stats == null) {
-            return I18nUtils.getString("SONG_NEVER_PLAYED");
-        } else {
-            DateTime date = stats.getLastPlayed();
-            // If date is null -> never played
-            if (date == null) {
-                return I18nUtils.getString("SONG_NEVER_PLAYED");
-            } else {
-                return StringUtils.getString("<html>", I18nUtils.getString("LAST_DATE_PLAYED"), ":<br/><center> ", DateTimeFormat.shortDateTime().print(date), "<center></html>");
-            }
-        }
-    }
-    
-    /**
-     * @param webServicesHandler
-     */
-    public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+	/**
+	 * Return last play date for given audio object
+	 * 
+	 * @param audioObject
+	 * @return
+	 */
+	private String getLastPlayDateData(final IAudioObject audioObject) {
+		// Get last date played
+		IAudioObjectStatistics stats = Context.getBean(IStatisticsHandler.class).getAudioObjectStatistics(audioObject);
+		if (stats == null) {
+			return I18nUtils.getString("SONG_NEVER_PLAYED");
+		} else {
+			DateTime date = stats.getLastPlayed();
+			// If date is null -> never played
+			if (date == null) {
+				return I18nUtils.getString("SONG_NEVER_PLAYED");
+			} else {
+				return StringUtils.getString("<html>", I18nUtils.getString("LAST_DATE_PLAYED"), ":<br/><center> ", DateTimeFormat.shortDateTime().print(date), "<center></html>");
+			}
+		}
+	}
+
+	/**
+	 * @param webServicesHandler
+	 */
+	public final void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
-    
-    @Override
-    public void cancel() {
-    }
+
+	@Override
+	public void cancel() {
+	}
 
 }

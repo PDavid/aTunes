@@ -51,6 +51,8 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IReviewImportDialog;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
+import net.sourceforge.atunes.model.ITagHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -63,140 +65,160 @@ import org.jdesktop.swingx.JXTreeTable;
  */
 public final class ReviewImportDialog extends AbstractCustomDialog implements IReviewImportDialog {
 
-    private static final long serialVersionUID = 8523236886848649698L;
+	private static final long serialVersionUID = 8523236886848649698L;
 
-    /** The table. */
-    private JXTreeTable treeTable;
+	/** The table. */
+	private JXTreeTable treeTable;
 
-    /** True when user pressed Cancel or closes the window */
-    private boolean dialogCancelled = true;
+	/** True when user pressed Cancel or closes the window */
+	private boolean dialogCancelled = true;
 
-    private IStateRepository stateRepository;
-    
-    private List<File> folders;
-    
-    private List<ILocalAudioObject> filesToLoad;
-    
-    private IDialogFactory dialogFactory;
-    
-    private Patterns patterns;
-    
-    private PatternMatcher patternMatcher;
-    
-    /**
-     * @param patternMatcher
-     */
-    public void setPatternMatcher(PatternMatcher patternMatcher) {
+	private IStateRepository stateRepository;
+
+	private List<File> folders;
+
+	private List<ILocalAudioObject> filesToLoad;
+
+	private IDialogFactory dialogFactory;
+
+	private Patterns patterns;
+
+	private PatternMatcher patternMatcher;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	private ITagHandler tagHandler;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
+	/**
+	 * @param tagHandler
+	 */
+	public void setTagHandler(final ITagHandler tagHandler) {
+		this.tagHandler = tagHandler;
+	}
+
+
+	/**
+	 * @param patternMatcher
+	 */
+	public void setPatternMatcher(final PatternMatcher patternMatcher) {
 		this.patternMatcher = patternMatcher;
 	}
-    
-    /**
-     * @param patterns
-     */
-    public void setPatterns(Patterns patterns) {
+
+	/**
+	 * @param patterns
+	 */
+	public void setPatterns(final Patterns patterns) {
 		this.patterns = patterns;
 	}
-    
-    /**
-     * Instantiates a new ReviewImportDialog
-     * @param frame
-     * @param stateRepository
-     */
-    public ReviewImportDialog(IFrame frame) {
-        super(frame, 800, 600);
-    }
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
+
+	/**
+	 * Instantiates a new ReviewImportDialog
+	 * @param frame
+	 * @param stateRepository
+	 */
+	public ReviewImportDialog(final IFrame frame) {
+		super(frame, 800, 600);
+	}
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
 
-    /**
-     * @param stateRepository
-     */
-    public void setStateRepository(IStateRepository stateRepository) {
+	/**
+	 * @param stateRepository
+	 */
+	public void setStateRepository(final IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
 	}
-    
-    @Override
-    public void initialize() {
-        setTitle(I18nUtils.getString("REVIEW_TAGS"));
-        setContent(getLookAndFeel());
-    }
-    
-    /**
-     * @return tree table
-     */
-    JXTreeTable getTreeTable() {
+
+	@Override
+	public void initialize() {
+		setTitle(I18nUtils.getString("REVIEW_TAGS"));
+		setContent(getLookAndFeel());
+	}
+
+	/**
+	 * @return tree table
+	 */
+	JXTreeTable getTreeTable() {
 		return treeTable;
 	}
-    
-    /**
-     * @return stateRepository
-     */
-    IStateRepository getStateRepository() {
+
+	/**
+	 * @return stateRepository
+	 */
+	IStateRepository getStateRepository() {
 		return stateRepository;
 	}
 
-    /**
-     * Sets the content.
-     */
-    private void setContent(final ILookAndFeel lookAndFeel) {
-        JPanel panel = new JPanel(new GridBagLayout());
-        treeTable = new JXTreeTable();
-        treeTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        treeTable.setRootVisible(false);
-        treeTable.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-        treeTable.getTableHeader().setReorderingAllowed(false);
-        treeTable.setSurrendersFocusOnKeystroke(true);
-        JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-        JTextArea reviewInstructions = new CustomTextArea(I18nUtils.getString("REVIEW_TAGS_INSTRUCTIONS"));
-        reviewInstructions.setEditable(false);
-        reviewInstructions.setLineWrap(true);
-        reviewInstructions.setWrapStyleWord(true);
-        reviewInstructions.setOpaque(false);
-        reviewInstructions.setBorder(BorderFactory.createEmptyBorder());
-        JButton okButton = new JButton(I18nUtils.getString("OK"));
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dialogCancelled = false;
-                setVisible(false);
-            }
-        });
-        JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
-        topPanel.add(reviewInstructions, BorderLayout.CENTER);
+	/**
+	 * Sets the content.
+	 */
+	private void setContent(final ILookAndFeel lookAndFeel) {
+		JPanel panel = new JPanel(new GridBagLayout());
+		treeTable = new JXTreeTable();
+		treeTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		treeTable.setRootVisible(false);
+		treeTable.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+		treeTable.getTableHeader().setReorderingAllowed(false);
+		treeTable.setSurrendersFocusOnKeystroke(true);
+		JPanel topPanel = new JPanel(new BorderLayout(10, 0));
+		JTextArea reviewInstructions = new CustomTextArea(I18nUtils.getString("REVIEW_TAGS_INSTRUCTIONS"));
+		reviewInstructions.setEditable(false);
+		reviewInstructions.setLineWrap(true);
+		reviewInstructions.setWrapStyleWord(true);
+		reviewInstructions.setOpaque(false);
+		reviewInstructions.setBorder(BorderFactory.createEmptyBorder());
+		JButton okButton = new JButton(I18nUtils.getString("OK"));
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				dialogCancelled = false;
+				setVisible(false);
+			}
+		});
+		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
+		cancelButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				setVisible(false);
+			}
+		});
+		topPanel.add(reviewInstructions, BorderLayout.CENTER);
 
-        final JButton fillTagsFromFolderName = new JButton(StringUtils.getString(I18nUtils.getString("FILL_TAGS_FROM_FOLDER_NAME"), "..."));
-        // Disabled as initially there is no row selected
-        fillTagsFromFolderName.setEnabled(false);
-        fillTagsFromFolderName.addActionListener(new FillTagsFromFolderNameActionListener(this, dialogFactory, patterns, patternMatcher));
+		final JButton fillTagsFromFolderName = new JButton(StringUtils.getString(I18nUtils.getString("FILL_TAGS_FROM_FOLDER_NAME"), "..."));
+		// Disabled as initially there is no row selected
+		fillTagsFromFolderName.setEnabled(false);
+		fillTagsFromFolderName.addActionListener(new FillTagsFromFolderNameActionListener(this, dialogFactory, patterns, patternMatcher));
 
-        treeTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                fillTagsFromFolderName.setEnabled(treeTable.getSelectedRowCount() != 0);
-            }
-        });
+		treeTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(final ListSelectionEvent e) {
+				fillTagsFromFolderName.setEnabled(treeTable.getSelectedRowCount() != 0);
+			}
+		});
 
-        arrangePanel(lookAndFeel, panel, topPanel, okButton, cancelButton,
+		arrangePanel(lookAndFeel, panel, topPanel, okButton, cancelButton,
 				fillTagsFromFolderName);
 
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                dialogCancelled = true;
-            }
-        });
-    }
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(final WindowEvent e) {
+				dialogCancelled = true;
+			}
+		});
+	}
 
 	/**
 	 * @param lookAndFeel
@@ -206,77 +228,77 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
 	 * @param cancelButton
 	 * @param fillTagsFromFolderName
 	 */
-	private void arrangePanel(final ILookAndFeel lookAndFeel, JPanel panel,
-			JPanel topPanel, JButton okButton, JButton cancelButton,
+	private void arrangePanel(final ILookAndFeel lookAndFeel, final JPanel panel,
+			final JPanel topPanel, final JButton okButton, final JButton cancelButton,
 			final JButton fillTagsFromFolderName) {
 		GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.anchor = GridBagConstraints.WEST;
-        c.weightx = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(10, 20, 10, 20);
-        panel.add(topPanel, c);
-        c.gridy = 1;
-        c.weighty = 1;
-        panel.add(lookAndFeel.getScrollPane(treeTable), c);
-        c.gridy = 2;
-        c.weightx = 0;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.NONE;
-        panel.add(fillTagsFromFolderName, c);
-        c.gridy = 3;
-        c.anchor = GridBagConstraints.CENTER;
-        JPanel auxPanel = new JPanel();
-        auxPanel.add(okButton);
-        auxPanel.add(cancelButton);
-        panel.add(auxPanel, c);
-        add(panel);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.WEST;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(10, 20, 10, 20);
+		panel.add(topPanel, c);
+		c.gridy = 1;
+		c.weighty = 1;
+		panel.add(lookAndFeel.getScrollPane(treeTable), c);
+		c.gridy = 2;
+		c.weightx = 0;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.NONE;
+		panel.add(fillTagsFromFolderName, c);
+		c.gridy = 3;
+		c.anchor = GridBagConstraints.CENTER;
+		JPanel auxPanel = new JPanel();
+		auxPanel.add(okButton);
+		auxPanel.add(cancelButton);
+		panel.add(auxPanel, c);
+		add(panel);
 	}
 
-    @Override
+	@Override
 	public boolean isDialogCancelled() {
-        return dialogCancelled;
-    }
+		return dialogCancelled;
+	}
 
-    @Override
-    public void setVisible(boolean b) {
-        // as this dialog is modal we must initialize value of dialogCancelled before setting visibility to true
-        if (b) {
-            dialogCancelled = true;
-        }
-        super.setVisible(b);
-        if (!b) {
-        	dispose();
-        }
-    }
-    
-    @Override
-    public void setFilesToLoad(List<ILocalAudioObject> filesToLoad) {
-    	this.filesToLoad = filesToLoad;
-    }
-    
-    @Override
-    public void setFolders(List<File> folders) {
-    	this.folders = folders;
-    }
-    
-    @Override
+	@Override
+	public void setVisible(final boolean b) {
+		// as this dialog is modal we must initialize value of dialogCancelled before setting visibility to true
+		if (b) {
+			dialogCancelled = true;
+		}
+		super.setVisible(b);
+		if (!b) {
+			dispose();
+		}
+	}
+
+	@Override
+	public void setFilesToLoad(final List<ILocalAudioObject> filesToLoad) {
+		this.filesToLoad = filesToLoad;
+	}
+
+	@Override
+	public void setFolders(final List<File> folders) {
+		this.folders = folders;
+	}
+
+	@Override
 	public void showDialog() {
-        treeTable.setTreeTableModel(new ReviewImportTreeTableModel(folders, filesToLoad, treeTable));
-        treeTable.getColumnExt(0).setPreferredWidth(300);
-        ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).setCellEditors();
-        treeTable.expandAll();
-        setVisible(true);
-    }
+		treeTable.setTreeTableModel(new ReviewImportTreeTableModel(folders, filesToLoad, treeTable, new TagAttributesReviewed(unknownObjectChecker, tagHandler)));
+		treeTable.getColumnExt(0).setPreferredWidth(300);
+		((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).setCellEditors();
+		treeTable.expandAll();
+		setVisible(true);
+	}
 
-    @Override
+	@Override
 	public ITagAttributesReviewed getResult() {
-        return ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).getTagAttributesReviewed();
-    }
-    
-    @Override
-    public void hideDialog() {
-    	setVisible(false);
-    }
+		return ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).getTagAttributesReviewed();
+	}
+
+	@Override
+	public void hideDialog() {
+		setVisible(false);
+	}
 }

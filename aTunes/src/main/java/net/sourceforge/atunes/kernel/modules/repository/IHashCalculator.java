@@ -18,30 +18,15 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs.properties;
+package net.sourceforge.atunes.kernel.modules.repository;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
-class AlbumProvider extends AbstractFieldProvider {
-
-	private final IUnknownObjectChecker unknownObjectChecker;
-
+interface IHashCalculator {
 	/**
-	 * @param unknownObjectChecker
+	 * Gets hash for a lao
+	 * @param lao
+	 * @return
 	 */
-	AlbumProvider(final IUnknownObjectChecker unknownObjectChecker) {
-		super();
-		this.unknownObjectChecker = unknownObjectChecker;
-	}
-
-	@Override
-	public String getI18Name() {
-		return "ALBUM";
-	}
-
-	@Override
-	public String getClearValue(final ILocalAudioObject file) {
-		return file.getAlbum(unknownObjectChecker);
-	}
+	int getHash(ILocalAudioObject lao);
 }

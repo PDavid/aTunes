@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILyrics;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
 /**
@@ -32,23 +33,33 @@ import net.sourceforge.atunes.model.IWebServicesHandler;
 public class SetLyricsProcess extends AbstractChangeTagProcess {
 
 	private IWebServicesHandler webServicesHandler;
-	
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
 	/**
 	 * @param webServicesHandler
 	 */
-	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+	public void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
-	
-    @Override
-    protected void changeTag(ILocalAudioObject file) throws IOException {
-        // Check if no lyrics is present and we have enough info for a query
-        if (file.getLyrics().isEmpty() && !file.getArtist().isEmpty() && !file.getTitle().isEmpty()) {
-            ILyrics lyrics = webServicesHandler.getLyrics(file.getArtist(), file.getTitle());
-            String lyricsString = lyrics != null ? lyrics.getLyrics().trim() : "";
-            if (!lyricsString.isEmpty()) {
-                getTagHandler().setLyrics(file, lyricsString);
-            }
-        }
-    }
+
+	@Override
+	protected void changeTag(final ILocalAudioObject file) throws IOException {
+		// Check if no lyrics is present and we have enough info for a query
+		if (file.getLyrics().isEmpty() && !file.getArtist(unknownObjectChecker).isEmpty() && !file.getTitle().isEmpty()) {
+			ILyrics lyrics = webServicesHandler.getLyrics(file.getArtist(unknownObjectChecker), file.getTitle());
+			String lyricsString = lyrics != null ? lyrics.getLyrics().trim() : "";
+			if (!lyricsString.isEmpty()) {
+				getTagHandler().setLyrics(file, lyricsString);
+			}
+		}
+	}
 }

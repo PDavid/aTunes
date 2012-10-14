@@ -47,98 +47,98 @@ import net.sourceforge.atunes.model.RankList;
  */
 public final class StatisticsHandler extends AbstractHandler implements IStatisticsHandler {
 
-    private IStatistics statistics = new Statistics();
-    
-    private StatsDialogController controller;
-    
-    private IStateHandler stateHandler;
-    
-    private IRepositoryHandler repositoryHandler;
-    
-    private ITaskService taskService;
-    
-    private ILookAndFeelManager lookAndFeelManager;
-    
+	private IStatistics statistics = new Statistics();
+
+	private StatsDialogController controller;
+
+	private IStateHandler stateHandler;
+
+	private IRepositoryHandler repositoryHandler;
+
+	private ITaskService taskService;
+
+	private ILookAndFeelManager lookAndFeelManager;
+
 	private IUnknownObjectChecker unknownObjectChecker;
 
 	private IDialogFactory dialogFactory;
-	
+
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-	
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
-    
-    /**
-     * @param taskService
-     */
-    public void setTaskService(ITaskService taskService) {
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
 		this.taskService = taskService;
 	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
-    
-    /**
-     * @param stateHandler
-     */
-    public void setStateHandler(IStateHandler stateHandler) {
+
+	/**
+	 * @param stateHandler
+	 */
+	public void setStateHandler(final IStateHandler stateHandler) {
 		this.stateHandler = stateHandler;
 	}
 
-    /**
-     * Fill stats.
-     * 
-     * @param repository
-     *            the repository
-     * @param audioObject
-     *            the audio file
-     */
-    private void fillStats(IAudioObject audioObject) {
-        String songPath = audioObject.getUrl();
-        if (audioObjectInRepository(songPath)) {
-            updateStatistics(audioObject, songPath);
-        }
-    }
+	/**
+	 * Fill stats.
+	 * 
+	 * @param repository
+	 *            the repository
+	 * @param audioObject
+	 *            the audio file
+	 */
+	private void fillStats(final IAudioObject audioObject) {
+		String songPath = audioObject.getUrl();
+		if (audioObjectInRepository(songPath)) {
+			updateStatistics(audioObject, songPath);
+		}
+	}
 
 	/**
 	 * Updates statistics for audio object
 	 * @param audioObject
 	 * @param songPath
 	 */
-	private void updateStatistics(IAudioObject audioObject, String songPath) {
+	private void updateStatistics(final IAudioObject audioObject, final String songPath) {
 		statistics.setTotalPlays(statistics.getTotalPlays() + 1);
 
 		IAudioObjectStatistics stats = getOrCreateAudioObjectStatistics(songPath);
 		stats.increaseStatistics();
-		
+
 		updateAudioObjectRanking(songPath);
 
-		String artist = audioObject.getArtist();
+		String artist = audioObject.getArtist(unknownObjectChecker);
 		IArtist a = repositoryHandler.getArtist(artist);
 
 		// Unknown artist -> don't fill artist stats
 		if (a == null || unknownObjectChecker.isUnknownArtist(a.getName())) {
-		    return;
+			return;
 		}
 
 		updateArtistRanking(a);
@@ -150,12 +150,12 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 	 * @param songPath
 	 * @return
 	 */
-	private IAudioObjectStatistics getOrCreateAudioObjectStatistics(String songPath) {
+	private IAudioObjectStatistics getOrCreateAudioObjectStatistics(final String songPath) {
 		IAudioObjectStatistics stats = statistics.getAudioFilesStats().get(songPath);
 		if (stats == null) {
-		    stats = new AudioObjectStats();
-		    statistics.getAudioFilesStats().put(songPath, stats);
-		    statistics.setDifferentAudioFilesPlayed(statistics.getDifferentAudioFilesPlayed() + 1);
+			stats = new AudioObjectStats();
+			statistics.getAudioFilesStats().put(songPath, stats);
+			statistics.setDifferentAudioFilesPlayed(statistics.getDifferentAudioFilesPlayed() + 1);
 		}
 		return stats;
 	}
@@ -164,7 +164,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 	 * Updates audio object ranking
 	 * @param songPath
 	 */
-	private void updateAudioObjectRanking(String songPath) {
+	private void updateAudioObjectRanking(final String songPath) {
 		statistics.getAudioFilesRanking().addItem(songPath);
 	}
 
@@ -174,14 +174,14 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 	 * @param artist
 	 * @param a
 	 */
-	private void updateAlbumRanking(IAudioObject audioObject, String artist, IArtist a) {
-		String album = audioObject.getAlbum();
+	private void updateAlbumRanking(final IAudioObject audioObject, final String artist, final IArtist a) {
+		String album = audioObject.getAlbum(unknownObjectChecker);
 
 		IAlbum alb = a.getAlbum(album);
 
 		// Unknown album -> don't fill album stats
 		if (alb == null || unknownObjectChecker.isUnknownAlbum(alb.getName())) {
-		    return;
+			return;
 		}
 
 		IStatisticsAlbum statisticsAlbum = new StatisticsAlbum(artist, album);
@@ -192,7 +192,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 	 * Updates artist ranking
 	 * @param a
 	 */
-	private void updateArtistRanking(IArtist a) {
+	private void updateArtistRanking(final IArtist a) {
 		statistics.getArtistsRanking().addItem(a.getName());
 	}
 
@@ -201,165 +201,165 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 	 * @param audioObjectPath
 	 * @return
 	 */
-	private boolean audioObjectInRepository(String audioObjectPath) {
+	private boolean audioObjectInRepository(final String audioObjectPath) {
 		return repositoryHandler.getFile(audioObjectPath) != null;
 	}
 
-    @Override
-    public int getArtistTimesPlayed(IArtist artist) {
-        if (statistics.getArtistsRanking().getCount(artist.getName()) != null) {
-            return statistics.getArtistsRanking().getCount(artist.getName());
-        }
-        return 0;
-    }
+	@Override
+	public int getArtistTimesPlayed(final IArtist artist) {
+		if (statistics.getArtistsRanking().getCount(artist.getName()) != null) {
+			return statistics.getArtistsRanking().getCount(artist.getName());
+		}
+		return 0;
+	}
 
-    @Override
-    public int getDifferentAudioObjectsPlayed() {
-        return statistics.getDifferentAudioFilesPlayed();
-    }
+	@Override
+	public int getDifferentAudioObjectsPlayed() {
+		return statistics.getDifferentAudioFilesPlayed();
+	}
 
-    @Override
-    public List<IAlbum> getMostPlayedAlbums(int n) {
-        List<IStatisticsAlbum> statisticsAlbums = statistics.getAlbumsRanking().getNFirstElements(n);
-        List<IAlbum> albums = new ArrayList<IAlbum>();
-        for (IStatisticsAlbum statisticAlbum : statisticsAlbums) {
-        	IArtist artist = repositoryHandler.getArtist(statisticAlbum.getArtist());
-        	if (artist != null) {
-        		IAlbum album = artist.getAlbum(statisticAlbum.getAlbum());
-        		if (album != null) {
-        			albums.add(album);
-        		}
-        	}
-        }
-        return albums;
-    }
+	@Override
+	public List<IAlbum> getMostPlayedAlbums(final int n) {
+		List<IStatisticsAlbum> statisticsAlbums = statistics.getAlbumsRanking().getNFirstElements(n);
+		List<IAlbum> albums = new ArrayList<IAlbum>();
+		for (IStatisticsAlbum statisticAlbum : statisticsAlbums) {
+			IArtist artist = repositoryHandler.getArtist(statisticAlbum.getArtist());
+			if (artist != null) {
+				IAlbum album = artist.getAlbum(statisticAlbum.getAlbum());
+				if (album != null) {
+					albums.add(album);
+				}
+			}
+		}
+		return albums;
+	}
 
-    @Override
-    public List<Integer> getMostPlayedAlbumsCount(int n) {
-        return statistics.getAlbumsRanking().getNFirstElementCounts(n);
-    }
+	@Override
+	public List<Integer> getMostPlayedAlbumsCount(final int n) {
+		return statistics.getAlbumsRanking().getNFirstElementCounts(n);
+	}
 
-    @Override
-    public List<IArtist> getMostPlayedArtists(int n) {
-        List<String> artistsNames = statistics.getArtistsRanking().getNFirstElements(n);
-        List<IArtist> artists = new ArrayList<IArtist>();
-        for (String artistName : artistsNames) {
-        	artists.add(repositoryHandler.getArtist(artistName));
-        }
-        return artists;
-    }
+	@Override
+	public List<IArtist> getMostPlayedArtists(final int n) {
+		List<String> artistsNames = statistics.getArtistsRanking().getNFirstElements(n);
+		List<IArtist> artists = new ArrayList<IArtist>();
+		for (String artistName : artistsNames) {
+			artists.add(repositoryHandler.getArtist(artistName));
+		}
+		return artists;
+	}
 
-    @Override
-    public List<Integer> getMostPlayedArtistsCount(int n) {
-        return statistics.getArtistsRanking().getNFirstElementCounts(n);
-    }
+	@Override
+	public List<Integer> getMostPlayedArtistsCount(final int n) {
+		return statistics.getArtistsRanking().getNFirstElementCounts(n);
+	}
 
-    @Override
-    public List<IAudioObject> getMostPlayedAudioObjects(int n) {
-        List<String> audioFilesUrls = statistics.getAudioFilesRanking().getNFirstElements(n);
-        List<IAudioObject> audioFiles = new ArrayList<IAudioObject>();
-        for (String audioFileUrl : audioFilesUrls) {
-        	audioFiles.add(repositoryHandler.getFileIfLoaded(audioFileUrl));
-        }
-        return audioFiles;
-    }
+	@Override
+	public List<IAudioObject> getMostPlayedAudioObjects(final int n) {
+		List<String> audioFilesUrls = statistics.getAudioFilesRanking().getNFirstElements(n);
+		List<IAudioObject> audioFiles = new ArrayList<IAudioObject>();
+		for (String audioFileUrl : audioFilesUrls) {
+			audioFiles.add(repositoryHandler.getFileIfLoaded(audioFileUrl));
+		}
+		return audioFiles;
+	}
 
-    /**
-     * @return
-     */
-    IStatistics getStatistics() {
+	/**
+	 * @return
+	 */
+	IStatistics getStatistics() {
 		return statistics;
 	}
-    
-    /**
-     * @param statistics
-     */
-    void setStatistics(IStatistics statistics) {
+
+	/**
+	 * @param statistics
+	 */
+	void setStatistics(final IStatistics statistics) {
 		this.statistics = statistics;
 	}
-    
-    @Override
-    public List<Integer> getMostPlayedAudioObjectsCount(int n) {
-        return statistics.getAudioFilesRanking().getNFirstElementCounts(n);
-    }
 
-    @Override
-    public IAudioObjectStatistics getAudioObjectStatistics(IAudioObject audioObject) {
-        return statistics.getStatsForAudioFile(audioObject);
-    }
+	@Override
+	public List<Integer> getMostPlayedAudioObjectsCount(final int n) {
+		return statistics.getAudioFilesRanking().getNFirstElementCounts(n);
+	}
 
-    @Override
-    public int getTotalAudioObjectsPlayed() {
-        return statistics.getTotalPlays();
-    }
+	@Override
+	public IAudioObjectStatistics getAudioObjectStatistics(final IAudioObject audioObject) {
+		return statistics.getStatsForAudioFile(audioObject);
+	}
 
-    @Override
-    public List<IAudioObject> getUnplayedAudioObjects() {
-        List<IAudioObject> unplayedAudioFiles = new ArrayList<IAudioObject>(repositoryHandler.getAudioFilesList());
-        unplayedAudioFiles.removeAll(statistics.getAudioFilesRanking().getNFirstElements(-1));
-        return unplayedAudioFiles;
-    }
+	@Override
+	public int getTotalAudioObjectsPlayed() {
+		return statistics.getTotalPlays();
+	}
 
-    @Override
-    public void updateAudioObjectStatistics(IAudioObject audioObject) {
-    	if (audioObject != null) {
-    		fillStats(audioObject);
-    		// Store stats
-    		storeStatistics();
-    		// Update dialog if visible
-    		if (controller != null && controller.getComponentControlled().isVisible()) {
-    			controller.updateStats();
-    		}
-    	}
-    }
+	@Override
+	public List<IAudioObject> getUnplayedAudioObjects() {
+		List<IAudioObject> unplayedAudioFiles = new ArrayList<IAudioObject>(repositoryHandler.getAudioFilesList());
+		unplayedAudioFiles.removeAll(statistics.getAudioFilesRanking().getNFirstElements(-1));
+		return unplayedAudioFiles;
+	}
 
-    @Override
-    public void replaceArtist(String oldArtist, String newArtist) {
-        // Update artist ranking
-        statistics.getArtistsRanking().replaceItem(oldArtist, newArtist);
+	@Override
+	public void updateAudioObjectStatistics(final IAudioObject audioObject) {
+		if (audioObject != null) {
+			fillStats(audioObject);
+			// Store stats
+			storeStatistics();
+			// Update dialog if visible
+			if (controller != null && controller.getComponentControlled().isVisible()) {
+				controller.updateStats();
+			}
+		}
+	}
 
-        // Update album ranking
-        RankList<IStatisticsAlbum> albumsRanking = statistics.getAlbumsRanking();
-        for (IStatisticsAlbum album : albumsRanking.getOrder()) {
-            if (album.getArtist().equals(oldArtist)) {
-                statistics.getAlbumsRanking().replaceItem(album, new StatisticsAlbum(newArtist, album.getAlbum()));
-            }
-        }
-        storeStatistics();
-    }
+	@Override
+	public void replaceArtist(final String oldArtist, final String newArtist) {
+		// Update artist ranking
+		statistics.getArtistsRanking().replaceItem(oldArtist, newArtist);
 
-    @Override
-    public void replaceAlbum(String artist, String oldAlbum, String newAlbum) {
-        RankList<IStatisticsAlbum> albumsRanking = statistics.getAlbumsRanking();
-        for (IStatisticsAlbum album : albumsRanking.getOrder()) {
-            if (album.getArtist().equals(artist) && album.getAlbum().equals(oldAlbum)) {
-                statistics.getAlbumsRanking().replaceItem(album, new StatisticsAlbum(artist, newAlbum));
-            }
-        }
-        storeStatistics();
-    }
+		// Update album ranking
+		RankList<IStatisticsAlbum> albumsRanking = statistics.getAlbumsRanking();
+		for (IStatisticsAlbum album : albumsRanking.getOrder()) {
+			if (album.getArtist().equals(oldArtist)) {
+				statistics.getAlbumsRanking().replaceItem(album, new StatisticsAlbum(newArtist, album.getAlbum()));
+			}
+		}
+		storeStatistics();
+	}
 
-    @Override
-    public void updateFileName(ILocalAudioObject audioFile, String absolutePath, String newAbsolutePath) {
-        statistics.getAudioFilesRanking().replaceItem(absolutePath, newAbsolutePath);
-        statistics.getAudioFilesStats().put(newAbsolutePath, statistics.getAudioFilesStats().get(absolutePath));
-        statistics.getAudioFilesStats().remove(absolutePath);
-        storeStatistics();
-    }
-    
-    
-    @Override
-    public void showStatistics() {
+	@Override
+	public void replaceAlbum(final String artist, final String oldAlbum, final String newAlbum) {
+		RankList<IStatisticsAlbum> albumsRanking = statistics.getAlbumsRanking();
+		for (IStatisticsAlbum album : albumsRanking.getOrder()) {
+			if (album.getArtist().equals(artist) && album.getAlbum().equals(oldAlbum)) {
+				statistics.getAlbumsRanking().replaceItem(album, new StatisticsAlbum(artist, newAlbum));
+			}
+		}
+		storeStatistics();
+	}
+
+	@Override
+	public void updateFileName(final ILocalAudioObject audioFile, final String absolutePath, final String newAbsolutePath) {
+		statistics.getAudioFilesRanking().replaceItem(absolutePath, newAbsolutePath);
+		statistics.getAudioFilesStats().put(newAbsolutePath, statistics.getAudioFilesStats().get(absolutePath));
+		statistics.getAudioFilesStats().remove(absolutePath);
+		storeStatistics();
+	}
+
+
+	@Override
+	public void showStatistics() {
 		if (controller == null) {
-			controller = new StatsDialogController(dialogFactory.newDialog(StatsDialog.class), this, lookAndFeelManager, repositoryHandler); 
+			controller = new StatsDialogController(dialogFactory.newDialog(StatsDialog.class), this, lookAndFeelManager, repositoryHandler, unknownObjectChecker);
 		}
 		controller.showStats();
 	}
-    
-    /**
-     * Stores statistics
-     */
-    private void storeStatistics() {
-    	new StoreStatistics(taskService, stateHandler, this).storeStatistics();
-    }
+
+	/**
+	 * Stores statistics
+	 */
+	private void storeStatistics() {
+		new StoreStatistics(taskService, stateHandler, this).storeStatistics();
+	}
 }

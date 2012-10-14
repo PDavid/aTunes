@@ -47,22 +47,22 @@ public class AudioObjectDuplicateFinder implements IAudioObjectDuplicateFinder {
 	 * 
 	 */
 	private static final long serialVersionUID = -3725777266546165273L;
-	
+
 	private IUnknownObjectChecker unknownObjectChecker;
-	
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	@Override
-	public List<IAudioObject> findDuplicates(List<? extends IAudioObject> audioObjects) {
+	public List<IAudioObject> findDuplicates(final List<? extends IAudioObject> audioObjects) {
 		if (CollectionUtils.isEmpty(audioObjects)) {
 			return Collections.emptyList();
 		}
-		
+
 		List<IAudioObject> duplicated = new ArrayList<IAudioObject>();
 		Set<Integer> hashSet = new HashSet<Integer>();
 		for (IAudioObject ao : audioObjects) {
@@ -75,11 +75,11 @@ public class AudioObjectDuplicateFinder implements IAudioObjectDuplicateFinder {
 				}
 			}
 		}
-		
+
 		return duplicated;
 	}
 
-	private Integer getHashForAudioObject(IAudioObject ao) {
+	private Integer getHashForAudioObject(final IAudioObject ao) {
 		if (ao instanceof ILocalAudioObject) {
 			return getHashForLocalAudioObject((ILocalAudioObject)ao);
 		} else if (ao instanceof IRadio) {
@@ -91,24 +91,24 @@ public class AudioObjectDuplicateFinder implements IAudioObjectDuplicateFinder {
 		}
 	}
 
-	private Integer getHashForPodcastFeedEntry(IPodcastFeedEntry ao) {
+	private Integer getHashForPodcastFeedEntry(final IPodcastFeedEntry ao) {
 		if (StringUtils.isEmpty(ao.getTitle()) || StringUtils.isEmpty(ao.getUrl())) {
 			return null;
 		}
 		return "PODCAST".hashCode() + ao.getTitle().toLowerCase().hashCode() * ao.getUrl().toLowerCase().hashCode();
 	}
 
-	private Integer getHashForRadio(IRadio ao) {
+	private Integer getHashForRadio(final IRadio ao) {
 		if (StringUtils.isEmpty(ao.getUrl())) {
 			return null;
 		}
 		return "RADIO".hashCode() + ao.getUrl().toLowerCase().hashCode();
 	}
 
-	private Integer getHashForLocalAudioObject(ILocalAudioObject ao) {
-		if (StringUtils.isEmpty(ao.getTitle()) || StringUtils.isEmpty(ao.getArtist()) || unknownObjectChecker.isUnknownArtist(ao.getArtist())) {
+	private Integer getHashForLocalAudioObject(final ILocalAudioObject ao) {
+		if (StringUtils.isEmpty(ao.getTitle()) || StringUtils.isEmpty(ao.getArtist(unknownObjectChecker)) || unknownObjectChecker.isUnknownArtist(ao.getArtist(unknownObjectChecker))) {
 			return null;
 		}
-		return "LOCAL".hashCode() + ao.getTitle().toLowerCase().hashCode() * ao.getArtist().toLowerCase().hashCode(); 
+		return "LOCAL".hashCode() + ao.getTitle().toLowerCase().hashCode() * ao.getArtist(unknownObjectChecker).toLowerCase().hashCode();
 	}
 }

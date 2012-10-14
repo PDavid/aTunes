@@ -29,7 +29,6 @@ import java.util.Map;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -40,268 +39,253 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class Folder implements IFolder {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7175829016580923961L;
 
 	/** Name of the folder. */
-    String name;
+	String name;
 
-    /** List of files in this folder. */
-    List<ILocalAudioObject> files;
+	/** List of files in this folder. */
+	List<ILocalAudioObject> files;
 
-    /** List of folders in this folder, indexed by name. */
-    Map<String, IFolder> folders;
+	/** List of folders in this folder, indexed by name. */
+	Map<String, IFolder> folders;
 
-    /** Folder that contains this folder. */
-    IFolder parentFolder;
+	/** Folder that contains this folder. */
+	IFolder parentFolder;
 
-    /**
+	/**
 	 * Default constructor for serialization
 	 */
 	Folder() {
 	}
 
-    /**
-     * Constructor.
-     * 
-     * @param name
-     *            the name
-     */
-    public Folder(String name) {
-        this.name = name;
-    }
-    
-    /**
-     * Adds a file to this folder.
-     * 
-     * @param file
-     *            the file
-     */
-    @Override
-	public void addAudioFile(ILocalAudioObject file) {
-        getFiles().add(file);
-    }
+	/**
+	 * Constructor.
+	 * 
+	 * @param name
+	 *            the name
+	 */
+	public Folder(final String name) {
+		this.name = name;
+	}
 
-    /**
-     * Adds a folder as child of this folder.
-     * 
-     * @param f
-     *            the f
-     */
-    @Override
-	public void addFolder(IFolder f) {
-        if (getFolders().containsKey(f.getName())) {
-            getFolders().get(f.getName()).getFolders().putAll(f.getFolders());
-        } else {
-        	getFolders().put(f.getName(), f);
-            f.setParentFolder(this);
-        }
-    }
+	/**
+	 * Adds a file to this folder.
+	 * 
+	 * @param file
+	 *            the file
+	 */
+	@Override
+	public void addAudioFile(final ILocalAudioObject file) {
+		getFiles().add(file);
+	}
 
-    /**
-     * Returns a list of songs in this folder and in children folders.
-     * 
-     * @return the audio objects
-     */
-    @Override
-    public List<ILocalAudioObject> getAudioObjects() {
-        List<ILocalAudioObject> result = null;
-        for (IFolder f : getFolders().values()) {
-        	if (result == null) {
-        		result = f.getAudioObjects();
-        	} else {
-        		result.addAll(f.getAudioObjects());
-        	}
-        }
-        if (result == null) {
-        	result = new ArrayList<ILocalAudioObject>();
-        }
-       	result.addAll(getFiles());
-        return result;
-    }
+	/**
+	 * Adds a folder as child of this folder.
+	 * 
+	 * @param f
+	 *            the f
+	 */
+	@Override
+	public void addFolder(final IFolder f) {
+		if (getFolders().containsKey(f.getName())) {
+			getFolders().get(f.getName()).getFolders().putAll(f.getFolders());
+		} else {
+			getFolders().put(f.getName(), f);
+			f.setParentFolder(this);
+		}
+	}
 
-    /**
-     * Returns files in this folder.
-     * 
-     * @return the files
-     */
-    private List<ILocalAudioObject> getFiles() {
-    	if (files == null) {
-    		files = new ArrayList<ILocalAudioObject>();
-    	}
-        return files;
-    }
+	/**
+	 * Returns a list of songs in this folder and in children folders.
+	 * 
+	 * @return the audio objects
+	 */
+	@Override
+	public List<ILocalAudioObject> getAudioObjects() {
+		List<ILocalAudioObject> result = null;
+		for (IFolder f : getFolders().values()) {
+			if (result == null) {
+				result = f.getAudioObjects();
+			} else {
+				result.addAll(f.getAudioObjects());
+			}
+		}
+		if (result == null) {
+			result = new ArrayList<ILocalAudioObject>();
+		}
+		result.addAll(getFiles());
+		return result;
+	}
 
-    /**
-     * Returns a child folder given a folder name.
-     * 
-     * @param folderName
-     *            the folder name
-     * 
-     * @return the folder
-     */
-    @Override
-	public IFolder getFolder(String folderName) {
-        return getFolders().get(folderName);
-    }
+	/**
+	 * Returns files in this folder.
+	 * 
+	 * @return the files
+	 */
+	private List<ILocalAudioObject> getFiles() {
+		if (files == null) {
+			files = new ArrayList<ILocalAudioObject>();
+		}
+		return files;
+	}
 
-    /**
-     * Returns all children folders.
-     * 
-     * @return the folders
-     */
-    @Override
+	/**
+	 * Returns a child folder given a folder name.
+	 * 
+	 * @param folderName
+	 *            the folder name
+	 * 
+	 * @return the folder
+	 */
+	@Override
+	public IFolder getFolder(final String folderName) {
+		return getFolders().get(folderName);
+	}
+
+	/**
+	 * Returns all children folders.
+	 * 
+	 * @return the folders
+	 */
+	@Override
 	public Map<String, IFolder> getFolders() {
-    	if (folders == null) {
-    		folders = new HashMap<String, IFolder>();
-    	}
-        return folders;
-    }
+		if (folders == null) {
+			folders = new HashMap<String, IFolder>();
+		}
+		return folders;
+	}
 
-    /**
-     * Returns the name of this folder.
-     * 
-     * @return the name
-     */
-    @Override
+	/**
+	 * Returns the name of this folder.
+	 * 
+	 * @return the name
+	 */
+	@Override
 	public String getName() {
-        return name;
-    }
+		return name;
+	}
 
-    /**
-     * Gets the parent folder.
-     * 
-     * @return the parentFolder
-     */
-    @Override
+	/**
+	 * Gets the parent folder.
+	 * 
+	 * @return the parentFolder
+	 */
+	@Override
 	public IFolder getParentFolder() {
-        return parentFolder;
-    }
+		return parentFolder;
+	}
 
-    /**
-     * Returns true if folder is empty (contains neither files nor folders).
-     * 
-     * @return true, if checks if is empty
-     */
-    @Override
+	/**
+	 * Returns true if folder is empty (contains neither files nor folders).
+	 * 
+	 * @return true, if checks if is empty
+	 */
+	@Override
 	public boolean isEmpty() {
-        return getFiles().isEmpty() && getFolders().isEmpty();
-    }
+		return getFiles().isEmpty() && getFolders().isEmpty();
+	}
 
-    /**
-     * Removes a file from this folder
-     * 
-     * @param file
-     *            the file
-     */
-    @Override
-	public void removeAudioFile(ILocalAudioObject file) {
-        getFiles().remove(file);
-    }
+	/**
+	 * Removes a file from this folder
+	 * 
+	 * @param file
+	 *            the file
+	 */
+	@Override
+	public void removeAudioFile(final ILocalAudioObject file) {
+		getFiles().remove(file);
+	}
 
-    /**
-     * Removes a folder from this folder.
-     * 
-     * @param f
-     *            the f
-     */
-    @Override
-	public void removeFolder(IFolder f) {
-    	getFolders().remove(f.getName());
-    }
+	/**
+	 * Removes a folder from this folder.
+	 * 
+	 * @param f
+	 *            the f
+	 */
+	@Override
+	public void removeFolder(final IFolder f) {
+		getFolders().remove(f.getName());
+	}
 
-    /**
-     * Sets the parent folder.
-     * 
-     * @param parentFolder
-     *            the parentFolder to set
-     */
-    @Override
-    public void setParentFolder(IFolder parentFolder) {
-        this.parentFolder = parentFolder;
-    }
+	/**
+	 * Sets the parent folder.
+	 * 
+	 * @param parentFolder
+	 *            the parentFolder to set
+	 */
+	@Override
+	public void setParentFolder(final IFolder parentFolder) {
+		this.parentFolder = parentFolder;
+	}
 
-    /**
-     * String representation.
-     * 
-     * @return the string
-     */
-    @Override
-    public String toString() {
-        return name;
-    }
+	/**
+	 * String representation.
+	 * 
+	 * @return the string
+	 */
+	@Override
+	public String toString() {
+		return name;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Folder)) {
-            return false;
-        }
-        Folder folder = (Folder) o;
-        // Two folders are equal if have the same name and the same parent
-        if (folder.parentFolder != null && parentFolder != null) {
-            return folder.name.equals(name) && folder.parentFolder.equals(parentFolder);
-        } else {
-            if (folder.parentFolder == null && parentFolder == null) {
-                return folder.name.equals(name);
-            } else {
-                return false;
-            }
-        }
-    }
+	@Override
+	public boolean equals(final Object o) {
+		if (!(o instanceof Folder)) {
+			return false;
+		}
+		Folder folder = (Folder) o;
+		// Two folders are equal if have the same name and the same parent
+		if (folder.parentFolder != null && parentFolder != null) {
+			return folder.name.equals(name) && folder.parentFolder.equals(parentFolder);
+		} else {
+			if (folder.parentFolder == null && parentFolder == null) {
+				return folder.name.equals(name);
+			} else {
+				return false;
+			}
+		}
+	}
 
-    @Override
-    public int hashCode() {
-        if (parentFolder == null) {
-            return name.hashCode();
-        } else {
-            return (name + parentFolder).hashCode();
-        }
-    }
+	@Override
+	public int hashCode() {
+		if (parentFolder == null) {
+			return name.hashCode();
+		} else {
+			return (name + parentFolder).hashCode();
+		}
+	}
 
-    /**
-     * Returns the path of this folder
-     * 
-     * @param osManager
-     * @return
-     */
-    @Override
-	public File getFolderPath(IOSManager osManager) {
-        String path = name;
-        IFolder parent = this.parentFolder;
-        while (parent != null) {
-            path = StringUtils.getString(parent.getName(), osManager.getFileSeparator(), path);
-            parent = parent.getParentFolder();
-        }
-        return new File(path);
-    }
+	/**
+	 * Returns the path of this folder
+	 * 
+	 * @param osManager
+	 * @return
+	 */
+	@Override
+	public File getFolderPath(final IOSManager osManager) {
+		String path = name;
+		IFolder parent = this.parentFolder;
+		while (parent != null) {
+			path = StringUtils.getString(parent.getName(), osManager.getFileSeparator(), path);
+			parent = parent.getParentFolder();
+		}
+		return new File(path);
+	}
 
-    @Override
-    public String getTooltip() {
-        int songs = getAudioObjects().size();
-        return StringUtils.getString(getName(), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
-    }
-
-    @Override
-    public boolean isExtendedTooltipSupported() {
-        return true;
-    }
-
-    @Override
-    public boolean isExtendedTooltipImageSupported() {
-        return false;
-    }
-    
 	/**
 	 * Returns number of audio object
 	 * @return
 	 */
+	@Override
 	public int size() {
 		int size = getFiles().size();
-        for (IFolder f : getFolders().values()) {
-        	size = size + f.size();
-        }       	
+		for (IFolder f : getFolders().values()) {
+			size = size + f.size();
+		}
 		return size;
 	}
 }

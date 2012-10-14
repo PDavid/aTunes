@@ -127,14 +127,14 @@ final class RepositoryFiller {
 	private void addToArtistStructure(final ILocalAudioObject audioFile) {
 		String artist = null;
 		if (ArtistViewMode.ARTIST.equals(stateNavigation.getArtistViewMode())) {
-			artist = audioFile.getArtist();
+			artist = audioFile.getArtist(unknownObjectChecker);
 		} else if (ArtistViewMode.ARTIST_OF_ALBUM.equals(stateNavigation.getArtistViewMode())) {
-			artist = audioFile.getAlbumArtist();
+			artist = audioFile.getAlbumArtist(unknownObjectChecker);
 		} else {
-			artist = audioFile.getAlbumArtistOrArtist();
+			artist = audioFile.getAlbumArtistOrArtist(unknownObjectChecker);
 		}
 
-		String album = audioFile.getAlbum();
+		String album = audioFile.getAlbum(unknownObjectChecker);
 
 		// Create artist object if needed
 		IArtist artistObject = repository.getArtist(artist);
@@ -160,7 +160,7 @@ final class RepositoryFiller {
 	 *            the audio file
 	 */
 	private void addToGenreStructure(final ILocalAudioObject audioFile) {
-		String genre = audioFile.getGenre();
+		String genre = audioFile.getGenre(unknownObjectChecker);
 		IGenre genreObject = repository.getGenre(genre);
 		if (genreObject == null) {
 			genreObject = repository.putGenre(new Genre(genre));
@@ -180,7 +180,7 @@ final class RepositoryFiller {
 		IYear yearObject = repository.getYear(year);
 		if (yearObject == null) {
 			yearObject = new Year(year);
-			repository.putYear(yearObject);
+			repository.putYear(yearObject, unknownObjectChecker);
 		}
 
 		yearObject.addAudioObject(audioFile);
@@ -344,7 +344,7 @@ final class RepositoryFiller {
 			y.removeAudioObject(file);
 
 			if (y.size() <= 1) {
-				repository.removeYear(y);
+				repository.removeYear(y, unknownObjectChecker);
 			}
 		}
 	}

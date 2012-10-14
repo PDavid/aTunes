@@ -43,89 +43,89 @@ import net.sourceforge.atunes.utils.ImageUtils;
  */
 public class ArtistAlbumListImagesDataSource implements IContextInformationSource {
 
-    private IWebServicesHandler webServicesHandler;
-    
-    private IAudioObject audioObject;
-    
-    private IAlbumListInfo albumList;
-    
-    private Map<IAlbumInfo, ImageIcon> covers; 
-    
-    private IUnknownObjectChecker unknownObjectChecker;
-    
-    /**
-     * @param unknownObjectChecker
-     */
-    public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	private IWebServicesHandler webServicesHandler;
+
+	private IAudioObject audioObject;
+
+	private IAlbumListInfo albumList;
+
+	private Map<IAlbumInfo, ImageIcon> covers;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
-    
-    @Override
-    public void getData(IAudioObject audioObject) {
-    	this.audioObject = audioObject;
-        this.albumList = getAlbumListData(audioObject);
-        this.covers = new HashMap<IAlbumInfo, ImageIcon>();
-        if (albumList != null && !albumList.getAlbums().isEmpty()) {
-            for (IAlbumInfo album : albumList.getAlbums()) {
-            	ImageIcon albumImage = getAlbumImageData(album);
-                covers.put(album, ImageUtils.resize(albumImage, Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
-            }
-        }
-    }
-    
-    /**
-     * @return
-     */
-    public IAlbumListInfo getAlbumList() {
-		return albumList;
-	}
-    
-    /**
-     * @return
-     */
-    public Map<IAlbumInfo, ImageIcon> getCovers() {
-		return covers;
-	}
-    
-    /**
-     * Return album list for artist
-     * 
-     * @param audioObject
-     * @return
-     */
-    private IAlbumListInfo getAlbumListData(IAudioObject audioObject) {
-        if (!unknownObjectChecker.isUnknownArtist(audioObject.getArtist())) {
-            return webServicesHandler.getAlbumList(audioObject.getArtist());
-        }
-        return null;
-    }
 
-    /**
-     * Returns image for album
-     * 
-     * @param album
-     * @return
-     */
-    private ImageIcon getAlbumImageData(IAlbumInfo album) {
-        return webServicesHandler.getAlbumThumbImage(album);
-    }
-    
-    /**
-     * @return
-     */
-    public IAudioObject getAudioObject() {
-		return audioObject;
+	@Override
+	public void getData(final IAudioObject audioObject) {
+		this.audioObject = audioObject;
+		this.albumList = getAlbumListData(audioObject);
+		this.covers = new HashMap<IAlbumInfo, ImageIcon>();
+		if (albumList != null && !albumList.getAlbums().isEmpty()) {
+			for (IAlbumInfo album : albumList.getAlbums()) {
+				ImageIcon albumImage = getAlbumImageData(album);
+				covers.put(album, ImageUtils.resize(albumImage, Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
+			}
+		}
 	}
-    
-    /**
-     * @param webServicesHandler
-     */
-    public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
-		this.webServicesHandler = webServicesHandler;
-	}
-    
-    @Override
-    public void cancel() {
-    }
+
+	/**
+	 * @return
+	 */
+	 public IAlbumListInfo getAlbumList() {
+		return albumList;
+	 }
+
+	 /**
+	  * @return
+	  */
+	 public Map<IAlbumInfo, ImageIcon> getCovers() {
+		 return covers;
+	 }
+
+	 /**
+	  * Return album list for artist
+	  * 
+	  * @param audioObject
+	  * @return
+	  */
+	 private IAlbumListInfo getAlbumListData(final IAudioObject audioObject) {
+		 if (!unknownObjectChecker.isUnknownArtist(audioObject.getArtist(unknownObjectChecker))) {
+			 return webServicesHandler.getAlbumList(audioObject.getArtist(unknownObjectChecker));
+		 }
+		 return null;
+	 }
+
+	 /**
+	  * Returns image for album
+	  * 
+	  * @param album
+	  * @return
+	  */
+	 private ImageIcon getAlbumImageData(final IAlbumInfo album) {
+		 return webServicesHandler.getAlbumThumbImage(album);
+	 }
+
+	 /**
+	  * @return
+	  */
+	 public IAudioObject getAudioObject() {
+		 return audioObject;
+	 }
+
+	 /**
+	  * @param webServicesHandler
+	  */
+	 public final void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
+		 this.webServicesHandler = webServicesHandler;
+	 }
+
+	 @Override
+	 public void cancel() {
+	 }
 
 }

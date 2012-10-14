@@ -40,166 +40,166 @@ import org.w3c.dom.Document;
  */
 public final class YoutubeService {
 
-    /**
-     * Query string wildcard
-     */
-    private static final String QUERY_STRING_WILDCARD = "%QUERY%";
+	/**
+	 * Query string wildcard
+	 */
+	private static final String QUERY_STRING_WILDCARD = "%QUERY%";
 
-    /**
-     * Start index wildcard
-     */
-    private static final String START_INDEX_WILDCARD = "%STARTINDEX%";
+	/**
+	 * Start index wildcard
+	 */
+	private static final String START_INDEX_WILDCARD = "%STARTINDEX%";
 
-    /**
-     * Max results for a search
-     */
-    public static final int MAX_RESULTS = 10;
+	/**
+	 * Max results for a search
+	 */
+	public static final int MAX_RESULTS = 10;
 
-    /**
-     * youtube search API: http://gdata.youtube.com/feeds/api/videos
-     * &start-index= &max-results=10 &vq == search string
-     */
-    private static final String SEARCH_URL = StringUtils.getString("http://gdata.youtube.com/feeds/api/videos?vq=", QUERY_STRING_WILDCARD, "&max-results=", Integer
-            .toString(MAX_RESULTS), "&start-index=", START_INDEX_WILDCARD);
+	/**
+	 * youtube search API: http://gdata.youtube.com/feeds/api/videos
+	 * &start-index= &max-results=10 &vq == search string
+	 */
+	private static final String SEARCH_URL = StringUtils.getString("http://gdata.youtube.com/feeds/api/videos?vq=", QUERY_STRING_WILDCARD, "&max-results=", Integer
+			.toString(MAX_RESULTS), "&start-index=", START_INDEX_WILDCARD);
 
-    private INetworkHandler networkHandler;
-    
-    private YoutubeResultXmlAnalyzer youtubeResultXmlAnalyzer;
-    
-    private IUnknownObjectChecker unknownObjectChecker;
-    
-    /**
-     * @param unknownObjectChecker
-     */
-    public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	private INetworkHandler networkHandler;
+
+	private YoutubeResultXmlAnalyzer youtubeResultXmlAnalyzer;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
-    
-    /**
-     * @param youtubeResultXmlAnalyzer
-     */
-    public void setYoutubeResultXmlAnalyzer(YoutubeResultXmlAnalyzer youtubeResultXmlAnalyzer) {
+
+	/**
+	 * @param youtubeResultXmlAnalyzer
+	 */
+	public void setYoutubeResultXmlAnalyzer(final YoutubeResultXmlAnalyzer youtubeResultXmlAnalyzer) {
 		this.youtubeResultXmlAnalyzer = youtubeResultXmlAnalyzer;
 	}
 
-    /**
-     * @param networkHandler
-     */
-    public void setNetworkHandler(INetworkHandler networkHandler) {
+	/**
+	 * @param networkHandler
+	 */
+	public void setNetworkHandler(final INetworkHandler networkHandler) {
 		this.networkHandler = networkHandler;
 	}
-    
-    /**
-     * triggers youtube search and returns result in table model structure by
-     * default only the first 10 result entries will be returned. Specify
-     * startIndex to get the next 10 results from given startIndex.
-     * 
-     * @param searchString
-     * @param startIndex
-     * @return
-     */
-    public List<IVideoEntry> searchInYoutube(String searchString, int startIndex) {
-        try {
-            String searchStringEncoded = networkHandler.encodeString(searchString);
-            searchStringEncoded = searchStringEncoded.replaceAll("\\+", "%20");
 
-            //construct search url
-            String url = SEARCH_URL.replaceAll(QUERY_STRING_WILDCARD, searchStringEncoded).replaceAll(START_INDEX_WILDCARD, Integer.toString(startIndex));
+	/**
+	 * triggers youtube search and returns result in table model structure by
+	 * default only the first 10 result entries will be returned. Specify
+	 * startIndex to get the next 10 results from given startIndex.
+	 * 
+	 * @param searchString
+	 * @param startIndex
+	 * @return
+	 */
+	public List<IVideoEntry> searchInYoutube(final String searchString, final int startIndex) {
+		try {
+			String searchStringEncoded = networkHandler.encodeString(searchString);
+			searchStringEncoded = searchStringEncoded.replaceAll("\\+", "%20");
 
-            //get the XML dom; very very nice API, I like it.		
-            Document xml = XMLUtils.getXMLDocument(networkHandler.readURL(networkHandler.getConnection(url)));
+			//construct search url
+			String url = SEARCH_URL.replaceAll(QUERY_STRING_WILDCARD, searchStringEncoded).replaceAll(START_INDEX_WILDCARD, Integer.toString(startIndex));
 
-            if (xml == null) {
-                return Collections.emptyList();
-            } else {
-                // parse xml and construct result structure
-                return youtubeResultXmlAnalyzer.analyzeResultXml(xml);
-            }
-        } catch (Exception e) {
-            Logger.error(e);
-        }
+			//get the XML dom; very very nice API, I like it.
+			Document xml = XMLUtils.getXMLDocument(networkHandler.readURL(networkHandler.getConnection(url)));
 
-        return Collections.emptyList();
-    }
+			if (xml == null) {
+				return Collections.emptyList();
+			} else {
+				// parse xml and construct result structure
+				return youtubeResultXmlAnalyzer.analyzeResultXml(xml);
+			}
+		} catch (Exception e) {
+			Logger.error(e);
+		}
+
+		return Collections.emptyList();
+	}
 
 
-    /**
-     * returns a URL which allows to download the youtube video. The html page
-     * is opened and the swfArgs javascript is parsed to construct the download
-     * URL.
-     * 
-     * @param url
-     * @return
-     */
-    public String getDirectUrlToBeAbleToPlaySong(String url) {
-        try {
-            String response = networkHandler.readURL(networkHandler.getConnection(url));
-            //now try to construct the download url from youtube
-            int ind = response.indexOf("swfArgs");
-            response = response.substring(ind + 1, response.length());
-            ind = response.indexOf("\"video_id\":");
-            String substr = response.substring(ind, response.length());
-            int start = substr.indexOf(':');
-            int end = substr.indexOf("\",");
-            String videoId = substr.substring(start + 3, end);
+	/**
+	 * returns a URL which allows to download the youtube video. The html page
+	 * is opened and the swfArgs javascript is parsed to construct the download
+	 * URL.
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public String getDirectUrlToBeAbleToPlaySong(final String url) {
+		try {
+			String response = networkHandler.readURL(networkHandler.getConnection(url));
+			//now try to construct the download url from youtube
+			int ind = response.indexOf("swfArgs");
+			response = response.substring(ind + 1, response.length());
+			ind = response.indexOf("\"video_id\":");
+			String substr = response.substring(ind, response.length());
+			int start = substr.indexOf(':');
+			int end = substr.indexOf("\",");
+			String videoId = substr.substring(start + 3, end);
 
-            ind = response.indexOf("\"t\":");
-            substr = response.substring(ind, response.length());
-            start = substr.indexOf(':');
-            end = substr.indexOf("\",");
-            String t = substr.substring(start + 3, end);
-            /**
-             * Quality settings for downloading Youtube video: No &fmt = FLV
-             * (very low - same as &fmt=5) &fmt=5 = FLV (very low) &fmt=6 = FLV
-             * (does not always work) &fmt=13 = 3GP (mobile phone) &fmt=18 = MP4
-             * (normal) &fmt=22 = MP4 (hd)
-             */
-            String videoQuality = "18";
-            String downloadurl = StringUtils.getString("http://youtube.com/get_video?video_id=", videoId, "&t=", t, "&fmt=", videoQuality);
+			ind = response.indexOf("\"t\":");
+			substr = response.substring(ind, response.length());
+			start = substr.indexOf(':');
+			end = substr.indexOf("\",");
+			String t = substr.substring(start + 3, end);
+			/**
+			 * Quality settings for downloading Youtube video: No &fmt = FLV
+			 * (very low - same as &fmt=5) &fmt=5 = FLV (very low) &fmt=6 = FLV
+			 * (does not always work) &fmt=13 = 3GP (mobile phone) &fmt=18 = MP4
+			 * (normal) &fmt=22 = MP4 (hd)
+			 */
+			String videoQuality = "18";
+			String downloadurl = StringUtils.getString("http://youtube.com/get_video?video_id=", videoId, "&t=", t, "&fmt=", videoQuality);
 
-            return downloadurl;
-        } catch (Exception e) {
-            Logger.error(e);
-        }
-        return null;
-    }
+			return downloadurl;
+		} catch (Exception e) {
+			Logger.error(e);
+		}
+		return null;
+	}
 
-    /**
-     * Returns text to search at YouTube
-     * 
-     * @param ao
-     * @return
-     */
-    public String getSearchForAudioObject(IAudioObject ao) {
-        StringBuilder builder = new StringBuilder();
+	/**
+	 * Returns text to search at YouTube
+	 * 
+	 * @param ao
+	 * @return
+	 */
+	public String getSearchForAudioObject(final IAudioObject ao) {
+		StringBuilder builder = new StringBuilder();
 
-        // Add artist if it's not unknown
-        if (!unknownObjectChecker.isUnknownArtist(ao.getArtist())) {
-            builder.append(ao.getArtist());
-        }
+		// Add artist if it's not unknown
+		if (!unknownObjectChecker.isUnknownArtist(ao.getArtist(unknownObjectChecker))) {
+			builder.append(ao.getArtist(unknownObjectChecker));
+		}
 
-        // Add processed title
-        /*
-         * Titles often contain chars between parentheses, brackets, etc. In
-         * this cases search at YouTube can have no results as search string
-         * contains information that does not match any video. So remove this
-         * chars and its content
-         */
-        String title = ao.getTitle();
-        if (title != null && !title.trim().equals("")) {
-            // Remove () {} []
-            title = title.replaceAll("\\(.*\\)", "");
-            title = title.replaceAll("\\{.*\\}", "");
-            title = title.replaceAll("\\[.*\\]", "");
+		// Add processed title
+		/*
+		 * Titles often contain chars between parentheses, brackets, etc. In
+		 * this cases search at YouTube can have no results as search string
+		 * contains information that does not match any video. So remove this
+		 * chars and its content
+		 */
+		String title = ao.getTitle();
+		if (title != null && !title.trim().equals("")) {
+			// Remove () {} []
+			title = title.replaceAll("\\(.*\\)", "");
+			title = title.replaceAll("\\{.*\\}", "");
+			title = title.replaceAll("\\[.*\\]", "");
 
-            // ... but if we replaced all title then use original string as maybe we have removed too much ;)
-            if (title.trim().isEmpty()) {
-                title = ao.getTitle();
-            }
+			// ... but if we replaced all title then use original string as maybe we have removed too much ;)
+			if (title.trim().isEmpty()) {
+				title = ao.getTitle();
+			}
 
-            builder.append(" ").append(title);
-        }
+			builder.append(" ").append(title);
+		}
 
-        return builder.toString();
-    }
+		return builder.toString();
+	}
 }

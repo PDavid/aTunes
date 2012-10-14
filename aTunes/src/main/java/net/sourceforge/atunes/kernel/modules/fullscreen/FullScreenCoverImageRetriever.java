@@ -31,84 +31,100 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
+/**
+ * Gets covers for full screen mode
+ * @author alex
+ *
+ */
 public class FullScreenCoverImageRetriever {
 
 	private IWebServicesHandler webServicesHandler;
-	
+
 	private IOSManager osManager;
-	
+
 	private IIconFactory radioBigIcon;
-	
+
 	private IIconFactory rssBigIcon;
-	
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
 	/**
 	 * @param radioBigIcon
 	 */
-	public void setRadioBigIcon(IIconFactory radioBigIcon) {
+	public void setRadioBigIcon(final IIconFactory radioBigIcon) {
 		this.radioBigIcon = radioBigIcon;
 	}
-	
+
 	/**
 	 * @param rssBigIcon
 	 */
-	public void setRssBigIcon(IIconFactory rssBigIcon) {
+	public void setRssBigIcon(final IIconFactory rssBigIcon) {
 		this.rssBigIcon = rssBigIcon;
 	}
-	
+
 	/**
 	 * @param webServicesHandler
 	 */
-	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+	public void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
-	
+
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
-    /**
-     * Returns picture for audio object
-     * 
-     * @param audioObject
-     * @param osManager
-     * @return
-     */
-    ImageIcon getPicture(IAudioObject audioObject) {
-    	ImageIcon image = null;
-    	if (audioObject instanceof IRadio) {
-    		image = radioBigIcon.getIcon(Color.WHITE);
-    	} else if (audioObject instanceof IPodcastFeedEntry) {
-    		image = rssBigIcon.getIcon(Color.WHITE);
-    	} else if (audioObject instanceof ILocalAudioObject){
-    		image = getPictureForLocalAudioObject(audioObject);
-    	}
 
-    	return image;
-    }
+	/**
+	 * Returns picture for audio object
+	 * 
+	 * @param audioObject
+	 * @param osManager
+	 * @return
+	 */
+	ImageIcon getPicture(final IAudioObject audioObject) {
+		ImageIcon image = null;
+		if (audioObject instanceof IRadio) {
+			image = radioBigIcon.getIcon(Color.WHITE);
+		} else if (audioObject instanceof IPodcastFeedEntry) {
+			image = rssBigIcon.getIcon(Color.WHITE);
+		} else if (audioObject instanceof ILocalAudioObject){
+			image = getPictureForLocalAudioObject(audioObject);
+		}
+
+		return image;
+	}
 
 	/**
 	 * @param audioObject
 	 * @return
 	 */
-	private ImageIcon getPictureForLocalAudioObject(IAudioObject audioObject) {
-		ImageIcon image = webServicesHandler.getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
+	private ImageIcon getPictureForLocalAudioObject(final IAudioObject audioObject) {
+		ImageIcon image = webServicesHandler.getAlbumImage(audioObject.getArtist(unknownObjectChecker), audioObject.getAlbum(unknownObjectChecker));
 		if (image == null) {
 			// Get inside picture
 			image = AudioFilePictureUtils.getInsidePicture(audioObject, -1, -1);
 		}
 		if (image == null) {
 			// Get external picture
-			image = AudioFilePictureUtils.getExternalPicture(audioObject, -1, -1, osManager);
+			image = AudioFilePictureUtils.getExternalPicture(audioObject, -1, -1, osManager, unknownObjectChecker);
 		}
 		if (image == null) {
 			image = Images.getImage(Images.APP_LOGO_300);
 		}
 		return image;
-	}    
+	}
 }

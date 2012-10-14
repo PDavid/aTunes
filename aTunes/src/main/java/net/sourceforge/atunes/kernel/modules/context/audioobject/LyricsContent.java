@@ -32,7 +32,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.text.StyleConstants;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.model.EditTagSources;
@@ -41,6 +40,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.ITagHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.ClipboardFacade;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -52,119 +52,141 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class LyricsContent extends AbstractContextPanelContent<LyricsDataSource> {
 
-    private static final long serialVersionUID = 962229017133714396L;
+	private static final long serialVersionUID = 962229017133714396L;
 
-    private CustomTextPane lyricsContainer;
+	private CustomTextPane lyricsContainer;
 
-    private JMenu addLyrics;
+	private final JMenu addLyrics;
 
-    private JMenuItem copyLyrics;
+	private final JMenuItem copyLyrics;
 
-    private JMenuItem openLyrics;
+	private final JMenuItem openLyrics;
 
-    private String lyricsSourceUrl;
+	private String lyricsSourceUrl;
 
-    private IAudioObject audioObject;
-    
-    private ILyricsService lyricsService;
-    
-    private ClipboardFacade clipboard;
+	private IAudioObject audioObject;
 
-    public LyricsContent() {
-        copyLyrics = new JMenuItem(new AbstractAction(I18nUtils.getString("COPY_TO_CLIPBOARD")) {
+	private ILyricsService lyricsService;
 
-            private static final long serialVersionUID = -851267486478098295L;
+	private ClipboardFacade clipboard;
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String sLyric = lyricsContainer.getText();
-                if (sLyric == null) {
-                    sLyric = "";
-                }
-                clipboard.copyToClipboard(sLyric);
-            }
-        });
-        addLyrics = new JMenu(I18nUtils.getString("ADD_LYRICS"));
-        openLyrics = new JMenuItem(new AbstractAction(I18nUtils.getString("OPEN_LYRICS_SOURCE")) {
+	private IUnknownObjectChecker unknownObjectChecker;
 
-            private static final long serialVersionUID = 9043861642969889713L;
+	private ITagHandler tagHandler;
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (lyricsSourceUrl != null && !lyricsSourceUrl.trim().isEmpty()) {
-                	getDesktop().openURL(lyricsSourceUrl);
-                } else {
-                    if (audioObject instanceof ILocalAudioObject) {
-                    	Context.getBean(ITagHandler.class).editFiles(EditTagSources.NAVIGATOR, Arrays.asList((ILocalAudioObject) audioObject));                        
-                    }
-                }
-            }
-        });
-    }
+	/**
+	 * @param tagHandler
+	 */
+	public void setTagHandler(final ITagHandler tagHandler) {
+		this.tagHandler = tagHandler;
+	}
 
-    @Override
-    public void updateContentFromDataSource(LyricsDataSource source) {
-    	this.audioObject = source.getAudioObject();
-        ILyrics lyrics = source.getLyrics();
-        lyricsContainer.setText(lyrics != null ? lyrics.getLyrics() : null);
-        lyricsContainer.setCaretPosition(0);
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
-        boolean lyricsNotEmpty = lyrics != null && !lyrics.getLyrics().trim().isEmpty();
-        copyLyrics.setEnabled(lyricsNotEmpty);
-        addLyrics.setEnabled(!lyricsNotEmpty);
-        lyricsSourceUrl = lyrics != null ? lyrics.getUrl() : null;
-        openLyrics.setEnabled(lyricsNotEmpty);
-        if (!lyricsNotEmpty) {
-            addLyrics.removeAll();
-            for (final Entry<String, String> entry : lyricsService.getUrlsForAddingNewLyrics(audioObject.getArtist(), audioObject.getTitle()).entrySet()) {
-                JMenuItem mi = new JMenuItem(entry.getKey());
-                mi.addActionListener(new OpenUrlActionListener(entry, getDesktop()));
-                addLyrics.add(mi);
-            }
-            addLyrics.setEnabled(addLyrics.getMenuComponentCount() > 0);
-        }
-    }
-    
-    @Override
-    public void clearContextPanelContent() {
-        super.clearContextPanelContent();
-        lyricsContainer.setText(null);
-        copyLyrics.setEnabled(false);
-        addLyrics.setEnabled(false);
-        addLyrics.removeAll();
-        openLyrics.setEnabled(false);
-        lyricsSourceUrl = null;
-        audioObject = null;
-    }
+	/**
+	 * Constructor
+	 */
+	public LyricsContent() {
+		copyLyrics = new JMenuItem(new AbstractAction(I18nUtils.getString("COPY_TO_CLIPBOARD")) {
 
-    @Override
-    public String getContentName() {
-        return I18nUtils.getString("LYRICS");
-    }
+			private static final long serialVersionUID = -851267486478098295L;
 
-    @Override
-    public Component getComponent() {
-        lyricsContainer = new CustomTextPane(StyleConstants.ALIGN_CENTER, getLookAndFeelManager());
-        lyricsContainer.setBorder(null);
-        lyricsContainer.setEditable(false);
-        lyricsContainer.setOpaque(false);
-        return lyricsContainer;
-    }
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				String sLyric = lyricsContainer.getText();
+				if (sLyric == null) {
+					sLyric = "";
+				}
+				clipboard.copyToClipboard(sLyric);
+			}
+		});
+		addLyrics = new JMenu(I18nUtils.getString("ADD_LYRICS"));
+		openLyrics = new JMenuItem(new AbstractAction(I18nUtils.getString("OPEN_LYRICS_SOURCE")) {
 
-    @Override
-    public List<Component> getOptions() {
-        List<Component> options = new ArrayList<Component>();
-        options.add(copyLyrics);
-        options.add(addLyrics);
-        options.add(openLyrics);
-        return options;
-    }
+			private static final long serialVersionUID = 9043861642969889713L;
 
-    public void setLyricsService(ILyricsService lyricsService) {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				if (lyricsSourceUrl != null && !lyricsSourceUrl.trim().isEmpty()) {
+					getDesktop().openURL(lyricsSourceUrl);
+				} else {
+					if (audioObject instanceof ILocalAudioObject) {
+						tagHandler.editFiles(EditTagSources.NAVIGATOR, Arrays.asList((ILocalAudioObject) audioObject));
+					}
+				}
+			}
+		});
+	}
+
+	@Override
+	public void updateContentFromDataSource(final LyricsDataSource source) {
+		this.audioObject = source.getAudioObject();
+		ILyrics lyrics = source.getLyrics();
+		lyricsContainer.setText(lyrics != null ? lyrics.getLyrics() : null);
+		lyricsContainer.setCaretPosition(0);
+
+		boolean lyricsNotEmpty = lyrics != null && !lyrics.getLyrics().trim().isEmpty();
+		copyLyrics.setEnabled(lyricsNotEmpty);
+		addLyrics.setEnabled(!lyricsNotEmpty);
+		lyricsSourceUrl = lyrics != null ? lyrics.getUrl() : null;
+		openLyrics.setEnabled(lyricsNotEmpty);
+		if (!lyricsNotEmpty) {
+			addLyrics.removeAll();
+			for (final Entry<String, String> entry : lyricsService.getUrlsForAddingNewLyrics(audioObject.getArtist(unknownObjectChecker), audioObject.getTitle()).entrySet()) {
+				JMenuItem mi = new JMenuItem(entry.getKey());
+				mi.addActionListener(new OpenUrlActionListener(entry, getDesktop()));
+				addLyrics.add(mi);
+			}
+			addLyrics.setEnabled(addLyrics.getMenuComponentCount() > 0);
+		}
+	}
+
+	@Override
+	public void clearContextPanelContent() {
+		super.clearContextPanelContent();
+		lyricsContainer.setText(null);
+		copyLyrics.setEnabled(false);
+		addLyrics.setEnabled(false);
+		addLyrics.removeAll();
+		openLyrics.setEnabled(false);
+		lyricsSourceUrl = null;
+		audioObject = null;
+	}
+
+	@Override
+	public String getContentName() {
+		return I18nUtils.getString("LYRICS");
+	}
+
+	@Override
+	public Component getComponent() {
+		lyricsContainer = new CustomTextPane(StyleConstants.ALIGN_CENTER, getLookAndFeelManager());
+		lyricsContainer.setBorder(null);
+		lyricsContainer.setEditable(false);
+		lyricsContainer.setOpaque(false);
+		return lyricsContainer;
+	}
+
+	@Override
+	public List<Component> getOptions() {
+		List<Component> options = new ArrayList<Component>();
+		options.add(copyLyrics);
+		options.add(addLyrics);
+		options.add(openLyrics);
+		return options;
+	}
+
+	public void setLyricsService(final ILyricsService lyricsService) {
 		this.lyricsService = lyricsService;
 	}
-    
-    public void setClipboard(ClipboardFacade clipboard) {
+
+	public void setClipboard(final ClipboardFacade clipboard) {
 		this.clipboard = clipboard;
 	}
 }

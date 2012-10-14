@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 
 import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -36,115 +37,129 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public abstract class AbstractPattern {
 
-    static final char PATTERN_NAME_FIRST_CHAR = '%';
+	static final char PATTERN_NAME_FIRST_CHAR = '%';
 
-    /**
-     * Chars representing this pattern
-     */
-    private String pattern;
+	/**
+	 * Chars representing this pattern
+	 */
+	private String pattern;
 
-    /**
-     * Name of this pattern
-     */
-    private String name;
+	/**
+	 * Name of this pattern
+	 */
+	private String name;
 
-    /**
-     * <code>true</code> if this pattern can be used for massive pattern
-     * recognition
-     * 
-     * For example: song title or track number are not massive patterns as it
-     * only apply to one song at a time
-     * 
-     */
-    private boolean massiveRecognitionPattern = false;
+	/**
+	 * <code>true</code> if this pattern can be used for massive pattern
+	 * recognition
+	 * 
+	 * For example: song title or track number are not massive patterns as it
+	 * only apply to one song at a time
+	 * 
+	 */
+	private boolean massiveRecognitionPattern = false;
 
-    /**
-     * <code>true</code> if this pattern can be used for pattern recognition
-     * 
-     * For example: To be used for recognition application must be able to
-     * assign a full attribute value from a pattern Fist artist char is not a
-     * recognition pattern as it is not a complete attribute of a song
-     * 
-     */
-    private boolean recognitionPattern = false;
+	/**
+	 * <code>true</code> if this pattern can be used for pattern recognition
+	 * 
+	 * For example: To be used for recognition application must be able to
+	 * assign a full attribute value from a pattern Fist artist char is not a
+	 * recognition pattern as it is not a complete attribute of a song
+	 * 
+	 */
+	private boolean recognitionPattern = false;
 
-    /**
-     * @param patternChar
-     */
-    public final void setPatternChar(char patternChar) {
-        // Force upper case
-        this.pattern = StringUtils.getString(PATTERN_NAME_FIRST_CHAR, patternChar).toUpperCase();
-    }
-    
-    /**
-     * @param name
-     */
-    public final void setName(String name) {
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
+	protected final IUnknownObjectChecker getUnknownObjectChecker() {
+		return unknownObjectChecker;
+	}
+
+	/**
+	 * @param patternChar
+	 */
+	public final void setPatternChar(final char patternChar) {
+		// Force upper case
+		this.pattern = StringUtils.getString(PATTERN_NAME_FIRST_CHAR, patternChar).toUpperCase();
+	}
+
+	/**
+	 * @param name
+	 */
+	public final void setName(final String name) {
 		this.name = name;
 	}
-    
-    /**
-     * @param recognitionPattern
-     */
-    public final void setRecognitionPattern(boolean recognitionPattern) {
+
+	/**
+	 * @param recognitionPattern
+	 */
+	public final void setRecognitionPattern(final boolean recognitionPattern) {
 		this.recognitionPattern = recognitionPattern;
 	}
-    
-    /**
-     * @param massiveRecognitionPattern
-     */
-    public final void setMassiveRecognitionPattern(boolean massiveRecognitionPattern) {
+
+	/**
+	 * @param massiveRecognitionPattern
+	 */
+	public final void setMassiveRecognitionPattern(final boolean massiveRecognitionPattern) {
 		this.massiveRecognitionPattern = massiveRecognitionPattern;
 	}
 
-    /**
-     * @return
-     */
-    public final boolean isMassiveRecognitionPattern() {
+	/**
+	 * @return
+	 */
+	public final boolean isMassiveRecognitionPattern() {
 		return massiveRecognitionPattern;
 	}
-    
-    /**
-     * @return
-     */
-    public final boolean isRecognitionPattern() {
+
+	/**
+	 * @return
+	 */
+	public final boolean isRecognitionPattern() {
 		return recognitionPattern;
 	}
-    
-    /**
-     * @return the pattern
-     */
-    public final String getPattern() {
-        return pattern;
-    }
 
-    /**
-     * @return the name
-     */
-    public final String getName() {
-        return name;
-    }
+	/**
+	 * @return the pattern
+	 */
+	public final String getPattern() {
+		return pattern;
+	}
 
-    /**
-     * @return the description of this pattern
-     */
-    public final String getDescription() {
-        return I18nUtils.getString(name);
-    }
+	/**
+	 * @return the name
+	 */
+	public final String getName() {
+		return name;
+	}
 
-    /**
-     * Returns string value of an LocalAudioObject to do transformation
-     * 
-     * @param audioFile
-     * @return
-     */
-    public abstract String getAudioFileStringValue(ILocalAudioObject audioFile);
-    
-    /**
-     * Returns string value of an LocalAudioObject to do transformation
-     * @param metadata
-     * @param trackNumber
-     * @return
-     */
-    public abstract String getCDMetadataStringValue(CDMetadata metadata, int trackNumber);
+	/**
+	 * @return the description of this pattern
+	 */
+	public final String getDescription() {
+		return I18nUtils.getString(name);
+	}
+
+	/**
+	 * Returns string value of an LocalAudioObject to do transformation
+	 * 
+	 * @param audioFile
+	 * @return
+	 */
+	public abstract String getAudioFileStringValue(ILocalAudioObject audioFile);
+
+	/**
+	 * Returns string value of an LocalAudioObject to do transformation
+	 * @param metadata
+	 * @param trackNumber
+	 * @return
+	 */
+	public abstract String getCDMetadataStringValue(CDMetadata metadata, int trackNumber);
 }

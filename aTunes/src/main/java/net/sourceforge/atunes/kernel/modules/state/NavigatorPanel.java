@@ -26,6 +26,9 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
@@ -43,7 +46,6 @@ import javax.swing.border.TitledBorder;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
-import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
@@ -52,6 +54,7 @@ import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.IStateRepository;
+import net.sourceforge.atunes.model.TextTagAttribute;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -366,7 +369,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 
 	@Override
 	public void updatePanel() {
-		tagAttributesTableModel.setTagAttributes(IncompleteTagsChecker.getAllTagAttributes(stateNavigation.getHighlightIncompleteTagFoldersAttributes()));
+		tagAttributesTableModel.setTagAttributes(getAllTagAttributes(stateNavigation.getHighlightIncompleteTagFoldersAttributes()));
 		setShowFavorites(stateNavigation.isShowFavoritesInNavigator());
 		setShowAlbumToolTip(stateNavigation.isShowExtendedTooltip());
 		setAlbumToolTipDelay(stateNavigation.getExtendedTooltipDelay());
@@ -375,6 +378,23 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		setUsePersonNamesArtistTagViewSorting(stateNavigation.isUsePersonNamesArtistTagViewSorting());
 		setKeyAlwaysCaseSensitiveInRepositoryStructure(stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure());
 		setArtistViewMode(stateNavigation.getArtistViewMode());
+	}
+
+	/**
+	 * Returns a hash map with all tag attributes as key, and state (used or not) as value
+	 * 
+	 * @param attributes
+	 * @return
+	 */
+	private Map<TextTagAttribute, Boolean> getAllTagAttributes(final List<TextTagAttribute> attributes) {
+		Map<TextTagAttribute, Boolean> result = new HashMap<TextTagAttribute, Boolean>();
+		for (TextTagAttribute att : TextTagAttribute.values()) {
+			result.put(att, false);
+		}
+		for (TextTagAttribute attr : attributes) {
+			result.put(attr, true);
+		}
+		return result;
 	}
 
 	private void setArtistViewMode(final ArtistViewMode artistViewMode) {

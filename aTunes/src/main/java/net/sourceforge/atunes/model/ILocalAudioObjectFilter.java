@@ -18,30 +18,38 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs.properties;
+package net.sourceforge.atunes.model;
 
-import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
+import java.util.List;
 
-class AlbumProvider extends AbstractFieldProvider {
-
-	private final IUnknownObjectChecker unknownObjectChecker;
+/**
+ * Filters for local audio objects
+ * @author alex
+ *
+ */
+public interface ILocalAudioObjectFilter {
 
 	/**
-	 * @param unknownObjectChecker
+	 * Gets the local audio objects from a list of audio objects
+	 * 
+	 * @param audioObjects
+	 * @return
 	 */
-	AlbumProvider(final IUnknownObjectChecker unknownObjectChecker) {
-		super();
-		this.unknownObjectChecker = unknownObjectChecker;
-	}
+	List<ILocalAudioObject> getLocalAudioObjects(List<IAudioObject> audioObjects);
 
-	@Override
-	public String getI18Name() {
-		return "ALBUM";
-	}
+	/**
+	 * Returns a list where there are no repeated audio objects (same title and artist)
+	 * 
+	 * @param list
+	 * @return
+	 */
+	List<ILocalAudioObject> filterRepeatedObjects(List<ILocalAudioObject> list);
 
-	@Override
-	public String getClearValue(final ILocalAudioObject file) {
-		return file.getAlbum(unknownObjectChecker);
-	}
+	/**
+	 * Returns a list where there are no repeated audio objects (same title and album and artist)
+	 * 
+	 * @param list
+	 * @return
+	 */
+	List<ILocalAudioObject> filterRepeatedObjectsWithAlbums(List<ILocalAudioObject> list);
 }

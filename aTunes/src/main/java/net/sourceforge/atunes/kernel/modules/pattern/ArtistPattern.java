@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 
 import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 /**
  * Pattern for artist
@@ -30,29 +29,20 @@ import net.sourceforge.atunes.model.IUnknownObjectChecker;
  *
  */
 public final class ArtistPattern extends AbstractPattern {
-	
-	private IUnknownObjectChecker unknownObjectChecker;
-	
-	/**
-	 * @param unknownObjectChecker
-	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
-	}
-	
+
 	@Override
-	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-	    return audioFile.getArtist();
+	public String getAudioFileStringValue(final ILocalAudioObject audioFile) {
+		return audioFile.getArtist(getUnknownObjectChecker());
 	}
-	
+
 	@Override
-	public String getCDMetadataStringValue(CDMetadata metadata, int trackNumber) {
+	public String getCDMetadataStringValue(final CDMetadata metadata, final int trackNumber) {
 		String artist = metadata.getArtist(trackNumber);
 		// If track has not artist, then use album artist
 		if (artist == null) {
 			artist = metadata.getAlbumArtist();
 		}
 		// If still null then use unknown artist
-		return artist != null ? artist : unknownObjectChecker.getUnknownArtist();
+		return artist != null ? artist : getUnknownObjectChecker().getUnknownArtist();
 	}
 }

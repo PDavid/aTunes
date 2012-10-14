@@ -33,13 +33,13 @@ import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListObjectFilter;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateDevice;
-import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -66,6 +66,16 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 	private IStateDevice stateDevice;
 
 	private IDialogFactory dialogFactory;
+
+	private ILocalAudioObjectFilter localAudioObjectFilter;
+
+	/**
+	 * @param localAudioObjectFilter
+	 */
+	public void setLocalAudioObjectFilter(
+			final ILocalAudioObjectFilter localAudioObjectFilter) {
+		this.localAudioObjectFilter = localAudioObjectFilter;
+	}
 
 	/**
 	 * @param dialogFactory
@@ -154,13 +164,12 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		protected Map<String, List<ILocalAudioObject>> doInBackground() {
 			// Get play list elements
 			List<ILocalAudioObject> playListObjects;
-			LocalAudioObjectFilter filter = new LocalAudioObjectFilter();
 			if (SynchronizeDeviceWithPlayListAction.this.stateDevice.isAllowRepeatedSongsInDevice()) {
 				// Repeated songs allowed, filter only if have same artist and album
-				playListObjects = filter.filterRepeatedObjectsWithAlbums(playListLocalAudioObjectFilter.getObjects(playListHandler.getVisiblePlayList()));
+				playListObjects = localAudioObjectFilter.filterRepeatedObjectsWithAlbums(playListLocalAudioObjectFilter.getObjects(playListHandler.getVisiblePlayList()));
 			} else {
 				// Repeated songs not allows, filter even if have different album
-				playListObjects = filter.filterRepeatedObjects(playListLocalAudioObjectFilter.getObjects(playListHandler.getVisiblePlayList()));
+				playListObjects = localAudioObjectFilter.filterRepeatedObjects(playListLocalAudioObjectFilter.getObjects(playListHandler.getVisiblePlayList()));
 			}
 
 			// Get elements present in play list and not in device -> objects to be copied to device

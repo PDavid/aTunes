@@ -27,6 +27,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
@@ -36,36 +37,46 @@ import net.sourceforge.atunes.utils.AudioFilePictureUtils;
  *
  */
 public class AudioObjectImageLocator implements IAudioObjectImageLocator {
-	
+
 	private IOSManager osManager;
-	
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	@Override
-	public ImageIcon getImage(IAudioObject audioObject, ImageSize imageSize) {
+	public ImageIcon getImage(final IAudioObject audioObject, final ImageSize imageSize) {
 		if (audioObject instanceof ILocalAudioObject) {
 			ILocalAudioObject localAudioObject = (ILocalAudioObject) audioObject;
 
 			ImageIcon result = AudioFilePictureUtils.getInsidePicture(localAudioObject, imageSize.getSize(), imageSize.getSize());
 			if (result == null) {
-				result = AudioFilePictureUtils.getExternalPicture(localAudioObject, imageSize.getSize(), imageSize.getSize(), osManager);
+				result = AudioFilePictureUtils.getExternalPicture(localAudioObject, imageSize.getSize(), imageSize.getSize(), osManager, unknownObjectChecker);
 			}
 
 			return result;
 		}
 		return null;
 	}
-	
+
 	@Override
-	public ImageIcon getImage(IAlbum album, ImageSize imageSize) {
+	public ImageIcon getImage(final IAlbum album, final ImageSize imageSize) {
 		if (album == null || album.getAudioObjects().isEmpty()) {
 			return null;
 		}
 		return getImage(album.getAudioObjects().get(0), imageSize);
-    }
+	}
 }

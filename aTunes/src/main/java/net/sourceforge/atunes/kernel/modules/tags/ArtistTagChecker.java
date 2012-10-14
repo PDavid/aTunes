@@ -24,18 +24,18 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 class ArtistTagChecker implements ITagChecker {
-	
-    private IUnknownObjectChecker unknownObjectChecker;
 
-    /**
-     * @param unknownObjectChecker
-     */
-    public ArtistTagChecker(IUnknownObjectChecker unknownObjectChecker) {
+	private final IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public ArtistTagChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	@Override
-	public boolean checkTagAttribute(ILocalAudioObject localAudioObject) {
-		return !unknownObjectChecker.isUnknownArtist(localAudioObject.getArtist());
+	public boolean checkTagAttribute(final ILocalAudioObject localAudioObject) {
+		return !unknownObjectChecker.isUnknownArtist(localAudioObject.getArtist(unknownObjectChecker));
 	}
 }

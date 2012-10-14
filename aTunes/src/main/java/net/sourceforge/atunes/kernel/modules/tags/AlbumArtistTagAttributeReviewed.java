@@ -22,20 +22,25 @@ package net.sourceforge.atunes.kernel.modules.tags;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 final class AlbumArtistTagAttributeReviewed extends AbstractTagAttributeReviewed {
-    AlbumArtistTagAttributeReviewed(String name) {
-        super(name);
-    }
 
-    @Override
-    String getValue(ILocalAudioObject audioFile) {
-        return audioFile.getAlbumArtist();
-    }
+	private final IUnknownObjectChecker unknownObjectChecker;
 
-    @Override
-    ITag changeTag(ITag tag, String value) {
-        tag.setAlbumArtist(value);
-        return tag;
-    }
+	AlbumArtistTagAttributeReviewed(final String name, final IUnknownObjectChecker unknownObjectChecker) {
+		super(name);
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
+	@Override
+	String getValue(final ILocalAudioObject audioFile) {
+		return audioFile.getAlbumArtist(unknownObjectChecker);
+	}
+
+	@Override
+	ITag changeTag(final ITag tag, final String value) {
+		tag.setAlbumArtist(value);
+		return tag;
+	}
 }

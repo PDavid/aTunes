@@ -25,45 +25,24 @@ import java.util.List;
 import org.commonjukebox.plugins.model.PluginApi;
 
 /**
+ * @author alex
  * All objects that can be shown in Navigator tree must implement this
  * interface.
+ * @param <T>
  */
 @PluginApi
 public interface ITreeObject<T extends IAudioObject> {
 
-    /**
-     * Returns the audio objects of this tree object
-     * 
-     * @return The audio objects of this object
-     */
-    public List<T> getAudioObjects();
-
-    /**
-     * Returns a string to be shown as tool tip when object is used
-     * 
-     * @return ToolTip
-     */
-    public String getTooltip();
-
-    /**
-     * Returns <code>true</code> if this object supports extended tool tip
-     * 
-     * @return
-     */
-    public boolean isExtendedTooltipSupported();
-
-    /**
-     * Returns <code>true</code> if this object supports image in extended tool
-     * tip
-     * 
-     * @return
-     */
-    public boolean isExtendedTooltipImageSupported();
+	/**
+	 * Returns the audio objects of this tree object
+	 * 
+	 * @return The audio objects of this object
+	 */
+	List<T> getAudioObjects();
 
 	/**
 	 * Returns number of audio objects
 	 * @return
 	 */
-	public int size();
-
+	int size();
 }

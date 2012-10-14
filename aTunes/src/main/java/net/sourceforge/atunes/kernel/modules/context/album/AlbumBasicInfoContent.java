@@ -39,6 +39,7 @@ import net.sourceforge.atunes.kernel.modules.context.ContextInformationTableFact
 import net.sourceforge.atunes.kernel.modules.context.ITracksTableListener;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -54,53 +55,63 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 	private static final long serialVersionUID = -5538266144953409867L;
 
 	private JLabel albumCoverLabel;
-	
+
 	private UrlLabel albumLabel;
-	
+
 	private UrlLabel artistLabel;
-	
+
 	private UrlLabel yearLabel;
-	
-    private JTable tracksTable;
-    
-    private ContextInformationTableFactory contextInformationTableFactory;
-    
-    private ITracksTableListener contextTableURLOpener;
+
+	private JTable tracksTable;
+
+	private ContextInformationTableFactory contextInformationTableFactory;
+
+	private ITracksTableListener contextTableURLOpener;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	@Override
 	public String getContentName() {
 		return I18nUtils.getString("INFO");
 	}
-	
-    /**
-     * @param contextTableURLOpener
-     */
-    public void setContextTableURLOpener(ITracksTableListener contextTableURLOpener) {
+
+	/**
+	 * @param contextTableURLOpener
+	 */
+	public void setContextTableURLOpener(final ITracksTableListener contextTableURLOpener) {
 		this.contextTableURLOpener = contextTableURLOpener;
 	}
-    
-    /**
-     * @param contextInformationTableFactory
-     */
-    public void setContextInformationTableFactory(ContextInformationTableFactory contextInformationTableFactory) {
+
+	/**
+	 * @param contextInformationTableFactory
+	 */
+	public void setContextInformationTableFactory(final ContextInformationTableFactory contextInformationTableFactory) {
 		this.contextInformationTableFactory = contextInformationTableFactory;
 	}
 
 	@Override
-	public void updateContentFromDataSource(AlbumInfoDataSource source) {
+	public void updateContentFromDataSource(final AlbumInfoDataSource source) {
 		IAudioObject audioObject = source.getAudioObject();
 		IAlbumInfo album = source.getAlbumInfo();
 		updateArtist(audioObject, album);
 		updateAlbum(album);
 		updateYear(album);
 		updateAlbumCover(source);
-   		((ContextTracksTableModel)tracksTable.getModel()).setAlbum(album);
+		((ContextTracksTableModel)tracksTable.getModel()).setAlbum(album);
 	}
 
 	/**
 	 * @param source
 	 */
-	private void updateAlbumCover(AlbumInfoDataSource source) {
+	private void updateAlbumCover(final AlbumInfoDataSource source) {
 		ImageIcon image = source.getImage();
 		ImageIcon imageIcon = null;
 		if (image != null) {
@@ -114,7 +125,7 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 	/**
 	 * @param album
 	 */
-	private void updateYear(IAlbumInfo album) {
+	private void updateYear(final IAlbumInfo album) {
 		// TODO: wikipedia is opened in English
 		yearLabel.setText(album != null ? album.getYear() : "", album != null && album.getYear() != null ? StringUtils.getString("http://en.wikipedia.org/wiki/", album
 				.getYear()) : null);
@@ -123,7 +134,7 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 	/**
 	 * @param album
 	 */
-	private void updateAlbum(IAlbumInfo album) {
+	private void updateAlbum(final IAlbumInfo album) {
 		albumLabel.setText(album != null ? album.getTitle() : I18nUtils.getString("UNKNOWN_ALBUM"), album != null ? album.getUrl() : null);
 		albumLabel.setEnabled(album != null && album.getUrl() != null);
 	}
@@ -132,8 +143,8 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 	 * @param audioObject
 	 * @param album
 	 */
-	private void updateArtist(IAudioObject audioObject, IAlbumInfo album) {
-		artistLabel.setText(album != null ? album.getArtist() : audioObject.getArtist(), album != null ? album.getArtistUrl() : null);
+	private void updateArtist(final IAudioObject audioObject, final IAlbumInfo album) {
+		artistLabel.setText(album != null ? album.getArtist() : audioObject.getArtist(unknownObjectChecker), album != null ? album.getArtistUrl() : null);
 		artistLabel.setEnabled(album != null && album.getArtistUrl() != null);
 	}
 
@@ -145,7 +156,7 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 		albumLabel.setText(null);
 		artistLabel.setText(null);
 		yearLabel.setText(null);
-   		((ContextTracksTableModel)tracksTable.getModel()).setAlbum(null);
+		((ContextTracksTableModel)tracksTable.getModel()).setAlbum(null);
 	}
 
 	@Override
@@ -160,8 +171,8 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 		yearLabel = new UrlLabel(getDesktop());
 		yearLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-    	tracksTable = contextInformationTableFactory.getNewTracksTable(contextTableURLOpener);
-        tracksTable.setModel(new ContextTracksTableModel());
+		tracksTable = contextInformationTableFactory.getNewTracksTable(contextTableURLOpener);
+		tracksTable.setModel(new ContextTracksTableModel());
 
 		// Add components
 		return arrangeComponents();

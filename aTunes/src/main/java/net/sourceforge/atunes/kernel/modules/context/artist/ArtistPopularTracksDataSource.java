@@ -34,47 +34,47 @@ import net.sourceforge.atunes.model.IWebServicesHandler;
  */
 public class ArtistPopularTracksDataSource implements IContextInformationSource {
 
-    private IWebServicesHandler webServicesHandler;
-    
-    private IArtistTopTracks topTracks;
-    
-    private IUnknownObjectChecker unknownObjectChecker;
-    
-    /**
-     * @param unknownObjectChecker
-     */
-    public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	private IWebServicesHandler webServicesHandler;
+
+	private IArtistTopTracks topTracks;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
-    
-    @Override
-    public void getData(IAudioObject audioObject) {
-    	this.topTracks = getTopTracksData(audioObject);
-    }
-    
-    /**
-     * @return
-     */
-    public IArtistTopTracks getTopTracks() {
+
+	@Override
+	public void getData(final IAudioObject audioObject) {
+		this.topTracks = getTopTracksData(audioObject);
+	}
+
+	/**
+	 * @return
+	 */
+	public IArtistTopTracks getTopTracks() {
 		return topTracks;
 	}
 
-    private IArtistTopTracks getTopTracksData(IAudioObject audioObject) {
-    	if (!unknownObjectChecker.isUnknownArtist(audioObject.getArtist())) {
-    		return webServicesHandler.getTopTracks(audioObject.getArtist());
-    	}
-    	return null;
-    }
-    
-    /**
-     * @param webServicesHandler
-     */
-    public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+	private IArtistTopTracks getTopTracksData(final IAudioObject audioObject) {
+		if (!unknownObjectChecker.isUnknownArtist(audioObject.getArtist(unknownObjectChecker))) {
+			return webServicesHandler.getTopTracks(audioObject.getArtist(unknownObjectChecker));
+		}
+		return null;
+	}
+
+	/**
+	 * @param webServicesHandler
+	 */
+	public final void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
-    
-    @Override
-    public void cancel() {
-    }
+
+	@Override
+	public void cancel() {
+	}
 
 }

@@ -22,151 +22,100 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IYear;
-import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * This class represents a year, with a set of artist of this year.
  */
 public class Year implements IYear {
 
-    private static final long serialVersionUID = -8560986690062265343L;
+	private static final long serialVersionUID = -8560986690062265343L;
 
-    /** Year value. */
-    String year;
+	/** Year value. */
+	String year;
 
-    /** List of songs of this year. */
-    List<ILocalAudioObject> audioFiles;
+	/** List of songs of this year. */
+	List<ILocalAudioObject> audioFiles;
 
-    /**
+	/**
 	 * Default constructor for serialization
 	 */
 	Year() {
 	}
 
-    /**
-     * Constructor.
-     * @param year
-     */
-    public Year(String year) {
-        this.year = year;
-        this.audioFiles = new ArrayList<ILocalAudioObject>();
-    }
+	/**
+	 * Constructor.
+	 * @param year
+	 */
+	public Year(final String year) {
+		this.year = year;
+		this.audioFiles = new ArrayList<ILocalAudioObject>();
+	}
 
-    /**
-     * Adds an audio file
-     * 
-     * @param a
-     *            the a
-     */
-    @Override
-	public void addAudioObject(ILocalAudioObject a) {
-        audioFiles.add(a);
-    }
+	/**
+	 * Adds an audio file
+	 * 
+	 * @param a
+	 *            the a
+	 */
+	@Override
+	public void addAudioObject(final ILocalAudioObject a) {
+		audioFiles.add(a);
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Year)) {
-            return false;
-        }
-        return ((Year) o).year.equals(year);
-    }
+	@Override
+	public boolean equals(final Object o) {
+		if (!(o instanceof Year)) {
+			return false;
+		}
+		return ((Year) o).year.equals(year);
+	}
 
-    /**
-     * Returns all songs of this year (all songs of all artists) from the given
-     * repository
-     * 
-     * @return the audio objects
-     */
-    @Override
-    public List<ILocalAudioObject> getAudioObjects() {
-        return new ArrayList<ILocalAudioObject>(audioFiles);
-    }
+	/**
+	 * Returns all songs of this year (all songs of all artists) from the given
+	 * repository
+	 * 
+	 * @return the audio objects
+	 */
+	@Override
+	public List<ILocalAudioObject> getAudioObjects() {
+		return new ArrayList<ILocalAudioObject>(audioFiles);
+	}
 
-    /**
-     * Returns the year as a string.
-     * 
-     * @return the year
-     */
-    @Override
-	public String getName() {
-        if (year.isEmpty()) {
-            return Context.getBean(IUnknownObjectChecker.class).getUnknownYear();
-        }
-        return year;
-    }
+	@Override
+	public String getName(final IUnknownObjectChecker unknownObjectChecker) {
+		if (year.isEmpty()) {
+			return unknownObjectChecker.getUnknownYear();
+		}
+		return year;
+	}
 
-    @Override
-    public int hashCode() {
-        return year.hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return year.hashCode();
+	}
 
-    /**
-     * Removes an artist from this year.
-     * 
-     * @param a
-     *            the a
-     */
-    @Override
-	public void removeAudioObject(ILocalAudioObject a) {
-        audioFiles.remove(a);
-    }
+	/**
+	 * Removes an artist from this year.
+	 * 
+	 * @param a
+	 *            the a
+	 */
+	@Override
+	public void removeAudioObject(final ILocalAudioObject a) {
+		audioFiles.remove(a);
+	}
 
-    /**
-     * String representation.
-     * 
-     * @return the string
-     */
-    @Override
-    public String toString() {
-        return getName();
-    }
+	@Override
+	public String toString() {
+		return year;
+	}
 
-    @Override
-    public String getTooltip() {
-        int artistNumber = getArtistSet().size();
-        int songs = size();
-        return StringUtils.getString(getName(), " (", I18nUtils.getString("ARTISTS"), ": ", artistNumber, ", ", I18nUtils.getString("SONGS"), ": ", songs, ")");
-    }
-
-    @Override
-    public boolean isExtendedTooltipSupported() {
-        return true;
-    }
-
-    @Override
-    public boolean isExtendedTooltipImageSupported() {
-        return false;
-    }
-
-    /**
-     * Returns an structure of artists and albums containing songs of this year
-     * 
-     * @return the artists
-     */
-    @Override
-	public Map<String, IArtist> getArtistObjects() {
-    	return new ArtistStructureBuilder().getArtistObjects(getAudioObjects());
-    }
-
-    /**
-     * Returns all artists of this year
-     */
-    @Override
-	public Set<String> getArtistSet() {
-    	return new ArtistStructureBuilder().getArtistSet(getAudioObjects());
-    }
-    
-    @Override
-    public int size() {
-    	return audioFiles.size();
-    }
+	@Override
+	public int size() {
+		return audioFiles.size();
+	}
 }

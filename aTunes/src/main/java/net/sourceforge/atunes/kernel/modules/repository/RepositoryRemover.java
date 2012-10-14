@@ -140,7 +140,7 @@ public class RepositoryRemover {
 	 * @param file
 	 */
 	private void removeFromGenreStructure(final ILocalAudioObject file) {
-		String genre = file.getGenre();
+		String genre = file.getGenre(unknownObjectChecker);
 
 		IGenre g = repositoryHandler.getGenre(genre);
 		if (g != null) {
@@ -155,9 +155,9 @@ public class RepositoryRemover {
 	 * @param file
 	 */
 	private void removeFromTreeStructure(final ILocalAudioObject file) {
-		String albumArtist = file.getAlbumArtist();
-		String artist = file.getArtist();
-		String album = file.getAlbum();
+		String albumArtist = file.getAlbumArtist(unknownObjectChecker);
+		String artist = file.getArtist(unknownObjectChecker);
+		String album = file.getAlbum(unknownObjectChecker);
 
 		IArtist a = repositoryHandler.getArtist(albumArtist);
 		if (a == null || unknownObjectChecker.isUnknownArtist(a)) {

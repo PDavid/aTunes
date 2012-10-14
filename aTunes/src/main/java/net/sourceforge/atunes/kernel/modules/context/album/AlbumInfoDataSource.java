@@ -53,104 +53,104 @@ import org.apache.sanselan.ImageWriteException;
  */
 public class AlbumInfoDataSource implements IContextInformationSource {
 
-    private IStateContext stateContext;
-    
-    private IWebServicesHandler webServicesHandler;
-    
-    private IOSManager osManager;
-    
-    private IAudioObjectImageLocator audioObjectImageLocator;
-    
-    private IAlbumInfo albumInfo;
-    
-    private ImageIcon image;
-    
-    private IAudioObject audioObject;
-    
-    private IUnknownObjectChecker unknownObjectChecker;
-    
-    /**
-     * @param unknownObjectChecker
-     */
-    public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	private IStateContext stateContext;
+
+	private IWebServicesHandler webServicesHandler;
+
+	private IOSManager osManager;
+
+	private IAudioObjectImageLocator audioObjectImageLocator;
+
+	private IAlbumInfo albumInfo;
+
+	private ImageIcon image;
+
+	private IAudioObject audioObject;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
-    @Override
-    public void getData(IAudioObject audioObject) {
-    	this.audioObject = audioObject;
-    	this.albumInfo = getAlbumInfoData(audioObject);
+	@Override
+	public void getData(final IAudioObject audioObject) {
+		this.audioObject = audioObject;
+		this.albumInfo = getAlbumInfoData(audioObject);
 		this.image = getImageData(albumInfo, audioObject);
-    }
-    
-    /**
-     * @return
-     */
-    public IAudioObject getAudioObject() {
+	}
+
+	/**
+	 * @return
+	 */
+	public IAudioObject getAudioObject() {
 		return audioObject;
 	}
 
-    /**
-     * @return
-     */
-    public IAlbumInfo getAlbumInfo() {
+	/**
+	 * @return
+	 */
+	public IAlbumInfo getAlbumInfo() {
 		return albumInfo;
 	}
-    
-    /**
-     * @return
-     */
-    public ImageIcon getImage() {
+
+	/**
+	 * @return
+	 */
+	public ImageIcon getImage() {
 		return image;
 	}
-    
-    /**
-     * Returns album information
-     * 
-     * @param audioObject
-     * @return
-     */
-    private IAlbumInfo getAlbumInfoData(IAudioObject audioObject) {
-        // Get album info
-        IAlbumInfo album = webServicesHandler.getAlbum(audioObject.getAlbumArtistOrArtist(), audioObject.getAlbum());
 
-        // If album was not found try to get an album from the same artist that match
-        if (album == null) {
-            album = tryToFindAnotherAlbumFromSameArtist(audioObject);
-        }
+	/**
+	 * Returns album information
+	 * 
+	 * @param audioObject
+	 * @return
+	 */
+	private IAlbumInfo getAlbumInfoData(final IAudioObject audioObject) {
+		// Get album info
+		IAlbumInfo album = webServicesHandler.getAlbum(audioObject.getAlbumArtistOrArtist(unknownObjectChecker), audioObject.getAlbum(unknownObjectChecker));
 
-        return album;
-        // Get image of album or custom image for audio object
-    }
+		// If album was not found try to get an album from the same artist that match
+		if (album == null) {
+			album = tryToFindAnotherAlbumFromSameArtist(audioObject);
+		}
+
+		return album;
+		// Get image of album or custom image for audio object
+	}
 
 	/**
 	 * @param audioObject
 	 * @return
 	 */
-	private IAlbumInfo tryToFindAnotherAlbumFromSameArtist(IAudioObject audioObject) {
-		
+	private IAlbumInfo tryToFindAnotherAlbumFromSameArtist(final IAudioObject audioObject) {
+
 		// Wait a second to prevent IP banning
 		try {
-		    Thread.sleep(1000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 		}
 
 		List<IAlbumInfo> albums = null;
-		if (!unknownObjectChecker.isUnknownArtist(audioObject.getAlbumArtistOrArtist())) {
-		    // Get album list
-		    albums = getAlbumList(audioObject.getAlbumArtistOrArtist());
+		if (!unknownObjectChecker.isUnknownArtist(audioObject.getAlbumArtistOrArtist(unknownObjectChecker))) {
+			// Get album list
+			albums = getAlbumList(audioObject.getAlbumArtistOrArtist(unknownObjectChecker));
 		}
 
 		if (albums != null) {
-		    // Try to find an album which fits 
-		    IAlbumInfo matchingAlbum = analyseAlbums(audioObject, albums);
-		    if (matchingAlbum != null) {
-		        // Get full information for album
-		        matchingAlbum = webServicesHandler.getAlbum(matchingAlbum.getArtist(), matchingAlbum.getTitle());
-		        if (matchingAlbum != null) {
-		            return matchingAlbum;
-		        }
-		    }
+			// Try to find an album which fits
+			IAlbumInfo matchingAlbum = analyseAlbums(audioObject, albums);
+			if (matchingAlbum != null) {
+				// Get full information for album
+				matchingAlbum = webServicesHandler.getAlbum(matchingAlbum.getArtist(), matchingAlbum.getTitle());
+				if (matchingAlbum != null) {
+					return matchingAlbum;
+				}
+			}
 		}
 		return null;
 	}
@@ -160,7 +160,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 	 * @param albums
 	 * @return
 	 */
-	private IAlbumInfo analyseAlbums(IAudioObject audioObject, List<IAlbumInfo> albums) {
+	private IAlbumInfo analyseAlbums(final IAudioObject audioObject, final List<IAlbumInfo> albums) {
 		for (IAlbumInfo a : albums) {
 			IAlbumInfo auxAlbum = getMacthingAlbum(audioObject, a);
 			if (auxAlbum != null) {
@@ -176,30 +176,30 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 	 * @param a
 	 * @return
 	 */
-	private IAlbumInfo getMacthingAlbum(IAudioObject audioObject, IAlbumInfo a) {
+	private IAlbumInfo getMacthingAlbum(final IAudioObject audioObject, final IAlbumInfo a) {
 		StringTokenizer st = new StringTokenizer(a.getTitle(), " ");
 		boolean matches = true;
 		int tokensAnalyzed = 0;
 		while (st.hasMoreTokens() && matches) {
-		    String t = st.nextToken();
-		    if (forbiddenToken(t)) { // Ignore album if contains forbidden chars
-		        matches = false;
-		        break;
-		    }
-		    if (!validToken(t)) { // Ignore tokens without alphanumerics
-		        if (tokensAnalyzed == 0 && !st.hasMoreTokens()) {
-		            matches = false;
-		        } else {
-		            continue;
-		        }
-		    }
-		    if (!audioObject.getAlbum().toLowerCase().contains(t.toLowerCase())) {
-		        matches = false;
-		    }
-		    tokensAnalyzed++;
+			String t = st.nextToken();
+			if (forbiddenToken(t)) { // Ignore album if contains forbidden chars
+				matches = false;
+				break;
+			}
+			if (!validToken(t)) { // Ignore tokens without alphanumerics
+				if (tokensAnalyzed == 0 && !st.hasMoreTokens()) {
+					matches = false;
+				} else {
+					continue;
+				}
+			}
+			if (!audioObject.getAlbum(unknownObjectChecker).toLowerCase().contains(t.toLowerCase())) {
+				matches = false;
+			}
+			tokensAnalyzed++;
 		}
 		if (matches) {
-		    return a;
+			return a;
 		}
 		return null;
 	}
@@ -208,116 +208,116 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 	 * @param artist
 	 * @return
 	 */
-	private List<IAlbumInfo> getAlbumList(String artist) {
+	private List<IAlbumInfo> getAlbumList(final String artist) {
 		IAlbumListInfo albumList = webServicesHandler.getAlbumList(artist);
 		if (albumList != null) {
-		    return albumList.getAlbums();
+			return albumList.getAlbums();
 		}
 		return null;
 	}
 
-    /**
-     * Returns image from lastfm or from custom image
-     * 
-     * @param albumInfo
-     * @param audioObject
-     * @return
-     */
-    private ImageIcon getImageData(IAlbumInfo albumInfo, IAudioObject audioObject) {
-        ImageIcon imageIcon = null;
-        if (albumInfo != null) {
-            imageIcon = webServicesHandler.getAlbumImage(albumInfo);
-            // This data source should only be used with audio files but anyway check if audioObject is an LocalAudioObject before save picture
-            if (audioObject instanceof ILocalAudioObject) {
-                savePicture(imageIcon, (ILocalAudioObject) audioObject);
-            }
-        } else {
-            imageIcon = audioObjectImageLocator.getImage(audioObject, ImageSize.SIZE_MAX);
-        }
-        
-        return imageIcon;
-    }
+	/**
+	 * Returns image from lastfm or from custom image
+	 * 
+	 * @param albumInfo
+	 * @param audioObject
+	 * @return
+	 */
+	private ImageIcon getImageData(final IAlbumInfo albumInfo, final IAudioObject audioObject) {
+		ImageIcon imageIcon = null;
+		if (albumInfo != null) {
+			imageIcon = webServicesHandler.getAlbumImage(albumInfo);
+			// This data source should only be used with audio files but anyway check if audioObject is an LocalAudioObject before save picture
+			if (audioObject instanceof ILocalAudioObject) {
+				savePicture(imageIcon, (ILocalAudioObject) audioObject);
+			}
+		} else {
+			imageIcon = audioObjectImageLocator.getImage(audioObject, ImageSize.SIZE_MAX);
+		}
 
-    /**
-     * Saves an image related to an audio file from a web service in the folder
-     * where audio file is
-     * 
-     * @param img
-     * @param file
-     */
-    private void savePicture(ImageIcon img, ILocalAudioObject file) {
-        if (img != null && stateContext.isSaveContextPicture()) { // save image in folder of file
-            String imageFileName = AudioFilePictureUtils.getFileNameForCover(file, osManager);
+		return imageIcon;
+	}
 
-            File imageFile = new File(imageFileName);
-            if (!imageFile.exists()) {
-                // Save picture
-                try {
-                    ImageUtils.writeImageToFile(img.getImage(), imageFileName);
-                } catch (IOException e) {
-                    Logger.error(e);
-                } catch (ImageWriteException e) {
-                    Logger.error(e);
+	/**
+	 * Saves an image related to an audio file from a web service in the folder
+	 * where audio file is
+	 * 
+	 * @param img
+	 * @param file
+	 */
+	private void savePicture(final ImageIcon img, final ILocalAudioObject file) {
+		if (img != null && stateContext.isSaveContextPicture()) { // save image in folder of file
+			String imageFileName = AudioFilePictureUtils.getFileNameForCover(file, osManager, unknownObjectChecker);
+
+			File imageFile = new File(imageFileName);
+			if (!imageFile.exists()) {
+				// Save picture
+				try {
+					ImageUtils.writeImageToFile(img.getImage(), imageFileName);
+				} catch (IOException e) {
+					Logger.error(e);
+				} catch (ImageWriteException e) {
+					Logger.error(e);
 				}
-            }
-        }
-    }
+			}
+		}
+	}
 
-    /**
-     * Valid token.
-     * 
-     * @param t
-     *            the t
-     * 
-     * @return true, if successful
-     */
-    private boolean validToken(String t) {
-        return t.matches("[A-Za-z]+");
-        //t.contains("(") || t.contains(")")
-    }
+	/**
+	 * Valid token.
+	 * 
+	 * @param t
+	 *            the t
+	 * 
+	 * @return true, if successful
+	 */
+	private boolean validToken(final String t) {
+		return t.matches("[A-Za-z]+");
+		//t.contains("(") || t.contains(")")
+	}
 
-    /**
-     * Forbidden token.
-     * 
-     * @param t
-     *            the t
-     * 
-     * @return true, if successful
-     */
-    private boolean forbiddenToken(String t) {
-        return t.contains("/");
-    }
-    
-    /**
-     * @param osManager
-     */
-    public void setOsManager(IOSManager osManager) {
+	/**
+	 * Forbidden token.
+	 * 
+	 * @param t
+	 *            the t
+	 * 
+	 * @return true, if successful
+	 */
+	private boolean forbiddenToken(final String t) {
+		return t.contains("/");
+	}
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-    
-    /**
-     * @param webServicesHandler
-     */
-    public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+
+	/**
+	 * @param webServicesHandler
+	 */
+	public final void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
-    
-    /**
-     * @param stateContext
-     */
-    public void setStateContext(IStateContext stateContext) {
+
+	/**
+	 * @param stateContext
+	 */
+	public void setStateContext(final IStateContext stateContext) {
 		this.stateContext = stateContext;
 	}
-    
-    /**
-     * @param audioObjectImageLocator
-     */
-    public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
+
+	/**
+	 * @param audioObjectImageLocator
+	 */
+	public void setAudioObjectImageLocator(final IAudioObjectImageLocator audioObjectImageLocator) {
 		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
-    
-    @Override
-    public void cancel() {
-    }
+
+	@Override
+	public void cancel() {
+	}
 
 }

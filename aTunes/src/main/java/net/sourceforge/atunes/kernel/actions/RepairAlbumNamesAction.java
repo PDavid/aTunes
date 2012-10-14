@@ -42,79 +42,79 @@ import com.google.common.collect.Collections2;
  */
 public class RepairAlbumNamesAction extends CustomAbstractAction {
 
-    private final class FilesWithEmptyAlbumFilter implements Predicate<ILocalAudioObject> {
+	private final class FilesWithEmptyAlbumFilter implements Predicate<ILocalAudioObject> {
 		@Override
-		public boolean apply(ILocalAudioObject ao) {
-			return ao.getAlbum() == null || unknownObjectChecker.isUnknownAlbum(ao.getAlbum()) || ao.getAlbum().isEmpty();
+		public boolean apply(final ILocalAudioObject ao) {
+			return ao.getAlbum(unknownObjectChecker) == null || unknownObjectChecker.isUnknownAlbum(ao.getAlbum(unknownObjectChecker)) || ao.getAlbum(unknownObjectChecker).isEmpty();
 		}
 	}
 
 	private static final long serialVersionUID = -7828819966696617838L;
 
-	
-    private IRepositoryHandler repositoryHandler;
-    
-    private IProcessFactory processFactory;
-    
+
+	private IRepositoryHandler repositoryHandler;
+
+	private IProcessFactory processFactory;
+
 	private IUnknownObjectChecker unknownObjectChecker;
-	
+
 	private IDialogFactory dialogFactory;
-	
+
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-	
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
-    /**
-     * @param processFactory
-     */
-    public void setProcessFactory(IProcessFactory processFactory) {
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(final IProcessFactory processFactory) {
 		this.processFactory = processFactory;
 	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
-    
-    /**
-     * Default constructor
-     */
-    public RepairAlbumNamesAction() {
-        super(I18nUtils.getString("REPAIR_ALBUM_NAMES"));
-    }
 
-    @Override
-    protected void executeAction() {
-        // Show confirmation dialog
-    	IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
-    	dialog.setMessage(I18nUtils.getString("REPAIR_ALBUM_NAMES_MESSAGE"));
-    	dialog.showDialog();
-        if (dialog.userAccepted()) {
-            // Call album name edit
-        	IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("setAlbumNamesProcess");
-        	process.setFilesToChange(getFilesWithEmptyAlbum(repositoryHandler.getAudioFilesList()));
-            process.execute();
-        }
-    }
-    
-    /**
-     * Returns files without album
-     * @param audioFiles
-     * @return
-     */
-    private Collection<ILocalAudioObject> getFilesWithEmptyAlbum(Collection<ILocalAudioObject> audioFiles) {
-    	return Collections2.filter(audioFiles, new FilesWithEmptyAlbumFilter());
-    }
+	/**
+	 * Default constructor
+	 */
+	public RepairAlbumNamesAction() {
+		super(I18nUtils.getString("REPAIR_ALBUM_NAMES"));
+	}
+
+	@Override
+	protected void executeAction() {
+		// Show confirmation dialog
+		IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
+		dialog.setMessage(I18nUtils.getString("REPAIR_ALBUM_NAMES_MESSAGE"));
+		dialog.showDialog();
+		if (dialog.userAccepted()) {
+			// Call album name edit
+			IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("setAlbumNamesProcess");
+			process.setFilesToChange(getFilesWithEmptyAlbum(repositoryHandler.getAudioFilesList()));
+			process.execute();
+		}
+	}
+
+	/**
+	 * Returns files without album
+	 * @param audioFiles
+	 * @return
+	 */
+	private Collection<ILocalAudioObject> getFilesWithEmptyAlbum(final Collection<ILocalAudioObject> audioFiles) {
+		return Collections2.filter(audioFiles, new FilesWithEmptyAlbumFilter());
+	}
 }

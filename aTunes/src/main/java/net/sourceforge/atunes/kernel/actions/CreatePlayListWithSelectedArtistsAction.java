@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -43,67 +44,80 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverSelectedObjects<IAudioObject> {
 
-    private static final long serialVersionUID = 242525309967706255L;
+	private static final long serialVersionUID = 242525309967706255L;
 
-    private IRepositoryHandler repositoryHandler;
-    
-    private IPlayListHandler playListHandler;
-    
-    private IAudioObjectComparator audioObjectComparator;
-    
-    /**
-     * @param audioObjectComparator
-     */
-    public void setAudioObjectComparator(IAudioObjectComparator audioObjectComparator) {
+	private IRepositoryHandler repositoryHandler;
+
+	private IPlayListHandler playListHandler;
+
+	private IAudioObjectComparator audioObjectComparator;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
+	/**
+	 * @param audioObjectComparator
+	 */
+	public void setAudioObjectComparator(final IAudioObjectComparator audioObjectComparator) {
 		this.audioObjectComparator = audioObjectComparator;
 	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    public CreatePlayListWithSelectedArtistsAction() {
-        super(I18nUtils.getString("SET_ARTIST_AS_PLAYLIST"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("ARTIST_BUTTON_TOOLTIP"));
-        setEnabled(false);
-    }
 
-    @Override
-    protected void executeAction(List<IAudioObject> objects) {
-        // Get selected artists from play list
-        List<IArtist> selectedArtists = new ArrayList<IArtist>();
-        for (IAudioObject ao : objects) {
-            String artist = ao.getArtist();
-            IArtist a = repositoryHandler.getArtist(artist);
-            if (a != null && !selectedArtists.contains(a)) {
-            	selectedArtists.add(a);
-            }
-        }
+	/**
+	 * Default constructor
+	 */
+	public CreatePlayListWithSelectedArtistsAction() {
+		super(I18nUtils.getString("SET_ARTIST_AS_PLAYLIST"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("ARTIST_BUTTON_TOOLTIP"));
+		setEnabled(false);
+	}
 
-        // For every artist create a play list
-        createPlayLists(selectedArtists);
-    }
+	@Override
+	protected void executeAction(final List<IAudioObject> objects) {
+		// Get selected artists from play list
+		List<IArtist> selectedArtists = new ArrayList<IArtist>();
+		for (IAudioObject ao : objects) {
+			String artist = ao.getArtist(unknownObjectChecker);
+			IArtist a = repositoryHandler.getArtist(artist);
+			if (a != null && !selectedArtists.contains(a)) {
+				selectedArtists.add(a);
+			}
+		}
+
+		// For every artist create a play list
+		createPlayLists(selectedArtists);
+	}
 
 	/**
 	 * @param selectedArtists
 	 */
-	private void createPlayLists(List<IArtist> selectedArtists) {
+	private void createPlayLists(final List<IArtist> selectedArtists) {
 		for (IArtist artist : selectedArtists) {
-            List<ILocalAudioObject> audioObjects = repositoryHandler.getAudioFilesForArtists(Collections.singletonMap(artist.getName(), artist));
-            audioObjectComparator.sort(audioObjects);
+			List<ILocalAudioObject> audioObjects = repositoryHandler.getAudioFilesForArtists(Collections.singletonMap(artist.getName(), artist));
+			audioObjectComparator.sort(audioObjects);
 
-            // Create a new play list with artist as name and audio objects selected
-            playListHandler.newPlayList(artist.getName(), audioObjects);
-        }
+			// Create a new play list with artist as name and audio objects selected
+			playListHandler.newPlayList(artist.getName(), audioObjects);
+		}
 	}
 }

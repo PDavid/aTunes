@@ -22,12 +22,23 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 class ArtistAudioObjectSelector extends AudioObjectSelector<IArtist, IAudioObject> {
 
+	private final IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	ArtistAudioObjectSelector(final IUnknownObjectChecker unknownObjectChecker) {
+		super();
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
 	@Override
-	boolean equals(IArtist artist, IAudioObject audioObject) {
-		return artist.getName().equals(audioObject.getArtist());
+	boolean equals(final IArtist artist, final IAudioObject audioObject) {
+		return artist.getName().equals(audioObject.getArtist(unknownObjectChecker));
 	}
 
 }

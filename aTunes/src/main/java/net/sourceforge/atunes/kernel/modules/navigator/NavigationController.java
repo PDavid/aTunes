@@ -66,6 +66,7 @@ import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.springframework.context.ApplicationContext;
@@ -111,6 +112,16 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
 	private IStateNavigation stateNavigation;
 
 	private IBeanFactory beanFactory;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	/**
 	 * @param beanFactory
@@ -259,7 +270,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
 	public ExtendedToolTip getExtendedToolTip() {
 		if (extendedToolTip == null) {
 			JDialog.setDefaultLookAndFeelDecorated(false);
-			extendedToolTip = new ExtendedToolTip(lookAndFeelManager.getCurrentLookAndFeel());
+			extendedToolTip = new ExtendedToolTip(lookAndFeelManager.getCurrentLookAndFeel(), unknownObjectChecker);
 			JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager.getCurrentLookAndFeel().isDialogUndecorated());
 		}
 		return extendedToolTip;
@@ -353,10 +364,9 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
 	 * @param currentAlbumToolTipContent
 	 *            the new current album tool tip content
 	 */
-	@SuppressWarnings("unchecked")
 	public void setCurrentExtendedToolTipContent(final Object currentAlbumToolTipContent) {
 		this.currentExtendedToolTipContent = currentAlbumToolTipContent;
-		getExtendedToolTip().setSizeToFitImage(currentAlbumToolTipContent instanceof ITreeObject && ((ITreeObject<? extends IAudioObject>) currentAlbumToolTipContent).isExtendedTooltipImageSupported());
+		getExtendedToolTip().setSizeToFitImage(currentAlbumToolTipContent);
 	}
 
 	/**

@@ -27,69 +27,68 @@ import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class LastFmSongServices {
-	
+
 	private LastFmAlbumServices lastFmAlbumServices;
-	
+
 	private IUnknownObjectChecker unknownObjectChecker;
-	
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
-	
+
 	/**
 	 * @param lastFmAlbumServices
 	 */
-	public void setLastFmAlbumServices(LastFmAlbumServices lastFmAlbumServices) {
+	public void setLastFmAlbumServices(final LastFmAlbumServices lastFmAlbumServices) {
 		this.lastFmAlbumServices = lastFmAlbumServices;
 	}
 
-    /**
-     * Return title of an LocalAudioObject known its artist and album
-     * 
-     * @param f
-     * @return
-     */
-    String getTitleForFile(ILocalAudioObject f) {
-        // If has valid artist name, album name, and track number...
-        if (!unknownObjectChecker.isUnknownArtist(f.getArtist())
-                && !unknownObjectChecker.isUnknownAlbum(f.getAlbum()) && f.getTrackNumber() > 0) {
-            // Find album
-            IAlbumInfo albumRetrieved = lastFmAlbumServices.getAlbum(f.getArtist(), f.getAlbum());
-            if (albumRetrieved != null && albumRetrieved.getTracks().size() >= f.getTrackNumber()) {
-            	// Get track
-            	return albumRetrieved.getTracks().get(f.getTrackNumber() - 1).getTitle();
-            }
-        }
-        return null;
-    }
+	/**
+	 * Return title of an LocalAudioObject known its artist and album
+	 * 
+	 * @param f
+	 * @return
+	 */
+	String getTitleForFile(final ILocalAudioObject f) {
+		// If has valid artist name, album name, and track number...
+		if (!unknownObjectChecker.isUnknownArtist(f.getArtist(unknownObjectChecker))
+				&& !unknownObjectChecker.isUnknownAlbum(f.getAlbum(unknownObjectChecker)) && f.getTrackNumber() > 0) {
+			// Find album
+			IAlbumInfo albumRetrieved = lastFmAlbumServices.getAlbum(f.getArtist(unknownObjectChecker), f.getAlbum(unknownObjectChecker));
+			if (albumRetrieved != null && albumRetrieved.getTracks().size() >= f.getTrackNumber()) {
+				// Get track
+				return albumRetrieved.getTracks().get(f.getTrackNumber() - 1).getTitle();
+			}
+		}
+		return null;
+	}
 
-    /**
-     * Return track number of an LocalAudioObject known its artist and album
-     * 
-     * @param f
-     * @return
-     */
-    int getTrackNumberForFile(ILocalAudioObject f) {
-        // If has valid artist name, album name and title
-        if (!unknownObjectChecker.isUnknownArtist(f.getArtist())
-                && !unknownObjectChecker.isUnknownAlbum(f.getAlbum()) && !StringUtils.isEmpty(f.getTitle())) {
-            // Find album
-            IAlbumInfo albumRetrieved = lastFmAlbumServices.getAlbum(f.getArtist(), f.getAlbum());
-            if (albumRetrieved != null) {
-                // Try to match titles to get track
-                int trackIndex = 1;
-                for (ITrackInfo track : albumRetrieved.getTracks()) {
-                    if (track.getTitle().equalsIgnoreCase(f.getTitle())) {
-                        return trackIndex;
-                    }
-                    trackIndex++;
-                }
-            }
-        }
-        return 0;
-    }
-
+	/**
+	 * Return track number of an LocalAudioObject known its artist and album
+	 * 
+	 * @param f
+	 * @return
+	 */
+	int getTrackNumberForFile(final ILocalAudioObject f) {
+		// If has valid artist name, album name and title
+		if (!unknownObjectChecker.isUnknownArtist(f.getArtist(unknownObjectChecker))
+				&& !unknownObjectChecker.isUnknownAlbum(f.getAlbum(unknownObjectChecker)) && !StringUtils.isEmpty(f.getTitle())) {
+			// Find album
+			IAlbumInfo albumRetrieved = lastFmAlbumServices.getAlbum(f.getArtist(unknownObjectChecker), f.getAlbum(unknownObjectChecker));
+			if (albumRetrieved != null) {
+				// Try to match titles to get track
+				int trackIndex = 1;
+				for (ITrackInfo track : albumRetrieved.getTracks()) {
+					if (track.getTitle().equalsIgnoreCase(f.getTitle())) {
+						return trackIndex;
+					}
+					trackIndex++;
+				}
+			}
+		}
+		return 0;
+	}
 }

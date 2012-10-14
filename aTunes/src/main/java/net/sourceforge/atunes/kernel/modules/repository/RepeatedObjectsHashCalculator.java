@@ -18,30 +18,31 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs.properties;
+package net.sourceforge.atunes.kernel.modules.repository;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
-class AlbumProvider extends AbstractFieldProvider {
+/**
+ * Calculates a hash of an audio object using artist and title
+ * @author alex
+ *
+ */
+final class RepeatedObjectsHashCalculator implements IHashCalculator {
 
 	private final IUnknownObjectChecker unknownObjectChecker;
 
 	/**
 	 * @param unknownObjectChecker
 	 */
-	AlbumProvider(final IUnknownObjectChecker unknownObjectChecker) {
-		super();
+	public RepeatedObjectsHashCalculator(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	@Override
-	public String getI18Name() {
-		return "ALBUM";
-	}
-
-	@Override
-	public String getClearValue(final ILocalAudioObject file) {
-		return file.getAlbum(unknownObjectChecker);
+	public int getHash(final ILocalAudioObject lao) {
+		return (lao.getAlbumArtist(unknownObjectChecker) != null && !lao.getAlbumArtist(unknownObjectChecker).trim().equals("") ?
+				lao.getAlbumArtist(unknownObjectChecker) : lao.getArtist(unknownObjectChecker))
+				.hashCode() * lao.getTitle().hashCode();
 	}
 }
