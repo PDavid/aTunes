@@ -23,29 +23,30 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 import javax.swing.table.DefaultTableModel;
 
 final class AvailablePatternsDefaultTableModel extends DefaultTableModel {
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 7475413284696491261L;
+	private static final long serialVersionUID = 7475413284696491261L;
 
-    private Object[][] data;
-    
-    AvailablePatternsDefaultTableModel(Object[][] data, Object[] columnNames) {
-        super(data, columnNames);
-        this.data = data;
-    }
+	private final Object[][] data;
 
-    @Override
-    public boolean isCellEditable(int row, int column) {        	
-        return false;
-    }
-    
-    /**
-     * Returns pattern at given row
-     * @param row
-     * @return pattern at given row
-     */
-    public String getPatternAtRow(int row) {
-    	return (String) data[row][0];
-    }
+	AvailablePatternsDefaultTableModel(final Object[][] data, final Object[] columnNames) {
+		super(data, columnNames);
+		this.data = new Object[data.length][];
+		System.arraycopy(data, 0, this.data, 0, data.length);
+	}
+
+	@Override
+	public boolean isCellEditable(final int row, final int column) {
+		return false;
+	}
+
+	/**
+	 * Returns pattern at given row
+	 * @param row
+	 * @return pattern at given row
+	 */
+	public String getPatternAtRow(final int row) {
+		return (String) data[row][0];
+	}
 }

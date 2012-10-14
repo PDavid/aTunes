@@ -149,7 +149,7 @@ public class XineEngine extends AbstractPlayerEngine {
 				durationUpdater = new Timer(250, new DurationUpdaterActionListener(audioObjectToPlay));
 				durationUpdater.start();
 			} else {
-				currentAudioObjectFinished(false, errorMessage);
+				currentAudioObjectFinishedWithError(new Exception(errorMessage));
 			}
 		}
 	}
@@ -243,7 +243,7 @@ public class XineEngine extends AbstractPlayerEngine {
 			xineController.start(0, (int) milliseconds);
 		} catch (Exception e) {
 			info("Xine encountered an error: " + e);
-			currentAudioObjectFinished(false, "Xine encountered an error: ", e.getMessage());
+			currentAudioObjectFinishedWithError(new Exception(StringUtils.getString("Xine encountered an error: ", e.getMessage()), e));
 		}
 	}
 
@@ -329,7 +329,7 @@ public class XineEngine extends AbstractPlayerEngine {
 					SwingUtilities.invokeAndWait(new Runnable() {
 						@Override
 						public void run() {
-							currentAudioObjectFinished(true);
+							currentAudioObjectFinished();
 						}
 					});
 				} catch (InterruptedException e) {

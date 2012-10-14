@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 import net.sourceforge.atunes.kernel.modules.process.SetTrackNumberProcess;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
@@ -37,11 +39,16 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
+/**
+ * Sets automatically track number of songs
+ * @author alex
+ *
+ */
 public class RepairTrackNumbersAction extends CustomAbstractAction {
 
-    private static final class FilesWithEmptyTracksFilter implements Predicate<ILocalAudioObject> {
+	private static final class FilesWithEmptyTracksFilter implements Predicate<ILocalAudioObject> {
 		@Override
-		public boolean apply(ILocalAudioObject ao) {
+		public boolean apply(@Nonnull final ILocalAudioObject ao) {
 			return ao.getTrackNumber() == 0;
 		}
 	}
@@ -49,118 +56,121 @@ public class RepairTrackNumbersAction extends CustomAbstractAction {
 
 	private static final long serialVersionUID = 4117130815173907225L;
 
-    private IProcessFactory processFactory;
-    
-    private IRepositoryHandler repositoryHandler;
-    
-    private IWebServicesHandler webServicesHandler;
-    
-    private IDialogFactory dialogFactory;
-    
-    private static final Pattern NUMBER_SEPARATOR_PATTERN = Pattern.compile("[^0-9]+");
+	private IProcessFactory processFactory;
 
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
+	private IRepositoryHandler repositoryHandler;
+
+	private IWebServicesHandler webServicesHandler;
+
+	private IDialogFactory dialogFactory;
+
+	private static final Pattern NUMBER_SEPARATOR_PATTERN = Pattern.compile("[^0-9]+");
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-    
-    /**
-     * @param webServicesHandler
-     */
-    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+
+	/**
+	 * @param webServicesHandler
+	 */
+	public void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
-    
-    /**
-     * @param processFactory
-     */
-    public void setProcessFactory(IProcessFactory processFactory) {
+
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(final IProcessFactory processFactory) {
 		this.processFactory = processFactory;
 	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
-    public RepairTrackNumbersAction() {
-        super(I18nUtils.getString("REPAIR_TRACK_NUMBERS"));
-    }
+	/**
+	 * Constructor
+	 */
+	public RepairTrackNumbersAction() {
+		super(I18nUtils.getString("REPAIR_TRACK_NUMBERS"));
+	}
 
-    @Override
-    protected void executeAction() {
-        // Show confirmation dialog
-    	IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
-    	dialog.setMessage(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"));
-        if (dialog.userAccepted()) {
-            // Call track number edit
-            /*
-             * Given an array of files, returns a map containing each file and its
-             * track number based on information found on file name.
-             */
-            Map<ILocalAudioObject, Integer> filesToSet = new HashMap<ILocalAudioObject, Integer>();
-            for (ILocalAudioObject ao : getFilesWithEmptyTracks(repositoryHandler.getAudioFilesList())) {
-                int trackNumber = getTrackNumber(ao);
+	@Override
+	protected void executeAction() {
+		// Show confirmation dialog
+		IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
+		dialog.setMessage(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"));
+		if (dialog.userAccepted()) {
+			// Call track number edit
+			/*
+			 * Given an array of files, returns a map containing each file and its
+			 * track number based on information found on file name.
+			 */
+			Map<ILocalAudioObject, Integer> filesToSet = new HashMap<ILocalAudioObject, Integer>();
+			for (ILocalAudioObject ao : getFilesWithEmptyTracks(repositoryHandler.getAudioFilesList())) {
+				int trackNumber = getTrackNumber(ao);
 
-                if (trackNumber != 0) {
-                    filesToSet.put(ao, trackNumber);
-                }
-            }
-            if (!filesToSet.isEmpty()) {
-                // Call process
-                SetTrackNumberProcess process = (SetTrackNumberProcess) processFactory.getProcessByName("setTrackNumberProcess");
-                process.setFilesAndTracks(filesToSet);
-                process.execute();
-            }
-        }
-    }
-    
-    /**
-     * Returns track number for a given audio file
-     * 
-     * @param audioFile
-     * @return
-     */
-    private int getTrackNumber(ILocalAudioObject audioFile) {
-        // Try to get a number from file name
-        String fileName = audioFile.getNameWithoutExtension();
-        String[] aux = NUMBER_SEPARATOR_PATTERN.split(fileName);
-        int trackNumber = 0;
-        int i = 0;
-        while (trackNumber == 0 && i < aux.length) {
-            String token = aux[i];
-            try {
-                trackNumber = Integer.parseInt(token);
-                // If trackNumber >= 1000 maybe it's not a track number (year?) 
-                if (trackNumber >= 1000) {
-                    trackNumber = 0;
-                }
-            } catch (NumberFormatException e) {
-                // Ok, it's not a valid number, skip it
-            }
-            i++;
-        }
+				if (trackNumber != 0) {
+					filesToSet.put(ao, trackNumber);
+				}
+			}
+			if (!filesToSet.isEmpty()) {
+				// Call process
+				SetTrackNumberProcess process = (SetTrackNumberProcess) processFactory.getProcessByName("setTrackNumberProcess");
+				process.setFilesAndTracks(filesToSet);
+				process.execute();
+			}
+		}
+	}
 
-        // If trackNumber could not be retrieved from file name, try to get from last.fm
-        // To get this, titles must match
-        if (trackNumber == 0) {
-            trackNumber = webServicesHandler.getTrackNumber(audioFile);
-        }
+	/**
+	 * Returns track number for a given audio file
+	 * 
+	 * @param audioFile
+	 * @return
+	 */
+	private int getTrackNumber(final ILocalAudioObject audioFile) {
+		// Try to get a number from file name
+		String fileName = audioFile.getNameWithoutExtension();
+		String[] aux = NUMBER_SEPARATOR_PATTERN.split(fileName);
+		int trackNumber = 0;
+		int i = 0;
+		while (trackNumber == 0 && i < aux.length) {
+			String token = aux[i];
+			try {
+				trackNumber = Integer.parseInt(token);
+				// If trackNumber >= 1000 maybe it's not a track number (year?)
+				if (trackNumber >= 1000) {
+					trackNumber = 0;
+				}
+			} catch (NumberFormatException e) {
+				// Ok, it's not a valid number, skip it
+			}
+			i++;
+		}
 
-        return trackNumber;
-    }
+		// If trackNumber could not be retrieved from file name, try to get from last.fm
+		// To get this, titles must match
+		if (trackNumber == 0) {
+			trackNumber = webServicesHandler.getTrackNumber(audioFile);
+		}
 
-    
-    /**
-     * Returns files without track number
-     * @param audioFiles
-     * @return
-     */
-    private Collection<ILocalAudioObject> getFilesWithEmptyTracks(Collection<ILocalAudioObject> audioFiles) {
-    	return Collections2.filter(audioFiles, new FilesWithEmptyTracksFilter());
-    }
+		return trackNumber;
+	}
+
+
+	/**
+	 * Returns files without track number
+	 * @param audioFiles
+	 * @return
+	 */
+	private Collection<ILocalAudioObject> getFilesWithEmptyTracks(final Collection<ILocalAudioObject> audioFiles) {
+		return Collections2.filter(audioFiles, new FilesWithEmptyTracksFilter());
+	}
 }

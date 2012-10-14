@@ -27,41 +27,41 @@ import net.sourceforge.atunes.utils.Logger;
 
 class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
-    private ILocalAudioObject audioFile;
+	private final ILocalAudioObject audioFile;
 
-    private boolean isMp3File;
+	private final boolean isMp3File;
 
-    /**
-     * Instantiates a new audio file m player output reader.
-     * 
-     * @param engine
-     * @param process
-     * @param audioFile
-     * @param localAudioObjectValidator
-     */
-    AudioFileMPlayerOutputReader(MPlayerEngine engine, Process process, ILocalAudioObject audioFile, ILocalAudioObjectValidator localAudioObjectValidator) {
-        super(engine, process);
-        this.audioFile = audioFile;
-        // Check audio file type only once and use calculated value in read method
-        this.isMp3File = localAudioObjectValidator.isOneOfTheseFormats(audioFile.getFile().getName(), LocalAudioObjectFormat.MP3);
-    }
-    
-    @Override
-    protected void init() {
-    }
+	/**
+	 * Instantiates a new audio file m player output reader.
+	 * 
+	 * @param engine
+	 * @param process
+	 * @param audioFile
+	 * @param localAudioObjectValidator
+	 */
+	AudioFileMPlayerOutputReader(final MPlayerEngine engine, final Process process, final ILocalAudioObject audioFile, final ILocalAudioObjectValidator localAudioObjectValidator) {
+		super(engine, process);
+		this.audioFile = audioFile;
+		// Check audio file type only once and use calculated value in read method
+		this.isMp3File = localAudioObjectValidator.isOneOfTheseFormats(audioFile.getFile().getName(), LocalAudioObjectFormat.MP3);
+	}
 
-    @Override
-    protected void read(String line) {
-        super.read(line);
+	@Override
+	protected void init() {
+	}
 
-        readAndApplyLength(audioFile, line, isMp3File);
+	@Override
+	protected void read(final String line) {
+		super.read(line);
 
-        // MPlayer bug: Workaround (for audio files) for "mute bug" [1868482] 
-        if (getEngine().isMute() && getLength() > 0 && getLength() - getTime() < 2000) {
-            Logger.debug("MPlayer 'mute bug' workaround applied");
-            getEngine().currentAudioObjectFinished(true);
-            interrupt();
-        }
-    }
+		readAndApplyLength(audioFile, line, isMp3File);
+
+		// MPlayer bug: Workaround (for audio files) for "mute bug" [1868482]
+		if (getEngine().isMute() && getLength() > 0 && getLength() - getTime() < 2000) {
+			Logger.debug("MPlayer 'mute bug' workaround applied");
+			getEngine().currentAudioObjectFinished();
+			interrupt();
+		}
+	}
 
 }
