@@ -37,14 +37,14 @@ public class RenamePlaylistActionTest {
 		RenamePlaylistAction sut = new RenamePlaylistAction();
 		IPlayListHandler playListHandler = mock(IPlayListHandler.class);
 		sut.setPlayListHandler(playListHandler);
-		
+
 		IDialogFactory dialogFactory = mock(IDialogFactory.class);
 		IInputDialog dialog = mock(IInputDialog.class);
 		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(dialog);
 		sut.setDialogFactory(dialogFactory);
-		
+
 		sut.executeAction();
-		
+
 		verify(playListHandler).renameCurrentVisiblePlayList(any(String.class));
 	}
 }

@@ -251,6 +251,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 			int index = playListTabController.getSelectedPlayListIndex();
 			playListsContainer.getPlayListAt(index).setName(newName);
 			playListTabController.renamePlayList(index, newName);
+			playListsChanged();
 		}
 	}
 
