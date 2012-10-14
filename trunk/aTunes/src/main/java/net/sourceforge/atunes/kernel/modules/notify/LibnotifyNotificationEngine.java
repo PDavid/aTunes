@@ -22,30 +22,34 @@ package net.sourceforge.atunes.kernel.modules.notify;
 
 import net.sourceforge.atunes.kernel.modules.notify.Notify.NotifyNotification;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateUI;
-import net.sourceforge.atunes.model.ITemporalDiskStorage;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * Notification for Linux using libnotify
+ * @author alex
+ *
+ */
 public class LibnotifyNotificationEngine extends CommonNotificationEngine {
 
 	private IOSManager osManager;
-	
-    private final class ShowNotificationRunnable implements Runnable {
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	private final class ShowNotificationRunnable implements Runnable {
 		private final IAudioObject audioObject;
 
-		private ShowNotificationRunnable(IAudioObject audioObject) {
+		private ShowNotificationRunnable(final IAudioObject audioObject) {
 			this.audioObject = audioObject;
 		}
 
 		@Override
 		public void run() {
 			String image = getTemporalImage(audioObject, osManager);
-			NotifyNotification n = Notify.newNotification(audioObject.getTitle(), audioObject.getArtist(), image);
+			NotifyNotification n = Notify.newNotification(audioObject.getTitle(), audioObject.getArtist(unknownObjectChecker), image);
 			if (!Notify.show(n)) {
 				Logger.error("could not show notification - libnotify");
 			}
@@ -54,62 +58,65 @@ public class LibnotifyNotificationEngine extends CommonNotificationEngine {
 		}
 	}
 
-    /**
-     * @param osManager
-     * @param audioObjectGenericImageFactory
-     * @param diskStorage
-     */
-    public LibnotifyNotificationEngine(IOSManager osManager, 
-    		IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage, ILookAndFeelManager lookAndFeelManager, IAudioObjectImageLocator audioObjectImageLocator) {
-    	super(audioObjectGenericImageFactory, diskStorage, lookAndFeelManager, audioObjectImageLocator);
-    	this.osManager = osManager;
-    }
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
-    @Override
-    public boolean testEngineAvailable() {
-    	if (osManager.isLinux() || osManager.isSolaris()) {
-    		if (!Notify.isNotifyPresent()) {
-    			Logger.error("libnotify is not available");
-    			return false;
-    		}
-    		if (!Notify.init("aTunes")) {
-    			Logger.error("could not init libnotify");
-    			return false;
-    		}
-    		return true;
-    	} else {
-    		return false;
-    	}
-    }
-    
-    @Override
-    public String getName() {
-        return "Libnotify";
-    }
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
-    @Override
-    public void showNotification(final IAudioObject audioObject) {
-        new Thread(new ShowNotificationRunnable(audioObject)).start();
-    }
-    
-    @Override
-    public void disposeNotifications() {
-    	// This method can only be called when closing application
-	    Notify.uninit();
-    }
-    
-    @Override
-    public void updateNotification(IStateUI newState) {
-    }
-    
-    @Override
-    public String getDescription() {
-    	return I18nUtils.getString("NOTIFICATION_ENGINE_LIBNOTIFY_DESCRIPTION");
-    }
-    
-    @Override
-    public String getUrl() {
-    	return "http://developer.gnome.org/libnotify/";
-    }
+	@Override
+	public boolean testEngineAvailable() {
+		if (osManager.isLinux() || osManager.isSolaris()) {
+			if (!Notify.isNotifyPresent()) {
+				Logger.error("libnotify is not available");
+				return false;
+			}
+			if (!Notify.init("aTunes")) {
+				Logger.error("could not init libnotify");
+				return false;
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
 
+	@Override
+	public String getName() {
+		return "Libnotify";
+	}
+
+	@Override
+	public void showNotification(final IAudioObject audioObject) {
+		new Thread(new ShowNotificationRunnable(audioObject)).start();
+	}
+
+	@Override
+	public void disposeNotifications() {
+		// This method can only be called when closing application
+		Notify.uninit();
+	}
+
+	@Override
+	public void updateNotification(final IStateUI newState) {
+	}
+
+	@Override
+	public String getDescription() {
+		return I18nUtils.getString("NOTIFICATION_ENGINE_LIBNOTIFY_DESCRIPTION");
+	}
+
+	@Override
+	public String getUrl() {
+		return "http://developer.gnome.org/libnotify/";
+	}
 }

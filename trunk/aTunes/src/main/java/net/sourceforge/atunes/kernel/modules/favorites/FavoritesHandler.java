@@ -45,6 +45,7 @@ import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.apache.commons.collections.list.SetUniqueList;
@@ -66,6 +67,16 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 	private IStateContext stateContext;
 
 	private ISearchableObject favoritesSearchableObject;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	/**
 	 * @param favoritesSearchableObject
@@ -125,11 +136,11 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 		List<ITreeObject<?>> toRemove = new ArrayList<ITreeObject<?>>();
 		Map<String, IAlbum> favAlbums = favorites.getFavoriteAlbums();
 		for (ILocalAudioObject f : set) {
-			IArtist artist = repositoryHandler.getArtist(f.getArtist());
+			IArtist artist = repositoryHandler.getArtist(f.getArtist(unknownObjectChecker));
 			if (artist == null) {
-				artist = repositoryHandler.getArtist(f.getAlbumArtist());
+				artist = repositoryHandler.getArtist(f.getAlbumArtist(unknownObjectChecker));
 			}
-			IAlbum album = artist.getAlbum(f.getAlbum());
+			IAlbum album = artist.getAlbum(f.getAlbum(unknownObjectChecker));
 			if (favAlbums.containsValue(album)) {
 				toRemove.add(album);
 			} else {
@@ -153,7 +164,7 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 		List<ITreeObject<?>> toRemove = new ArrayList<ITreeObject<?>>();
 		Map<String, IArtist> favArtists = favorites.getFavoriteArtists();
 		for (ILocalAudioObject f : set) {
-			IArtist artist = repositoryHandler.getArtist(f.getArtist());
+			IArtist artist = repositoryHandler.getArtist(f.getArtist(unknownObjectChecker));
 			if (favArtists.containsValue(artist)) {
 				toRemove.add(artist);
 			} else {
@@ -300,12 +311,12 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 			favorites.getFavoriteAudioFiles().remove(file.getUrl());
 
 			// If artist has been removed then remove it from favorites too
-			if (repositoryHandler.getArtist(file.getArtist()) == null) {
-				favorites.getFavoriteArtists().remove(file.getArtist());
+			if (repositoryHandler.getArtist(file.getArtist(unknownObjectChecker)) == null) {
+				favorites.getFavoriteArtists().remove(file.getArtist(unknownObjectChecker));
 			} else {
 				// If album has been removed then remove it from favorites too
-				if (repositoryHandler.getArtist(file.getArtist()).getAlbum(file.getAlbum()) == null) {
-					favorites.getFavoriteAlbums().remove(file.getAlbum());
+				if (repositoryHandler.getArtist(file.getArtist(unknownObjectChecker)).getAlbum(file.getAlbum(unknownObjectChecker)) == null) {
+					favorites.getFavoriteAlbums().remove(file.getAlbum(unknownObjectChecker));
 				}
 			}
 		}

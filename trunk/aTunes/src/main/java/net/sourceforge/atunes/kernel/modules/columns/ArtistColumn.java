@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IIconFactory;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 /**
  * Column to show artist
@@ -43,6 +44,16 @@ public class ArtistColumn extends AbstractColumn<TextAndIcon> {
 	private transient IBeanFactory beanFactory;
 
 	private transient IFavoritesHandler favoritesHandler;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	/**
 	 * Default constructor
@@ -63,11 +74,11 @@ public class ArtistColumn extends AbstractColumn<TextAndIcon> {
 
 	@Override
 	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		int artist = ao1.getArtist().compareTo(ao2.getArtist());
+		int artist = ao1.getArtist(unknownObjectChecker).compareTo(ao2.getArtist(unknownObjectChecker));
 		if (artist != 0) {
 			return artist;
 		} else {
-			int album = ao1.getAlbum().compareTo(ao2.getAlbum());
+			int album = ao1.getAlbum(unknownObjectChecker).compareTo(ao2.getAlbum(unknownObjectChecker));
 			if (album != 0) {
 				return album;
 			} else {
@@ -83,11 +94,11 @@ public class ArtistColumn extends AbstractColumn<TextAndIcon> {
 
 	@Override
 	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		int artist = ao2.getArtist().compareTo(ao1.getArtist());
+		int artist = ao2.getArtist(unknownObjectChecker).compareTo(ao1.getArtist(unknownObjectChecker));
 		if (artist != 0) {
 			return artist;
 		} else {
-			int album = ao1.getAlbum().compareTo(ao2.getAlbum());
+			int album = ao1.getAlbum(unknownObjectChecker).compareTo(ao2.getAlbum(unknownObjectChecker));
 			if (album != 0) {
 				return album;
 			} else {
@@ -103,32 +114,32 @@ public class ArtistColumn extends AbstractColumn<TextAndIcon> {
 
 	@Override
 	public TextAndIcon getValueFor(final IAudioObject audioObject, final int row) {
-		if (getFavoritesHandler().getFavoriteArtistsInfo().containsKey(audioObject.getArtist())) {
-			return new TextAndIcon(audioObject.getArtist(), artistFavoriteIcon.getColorMutableIcon(), SwingConstants.LEFT);
+		if (getFavoritesHandler().getFavoriteArtistsInfo().containsKey(audioObject.getArtist(unknownObjectChecker))) {
+			return new TextAndIcon(audioObject.getArtist(unknownObjectChecker), artistFavoriteIcon.getColorMutableIcon(), SwingConstants.LEFT);
 		} else {
-			return new TextAndIcon(audioObject.getArtist(), null, SwingConstants.LEFT);
+			return new TextAndIcon(audioObject.getArtist(unknownObjectChecker), null, SwingConstants.LEFT);
 		}
 	}
 
 	@Override
 	public String getValueForFilter(final IAudioObject audioObject, final int row) {
-		return audioObject.getArtist();
+		return audioObject.getArtist(unknownObjectChecker);
 	}
 
 	/**
 	 * @return favorites handler
 	 */
-	 private IFavoritesHandler getFavoritesHandler() {
+	private IFavoritesHandler getFavoritesHandler() {
 		if (favoritesHandler == null) {
 			favoritesHandler = beanFactory.getBean(IFavoritesHandler.class);
 		}
 		return favoritesHandler;
-	 }
+	}
 
-	 /**
-	  * @param artistFavoriteIcon
-	  */
-	 public void setArtistFavoriteIcon(final IIconFactory artistFavoriteIcon) {
-		 this.artistFavoriteIcon = artistFavoriteIcon;
-	 }
+	/**
+	 * @param artistFavoriteIcon
+	 */
+	public void setArtistFavoriteIcon(final IIconFactory artistFavoriteIcon) {
+		this.artistFavoriteIcon = artistFavoriteIcon;
+	}
 }

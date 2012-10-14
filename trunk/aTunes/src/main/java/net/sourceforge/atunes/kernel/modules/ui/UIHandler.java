@@ -46,6 +46,7 @@ import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.IUIHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.JVMProperties;
 import net.sourceforge.atunes.utils.Logger;
@@ -63,6 +64,16 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 	private IStateContext stateContext;
 
 	private IDialogFactory dialogFactory;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	/**
 	 * @param dialogFactory
@@ -227,7 +238,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 
 	@Override
 	public void updateTitleBar(final IAudioObject song) {
-		setTitleBar(song != null ? song.getAudioObjectDescription() : "");
+		setTitleBar(song != null ? song.getAudioObjectDescription(unknownObjectChecker) : "");
 	}
 
 	@Override

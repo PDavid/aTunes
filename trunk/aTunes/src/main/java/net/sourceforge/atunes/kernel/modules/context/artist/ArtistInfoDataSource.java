@@ -40,155 +40,155 @@ import net.sourceforge.atunes.utils.ImageUtils;
  */
 public class ArtistInfoDataSource implements IContextInformationSource {
 
-    private IWebServicesHandler webServicesHandler;
-    
-    private IAudioObject audioObject;
-    
-    private String wikiText;
-    
-    private String wikiUrl;
-    
-    private String artistName;
-    
-    private String artistUrl;
-    
-    private ImageIcon artistImage;
-    
-    private IAlbumListInfo albumList;
-    
-    private IUnknownObjectChecker unknownObjectChecker;
-    
-    /**
-     * @param unknownObjectChecker
-     */
-    public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
-	}
-    
-    @Override
-    public void getData(IAudioObject audioObject) {
-    	this.audioObject = audioObject;
-    	this.wikiText = getWikiTextData(audioObject);
-        this.wikiUrl = getWikiUrlData(audioObject);
-        this.artistImage = getArtistImageData(audioObject);
-        this.albumList = getAlbumListData(audioObject);
-        if (albumList != null && !albumList.getAlbums().isEmpty()) {
-        	this.artistName = albumList.getArtist();
-        	this.artistUrl = albumList.getAlbums().get(0).getArtistUrl();
-        }
-    }
-    
-    /**
-     * @return
-     */
-    public IAlbumListInfo getAlbumList() {
-		return albumList;
-	}
-    
-    /**
-     * Return album list for artist
-     * 
-     * @param audioObject
-     * @return
-     */
-    private IAlbumListInfo getAlbumListData(IAudioObject audioObject) {
-        if (!unknownObjectChecker.isUnknownArtist(audioObject.getArtist())) {
-            return webServicesHandler.getAlbumList(audioObject.getArtist());
-        }
-        return null;
-    }
+	private IWebServicesHandler webServicesHandler;
 
-    /**
-     * @return
-     */
-    public IAudioObject getAudioObject() {
-		return audioObject;
-	}
-    
-    /**
-     * @return
-     */
-    public String getWikiText() {
-		return wikiText;
-	}
-    
-    /**
-     * @return
-     */
-    public String getWikiUrl() {
-		return wikiUrl;
-	}
-    
-    /**
-     * @return
-     */
-    public ImageIcon getArtistImage() {
-		return artistImage;
-	}
-    
-    /**
-     * @return
-     */
-    public String getArtistName() {
-		return artistName;
-	}
-    
-    /**
-     * @return
-     */
-    public String getArtistUrl() {
-		return artistUrl;
-	}
-    
-    /**
-     * Return wiki text for artist
-     * 
-     * @param audioObject
-     * @return
-     */
-    private String getWikiTextData(IAudioObject audioObject) {
-        if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
-            return webServicesHandler.getBioText(audioObject.getArtist());
-        }
-        return null;
-    }
+	private IAudioObject audioObject;
 
-    /**
-     * Return wiki url for artist
-     * 
-     * @param audioObject
-     * @return
-     */
-    private String getWikiUrlData(IAudioObject audioObject) {
-        if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
-            return webServicesHandler.getBioURL(audioObject.getArtist());
-        }
-        return null;
-    }
+	private String wikiText;
 
-    /**
-     * Returns image for artist
-     * 
-     * @param audioObject
-     * @return
-     */
-    private ImageIcon getArtistImageData(IAudioObject audioObject) {
-        ImageIcon image = webServicesHandler.getArtistImage(audioObject.getArtist());
-        if (image != null) {
-        	image = ImageUtils.resize(image, Constants.ARTIST_IMAGE_SIZE, Constants.ARTIST_IMAGE_SIZE);
-        }
-        return image;
-    }
+	private String wikiUrl;
 
-    /**
-     * @param webServicesHandler
-     */
-    public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
-		this.webServicesHandler = webServicesHandler;
-	}
+	private String artistName;
 
-    @Override
-    public void cancel() {
-    }
+	private String artistUrl;
+
+	private ImageIcon artistImage;
+
+	private IAlbumListInfo albumList;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	 public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
+		 this.unknownObjectChecker = unknownObjectChecker;
+	 }
+
+	 @Override
+	 public void getData(final IAudioObject audioObject) {
+		 this.audioObject = audioObject;
+		 this.wikiText = getWikiTextData(audioObject);
+		 this.wikiUrl = getWikiUrlData(audioObject);
+		 this.artistImage = getArtistImageData(audioObject);
+		 this.albumList = getAlbumListData(audioObject);
+		 if (albumList != null && !albumList.getAlbums().isEmpty()) {
+			 this.artistName = albumList.getArtist();
+			 this.artistUrl = albumList.getAlbums().get(0).getArtistUrl();
+		 }
+	 }
+
+	 /**
+	  * @return
+	  */
+	  public IAlbumListInfo getAlbumList() {
+		  return albumList;
+	  }
+
+	  /**
+	   * Return album list for artist
+	   * 
+	   * @param audioObject
+	   * @return
+	   */
+	  private IAlbumListInfo getAlbumListData(final IAudioObject audioObject) {
+		  if (!unknownObjectChecker.isUnknownArtist(audioObject.getArtist(unknownObjectChecker))) {
+			  return webServicesHandler.getAlbumList(audioObject.getArtist(unknownObjectChecker));
+		  }
+		  return null;
+	  }
+
+	  /**
+	   * @return
+	   */
+	  public IAudioObject getAudioObject() {
+		  return audioObject;
+	  }
+
+	  /**
+	   * @return
+	   */
+	  public String getWikiText() {
+		  return wikiText;
+	  }
+
+	  /**
+	   * @return
+	   */
+	  public String getWikiUrl() {
+		  return wikiUrl;
+	  }
+
+	  /**
+	   * @return
+	   */
+	  public ImageIcon getArtistImage() {
+		  return artistImage;
+	  }
+
+	  /**
+	   * @return
+	   */
+	  public String getArtistName() {
+		  return artistName;
+	  }
+
+	  /**
+	   * @return
+	   */
+	  public String getArtistUrl() {
+		  return artistUrl;
+	  }
+
+	  /**
+	   * Return wiki text for artist
+	   * 
+	   * @param audioObject
+	   * @return
+	   */
+	  private String getWikiTextData(final IAudioObject audioObject) {
+		  if (!audioObject.getArtist(unknownObjectChecker).equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
+			  return webServicesHandler.getBioText(audioObject.getArtist(unknownObjectChecker));
+		  }
+		  return null;
+	  }
+
+	  /**
+	   * Return wiki url for artist
+	   * 
+	   * @param audioObject
+	   * @return
+	   */
+	  private String getWikiUrlData(final IAudioObject audioObject) {
+		  if (!audioObject.getArtist(unknownObjectChecker).equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
+			  return webServicesHandler.getBioURL(audioObject.getArtist(unknownObjectChecker));
+		  }
+		  return null;
+	  }
+
+	  /**
+	   * Returns image for artist
+	   * 
+	   * @param audioObject
+	   * @return
+	   */
+	  private ImageIcon getArtistImageData(final IAudioObject audioObject) {
+		  ImageIcon image = webServicesHandler.getArtistImage(audioObject.getArtist(unknownObjectChecker));
+		  if (image != null) {
+			  image = ImageUtils.resize(image, Constants.ARTIST_IMAGE_SIZE, Constants.ARTIST_IMAGE_SIZE);
+		  }
+		  return image;
+	  }
+
+	  /**
+	   * @param webServicesHandler
+	   */
+	  public final void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
+		  this.webServicesHandler = webServicesHandler;
+	  }
+
+	  @Override
+	  public void cancel() {
+	  }
 
 }

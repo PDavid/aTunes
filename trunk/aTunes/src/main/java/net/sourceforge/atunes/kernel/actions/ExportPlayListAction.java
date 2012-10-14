@@ -24,8 +24,8 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectExporter;
+import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -40,8 +40,18 @@ public class ExportPlayListAction extends CustomAbstractAction {
 	private static final long serialVersionUID = -6661702915765846089L;
 
 	private IPlayListHandler playListHandler;
-	
+
 	private IAudioObjectExporter audioObjectExporter;
+
+	private ILocalAudioObjectFilter localAudioObjectFilter;
+
+	/**
+	 * @param localAudioObjectFilter
+	 */
+	public void setLocalAudioObjectFilter(
+			final ILocalAudioObjectFilter localAudioObjectFilter) {
+		this.localAudioObjectFilter = localAudioObjectFilter;
+	}
 
 	/**
 	 * Constructor
@@ -54,26 +64,25 @@ public class ExportPlayListAction extends CustomAbstractAction {
 	/**
 	 * @param playListHandler
 	 */
-	public void setPlayListHandler(IPlayListHandler playListHandler) {
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-	
+
 	/**
 	 * @param audioObjectExporter
 	 */
-	public void setAudioObjectExporter(IAudioObjectExporter audioObjectExporter) {
+	public void setAudioObjectExporter(final IAudioObjectExporter audioObjectExporter) {
 		this.audioObjectExporter = audioObjectExporter;
-	}
-	
-	@Override
-	protected void executeAction() {
-		LocalAudioObjectFilter filter = new LocalAudioObjectFilter();
-		// Get only LocalAudioObject objects of current play list
-		audioObjectExporter.exportAudioObject(filter.getLocalAudioObjects(playListHandler.getVisiblePlayList().getAudioObjectsList()));
 	}
 
 	@Override
-	public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
+	protected void executeAction() {
+		// Get only LocalAudioObject objects of current play list
+		audioObjectExporter.exportAudioObject(localAudioObjectFilter.getLocalAudioObjects(playListHandler.getVisiblePlayList().getAudioObjectsList()));
+	}
+
+	@Override
+	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
 		return !playListHandler.getVisiblePlayList().isEmpty();
 	}
 }

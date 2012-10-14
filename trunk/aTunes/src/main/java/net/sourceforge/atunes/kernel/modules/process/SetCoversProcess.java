@@ -42,84 +42,84 @@ import net.sourceforge.atunes.utils.ImageUtils;
  */
 public class SetCoversProcess extends AbstractChangeTagProcess {
 
-    private Map<ILocalAudioObject, ImageIcon> filesAndCovers;
-    
-    private IWebServicesHandler webServicesHandler;
-    
+	private Map<ILocalAudioObject, ImageIcon> filesAndCovers;
+
+	private IWebServicesHandler webServicesHandler;
+
 	private IUnknownObjectChecker unknownObjectChecker;
-	
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
-    
-    /**
-     * @param webServicesHandler
-     */
-    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+
+	/**
+	 * @param webServicesHandler
+	 */
+	public void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
-    
-    @Override
-    protected void retrieveInformationBeforeChangeTags() {
-        super.retrieveInformationBeforeChangeTags();
-        this.filesAndCovers = getCoversForFiles(this.getFilesToChange());
-    }
 
-    @Override
-    protected void changeTag(ILocalAudioObject file) throws IOException {
-        BufferedImage bufferedCover = ImageUtils.toBufferedImage(this.filesAndCovers.get(file).getImage());
-        ITag newTag = getTagHandler().getNewTag(file, new HashMap<String, Object>());
-        newTag.setInternalImage(true);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ImageIO.write(bufferedCover, "PNG", byteArrayOutputStream);
-        getTagHandler().setTag(file, newTag, true, byteArrayOutputStream.toByteArray());
-    }
+	@Override
+	protected void retrieveInformationBeforeChangeTags() {
+		super.retrieveInformationBeforeChangeTags();
+		this.filesAndCovers = getCoversForFiles(this.getFilesToChange());
+	}
 
-    /**
-     * Gets the covers for files.
-     * 
-     * @param files
-     *            the files
-     * 
-     * @return the covers for files
-     */
-    private Map<ILocalAudioObject, ImageIcon> getCoversForFiles(Collection<ILocalAudioObject> files) {
-        Map<ILocalAudioObject, ImageIcon> result = new HashMap<ILocalAudioObject, ImageIcon>();
+	@Override
+	protected void changeTag(final ILocalAudioObject file) throws IOException {
+		BufferedImage bufferedCover = ImageUtils.toBufferedImage(this.filesAndCovers.get(file).getImage());
+		ITag newTag = getTagHandler().getNewTag(file, new HashMap<String, Object>());
+		newTag.setInternalImage(true);
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		ImageIO.write(bufferedCover, "PNG", byteArrayOutputStream);
+		getTagHandler().setTag(file, newTag, true, byteArrayOutputStream.toByteArray());
+	}
 
-        Map<Integer, ImageIcon> coverCache = new HashMap<Integer, ImageIcon>();
+	/**
+	 * Gets the covers for files.
+	 * 
+	 * @param files
+	 *            the files
+	 * 
+	 * @return the covers for files
+	 */
+	private Map<ILocalAudioObject, ImageIcon> getCoversForFiles(final Collection<ILocalAudioObject> files) {
+		Map<ILocalAudioObject, ImageIcon> result = new HashMap<ILocalAudioObject, ImageIcon>();
 
-        for (ILocalAudioObject f : files) {
-            if (!unknownObjectChecker.isUnknownArtist(f.getArtist()) && !unknownObjectChecker.isUnknownAlbum(f.getAlbum())) {
-                ImageIcon cover = null;
-                int cacheKey = f.getArtist().hashCode() + f.getAlbum().hashCode();
-                if (coverCache.containsKey(cacheKey)) {
-                    cover = coverCache.get(cacheKey);
-                } else {
-                    IAlbumInfo albumInfo = webServicesHandler.getAlbum(f.getArtist(), f.getAlbum());
-                    if (albumInfo == null) {
-                        continue;
-                    }
-                    cover = webServicesHandler.getAlbumImage(albumInfo);
-                    if (cover == null) {
-                        continue;
-                    }
-                    coverCache.put(cacheKey, cover);
-                    // Wait one second to avoid IP banning
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        // Nothing to do
-                    }
-                }
-                if (cover != null) {
-                    result.put(f, cover);
-                }
-            }
-        }
-        return result;
-    }
+		Map<Integer, ImageIcon> coverCache = new HashMap<Integer, ImageIcon>();
+
+		for (ILocalAudioObject f : files) {
+			if (!unknownObjectChecker.isUnknownArtist(f.getArtist(unknownObjectChecker)) && !unknownObjectChecker.isUnknownAlbum(f.getAlbum(unknownObjectChecker))) {
+				ImageIcon cover = null;
+				int cacheKey = f.getArtist(unknownObjectChecker).hashCode() + f.getAlbum(unknownObjectChecker).hashCode();
+				if (coverCache.containsKey(cacheKey)) {
+					cover = coverCache.get(cacheKey);
+				} else {
+					IAlbumInfo albumInfo = webServicesHandler.getAlbum(f.getArtist(unknownObjectChecker), f.getAlbum(unknownObjectChecker));
+					if (albumInfo == null) {
+						continue;
+					}
+					cover = webServicesHandler.getAlbumImage(albumInfo);
+					if (cover == null) {
+						continue;
+					}
+					coverCache.put(cacheKey, cover);
+					// Wait one second to avoid IP banning
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// Nothing to do
+					}
+				}
+				if (cover != null) {
+					result.put(f, cover);
+				}
+			}
+		}
+		return result;
+	}
 
 }

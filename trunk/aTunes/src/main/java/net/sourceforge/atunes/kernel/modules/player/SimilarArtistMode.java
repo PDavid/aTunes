@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.PlaybackState;
 
 import org.springframework.context.ApplicationContext;
@@ -43,30 +44,40 @@ import org.springframework.context.ApplicationContextAware;
  */
 public class SimilarArtistMode implements ApplicationContextAware {
 
-	private Map<String, List<ILocalAudioObject>> notAlreadySelectedSongsForArtist; 
+	private Map<String, List<ILocalAudioObject>> notAlreadySelectedSongsForArtist;
 
 	private IPlayListHandler playListHandler;
-	
+
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
-	
+
 	private ApplicationContext context;
-	
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
+	public void setApplicationContext(final ApplicationContext applicationContext) {
 		this.context = applicationContext;
 	}
-	
+
 	/**
 	 * @param backgroundWorkerFactory
 	 */
-	public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
+	public void setBackgroundWorkerFactory(final IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
 
 	/**
 	 * @param playListHandler
 	 */
-	public void setPlayListHandler(IPlayListHandler playListHandler) {
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
 
@@ -81,7 +92,7 @@ public class SimilarArtistMode implements ApplicationContextAware {
 	 * Enables this mode
 	 * @param enabled
 	 */
-	void setEnabled(boolean enabled) {
+	void setEnabled(final boolean enabled) {
 		if (enabled) {
 			addSimilarArtistsAudioObjects(playListHandler.getCurrentAudioObjectFromCurrentPlayList());
 		} else {
@@ -94,7 +105,7 @@ public class SimilarArtistMode implements ApplicationContextAware {
 	 * @param newState
 	 * @param currentAudioObject
 	 */
-	void playbackStateChanged(PlaybackState newState, IAudioObject currentAudioObject) {
+	void playbackStateChanged(final PlaybackState newState, final IAudioObject currentAudioObject) {
 		if (newState.equals(PlaybackState.PLAYING)) {
 			addSimilarArtistsAudioObjects(currentAudioObject);
 		}
@@ -103,19 +114,19 @@ public class SimilarArtistMode implements ApplicationContextAware {
 	/**
 	 * @param currentAudioObject
 	 */
-	private void addSimilarArtistsAudioObjects(IAudioObject currentAudioObject) {
+	private void addSimilarArtistsAudioObjects(final IAudioObject currentAudioObject) {
 		if (currentAudioObject != null) {
 			IPlayList currentPlayList = playListHandler.getActivePlayList();
 			if (currentPlayList.get(currentPlayList.size() - 1).equals(currentAudioObject)) {
 				IBackgroundWorker<List<IAudioObject>> worker = backgroundWorkerFactory.getWorker();
 				GetSimilarArtistAudioObjectsCallable callable = context.getBean(GetSimilarArtistAudioObjectsCallable.class);
-				callable.setArtistName(currentAudioObject.getArtist());
+				callable.setArtistName(currentAudioObject.getArtist(unknownObjectChecker));
 				callable.setNotAlreadySelectedSongsForArtist(notAlreadySelectedSongsForArtist);
 				worker.setBackgroundActions(callable);
 				worker.setActionsWhenDone(new IActionsWithBackgroundResult<List<IAudioObject>>() {
-					
+
 					@Override
-					public void call(List<IAudioObject> result) {
+					public void call(final List<IAudioObject> result) {
 						playListHandler.addToVisiblePlayList(result);
 					}
 				});

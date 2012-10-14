@@ -26,7 +26,7 @@ import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsRetrieveOperation;
 import net.sourceforge.atunes.model.ILyricsService;
-import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 /**
  * Context data source to retrieve lyrics
@@ -35,20 +35,30 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class LyricsDataSource implements IContextInformationSource {
 
-    private ILyricsService lyricsService;
-    
-    private ILyrics lyrics;
-    
-    private IAudioObject audioObject;
-    
-    private ILyricsRetrieveOperation lyricsRetrieveOperation;
-    
+	private ILyricsService lyricsService;
+
+	private ILyrics lyrics;
+
+	private IAudioObject audioObject;
+
+	private ILyricsRetrieveOperation lyricsRetrieveOperation;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
 	@Override
-    public void getData(IAudioObject audioObject) {
+	public void getData(final IAudioObject audioObject) {
 		this.audioObject = audioObject;
 		this.lyrics = getLyricsData(audioObject);
-    }
-	
+	}
+
 	/**
 	 * @return
 	 */
@@ -62,45 +72,45 @@ public class LyricsDataSource implements IContextInformationSource {
 	public ILyrics getLyrics() {
 		return lyrics;
 	}
-	
-    /**
-     * Returns lyrics
-     * 
-     * @param audioObject
-     * @return
-     */
-    private ILyrics getLyricsData(IAudioObject audioObject) {
-        ILyrics lyricsData = null;
-        // First check if tag contains the lyrics. Favour this over internet services.
-        if (!audioObject.getLyrics().trim().isEmpty()) {
-            lyricsData = new Lyrics(audioObject.getLyrics(), null);
-        }
-        // Query internet service for lyrics
-        else {
-            if (!audioObject.getTitle().trim().isEmpty() && !audioObject.getArtist().trim().isEmpty() && !audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
-            	lyricsRetrieveOperation = lyricsService.getLyricsRetrieveOperation(audioObject.getArtist().trim(), audioObject.getTitle().trim());
-                lyricsData = lyricsRetrieveOperation.getLyrics();
-            }
-        }
 
-        if (lyricsData == null) {
-            lyricsData = new Lyrics("", "");
-        }
+	/**
+	 * Returns lyrics
+	 * 
+	 * @param audioObject
+	 * @return
+	 */
+	private ILyrics getLyricsData(final IAudioObject audioObject) {
+		ILyrics lyricsData = null;
+		// First check if tag contains the lyrics. Favour this over internet services.
+		if (!audioObject.getLyrics().trim().isEmpty()) {
+			lyricsData = new Lyrics(audioObject.getLyrics(), null);
+		}
+		// Query internet service for lyrics
+		else {
+			if (!audioObject.getTitle().trim().isEmpty() && !audioObject.getArtist(unknownObjectChecker).trim().isEmpty() && !audioObject.getArtist(unknownObjectChecker).equals(unknownObjectChecker.getUnknownArtist())) {
+				lyricsRetrieveOperation = lyricsService.getLyricsRetrieveOperation(audioObject.getArtist(unknownObjectChecker).trim(), audioObject.getTitle().trim());
+				lyricsData = lyricsRetrieveOperation.getLyrics();
+			}
+		}
 
-        return lyricsData;
-    }
-    
-    /**
-     * @param lyricsService
-     */
-    public void setLyricsService(ILyricsService lyricsService) {
+		if (lyricsData == null) {
+			lyricsData = new Lyrics("", "");
+		}
+
+		return lyricsData;
+	}
+
+	/**
+	 * @param lyricsService
+	 */
+	public void setLyricsService(final ILyricsService lyricsService) {
 		this.lyricsService = lyricsService;
 	}
-    
-    @Override
-    public void cancel() {
-    	if (lyricsRetrieveOperation != null) {
-    		lyricsRetrieveOperation.cancelRetrieve();
-    	}
-    }
+
+	@Override
+	public void cancel() {
+		if (lyricsRetrieveOperation != null) {
+			lyricsRetrieveOperation.cancelRetrieve();
+		}
+	}
 }

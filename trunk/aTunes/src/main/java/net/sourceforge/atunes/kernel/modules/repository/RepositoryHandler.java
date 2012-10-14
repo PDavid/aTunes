@@ -50,6 +50,7 @@ import net.sourceforge.atunes.model.IRepositoryTransaction;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IStatisticsHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -105,6 +106,16 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	private List<File> foldersSelectedFromPreferences;
 
 	private RepositoryAddService repositoryAddService;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	/**
 	 * @param repositoryAddService
@@ -565,7 +576,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 
 	@Override
 	public void removeYear(final IYear year) {
-		repository.removeYear(year);
+		repository.removeYear(year, unknownObjectChecker);
 	}
 
 	@Override

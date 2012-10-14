@@ -34,75 +34,75 @@ import net.sourceforge.atunes.model.IWebServicesHandler;
  */
 public class SetGenresProcess extends AbstractChangeTagProcess {
 
-    private Map<ILocalAudioObject, String> filesAndGenres;
-    
-    private IWebServicesHandler webServicesHandler;
-    
+	private Map<ILocalAudioObject, String> filesAndGenres;
+
+	private IWebServicesHandler webServicesHandler;
+
 	private IUnknownObjectChecker unknownObjectChecker;
-	
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
-    
-    /**
-     * @param webServicesHandler
-     */
-    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+
+	/**
+	 * @param webServicesHandler
+	 */
+	public void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
 
-    @Override
-    protected void retrieveInformationBeforeChangeTags() {
-        super.retrieveInformationBeforeChangeTags();
-        this.filesAndGenres = getGenresForFiles(getFilesToChange());
-    }
+	@Override
+	protected void retrieveInformationBeforeChangeTags() {
+		super.retrieveInformationBeforeChangeTags();
+		this.filesAndGenres = getGenresForFiles(getFilesToChange());
+	}
 
-    @Override
-    protected void changeTag(ILocalAudioObject file) throws IOException {
-        String genre = this.filesAndGenres.get(file);
-        // If file has already genre setted, avoid
-        if (!file.getGenre().equals(genre)) {
-            getTagHandler().setGenre(file, genre);
-        }
-    }
+	@Override
+	protected void changeTag(final ILocalAudioObject file) throws IOException {
+		String genre = this.filesAndGenres.get(file);
+		// If file has already genre setted, avoid
+		if (!file.getGenre(unknownObjectChecker).equals(genre)) {
+			getTagHandler().setGenre(file, genre);
+		}
+	}
 
-    /**
-     * Gets the genres for files.
-     * 
-     * @param files
-     *            the files
-     * 
-     * @return the genres for files
-     */
-    private Map<ILocalAudioObject, String> getGenresForFiles(Collection<ILocalAudioObject> files) {
-        Map<ILocalAudioObject, String> result = new HashMap<ILocalAudioObject, String>();
+	/**
+	 * Gets the genres for files.
+	 * 
+	 * @param files
+	 *            the files
+	 * 
+	 * @return the genres for files
+	 */
+	private Map<ILocalAudioObject, String> getGenresForFiles(final Collection<ILocalAudioObject> files) {
+		Map<ILocalAudioObject, String> result = new HashMap<ILocalAudioObject, String>();
 
-        Map<String, String> tagCache = new HashMap<String, String>();
-        
-        for (ILocalAudioObject f : files) {
-            if (!unknownObjectChecker.isUnknownArtist(f.getArtist())) {
-                String tag = null;
-                if (tagCache.containsKey(f.getArtist())) {
-                    tag = tagCache.get(f.getArtist());
-                } else {
-                    tag = webServicesHandler.getArtistTopTag(f.getArtist());
-                    tagCache.put(f.getArtist(), tag);
-                    // Wait one second to avoid IP banning
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        // Nothing to do
-                    }
-                }
-                if (tag != null) {
-                    result.put(f, tag);
-                }
-            }
-        }
+		Map<String, String> tagCache = new HashMap<String, String>();
 
-        return result;
-    }
+		for (ILocalAudioObject f : files) {
+			if (!unknownObjectChecker.isUnknownArtist(f.getArtist(unknownObjectChecker))) {
+				String tag = null;
+				if (tagCache.containsKey(f.getArtist(unknownObjectChecker))) {
+					tag = tagCache.get(f.getArtist(unknownObjectChecker));
+				} else {
+					tag = webServicesHandler.getArtistTopTag(f.getArtist(unknownObjectChecker));
+					tagCache.put(f.getArtist(unknownObjectChecker), tag);
+					// Wait one second to avoid IP banning
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// Nothing to do
+					}
+				}
+				if (tag != null) {
+					result.put(f, tag);
+				}
+			}
+		}
+
+		return result;
+	}
 }

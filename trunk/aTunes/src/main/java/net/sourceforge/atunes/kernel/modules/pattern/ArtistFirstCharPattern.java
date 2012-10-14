@@ -29,14 +29,14 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
  *
  */
 public final class ArtistFirstCharPattern extends AbstractPattern {
-	
+
 	@Override
-	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-	    return audioFile.getArtist().substring(0, 1);
+	public String getAudioFileStringValue(final ILocalAudioObject audioFile) {
+		return audioFile.getArtist(getUnknownObjectChecker()).substring(0, 1);
 	}
-	
+
 	@Override
-	public String getCDMetadataStringValue(CDMetadata metadata, int trackNumber) {
+	public String getCDMetadataStringValue(final CDMetadata metadata, final int trackNumber) {
 		String artist = metadata.getArtist(trackNumber);
 		return artist != null ? artist.substring(0, 1) : null;
 	}

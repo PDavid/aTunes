@@ -28,8 +28,6 @@ import java.util.Map;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -41,156 +39,140 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public class Artist implements IArtist {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2528917861599275619L;
 
 	/** Name of the artist. */
-    String name;
+	String name;
 
-    /** List of IAlbum objects, indexed by name. */
-    Map<String, IAlbum> albums;
+	/** List of IAlbum objects, indexed by name. */
+	Map<String, IAlbum> albums;
 
-    /**
+	/**
 	 * Default constructor for serialization
 	 */
 	Artist() {
 	}
 
 	/**
-     * Constructor.
-     * 
-     * @param name
-     *            the name
-     */
-    public Artist(String name) {
-        this.name = name;
-    }
+	 * Constructor.
+	 * 
+	 * @param name
+	 *            the name
+	 */
+	public Artist(final String name) {
+		this.name = name;
+	}
 
-    /**
-     * Adds an album to this artist.
-     * 
-     * @param album
-     *            the album
-     */
-    @Override
-	public void addAlbum(IAlbum album) {
-    	getAlbums().put(album.getName(), album);
-    }
+	/**
+	 * Adds an album to this artist.
+	 * 
+	 * @param album
+	 *            the album
+	 */
+	@Override
+	public void addAlbum(final IAlbum album) {
+		getAlbums().put(album.getName(), album);
+	}
 
-    /**
-     * Comparator.
-     * 
-     * @param o
-     *            the o
-     * 
-     * @return the int
-     */
-    @Override
-    public int compareTo(IArtist o) {
-        return this.name.compareToIgnoreCase(o.getName());
-    }
+	/**
+	 * Comparator.
+	 * 
+	 * @param o
+	 *            the o
+	 * 
+	 * @return the int
+	 */
+	@Override
+	public int compareTo(final IArtist o) {
+		return this.name.compareToIgnoreCase(o.getName());
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Artist)) {
-            return false;
-        }
-        return ((Artist) o).name.equalsIgnoreCase(name);
-    }
+	@Override
+	public boolean equals(final Object o) {
+		if (!(o instanceof Artist)) {
+			return false;
+		}
+		return ((Artist) o).name.equalsIgnoreCase(name);
+	}
 
-    /**
-     * Return an IAlbum for a given album name.
-     * 
-     * @param albumName
-     *            the album name
-     * 
-     * @return the album
-     */
-    @Override
-	public IAlbum getAlbum(String albumName) {
-        return getAlbums().get(albumName);
-    }
+	/**
+	 * Return an IAlbum for a given album name.
+	 * 
+	 * @param albumName
+	 *            the album name
+	 * 
+	 * @return the album
+	 */
+	@Override
+	public IAlbum getAlbum(final String albumName) {
+		return getAlbums().get(albumName);
+	}
 
-    /**
-     * Return albums of this artist.
-     * 
-     * @return the albums
-     */
-    @Override
+	/**
+	 * Return albums of this artist.
+	 * 
+	 * @return the albums
+	 */
+	@Override
 	public Map<String, IAlbum> getAlbums() {
-    	if (albums == null) {
-    		albums = new HashMap<String, IAlbum>();
-    	}
-        return albums;
-    }
+		if (albums == null) {
+			albums = new HashMap<String, IAlbum>();
+		}
+		return albums;
+	}
 
-    /**
-     * Returns a list of songs of this artist (all songs of all albums).
-     * 
-     * @return the audio objects
-     */
-    @Override
-    public List<ILocalAudioObject> getAudioObjects() {
-        List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>();
-        for (IAlbum album : getAlbums().values()) {
-            songs.addAll(album.getAudioObjects());
-        }
-        return songs;
-    }
+	/**
+	 * Returns a list of songs of this artist (all songs of all albums).
+	 * 
+	 * @return the audio objects
+	 */
+	@Override
+	public List<ILocalAudioObject> getAudioObjects() {
+		List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>();
+		for (IAlbum album : getAlbums().values()) {
+			songs.addAll(album.getAudioObjects());
+		}
+		return songs;
+	}
 
-    /**
-     * Returns the name of this artist.
-     * 
-     * @return the name
-     */
-    @Override
+	/**
+	 * Returns the name of this artist.
+	 * 
+	 * @return the name
+	 */
+	@Override
 	public String getName() {
-        return name;
-    }
+		return name;
+	}
 
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
 
-    /**
-     * Removes an album from this artist.
-     * 
-     * @param alb
-     *            the alb
-     */
-    @Override
-	public void removeAlbum(IAlbum alb) {
-    	getAlbums().remove(alb.getName());
-    }
+	/**
+	 * Removes an album from this artist.
+	 * 
+	 * @param alb
+	 *            the alb
+	 */
+	@Override
+	public void removeAlbum(final IAlbum alb) {
+		getAlbums().remove(alb.getName());
+	}
 
-    /**
-     * String representation.
-     * 
-     * @return the string
-     */
-    @Override
-    public String toString() {
-        return getName();
-    }
-
-    @Override
-    public String getTooltip() {
-        int albumSize = getAlbums().size();
-        return StringUtils.getString(getName(), " (", albumSize, " ", (albumSize > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils.getString("ALBUM")), ")");
-    }
-
-    @Override
-    public boolean isExtendedTooltipSupported() {
-        return true;
-    }
-
-    @Override
-    public boolean isExtendedTooltipImageSupported() {
-        return true;
-    }
+	/**
+	 * String representation.
+	 * 
+	 * @return the string
+	 */
+	@Override
+	public String toString() {
+		return getName();
+	}
 
 	/**
 	 * Returns true if artist has no audio files
@@ -207,11 +189,12 @@ public class Artist implements IArtist {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Returns number of audio files of artist
 	 * @return
 	 */
+	@Override
 	public int size() {
 		int size = 0;
 		if (!getAlbums().isEmpty()) {

@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import com.google.common.base.Predicate;
@@ -40,66 +41,80 @@ import com.google.common.collect.Collections2;
  */
 public class RepairGenresAction extends CustomAbstractAction {
 
-    private static final class FilesWithEmptyGenre implements Predicate<ILocalAudioObject> {
+	private final class FilesWithEmptyGenre implements Predicate<ILocalAudioObject> {
+
 		@Override
-		public boolean apply(ILocalAudioObject ao) {
-			return ao.getGenre() == null || ao.getGenre().isEmpty();
+		public boolean apply(final ILocalAudioObject ao) {
+			return ao.getGenre(unknownObjectChecker) == null || ao.getGenre(unknownObjectChecker).isEmpty();
 		}
 	}
 
 	private static final long serialVersionUID = -7789897583007508598L;
 
-    private IProcessFactory processFactory;
-    
-    private IRepositoryHandler repositoryHandler;
+	private IProcessFactory processFactory;
 
-    private IDialogFactory dialogFactory;
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
+	private IRepositoryHandler repositoryHandler;
+
+	private IDialogFactory dialogFactory;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-    
-    /**
-     * @param processFactory
-     */
-    public void setProcessFactory(IProcessFactory processFactory) {
+
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(final IProcessFactory processFactory) {
 		this.processFactory = processFactory;
 	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
-    public RepairGenresAction() {
-        super(I18nUtils.getString("REPAIR_GENRES"));
-    }
+	/**
+	 * Constructor
+	 */
+	public RepairGenresAction() {
+		super(I18nUtils.getString("REPAIR_GENRES"));
+	}
 
-    @Override
-    protected void executeAction() {
-        // Show confirmation dialog
-    	IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
-    	dialog.setMessage(I18nUtils.getString("REPAIR_GENRES_MESSAGE"));
-    	dialog.showDialog();
-        if (dialog.userAccepted()) {
-            // Call genre edit
-        	IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("setGenresProcess");
-        	process.setFilesToChange(getFilesWithEmptyGenre(repositoryHandler.getAudioFilesList()));
-            process.execute();
-        }
-    }
+	@Override
+	protected void executeAction() {
+		// Show confirmation dialog
+		IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
+		dialog.setMessage(I18nUtils.getString("REPAIR_GENRES_MESSAGE"));
+		dialog.showDialog();
+		if (dialog.userAccepted()) {
+			// Call genre edit
+			IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("setGenresProcess");
+			process.setFilesToChange(getFilesWithEmptyGenre(repositoryHandler.getAudioFilesList()));
+			process.execute();
+		}
+	}
 
-    /**
-     * Returns files without genre
-     * @param audioFiles
-     * @return
-     */
-    private Collection<ILocalAudioObject> getFilesWithEmptyGenre(Collection<ILocalAudioObject> audioFiles) {
-    	return Collections2.filter(audioFiles, new FilesWithEmptyGenre());
-    }
+	/**
+	 * Returns files without genre
+	 * @param audioFiles
+	 * @return
+	 */
+	private Collection<ILocalAudioObject> getFilesWithEmptyGenre(final Collection<ILocalAudioObject> audioFiles) {
+		return Collections2.filter(audioFiles, new FilesWithEmptyGenre());
+	}
 }

@@ -27,10 +27,10 @@ import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavoritesHandler;
+import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -41,49 +41,62 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class SetPlayListSelectionAsFavoriteArtistAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 3403777999793279297L;
+	private static final long serialVersionUID = 3403777999793279297L;
 
-    private IFavoritesHandler favoritesHandler;
-    
-    private IPlayListHandler playListHandler;
-    
-    /**
-     * @param favoritesHandler
-     */
-    public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
+	private IFavoritesHandler favoritesHandler;
+
+	private IPlayListHandler playListHandler;
+
+	private ILocalAudioObjectFilter localAudioObjectFilter;
+
+	/**
+	 * @param localAudioObjectFilter
+	 */
+	public void setLocalAudioObjectFilter(
+			final ILocalAudioObjectFilter localAudioObjectFilter) {
+		this.localAudioObjectFilter = localAudioObjectFilter;
+	}
+
+	/**
+	 * @param favoritesHandler
+	 */
+	public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
 		this.favoritesHandler = favoritesHandler;
 	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    public SetPlayListSelectionAsFavoriteArtistAction() {
-        super(I18nUtils.getString("SET_FAVORITE_ARTIST"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
-        setEnabled(false);
-    }
 
-    @Override
-    protected void executeAction() {
-    	favoritesHandler.toggleFavoriteArtists(
-    			new LocalAudioObjectFilter().getLocalAudioObjects(playListHandler.getSelectedAudioObjects()));
-    }
+	/**
+	 * Default constructor
+	 */
+	public SetPlayListSelectionAsFavoriteArtistAction() {
+		super(I18nUtils.getString("SET_FAVORITE_ARTIST"));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
+		setEnabled(false);
+	}
 
-    @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        if (selection.isEmpty()) {
-            return false;
-        }
+	@Override
+	protected void executeAction() {
+		favoritesHandler.toggleFavoriteArtists(
+				localAudioObjectFilter.getLocalAudioObjects(playListHandler.getSelectedAudioObjects()));
+	}
 
-        for (IAudioObject ao : selection) {
-            if (ao instanceof IRadio || ao instanceof IPodcastFeedEntry) {
-                return false;
-            }
-        }
-        return true;
-    }
+	@Override
+	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
+		if (selection.isEmpty()) {
+			return false;
+		}
+
+		for (IAudioObject ao : selection) {
+			if (ao instanceof IRadio || ao instanceof IPodcastFeedEntry) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

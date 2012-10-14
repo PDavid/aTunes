@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -38,19 +39,22 @@ import org.junit.Test;
 public class AudioObjectDuplicateFinderTest {
 
 	private AudioObjectDuplicateFinder sut;
-	
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
 	@Before
 	public void init() {
 		sut = new AudioObjectDuplicateFinder();
-		sut.setUnknownObjectChecker(new UnknownObjectChecker());
+		unknownObjectChecker = new UnknownObjectChecker();
+		sut.setUnknownObjectChecker(unknownObjectChecker);
 	}
-	
+
 	@Test
 	public void testEmpty() {
 		Assert.assertTrue(sut.findDuplicates(null).isEmpty());
 		Assert.assertTrue(sut.findDuplicates(new ArrayList<IAudioObject>()).isEmpty());
 	}
-	
+
 	@Test
 	public void test1() {
 		List<IAudioObject> list = new ArrayList<IAudioObject>();
@@ -67,33 +71,33 @@ public class AudioObjectDuplicateFinderTest {
 	public void testLocalAudioObject() {
 		ILocalAudioObject lao1 = mock(ILocalAudioObject.class);
 		when(lao1.getTitle()).thenReturn("T1");
-		when(lao1.getArtist()).thenReturn("A1");
+		when(lao1.getArtist(unknownObjectChecker)).thenReturn("A1");
 
 		ILocalAudioObject lao2 = mock(ILocalAudioObject.class);
 		when(lao2.getTitle()).thenReturn("t1");
-		when(lao2.getArtist()).thenReturn("a1");
-		
+		when(lao2.getArtist(unknownObjectChecker)).thenReturn("a1");
+
 		ILocalAudioObject lao3 = mock(ILocalAudioObject.class);
 		when(lao3.getTitle()).thenReturn("T2");
-		when(lao3.getArtist()).thenReturn("A1");
+		when(lao3.getArtist(unknownObjectChecker)).thenReturn("A1");
 
 		ILocalAudioObject lao4 = mock(ILocalAudioObject.class);
 		when(lao4.getTitle()).thenReturn("T1");
-		when(lao4.getArtist()).thenReturn("A1");
+		when(lao4.getArtist(unknownObjectChecker)).thenReturn("A1");
 
 		ILocalAudioObject lao5 = mock(ILocalAudioObject.class);
 		when(lao5.getTitle()).thenReturn("T1");
-		when(lao5.getArtist()).thenReturn("A5");
+		when(lao5.getArtist(unknownObjectChecker)).thenReturn("A5");
 
 		List<IAudioObject> list = new ArrayList<IAudioObject>();
 		list.add(lao1);
 		list.add(lao2);
 		list.add(lao3);
 		list.add(lao4);
-	
+
 		List<IAudioObject> duplicates = sut.findDuplicates(list);
 		Assert.assertEquals(2, duplicates.size());
-		
+
 		Assert.assertEquals(lao2, duplicates.get(0));
 		Assert.assertEquals(lao4, duplicates.get(1));
 	}
@@ -102,16 +106,16 @@ public class AudioObjectDuplicateFinderTest {
 	public void testLocalAudioObjectWithUnknownArtist() {
 		ILocalAudioObject lao1 = mock(ILocalAudioObject.class);
 		when(lao1.getTitle()).thenReturn("T1");
-		when(lao1.getArtist()).thenReturn(new UnknownObjectChecker().getUnknownArtist());
+		when(lao1.getArtist(unknownObjectChecker)).thenReturn(unknownObjectChecker.getUnknownArtist());
 
 		ILocalAudioObject lao2 = mock(ILocalAudioObject.class);
 		when(lao2.getTitle()).thenReturn("T1");
-		when(lao2.getArtist()).thenReturn(new UnknownObjectChecker().getUnknownArtist());
-		
+		when(lao2.getArtist(unknownObjectChecker)).thenReturn(unknownObjectChecker.getUnknownArtist());
+
 		List<IAudioObject> list = new ArrayList<IAudioObject>();
 		list.add(lao1);
 		list.add(lao2);
-	
+
 		List<IAudioObject> duplicates = sut.findDuplicates(list);
 		Assert.assertTrue(duplicates.isEmpty());
 	}
@@ -135,10 +139,10 @@ public class AudioObjectDuplicateFinderTest {
 		list.add(r2);
 		list.add(r3);
 		list.add(r4);
-	
+
 		List<IAudioObject> duplicates = sut.findDuplicates(list);
 		Assert.assertEquals(2, duplicates.size());
-		
+
 		Assert.assertEquals(r3, duplicates.get(0));
 		Assert.assertEquals(r4, duplicates.get(1));
 	}
@@ -166,10 +170,10 @@ public class AudioObjectDuplicateFinderTest {
 		list.add(p2);
 		list.add(p3);
 		list.add(p4);
-	
+
 		List<IAudioObject> duplicates = sut.findDuplicates(list);
 		Assert.assertEquals(1, duplicates.size());
-		
+
 		Assert.assertEquals(p4, duplicates.get(0));
 	}
 }

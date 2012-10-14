@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFilter;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -53,12 +54,13 @@ public class SetPlayListSelectionAsFavoriteArtistActionTest {
 		when(playListHandler.getSelectedAudioObjects()).thenReturn(selectedObjects);
 		sut.setFavoritesHandler(favoritesHandler);
 		sut.setPlayListHandler(playListHandler);
-		
+		sut.setLocalAudioObjectFilter(new LocalAudioObjectFilter());
+
 		sut.executeAction();
-		
+
 		verify(favoritesHandler).toggleFavoriteArtists(Collections.singletonList(lao1));
 	}
-	
+
 	@Test
 	public void testDisabled() {
 		SetPlayListSelectionAsFavoriteAlbumAction sut = new SetPlayListSelectionAsFavoriteAlbumAction();
@@ -71,12 +73,12 @@ public class SetPlayListSelectionAsFavoriteArtistActionTest {
 		list.add(mock(IPodcastFeedEntry.class));
 		Assert.assertFalse(sut.isEnabledForPlayListSelection(list));
 	}
-	
+
 	@Test
 	public void testEnabled() {
 		SetPlayListSelectionAsFavoriteAlbumAction sut = new SetPlayListSelectionAsFavoriteAlbumAction();
 		List<IAudioObject> list = new ArrayList<IAudioObject>();
 		list.add(mock(ILocalAudioObject.class));
-		Assert.assertTrue(sut.isEnabledForPlayListSelection(list));		
+		Assert.assertTrue(sut.isEnabledForPlayListSelection(list));
 	}
 }

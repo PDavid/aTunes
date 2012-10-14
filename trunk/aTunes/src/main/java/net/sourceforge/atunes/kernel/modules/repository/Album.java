@@ -28,8 +28,6 @@ import java.util.TreeSet;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * This class represents an album, with it's name, artist, and songs.
@@ -38,144 +36,128 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class Album implements IAlbum {
 
-    private static final long serialVersionUID = -1481314950918557022L;
+	private static final long serialVersionUID = -1481314950918557022L;
 
-    /** Name of the album. */
-    String name;
+	/** Name of the album. */
+	String name;
 
-    /** Name of the artist. */
-    IArtist artist;
+	/** Name of the artist. */
+	IArtist artist;
 
-    /** List of songs of this album. */
-    Set<ILocalAudioObject> audioFiles;
+	/** List of songs of this album. */
+	Set<ILocalAudioObject> audioFiles;
 
-    /**
+	/**
 	 * Default constructor for serialization
 	 */
 	Album() {
 	}
 
-    /**
-     * Constructor.
-     * 
-     * @param artist
-     * @param name
-     */
-    public Album(IArtist artist, String name) {
-        this.artist = artist;
-        this.name = name;
-    }
-    
-    /**
-     * Returns audio files
-     * @return
-     */
-    private Set<ILocalAudioObject> getAudioFiles() {
-    	if (audioFiles == null) {
-    		audioFiles = new TreeSet<ILocalAudioObject>(new TrackNumberComparator());
-    	}
-    	return audioFiles;
-    }
+	/**
+	 * Constructor.
+	 * 
+	 * @param artist
+	 * @param name
+	 */
+	public Album(final IArtist artist, final String name) {
+		this.artist = artist;
+		this.name = name;
+	}
 
-    /**
-     * Adds a song to this album.
-     * 
-     * @param file
-     *            the file
-     */
-    @Override
-	public void addAudioFile(ILocalAudioObject file) {
-    	getAudioFiles().add(file);
-    }
+	/**
+	 * Returns audio files
+	 * @return
+	 */
+	private Set<ILocalAudioObject> getAudioFiles() {
+		if (audioFiles == null) {
+			audioFiles = new TreeSet<ILocalAudioObject>(new TrackNumberComparator());
+		}
+		return audioFiles;
+	}
 
-    /**
-     * Comparator.
-     * 
-     * @param o
-     *            the o
-     * 
-     * @return the int
-     */
-    @Override
-    public int compareTo(IAlbum o) {
-    	if (o == null || name == null || artist == null) {
-    		return 1;
-    	} else {
-    		int artistCompare = artist.compareTo(o.getArtist());
-    		if (artistCompare == 0) {
-    			return name.compareToIgnoreCase(o.getName());
-    		} else {
-    			return artistCompare;
-    		}
-    	}
-    }
+	/**
+	 * Adds a song to this album.
+	 * 
+	 * @param file
+	 *            the file
+	 */
+	@Override
+	public void addAudioFile(final ILocalAudioObject file) {
+		getAudioFiles().add(file);
+	}
 
-    /**
-     * Returns the name of the artist of this album.
-     * 
-     * @return the artist
-     */
-    @Override
+	/**
+	 * Comparator.
+	 * 
+	 * @param o
+	 *            the o
+	 * 
+	 * @return the int
+	 */
+	@Override
+	public int compareTo(final IAlbum o) {
+		if (o == null || name == null || artist == null) {
+			return 1;
+		} else {
+			int artistCompare = artist.compareTo(o.getArtist());
+			if (artistCompare == 0) {
+				return name.compareToIgnoreCase(o.getName());
+			} else {
+				return artistCompare;
+			}
+		}
+	}
+
+	/**
+	 * Returns the name of the artist of this album.
+	 * 
+	 * @return the artist
+	 */
+	@Override
 	public IArtist getArtist() {
-        return artist;
-    }
+		return artist;
+	}
 
-    /**
-     * Returns a list of songs of this album.
-     * 
-     * @return the audio objects
-     */
-    @Override
-    public List<ILocalAudioObject> getAudioObjects() {
-        return new ArrayList<ILocalAudioObject>(getAudioFiles());
-    }
+	/**
+	 * Returns a list of songs of this album.
+	 * 
+	 * @return the audio objects
+	 */
+	@Override
+	public List<ILocalAudioObject> getAudioObjects() {
+		return new ArrayList<ILocalAudioObject>(getAudioFiles());
+	}
 
-    /**
-     * Returns name of the album.
-     * 
-     * @return the name
-     */
-    @Override
+	/**
+	 * Returns name of the album.
+	 * 
+	 * @return the name
+	 */
+	@Override
 	public String getName() {
-        return name;
-    }
+		return name;
+	}
 
-    /**
-     * Removes a song from this album.
-     * 
-     * @param file
-     *            the file
-     */
-    @Override
-	public void removeAudioFile(ILocalAudioObject file) {
-    	getAudioFiles().remove(file);
-    }
+	/**
+	 * Removes a song from this album.
+	 * 
+	 * @param file
+	 *            the file
+	 */
+	@Override
+	public void removeAudioFile(final ILocalAudioObject file) {
+		getAudioFiles().remove(file);
+	}
 
-    /**
-     * String representation of this object.
-     * 
-     * @return the string
-     */
-    @Override
-    public String toString() {
-        return getName();
-    }
-
-    @Override
-    public String getTooltip() {
-        int songs = size();
-        return StringUtils.getString(getName(), " - ", getArtist(), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
-    }
-
-    @Override
-    public boolean isExtendedTooltipSupported() {
-        return true;
-    }
-
-    @Override
-    public boolean isExtendedTooltipImageSupported() {
-        return true;
-    }
+	/**
+	 * String representation of this object.
+	 * 
+	 * @return the string
+	 */
+	@Override
+	public String toString() {
+		return getName();
+	}
 
 	@Override
 	public int hashCode() {
@@ -187,10 +169,10 @@ public class Album implements IAlbum {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		}		
+		}
 		if (obj == null) {
 			return false;
 		}
@@ -208,13 +190,13 @@ public class Album implements IAlbum {
 		if (name == null) {
 			if (other.name != null) {
 				return false;
-			}	
+			}
 		} else if (!name.equalsIgnoreCase(other.name)) {
 			return false;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Returns true if album has no audio files
 	 * @return
@@ -223,11 +205,12 @@ public class Album implements IAlbum {
 	public boolean isEmpty() {
 		return getAudioFiles().isEmpty();
 	}
-	
+
 	/**
 	 * Returns number of audio files of album
 	 * @return
 	 */
+	@Override
 	public int size() {
 		return getAudioFiles().size();
 	}

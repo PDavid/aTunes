@@ -44,84 +44,84 @@ import net.sourceforge.atunes.utils.ImageUtils;
  */
 public class SimilarArtistsDataSource implements IContextInformationSource {
 
-    /**
-     * Input parameter
-     */
-    public static final String INPUT_AUDIO_OBJECT = "AUDIO_OBJECT";
+	/**
+	 * Input parameter
+	 */
+	public static final String INPUT_AUDIO_OBJECT = "AUDIO_OBJECT";
 
-    /**
-     * Output parameter
-     */
-    public static final String OUTPUT_ARTISTS = "ARTISTS";
+	/**
+	 * Output parameter
+	 */
+	public static final String OUTPUT_ARTISTS = "ARTISTS";
 
 	private IWebServicesHandler webServicesHandler;
 
 	private IRepositoryHandler repositoryHandler;
-	
+
 	private ISimilarArtistsInfo similarArtistsInfo;
-	
+
 	private IUnknownObjectChecker unknownObjectChecker;
-	
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
-	
+
 	@Override
-	public void getData(IAudioObject audioObject) {
-    	this.similarArtistsInfo = getSimilarArtists(audioObject);
+	public void getData(final IAudioObject audioObject) {
+		this.similarArtistsInfo = getSimilarArtists(audioObject);
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public ISimilarArtistsInfo getSimilarArtistsInfo() {
 		return similarArtistsInfo;
 	}
-	
-    /**
-     * Returns similar artists
-     * 
-     * @param audioObject
-     */
-    private ISimilarArtistsInfo getSimilarArtists(IAudioObject audioObject) {
-        if (!unknownObjectChecker.isUnknownArtist(audioObject.getArtist())) {
-            ISimilarArtistsInfo artists = webServicesHandler.getSimilarArtists(audioObject.getArtist());
-            if (artists != null) {
-            	Set<String> artistNamesSet = new HashSet<String>();
-            	for (IArtist a : repositoryHandler.getArtists()) {
-            		artistNamesSet.add(a.getName().toUpperCase());
-            	}
-                for (int i = 0; i < artists.getArtists().size(); i++) {
-                    IArtistInfo a = artists.getArtists().get(i);
-                    ImageIcon img = webServicesHandler.getArtistThumbImage(a);
-                    a.setImage(ImageUtils.resize(img, Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
-                    a.setAvailable(artistNamesSet.contains(a.getName().toUpperCase()));
-                }
-            }
-            return artists;
-        }
-        return null;
-    }
 
-    /**
-     * @param webServicesHandler
-     */
-    public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+	/**
+	 * Returns similar artists
+	 * 
+	 * @param audioObject
+	 */
+	private ISimilarArtistsInfo getSimilarArtists(final IAudioObject audioObject) {
+		if (!unknownObjectChecker.isUnknownArtist(audioObject.getArtist(unknownObjectChecker))) {
+			ISimilarArtistsInfo artists = webServicesHandler.getSimilarArtists(audioObject.getArtist(unknownObjectChecker));
+			if (artists != null) {
+				Set<String> artistNamesSet = new HashSet<String>();
+				for (IArtist a : repositoryHandler.getArtists()) {
+					artistNamesSet.add(a.getName().toUpperCase());
+				}
+				for (int i = 0; i < artists.getArtists().size(); i++) {
+					IArtistInfo a = artists.getArtists().get(i);
+					ImageIcon img = webServicesHandler.getArtistThumbImage(a);
+					a.setImage(ImageUtils.resize(img, Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
+					a.setAvailable(artistNamesSet.contains(a.getName().toUpperCase()));
+				}
+			}
+			return artists;
+		}
+		return null;
+	}
+
+	/**
+	 * @param webServicesHandler
+	 */
+	public final void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
-    
-    @Override
-    public void cancel() {
-    }
+
+	@Override
+	public void cancel() {
+	}
 
 }

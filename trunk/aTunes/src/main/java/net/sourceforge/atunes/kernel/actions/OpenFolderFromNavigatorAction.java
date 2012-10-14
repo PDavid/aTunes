@@ -31,9 +31,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -51,6 +51,16 @@ public class OpenFolderFromNavigatorAction extends AbstractActionOverSelectedObj
 	private IDesktop desktop;
 
 	private IOSManager osManager;
+
+	private ILocalAudioObjectFilter localAudioObjectFilter;
+
+	/**
+	 * @param localAudioObjectFilter
+	 */
+	public void setLocalAudioObjectFilter(
+			final ILocalAudioObjectFilter localAudioObjectFilter) {
+		this.localAudioObjectFilter = localAudioObjectFilter;
+	}
 
 	/**
 	 * Default constructor
@@ -84,12 +94,12 @@ public class OpenFolderFromNavigatorAction extends AbstractActionOverSelectedObj
 	@Override
 	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<DefaultMutableTreeNode> selection) {
 		List<IAudioObject> filesSelectedInNavigator = navigationHandler.getFilesSelectedInNavigator();
-		return sameParentFile(new LocalAudioObjectFilter().getLocalAudioObjects(filesSelectedInNavigator));
+		return sameParentFile(localAudioObjectFilter.getLocalAudioObjects(filesSelectedInNavigator));
 	}
 
 	@Override
 	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
-		return sameParentFile(new LocalAudioObjectFilter().getLocalAudioObjects(selection));
+		return sameParentFile(localAudioObjectFilter.getLocalAudioObjects(selection));
 	}
 
 	/**

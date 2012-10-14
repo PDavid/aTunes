@@ -312,7 +312,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 		notifyFileLoaded();
 		filesLoaded++;
 		filler.addAudioFile(audio, relativeTo, relativePath);
-		notifyCurrentAlbum(audio.getArtist(), audio.getAlbum());
+		notifyCurrentAlbum(audio.getArtist(unknownObjectChecker), audio.getAlbum(unknownObjectChecker));
 	}
 
 	/**

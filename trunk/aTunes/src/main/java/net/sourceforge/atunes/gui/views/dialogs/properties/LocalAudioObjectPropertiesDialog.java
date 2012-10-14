@@ -43,6 +43,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.TimeUtils;
@@ -82,26 +83,36 @@ public final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertie
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 
 	private IProcessFactory processFactory;
-	
+
 	private IDialogFactory dialogFactory;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	/**
 	 * Instantiates a new audio file properties dialog.
 	 * @param frame
 	 */
-	LocalAudioObjectPropertiesDialog(IFrame frame) {
+	LocalAudioObjectPropertiesDialog(final IFrame frame) {
 		super(frame);
 	}
-	
+
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
 
 	@Override
-	public void setAudioObject(IAudioObject audioObject) {
+	public void setAudioObject(final IAudioObject audioObject) {
 		if (audioObject instanceof ILocalAudioObject) {
 			this.file = (ILocalAudioObject) audioObject;
 			addContent(getLookAndFeel());
@@ -115,49 +126,49 @@ public final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertie
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
 	/**
 	 * @param playListHandler
 	 */
-	public void setPlayListHandler(IPlayListHandler playListHandler) {
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
 
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
 	/**
 	 * @param audioObjectImageLocator
 	 */
-	public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
+	public void setAudioObjectImageLocator(final IAudioObjectImageLocator audioObjectImageLocator) {
 		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
 
 	/**
 	 * @param localAudioObjectValidator
 	 */
-	public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+	public void setLocalAudioObjectValidator(final ILocalAudioObjectValidator localAudioObjectValidator) {
 		this.localAudioObjectValidator = localAudioObjectValidator;
 	}
 
 	/**
 	 * @param processFactory
 	 */
-	public void setProcessFactory(IProcessFactory processFactory) {
+	public void setProcessFactory(final IProcessFactory processFactory) {
 		this.processFactory = processFactory;
 	}
 
 	/**
 	 * @param file
 	 */
-	public void setFile(ILocalAudioObject file) {
+	public void setFile(final ILocalAudioObject file) {
 		this.file = file;
 		setTitle(getTitleText(file));
 	}
@@ -170,7 +181,7 @@ public final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertie
 	 * 
 	 * @return title for dialog
 	 */
-	private String getTitleText(ILocalAudioObject file) {
+	private String getTitleText(final ILocalAudioObject file) {
 		return StringUtils.getString(I18nUtils.getString("INFO_OF_FILE"), " ", file.getFile().getName());
 	}
 
@@ -184,11 +195,11 @@ public final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertie
 		pictureLabel = new JLabel();
 		songLabel = new ProviderLabel(new SongProvider());
 		songLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
-		artistLabel = new ProviderLabel(new ArtistProvider());
+		artistLabel = new ProviderLabel(new ArtistProvider(unknownObjectChecker));
 		artistLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
-		albumArtistLabel = new ProviderLabel(new AlbumArtistProvider());
+		albumArtistLabel = new ProviderLabel(new AlbumArtistProvider(unknownObjectChecker));
 		albumArtistLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
-		albumLabel = new ProviderLabel(new AlbumProvider());
+		albumLabel = new ProviderLabel(new AlbumProvider(unknownObjectChecker));
 		albumLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
 		fileNameLabel = new ProviderLabel(new FileNameProvider());
 		pathLabel = new ProviderLabel(new FilePathProvider());
@@ -204,7 +215,8 @@ public final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertie
 		JButton editTagsButton = new JButton();
 		editTagsButton.setText(I18nUtils.getString("EDIT_TAG"));
 		editTagsButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
+			@Override
+			public void actionPerformed(final ActionEvent evt) {
 				EditTagDialog dialog = dialogFactory.newDialog(EditTagDialog.class);
 				dialog.setPrevNextButtonsShown(false);
 				EditTagDialogController ctl = new EditTagDialogController(dialog, osManager, playListHandler, repositoryHandler, localAudioObjectValidator, processFactory);
@@ -221,7 +233,7 @@ public final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertie
 	 * @param panel
 	 * @param editTagsButton
 	 */
-	private void setLayout(JPanel panel, JButton editTagsButton) {
+	private void setLayout(final JPanel panel, final JButton editTagsButton) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -305,7 +317,7 @@ public final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertie
 		durationLabel.setText(getHtmlFormatted(I18nUtils.getString("DURATION"), TimeUtils.secondsToHoursMinutesSeconds(file.getDuration())));
 		trackLabel.setText(getHtmlFormatted(I18nUtils.getString("TRACK"), file.getTrackNumber() > 0 ? String.valueOf(file.getTrackNumber()) : "-"));
 		discNumberLabel.setText(getHtmlFormatted(I18nUtils.getString("DISC_NUMBER"), file.getDiscNumber() > 0 ? String.valueOf(file.getDiscNumber()) : "-"));
-		genreLabel.setText(getHtmlFormatted(I18nUtils.getString("GENRE"), StringUtils.isEmpty(file.getGenre()) ? "-" : file.getGenre()));
+		genreLabel.setText(getHtmlFormatted(I18nUtils.getString("GENRE"), StringUtils.isEmpty(file.getGenre(unknownObjectChecker)) ? "-" : file.getGenre(unknownObjectChecker)));
 		yearLabel.setText(getHtmlFormatted(I18nUtils.getString("YEAR"), StringUtils.getNumberOrZero(file.getYear()) > 0 ? file.getYear() : "-"));
 		composerLabel.setText(getHtmlFormatted(I18nUtils.getString("COMPOSER"), StringUtils.isEmpty(file.getComposer()) ? "-" : file.getComposer()));
 		bitrateLabel.setText(getHtmlFormatted(I18nUtils.getString("BITRATE"), StringUtils.getString(Long.toString(file.getBitrate()), " Kbps")));

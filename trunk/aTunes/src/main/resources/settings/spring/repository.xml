@@ -9,7 +9,7 @@
 	<bean id="repositoryActions" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryActionsHelper"/>
 	<bean id="showRepositoryDataHelper" class="net.sourceforge.atunes.kernel.modules.repository.ShowRepositoryDataHelper"/>
 	<bean id="voidRepository" class="net.sourceforge.atunes.kernel.modules.repository.VoidRepository" scope="prototype"/>
-	<bean id="repositorySearchableObject" class="net.sourceforge.atunes.kernel.modules.search.RepositorySearchableObject"/>
+	<bean id="repositorySearchableObject" class="net.sourceforge.atunes.kernel.modules.search.RepositorySearchableObject" parent="searchableObject"/>
 	<bean id="repositoryRefresher" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryAutoRefresher"/>
 	<bean id="persistRepositoryTask" class="net.sourceforge.atunes.kernel.modules.repository.PersistRepositoryTask"/>
 	
@@ -42,6 +42,7 @@
 	<bean id="importToRepositoryProcessListener" class="net.sourceforge.atunes.kernel.modules.repository.ImportToRepositoryProcessListener" scope="prototype"/>
 	
 	
-	<bean id="favoritesSearchableObject" class="net.sourceforge.atunes.kernel.modules.search.FavoritesSearchableObject"/>
-	
+	<bean id="favoritesSearchableObject" class="net.sourceforge.atunes.kernel.modules.search.FavoritesSearchableObject" parent="searchableObject"/>
+
+	<bean id="localAudioObjectFilter" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFilter"/>	
 </beans>

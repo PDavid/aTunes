@@ -37,58 +37,58 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ArtistContextPanel extends AbstractContextPanel {
 
-    private static final long serialVersionUID = -7910261492394049289L;
-    
-    private IIconFactory artistImageIcon;
-    
-    private IUnknownObjectChecker unknownObjectChecker;
-    
-    /**
-     * @param unknownObjectChecker
-     */
-    public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	private static final long serialVersionUID = -7910261492394049289L;
+
+	private IIconFactory artistImageIcon;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
-    
-    /**
-     * @param artistImageIcon
-     */
-    public void setArtistImageIcon(IIconFactory artistImageIcon) {
+
+	/**
+	 * @param artistImageIcon
+	 */
+	public void setArtistImageIcon(final IIconFactory artistImageIcon) {
 		this.artistImageIcon = artistImageIcon;
 	}
 
 	@Override
-	public IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
+	public IColorMutableImageIcon getContextPanelIcon(final IAudioObject audioObject) {
 		return artistImageIcon.getColorMutableIcon();
-    }
+	}
 
-    @Override
-    public String getContextPanelName() {
-        return "ARTIST";
-    }
+	@Override
+	public String getContextPanelName() {
+		return "ARTIST";
+	}
 
-    @Override
-    public String getContextPanelTitle(IAudioObject audioObject) {
-        return I18nUtils.getString("ARTIST");
-    }
+	@Override
+	public String getContextPanelTitle(final IAudioObject audioObject) {
+		return I18nUtils.getString("ARTIST");
+	}
 
-    @Override
-    public boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
-        // Avoid unknown artist
-        if (unknownObjectChecker.isUnknownArtist(audioObject.getArtist())) {
-            return false;
-        }
+	@Override
+	public boolean isPanelVisibleForAudioObject(final IAudioObject audioObject) {
+		// Avoid unknown artist
+		if (unknownObjectChecker.isUnknownArtist(audioObject.getArtist(unknownObjectChecker))) {
+			return false;
+		}
 
-        // Enable panel for LocalAudioObject objects or Radios with song information available
-        return audioObject instanceof ILocalAudioObject || audioObject instanceof IRadio && ((IRadio) audioObject).isSongInfoAvailable();
-    }
-    
-    @Override
-    public boolean panelNeedsToBeUpdated(IAudioObject previousAudioObject, IAudioObject newAudioObject) {
-    	if (previousAudioObject == null || newAudioObject == null) {
-    		return true;
-    	}
-    	
-    	return !previousAudioObject.getArtist().equalsIgnoreCase(newAudioObject.getArtist());
-    }
+		// Enable panel for LocalAudioObject objects or Radios with song information available
+		return audioObject instanceof ILocalAudioObject || audioObject instanceof IRadio && ((IRadio) audioObject).isSongInfoAvailable();
+	}
+
+	@Override
+	public boolean panelNeedsToBeUpdated(final IAudioObject previousAudioObject, final IAudioObject newAudioObject) {
+		if (previousAudioObject == null || newAudioObject == null) {
+			return true;
+		}
+
+		return !previousAudioObject.getArtist(unknownObjectChecker).equalsIgnoreCase(newAudioObject.getArtist(unknownObjectChecker));
+	}
 }

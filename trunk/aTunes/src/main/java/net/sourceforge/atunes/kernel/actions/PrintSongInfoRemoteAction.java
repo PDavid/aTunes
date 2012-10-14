@@ -24,6 +24,7 @@ import java.util.List;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.CollectionUtils;
 
 import org.apache.commons.lang.StringUtils;
@@ -35,70 +36,80 @@ import org.apache.commons.lang.StringUtils;
  */
 public class PrintSongInfoRemoteAction extends RemoteAction {
 
-    private static final String SEPARATOR = "\n";
+	private static final String SEPARATOR = "\n";
 
 	private static final long serialVersionUID = 1742363002472924706L;
-    
-    private IRepositoryHandler repositoryHandler;
-    
-    private IPlayListHandler playListHandler;
 
-    /**
-     * Default constructor
-     */
-    public PrintSongInfoRemoteAction() {
-    	super("song");
+	private IRepositoryHandler repositoryHandler;
+
+	private IPlayListHandler playListHandler;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
 	}
-    
-    /**
-     * @param handler
-     */
-    public void setPlayListHandler(IPlayListHandler handler) {
-        this.playListHandler = handler;
-    }
 
-    /**
-     * @param handler
-     */
-    public void setRepositoryHandler(IRepositoryHandler handler) {
-        this.repositoryHandler = handler;
-    }
-    
-    @Override
-    public String runCommand(List<String> parameters) {
-    	String errorResponse = null;
-    	IAudioObject object = null;
-        if (CollectionUtils.isEmpty(parameters)) {
-        	object = playListHandler.getCurrentAudioObjectFromCurrentPlayList();
-            if (object == null) {
-                errorResponse = "Nothing is playing";
-            }
-        } else {
-            String name = StringUtils.join(parameters, ' ');
-            object = repositoryHandler.getFile(name);
-            if (object == null) {
-                errorResponse = "File not found";
-            }
-        }
-        
-        if (object != null) {
-        	return returnInformation(object);
-        }
-        
-        return errorResponse;
-    }
+	/**
+	 * Default constructor
+	 */
+	public PrintSongInfoRemoteAction() {
+		super("song");
+	}
+
+	/**
+	 * @param handler
+	 */
+	public void setPlayListHandler(final IPlayListHandler handler) {
+		this.playListHandler = handler;
+	}
+
+	/**
+	 * @param handler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler handler) {
+		this.repositoryHandler = handler;
+	}
+
+	@Override
+	public String runCommand(final List<String> parameters) {
+		String errorResponse = null;
+		IAudioObject object = null;
+		if (CollectionUtils.isEmpty(parameters)) {
+			object = playListHandler.getCurrentAudioObjectFromCurrentPlayList();
+			if (object == null) {
+				errorResponse = "Nothing is playing";
+			}
+		} else {
+			String name = StringUtils.join(parameters, ' ');
+			object = repositoryHandler.getFile(name);
+			if (object == null) {
+				errorResponse = "File not found";
+			}
+		}
+
+		if (object != null) {
+			return returnInformation(object);
+		}
+
+		return errorResponse;
+	}
 
 	/**
 	 * @param object
 	 */
-	private String returnInformation(IAudioObject object) {
+	private String returnInformation(final IAudioObject object) {
 		int mins = object.getDuration() / 60;
 		int sec = object.getDuration() % 60;
 		return net.sourceforge.atunes.utils.StringUtils.getString(
-				"Name: ", object.getTitleOrFileName(), SEPARATOR, 
-				"Artist: ", object.getArtist(), SEPARATOR, 
-				"Album: ", object.getAlbum(), SEPARATOR, 
-				"Year: ", object.getYear(), SEPARATOR, 
+				"Name: ", object.getTitleOrFileName(), SEPARATOR,
+				"Artist: ", object.getArtist(unknownObjectChecker), SEPARATOR,
+				"Album: ", object.getAlbum(unknownObjectChecker), SEPARATOR,
+				"Year: ", object.getYear(), SEPARATOR,
 				"Duration: ", mins, ":", sec);
 	}
 }

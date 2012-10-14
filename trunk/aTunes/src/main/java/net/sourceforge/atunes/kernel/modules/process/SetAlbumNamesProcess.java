@@ -29,20 +29,20 @@ import net.sourceforge.atunes.model.IUnknownObjectChecker;
 public class SetAlbumNamesProcess extends AbstractChangeTagProcess {
 
 	private IUnknownObjectChecker unknownObjectChecker;
-	
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
-    @Override
-    protected void changeTag(ILocalAudioObject file) {
-        if (unknownObjectChecker.isUnknownAlbum(file.getAlbum())) {
-            // Take name from folder
-            String albumName = file.getFile().getParentFile().getName();
-            getTagHandler().setAlbum(file, albumName);
-        }
-    }
+	@Override
+	protected void changeTag(final ILocalAudioObject file) {
+		if (unknownObjectChecker.isUnknownAlbum(file.getAlbum(unknownObjectChecker))) {
+			// Take name from folder
+			String albumName = file.getFile().getParentFile().getName();
+			getTagHandler().setAlbum(file, albumName);
+		}
+	}
 }

@@ -21,13 +21,24 @@
 package net.sourceforge.atunes.kernel.modules.navigator;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IYear;
 
 class YearAudioObjectSelector extends AudioObjectSelector<IYear, IAudioObject> {
 
+	private final IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	YearAudioObjectSelector(final IUnknownObjectChecker unknownObjectChecker) {
+		super();
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
 	@Override
-	boolean equals(IYear year, IAudioObject audioObject) {
-		return year.getName().equals(audioObject.getYear());
+	boolean equals(final IYear year, final IAudioObject audioObject) {
+		return year.getName(unknownObjectChecker).equals(audioObject.getYear());
 	}
 
 }

@@ -43,6 +43,7 @@ import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IStateCore;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.TimeUtils;
@@ -68,6 +69,16 @@ public final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertie
 
 	private IStateCore stateCore;
 
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
 	/**
 	 * Instantiates a new podcast feed entry properties dialog.
 	 * 
@@ -75,14 +86,14 @@ public final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertie
 	 * @param frame
 	 * @param stateCore
 	 */
-	PodcastFeedEntryPropertiesDialog(IFrame frame) {
+	PodcastFeedEntryPropertiesDialog(final IFrame frame) {
 		super(frame);
 	}
 
 	/**
 	 * @param entry
 	 */
-	public void setEntry(IPodcastFeedEntry entry) {
+	public void setEntry(final IPodcastFeedEntry entry) {
 		this.entry = entry;
 		setTitle(getTitleText(entry));
 	}
@@ -90,7 +101,7 @@ public final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertie
 	/**
 	 * @param stateCore
 	 */
-	public void setStateCore(IStateCore stateCore) {
+	public void setStateCore(final IStateCore stateCore) {
 		this.stateCore = stateCore;
 	}
 
@@ -99,7 +110,7 @@ public final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertie
 	}
 
 	@Override
-	public void setAudioObject(IAudioObject audioObject) {
+	public void setAudioObject(final IAudioObject audioObject) {
 		if (audioObject instanceof IPodcastFeedEntry) {
 			this.entry = (IPodcastFeedEntry) audioObject;
 			addContent(getLookAndFeel());
@@ -118,15 +129,15 @@ public final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertie
 	 * 
 	 * @return title for dialog
 	 */
-	private static String getTitleText(IPodcastFeedEntry entry) {
+	private static String getTitleText(final IPodcastFeedEntry entry) {
 		return StringUtils.getString(I18nUtils.getString("INFO_OF_PODCAST_FEED"), " ", entry.getTitle());
 	}
 
 	/**
 	 * Adds the content.
-	 * @param iLookAndFeel 
+	 * @param iLookAndFeel
 	 */
-	private void addContent(ILookAndFeel iLookAndFeel) {
+	private void addContent(final ILookAndFeel iLookAndFeel) {
 		JPanel panel = new JPanel(new GridBagLayout());
 
 		pictureLabel = new JLabel();
@@ -137,7 +148,7 @@ public final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertie
 		urlLabel = new JLabel();
 		urlLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
 		durationLabel = new JLabel();
-		dateLabel = new JLabel();       
+		dateLabel = new JLabel();
 		podcastFeedLabel = new JLabel();
 		downloadedLabel = new JLabel();
 		descriptionLabel = new JLabel();
@@ -160,7 +171,7 @@ public final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertie
 	 * @param panel
 	 * @param descriptionScrollPane
 	 */
-	private void arrangePanel(JPanel panel, JScrollPane descriptionScrollPane) {
+	private void arrangePanel(final JPanel panel, final JScrollPane descriptionScrollPane) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -235,7 +246,7 @@ public final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertie
 	private void setContent() {
 		fillPicture();
 		titleLabel.setText(getHtmlFormatted(I18nUtils.getString("NAME"), StringUtils.isEmpty(entry.getTitle()) ? "-" : entry.getTitle()));
-		artistLabel.setText(getHtmlFormatted(I18nUtils.getString("ARTIST"), StringUtils.isEmpty(entry.getArtist()) ? "-" : entry.getArtist()));
+		artistLabel.setText(getHtmlFormatted(I18nUtils.getString("ARTIST"), StringUtils.isEmpty(entry.getArtist(unknownObjectChecker)) ? "-" : entry.getArtist(unknownObjectChecker)));
 		urlLabel.setText(getHtmlFormatted(I18nUtils.getString("URL"), entry.getUrl()));
 		if (entry.getDuration() > 0) {
 			durationLabel.setText(getHtmlFormatted(I18nUtils.getString("DURATION"), TimeUtils.secondsToHoursMinutesSeconds(entry.getDuration())));

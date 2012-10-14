@@ -29,14 +29,14 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
  *
  */
 public final class GenrePattern extends AbstractPattern {
-	
+
 	@Override
-	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-	    return audioFile.getGenre();
+	public String getAudioFileStringValue(final ILocalAudioObject audioFile) {
+		return audioFile.getGenre(getUnknownObjectChecker());
 	}
-	
+
 	@Override
-	public String getCDMetadataStringValue(CDMetadata metadata, int trackNumber) {
+	public String getCDMetadataStringValue(final CDMetadata metadata, final int trackNumber) {
 		return metadata.getGenre();
 	}
 }

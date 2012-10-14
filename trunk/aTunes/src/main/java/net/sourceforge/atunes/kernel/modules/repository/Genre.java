@@ -22,14 +22,9 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * This class represents a genre, with a name, and a set of artist of this
@@ -37,134 +32,99 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class Genre implements IGenre {
 
-    private static final long serialVersionUID = -6552057266561177152L;
+	private static final long serialVersionUID = -6552057266561177152L;
 
-    /** Name of the genre. */
-    String name;
+	/** Name of the genre. */
+	String name;
 
-    /** List of objects of this genre. */
-    List<ILocalAudioObject> audioFiles;
+	/** List of objects of this genre. */
+	List<ILocalAudioObject> audioFiles;
 
-    /**
+	/**
 	 * Default constructor for serialization
 	 */
 	Genre() {
 	}
 
-    /**
-     * Constructor.
-     * 
-     * @param name
-     *            the name
-     */
-    public Genre(String name) {
-        this.name = name;
-        this.audioFiles = new ArrayList<ILocalAudioObject>();
-    }
+	/**
+	 * Constructor.
+	 * 
+	 * @param name
+	 *            the name
+	 */
+	public Genre(final String name) {
+		this.name = name;
+		this.audioFiles = new ArrayList<ILocalAudioObject>();
+	}
 
-    /**
-     * Adds an audio file
-     * 
-     * @param a
-     *            the a
-     */
-    @Override
-	public void addAudioObject(ILocalAudioObject a) {
-        this.audioFiles.add(a);
-    }
+	/**
+	 * Adds an audio file
+	 * 
+	 * @param a
+	 *            the a
+	 */
+	@Override
+	public void addAudioObject(final ILocalAudioObject a) {
+		this.audioFiles.add(a);
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Genre)) {
-            return false;
-        }
-        return ((Genre) o).name.equalsIgnoreCase(name);
-    }
+	@Override
+	public boolean equals(final Object o) {
+		if (!(o instanceof Genre)) {
+			return false;
+		}
+		return ((Genre) o).name.equalsIgnoreCase(name);
+	}
 
-    /**
-     * Returns all songs of this genre (all songs of all artists) from the given
-     * repository
-     * 
-     * @return the audio objects
-     */
-    @Override
-    public List<ILocalAudioObject> getAudioObjects() {
-        return new ArrayList<ILocalAudioObject>(audioFiles);
-    }
+	/**
+	 * Returns all songs of this genre (all songs of all artists) from the given
+	 * repository
+	 * 
+	 * @return the audio objects
+	 */
+	@Override
+	public List<ILocalAudioObject> getAudioObjects() {
+		return new ArrayList<ILocalAudioObject>(audioFiles);
+	}
 
-    /**
-     * Returns the name of this genre.
-     * 
-     * @return the name
-     */
-    @Override
+	/**
+	 * Returns the name of this genre.
+	 * 
+	 * @return the name
+	 */
+	@Override
 	public String getName() {
-        return name;
-    }
+		return name;
+	}
 
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
 
-    /**
-     * Removes an object from this genre.
-     * 
-     * @param a
-     *            the a
-     */
-    @Override
-	public void removeAudioObject(ILocalAudioObject a) {
-        audioFiles.remove(a);
-    }
+	/**
+	 * Removes an object from this genre.
+	 * 
+	 * @param a
+	 *            the a
+	 */
+	@Override
+	public void removeAudioObject(final ILocalAudioObject a) {
+		audioFiles.remove(a);
+	}
 
-    /**
-     * String representation.
-     * 
-     * @return the string
-     */
-    @Override
-    public String toString() {
-        return getName();
-    }
+	/**
+	 * String representation.
+	 * 
+	 * @return the string
+	 */
+	@Override
+	public String toString() {
+		return getName();
+	}
 
-    @Override
-    public String getTooltip() {
-        int artistNumber = getArtistSet().size();
-        int songs = size();
-        return StringUtils.getString(getName(), " (", I18nUtils.getString("ARTISTS"), ": ", artistNumber, ", ", I18nUtils.getString("SONGS"), ": ", songs, ")");
-    }
-
-    @Override
-    public boolean isExtendedTooltipSupported() {
-        return true;
-    }
-
-    @Override
-    public boolean isExtendedTooltipImageSupported() {
-        return false;
-    }
-
-    /**
-     * Returns an structure of artists and albums containing songs of this genre
-     * 
-     * @return the artists
-     */
-    @Override
-	public Map<String, IArtist> getArtistObjects() {
-    	return new ArtistStructureBuilder().getArtistObjects(getAudioObjects());
-    }
-
-    /**
-     * Returns all artists of this genre
-     */
-    @Override
-	public Set<String> getArtistSet() {
-    	return new ArtistStructureBuilder().getArtistSet(getAudioObjects());
-    }
-
-    @Override
-    public int size() {
-    	return audioFiles.size();
-    }
+	@Override
+	public int size() {
+		return audioFiles.size();
+	}
 }

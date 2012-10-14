@@ -35,6 +35,7 @@ import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IStateRepository;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.InconsistentRepositoryException;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -120,65 +121,41 @@ public class Repository implements Serializable, IRepository {
 		this.stateRepository = stateRepository;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#getRepositoryFolders()
-	 */
 	@Override
 	public List<File> getRepositoryFolders() {
 		return new ArrayList<File>(folders);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#addDurationInSeconds(long)
-	 */
 	@Override
 	public void addDurationInSeconds(final long seconds) {
 		this.totalDurationInSeconds += seconds;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#removeDurationInSeconds(long)
-	 */
 	@Override
 	public void removeDurationInSeconds(final long seconds) {
 		totalDurationInSeconds -= seconds;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#getTotalDurationInSeconds()
-	 */
 	@Override
 	public long getTotalDurationInSeconds() {
 		return totalDurationInSeconds;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#addSizeInBytes(long)
-	 */
 	@Override
 	public void addSizeInBytes(final long bytes) {
 		totalSizeInBytes += bytes;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#removeSizeInBytes(long)
-	 */
 	@Override
 	public void removeSizeInBytes(final long bytes) {
 		totalSizeInBytes -= bytes;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#getTotalSizeInBytes()
-	 */
 	@Override
 	public long getTotalSizeInBytes() {
 		return totalSizeInBytes;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#exists()
-	 */
 	@Override
 	public boolean exists() {
 		// All folders must exist
@@ -190,9 +167,6 @@ public class Repository implements Serializable, IRepository {
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#validateRepository()
-	 */
 	@Override
 	public void validateRepository() throws InconsistentRepositoryException {
 		checkConsistency(filesStructure);
@@ -215,50 +189,32 @@ public class Repository implements Serializable, IRepository {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#countFiles()
-	 */
 	@Override
 	public int countFiles() {
 		return filesStructure.count();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#getFile(java.lang.String)
-	 */
 	@Override
 	public ILocalAudioObject getFile(final String fileName) {
 		return filesStructure.get(fileName);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#getFiles()
-	 */
 	@Override
 	public Collection<ILocalAudioObject> getFiles() {
 		return filesStructure.getAll();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#putFile(net.sourceforge.atunes.model.ILocalAudioObject)
-	 */
 	@Override
 	public ILocalAudioObject putFile(final ILocalAudioObject file) {
 		filesStructure.put(file.getUrl(), file);
 		return file;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#removeFile(net.sourceforge.atunes.model.ILocalAudioObject)
-	 */
 	@Override
 	public void removeFile(final ILocalAudioObject file) {
 		filesStructure.remove(file.getUrl());
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#removeFile(java.io.File)
-	 */
 	@Override
 	public void removeFile(final File file) {
 		filesStructure.remove(net.sourceforge.atunes.utils.FileUtils.getPath(file));
@@ -275,17 +231,11 @@ public class Repository implements Serializable, IRepository {
 		return artistsStructure.getStructure();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#countArtists()
-	 */
 	@Override
 	public int countArtists() {
 		return artistsStructure.count();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#getArtist(java.lang.String)
-	 */
 	@Override
 	public IArtist getArtist(final String artistName) {
 		if (artistName == null) {
@@ -297,9 +247,6 @@ public class Repository implements Serializable, IRepository {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#getArtists()
-	 */
 	@Override
 	public Collection<IArtist> getArtists() {
 		return artistsStructure.getAll();
@@ -315,9 +262,6 @@ public class Repository implements Serializable, IRepository {
 		return artist;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#removeArtist(net.sourceforge.atunes.model.Artist)
-	 */
 	@Override
 	public void removeArtist(final IArtist artist) {
 		if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
@@ -356,17 +300,11 @@ public class Repository implements Serializable, IRepository {
 		return foldersStructure.getStructure();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#getFolder(java.lang.String)
-	 */
 	@Override
 	public IFolder getFolder(final String path) {
 		return foldersStructure.get(path);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#getFolders()
-	 */
 	@Override
 	public Collection<IFolder> getFolders() {
 		return foldersStructure.getAll();
@@ -389,17 +327,11 @@ public class Repository implements Serializable, IRepository {
 		return genresStructure.getStructure();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#getGenres()
-	 */
 	@Override
 	public Collection<IGenre> getGenres() {
 		return genresStructure.getAll();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#getGenre(java.lang.String)
-	 */
 	@Override
 	public IGenre getGenre(final String genre) {
 		if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
@@ -419,9 +351,6 @@ public class Repository implements Serializable, IRepository {
 		return genre;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#removeGenre(net.sourceforge.atunes.kernel.modules.repository.data.Genre)
-	 */
 	@Override
 	public void removeGenre(final IGenre genre) {
 		if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
@@ -442,36 +371,24 @@ public class Repository implements Serializable, IRepository {
 		return yearStructure.getStructure();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#getYear(java.lang.String)
-	 */
 	@Override
 	public IYear getYear(final String year) {
 		return yearStructure.get(year);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#getYears()
-	 */
 	@Override
 	public Collection<IYear> getYears() {
 		return yearStructure.getAll();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#putYear(net.sourceforge.atunes.kernel.modules.repository.data.Year)
-	 */
 	@Override
-	public IYear putYear(final IYear year) {
-		yearStructure.put(year.getName(), year);
+	public IYear putYear(final IYear year, final IUnknownObjectChecker unknownObjectChecker) {
+		yearStructure.put(year.getName(unknownObjectChecker), year);
 		return year;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#removeYear(net.sourceforge.atunes.kernel.modules.repository.data.Year)
-	 */
 	@Override
-	public void removeYear(final IYear year) {
-		yearStructure.remove(year.getName());
+	public void removeYear(final IYear year, final IUnknownObjectChecker unknownObjectChecker) {
+		yearStructure.remove(year.getName(unknownObjectChecker));
 	}
 }

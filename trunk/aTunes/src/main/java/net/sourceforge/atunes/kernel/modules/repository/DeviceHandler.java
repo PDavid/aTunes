@@ -66,6 +66,7 @@ import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IStateDevice;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStateRepository;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.FileUtils;
@@ -132,6 +133,16 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	private IRepositoryHandler repositoryHandler;
 
 	private IBeanFactory beanFactory;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	/**
 	 * @param beanFactory
@@ -689,8 +700,8 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	 * @return
 	 */
 	private boolean isElementNotPresentInDevice(final ILocalAudioObject af) {
-		String artist = af.getAlbumArtist() != null && !af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist();
-		String album = af.getAlbum();
+		String artist = af.getAlbumArtist(unknownObjectChecker) != null && !af.getAlbumArtist(unknownObjectChecker).trim().equals("") ? af.getAlbumArtist(unknownObjectChecker) : af.getArtist(unknownObjectChecker);
+		String album = af.getAlbum(unknownObjectChecker);
 		String title = af.getTitle();
 
 		// If artist is not present in device then
@@ -730,22 +741,9 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 		return false;
 	}
 
-	@Override
-	public List<ILocalAudioObject> getElementsNotPresentInList(final List<ILocalAudioObject> list) {
-		// Start with all device
-		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>(getAudioFilesList());
-
-		for (ILocalAudioObject af : list) {
-			if (!isElementNotPresentInList(af)) {
-				result.remove(af);
-			}
-		}
-		return result;
-	}
-
 	private boolean isElementNotPresentInList(final ILocalAudioObject af) {
-		String artist = af.getAlbumArtist() != null && !af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist();
-		String album = af.getAlbum();
+		String artist = af.getAlbumArtist(unknownObjectChecker) != null && !af.getAlbumArtist(unknownObjectChecker).trim().equals("") ? af.getAlbumArtist(unknownObjectChecker) : af.getArtist(unknownObjectChecker);
+		String album = af.getAlbum(unknownObjectChecker);
 		String title = af.getTitle();
 
 		// Remove objects present in device
@@ -776,6 +774,19 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 		}
 
 		return true;
+	}
+
+	@Override
+	public List<ILocalAudioObject> getElementsNotPresentInList(final List<ILocalAudioObject> list) {
+		// Start with all device
+		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>(getAudioFilesList());
+
+		for (ILocalAudioObject af : list) {
+			if (!isElementNotPresentInList(af)) {
+				result.remove(af);
+			}
+		}
+		return result;
 	}
 
 	@Override

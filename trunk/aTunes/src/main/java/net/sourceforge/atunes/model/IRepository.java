@@ -25,6 +25,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * An object that holds information about a collection of music
+ * @author alex
+ *
+ */
 public interface IRepository {
 
 	/**
@@ -89,7 +94,7 @@ public interface IRepository {
 	public boolean exists();
 
 	/**
-	 * Validates this repository throwing exception if object is not consistent. 
+	 * Validates this repository throwing exception if object is not consistent.
 	 * For example when a new attribute is added a repository object without that attribute can be considered invalid
 	 * @throws InconsistentRepositoryException
 	 */
@@ -197,7 +202,7 @@ public interface IRepository {
 
 	/**
 	 * Returns genre given by name or null
-	 * @param artistName
+	 * @param genre
 	 * @return
 	 */
 	public IGenre getGenre(String genre);
@@ -211,7 +216,7 @@ public interface IRepository {
 
 	/**
 	 * Removes genre from repository
-	 * @param artist
+	 * @param genre
 	 */
 	public void removeGenre(IGenre genre);
 
@@ -231,15 +236,17 @@ public interface IRepository {
 	/**
 	 * Puts a year
 	 * @param year
+	 * @param unknownObjectChecker
 	 * @return
 	 */
-	public IYear putYear(IYear year);
+	public IYear putYear(IYear year, IUnknownObjectChecker unknownObjectChecker);
 
 	/**
 	 * Removes a year
 	 * @param year
+	 * @param unknownObjectChecker
 	 */
-	public void removeYear(IYear year);
+	public void removeYear(IYear year, IUnknownObjectChecker unknownObjectChecker);
 
 	/**
 	 * Returns data organized by years

@@ -38,6 +38,7 @@ import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStatisticsHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -59,20 +60,23 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
 
 	private final ILookAndFeelManager lookAndFeelManager;
 
+	private final IUnknownObjectChecker unknownObjectChecker;
+
 	/**
 	 * Instantiates a new stats dialog controller.
-	 * 
 	 * @param frame
 	 * @param statisticsHandler
 	 * @param lookAndFeelManager
 	 * @param repositoryHandler
+	 * @param unknownObjectChecker
 	 */
-	StatsDialogController(final StatsDialog frame, final IStatisticsHandler statisticsHandler, final ILookAndFeelManager lookAndFeelManager, final IRepositoryHandler repositoryHandler) {
+	StatsDialogController(final StatsDialog frame, final IStatisticsHandler statisticsHandler, final ILookAndFeelManager lookAndFeelManager, final IRepositoryHandler repositoryHandler, final IUnknownObjectChecker unknownObjectChecker) {
 		super(frame);
 		this.statisticsHandler = statisticsHandler;
 		this.lookAndFeelManager = lookAndFeelManager;
 		this.lookAndFeelManager.addLookAndFeelChangeListener(this);
 		this.repositoryHandler = repositoryHandler;
+		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	/**
@@ -142,7 +146,7 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
 	 * Sets the artists table.
 	 */
 
-	 private void setArtistsTable() {
+	private void setArtistsTable() {
 		List<Object[]> artists = getMostPlayedArtistsInRanking(-1);
 		if (artists != null) {
 			String[] headers = new String[] { I18nUtils.getString("ARTIST"), I18nUtils.getString("TIMES_PLAYED"), "%" };
@@ -158,221 +162,221 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
 			}
 			setTable(getComponentControlled().getArtistsTable(), headers, content);
 		}
-	 }
+	}
 
-	 /**
-	  * Gets the most played artists in ranking.
-	  * 
-	  * @param n
-	  *            the n
-	  * 
-	  * @return the most played artists in ranking
-	  */
-	 private List<Object[]> getMostPlayedArtistsInRanking(final int n) {
-		 List<Object[]> result = new ArrayList<Object[]>();
-		 List<IArtist> artists = statisticsHandler.getMostPlayedArtists(n);
-		 List<Integer> count = statisticsHandler.getMostPlayedArtistsCount(n);
-		 if (artists != null) {
-			 for (int i = 0; i < artists.size(); i++) {
-				 if (artists.get(i) != null) {
-					 Object[] obj = new Object[2];
-					 obj[0] = artists.get(i).toString();
-					 obj[1] = count.get(i);
-					 result.add(obj);
-				 }
-			 }
-		 }
-		 return result;
-	 }
+	/**
+	 * Gets the most played artists in ranking.
+	 * 
+	 * @param n
+	 *            the n
+	 * 
+	 * @return the most played artists in ranking
+	 */
+	private List<Object[]> getMostPlayedArtistsInRanking(final int n) {
+		List<Object[]> result = new ArrayList<Object[]>();
+		List<IArtist> artists = statisticsHandler.getMostPlayedArtists(n);
+		List<Integer> count = statisticsHandler.getMostPlayedArtistsCount(n);
+		if (artists != null) {
+			for (int i = 0; i < artists.size(); i++) {
+				if (artists.get(i) != null) {
+					Object[] obj = new Object[2];
+					obj[0] = artists.get(i).toString();
+					obj[1] = count.get(i);
+					result.add(obj);
+				}
+			}
+		}
+		return result;
+	}
 
-	 /**
-	  * Sets the general table.
-	  */
+	/**
+	 * Sets the general table.
+	 */
 
-	  private void setGeneralTable() {
-		 int different = statisticsHandler.getDifferentAudioObjectsPlayed();
-		 int total = repositoryHandler.getAudioFilesList().size();
-		 if (total != 0) {
-			 String[] headers = new String[] { " ", I18nUtils.getString("COUNT"), "%" };
-			 Object[][] content = new Object[2][3];
-			 content[0] = new Object[3];
-			 content[0][0] = I18nUtils.getString("SONGS_PLAYED");
-			 content[0][1] = different;
-			 content[0][2] = StringUtils.toString((float) different / (float) total * 100, 2);
-			 content[1] = new Object[3];
-			 content[1][0] = I18nUtils.getString("SONGS_NEVER_PLAYED");
-			 content[1][1] = total - different;
-			 content[1][2] = StringUtils.toString((float) (total - different) / (float) total * 100, 2);
-			 setTable(getComponentControlled().getGeneralTable(), headers, content);
-		 }
-	  }
+	private void setGeneralTable() {
+		int different = statisticsHandler.getDifferentAudioObjectsPlayed();
+		int total = repositoryHandler.getAudioFilesList().size();
+		if (total != 0) {
+			String[] headers = new String[] { " ", I18nUtils.getString("COUNT"), "%" };
+			Object[][] content = new Object[2][3];
+			content[0] = new Object[3];
+			content[0][0] = I18nUtils.getString("SONGS_PLAYED");
+			content[0][1] = different;
+			content[0][2] = StringUtils.toString((float) different / (float) total * 100, 2);
+			content[1] = new Object[3];
+			content[1][0] = I18nUtils.getString("SONGS_NEVER_PLAYED");
+			content[1][1] = total - different;
+			content[1][2] = StringUtils.toString((float) (total - different) / (float) total * 100, 2);
+			setTable(getComponentControlled().getGeneralTable(), headers, content);
+		}
+	}
 
-	  /**
-	   * Sets the songs table.
-	   */
+	/**
+	 * Sets the songs table.
+	 */
 
-	  private void setSongsTable() {
-		  List<Object[]> songs = getMostPlayedAudioFilesInRanking(-1);
-		  if (songs != null) {
-			  String[] headers = new String[] { I18nUtils.getString("SONG"), I18nUtils.getString("TIMES_PLAYED"), "%" };
-			  Object[][] content = new Object[songs.size()][3];
-			  for (int i = 0; i < songs.size(); i++) {
-				  content[i][0] = songs.get(i)[0];
-				  content[i][1] = songs.get(i)[1];
-				  if (statisticsHandler.getTotalAudioObjectsPlayed() != -1) {
-					  content[i][2] = StringUtils.toString(100.0 * (float) ((Integer) songs.get(i)[1]) / statisticsHandler.getTotalAudioObjectsPlayed(), 2);
-				  } else {
-					  content[i][2] = 0;
-				  }
-			  }
-			  setTable(getComponentControlled().getSongsTable(), headers, content);
-		  }
-	  }
+	private void setSongsTable() {
+		List<Object[]> songs = getMostPlayedAudioFilesInRanking(-1);
+		if (songs != null) {
+			String[] headers = new String[] { I18nUtils.getString("SONG"), I18nUtils.getString("TIMES_PLAYED"), "%" };
+			Object[][] content = new Object[songs.size()][3];
+			for (int i = 0; i < songs.size(); i++) {
+				content[i][0] = songs.get(i)[0];
+				content[i][1] = songs.get(i)[1];
+				if (statisticsHandler.getTotalAudioObjectsPlayed() != -1) {
+					content[i][2] = StringUtils.toString(100.0 * (float) ((Integer) songs.get(i)[1]) / statisticsHandler.getTotalAudioObjectsPlayed(), 2);
+				} else {
+					content[i][2] = 0;
+				}
+			}
+			setTable(getComponentControlled().getSongsTable(), headers, content);
+		}
+	}
 
-	  /**
-	   * Gets the most played audio files in ranking.
-	   * 
-	   * @param n
-	   *            the n
-	   * 
-	   * @return the most played audio files in ranking
-	   */
-	  private List<Object[]> getMostPlayedAudioFilesInRanking(final int n) {
-		  List<Object[]> result = new ArrayList<Object[]>();
-		  List<IAudioObject> audioFiles = statisticsHandler.getMostPlayedAudioObjects(n);
-		  List<Integer> count = statisticsHandler.getMostPlayedAudioObjectsCount(n);
-		  if (audioFiles != null) {
-			  for (int i = 0; i < audioFiles.size(); i++) {
-				  Object[] obj = new Object[2];
-				  IAudioObject audioFile = audioFiles.get(i);
-				  if (audioFile != null) {
-					  obj[0] = StringUtils.getString(audioFile.getTitleOrFileName(), " (", audioFile.getArtist(), ")");
-					  obj[1] = count.get(i);
-					  result.add(obj);
-				  }
-			  }
-		  }
-		  return result;
-	  }
+	/**
+	 * Gets the most played audio files in ranking.
+	 * 
+	 * @param n
+	 *            the n
+	 * 
+	 * @return the most played audio files in ranking
+	 */
+	private List<Object[]> getMostPlayedAudioFilesInRanking(final int n) {
+		List<Object[]> result = new ArrayList<Object[]>();
+		List<IAudioObject> audioFiles = statisticsHandler.getMostPlayedAudioObjects(n);
+		List<Integer> count = statisticsHandler.getMostPlayedAudioObjectsCount(n);
+		if (audioFiles != null) {
+			for (int i = 0; i < audioFiles.size(); i++) {
+				Object[] obj = new Object[2];
+				IAudioObject audioFile = audioFiles.get(i);
+				if (audioFile != null) {
+					obj[0] = StringUtils.getString(audioFile.getTitleOrFileName(), " (", audioFile.getArtist(unknownObjectChecker), ")");
+					obj[1] = count.get(i);
+					result.add(obj);
+				}
+			}
+		}
+		return result;
+	}
 
-	  /**
-	   * Sets the table.
-	   * 
-	   * @param table
-	   *            the table
-	   * @param headers
-	   *            the headers
-	   * @param content
-	   *            the content
-	   */
-	  private void setTable(final JTable table, final Object[] headers, final Object[][] content) {
-		  table.setModel(new StatsDialogDefaultTableModel(content, headers));
-		  table.getColumnModel().getColumn(0).setPreferredWidth(420);
-		  table.getColumnModel().getColumn(0).setWidth(table.getColumnModel().getColumn(0).getWidth());
-		  table.getColumnModel().getColumn(0).setCellRenderer(
-				  lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new SwingOrientationTableCellRendererCode()));
-		  table.getColumnModel().getColumn(2).setPreferredWidth(30);
-		  table.getColumnModel().getColumn(2).setWidth(table.getColumnModel().getColumn(2).getWidth());
+	/**
+	 * Sets the table.
+	 * 
+	 * @param table
+	 *            the table
+	 * @param headers
+	 *            the headers
+	 * @param content
+	 *            the content
+	 */
+	private void setTable(final JTable table, final Object[] headers, final Object[][] content) {
+		table.setModel(new StatsDialogDefaultTableModel(content, headers));
+		table.getColumnModel().getColumn(0).setPreferredWidth(420);
+		table.getColumnModel().getColumn(0).setWidth(table.getColumnModel().getColumn(0).getWidth());
+		table.getColumnModel().getColumn(0).setCellRenderer(
+				lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new SwingOrientationTableCellRendererCode()));
+		table.getColumnModel().getColumn(2).setPreferredWidth(30);
+		table.getColumnModel().getColumn(2).setWidth(table.getColumnModel().getColumn(2).getWidth());
 
-		  table.getColumnModel().getColumn(1).setCellRenderer(
-				  lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new RightAlignmentTableCellRendererCode()));
-		  table.getColumnModel().getColumn(2).setCellRenderer(
-				  lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new RightAlignmentTableCellRendererCode()));
-	  }
+		table.getColumnModel().getColumn(1).setCellRenderer(
+				lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new RightAlignmentTableCellRendererCode()));
+		table.getColumnModel().getColumn(2).setCellRenderer(
+				lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new RightAlignmentTableCellRendererCode()));
+	}
 
-	  /**
-	   * Show stats.
-	   */
-	  void showStats() {
-		  updateStats();
-		  StatsDialog frame = getComponentControlled();
-		  frame.setVisible(true);
-	  }
+	/**
+	 * Show stats.
+	 */
+	void showStats() {
+		updateStats();
+		StatsDialog frame = getComponentControlled();
+		frame.setVisible(true);
+	}
 
-	  /**
-	   * Update stats.
-	   */
-	  void updateStats() {
-		  setArtistsTable();
-		  setAlbumsTable();
-		  setSongsTable();
-		  setGeneralTable();
+	/**
+	 * Update stats.
+	 */
+	void updateStats() {
+		setArtistsTable();
+		setAlbumsTable();
+		setSongsTable();
+		setGeneralTable();
 
-		  setArtistsChart();
-		  setAlbumsChart();
-		  setSongsChart();
-		  setGeneralChart();
-	  }
+		setArtistsChart();
+		setAlbumsChart();
+		setSongsChart();
+		setGeneralChart();
+	}
 
-	  @Override
-	  public void lookAndFeelChanged() {
-		  updateStats(); // Update color of charts
-	  }
+	@Override
+	public void lookAndFeelChanged() {
+		updateStats(); // Update color of charts
+	}
 
-	  /**
-	   * Puts image with chart in given label, with title and data provided
-	   * @param data
-	   * @param titleKey
-	   * @param chartLabel
-	   */
-	  private void setChart(final List<?> data, final String titleKey, final JLabel chartLabel) {
-		  DefaultCategoryDataset dataset = getDataSet(data);
-		  JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString(titleKey), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
-		  chart.setBackgroundPaint(Color.WHITE);
-		  chart.setPadding(new RectangleInsets(5, 0, 0, 0));
-		  NumberAxis axis = new NumberAxis();
-		  axis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-		  chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
-		  chart.getTitle().setPaint(GuiUtils.getForegroundColor());
-		  chart.getCategoryPlot().setRangeAxis(axis);
-		  chart.getCategoryPlot().setForegroundAlpha(1f);
-		  chart.getCategoryPlot().getRenderer().setSeriesPaint(0, Color.GREEN);
-		  chart.getCategoryPlot().getDomainAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
-		  chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
-		  chart.getPlot().setBackgroundPaint(GuiUtils.getBackgroundColor());
-		  chartLabel.setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
-	  }
+	/**
+	 * Puts image with chart in given label, with title and data provided
+	 * @param data
+	 * @param titleKey
+	 * @param chartLabel
+	 */
+	private void setChart(final List<?> data, final String titleKey, final JLabel chartLabel) {
+		DefaultCategoryDataset dataset = getDataSet(data);
+		JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString(titleKey), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
+		chart.setBackgroundPaint(Color.WHITE);
+		chart.setPadding(new RectangleInsets(5, 0, 0, 0));
+		NumberAxis axis = new NumberAxis();
+		axis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+		chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
+		chart.getTitle().setPaint(GuiUtils.getForegroundColor());
+		chart.getCategoryPlot().setRangeAxis(axis);
+		chart.getCategoryPlot().setForegroundAlpha(1f);
+		chart.getCategoryPlot().getRenderer().setSeriesPaint(0, Color.GREEN);
+		chart.getCategoryPlot().getDomainAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
+		chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
+		chart.getPlot().setBackgroundPaint(GuiUtils.getBackgroundColor());
+		chartLabel.setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
+	}
 
-	  /**
-	   * Sets the artists chart.
-	   */
-	  private void setArtistsChart() {
-		  setChart(getMostPlayedArtistsInRanking(10), "ARTIST_MOST_PLAYED", getComponentControlled().getArtistsChart());
-	  }
+	/**
+	 * Sets the artists chart.
+	 */
+	private void setArtistsChart() {
+		setChart(getMostPlayedArtistsInRanking(10), "ARTIST_MOST_PLAYED", getComponentControlled().getArtistsChart());
+	}
 
-	  /**
-	   * Sets the albums chart.
-	   */
-	  private void setAlbumsChart() {
-		  setChart(getMostPlayedAlbumsInRanking(10), "ALBUM_MOST_PLAYED", getComponentControlled().getAlbumsChart());
-	  }
+	/**
+	 * Sets the albums chart.
+	 */
+	private void setAlbumsChart() {
+		setChart(getMostPlayedAlbumsInRanking(10), "ALBUM_MOST_PLAYED", getComponentControlled().getAlbumsChart());
+	}
 
-	  /**
-	   * Sets the songs chart.
-	   */
-	  private void setSongsChart() {
-		  setChart(getMostPlayedAudioFilesInRanking(10), "SONG_MOST_PLAYED", getComponentControlled().getSongsChart());
-	  }
+	/**
+	 * Sets the songs chart.
+	 */
+	private void setSongsChart() {
+		setChart(getMostPlayedAudioFilesInRanking(10), "SONG_MOST_PLAYED", getComponentControlled().getSongsChart());
+	}
 
-	  /**
-	   * Sets the general chart.
-	   */
-	  private void setGeneralChart() {
-		  DefaultPieDataset dataset = new DefaultPieDataset();
-		  int different = statisticsHandler.getDifferentAudioObjectsPlayed();
-		  int total = repositoryHandler.getAudioFilesList().size();
-		  dataset.setValue(I18nUtils.getString("SONGS_PLAYED"), different);
-		  dataset.setValue(I18nUtils.getString("SONGS_NEVER_PLAYED"), total - different);
-		  JFreeChart chart = ChartFactory.createPieChart3D(I18nUtils.getString("SONGS_PLAYED"), dataset, false, false, false);
-		  chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
-		  chart.getTitle().setPaint(GuiUtils.getForegroundColor());
-		  chart.setPadding(new RectangleInsets(5, 0, 0, 0));
-		  DefaultDrawingSupplier drawingSupplier = new DefaultDrawingSupplier(new Paint[] { new Color(0, 1, 0, 0.6f), new Color(1, 0, 0, 0.6f) }, new Paint[] {
-				  new Color(0, 1, 0, 0.4f), new Color(1, 0, 0, 0.4f) }, DefaultDrawingSupplier.DEFAULT_STROKE_SEQUENCE, DefaultDrawingSupplier.DEFAULT_STROKE_SEQUENCE,
-				  DefaultDrawingSupplier.DEFAULT_SHAPE_SEQUENCE);
-		  chart.getPlot().setDrawingSupplier(drawingSupplier);
-		  ((PiePlot3D) chart.getPlot()).setOutlineVisible(false);
-		  ((PiePlot3D) chart.getPlot()).setBackgroundPaint(GuiUtils.getBackgroundColor());
-		  getComponentControlled().getGeneralChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
-	  }
+	/**
+	 * Sets the general chart.
+	 */
+	private void setGeneralChart() {
+		DefaultPieDataset dataset = new DefaultPieDataset();
+		int different = statisticsHandler.getDifferentAudioObjectsPlayed();
+		int total = repositoryHandler.getAudioFilesList().size();
+		dataset.setValue(I18nUtils.getString("SONGS_PLAYED"), different);
+		dataset.setValue(I18nUtils.getString("SONGS_NEVER_PLAYED"), total - different);
+		JFreeChart chart = ChartFactory.createPieChart3D(I18nUtils.getString("SONGS_PLAYED"), dataset, false, false, false);
+		chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
+		chart.getTitle().setPaint(GuiUtils.getForegroundColor());
+		chart.setPadding(new RectangleInsets(5, 0, 0, 0));
+		DefaultDrawingSupplier drawingSupplier = new DefaultDrawingSupplier(new Paint[] { new Color(0, 1, 0, 0.6f), new Color(1, 0, 0, 0.6f) }, new Paint[] {
+				new Color(0, 1, 0, 0.4f), new Color(1, 0, 0, 0.4f) }, DefaultDrawingSupplier.DEFAULT_STROKE_SEQUENCE, DefaultDrawingSupplier.DEFAULT_STROKE_SEQUENCE,
+				DefaultDrawingSupplier.DEFAULT_SHAPE_SEQUENCE);
+		chart.getPlot().setDrawingSupplier(drawingSupplier);
+		((PiePlot3D) chart.getPlot()).setOutlineVisible(false);
+		((PiePlot3D) chart.getPlot()).setBackgroundPaint(GuiUtils.getBackgroundColor());
+		getComponentControlled().getGeneralChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
+	}
 }

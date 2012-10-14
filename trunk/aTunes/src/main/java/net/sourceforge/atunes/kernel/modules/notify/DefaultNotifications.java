@@ -25,99 +25,99 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IStateUI;
-import net.sourceforge.atunes.model.ITemporalDiskStorage;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Default built-in notification
+ * @author alex
+ *
+ */
 public class DefaultNotifications extends CommonNotificationEngine {
 
 	/**
 	 * OSD controller
 	 */
 	private OSDDialogController osdDialogController;
-	
+
 	/**
 	 * OSD Dialog
 	 */
 	private OSDDialog osdDialog;
-	
+
 	private IStateUI stateUI;
-	
-	private ILookAndFeelManager lookAndFeelManager;
-	
-	private IAudioObjectImageLocator audioObjectImageLocator;
-	
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
 	/**
 	 * @param stateUI
-	 * @param lookAndFeelManager
-	 * @param audioObjectGenericImageFactory
-	 * @param diskStorage
-	 * @param audioObjectImageLocator
 	 */
-	public DefaultNotifications(IStateUI stateUI, ILookAndFeelManager lookAndFeelManager, 
-			IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage, IAudioObjectImageLocator audioObjectImageLocator) {
-		super(audioObjectGenericImageFactory, diskStorage, lookAndFeelManager, audioObjectImageLocator);
+	public void setStateUI(final IStateUI stateUI) {
 		this.stateUI = stateUI;
-		this.lookAndFeelManager = lookAndFeelManager;
-		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
-	
-    /**
-     * Gets the oSD dialog controller.
-     * 
-     * @return the oSD dialog controller
-     */
-    private OSDDialogController getOSDDialogController() {
-        if (osdDialogController == null) {
-            JDialog.setDefaultLookAndFeelDecorated(false);
-            osdDialog = new OSDDialog(stateUI.getOsdWidth(), lookAndFeelManager.getCurrentLookAndFeel());
-            JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager.getCurrentLookAndFeel().isDialogUndecorated());
-            osdDialogController = new OSDDialogController(osdDialog, stateUI, getAudioObjectGenericImageFactory(), lookAndFeelManager, audioObjectImageLocator);
-        }
-        return osdDialogController;
-    }
 
-    @Override
-    public void updateNotification(IStateUI newState) {
-    	if (osdDialog != null) {
-    		osdDialog.setWidth(newState.getOsdWidth());
-    	}
-    }
-	
-    @Override
-    public String getName() {
-        return "Default";
-    }
+	/**
+	 * Gets the oSD dialog controller.
+	 * 
+	 * @return the oSD dialog controller
+	 */
+	private OSDDialogController getOSDDialogController() {
+		if (osdDialogController == null) {
+			JDialog.setDefaultLookAndFeelDecorated(false);
+			osdDialog = new OSDDialog(stateUI.getOsdWidth(), getLookAndFeelManager().getCurrentLookAndFeel());
+			JDialog.setDefaultLookAndFeelDecorated(getLookAndFeelManager().getCurrentLookAndFeel().isDialogUndecorated());
+			osdDialogController = new OSDDialogController(osdDialog, stateUI, getAudioObjectGenericImageFactory(), getLookAndFeelManager(), getAudioObjectImageLocator(), unknownObjectChecker);
+		}
+		return osdDialogController;
+	}
 
-    @Override
-    public void showNotification(final IAudioObject audioObject) {
-    	SwingUtilities.invokeLater(new Runnable() {
-    		@Override
-    		public void run() {
-    	    	getOSDDialogController().showOSD(audioObject);
-    		}
-    	});
-    }
-    
-    @Override
-    public void disposeNotifications() {
-    }
-    
-    @Override
-    public boolean testEngineAvailable() {
-    	return true; // Always available
-    }
-    
-    @Override
-    public String getDescription() {
-    	return I18nUtils.getString("NOTIFICATION_ENGINE_DEFAULT_DESCRIPTION");
-    }
-    
-    @Override
-    public String getUrl() {
-    	return null;
-    }
+	@Override
+	public void updateNotification(final IStateUI newState) {
+		if (osdDialog != null) {
+			osdDialog.setWidth(newState.getOsdWidth());
+		}
+	}
+
+	@Override
+	public String getName() {
+		return "Default";
+	}
+
+	@Override
+	public void showNotification(final IAudioObject audioObject) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				getOSDDialogController().showOSD(audioObject);
+			}
+		});
+	}
+
+	@Override
+	public void disposeNotifications() {
+	}
+
+	@Override
+	public boolean testEngineAvailable() {
+		return true; // Always available
+	}
+
+	@Override
+	public String getDescription() {
+		return I18nUtils.getString("NOTIFICATION_ENGINE_DEFAULT_DESCRIPTION");
+	}
+
+	@Override
+	public String getUrl() {
+		return null;
+	}
 }

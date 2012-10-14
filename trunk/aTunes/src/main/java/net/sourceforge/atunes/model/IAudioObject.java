@@ -29,157 +29,158 @@ import org.joda.time.base.BaseDateTime;
 @PluginApi
 public interface IAudioObject {
 
-    /**
-     * Gets the album.
-     * 
-     * @return the album
-     */
-    public String getAlbum();
+	/**
+	 * Gets the album.
+	 * @param checker
+	 * @return the album or null or unknown album if checker is not null
+	 */
+	public String getAlbum(final IUnknownObjectChecker checker);
 
-    /**
-     * Gets the album artist.
-     * 
-     * @return the album artist
-     */
-    public String getAlbumArtist();
+	/**
+	 * Gets the album artist.
+	 * @param checker
+	 * @return the album artist or null or unknown artist text if checker is not null
+	 */
+	public String getAlbumArtist(IUnknownObjectChecker checker);
 
-    /**
-     * Returns album artist or artist
-     * 
-     * @return the artist or (if empty) the album artist
-     */
-    public String getAlbumArtistOrArtist();
+	/**
+	 * Returns album artist or artist
+	 * @param unknownObjectChecker
+	 * @return the artist or (if empty) the album artist or null or unknown artist text if checker is not null
+	 */
+	public String getAlbumArtistOrArtist(IUnknownObjectChecker unknownObjectChecker);
 
-    /**
-     * Gets the artist.
-     * 
-     * @return the artist
-     */
-    public String getArtist();
+	/**
+	 * Gets the artist.
+	 * @param checker
+	 * @return the artist or null or unknown artist if checker is not null
+	 */
+	public String getArtist(final IUnknownObjectChecker checker);
 
-    /**
-     * Gets the bitrate.
-     * 
-     * @return the bitrate
-     */
-    public long getBitrate();
+	/**
+	 * Gets the bitrate.
+	 * 
+	 * @return the bitrate
+	 */
+	public long getBitrate();
 
-    /**
-     * Gets the composer.
-     * 
-     * @return the composer
-     */
-    public String getComposer();
+	/**
+	 * Gets the composer.
+	 * 
+	 * @return the composer
+	 */
+	public String getComposer();
 
-    /**
-     * Gets the duration.
-     * 
-     * @return the duration
-     */
-    public int getDuration();
+	/**
+	 * Gets the duration.
+	 * 
+	 * @return the duration
+	 */
+	public int getDuration();
 
-    /**
-     * Gets the frequency.
-     * 
-     * @return the frequency
-     */
-    public int getFrequency();
+	/**
+	 * Gets the frequency.
+	 * 
+	 * @return the frequency
+	 */
+	public int getFrequency();
 
-    /**
-     * Gets the genre.
-     * 
-     * @return the genre
-     */
-    public String getGenre();
+	/**
+	 * Gets the genre.
+	 * @param checker
+	 * @return the genre or null or unknown genre text if checker is not null
+	 */
+	public String getGenre(IUnknownObjectChecker checker);
 
-    /**
-     * Gets the lyrics.
-     * 
-     * @return the lyrics
-     */
-    public String getLyrics();
+	/**
+	 * Gets the lyrics.
+	 * 
+	 * @return the lyrics
+	 */
+	public String getLyrics();
 
-    /**
-     * Gets the stars.
-     * 
-     * @return the stars
-     */
-    public int getStars();
+	/**
+	 * Gets the stars.
+	 * 
+	 * @return the stars
+	 */
+	public int getStars();
 
-    /**
-     * Gets the title.
-     * 
-     * @return the title
-     */
-    public String getTitle();
+	/**
+	 * Gets the title.
+	 * 
+	 * @return the title
+	 */
+	public String getTitle();
 
-    /**
-     * Gets the title or file name.
-     * 
-     * @return the title or file name
-     */
-    public String getTitleOrFileName();
+	/**
+	 * Gets the title or file name.
+	 * 
+	 * @return the title or file name
+	 */
+	public String getTitleOrFileName();
 
-    /**
-     * Gets the track number.
-     * 
-     * @return the track number
-     */
-    public int getTrackNumber();
+	/**
+	 * Gets the track number.
+	 * 
+	 * @return the track number
+	 */
+	public int getTrackNumber();
 
-    /**
-     * Gets the url.
-     * 
-     * @return the url
-     */
-    public String getUrl();
+	/**
+	 * Gets the url.
+	 * 
+	 * @return the url
+	 */
+	public String getUrl();
 
-    /**
-     * Gets the year.
-     * 
-     * @return the year
-     */
-    public String getYear();
+	/**
+	 * Gets the year.
+	 * 
+	 * @return the year
+	 */
+	public String getYear();
 
-    /**
-     * Gets the date.
-     * 
-     * @return the date
-     */
-    public BaseDateTime getDate();
+	/**
+	 * Gets the date.
+	 * 
+	 * @return the date
+	 */
+	public BaseDateTime getDate();
 
-    /**
-     * Gets the comment
-     * 
-     * @return the comment
-     */
-    public String getComment();
+	/**
+	 * Gets the comment
+	 * 
+	 * @return the comment
+	 */
+	public String getComment();
 
-    /**
-     * Sets the stars.
-     * 
-     * @param stars
-     *            the new stars
-     */
-    public void setStars(int stars);
+	/**
+	 * Sets the stars.
+	 * 
+	 * @param stars
+	 *            the new stars
+	 */
+	public void setStars(int stars);
 
-    /**
-     * Checks if is seekable.
-     * 
-     * @return true, if is seekable
-     */
-    public boolean isSeekable();
+	/**
+	 * Checks if is seekable.
+	 * 
+	 * @return true, if is seekable
+	 */
+	public boolean isSeekable();
 
-    /**
-     * Gets the disc number
-     * 
-     * @return
-     */
-    public int getDiscNumber();
+	/**
+	 * Gets the disc number
+	 * 
+	 * @return
+	 */
+	public int getDiscNumber();
 
-    /**
-     * A human-readable text describing this object
-     * @return
-     */
-    public String getAudioObjectDescription();
+	/**
+	 * A human-readable text describing this object
+	 * @param unknownObjectChecker
+	 * @return
+	 */
+	public String getAudioObjectDescription(IUnknownObjectChecker unknownObjectChecker);
 }

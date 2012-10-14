@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
@@ -46,10 +45,6 @@ import org.joda.time.base.BaseDateTime;
 public final class AudioFile implements ILocalAudioObject, Serializable {
 
 	private static final long serialVersionUID = -1139001443603556703L;
-
-	private static final String UNKNOWN_ARTIST = Context.getBean(IUnknownObjectChecker.class).getUnknownArtist();
-	private static final String UNKNOWN_ALBUM = Context.getBean(IUnknownObjectChecker.class).getUnknownAlbum();
-	private static final String UNKNOWN_GENRE = Context.getBean(IUnknownObjectChecker.class).getUnknownGenre();
 
 	ITag tag;
 	int duration;
@@ -98,32 +93,32 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	}
 
 	@Override
-	public String getAlbum() {
+	public String getAlbum(final IUnknownObjectChecker checker) {
 		if (tag != null && tag.getAlbum() != null && !tag.getAlbum().isEmpty()) {
 			return tag.getAlbum();
 		}
-		return UNKNOWN_ALBUM;
+		return checker != null ? checker.getUnknownAlbum() : null;
 	}
 
 	@Override
-	public String getAlbumArtist() {
+	public String getAlbumArtist(final IUnknownObjectChecker checker) {
 		if (tag != null && tag.getAlbumArtist() != null && !tag.getAlbumArtist().isEmpty()) {
 			return tag.getAlbumArtist();
 		}
-		return UNKNOWN_ARTIST;
+		return checker != null ? checker.getUnknownArtist() : null;
 	}
 
 	@Override
-	public String getAlbumArtistOrArtist() {
-		return getAlbumArtist().isEmpty() || getAlbumArtist().equals(UNKNOWN_ARTIST) ? getArtist() : getAlbumArtist();
+	public String getAlbumArtistOrArtist(final IUnknownObjectChecker checker) {
+		return getAlbumArtist(checker).isEmpty() || getAlbumArtist(checker).equals(checker.getUnknownArtist()) ? getArtist(checker) : getAlbumArtist(checker);
 	}
 
 	@Override
-	public String getArtist() {
+	public String getArtist(final IUnknownObjectChecker checker) {
 		if (tag != null && tag.getArtist() != null && !tag.getArtist().isEmpty()) {
 			return tag.getArtist();
 		}
-		return UNKNOWN_ARTIST;
+		return checker != null ? checker.getUnknownArtist() : null;
 	}
 
 	@Override
@@ -160,11 +155,11 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	}
 
 	@Override
-	public String getGenre() {
+	public String getGenre(final IUnknownObjectChecker checker) {
 		if (tag != null && tag.getGenre() != null && !tag.getGenre().isEmpty()) {
 			return tag.getGenre();
 		}
-		return UNKNOWN_GENRE;
+		return checker != null ? checker.getUnknownGenre() : null;
 	}
 
 	@Override
@@ -383,8 +378,8 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	}
 
 	@Override
-	public String getAudioObjectDescription() {
-		return StringUtils.getString(getTitleOrFileName(), " - ", getArtist(), " (", TimeUtils.secondsToHoursMinutesSeconds(getDuration()), ")");
+	public String getAudioObjectDescription(final IUnknownObjectChecker unknownObjectChecker) {
+		return StringUtils.getString(getTitleOrFileName(), " - ", getArtist(unknownObjectChecker), " (", TimeUtils.secondsToHoursMinutesSeconds(getDuration()), ")");
 	}
 
 	/**

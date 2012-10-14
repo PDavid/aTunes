@@ -32,6 +32,7 @@ import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IStateRepository;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.InconsistentRepositoryException;
 
@@ -43,7 +44,7 @@ import net.sourceforge.atunes.model.InconsistentRepositoryException;
 public class VoidRepository implements IRepository {
 
 	@Override
-	public void setStateRepository(IStateRepository state) {}
+	public void setStateRepository(final IStateRepository state) {}
 
 	@Override
 	public List<File> getRepositoryFolders() {
@@ -51,10 +52,10 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public void addDurationInSeconds(long seconds) {}
+	public void addDurationInSeconds(final long seconds) {}
 
 	@Override
-	public void removeDurationInSeconds(long seconds) {}
+	public void removeDurationInSeconds(final long seconds) {}
 
 	@Override
 	public long getTotalDurationInSeconds() {
@@ -62,10 +63,10 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public void addSizeInBytes(long bytes) {}
+	public void addSizeInBytes(final long bytes) {}
 
 	@Override
-	public void removeSizeInBytes(long bytes) {}
+	public void removeSizeInBytes(final long bytes) {}
 
 	@Override
 	public long getTotalSizeInBytes() {
@@ -86,7 +87,7 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public ILocalAudioObject getFile(String fileName) {
+	public ILocalAudioObject getFile(final String fileName) {
 		return null;
 	}
 
@@ -96,15 +97,15 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public ILocalAudioObject putFile(ILocalAudioObject file) {
+	public ILocalAudioObject putFile(final ILocalAudioObject file) {
 		return null;
 	}
 
 	@Override
-	public void removeFile(ILocalAudioObject file) {}
+	public void removeFile(final ILocalAudioObject file) {}
 
 	@Override
-	public void removeFile(File file) {}
+	public void removeFile(final File file) {}
 
 	@Override
 	public int countArtists() {
@@ -112,7 +113,7 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public IArtist getArtist(String artistName) {
+	public IArtist getArtist(final String artistName) {
 		return null;
 	}
 
@@ -120,17 +121,17 @@ public class VoidRepository implements IRepository {
 	public Collection<IArtist> getArtists() {
 		return Collections.emptyList();
 	}
-	
+
 	@Override
-	public IArtist putArtist(IArtist artist) {
+	public IArtist putArtist(final IArtist artist) {
 		return null;
 	}
 
 	@Override
-	public void removeArtist(IArtist artist) {}
+	public void removeArtist(final IArtist artist) {}
 
 	@Override
-	public IFolder getFolder(String path) {
+	public IFolder getFolder(final String path) {
 		return null;
 	}
 
@@ -140,7 +141,7 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public IFolder putFolder(IFolder folder) {
+	public IFolder putFolder(final IFolder folder) {
 		return null;
 	}
 
@@ -150,20 +151,20 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public IGenre getGenre(String genre) {
+	public IGenre getGenre(final String genre) {
 		return null;
 	}
 
 	@Override
-	public IGenre putGenre(IGenre genre) {
+	public IGenre putGenre(final IGenre genre) {
 		return null;
 	}
 
 	@Override
-	public void removeGenre(IGenre genre) {}
+	public void removeGenre(final IGenre genre) {}
 
 	@Override
-	public IYear getYear(String year) {
+	public IYear getYear(final String year) {
 		return null;
 	}
 
@@ -173,12 +174,14 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public IYear putYear(IYear year) {
+	public IYear putYear(final IYear year, final IUnknownObjectChecker unknownObjectChecker) {
 		return null;
 	}
 
 	@Override
-	public void removeYear(IYear year) {}
+	public void removeYear(final IYear year,
+			final IUnknownObjectChecker unknownObjectChecker) {
+	}
 
 	@Override
 	public Map<String, ?> getYearStructure() {

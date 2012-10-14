@@ -32,6 +32,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 import org.apache.sanselan.ImageWriteException;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -52,15 +53,14 @@ public final class AudioFilePictureUtils {
 
 	/**
 	 * Gets the external picture.
-	 * 
 	 * @param audioObject
-	 * @param index
 	 * @param width
 	 * @param height
 	 * @param osManager
+	 * @param unknownObjectChecker
 	 * @return
 	 */
-	public static ImageIcon getExternalPicture(final IAudioObject audioObject, final int width, final int height, final IOSManager osManager) {
+	public static ImageIcon getExternalPicture(final IAudioObject audioObject, final int width, final int height, final IOSManager osManager, final IUnknownObjectChecker unknownObjectChecker) {
 		if (!(audioObject instanceof ILocalAudioObject)) {
 			return null;
 		}
@@ -68,7 +68,7 @@ public final class AudioFilePictureUtils {
 		ILocalAudioObject file = (ILocalAudioObject) audioObject;
 
 		// Try first to get picture with file name "ARTIST_ALBUM_COVER" pattern
-		String coverFileName = getFileNameForCover(file, osManager);
+		String coverFileName = getFileNameForCover(file, osManager, unknownObjectChecker);
 		ImageIcon image = null;
 		if (coverFileName != null && new File(coverFileName).exists()) {
 			image = new ImageIcon(coverFileName);
@@ -88,16 +88,16 @@ public final class AudioFilePictureUtils {
 	/**
 	 * Returns a file name to save an external image associated to an audio
 	 * file.
-	 * 
 	 * @param file
 	 * @param osManager
+	 * @param unknownObjectChecker
 	 * @return
 	 */
-	public static String getFileNameForCover(final ILocalAudioObject file, final IOSManager osManager) {
+	public static String getFileNameForCover(final ILocalAudioObject file, final IOSManager osManager, final IUnknownObjectChecker unknownObjectChecker) {
 		if (file == null || file.getFile() == null) {
 			return null;
 		}
-		return StringUtils.getString(net.sourceforge.atunes.utils.FileUtils.getPath(file.getFile().getParentFile()), osManager.getFileSeparator(), file.getArtist(), '_', file.getAlbum(), "_Cover.", ImageUtils.FILES_EXTENSION);
+		return StringUtils.getString(net.sourceforge.atunes.utils.FileUtils.getPath(file.getFile().getParentFile()), osManager.getFileSeparator(), file.getArtist(unknownObjectChecker), '_', file.getAlbum(unknownObjectChecker), "_Cover.", ImageUtils.FILES_EXTENSION);
 	}
 
 	/**

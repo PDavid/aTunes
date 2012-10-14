@@ -26,15 +26,17 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateUI;
-import net.sourceforge.atunes.model.ITemporalDiskStorage;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * Notification engine for Mac OS X using Growl
+ * @author alex
+ *
+ */
 public class GrowlNotificationEngine extends CommonNotificationEngine {
 
 	private static final String HELP_ARG = "--help";
@@ -44,27 +46,31 @@ public class GrowlNotificationEngine extends CommonNotificationEngine {
 	private static final String GROWLNOTIFY = "/usr/local/bin/growlnotify";
 
 	private IOSManager osManager;
-	
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
 	/**
 	 * @param osManager
-	 * @param audioObjectGenericImageFactory
-	 * @param diskStorage
-	 * @param lookAndFeelManager
-	 * @param audioObjectImageLocator
 	 */
-	public GrowlNotificationEngine(IOSManager osManager,
-			IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage, ILookAndFeelManager lookAndFeelManager, IAudioObjectImageLocator audioObjectImageLocator) {
-		super(audioObjectGenericImageFactory, diskStorage, lookAndFeelManager, audioObjectImageLocator);
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	@Override
 	public String getName() {
 		return "Growl";
 	}
 
 	@Override
-	public void showNotification(IAudioObject audioObject) {
+	public void showNotification(final IAudioObject audioObject) {
 		String image = getTemporalImage(audioObject, osManager);
 		List<String> command = getCommand(audioObject, image);
 		ProcessBuilder pb = new ProcessBuilder(command);
@@ -87,7 +93,7 @@ public class GrowlNotificationEngine extends CommonNotificationEngine {
 	}
 
 	@Override
-	public void updateNotification(IStateUI newState) {
+	public void updateNotification(final IStateUI newState) {
 	}
 
 	@Override
@@ -95,7 +101,7 @@ public class GrowlNotificationEngine extends CommonNotificationEngine {
 		if (!osManager.isMacOsX()) {
 			return false;
 		}
-		
+
 		List<String> args = new ArrayList<String>();
 		args.add(GROWLNOTIFY);
 		args.add(HELP_ARG);
@@ -114,33 +120,33 @@ public class GrowlNotificationEngine extends CommonNotificationEngine {
 
 		return code == 0;
 	}
-	
+
 	/**
 	 * Arguments for growl command
 	 * @param audioObject
 	 * @param image
 	 * @return
 	 */
-	private List<String> getCommand(IAudioObject audioObject, String image) {
+	private List<String> getCommand(final IAudioObject audioObject, final String image) {
 		List<String> args = new ArrayList<String>();
 		args.add(GROWLNOTIFY);
 		args.add(TITLE_ARG);
 		args.add(audioObject.getTitleOrFileName());
 		args.add(MESSAGE_ARG);
-		args.add(new StringBuilder(audioObject.getAlbum()).append("\n").append(audioObject.getAlbumArtistOrArtist()).toString());
+		args.add(new StringBuilder(audioObject.getAlbum(unknownObjectChecker)).append("\n").append(audioObject.getAlbumArtistOrArtist(unknownObjectChecker)).toString());
 		args.add(IMAGE_ARG);
 		args.add(image);
 		return args;
-	}	
-	
-    @Override
-    public String getDescription() {
-    	return I18nUtils.getString("NOTIFICATION_ENGINE_GROWL_DESCRIPTION");
-    }
-    
-    @Override
-    public String getUrl() {
-    	return "http://growl.info/";
-    }
+	}
+
+	@Override
+	public String getDescription() {
+		return I18nUtils.getString("NOTIFICATION_ENGINE_GROWL_DESCRIPTION");
+	}
+
+	@Override
+	public String getUrl() {
+		return "http://growl.info/";
+	}
 
 }

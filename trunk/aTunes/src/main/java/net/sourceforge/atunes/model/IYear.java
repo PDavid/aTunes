@@ -21,10 +21,13 @@
 package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
-import java.util.Map;
-import java.util.Set;
 
 
+/**
+ * Represents a year with audio objects
+ * @author alex
+ *
+ */
 public interface IYear extends Serializable, ITreeObject<ILocalAudioObject> {
 
 	/**
@@ -37,10 +40,10 @@ public interface IYear extends Serializable, ITreeObject<ILocalAudioObject> {
 
 	/**
 	 * Returns the year as a string.
-	 * 
+	 * @param unknownObjectChecker
 	 * @return the year
 	 */
-	public String getName();
+	public String getName(IUnknownObjectChecker unknownObjectChecker);
 
 	/**
 	 * Removes an artist from this year.
@@ -49,17 +52,5 @@ public interface IYear extends Serializable, ITreeObject<ILocalAudioObject> {
 	 *            the a
 	 */
 	public void removeAudioObject(ILocalAudioObject a);
-
-	/**
-	 * Returns an structure of artists and albums containing songs of this year
-	 * 
-	 * @return the artists
-	 */
-	public Map<String, IArtist> getArtistObjects();
-
-	/**
-	 * Returns all artists of this year
-	 */
-	public Set<String> getArtistSet();
 
 }

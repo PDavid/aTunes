@@ -26,6 +26,8 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFilter;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,14 +35,14 @@ public class LocalAudioObjectFilterTest {
 
 	@Test
 	public void testEmpty() {
-		LocalAudioObjectFilter sut = new LocalAudioObjectFilter();
+		ILocalAudioObjectFilter sut = new LocalAudioObjectFilter();
 		Assert.assertTrue(sut.getLocalAudioObjects(null).isEmpty());
 		Assert.assertTrue(sut.getLocalAudioObjects(new ArrayList<IAudioObject>()).isEmpty());
 	}
 
 	@Test
 	public void testNotEmpty() {
-		LocalAudioObjectFilter sut = new LocalAudioObjectFilter();
+		ILocalAudioObjectFilter sut = new LocalAudioObjectFilter();
 		List<IAudioObject> list = new ArrayList<IAudioObject>();
 		ILocalAudioObject lao1 = mock(ILocalAudioObject.class);
 		ILocalAudioObject lao2 = mock(ILocalAudioObject.class);
@@ -53,10 +55,12 @@ public class LocalAudioObjectFilterTest {
 		Assert.assertEquals(lao1, sut.getLocalAudioObjects(list).get(0));
 		Assert.assertEquals(lao2, sut.getLocalAudioObjects(list).get(1));
 	}
-	
+
 	@Test
 	public void testFilterRepeatedObjects() {
 		LocalAudioObjectFilter sut = new LocalAudioObjectFilter();
+		IUnknownObjectChecker unknownObjectChecker = mock(IUnknownObjectChecker.class);
+		sut.setUnknownObjectChecker(unknownObjectChecker);
 		List<ILocalAudioObject> list = new ArrayList<ILocalAudioObject>();
 		ILocalAudioObject lao1 = mock(ILocalAudioObject.class);
 		ILocalAudioObject lao2 = mock(ILocalAudioObject.class);
@@ -66,15 +70,15 @@ public class LocalAudioObjectFilterTest {
 		list.add(lao2);
 		list.add(lao3);
 		list.add(lao4);
-		when(lao1.getAlbumArtist()).thenReturn("artist1");
-		when(lao2.getAlbumArtist()).thenReturn("artist1");
-		when(lao3.getArtist()).thenReturn("artist1");
-		when(lao4.getArtist()).thenReturn("artist2");
+		when(lao1.getAlbumArtist(unknownObjectChecker)).thenReturn("artist1");
+		when(lao2.getAlbumArtist(unknownObjectChecker)).thenReturn("artist1");
+		when(lao3.getArtist(unknownObjectChecker)).thenReturn("artist1");
+		when(lao4.getArtist(unknownObjectChecker)).thenReturn("artist2");
 		when(lao1.getTitle()).thenReturn("title1");
 		when(lao2.getTitle()).thenReturn("title2");
 		when(lao3.getTitle()).thenReturn("title2");
 		when(lao4.getTitle()).thenReturn("title1");
-		
+
 		List<ILocalAudioObject> result = sut.filterRepeatedObjects(list);
 		Assert.assertTrue(result.contains(lao1));
 		Assert.assertTrue(result.contains(lao2));
@@ -85,6 +89,8 @@ public class LocalAudioObjectFilterTest {
 	@Test
 	public void testFilterRepeatedObjectsWithAlbums() {
 		LocalAudioObjectFilter sut = new LocalAudioObjectFilter();
+		IUnknownObjectChecker unknownObjectChecker = mock(IUnknownObjectChecker.class);
+		sut.setUnknownObjectChecker(unknownObjectChecker);
 		List<ILocalAudioObject> list = new ArrayList<ILocalAudioObject>();
 		ILocalAudioObject lao1 = mock(ILocalAudioObject.class);
 		ILocalAudioObject lao2 = mock(ILocalAudioObject.class);
@@ -94,19 +100,19 @@ public class LocalAudioObjectFilterTest {
 		list.add(lao2);
 		list.add(lao3);
 		list.add(lao4);
-		when(lao1.getAlbumArtist()).thenReturn("artist1");
-		when(lao2.getAlbumArtist()).thenReturn("artist1");
-		when(lao3.getArtist()).thenReturn("artist1");
-		when(lao4.getArtist()).thenReturn("artist1");
+		when(lao1.getAlbumArtist(unknownObjectChecker)).thenReturn("artist1");
+		when(lao2.getAlbumArtist(unknownObjectChecker)).thenReturn("artist1");
+		when(lao3.getArtist(unknownObjectChecker)).thenReturn("artist1");
+		when(lao4.getArtist(unknownObjectChecker)).thenReturn("artist1");
 		when(lao1.getTitle()).thenReturn("title1");
 		when(lao2.getTitle()).thenReturn("title2");
 		when(lao3.getTitle()).thenReturn("title2");
 		when(lao4.getTitle()).thenReturn("title1");
-		when(lao1.getAlbum()).thenReturn("album1");
-		when(lao2.getAlbum()).thenReturn("album2");
-		when(lao3.getAlbum()).thenReturn("album2");
-		when(lao4.getAlbum()).thenReturn("album2");
-		
+		when(lao1.getAlbum(unknownObjectChecker)).thenReturn("album1");
+		when(lao2.getAlbum(unknownObjectChecker)).thenReturn("album2");
+		when(lao3.getAlbum(unknownObjectChecker)).thenReturn("album2");
+		when(lao4.getAlbum(unknownObjectChecker)).thenReturn("album2");
+
 		List<ILocalAudioObject> result = sut.filterRepeatedObjectsWithAlbums(list);
 		Assert.assertTrue(result.contains(lao1));
 		Assert.assertTrue(result.contains(lao2));

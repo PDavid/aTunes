@@ -21,16 +21,27 @@
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 class ArtistProvider extends AbstractFieldProvider {
-	
+
+	private final IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	ArtistProvider(final IUnknownObjectChecker unknownObjectChecker) {
+		super();
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
 	@Override
 	public String getI18Name() {
 		return "ARTIST";
 	}
 
 	@Override
-	public String getClearValue(ILocalAudioObject file) {
-		return file.getArtist();
+	public String getClearValue(final ILocalAudioObject file) {
+		return file.getArtist(unknownObjectChecker);
 	}
 }

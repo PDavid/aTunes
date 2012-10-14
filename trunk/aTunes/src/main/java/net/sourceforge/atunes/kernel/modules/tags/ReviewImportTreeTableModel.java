@@ -67,17 +67,17 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 
 	/**
 	 * Constructor
-	 * 
 	 * @param folders
 	 * @param filesToImport
 	 * @param treeTable
+	 * @param tagAttributesReviewed
 	 */
-	public ReviewImportTreeTableModel(final List<File> folders, final List<ILocalAudioObject> filesToImport, final JXTreeTable treeTable) {
+	public ReviewImportTreeTableModel(final List<File> folders, final List<ILocalAudioObject> filesToImport, final JXTreeTable treeTable, final TagAttributesReviewed tagAttributesReviewed) {
 		super(new DefaultMutableTreeTableNode(ROOT));
 		this.folders = folders;
 		this.audioFilesToImport = filesToImport;
 		this.treeTable = treeTable;
-		this.tagAttributesReviewed = new TagAttributesReviewed();
+		this.tagAttributesReviewed = tagAttributesReviewed;
 		Collections.sort(this.folders);
 	}
 
@@ -184,88 +184,88 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 	 * @param audioFile
 	 * @return
 	 */
-	 private String getValueForColumn(final int column, final ILocalAudioObject audioFile) {
-		 return this.tagAttributesReviewed.getValueForTagAttribute(column - 1, audioFile);
-	 }
+	private String getValueForColumn(final int column, final ILocalAudioObject audioFile) {
+		return this.tagAttributesReviewed.getValueForTagAttribute(column - 1, audioFile);
+	}
 
-	 @Override
-	 public Object getValueAt(final Object node, final int column) {
-		 if (isRoot((DefaultMutableTreeTableNode) node)) {
-			 return "";
-		 }
+	@Override
+	public Object getValueAt(final Object node, final int column) {
+		if (isRoot((DefaultMutableTreeTableNode) node)) {
+			return "";
+		}
 
-		 File folder = ((File) ((DefaultMutableTreeTableNode) node).getUserObject()).getAbsoluteFile();
-		 if (column == 0) {
-			 if (folders.contains(folder)) {
-				 return net.sourceforge.atunes.utils.FileUtils.getPath(folder);
-			 }
-			 return folder.getName();
-		 }
+		File folder = ((File) ((DefaultMutableTreeTableNode) node).getUserObject()).getAbsoluteFile();
+		if (column == 0) {
+			if (folders.contains(folder)) {
+				return net.sourceforge.atunes.utils.FileUtils.getPath(folder);
+			}
+			return folder.getName();
+		}
 
-		 String change = this.tagAttributesReviewed.getChangeForAttributeAndFolder(column - 1, folder);
-		 if (change != null) {
-			 return change;
-		 }
+		String change = this.tagAttributesReviewed.getChangeForAttributeAndFolder(column - 1, folder);
+		if (change != null) {
+			return change;
+		}
 
-		 String value = "";
-		 for (ILocalAudioObject audioFile : audioFilesToImport) {
-			 if (audioFile.getFile().getParentFile().equals(folder)) {
-				 if (value.equals("")) {
-					 value = getValueForColumn(column, audioFile);
-					 if (value == null) {
-						 value = "";
-					 }
-				 } else {
-					 if (!value.equals(getValueForColumn(column, audioFile))) {
-						 value = "";
-						 break;
-					 }
-				 }
-			 }
-		 }
-		 return value;
-	 }
+		String value = "";
+		for (ILocalAudioObject audioFile : audioFilesToImport) {
+			if (audioFile.getFile().getParentFile().equals(folder)) {
+				if (value.equals("")) {
+					value = getValueForColumn(column, audioFile);
+					if (value == null) {
+						value = "";
+					}
+				} else {
+					if (!value.equals(getValueForColumn(column, audioFile))) {
+						value = "";
+						break;
+					}
+				}
+			}
+		}
+		return value;
+	}
 
-	 @Override
-	 public boolean isCellEditable(final Object node, final int column) {
-		 return column != 0;
-	 }
+	@Override
+	public boolean isCellEditable(final Object node, final int column) {
+		return column != 0;
+	}
 
-	 @Override
-	 public void setValueAt(final Object value, final Object node, final int column) {
-		 super.setValueAt(value, node, column);
-		 File folder = ((File) ((DefaultMutableTreeTableNode) node).getUserObject()).getAbsoluteFile();
-		 recursiveFolderChange(column, folder, (String) value);
-		 // If folder has childs then update UI to show recursive changes
-		 if (!foldersMap.get(folder).isEmpty()) {
-			 // Use repaint instead of updateUI since there are problems when using with combo box cell editors
-			 treeTable.repaint();
-		 }
-	 }
+	@Override
+	public void setValueAt(final Object value, final Object node, final int column) {
+		super.setValueAt(value, node, column);
+		File folder = ((File) ((DefaultMutableTreeTableNode) node).getUserObject()).getAbsoluteFile();
+		recursiveFolderChange(column, folder, (String) value);
+		// If folder has childs then update UI to show recursive changes
+		if (!foldersMap.get(folder).isEmpty()) {
+			// Use repaint instead of updateUI since there are problems when using with combo box cell editors
+			treeTable.repaint();
+		}
+	}
 
-	 public void setValueForColumn(final int row, final String tagAttributeName, final String value) {
-		 int column = this.tagAttributesReviewed.getTagAttributeIndex(tagAttributeName);
-		 setValueAt(value, treeTable.getPathForRow(row).getLastPathComponent(), column + 1);
-	 }
+	public void setValueForColumn(final int row, final String tagAttributeName, final String value) {
+		int column = this.tagAttributesReviewed.getTagAttributeIndex(tagAttributeName);
+		setValueAt(value, treeTable.getPathForRow(row).getLastPathComponent(), column + 1);
+	}
 
-	 /**
-	  * Stores recursively changes of a tag attribute in a folder
-	  * 
-	  * @param column
-	  * @param folder
-	  * @param value
-	  */
-	 private void recursiveFolderChange(final int column, final File folder, final String value) {
-		 this.tagAttributesReviewed.setTagAttributeForFolder(column - 1, folder, value);
-		 for (File childFolder : foldersMap.get(folder)) {
-			 recursiveFolderChange(column, childFolder, value);
-		 }
-	 }
+	/**
+	 * Stores recursively changes of a tag attribute in a folder
+	 * 
+	 * @param column
+	 * @param folder
+	 * @param value
+	 */
+	private void recursiveFolderChange(final int column, final File folder, final String value) {
+		this.tagAttributesReviewed.setTagAttributeForFolder(column - 1, folder, value);
+		for (File childFolder : foldersMap.get(folder)) {
+			recursiveFolderChange(column, childFolder, value);
+		}
+	}
 
-	 /**
-	  * @return the tagAttributesReviewed
-	  */
-	 public ITagAttributesReviewed getTagAttributesReviewed() {
-		 return tagAttributesReviewed;
-	 }
+	/**
+	 * @return the tagAttributesReviewed
+	 */
+	public ITagAttributesReviewed getTagAttributesReviewed() {
+		return tagAttributesReviewed;
+	}
 }

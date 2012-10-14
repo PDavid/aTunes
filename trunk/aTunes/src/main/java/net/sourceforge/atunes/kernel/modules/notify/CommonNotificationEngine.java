@@ -47,24 +47,41 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 
 	private Boolean available;
 
-	private final IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
+	private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
 
-	private final ITemporalDiskStorage diskStorage;
+	private ITemporalDiskStorage temporalDiskStorage;
 
-	private final ILookAndFeelManager lookAndFeelManager;
+	private ILookAndFeelManager lookAndFeelManager;
 
-	private final IAudioObjectImageLocator audioObjectImageLocator;
+	private IAudioObjectImageLocator audioObjectImageLocator;
 
 	/**
 	 * @param audioObjectGenericImageFactory
-	 * @param diskStorage
+	 */
+	public void setAudioObjectGenericImageFactory(
+			final IAudioObjectGenericImageFactory audioObjectGenericImageFactory) {
+		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
+	}
+
+	/**
+	 * @param temporalDiskStorage
+	 */
+	public void setTemporalDiskStorage(final ITemporalDiskStorage temporalDiskStorage) {
+		this.temporalDiskStorage = temporalDiskStorage;
+	}
+
+	/**
 	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
 	 * @param audioObjectImageLocator
 	 */
-	public CommonNotificationEngine(final IAudioObjectGenericImageFactory audioObjectGenericImageFactory, final ITemporalDiskStorage diskStorage, final ILookAndFeelManager lookAndFeelManager, final IAudioObjectImageLocator audioObjectImageLocator) {
-		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
-		this.diskStorage = diskStorage;
-		this.lookAndFeelManager = lookAndFeelManager;
+	public void setAudioObjectImageLocator(
+			final IAudioObjectImageLocator audioObjectImageLocator) {
 		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
 
@@ -90,7 +107,15 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 		if (imageForAudioObject == null) {
 			imageForAudioObject = audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.MEDIUM).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
 		}
-		return net.sourceforge.atunes.utils.FileUtils.getPath(diskStorage.addImage(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()));
+		return net.sourceforge.atunes.utils.FileUtils.getPath(temporalDiskStorage.addImage(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()));
+	}
+
+	protected final ILookAndFeelManager getLookAndFeelManager() {
+		return lookAndFeelManager;
+	}
+
+	protected final IAudioObjectImageLocator getAudioObjectImageLocator() {
+		return audioObjectImageLocator;
 	}
 
 	/**

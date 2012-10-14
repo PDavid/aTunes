@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 /**
  * Column to show album artist
@@ -30,6 +31,16 @@ import net.sourceforge.atunes.model.IAudioObject;
 public class AlbumArtistColumn extends AbstractColumn<String> {
 
 	private static final long serialVersionUID = -1105793722315426353L;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	/**
 	 * Default constructor
@@ -42,29 +53,29 @@ public class AlbumArtistColumn extends AbstractColumn<String> {
 
 	@Override
 	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		if (ao1.getAlbumArtist().equals(ao2.getAlbumArtist())) {
+		if (ao1.getAlbumArtist(unknownObjectChecker).equals(ao2.getAlbumArtist(unknownObjectChecker))) {
 			return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
 		}
-		return ao1.getAlbumArtist().compareTo(ao2.getAlbumArtist());
+		return ao1.getAlbumArtist(unknownObjectChecker).compareTo(ao2.getAlbumArtist(unknownObjectChecker));
 	}
 
 	@Override
 	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		if (ao1.getAlbumArtist().equals(ao2.getAlbumArtist())) {
+		if (ao1.getAlbumArtist(unknownObjectChecker).equals(ao2.getAlbumArtist(unknownObjectChecker))) {
 			return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
 		}
-		return ao2.getAlbumArtist().compareTo(ao1.getAlbumArtist());
+		return ao2.getAlbumArtist(unknownObjectChecker).compareTo(ao1.getAlbumArtist(unknownObjectChecker));
 	}
 
 	@Override
 	public String getValueFor(final IAudioObject audioObject, final int row) {
 		// Return album artist
-		return audioObject.getAlbumArtist();
+		return audioObject.getAlbumArtist(unknownObjectChecker);
 	}
 
 	@Override
 	public String getValueForFilter(final IAudioObject audioObject, final int row) {
-		return audioObject.getAlbumArtist();
+		return audioObject.getAlbumArtist(unknownObjectChecker);
 	}
 
 }
