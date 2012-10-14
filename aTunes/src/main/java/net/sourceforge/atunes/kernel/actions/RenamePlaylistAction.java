@@ -25,44 +25,51 @@ import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Renames a play list
+ * @author alex
+ *
+ */
 public class RenamePlaylistAction extends CustomAbstractAction {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 8445003048535126058L;
+	private static final long serialVersionUID = 8445003048535126058L;
 
-    private IPlayListHandler playListHandler;
-    
-    private IDialogFactory dialogFactory;
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
+	private IPlayListHandler playListHandler;
+
+	private IDialogFactory dialogFactory;
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    public RenamePlaylistAction() {
-        super(I18nUtils.getString("RENAME_PLAYLIST"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_PLAYLIST"));
-    }
 
-    @Override
-    protected void executeAction() {
-    	String currentName = playListHandler.getCurrentVisiblePlayListName();
-        IInputDialog dialog = dialogFactory.newDialog(IInputDialog.class);
-        dialog.setTitle(I18nUtils.getString("RENAME_PLAYLIST"));
-        dialog.setText(currentName);
-        dialog.showDialog();
-        playListHandler.renameCurrentVisiblePlayList(dialog.getResult());
-    }
+	/**
+	 * Constructor
+	 */
+	public RenamePlaylistAction() {
+		super(I18nUtils.getString("RENAME_PLAYLIST"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_PLAYLIST"));
+	}
 
+	@Override
+	protected void executeAction() {
+		String currentName = playListHandler.getCurrentVisiblePlayListName();
+		IInputDialog dialog = dialogFactory.newDialog(IInputDialog.class);
+		dialog.setTitle(I18nUtils.getString("RENAME_PLAYLIST"));
+		dialog.setText(currentName);
+		dialog.showDialog();
+		playListHandler.renameCurrentVisiblePlayList(dialog.getResult());
+	}
 }
