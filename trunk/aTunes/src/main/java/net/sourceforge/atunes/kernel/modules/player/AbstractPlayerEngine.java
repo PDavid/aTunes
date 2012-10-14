@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.player;
 
 import java.io.File;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -339,48 +338,21 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	 *            Messages when playback finishes with error
 	 */
 	@Override
-	public final void currentAudioObjectFinished(final boolean ok, final String... errorMessages) {
+	public final void currentAudioObjectFinished() {
 		// Call listeners to notify playback finished
 		callPlaybackStateListeners(PlaybackState.PLAY_FINISHED);
+		Logger.info("Playback finished");
 
-		if (!ok) {
-			StringBuilder sb = new StringBuilder();
-			for (String errorMessage : errorMessages) {
-				sb.append(errorMessage).append(" ");
-			}
-			Logger.info(StringUtils.getString("Playback finished with errors: ", sb.toString()));
-
-			boolean ignore = showPlaybackError(errorMessages);
-			applyUserSelection(ignore);
-
-		} else {
-			Logger.info("Playback finished");
-
-			// Move to the next audio object
-			playNextAudioObject(true);
-		}
+		// Move to the next audio object
+		playNextAudioObject(true);
 	}
 
-	/**
-	 * Lets user decide if want to ignore playback error or cancel
-	 * 
-	 * @param errorMessages
-	 * @return
-	 */
-	private boolean showPlaybackError(final String... errorMessages) {
-		ShowPlaybackErrorRunnable r = new ShowPlaybackErrorRunnable(errorMessages);
-		GuiUtils.callInEventDispatchThreadAndWait(r);
-		return r.isIgnore();
-	}
-
-	/**
-	 * if user wants to ignore play back error then play back continues, if not
-	 * it's stopped
-	 * 
-	 * @param ignorePlaybackError
-	 */
-	private void applyUserSelection(final boolean ignorePlaybackError) {
-		GuiUtils.callInEventDispatchThread(new ApplyUserSelectionRunnable(this, ignorePlaybackError));
+	@Override
+	public void currentAudioObjectFinishedWithError(final Exception exception) {
+		// Call listeners to notify playback finished
+		callPlaybackStateListeners(PlaybackState.PLAY_FINISHED);
+		Logger.info(StringUtils.getString("Playback finished with errors: ", exception.toString()));
+		handlePlayerEngineError(exception);
 	}
 
 	@Override

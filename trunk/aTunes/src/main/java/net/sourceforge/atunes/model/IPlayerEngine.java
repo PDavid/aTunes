@@ -22,6 +22,7 @@ package net.sourceforge.atunes.model;
 
 
 
+
 /**
  * Classes implementing this interface are responsible of work with native player engine
  * @author alex
@@ -104,14 +105,14 @@ public interface IPlayerEngine {
 	/**
 	 * This method must be called by engine when audio object finishes its
 	 * playback
-	 * 
-	 * @param ok
-	 *            <code>true</code> if playback finishes ok, <code>false</code>
-	 *            otherwise
-	 * @param errorMessages
-	 * 				Messages when playback finishes with error
 	 */
-	void currentAudioObjectFinished(boolean ok, final String... errorMessages);
+	void currentAudioObjectFinished();
+
+	/**
+	 * This method must be called by engine when audio object finishes its playback with error
+	 * @param exception
+	 */
+	void currentAudioObjectFinishedWithError(Exception exception);
 
 	/**
 	 * Seek function: play current audio object from milliseconds or percent defined by parameter

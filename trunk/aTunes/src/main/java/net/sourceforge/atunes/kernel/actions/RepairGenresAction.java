@@ -22,6 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+
 import net.sourceforge.atunes.model.IChangeTagsProcess;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
@@ -44,7 +46,7 @@ public class RepairGenresAction extends CustomAbstractAction {
 	private final class FilesWithEmptyGenre implements Predicate<ILocalAudioObject> {
 
 		@Override
-		public boolean apply(final ILocalAudioObject ao) {
+		public boolean apply(@Nonnull final ILocalAudioObject ao) {
 			return ao.getGenre(unknownObjectChecker) == null || ao.getGenre(unknownObjectChecker).isEmpty();
 		}
 	}
