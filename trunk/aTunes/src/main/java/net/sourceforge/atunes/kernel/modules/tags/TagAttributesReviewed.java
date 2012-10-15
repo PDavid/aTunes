@@ -69,7 +69,7 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
 		if (tagAttributes == null) {
 			tagAttributes = new ArrayList<AbstractTagAttributeReviewed>();
 			tagAttributes.add(new ArtistTagAttributeReviewed("ARTIST"));
-			tagAttributes.add(new AlbumArtistTagAttributeReviewed("ALBUM_ARTIST", unknownObjectChecker));
+			tagAttributes.add(new AlbumArtistTagAttributeReviewed("ALBUM_ARTIST"));
 			tagAttributes.add(new ComposerTagAttributeReviewed("COMPOSER"));
 			tagAttributes.add(new AlbumTagAttributeReviewed("ALBUM"));
 			tagAttributes.add(new GenreTagAttributeReviewed("GENRE"));

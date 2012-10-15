@@ -243,6 +243,12 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 		}
 	}
 
+	/**
+	 * Sets value of column for given row (a folder)
+	 * @param row
+	 * @param tagAttributeName
+	 * @param value
+	 */
 	public void setValueForColumn(final int row, final String tagAttributeName, final String value) {
 		int column = this.tagAttributesReviewed.getTagAttributeIndex(tagAttributeName);
 		setValueAt(value, treeTable.getPathForRow(row).getLastPathComponent(), column + 1);

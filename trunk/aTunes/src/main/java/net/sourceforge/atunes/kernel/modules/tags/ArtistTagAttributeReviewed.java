@@ -36,33 +36,33 @@ import net.sourceforge.atunes.model.ITag;
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
 final class ArtistTagAttributeReviewed extends AbstractTagAttributeReviewed {
-    ArtistTagAttributeReviewed(String name) {
-        super(name);
-    }
+	ArtistTagAttributeReviewed(final String name) {
+		super(name);
+	}
 
-    @Override
-    String getValue(ILocalAudioObject audioFile) {
-        // we use getTag().getArtist() to avoid returning unknown artist
-        return audioFile.getTag() != null ? audioFile.getTag().getArtist() : null;
-    }
+	@Override
+	String getValue(final ILocalAudioObject audioFile) {
+		// Don't want to return unknown artist
+		return audioFile.getArtist(null);
+	}
 
-    @Override
-    ITag changeTag(ITag tag, String value) {
-        tag.setArtist(value);
-        return tag;
-    }
+	@Override
+	ITag changeTag(final ITag tag, final String value) {
+		tag.setArtist(value);
+		return tag;
+	}
 
-    @Override
-    TableCellEditor getCellEditor() {
-        List<IArtist> artistList = Context.getBean(IRepositoryHandler.class).getArtists();
-        List<String> artistNames = new ArrayList<String>();
-        for (IArtist a : artistList) {
-            artistNames.add(a.getName());
-        }
-        JComboBox artistsCombo = new JComboBox(new ListComboBoxModel<String>(artistNames));
-        artistsCombo.setEditable(true);
-        // Automcomplete seems to work incorrectly when using it in a cell editor
-        // AutoCompleteDecorator.decorate(artistsCombo);
-        return new DefaultCellEditor(artistsCombo);
-    }
+	@Override
+	TableCellEditor getCellEditor() {
+		List<IArtist> artistList = Context.getBean(IRepositoryHandler.class).getArtists();
+		List<String> artistNames = new ArrayList<String>();
+		for (IArtist a : artistList) {
+			artistNames.add(a.getName());
+		}
+		JComboBox artistsCombo = new JComboBox(new ListComboBoxModel<String>(artistNames));
+		artistsCombo.setEditable(true);
+		// Automcomplete seems to work incorrectly when using it in a cell editor
+		// AutoCompleteDecorator.decorate(artistsCombo);
+		return new DefaultCellEditor(artistsCombo);
+	}
 }
