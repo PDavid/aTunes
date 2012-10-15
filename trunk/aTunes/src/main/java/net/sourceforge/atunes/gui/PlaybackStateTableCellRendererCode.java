@@ -65,6 +65,7 @@ public final class PlaybackStateTableCellRendererCode extends AbstractTableCellR
 
 	@Override
 	public JLabel getComponent(final JLabel c, final JTable t, final PlaybackState value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+		c.setText(null);
 		c.setIcon(getPlayStateIcon(getLookAndFeel().getPaintForColorMutableIcon(c, isSelected), value));
 		return c;
 	}

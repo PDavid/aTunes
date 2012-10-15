@@ -51,7 +51,7 @@ public class PlayingColumn extends AbstractColumn<PlaybackState> {
 	public PlayingColumn() {
 		super("PLAYING");
 		setResizable(false);
-		setWidth(160);
+		setWidth(20);
 		setVisible(true);
 	}
 
