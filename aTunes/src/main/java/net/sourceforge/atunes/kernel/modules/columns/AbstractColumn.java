@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
+import java.text.Collator;
 import java.util.Comparator;
 
 import javax.swing.table.TableCellEditor;
@@ -74,7 +75,9 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 	 * Last sort order used for this column
 	 */
 	private transient ColumnSort columnSort;
-
+	
+	private transient Collator collator;
+	
 	/**
 	 * Constructor with columnId, headerText and columnClass.
 	 * 
@@ -90,6 +93,23 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 		this.columnClass = (Class<?>) ReflectionUtils.getTypeArgumentsOfParameterizedType(this.getClass())[0];
 	}
 
+	/**
+	 * @param collator
+	 */
+	public void setCollator(Collator collator) {
+		this.collator = collator;
+	}
+	
+	/**
+	 * Helper method to compare strings
+	 * @param s1
+	 * @param s2
+	 * @return
+	 */
+	protected int compare(String s1, String s2) {
+		return collator.compare(s1, s2);
+	}
+	
 	@Override
 	public void applyColumnBean(final ColumnBean bean) {
 		order = bean.getOrder();

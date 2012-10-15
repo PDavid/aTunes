@@ -35,7 +35,7 @@ final class RadioUrlColumn extends AbstractColumn<String> {
 
 	@Override
 	protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
-		return o1.getUrl().compareTo(o2.getUrl());
+		return compare(o1.getUrl(), o2.getUrl());
 	}
 
 	@Override

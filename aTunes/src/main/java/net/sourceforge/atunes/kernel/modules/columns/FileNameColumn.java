@@ -45,7 +45,7 @@ public class FileNameColumn extends AbstractColumn<String> {
 	@Override
 	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
 		if (ao1 instanceof ILocalAudioObject) {
-			return ((ILocalAudioObject) ao1).getFile().getName().compareTo(((ILocalAudioObject) ao2).getFile().getName());
+			return compare(((ILocalAudioObject) ao1).getFile().getName(), ((ILocalAudioObject) ao2).getFile().getName());
 		}
 		return 0;
 	}

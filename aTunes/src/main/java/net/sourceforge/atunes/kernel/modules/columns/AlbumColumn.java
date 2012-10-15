@@ -72,7 +72,7 @@ public class AlbumColumn extends AbstractColumn<TextAndIcon> {
 
 	@Override
 	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		int album = ao1.getAlbum(unknownObjectChecker).compareTo(ao2.getAlbum(unknownObjectChecker));
+		int album = compare(ao1.getAlbum(unknownObjectChecker), ao2.getAlbum(unknownObjectChecker));
 		if (album == 0) {
 			if (ao1.getDiscNumber() == ao2.getDiscNumber()) {
 				return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
@@ -84,7 +84,7 @@ public class AlbumColumn extends AbstractColumn<TextAndIcon> {
 
 	@Override
 	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		int album = ao2.getAlbum(unknownObjectChecker).compareTo(ao1.getAlbum(unknownObjectChecker));
+		int album = compare(ao2.getAlbum(unknownObjectChecker), ao1.getAlbum(unknownObjectChecker));
 		if (album == 0) {
 			if (ao1.getDiscNumber() == ao2.getDiscNumber()) {
 				return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());

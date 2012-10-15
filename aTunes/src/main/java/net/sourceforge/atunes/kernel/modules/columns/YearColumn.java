@@ -46,7 +46,7 @@ public class YearColumn extends AbstractColumn<String> {
 
 	@Override
 	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return ao1.getYear().compareTo(ao2.getYear());
+		return compare(ao1.getYear(), ao2.getYear());
 	}
 
 	@Override

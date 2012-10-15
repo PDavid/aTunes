@@ -42,7 +42,7 @@ public class ComposerColumn extends AbstractColumn<String> {
 
 	@Override
 	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return ao1.getComposer().compareTo(ao2.getComposer());
+		return compare(ao1.getComposer(), ao2.getComposer());
 	}
 
 	@Override

@@ -74,11 +74,11 @@ public class ArtistColumn extends AbstractColumn<TextAndIcon> {
 
 	@Override
 	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		int artist = ao1.getArtist(unknownObjectChecker).compareTo(ao2.getArtist(unknownObjectChecker));
+		int artist = compare(ao1.getArtist(unknownObjectChecker), ao2.getArtist(unknownObjectChecker));
 		if (artist != 0) {
 			return artist;
 		} else {
-			int album = ao1.getAlbum(unknownObjectChecker).compareTo(ao2.getAlbum(unknownObjectChecker));
+			int album = compare(ao1.getAlbum(unknownObjectChecker), ao2.getAlbum(unknownObjectChecker));
 			if (album != 0) {
 				return album;
 			} else {
@@ -94,11 +94,11 @@ public class ArtistColumn extends AbstractColumn<TextAndIcon> {
 
 	@Override
 	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		int artist = ao2.getArtist(unknownObjectChecker).compareTo(ao1.getArtist(unknownObjectChecker));
+		int artist = compare(ao2.getArtist(unknownObjectChecker), ao1.getArtist(unknownObjectChecker));
 		if (artist != 0) {
 			return artist;
 		} else {
-			int album = ao1.getAlbum(unknownObjectChecker).compareTo(ao2.getAlbum(unknownObjectChecker));
+			int album = compare(ao1.getAlbum(unknownObjectChecker), ao2.getAlbum(unknownObjectChecker));
 			if (album != 0) {
 				return album;
 			} else {

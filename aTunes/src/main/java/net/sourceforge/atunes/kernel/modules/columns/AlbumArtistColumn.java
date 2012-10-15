@@ -56,7 +56,7 @@ public class AlbumArtistColumn extends AbstractColumn<String> {
 		if (ao1.getAlbumArtist(unknownObjectChecker).equals(ao2.getAlbumArtist(unknownObjectChecker))) {
 			return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
 		}
-		return ao1.getAlbumArtist(unknownObjectChecker).compareTo(ao2.getAlbumArtist(unknownObjectChecker));
+		return compare(ao1.getAlbumArtist(unknownObjectChecker), ao2.getAlbumArtist(unknownObjectChecker));
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class AlbumArtistColumn extends AbstractColumn<String> {
 		if (ao1.getAlbumArtist(unknownObjectChecker).equals(ao2.getAlbumArtist(unknownObjectChecker))) {
 			return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
 		}
-		return ao2.getAlbumArtist(unknownObjectChecker).compareTo(ao1.getAlbumArtist(unknownObjectChecker));
+		return compare(ao2.getAlbumArtist(unknownObjectChecker), ao1.getAlbumArtist(unknownObjectChecker));
 	}
 
 	@Override
@@ -77,5 +77,4 @@ public class AlbumArtistColumn extends AbstractColumn<String> {
 	public String getValueForFilter(final IAudioObject audioObject, final int row) {
 		return audioObject.getAlbumArtist(unknownObjectChecker);
 	}
-
 }
