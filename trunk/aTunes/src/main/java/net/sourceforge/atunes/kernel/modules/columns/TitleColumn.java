@@ -43,7 +43,7 @@ public class TitleColumn extends AbstractColumn<String> {
 
 	@Override
 	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return ao1.getTitleOrFileName().compareTo(ao2.getTitleOrFileName());
+		return compare(ao1.getTitleOrFileName(), ao2.getTitleOrFileName());
 	}
 
 	@Override

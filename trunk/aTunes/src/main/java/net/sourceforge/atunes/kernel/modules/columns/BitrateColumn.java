@@ -63,5 +63,4 @@ public class BitrateColumn extends AbstractColumn<String> {
 		}
 		return "";
 	}
-
 }

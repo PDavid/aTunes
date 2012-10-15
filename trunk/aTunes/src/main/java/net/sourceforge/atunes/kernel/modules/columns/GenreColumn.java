@@ -58,11 +58,11 @@ public class GenreColumn extends AbstractColumn<String> {
 				if (ao1.getAlbum(unknownObjectChecker).equals(ao2.getAlbum(unknownObjectChecker))) {
 					return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
 				}
-				return ao1.getAlbum(unknownObjectChecker).compareTo(ao2.getAlbum(unknownObjectChecker));
+				return compare(ao1.getAlbum(unknownObjectChecker), ao2.getAlbum(unknownObjectChecker));
 			}
-			return ao1.getArtist(unknownObjectChecker).compareTo(ao2.getArtist(unknownObjectChecker));
+			return compare(ao1.getArtist(unknownObjectChecker), ao2.getArtist(unknownObjectChecker));
 		}
-		return ao1.getGenre(unknownObjectChecker).compareTo(ao2.getGenre(unknownObjectChecker));
+		return compare(ao1.getGenre(unknownObjectChecker), ao2.getGenre(unknownObjectChecker));
 	}
 
 	@Override
@@ -72,11 +72,11 @@ public class GenreColumn extends AbstractColumn<String> {
 				if (ao1.getAlbum(unknownObjectChecker).equals(ao2.getAlbum(unknownObjectChecker))) {
 					return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
 				}
-				return ao1.getAlbum(unknownObjectChecker).compareTo(ao2.getAlbum(unknownObjectChecker));
+				return compare(ao1.getAlbum(unknownObjectChecker), ao2.getAlbum(unknownObjectChecker));
 			}
-			return ao1.getArtist(unknownObjectChecker).compareTo(ao2.getArtist(unknownObjectChecker));
+			return compare(ao1.getArtist(unknownObjectChecker), ao2.getArtist(unknownObjectChecker));
 		}
-		return ao2.getGenre(unknownObjectChecker).compareTo(ao1.getGenre(unknownObjectChecker));
+		return compare(ao2.getGenre(unknownObjectChecker), ao1.getGenre(unknownObjectChecker));
 	}
 
 	@Override

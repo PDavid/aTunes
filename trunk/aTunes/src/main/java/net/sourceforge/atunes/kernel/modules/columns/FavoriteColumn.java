@@ -20,10 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
+import java.util.Map;
+
 import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 
@@ -38,7 +41,7 @@ public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> {
 
 	private transient IBeanFactory beanFactory;
 
-	private transient IFavoritesHandler favoritesHandler;
+	private transient Map<String, ILocalAudioObject> favoriteObjects;
 
 	/**
 	 * Default constructor
@@ -74,7 +77,7 @@ public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> {
 		if (audioObject instanceof IPodcastFeedEntry) {
 			return null;
 		}
-		return getFavoritesHandler().getFavoriteSongsInfo().containsValue(audioObject) ? AudioObjectProperty.FAVORITE : null;
+		return getFavoriteObjects().containsValue(audioObject) ? AudioObjectProperty.FAVORITE : null;
 	}
 
 	@Override
@@ -89,10 +92,11 @@ public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> {
 		this.beanFactory = beanFactory;
 	}
 
-	private IFavoritesHandler getFavoritesHandler() {
-		if (favoritesHandler == null) {
-			favoritesHandler = beanFactory.getBean(IFavoritesHandler.class);
+	private Map<String, ILocalAudioObject> getFavoriteObjects() {
+		if (favoriteObjects == null) {
+			// Access directly to favorites
+			favoriteObjects = beanFactory.getBean(IFavoritesHandler.class).getFavoriteSongsInfo();
 		}
-		return favoritesHandler;
+		return favoriteObjects;
 	}
 }

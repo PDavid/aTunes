@@ -55,7 +55,7 @@ public class PathColumn extends AbstractColumn<String> {
 		if (ao2 instanceof ILocalAudioObject) {
 			p2 = FileUtils.getPath(((ILocalAudioObject) ao2).getFile().getParentFile());
 		}
-		return p1.compareTo(p2);
+		return compare(p1, p2);
 	}
 
 	@Override
