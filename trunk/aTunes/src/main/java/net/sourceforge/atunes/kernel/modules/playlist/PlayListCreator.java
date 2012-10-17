@@ -23,18 +23,33 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IStatePlayer;
 
+/**
+ * Creates play lists
+ * @author alex
+ *
+ */
 public class PlayListCreator {
-	
+
 	private IStatePlayer statePlayer;
-	
+
+	private IColumnSet playListColumnSet;
+
 	/**
 	 * @param statePlayer
 	 */
-	public void setStatePlayer(IStatePlayer statePlayer) {
+	public void setStatePlayer(final IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;
+	}
+
+	/**
+	 * @param playListColumnSet
+	 */
+	public void setPlayListColumnSet(final IColumnSet playListColumnSet) {
+		this.playListColumnSet = playListColumnSet;
 	}
 
 	/**
@@ -43,7 +58,7 @@ public class PlayListCreator {
 	 * @param audioObjects
 	 * @return
 	 */
-	IPlayList getNewPlayList(String nameOfNewPlayList, List<? extends IAudioObject> audioObjects) {
+	IPlayList getNewPlayList(final String nameOfNewPlayList, final List<? extends IAudioObject> audioObjects) {
 		PlayList newPlayList;
 		if (audioObjects == null) {
 			newPlayList = new PlayList(statePlayer);
@@ -51,6 +66,19 @@ public class PlayListCreator {
 			newPlayList = new PlayList(audioObjects, statePlayer);
 		}
 		newPlayList.setName(nameOfNewPlayList);
+		return newPlayList;
+	}
+
+	/**
+	 * Returns a new play list with filtered audio objects from given play list
+	 * @param playList
+	 * @param filter
+	 * @return
+	 */
+	IPlayList getNewPlayListWithFilter(final IPlayList playList, final String filter) {
+		IPlayList newPlayList = getNewPlayList(playList.getName(), playListColumnSet.filterAudioObjects(playList.getAudioObjectsList(), filter));
+		// Set previous selected object or first one
+		newPlayList.setCurrentAudioObjectIndex(Math.max(newPlayList.indexOf(playList.getCurrentAudioObject()), 0));
 		return newPlayList;
 	}
 }

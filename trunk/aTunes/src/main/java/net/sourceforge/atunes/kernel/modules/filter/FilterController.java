@@ -28,87 +28,92 @@ import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IFilterPanel;
 
+/**
+ * A controller for a filter panel
+ * @author alex
+ *
+ */
 public class FilterController extends AbstractSimpleController<FilterPanel> {
 
 	private FilterTextFieldDocumentListener listener;
-	
-	private boolean filterApplied = false;
-	
-    private IFilterHandler filterHandler;
-    
-    /**
-     * Filter to apply when user types in filter panel managed by this controller
-     */
-    private IFilter filter;
 
-    /**
-     * @param panel
-     */
-    public FilterController(IFilterPanel panel) {
-        super((FilterPanel)panel.getSwingComponent());
-    }
-    
-    /**
-     * Initializes controller
-     */
-    public void initialize() {
-        this.listener = new FilterTextFieldDocumentListener(this);
-        addBindings();
-    }
-    
-    /**
-     * @return
-     */
-    FilterTextFieldDocumentListener getListener() {
+	private boolean filterApplied = false;
+
+	private IFilterHandler filterHandler;
+
+	/**
+	 * Filter to apply when user types in filter panel managed by this controller
+	 */
+	private IFilter filter;
+
+	/**
+	 * @param panel
+	 */
+	public FilterController(final IFilterPanel panel) {
+		super((FilterPanel)panel.getSwingComponent());
+	}
+
+	/**
+	 * Initializes controller
+	 */
+	public void initialize() {
+		this.listener = new FilterTextFieldDocumentListener(this);
+		addBindings();
+	}
+
+	/**
+	 * @return
+	 */
+	FilterTextFieldDocumentListener getListener() {
 		return listener;
 	}
-    
-    /**
-     * @return
-     */
-    boolean isFilterApplied() {
+
+	/**
+	 * @return
+	 */
+	boolean isFilterApplied() {
 		return filterApplied;
 	}
-    
-    /**
-     * Set filter to apply
-     * @param filter
-     */
-    public void setFilter(IFilter filter) {
+
+	/**
+	 * Set filter to apply
+	 * @param filter
+	 */
+	public void setFilter(final IFilter filter) {
 		this.filter = filter;
 	}
-    
-    /**
-     * @param filterHandler
-     */
-    public void setFilterHandler(IFilterHandler filterHandler) {
+
+	/**
+	 * @param filterHandler
+	 */
+	public void setFilterHandler(final IFilterHandler filterHandler) {
 		this.filterHandler = filterHandler;
 	}
 
-    @Override
+	@Override
 	public void addBindings() {
-    	getComponentControlled().getFilterTextField().addFocusListener(new FilterControllerFocusListener(this));
-        getComponentControlled().getFilterTextField().addKeyListener(new FilterControllerKeyAdapter(this));        
-        getComponentControlled().getClearButton().addActionListener(new FilterControllerActionListener(this));
-    }
-    
-    /**
-     * Applies filter by calling FilterHandler
-     * 
-     * @param filterText
-     */
-    void applyFilter(String filterText) {
-    	filterApplied = filterText != null && !filterText.equals("");
-        filterHandler.applyFilter(filter, filterText);
-    }
+		getComponentControlled().getFilterTextField().addFocusListener(new FilterControllerFocusListener(this));
+		getComponentControlled().getFilterTextField().addKeyListener(new FilterControllerKeyAdapter(this));
+		getComponentControlled().getClearButton().addActionListener(new FilterControllerActionListener(this));
+	}
 
-    /**
-     * Returns filter text or null
-     * 
-     * @return
-     */
-    String getFilterText() {
-        String filterText = getComponentControlled().getFilterTextField().getText();
-        return filterText.trim().equals("") ? null : filterText;
-    }
+	/**
+	 * Applies filter by calling FilterHandler
+	 * 
+	 * @param filterText
+	 */
+	void applyFilter(final String filterText) {
+		filterApplied = filterText != null && !filterText.equals("");
+		filterHandler.applyFilter(filter, filterText);
+	}
+
+	/**
+	 * Returns filter text or null
+	 * 
+	 * @return
+	 */
+	String getFilterText() {
+		String filterText = getComponentControlled().getFilterTextField().getText();
+		return filterText.trim().equals("") ? null : filterText;
+	}
 }

@@ -506,6 +506,10 @@ public final class GuiUtils {
 		}
 	}
 
+	/**
+	 * Sets custom properties to text fields
+	 * @param customTextField
+	 */
 	public static void initializeTextField(final CustomTextField customTextField) {
 		if (Context.getBean(IOSManager.class).isMacOsX()) {
 			JTextComponent.loadKeymap(customTextField.getKeymap(), MAC_OS_BINDINGS, customTextField.getActions());
