@@ -76,9 +76,6 @@ public class PlayListCreator {
 	 * @return
 	 */
 	IPlayList getNewPlayListWithFilter(final IPlayList playList, final String filter) {
-		IPlayList newPlayList = getNewPlayList(playList.getName(), playListColumnSet.filterAudioObjects(playList.getAudioObjectsList(), filter));
-		// Set previous selected object or first one
-		newPlayList.setCurrentAudioObjectIndex(Math.max(newPlayList.indexOf(playList.getCurrentAudioObject()), 0));
-		return newPlayList;
+		return getNewPlayList(playList.getName(), playListColumnSet.filterAudioObjects(playList.getAudioObjectsList(), filter));
 	}
 }

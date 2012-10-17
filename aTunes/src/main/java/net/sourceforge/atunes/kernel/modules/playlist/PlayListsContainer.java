@@ -206,6 +206,10 @@ public final class PlayListsContainer implements IPlayListsContainer {
 		if (filterText == null) {
 			// If play list was filtered, back to non-filtered play list
 			if (nonFilteredPlayList != null) {
+				if (getVisiblePlayList().getCurrentAudioObjectIndex() != -1) {
+					// User selected another object -> keep that object selected in original play list
+					nonFilteredPlayList.setCurrentAudioObjectIndex(nonFilteredPlayList.indexOf(getVisiblePlayList().getCurrentAudioObject()));
+				}
 				setPlayListAfterFiltering(nonFilteredPlayList);
 				nonFilteredPlayList = null;
 			}
@@ -217,6 +221,8 @@ public final class PlayListsContainer implements IPlayListsContainer {
 
 			// Create a new play list by filtering elements
 			IPlayList newPlayList = playListCreator.getNewPlayListWithFilter(nonFilteredPlayList, filterText);
+			// Set index to -1 to detect if user selects another object
+			newPlayList.setCurrentAudioObjectIndex(-1);
 			setPlayListAfterFiltering(newPlayList);
 		}
 	}
