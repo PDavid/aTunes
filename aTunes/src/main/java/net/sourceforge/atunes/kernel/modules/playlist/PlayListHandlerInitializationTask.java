@@ -31,34 +31,34 @@ import net.sourceforge.atunes.model.IStatePlayer;
  *
  */
 public class PlayListHandlerInitializationTask implements IHandlerBackgroundInitializationTask {
-	
+
 	private PlayListHandler playListHandler;
-	
+
 	private IStateHandler stateHandler;
-	
+
 	private IStatePlayer statePlayer;
-	
+
 	/**
 	 * @param statePlayer
 	 */
-	public void setStatePlayer(IStatePlayer statePlayer) {
+	public void setStatePlayer(final IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;
 	}
-	
+
 	/**
 	 * @param stateHandler
 	 */
-	public void setStateHandler(IStateHandler stateHandler) {
+	public void setStateHandler(final IStateHandler stateHandler) {
 		this.stateHandler = stateHandler;
 	}
 
 	/**
 	 * @param playListHandler
 	 */
-	public void setPlayListHandler(PlayListHandler playListHandler) {
+	public void setPlayListHandler(final PlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-	
+
 	@Override
 	public Runnable getInitializationTask() {
 		return new Runnable() {
@@ -72,15 +72,15 @@ public class PlayListHandlerInitializationTask implements IHandlerBackgroundInit
 			}
 		};
 	}
-	
+
 	@Override
 	public Runnable getInitializationCompletedTask() {
 		return new Runnable() {
 			@Override
 			public void run() {
 				playListHandler.initializationTaskCompleted();
-			}    		
+			}
 		};
 	}
-	
+
 }

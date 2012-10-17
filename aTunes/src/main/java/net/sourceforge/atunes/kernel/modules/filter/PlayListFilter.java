@@ -24,31 +24,36 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Filter for play list
+ * @author alex
+ *
+ */
 public final class PlayListFilter implements IFilter {
-	
+
 	private static final String PLAYLIST = "PLAYLIST";
-	
+
 	private PlayListHandler playListHandler;
 
 	/**
 	 * @param playListHandler
 	 */
-	public void setPlayListHandler(PlayListHandler playListHandler) {
+	public void setPlayListHandler(final PlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-	
-	@Override
-    public String getName() {
-        return PLAYLIST;
-    }
 
 	@Override
-    public String getDescription() {
-        return I18nUtils.getString(PLAYLIST);
-    }
+	public String getName() {
+		return PLAYLIST;
+	}
 
 	@Override
-    public void applyFilter(String filter) {
-        this.playListHandler.setFilter(filter);
-    }
+	public String getDescription() {
+		return I18nUtils.getString(PLAYLIST);
+	}
+
+	@Override
+	public void applyFilter(final String filter) {
+		this.playListHandler.setFilter(filter);
+	}
 }

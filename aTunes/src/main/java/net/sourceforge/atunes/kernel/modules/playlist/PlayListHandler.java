@@ -292,6 +292,9 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 *            the new play list
 	 */
 	void setPlayList(final IPlayList playList) {
+		// Set selection interval to none
+		playListController.clearSelection();
+
 		getBean(SavePlayListAction.class).setEnabled(!getVisiblePlayList().isEmpty());
 		getBean(SaveM3UPlayListAction.class).setEnabled(!getVisiblePlayList().isEmpty());
 		getBean(ShufflePlayListAction.class).setEnabled(!getVisiblePlayList().isEmpty());

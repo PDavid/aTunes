@@ -24,19 +24,18 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 final class FilterControllerKeyAdapter extends KeyAdapter {
-	
-	private FilterController controller;
-	
+
+	private final FilterController controller;
+
 	/**
 	 * @param controller
 	 */
-	public FilterControllerKeyAdapter(FilterController controller) {
+	public FilterControllerKeyAdapter(final FilterController controller) {
 		this.controller = controller;
 	}
-	
+
 	@Override
-	public void keyTyped(KeyEvent e) {
-		super.keyTyped(e);
+	public void keyPressed(final KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
 			controller.getComponentControlled().getFilterTextField().setText("");
 			// Next is a trick to remove focus from filter text field

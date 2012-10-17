@@ -23,9 +23,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayList;
-import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -47,26 +45,15 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	/** Index of the visible play list: can be different of active play list */
 	private int visiblePlayListIndex = 0;
 
-	private IStatePlayer statePlayer;
-
 	private PlayListHandler playListHandler;
 
-	private IPlayListController playListController;
-
-	private IColumnSet playListColumnSet;
+	private PlayListCreator playListCreator;
 
 	/**
-	 * @param playListColumnSet
+	 * @param playListCreator
 	 */
-	public void setPlayListColumnSet(final IColumnSet playListColumnSet) {
-		this.playListColumnSet = playListColumnSet;
-	}
-
-	/**
-	 * @param playListController
-	 */
-	public void setPlayListController(final IPlayListController playListController) {
-		this.playListController = playListController;
+	public void setPlayListCreator(final PlayListCreator playListCreator) {
+		this.playListCreator = playListCreator;
 	}
 
 	/**
@@ -74,13 +61,6 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	 */
 	public void setPlayListHandler(final PlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
-	}
-
-	/**
-	 * @param statePlayer
-	 */
-	public void setStatePlayer(final IStatePlayer statePlayer) {
-		this.statePlayer = statePlayer;
 	}
 
 	/**
@@ -236,7 +216,7 @@ public final class PlayListsContainer implements IPlayListsContainer {
 			}
 
 			// Create a new play list by filtering elements
-			PlayList newPlayList = new PlayList(playListColumnSet.filterAudioObjects(nonFilteredPlayList.getAudioObjectsList(), filterText), statePlayer);
+			IPlayList newPlayList = playListCreator.getNewPlayListWithFilter(nonFilteredPlayList, filterText);
 			setPlayListAfterFiltering(newPlayList);
 		}
 	}
@@ -250,17 +230,6 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	private void setPlayListAfterFiltering(final IPlayList playList) {
 		removePlayList(getVisiblePlayListIndex());
 		addPlayList(getVisiblePlayListIndex(), playList);
-
-		// Set selection interval to none
-		playListController.clearSelection();
-
 		playListHandler.setPlayList(playList);
-
-		// Update table model
-		playListController.setVisiblePlayList(playList);
-		playListController.refreshPlayList();
-
-		playListController.scrollPlayList(false);
 	}
-
 }

@@ -28,72 +28,77 @@ import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * Manages play list and navigator filters
+ * @author alex
+ *
+ */
 public final class FilterHandler extends AbstractHandler implements IFilterHandler {
 
-    /**
-     * Text used as filter
-     */
-    private Map<IFilter, String> currentFilterText;
-    
-    private FilterController playListFilterPanelController;
-    
-    private FilterController navigatorFilterPanelController;
-    
-    private IFilter navigationTreeFilter;
-    
-    private IFilter playListFilter;
-    
-    /**
-     * @param playListFilter
-     */
-    public void setPlayListFilter(IFilter playListFilter) {
+	/**
+	 * Text used as filter
+	 */
+	private final Map<IFilter, String> currentFilterText;
+
+	private FilterController playListFilterPanelController;
+
+	private FilterController navigatorFilterPanelController;
+
+	private IFilter navigationTreeFilter;
+
+	private IFilter playListFilter;
+
+	/**
+	 * @param playListFilter
+	 */
+	public void setPlayListFilter(final IFilter playListFilter) {
 		this.playListFilter = playListFilter;
 	}
-    
-    /**
-     * @param navigationTreeFilter
-     */
-    public void setNavigationTreeFilter(IFilter navigationTreeFilter) {
+
+	/**
+	 * @param navigationTreeFilter
+	 */
+	public void setNavigationTreeFilter(final IFilter navigationTreeFilter) {
 		this.navigationTreeFilter = navigationTreeFilter;
 	}
-    
-    /**
-     * @param navigatorFilterPanelController
-     */
-    public void setNavigatorFilterPanelController(FilterController navigatorFilterPanelController) {
+
+	/**
+	 * @param navigatorFilterPanelController
+	 */
+	public void setNavigatorFilterPanelController(final FilterController navigatorFilterPanelController) {
 		this.navigatorFilterPanelController = navigatorFilterPanelController;
 	}
-    
-    /**
-     * @param playListFilterPanelController
-     */
-    public void setPlayListFilterPanelController(FilterController playListFilterPanelController) {
+
+	/**
+	 * @param playListFilterPanelController
+	 */
+	public void setPlayListFilterPanelController(final FilterController playListFilterPanelController) {
 		this.playListFilterPanelController = playListFilterPanelController;
 	}
-    
-    /**
-     * Default constructor
-     */
-    public FilterHandler() {
-    	this.currentFilterText = new HashMap<IFilter, String>();
+
+	/**
+	 * Default constructor
+	 */
+	public FilterHandler() {
+		this.currentFilterText = new HashMap<IFilter, String>();
 	}
-    
-    @Override
-	public void applyFilter(IFilter filter, String filterText) {
-        this.currentFilterText.put(filter, filterText);
-        Logger.debug("Applying filter: ", filter.getName(), " with text: ", filterText);
-        filter.applyFilter(filterText);
-    }
 
-    @Override
-    public void allHandlersInitialized() {
-    	// Set filter for each filter panel
-    	playListFilterPanelController.setFilter(playListFilter);
-    	navigatorFilterPanelController.setFilter(navigationTreeFilter);
-    }
+	@Override
+	public void applyFilter(final IFilter filter, final String filterText) {
+		this.currentFilterText.put(filter, filterText);
+		Logger.debug("Applying filter: ", filter.getName(), " with text: ", filterText);
+		filter.applyFilter(filterText);
+	}
 
-    @Override
-	public String getFilterText(IFilter filter) {
-        return this.currentFilterText.get(filter);
-    }
+	@Override
+	public void allHandlersInitialized() {
+		// Set filter for each filter panel
+		playListFilterPanelController.setFilter(playListFilter);
+		navigatorFilterPanelController.setFilter(navigationTreeFilter);
+	}
+
+	@Override
+	public String getFilterText(final IFilter filter) {
+		return this.currentFilterText.get(filter);
+	}
 }

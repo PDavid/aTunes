@@ -25,6 +25,11 @@ import java.util.Comparator;
 import java.util.List;
 
 
+/**
+ * A list of audio objects
+ * @author alex
+ *
+ */
 public interface IPlayList extends Serializable, Cloneable {
 
 	/**
