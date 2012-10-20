@@ -77,7 +77,7 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	private IContextHandler contextHandler;
 
 	private ILookAndFeel lookAndFeel;
-	
+
 	private JProgressBar indeterminateProgressBar;
 
 	@Override
@@ -130,7 +130,7 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	}
 
 	@Override
-	public final Component getUIComponent(ILookAndFeel lookAndFeel) {
+	public final Component getUIComponent(final ILookAndFeel lookAndFeel) {
 		if (component == null) {
 			JPanel panel = new ContextPanelContainer(new GridBagLayout());
 			indeterminateProgressBar = new JProgressBar();
@@ -169,7 +169,7 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	 * @param c
 	 * @param content
 	 */
-	private void addContextPanelContent(ILookAndFeel lookAndFeel, JPanel panel, GridBagConstraints c, IContextPanelContent<?> content) {
+	private void addContextPanelContent(final ILookAndFeel lookAndFeel, final JPanel panel, final GridBagConstraints c, final IContextPanelContent<?> content) {
 		Component componentToAdd = content.getComponent();
 		if (componentToAdd instanceof JComponent) {
 			((JComponent) componentToAdd).setOpaque(false);
@@ -182,7 +182,7 @@ public abstract class AbstractContextPanel implements IContextPanel {
 		fadePanel.setLayout(new GridLayout(1, 1));
 		fadePanel.add(componentToAdd);
 		content.setParentPanel(fadePanel);
-		
+
 		panel.add(fadePanel, c);
 		c.gridy++;
 	}
@@ -192,7 +192,7 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	 * @param componentToAdd
 	 * @return
 	 */
-	private JScrollPane getContentWithScroll(ILookAndFeel lookAndFeel, Component componentToAdd) {
+	private JScrollPane getContentWithScroll(final ILookAndFeel lookAndFeel, final Component componentToAdd) {
 		JScrollPane scroll = null;
 		if (componentToAdd instanceof JTable) {
 			scroll = lookAndFeel.getTableScrollPane((JTable)componentToAdd);
@@ -250,12 +250,12 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	public final Action getAction() {
 		return new AbstractAction() {
 
-			 private static final long serialVersionUID = -9078018024869169623L;
+			private static final long serialVersionUID = -9078018024869169623L;
 
-			 @Override
-			 public void actionPerformed(ActionEvent e) {
-				 contextHandler.setContextTab(getContextPanelName());
-			 }
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				contextHandler.setContextTab(getContextPanelName());
+			}
 		};
 	}
 
@@ -268,7 +268,7 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -299,21 +299,21 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	}
 
 	@Override
-	public final void setContents(List<IContextPanelContent<?>> contents) {
+	public final void setContents(final List<IContextPanelContent<?>> contents) {
 		this.contents = contents;
 	}
 
 	/**
 	 * @param contextHandler
 	 */
-	public void setContextHandler(IContextHandler contextHandler) {
+	public void setContextHandler(final IContextHandler contextHandler) {
 		this.contextHandler = contextHandler;
 	}
 
 	/**
 	 * @param lookAndFeel
 	 */
-	public void setLookAndFeel(ILookAndFeel lookAndFeel) {
+	public void setLookAndFeel(final ILookAndFeel lookAndFeel) {
 		this.lookAndFeel = lookAndFeel;
 	}
 
