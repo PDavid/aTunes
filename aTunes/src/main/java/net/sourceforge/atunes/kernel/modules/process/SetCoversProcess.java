@@ -70,12 +70,15 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
 
 	@Override
 	protected void changeTag(final ILocalAudioObject file) throws IOException {
-		BufferedImage bufferedCover = ImageUtils.toBufferedImage(this.filesAndCovers.get(file).getImage());
-		ITag newTag = getTagHandler().getNewTag(file, new HashMap<String, Object>());
-		newTag.setInternalImage(true);
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		ImageIO.write(bufferedCover, "PNG", byteArrayOutputStream);
-		getTagHandler().setTag(file, newTag, true, byteArrayOutputStream.toByteArray());
+		ImageIcon imageOfFile = this.filesAndCovers.get(file);
+		if (imageOfFile != null) {
+			BufferedImage bufferedCover = ImageUtils.toBufferedImage(imageOfFile.getImage());
+			ITag newTag = getTagHandler().getNewTag(file, new HashMap<String, Object>());
+			newTag.setInternalImage(true);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			ImageIO.write(bufferedCover, "PNG", byteArrayOutputStream);
+			getTagHandler().setTag(file, newTag, true, byteArrayOutputStream.toByteArray());
+		}
 	}
 
 	/**
