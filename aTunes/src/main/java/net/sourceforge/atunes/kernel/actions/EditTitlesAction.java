@@ -22,11 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-
 import net.sourceforge.atunes.model.IAlbum;
-import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -36,20 +32,11 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  *
  */
-public class EditTitlesAction extends CustomAbstractAction {
+public class EditTitlesAction extends AbstractActionOverSelectedTreeObjects<IAlbum> {
 
 	private static final long serialVersionUID = -2883223880879440970L;
 
-	private INavigationHandler navigationHandler;
-
 	private ITagHandler tagHandler;
-
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
 
 	/**
 	 * @param tagHandler
@@ -67,10 +54,8 @@ public class EditTitlesAction extends CustomAbstractAction {
 	}
 
 	@Override
-	protected void executeAction() {
-		TreePath path = navigationHandler.getCurrentView().getTree().getSelectionPath();
-		IAlbum a = (IAlbum) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-		tagHandler.editFiles(a);
+	protected void executeAction(final List<IAlbum> albums) {
+		tagHandler.editFiles(albums.get(0));
 	}
 
 	@Override
@@ -85,6 +70,6 @@ public class EditTitlesAction extends CustomAbstractAction {
 			}
 		}
 
-		return true;
+		return selection.size() == 1;
 	}
 }

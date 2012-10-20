@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.actions.RemoveFromFavoritesAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
+import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFolder;
@@ -97,7 +98,9 @@ public class FavoritesNavigationViewTreePopupMenu extends JPopupMenu {
 
 		add(new JSeparator());
 		add(new EditTagMenu(false, favoritesNavigationView));
-		add(beanFactory.getBean(EditTitlesAction.class));
+		AbstractActionOverSelectedTreeObjects<IAlbum> editTitles = beanFactory.getBean("editTitlesFromFavoritesViewAction", EditTitlesAction.class);
+		editTitles.setTreeObjectsSource(favoritesNavigationView);
+		add(editTitles);
 		add(new JSeparator());
 		add(beanFactory.getBean(RemoveFromDiskAction.class));
 		add(new JSeparator());
