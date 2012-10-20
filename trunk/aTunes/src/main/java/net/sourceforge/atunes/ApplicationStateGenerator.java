@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sourceforge.atunes.model.IApplicationStateGenerator;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Generates state of application
@@ -33,20 +34,22 @@ import net.sourceforge.atunes.model.IApplicationStateGenerator;
 public class ApplicationStateGenerator implements IApplicationStateGenerator {
 
 	private ApplicationPropertiesLogger applicationPropertiesLogger;
-	
+
 	/**
 	 * @param applicationPropertiesLogger
 	 */
-	public void setApplicationPropertiesLogger(ApplicationPropertiesLogger applicationPropertiesLogger) {
+	public void setApplicationPropertiesLogger(final ApplicationPropertiesLogger applicationPropertiesLogger) {
 		this.applicationPropertiesLogger = applicationPropertiesLogger;
 	}
-	
+
 	/**
 	 * @return state
 	 */
+	@Override
 	public Map<String, String> generateState() {
 		Map<String, String> state = new HashMap<String, String>();
 		state.putAll(applicationPropertiesLogger.getApplicationProperties());
+		state.put("Locale", I18nUtils.getSelectedLocale().toString());
 		return state;
 	}
 }
