@@ -306,7 +306,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 		// Call listeners to notify playback was interrupted
 		callPlaybackStateListeners(PlaybackState.PLAY_INTERRUPTED);
 
-		switchPlaybackTo(playListHandler.getPreviousAudioObject(), false, false);
+		switchPlaybackTo(playListHandler.getPreviousAudioObject(), true, false);
 	}
 
 	/**
