@@ -33,13 +33,15 @@ import javax.swing.tree.DefaultTreeModel;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
+import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedTreeObjects;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.CopyToRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.EditTitlesAction;
 import net.sourceforge.atunes.kernel.actions.ExtractPictureAction;
 import net.sourceforge.atunes.kernel.actions.FillDeviceWithRandomSongsAction;
-import net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorTableAction;
+import net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorTreeAction;
 import net.sourceforge.atunes.kernel.actions.PlayNowAction;
 import net.sourceforge.atunes.kernel.actions.RemoveFromDiskAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAction;
@@ -50,6 +52,7 @@ import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IDeviceHandler;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
@@ -138,9 +141,9 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 
 			deviceTreeMenu.add(new JSeparator());
 
-			OpenFolderFromNavigatorAction openFolderFromNavigatorAction = beanFactory.getBean("openFolderFromDeviceNavigationView", OpenFolderFromNavigatorAction.class);
-			openFolderFromNavigatorAction.setAudioObjectsSource(this);
-			deviceTreeMenu.add(openFolderFromNavigatorAction);
+			AbstractActionOverSelectedTreeObjects<IFolder> openFolder = beanFactory.getBean("openFolderFromDeviceNavigationTree", OpenFolderFromNavigatorTreeAction.class);
+			openFolder.setTreeObjectsSource(this);
+			deviceTreeMenu.add(openFolder);
 
 			deviceTreeMenu.add(new JSeparator());
 			deviceTreeMenu.add(new EditTagMenu(false, this));
@@ -179,7 +182,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 			deviceTableMenu.add(beanFactory.getBean(PlayNowAction.class));
 			deviceTableMenu.add(new JSeparator());
 
-			OpenFolderFromNavigatorAction openFolderFromNavigatorAction = beanFactory.getBean("openFolderFromDeviceNavigationView", OpenFolderFromNavigatorAction.class);
+			OpenFolderFromNavigatorTableAction openFolderFromNavigatorAction = beanFactory.getBean("openFolderFromDeviceNavigationTable", OpenFolderFromNavigatorTableAction.class);
 			openFolderFromNavigatorAction.setAudioObjectsSource(this);
 			deviceTableMenu.add(openFolderFromNavigatorAction);
 

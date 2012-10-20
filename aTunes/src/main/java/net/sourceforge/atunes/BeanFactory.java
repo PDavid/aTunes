@@ -22,32 +22,70 @@ package net.sourceforge.atunes;
 
 import java.util.Collection;
 
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IKernel;
 
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * Access beans of application context
+ * @author alex
+ *
+ */
 public class BeanFactory implements IBeanFactory, ApplicationContextAware {
-	
+
 	private ApplicationContext context;
-	
-	@Override
-	public void setApplicationContext(ApplicationContext context) {
-		this.context = context;
-	}
-	
-	@Override
-	public <T> T getBean(Class<T> beanType) {
-		return context.getBean(beanType);
-	}
-	
-	@Override
-	public <T> T getBean(String name, Class<T> clazz) {
-		return context.getBean(name, clazz);
+
+	private IApplicationArguments applicationArguments;
+
+	/**
+	 * @param applicationArguments
+	 */
+	public void setApplicationArguments(final IApplicationArguments applicationArguments) {
+		this.applicationArguments = applicationArguments;
 	}
 
 	@Override
-	public <T> Collection<T> getBeans(Class<T> beanType) {
-		return context.getBeansOfType(beanType).values();
+	public void setApplicationContext(final ApplicationContext context) {
+		this.context = context;
+	}
+
+	@Override
+	public <T> T getBean(final Class<T> beanType) {
+		try {
+			return context.getBean(beanType);
+		} catch (BeansException e) {
+			if (applicationArguments.isDebug()) {
+				context.getBean(IKernel.class).terminateWithError(e);
+			}
+			throw e;
+		}
+	}
+
+	@Override
+	public <T> T getBean(final String name, final Class<T> clazz) {
+		try {
+			return context.getBean(name, clazz);
+		} catch (BeansException e) {
+			if (applicationArguments.isDebug()) {
+				context.getBean(IKernel.class).terminateWithError(e);
+			}
+			throw e;
+		}
+	}
+
+	@Override
+	public <T> Collection<T> getBeans(final Class<T> beanType) {
+		try {
+			return context.getBeansOfType(beanType).values();
+		} catch (BeansException e) {
+			if (applicationArguments.isDebug()) {
+				context.getBean(IKernel.class).terminateWithError(e);
+			}
+			throw e;
+		}
 	}
 }

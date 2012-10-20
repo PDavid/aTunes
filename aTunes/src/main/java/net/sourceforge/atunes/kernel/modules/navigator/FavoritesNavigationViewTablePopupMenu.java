@@ -30,7 +30,7 @@ import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjec
 import net.sourceforge.atunes.kernel.actions.CopyToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.ExportNavigatorSelectionAction;
 import net.sourceforge.atunes.kernel.actions.ExtractPictureAction;
-import net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorTableAction;
 import net.sourceforge.atunes.kernel.actions.PlayNowAction;
 import net.sourceforge.atunes.kernel.actions.RemoveFromDiskAction;
 import net.sourceforge.atunes.kernel.actions.RemoveFromFavoritesAction;
@@ -47,77 +47,77 @@ import net.sourceforge.atunes.model.INavigationView;
  *
  */
 public class FavoritesNavigationViewTablePopupMenu extends JPopupMenu {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4861386762867007261L;
-	
+
 	private IBeanFactory beanFactory;
-	
+
 	private INavigationView favoritesNavigationView;
 
 	/**
 	 * Initializes menu
 	 */
 	public void initialize() {
-        AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = beanFactory.getBean("addToPlayListFromFavoritesNavigationView", AddToPlayListAction.class);
-        addToPlayListAction.setAudioObjectsSource(favoritesNavigationView);
-        add(addToPlayListAction);
-        
-        AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = beanFactory.getBean("addToPlayListAfterCurrentAudioObjectFromFavoritesNavigationView", AddToPlayListAfterCurrentAudioObjectAction.class);
-        addToPlayListAfterCurrentAudioObjectAction.setAudioObjectsSource(favoritesNavigationView);
-        add(addToPlayListAfterCurrentAudioObjectAction);
-        
-        SetAsPlayListAction setAsPlayListAction = beanFactory.getBean("setAsPlaylistFromFavoritesNavigationView", SetAsPlayListAction.class);
-        setAsPlayListAction.setAudioObjectsSource(favoritesNavigationView);
-        add(setAsPlayListAction);
-        
-        add(beanFactory.getBean(PlayNowAction.class));
-        add(new JSeparator());
-        add(beanFactory.getBean(ShowNavigatorTableItemInfoAction.class));
-        add(new JSeparator());
-        
-        OpenFolderFromNavigatorAction openFolderFromNavigatorAction = beanFactory.getBean("openFolderFromFavoritesNavigationView", OpenFolderFromNavigatorAction.class);
-        openFolderFromNavigatorAction.setAudioObjectsSource(favoritesNavigationView);
-        add(openFolderFromNavigatorAction);
-        
-        add(new JSeparator());
-        add(new EditTagMenu(false, favoritesNavigationView));
-        
-        ExtractPictureAction extractPictureAction = beanFactory.getBean("extractPictureFromFavoritesNavigationView", ExtractPictureAction.class);
-        extractPictureAction.setAudioObjectsSource(favoritesNavigationView);
-        add(extractPictureAction);
-        
-        add(new JSeparator());
-        add(beanFactory.getBean(RemoveFromDiskAction.class));
-        add(beanFactory.getBean(RenameAudioFileInNavigationTableAction.class));
-        add(new JSeparator());
+		AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = beanFactory.getBean("addToPlayListFromFavoritesNavigationView", AddToPlayListAction.class);
+		addToPlayListAction.setAudioObjectsSource(favoritesNavigationView);
+		add(addToPlayListAction);
 
-        AbstractActionOverSelectedObjects<IAudioObject> exportAction = beanFactory.getBean("exportNavigatorSelectionFromFavoritesViewAction", ExportNavigatorSelectionAction.class);
-        exportAction.setAudioObjectsSource(favoritesNavigationView);
-        add(exportAction);
+		AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = beanFactory.getBean("addToPlayListAfterCurrentAudioObjectFromFavoritesNavigationView", AddToPlayListAfterCurrentAudioObjectAction.class);
+		addToPlayListAfterCurrentAudioObjectAction.setAudioObjectsSource(favoritesNavigationView);
+		add(addToPlayListAfterCurrentAudioObjectAction);
 
-        AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceAction = beanFactory.getBean("copyToDeviceFromFavoritesNavigationView", CopyToDeviceAction.class);
-        copyToDeviceAction.setAudioObjectsSource(favoritesNavigationView);
-        add(copyToDeviceAction);
-        
-        add(new JSeparator());
-        add(beanFactory.getBean(RemoveFromFavoritesAction.class));
+		SetAsPlayListAction setAsPlayListAction = beanFactory.getBean("setAsPlaylistFromFavoritesNavigationView", SetAsPlayListAction.class);
+		setAsPlayListAction.setAudioObjectsSource(favoritesNavigationView);
+		add(setAsPlayListAction);
+
+		add(beanFactory.getBean(PlayNowAction.class));
+		add(new JSeparator());
+		add(beanFactory.getBean(ShowNavigatorTableItemInfoAction.class));
+		add(new JSeparator());
+
+		OpenFolderFromNavigatorTableAction openFolderFromNavigatorAction = beanFactory.getBean("openFolderFromFavoritesNavigationTable", OpenFolderFromNavigatorTableAction.class);
+		openFolderFromNavigatorAction.setAudioObjectsSource(favoritesNavigationView);
+		add(openFolderFromNavigatorAction);
+
+		add(new JSeparator());
+		add(new EditTagMenu(false, favoritesNavigationView));
+
+		ExtractPictureAction extractPictureAction = beanFactory.getBean("extractPictureFromFavoritesNavigationView", ExtractPictureAction.class);
+		extractPictureAction.setAudioObjectsSource(favoritesNavigationView);
+		add(extractPictureAction);
+
+		add(new JSeparator());
+		add(beanFactory.getBean(RemoveFromDiskAction.class));
+		add(beanFactory.getBean(RenameAudioFileInNavigationTableAction.class));
+		add(new JSeparator());
+
+		AbstractActionOverSelectedObjects<IAudioObject> exportAction = beanFactory.getBean("exportNavigatorSelectionFromFavoritesViewAction", ExportNavigatorSelectionAction.class);
+		exportAction.setAudioObjectsSource(favoritesNavigationView);
+		add(exportAction);
+
+		AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceAction = beanFactory.getBean("copyToDeviceFromFavoritesNavigationView", CopyToDeviceAction.class);
+		copyToDeviceAction.setAudioObjectsSource(favoritesNavigationView);
+		add(copyToDeviceAction);
+
+		add(new JSeparator());
+		add(beanFactory.getBean(RemoveFromFavoritesAction.class));
 	}
-	
+
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
-	
+
 	/**
 	 * @param favoritesNavigationView
 	 */
 	public void setFavoritesNavigationView(
-			INavigationView favoritesNavigationView) {
+			final INavigationView favoritesNavigationView) {
 		this.favoritesNavigationView = favoritesNavigationView;
 	}
 
