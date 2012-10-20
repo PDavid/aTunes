@@ -34,6 +34,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
+import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedTreeObjects;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
@@ -154,7 +155,9 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 			podcastFeedTreeMenu.add(new JSeparator());
 			podcastFeedTreeMenu.add(beanFactory.getBean(AddPodcastFeedAction.class));
 			podcastFeedTreeMenu.add(beanFactory.getBean(RenamePodcastFeedAction.class));
-			podcastFeedTreeMenu.add(beanFactory.getBean(MarkPodcastListenedAction.class));
+			AbstractActionOverSelectedTreeObjects<IPodcastFeed> markListened = beanFactory.getBean(MarkPodcastListenedAction.class);
+			markListened.setTreeObjectsSource(this);
+			podcastFeedTreeMenu.add(markListened);
 			podcastFeedTreeMenu.add(beanFactory.getBean(RemovePodcastFeedAction.class));
 		}
 		return podcastFeedTreeMenu;

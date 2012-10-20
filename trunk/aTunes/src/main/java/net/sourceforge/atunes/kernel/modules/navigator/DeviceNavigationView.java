@@ -47,6 +47,7 @@ import net.sourceforge.atunes.kernel.actions.RemoveFromDiskAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
+import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
@@ -147,7 +148,10 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 
 			deviceTreeMenu.add(new JSeparator());
 			deviceTreeMenu.add(new EditTagMenu(false, this));
-			deviceTreeMenu.add(beanFactory.getBean(EditTitlesAction.class));
+
+			AbstractActionOverSelectedTreeObjects<IAlbum> editTitles = beanFactory.getBean("editTitlesFromDeviceViewAction", EditTitlesAction.class);
+			editTitles.setTreeObjectsSource(this);
+			deviceTreeMenu.add(editTitles);
 			deviceTreeMenu.add(new JSeparator());
 			deviceTreeMenu.add(beanFactory.getBean(RemoveFromDiskAction.class));
 			deviceTreeMenu.add(new JSeparator());

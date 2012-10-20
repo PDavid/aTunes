@@ -20,13 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import javax.swing.Action;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedTreeObjects;
+import net.sourceforge.atunes.kernel.actions.EditTitlesAction;
 import net.sourceforge.atunes.kernel.actions.RemoveFromDiskAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
@@ -66,8 +66,6 @@ public class RepositoryNavigationViewTreePopupMenu extends JPopupMenu {
 
 	private AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceFromRepositoryNavigationView;
 
-	private Action editTitlesAction;
-
 	private IBeanFactory beanFactory;
 
 	private INavigationView repositoryNavigationView;
@@ -103,7 +101,7 @@ public class RepositoryNavigationViewTreePopupMenu extends JPopupMenu {
 		addTreeObjectsSourceAndAdd(refreshFolderFromNavigatorAction);
 		add(new JSeparator());
 		add(new EditTagMenu(false, repositoryNavigationView));
-		add(editTitlesAction);
+		addTreeObjectsSourceAndAdd(beanFactory.getBean("editTitlesFromRepositoryViewAction", EditTitlesAction.class));
 		add(new JSeparator());
 		add(beanFactory.getBean(RemoveFromDiskAction.class));
 		add(new JSeparator());
@@ -171,13 +169,6 @@ public class RepositoryNavigationViewTreePopupMenu extends JPopupMenu {
 	public void setRefreshFolderFromNavigatorAction(
 			final AbstractActionOverSelectedTreeObjects<IFolder> refreshFolderFromNavigatorAction) {
 		this.refreshFolderFromNavigatorAction = refreshFolderFromNavigatorAction;
-	}
-
-	/**
-	 * @param editTitlesAction the editTitlesAction to set
-	 */
-	public void setEditTitlesAction(final Action editTitlesAction) {
-		this.editTitlesAction = editTitlesAction;
 	}
 
 	/**

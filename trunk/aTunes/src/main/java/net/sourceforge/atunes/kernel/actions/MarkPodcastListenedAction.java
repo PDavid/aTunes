@@ -22,9 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPodcastFeed;
@@ -37,7 +34,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  *
  */
-public class MarkPodcastListenedAction extends CustomAbstractAction {
+public class MarkPodcastListenedAction extends AbstractActionOverSelectedTreeObjects<IPodcastFeed> {
 
 	private static final long serialVersionUID = 2594418895817769179L;
 
@@ -68,16 +65,18 @@ public class MarkPodcastListenedAction extends CustomAbstractAction {
 	}
 
 	@Override
-	protected void executeAction() {
-		TreePath path = podcastNavigationView.getTree().getSelectionPath();
-		IPodcastFeed podcastFeedToMarkAsListened = (IPodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-		podcastFeedToMarkAsListened.markEntriesAsListened();
+	protected void executeAction(final List<IPodcastFeed> objects) {
+		objects.get(0).markEntriesAsListened();
 		navigationHandler.refreshView(podcastNavigationView);
 	}
 
 	@Override
 	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
 		if (rootSelected) {
+			return false;
+		}
+
+		if (selection.size() != 1) {
 			return false;
 		}
 
