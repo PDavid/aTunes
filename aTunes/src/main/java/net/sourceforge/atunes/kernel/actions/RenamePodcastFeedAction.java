@@ -29,6 +29,7 @@ import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPodcastFeed;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -37,50 +38,50 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class RenamePodcastFeedAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 8334487960720117561L;
-    
-    private INavigationView podcastNavigationView;
+	private static final long serialVersionUID = 8334487960720117561L;
 
-    private IDialogFactory dialogFactory;
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
+	private INavigationView podcastNavigationView;
+
+	private IDialogFactory dialogFactory;
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
 
-    /**
-     * @param podcastNavigationView
-     */
-    public void setPodcastNavigationView(INavigationView podcastNavigationView) {
+	/**
+	 * @param podcastNavigationView
+	 */
+	public void setPodcastNavigationView(final INavigationView podcastNavigationView) {
 		this.podcastNavigationView = podcastNavigationView;
 	}
-    
-    /**
-     * Default constructor
-     */
-    public RenamePodcastFeedAction() {
-        super(I18nUtils.getString("RENAME_PODCAST_FEED"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_PODCAST_FEED"));
-    }
 
-    @Override
-    protected void executeAction() {
-        TreePath path = podcastNavigationView.getTree().getSelectionPath();
-        IPodcastFeed podcastFeed = (IPodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        IInputDialog dialog = dialogFactory.newDialog(IInputDialog.class);
-        dialog.setTitle(I18nUtils.getString("RENAME_PODCAST_FEED"));
-        dialog.setText(podcastFeed.getName());
-        dialog.showDialog();
-        String result = dialog.getResult();
-        if (result != null) {
-            podcastFeed.setName(result);
-        }
-    }
+	/**
+	 * Default constructor
+	 */
+	public RenamePodcastFeedAction() {
+		super(I18nUtils.getString("RENAME_PODCAST_FEED"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_PODCAST_FEED"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return !rootSelected && !selection.isEmpty();
-    }
+	@Override
+	protected void executeAction() {
+		TreePath path = podcastNavigationView.getTree().getSelectionPath();
+		IPodcastFeed podcastFeed = (IPodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+		IInputDialog dialog = dialogFactory.newDialog(IInputDialog.class);
+		dialog.setTitle(I18nUtils.getString("RENAME_PODCAST_FEED"));
+		dialog.setText(podcastFeed.getName());
+		dialog.showDialog();
+		String result = dialog.getResult();
+		if (result != null) {
+			podcastFeed.setName(result);
+		}
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		return !rootSelected && !selection.isEmpty();
+	}
 }

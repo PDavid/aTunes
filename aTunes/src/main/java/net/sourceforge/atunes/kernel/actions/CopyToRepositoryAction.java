@@ -22,12 +22,11 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.IProcessFactory;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -37,39 +36,39 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    private static final long serialVersionUID = 2416674807979541242L;
+	private static final long serialVersionUID = 2416674807979541242L;
 
-    private IProcessFactory processFactory;
-        
-    /**
-     * @param processFactory
-     */
-    public void setProcessFactory(IProcessFactory processFactory) {
+	private IProcessFactory processFactory;
+
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(final IProcessFactory processFactory) {
 		this.processFactory = processFactory;
 	}
-    
-    /**
-     * Default constructor
-     */
-    public CopyToRepositoryAction() {
-        super(I18nUtils.getString("COPY_TO_REPOSITORY"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_TO_REPOSITORY"));
-    }
 
-    @Override
-    protected void executeAction(List<ILocalAudioObject> objects) {
-        ILocalAudioObjectTransferProcess importer = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("transferToRepositoryProcess");
-        importer.setFilesToTransfer(objects);
-        importer.execute();
-    }
+	/**
+	 * Default constructor
+	 */
+	public CopyToRepositoryAction() {
+		super(I18nUtils.getString("COPY_TO_REPOSITORY"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_TO_REPOSITORY"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return !rootSelected && !selection.isEmpty();
-    }
+	@Override
+	protected void executeAction(final List<ILocalAudioObject> objects) {
+		ILocalAudioObjectTransferProcess importer = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("transferToRepositoryProcess");
+		importer.setFilesToTransfer(objects);
+		importer.execute();
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return !selection.isEmpty();
-    }    
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		return !rootSelected && !selection.isEmpty();
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
+		return !selection.isEmpty();
+	}
 }

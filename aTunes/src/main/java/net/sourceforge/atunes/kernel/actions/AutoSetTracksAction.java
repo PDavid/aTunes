@@ -25,13 +25,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.process.SetTrackNumberProcess;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -43,90 +42,93 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class AutoSetTracksAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    private static final long serialVersionUID = 1378739676496602001L;
+	private static final long serialVersionUID = 1378739676496602001L;
 
-    private static final Pattern NUMBER_SEPARATOR_PATTERN = Pattern.compile("[^0-9]+");
-    
-    private IProcessFactory processFactory;
-    
-    /**
-     * @param processFactory
-     */
-    public void setProcessFactory(IProcessFactory processFactory) {
+	private static final Pattern NUMBER_SEPARATOR_PATTERN = Pattern.compile("[^0-9]+");
+
+	private IProcessFactory processFactory;
+
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(final IProcessFactory processFactory) {
 		this.processFactory = processFactory;
 	}
-    
-    public AutoSetTracksAction() {
-        super(I18nUtils.getString("AUTO_SET_TRACK_NUMBER"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TRACK_NUMBER"));
-    }
 
-    @Override
-    protected void executeAction(List<ILocalAudioObject> objects) {
-        /*
-         * Given an array of files, returns a map containing each file and its
-         * track number based on information found on file name.
-         */
-        Map<ILocalAudioObject, Integer> filesToSet = new HashMap<ILocalAudioObject, Integer>();
-        for (ILocalAudioObject ao : objects) {
-            int trackNumber = getTrackNumber(ao);
+	/**
+	 * Default constructor
+	 */
+	public AutoSetTracksAction() {
+		super(I18nUtils.getString("AUTO_SET_TRACK_NUMBER"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TRACK_NUMBER"));
+	}
 
-            if (trackNumber != 0) {
-                filesToSet.put(ao, trackNumber);
-            }
-        }
-        if (!filesToSet.isEmpty()) {
-            // Call process
-            SetTrackNumberProcess process = (SetTrackNumberProcess) processFactory.getProcessByName("setTrackNumberProcess");
-            process.setFilesAndTracks(filesToSet);
-            process.execute();
-        }
-    }
+	@Override
+	protected void executeAction(final List<ILocalAudioObject> objects) {
+		/*
+		 * Given an array of files, returns a map containing each file and its
+		 * track number based on information found on file name.
+		 */
+		Map<ILocalAudioObject, Integer> filesToSet = new HashMap<ILocalAudioObject, Integer>();
+		for (ILocalAudioObject ao : objects) {
+			int trackNumber = getTrackNumber(ao);
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return !rootSelected && !selection.isEmpty();
-    }
+			if (trackNumber != 0) {
+				filesToSet.put(ao, trackNumber);
+			}
+		}
+		if (!filesToSet.isEmpty()) {
+			// Call process
+			SetTrackNumberProcess process = (SetTrackNumberProcess) processFactory.getProcessByName("setTrackNumberProcess");
+			process.setFilesAndTracks(filesToSet);
+			process.execute();
+		}
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return !selection.isEmpty();
-    }
-    
-    /**
-     * Returns track number for a given audio file
-     * 
-     * @param audioFile
-     * @return
-     */
-    private int getTrackNumber(ILocalAudioObject audioFile) {
-        // Try to get a number from file name
-        String fileName = audioFile.getNameWithoutExtension();
-        String[] aux = NUMBER_SEPARATOR_PATTERN.split(fileName);
-        int trackNumber = 0;
-        int i = 0;
-        while (trackNumber == 0 && i < aux.length) {
-            String token = aux[i];
-            try {
-                trackNumber = Integer.parseInt(token);
-                // If trackNumber >= 1000 maybe it's not a track number (year?) 
-                if (trackNumber >= 1000) {
-                    trackNumber = 0;
-                }
-            } catch (NumberFormatException e) {
-                // Ok, it's not a valid number, skip it
-            }
-            i++;
-        }
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		return !rootSelected && !selection.isEmpty();
+	}
 
-        // If trackNumber could not be retrieved from file name, try to get from last.fm
-        // To get this, titles must match
-        if (trackNumber == 0) {
-            trackNumber = Context.getBean(IWebServicesHandler.class).getTrackNumber(audioFile);
-        }
+	@Override
+	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
+		return !selection.isEmpty();
+	}
 
-        return trackNumber;
-    }
+	/**
+	 * Returns track number for a given audio file
+	 * 
+	 * @param audioFile
+	 * @return
+	 */
+	private int getTrackNumber(final ILocalAudioObject audioFile) {
+		// Try to get a number from file name
+		String fileName = audioFile.getNameWithoutExtension();
+		String[] aux = NUMBER_SEPARATOR_PATTERN.split(fileName);
+		int trackNumber = 0;
+		int i = 0;
+		while (trackNumber == 0 && i < aux.length) {
+			String token = aux[i];
+			try {
+				trackNumber = Integer.parseInt(token);
+				// If trackNumber >= 1000 maybe it's not a track number (year?)
+				if (trackNumber >= 1000) {
+					trackNumber = 0;
+				}
+			} catch (NumberFormatException e) {
+				// Ok, it's not a valid number, skip it
+			}
+			i++;
+		}
+
+		// If trackNumber could not be retrieved from file name, try to get from last.fm
+		// To get this, titles must match
+		if (trackNumber == 0) {
+			trackNumber = Context.getBean(IWebServicesHandler.class).getTrackNumber(audioFile);
+		}
+
+		return trackNumber;
+	}
 
 
 

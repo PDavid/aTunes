@@ -22,50 +22,57 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Edits radio properties
+ * @author alex
+ *
+ */
 public class EditRadioAction extends AbstractActionOverSelectedObjects<IRadio> {
 
-    private static final long serialVersionUID = -922076985505834816L;
+	private static final long serialVersionUID = -922076985505834816L;
 
-    private IRadioHandler radioHandler;
-    
-    /**
-     * @param radioHandler
-     */
-    public void setRadioHandler(IRadioHandler radioHandler) {
+	private IRadioHandler radioHandler;
+
+	/**
+	 * @param radioHandler
+	 */
+	public void setRadioHandler(final IRadioHandler radioHandler) {
 		this.radioHandler = radioHandler;
 	}
-    
-    public EditRadioAction() {
-        super(I18nUtils.getString("EDIT_RADIO"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_RADIO"));
-    }
 
-    @Override
-    protected void executeAction(List<IRadio> objects) {
-        IRadio radio = objects.get(0); // Guaranteed only one radio
-        IRadio radioEdited = radioHandler.editRadio(radio);
-        if (radioEdited != null) {
-        	radioHandler.replace(radio, radioEdited);
-        }
-    }
+	/**
+	 * Default constructor
+	 */
+	public EditRadioAction() {
+		super(I18nUtils.getString("EDIT_RADIO"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_RADIO"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        if (rootSelected || selection.size() != 1 || !(selection.get(0).getUserObject() instanceof IRadio)) {
-            return false;
-        }
-        return true;
-    }
-    
-    @Override
-    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return selection.size() == 1;
-    }
+	@Override
+	protected void executeAction(final List<IRadio> objects) {
+		IRadio radio = objects.get(0); // Guaranteed only one radio
+		IRadio radioEdited = radioHandler.editRadio(radio);
+		if (radioEdited != null) {
+			radioHandler.replace(radio, radioEdited);
+		}
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		if (rootSelected || selection.size() != 1 || !(selection.get(0) instanceof IRadio)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
+		return selection.size() == 1;
+	}
 }

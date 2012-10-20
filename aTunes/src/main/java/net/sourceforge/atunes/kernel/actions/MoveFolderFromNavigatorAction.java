@@ -25,8 +25,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryActionsHelper;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
@@ -38,6 +36,7 @@ import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateNavigation;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -190,7 +189,7 @@ public class MoveFolderFromNavigatorAction extends AbstractActionOverSelectedTre
 	}
 
 	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<DefaultMutableTreeNode> selection) {
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
 		if (selection.size() != 1) {
 			return false;
 		}
@@ -199,8 +198,8 @@ public class MoveFolderFromNavigatorAction extends AbstractActionOverSelectedTre
 			return false;
 		}
 
-		for (DefaultMutableTreeNode node : selection) {
-			if (!(node.getUserObject() instanceof IFolder)) {
+		for (ITreeObject<?> node : selection) {
+			if (!(node instanceof IFolder)) {
 				return false;
 			}
 		}

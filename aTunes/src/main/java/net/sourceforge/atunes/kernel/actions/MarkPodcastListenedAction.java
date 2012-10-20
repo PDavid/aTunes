@@ -29,59 +29,68 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Marks a podcast as listened
+ * @author alex
+ *
+ */
 public class MarkPodcastListenedAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 2594418895817769179L;
+	private static final long serialVersionUID = 2594418895817769179L;
 
-    private INavigationHandler navigationHandler;
-    
-    private INavigationView podcastNavigationView;
-    
-    /**
-     * @param podcastNavigationView
-     */
-    public void setPodcastNavigationView(INavigationView podcastNavigationView) {
+	private INavigationHandler navigationHandler;
+
+	private INavigationView podcastNavigationView;
+
+	/**
+	 * @param podcastNavigationView
+	 */
+	public void setPodcastNavigationView(final INavigationView podcastNavigationView) {
 		this.podcastNavigationView = podcastNavigationView;
 	}
-    
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-    
-    public MarkPodcastListenedAction() {
-        super(I18nUtils.getString("MARK_PODCAST_AS_LISTENED"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("MARK_PODCAST_AS_LISTENED"));
-    }
 
-    @Override
-    protected void executeAction() {
-        TreePath path = podcastNavigationView.getTree().getSelectionPath();
-        IPodcastFeed podcastFeedToMarkAsListened = (IPodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        podcastFeedToMarkAsListened.markEntriesAsListened();
-        navigationHandler.refreshView(podcastNavigationView);
-    }
+	/**
+	 * Default constructor
+	 */
+	public MarkPodcastListenedAction() {
+		super(I18nUtils.getString("MARK_PODCAST_AS_LISTENED"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("MARK_PODCAST_AS_LISTENED"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        if (rootSelected) {
-            return false;
-        }
+	@Override
+	protected void executeAction() {
+		TreePath path = podcastNavigationView.getTree().getSelectionPath();
+		IPodcastFeed podcastFeedToMarkAsListened = (IPodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+		podcastFeedToMarkAsListened.markEntriesAsListened();
+		navigationHandler.refreshView(podcastNavigationView);
+	}
 
-        boolean nonListenedEntries = false;
-        for (DefaultMutableTreeNode node : selection) {
-            List<IPodcastFeedEntry> podcastFeedEntries = ((IPodcastFeed) node.getUserObject()).getPodcastFeedEntries();
-            for (IPodcastFeedEntry entry : podcastFeedEntries) {
-                if (!entry.isListened()) {
-                    nonListenedEntries = true;
-                }
-            }
-        }
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		if (rootSelected) {
+			return false;
+		}
 
-        return nonListenedEntries;
-    }
+		boolean nonListenedEntries = false;
+		for (ITreeObject<?> node : selection) {
+			List<IPodcastFeedEntry> podcastFeedEntries = ((IPodcastFeed) node).getPodcastFeedEntries();
+			for (IPodcastFeedEntry entry : podcastFeedEntries) {
+				if (!entry.isListened()) {
+					nonListenedEntries = true;
+				}
+			}
+		}
+
+		return nonListenedEntries;
+	}
 }

@@ -22,74 +22,81 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IStateNavigation;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Sets favorite album
+ * @author alex
+ *
+ */
 public class SetFavoriteAlbumFromNavigatorAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    private static final long serialVersionUID = 836910667009804037L;
+	private static final long serialVersionUID = 836910667009804037L;
 
-    private IFavoritesHandler favoritesHandler;
-    
-    private INavigationHandler navigationHandler;
-    
-    private IStateNavigation stateNavigation;
-    
-    /**
-     * @param stateNavigation
-     */
-    public void setStateNavigation(IStateNavigation stateNavigation) {
+	private IFavoritesHandler favoritesHandler;
+
+	private INavigationHandler navigationHandler;
+
+	private IStateNavigation stateNavigation;
+
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
 		this.stateNavigation = stateNavigation;
 	}
-    
-    /**
-     * @param favoritesHandler
-     */
-    public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
+
+	/**
+	 * @param favoritesHandler
+	 */
+	public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
 		this.favoritesHandler = favoritesHandler;
 	}
-    
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-    
-    public SetFavoriteAlbumFromNavigatorAction() {
-        super(I18nUtils.getString("SET_FAVORITE_ALBUM"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_ALBUM"));
-    }
 
-    @Override
-    protected void executeAction(List<ILocalAudioObject> objects) {
-    	favoritesHandler.toggleFavoriteAlbums(objects);
-    	navigationHandler.refreshNavigationTable();
-    }
+	/**
+	 * Default constructor
+	 */
+	public SetFavoriteAlbumFromNavigatorAction() {
+		super(I18nUtils.getString("SET_FAVORITE_ALBUM"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_ALBUM"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        if (selection.isEmpty()) {
-            return false;
-        }
+	@Override
+	protected void executeAction(final List<ILocalAudioObject> objects) {
+		favoritesHandler.toggleFavoriteAlbums(objects);
+		navigationHandler.refreshNavigationTable();
+	}
 
-        if (stateNavigation.getViewMode() == ViewMode.FOLDER) {
-            return false;
-        }
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		if (selection.isEmpty()) {
+			return false;
+		}
 
-        for (DefaultMutableTreeNode node : selection) {
-            if (!(node.getUserObject() instanceof IAlbum)) {
-                return false;
-            }
-        }
+		if (stateNavigation.getViewMode() == ViewMode.FOLDER) {
+			return false;
+		}
 
-        return true;
-    }
+		for (ITreeObject<?> node : selection) {
+			if (!(node instanceof IAlbum)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

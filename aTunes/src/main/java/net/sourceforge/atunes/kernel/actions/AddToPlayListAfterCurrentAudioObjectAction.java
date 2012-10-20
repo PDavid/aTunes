@@ -22,42 +22,49 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Adds audio objects to play list after the current audio object which is being played
+ * @author alex
+ *
+ */
 public class AddToPlayListAfterCurrentAudioObjectAction extends AbstractActionOverSelectedObjects<IAudioObject> {
 
-    private static final long serialVersionUID = 1625697867534974341L;
+	private static final long serialVersionUID = 1625697867534974341L;
 
-    private IPlayListHandler playListHandler;
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+	private IPlayListHandler playListHandler;
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    public AddToPlayListAfterCurrentAudioObjectAction() {
-        super(I18nUtils.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"));
-    }
-    
-    @Override
-    protected void executeAction(List<IAudioObject> objects) {
-    	playListHandler.addToActivePlayList(playListHandler.getActivePlayList().getCurrentAudioObjectIndex() + 1, objects);
-    }
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return !selection.isEmpty();
-    }
+	/**
+	 * Default constructor
+	 */
+	public AddToPlayListAfterCurrentAudioObjectAction() {
+		super(I18nUtils.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return !selection.isEmpty();
-    }
+	@Override
+	protected void executeAction(final List<IAudioObject> objects) {
+		playListHandler.addToActivePlayList(playListHandler.getActivePlayList().getCurrentAudioObjectIndex() + 1, objects);
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		return !selection.isEmpty();
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
+		return !selection.isEmpty();
+	}
 }

@@ -28,54 +28,63 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ITagHandler;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Edit titles of an album
+ * @author alex
+ *
+ */
 public class EditTitlesAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -2883223880879440970L;
+	private static final long serialVersionUID = -2883223880879440970L;
 
-    private INavigationHandler navigationHandler;
-    
-    private ITagHandler tagHandler;
-    
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
+	private INavigationHandler navigationHandler;
+
+	private ITagHandler tagHandler;
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-    
-    /**
-     * @param tagHandler
-     */
-    public void setTagHandler(ITagHandler tagHandler) {
+
+	/**
+	 * @param tagHandler
+	 */
+	public void setTagHandler(final ITagHandler tagHandler) {
 		this.tagHandler = tagHandler;
 	}
-    
-    public EditTitlesAction() {
-        super(I18nUtils.getString("EDIT_TITLES"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TITLES"));
-    }
 
-    @Override
-    protected void executeAction() {
-        TreePath path = navigationHandler.getCurrentView().getTree().getSelectionPath();
-        IAlbum a = (IAlbum) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        tagHandler.editFiles(a);
-    }
+	/**
+	 * Default constructor
+	 */
+	public EditTitlesAction() {
+		super(I18nUtils.getString("EDIT_TITLES"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TITLES"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        if (selection.isEmpty()) {
-            return false;
-        }
+	@Override
+	protected void executeAction() {
+		TreePath path = navigationHandler.getCurrentView().getTree().getSelectionPath();
+		IAlbum a = (IAlbum) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+		tagHandler.editFiles(a);
+	}
 
-        for (DefaultMutableTreeNode node : selection) {
-            if (!(node.getUserObject() instanceof IAlbum)) {
-                return false;
-            }
-        }
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		if (selection.isEmpty()) {
+			return false;
+		}
 
-        return true;
-    }
+		for (ITreeObject<?> node : selection) {
+			if (!(node instanceof IAlbum)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

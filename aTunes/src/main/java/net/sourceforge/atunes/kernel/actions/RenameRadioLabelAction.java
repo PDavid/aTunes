@@ -31,86 +31,95 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Renames label of a radio
+ * @author alex
+ *
+ */
 public class RenameRadioLabelAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -606790181321223318L;
+	private static final long serialVersionUID = -606790181321223318L;
 
-    private INavigationHandler navigationHandler;
-    
-    private IRadioHandler radioHandler;
-    
-    private INavigationView radioNavigationView;
+	private INavigationHandler navigationHandler;
 
-    private IDialogFactory dialogFactory;
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
+	private IRadioHandler radioHandler;
+
+	private INavigationView radioNavigationView;
+
+	private IDialogFactory dialogFactory;
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-    
-    /**
-     * @param radioNavigationView
-     */
-    public void setRadioNavigationView(INavigationView radioNavigationView) {
+
+	/**
+	 * @param radioNavigationView
+	 */
+	public void setRadioNavigationView(final INavigationView radioNavigationView) {
 		this.radioNavigationView = radioNavigationView;
 	}
-    
-    /**
-     * @param radioHandler
-     */
-    public void setRadioHandler(IRadioHandler radioHandler) {
+
+	/**
+	 * @param radioHandler
+	 */
+	public void setRadioHandler(final IRadioHandler radioHandler) {
 		this.radioHandler = radioHandler;
 	}
-    
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-    
-    public RenameRadioLabelAction() {
-        super(I18nUtils.getString("RENAME_LABEL"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_LABEL"));
-    }
 
-    @Override
-    protected void executeAction() {
-        TreePath path = radioNavigationView.getTree().getSelectionPath();
-        Object o = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        
-        IInputDialog dialog = dialogFactory.newDialog(IInputDialog.class);
-        dialog.setTitle(I18nUtils.getString("RENAME_LABEL"));
+	/**
+	 * Default constructor
+	 */
+	public RenameRadioLabelAction() {
+		super(I18nUtils.getString("RENAME_LABEL"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_LABEL"));
+	}
 
-        if (o instanceof String) {
-            String label = (String) o;
-            dialog.setText(label);
-            dialog.showDialog();
-            String result = dialog.getResult();
-            if (result != null) {
-                List<IRadio> radios = radioHandler.getRadios(label);
-                radioHandler.setLabel(radios, result);
-                navigationHandler.refreshView(radioNavigationView);
-            }
-        } else if (o instanceof IRadio) {
-            IRadio radio = (IRadio) o;
-            dialog.setText(radio.getLabel());
-            dialog.showDialog();
-            String result = dialog.getResult();
-            if (result != null) {
-                radio.setLabel(result);
-                navigationHandler.refreshView(radioNavigationView);
-            }
-        }
-    }
+	@Override
+	protected void executeAction() {
+		TreePath path = radioNavigationView.getTree().getSelectionPath();
+		Object o = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return !rootSelected && selection.size() == 1;
-    }
+		IInputDialog dialog = dialogFactory.newDialog(IInputDialog.class);
+		dialog.setTitle(I18nUtils.getString("RENAME_LABEL"));
+
+		if (o instanceof String) {
+			String label = (String) o;
+			dialog.setText(label);
+			dialog.showDialog();
+			String result = dialog.getResult();
+			if (result != null) {
+				List<IRadio> radios = radioHandler.getRadios(label);
+				radioHandler.setLabel(radios, result);
+				navigationHandler.refreshView(radioNavigationView);
+			}
+		} else if (o instanceof IRadio) {
+			IRadio radio = (IRadio) o;
+			dialog.setText(radio.getLabel());
+			dialog.showDialog();
+			String result = dialog.getResult();
+			if (result != null) {
+				radio.setLabel(result);
+				navigationHandler.refreshView(radioNavigationView);
+			}
+		}
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		return !rootSelected && selection.size() == 1;
+	}
 
 }

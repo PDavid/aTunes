@@ -22,46 +22,53 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IChangeTagsProcess;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Removes tags of audio objects
+ * @author alex
+ *
+ */
 public class ClearTagNavigatorAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    private static final long serialVersionUID = 4476719536754930347L;
+	private static final long serialVersionUID = 4476719536754930347L;
 
-    private IProcessFactory processFactory;
-    
-    /**
-     * @param processFactory
-     */
-    public void setProcessFactory(IProcessFactory processFactory) {
+	private IProcessFactory processFactory;
+
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(final IProcessFactory processFactory) {
 		this.processFactory = processFactory;
 	}
-    
-    public ClearTagNavigatorAction() {
-        super(I18nUtils.getString("CLEAR_TAG"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TAG"));
-    }
 
-    @Override
-    protected void executeAction(List<ILocalAudioObject> objects) {
-        IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("clearTagsProcess");
-        process.setFilesToChange(objects);
-        process.execute();
-    }
+	/**
+	 * Default constructor
+	 */
+	public ClearTagNavigatorAction() {
+		super(I18nUtils.getString("CLEAR_TAG"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TAG"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-    	return !rootSelected && !selection.isEmpty();
-    }
+	@Override
+	protected void executeAction(final List<ILocalAudioObject> objects) {
+		IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("clearTagsProcess");
+		process.setFilesToChange(objects);
+		process.execute();
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return !selection.isEmpty();
-    }
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		return !rootSelected && !selection.isEmpty();
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
+		return !selection.isEmpty();
+	}
 }

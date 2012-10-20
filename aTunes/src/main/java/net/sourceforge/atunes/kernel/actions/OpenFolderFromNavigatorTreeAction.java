@@ -22,11 +22,10 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -66,13 +65,13 @@ public class OpenFolderFromNavigatorTreeAction extends AbstractActionOverSelecte
 	}
 
 	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<DefaultMutableTreeNode> selection) {
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
 		return allNodesAreFolders(selection);
 	}
 
-	private boolean allNodesAreFolders(final List<DefaultMutableTreeNode> nodes) {
-		for (DefaultMutableTreeNode node : nodes) {
-			if (!(node.getUserObject() instanceof IFolder)) {
+	private boolean allNodesAreFolders(final List<ITreeObject<?>> nodes) {
+		for (ITreeObject<?> node : nodes) {
+			if (!(node instanceof IFolder)) {
 				return false;
 			}
 		}

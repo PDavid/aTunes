@@ -31,51 +31,60 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Removes a podcast feed
+ * @author alex
+ *
+ */
 public class RemovePodcastFeedAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -7470658878101801512L;
+	private static final long serialVersionUID = -7470658878101801512L;
 
-    private IPodcastFeedHandler podcastFeedHandler;
-    
-    private INavigationView podcastNavigationView;
-    
-    /**
-     * @param podcastNavigationView
-     */
-    public void setPodcastNavigationView(INavigationView podcastNavigationView) {
+	private IPodcastFeedHandler podcastFeedHandler;
+
+	private INavigationView podcastNavigationView;
+
+	/**
+	 * @param podcastNavigationView
+	 */
+	public void setPodcastNavigationView(final INavigationView podcastNavigationView) {
 		this.podcastNavigationView = podcastNavigationView;
 	}
-    
-    /**
-     * @param podcastFeedHandler
-     */
-    public void setPodcastFeedHandler(IPodcastFeedHandler podcastFeedHandler) {
+
+	/**
+	 * @param podcastFeedHandler
+	 */
+	public void setPodcastFeedHandler(final IPodcastFeedHandler podcastFeedHandler) {
 		this.podcastFeedHandler = podcastFeedHandler;
 	}
-    
-    public RemovePodcastFeedAction() {
-        super(I18nUtils.getString("REMOVE_PODCAST_FEED"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_PODCAST_FEED"));
-    }
 
-    @Override
-    protected void executeAction() {
-        TreePath[] paths = podcastNavigationView.getTree().getSelectionPaths();
-        Set<PodcastFeed> podcastsToRemove = new HashSet<PodcastFeed>();
-        for (TreePath path : paths) {
-        	PodcastFeed podcastFeed = (PodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-            podcastsToRemove.add(podcastFeed);
-        }        	
-        for (IPodcastFeed pf : podcastsToRemove) {
-        	podcastFeedHandler.removePodcastFeed(pf);
-        }
-    }
-    
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return !rootSelected && !selection.isEmpty();
-    }
+	/**
+	 * Default constructor
+	 */
+	public RemovePodcastFeedAction() {
+		super(I18nUtils.getString("REMOVE_PODCAST_FEED"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_PODCAST_FEED"));
+	}
+
+	@Override
+	protected void executeAction() {
+		TreePath[] paths = podcastNavigationView.getTree().getSelectionPaths();
+		Set<PodcastFeed> podcastsToRemove = new HashSet<PodcastFeed>();
+		for (TreePath path : paths) {
+			PodcastFeed podcastFeed = (PodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+			podcastsToRemove.add(podcastFeed);
+		}
+		for (IPodcastFeed pf : podcastsToRemove) {
+			podcastFeedHandler.removePodcastFeed(pf);
+		}
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		return !rootSelected && !selection.isEmpty();
+	}
 
 }
