@@ -22,53 +22,60 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Removes a radio
+ * @author alex
+ *
+ */
 public class RemoveRadioAction extends AbstractActionOverSelectedObjects<IRadio> {
 
-    private static final long serialVersionUID = 8755385947718573969L;
+	private static final long serialVersionUID = 8755385947718573969L;
 
-    private IRadioHandler radioHandler;
-    
-    /**
-     * @param radioHandler
-     */
-    public void setRadioHandler(IRadioHandler radioHandler) {
+	private IRadioHandler radioHandler;
+
+	/**
+	 * @param radioHandler
+	 */
+	public void setRadioHandler(final IRadioHandler radioHandler) {
 		this.radioHandler = radioHandler;
 	}
-    
-    public RemoveRadioAction() {
-        super(I18nUtils.getString("REMOVE_RADIO"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_RADIO"));
-    }
 
-    @Override
-    protected void executeAction(List<IRadio> objects) {
-    	radioHandler.removeRadios(objects);
-    }
+	/**
+	 * Default constructor
+	 */
+	public RemoveRadioAction() {
+		super(I18nUtils.getString("REMOVE_RADIO"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_RADIO"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        if (rootSelected) {
-            return false;
-        }
+	@Override
+	protected void executeAction(final List<IRadio> objects) {
+		radioHandler.removeRadios(objects);
+	}
 
-        for (DefaultMutableTreeNode node : selection) {
-            if (!(node.getUserObject() instanceof IRadio)) {
-                return false;
-            }
-        }
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		if (rootSelected) {
+			return false;
+		}
 
-        return true;
-    }
+		for (ITreeObject<?> node : selection) {
+			if (!(node instanceof IRadio)) {
+				return false;
+			}
+		}
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return true;
-    }
+		return true;
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
+		return true;
+	}
 }

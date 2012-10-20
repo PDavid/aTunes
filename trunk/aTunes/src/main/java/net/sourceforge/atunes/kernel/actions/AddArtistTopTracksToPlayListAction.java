@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IBackgroundWorker;
@@ -38,6 +36,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITrackInfo;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.CollectionUtils;
@@ -57,50 +56,50 @@ public class AddArtistTopTracksToPlayListAction extends AbstractActionOverSelect
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
 
 	private IIndeterminateProgressDialog dialog;
-	
+
 	private IUnknownObjectChecker unknownObjectChecker;
-	
+
 	private IDialogFactory dialogFactory;
-	
+
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-	
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	/**
 	 * @param backgroundWorkerFactory
 	 */
-	public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
+	public void setBackgroundWorkerFactory(final IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
 
 	/**
 	 * @param webServicesHandler
 	 */
-	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+	public void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
 
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
 	/**
 	 * @param playListHandler
 	 */
-	public void setPlayListHandler(IPlayListHandler playListHandler) {
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
 
@@ -113,7 +112,7 @@ public class AddArtistTopTracksToPlayListAction extends AbstractActionOverSelect
 	}
 
 	@Override
-	protected void executeAction(List<IArtist> objects) {
+	protected void executeAction(final List<IArtist> objects) {
 		IBackgroundWorker<Map<String, List<ILocalAudioObject>>> worker = backgroundWorkerFactory.getWorker();
 		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 			@Override
@@ -127,10 +126,10 @@ public class AddArtistTopTracksToPlayListAction extends AbstractActionOverSelect
 
 		worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Map<String, List<ILocalAudioObject>>>() {
 			@Override
-			public void call(Map<String, List<ILocalAudioObject>> topTracksByArtist) {
+			public void call(final Map<String, List<ILocalAudioObject>> topTracksByArtist) {
 				for (Map.Entry<String, List<ILocalAudioObject>> artistTopTracks : topTracksByArtist.entrySet()) {
-	    			// Add songs to play list
-	    			playListHandler.addToVisiblePlayList(artistTopTracks.getValue());
+					// Add songs to play list
+					playListHandler.addToVisiblePlayList(artistTopTracks.getValue());
 				}
 				dialog.hideDialog();
 			}
@@ -140,12 +139,12 @@ public class AddArtistTopTracksToPlayListAction extends AbstractActionOverSelect
 	}
 
 	@Override
-	public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
 		if (selection.isEmpty()) {
 			return false;
 		}
-		for (DefaultMutableTreeNode node : selection) {
-			if (!(node.getUserObject() instanceof IArtist) || unknownObjectChecker.isUnknownArtist((IArtist) node.getUserObject())) {
+		for (ITreeObject<?> node : selection) {
+			if (!(node instanceof IArtist) || unknownObjectChecker.isUnknownArtist((IArtist) node)) {
 				return false;
 			}
 		}
@@ -153,16 +152,16 @@ public class AddArtistTopTracksToPlayListAction extends AbstractActionOverSelect
 	}
 
 	private final class GetTopTracksCallable implements Callable<Map<String, List<ILocalAudioObject>>> {
-		
-		private List<IArtist> artists;
-		
+
+		private final List<IArtist> artists;
+
 		/**
 		 * @param artists
 		 */
-		public GetTopTracksCallable(List<IArtist> artists) {
+		public GetTopTracksCallable(final List<IArtist> artists) {
 			this.artists = artists;
 		}
-		
+
 		@Override
 		public Map<String, List<ILocalAudioObject>> call() {
 			Map<String, List<ILocalAudioObject>> result = new HashMap<String, List<ILocalAudioObject>>();
@@ -184,7 +183,7 @@ public class AddArtistTopTracksToPlayListAction extends AbstractActionOverSelect
 				} else {
 					Logger.info("No top tracks found for: ", artist.getName());
 				}
-			}	
+			}
 			return result;
 		}
 	}

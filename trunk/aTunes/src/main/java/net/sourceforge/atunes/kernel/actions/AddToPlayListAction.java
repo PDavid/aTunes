@@ -22,10 +22,9 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -35,37 +34,37 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class AddToPlayListAction extends AbstractActionOverSelectedObjects<IAudioObject> {
 
-    private static final long serialVersionUID = 1625697867534974341L;
+	private static final long serialVersionUID = 1625697867534974341L;
 
-    private IPlayListHandler playListHandler;
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+	private IPlayListHandler playListHandler;
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    /**
-     * Default constructor
-     */
-    public AddToPlayListAction() {
-        super(I18nUtils.getString("ADD_TO_PLAYLIST"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_TO_PLAYLIST"));
-    }
 
-    @Override
-    protected void executeAction(List<IAudioObject> objects) {
-    	playListHandler.addToVisiblePlayList(objects);
-    }
+	/**
+	 * Default constructor
+	 */
+	public AddToPlayListAction() {
+		super(I18nUtils.getString("ADD_TO_PLAYLIST"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_TO_PLAYLIST"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return !selection.isEmpty();
-    }
+	@Override
+	protected void executeAction(final List<IAudioObject> objects) {
+		playListHandler.addToVisiblePlayList(objects);
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return !selection.isEmpty();
-    }
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		return !selection.isEmpty();
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
+		return !selection.isEmpty();
+	}
 }

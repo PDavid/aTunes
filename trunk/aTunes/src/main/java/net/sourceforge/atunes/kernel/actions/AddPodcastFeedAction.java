@@ -22,9 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -35,31 +34,31 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class AddPodcastFeedAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 2866782020999148427L;
+	private static final long serialVersionUID = 2866782020999148427L;
 
-    private IPodcastFeedHandler podcastFeedHandler;
-    
-    /**
-     * Default constructor
-     */
-    public AddPodcastFeedAction() {
-        super(I18nUtils.getString("ADD_PODCAST_FEED"));
-    }
-    
-    /**
-     * @param podcastFeedHandler
-     */
-    public void setPodcastFeedHandler(IPodcastFeedHandler podcastFeedHandler) {
+	private IPodcastFeedHandler podcastFeedHandler;
+
+	/**
+	 * Default constructor
+	 */
+	public AddPodcastFeedAction() {
+		super(I18nUtils.getString("ADD_PODCAST_FEED"));
+	}
+
+	/**
+	 * @param podcastFeedHandler
+	 */
+	public void setPodcastFeedHandler(final IPodcastFeedHandler podcastFeedHandler) {
 		this.podcastFeedHandler = podcastFeedHandler;
 	}
-    
-    @Override
-    protected void executeAction() {
-    	podcastFeedHandler.addPodcastFeed();
-    }
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return true;
-    }
+	@Override
+	protected void executeAction() {
+		podcastFeedHandler.addPodcastFeed();
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		return true;
+	}
 }

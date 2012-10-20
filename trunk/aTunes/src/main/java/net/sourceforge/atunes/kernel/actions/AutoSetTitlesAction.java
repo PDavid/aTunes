@@ -22,12 +22,11 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IChangeTagsProcess;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -38,40 +37,40 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class AutoSetTitlesAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    private static final long serialVersionUID = 7230329972815239426L;
+	private static final long serialVersionUID = 7230329972815239426L;
 
-    private IProcessFactory processFactory;
-    
-    /**
-     * @param processFactory
-     */
-    public void setProcessFactory(IProcessFactory processFactory) {
+	private IProcessFactory processFactory;
+
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(final IProcessFactory processFactory) {
 		this.processFactory = processFactory;
 	}
-    
-    /**
-     * Creates action
-     */
-    public AutoSetTitlesAction() {
-        super(I18nUtils.getString("AUTO_SET_TITLE"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TITLE"));
-    }
 
-    @Override
-    protected void executeAction(List<ILocalAudioObject> objects) {
-    	IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("editTitlesProcess");
-    	process.setFilesToChange(objects);
-    	process.execute();
-    }
+	/**
+	 * Creates action
+	 */
+	public AutoSetTitlesAction() {
+		super(I18nUtils.getString("AUTO_SET_TITLE"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TITLE"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return !rootSelected && !selection.isEmpty();
-    }
+	@Override
+	protected void executeAction(final List<ILocalAudioObject> objects) {
+		IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("editTitlesProcess");
+		process.setFilesToChange(objects);
+		process.execute();
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return !selection.isEmpty();
-    }
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		return !rootSelected && !selection.isEmpty();
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
+		return !selection.isEmpty();
+	}
 
 }

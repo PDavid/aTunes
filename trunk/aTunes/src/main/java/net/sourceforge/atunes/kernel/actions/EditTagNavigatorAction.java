@@ -22,12 +22,11 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITagHandler;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -39,39 +38,42 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class EditTagNavigatorAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    private static final long serialVersionUID = -4310895355731333072L;
+	private static final long serialVersionUID = -4310895355731333072L;
 
-    private ITagHandler tagHandler;
-    
-    /**
-     * @param tagHandler
-     */
-    public void setTagHandler(ITagHandler tagHandler) {
+	private ITagHandler tagHandler;
+
+	/**
+	 * @param tagHandler
+	 */
+	public void setTagHandler(final ITagHandler tagHandler) {
 		this.tagHandler = tagHandler;
 	}
-    
-    public EditTagNavigatorAction() {
-        super(I18nUtils.getString("EDIT_TAG"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TAG"));
-    }
 
-    @Override
-    protected void executeAction(List<ILocalAudioObject> objects) {
-        // Start edit by opening edit dialog
-        try {
-        	tagHandler.editFiles(EditTagSources.NAVIGATOR, objects);
-        } catch (IllegalArgumentException iae) {
-            Logger.error(iae);
-        }
-    }
+	/**
+	 * Default constructor
+	 */
+	public EditTagNavigatorAction() {
+		super(I18nUtils.getString("EDIT_TAG"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TAG"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return !rootSelected && !selection.isEmpty();
-    }
+	@Override
+	protected void executeAction(final List<ILocalAudioObject> objects) {
+		// Start edit by opening edit dialog
+		try {
+			tagHandler.editFiles(EditTagSources.NAVIGATOR, objects);
+		} catch (IllegalArgumentException iae) {
+			Logger.error(iae);
+		}
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return !selection.isEmpty();
-    }
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		return !rootSelected && !selection.isEmpty();
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
+		return !selection.isEmpty();
+	}
 }

@@ -22,11 +22,10 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateNavigation;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -41,52 +40,52 @@ public class RefreshFolderFromNavigatorAction extends AbstractActionOverSelected
 	private static final long serialVersionUID = -6840836346786226858L;
 
 	private IRepositoryHandler repositoryHandler;
-	
+
 	private IStateNavigation stateNavigation;
-	
+
 	/**
 	 * @param stateNavigation
 	 */
-	public void setStateNavigation(IStateNavigation stateNavigation) {
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
 		this.stateNavigation = stateNavigation;
 	}
-	
+
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
-	
+
 	/**
 	 * Default constructor
 	 */
 	public RefreshFolderFromNavigatorAction() {
-        super(I18nUtils.getString("REFRESH_FOLDER"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH_FOLDER"));
-    }
+		super(I18nUtils.getString("REFRESH_FOLDER"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH_FOLDER"));
+	}
 
-    @Override
-    protected void executeAction(List<IFolder> folders) {
-    	repositoryHandler.refreshFolders(folders);        	        
-    }
-    
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        if (selection.isEmpty()) {
-            return false;
-        }
+	@Override
+	protected void executeAction(final List<IFolder> folders) {
+		repositoryHandler.refreshFolders(folders);
+	}
 
-        if (stateNavigation.getViewMode() != ViewMode.FOLDER) {
-            return false;
-        }
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		if (selection.isEmpty()) {
+			return false;
+		}
 
-        for (DefaultMutableTreeNode node : selection) {
-            if (!(node.getUserObject() instanceof IFolder)) {
-                return false;
-            }
-        }
+		if (stateNavigation.getViewMode() != ViewMode.FOLDER) {
+			return false;
+		}
 
-        return true;
-    }
+		for (ITreeObject<?> node : selection) {
+			if (!(node instanceof IFolder)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

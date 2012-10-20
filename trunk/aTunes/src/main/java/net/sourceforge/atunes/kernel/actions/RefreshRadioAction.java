@@ -22,37 +22,43 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IRadioHandler;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Refreshes radios
+ * @author alex
+ *
+ */
 public class RefreshRadioAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 2614238225399634969L;
+	private static final long serialVersionUID = 2614238225399634969L;
 
-    private IRadioHandler radioHandler;
-    
-    /**
-     * @param radioHandler
-     */
-    public void setRadioHandler(IRadioHandler radioHandler) {
+	private IRadioHandler radioHandler;
+
+	/**
+	 * @param radioHandler
+	 */
+	public void setRadioHandler(final IRadioHandler radioHandler) {
 		this.radioHandler = radioHandler;
 	}
-    
-    public RefreshRadioAction() {
-        super(I18nUtils.getString("REFRESH"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH"));
-    }
 
-    @Override
-    protected void executeAction() {
-    	radioHandler.retrieveRadios();
-    }
+	/**
+	 * Default constructor
+	 */
+	public RefreshRadioAction() {
+		super(I18nUtils.getString("REFRESH"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return true;
-    }
+	@Override
+	protected void executeAction() {
+		radioHandler.retrieveRadios();
+	}
 
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+		return true;
+	}
 }
