@@ -43,4 +43,10 @@ public interface IKernel {
 	 */
 	public void restart();
 
+	/**
+	 * Terminates execution due to a fatal error
+	 * @param e
+	 */
+	public void terminateWithError(Throwable e);
+
 }

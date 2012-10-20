@@ -173,9 +173,12 @@
 	<bean id="normalizeModeAction" class="net.sourceforge.atunes.kernel.actions.NormalizeModeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.OpenFolderAction"/>
 	
-	<bean id="openFolderFromDeviceNavigationView" class="net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction"/>
-	<bean id="openFolderFromFavoritesNavigationView" class="net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction"/>
-	<bean id="openFolderFromRepositoryNavigationView" class="net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction"/>
+	<bean id="openFolderFromDeviceNavigationTable" class="net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorTableAction"/>
+	<bean id="openFolderFromFavoritesNavigationTable" class="net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorTableAction"/>
+	<bean id="openFolderFromRepositoryNavigationTable" class="net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorTableAction"/>
+	<bean id="openFolderFromDeviceNavigationTree" class="net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorTreeAction"/>
+	<bean id="openFolderFromFavoritesNavigationTree" class="net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorTreeAction"/>
+	<bean id="openFolderFromRepositoryNavigationTree" class="net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorTreeAction"/>
 	
 	<bean id="playAction" class="net.sourceforge.atunes.kernel.actions.PlayAction"/>
 	<bean id="nextAction" class="net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction"/>

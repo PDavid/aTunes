@@ -31,94 +31,108 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ITreeObjectsSource;
 import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * An action called after selecting nodes of a tree
+ * @author alex
+ *
+ * @param <T>
+ */
 public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObject<? extends IAudioObject>> extends CustomAbstractAction {
 
 	private static final long serialVersionUID = -2396109319433549043L;
 
-    private ITreeObjectsSource treeObjectsSource;
+	private ITreeObjectsSource treeObjectsSource;
 
-    private Class<?> clazz;
-    
-    public AbstractActionOverSelectedTreeObjects(String name) {
-        super(name);
-        clazz = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-    }
+	private final Class<?> clazz;
 
-    public AbstractActionOverSelectedTreeObjects(String name, Icon icon) {
-        super(name, icon);
-        clazz = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-    }
+	/**
+	 * @param name
+	 */
+	public AbstractActionOverSelectedTreeObjects(final String name) {
+		super(name);
+		clazz = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+	}
 
-    /**
-     * @param treeObjectsSource
-     */
-    public void setTreeObjectsSource(ITreeObjectsSource treeObjectsSource) {
+	/**
+	 * @param name
+	 * @param icon
+	 */
+	public AbstractActionOverSelectedTreeObjects(final String name, final Icon icon) {
+		super(name, icon);
+		clazz = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+	}
+
+	/**
+	 * @param treeObjectsSource
+	 */
+	public void setTreeObjectsSource(final ITreeObjectsSource treeObjectsSource) {
 		this.treeObjectsSource = treeObjectsSource;
 	}
-    
-    /**
-     * Returns if preprocess is needed
-     * 
-     * Default implementation does not need preprocess
-     * 
-     * @return
-     */
-    protected boolean isPreprocessNeeded() {
-    	return false;
-    }
 
-    /**
-     * Given a tree object performs a preprocess returning tree object to
-     * include in list or null if given tree object must be excluded from list
-     * 
-     * Default implementation returns the same object
-     * 
-     * @param treeObject
-     * @return
-     */
-    protected T preprocessObject(T treeObject) {
-        return treeObject;
-    }
+	/**
+	 * Returns if preprocess is needed
+	 * 
+	 * Default implementation does not need preprocess
+	 * 
+	 * @return
+	 */
+	protected boolean isPreprocessNeeded() {
+		return false;
+	}
 
-    protected abstract void executeAction(List<T> objects);
-    
-    @Override
-    protected final void executeAction() {
-    	// Use executionAction(List<T> objects)
-    }
+	/**
+	 * Given a tree object performs a preprocess returning tree object to
+	 * include in list or null if given tree object must be excluded from list
+	 * 
+	 * Default implementation returns the same object
+	 * 
+	 * @param treeObject
+	 * @return
+	 */
+	protected T preprocessObject(final T treeObject) {
+		return treeObject;
+	}
 
-    @SuppressWarnings("unchecked")
+	protected abstract void executeAction(List<T> objects);
+
 	@Override
-    public final void actionPerformed(ActionEvent e) {
-    	Logger.debug("Executing action: ", this.getClass().getName());
+	protected final void executeAction() {
+		// Use executionAction(List<T> objects)
+	}
 
-        if (this.treeObjectsSource == null) {
-            return;
-        }
+	@SuppressWarnings("unchecked")
+	@Override
+	public final void actionPerformed(final ActionEvent e) {
+		Logger.debug("Executing action: ", this.getClass().getName());
 
-        List<ITreeObject<? extends IAudioObject>> treeObjects = treeObjectsSource.getSelectedTreeObjects();
+		if (this.treeObjectsSource == null) {
+			throw new IllegalArgumentException(StringUtils.getString("No treeObjectsSource for action: ", this.getClass().getName()));
+		}
 
-        if (treeObjects == null || treeObjects.isEmpty()) {
-            return;
-        }
+		List<ITreeObject<? extends IAudioObject>> treeObjects = treeObjectsSource.getSelectedTreeObjects();
 
-        List<T> selectedTreeObjects = new ArrayList<T>();
+		if (treeObjects == null || treeObjects.isEmpty()) {
+			return;
+		}
 
-        for (ITreeObject<? extends IAudioObject> ao : treeObjects) {
-            if (clazz.isAssignableFrom(ao.getClass())) {
-            	if (isPreprocessNeeded()) {
-            		T processedTreeObject = preprocessObject((T) ao);
-            		if (processedTreeObject != null) {
-            			selectedTreeObjects.add(processedTreeObject);
-            		}
-            	} else {
-            		selectedTreeObjects.add((T)ao);
-            	}
-            }
-        }
+		List<T> selectedTreeObjects = new ArrayList<T>();
 
-        // Call to perform action
-        executeAction(selectedTreeObjects);
-    }
+		for (ITreeObject<? extends IAudioObject> ao : treeObjects) {
+			if (clazz.isAssignableFrom(ao.getClass())) {
+				if (isPreprocessNeeded()) {
+					T processedTreeObject = preprocessObject((T) ao);
+					if (processedTreeObject != null) {
+						selectedTreeObjects.add(processedTreeObject);
+					}
+				} else {
+					selectedTreeObjects.add((T)ao);
+				}
+			}
+		}
+
+		// Call to perform action
+		executeAction(selectedTreeObjects);
+	}
 }

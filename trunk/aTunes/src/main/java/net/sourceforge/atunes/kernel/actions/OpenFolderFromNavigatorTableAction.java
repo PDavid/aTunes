@@ -26,13 +26,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
-import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -42,11 +39,9 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class OpenFolderFromNavigatorAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
+public class OpenFolderFromNavigatorTableAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
 	private static final long serialVersionUID = 8251208528513562627L;
-
-	private INavigationHandler navigationHandler;
 
 	private IDesktop desktop;
 
@@ -65,7 +60,7 @@ public class OpenFolderFromNavigatorAction extends AbstractActionOverSelectedObj
 	/**
 	 * Default constructor
 	 */
-	public OpenFolderFromNavigatorAction() {
+	public OpenFolderFromNavigatorTableAction() {
 		super(I18nUtils.getString("OPEN_FOLDER"));
 		putValue(SHORT_DESCRIPTION, I18nUtils.getString("OPEN_FOLDER"));
 	}
@@ -78,23 +73,10 @@ public class OpenFolderFromNavigatorAction extends AbstractActionOverSelectedObj
 	}
 
 	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-
-	/**
 	 * @param desktop
 	 */
 	public void setDesktop(final IDesktop desktop) {
 		this.desktop = desktop;
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<DefaultMutableTreeNode> selection) {
-		List<IAudioObject> filesSelectedInNavigator = navigationHandler.getFilesSelectedInNavigator();
-		return sameParentFile(localAudioObjectFilter.getLocalAudioObjects(filesSelectedInNavigator));
 	}
 
 	@Override
