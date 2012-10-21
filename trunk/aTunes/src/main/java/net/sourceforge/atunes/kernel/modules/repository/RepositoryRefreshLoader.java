@@ -29,49 +29,54 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Executes repository load when loading a new repository
+ * @author alex
+ *
+ */
 public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
-	
+
 	private IFrame frame;
-	
+
 	private RepositoryActionsHelper repositoryActions;
-	
+
 	/**
 	 * @param repositoryActions
 	 */
-	public void setRepositoryActions(RepositoryActionsHelper repositoryActions) {
+	public void setRepositoryActions(final RepositoryActionsHelper repositoryActions) {
 		this.repositoryActions = repositoryActions;
 	}
-	
+
 	/**
 	 * @param frame
 	 */
-	public void setFrame(IFrame frame) {
+	public void setFrame(final IFrame frame) {
 		this.frame = frame;
 	}
-	
+
 	/**
 	 * @param backgroundWorkerFactory
 	 */
-	public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
+	public void setBackgroundWorkerFactory(final IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
-	
+
 	@Override
 	protected void execute() {
 		IBackgroundWorker<Void> worker = backgroundWorkerFactory.getWorker();
 		worker.setActionsBeforeBackgroundStarts(new Runnable() {
-			
+
 			@Override
 			public void run() {
-	            String text = StringUtils.getString(I18nUtils.getString("REFRESHING"), "...");
-	            frame.showProgressBar(true, text);
-	            repositoryActions.enableRepositoryActions(false);
+				String text = StringUtils.getString(I18nUtils.getString("REFRESHING"), "...");
+				frame.showProgressBar(true, text);
+				repositoryActions.enableRepositoryActions(false);
 			}
 		});
 		worker.setBackgroundActions(new Callable<Void>() {
-			
+
 			@Override
 			public Void call() {
 				run();
@@ -79,9 +84,9 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 			}
 		});
 		worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
-			
+
 			@Override
-			public void call(Void result) {
+			public void call(final Void result) {
 				Logger.debug("Calling notifyFinishRefresh");
 				getRepositoryLoaderListener().notifyFinishRefresh(RepositoryRefreshLoader.this);
 			}
@@ -95,13 +100,13 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 	}
 
 	@Override
-	protected void notifyCurrentPath(String relativePath) {
+	protected void notifyCurrentPath(final String relativePath) {
 		// Nothing to do
 	}
 
 	@Override
 	protected void notifyCurrentProgress() {
-		// Nothing to do		
+		// Nothing to do
 	}
 
 	@Override
@@ -110,7 +115,7 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 	}
 
 	@Override
-	protected void notifyCurrentAlbum(String artist, String album) {
+	protected void notifyCurrentAlbum(final String artist, final String album) {
 		// Nothing to do
 	}
 
