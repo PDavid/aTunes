@@ -39,34 +39,43 @@ import net.sourceforge.atunes.kernel.actions.EditTagPlaylistAction;
 import net.sourceforge.atunes.model.IAudioObjectsSource;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Edit tag submenu
+ * @author alex
+ *
+ */
 public final class EditTagMenu extends JMenu {
 
-    private static final long serialVersionUID = -8235925186759302907L;
+	private static final long serialVersionUID = -8235925186759302907L;
 
-    public EditTagMenu(boolean playlistMenu, IAudioObjectsSource audioObjectsSource) {
-        super(I18nUtils.getString("TAGS"));
-        addAction(playlistMenu ? EditTagPlaylistAction.class : EditTagNavigatorAction.class, audioObjectsSource);
-        add(new JSeparator());
-        addAction(AutoSetTagFromFolderNamePatternAction.class, audioObjectsSource);
-        addAction(AutoSetTagFromFileNamePatternAction.class, audioObjectsSource);
-        add(new JSeparator());
-        addAction(AutoSetLyricsAction.class, audioObjectsSource);
-        addAction(AutoSetTitlesAction.class, audioObjectsSource);
-        addAction(AutoSetTracksAction.class, audioObjectsSource);
-        addAction(AutoSetGenresAction.class, audioObjectsSource);
-        addAction(AutoSetCoversAction.class, audioObjectsSource);
-        add(new JSeparator());
-        addAction(playlistMenu ? ClearTagPlaylistAction.class : ClearTagNavigatorAction.class, audioObjectsSource);
-    }
-    
-    /**
-     * Get and action binded to audio objects source and add to menu
-     * @param actionClass
-     * @param audioObjectsSource
-     */
-    private void addAction(Class<? extends AbstractActionOverSelectedObjects<?>> actionClass, IAudioObjectsSource audioObjectsSource) {
-        AbstractActionOverSelectedObjects<?> action = Context.getBean(actionClass);
-        action.setAudioObjectsSource(audioObjectsSource);
-       	add(action);
-    }
+	/**
+	 * @param playlistMenu
+	 * @param audioObjectsSource
+	 */
+	public EditTagMenu(final boolean playlistMenu, final IAudioObjectsSource audioObjectsSource) {
+		super(I18nUtils.getString("TAGS"));
+		addAction(playlistMenu ? EditTagPlaylistAction.class : EditTagNavigatorAction.class, audioObjectsSource);
+		add(new JSeparator());
+		addAction(AutoSetTagFromFolderNamePatternAction.class, audioObjectsSource);
+		addAction(AutoSetTagFromFileNamePatternAction.class, audioObjectsSource);
+		add(new JSeparator());
+		addAction(AutoSetLyricsAction.class, audioObjectsSource);
+		addAction(AutoSetTitlesAction.class, audioObjectsSource);
+		addAction(AutoSetTracksAction.class, audioObjectsSource);
+		addAction(AutoSetGenresAction.class, audioObjectsSource);
+		addAction(AutoSetCoversAction.class, audioObjectsSource);
+		add(new JSeparator());
+		addAction(playlistMenu ? ClearTagPlaylistAction.class : ClearTagNavigatorAction.class, audioObjectsSource);
+	}
+
+	/**
+	 * Get and action binded to audio objects source and add to menu
+	 * @param actionClass
+	 * @param audioObjectsSource
+	 */
+	private void addAction(final Class<? extends AbstractActionOverSelectedObjects<?>> actionClass, final IAudioObjectsSource audioObjectsSource) {
+		AbstractActionOverSelectedObjects<?> action = Context.getBean(actionClass);
+		action.setAudioObjectsSource(audioObjectsSource);
+		add(action);
+	}
 }

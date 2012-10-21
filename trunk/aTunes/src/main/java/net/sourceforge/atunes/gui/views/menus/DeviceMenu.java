@@ -25,6 +25,11 @@ import javax.swing.JMenu;
 
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Device menu
+ * @author alex
+ *
+ */
 public class DeviceMenu extends JMenu {
 
 	private static final long serialVersionUID = -3624790857729577320L;
@@ -32,41 +37,41 @@ public class DeviceMenu extends JMenu {
 	private Action connectDeviceAction;
 	private Action refreshDeviceAction;
 	private Action disconnectDeviceAction;
-	
+
 	/**
 	 * @param i18nKey
 	 */
-	public DeviceMenu(String i18nKey) {
+	public DeviceMenu(final String i18nKey) {
 		super(I18nUtils.getString(i18nKey));
 	}
-	
+
 	/**
 	 * @param connectDeviceAction
 	 */
-	public void setConnectDeviceAction(Action connectDeviceAction) {
+	public void setConnectDeviceAction(final Action connectDeviceAction) {
 		this.connectDeviceAction = connectDeviceAction;
 	}
-	
+
 	/**
 	 * @param refreshDeviceAction
 	 */
-	public void setRefreshDeviceAction(Action refreshDeviceAction) {
+	public void setRefreshDeviceAction(final Action refreshDeviceAction) {
 		this.refreshDeviceAction = refreshDeviceAction;
 	}
-	
+
 	/**
 	 * @param disconnectDeviceAction
 	 */
-	public void setDisconnectDeviceAction(Action disconnectDeviceAction) {
+	public void setDisconnectDeviceAction(final Action disconnectDeviceAction) {
 		this.disconnectDeviceAction = disconnectDeviceAction;
 	}
-	
+
 	/**
 	 * Initializes menu
 	 */
 	public void initialize() {
-        add(connectDeviceAction);
-        add(refreshDeviceAction);
-        add(disconnectDeviceAction);
+		add(connectDeviceAction);
+		add(refreshDeviceAction);
+		add(disconnectDeviceAction);
 	}
 }

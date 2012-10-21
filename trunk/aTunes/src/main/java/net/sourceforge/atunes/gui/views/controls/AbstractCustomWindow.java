@@ -28,30 +28,35 @@ import javax.swing.JWindow;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 
+/**
+ * A custom window
+ * @author alex
+ *
+ */
 public abstract class AbstractCustomWindow extends JWindow {
 
-    private static final long serialVersionUID = -8846047318549650938L;
+	private static final long serialVersionUID = -8846047318549650938L;
 
-    /**
-     * Creates a window with given parent (owner) and size
-     * @param owner
-     * @param width
-     * @param height
-     */
-    public AbstractCustomWindow(JFrame owner, int width, int height) {
-        super(owner);
-        setSize(width, height);
-        setLocationRelativeTo(owner);
-        GuiUtils.addAppIcons(this);
-    }
+	/**
+	 * Creates a window with given parent (owner) and size
+	 * @param owner
+	 * @param width
+	 * @param height
+	 */
+	public AbstractCustomWindow(final JFrame owner, final int width, final int height) {
+		super(owner);
+		setSize(width, height);
+		setLocationRelativeTo(owner);
+		GuiUtils.addAppIcons(this);
+	}
 
-    @Override
-    public Component add(Component comp) {
-    	if (comp instanceof JComponent) {
-    		((JComponent)comp).setOpaque(false);
-    	}
-        Component c = super.add(comp);
-        GuiUtils.applyComponentOrientation(this);
-    	return c;
-    }    
+	@Override
+	public Component add(final Component comp) {
+		if (comp instanceof JComponent) {
+			((JComponent)comp).setOpaque(false);
+		}
+		Component c = super.add(comp);
+		GuiUtils.applyComponentOrientation(this);
+		return c;
+	}
 }

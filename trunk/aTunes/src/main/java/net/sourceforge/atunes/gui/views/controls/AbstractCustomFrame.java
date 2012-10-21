@@ -27,26 +27,31 @@ import javax.swing.JFrame;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 
+/**
+ * A custom frame
+ * @author alex
+ *
+ */
 public abstract class AbstractCustomFrame extends JFrame {
 
-    private static final long serialVersionUID = -7162399690169458143L;
+	private static final long serialVersionUID = -7162399690169458143L;
 
-    /**
-     * Default constructor
-     */
-    public AbstractCustomFrame() {
-        super();
-        GuiUtils.addAppIcons(this);
-    }
+	/**
+	 * Default constructor
+	 */
+	public AbstractCustomFrame() {
+		super();
+		GuiUtils.addAppIcons(this);
+	}
 
-    @Override
-    public Component add(Component comp) {
-    	if (comp instanceof JComponent) {
-    		((JComponent)comp).setOpaque(false);
-    	}
-        Component c = super.add(comp);
-        GuiUtils.applyComponentOrientation(this);
-    	return c;
-    }    
+	@Override
+	public Component add(final Component comp) {
+		if (comp instanceof JComponent) {
+			((JComponent)comp).setOpaque(false);
+		}
+		Component c = super.add(comp);
+		GuiUtils.applyComponentOrientation(this);
+		return c;
+	}
 
 }

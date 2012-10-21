@@ -49,6 +49,11 @@ import net.sourceforge.atunes.model.ITreeCellRendererCode;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
+/**
+ * Defines look and feel
+ * @author alex
+ *
+ */
 @PluginApi
 public abstract class AbstractLookAndFeel implements ILookAndFeel {
 
@@ -56,118 +61,118 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
 	 * Base font
 	 */
 	private Font baseFont;
-	
+
 	private IOSManager osManager;
-	
+
 	/**
 	 * @return
 	 */
 	public IOSManager getOsManager() {
 		return osManager;
 	}
-	
-    @Override
+
+	@Override
 	public abstract String getName();
 
-    @Override
+	@Override
 	public abstract String getDescription();
 
-    @Override
+	@Override
 	public abstract void initializeLookAndFeel();
 
-    @Override
+	@Override
 	public abstract void setLookAndFeel(String skin);
 
-    @Override
+	@Override
 	public abstract String getDefaultSkin();
 
-    @Override
+	@Override
 	public abstract List<String> getSkins();
 
-    @Override
+	@Override
 	public boolean isDialogUndecorated() {
-        return false;
-    }
+		return false;
+	}
 
-    @Override
+	@Override
 	public TreeCellRenderer getTreeCellRenderer(final ITreeCellRendererCode<?, ?> code) {
-        return new LookAndFeelTreeCellRenderer(code);
-    }
+		return new LookAndFeelTreeCellRenderer(code);
+	}
 
-    @Override
+	@Override
 	public TableCellRenderer getTableCellRenderer(final ITableCellRendererCode<?, ?> code) {
-        return new LookAndFeelTableCellRenderer(code);
-    }
+		return new LookAndFeelTableCellRenderer(code);
+	}
 
-    @Override
+	@Override
 	public TableCellRenderer getTableHeaderCellRenderer(final ITableCellRendererCode<?, ?> code) {
-        return new LookAndFeelTableHeaderCellRenderer(code);
-    }
+		return new LookAndFeelTableHeaderCellRenderer(code);
+	}
 
-    @Override
+	@Override
 	public ListCellRenderer getListCellRenderer(final IListCellRendererCode<?, ?> code) {
-        return new LookAndFeelListCellRenderer(code);
-    }
+		return new LookAndFeelListCellRenderer(code);
+	}
 
-    @Override
+	@Override
 	public boolean customComboBoxRenderersSupported() {
-    	return true;
-    }
-    
-    @Override
-	public void putClientProperties(JComponent c) {
-        // No properties by default
-    }
+		return true;
+	}
 
-    @Override
+	@Override
+	public void putClientProperties(final JComponent c) {
+		// No properties by default
+	}
+
+	@Override
 	public boolean isCustomPlayerControlsSupported() {
-        return false;
-    }
+		return false;
+	}
 
-    @Override
+	@Override
 	public Border getShadowBorder() {
-        return null;
-    }
+		return null;
+	}
 
-    @Override
-	public void initializeFonts(Font baseFont) {
-    	this.baseFont = baseFont;
-    	setUIFont(new FontUIResource(baseFont));
-    }
+	@Override
+	public void initializeFonts(final Font baseFont) {
+		this.baseFont = baseFont;
+		setUIFont(new FontUIResource(baseFont));
+	}
 
-    /**
-     * Changes all components' font to a given one
-     * @param f
-     */
-    protected void setUIFont (FontUIResource f){
-    	Enumeration<Object> keys = UIManager.getDefaults().keys();
-    	while (keys.hasMoreElements()) {
-    		Object key = keys.nextElement();
-    		Object value = UIManager.get (key);
-    		if (value instanceof FontUIResource) {
-    			UIManager.put (key, f);
-    		}
-    	}
-    }    
-    
-    @Override
+	/**
+	 * Changes all components' font to a given one
+	 * @param f
+	 */
+	protected void setUIFont (final FontUIResource f){
+		Enumeration<Object> keys = UIManager.getDefaults().keys();
+		while (keys.hasMoreElements()) {
+			Object key = keys.nextElement();
+			Object value = UIManager.get (key);
+			if (value instanceof FontUIResource) {
+				UIManager.put (key, f);
+			}
+		}
+	}
+
+	@Override
 	public boolean allowsSkins() {
-    	return getSkins() != null && !getSkins().isEmpty();
-    }
+		return getSkins() != null && !getSkins().isEmpty();
+	}
 
 	@Override
 	public Color getPaintForSpecialControls() {
-		return UIManager.getColor("Label.foreground"); 
+		return UIManager.getColor("Label.foreground");
 	}
-	
-	@Override
-	public Color getPaintForDisabledSpecialControls() {
-		return UIManager.getColor("Label.foreground"); 
-	}	
 
 	@Override
-	public Color getPaintForColorMutableIcon(Component c, boolean isSelected) {
-		return isSelected ? UIManager.getColor("Tree.selectionForeground") : UIManager.getColor("Label.foreground");	
+	public Color getPaintForDisabledSpecialControls() {
+		return UIManager.getColor("Label.foreground");
+	}
+
+	@Override
+	public Color getPaintForColorMutableIcon(final Component c, final boolean isSelected) {
+		return isSelected ? UIManager.getColor("Tree.selectionForeground") : UIManager.getColor("Label.foreground");
 	}
 
 	@Override
@@ -175,122 +180,122 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
 		return new Dimension(20, 20);
 	}
 
-	
+
 	/********************************************************* FONTS *******************************************************/
-	
-    @Override
+
+	@Override
 	public Font getDefaultFont() {
-        return this.baseFont;
-    }
-    
+		return this.baseFont;
+	}
+
 	@Override
 	public abstract boolean supportsCustomFontSettings();
-	
-    @Override
+
+	@Override
 	public final Font getAboutBigFont() {
-        return getDefaultFont().deriveFont(getDefaultFont().getSize() + 8f);
-    }
+		return getDefaultFont().deriveFont(getDefaultFont().getSize() + 8f);
+	}
 
-    @Override
+	@Override
 	public Font getPlayListFont() {
-        return getDefaultFont();
-    }
+		return getDefaultFont();
+	}
 
-    @Override
+	@Override
 	public Font getPlayListSelectedItemFont() {
-    	if (getPlayListFont() != null) {
-    		return getPlayListFont().deriveFont(Font.BOLD);
-    	}
-    	return getDefaultFont();
-    }
+		if (getPlayListFont() != null) {
+			return getPlayListFont().deriveFont(Font.BOLD);
+		}
+		return getDefaultFont();
+	}
 
-    @Override
+	@Override
 	public final Font getContextInformationBigFont() {
-        return getDefaultFont().deriveFont(getDefaultFont().getSize() + 8f);
-    }
+		return getDefaultFont().deriveFont(getDefaultFont().getSize() + 8f);
+	}
 
-    @Override
+	@Override
 	public final Font getPropertiesDialogBigFont() {
-        return getDefaultFont().deriveFont(getDefaultFont().getSize() + 4f);
-    }
+		return getDefaultFont().deriveFont(getDefaultFont().getSize() + 4f);
+	}
 
-    @Override
+	@Override
 	public final Font getOsdLine1Font() {
-        return getDefaultFont().deriveFont(Font.BOLD, getDefaultFont().getSize() + 4f);
-    }
+		return getDefaultFont().deriveFont(Font.BOLD, getDefaultFont().getSize() + 4f);
+	}
 
-    @Override
+	@Override
 	public final Font getOsdLine2Font() {
-        return getDefaultFont().deriveFont(getDefaultFont().getSize() + 2f);
-    }
+		return getDefaultFont().deriveFont(getDefaultFont().getSize() + 2f);
+	}
 
-    @Override
+	@Override
 	public final Font getOsdLine3Font() {
-        return getOsdLine2Font();
-    }
+		return getOsdLine2Font();
+	}
 
-    @Override
+	@Override
 	public final Font getFullScreenLine1Font() {
-        return  getDefaultFont().deriveFont(getDefaultFont().getSize() + 35f);
-    }
+		return  getDefaultFont().deriveFont(getDefaultFont().getSize() + 35f);
+	}
 
-    @Override
+	@Override
 	public final Font getFullScreenLine2Font() {
-        return  getDefaultFont().deriveFont(getDefaultFont().getSize() + 20f);
-    }
+		return  getDefaultFont().deriveFont(getDefaultFont().getSize() + 20f);
+	}
 
-    @Override
+	@Override
 	public int getSplitPaneDividerSize() {
-    	return new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT).getDividerSize();
-    }
-    
-    @Override
-	public JTable getTable() {
-    	JTable table = new JTable();
-    	table.setShowGrid(false);
-    	return table;
-    }
-    
-    @Override
-	public void decorateTable(JTable table) {
-    	table.setShowGrid(false);
-    }
-    
-    @Override
-	public JScrollPane getTableScrollPane(JTable table) {
-    	return getScrollPane(table);
-    }
-    
-    @Override
-	public JScrollPane getTreeScrollPane(JTree tree) {
-    	return getScrollPane(tree);
-    }
+		return new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT).getDividerSize();
+	}
 
-    @Override
+	@Override
+	public JTable getTable() {
+		JTable table = new JTable();
+		table.setShowGrid(false);
+		return table;
+	}
+
+	@Override
+	public void decorateTable(final JTable table) {
+		table.setShowGrid(false);
+	}
+
+	@Override
+	public JScrollPane getTableScrollPane(final JTable table) {
+		return getScrollPane(table);
+	}
+
+	@Override
+	public JScrollPane getTreeScrollPane(final JTree tree) {
+		return getScrollPane(tree);
+	}
+
+	@Override
 	public JList getList() {
-    	return new JList();
-    }
-    
-    @Override
-	public JScrollPane getListScrollPane(JList list) {
-    	return getScrollPane(list);
-    }
-    
-    @Override
-	public JScrollPane getScrollPane(Component component) {
-    	return new JScrollPane(component);
-    }
+		return new JList();
+	}
+
+	@Override
+	public JScrollPane getListScrollPane(final JList list) {
+		return getScrollPane(list);
+	}
+
+	@Override
+	public JScrollPane getScrollPane(final Component component) {
+		return new JScrollPane(component);
+	}
 
 	/**
 	 * @param osManager the osManager to set
-	 */ 
-    @Override
-	public void setOsManager(IOSManager osManager) {
+	 */
+	@Override
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
 	@Override
-	public void setBaseFont(Font f) {
+	public void setBaseFont(final Font f) {
 		this.baseFont = f;
 	}
 }
