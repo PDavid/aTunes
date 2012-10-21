@@ -23,91 +23,108 @@ package net.sourceforge.atunes.kernel.modules.webservices.lastfm.data;
 import net.sourceforge.atunes.model.ITrackInfo;
 import de.umass.lastfm.Track;
 
+/**
+ * Information about a track retrieved from last.fm
+ * @author alex
+ *
+ */
 public class LastFmTrack implements ITrackInfo {
 
-    private static final long serialVersionUID = -2692319576271311514L;
+	private static final long serialVersionUID = -2692319576271311514L;
 
-    private String title;
-    private String url;
-    private String artist;
-    private String album;
-    
+	private String title;
+	private String url;
+	private String artist;
+	private String album;
 
-    /**
-     * Gets the track.
-     * 
-     * @return the track
-     */
-    protected static LastFmTrack getTrack(Track t) {
-        LastFmTrack track = new LastFmTrack();
+	private transient boolean available;
 
-        track.title = t.getName();
-        track.url = t.getUrl();
-        track.artist = t.getArtist();
-        track.album = t.getAlbum();
 
-        return track;
-    }
+	/**
+	 * Gets the track.
+	 * 
+	 * @return the track
+	 */
+	protected static LastFmTrack getTrack(final Track t) {
+		LastFmTrack track = new LastFmTrack();
 
-    /**
-     * Gets the title.
-     * 
-     * @return the title
-     */
-    @Override
-    public String getTitle() {
-        return title;
-    }
+		track.title = t.getName();
+		track.url = t.getUrl();
+		track.artist = t.getArtist();
+		track.album = t.getAlbum();
 
-    /**
-     * Gets the url.
-     * 
-     * @return the url
-     */
-    @Override
-    public String getUrl() {
-        return url;
-    }
+		return track;
+	}
 
-    /**
-     * Sets the title.
-     * 
-     * @param title
-     *            the title to set
-     */
-    @Override
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	/**
+	 * Gets the title.
+	 * 
+	 * @return the title
+	 */
+	@Override
+	public String getTitle() {
+		return title;
+	}
 
-    /**
-     * Sets the url.
-     * 
-     * @param url
-     *            the url to set
-     */
-    @Override
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	/**
+	 * Gets the url.
+	 * 
+	 * @return the url
+	 */
+	@Override
+	public String getUrl() {
+		return url;
+	}
 
-    @Override
-    public String getArtist() {
+	/**
+	 * Sets the title.
+	 * 
+	 * @param title
+	 *            the title to set
+	 */
+	@Override
+	public void setTitle(final String title) {
+		this.title = title;
+	}
+
+	/**
+	 * Sets the url.
+	 * 
+	 * @param url
+	 *            the url to set
+	 */
+	@Override
+	public void setUrl(final String url) {
+		this.url = url;
+	}
+
+	@Override
+	public String getArtist() {
 		return artist;
 	}
-    
-    @Override
-    public String getAlbum() {
+
+	@Override
+	public String getAlbum() {
 		return album;
 	}
-    
-    @Override
-    public void setAlbum(String album) {
+
+	@Override
+	public void setAlbum(final String album) {
 		this.album = album;
 	}
 
-    @Override
-    public void setArtist(String artist) {
+	@Override
+	public void setArtist(final String artist) {
 		this.artist = artist;
+	}
+
+	@Override
+	public boolean isAvailable() {
+		return available;
+	}
+
+	@Override
+	public void setAvailable(final boolean available) {
+		this.available = available;
 	}
 }

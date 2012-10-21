@@ -29,58 +29,67 @@ import java.io.Serializable;
  */
 public interface ITrackInfo extends Serializable {
 
-    /**
-     * Gets the title.
-     * 
-     * @return the title
-     */
-    public String getTitle();
+	/**
+	 * Gets the title.
+	 * 
+	 * @return the title
+	 */
+	String getTitle();
 
-    /**
-     * Gets the artist
-     * @return
-     */
-    public String getArtist();
-    
-    /**
-     * Gets the album
-     * @return
-     */
-    public String getAlbum();
-    
-    /**
-     * Gets the url.
-     * 
-     * @return the url
-     */
-    public String getUrl();
+	/**
+	 * Gets the artist
+	 * @return
+	 */
+	String getArtist();
 
-    /**
-     * Sets the title.
-     * 
-     * @param title
-     *            the title to set
-     */
-    public void setTitle(String title);
+	/**
+	 * Gets the album
+	 * @return
+	 */
+	String getAlbum();
 
-    /**
-     * Sets the url.
-     * 
-     * @param url
-     *            the url to set
-     */
-    public void setUrl(String url);    
-    
-    /**
-     * Sets the artist
-     * @param artist
-     */
-    public void setArtist(String artist);
-    
-    /**
-     * Sets the album
-     * @param album
-     */
-    public void setAlbum(String album);
+	/**
+	 * Gets the url.
+	 * 
+	 * @return the url
+	 */
+	String getUrl();
 
+	/**
+	 * Sets the title.
+	 * 
+	 * @param title
+	 *            the title to set
+	 */
+	void setTitle(String title);
+
+	/**
+	 * Sets the url.
+	 * 
+	 * @param url
+	 *            the url to set
+	 */
+	void setUrl(String url);
+
+	/**
+	 * Sets the artist
+	 * @param artist
+	 */
+	void setArtist(String artist);
+
+	/**
+	 * Sets the album
+	 * @param album
+	 */
+	void setAlbum(String album);
+
+	/**
+	 * @return if track is available in repository
+	 */
+	boolean isAvailable();
+
+	/**
+	 * @param available
+	 */
+	void setAvailable(boolean available);
 }

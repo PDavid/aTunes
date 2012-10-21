@@ -28,21 +28,26 @@ import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IYear;
 
+/**
+ * Tree cell decorator for years
+ * @author alex
+ *
+ */
 public class YearTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IYear> {
 
 	private IIconFactory dateIcon;
-	
+
 	/**
 	 * @param dateIcon
 	 */
-	public void setDateIcon(IIconFactory dateIcon) {
+	public void setDateIcon(final IIconFactory dateIcon) {
 		this.dateIcon = dateIcon;
 	}
-	
-    @Override
-    public Component decorateTreeCellComponent(JLabel component, IYear userObject, boolean isSelected) {
-        component.setIcon(dateIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-        return component;
-    }
+
+	@Override
+	public Component decorateTreeCellComponent(final JLabel component, final IYear userObject, final boolean isSelected) {
+		component.setIcon(dateIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+		return component;
+	}
 
 }

@@ -30,49 +30,56 @@ import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IStateNavigation;
 
+/**
+ * Tree cell decorator for albums
+ * @author alex
+ *
+ */
 public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IAlbum> {
 
 	private IFavoritesHandler favoritesHandler;
-	
+
 	private IIconFactory albumFavoriteIcon;
-	
+
 	private IIconFactory albumSmallIcon;
-	
+
 	private IStateNavigation stateNavigation;
-	
+
 	/**
 	 * @param stateNavigation
 	 */
-	public void setStateNavigation(IStateNavigation stateNavigation) {
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
 		this.stateNavigation = stateNavigation;
 	}
 
 	/**
 	 * @param albumFavoriteIcon
 	 */
-	public void setAlbumFavoriteIcon(IIconFactory albumFavoriteIcon) {
+	public void setAlbumFavoriteIcon(final IIconFactory albumFavoriteIcon) {
 		this.albumFavoriteIcon = albumFavoriteIcon;
 	}
-	
+
 	/**
 	 * @param albumSmallIcon
 	 */
-	public void setAlbumSmallIcon(IIconFactory albumSmallIcon) {
+	public void setAlbumSmallIcon(final IIconFactory albumSmallIcon) {
 		this.albumSmallIcon = albumSmallIcon;
 	}
-	
-    @Override
-    public Component decorateTreeCellComponent(JLabel component, IAlbum userObject, boolean isSelected) {
-    	if (!stateNavigation.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteAlbumsInfo().containsValue(userObject)) {
-    		component.setIcon(albumSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-    	} else {
-    		component.setIcon(albumFavoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-    	}
-        return component;
-    }
-    
-    public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
-		this.favoritesHandler = favoritesHandler;
+
+	@Override
+	public Component decorateTreeCellComponent(final JLabel component, final IAlbum userObject, final boolean isSelected) {
+		if (!stateNavigation.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteAlbumsInfo().containsValue(userObject)) {
+			component.setIcon(albumSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+		} else {
+			component.setIcon(albumFavoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+		}
+		return component;
 	}
 
+	/**
+	 * @param favoritesHandler
+	 */
+	public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
+		this.favoritesHandler = favoritesHandler;
+	}
 }

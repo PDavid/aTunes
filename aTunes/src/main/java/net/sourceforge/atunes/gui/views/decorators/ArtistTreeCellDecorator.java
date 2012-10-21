@@ -30,51 +30,56 @@ import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IStateNavigation;
 
+/**
+ * Tree cell decorator for artists
+ * @author alex
+ *
+ */
 public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IArtist> {
 
 	private IFavoritesHandler favoritesHandler;
-	
+
 	private IIconFactory artistImageIcon;
-	
+
 	private IIconFactory artistFavoriteIcon;
-	
+
 	private IStateNavigation stateNavigation;
-	
+
 	/**
 	 * @param stateNavigation
 	 */
-	public void setStateNavigation(IStateNavigation stateNavigation) {
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
 		this.stateNavigation = stateNavigation;
 	}
-	
-    @Override
-    public Component decorateTreeCellComponent(JLabel component, IArtist userObject, boolean isSelected) {
-    	if (!stateNavigation.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteArtistsInfo().containsKey(userObject.getName())) {
-    		component.setIcon(artistImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-    	} else {
-    		component.setIcon(artistFavoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-    	}
-        return component;
-    }
-    
-    /**
-     * @param favoritesHandler
-     */
-    public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
+
+	@Override
+	public Component decorateTreeCellComponent(final JLabel component, final IArtist userObject, final boolean isSelected) {
+		if (!stateNavigation.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteArtistsInfo().containsKey(userObject.getName())) {
+			component.setIcon(artistImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+		} else {
+			component.setIcon(artistFavoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+		}
+		return component;
+	}
+
+	/**
+	 * @param favoritesHandler
+	 */
+	public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
 		this.favoritesHandler = favoritesHandler;
 	}
-    
-    /**
-     * @param artistImageIcon
-     */
-    public void setArtistImageIcon(IIconFactory artistImageIcon) {
+
+	/**
+	 * @param artistImageIcon
+	 */
+	public void setArtistImageIcon(final IIconFactory artistImageIcon) {
 		this.artistImageIcon = artistImageIcon;
 	}
-    
-    /**
-     * @param artistFavoriteIcon
-     */
-    public void setArtistFavoriteIcon(IIconFactory artistFavoriteIcon) {
+
+	/**
+	 * @param artistFavoriteIcon
+	 */
+	public void setArtistFavoriteIcon(final IIconFactory artistFavoriteIcon) {
 		this.artistFavoriteIcon = artistFavoriteIcon;
 	}
 }

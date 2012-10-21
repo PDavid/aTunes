@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.context.artist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
@@ -40,6 +41,15 @@ public class ArtistPopularTracksDataSource implements IContextInformationSource 
 
 	private IUnknownObjectChecker unknownObjectChecker;
 
+	private IRepositoryHandler repositoryHandler;
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+
 	/**
 	 * @param unknownObjectChecker
 	 */
@@ -50,6 +60,7 @@ public class ArtistPopularTracksDataSource implements IContextInformationSource 
 	@Override
 	public void getData(final IAudioObject audioObject) {
 		this.topTracks = getTopTracksData(audioObject);
+		repositoryHandler.checkAvailability(audioObject.getArtist(unknownObjectChecker), this.topTracks.getTracks());
 	}
 
 	/**

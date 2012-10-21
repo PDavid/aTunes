@@ -121,6 +121,7 @@
 	<bean class="net.sourceforge.atunes.kernel.modules.state.PluginsTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.context.similar.SimilarArtistTableCellRendererCode" parent="contextTableRowPanel" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.gui.TextAndIconTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.context.TrackInfoTableCellRendererCode" scope="prototype"/>
 	
 	<!-- COLUMN MODELS -->
 	<bean id="abstractCommonColumnModel" class="net.sourceforge.atunes.gui.AbstractCommonColumnModel" abstract="true"/>

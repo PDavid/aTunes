@@ -26,6 +26,7 @@ import javax.swing.ListSelectionModel;
 import net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.ITrackInfo;
 
 /**
  * Creates a table to show context information
@@ -60,8 +61,8 @@ public class ContextInformationTableFactory {
 	public JTable getNewTracksTable(final ITracksTableListener listener) {
 		final JTable tracksTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
 		tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tracksTable.setDefaultRenderer(String.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
-				beanFactory.getBean(ComponentOrientationTableCellRendererCode.class)));
+		tracksTable.setDefaultRenderer(ITrackInfo.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
+				beanFactory.getBean(TrackInfoTableCellRendererCode.class)));
 
 		tracksTable.setDefaultRenderer(Integer.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
 				beanFactory.getBean(ComponentOrientationTableCellRendererCode.class)));

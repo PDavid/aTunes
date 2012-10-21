@@ -28,21 +28,26 @@ import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IRadio;
 
+/**
+ * Tree cell decorator for radios
+ * @author alex
+ *
+ */
 public class RadioTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IRadio> {
-	
+
 	private IIconFactory radioSmallIcon;
-	
+
 	/**
 	 * @param radioSmallIcon
 	 */
-	public void setRadioSmallIcon(IIconFactory radioSmallIcon) {
+	public void setRadioSmallIcon(final IIconFactory radioSmallIcon) {
 		this.radioSmallIcon = radioSmallIcon;
 	}
 
-    @Override
-    public Component decorateTreeCellComponent(JLabel component, IRadio userObject, boolean isSelected) {
-        component.setIcon(radioSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-        return component;
-    }
+	@Override
+	public Component decorateTreeCellComponent(final JLabel component, final IRadio userObject, final boolean isSelected) {
+		component.setIcon(radioSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+		return component;
+	}
 
 }

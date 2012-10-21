@@ -34,6 +34,7 @@ import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -69,6 +70,15 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 
 	private IUnknownObjectChecker unknownObjectChecker;
 
+	private IRepositoryHandler repositoryHandler;
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+
 	/**
 	 * @param unknownObjectChecker
 	 */
@@ -80,6 +90,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 	public void getData(final IAudioObject audioObject) {
 		this.audioObject = audioObject;
 		this.albumInfo = getAlbumInfoData(audioObject);
+		repositoryHandler.checkAvailability(audioObject.getArtist(unknownObjectChecker), this.albumInfo.getTracks());
 		this.image = getImageData(albumInfo, audioObject);
 	}
 
@@ -120,7 +131,6 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 		}
 
 		return album;
-		// Get image of album or custom image for audio object
 	}
 
 	/**

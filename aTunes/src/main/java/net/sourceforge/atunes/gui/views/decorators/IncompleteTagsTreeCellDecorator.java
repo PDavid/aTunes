@@ -30,32 +30,37 @@ import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.ITreeObject;
 
+/**
+ * Cell decorator to select with a special color elements with incomplete tags
+ * @author alex
+ *
+ */
 public class IncompleteTagsTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, ITreeObject<?>> {
 
 	private ITagHandler tagHandler;
-	
+
 	private IStateNavigation stateNavigation;
-	
+
 	/**
 	 * @param stateNavigation
 	 */
-	public void setStateNavigation(IStateNavigation stateNavigation) {
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
 		this.stateNavigation = stateNavigation;
 	}
-	
+
 	/**
 	 * @param tagHandler
 	 */
-	public void setTagHandler(ITagHandler tagHandler) {
+	public void setTagHandler(final ITagHandler tagHandler) {
 		this.tagHandler = tagHandler;
 	}
-	
+
 	@Override
-    public Component decorateTreeCellComponent(JLabel component, ITreeObject<?> userObject, boolean isSelected) {
-        if (stateNavigation.isHighlightIncompleteTagElements() && tagHandler.hasIncompleteTags(userObject)) {
-        	component.setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
-        }
-        return component;
-    }
+	public Component decorateTreeCellComponent(final JLabel component, final ITreeObject<?> userObject, final boolean isSelected) {
+		if (stateNavigation.isHighlightIncompleteTagElements() && tagHandler.hasIncompleteTags(userObject)) {
+			component.setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
+		}
+		return component;
+	}
 
 }

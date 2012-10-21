@@ -35,64 +35,64 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 class ContextTracksTableModel extends DefaultTableModel implements ITrackTableModel {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7703905638405573814L;
-	
+
 	private IAlbumInfo album;
 
-    /**
-     * @param album
-     */
-    public void setAlbum(IAlbumInfo album) {
+	/**
+	 * @param album
+	 */
+	public void setAlbum(final IAlbumInfo album) {
 		this.album = album;
 		fireTableDataChanged();
 	}
 
-    @Override
-    public Class<?> getColumnClass(int columnIndex) {
-        return columnIndex == 0 ? Integer.class : String.class;
-    }
+	@Override
+	public Class<?> getColumnClass(final int columnIndex) {
+		return columnIndex == 0 ? Integer.class : ITrackInfo.class;
+	}
 
-    @Override
-    public int getColumnCount() {
-        return 2;
-    }
+	@Override
+	public int getColumnCount() {
+		return 2;
+	}
 
-    @Override
-    public String getColumnName(int columnIndex) {
-        return columnIndex != 0 ? I18nUtils.getString("SONGS") : "";
-    }
+	@Override
+	public String getColumnName(final int columnIndex) {
+		return columnIndex != 0 ? I18nUtils.getString("SONGS") : "";
+	}
 
-    @Override
-    public int getRowCount() {
-        return album != null ? album.getTracks().size() : 0;
-    }
+	@Override
+	public int getRowCount() {
+		return album != null ? album.getTracks().size() : 0;
+	}
 
-    /**
-     * Gets the track.
-     * 
-     * @param index
-     *            the index
-     * 
-     * @return the track
-     */
-    @Override
-    public ITrackInfo getTrack(int index) {
-        return album != null ? album.getTracks().get(index) : null;
-    }
+	/**
+	 * Gets the track.
+	 * 
+	 * @param index
+	 *            the index
+	 * 
+	 * @return the track
+	 */
+	@Override
+	public ITrackInfo getTrack(final int index) {
+		return album != null ? album.getTracks().get(index) : null;
+	}
 
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        if (columnIndex == 0) {
-            return StringUtils.getString(rowIndex + 1, ".");
-        }
-        return album != null ? album.getTracks().get(rowIndex).getTitle() : "";
-    }
+	@Override
+	public Object getValueAt(final int rowIndex, final int columnIndex) {
+		if (columnIndex == 0) {
+			return StringUtils.getString(rowIndex + 1, ".");
+		}
+		return getTrack(rowIndex);
+	}
 
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
-    }
+	@Override
+	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
+		return false;
+	}
 }

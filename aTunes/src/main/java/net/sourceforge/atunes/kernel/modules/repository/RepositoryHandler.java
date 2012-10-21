@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAlbum;
@@ -50,9 +49,11 @@ import net.sourceforge.atunes.model.IRepositoryTransaction;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IStatisticsHandler;
+import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.ViewMode;
+import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -610,6 +611,22 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		return result;
 	}
 
+	@Override
+	public void checkAvailability(final String artist, final List<ITrackInfo> tracks) {
+		if (StringUtils.isEmpty(artist)) {
+			throw new IllegalArgumentException("Invalid artist name");
+		}
+		if (!CollectionUtils.isEmpty(tracks)) {
+			IArtist a = getArtist(artist);
+			if (a != null) {
+				Map<String, ILocalAudioObject> normalizedTitles = getNormalizedAudioObjectsTitles(a);
+				for (ITrackInfo track : tracks) {
+					track.setAvailable(normalizedTitles.containsKey(track.getTitle().toLowerCase()));
+				}
+			}
+		}
+	}
+
 	/**
 	 * 
 	 * @param artist
@@ -633,10 +650,10 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 
 		IBackgroundWorker<List<ILocalAudioObject>> worker = backgroundWorkerFactory.getWorker();
 		worker.setActionsBeforeBackgroundStarts(new ShowIndeterminateDialogRunnable(indeterminateDialog));
-		ImportFoldersToRepositoryCallable callable = Context.getBean(ImportFoldersToRepositoryCallable.class);
+		ImportFoldersToRepositoryCallable callable = getBean(ImportFoldersToRepositoryCallable.class);
 		callable.setFolders(folders);
 		worker.setBackgroundActions(callable);
-		ImportFoldersToRepositoryActionsWithBackgroundResult actionsWhenDone = Context.getBean(ImportFoldersToRepositoryActionsWithBackgroundResult.class);
+		ImportFoldersToRepositoryActionsWithBackgroundResult actionsWhenDone = getBean(ImportFoldersToRepositoryActionsWithBackgroundResult.class);
 		actionsWhenDone.setFolders(folders);
 		actionsWhenDone.setPath(path);
 		actionsWhenDone.setIndeterminateDialog(indeterminateDialog);
