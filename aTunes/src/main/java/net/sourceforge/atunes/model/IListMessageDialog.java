@@ -23,12 +23,17 @@ package net.sourceforge.atunes.model;
 import java.util.List;
 
 
-public interface IAudioFilesRemovedListener {
+/**
+ * A dialog to show a message with a list of items
+ * @author alex
+ *
+ */
+public interface IListMessageDialog extends IDialog {
 
 	/**
-	 * Called when audio files are removed physically
-	 * 
-	 * @param audioFiles
+	 * Show message for principal frame
+	 * @param message
+	 * @param items
 	 */
-	public void audioFilesRemoved(List<ILocalAudioObject> audioFiles);
+	void showMessage(String message, List<String> items);
 }

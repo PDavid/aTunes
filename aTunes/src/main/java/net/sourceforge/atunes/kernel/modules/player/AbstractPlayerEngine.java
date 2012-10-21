@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.player;
 
 import java.io.File;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -395,7 +396,14 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	public final void handlePlayerEngineError(final Exception e) {
 		Logger.error(StringUtils.getString("Player Error: ", e));
 		Logger.error(e);
-		dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(e);
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(e);
+			}
+		});
+		// Force a stop to finish all player engine processes
+		stopCurrentAudioObject(false);
 	}
 
 	/**
