@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
@@ -537,13 +536,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	public void repositoryChanged(final IRepository repository) {
 		persistRepositoryTask.persist(repository);
 		favoritesHandler.updateFavorites(repository);
-		// Update navigator
-		GuiUtils.callInEventDispatchThread(new Runnable() {
-			@Override
-			public void run() {
-				navigationHandler.repositoryReloaded();
-			}
-		});
 	}
 
 	protected final void startTransaction() {

@@ -22,11 +22,11 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.util.concurrent.Callable;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -83,14 +83,6 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 				return null;
 			}
 		});
-		worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
-
-			@Override
-			public void call(final Void result) {
-				Logger.debug("Calling notifyFinishRefresh");
-				getRepositoryLoaderListener().notifyFinishRefresh(RepositoryRefreshLoader.this);
-			}
-		});
 		worker.execute();
 	}
 
@@ -121,6 +113,11 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 
 	@Override
 	protected void notifyFinishLoader() {
-		// Nothing to do, it's done in background worker setActionsWhenDone
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				getRepositoryLoaderListener().notifyFinishRefresh(RepositoryRefreshLoader.this);
+			}
+		});
 	}
 }

@@ -24,48 +24,53 @@ import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
+/**
+ * Access logger service
+ * @author alex
+ *
+ */
 @PluginApi
 public class LoggerService {
 
-    /**
-     * Creates a new logger service to be used by plugins
-     */
-    public LoggerService() {
-    }
+	/**
+	 * Creates a new logger service to be used by plugins
+	 */
+	public LoggerService() {
+	}
 
-    /**
-     * Logs a information message
-     * 
-     * @param message
-     */
-    public void info(String message) {
-        Logger.info(message);
-    }
+	/**
+	 * Logs a information message
+	 * 
+	 * @param message
+	 */
+	public void info(final String message) {
+		Logger.info(message);
+	}
 
-    /**
-     * Logs a debug message
-     * 
-     * @param message
-     */
-    public void debug(String message) {
-        Logger.debug(message);
-    }
+	/**
+	 * Logs a debug message
+	 * 
+	 * @param message
+	 */
+	public void debug(final String message) {
+		Logger.debug(message);
+	}
 
-    /**
-     * Logs an error message
-     * 
-     * @param message
-     */
-    public void error(String message) {
-        Logger.error(message);
-    }
+	/**
+	 * Logs an error message
+	 * 
+	 * @param message
+	 */
+	public void error(final String message) {
+		Logger.error(message);
+	}
 
-    /**
-     * Logs an exception
-     * 
-     * @param exception
-     */
-    public void error(Exception exception) {
-        Logger.error(exception);
-    }
+	/**
+	 * Logs an exception
+	 * 
+	 * @param exception
+	 */
+	public void error(final Exception exception) {
+		Logger.error(exception);
+	}
 }

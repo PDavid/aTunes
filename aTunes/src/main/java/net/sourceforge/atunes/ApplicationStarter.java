@@ -30,6 +30,11 @@ import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * Do all necessary to start application
+ * @author alex
+ *
+ */
 public class ApplicationStarter {
 
 	private IApplicationArguments applicationArguments;
@@ -42,72 +47,72 @@ public class ApplicationStarter {
 	/**
 	 * @param kernel
 	 */
-	public void setKernel(IKernel kernel) {
+	public void setKernel(final IKernel kernel) {
 		this.kernel = kernel;
 	}
-	
+
 	/**
 	 * @param applicationArguments
 	 */
-	public void setApplicationArguments(IApplicationArguments applicationArguments) {
+	public void setApplicationArguments(final IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
-	
+
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	/**
 	 * @param applicationPropertiesLogger
 	 */
-	public void setApplicationPropertiesLogger(ApplicationPropertiesLogger applicationPropertiesLogger) {
+	public void setApplicationPropertiesLogger(final ApplicationPropertiesLogger applicationPropertiesLogger) {
 		this.applicationPropertiesLogger = applicationPropertiesLogger;
 	}
-	
+
 	/**
 	 * @param multipleInstancesCheck
 	 */
-	public void setMultipleInstancesCheck(MultipleInstancesCheck multipleInstancesCheck) {
+	public void setMultipleInstancesCheck(final MultipleInstancesCheck multipleInstancesCheck) {
 		this.multipleInstancesCheck = multipleInstancesCheck;
 	}
-	
+
 	/**
 	 * @param applicationArgumentsSender
 	 */
-	public void setApplicationArgumentsSender(ApplicationArgumentsSender applicationArgumentsSender) {
+	public void setApplicationArgumentsSender(final ApplicationArgumentsSender applicationArgumentsSender) {
 		this.applicationArgumentsSender = applicationArgumentsSender;
 	}
-	
-    /**
-     * Starts application logic
-     * @param arguments
-     */
-    public void start(List<String> arguments) {
-        // For detecting Swing threading violations
-        if (applicationArguments.isDebug()) {
-            RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
-        }
 
-        // Set log4j properties
-        Logger.loadProperties(applicationArguments.isDebug(), applicationArguments.isDebugLevelLog(), osManager);
+	/**
+	 * Starts application logic
+	 * @param arguments
+	 */
+	public void start(final List<String> arguments) {
+		// For detecting Swing threading violations
+		if (applicationArguments.isDebug()) {
+			RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
+		}
 
-        // First, look up for other instances running
-        if (!applicationArguments.isMultipleInstance() && !multipleInstancesCheck.isFirstInstance()) {
-            // Is not first aTunes instance running, so send parameters and finalize
-        	applicationArgumentsSender.sendArgumentsToFirstInstance(arguments);
-        } else {
-            // WE ARE CLOSING ERROR STREAM!!!
-            // THIS IS DONE TO AVOID ANNOYING MESSAGES FROM SOME LIBRARIES
-            System.err.close();
+		// Set log4j properties
+		Logger.loadProperties(applicationArguments.isDebug(), applicationArguments.isDebugLevelLog(), osManager);
 
-            // Log program properties
-            applicationPropertiesLogger.logProgramProperties();
+		// First, look up for other instances running
+		if (!applicationArguments.isMultipleInstance() && !multipleInstancesCheck.isFirstInstance()) {
+			// Is not first aTunes instance running, so send parameters and finalize
+			applicationArgumentsSender.sendArgumentsToFirstInstance(arguments);
+		} else {
+			// WE ARE CLOSING ERROR STREAM!!!
+			// THIS IS DONE TO AVOID ANNOYING MESSAGES FROM SOME LIBRARIES
+			System.err.close();
 
-            // Start the Kernel, which really starts application
-            kernel.start();
-        }
-    }
+			// Log program properties
+			applicationPropertiesLogger.logProgramProperties();
+
+			// Start the Kernel, which really starts application
+			kernel.start();
+		}
+	}
 }

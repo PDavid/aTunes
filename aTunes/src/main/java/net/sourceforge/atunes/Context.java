@@ -43,8 +43,9 @@ public final class Context {
 
 	/**
 	 * Initializes Spring with bean definition files
+	 * @return
 	 */
-	public static void initialize() {
+	public static ApplicationContext initialize() {
 		File springBeans = ResourceLocator.getFile(SPRING_BEANS_XML);
 		if (springBeans != null) {
 			context = new ClassPathXmlApplicationContext(StringUtils.getString("file:" + net.sourceforge.atunes.utils.FileUtils.getPath(springBeans)));
@@ -52,6 +53,7 @@ public final class Context {
 			// Use classpath
 			context = new ClassPathXmlApplicationContext(SPRING_BEANS_XML);
 		}
+		return context;
 	}
 
 	/**

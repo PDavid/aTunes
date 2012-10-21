@@ -28,31 +28,34 @@ import java.util.List;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Sends arguments to another instance of aTunes
+ * @author alex
+ *
+ */
 public class ApplicationArgumentsSender {
 
 	/**
 	 * Send arguments to a running instance
 	 * @param args
 	 */
-	public void sendArgumentsToFirstInstance(List<String> args) {
-        Socket clientSocket = null;
-        PrintWriter output = null;
-        try {
-            // Open client socket to communicate with "master"
-            clientSocket = new Socket("localhost", Constants.MULTIPLE_INSTANCES_SOCKET);
-            output = new PrintWriter(clientSocket.getOutputStream(), true);
-            for (String arg : args) {
-            	System.out.println(StringUtils.getString("INFO: Sending argument \"", arg, "\""));
-            	output.write(arg);
-            	output.write(System.getProperty("line.separator"));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            ClosingUtils.close(output);
-            ClosingUtils.close(clientSocket);
-        }
-    }
-    
-
+	public void sendArgumentsToFirstInstance(final List<String> args) {
+		Socket clientSocket = null;
+		PrintWriter output = null;
+		try {
+			// Open client socket to communicate with "master"
+			clientSocket = new Socket("localhost", Constants.MULTIPLE_INSTANCES_SOCKET);
+			output = new PrintWriter(clientSocket.getOutputStream(), true);
+			for (String arg : args) {
+				System.out.println(StringUtils.getString("INFO: Sending argument \"", arg, "\""));
+				output.write(arg);
+				output.write(System.getProperty("line.separator"));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			ClosingUtils.close(output);
+			ClosingUtils.close(clientSocket);
+		}
+	}
 }
