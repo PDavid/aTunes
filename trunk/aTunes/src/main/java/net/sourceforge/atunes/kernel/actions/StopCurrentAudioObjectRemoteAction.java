@@ -40,16 +40,19 @@ public class StopCurrentAudioObjectRemoteAction extends RemoteAction {
 		this.stopAction = stopAction;
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public StopCurrentAudioObjectRemoteAction() {
-		super("stop");
-	}
-
 	@Override
 	public String runCommand(final List<String> parameters) {
 		callAction(stopAction);
-		return "OK";
+		return OK;
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Stops playback";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return null;
 	}
 }

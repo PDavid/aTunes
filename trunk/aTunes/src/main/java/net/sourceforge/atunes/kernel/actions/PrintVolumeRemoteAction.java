@@ -33,44 +33,47 @@ import net.sourceforge.atunes.utils.CollectionUtils;
  */
 public class PrintVolumeRemoteAction extends RemoteAction {
 
-    private static final long serialVersionUID = -9122835254109082353L;
-    private IPlayerHandler playerHandler;
-    private IStatePlayer statePlayer;
+	private static final long serialVersionUID = -9122835254109082353L;
+	private IPlayerHandler playerHandler;
+	private IStatePlayer statePlayer;
 
-    /**
-     * Default constructor
-     */
-    public PrintVolumeRemoteAction() {
-    	super("volume");
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
 	}
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-        this.playerHandler = playerHandler;
-    }
 
-    /**
-     * @param statePlayer
-     */
-    public void setStatePlayer(IStatePlayer statePlayer) {
-        this.statePlayer = statePlayer;
-    }
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(final IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
 
-    @Override
-    public String runCommand(List<String> parameters) {
-        if (CollectionUtils.isEmpty(parameters)) {
-            return Integer.toString(statePlayer.getVolume());
-        } else if (parameters.size() == 1) {
-            try {
-                playerHandler.setVolume(Integer.parseInt(parameters.get(0)));
-                return Integer.toString(statePlayer.getVolume());
-            } catch (NumberFormatException ex) {
-                return "Please input a number.";
-            }
-        } else {
-        	return "Bad number of arguments";
-        }
-    }
+	@Override
+	public String runCommand(final List<String> parameters) {
+		if (CollectionUtils.isEmpty(parameters)) {
+			return Integer.toString(statePlayer.getVolume());
+		} else if (parameters.size() == 1) {
+			try {
+				playerHandler.setVolume(Integer.parseInt(parameters.get(0)));
+				return Integer.toString(statePlayer.getVolume());
+			} catch (NumberFormatException ex) {
+				return "Please input a number.";
+			}
+		} else {
+			return "Bad number of arguments";
+		}
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Outputs the current volume";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return null;
+	}
 }

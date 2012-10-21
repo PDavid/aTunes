@@ -41,17 +41,19 @@ public class FullScreenRemoteAction extends RemoteAction {
 		this.fullScreenAction = fullScreenAction;
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public FullScreenRemoteAction() {
-		super("fullscreen");
-		setSynchronousResponse(false);
-	}
-
 	@Override
 	public String runCommand(final List<String> parameters) {
 		callAction(fullScreenAction);
-		return "OK";
+		return OK;
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Switches the player to fullscreen mode";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return null;
 	}
 }

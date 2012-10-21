@@ -32,39 +32,42 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ShowNavigationTableAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -3275592274940501407L;
+	private static final long serialVersionUID = -3275592274940501407L;
 
-    private INavigationHandler navigationHandler;
-    
-    private IStateNavigation stateNavigation;
+	private INavigationHandler navigationHandler;
 
-    /**
-     * @param stateNavigation
-     */
-    public void setStateNavigation(IStateNavigation stateNavigation) {
+	private IStateNavigation stateNavigation;
+
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
 		this.stateNavigation = stateNavigation;
 	}
-    
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-    
-    public ShowNavigationTableAction() {
-        super(I18nUtils.getString("SHOW_NAVIGATION_TABLE"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_NAVIGATION_TABLE"));
-    }
-    
-    @Override
-    protected void initialize() {
-    	super.initialize();
-        putValue(SELECTED_KEY, stateNavigation.isShowNavigationTable());
-    }
 
-    @Override
-    protected void executeAction() {
-    	navigationHandler.showNavigationTable((Boolean) getValue(SELECTED_KEY));
-    }
+	/**
+	 * Default constructor
+	 */
+	public ShowNavigationTableAction() {
+		super(I18nUtils.getString("SHOW_NAVIGATION_TABLE"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_NAVIGATION_TABLE"));
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(SELECTED_KEY, stateNavigation.isShowNavigationTable());
+	}
+
+	@Override
+	protected void executeAction() {
+		navigationHandler.showNavigationTable((Boolean) getValue(SELECTED_KEY));
+	}
 }

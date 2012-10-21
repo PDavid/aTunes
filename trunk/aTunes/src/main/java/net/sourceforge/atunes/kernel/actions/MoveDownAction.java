@@ -38,32 +38,35 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class MoveDownAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 8200322913128575526L;
-    
-    private IPlayListHandler playListHandler;
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+	private static final long serialVersionUID = 8200322913128575526L;
+
+	private IPlayListHandler playListHandler;
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
 
-    public MoveDownAction() {
-        super(I18nUtils.getString("MOVE_DOWN"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_DOWN_TOOLTIP"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, ActionEvent.ALT_MASK));
-        setEnabled(false);
-    }
+	/**
+	 * Default constructor
+	 */
+	public MoveDownAction() {
+		super(I18nUtils.getString("MOVE_DOWN"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_DOWN_TOOLTIP"));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, ActionEvent.ALT_MASK));
+		setEnabled(false);
+	}
 
-    @Override
-    protected void executeAction() {
-    	playListHandler.moveDown();
-    }
+	@Override
+	protected void executeAction() {
+		playListHandler.moveDown();
+	}
 
-    @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return selection != null && !selection.isEmpty();
-    }
+	@Override
+	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
+		return selection != null && !selection.isEmpty();
+	}
 
 }

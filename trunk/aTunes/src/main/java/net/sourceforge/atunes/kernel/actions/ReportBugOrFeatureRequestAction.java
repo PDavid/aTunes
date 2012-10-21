@@ -32,25 +32,28 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ReportBugOrFeatureRequestAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -2614037760672140565L;
+	private static final long serialVersionUID = -2614037760672140565L;
 
-    private IDesktop desktop;
-    
-    /**
-     * @param desktop
-     */
-    public void setDesktop(IDesktop desktop) {
+	private IDesktop desktop;
+
+	/**
+	 * @param desktop
+	 */
+	public void setDesktop(final IDesktop desktop) {
 		this.desktop = desktop;
 	}
-    
-    public ReportBugOrFeatureRequestAction() {
-        super(I18nUtils.getString("REPORT_BUG_OR_REQUEST_FEATURE"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPORT_BUG_OR_REQUEST_FEATURE"));
-    }
 
-    @Override
-    protected void executeAction() {
-    	desktop.openURL(Constants.REPORT_BUG_OR_REQUEST_FEATURE_URL);
-    }
+	/**
+	 * Default constructor
+	 */
+	public ReportBugOrFeatureRequestAction() {
+		super(I18nUtils.getString("REPORT_BUG_OR_REQUEST_FEATURE"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPORT_BUG_OR_REQUEST_FEATURE"));
+	}
+
+	@Override
+	protected void executeAction() {
+		desktop.openURL(Constants.REPORT_BUG_OR_REQUEST_FEATURE_URL);
+	}
 
 }

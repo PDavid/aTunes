@@ -39,140 +39,145 @@ import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Gets loved tracks from last.fm and sets as favorites
+ * @author alex
+ *
+ */
 public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 5620935204300321285L;
+	private static final long serialVersionUID = 5620935204300321285L;
 
 	private IIndeterminateProgressDialog dialog;
-	
-    private IBackgroundWorkerFactory backgroundWorkerFactory;
-    
-    private IWebServicesHandler webServicesHandler;
-    
-    private IRepositoryHandler repositoryHandler;
-    
-    private IFavoritesHandler favoritesHandler;
-    
-    private IDialogFactory dialogFactory;
-    
-    private IStateContext stateContext;
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
-    
-    /**
-     * @param stateContext
-     */
-    public void setStateContext(IStateContext stateContext) {
-		this.stateContext = stateContext;
-	}
-    
-    /**
-     * 
-     */
-    public ImportLovedTracksFromLastFMAction() {
-        super(I18nUtils.getString("IMPORT_LOVED_TRACKS_FROM_LASTFM"));
-    }
-    
-    @Override
-    protected void initialize() {
-    	super.initialize();
-        setEnabled(stateContext.isLastFmEnabled());
-    }
 
-    @Override
-    protected void executeAction() {
-        IBackgroundWorker<List<ILocalAudioObject>> worker = backgroundWorkerFactory.getWorker();
-        worker.setActionsBeforeBackgroundStarts(new Runnable() {
-        	@Override
-        	public void run() {
-        		dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
-        		dialog.setTitle(I18nUtils.getString("GETTING_LOVED_TRACKS_FROM_LASTFM"));
-        		dialog.showDialog();
-        	}
-        });
-        
-        worker.setBackgroundActions(new Callable<List<ILocalAudioObject>>() {
-			
-			@Override
-			public List<ILocalAudioObject> call() {
-				return fetchFavorites();
-			}
-		});
-        
-        worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<List<ILocalAudioObject>>() {
-        	@Override
-        	public void call(List<ILocalAudioObject> lovedTracks) {
-        		finishAction(lovedTracks);
-        	}
-		});
-        
-        worker.execute();
-    }
-    
-    /**
-     * Retrieves favorites
-     * @return
-     */
-    private List<ILocalAudioObject> fetchFavorites() {
-        List<ILocalAudioObject> favorites = new ArrayList<ILocalAudioObject>();
-        List<ILovedTrack> lovedTracks = webServicesHandler.getLovedTracks();
-        if (!lovedTracks.isEmpty()) {
-            for (ILovedTrack lovedTrack : lovedTracks) {
-                IArtist artist = repositoryHandler.getArtist(lovedTrack.getArtist());
-                if (artist != null) {
-                    for (ILocalAudioObject audioObject : artist.getAudioObjects()) {
-                        if (audioObject.getTitleOrFileName().equalsIgnoreCase(lovedTrack.getTitle())) {
-                            favorites.add(audioObject);
-                        }
-                    }
-                }
-            }
-        }
-        return favorites;
-    }
-    
-    /**
-     * Add favorites and show message
-     * @param lovedTracks
-     */
-    private void finishAction(List<ILocalAudioObject> lovedTracks) {
-		dialog.hideDialog();
-        // Set favorites, but not in last.fm again
-		favoritesHandler.addFavoriteSongs(lovedTracks, false);
-		dialogFactory.newDialog(IMessageDialog.class)
-			.showMessage(StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()));
-    }
-    
-    /**
-     * @param backgroundWorkerFactory
-     */
-    public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
-		this.backgroundWorkerFactory = backgroundWorkerFactory;
-	}
-    
-    /**
-     * @param webServicesHandler
-     */
-    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
-		this.webServicesHandler = webServicesHandler;
-	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-    
-    /**
-     * @param favoritesHandler
-     */
-    public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
-		this.favoritesHandler = favoritesHandler;
-	}
+	private IBackgroundWorkerFactory backgroundWorkerFactory;
+
+	private IWebServicesHandler webServicesHandler;
+
+	private IRepositoryHandler repositoryHandler;
+
+	private IFavoritesHandler favoritesHandler;
+
+	private IDialogFactory dialogFactory;
+
+	private IStateContext stateContext;
+
+	/**
+	 * @param dialogFactory
+	 */
+	 public void setDialogFactory(final IDialogFactory dialogFactory) {
+		 this.dialogFactory = dialogFactory;
+	 }
+
+	 /**
+	  * @param stateContext
+	  */
+	 public void setStateContext(final IStateContext stateContext) {
+		 this.stateContext = stateContext;
+	 }
+
+	 /**
+	  * 
+	  */
+	 public ImportLovedTracksFromLastFMAction() {
+		 super(I18nUtils.getString("IMPORT_LOVED_TRACKS_FROM_LASTFM"));
+	 }
+
+	 @Override
+	 protected void initialize() {
+		 super.initialize();
+		 setEnabled(stateContext.isLastFmEnabled());
+	 }
+
+	 @Override
+	 protected void executeAction() {
+		 IBackgroundWorker<List<ILocalAudioObject>> worker = backgroundWorkerFactory.getWorker();
+		 worker.setActionsBeforeBackgroundStarts(new Runnable() {
+			 @Override
+			 public void run() {
+				 dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
+				 dialog.setTitle(I18nUtils.getString("GETTING_LOVED_TRACKS_FROM_LASTFM"));
+				 dialog.showDialog();
+			 }
+		 });
+
+		 worker.setBackgroundActions(new Callable<List<ILocalAudioObject>>() {
+
+			 @Override
+			 public List<ILocalAudioObject> call() {
+				 return fetchFavorites();
+			 }
+		 });
+
+		 worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<List<ILocalAudioObject>>() {
+			 @Override
+			 public void call(final List<ILocalAudioObject> lovedTracks) {
+				 finishAction(lovedTracks);
+			 }
+		 });
+
+		 worker.execute();
+	 }
+
+	 /**
+	  * Retrieves favorites
+	  * @return
+	  */
+	 private List<ILocalAudioObject> fetchFavorites() {
+		 List<ILocalAudioObject> favorites = new ArrayList<ILocalAudioObject>();
+		 List<ILovedTrack> lovedTracks = webServicesHandler.getLovedTracks();
+		 if (!lovedTracks.isEmpty()) {
+			 for (ILovedTrack lovedTrack : lovedTracks) {
+				 IArtist artist = repositoryHandler.getArtist(lovedTrack.getArtist());
+				 if (artist != null) {
+					 for (ILocalAudioObject audioObject : artist.getAudioObjects()) {
+						 if (audioObject.getTitleOrFileName().equalsIgnoreCase(lovedTrack.getTitle())) {
+							 favorites.add(audioObject);
+						 }
+					 }
+				 }
+			 }
+		 }
+		 return favorites;
+	 }
+
+	 /**
+	  * Add favorites and show message
+	  * @param lovedTracks
+	  */
+	 private void finishAction(final List<ILocalAudioObject> lovedTracks) {
+		 dialog.hideDialog();
+		 // Set favorites, but not in last.fm again
+		 favoritesHandler.addFavoriteSongs(lovedTracks, false);
+		 dialogFactory.newDialog(IMessageDialog.class)
+		 .showMessage(StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()));
+	 }
+
+	 /**
+	  * @param backgroundWorkerFactory
+	  */
+	 public void setBackgroundWorkerFactory(final IBackgroundWorkerFactory backgroundWorkerFactory) {
+		 this.backgroundWorkerFactory = backgroundWorkerFactory;
+	 }
+
+	 /**
+	  * @param webServicesHandler
+	  */
+	 public void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
+		 this.webServicesHandler = webServicesHandler;
+	 }
+
+	 /**
+	  * @param repositoryHandler
+	  */
+	 public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+		 this.repositoryHandler = repositoryHandler;
+	 }
+
+	 /**
+	  * @param favoritesHandler
+	  */
+	 public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
+		 this.favoritesHandler = favoritesHandler;
+	 }
 }

@@ -39,54 +39,57 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ClearCachesAction extends CustomAbstractAction {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 5131926704037915711L;
+	private static final long serialVersionUID = 5131926704037915711L;
 
-    private IWebServicesHandler webServicesHandler;
-    
-    private IBackgroundWorkerFactory backgroundWorkerFactory;
-    
-    /**
-     * @param webServicesHandler
-     */
-    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+	private IWebServicesHandler webServicesHandler;
+
+	private IBackgroundWorkerFactory backgroundWorkerFactory;
+
+	/**
+	 * @param webServicesHandler
+	 */
+	public void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
-    
-    /**
-     * @param backgroundWorkerFactory
-     */
-    public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
-    	this.backgroundWorkerFactory = backgroundWorkerFactory;
-	}
-    
-    public ClearCachesAction() {
-        super(I18nUtils.getString("CLEAR_CACHE"));
-    }
 
-    @Override
-    protected void executeAction() {
-        setEnabled(false);
-    	((JPanel)((JButton)getSource()).getParent()).setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    	IBackgroundWorker<Void> backgroundWorker = backgroundWorkerFactory.getWorker();
-    	backgroundWorker.setBackgroundActions(new Callable<Void>() {
-    		
-    		@Override
-    		public Void call() {
-    			webServicesHandler.clearCache();
-    			return null;
-    		}
-    	});
-    	backgroundWorker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
-    		@Override
-    		public void call(Void result) {
-            	((JPanel)((JButton)getSource()).getParent()).setCursor(Cursor.getDefaultCursor());
-                setEnabled(true);
-    		}
-    	});
-    	backgroundWorker.execute();
-    }
+	/**
+	 * @param backgroundWorkerFactory
+	 */
+	public void setBackgroundWorkerFactory(final IBackgroundWorkerFactory backgroundWorkerFactory) {
+		this.backgroundWorkerFactory = backgroundWorkerFactory;
+	}
+
+	/**
+	 * Default constructor
+	 */
+	public ClearCachesAction() {
+		super(I18nUtils.getString("CLEAR_CACHE"));
+	}
+
+	@Override
+	protected void executeAction() {
+		setEnabled(false);
+		((JPanel)((JButton)getSource()).getParent()).setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		IBackgroundWorker<Void> backgroundWorker = backgroundWorkerFactory.getWorker();
+		backgroundWorker.setBackgroundActions(new Callable<Void>() {
+
+			@Override
+			public Void call() {
+				webServicesHandler.clearCache();
+				return null;
+			}
+		});
+		backgroundWorker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
+			@Override
+			public void call(final Void result) {
+				((JPanel)((JButton)getSource()).getParent()).setCursor(Cursor.getDefaultCursor());
+				setEnabled(true);
+			}
+		});
+		backgroundWorker.execute();
+	}
 
 }

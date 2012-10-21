@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.process.SetTrackNumberProcess;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -47,6 +46,15 @@ public class AutoSetTracksAction extends AbstractActionOverSelectedObjects<ILoca
 	private static final Pattern NUMBER_SEPARATOR_PATTERN = Pattern.compile("[^0-9]+");
 
 	private IProcessFactory processFactory;
+
+	private IWebServicesHandler webServicesHandler;
+
+	/**
+	 * @param webServicesHandler
+	 */
+	public void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
 
 	/**
 	 * @param processFactory
@@ -124,12 +132,8 @@ public class AutoSetTracksAction extends AbstractActionOverSelectedObjects<ILoca
 		// If trackNumber could not be retrieved from file name, try to get from last.fm
 		// To get this, titles must match
 		if (trackNumber == 0) {
-			trackNumber = Context.getBean(IWebServicesHandler.class).getTrackNumber(audioFile);
+			trackNumber = webServicesHandler.getTrackNumber(audioFile);
 		}
-
 		return trackNumber;
 	}
-
-
-
 }

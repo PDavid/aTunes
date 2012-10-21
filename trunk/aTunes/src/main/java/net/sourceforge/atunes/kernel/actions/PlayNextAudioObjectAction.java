@@ -28,33 +28,38 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Changes playback to next audio object
+ * @author alex
+ *
+ */
 public class PlayNextAudioObjectAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 2012440550238196002L;
+	private static final long serialVersionUID = 2012440550238196002L;
 
-    private IPlayerHandler playerHandler;
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
+	private IPlayerHandler playerHandler;
+
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
-    
-    /**
-     * Default constructor
-     */
-    public PlayNextAudioObjectAction() {
-    	super(I18nUtils.getString("NEXT"));
-    }
-    
-    @Override
-    protected void initialize() {
-    	putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_T, GuiUtils.getCtrlOrMetaActionEventMask()));
-    }
 
-    @Override
-    protected void executeAction() {
-        playerHandler.playNextAudioObject();
-    }
+	/**
+	 * Default constructor
+	 */
+	public PlayNextAudioObjectAction() {
+		super(I18nUtils.getString("NEXT"));
+	}
+
+	@Override
+	protected void initialize() {
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_T, GuiUtils.getCtrlOrMetaActionEventMask()));
+	}
+
+	@Override
+	protected void executeAction() {
+		playerHandler.playNextAudioObject();
+	}
 }

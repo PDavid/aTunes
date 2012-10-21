@@ -34,44 +34,47 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ShuffleModeAction extends ActionWithColorMutableIcon {
 
-    private static final long serialVersionUID = 6841858742889010498L;
-    
-    private IIconFactory shuffleIcon;
-    
-    private IStatePlayer statePlayer;
-    
-    /**
-     * @param statePlayer
-     */
-    public void setStatePlayer(IStatePlayer statePlayer) {
+	private static final long serialVersionUID = 6841858742889010498L;
+
+	private IIconFactory shuffleIcon;
+
+	private IStatePlayer statePlayer;
+
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(final IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;
 	}
-    
-    /**
-     * @param shuffleIcon
-     */
-    public void setShuffleIcon(IIconFactory shuffleIcon) {
+
+	/**
+	 * @param shuffleIcon
+	 */
+	public void setShuffleIcon(final IIconFactory shuffleIcon) {
 		this.shuffleIcon = shuffleIcon;
 	}
-    
-    public ShuffleModeAction() {
-        super(I18nUtils.getString("SHUFFLE"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHUFFLE"));
-    }
-    
-    @Override
-    protected void initialize() {
-    	super.initialize();
-        putValue(SELECTED_KEY, statePlayer.isShuffle());
-    }
 
-    @Override
-    protected void executeAction() {
-    	statePlayer.setShuffle((Boolean) getValue(SELECTED_KEY));
-    }
-    
-    @Override
-    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-    	return shuffleIcon.getColorMutableIcon();
-    }
+	/**
+	 * Default constructor
+	 */
+	public ShuffleModeAction() {
+		super(I18nUtils.getString("SHUFFLE"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHUFFLE"));
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(SELECTED_KEY, statePlayer.isShuffle());
+	}
+
+	@Override
+	protected void executeAction() {
+		statePlayer.setShuffle((Boolean) getValue(SELECTED_KEY));
+	}
+
+	@Override
+	public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
+		return shuffleIcon.getColorMutableIcon();
+	}
 }

@@ -28,59 +28,67 @@ import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Changes view mode to show artists
+ * @author alex
+ *
+ */
 public class ShowArtistsInNavigatorAction extends ActionWithColorMutableIcon {
 
-    private static final long serialVersionUID = -6172848158352600345L;
+	private static final long serialVersionUID = -6172848158352600345L;
 
-    private INavigationHandler navigationHandler;
-    
-    private IIconFactory artistImageIcon;
-    
-    private IStateNavigation stateNavigation;
+	private INavigationHandler navigationHandler;
 
-    /**
-     * @param stateNavigation
-     */
-    public void setStateNavigation(IStateNavigation stateNavigation) {
+	private IIconFactory artistImageIcon;
+
+	private IStateNavigation stateNavigation;
+
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
 		this.stateNavigation = stateNavigation;
 	}
-    
-    /**
-     * @param artistImageIcon
-     */
-    public void setArtistImageIcon(IIconFactory artistImageIcon) {
+
+	/**
+	 * @param artistImageIcon
+	 */
+	public void setArtistImageIcon(final IIconFactory artistImageIcon) {
 		this.artistImageIcon = artistImageIcon;
 	}
-    
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-    
-    public ShowArtistsInNavigatorAction() {
-        super(I18nUtils.getString("SHOW_ARTISTS"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_ARTISTS"));
-    }
 
-    @Override
-    protected void initialize() {
-    	super.initialize();
-        putValue(SELECTED_KEY, stateNavigation.getViewMode() == ViewMode.ARTIST);
-    }
-    
-    @Override
-    protected void executeAction() {
-        if (stateNavigation.getViewMode() != ViewMode.ARTIST) {
-            stateNavigation.setViewMode(ViewMode.ARTIST);
-            navigationHandler.refreshCurrentView();
-        }
-    }
-    
-    @Override
-    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-    	return artistImageIcon.getColorMutableIcon();
-    }
+	/**
+	 * Default constructor
+	 */
+	public ShowArtistsInNavigatorAction() {
+		super(I18nUtils.getString("SHOW_ARTISTS"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_ARTISTS"));
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(SELECTED_KEY, stateNavigation.getViewMode() == ViewMode.ARTIST);
+	}
+
+	@Override
+	protected void executeAction() {
+		if (stateNavigation.getViewMode() != ViewMode.ARTIST) {
+			stateNavigation.setViewMode(ViewMode.ARTIST);
+			navigationHandler.refreshCurrentView();
+		}
+	}
+
+	@Override
+	public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
+		return artistImageIcon.getColorMutableIcon();
+	}
 
 }

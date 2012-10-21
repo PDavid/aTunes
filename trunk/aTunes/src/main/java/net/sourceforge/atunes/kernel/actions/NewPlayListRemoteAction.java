@@ -32,27 +32,30 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 public class NewPlayListRemoteAction extends RemoteAction {
 
 	private static final long serialVersionUID = -5575374156962786237L;
-   
-    private IPlayListHandler playListHandler;
 
-    /**
-     * Default constructor
-     */
-    public NewPlayListRemoteAction() {
-    	super("newPlaylist");
+	private IPlayListHandler playListHandler;
+
+	/**
+	 * @param handler
+	 */
+	public void setPlayListHandler(final IPlayListHandler handler) {
+		this.playListHandler = handler;
 	}
-    
-    /**
-     * @param handler
-     */
-    public void setPlayListHandler(IPlayListHandler handler) {
-        this.playListHandler = handler;
-    }
 
-    @Override
-    public String runCommand(List<String> parameters) {
-        playListHandler.newPlayList(null);
-        playListHandler.switchToPlaylist(playListHandler.getPlayListCount() - 1);
-        return "OK";
-    }
+	@Override
+	public String runCommand(final List<String> parameters) {
+		playListHandler.newPlayList(null);
+		playListHandler.switchToPlaylist(playListHandler.getPlayListCount() - 1);
+		return OK;
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Creates a new play list";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return null;
+	}
 }

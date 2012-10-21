@@ -29,74 +29,79 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Starts playing immediately given audio object
+ * @author alex
+ *
+ */
 public class PlayNowAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -2099290583376403144L;
+	private static final long serialVersionUID = -2099290583376403144L;
 
-    private IPlayListHandler playListHandler;
-    
-    private INavigationHandler navigationHandler;
-    
-    private IPlayerHandler playerHandler;
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
+	private IPlayListHandler playListHandler;
+
+	private INavigationHandler navigationHandler;
+
+	private IPlayerHandler playerHandler;
+
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-    
-    /**
-     * Default constructor
-     */
-    public PlayNowAction() {
-        super(I18nUtils.getString("PLAY_NOW"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY_NOW"));
-    }
 
-    @Override
-    protected void executeAction() {
-        playNow(navigationHandler.getSelectedAudioObjectInNavigationTable());
-    }
+	/**
+	 * Default constructor
+	 */
+	public PlayNowAction() {
+		super(I18nUtils.getString("PLAY_NOW"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY_NOW"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return selection != null && selection.size() == 1;
-    }
-    
-	void playNow(IAudioObject audioObject) {
-        // Play now feature plays selected song immediately. If song is added to play list, then is automatically selected.
-        // If not, it's added to play list    	
-        if (!playListHandler.getVisiblePlayList().contains(audioObject)) {
-            List<IAudioObject> list = new ArrayList<IAudioObject>();
-            list.add(audioObject);
-            addToPlayListAndPlay(list);
-        } else {
-        	playerHandler.playAudioObjectInPlayListPositionOfVisiblePlayList(playListHandler.getVisiblePlayList().indexOf(audioObject));
-        }
-    }
-	
-	private void addToPlayListAndPlay(List<IAudioObject> audioObjects) {
-        if (audioObjects == null || audioObjects.isEmpty()) {
-            return;
-        }
+	@Override
+	protected void executeAction() {
+		playNow(navigationHandler.getSelectedAudioObjectInNavigationTable());
+	}
 
-        int playListCurrentSize = playListHandler.getVisiblePlayList().size();
-        playListHandler.addToVisiblePlayList(audioObjects);
-    	playerHandler.playAudioObjectInPlayListPositionOfVisiblePlayList(playListCurrentSize);
-    }
+	@Override
+	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
+		return selection != null && selection.size() == 1;
+	}
+
+	void playNow(final IAudioObject audioObject) {
+		// Play now feature plays selected song immediately. If song is added to play list, then is automatically selected.
+		// If not, it's added to play list
+		if (!playListHandler.getVisiblePlayList().contains(audioObject)) {
+			List<IAudioObject> list = new ArrayList<IAudioObject>();
+			list.add(audioObject);
+			addToPlayListAndPlay(list);
+		} else {
+			playerHandler.playAudioObjectInPlayListPositionOfVisiblePlayList(playListHandler.getVisiblePlayList().indexOf(audioObject));
+		}
+	}
+
+	private void addToPlayListAndPlay(final List<IAudioObject> audioObjects) {
+		if (audioObjects == null || audioObjects.isEmpty()) {
+			return;
+		}
+
+		int playListCurrentSize = playListHandler.getVisiblePlayList().size();
+		playListHandler.addToVisiblePlayList(audioObjects);
+		playerHandler.playAudioObjectInPlayListPositionOfVisiblePlayList(playListCurrentSize);
+	}
 }

@@ -23,26 +23,34 @@ package net.sourceforge.atunes.kernel.actions;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Cancels repository load
+ * @author alex
+ *
+ */
 public class RepositoryLoadCancelAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -9039622325405324974L;
+	private static final long serialVersionUID = -9039622325405324974L;
 
-    private IRepositoryHandler repositoryHandler;
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	private IRepositoryHandler repositoryHandler;
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
-    
-    public RepositoryLoadCancelAction() {
-        super(I18nUtils.getString("CANCEL"), null);
-    }
-    
-    @Override
-    protected void executeAction() {
-    	repositoryHandler.notifyCancel();
-    }
+
+	/**
+	 * Default constructor
+	 */
+	public RepositoryLoadCancelAction() {
+		super(I18nUtils.getString("CANCEL"), null);
+	}
+
+	@Override
+	protected void executeAction() {
+		repositoryHandler.notifyCancel();
+	}
 
 }

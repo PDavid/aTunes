@@ -32,40 +32,43 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ShowStatusBarAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 2303076465024539635L;
+	private static final long serialVersionUID = 2303076465024539635L;
 
-    private IUIHandler uiHandler;
-    
-    private IStateUI stateUI;
-    
-    /**
-     * @param stateUI
-     */
-    public void setStateUI(IStateUI stateUI) {
+	private IUIHandler uiHandler;
+
+	private IStateUI stateUI;
+
+	/**
+	 * @param stateUI
+	 */
+	public void setStateUI(final IStateUI stateUI) {
 		this.stateUI = stateUI;
 	}
-    
-    /**
-     * @param uiHandler
-     */
-    public void setUiHandler(IUIHandler uiHandler) {
+
+	/**
+	 * @param uiHandler
+	 */
+	public void setUiHandler(final IUIHandler uiHandler) {
 		this.uiHandler = uiHandler;
 	}
-    
-    public ShowStatusBarAction() {
-        super(I18nUtils.getString("SHOW_STATUS_BAR"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_STATUS_BAR"));
-    }
-    
-    @Override
-    protected void initialize() {
-    	super.initialize();
-        putValue(SELECTED_KEY, stateUI.isShowStatusBar());
-    }
 
-    @Override
-    protected void executeAction() {
-    	uiHandler.showStatusBar((Boolean) getValue(SELECTED_KEY), true);
-    }
+	/**
+	 * Default constructor
+	 */
+	public ShowStatusBarAction() {
+		super(I18nUtils.getString("SHOW_STATUS_BAR"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_STATUS_BAR"));
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(SELECTED_KEY, stateUI.isShowStatusBar());
+	}
+
+	@Override
+	protected void executeAction() {
+		uiHandler.showStatusBar((Boolean) getValue(SELECTED_KEY), true);
+	}
 
 }

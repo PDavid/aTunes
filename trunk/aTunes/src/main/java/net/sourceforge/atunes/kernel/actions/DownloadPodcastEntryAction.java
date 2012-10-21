@@ -27,40 +27,48 @@ import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Downloads a podcast entry
+ * @author alex
+ *
+ */
 public class DownloadPodcastEntryAction extends AbstractActionOverSelectedObjects<IPodcastFeedEntry> {
 
-    private static final long serialVersionUID = 1081237259786604605L;
+	private static final long serialVersionUID = 1081237259786604605L;
 
-    private IPodcastFeedHandler podcastFeedHandler;
-    
-    /**
-     * @param podcastFeedHandler
-     */
-    public void setPodcastFeedHandler(IPodcastFeedHandler podcastFeedHandler) {
+	private IPodcastFeedHandler podcastFeedHandler;
+
+	/**
+	 * @param podcastFeedHandler
+	 */
+	public void setPodcastFeedHandler(final IPodcastFeedHandler podcastFeedHandler) {
 		this.podcastFeedHandler = podcastFeedHandler;
 	}
-    
-    public DownloadPodcastEntryAction() {
-        super(I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"));
-        setEnabled(false);
-    }
 
-    @Override
-    protected void executeAction(List<IPodcastFeedEntry> objects) {
-        for (IPodcastFeedEntry pfe : objects) {
-        	podcastFeedHandler.downloadPodcastFeedEntry(pfe);
-        }
-    }
+	/**
+	 * Default constructor
+	 */
+	public DownloadPodcastEntryAction() {
+		super(I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"));
+		setEnabled(false);
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        for (IAudioObject ao : selection) {
-            if (!(ao instanceof IPodcastFeedEntry) || ((IPodcastFeedEntry) ao).isDownloaded() || podcastFeedHandler.isDownloading((IPodcastFeedEntry) ao)) {
-                return false;
-            }
-        }
-        return true;
-    }
+	@Override
+	protected void executeAction(final List<IPodcastFeedEntry> objects) {
+		for (IPodcastFeedEntry pfe : objects) {
+			podcastFeedHandler.downloadPodcastFeedEntry(pfe);
+		}
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
+		for (IAudioObject ao : selection) {
+			if (!(ao instanceof IPodcastFeedEntry) || ((IPodcastFeedEntry) ao).isDownloaded() || podcastFeedHandler.isDownloading((IPodcastFeedEntry) ao)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 }

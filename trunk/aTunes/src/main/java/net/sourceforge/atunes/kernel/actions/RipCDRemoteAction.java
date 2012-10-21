@@ -41,16 +41,19 @@ public class RipCDRemoteAction extends RemoteAction {
 		this.ripCDAction = ripCDAction;
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public RipCDRemoteAction() {
-		super("cdripper");
-	}
-
 	@Override
 	public String runCommand(final List<String> parameters) {
 		callAction(ripCDAction);
-		return "OK";
+		return OK;
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Starts CD ripping process";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return null;
 	}
 }

@@ -29,42 +29,50 @@ import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Shows or hides context panel
+ * @author alex
+ *
+ */
 public class ShowContextAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 5939730387818346294L;
+	private static final long serialVersionUID = 5939730387818346294L;
 
-    private IContextHandler contextHandler;
-    
-    private IStateContext stateContext;
-    
-    /**
-     * @param stateContext
-     */
-    public void setStateContext(IStateContext stateContext) {
+	private IContextHandler contextHandler;
+
+	private IStateContext stateContext;
+
+	/**
+	 * @param stateContext
+	 */
+	public void setStateContext(final IStateContext stateContext) {
 		this.stateContext = stateContext;
 	}
-    
-    /**
-     * @param contextHandler
-     */
-    public void setContextHandler(IContextHandler contextHandler) {
+
+	/**
+	 * @param contextHandler
+	 */
+	public void setContextHandler(final IContextHandler contextHandler) {
 		this.contextHandler = contextHandler;
 	}
-    
-    public ShowContextAction() {
-        super(I18nUtils.getString("SHOW_CONTEXT_INFORMATION"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_CONTEXT_INFORMATION"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_MASK));
-    }
 
-    @Override
-    protected void initialize() {
-    	super.initialize();
-        putValue(SELECTED_KEY, stateContext.isUseContext());
-    }
-    
-    @Override
-    protected void executeAction() {
-    	contextHandler.showContextPanel((Boolean) getValue(SELECTED_KEY));
-    }
+	/**
+	 * Default constructor
+	 */
+	public ShowContextAction() {
+		super(I18nUtils.getString("SHOW_CONTEXT_INFORMATION"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_CONTEXT_INFORMATION"));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_MASK));
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(SELECTED_KEY, stateContext.isUseContext());
+	}
+
+	@Override
+	protected void executeAction() {
+		contextHandler.showContextPanel((Boolean) getValue(SELECTED_KEY));
+	}
 }

@@ -258,22 +258,60 @@
 	
 	
 	<!-- Remote Actions -->
-	<bean class="net.sourceforge.atunes.kernel.actions.AddToPlayListRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.FullScreenRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.NewPlayListRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.PlayRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.PrintHelpToTelnetAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.PrintSongInfoRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.PrintSongListRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.PrintVolumeRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.RepeatModeRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.RipCDRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.ShowOSDRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.ShuffleModeRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.SkipToRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.VolumeDownRemoteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.VolumeUpRemoteAction"/>
+	<bean id="remoteAction" class="net.sourceforge.atunes.kernel.actions.RemoteAction" abstract="true"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.AddToPlayListRemoteAction" parent="remoteAction">
+		<property name="commandName" value="add"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.FullScreenRemoteAction" parent="remoteAction">
+		<property name="commandName" value="fullscreen"/>
+		<property name="synchronousResponse" value="false"></property>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.NewPlayListRemoteAction" parent="remoteAction">
+		<property name="commandName" value="newPlaylist"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectRemoteAction" parent="remoteAction">
+		<property name="commandName" value="next"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectRemoteAction" parent="remoteAction">
+		<property name="commandName" value="previous"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.PlayRemoteAction" parent="remoteAction">
+		<property name="commandName" value="play"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.PrintHelpToRemoteAction" parent="remoteAction">
+		<property name="commandName" value="help"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.PrintSongInfoRemoteAction" parent="remoteAction">
+		<property name="commandName" value="song"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.PrintSongListRemoteAction" parent="remoteAction">
+		<property name="commandName" value="list"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.PrintVolumeRemoteAction" parent="remoteAction">
+		<property name="commandName" value="volume"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.RepeatModeRemoteAction" parent="remoteAction">
+		<property name="commandName" value="repeat"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.RipCDRemoteAction" parent="remoteAction">
+		<property name="commandName" value="cdripper"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowOSDRemoteAction" parent="remoteAction">
+		<property name="commandName" value="showOSD"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShuffleModeRemoteAction" parent="remoteAction">
+		<property name="commandName" value="shuffle"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.SkipToRemoteAction" parent="remoteAction">
+		<property name="commandName" value="goto"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectRemoteAction" parent="remoteAction">
+		<property name="commandName" value="stop"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.VolumeDownRemoteAction" parent="remoteAction">
+		<property name="commandName" value="volDOWN"/>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.VolumeUpRemoteAction" parent="remoteAction">
+		<property name="commandName" value="volUP"/>
+	</bean>
 </beans>

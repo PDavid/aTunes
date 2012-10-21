@@ -40,16 +40,20 @@ public class PlayPreviousAudioObjectRemoteAction extends RemoteAction {
 		this.previousAction = previousAction;
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public PlayPreviousAudioObjectRemoteAction() {
-		super("previous");
-	}
-
 	@Override
 	public String runCommand(final List<String> parameters) {
 		callAction(previousAction);
-		return "OK";
+		return OK;
 	}
+
+	@Override
+	protected String getHelpText() {
+		return "Plays the previous song in the playlist";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return null;
+	}
+
 }

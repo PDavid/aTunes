@@ -23,30 +23,35 @@ package net.sourceforge.atunes.kernel.actions;
 import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 
+/**
+ * Activates OSD
+ * @author alex
+ *
+ */
 public class ShowOSDAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 646318992035897920L;
+	private static final long serialVersionUID = 646318992035897920L;
 
-    private INotificationsHandler notificationsHandler;
-    
-    private IPlayListHandler playListHandler;
-    
-    /**
-     * @param notificationsHandler
-     */
-    public void setNotificationsHandler(INotificationsHandler notificationsHandler) {
+	private INotificationsHandler notificationsHandler;
+
+	private IPlayListHandler playListHandler;
+
+	/**
+	 * @param notificationsHandler
+	 */
+	public void setNotificationsHandler(final INotificationsHandler notificationsHandler) {
 		this.notificationsHandler = notificationsHandler;
 	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
 
-    @Override
-    protected void executeAction() {
-    	notificationsHandler.showNotification(playListHandler.getCurrentAudioObjectFromCurrentPlayList());
-    }
+	@Override
+	protected void executeAction() {
+		notificationsHandler.showNotification(playListHandler.getCurrentAudioObjectFromCurrentPlayList());
+	}
 }

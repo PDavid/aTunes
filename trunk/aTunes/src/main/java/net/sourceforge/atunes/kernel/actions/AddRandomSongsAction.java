@@ -26,52 +26,57 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ISmartPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Adds random songs to play list
+ * @author alex
+ *
+ */
 public class AddRandomSongsAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 950514324011175113L;
+	private static final long serialVersionUID = 950514324011175113L;
 
-    private ISmartPlayListHandler smartPlayListHandler;
-    
-    private String i18nKey;
-    
-    private int songs;
-    
-    /**
-     * @param i18nKey
-     */
-    public void setI18nKey(String i18nKey) {
+	private ISmartPlayListHandler smartPlayListHandler;
+
+	private String i18nKey;
+
+	private int songs;
+
+	/**
+	 * @param i18nKey
+	 */
+	public void setI18nKey(final String i18nKey) {
 		this.i18nKey = i18nKey;
 	}
-    
-    /**
-     * @param songs
-     */
-    public void setSongs(int songs) {
+
+	/**
+	 * @param songs
+	 */
+	public void setSongs(final int songs) {
 		this.songs = songs;
 	}
-    
-    /**
-     * @param smartPlayListHandler
-     */
-    public void setSmartPlayListHandler(
-			ISmartPlayListHandler smartPlayListHandler) {
+
+	/**
+	 * @param smartPlayListHandler
+	 */
+	public void setSmartPlayListHandler(
+			final ISmartPlayListHandler smartPlayListHandler) {
 		this.smartPlayListHandler = smartPlayListHandler;
 	}
-    
-    @Override
-    protected void initialize() {
-    	super.initialize();
-        putValue(NAME, I18nUtils.getString(i18nKey));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString(i18nKey));
-    }
 
-    @Override
-    protected void executeAction() {
-    	smartPlayListHandler.addRandomSongs(songs);
-    }
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(NAME, I18nUtils.getString(i18nKey));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString(i18nKey));
+	}
 
-    @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return true;
-    }
+	@Override
+	protected void executeAction() {
+		smartPlayListHandler.addRandomSongs(songs);
+	}
+
+	@Override
+	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
+		return true;
+	}
 }
