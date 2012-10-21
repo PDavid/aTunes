@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.util.List;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
+import net.sourceforge.atunes.model.ITrackInfo;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,11 +40,11 @@ import org.junit.Test;
 public class RepositoryHandlerTest {
 
 	private RepositoryHandler sut;
-	
+
 	@Before
 	public void init() {
 		sut = new RepositoryHandler();
-		
+
 		// Repository
 		IRepository repository = mock(IRepository.class);
 
@@ -73,10 +75,10 @@ public class RepositoryHandlerTest {
 		aos2.add(ao22);
 		aos2.add(ao32);
 		when(artist2.getAudioObjects()).thenReturn(aos2);
-		
+
 		when(repository.getArtist("Artist 1")).thenReturn(artist1);
 		when(repository.getArtist("Artist 2")).thenReturn(artist2);
-		
+
 		sut.setRepository(repository);
 	}
 
@@ -107,8 +109,8 @@ public class RepositoryHandlerTest {
 		titles.add("AO1");
 		titles.add("AO2");
 		titles.add("AOS1");
-		
-		// Match of artist 
+
+		// Match of artist
 		List<ILocalAudioObject> result = sut.getAudioObjectsByTitle("Artist 1", titles);
 		assertEquals(2, result.size());
 	}
@@ -119,9 +121,26 @@ public class RepositoryHandlerTest {
 		titles.add("AO1");
 		titles.add("AO2");
 		titles.add("AOS1");
-		
-		// Match of artist 
+
+		// Match of artist
 		List<ILocalAudioObject> result = sut.getAudioObjectsByTitle("Artist 2", titles);
 		assertTrue(result.isEmpty());
+	}
+
+	@Test
+	public void testCheckAvailability() {
+		ITrackInfo t1 = mock(ITrackInfo.class);
+		when(t1.getTitle()).thenReturn("AO1");
+		ITrackInfo t2 = mock(ITrackInfo.class);
+		when(t2.getTitle()).thenReturn("UNKNOWN");
+
+		List<ITrackInfo> tracks = new ArrayList<ITrackInfo>();
+		tracks.add(t1);
+		tracks.add(t2);
+
+		sut.checkAvailability("Artist 1", tracks);
+
+		verify(t1).setAvailable(true);
+		verify(t2).setAvailable(false);
 	}
 }
