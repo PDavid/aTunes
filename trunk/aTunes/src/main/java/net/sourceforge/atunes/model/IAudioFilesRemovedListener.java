@@ -25,10 +25,10 @@ import java.util.List;
 
 public interface IAudioFilesRemovedListener {
 
-    /**
-     * Called when audio files are removed physically
-     * 
-     * @param audioFiles
-     */
-    public void audioFilesRemoved(List<ILocalAudioObject> audioFiles);
+	/**
+	 * Called when audio files are removed physically
+	 * 
+	 * @param audioFiles
+	 */
+	public void audioFilesRemoved(List<ILocalAudioObject> audioFiles);
 }

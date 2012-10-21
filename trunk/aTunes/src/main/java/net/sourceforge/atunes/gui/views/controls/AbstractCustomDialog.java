@@ -40,88 +40,88 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 
 	private static final long serialVersionUID = -4593025984520110706L;
-	
-	private ILookAndFeelManager lookAndFeelManager;
-	
-    /**
-     * Instantiates a new custom modal dialog.
-     * 
-     * @param frame
-     * @param width
-     * @param height
-     */
-    public AbstractCustomDialog(IFrame frame, int width, int height) {
-    	this(frame, width, height, true, CloseAction.DISPOSE);
-    }
 
-    /**
-     * Instantiates a new custom dialog.
-     * 
-     * @param frame
-     * @param width
-     * @param height
-     * @param modal
-     * @param closeAction
-     */
-    public AbstractCustomDialog(IFrame frame, int width, int height, boolean modal, CloseAction closeAction) {
-        super(frame.getFrame());
+	private ILookAndFeelManager lookAndFeelManager;
+
+	/**
+	 * Instantiates a new custom modal dialog.
+	 * 
+	 * @param frame
+	 * @param width
+	 * @param height
+	 */
+	public AbstractCustomDialog(final IFrame frame, final int width, final int height) {
+		this(frame, width, height, true, CloseAction.DISPOSE);
+	}
+
+	/**
+	 * Instantiates a new custom dialog.
+	 * 
+	 * @param frame
+	 * @param width
+	 * @param height
+	 * @param modal
+	 * @param closeAction
+	 */
+	public AbstractCustomDialog(final IFrame frame, final int width, final int height, final boolean modal, final CloseAction closeAction) {
+		super(frame.getFrame());
 		setSize(width, height);
-        setLocationRelativeTo(frame.getFrame().getWidth() == 0 ? null : frame.getFrame());
-        initializeDialog(modal, closeAction);
-    }
+		setLocationRelativeTo(frame.getFrame().getWidth() == 0 ? null : frame.getFrame());
+		initializeDialog(modal, closeAction);
+	}
 
 	/**
 	 * @param modal
 	 * @param closeAction
 	 */
-	private void initializeDialog(boolean modal, CloseAction closeAction) {
-        this.lookAndFeelManager = Context.getBean(ILookAndFeelManager.class);
-        setUndecorated(getLookAndFeel().isDialogUndecorated());
-        setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
-        setDefaultCloseOperation(closeAction.getConstant());
-        if (closeAction == CloseAction.DISPOSE) {
-            GuiUtils.addDisposeActionWithEscapeKey(this, getRootPane());
-        } else if (closeAction == CloseAction.HIDE) {
-            GuiUtils.addCloseActionWithEscapeKey(this, getRootPane());
-        }
+	private void initializeDialog(final boolean modal, final CloseAction closeAction) {
+		this.lookAndFeelManager = Context.getBean(ILookAndFeelManager.class);
+		setUndecorated(getLookAndFeel().isDialogUndecorated());
+		setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
+		setDefaultCloseOperation(closeAction.getConstant());
+		if (closeAction == CloseAction.DISPOSE) {
+			GuiUtils.addDisposeActionWithEscapeKey(this, getRootPane());
+		} else if (closeAction == CloseAction.HIDE) {
+			GuiUtils.addCloseActionWithEscapeKey(this, getRootPane());
+		}
 	}
 
-    /**
-     * @return look and feel
-     */
-    protected ILookAndFeel getLookAndFeel() {
+	/**
+	 * @return look and feel
+	 */
+	protected ILookAndFeel getLookAndFeel() {
 		return lookAndFeelManager.getCurrentLookAndFeel();
 	}
-    
-    /**
-     * @return look and feel manager
-     */
-    protected ILookAndFeelManager getLookAndFeelManager() {
-    	return lookAndFeelManager;
-    }
-    
-    @Override
-    public Component add(Component comp) {
-    	if (comp instanceof JComponent) {
-    		((JComponent)comp).setOpaque(false);
-    	}
-        Component c = super.add(comp);
-        GuiUtils.applyComponentOrientation(this);
-    	return c;
-    }
-    
-    @Override
-    public void hideDialog() {
-    	setVisible(false);
-    }
-    
-    @Override
-    public void showDialog() {
-    	setVisible(true);
-    }
-    
-    @Override
-    public void initialize() {
-    	// Empty method to override
-    }
+
+	/**
+	 * @return look and feel manager
+	 */
+	protected ILookAndFeelManager getLookAndFeelManager() {
+		return lookAndFeelManager;
+	}
+
+	@Override
+	public Component add(final Component comp) {
+		if (comp instanceof JComponent) {
+			((JComponent)comp).setOpaque(false);
+		}
+		Component c = super.add(comp);
+		GuiUtils.applyComponentOrientation(this);
+		return c;
+	}
+
+	@Override
+	public void hideDialog() {
+		setVisible(false);
+	}
+
+	@Override
+	public void showDialog() {
+		setVisible(true);
+	}
+
+	@Override
+	public void initialize() {
+		// Empty method to override
+	}
 }

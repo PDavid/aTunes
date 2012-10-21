@@ -38,9 +38,8 @@ public interface IMessageDialog extends IDialog {
 
 	/**
 	 * Show message
-	 * 
 	 * @param message
-	 *            the message
+	 * @param owner
 	 */
 	void showMessage(String message, Component owner);
 

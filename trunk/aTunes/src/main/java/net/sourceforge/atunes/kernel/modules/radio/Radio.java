@@ -37,17 +37,21 @@ public final class Radio implements IRadio {
 
 	private static final long serialVersionUID = 3295941106814718559L;
 
-	private String name;
-	private String url;
-	private String label;
-	private String genre;
-	private boolean isRemoved;
+	String name;
+	String url;
+	String label;
+	String genre;
+	boolean isRemoved;
 	// Song infos from radio stream
-	private transient String artist;
-	private transient String title;
-	private transient boolean songInfoAvailable;
-	private long bitrate;
-	private int frequency;
+	transient String artist;
+	transient String title;
+	transient boolean songInfoAvailable;
+	long bitrate;
+	int frequency;
+
+	Radio() {
+		// Needed for serialization
+	}
 
 	/**
 	 * Instantiates a new radio.

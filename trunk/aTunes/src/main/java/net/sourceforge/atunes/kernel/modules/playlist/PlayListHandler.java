@@ -31,8 +31,10 @@ import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
+import net.sourceforge.atunes.model.IListMessageDialog;
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
@@ -43,6 +45,7 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.utils.CollectionUtils;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -87,6 +90,15 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private PlayListInformationInStatusBar playListInformationInStatusBar;
 
 	private IContextHandler contextHandler;
+
+	private IDialogFactory dialogFactory;
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
 	/**
 	 * @param contextHandler
@@ -667,6 +679,30 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 				contextHandler.retrieveInfoAndShowInPanel(getCurrentAudioObjectFromCurrentPlayList());
 			}
 		});
+
+		checkPlayListsItems();
+	}
+
+	/**
+	 * Checks and removes audio objects of play lists that are no longer available
+	 */
+	private void checkPlayListsItems() {
+		List<ILocalAudioObject> audioObjectsNotFound = getBean(PlayListsChecker.class).checkPlayLists();
+		Logger.info(audioObjectsNotFound.size(), " audio objects of play lists not found");
+		if (!audioObjectsNotFound.isEmpty()) {
+			getBean(PlayListRemover.class).removeAudioFiles(audioObjectsNotFound);
+			playListController.refreshPlayList();
+			final List<String> items = new ArrayList<String>();
+			for (ILocalAudioObject ao : audioObjectsNotFound) {
+				items.add(ao.getUrl());
+			}
+			GuiUtils.callInEventDispatchThread(new Runnable() {
+				@Override
+				public void run() {
+					dialogFactory.newDialog(IListMessageDialog.class).showMessage(I18nUtils.getString("ITEMS_REMOVED_AUTOMATICALLY_FROM_PLAYLIST"), items);
+				}
+			});
+		}
 	}
 
 	/**
