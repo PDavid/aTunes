@@ -28,21 +28,26 @@ import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IPodcastFeed;
 
+/**
+ * Tree cell decorator for podcasts
+ * @author alex
+ *
+ */
 public class PodcastFeedTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IPodcastFeed> {
-	
+
 	private IIconFactory rssSmallIcon;
-	
+
 	/**
 	 * @param rssSmallIcon
 	 */
-	public void setRssSmallIcon(IIconFactory rssSmallIcon) {
+	public void setRssSmallIcon(final IIconFactory rssSmallIcon) {
 		this.rssSmallIcon = rssSmallIcon;
 	}
 
-    @Override
-    public Component decorateTreeCellComponent(JLabel component, IPodcastFeed userObject, boolean isSelected) {
-        component.setIcon(rssSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-        return component;
-    }
+	@Override
+	public Component decorateTreeCellComponent(final JLabel component, final IPodcastFeed userObject, final boolean isSelected) {
+		component.setIcon(rssSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+		return component;
+	}
 
 }

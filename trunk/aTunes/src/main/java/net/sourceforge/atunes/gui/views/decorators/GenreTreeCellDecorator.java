@@ -28,21 +28,26 @@ import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.IIconFactory;
 
+/**
+ * Tree cell decorator for genres
+ * @author alex
+ *
+ */
 public class GenreTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IGenre> {
-	
+
 	private IIconFactory genreIcon;
-	
+
 	/**
 	 * @param genreIcon
 	 */
-	public void setGenreIcon(IIconFactory genreIcon) {
+	public void setGenreIcon(final IIconFactory genreIcon) {
 		this.genreIcon = genreIcon;
 	}
 
-    @Override
-    public Component decorateTreeCellComponent(JLabel component, IGenre userObject, boolean isSelected) {
-        component.setIcon(genreIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-        return component;
-    }
+	@Override
+	public Component decorateTreeCellComponent(final JLabel component, final IGenre userObject, final boolean isSelected) {
+		component.setIcon(genreIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+		return component;
+	}
 
 }

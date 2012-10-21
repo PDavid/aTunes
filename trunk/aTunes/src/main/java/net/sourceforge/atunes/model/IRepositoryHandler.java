@@ -283,6 +283,14 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	public List<ILocalAudioObject> getAudioObjectsByTitle(String artist, List<String> titles);
 
 	/**
+	 * Checks availability of each track of an artist
+	 * @param artist
+	 * @param tracks
+	 * @return
+	 */
+	void checkAvailability(String artist, List<ITrackInfo> tracks);
+
+	/**
 	 * Imports folders to repository
 	 * @param folders
 	 * @param path

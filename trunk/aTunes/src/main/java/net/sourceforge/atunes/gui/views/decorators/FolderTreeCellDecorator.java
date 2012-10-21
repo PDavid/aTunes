@@ -28,21 +28,26 @@ import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IIconFactory;
 
+/**
+ * Tree cell decorator for folders
+ * @author alex
+ *
+ */
 public class FolderTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IFolder> {
 
 	private IIconFactory folderIcon;
-	
+
 	/**
 	 * @param folderIcon
 	 */
-	public void setFolderIcon(IIconFactory folderIcon) {
+	public void setFolderIcon(final IIconFactory folderIcon) {
 		this.folderIcon = folderIcon;
 	}
-	
-    @Override
-    public Component decorateTreeCellComponent(JLabel component, IFolder userObject, boolean isSelected) {
-        component.setIcon(folderIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-        return component;
-    }
+
+	@Override
+	public Component decorateTreeCellComponent(final JLabel component, final IFolder userObject, final boolean isSelected) {
+		component.setIcon(folderIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+		return component;
+	}
 
 }

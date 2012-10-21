@@ -31,100 +31,105 @@ import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Tree cell decorator for strings
+ * @author alex
+ *
+ */
 public class StringTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, String> {
-	
+
 	private IIconFactory artistImageIcon;
-	
+
 	private IIconFactory albumSmallIcon;
-	
+
 	private IIconFactory audioFileSmallIcon;
-	
+
 	private IIconFactory deviceIcon;
-	
+
 	private IIconFactory favoriteIcon;
-	
+
 	private IIconFactory folderIcon;
-	
+
 	private IIconFactory rssSmallIcon;
-	
+
 	private IIconFactory radioSmallIcon;
-	
+
 	private Map<String, IIconFactory> iconsByString;
-	
+
 	/**
 	 * @param radioSmallIcon
 	 */
-	public void setRadioSmallIcon(IIconFactory radioSmallIcon) {
+	public void setRadioSmallIcon(final IIconFactory radioSmallIcon) {
 		this.radioSmallIcon = radioSmallIcon;
 	}
-	
+
 	/**
 	 * @param rssSmallIcon
 	 */
-	public void setRssSmallIcon(IIconFactory rssSmallIcon) {
+	public void setRssSmallIcon(final IIconFactory rssSmallIcon) {
 		this.rssSmallIcon = rssSmallIcon;
 	}
-	
+
 	/**
 	 * @param folderIcon
 	 */
-	public void setFolderIcon(IIconFactory folderIcon) {
+	public void setFolderIcon(final IIconFactory folderIcon) {
 		this.folderIcon = folderIcon;
 	}
-	
+
 	/**
 	 * @param favoriteIcon
 	 */
-	public void setFavoriteIcon(IIconFactory favoriteIcon) {
+	public void setFavoriteIcon(final IIconFactory favoriteIcon) {
 		this.favoriteIcon = favoriteIcon;
 	}
-	
+
 	/**
 	 * @param deviceIcon
 	 */
-	public void setDeviceIcon(IIconFactory deviceIcon) {
+	public void setDeviceIcon(final IIconFactory deviceIcon) {
 		this.deviceIcon = deviceIcon;
 	}
-	
+
 	/**
 	 * @param audioFileSmallIcon
 	 */
-	public void setAudioFileSmallIcon(IIconFactory audioFileSmallIcon) {
+	public void setAudioFileSmallIcon(final IIconFactory audioFileSmallIcon) {
 		this.audioFileSmallIcon = audioFileSmallIcon;
 	}
-	
+
 	/**
 	 * @param albumSmallIcon
 	 */
-	public void setAlbumSmallIcon(IIconFactory albumSmallIcon) {
+	public void setAlbumSmallIcon(final IIconFactory albumSmallIcon) {
 		this.albumSmallIcon = albumSmallIcon;
 	}
-	
+
 	/**
 	 * @param artistImageIcon
 	 */
-	public void setArtistImageIcon(IIconFactory artistImageIcon) {
+	public void setArtistImageIcon(final IIconFactory artistImageIcon) {
 		this.artistImageIcon = artistImageIcon;
 	}
 
-    @Override
-    public Component decorateTreeCellComponent(JLabel component, String userObject, boolean isSelected) {
-    	Color color = getLookAndFeel().getPaintForColorMutableIcon(component, isSelected);
-    	component.setIcon(getIcon(userObject).getIcon(color));
-    	component.setToolTipText(null);
-        return component;
-    }
+	@Override
+	public Component decorateTreeCellComponent(final JLabel component, final String userObject, final boolean isSelected) {
+		Color color = getLookAndFeel().getPaintForColorMutableIcon(component, isSelected);
+		component.setIcon(getIcon(userObject).getIcon(color));
+		component.setToolTipText(null);
+		return component;
+	}
 
 	/**
 	 * Returns icon to use depending on text
 	 * @param text
-	 * @return 
+	 * @return
 	 */
-	private IIconFactory getIcon(String text) {
+	private IIconFactory getIcon(final String text) {
 		IIconFactory factory = getIconsByString().get(text);
 		return factory != null ? factory : folderIcon; // For radio view
 	}
-	
+
 	private Map<String, IIconFactory> getIconsByString() {
 		if (iconsByString == null) {
 			iconsByString = new HashMap<String, IIconFactory>();
