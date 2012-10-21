@@ -27,113 +27,126 @@ import java.io.File;
  */
 public abstract class AbstractCdToWavConverter {
 
-    private ProgressListener listener;
-    private NoCdListener noCdListener;
-    private Process process;
-    // Cd must be initialized here, otherwise it wont work
-    private CDInfo cdInfo = new CDInfo();
+	private ProgressListener listener;
+	private NoCdListener noCdListener;
+	private Process process;
+	// Cd must be initialized here, otherwise it wont work
+	private CDInfo cdInfo = new CDInfo();
 
-    /*
-     * Public methods
-     */
+	/*
+	 * Public methods
+	 */
 
-    /**
-     * Sets no CD found so a dialog gets displayed.
-     */
-    public void notifyNoCd() {
-        if (noCdListener != null) {
-            noCdListener.noCd();
-        }
-    }
+	/**
+	 * Sets no CD found so a dialog gets displayed.
+	 */
+	public void notifyNoCd() {
+		if (noCdListener != null) {
+			noCdListener.noCd();
+		}
+	}
 
-    /**
-     * Destroys the ripping process.
-     */
-    public void stop() {
-    	if (process != null) {
-    		process.destroy();
-    	}
-    }
+	/**
+	 * Destroys the ripping process.
+	 */
+	public void stop() {
+		if (process != null) {
+			process.destroy();
+		}
+	}
 
-    /*
-     * Abstract methods
-     */
+	/*
+	 * Abstract methods
+	 */
 
-    public abstract boolean cdda2wav(int track, File file);
+	/**
+	 * Converts to wav
+	 * @param track
+	 * @param file
+	 * @return
+	 */
+	public abstract boolean cdda2wav(int track, File file);
 
-    public abstract boolean cdda2wav(int track, File file, boolean useParanoia);
+	/**
+	 * Converts to wav
+	 * @param track
+	 * @param file
+	 * @param useParanoia
+	 * @return
+	 */
+	public abstract boolean cdda2wav(int track, File file, boolean useParanoia);
 
-    /**
-     * @return cd information retrieved with converter
-     */
-    public abstract CDInfo retrieveDiscInformation();
+	/**
+	 * @return cd information retrieved with converter
+	 */
+	public abstract CDInfo retrieveDiscInformation();
 
-    /*
-     * Getters and Setters
-     */
+	/*
+	 * Getters and Setters
+	 */
 
-    /**
-     * Sets the listener.
-     * 
-     * @param listener
-     *            the new listener
-     */
-    public void setListener(ProgressListener listener) {
-        this.listener = listener;
-    }
+	/**
+	 * Sets the listener.
+	 * 
+	 * @param listener
+	 *            the new listener
+	 */
+	public void setListener(final ProgressListener listener) {
+		this.listener = listener;
+	}
 
-    /**
-     * Sets the no cd listener.
-     * 
-     * @param noCdListener
-     *            the new no cd listener
-     */
-    public void setNoCdListener(NoCdListener noCdListener) {
-        this.noCdListener = noCdListener;
-    }
+	/**
+	 * Sets the no cd listener.
+	 * 
+	 * @param noCdListener
+	 *            the new no cd listener
+	 */
+	public void setNoCdListener(final NoCdListener noCdListener) {
+		this.noCdListener = noCdListener;
+	}
 
-    /**
-     * @return the process
-     */
-    protected Process getProcess() {
-        return process;
-    }
+	/**
+	 * @return the process
+	 */
+	protected Process getProcess() {
+		return process;
+	}
 
-    /**
-     * @param process
-     *            the process to set
-     */
-    protected void setProcess(Process process) {
-        this.process = process;
-    }
+	/**
+	 * @param process
+	 *            the process to set
+	 */
+	protected void setProcess(final Process process) {
+		this.process = process;
+	}
 
-    /**
-     * @return the listener
-     */
-    protected ProgressListener getListener() {
-        return listener;
-    }
+	/**
+	 * @return the listener
+	 */
+	protected ProgressListener getListener() {
+		return listener;
+	}
 
-    /**
-     * @return the cd
-     */
-    protected CDInfo getCDInfo() {
-        return cdInfo;
-    }
+	/**
+	 * @return the cd
+	 */
+	protected CDInfo getCDInfo() {
+		return cdInfo;
+	}
 
-    /**
-     * @param cdInfo
-     *            the cdInfo to set
-     */
-    protected void setCDInfo(CDInfo cdInfo) {
-        this.cdInfo = cdInfo;
-    }
+	/**
+	 * @param cdInfo
+	 *            the cdInfo to set
+	 */
+	protected void setCDInfo(final CDInfo cdInfo) {
+		this.cdInfo = cdInfo;
+	}
 
-    /**
-     * @return the noCdListener
-     */
-    protected NoCdListener getNoCdListener() {
-        return noCdListener;
-    }
+	/**
+	 * @return the noCdListener
+	 */
+	protected NoCdListener getNoCdListener() {
+		return noCdListener;
+	}
 
 }

@@ -27,9 +27,16 @@ import javax.swing.JTree;
 
 import net.sourceforge.atunes.model.ITreeCellRendererCode;
 
+/**
+ * Tree cell renderer to implement
+ * @author alex
+ *
+ * @param <T>
+ * @param <U>
+ */
 public abstract class AbstractTreeCellRendererCode<T extends Component, U> implements ITreeCellRendererCode<T, U> {
 
-    @Override
+	@Override
 	public abstract JComponent getComponent(T superComponent, JTree tree, U value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus);
 
 }

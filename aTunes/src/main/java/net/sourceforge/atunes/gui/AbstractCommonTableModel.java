@@ -27,45 +27,51 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+/**
+ * Common code for table models
+ * @author alex
+ *
+ */
 public abstract class AbstractCommonTableModel implements TableModel {
 
-    private List<TableModelListener> listeners;
+	private final List<TableModelListener> listeners;
 
-    protected AbstractCommonTableModel() {
-        listeners = new ArrayList<TableModelListener>();
-    }
+	protected AbstractCommonTableModel() {
+		listeners = new ArrayList<TableModelListener>();
+	}
 
-    /**
-     * Adds a listener.
-     * 
-     * @param l
-     *            the l
-     */
-    @Override
-    public final void addTableModelListener(TableModelListener l) {
-        listeners.add(l);
-    }
+	/**
+	 * Adds a listener.
+	 * 
+	 * @param l
+	 *            the l
+	 */
+	@Override
+	public final void addTableModelListener(final TableModelListener l) {
+		listeners.add(l);
+	}
 
-    /**
-     * Removes a listener.
-     * 
-     * @param l
-     *            the l
-     */
-    @Override
-    public final void removeTableModelListener(TableModelListener l) {
-        listeners.remove(l);
-    }
+	/**
+	 * Removes a listener.
+	 * 
+	 * @param l
+	 *            the l
+	 */
+	@Override
+	public final void removeTableModelListener(final TableModelListener l) {
+		listeners.remove(l);
+	}
 
-    /**
-     * Refresh table.
-     */
-    public final void refresh(int eventType) {
-        TableModelEvent event;
-        event = new TableModelEvent(this, -1, -1, TableModelEvent.ALL_COLUMNS, eventType);
+	/**
+	 * Refresh table.
+	 * @param eventType
+	 */
+	public final void refresh(final int eventType) {
+		TableModelEvent event;
+		event = new TableModelEvent(this, -1, -1, TableModelEvent.ALL_COLUMNS, eventType);
 
-        for (int i = 0; i < listeners.size(); i++) {
-            listeners.get(i).tableChanged(event);
-        }
-    }
+		for (int i = 0; i < listeners.size(); i++) {
+			listeners.get(i).tableChanged(event);
+		}
+	}
 }

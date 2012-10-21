@@ -32,26 +32,28 @@ import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
 import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
 
-/*
+/**
  * based on code from Xtreme Media Player
+ * @author alex
+ *
  */
 public abstract class AbstractButtonShaper implements SubstanceButtonShaper {
 
 	private static final class CustomSubstanceButtonBorder extends
-			SubstanceButtonBorder {
-		private CustomSubstanceButtonBorder(Class<?> buttonShaperClass) {
+	SubstanceButtonBorder {
+		private CustomSubstanceButtonBorder(final Class<?> buttonShaperClass) {
 			super(buttonShaperClass);
 		}
 
 		@Override
-		public Insets getBorderInsets(Component c) {
+		public Insets getBorderInsets(final Component c) {
 			return new Insets(0, 0, 0, 0);
 		}
 	}
 
 	@Override
-	public Dimension getPreferredSize(AbstractButton button,
-			Dimension uiPreferredSize) {
+	public Dimension getPreferredSize(final AbstractButton button,
+			final Dimension uiPreferredSize) {
 		if (button.getClientProperty(SubstanceButtonUI.BORDER_COMPUTED) == null) {
 			boolean isBorderComputing = (button
 					.getClientProperty(SubstanceButtonUI.BORDER_COMPUTING) != null);
@@ -74,7 +76,7 @@ public abstract class AbstractButtonShaper implements SubstanceButtonShaper {
 	}
 
 	@Override
-	public Border getButtonBorder(AbstractButton button) {
+	public Border getButtonBorder(final AbstractButton button) {
 		return new CustomSubstanceButtonBorder(StandardButtonShaper.class);
 	}
 

@@ -27,24 +27,29 @@ import net.sf.ehcache.CacheManager;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IOSManager;
 
+/**
+ * A cache using ehcache
+ * @author alex
+ *
+ */
 public abstract class AbstractCache {
 
-    private CacheManager cacheManager;
+	private CacheManager cacheManager;
 
-    /**
-     * @param osManager
-     * @param settings
-     */
-    public AbstractCache(IOSManager osManager, URL settings) {
-        init(osManager, settings);
-    }
+	/**
+	 * @param osManager
+	 * @param settings
+	 */
+	public AbstractCache(final IOSManager osManager, final URL settings) {
+		init(osManager, settings);
+	}
 
-    private void init(IOSManager osManager, URL settings) {
-        System.setProperty("ehcache.disk.store.dir", StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), Constants.CACHE_DIR));
-        this.cacheManager = new CacheManager(settings);
-    }
+	private void init(final IOSManager osManager, final URL settings) {
+		System.setProperty("ehcache.disk.store.dir", StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), Constants.CACHE_DIR));
+		this.cacheManager = new CacheManager(settings);
+	}
 
-    protected Cache getCache(String name) {
-        return cacheManager.getCache(name);
-    }
+	protected Cache getCache(final String name) {
+		return cacheManager.getCache(name);
+	}
 }

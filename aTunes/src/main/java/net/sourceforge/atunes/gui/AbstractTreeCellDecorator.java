@@ -28,14 +28,24 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.ReflectionUtils;
 
+/**
+ * Common tree cell decorator
+ * @author alex
+ *
+ * @param <T>
+ * @param <U>
+ */
 public abstract class AbstractTreeCellDecorator<T extends Component, U> {
-	
+
 	private ILookAndFeelManager lookAndFeelManager;
-	
-	private Class<?> componentClass;
-	
+
+	private final Class<?> componentClass;
+
 	private Class<?> valueClass;
-	
+
+	/**
+	 * Default constructor
+	 */
 	public AbstractTreeCellDecorator() {
 		Type[] types = ReflectionUtils.getTypeArgumentsOfParameterizedType(this.getClass());
 		this.componentClass = (Class<?>) types[0];
@@ -45,21 +55,21 @@ public abstract class AbstractTreeCellDecorator<T extends Component, U> {
 			this.valueClass = (Class<?>) ((ParameterizedType)types[1]).getRawType();
 		}
 	}
-	
+
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public final void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	public final void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	protected final ILookAndFeelManager getLookAndFeelManager() {
 		return lookAndFeelManager;
 	}
-	
+
 	/**
 	 * @return current look and feel
 	 */
@@ -73,21 +83,21 @@ public abstract class AbstractTreeCellDecorator<T extends Component, U> {
 	public final Class<?> getComponentClass() {
 		return componentClass;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public final Class<?> getValueClass() {
 		return valueClass;
 	}
-	
-    /**
-     * Decorates a tree cell component in some way given the user object
-     * @param component
-     * @param userObject
-     * @param isSelected
-     * @return
-     */
-    public abstract Component decorateTreeCellComponent(T component, U userObject, boolean isSelected);
+
+	/**
+	 * Decorates a tree cell component in some way given the user object
+	 * @param component
+	 * @param userObject
+	 * @param isSelected
+	 * @return
+	 */
+	public abstract Component decorateTreeCellComponent(T component, U userObject, boolean isSelected);
 
 }

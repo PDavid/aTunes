@@ -27,9 +27,16 @@ import javax.swing.JList;
 
 import net.sourceforge.atunes.model.IListCellRendererCode;
 
+/**
+ * Custom renderer code for lists
+ * @author alex
+ *
+ * @param <T>
+ * @param <U>
+ */
 public abstract class AbstractListCellRendererCode<T extends Component, U> implements IListCellRendererCode<T, U> {
 
-    @Override
+	@Override
 	public abstract JComponent getComponent(T superComponent, JList list, U value, int index, boolean isSelected, boolean cellHasFocus);
 
 }
