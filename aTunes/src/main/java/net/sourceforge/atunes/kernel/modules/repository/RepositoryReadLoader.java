@@ -23,43 +23,50 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
-
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 
+/**
+ * Executes repository load when loading a new repository
+ * @author alex
+ *
+ */
 public class RepositoryReadLoader extends AbstractRepositoryLoader {
-	
+
 	private int totalFilesToLoad;
 
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 
-	public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+	/**
+	 * @param localAudioObjectValidator
+	 */
+	public void setLocalAudioObjectValidator(final ILocalAudioObjectValidator localAudioObjectValidator) {
 		this.localAudioObjectValidator = localAudioObjectValidator;
 	}
-	
+
 	@Override
 	protected void execute() {
 		Thread t = new Thread(this);
 		t.setPriority(Thread.MAX_PRIORITY);
 		t.start();
 	}
-	
+
 	@Override
 	protected void runTasksBeforeLoadRepository() {
 		totalFilesToLoad = countFilesInDir(getFolders());
-		SwingUtilities.invokeLater(new Runnable() {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
 			public void run() {
 				getRepositoryLoaderListener().notifyFilesInRepository(totalFilesToLoad);
 			}
 		});
 	}
-	
+
 	@Override
-	protected void notifyCurrentPath(String relativePath) {
-        getRepositoryLoaderListener().notifyCurrentPath(relativePath);
+	protected void notifyCurrentPath(final String relativePath) {
+		getRepositoryLoaderListener().notifyCurrentPath(relativePath);
 	}
-	
+
 	@Override
 	protected void notifyCurrentProgress() {
 		// Update remaining time after a number of files
@@ -70,28 +77,28 @@ public class RepositoryReadLoader extends AbstractRepositoryLoader {
 			getRepositoryLoaderListener().notifyReadProgress();
 		}
 	}
-	
+
 	@Override
 	protected void notifyFileLoaded() {
 		getRepositoryLoaderListener().notifyFileLoaded();
 	}
-	
+
 	@Override
-	protected void notifyCurrentAlbum(String artist, String album) {
+	protected void notifyCurrentAlbum(final String artist, final String album) {
 		// Update current artist and album
 		getRepositoryLoaderListener().notifyCurrentAlbum(artist, album);
 	}
-	
+
 	@Override
 	protected void notifyFinishLoader() {
-		SwingUtilities.invokeLater(new Runnable() {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
 			public void run() {
 				getRepositoryLoaderListener().notifyFinishRead(RepositoryReadLoader.this);
 			}
 		});
 	}
-	
+
 	/**
 	 * Count files in dir.
 	 * 
@@ -100,7 +107,7 @@ public class RepositoryReadLoader extends AbstractRepositoryLoader {
 	 * 
 	 * @return the int
 	 */
-	private int countFilesInDir(File dir) {
+	private int countFilesInDir(final File dir) {
 		int files = 0;
 		if (!isInterrupt()) {
 			File[] list = dir.listFiles();
@@ -126,7 +133,7 @@ public class RepositoryReadLoader extends AbstractRepositoryLoader {
 	 * 
 	 * @return the int
 	 */
-	private int countFilesInDir(List<File> folders1) {
+	private int countFilesInDir(final List<File> folders1) {
 		int files = 0;
 		for (File f : folders1) {
 			files = files + countFilesInDir(f);
