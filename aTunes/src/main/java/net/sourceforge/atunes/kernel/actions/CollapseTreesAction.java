@@ -25,28 +25,33 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Collapses navigation trees
+ * @author alex
+ *
+ */
 public class CollapseTreesAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 4230335834253793622L;
+	private static final long serialVersionUID = 4230335834253793622L;
 
-    private INavigationHandler navigationHandler;
-    
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
+	private INavigationHandler navigationHandler;
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-    
-    CollapseTreesAction() {
-        super(I18nUtils.getString("COLLAPSE"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("COLLAPSE"));
-    }
 
-    @Override
-    protected void executeAction() {
-        for (INavigationView view : navigationHandler.getNavigationViews()) {
-            GuiUtils.collapseTree(view.getTree());
-        }
-    }
+	CollapseTreesAction() {
+		super(I18nUtils.getString("COLLAPSE"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("COLLAPSE"));
+	}
+
+	@Override
+	protected void executeAction() {
+		for (INavigationView view : navigationHandler.getNavigationViews()) {
+			GuiUtils.collapseTree(view.getTree());
+		}
+	}
 }

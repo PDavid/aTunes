@@ -54,16 +54,19 @@ public class VolumeDownRemoteAction extends RemoteAction {
 		this.statePlayer = statePlayer;
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public VolumeDownRemoteAction() {
-		super("volDOWN");
-	}
-
 	@Override
 	public String runCommand(final List<String> parameters) {
 		callAction(volumeDownAction);
 		return StringUtils.getString(statePlayer.getVolume(), '%');
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Decrements the volume by 5 percent";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return null;
 	}
 }

@@ -22,9 +22,14 @@ package net.sourceforge.atunes.kernel.actions;
 import java.util.List;
 
 
+/**
+ * Remote action to enable shuffle
+ * @author alex
+ *
+ */
 public class ShuffleModeRemoteAction extends RemoteAction {
-	
-    private static final String ON = "on";
+
+	private static final String ON = "on";
 
 	private static final String OFF = "off";
 
@@ -32,26 +37,29 @@ public class ShuffleModeRemoteAction extends RemoteAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1135197116966774313L;
-	
-    /**
-     * Default constructor
-     */
-    public ShuffleModeRemoteAction() {
-    	super("shuffle");
-    }
 
-    @Override
-    public String runCommand(List<String> parameters) {
-        if(parameters.size() == 1) {
-        	String parameter = parameters.get(0);
-            if(parameter.equalsIgnoreCase(OFF)) {
-            	callToggleAction(ShuffleModeAction.class, false);
-            } else if(parameter.equalsIgnoreCase(ON)) {
-            	callToggleAction(ShuffleModeAction.class, true);
-            }
-            return "OK";
-        } else {
-            return "Bad number of arguments, plase input either a ON of OFF.";
-        }
-    }
+	@Override
+	public String runCommand(final List<String> parameters) {
+		if(parameters.size() == 1) {
+			String parameter = parameters.get(0);
+			if(parameter.equalsIgnoreCase(OFF)) {
+				callToggleAction(ShuffleModeAction.class, false);
+			} else if(parameter.equalsIgnoreCase(ON)) {
+				callToggleAction(ShuffleModeAction.class, true);
+			}
+			return OK;
+		} else {
+			return "Bad number of arguments, plase input either a ON of OFF.";
+		}
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Toggles shuffle playlist on/off";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return "[on|off]";
+	}
 }

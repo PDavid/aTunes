@@ -31,31 +31,34 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ToggleOSDSettingAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 646318992035897920L;
+	private static final long serialVersionUID = 646318992035897920L;
 
-    private IStateUI stateUI;
-    
-    /**
-     * @param stateUI
-     */
-    public void setStateUI(IStateUI stateUI) {
+	private IStateUI stateUI;
+
+	/**
+	 * @param stateUI
+	 */
+	public void setStateUI(final IStateUI stateUI) {
 		this.stateUI = stateUI;
 	}
-    
-    public ToggleOSDSettingAction() {
-        super(I18nUtils.getString("SHOW_OSD"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_OSD"));
-    }
-    
-    @Override
-    protected void initialize() {
-    	super.initialize();
-        putValue(SELECTED_KEY, stateUI.isShowOSD());
-    }
 
-    @Override
-    protected void executeAction() {
-    	stateUI.setShowOSD((Boolean) getValue(SELECTED_KEY));
-    }
+	/**
+	 * Default constructor
+	 */
+	public ToggleOSDSettingAction() {
+		super(I18nUtils.getString("SHOW_OSD"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_OSD"));
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(SELECTED_KEY, stateUI.isShowOSD());
+	}
+
+	@Override
+	protected void executeAction() {
+		stateUI.setShowOSD((Boolean) getValue(SELECTED_KEY));
+	}
 
 }

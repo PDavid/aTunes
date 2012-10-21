@@ -26,33 +26,37 @@ import java.util.List;
  * This action enables a telnet user to turn on and off song looping,
  */
 public class RepeatModeRemoteAction extends RemoteAction {
-    
-    private static final String ON = "on";
+
+	private static final String ON = "on";
 
 	private static final String OFF = "off";
 
 	private static final long serialVersionUID = 8443448052842553551L;
-	
-    /**
-     * Default constructor
-     */
-    public RepeatModeRemoteAction() {
-    	super("repeat");
-    }
 
-    @Override
-    public String runCommand(List<String> parameters) {
-        if(parameters.size() == 1) {
-        	String parameter = parameters.get(0);
-            if(parameter.equalsIgnoreCase(OFF)) {
-                callToggleAction(RepeatModeAction.class, false);
-                return "OK";
-            }
-            if(parameter.equalsIgnoreCase(ON)) {
-                callToggleAction(RepeatModeAction.class, true);
-                return "OK";
-            }
-        }
-        return "Bad number of arguments or bad command, plase input either a ON of OFF.";
-    }
+	@Override
+	public String runCommand(final List<String> parameters) {
+		if(parameters.size() == 1) {
+			String parameter = parameters.get(0);
+			if(parameter.equalsIgnoreCase(OFF)) {
+				callToggleAction(RepeatModeAction.class, false);
+				return OK;
+			}
+			if(parameter.equalsIgnoreCase(ON)) {
+				callToggleAction(RepeatModeAction.class, true);
+				return OK;
+			}
+		}
+		return "Bad number of arguments or bad command, plase input either a ON of OFF.";
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Toggles looping of a song on/off";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return "[on|off]";
+	}
+
 }

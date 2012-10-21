@@ -40,68 +40,71 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class MoveAfterCurrentAudioObjectAction extends CustomAbstractAction {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 89994064517052361L;
 
 	private IPlayListHandler playListHandler;
-	
+
 	/**
 	 * @param playListHandler
 	 */
-	public void setPlayListHandler(IPlayListHandler playListHandler) {
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-	
+
+	/**
+	 * Default constructor
+	 */
 	public MoveAfterCurrentAudioObjectAction() {
-        super(I18nUtils.getString("MOVE_AFTER_CURRENT_SONG"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_AFTER_CURRENT_SONG_TOOLTIP"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.ALT_MASK));
-        setEnabled(false);
-    }
+		super(I18nUtils.getString("MOVE_AFTER_CURRENT_SONG"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_AFTER_CURRENT_SONG_TOOLTIP"));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.ALT_MASK));
+		setEnabled(false);
+	}
 
 	@Override
 	protected void executeAction() {
-        IPlayList currentPlayList = playListHandler.getVisiblePlayList();
-        List<IAudioObject> selectedAudioObjects = playListHandler.getSelectedAudioObjects();
-        
-        //Recurse backwards to move the elements to the correct position
-        Collections.reverse(selectedAudioObjects);
-        
-        int beginNewPosition = playListHandler.getCurrentAudioObjectIndexInVisiblePlayList();
-        int endNewPosition = playListHandler.getCurrentAudioObjectIndexInVisiblePlayList();
-        for (int i = 0; i < selectedAudioObjects.size(); i++) {
-        	IAudioObject o = selectedAudioObjects.get(i);
-        	int currentIndex = playListHandler.getCurrentAudioObjectIndexInVisiblePlayList();
-        	int sourceIndex = currentPlayList.indexOf(o);
+		IPlayList currentPlayList = playListHandler.getVisiblePlayList();
+		List<IAudioObject> selectedAudioObjects = playListHandler.getSelectedAudioObjects();
 
-        	//Workaround otherwise file is put before current playing
-        	if (sourceIndex > currentIndex) {
-        		currentIndex++;
-        	}
-        	currentPlayList.moveRowTo(sourceIndex, currentIndex);
+		//Recurse backwards to move the elements to the correct position
+		Collections.reverse(selectedAudioObjects);
 
-        	// Get min and max indexes to set selected
-        	beginNewPosition = Math.min(currentIndex, beginNewPosition);
-        	endNewPosition = Math.max(currentIndex, endNewPosition);
-        }
-        
-        playListHandler.refreshPlayList();
-        
-        // Keep selected elements
-        playListHandler.setSelectionInterval(playListHandler.getCurrentAudioObjectIndexInVisiblePlayList() + 1, playListHandler.getCurrentAudioObjectIndexInVisiblePlayList() + selectedAudioObjects.size());
+		int beginNewPosition = playListHandler.getCurrentAudioObjectIndexInVisiblePlayList();
+		int endNewPosition = playListHandler.getCurrentAudioObjectIndexInVisiblePlayList();
+		for (int i = 0; i < selectedAudioObjects.size(); i++) {
+			IAudioObject o = selectedAudioObjects.get(i);
+			int currentIndex = playListHandler.getCurrentAudioObjectIndexInVisiblePlayList();
+			int sourceIndex = currentPlayList.indexOf(o);
 
-    }
-    
-    @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        //Don't allow moving songs from other playlists into active playlist
-        if (!playListHandler.isActivePlayListVisible() || 
-        	 playListHandler.isFiltered()) {
-            return false;
-        }
+			//Workaround otherwise file is put before current playing
+			if (sourceIndex > currentIndex) {
+				currentIndex++;
+			}
+			currentPlayList.moveRowTo(sourceIndex, currentIndex);
 
-        return !selection.isEmpty();
-    }
+			// Get min and max indexes to set selected
+			beginNewPosition = Math.min(currentIndex, beginNewPosition);
+			endNewPosition = Math.max(currentIndex, endNewPosition);
+		}
+
+		playListHandler.refreshPlayList();
+
+		// Keep selected elements
+		playListHandler.setSelectionInterval(playListHandler.getCurrentAudioObjectIndexInVisiblePlayList() + 1, playListHandler.getCurrentAudioObjectIndexInVisiblePlayList() + selectedAudioObjects.size());
+
+	}
+
+	@Override
+	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
+		//Don't allow moving songs from other playlists into active playlist
+		if (!playListHandler.isActivePlayListVisible() ||
+				playListHandler.isFiltered()) {
+			return false;
+		}
+
+		return !selection.isEmpty();
+	}
 }

@@ -32,74 +32,67 @@ import net.sourceforge.atunes.utils.CollectionUtils;
  * 
  */
 public class AddToPlayListRemoteAction extends RemoteAction {
-    
-    private static final String NOW = "--NOW";
+
+	private static final String NOW = "--NOW";
 
 	private static final long serialVersionUID = -634125878559446978L;
 
-    private IPlayListHandler playListHandler;
-    
-    private IRepositoryHandler repositoryHandler;
+	private IPlayListHandler playListHandler;
 
-    private PlayNowAction playNowAction;
-    
-    /**
-     * Creates this action 
-     */
-    public AddToPlayListRemoteAction() {
-    	super("add");
-    }
+	private IRepositoryHandler repositoryHandler;
 
-    /**
-     * @param playNowAction
-     */
-    public void setPlayNowAction(PlayNowAction playNowAction) {
+	private PlayNowAction playNowAction;
+
+	/**
+	 * @param playNowAction
+	 */
+	public void setPlayNowAction(final PlayNowAction playNowAction) {
 		this.playNowAction = playNowAction;
 	}
-    
-    /**
-     * @param handler
-     */
-    public void setRepositoryHandler(IRepositoryHandler handler) {
-        this.repositoryHandler = handler;
-    }
 
-    /**
-     * @param handler
-     */
-    public void setPlayListHandler(IPlayListHandler handler) {
-        this.playListHandler = handler;
-    }
+	/**
+	 * @param handler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler handler) {
+		this.repositoryHandler = handler;
+	}
 
-    @Override
-    public String runCommand(List<String> parameters) {
-        if (CollectionUtils.isEmpty(parameters)) {
-            return "Please input a valid song filename";
-        }
+	/**
+	 * @param handler
+	 */
+	public void setPlayListHandler(final IPlayListHandler handler) {
+		this.playListHandler = handler;
+	}
 
-        boolean playNow = getPlayNow(parameters);
-        
-        //as the parameters are normally divided into parts based on spaces, put all together
-        String name = org.apache.commons.lang.StringUtils.join(parameters, ' ');
+	@Override
+	public String runCommand(final List<String> parameters) {
+		if (CollectionUtils.isEmpty(parameters)) {
+			return "Please input a valid song filename";
+		}
 
-        ILocalAudioObject file = repositoryHandler.getFile(name);
-        if (file != null) {
-        	processFile(playNow, file);
-    		return "OK";
-        } else {
-        	return "Bad song name, for a full list of songs in the repository, please type \"command:list\"";
-        }	
-    }
+		boolean playNow = getPlayNow(parameters);
+
+		//as the parameters are normally divided into parts based on spaces, put all together
+		String name = org.apache.commons.lang.StringUtils.join(parameters, ' ');
+
+		ILocalAudioObject file = repositoryHandler.getFile(name);
+		if (file != null) {
+			processFile(playNow, file);
+			return OK;
+		} else {
+			return "Bad song name, for a full list of songs in the repository, please type \"command:list\"";
+		}
+	}
 
 	/**
 	 * @return
 	 */
-	private boolean getPlayNow(List<String> parameters) {
+	private boolean getPlayNow(final List<String> parameters) {
 		boolean playNow = false;
 		if(parameters.contains(NOW)) {
-        	playNow = true;
-        	parameters.remove(NOW);
-        }
+			playNow = true;
+			parameters.remove(NOW);
+		}
 		return playNow;
 	}
 
@@ -107,11 +100,21 @@ public class AddToPlayListRemoteAction extends RemoteAction {
 	 * @param playNow
 	 * @param file
 	 */
-	private void processFile(boolean playNow, ILocalAudioObject file) {
+	private void processFile(final boolean playNow, final ILocalAudioObject file) {
 		if(playNow) {
 			playNowAction.playNow(file);
 		} else {
 			playListHandler.addToVisiblePlayList(Collections.singletonList(file));
 		}
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return "[--NOW] SONGNAME";
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Appends SONGNAME to the end of the playlist. If --NOW follows the add keyword, it plays the song immediately";
 	}
 }

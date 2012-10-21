@@ -23,26 +23,34 @@ package net.sourceforge.atunes.kernel.actions;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Causes repository load to be done in background
+ * @author alex
+ *
+ */
 public class RepositoryLoadInBackgroundAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -9039622325405324974L;
+	private static final long serialVersionUID = -9039622325405324974L;
 
-    private IRepositoryHandler repositoryHandler;
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	private IRepositoryHandler repositoryHandler;
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
-    
-    public RepositoryLoadInBackgroundAction() {
-        super(I18nUtils.getString("DO_IN_BACKGROUND"), null);
-    }
 
-    @Override
-    protected void executeAction() {
-    	repositoryHandler.doInBackground();
-    }
+	/**
+	 * Default constructor
+	 */
+	public RepositoryLoadInBackgroundAction() {
+		super(I18nUtils.getString("DO_IN_BACKGROUND"), null);
+	}
+
+	@Override
+	protected void executeAction() {
+		repositoryHandler.doInBackground();
+	}
 
 }

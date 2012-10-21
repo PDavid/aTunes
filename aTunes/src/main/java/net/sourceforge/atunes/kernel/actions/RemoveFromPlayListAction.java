@@ -37,32 +37,35 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class RemoveFromPlayListAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 7249538257655420803L;
+	private static final long serialVersionUID = 7249538257655420803L;
 
-    private IPlayListHandler playListHandler;
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+	private IPlayListHandler playListHandler;
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    public RemoveFromPlayListAction() {
-        super(I18nUtils.getString("REMOVE"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_TOOLTIP"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
-        setEnabled(false);
-    }
 
-    @Override
-    protected void executeAction() {
-    	playListHandler.deleteSelection();
-    }
+	/**
+	 * Default constructor
+	 */
+	public RemoveFromPlayListAction() {
+		super(I18nUtils.getString("REMOVE"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_TOOLTIP"));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+		setEnabled(false);
+	}
 
-    @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return selection != null && !selection.isEmpty();
-    }
+	@Override
+	protected void executeAction() {
+		playListHandler.deleteSelection();
+	}
+
+	@Override
+	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
+		return selection != null && !selection.isEmpty();
+	}
 
 }

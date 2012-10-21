@@ -23,26 +23,34 @@ package net.sourceforge.atunes.kernel.actions;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Closes visible play list
+ * @author alex
+ *
+ */
 public class ClosePlaylistAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -710334709397174680L;
+	private static final long serialVersionUID = -710334709397174680L;
 
-    private IPlayListHandler playListHandler;
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+	private IPlayListHandler playListHandler;
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    public ClosePlaylistAction() {
-        super(I18nUtils.getString("CLOSE"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLOSE"));
-    }
 
-    @Override
-    protected void executeAction() {
-    	playListHandler.closeCurrentPlaylist();
-    }
+	/**
+	 * Default constructor
+	 */
+	public ClosePlaylistAction() {
+		super(I18nUtils.getString("CLOSE"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLOSE"));
+	}
+
+	@Override
+	protected void executeAction() {
+		playListHandler.closeCurrentPlaylist();
+	}
 }

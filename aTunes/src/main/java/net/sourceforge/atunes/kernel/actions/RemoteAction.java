@@ -20,49 +20,46 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ICommand;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Remote action can be called from outside application
+ * @author alex
+ *
+ */
 public abstract class RemoteAction implements ICommand {
 
-	private static final class CallToggleAction implements Runnable {
-
-		private final Class<? extends CustomAbstractAction> actionClass;
-		private final boolean value;
-
-		private CallToggleAction(final Class<? extends CustomAbstractAction> actionClass, final boolean value) {
-			this.actionClass = actionClass;
-			this.value = value;
-		}
-
-		@Override
-		public void run() {
-			CustomAbstractAction action = Context.getBean(actionClass);
-			action.putValue(CustomAbstractAction.SELECTED_KEY, value);
-			action.actionPerformed(null);
-		}
-	}
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 34587011817746442L;
 
-	private boolean synchronousResponse = false;
+	private boolean synchronousResponse = true; // all commands are synchronous by default
 
 	private ICommandHandler commandHandler;
 
-	private final String commandName;
+	private String commandName;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * String to return when command completes successfully
+	 */
+	protected static final String OK = "OK";
 
 	/**
 	 * @param commandName
 	 */
-	public RemoteAction(final String commandName) {
+	public void setCommandName(final String commandName) {
 		this.commandName = commandName;
-		setSynchronousResponse(true); // all commands are synchronous by default
+	}
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -94,7 +91,7 @@ public abstract class RemoteAction implements ICommand {
 	 * Sets if action needs a synchronous response
 	 * @param sync
 	 */
-	protected final void setSynchronousResponse(final boolean sync) {
+	public void setSynchronousResponse(final boolean sync) {
 		this.synchronousResponse = sync;
 	}
 
@@ -102,8 +99,8 @@ public abstract class RemoteAction implements ICommand {
 	 * Calls an action of application
 	 * @param actionClass
 	 */
-	protected final void callActidon(final Class<? extends CustomAbstractAction> actionClass) {
-		Context.getBean(actionClass).actionPerformed(null);
+	protected final void callAction(final Class<? extends CustomAbstractAction> actionClass) {
+		beanFactory.getBean(actionClass).actionPerformed(null);
 	}
 
 	/**
@@ -119,11 +116,28 @@ public abstract class RemoteAction implements ICommand {
 	 * @param actionClass
 	 */
 	protected final void callToggleAction(final Class<? extends CustomAbstractAction> actionClass, final boolean value) {
-		GuiUtils.callInEventDispatchThread(new CallToggleAction(actionClass, value));
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				CustomAbstractAction action = beanFactory.getBean(actionClass);
+				action.putValue(CustomAbstractAction.SELECTED_KEY, value);
+				callAction(action);
+			}
+		});
 	}
 
 	@Override
 	public final String getCommandName() {
 		return commandName;
 	}
+
+	/**
+	 * @return optional parameters text
+	 */
+	protected abstract String getOptionalParameters();
+
+	/**
+	 * @return help text of command
+	 */
+	protected abstract String getHelpText();
 }

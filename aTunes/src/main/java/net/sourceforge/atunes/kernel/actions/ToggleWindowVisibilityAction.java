@@ -22,21 +22,26 @@ package net.sourceforge.atunes.kernel.actions;
 
 import net.sourceforge.atunes.model.IUIHandler;
 
+/**
+ * Toggles window visibility (visible or not visible)
+ * @author alex
+ *
+ */
 public class ToggleWindowVisibilityAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -1177020643937370678L;
+	private static final long serialVersionUID = -1177020643937370678L;
 
-    private IUIHandler uiHandler;
-    
-    /**
-     * @param uiHandler
-     */
-    public void setUiHandler(IUIHandler uiHandler) {
+	private IUIHandler uiHandler;
+
+	/**
+	 * @param uiHandler
+	 */
+	public void setUiHandler(final IUIHandler uiHandler) {
 		this.uiHandler = uiHandler;
 	}
-    
-    @Override
-    protected void executeAction() {
-        uiHandler.toggleWindowVisibility();
-    }
+
+	@Override
+	protected void executeAction() {
+		uiHandler.toggleWindowVisibility();
+	}
 }

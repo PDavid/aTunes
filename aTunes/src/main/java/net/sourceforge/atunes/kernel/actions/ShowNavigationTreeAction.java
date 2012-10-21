@@ -36,40 +36,43 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ShowNavigationTreeAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 5137162733978906000L;
+	private static final long serialVersionUID = 5137162733978906000L;
 
-    private INavigationHandler navigationHandler;
-    
-    private IStateNavigation stateNavigation;
+	private INavigationHandler navigationHandler;
 
-    /**
-     * @param stateNavigation
-     */
-    public void setStateNavigation(IStateNavigation stateNavigation) {
+	private IStateNavigation stateNavigation;
+
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
 		this.stateNavigation = stateNavigation;
 	}
 
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-    
-    public ShowNavigationTreeAction() {
-        super(I18nUtils.getString("SHOW_NAVIGATION_TREE"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_NAVIGATION_TREE"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
-    }
-    
-    @Override
-    protected void initialize() {
-    	super.initialize();
-        putValue(SELECTED_KEY, stateNavigation.isShowNavigationTree());
-    }
 
-    @Override
-    protected void executeAction() {
-    	navigationHandler.showNavigationTree((Boolean) getValue(SELECTED_KEY));
-    }
+	/**
+	 * Default constructor
+	 */
+	public ShowNavigationTreeAction() {
+		super(I18nUtils.getString("SHOW_NAVIGATION_TREE"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_NAVIGATION_TREE"));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(SELECTED_KEY, stateNavigation.isShowNavigationTree());
+	}
+
+	@Override
+	protected void executeAction() {
+		navigationHandler.showNavigationTree((Boolean) getValue(SELECTED_KEY));
+	}
 }

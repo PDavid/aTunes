@@ -39,129 +39,122 @@ import org.apache.commons.lang.StringUtils;
  */
 public class PrintSongListRemoteAction extends RemoteAction {
 
-    private static final String PLAYLIST = "playlist";
+	private static final String PLAYLIST = "playlist";
 	private static final String ALBUM = "album";
 	private static final String ARTIST = "artist";
 	private static final long serialVersionUID = -1450032380215351834L;
-	
-    private IRepositoryHandler repositoryHandler;
-    
-    private IPlayListHandler playListHandler;
 
-    /**
-     * Default constructor
-     */
-    public PrintSongListRemoteAction() {
-    	super("list");
+	private IRepositoryHandler repositoryHandler;
+
+	private IPlayListHandler playListHandler;
+
+	/**
+	 * @param handler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler handler) {
+		this.repositoryHandler = handler;
 	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler handler) {
-        this.repositoryHandler = handler;
-    }
 
-    /**
-     * @param handler
-     */
-    public void setPlayListHandler(IPlayListHandler handler) {
-        this.playListHandler = handler;
-    }
+	/**
+	 * @param handler
+	 */
+	public void setPlayListHandler(final IPlayListHandler handler) {
+		this.playListHandler = handler;
+	}
 
-    @Override
-    public String runCommand(List<String> parameters) {
-        Collection<ILocalAudioObject> objects = null;
+	@Override
+	public String runCommand(final List<String> parameters) {
+		Collection<ILocalAudioObject> objects = null;
 
-        if (!CollectionUtils.isEmpty(parameters)) {
-            String query = null;
-            if (parameters.size() > 1) {
-            	query = StringUtils.join(parameters.subList(1, parameters.size()), ' ');
-            }
-            String firstParameter = parameters.get(0);
-            if (firstParameter.equalsIgnoreCase(ARTIST)) {
-                objects = processArtistParameter(query);
-                if (objects == null) {
-    		        return "Artist not found.";
-                }
-            } else if (firstParameter.equalsIgnoreCase(ALBUM)) {
-            	objects = processAlbumParameter(query);
-            	if (objects == null) {
-                	return "Album not found";
-            	}
-            } else if (firstParameter.equalsIgnoreCase(PLAYLIST)) {
-            	return processPlaylistParameter();
-            } else {
-            	return "Bad command";
-            }
-        } else {
-        	objects = processAllSongs();
-        }
+		if (!CollectionUtils.isEmpty(parameters)) {
+			String query = null;
+			if (parameters.size() > 1) {
+				query = StringUtils.join(parameters.subList(1, parameters.size()), ' ');
+			}
+			String firstParameter = parameters.get(0);
+			if (firstParameter.equalsIgnoreCase(ARTIST)) {
+				objects = processArtistParameter(query);
+				if (objects == null) {
+					return "Artist not found.";
+				}
+			} else if (firstParameter.equalsIgnoreCase(ALBUM)) {
+				objects = processAlbumParameter(query);
+				if (objects == null) {
+					return "Album not found";
+				}
+			} else if (firstParameter.equalsIgnoreCase(PLAYLIST)) {
+				return processPlaylistParameter();
+			} else {
+				return "Bad command";
+			}
+		} else {
+			objects = processAllSongs();
+		}
 
-        StringBuilder sb = new StringBuilder();
-        if (objects != null) {
-        	for (ILocalAudioObject iao : objects) {
-        		sb.append(iao.getFile().getAbsoluteFile()).append("\n");
-        	}
-        }
-        return sb.toString();
-    }
-    
-    private Collection<ILocalAudioObject> processAllSongs() {
-    	return repositoryHandler.getAudioFilesList();
-    }
-    
-    private String processPlaylistParameter() {
-        Collection<IAudioObject> playlistObjects = playListHandler.getActivePlayList().getAudioObjectsList();
-        if (playlistObjects.isEmpty()) {
-        	return "Playlist is empty";
-        } else {
-        	StringBuilder sb = new StringBuilder();
-        	for (IAudioObject audio : playlistObjects) {
-        		sb.append(audio.getTitleOrFileName()).append("\n");
-        	}
-        	return sb.toString();
-        }
-    }
+		StringBuilder sb = new StringBuilder();
+		if (objects != null) {
+			for (ILocalAudioObject iao : objects) {
+				sb.append(iao.getFile().getAbsoluteFile()).append("\n");
+			}
+		}
+		return sb.toString();
+	}
+
+	private Collection<ILocalAudioObject> processAllSongs() {
+		return repositoryHandler.getAudioFilesList();
+	}
+
+	private String processPlaylistParameter() {
+		Collection<IAudioObject> playlistObjects = playListHandler.getActivePlayList().getAudioObjectsList();
+		if (playlistObjects.isEmpty()) {
+			return "Playlist is empty";
+		} else {
+			StringBuilder sb = new StringBuilder();
+			for (IAudioObject audio : playlistObjects) {
+				sb.append(audio.getTitleOrFileName()).append("\n");
+			}
+			return sb.toString();
+		}
+	}
 
 	/**
 	 * @param query
 	 * @return
 	 */
-	private Collection<ILocalAudioObject> processArtistParameter(String query) {
+	private Collection<ILocalAudioObject> processArtistParameter(final String query) {
 		if (net.sourceforge.atunes.utils.StringUtils.isEmpty(query)) {
 			returnArtistList();
 			return null;
 		} else {
-		    IArtist artist = repositoryHandler.getArtist(query);
-		    if (artist == null) {
-		        return null;
-		    } else {
-		    	return artist.getAudioObjects();
-		    }
+			IArtist artist = repositoryHandler.getArtist(query);
+			if (artist == null) {
+				return null;
+			} else {
+				return artist.getAudioObjects();
+			}
 		}
 	}
-	
-	private Collection<ILocalAudioObject> processAlbumParameter(String query) {
-        if (net.sourceforge.atunes.utils.StringUtils.isEmpty(query)) {
-        	returnAlbumList();
-        	return null;
-        } else {
-            List<IAlbum> albums = repositoryHandler.getAlbums();
-        	// Find album
-            IAlbum album = null;
-            for (IAlbum alb : albums) {
-                if (alb.getName().equalsIgnoreCase(query)) {
-                    album = alb;
-                    break;
-                }
-            }
-            if (album == null) {
-            	return null;
-            } else {
-            	return album.getAudioObjects();
-            }
-        }
+
+	private Collection<ILocalAudioObject> processAlbumParameter(final String query) {
+		if (net.sourceforge.atunes.utils.StringUtils.isEmpty(query)) {
+			returnAlbumList();
+			return null;
+		} else {
+			List<IAlbum> albums = repositoryHandler.getAlbums();
+			// Find album
+			IAlbum album = null;
+			for (IAlbum alb : albums) {
+				if (alb.getName().equalsIgnoreCase(query)) {
+					album = alb;
+					break;
+				}
+			}
+			if (album == null) {
+				return null;
+			} else {
+				return album.getAudioObjects();
+			}
+		}
 	}
 
 	/**
@@ -170,11 +163,11 @@ public class PrintSongListRemoteAction extends RemoteAction {
 	private String returnArtistList() {
 		StringBuilder sb = new StringBuilder();
 		for (IArtist artist : repositoryHandler.getArtists()) {
-		    sb.append(artist.getName()).append("\n");
+			sb.append(artist.getName()).append("\n");
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * Builds a list of albums
 	 */
@@ -184,5 +177,17 @@ public class PrintSongListRemoteAction extends RemoteAction {
 			sb.append(album.getName()).append("\n");
 		}
 		return sb.toString();
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Prints out a list of all song files. " +
+		"When parameter artist is used it prints the list of all artists, when the name of an artist is provided, " +
+		"it ouputs all song which belong to the artist";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return "[artist [artistName] | album [albumName]]";
 	}
 }

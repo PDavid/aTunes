@@ -43,6 +43,11 @@ import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * Adds top tracks of an artist to play list
+ * @author alex
+ *
+ */
 public class AddArtistTopTracksToPlayListAction extends AbstractActionOverSelectedTreeObjects<IArtist> {
 
 	private static final long serialVersionUID = -8993769615827375740L;

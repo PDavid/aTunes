@@ -40,16 +40,19 @@ public class ShowOSDRemoteAction extends RemoteAction {
 		this.showOSDAction = showOSDAction;
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public ShowOSDRemoteAction() {
-		super("showOSD");
-	}
-
 	@Override
 	public String runCommand(final List<String> parameters) {
 		callAction(showOSDAction);
-		return "OK";
+		return OK;
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Pops out a window with the current name of the song";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return null;
 	}
 }

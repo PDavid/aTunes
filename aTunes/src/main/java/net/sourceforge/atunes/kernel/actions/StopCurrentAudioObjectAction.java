@@ -28,33 +28,38 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Stops playback
+ * @author alex
+ *
+ */
 public class StopCurrentAudioObjectAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -1177020643937370678L;
+	private static final long serialVersionUID = -1177020643937370678L;
 
-    private IPlayerHandler playerHandler;
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
+	private IPlayerHandler playerHandler;
+
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
-    
-    /**
-     * Default constructor
-     */
-    public StopCurrentAudioObjectAction() {
-    	super(I18nUtils.getString("STOP"));
-    }
-    
-    @Override
-    protected void initialize() {
-    	putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, GuiUtils.getCtrlOrMetaActionEventMask()));
-    }
 
-    @Override
-    protected void executeAction() {
-    	playerHandler.stopCurrentAudioObject(true);
-    }
+	/**
+	 * Default constructor
+	 */
+	public StopCurrentAudioObjectAction() {
+		super(I18nUtils.getString("STOP"));
+	}
+
+	@Override
+	protected void initialize() {
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, GuiUtils.getCtrlOrMetaActionEventMask()));
+	}
+
+	@Override
+	protected void executeAction() {
+		playerHandler.stopCurrentAudioObject(true);
+	}
 }

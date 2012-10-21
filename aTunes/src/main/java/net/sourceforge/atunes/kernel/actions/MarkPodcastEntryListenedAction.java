@@ -27,40 +27,48 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Marks a podcast feed entry as listened
+ * @author alex
+ *
+ */
 public class MarkPodcastEntryListenedAction extends AbstractActionOverSelectedObjects<IPodcastFeedEntry> {
 
-    private static final long serialVersionUID = 1563803489549692850L;
+	private static final long serialVersionUID = 1563803489549692850L;
 
-    private INavigationHandler navigationHandler;
-    
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
+	private INavigationHandler navigationHandler;
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-    
-    public MarkPodcastEntryListenedAction() {
-        super(I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"));
-    }
 
-    @Override
-    protected void executeAction(List<IPodcastFeedEntry> objects) {
-        for (IPodcastFeedEntry pfe : objects) {
-            pfe.setListened(true);
-        }
-        navigationHandler.refreshNavigationTable();
-    }
+	/**
+	 * Default constructor
+	 */
+	public MarkPodcastEntryListenedAction() {
+		super(I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        for (IAudioObject ao : selection) {
-            if (!(ao instanceof IPodcastFeedEntry) || ((IPodcastFeedEntry) ao).isListened()) {
-                return false;
-            }
-        }
-        return true;
-    }
+	@Override
+	protected void executeAction(final List<IPodcastFeedEntry> objects) {
+		for (IPodcastFeedEntry pfe : objects) {
+			pfe.setListened(true);
+		}
+		navigationHandler.refreshNavigationTable();
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
+		for (IAudioObject ao : selection) {
+			if (!(ao instanceof IPodcastFeedEntry) || ((IPodcastFeedEntry) ao).isListened()) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 }

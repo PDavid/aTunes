@@ -31,24 +31,27 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ConnectDeviceAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -8571631451521817410L;
+	private static final long serialVersionUID = -8571631451521817410L;
 
-    private IDeviceHandler deviceHandler;
-    
-    /**
-     * @param deviceHandler
-     */
-    public void setDeviceHandler(IDeviceHandler deviceHandler) {
+	private IDeviceHandler deviceHandler;
+
+	/**
+	 * @param deviceHandler
+	 */
+	public void setDeviceHandler(final IDeviceHandler deviceHandler) {
 		this.deviceHandler = deviceHandler;
 	}
-    
-    public ConnectDeviceAction() {
-        super(I18nUtils.getString("CONNECT"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("CONNECT"));
-    }
 
-    @Override
-    protected void executeAction() {
-    	deviceHandler.connectDevice();
-    }
+	/**
+	 * Default constructor
+	 */
+	public ConnectDeviceAction() {
+		super(I18nUtils.getString("CONNECT"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("CONNECT"));
+	}
+
+	@Override
+	protected void executeAction() {
+		deviceHandler.connectDevice();
+	}
 }

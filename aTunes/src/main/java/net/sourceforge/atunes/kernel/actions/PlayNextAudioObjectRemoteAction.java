@@ -40,16 +40,19 @@ public class PlayNextAudioObjectRemoteAction extends RemoteAction {
 		this.nextAction = nextAction;
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public PlayNextAudioObjectRemoteAction() {
-		super("next");
-	}
-
 	@Override
 	public String runCommand(final List<String> parameters) {
 		callAction(nextAction);
-		return "OK";
+		return OK;
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Plays the next song in the playlist";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return null;
 	}
 }

@@ -30,41 +30,44 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class SkipToRemoteAction extends RemoteAction {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6798387500260668197L;
-	
+
 	private IPlayerHandler playerHandler;
 
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-        this.playerHandler = playerHandler;
-    }
-    
-    /**
-     * Default constructor
-     */
-    public SkipToRemoteAction() {
-    	super("goto");
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
 	}
 
-    @Override
-    public String runCommand(List<String> parameters) {
-        if (parameters.size() >= 1) {
-            try {
-                int perc = Integer.parseInt(parameters.get(0));
-                if (perc < 0 || perc > 100) {
-                	throw new NumberFormatException();
-                }
-                playerHandler.seekCurrentAudioObject((long) ((perc/100.0) * playerHandler.getCurrentAudioObjectLength()), perc);
-                return "OK";
-            } catch (NumberFormatException ex) {
-                return StringUtils.getString("Bad number format: ", parameters.get(0));
-            }
-        }
-        return "Missing parameter";
-    }
+	@Override
+	public String runCommand(final List<String> parameters) {
+		if (parameters.size() >= 1) {
+			try {
+				int perc = Integer.parseInt(parameters.get(0));
+				if (perc < 0 || perc > 100) {
+					throw new NumberFormatException();
+				}
+				playerHandler.seekCurrentAudioObject((long) ((perc/100.0) * playerHandler.getCurrentAudioObjectLength()), perc);
+				return OK;
+			} catch (NumberFormatException ex) {
+				return StringUtils.getString("Bad number format: ", parameters.get(0));
+			}
+		}
+		return "Missing parameter";
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Skips the playback to the percentage chosen. 0-100";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return "[number]";
+	}
 }

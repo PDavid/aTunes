@@ -38,31 +38,34 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class MoveToBottomAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 8200322913128575526L;
+	private static final long serialVersionUID = 8200322913128575526L;
 
-    private IPlayListHandler playListHandler;
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+	private IPlayListHandler playListHandler;
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    public MoveToBottomAction() {
-        super(I18nUtils.getString("MOVE_TO_BOTTOM"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_BOTTOM_TOOLTIP"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.ALT_MASK));
-        setEnabled(false);
-    }
 
-    @Override
-    protected void executeAction() {
-    	playListHandler.moveToBottom();
-    }
+	/**
+	 * Default constructor
+	 */
+	public MoveToBottomAction() {
+		super(I18nUtils.getString("MOVE_TO_BOTTOM"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_BOTTOM_TOOLTIP"));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.ALT_MASK));
+		setEnabled(false);
+	}
 
-    @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return selection != null && !selection.isEmpty();
-    }
+	@Override
+	protected void executeAction() {
+		playListHandler.moveToBottom();
+	}
+
+	@Override
+	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
+		return selection != null && !selection.isEmpty();
+	}
 }

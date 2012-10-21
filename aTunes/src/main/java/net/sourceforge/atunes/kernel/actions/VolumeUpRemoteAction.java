@@ -52,16 +52,19 @@ public class VolumeUpRemoteAction extends RemoteAction {
 		this.statePlayer = statePlayer;
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public VolumeUpRemoteAction() {
-		super("volUP");
-	}
-
 	@Override
 	public String runCommand(final List<String> parameters) {
 		callAction(volumeUpAction);
 		return StringUtils.getString(statePlayer.getVolume(), '%');
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Increments the volume by 5 percent";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return null;
 	}
 }

@@ -33,66 +33,69 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class MuteAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 306200192652324065L;
+	private static final long serialVersionUID = 306200192652324065L;
 
-    private IPlayerHandler playerHandler;
-    
-    private VolumeIconCalculator volumeIconCalculator;
-    
-    private IStatePlayer statePlayer;
-    
-    /**
-     * @param statePlayer
-     */
-    public void setStatePlayer(IStatePlayer statePlayer) {
+	private IPlayerHandler playerHandler;
+
+	private VolumeIconCalculator volumeIconCalculator;
+
+	private IStatePlayer statePlayer;
+
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(final IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;
 	}
-    
-    /**
-     * @param volumeIconCalculator
-     */
-    public void setVolumeIconCalculator(VolumeIconCalculator volumeIconCalculator) {
+
+	/**
+	 * @param volumeIconCalculator
+	 */
+	public void setVolumeIconCalculator(final VolumeIconCalculator volumeIconCalculator) {
 		this.volumeIconCalculator = volumeIconCalculator;
 	}
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
+
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
-    
-    public MuteAction() {
-        super(I18nUtils.getString("MUTE"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("MUTE"));
-    }
-    
-    @Override
-    protected void initialize() {
-    	super.initialize();
-        putValue(SELECTED_KEY, statePlayer.isMuteEnabled());
-        updateIcon();
-    }
 
-    @Override
-    protected void executeAction() {
-    	statePlayer.setMuteEnabled((Boolean) getValue(SELECTED_KEY));
-        playerHandler.applyMuteState(statePlayer.isMuteEnabled());
-        updateIcon();
-    }
-    
-    /**
-     * This method must be called when action code is fired from app, not from Swing
-     */
-    public void switchState() {
-        putValue(SELECTED_KEY, !(Boolean) getValue(SELECTED_KEY));
-        executeAction();
-    }
+	/**
+	 * Default constructor
+	 */
+	public MuteAction() {
+		super(I18nUtils.getString("MUTE"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("MUTE"));
+	}
 
-    /**
-     * Updates icon of mute
-     */
-    private void updateIcon() {
-        putValue(SMALL_ICON, volumeIconCalculator.getVolumeIcon());
-    }
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(SELECTED_KEY, statePlayer.isMuteEnabled());
+		updateIcon();
+	}
+
+	@Override
+	protected void executeAction() {
+		statePlayer.setMuteEnabled((Boolean) getValue(SELECTED_KEY));
+		playerHandler.applyMuteState(statePlayer.isMuteEnabled());
+		updateIcon();
+	}
+
+	/**
+	 * This method must be called when action code is fired from app, not from Swing
+	 */
+	public void switchState() {
+		putValue(SELECTED_KEY, !(Boolean) getValue(SELECTED_KEY));
+		executeAction();
+	}
+
+	/**
+	 * Updates icon of mute
+	 */
+	private void updateIcon() {
+		putValue(SMALL_ICON, volumeIconCalculator.getVolumeIcon());
+	}
 }

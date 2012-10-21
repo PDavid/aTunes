@@ -40,16 +40,19 @@ public class PlayRemoteAction extends RemoteAction {
 		this.playAction = playAction;
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public PlayRemoteAction() {
-		super("play");
-	}
-
 	@Override
 	public String runCommand(final List<String> parameters) {
 		callAction(playAction);
-		return "OK";
+		return OK;
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Starts or pauses playback";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return null;
 	}
 }

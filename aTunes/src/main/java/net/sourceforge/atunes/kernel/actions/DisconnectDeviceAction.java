@@ -32,35 +32,38 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class DisconnectDeviceAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 1782027529649014492L;
+	private static final long serialVersionUID = 1782027529649014492L;
 
-    private IDeviceHandler deviceHandler;
-    
-    private DeviceListeners deviceListeners;
-    
-    /**
-     * @param deviceHandler
-     */
-    public void setDeviceHandler(IDeviceHandler deviceHandler) {
+	private IDeviceHandler deviceHandler;
+
+	private DeviceListeners deviceListeners;
+
+	/**
+	 * @param deviceHandler
+	 */
+	public void setDeviceHandler(final IDeviceHandler deviceHandler) {
 		this.deviceHandler = deviceHandler;
 	}
-    
-    /**
-     * @param deviceListeners
-     */
-    public void setDeviceListeners(DeviceListeners deviceListeners) {
+
+	/**
+	 * @param deviceListeners
+	 */
+	public void setDeviceListeners(final DeviceListeners deviceListeners) {
 		this.deviceListeners = deviceListeners;
 	}
-    
-    public DisconnectDeviceAction() {
-        super(I18nUtils.getString("DISCONNECT"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("DISCONNECT"));
-        setEnabled(false);
-    }
 
-    @Override
-    protected void executeAction() {
-    	// Launch a device disconnected event
-    	deviceListeners.deviceDisconnected(deviceHandler.getDeviceLocation());
-    }
+	/**
+	 * Default constructor
+	 */
+	public DisconnectDeviceAction() {
+		super(I18nUtils.getString("DISCONNECT"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("DISCONNECT"));
+		setEnabled(false);
+	}
+
+	@Override
+	protected void executeAction() {
+		// Launch a device disconnected event
+		deviceListeners.deviceDisconnected(deviceHandler.getDeviceLocation());
+	}
 }

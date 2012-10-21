@@ -28,59 +28,67 @@ import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Changes view mode to show years
+ * @author alex
+ *
+ */
 public class ShowYearsInNavigatorAction extends ActionWithColorMutableIcon {
 
-    private static final long serialVersionUID = -1192790723328398881L;
+	private static final long serialVersionUID = -1192790723328398881L;
 
-    private INavigationHandler navigationHandler;
-    
-    private IIconFactory dateIcon;
-    
-    private IStateNavigation stateNavigation;
+	private INavigationHandler navigationHandler;
 
-    /**
-     * @param stateNavigation
-     */
-    public void setStateNavigation(IStateNavigation stateNavigation) {
+	private IIconFactory dateIcon;
+
+	private IStateNavigation stateNavigation;
+
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
 		this.stateNavigation = stateNavigation;
 	}
 
-    
-    /**
-     * @param dateIcon
-     */
-    public void setDateIcon(IIconFactory dateIcon) {
+
+	/**
+	 * @param dateIcon
+	 */
+	public void setDateIcon(final IIconFactory dateIcon) {
 		this.dateIcon = dateIcon;
 	}
-    
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-    
-    public ShowYearsInNavigatorAction() {
-        super(I18nUtils.getString("SHOW_YEARS"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_YEARS"));
-    }
 
-    @Override
-    protected void initialize() {
-    	super.initialize();
-        putValue(SELECTED_KEY, stateNavigation.getViewMode() == ViewMode.YEAR);
-    }
-    
-    @Override
-    protected void executeAction() {
-        if (stateNavigation.getViewMode() != ViewMode.YEAR) {
-            stateNavigation.setViewMode(ViewMode.YEAR);
-            navigationHandler.refreshCurrentView();
-        }
-    }
+	/**
+	 * Default constructor
+	 */
+	public ShowYearsInNavigatorAction() {
+		super(I18nUtils.getString("SHOW_YEARS"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_YEARS"));
+	}
 
-    @Override
-    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-    	return dateIcon.getColorMutableIcon();
-    }
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(SELECTED_KEY, stateNavigation.getViewMode() == ViewMode.YEAR);
+	}
+
+	@Override
+	protected void executeAction() {
+		if (stateNavigation.getViewMode() != ViewMode.YEAR) {
+			stateNavigation.setViewMode(ViewMode.YEAR);
+			navigationHandler.refreshCurrentView();
+		}
+	}
+
+	@Override
+	public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
+		return dateIcon.getColorMutableIcon();
+	}
 }

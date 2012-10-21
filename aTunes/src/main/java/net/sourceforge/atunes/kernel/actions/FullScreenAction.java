@@ -35,25 +35,28 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class FullScreenAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 916565212685861604L;
+	private static final long serialVersionUID = 916565212685861604L;
 
-    private IFullScreenHandler fullScreenHandler;
-    
-    /**
-     * @param fullScreenHandler
-     */
-    public void setFullScreenHandler(IFullScreenHandler fullScreenHandler) {
+	private IFullScreenHandler fullScreenHandler;
+
+	/**
+	 * @param fullScreenHandler
+	 */
+	public void setFullScreenHandler(final IFullScreenHandler fullScreenHandler) {
 		this.fullScreenHandler = fullScreenHandler;
 	}
-    
-    public FullScreenAction() {
-        super(I18nUtils.getString("FULL_SCREEN"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("FULL_SCREEN"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0));
-    }
 
-    @Override
-    protected void executeAction() {
-    	fullScreenHandler.toggleFullScreenVisibility();
-    }
+	/**
+	 * Default constructor
+	 */
+	public FullScreenAction() {
+		super(I18nUtils.getString("FULL_SCREEN"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("FULL_SCREEN"));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0));
+	}
+
+	@Override
+	protected void executeAction() {
+		fullScreenHandler.toggleFullScreenVisibility();
+	}
 }

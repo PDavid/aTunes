@@ -55,13 +55,6 @@ public class PrintSongInfoRemoteAction extends RemoteAction {
 	}
 
 	/**
-	 * Default constructor
-	 */
-	public PrintSongInfoRemoteAction() {
-		super("song");
-	}
-
-	/**
 	 * @param handler
 	 */
 	public void setPlayListHandler(final IPlayListHandler handler) {
@@ -111,5 +104,15 @@ public class PrintSongInfoRemoteAction extends RemoteAction {
 				"Album: ", object.getAlbum(unknownObjectChecker), SEPARATOR,
 				"Year: ", object.getYear(), SEPARATOR,
 				"Duration: ", mins, ":", sec);
+	}
+
+	@Override
+	protected String getHelpText() {
+		return "Prints out current song information, or the song information of the specified filename";
+	}
+
+	@Override
+	protected String getOptionalParameters() {
+		return "[fileName]";
 	}
 }

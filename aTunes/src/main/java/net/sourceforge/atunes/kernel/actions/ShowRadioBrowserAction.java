@@ -31,24 +31,27 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ShowRadioBrowserAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 531135150461152301L;
+	private static final long serialVersionUID = 531135150461152301L;
 
-    private IRadioHandler radioHandler;
-    
-    /**
-     * @param radioHandler
-     */
-    public void setRadioHandler(IRadioHandler radioHandler) {
+	private IRadioHandler radioHandler;
+
+	/**
+	 * @param radioHandler
+	 */
+	public void setRadioHandler(final IRadioHandler radioHandler) {
 		this.radioHandler = radioHandler;
 	}
-    
-    public ShowRadioBrowserAction() {
-        super(I18nUtils.getString("RADIO_BROWSER"));
-    }
-    
-    @Override
-    protected void executeAction() {
-    	radioHandler.showRadioBrowser();
-    }
+
+	/**
+	 * Default constructor
+	 */
+	public ShowRadioBrowserAction() {
+		super(I18nUtils.getString("RADIO_BROWSER"));
+	}
+
+	@Override
+	protected void executeAction() {
+		radioHandler.showRadioBrowser();
+	}
 
 }
