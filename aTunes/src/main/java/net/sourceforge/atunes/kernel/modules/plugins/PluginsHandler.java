@@ -31,7 +31,6 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
@@ -65,6 +64,10 @@ import org.commonjukebox.plugins.model.PluginFolder;
 import org.commonjukebox.plugins.model.PluginInfo;
 import org.commonjukebox.plugins.model.PluginListener;
 
+/**
+ * Responsible of loading and unloading plugins
+ * @author alex
+ */
 public class PluginsHandler extends AbstractHandler implements PluginListener, IPluginsHandler {
 
 	/**
@@ -72,21 +75,11 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
 	 */
 	private PluginsFactory factory;
 
-	private static Set<PluginType> pluginTypes;
+	private Set<PluginType> pluginTypes;
 
 	private IStateCore stateCore;
 
 	private IDialogFactory dialogFactory;
-
-	static {
-		pluginTypes = new HashSet<PluginType>();
-		pluginTypes.add(new PluginType(IPlaybackStateListener.class.getName(), (PluginListener) Context.getBean(IPlayerHandler.class), false));
-		pluginTypes.add(new PluginType(AbstractColumn.class.getName(), ColumnSets.getInstance(), false));
-		pluginTypes.add(new PluginType(AbstractNavigationView.class.getName(), (PluginListener) Context.getBean(INavigationHandler.class), false));
-		pluginTypes.add(new PluginType(AbstractContextPanel.class.getName(), (PluginListener) Context.getBean(IContextHandler.class), false));
-		pluginTypes.add(new PluginType(AbstractLookAndFeel.class.getName(), (PluginListener) Context.getBean(ILookAndFeelManager.class), false));
-		pluginTypes.add(new PluginType(AbstractGeneralPurposePlugin.class.getName(), Context.getBean(IGeneralPurposePluginsHandler.class), false));
-	}
 
 	/**
 	 * @param dialogFactory
@@ -176,6 +169,19 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
 		}
 	}
 
+	private Set<PluginType> getPluginTypes() {
+		if (pluginTypes == null) {
+			pluginTypes = new HashSet<PluginType>();
+			pluginTypes.add(new PluginType(IPlaybackStateListener.class.getName(), (PluginListener) getBean(IPlayerHandler.class), false));
+			pluginTypes.add(new PluginType(AbstractColumn.class.getName(), ColumnSets.getInstance(), false));
+			pluginTypes.add(new PluginType(AbstractNavigationView.class.getName(), (PluginListener) getBean(INavigationHandler.class), false));
+			pluginTypes.add(new PluginType(AbstractContextPanel.class.getName(), (PluginListener) getBean(IContextHandler.class), false));
+			pluginTypes.add(new PluginType(AbstractLookAndFeel.class.getName(), (PluginListener) getBean(ILookAndFeelManager.class), false));
+			pluginTypes.add(new PluginType(AbstractGeneralPurposePlugin.class.getName(), getBean(IGeneralPurposePluginsHandler.class), false));
+		}
+		return pluginTypes;
+	}
+
 	/**
 	 * Return class names of all plugin types
 	 * 
@@ -183,7 +189,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
 	 */
 	private Set<String> getPluginClassNames() {
 		Set<String> result = new HashSet<String>();
-		for (PluginType pluginType : pluginTypes) {
+		for (PluginType pluginType : getPluginTypes()) {
 			result.add(pluginType.getClassType());
 		}
 		return result;
@@ -194,7 +200,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
 	 * for all plugin types
 	 */
 	private void addPluginListeners() {
-		for (PluginType pluginType : pluginTypes) {
+		for (PluginType pluginType : getPluginTypes()) {
 			factory.addPluginListener(pluginType.getClassType(), this);
 			factory.addPluginListener(pluginType.getClassType(), pluginType.getListener());
 		}
@@ -287,7 +293,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
 
 	@Override
 	public boolean pluginNeedsRestart(final PluginInfo plugin) {
-		for (PluginType pluginType : pluginTypes) {
+		for (PluginType pluginType : getPluginTypes()) {
 			if (plugin.getPluginType().equals(pluginType.getClassType())) {
 				return pluginType.isApplicationNeedsRestart();
 			}
