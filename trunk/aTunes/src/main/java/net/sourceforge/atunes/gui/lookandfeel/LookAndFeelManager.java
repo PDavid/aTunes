@@ -33,6 +33,7 @@ import javax.swing.UIManager;
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.model.FontSettings;
 import net.sourceforge.atunes.model.IApplicationArguments;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFontBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
@@ -83,14 +84,15 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
 
 	private IApplicationArguments applicationArguments;
 
-	private IPluginsHandler pluginsHandler;
+	private IBeanFactory beanFactory;
 
 	/**
-	 * @param pluginsHandler
+	 * @param beanFactory
 	 */
-	public void setPluginsHandler(final IPluginsHandler pluginsHandler) {
-		this.pluginsHandler = pluginsHandler;
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
+
 
 	/**
 	 * @param osManager
@@ -117,7 +119,7 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
 	@Override
 	public void pluginActivated(final PluginInfo plugin) {
 		try {
-			ILookAndFeel laf = (ILookAndFeel) pluginsHandler.getNewInstance(plugin);
+			ILookAndFeel laf = (ILookAndFeel) beanFactory.getBean(IPluginsHandler.class).getNewInstance(plugin);
 			lookAndFeels.put(laf.getName(), laf.getClass());
 		} catch (PluginSystemException e) {
 			Logger.error(e);
