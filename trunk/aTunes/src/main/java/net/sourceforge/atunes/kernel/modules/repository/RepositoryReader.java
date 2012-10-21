@@ -389,18 +389,16 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 			frame.hideProgressBar();
 		}
 
+		repositoryProgressDialog.hideDialog();
+
 		repositoryReadCompleted();
 	}
 
 	@Override
 	public void notifyFinishRefresh(final IRepositoryLoader loader) {
-		repositoryActions.enableRepositoryActions(true);
-
 		frame.hideProgressBar();
-		showRepositoryDataHelper.showRepositoryAudioFileNumber(repository.getFiles().size(), repository.getTotalSizeInBytes(), repository.getTotalDurationInSeconds());
 		Logger.info("Repository refresh done");
-
-		currentLoader = null;
+		repositoryReadCompleted();
 	}
 
 	@Override
@@ -523,7 +521,6 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 * Notify finish repository read.
 	 */
 	private void repositoryReadCompleted() {
-		repositoryProgressDialog.hideDialog();
 		repositoryHandler.setRepository(repository);
 		repositoryActions.enableRepositoryActions(true);
 		showRepositoryDataHelper.showRepositoryAudioFileNumber(repository.getFiles().size(), repository.getTotalSizeInBytes(), repository.getTotalDurationInSeconds());

@@ -26,30 +26,32 @@ import java.util.List;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.utils.StringUtils;
 
+import org.springframework.context.ApplicationContext;
+
 /**
  * Main class to launch aTunes.
  */
 public final class Main {
-	
+
 	private Main() {}
-	
-    /**
-     * Main method for calling aTunes.
-     * @param args
-     */
-    public static void main(String[] args) {
-        // Initialize Spring
-    	Context.initialize();
 
-        // Enable uncaught exception catching
-        Thread.setDefaultUncaughtExceptionHandler(Context.getBean(UncaughtExceptionHandler.class));
-        
-    	List<String> arguments = StringUtils.fromStringArrayToList(args);
-    	
-        // Save arguments, if application is restarted they will be necessary
-    	Context.getBean(IApplicationArguments.class).saveArguments(arguments);
+	/**
+	 * Main method for calling aTunes.
+	 * @param args
+	 */
+	public static void main(final String[] args) {
+		// Initialize Spring
+		ApplicationContext context = Context.initialize();
 
-    	// Now start application
-    	Context.getBean(ApplicationStarter.class).start(arguments);
-    }    
+		// Enable uncaught exception catching
+		Thread.setDefaultUncaughtExceptionHandler(context.getBean(UncaughtExceptionHandler.class));
+
+		List<String> arguments = StringUtils.fromStringArrayToList(args);
+
+		// Save arguments, if application is restarted they will be necessary
+		context.getBean(IApplicationArguments.class).saveArguments(arguments);
+
+		// Now start application
+		context.getBean(ApplicationStarter.class).start(arguments);
+	}
 }

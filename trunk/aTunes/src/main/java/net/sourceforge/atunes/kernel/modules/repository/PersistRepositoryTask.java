@@ -30,24 +30,24 @@ import net.sourceforge.atunes.model.ITaskService;
  *
  */
 public class PersistRepositoryTask implements Runnable {
-	
+
 	private IRepository repository;
-	
+
 	private IStateHandler stateHandler;
-	
+
 	private ITaskService taskService;
-	
+
 	/**
 	 * @param taskService
 	 */
-	public void setTaskService(ITaskService taskService) {
+	public void setTaskService(final ITaskService taskService) {
 		this.taskService = taskService;
 	}
-	
+
 	/**
 	 * @param stateHandler
 	 */
-	public void setStateHandler(IStateHandler stateHandler) {
+	public void setStateHandler(final IStateHandler stateHandler) {
 		this.stateHandler = stateHandler;
 	}
 
@@ -55,11 +55,11 @@ public class PersistRepositoryTask implements Runnable {
 	 * Persists repository
 	 * @param repository
 	 */
-	public void persist(IRepository repository) {
+	public void persist(final IRepository repository) {
 		this.repository = repository;
 		taskService.submitNow("Persist Repository Cache", this);
 	}
-	
+
 	@Override
 	public void run() {
 		stateHandler.persistRepositoryCache(repository);
