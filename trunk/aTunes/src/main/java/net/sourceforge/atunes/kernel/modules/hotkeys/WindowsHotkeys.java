@@ -28,86 +28,103 @@ import com.melloware.jintellitype.IntellitypeListener;
 import com.melloware.jintellitype.JIntellitype;
 import com.melloware.jintellitype.JIntellitypeConstants;
 
-public class WindowsHotkeys extends AbstractHotkeys implements com.melloware.jintellitype.HotkeyListener, IntellitypeListener {
+/**
+ * Resposible of handle Windows hotkeys
+ * 
+ * @author alex
+ * 
+ */
+public class WindowsHotkeys extends AbstractHotkeys implements
+	com.melloware.jintellitype.HotkeyListener, IntellitypeListener {
 
-    public WindowsHotkeys(IHotkeyListener hotkeyListener) {
-        super(hotkeyListener);
+    /**
+     * @param hotkeyListener
+     */
+    public WindowsHotkeys(final IHotkeyListener hotkeyListener) {
+	super(hotkeyListener);
     }
 
     @Override
-    public boolean registerHotkey(IHotkey hotkey) {
-        JIntellitype.getInstance().registerSwingHotKey(hotkey.getId(), hotkey.getMod(), hotkey.getKey());
-        return true;
+    public boolean registerHotkey(final IHotkey hotkey) {
+	JIntellitype.getInstance().registerSwingHotKey(hotkey.getId(),
+		hotkey.getMod(), hotkey.getKey());
+	return true;
     }
 
     @Override
-    public void unregisterHotkey(IHotkey hotkey) {
-        JIntellitype.getInstance().unregisterHotKey(hotkey.getId());
+    public void unregisterHotkey(final IHotkey hotkey) {
+	JIntellitype.getInstance().unregisterHotKey(hotkey.getId());
     }
 
     @Override
     public void cleanUp() {
-        JIntellitype.getInstance().cleanUp();
+	JIntellitype.getInstance().cleanUp();
     }
 
     @Override
     public void activate() {
-        JIntellitype.getInstance().addHotKeyListener(this);
-        JIntellitype.getInstance().addIntellitypeListener(this);
+	JIntellitype.getInstance().addHotKeyListener(this);
+	JIntellitype.getInstance().addIntellitypeListener(this);
     }
 
     @Override
     public void deactivate() {
-        JIntellitype.getInstance().removeHotKeyListener(this);
-        JIntellitype.getInstance().removeIntellitypeListener(this);
+	JIntellitype.getInstance().removeHotKeyListener(this);
+	JIntellitype.getInstance().removeIntellitypeListener(this);
     }
 
     @Override
-    public void onHotKey(int arg0) {
-        getHotkeyListener().onHotkey(arg0);
+    public void onHotKey(final int arg0) {
+	getHotkeyListener().onHotkey(arg0);
     }
 
     @Override
-    public void onIntellitype(int command) {
-        switch (command) {
-        case JIntellitypeConstants.APPCOMMAND_MEDIA_NEXTTRACK: {
-            getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_NEXT);
-            break;
-        }
-        case JIntellitypeConstants.APPCOMMAND_MEDIA_PREVIOUSTRACK: {
-            getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_PREVIOUS);
-            break;
-        }
-        case JIntellitypeConstants.APPCOMMAND_MEDIA_PLAY_PAUSE: {
-            getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_PAUSE);
-            break;
-        }
-        case JIntellitypeConstants.APPCOMMAND_MEDIA_STOP: {
-            getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_STOP);
-            break;
-        }
-        case JIntellitypeConstants.APPCOMMAND_VOLUME_UP: {
-            getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_VOLUME_UP);
-            break;
-        }
-        case JIntellitypeConstants.APPCOMMAND_VOLUME_DOWN: {
-            getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_VOLUME_DOWN);
-            break;
-        }
-        case JIntellitypeConstants.APPCOMMAND_VOLUME_MUTE: {
-            getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_MUTE);
-            break;
-        }
-        default: {
-            // Nothing to do
-        }
-        }
+    public void onIntellitype(final int command) {
+	switch (command) {
+	case JIntellitypeConstants.APPCOMMAND_MEDIA_NEXTTRACK: {
+	    getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_NEXT);
+	    break;
+	}
+	case JIntellitypeConstants.APPCOMMAND_MEDIA_PREVIOUSTRACK: {
+	    getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_PREVIOUS);
+	    break;
+	}
+	case JIntellitypeConstants.APPCOMMAND_MEDIA_PLAY_PAUSE: {
+	    getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_PAUSE);
+	    break;
+	}
+	case JIntellitypeConstants.APPCOMMAND_MEDIA_STOP: {
+	    getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_STOP);
+	    break;
+	}
+	case JIntellitypeConstants.APPCOMMAND_VOLUME_UP: {
+	    getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_VOLUME_UP);
+	    break;
+	}
+	case JIntellitypeConstants.APPCOMMAND_VOLUME_DOWN: {
+	    getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_VOLUME_DOWN);
+	    break;
+	}
+	case JIntellitypeConstants.APPCOMMAND_VOLUME_MUTE: {
+	    getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_MUTE);
+	    break;
+	}
+	default: {
+	    // Nothing to do
+	}
+	}
     }
 
-    public static boolean isSupported(IOSManager osManager) {
-    	if(osManager.is64Bit()) {
-    		JIntellitype.setLibraryLocation("JIntellitype64.dll");
-    	}
-        return JIntellitype.isJIntellitypeSupported();
+    /**
+     * Test if operating system is supported
+     * 
+     * @param osManager
+     * @return
+     */
+    public static boolean isSupported(final IOSManager osManager) {
+	if (osManager.is64Bit()) {
+	    JIntellitype.setLibraryLocation("JIntellitype64.dll");
+	}
+	return JIntellitype.isJIntellitypeSupported();
     }
 }

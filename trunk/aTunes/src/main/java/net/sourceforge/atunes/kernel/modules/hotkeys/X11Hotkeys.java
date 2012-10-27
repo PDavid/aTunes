@@ -29,58 +29,71 @@ import net.sourceforge.atunes.model.IHotkeyListener;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class X11Hotkeys extends AbstractHotkeys implements jxgrabkey.HotkeyListener {
+/**
+ * Responsible of handle X11 hotkeys
+ * 
+ * @author alex
+ * 
+ */
+public class X11Hotkeys extends AbstractHotkeys implements
+	jxgrabkey.HotkeyListener {
 
-    public X11Hotkeys(IHotkeyListener hotkeyListener) {
-        super(hotkeyListener);
-        init();
+    /**
+     * @param hotkeyListener
+     */
+    public X11Hotkeys(final IHotkeyListener hotkeyListener) {
+	super(hotkeyListener);
+	init();
     }
 
     private void init() {
-        //Load JXGrabKey lib
-        System.loadLibrary("JXGrabKey");
-        JXGrabKey.setDebugOutput(false);
+	// Load JXGrabKey lib
+	System.loadLibrary("JXGrabKey");
+	JXGrabKey.setDebugOutput(false);
     }
 
     @Override
     public void activate() {
-        JXGrabKey.getInstance().addHotkeyListener(this);
+	JXGrabKey.getInstance().addHotkeyListener(this);
     }
 
     @Override
     public void cleanUp() {
-        JXGrabKey.getInstance().cleanUp();
+	JXGrabKey.getInstance().cleanUp();
     }
 
     @Override
     public void deactivate() {
-        JXGrabKey.getInstance().removeHotkeyListener(this);
+	JXGrabKey.getInstance().removeHotkeyListener(this);
     }
 
     @Override
-    public boolean registerHotkey(IHotkey hotkey) {
-        try {
-            JXGrabKey.getInstance().registerAwtHotkey(hotkey.getId(), hotkey.getMod(), hotkey.getKey());
-        } catch (HotkeyConflictException e) {
-            Logger.error(StringUtils.getString("Hotkey '", hotkey.getKeyDescription(), "' is in use by another application"));
-            return false;
-        }
-        return true;
+    public boolean registerHotkey(final IHotkey hotkey) {
+	try {
+	    JXGrabKey.getInstance().registerAwtHotkey(hotkey.getId(),
+		    hotkey.getMod(), hotkey.getKey());
+	} catch (HotkeyConflictException e) {
+	    Logger.error(StringUtils.getString("Hotkey '",
+		    hotkey.getKeyDescription(),
+		    "' is in use by another application"));
+	    return false;
+	}
+	return true;
     }
 
     @Override
-    public void unregisterHotkey(IHotkey hotkey) {
-        JXGrabKey.getInstance().unregisterHotKey(hotkey.getId());
+    public void unregisterHotkey(final IHotkey hotkey) {
+	JXGrabKey.getInstance().unregisterHotKey(hotkey.getId());
     }
 
     @Override
     public void onHotkey(final int id) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                getHotkeyListener().onHotkey(id);
-            }
-        });
+	SwingUtilities.invokeLater(new Runnable() {
+	    @Override
+	    public void run() {
+		getHotkeyListener().onHotkey(id);
+	    }
+	});
     }
 
 }
