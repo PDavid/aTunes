@@ -28,14 +28,11 @@ import net.sourceforge.atunes.utils.Logger;
  */
 class FadeAwayRunnable implements Runnable {
 
-    /** The process. */
-    private Process process;
-
     /** The command writer. */
-    private MPlayerCommandWriter commandWriter;
+    private final MPlayerCommandWriter commandWriter;
 
     /** The initial volume. */
-    private int initialVolume;
+    private final int initialVolume;
 
     /** Flag to interrupt this runnable */
     private boolean interrupted = false;
@@ -43,7 +40,7 @@ class FadeAwayRunnable implements Runnable {
     /**
      * MPlayerHandler instance
      */
-    private MPlayerEngine handler;
+    private final MPlayerEngine handler;
 
     /**
      * Instantiates a new fade away runnable.
@@ -53,46 +50,46 @@ class FadeAwayRunnable implements Runnable {
      * @param handler
      * @param osManager
      */
-    FadeAwayRunnable(Process process, int initialVolume, MPlayerEngine handler, IOSManager osManager) {
-        this.process = process;
-        this.initialVolume = initialVolume;
-        this.handler = handler;
-        commandWriter = MPlayerCommandWriter.newCommandWriter(process, osManager);
+    FadeAwayRunnable(final Process process, final int initialVolume,
+	    final MPlayerEngine handler, final IOSManager osManager) {
+	this.initialVolume = initialVolume;
+	this.handler = handler;
+	commandWriter = MPlayerCommandWriter.newCommandWriter(process,
+		osManager);
     }
 
     @Override
     public void run() {
-        Logger.debug("Fade away runnable started");
-        try {
-            int fadeVolume = initialVolume;
-            int fadeStep = 0;
-            // Lower volume until it reaches 0 or 50 volume reductions
-            // or object is interrupted
-            while (!interrupted && fadeStep < 50 && fadeVolume > 0) {
-                fadeVolume = fadeVolume - 2;
-                commandWriter.sendVolumeCommand(fadeVolume);
-                try {
-                    Thread.sleep(25);
-                } catch (InterruptedException e) {
-                    Logger.error(e);
-                }
-                fadeStep++;
-            }
-        } finally {
-            process.destroy();
-            Logger.debug("Fade away runnable finished");
-        }
-        if (!interrupted) {
-            // Notify finish to MPlayerHandler
-            handler.finishedFadeAway();
-        }
+	Logger.debug("Fade away runnable started");
+	try {
+	    int fadeVolume = initialVolume;
+	    int fadeStep = 0;
+	    // Lower volume until it reaches 0 or 50 volume reductions
+	    // or object is interrupted
+	    while (!interrupted && fadeStep < 50 && fadeVolume > 0) {
+		fadeVolume = fadeVolume - 2;
+		commandWriter.sendVolumeCommand(fadeVolume);
+		try {
+		    Thread.sleep(25);
+		} catch (InterruptedException e) {
+		    Logger.error(e);
+		}
+		fadeStep++;
+	    }
+	} finally {
+	    Logger.debug("Fade away runnable finished");
+	}
+	if (!interrupted) {
+	    // Notify finish to MPlayerHandler
+	    handler.finishedFadeAway();
+	}
     }
 
     /**
      * This method is called when fade away must stop inmediately
      */
     void finish() {
-        interrupted = true;
-        handler.finishedFadeAway();
+	interrupted = true;
+	handler.finishedFadeAway();
     }
 }
