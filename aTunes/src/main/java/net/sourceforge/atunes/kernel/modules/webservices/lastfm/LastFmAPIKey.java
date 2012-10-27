@@ -26,50 +26,65 @@ import java.security.GeneralSecurityException;
 import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * aTunes API key
+ * 
+ * @author alex
+ * 
+ */
 public class LastFmAPIKey {
 
     /*
      * DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN aTunes!
      */
-    private static final byte[] API_KEY = {78, 119, -39, -5, -89, -107, -38, 41, -87, -107, 122, 98, -33, 46, 32, -47, -44, 54, 97, 67, 105, 122, 11, -26, -81, 90, 94, 55, 121, 11, 14, -104, -70, 123, -88, -70, -108, 75, -77, 98};
-    private static final byte[] API_SECRET = {38, -8, 33, 63, 10, 86, 29, -2, 87, -63, 67, 111, -5, -101, -87, 38, 2, 35, 86, -86, 19, 110, -81, -115, 102, 54, -24, 27, 40, -124, -57, -62, -70, 123, -88, -70, -108, 75, -77, 98};
+    private static final byte[] API_KEY = { 78, 119, -39, -5, -89, -107, -38,
+	    41, -87, -107, 122, 98, -33, 46, 32, -47, -44, 54, 97, 67, 105,
+	    122, 11, -26, -81, 90, 94, 55, 121, 11, 14, -104, -70, 123, -88,
+	    -70, -108, 75, -77, 98 };
+    private static final byte[] API_SECRET = { 38, -8, 33, 63, 10, 86, 29, -2,
+	    87, -63, 67, 111, -5, -101, -87, 38, 2, 35, 86, -86, 19, 110, -81,
+	    -115, 102, 54, -24, 27, 40, -124, -57, -62, -70, 123, -88, -70,
+	    -108, 75, -77, 98 };
     private static final String CLIENT_ID = "atu";
 
     /**
      * Get Client ID
+     * 
      * @return
      */
     String getClientId() {
-    	return CLIENT_ID;
+	return CLIENT_ID;
     }
-    
+
     /**
      * Get API key
+     * 
      * @return
      */
     String getApiKey() {
-        try {
-            return new String(CryptoUtils.decrypt(API_KEY));
-        } catch (GeneralSecurityException e) {
-            Logger.error(e);
-        } catch (IOException e) {
-            Logger.error(e);
-        }
-        return "";
+	try {
+	    return new String(CryptoUtils.decrypt(API_KEY));
+	} catch (GeneralSecurityException e) {
+	    Logger.error(e);
+	} catch (IOException e) {
+	    Logger.error(e);
+	}
+	return "";
     }
 
     /**
      * Get API secret
+     * 
      * @return
      */
     String getApiSecret() {
-        try {
-            return new String(CryptoUtils.decrypt(API_SECRET));
-        } catch (GeneralSecurityException e) {
-            Logger.error(e);
-        } catch (IOException e) {
-            Logger.error(e);
-        }
-        return "";
+	try {
+	    return new String(CryptoUtils.decrypt(API_SECRET));
+	} catch (GeneralSecurityException e) {
+	    Logger.error(e);
+	} catch (IOException e) {
+	    Logger.error(e);
+	}
+	return "";
     }
 }

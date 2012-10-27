@@ -48,82 +48,86 @@ import de.umass.lastfm.Event;
 public final class LastFmService {
 
     private LastFmCache lastFmCache;
-    
+
     private LastFmAPIKey lastFmAPIKey;
-    
+
     private LastFmLogin lastFmLogin;
-    
+
     private LastFmUserServices lastFmUserServices;
-    
+
     private LastFmAlbumServices lastFmAlbumServices;
-    
+
     private LastFmArtistServices lastFmArtistServices;
-    
+
     private LastFmSongServices lastFmSongServices;
-    
+
     /**
      * @param lastFmSongServices
      */
-    public void setLastFmSongServices(LastFmSongServices lastFmSongServices) {
-		this.lastFmSongServices = lastFmSongServices;
-	}
-    
+    public void setLastFmSongServices(
+	    final LastFmSongServices lastFmSongServices) {
+	this.lastFmSongServices = lastFmSongServices;
+    }
+
     /**
      * @param lastFmArtistServices
      */
-    public void setLastFmArtistServices(LastFmArtistServices lastFmArtistServices) {
-		this.lastFmArtistServices = lastFmArtistServices;
-	}
-    
+    public void setLastFmArtistServices(
+	    final LastFmArtistServices lastFmArtistServices) {
+	this.lastFmArtistServices = lastFmArtistServices;
+    }
+
     /**
      * @param lastFmAlbumServices
      */
-    public void setLastFmAlbumServices(LastFmAlbumServices lastFmAlbumServices) {
-		this.lastFmAlbumServices = lastFmAlbumServices;
-	}
-    
+    public void setLastFmAlbumServices(
+	    final LastFmAlbumServices lastFmAlbumServices) {
+	this.lastFmAlbumServices = lastFmAlbumServices;
+    }
+
     /**
      * @param lastFmCache
      */
-    public void setLastFmCache(LastFmCache lastFmCache) {
-		this.lastFmCache = lastFmCache;
-	}
-    
+    public void setLastFmCache(final LastFmCache lastFmCache) {
+	this.lastFmCache = lastFmCache;
+    }
+
     /**
      * @param lastFmUserServices
      */
-    public void setLastFmUserServices(LastFmUserServices lastFmUserServices) {
-		this.lastFmUserServices = lastFmUserServices;
-	}
-    
+    public void setLastFmUserServices(
+	    final LastFmUserServices lastFmUserServices) {
+	this.lastFmUserServices = lastFmUserServices;
+    }
+
     /**
      * @param lastFmLogin
      */
-    public void setLastFmLogin(LastFmLogin lastFmLogin) {
-		this.lastFmLogin = lastFmLogin;
-	}
-    
+    public void setLastFmLogin(final LastFmLogin lastFmLogin) {
+	this.lastFmLogin = lastFmLogin;
+    }
+
     /**
      * @param lastFmAPIKey
      */
-    public void setLastFmAPIKey(LastFmAPIKey lastFmAPIKey) {
-		this.lastFmAPIKey = lastFmAPIKey;
-	}
-    
+    public void setLastFmAPIKey(final LastFmAPIKey lastFmAPIKey) {
+	this.lastFmAPIKey = lastFmAPIKey;
+    }
+
     /**
      * Initializes service
      */
     public void initialize() {
-        Caller.getInstance().setCache(null);
-        Caller.getInstance().setUserAgent(lastFmAPIKey.getClientId());    	
-	}
-    
+	Caller.getInstance().setCache(null);
+	Caller.getInstance().setUserAgent(lastFmAPIKey.getClientId());
+    }
+
     /**
      * Finishes service
      */
     public void finishService() {
-    	Logger.debug("Finalizing LastFmCache");
-    	lastFmCache.shutdown();
+	Logger.debug("Finalizing LastFmCache");
+	lastFmCache.shutdown();
     }
 
     /**
@@ -136,8 +140,8 @@ public final class LastFmService {
      * 
      * @return the album
      */
-    public IAlbumInfo getAlbum(String artist, String album) {
-        return lastFmAlbumServices.getAlbum(artist, album);
+    public IAlbumInfo getAlbum(final String artist, final String album) {
+	return lastFmAlbumServices.getAlbum(artist, album);
     }
 
     /**
@@ -147,8 +151,8 @@ public final class LastFmService {
      * @param album
      * @return
      */
-    public ImageIcon getAlbumImage(String artist, String album) {
-        return lastFmAlbumServices.getAlbumImage(artist, album);
+    public ImageIcon getAlbumImage(final String artist, final String album) {
+	return lastFmAlbumServices.getAlbumImage(artist, album);
     }
 
     /**
@@ -159,8 +163,8 @@ public final class LastFmService {
      * 
      * @return the album list
      */
-    public IAlbumListInfo getAlbumList(String artist) {
-    	return lastFmAlbumServices.getAlbumList(artist);
+    public IAlbumListInfo getAlbumList(final String artist) {
+	return lastFmAlbumServices.getAlbumList(artist);
     }
 
     /**
@@ -171,8 +175,8 @@ public final class LastFmService {
      * 
      * @return the artist top tag
      */
-    public String getArtistTopTag(String artist) {
-    	return lastFmArtistServices.getArtistTopTag(artist);
+    public String getArtistTopTag(final String artist) {
+	return lastFmArtistServices.getArtistTopTag(artist);
     }
 
     /**
@@ -183,8 +187,8 @@ public final class LastFmService {
      * 
      * @return the image
      */
-    public ImageIcon getAlbumImage(IAlbumInfo album) {
-        return lastFmAlbumServices.getAlbumImage(album);
+    public ImageIcon getAlbumImage(final IAlbumInfo album) {
+	return lastFmAlbumServices.getAlbumImage(album);
     }
 
     /**
@@ -195,8 +199,8 @@ public final class LastFmService {
      * 
      * @return the image
      */
-    public ImageIcon getAlbumThumbImage(IAlbumInfo album) {
-        return lastFmAlbumServices.getAlbumThumbImage(album);
+    public ImageIcon getAlbumThumbImage(final IAlbumInfo album) {
+	return lastFmAlbumServices.getAlbumThumbImage(album);
     }
 
     /**
@@ -207,8 +211,8 @@ public final class LastFmService {
      * 
      * @return the image
      */
-    public ImageIcon getArtistThumbImage(IArtistInfo artist) {
-        return lastFmArtistServices.getArtistThumbImage(artist);
+    public ImageIcon getArtistThumbImage(final IArtistInfo artist) {
+	return lastFmArtistServices.getArtistThumbImage(artist);
     }
 
     /**
@@ -219,17 +223,18 @@ public final class LastFmService {
      * 
      * @return the image
      */
-    public ImageIcon getArtistImage(String artistName) {
-        return lastFmArtistServices.getArtistImage(artistName);
+    public ImageIcon getArtistImage(final String artistName) {
+	return lastFmArtistServices.getArtistImage(artistName);
     }
-    
+
     /**
      * Returns top tracks for given artist name
+     * 
      * @param artistName
-     * @return 
+     * @return
      */
-    public IArtistTopTracks getTopTracks(String artistName) {
-    	return lastFmArtistServices.getTopTracks(artistName);
+    public IArtistTopTracks getTopTracks(final String artistName) {
+	return lastFmArtistServices.getTopTracks(artistName);
     }
 
     /**
@@ -240,8 +245,8 @@ public final class LastFmService {
      * 
      * @return the similar artists
      */
-    public ISimilarArtistsInfo getSimilarArtists(String artist) {
-        return lastFmArtistServices.getSimilarArtists(artist);
+    public ISimilarArtistsInfo getSimilarArtists(final String artist) {
+	return lastFmArtistServices.getSimilarArtists(artist);
     }
 
     /**
@@ -252,10 +257,10 @@ public final class LastFmService {
      * 
      * @return the wiki text
      */
-    public String getWikiText(String artist) {
-        return lastFmArtistServices.getWikiText(artist);
+    public String getWikiText(final String artist) {
+	return lastFmArtistServices.getWikiText(artist);
     }
-    
+
     /**
      * Gets the wiki url.
      * 
@@ -264,10 +269,10 @@ public final class LastFmService {
      * 
      * @return the wiki url
      */
-    public String getWikiURL(String artist) {
-    	return lastFmArtistServices.getWikiURL(artist);
+    public String getWikiURL(final String artist) {
+	return lastFmArtistServices.getWikiURL(artist);
     }
-    
+
     /**
      * Submits song to Last.fm
      * 
@@ -277,8 +282,9 @@ public final class LastFmService {
      *            seconds the audio file has already played
      * @throws ScrobblerException
      */
-    void submit(IAudioObject file, long secondsPlayed) throws ScrobblerException {
-    	lastFmUserServices.submit(file, secondsPlayed);
+    void submit(final IAudioObject file, final long secondsPlayed)
+	    throws ScrobblerException {
+	lastFmUserServices.submit(file, secondsPlayed);
     }
 
     /**
@@ -286,8 +292,8 @@ public final class LastFmService {
      * 
      * @param song
      */
-    public void addLovedSong(IAudioObject song) {
-    	lastFmUserServices.addLovedSong(song);
+    public void addLovedSong(final IAudioObject song) {
+	lastFmUserServices.addLovedSong(song);
     }
 
     /**
@@ -295,8 +301,8 @@ public final class LastFmService {
      * 
      * @param song
      */
-    public void removeLovedSong(IAudioObject song) {
-    	lastFmUserServices.removeLovedSong(song);
+    public void removeLovedSong(final IAudioObject song) {
+	lastFmUserServices.removeLovedSong(song);
     }
 
     /**
@@ -304,8 +310,8 @@ public final class LastFmService {
      * 
      * @param song
      */
-    public void addBannedSong(IAudioObject song) {
-    	lastFmUserServices.addBannedSong(song);
+    public void addBannedSong(final IAudioObject song) {
+	lastFmUserServices.addBannedSong(song);
     }
 
     /**
@@ -315,8 +321,9 @@ public final class LastFmService {
      *            audio file
      * @throws ScrobblerException
      */
-    void submitNowPlayingInfo(ILocalAudioObject file) throws ScrobblerException {
-    	lastFmUserServices.submitNowPlayingInfo(file);
+    void submitNowPlayingInfo(final ILocalAudioObject file)
+	    throws ScrobblerException {
+	lastFmUserServices.submitNowPlayingInfo(file);
     }
 
     /**
@@ -325,7 +332,7 @@ public final class LastFmService {
      * @return a list of loved tracks from user profile
      */
     public List<ILovedTrack> getLovedTracks() {
-    	return lastFmUserServices.getLovedTracks();
+	return lastFmUserServices.getLovedTracks();
     }
 
     /**
@@ -334,7 +341,7 @@ public final class LastFmService {
      * @return
      */
     public boolean clearCache() {
-        return lastFmCache.clearCache();
+	return lastFmCache.clearCache();
     }
 
     /**
@@ -343,8 +350,8 @@ public final class LastFmService {
      * @param f
      * @return
      */
-    public String getTitleForFile(ILocalAudioObject f) {
-        return lastFmSongServices.getTitleForFile(f);
+    public String getTitleForFile(final ILocalAudioObject f) {
+	return lastFmSongServices.getTitleForFile(f);
     }
 
     /**
@@ -353,8 +360,8 @@ public final class LastFmService {
      * @param f
      * @return
      */
-    public int getTrackNumberForFile(ILocalAudioObject f) {
-        return lastFmSongServices.getTrackNumberForFile(f);
+    public int getTrackNumberForFile(final ILocalAudioObject f) {
+	return lastFmSongServices.getTrackNumberForFile(f);
     }
 
     /**
@@ -364,26 +371,30 @@ public final class LastFmService {
      * @param secondsPlayed
      * @param taskService
      */
-    public void submitToLastFm(IAudioObject audioFile, long secondsPlayed, ITaskService taskService) {
-    	lastFmUserServices.submitToLastFm(audioFile, secondsPlayed, taskService);
+    public void submitToLastFm(final IAudioObject audioFile,
+	    final long secondsPlayed, final ITaskService taskService) {
+	lastFmUserServices
+		.submitToLastFm(audioFile, secondsPlayed, taskService);
     }
 
     /**
      * Submits Last.fm cache
+     * 
      * @param service
      */
-    public void submitCacheToLastFm(ITaskService service) {
-    	lastFmUserServices.submitCacheToLastFm(service);
+    public void submitCacheToLastFm(final ITaskService service) {
+	lastFmUserServices.submitCacheToLastFm(service);
     }
 
     /**
      * Submit now playing info to Last.fm
      * 
      * @param audioFile
-     *            the file
+     * @param taskService
      */
-    public void submitNowPlayingInfoToLastFm(ILocalAudioObject audioFile, ITaskService taskService) {
-    	lastFmUserServices.submitNowPlayingInfoToLastFm(audioFile, taskService);
+    public void submitNowPlayingInfoToLastFm(final ILocalAudioObject audioFile,
+	    final ITaskService taskService) {
+	lastFmUserServices.submitNowPlayingInfoToLastFm(audioFile, taskService);
     }
 
     /**
@@ -394,24 +405,25 @@ public final class LastFmService {
      * @param artist
      * @return
      */
-    public Collection<Event> getArtistEvents(String artist) {
-    	return lastFmArtistServices.getArtistEvents(artist);
+    public Collection<Event> getArtistEvents(final String artist) {
+	return lastFmArtistServices.getArtistEvents(artist);
     }
 
-	/**
-	 * Flush cache
-	 */
-	public void flush() {
-		lastFmCache.flush();
-	}
+    /**
+     * Flush cache
+     */
+    public void flush() {
+	lastFmCache.flush();
+    }
 
     /**
      * Test if given user and password are correct to login at last.fm
      * 
      * @param user
      * @param password
+     * @return
      */
-	public boolean testLogin(String user, String password) {
-		return lastFmLogin.testLogin(user, password);
-	}
+    public boolean testLogin(final String user, final String password) {
+	return lastFmLogin.testLogin(user, password);
+    }
 }

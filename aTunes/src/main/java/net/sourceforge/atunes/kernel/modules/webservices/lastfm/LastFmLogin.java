@@ -26,25 +26,31 @@ import net.sourceforge.atunes.utils.StringUtils;
 import de.umass.lastfm.Authenticator;
 import de.umass.lastfm.Session;
 
+/**
+ * Login into last.fm
+ * 
+ * @author alex
+ * 
+ */
 public class LastFmLogin {
-	
-	private LastFmAPIKey lastFmAPIKey;
-	
-	private IStateContext stateContext;
-	
-	/**
-	 * @param stateContext
-	 */
-	public void setStateContext(IStateContext stateContext) {
-		this.stateContext = stateContext;
-	}
-	
-	/**
-	 * @param lastFmAPIKey
-	 */
-	public void setLastFmAPIKey(LastFmAPIKey lastFmAPIKey) {
-		this.lastFmAPIKey = lastFmAPIKey;
-	}
+
+    private LastFmAPIKey lastFmAPIKey;
+
+    private IStateContext stateContext;
+
+    /**
+     * @param stateContext
+     */
+    public void setStateContext(final IStateContext stateContext) {
+	this.stateContext = stateContext;
+    }
+
+    /**
+     * @param lastFmAPIKey
+     */
+    public void setLastFmAPIKey(final LastFmAPIKey lastFmAPIKey) {
+	this.lastFmAPIKey = lastFmAPIKey;
+    }
 
     /**
      * Test if given user and password are correct to login at last.fm
@@ -52,8 +58,9 @@ public class LastFmLogin {
      * @param user
      * @param password
      */
-    boolean testLogin(String user, String password) {
-        return Authenticator.getMobileSession(user, password, lastFmAPIKey.getApiKey(), lastFmAPIKey.getApiSecret()) != null;
+    boolean testLogin(final String user, final String password) {
+	return Authenticator.getMobileSession(user, password,
+		lastFmAPIKey.getApiKey(), lastFmAPIKey.getApiSecret()) != null;
     }
 
     /**
@@ -62,20 +69,22 @@ public class LastFmLogin {
      * @return
      */
     Session getSession() {
-        return Authenticator.getMobileSession(stateContext.getLastFmUser(), stateContext.getLastFmPassword(), lastFmAPIKey.getApiKey(), lastFmAPIKey.getApiSecret());
+	return Authenticator.getMobileSession(stateContext.getLastFmUser(),
+		stateContext.getLastFmPassword(), lastFmAPIKey.getApiKey(),
+		lastFmAPIKey.getApiSecret());
     }
-    
+
     /**
      * Checks user
      * 
      * @return
      */
     boolean checkUser() {
-        if (StringUtils.isEmpty(stateContext.getLastFmUser())) {
-            Logger.debug("Don't submit to Last.fm: Empty user");
-            return false;
-        }
-        return true;
+	if (StringUtils.isEmpty(stateContext.getLastFmUser())) {
+	    Logger.debug("Don't submit to Last.fm: Empty user");
+	    return false;
+	}
+	return true;
     }
 
     /**
@@ -84,21 +93,20 @@ public class LastFmLogin {
      * @return
      */
     boolean checkPassword() {
-        if (StringUtils.isEmpty(stateContext.getLastFmPassword())) {
-            Logger.debug("Don't submit to Last.fm: Empty password");
-            return false;
-        }
-        return true;
+	if (StringUtils.isEmpty(stateContext.getLastFmPassword())) {
+	    Logger.debug("Don't submit to Last.fm: Empty password");
+	    return false;
+	}
+	return true;
     }
 
     /**
      * Check last.fm user and password
+     * 
      * @return
      */
     boolean checkCredentials() {
-    	return checkUser() && checkPassword();
+	return checkUser() && checkPassword();
     }
-
-
 
 }

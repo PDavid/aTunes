@@ -28,6 +28,12 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.AbstractCache;
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * Cache to store lyrics
+ * 
+ * @author alex
+ * 
+ */
 public class LyricsCache extends AbstractCache {
 
     private static final String LYRICS = "lyrics";
@@ -35,8 +41,9 @@ public class LyricsCache extends AbstractCache {
     /**
      * @param osManager
      */
-    public LyricsCache(IOSManager osManager) {
-        super(osManager, LyricsCache.class.getResource("/settings/ehcache-lyrics.xml"));
+    public LyricsCache(final IOSManager osManager) {
+	super(osManager, LyricsCache.class
+		.getResource("/settings/ehcache-lyrics.xml"));
     }
 
     /**
@@ -45,17 +52,17 @@ public class LyricsCache extends AbstractCache {
      * @return If an Exception occurred during clearing
      */
     public synchronized boolean clearCache() {
-        try {
-            getCache().removeAll();
-            getCache().flush();
-        } catch (IllegalStateException e) {
-            Logger.info("Could not delete all files from lyrics cache");
-            return true;
-        } catch (CacheException e) {
-            Logger.info("Could not delete all files from lyrics cache");
-            return true;
-        }
-        return false;
+	try {
+	    getCache().removeAll();
+	    getCache().flush();
+	} catch (IllegalStateException e) {
+	    Logger.info("Could not delete all files from lyrics cache");
+	    return true;
+	} catch (CacheException e) {
+	    Logger.info("Could not delete all files from lyrics cache");
+	    return true;
+	}
+	return false;
     }
 
     /**
@@ -68,13 +75,14 @@ public class LyricsCache extends AbstractCache {
      * 
      * @return the string
      */
-    public synchronized ILyrics retrieveLyric(String artist, String title) {
-        Element element = getCache().get(id(artist, title));
-        if (element != null) {
-            return (ILyrics) element.getValue();
-        } else {
-            return null;
-        }
+    public synchronized ILyrics retrieveLyric(final String artist,
+	    final String title) {
+	Element element = getCache().get(id(artist, title));
+	if (element != null) {
+	    return (ILyrics) element.getValue();
+	} else {
+	    return null;
+	}
     }
 
     /**
@@ -87,24 +95,28 @@ public class LyricsCache extends AbstractCache {
      * @param lyric
      *            the lyric
      */
-    public synchronized void storeLyric(String artist, String title, ILyrics lyric) {
-        if (artist == null || title == null || lyric == null) {
-            return;
-        }
-        Element element = new Element(id(artist, title), lyric);
-        getCache().put(element);
-        Logger.debug("Stored lyric for ", title);
+    public synchronized void storeLyric(final String artist,
+	    final String title, final ILyrics lyric) {
+	if (artist == null || title == null || lyric == null) {
+	    return;
+	}
+	Element element = new Element(id(artist, title), lyric);
+	getCache().put(element);
+	Logger.debug("Stored lyric for ", title);
     }
 
-    private static String id(String artist, String title) {
-        return artist + title;
+    private static String id(final String artist, final String title) {
+	return artist + title;
     }
 
     private Cache getCache() {
-        return getCache(LYRICS);
+	return getCache(LYRICS);
     }
 
+    /**
+     * Shutdown cache
+     */
     public void shutdown() {
-        getCache().dispose();
+	getCache().dispose();
     }
 }

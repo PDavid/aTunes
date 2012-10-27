@@ -28,6 +28,12 @@ import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import de.umass.lastfm.Album;
 
+/**
+ * A list of last.fm albums
+ * 
+ * @author alex
+ * 
+ */
 public class LastFmAlbumList implements IAlbumListInfo {
 
     private static final long serialVersionUID = 5865751328573689357L;
@@ -38,19 +44,22 @@ public class LastFmAlbumList implements IAlbumListInfo {
     /**
      * Gets the album list.
      * 
-     * @return the album list
+     * @param as
+     * @param artist
+     * @return
      */
-    public static IAlbumListInfo getAlbumList(Collection<Album> as, String artist) {
-        List<IAlbumInfo> albums = new ArrayList<IAlbumInfo>();
-        IAlbumListInfo albumList = new LastFmAlbumList();
+    public static IAlbumListInfo getAlbumList(final Collection<Album> as,
+	    final String artist) {
+	List<IAlbumInfo> albums = new ArrayList<IAlbumInfo>();
+	IAlbumListInfo albumList = new LastFmAlbumList();
 
-        for (Album a : as) {
-            IAlbumInfo album = LastFmAlbum.getAlbum(a, null);
-            albums.add(album);
-        }
+	for (Album a : as) {
+	    IAlbumInfo album = LastFmAlbum.getAlbum(a, null);
+	    albums.add(album);
+	}
 
-        albumList.setAlbums(albums);
-        return albumList;
+	albumList.setAlbums(albums);
+	return albumList;
     }
 
     /**
@@ -60,7 +69,7 @@ public class LastFmAlbumList implements IAlbumListInfo {
      */
     @Override
     public List<IAlbumInfo> getAlbums() {
-        return albums;
+	return albums;
     }
 
     /**
@@ -70,7 +79,7 @@ public class LastFmAlbumList implements IAlbumListInfo {
      */
     @Override
     public String getArtist() {
-        return artist;
+	return artist;
     }
 
     /**
@@ -80,8 +89,8 @@ public class LastFmAlbumList implements IAlbumListInfo {
      *            the albums to set
      */
     @Override
-    public void setAlbums(List<? extends IAlbumInfo> albums) {
-        this.albums = albums != null ? new ArrayList<IAlbumInfo>(albums) : null;
+    public void setAlbums(final List<? extends IAlbumInfo> albums) {
+	this.albums = albums != null ? new ArrayList<IAlbumInfo>(albums) : null;
     }
 
     /**
@@ -91,8 +100,8 @@ public class LastFmAlbumList implements IAlbumListInfo {
      *            the artist to set
      */
     @Override
-    public void setArtist(String artist) {
-        this.artist = artist;
+    public void setArtist(final String artist) {
+	this.artist = artist;
     }
 
 }

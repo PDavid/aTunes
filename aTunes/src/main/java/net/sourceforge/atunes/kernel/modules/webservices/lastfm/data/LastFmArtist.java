@@ -26,6 +26,12 @@ import net.sourceforge.atunes.model.IArtistInfo;
 import de.umass.lastfm.Artist;
 import de.umass.lastfm.ImageSize;
 
+/**
+ * An artist retrieved from last.fm
+ * 
+ * @author alex
+ * 
+ */
 public class LastFmArtist implements IArtistInfo {
 
     private static final long serialVersionUID = 2077813440652134441L;
@@ -47,16 +53,17 @@ public class LastFmArtist implements IArtistInfo {
      * 
      * @return the artist
      */
-    protected static LastFmArtist getArtist(Artist a) {
-        LastFmArtist artist = new LastFmArtist();
-        artist.name = a.getName();
-        // Match is returned in [0-1] range and we show a percentage
-        artist.match = String.valueOf((int) (a.getSimilarityMatch() * 100));
-        String url2 = a.getUrl();
-        artist.url = url2.startsWith("http") ? url2 : "http://" + url2;
-        // SMALL images have low quality when scaling. Better to get largest image
-        artist.imageUrl = a.getImageURL(ImageSize.LARGE);
-        return artist;
+    protected static LastFmArtist getArtist(final Artist a) {
+	LastFmArtist artist = new LastFmArtist();
+	artist.name = a.getName();
+	// Match is returned in [0-1] range and we show a percentage
+	artist.match = String.valueOf((int) (a.getSimilarityMatch() * 100));
+	String url2 = a.getUrl();
+	artist.url = url2.startsWith("http") ? url2 : "http://" + url2;
+	// SMALL images have low quality when scaling. Better to get largest
+	// image
+	artist.imageUrl = a.getImageURL(ImageSize.LARGE);
+	return artist;
     }
 
     /**
@@ -66,7 +73,7 @@ public class LastFmArtist implements IArtistInfo {
      */
     @Override
     public ImageIcon getImage() {
-        return image;
+	return image;
     }
 
     /**
@@ -76,7 +83,7 @@ public class LastFmArtist implements IArtistInfo {
      */
     @Override
     public String getImageUrl() {
-        return imageUrl;
+	return imageUrl;
     }
 
     /**
@@ -86,7 +93,7 @@ public class LastFmArtist implements IArtistInfo {
      */
     @Override
     public String getMatch() {
-        return match;
+	return match;
     }
 
     /**
@@ -96,7 +103,7 @@ public class LastFmArtist implements IArtistInfo {
      */
     @Override
     public String getName() {
-        return name;
+	return name;
     }
 
     /**
@@ -106,7 +113,7 @@ public class LastFmArtist implements IArtistInfo {
      */
     @Override
     public String getUrl() {
-        return url;
+	return url;
     }
 
     /**
@@ -116,8 +123,8 @@ public class LastFmArtist implements IArtistInfo {
      *            the new image
      */
     @Override
-    public void setImage(ImageIcon image) {
-        this.image = image;
+    public void setImage(final ImageIcon image) {
+	this.image = image;
     }
 
     /**
@@ -127,8 +134,8 @@ public class LastFmArtist implements IArtistInfo {
      *            the imageUrl to set
      */
     @Override
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageUrl(final String imageUrl) {
+	this.imageUrl = imageUrl;
     }
 
     /**
@@ -138,8 +145,8 @@ public class LastFmArtist implements IArtistInfo {
      *            the match to set
      */
     @Override
-    public void setMatch(String match) {
-        this.match = match;
+    public void setMatch(final String match) {
+	this.match = match;
     }
 
     /**
@@ -149,8 +156,8 @@ public class LastFmArtist implements IArtistInfo {
      *            the name to set
      */
     @Override
-    public void setName(String name) {
-        this.name = name;
+    public void setName(final String name) {
+	this.name = name;
     }
 
     /**
@@ -160,53 +167,55 @@ public class LastFmArtist implements IArtistInfo {
      *            the url to set
      */
     @Override
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrl(final String url) {
+	this.url = url;
     }
 
     /**
      * @return the available
      */
+    @Override
     public boolean isAvailable() {
-        return available;
+	return available;
     }
 
     /**
      * @param available
      *            the available to set
      */
-    public void setAvailable(boolean available) {
-        this.available = available;
+    @Override
+    public void setAvailable(final boolean available) {
+	this.available = available;
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((name == null) ? 0 : name.hashCode());
+	return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        LastFmArtist other = (LastFmArtist) obj;
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
-        return true;
+    public boolean equals(final Object obj) {
+	if (this == obj) {
+	    return true;
+	}
+	if (obj == null) {
+	    return false;
+	}
+	if (getClass() != obj.getClass()) {
+	    return false;
+	}
+	LastFmArtist other = (LastFmArtist) obj;
+	if (name == null) {
+	    if (other.name != null) {
+		return false;
+	    }
+	} else if (!name.equals(other.name)) {
+	    return false;
+	}
+	return true;
     }
 
 }

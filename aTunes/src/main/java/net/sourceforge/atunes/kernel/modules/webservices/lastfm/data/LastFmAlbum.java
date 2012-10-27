@@ -36,6 +36,12 @@ import de.umass.lastfm.ImageSize;
 import de.umass.lastfm.Playlist;
 import de.umass.lastfm.Track;
 
+/**
+ * An album retrieved from last.fm
+ * 
+ * @author alex
+ * 
+ */
 public class LastFmAlbum implements IAlbumInfo {
 
     private static final long serialVersionUID = -8021357529697065642L;
@@ -52,142 +58,150 @@ public class LastFmAlbum implements IAlbumInfo {
     /**
      * Gets the album.
      * 
-     * @return the album
+     * @param a
+     * @param pl
+     * @return
      */
-    public static IAlbumInfo getAlbum(Album a, Playlist pl) {
-        LastFmAlbum album = new LastFmAlbum();
+    public static IAlbumInfo getAlbum(final Album a, final Playlist pl) {
+	LastFmAlbum album = new LastFmAlbum();
 
-        album.artist = a.getArtist();
-        album.title = a.getName();
-        album.url = a.getUrl();
-        album.mbid = a.getMbid();
-        album.releaseDateString = a.getReleaseDate() != null ? a.getReleaseDate().toString() : "";
-        album.bigCoverURL = getBiggestPosible(a);
-        album.thumbCoverURL = getThumbURL(a);
+	album.artist = a.getArtist();
+	album.title = a.getName();
+	album.url = a.getUrl();
+	album.mbid = a.getMbid();
+	album.releaseDateString = a.getReleaseDate() != null ? a
+		.getReleaseDate().toString() : "";
+	album.bigCoverURL = getBiggestPosible(a);
+	album.thumbCoverURL = getThumbURL(a);
 
-        processPlayList(pl, album);
+	processPlayList(pl, album);
 
-        return album;
+	return album;
     }
 
-	/**
-	 * @param pl
-	 * @param album
-	 */
-	private static void processPlayList(Playlist pl, LastFmAlbum album) {
-		if (pl != null) {
-            List<ITrackInfo> ts = new ArrayList<ITrackInfo>();
-            for (Track t : pl.getTracks()) {
-                ts.add(LastFmTrack.getTrack(t));
-            }
+    /**
+     * @param pl
+     * @param album
+     */
+    private static void processPlayList(final Playlist pl,
+	    final LastFmAlbum album) {
+	if (pl != null) {
+	    List<ITrackInfo> ts = new ArrayList<ITrackInfo>();
+	    for (Track t : pl.getTracks()) {
+		ts.add(LastFmTrack.getTrack(t));
+	    }
 
-            // Process track list: if all tracks have a common string between (), [], {} as "(Live)" then it's removed from all of them
-            // In this way track names are more accurate
-            if (!ts.isEmpty()) {
-                processListOfTracks(ts);
-            }
+	    // Process track list: if all tracks have a common string between
+	    // (), [], {} as "(Live)" then it's removed from all of them
+	    // In this way track names are more accurate
+	    if (!ts.isEmpty()) {
+		processListOfTracks(ts);
+	    }
 
-            album.tracks = ts;
-        }
+	    album.tracks = ts;
+	}
+    }
+
+    /**
+     * @param ts
+     */
+    private static void processListOfTracks(final List<ITrackInfo> ts) {
+	String firstTrackTitle = ts.get(0).getTitle();
+	// Get all text between () [] {}
+	List<String> tokensOfFirstTrackTitle = StringUtils.getTextBetweenChars(
+		firstTrackTitle, '(', ')');
+	tokensOfFirstTrackTitle.addAll(StringUtils.getTextBetweenChars(
+		firstTrackTitle, '[', ']'));
+	tokensOfFirstTrackTitle.addAll(StringUtils.getTextBetweenChars(
+		firstTrackTitle, '{', '}'));
+
+	// Check what tokens are present in all track titles
+	List<String> commonTokens = new ArrayList<String>();
+	for (String token : tokensOfFirstTrackTitle) {
+	    boolean common = true;
+	    for (int i = 1; i < ts.size() && common; i++) {
+		if (!ts.get(i).getTitle().contains(token)) {
+		    common = false;
+		}
+	    }
+	    if (common) {
+		commonTokens.add(token);
+	    }
 	}
 
-	/**
-	 * @param ts
-	 */
-	private static void processListOfTracks(List<ITrackInfo> ts) {
-		String firstTrackTitle = ts.get(0).getTitle();
-		// Get all text between () [] {}
-		List<String> tokensOfFirstTrackTitle = StringUtils.getTextBetweenChars(firstTrackTitle, '(', ')');
-		tokensOfFirstTrackTitle.addAll(StringUtils.getTextBetweenChars(firstTrackTitle, '[', ']'));
-		tokensOfFirstTrackTitle.addAll(StringUtils.getTextBetweenChars(firstTrackTitle, '{', '}'));
-
-		// Check what tokens are present in all track titles
-		List<String> commonTokens = new ArrayList<String>();
-		for (String token : tokensOfFirstTrackTitle) {
-		    boolean common = true;
-		    for (int i = 1; i < ts.size() && common; i++) {
-		        if (!ts.get(i).getTitle().contains(token)) {
-		            common = false;
-		        }
-		    }
-		    if (common) {
-		        commonTokens.add(token);
-		    }
-		}
-
-		// Then remove common tokens from all titles
-		for (ITrackInfo ti : ts) {
-		    for (String token : commonTokens) {
-		        ti.setTitle(ti.getTitle().replace(token, ""));
-		    }
-		    ti.setTitle(ti.getTitle().trim());
-		}
+	// Then remove common tokens from all titles
+	for (ITrackInfo ti : ts) {
+	    for (String token : commonTokens) {
+		ti.setTitle(ti.getTitle().replace(token, ""));
+	    }
+	    ti.setTitle(ti.getTitle().trim());
 	}
+    }
 
     /**
      * Returns URL of the biggest album cover
+     * 
      * @param a
      * @return
      */
-    private static String getBiggestPosible(Album a) {
-//    	SMALL: 0
-//    	MEDIUM: 1
-//    	LARGE: 2
-//    	LARGESQUARE: 3
-//    	HUGE: 4
-//    	EXTRALARGE: 5
-//    	MEGA: 6
-//    	ORIGINAL: 7
-    	
-    	ImageSize[] sizes = ImageSize.values();
-    	// Start from extralarge
-    	for (int i = 5; i >= 0; i--) {
-    		String url = a.getImageURL(sizes[i]);
-    		if (url != null) {
-    			return url;
-    		}
-    	}
-    	
-    	return null;
+    private static String getBiggestPosible(final Album a) {
+	// SMALL: 0
+	// MEDIUM: 1
+	// LARGE: 2
+	// LARGESQUARE: 3
+	// HUGE: 4
+	// EXTRALARGE: 5
+	// MEGA: 6
+	// ORIGINAL: 7
+
+	ImageSize[] sizes = ImageSize.values();
+	// Start from extralarge
+	for (int i = 5; i >= 0; i--) {
+	    String url = a.getImageURL(sizes[i]);
+	    if (url != null) {
+		return url;
+	    }
 	}
-    
+
+	return null;
+    }
+
     /**
      * Returns URL of the smallest album cover
+     * 
      * @param a
      * @return
      */
-    private static String getThumbURL(Album a) {
-//    	SMALL: 0
-//    	MEDIUM: 1
-//    	LARGE: 2
-//    	LARGESQUARE: 3
-//    	HUGE: 4
-//    	EXTRALARGE: 5
-//    	MEGA: 6
-//    	ORIGINAL: 7
+    private static String getThumbURL(final Album a) {
+	// SMALL: 0
+	// MEDIUM: 1
+	// LARGE: 2
+	// LARGESQUARE: 3
+	// HUGE: 4
+	// EXTRALARGE: 5
+	// MEGA: 6
+	// ORIGINAL: 7
 
-    	ImageSize[] sizes = ImageSize.values();
-    	// Start from large
-    	for (int i = 2; i < sizes.length; i++) {
-    		String url = a.getImageURL(sizes[i]);
-    		if (url != null) {
-    			return url;
-    		}
-    	}
+	ImageSize[] sizes = ImageSize.values();
+	// Start from large
+	for (int i = 2; i < sizes.length; i++) {
+	    String url = a.getImageURL(sizes[i]);
+	    if (url != null) {
+		return url;
+	    }
+	}
 
-    	return null;
+	return null;
     }
-    
-    
 
-	/**
+    /**
      * Gets the artist.
      * 
      * @return the artist
      */
     @Override
     public String getArtist() {
-        return artist;
+	return artist;
     }
 
     /**
@@ -197,7 +211,7 @@ public class LastFmAlbum implements IAlbumInfo {
      */
     @Override
     public String getArtistUrl() {
-        return url.substring(0, url.lastIndexOf('/'));
+	return url.substring(0, url.lastIndexOf('/'));
     }
 
     /**
@@ -207,7 +221,7 @@ public class LastFmAlbum implements IAlbumInfo {
      */
     @Override
     public String getBigCoverURL() {
-        return bigCoverURL;
+	return bigCoverURL;
     }
 
     /**
@@ -217,11 +231,12 @@ public class LastFmAlbum implements IAlbumInfo {
      */
     @Override
     public DateTime getReleaseDate() {
-        try {
-            return DateTimeFormat.forPattern("EEE MMM dd HH:mm:ss 'CEST' yyyy").withLocale(Locale.US).parseDateTime(releaseDateString);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
+	try {
+	    return DateTimeFormat.forPattern("EEE MMM dd HH:mm:ss 'CEST' yyyy")
+		    .withLocale(Locale.US).parseDateTime(releaseDateString);
+	} catch (IllegalArgumentException e) {
+	    return null;
+	}
     }
 
     /**
@@ -231,7 +246,7 @@ public class LastFmAlbum implements IAlbumInfo {
      */
     @Override
     public String getReleaseDateString() {
-        return releaseDateString;
+	return releaseDateString;
     }
 
     /**
@@ -241,7 +256,7 @@ public class LastFmAlbum implements IAlbumInfo {
      */
     @Override
     public String getTitle() {
-        return title;
+	return title;
     }
 
     /**
@@ -251,7 +266,7 @@ public class LastFmAlbum implements IAlbumInfo {
      */
     @Override
     public List<ITrackInfo> getTracks() {
-        return tracks;
+	return tracks;
     }
 
     /**
@@ -261,7 +276,7 @@ public class LastFmAlbum implements IAlbumInfo {
      */
     @Override
     public String getUrl() {
-        return url;
+	return url;
     }
 
     /**
@@ -271,56 +286,57 @@ public class LastFmAlbum implements IAlbumInfo {
      */
     @Override
     public String getYear() {
-        DateTime releaseDate = getReleaseDate();
-        if (releaseDate == null) {
-            return "";
-        }
-        return Integer.toString(releaseDate.getYear());
+	DateTime releaseDate = getReleaseDate();
+	if (releaseDate == null) {
+	    return "";
+	}
+	return Integer.toString(releaseDate.getYear());
     }
 
     @Override
     public String getThumbCoverURL() {
-    	return thumbCoverURL;
+	return thumbCoverURL;
     }
-    
+
     @Override
     public String toString() {
-        return StringUtils.getString(artist, " - ", title);
+	return StringUtils.getString(artist, " - ", title);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((bigCoverURL == null) ? 0 : bigCoverURL.hashCode());
-        return result;
+	final int prime = 31;
+	int result = 1;
+	result = prime * result
+		+ ((bigCoverURL == null) ? 0 : bigCoverURL.hashCode());
+	return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        LastFmAlbum other = (LastFmAlbum) obj;
-        if (bigCoverURL == null) {
-            if (other.bigCoverURL != null) {
-                return false;
-            }
-        } else if (!bigCoverURL.equals(other.bigCoverURL)) {
-            return false;
-        }
-        return true;
+    public boolean equals(final Object obj) {
+	if (this == obj) {
+	    return true;
+	}
+	if (obj == null) {
+	    return false;
+	}
+	if (getClass() != obj.getClass()) {
+	    return false;
+	}
+	LastFmAlbum other = (LastFmAlbum) obj;
+	if (bigCoverURL == null) {
+	    if (other.bigCoverURL != null) {
+		return false;
+	    }
+	} else if (!bigCoverURL.equals(other.bigCoverURL)) {
+	    return false;
+	}
+	return true;
     }
 
     @Override
     public String getMbid() {
-    	return mbid;
+	return mbid;
     }
-    
+
 }
