@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -87,7 +86,7 @@ public class ArtistStructureBuilder {
      * @param audioFiles
      * @return
      */
-    List<String> getArtistList(final List<ILocalAudioObject> audioFiles) {
+    Set<String> getArtistList(final List<ILocalAudioObject> audioFiles) {
 	Set<String> artists = new HashSet<String>();
 	for (ILocalAudioObject song : audioFiles) {
 	    String albumArtist = song.getAlbumArtist(unknownObjectChecker);
@@ -97,6 +96,6 @@ public class ArtistStructureBuilder {
 		artists.add(song.getArtist(unknownObjectChecker));
 	    }
 	}
-	return new ArrayList<String>(artists);
+	return artists;
     }
 }

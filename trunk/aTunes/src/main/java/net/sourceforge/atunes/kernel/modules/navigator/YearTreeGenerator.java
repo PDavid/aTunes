@@ -140,8 +140,8 @@ public class YearTreeGenerator implements ITreeGenerator {
 	    }
 	    List<ILocalAudioObject> audioObjects = year.getAudioObjects();
 	    // Returns all artists of this year
-	    List<String> artistNamesList = artistStructureBuilder
-		    .getArtistList(audioObjects);
+	    List<String> artistNamesList = new ArrayList<String>(
+		    artistStructureBuilder.getArtistList(audioObjects));
 	    Collections.sort(artistNamesList);
 	    // Returns an structure of artists and albums containing songs of
 	    // this year

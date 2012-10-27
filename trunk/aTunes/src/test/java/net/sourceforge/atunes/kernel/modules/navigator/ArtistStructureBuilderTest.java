@@ -55,7 +55,7 @@ public class ArtistStructureBuilderTest {
 	aos.add(ao1);
 	aos.add(ao2);
 
-	List<String> artists = sut.getArtistList(aos);
+	List<String> artists = new ArrayList<String>(sut.getArtistList(aos));
 
 	assertEquals(1, artists.size());
 	assertEquals("Children of Bodom", artists.get(0));

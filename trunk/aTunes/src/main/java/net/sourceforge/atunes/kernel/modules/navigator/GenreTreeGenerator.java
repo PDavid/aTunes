@@ -153,8 +153,8 @@ public class GenreTreeGenerator implements ITreeGenerator {
 	    }
 	    List<ILocalAudioObject> audioObjects = genre.getAudioObjects();
 	    // Returns all artists of this genre
-	    List<String> artistNamesList = artistStructureBuilder
-		    .getArtistList(audioObjects);
+	    List<String> artistNamesList = new ArrayList<String>(
+		    artistStructureBuilder.getArtistList(audioObjects));
 	    artistSorter.sort(artistNamesList);
 	    // Returns an structure of artists and albums containing songs of
 	    // this genre
