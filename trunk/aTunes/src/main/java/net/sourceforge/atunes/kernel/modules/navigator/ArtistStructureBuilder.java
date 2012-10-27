@@ -22,8 +22,10 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.sourceforge.atunes.kernel.modules.repository.Album;
 import net.sourceforge.atunes.kernel.modules.repository.Artist;
@@ -31,55 +33,70 @@ import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
+import net.sourceforge.atunes.utils.StringUtils;
 
-class ArtistStructureBuilder {
+/**
+ * Organizes audio objects in structures of artists for trees
+ * 
+ * @author alex
+ * 
+ */
+public class ArtistStructureBuilder {
 
-	private final IUnknownObjectChecker unknownObjectChecker;
+    private IUnknownObjectChecker unknownObjectChecker;
 
-	/**
-	 * @param unknownObjectChecker
-	 */
-	ArtistStructureBuilder(final IUnknownObjectChecker unknownObjectChecker) {
-		super();
-		this.unknownObjectChecker = unknownObjectChecker;
+    /**
+     * @param unknownObjectChecker
+     */
+    public void setUnknownObjectChecker(
+	    final IUnknownObjectChecker unknownObjectChecker) {
+	this.unknownObjectChecker = unknownObjectChecker;
+    }
+
+    /**
+     * Returns an structure of artists and albums containing songs from a list
+     * 
+     * @param audioFiles
+     * @return
+     */
+    Map<String, IArtist> getArtistObjects(
+	    final List<ILocalAudioObject> audioFiles) {
+	Map<String, IArtist> structure = new HashMap<String, IArtist>();
+	for (ILocalAudioObject song : audioFiles) {
+	    String artist = !song.getAlbumArtist(unknownObjectChecker).equals(
+		    "") ? song.getAlbumArtist(unknownObjectChecker) : song
+		    .getArtist(unknownObjectChecker);
+	    if (!structure.containsKey(artist)) {
+		structure.put(artist, new Artist(artist));
+	    }
+	    if (!structure.get(artist).getAlbums()
+		    .containsKey(song.getAlbum(unknownObjectChecker))) {
+		IAlbum album = new Album(structure.get(artist),
+			song.getAlbum(unknownObjectChecker));
+		structure.get(artist).addAlbum(album);
+	    }
+	    structure.get(artist).getAlbum(song.getAlbum(unknownObjectChecker))
+		    .addAudioFile(song);
 	}
+	return structure;
+    }
 
-	/**
-	 * Returns an structure of artists and albums containing songs from a list
-	 * 
-	 * @param audioFiles
-	 * @return
-	 */
-	Map<String, IArtist> getArtistObjects(final List<ILocalAudioObject> audioFiles) {
-		Map<String, IArtist> structure = new HashMap<String, IArtist>();
-		for (ILocalAudioObject song : audioFiles) {
-			String artist = !song.getAlbumArtist(unknownObjectChecker).equals("") ? song.getAlbumArtist(unknownObjectChecker) : song.getArtist(unknownObjectChecker);
-			if (!structure.containsKey(artist)) {
-				structure.put(artist, new Artist(artist));
-			}
-			if (!structure.get(artist).getAlbums().containsKey(song.getAlbum(unknownObjectChecker))) {
-				IAlbum album = new Album(structure.get(artist), song.getAlbum(unknownObjectChecker));
-				structure.get(artist).addAlbum(album);
-			}
-			structure.get(artist).getAlbum(song.getAlbum(unknownObjectChecker)).addAudioFile(song);
-		}
-		return structure;
+    /**
+     * Returns all artists from a list of audio object
+     * 
+     * @param audioFiles
+     * @return
+     */
+    List<String> getArtistList(final List<ILocalAudioObject> audioFiles) {
+	Set<String> artists = new HashSet<String>();
+	for (ILocalAudioObject song : audioFiles) {
+	    String albumArtist = song.getAlbumArtist(unknownObjectChecker);
+	    if (!StringUtils.isEmpty(albumArtist)) {
+		artists.add(albumArtist);
+	    } else {
+		artists.add(song.getArtist(unknownObjectChecker));
+	    }
 	}
-
-	/**
-	 * Returns all artists from a list of audio object
-	 * @param audioFiles
-	 * @return
-	 */
-	List<String> getArtistList(final List<ILocalAudioObject> audioFiles) {
-		List<String> artists = new ArrayList<String>();
-		for (ILocalAudioObject song : audioFiles) {
-			if (!song.getAlbumArtist(unknownObjectChecker).equals("")) {
-				artists.add(song.getAlbumArtist(unknownObjectChecker));
-			} else {
-				artists.add(song.getArtist(unknownObjectChecker));
-			}
-		}
-		return artists;
-	}
+	return new ArrayList<String>(artists);
+    }
 }

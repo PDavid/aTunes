@@ -36,6 +36,8 @@
 		class="net.sourceforge.atunes.kernel.modules.navigator.YearTreeGenerator">
 	</bean>
 	
+	<bean id="artistStructureBuilder" class="net.sourceforge.atunes.kernel.modules.navigator.ArtistStructureBuilder"/>
+	
 	
 	
 	<bean id="artistViewMode" class="net.sourceforge.atunes.model.ViewMode" factory-method="valueOf">

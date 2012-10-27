@@ -55,6 +55,16 @@ public class GenreTreeGenerator implements ITreeGenerator {
 
     private IUnknownObjectChecker unknownObjectChecker;
 
+    private ArtistStructureBuilder artistStructureBuilder;
+
+    /**
+     * @param artistStructureBuilder
+     */
+    public void setArtistStructureBuilder(
+	    final ArtistStructureBuilder artistStructureBuilder) {
+	this.artistStructureBuilder = artistStructureBuilder;
+    }
+
     /**
      * @param unknownObjectChecker
      */
@@ -141,15 +151,14 @@ public class GenreTreeGenerator implements ITreeGenerator {
 	    if (objectsExpanded.contains(genreNode.getUserObject())) {
 		nodesToExpand.add(genreNode);
 	    }
-	    ArtistStructureBuilder builder = new ArtistStructureBuilder(
-		    unknownObjectChecker);
 	    List<ILocalAudioObject> audioObjects = genre.getAudioObjects();
 	    // Returns all artists of this genre
-	    List<String> artistNamesList = builder.getArtistList(audioObjects);
+	    List<String> artistNamesList = artistStructureBuilder
+		    .getArtistList(audioObjects);
 	    artistSorter.sort(artistNamesList);
 	    // Returns an structure of artists and albums containing songs of
 	    // this genre
-	    Map<String, IArtist> genreArtists = builder
+	    Map<String, IArtist> genreArtists = artistStructureBuilder
 		    .getArtistObjects(audioObjects);
 	    for (String artistName : artistNamesList) {
 		buildArtistNode(tree, objectsSelected, objectsExpanded,
