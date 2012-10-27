@@ -29,117 +29,130 @@ import java.util.List;
 import net.sourceforge.atunes.model.IHotkey;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * A representation of a hotkey
+ * 
+ * @author alex
+ * 
+ */
 public class Hotkey implements IHotkey {
 
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = -1438992610049688867L;
-	
-	private static final List<Integer> F_KEYS = new ArrayList<Integer>();
-	
-	private static final List<Integer> KEY_MODIFIERS = new ArrayList<Integer>();
-	
-	static {
-        F_KEYS.add(KeyEvent.VK_F1);
-        F_KEYS.add(KeyEvent.VK_F2);
-        F_KEYS.add(KeyEvent.VK_F3);
-        F_KEYS.add(KeyEvent.VK_F4);
-        F_KEYS.add(KeyEvent.VK_F5);
-        F_KEYS.add(KeyEvent.VK_F6);
-        F_KEYS.add(KeyEvent.VK_F7);
-        F_KEYS.add(KeyEvent.VK_F8);
-        F_KEYS.add(KeyEvent.VK_F9);
-        F_KEYS.add(KeyEvent.VK_F10);
-        F_KEYS.add(KeyEvent.VK_F11);
-        F_KEYS.add(KeyEvent.VK_F12);
-        
-        KEY_MODIFIERS.add(KeyEvent.VK_ALT);
-        KEY_MODIFIERS.add(KeyEvent.VK_ALT_GRAPH);
-        KEY_MODIFIERS.add(KeyEvent.VK_CONTROL);
-        KEY_MODIFIERS.add(KeyEvent.VK_META);
-        KEY_MODIFIERS.add(KeyEvent.VK_SHIFT);
-	}
-	
-	private int id;
+    private static final long serialVersionUID = -1438992610049688867L;
+
+    private static final List<Integer> F_KEYS = new ArrayList<Integer>();
+
+    private static final List<Integer> KEY_MODIFIERS = new ArrayList<Integer>();
+
+    static {
+	F_KEYS.add(KeyEvent.VK_F1);
+	F_KEYS.add(KeyEvent.VK_F2);
+	F_KEYS.add(KeyEvent.VK_F3);
+	F_KEYS.add(KeyEvent.VK_F4);
+	F_KEYS.add(KeyEvent.VK_F5);
+	F_KEYS.add(KeyEvent.VK_F6);
+	F_KEYS.add(KeyEvent.VK_F7);
+	F_KEYS.add(KeyEvent.VK_F8);
+	F_KEYS.add(KeyEvent.VK_F9);
+	F_KEYS.add(KeyEvent.VK_F10);
+	F_KEYS.add(KeyEvent.VK_F11);
+	F_KEYS.add(KeyEvent.VK_F12);
+
+	KEY_MODIFIERS.add(KeyEvent.VK_ALT);
+	KEY_MODIFIERS.add(KeyEvent.VK_ALT_GRAPH);
+	KEY_MODIFIERS.add(KeyEvent.VK_CONTROL);
+	KEY_MODIFIERS.add(KeyEvent.VK_META);
+	KEY_MODIFIERS.add(KeyEvent.VK_SHIFT);
+    }
+
+    private final int id;
     private int mod;
     private int key;
-    private String description;
+    private final String description;
 
-    @ConstructorProperties( { "id", "mod", "key", "description" })
-    public Hotkey(int id, int mod, int key, String description) {
-        this.id = id;
-        this.mod = mod;
-        this.key = key;
-        this.description = description;
+    /**
+     * @param id
+     * @param mod
+     * @param key
+     * @param description
+     */
+    @ConstructorProperties({ "id", "mod", "key", "description" })
+    public Hotkey(final int id, final int mod, final int key,
+	    final String description) {
+	this.id = id;
+	this.mod = mod;
+	this.key = key;
+	this.description = description;
     }
 
     @Override
-	public int getId() {
-        return id;
+    public int getId() {
+	return id;
     }
 
     @Override
-	public int getMod() {
-        return mod;
+    public int getMod() {
+	return mod;
     }
 
     @Override
-	public int getKey() {
-        return key;
+    public int getKey() {
+	return key;
     }
 
     @Override
-	public String getDescription() {
-        return description;
+    public String getDescription() {
+	return description;
     }
 
     @Override
-	public void setMod(int mod) {
-        this.mod = mod;
+    public void setMod(final int mod) {
+	this.mod = mod;
     }
 
     @Override
-	public void setKey(int key) {
-        this.key = key;
+    public void setKey(final int key) {
+	this.key = key;
     }
 
     @Override
-	public String getKeyDescription() {
-        String keyText = KeyEvent.getKeyText(getKey());
-        if (getMod() != 0) {
-            String modifiersExText = InputEvent.getModifiersExText(getMod());
-            if (keyText.equals(modifiersExText)) {
-                return keyText;
-            } else {
-                return StringUtils.getString(modifiersExText, "+", keyText);
-            }
-        } else {
-            return keyText;
-        }
+    public String getKeyDescription() {
+	String keyText = KeyEvent.getKeyText(getKey());
+	if (getMod() != 0) {
+	    String modifiersExText = InputEvent.getModifiersExText(getMod());
+	    if (keyText.equals(modifiersExText)) {
+		return keyText;
+	    } else {
+		return StringUtils.getString(modifiersExText, "+", keyText);
+	    }
+	} else {
+	    return keyText;
+	}
     }
 
     @Override
-	public boolean isRecommended() {
-        boolean recommended = false;
-        if (getMod() != 0 && getKey() != 0 && !isKeyModifier(getKey())) {
-            recommended = true;
-        } else if (isFKey(getKey())) {
-            recommended = true;
-        }
-        return recommended;
+    public boolean isRecommended() {
+	boolean recommended = false;
+	if (getMod() != 0 && getKey() != 0 && !isKeyModifier(getKey())) {
+	    recommended = true;
+	} else if (isFKey(getKey())) {
+	    recommended = true;
+	}
+	return recommended;
     }
 
-    private boolean isFKey(int key) {
-        return F_KEYS.contains(key);
+    private boolean isFKey(final int key) {
+	return F_KEYS.contains(key);
     }
 
-    private boolean isKeyModifier(int keyCode) {
-        return KEY_MODIFIERS.contains(keyCode);
+    private boolean isKeyModifier(final int keyCode) {
+	return KEY_MODIFIERS.contains(keyCode);
     }
 
     @Override
     public String toString() {
-        return StringUtils.getString(description, " ", getKeyDescription());
+	return StringUtils.getString(description, " ", getKeyDescription());
     }
 }
