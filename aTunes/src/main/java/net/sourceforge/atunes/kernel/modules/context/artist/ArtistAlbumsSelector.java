@@ -24,16 +24,29 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IContextPanelContent;
 import net.sourceforge.atunes.model.IStateContext;
 
+/**
+ * Selects between albums list or albums flow
+ * 
+ * @author alex
+ * 
+ */
 public final class ArtistAlbumsSelector {
-	
-	private ArtistAlbumsSelector() {}
 
-	/**
-	 * Selects albums content 
-	 * @param stateContext
-	 * @return
-	 */
-	public static IContextPanelContent<?> getContextPanelContent(IStateContext stateContext) {
-		return Context.getBean(stateContext.isShowContextAlbumsInGrid() ?  "artistAlbumsFlowContent" : "artistAlbumsContent", IContextPanelContent.class);
-	}
+    private ArtistAlbumsSelector() {
+    }
+
+    /**
+     * Selects albums content
+     * 
+     * @param stateContext
+     * @return
+     */
+    public static IContextPanelContent<?> getContextPanelContent(
+	    final IStateContext stateContext) {
+	return Context
+		.getBean(
+			stateContext.isShowContextAlbumsInGrid() ? "artistAlbumsFlowContent"
+				: "artistAlbumsContent",
+			IContextPanelContent.class);
+    }
 }
