@@ -24,23 +24,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IStateNavigation;
+import net.sourceforge.atunes.model.ITreeNode;
 
 /**
  * The listener interface for receiving navigationTreeToolTip events.
  */
 public final class NavigationTreeToolTipListener extends MouseAdapter {
 
-    private NavigationController controller;
-    
-    private INavigationHandler navigationHandler;
-    
-    private IStateNavigation stateNavigation;
+    private final NavigationController controller;
+
+    private final INavigationHandler navigationHandler;
+
+    private final IStateNavigation stateNavigation;
 
     /**
      * Instantiates a new navigation tree tool tip listener.
@@ -49,89 +47,99 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
      * @param stateNavigation
      * @param navigationHandler
      */
-    public NavigationTreeToolTipListener(NavigationController controller, IStateNavigation stateNavigation, INavigationHandler navigationHandler) {
-        this.controller = controller;
-        this.stateNavigation = stateNavigation;
-        this.navigationHandler = navigationHandler;
+    public NavigationTreeToolTipListener(final NavigationController controller,
+	    final IStateNavigation stateNavigation,
+	    final INavigationHandler navigationHandler) {
+	this.controller = controller;
+	this.stateNavigation = stateNavigation;
+	this.navigationHandler = navigationHandler;
     }
 
     @Override
-    public void mouseDragged(MouseEvent arg0) {
-        if (!stateNavigation.isShowExtendedTooltip()) {
-            return;
-        }
+    public void mouseDragged(final MouseEvent arg0) {
+	if (!stateNavigation.isShowExtendedTooltip()) {
+	    return;
+	}
 
-        controller.setCurrentExtendedToolTipContent(null);
-        controller.getExtendedToolTip().setVisible(false);
+	controller.setCurrentExtendedToolTipContent(null);
+	controller.getExtendedToolTip().setVisible(false);
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-        if (!stateNavigation.isShowExtendedTooltip()) {
-            return;
-        }
+    public void mouseMoved(final MouseEvent e) {
+	if (!stateNavigation.isShowExtendedTooltip()) {
+	    return;
+	}
 
-        TreePath selectedPath = navigationHandler.getCurrentView().getTree().getPathForLocation(e.getX(), e.getY());
-        if (selectedPath != null) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
-            final Object content = node.getUserObject();
+	ITreeNode node = navigationHandler.getCurrentView().getTree()
+		.getSelectedNode(e);
+	if (node != null) {
+	    final Object content = node.getUserObject();
 
-            if (content.equals(controller.getCurrentExtendedToolTipContent())) {
-                return;
-            }
+	    if (content.equals(controller.getCurrentExtendedToolTipContent())) {
+		return;
+	    }
 
-            // Show extended tooltip
-            if (ExtendedToolTip.canObjectBeShownInExtendedToolTip(content)) {
-                if (!controller.getExtendedToolTip().isVisible() || controller.getCurrentExtendedToolTipContent() == null
-                        || controller.getCurrentExtendedToolTipContent() != content) {
-                    if (controller.getExtendedToolTip().isVisible()) {
-                        controller.getExtendedToolTip().setVisible(false);
-                    }
-                    controller.getExtendedToolTip().setLocation((int) navigationHandler.getCurrentView().getTree().getLocationOnScreen().getX() + e.getX(),
-                            (int) navigationHandler.getCurrentView().getTree().getLocationOnScreen().getY() + e.getY() + 20);
+	    // Show extended tooltip
+	    if (ExtendedToolTip.canObjectBeShownInExtendedToolTip(content)) {
+		if (!controller.getExtendedToolTip().isVisible()
+			|| controller.getCurrentExtendedToolTipContent() == null
+			|| controller.getCurrentExtendedToolTipContent() != content) {
+		    if (controller.getExtendedToolTip().isVisible()) {
+			controller.getExtendedToolTip().setVisible(false);
+		    }
+		    controller.getExtendedToolTip().setLocation(
+			    (int) navigationHandler.getCurrentView().getTree()
+				    .getLocationOnScreen().getX()
+				    + e.getX(),
+			    (int) navigationHandler.getCurrentView().getTree()
+				    .getLocationOnScreen().getY()
+				    + e.getY() + 20);
 
-                    controller.getExtendedToolTip().setToolTipContent(content);
-                    controller.setCurrentExtendedToolTipContent(content);
-                } else {
-                    controller.setCurrentExtendedToolTipContent(null);
-                }
+		    controller.getExtendedToolTip().setToolTipContent(content);
+		    controller.setCurrentExtendedToolTipContent(content);
+		} else {
+		    controller.setCurrentExtendedToolTipContent(null);
+		}
 
-                controller.getToolTipTimer().setInitialDelay(stateNavigation.getExtendedTooltipDelay() * 1000);
-                controller.getToolTipTimer().setRepeats(false);
-                controller.getToolTipTimer().start();
-            } else {
-                controller.setCurrentExtendedToolTipContent(null);
-                controller.getExtendedToolTip().setVisible(false);
-                controller.getToolTipTimer().stop();
-            }
-        } else {
-            controller.setCurrentExtendedToolTipContent(null);
-            controller.getExtendedToolTip().setVisible(false);
-            controller.getToolTipTimer().stop();
-        }
+		controller.getToolTipTimer().setInitialDelay(
+			stateNavigation.getExtendedTooltipDelay() * 1000);
+		controller.getToolTipTimer().setRepeats(false);
+		controller.getToolTipTimer().start();
+	    } else {
+		controller.setCurrentExtendedToolTipContent(null);
+		controller.getExtendedToolTip().setVisible(false);
+		controller.getToolTipTimer().stop();
+	    }
+	} else {
+	    controller.setCurrentExtendedToolTipContent(null);
+	    controller.getExtendedToolTip().setVisible(false);
+	    controller.getToolTipTimer().stop();
+	}
     }
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-        if (!stateNavigation.isShowExtendedTooltip()) {
-            return;
-        }
+    public void mouseWheelMoved(final MouseWheelEvent e) {
+	if (!stateNavigation.isShowExtendedTooltip()) {
+	    return;
+	}
 
-        controller.setCurrentExtendedToolTipContent(null);
-        controller.getExtendedToolTip().setVisible(false);
+	controller.setCurrentExtendedToolTipContent(null);
+	controller.getExtendedToolTip().setVisible(false);
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        super.mouseClicked(e);
+    public void mouseClicked(final MouseEvent e) {
+	super.mouseClicked(e);
 
-        // When user does click (to popup menu for example) tool tip must be hidden
-        if (!stateNavigation.isShowExtendedTooltip()) {
-            return;
-        }
+	// When user does click (to popup menu for example) tool tip must be
+	// hidden
+	if (!stateNavigation.isShowExtendedTooltip()) {
+	    return;
+	}
 
-        controller.setCurrentExtendedToolTipContent(null);
-        controller.getExtendedToolTip().setVisible(false);
+	controller.setCurrentExtendedToolTipContent(null);
+	controller.getExtendedToolTip().setVisible(false);
     }
 
 }

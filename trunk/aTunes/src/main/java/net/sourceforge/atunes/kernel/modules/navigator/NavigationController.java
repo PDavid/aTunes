@@ -32,8 +32,6 @@ import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.ColumnRenderers;
@@ -41,6 +39,7 @@ import net.sourceforge.atunes.gui.NavigationTableColumnModel;
 import net.sourceforge.atunes.gui.NavigationTableModel;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
+import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
@@ -58,15 +57,19 @@ import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationTree;
 import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.INavigationView;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITable;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
+import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.springframework.context.ApplicationContext;
@@ -74,430 +77,487 @@ import org.springframework.context.ApplicationContextAware;
 
 /**
  * Controller to manage
+ * 
  * @author alex
- *
+ * 
  */
-public final class NavigationController implements IAudioFilesRemovedListener, IController, ApplicationContextAware {
+public final class NavigationController implements IAudioFilesRemovedListener,
+	IController, ApplicationContextAware {
 
-	private INavigationTreePanel navigationTreePanel;
+    private INavigationTreePanel navigationTreePanel;
 
-	/** The current extended tool tip content. */
-	private volatile Object currentExtendedToolTipContent;
+    /** The current extended tool tip content. */
+    private volatile Object currentExtendedToolTipContent;
 
-	/** The album tool tip. */
-	private ExtendedToolTip extendedToolTip;
+    /** The album tool tip. */
+    private ExtendedToolTip extendedToolTip;
 
-	/** The popupmenu caller. */
-	private JComponent popupMenuCaller;
+    /** The popupmenu caller. */
+    private JComponent popupMenuCaller;
 
-	private ColumnSetPopupMenu columnSetPopupMenu;
+    private ColumnSetPopupMenu columnSetPopupMenu;
 
-	/** The timer. */
-	private Timer timer;
+    /** The timer. */
+    private Timer timer;
 
-	private IColumnSet navigatorColumnSet;
+    private IColumnSet navigatorColumnSet;
 
-	private INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-	private ILookAndFeelManager lookAndFeelManager;
+    private ILookAndFeelManager lookAndFeelManager;
 
-	private IFilterHandler filterHandler;
+    private IFilterHandler filterHandler;
 
-	private ITable navigationTable;
+    private ITable navigationTable;
 
-	private IRepositoryHandler repositoryHandler;
+    private IRepositoryHandler repositoryHandler;
 
-	private IFilter navigationTreeFilter;
+    private IFilter navigationTreeFilter;
 
-	private IStateNavigation stateNavigation;
+    private IStateNavigation stateNavigation;
 
-	private IBeanFactory beanFactory;
+    private IBeanFactory beanFactory;
 
-	private IUnknownObjectChecker unknownObjectChecker;
+    private IUnknownObjectChecker unknownObjectChecker;
 
-	/**
-	 * @param unknownObjectChecker
-	 */
-	public void setUnknownObjectChecker(
-			final IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
-	}
+    private IPlayListHandler playListHandler;
 
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(final IPlayListHandler playListHandler) {
+	this.playListHandler = playListHandler;
+    }
 
-	/**
-	 * @param stateNavigation
-	 */
-	public void setStateNavigation(final IStateNavigation stateNavigation) {
-		this.stateNavigation = stateNavigation;
-	}
+    /**
+     * @param unknownObjectChecker
+     */
+    public void setUnknownObjectChecker(
+	    final IUnknownObjectChecker unknownObjectChecker) {
+	this.unknownObjectChecker = unknownObjectChecker;
+    }
 
-	@Override
-	public void setApplicationContext(final ApplicationContext applicationContext) {
-		timer = new Timer(0, applicationContext.getBean(ExtendedToolTipActionListener.class));
-	}
+    /**
+     * @param beanFactory
+     */
+    public void setBeanFactory(final IBeanFactory beanFactory) {
+	this.beanFactory = beanFactory;
+    }
 
-	/**
-	 * @param navigationTreeFilter
-	 */
-	public void setNavigationTreeFilter(final IFilter navigationTreeFilter) {
-		this.navigationTreeFilter = navigationTreeFilter;
-	}
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(final IStateNavigation stateNavigation) {
+	this.stateNavigation = stateNavigation;
+    }
 
-	/**
-	 * @param repositoryHandler
-	 */
-	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
+    @Override
+    public void setApplicationContext(
+	    final ApplicationContext applicationContext) {
+	timer = new Timer(0,
+		applicationContext.getBean(ExtendedToolTipActionListener.class));
+    }
 
-	/**
-	 * @param navigationTreePanel
-	 */
-	public void setNavigationTreePanel(final INavigationTreePanel navigationTreePanel) {
-		this.navigationTreePanel = navigationTreePanel;
-	}
+    /**
+     * @param navigationTreeFilter
+     */
+    public void setNavigationTreeFilter(final IFilter navigationTreeFilter) {
+	this.navigationTreeFilter = navigationTreeFilter;
+    }
 
-	/**
-	 * @param navigationTable
-	 */
-	public void setNavigationTable(final ITable navigationTable) {
-		this.navigationTable = navigationTable;
-	}
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+	this.repositoryHandler = repositoryHandler;
+    }
 
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
+    /**
+     * @param navigationTreePanel
+     */
+    public void setNavigationTreePanel(
+	    final INavigationTreePanel navigationTreePanel) {
+	this.navigationTreePanel = navigationTreePanel;
+    }
 
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
+    /**
+     * @param navigationTable
+     */
+    public void setNavigationTable(final ITable navigationTable) {
+	this.navigationTable = navigationTable;
+    }
 
-	/**
-	 * @param filterHandler
-	 */
-	public void setFilterHandler(final IFilterHandler filterHandler) {
-		this.filterHandler = filterHandler;
-	}
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
 
-	/**
-	 * @param navigatorColumnSet
-	 */
-	public void setNavigatorColumnSet(final IColumnSet navigatorColumnSet) {
-		this.navigatorColumnSet = navigatorColumnSet;
-	}
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(
+	    final ILookAndFeelManager lookAndFeelManager) {
+	this.lookAndFeelManager = lookAndFeelManager;
+    }
 
-	/**
-	 * Initializes controller
-	 */
-	public void initialize() {
-		addBindings();
-		repositoryHandler.addAudioFilesRemovedListener(this);
-	}
+    /**
+     * @param filterHandler
+     */
+    public void setFilterHandler(final IFilterHandler filterHandler) {
+	this.filterHandler = filterHandler;
+    }
 
-	/**
-	 * @return navigation tree panel
-	 */
-	protected INavigationTreePanel getNavigationTreePanel() {
-		return navigationTreePanel;
-	}
+    /**
+     * @param navigatorColumnSet
+     */
+    public void setNavigatorColumnSet(final IColumnSet navigatorColumnSet) {
+	this.navigatorColumnSet = navigatorColumnSet;
+    }
 
-	@Override
-	public void addBindings() {
-		NavigationTableModel model = new NavigationTableModel();
-		navigationTable.setModel(model);
-		AbstractCommonColumnModel columnModel = beanFactory.getBean(NavigationTableColumnModel.class);
-		columnModel.setModel(model);
-		navigationTable.setColumnModel(columnModel);
-		ColumnRenderers.addRenderers(navigationTable.getSwingComponent(), columnModel, lookAndFeelManager.getCurrentLookAndFeel());
+    /**
+     * Initializes controller
+     */
+    public void initialize() {
+	addBindings();
+	repositoryHandler.addAudioFilesRemovedListener(this);
+    }
 
-		new ColumnSetRowSorter(navigationTable.getSwingComponent(), model, columnModel);
+    /**
+     * @return navigation tree panel
+     */
+    protected INavigationTreePanel getNavigationTreePanel() {
+	return navigationTreePanel;
+    }
 
-		// Bind column set popup menu
-		columnSetPopupMenu = new ColumnSetPopupMenu(navigationTable.getSwingComponent(), columnModel);
+    @Override
+    public void addBindings() {
+	NavigationTableModel model = new NavigationTableModel();
+	navigationTable.setModel(model);
+	AbstractCommonColumnModel columnModel = beanFactory
+		.getBean(NavigationTableColumnModel.class);
+	columnModel.setModel(model);
+	navigationTable.setColumnModel(columnModel);
+	ColumnRenderers.addRenderers(navigationTable.getSwingComponent(),
+		columnModel, lookAndFeelManager.getCurrentLookAndFeel());
 
-		// Add tree selection listeners to all views
-		for (INavigationView view : navigationHandler.getNavigationViews()) {
-			view.getTree().addTreeSelectionListener(new TreeSelectionListener() {
-				@Override
-				public void valueChanged(final TreeSelectionEvent e) {
-					updateTableContent((JTree) e.getSource());
-				}
-			});
-		}
+	new ColumnSetRowSorter(navigationTable.getSwingComponent(), model,
+		columnModel);
 
-		// Add tree mouse listeners to all views
-		// Add tree tool tip listener to all views
-		NavigationTreeMouseListener treeMouseListener = new NavigationTreeMouseListener(this, navigationTable, stateNavigation, navigationHandler);
-		NavigationTreeToolTipListener tooltipListener = new NavigationTreeToolTipListener(this, stateNavigation, navigationHandler);
-		for (INavigationView view : navigationHandler.getNavigationViews()) {
-			view.getTree().addMouseListener(treeMouseListener);
-			view.getTree().addMouseListener(tooltipListener);
-			view.getTree().addMouseMotionListener(tooltipListener);
-			view.getTreeScrollPane().addMouseWheelListener(tooltipListener);
-		}
+	// Bind column set popup menu
+	columnSetPopupMenu = new ColumnSetPopupMenu(
+		navigationTable.getSwingComponent(), columnModel);
 
-		navigationTable.addMouseListener(new NavigationTableMouseListener(this, navigationTable, navigationHandler));
-	}
-
-	@Override
-	public void addStateBindings() {
-	}
-
-	/**
-	 * @return the timer
-	 */
-	public Timer getToolTipTimer() {
-		return timer;
-	}
-
-	/**
-	 * Gets the album tool tip.
-	 * 
-	 * @return the album tool tip
-	 */
-	public ExtendedToolTip getExtendedToolTip() {
-		if (extendedToolTip == null) {
-			JDialog.setDefaultLookAndFeelDecorated(false);
-			extendedToolTip = new ExtendedToolTip(lookAndFeelManager.getCurrentLookAndFeel(), unknownObjectChecker);
-			JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager.getCurrentLookAndFeel().isDialogUndecorated());
-		}
-		return extendedToolTip;
-	}
-
-	/**
-	 * Get files of all selected elements in navigator.
-	 * 
-	 * @return the files selected in navigator
-	 */
-	public List<IAudioObject> getFilesSelectedInNavigator() {
-		List<IAudioObject> files = new ArrayList<IAudioObject>();
-		if (getPopupMenuCaller() instanceof JTable) {
-			int[] rows = navigationTable.getSelectedRows();
-			files.addAll(((NavigationTableModel) navigationTable.getModel()).getAudioObjectsAt(rows));
-		} else if (getPopupMenuCaller() instanceof JTree) {
-			TreePath[] paths = navigationHandler.getCurrentView().getTree().getSelectionPaths();
-			for (TreePath path : paths) {
-				DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-				if (treeNode.getUserObject() instanceof ITreeObject) {
-					files.addAll(getAudioObjectsForTreeNode(navigationHandler.getCurrentView().getClass(),
-							treeNode));
-				}
+	// Add tree selection listeners to all views
+	for (INavigationView view : navigationHandler.getNavigationViews()) {
+	    view.getTree().addTreeSelectionListener(
+		    new TreeSelectionListener() {
+			@Override
+			public void valueChanged(final TreeSelectionEvent e) {
+			    updateTableContent((JTree) e.getSource());
 			}
+		    });
+	}
+
+	// Add tree mouse listeners to all views
+	// Add tree tool tip listener to all views
+	NavigationTreeMouseListener treeMouseListener = new NavigationTreeMouseListener(
+		this, navigationTable, stateNavigation, navigationHandler,
+		playListHandler);
+	NavigationTreeToolTipListener tooltipListener = new NavigationTreeToolTipListener(
+		this, stateNavigation, navigationHandler);
+	for (INavigationView view : navigationHandler.getNavigationViews()) {
+	    view.getTree().addMouseListener(treeMouseListener);
+	    view.getTree().addMouseListener(tooltipListener);
+	    view.getTree().addMouseMotionListener(tooltipListener);
+	    view.getTreeScrollPane().addMouseWheelListener(tooltipListener);
+	}
+
+	navigationTable.addMouseListener(new NavigationTableMouseListener(this,
+		navigationTable, navigationHandler, playListHandler));
+    }
+
+    @Override
+    public void addStateBindings() {
+    }
+
+    /**
+     * @return the timer
+     */
+    public Timer getToolTipTimer() {
+	return timer;
+    }
+
+    /**
+     * Gets the album tool tip.
+     * 
+     * @return the album tool tip
+     */
+    public ExtendedToolTip getExtendedToolTip() {
+	if (extendedToolTip == null) {
+	    JDialog.setDefaultLookAndFeelDecorated(false);
+	    extendedToolTip = new ExtendedToolTip(
+		    lookAndFeelManager.getCurrentLookAndFeel(),
+		    unknownObjectChecker);
+	    JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager
+		    .getCurrentLookAndFeel().isDialogUndecorated());
+	}
+	return extendedToolTip;
+    }
+
+    /**
+     * Get files of all selected elements in navigator.
+     * 
+     * @return the files selected in navigator
+     */
+    public List<IAudioObject> getFilesSelectedInNavigator() {
+	List<IAudioObject> files = new ArrayList<IAudioObject>();
+	if (getPopupMenuCaller() instanceof JTable) {
+	    int[] rows = navigationTable.getSelectedRows();
+	    files.addAll(((NavigationTableModel) navigationTable.getModel())
+		    .getAudioObjectsAt(rows));
+	} else if (getPopupMenuCaller() instanceof NavigationTree) {
+	    List<ITreeNode> nodes = navigationHandler.getCurrentView()
+		    .getTree().getSelectedNodes();
+	    for (ITreeNode node : nodes) {
+		if (node.getUserObject() instanceof ITreeObject) {
+		    files.addAll(getAudioObjectsForTreeNode(navigationHandler
+			    .getCurrentView().getClass(), node));
 		}
-		return files;
+	    }
+	}
+	return files;
+    }
+
+    /**
+     * Gets the last album tool tip content.
+     * 
+     * @return the last album tool tip content
+     */
+    public Object getCurrentExtendedToolTipContent() {
+	return currentExtendedToolTipContent;
+    }
+
+    /**
+     * Gets the audio object in navigation table.
+     * 
+     * @param row
+     *            the row
+     * 
+     * @return the song in navigation table
+     */
+    public IAudioObject getAudioObjectInNavigationTable(final int row) {
+	return ((NavigationTableModel) navigationTable.getModel())
+		.getAudioObjectAt(row);
+    }
+
+    /**
+     * Returns audio objects selected by the given node in the given navigation
+     * view
+     * 
+     * @param navigationViewClass
+     * @param node
+     * @return
+     */
+    public List<? extends IAudioObject> getAudioObjectsForTreeNode(
+	    final Class<? extends INavigationView> navigationViewClass,
+	    final ITreeNode node) {
+	List<? extends IAudioObject> audioObjects = navigationHandler.getView(
+		navigationViewClass).getAudioObjectForTreeNode(node,
+		stateNavigation.getViewMode(),
+		filterHandler.getFilterText(navigationTreeFilter));
+
+	IColumnSet columnSet = navigationHandler.getCurrentView()
+		.getCustomColumnSet();
+	if (columnSet == null) {
+	    columnSet = navigatorColumnSet;
 	}
 
-	/**
-	 * Gets the last album tool tip content.
-	 * 
-	 * @return the last album tool tip content
-	 */
-	public Object getCurrentExtendedToolTipContent() {
-		return currentExtendedToolTipContent;
+	IColumn<?> columnSorted = columnSet.getSortedColumn();
+	if (columnSorted != null) {
+	    net.sourceforge.atunes.utils.Timer t = new net.sourceforge.atunes.utils.Timer();
+	    t.start();
+	    Collections.sort(audioObjects, columnSorted.getComparator(false));
+	    Logger.debug("Navigation table sort: ", t.stop(), " seconds");
+	}
+	return audioObjects;
+    }
+
+    @Override
+    public void notifyReload() {
+    }
+
+    /**
+     * Refresh table.
+     */
+    public void refreshTable() {
+	((NavigationTableModel) navigationTable.getModel())
+		.refresh(TableModelEvent.UPDATE);
+    }
+
+    /**
+     * Sets the current album tool tip content.
+     * 
+     * @param currentAlbumToolTipContent
+     *            the new current album tool tip content
+     */
+    public void setCurrentExtendedToolTipContent(
+	    final Object currentAlbumToolTipContent) {
+	this.currentExtendedToolTipContent = currentAlbumToolTipContent;
+	getExtendedToolTip().setSizeToFitImage(currentAlbumToolTipContent);
+    }
+
+    /**
+     * Sets the navigation view and optionally saves navigation view
+     * 
+     * @param view
+     *            the new navigation view
+     * 
+     * @param saveNavigationView
+     */
+    public void setNavigationView(final String view,
+	    final boolean saveNavigationView) {
+	Class<? extends INavigationView> navigationView = navigationHandler
+		.getViewByName(view);
+	if (navigationView == null) {
+	    navigationView = RepositoryNavigationView.class;
 	}
 
-	/**
-	 * Gets the audio object in navigation table.
-	 * 
-	 * @param row
-	 *            the row
-	 * 
-	 * @return the song in navigation table
-	 */
-	public IAudioObject getAudioObjectInNavigationTable(final int row) {
-		return ((NavigationTableModel) navigationTable.getModel()).getAudioObjectAt(row);
+	if (saveNavigationView) {
+	    stateNavigation.setNavigationView(navigationView.getName());
 	}
 
-	/**
-	 * Returns audio objects selected by the given node in the given navigation
-	 * view
-	 * 
-	 * @param navigationViewClass
-	 * @param node
-	 * @return
-	 */
-	public List<? extends IAudioObject> getAudioObjectsForTreeNode(final Class<? extends INavigationView> navigationViewClass, final DefaultMutableTreeNode node) {
-		List<? extends IAudioObject> audioObjects = navigationHandler.getView(navigationViewClass).getAudioObjectForTreeNode(node, stateNavigation.getViewMode(),
-				filterHandler.getFilterText(navigationTreeFilter));
+	getNavigationTreePanel().showNavigationView(
+		navigationHandler.getView(navigationView));
 
-		IColumnSet columnSet = navigationHandler.getCurrentView().getCustomColumnSet();
-		if (columnSet == null) {
-			columnSet = navigatorColumnSet;
-		}
+	boolean viewModeSupported = navigationHandler.getView(navigationView)
+		.isViewModeSupported();
+	beanFactory.getBean(ShowAlbumsInNavigatorAction.class).setEnabled(
+		viewModeSupported);
+	beanFactory.getBean(ShowArtistsInNavigatorAction.class).setEnabled(
+		viewModeSupported);
+	beanFactory.getBean(ShowFoldersInNavigatorAction.class).setEnabled(
+		viewModeSupported);
+	beanFactory.getBean(ShowGenresInNavigatorAction.class).setEnabled(
+		viewModeSupported);
+	beanFactory.getBean(ShowYearsInNavigatorAction.class).setEnabled(
+		viewModeSupported);
 
-		IColumn<?> columnSorted = columnSet.getSortedColumn();
-		if (columnSorted != null) {
-			net.sourceforge.atunes.utils.Timer t = new net.sourceforge.atunes.utils.Timer();
-			t.start();
-			Collections.sort(audioObjects, columnSorted.getComparator(false));
-			Logger.debug("Navigation table sort: ", t.stop(), " seconds");
-		}
-		return audioObjects;
+	// Change column set
+	boolean useDefaultNavigatorColumns = navigationHandler.getView(
+		navigationView).isUseDefaultNavigatorColumnSet();
+	IColumnSet columnSet = null;
+	if (useDefaultNavigatorColumns) {
+	    columnSet = navigatorColumnSet;
+	} else {
+	    columnSet = navigationHandler.getView(navigationView)
+		    .getCustomColumnSet();
 	}
 
-	@Override
-	public void notifyReload() {
+	((NavigationTableModel) navigationTable.getModel())
+		.setColumnSet(columnSet);
+	((NavigationTableColumnModel) navigationTable.getColumnModel())
+		.setColumnSet(columnSet);
+
+	navigationHandler.refreshCurrentView();
+
+	// Allow arrange columns if view uses default column set
+	columnSetPopupMenu.enableArrangeColumns(useDefaultNavigatorColumns);
+
+	showNodesContentInNavigationTable(navigationView, navigationHandler
+		.getCurrentView().getTree());
+    }
+
+    /**
+     * @param navigationView
+     * @param tree
+     */
+    private void showNodesContentInNavigationTable(
+	    final Class<? extends INavigationView> navigationView,
+	    final INavigationTree tree) {
+	List<ITreeNode> nodes = tree.getSelectedNodes();
+	if (!CollectionUtils.isEmpty(nodes)) {
+	    List<IAudioObject> songs = new ArrayList<IAudioObject>();
+	    for (ITreeNode node : nodes) {
+		songs.addAll(getAudioObjectsForTreeNode(navigationView, node));
+	    }
+	    ((NavigationTableModel) navigationTable.getModel()).setSongs(songs);
+	}
+    }
+
+    /**
+     * Sets the navigation view and saves state
+     * 
+     * @param view
+     */
+    public void setNavigationView(final String view) {
+	setNavigationView(view, true);
+    }
+
+    /**
+     * Updates table contents when user selects a tree node or the table filter
+     * changes
+     * 
+     * @param tree
+     *            the tree
+     */
+    protected void updateTableContent(final JTree tree) {
+	// If navigation table is not shown then don't update it
+	if (!stateNavigation.isShowNavigationTable()) {
+	    return;
 	}
 
-	/**
-	 * Refresh table.
-	 */
-	public void refreshTable() {
-		((NavigationTableModel) navigationTable.getModel()).refresh(TableModelEvent.UPDATE);
+	// Avoid events when changes on a tree different than the one which is
+	// visible
+	if (tree != navigationHandler.getCurrentView().getTree()) {
+	    return;
 	}
 
-	/**
-	 * Sets the current album tool tip content.
-	 * 
-	 * @param currentAlbumToolTipContent
-	 *            the new current album tool tip content
-	 */
-	public void setCurrentExtendedToolTipContent(final Object currentAlbumToolTipContent) {
-		this.currentExtendedToolTipContent = currentAlbumToolTipContent;
-		getExtendedToolTip().setSizeToFitImage(currentAlbumToolTipContent);
-	}
+	showNodesContentInNavigationTable(navigationHandler.getCurrentView()
+		.getClass(), navigationHandler.getCurrentView().getTree());
+    }
 
-	/**
-	 * Sets the navigation view and optionally saves navigation view
-	 * 
-	 * @param view
-	 *            the new navigation view
-	 * 
-	 * @param saveNavigationView
-	 */
-	public void setNavigationView(final String view, final boolean saveNavigationView) {
-		Class<? extends INavigationView> navigationView = navigationHandler.getViewByName(view);
-		if (navigationView == null) {
-			navigationView = RepositoryNavigationView.class;
-		}
+    /**
+     * Open search dialog.
+     * 
+     * @param dialog
+     *            the dialog
+     * @param setAsDefaultVisible
+     *            the set as default visible
+     * 
+     * @return the search
+     */
+    public ISearch openSearchDialog(final ISearchDialog dialog,
+	    final boolean setAsDefaultVisible) {
+	dialog.setSetAsDefaultVisible(setAsDefaultVisible);
+	dialog.showDialog();
+	return dialog.getResult();
+    }
 
-		if (saveNavigationView) {
-			stateNavigation.setNavigationView(navigationView.getName());
-		}
+    protected JComponent getPopupMenuCaller() {
+	return popupMenuCaller;
+    }
 
-		getNavigationTreePanel().showNavigationView(navigationHandler.getView(navigationView));
+    /**
+     * @param popupMenuCaller
+     *            the popupMenuCaller to set
+     */
+    public void setPopupMenuCaller(final JComponent popupMenuCaller) {
+	this.popupMenuCaller = popupMenuCaller;
+    }
 
-		boolean viewModeSupported = navigationHandler.getView(navigationView).isViewModeSupported();
-		beanFactory.getBean(ShowAlbumsInNavigatorAction.class).setEnabled(viewModeSupported);
-		beanFactory.getBean(ShowArtistsInNavigatorAction.class).setEnabled(viewModeSupported);
-		beanFactory.getBean(ShowFoldersInNavigatorAction.class).setEnabled(viewModeSupported);
-		beanFactory.getBean(ShowGenresInNavigatorAction.class).setEnabled(viewModeSupported);
-		beanFactory.getBean(ShowYearsInNavigatorAction.class).setEnabled(viewModeSupported);
+    @Override
+    public void audioFilesRemoved(final List<ILocalAudioObject> audioFiles) {
+	navigationHandler.refreshCurrentView();
+    }
 
-		// Change column set
-		boolean useDefaultNavigatorColumns = navigationHandler.getView(navigationView).isUseDefaultNavigatorColumnSet();
-		IColumnSet columnSet = null;
-		if (useDefaultNavigatorColumns) {
-			columnSet = navigatorColumnSet;
-		} else {
-			columnSet = navigationHandler.getView(navigationView).getCustomColumnSet();
-		}
-
-		((NavigationTableModel) navigationTable.getModel()).setColumnSet(columnSet);
-		((NavigationTableColumnModel) navigationTable.getColumnModel()).setColumnSet(columnSet);
-
-		navigationHandler.refreshCurrentView();
-
-		// Allow arrange columns if view uses default column set
-		columnSetPopupMenu.enableArrangeColumns(useDefaultNavigatorColumns);
-
-		JTree tree = navigationHandler.getCurrentView().getTree();
-
-		if (tree.getSelectionPath() != null) {
-			((NavigationTableModel) navigationTable.getModel()).setSongs(getAudioObjectsForTreeNode(navigationView, (DefaultMutableTreeNode) (tree
-					.getSelectionPath().getLastPathComponent())));
-		}
-	}
-
-	/**
-	 * Sets the navigation view and saves state
-	 * @param view
-	 */
-	public void setNavigationView(final String view) {
-		setNavigationView(view, true);
-	}
-
-	/**
-	 * Updates table contents when user selects a tree node or the table filter
-	 * changes
-	 * 
-	 * @param tree
-	 *            the tree
-	 */
-	protected void updateTableContent(final JTree tree) {
-		// If navigation table is not shown then don't update it
-		if (!stateNavigation.isShowNavigationTable()) {
-			return;
-		}
-
-		// Avoid events when changes on a tree different than the one which is visible
-		if (tree != navigationHandler.getCurrentView().getTree()) {
-			return;
-		}
-
-		TreePath[] paths = tree.getSelectionPaths();
-
-		if (paths != null) {
-			List<IAudioObject> audioObjects = new ArrayList<IAudioObject>();
-			for (TreePath element : paths) {
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) (element.getLastPathComponent());
-				audioObjects.addAll(getAudioObjectsForTreeNode(navigationHandler.getViewByName(stateNavigation.getNavigationView()), node));
-			}
-
-			((NavigationTableModel) navigationTable.getModel()).setSongs(audioObjects);
-		}
-	}
-
-	/**
-	 * Open search dialog.
-	 * 
-	 * @param dialog
-	 *            the dialog
-	 * @param setAsDefaultVisible
-	 *            the set as default visible
-	 * 
-	 * @return the search
-	 */
-	public ISearch openSearchDialog(final ISearchDialog dialog, final boolean setAsDefaultVisible) {
-		dialog.setSetAsDefaultVisible(setAsDefaultVisible);
-		dialog.showDialog();
-		return dialog.getResult();
-	}
-
-	protected JComponent getPopupMenuCaller() {
-		return popupMenuCaller;
-	}
-
-	/**
-	 * @param popupMenuCaller
-	 *            the popupMenuCaller to set
-	 */
-	public void setPopupMenuCaller(final JComponent popupMenuCaller) {
-		this.popupMenuCaller = popupMenuCaller;
-	}
-
-	@Override
-	public void audioFilesRemoved(final List<ILocalAudioObject> audioFiles) {
-		navigationHandler.refreshCurrentView();
-	}
-
-	/**
-	 * Returns true if last action has been performed in tree
-	 * @return
-	 */
-	public boolean isActionOverTree() {
-		return getPopupMenuCaller() instanceof JTree;
-	}
+    /**
+     * Returns true if last action has been performed in tree
+     * 
+     * @return
+     */
+    public boolean isActionOverTree() {
+	return getPopupMenuCaller() instanceof JTree;
+    }
 }

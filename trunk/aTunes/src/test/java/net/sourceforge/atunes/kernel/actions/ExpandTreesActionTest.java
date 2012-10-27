@@ -27,8 +27,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JTree;
-
+import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 
@@ -36,23 +35,23 @@ import org.junit.Test;
 
 public class ExpandTreesActionTest {
 
-	@Test
-	public void test() {
-		ExpandTreesAction sut = new ExpandTreesAction();
-		INavigationHandler navigationHandler = mock(INavigationHandler.class);
-		INavigationView nv2 = mock(INavigationView.class);
-		INavigationView nv1 = mock(INavigationView.class);
-		when(nv1.getTree()).thenReturn(new JTree());
-		when(nv2.getTree()).thenReturn(new JTree());
-		List<INavigationView> nvs = new ArrayList<INavigationView>();
-		nvs.add(nv1);
-		nvs.add(nv2);
-		when(navigationHandler.getNavigationViews()).thenReturn(nvs);		
-		sut.setNavigationHandler(navigationHandler);
-		
-		sut.executeAction();
-		
-		verify(nv1).getTree();
-		verify(nv2).getTree();
-	}
+    @Test
+    public void test() {
+	ExpandTreesAction sut = new ExpandTreesAction();
+	INavigationHandler navigationHandler = mock(INavigationHandler.class);
+	INavigationView nv2 = mock(INavigationView.class);
+	INavigationView nv1 = mock(INavigationView.class);
+	when(nv1.getTree()).thenReturn(new NavigationTree("TREE", null));
+	when(nv2.getTree()).thenReturn(new NavigationTree("TREE", null));
+	List<INavigationView> nvs = new ArrayList<INavigationView>();
+	nvs.add(nv1);
+	nvs.add(nv2);
+	when(navigationHandler.getNavigationViews()).thenReturn(nvs);
+	sut.setNavigationHandler(navigationHandler);
+
+	sut.executeAction();
+
+	verify(nv1).getTree();
+	verify(nv2).getTree();
+    }
 }

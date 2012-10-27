@@ -24,168 +24,176 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.INavigationTree;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INavigationViewSorter;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITreeGenerator;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * Builds a Folder ViewMode for a view. Several views can use this code (Repository and Device)
+ * Builds a Folder ViewMode for a view. Several views can use this code
+ * (Repository and Device)
+ * 
  * @author fleax
- *
+ * 
  */
 public class FolderTreeGenerator implements ITreeGenerator {
 
-	private INavigationViewSorter folderSorter;
+    private INavigationViewSorter folderSorter;
 
-	private IOSManager osManager;
+    private IOSManager osManager;
 
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
+    /**
+     * @param osManager
+     */
+    public void setOsManager(final IOSManager osManager) {
+	this.osManager = osManager;
+    }
+
+    /**
+     * @param folderSorter
+     */
+    public void setFolderSorter(final INavigationViewSorter folderSorter) {
+	this.folderSorter = folderSorter;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void buildTree(final INavigationTree tree, final String rootTextKey,
+	    final INavigationView view, final Map<String, ?> structure,
+	    final String currentFilter,
+	    final List<ITreeObject<? extends IAudioObject>> objectsSelected,
+	    final List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
+	// Refresh nodes
+	tree.setRoot(I18nUtils.getString(rootTextKey));
+
+	addFolderNodes(tree, structure, currentFilter, folderSorter);
+
+	tree.reload();
+
+	if (objectsExpanded.isEmpty()) {
+	    // In folder view root child nodes must be expanded always
+	    // So when refreshing folder view for first time add these nodes to
+	    // list of expanded objects
+	    List<?> rootChilds = tree.getRootChilds();
+	    for (Object rootChild : rootChilds) {
+		objectsExpanded
+			.add((ITreeObject<? extends IAudioObject>) rootChild);
+	    }
 	}
 
-	/**
-	 * @param folderSorter
-	 */
-	public void setFolderSorter(final INavigationViewSorter folderSorter) {
-		this.folderSorter = folderSorter;
-	}
+	// Get nodes to select after refresh
+	List<ITreeNode> nodesToSelect = tree.getNodes(objectsSelected);
 
-	/**
-	 * Builds tree
-	 * @param rootTextKey
-	 * @param view
-	 * @param structure
-	 * @param currentFilter
-	 * @param root
-	 * @param treeModel
-	 * @param objectsSelected
-	 * @param objectsExpanded
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public void buildTree(final String rootTextKey, final INavigationView view, final Map<String, ?> structure, final String currentFilter, final DefaultMutableTreeNode root, final DefaultTreeModel treeModel, final List<ITreeObject<? extends IAudioObject>> objectsSelected, final List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
-		// Refresh nodes
-		root.setUserObject(I18nUtils.getString(rootTextKey));
-		root.removeAllChildren();
-		addFolderNodes(structure, root, currentFilter, folderSorter);
+	// Get nodes to expand after refresh
+	List<ITreeNode> nodesToExpand = tree.getNodes(objectsExpanded);
 
-		treeModel.reload();
+	// Expand nodes
+	tree.expandNodes(nodesToExpand);
 
-		if (objectsExpanded.isEmpty()) {
-			// In folder view root child nodes must be expanded always
-			// So when refreshing folder view for first time add these nodes to list of expanded objects
-			for (int i = 0; i < root.getChildCount(); i++) {
-				TreeNode childNode = root.getChildAt(i);
-				objectsExpanded.add((ITreeObject<? extends IAudioObject>) ((DefaultMutableTreeNode) childNode).getUserObject());
-			}
+	// Once tree has been refreshed, select previously selected nodes
+	tree.selectNodes(nodesToSelect);
+    }
+
+    @Override
+    public void selectAudioObject(final INavigationTree tree,
+	    final IAudioObject audioObject) {
+	if (audioObject instanceof ILocalAudioObject) {
+	    String filePath = audioObject.getUrl();
+	    ITreeNode folderNode = new FolderAudioObjectSelector()
+		    .getNodeRepresentingAudioObject(tree, filePath);
+	    if (folderNode != null) {
+		IFolder f = (IFolder) folderNode.getUserObject();
+		String searchPath = filePath
+			.substring(f.getName().length() + 1);
+		String[] paths = searchPath.split(osManager.getFileSeparator());
+		ITreeNode node = getTreeNodeForLevel(paths, 0, tree, folderNode);
+		if (node != null) {
+		    tree.selectNode(node);
+		    tree.scrollToNode(node);
+		    tree.expandNode(node);
 		}
-
-		// Get nodes to select after refresh
-		List<DefaultMutableTreeNode> nodesToSelect = getNodes(root, objectsSelected);
-
-		// Get nodes to expand after refresh
-		List<DefaultMutableTreeNode> nodesToExpand = getNodes(root, objectsExpanded);
-
-		// Expand nodes
-		NavigationViewHelper.expandNodes(view.getTree(), nodesToExpand);
-
-		// Once tree has been refreshed, select previously selected nodes
-		NavigationViewHelper.selectNodes(view.getTree(), nodesToSelect);
+	    }
 	}
+    }
 
-	@Override
-	public void selectAudioObject(final JTree tree, final IAudioObject audioObject) {
-		if (audioObject instanceof ILocalAudioObject) {
-			String filePath = audioObject.getUrl();
-			DefaultMutableTreeNode folderNode = new FolderAudioObjectSelector().getNodeRepresentingAudioObject((DefaultMutableTreeNode)tree.getModel().getRoot(), filePath);
-			if (folderNode != null) {
-				IFolder f = (IFolder) folderNode.getUserObject();
-				String searchPath = filePath.substring(f.getName().length()+1);
-				String[] paths = searchPath.split(osManager.getFileSeparator());
-				TreePath treePath = getTreePathForLevel(paths, 0, folderNode);
-				if (treePath != null) {
-					tree.setSelectionPath(treePath);
-					tree.scrollPathToVisible(treePath);
-					tree.expandPath(treePath);
-				}
-			}
-		}
+    private ITreeNode getTreeNodeForLevel(final String[] paths,
+	    final int currentLevel, final INavigationTree tree,
+	    final ITreeNode foldersRootNode) {
+	ITreeNode folderNode = new FolderAudioObjectSelector()
+		.getNodeRepresentingAudioObject(tree, foldersRootNode,
+			paths[currentLevel]);
+	if (folderNode != null) {
+	    if (currentLevel == paths.length - 2) {
+		return folderNode;
+	    } else {
+		return getTreeNodeForLevel(paths, currentLevel + 1, tree,
+			folderNode);
+	    }
 	}
+	return null;
+    }
 
-	private TreePath getTreePathForLevel(final String[] paths, final int currentLevel, final DefaultMutableTreeNode foldersRootNode) {
-		TreePath treePath = null;
-		DefaultMutableTreeNode folderNode = new FolderAudioObjectSelector().getNodeRepresentingAudioObject(foldersRootNode, paths[currentLevel]);
-		if (folderNode != null) {
-			if (currentLevel == paths.length - 2) {
-				treePath =  new TreePath(folderNode.getPath());
-			} else {
-				treePath = getTreePathForLevel(paths, currentLevel + 1, folderNode);
-			}
-		}
-		return treePath;
+    @Override
+    public void selectArtist(final INavigationTree tree, final String artist) {
+    }
+
+    /**
+     * Adds the folder nodes to root node
+     * 
+     * @param folders
+     *            the folders
+     * @param currentFilter
+     *            the current filter
+     * @param sorter
+     *            the comparator for node sorting
+     */
+    private void addFolderNodes(final INavigationTree tree,
+	    final Map<String, ?> folders, final String currentFilter,
+	    final INavigationViewSorter sorter) {
+	List<String> folderNamesList = new ArrayList<String>(folders.keySet());
+	sorter.sort(folderNamesList);
+	for (int i = 0; i < folderNamesList.size(); i++) {
+	    IFolder f = (IFolder) folders.get(folderNamesList.get(i));
+	    ITreeNode child = tree.createNode(f);
+	    tree.addNode(child);
+	    addFolderNodes(tree, f.getFolders(), child, currentFilter, sorter);
 	}
+    }
 
-	@Override
-	public void selectArtist(final JTree tree, final String artist) {}
-
-	/**
-	 * Adds the folder nodes.
-	 * 
-	 * @param folders
-	 *            the folders
-	 * @param node
-	 *            the node
-	 * @param currentFilter
-	 *            the current filter
-	 * @param sorter
-	 *            the comparator for node sorting
-	 */
-	private void addFolderNodes(final Map<String, ?> folders, final DefaultMutableTreeNode node, final String currentFilter, final INavigationViewSorter sorter) {
-		List<String> folderNamesList = new ArrayList<String>(folders.keySet());
-		sorter.sort(folderNamesList);
-		for (int i = 0; i < folderNamesList.size(); i++) {
-			IFolder f = (IFolder) folders.get(folderNamesList.get(i));
-			if (node.isRoot() || currentFilter == null || f.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
-				DefaultMutableTreeNode child = new DefaultMutableTreeNode(f);
-				node.add(child);
-				addFolderNodes(f.getFolders(), child, node.isRoot() ? currentFilter : null, sorter);
-			}
-		}
+    /**
+     * Adds the folder nodes.
+     * 
+     * @param folders
+     *            the folders
+     * @param node
+     *            the node
+     * @param currentFilter
+     *            the current filter
+     * @param sorter
+     *            the comparator for node sorting
+     */
+    private void addFolderNodes(final INavigationTree tree,
+	    final Map<String, ?> folders, final ITreeNode node,
+	    final String currentFilter, final INavigationViewSorter sorter) {
+	List<String> folderNamesList = new ArrayList<String>(folders.keySet());
+	sorter.sort(folderNamesList);
+	for (int i = 0; i < folderNamesList.size(); i++) {
+	    IFolder f = (IFolder) folders.get(folderNamesList.get(i));
+	    if (currentFilter == null
+		    || f.getName().toUpperCase()
+			    .contains(currentFilter.toUpperCase())) {
+		ITreeNode child = tree.createNode(f);
+		node.add(child);
+		addFolderNodes(tree, f.getFolders(), child, currentFilter,
+			sorter);
+	    }
 	}
-
-	/**
-	 * Recursive method to find nodes, based on whether user objects are present
-	 * in given set
-	 * 
-	 * @param rootNode
-	 * @param userObjects
-	 * @return list of nodes
-	 */
-	private List<DefaultMutableTreeNode> getNodes(final DefaultMutableTreeNode rootNode, final List<ITreeObject<? extends IAudioObject>> userObjects) {
-		List<DefaultMutableTreeNode> result = new ArrayList<DefaultMutableTreeNode>();
-
-		if (userObjects.contains(rootNode.getUserObject())) {
-			result.add(rootNode);
-		}
-		for (int i = 0; i < rootNode.getChildCount(); i++) {
-			result.addAll(getNodes((DefaultMutableTreeNode) rootNode.getChildAt(i), userObjects));
-		}
-		return result;
-	}
-
+    }
 }

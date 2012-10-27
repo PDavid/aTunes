@@ -23,33 +23,42 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import net.sourceforge.atunes.model.IBeanFactory;
 
+/**
+ * Listener to show navigator tree tool tip
+ * 
+ * @author alex
+ * 
+ */
+public final class ExtendedToolTipActionListener implements ActionListener {
 
-public final class ExtendedToolTipActionListener implements ActionListener, ApplicationContextAware {
-	
     private NavigationController navigationController;
-    
-    private ApplicationContext context;
-    
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-    	this.context = applicationContext;
+
+    private IBeanFactory beanFactory;
+
+    /**
+     * @param beanFactory
+     */
+    public void setBeanFactory(final IBeanFactory beanFactory) {
+	this.beanFactory = beanFactory;
     }
-	
-	/**
-	 * @param navigationController
-	 */
-	public void setNavigationController(NavigationController navigationController) {
-		this.navigationController = navigationController;
-	}
-	
-	@Override
-    public void actionPerformed(ActionEvent arg0) {
-        navigationController.getExtendedToolTip().setVisible(true);
-        ExtendedToolTipGetAndSetImageSwingWorker worker = context.getBean(ExtendedToolTipGetAndSetImageSwingWorker.class);
-        worker.setCurrentObject(navigationController.getCurrentExtendedToolTipContent());
-        worker.execute();
+
+    /**
+     * @param navigationController
+     */
+    public void setNavigationController(
+	    final NavigationController navigationController) {
+	this.navigationController = navigationController;
+    }
+
+    @Override
+    public void actionPerformed(final ActionEvent arg0) {
+	navigationController.getExtendedToolTip().setVisible(true);
+	ExtendedToolTipGetAndSetImageSwingWorker worker = beanFactory
+		.getBean(ExtendedToolTipGetAndSetImageSwingWorker.class);
+	worker.setCurrentObject(navigationController
+		.getCurrentExtendedToolTipContent());
+	worker.execute();
     }
 }

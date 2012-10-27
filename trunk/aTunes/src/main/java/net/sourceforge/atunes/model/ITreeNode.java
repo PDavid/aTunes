@@ -18,22 +18,53 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.navigator;
+package net.sourceforge.atunes.model;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.model.IAlbum;
-import net.sourceforge.atunes.utils.StringUtils;
+/**
+ * Wraps a node of a tree
+ * 
+ * @author alex
+ * 
+ */
+public interface ITreeNode {
 
-final class AlbumDefaultMutableTreeNode extends DefaultMutableTreeNode {
-    private static final long serialVersionUID = -1276777390072754207L;
+    /**
+     * @return if node is root
+     */
+    boolean isRoot();
 
-    AlbumDefaultMutableTreeNode(Object userObject) {
-        super(userObject);
-    }
+    /**
+     * Adds child node
+     * 
+     * @param child
+     */
+    void add(ITreeNode child);
 
-    @Override
-    public String toString() {
-    	return StringUtils.getString(((IAlbum) getUserObject()).getName(), " (", ((IAlbum) getUserObject()).getArtist(), ")");
-    }
+    /**
+     * @return underlying node implementation
+     */
+    DefaultMutableTreeNode getNode();
+
+    /**
+     * @return object of this node
+     */
+    Object getUserObject();
+
+    /**
+     * @return parent node
+     */
+    ITreeNode getParent();
+
+    /**
+     * @return number of children
+     */
+    int getChildCount();
+
+    /**
+     * @param i
+     * @return children at given position
+     */
+    ITreeNode getChildAt(int i);
 }

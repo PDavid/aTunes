@@ -31,53 +31,54 @@ import javax.swing.TransferHandler;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-
 /**
  * A graphical component representing a table
+ * 
  * @author alex
- *
+ * 
  */
 public interface ITable extends IComponent<JTable> {
 
-	public void addKeyListener(KeyListener keyListener);
+    @Override
+    public void addKeyListener(KeyListener keyListener);
 
-	public ListSelectionModel getSelectionModel();
+    public ListSelectionModel getSelectionModel();
 
-	public void addMouseListener(MouseListener listener);
+    @Override
+    public void addMouseListener(MouseListener listener);
 
-	public int[] getSelectedRows();
+    public int[] getSelectedRows();
 
-	public int getSelectedRow();
+    public int getSelectedRow();
 
-	public int getRowCount();
+    public int getRowCount();
 
-	public Rectangle getVisibleRect();
+    public Rectangle getVisibleRect();
 
-	public Rectangle getCellRect(int row, int column, boolean includeSpacing);
+    public Rectangle getCellRect(int row, int column, boolean includeSpacing);
 
-	public void scrollRectToVisible(Rectangle visibleRect);
+    public void scrollRectToVisible(Rectangle visibleRect);
 
-	public void setModel(TableModel model); 
+    public void setModel(TableModel model);
 
-	public TableModel getModel();
+    public TableModel getModel();
 
-	public void setTransferHandler(TransferHandler transferHandler);
+    public void setTransferHandler(TransferHandler transferHandler);
 
-	public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend);
+    public void changeSelection(int rowIndex, int columnIndex, boolean toggle,
+	    boolean extend);
 
-	public int rowAtPoint(Point point);
+    public int rowAtPoint(Point point);
 
-	public void setColumnModel(TableColumnModel columnModel);
+    public void setColumnModel(TableColumnModel columnModel);
 
-	public TableColumnModel getColumnModel();
+    public TableColumnModel getColumnModel();
 
-	public void addRowSelectionInterval(int start, int end);
+    public void addRowSelectionInterval(int start, int end);
 
-	public void repaint();
+    public void repaint();
 
-	public void setSelectionMode(int multipleIntervalSelection);
+    public void setSelectionMode(int multipleIntervalSelection);
 
-	public void setAutoResizeMode(int autoResize);
-
-
+    public void setAutoResizeMode(int autoResize);
 }

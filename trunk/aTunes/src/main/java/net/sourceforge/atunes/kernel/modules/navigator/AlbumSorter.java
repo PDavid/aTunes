@@ -28,34 +28,40 @@ import java.util.List;
 import net.sourceforge.atunes.model.INavigationViewSorter;
 import net.sourceforge.atunes.model.IStateNavigation;
 
+/**
+ * Sorts navigation table by album
+ * 
+ * @author alex
+ * 
+ */
 public class AlbumSorter implements INavigationViewSorter {
 
-	private Collator collator;
-	
-	private IStateNavigation stateNavigation;
-	
-	/**
-	 * @param stateNavigation
-	 */
-	public void setStateNavigation(IStateNavigation stateNavigation) {
-		this.stateNavigation = stateNavigation;
+    private Collator collator;
+
+    private IStateNavigation stateNavigation;
+
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(final IStateNavigation stateNavigation) {
+	this.stateNavigation = stateNavigation;
+    }
+
+    /**
+     * @param collator
+     */
+    public void setCollator(final Collator collator) {
+	this.collator = collator;
+    }
+
+    @Override
+    public void sort(final List<String> list) {
+	Comparator<String> comparator = null;
+	if (stateNavigation.isUseSmartTagViewSorting()) {
+	    comparator = new SmartComparator(collator);
+	} else {
+	    comparator = new DefaultComparator(collator);
 	}
-	
-	/**
-	 * @param collator
-	 */
-	public void setCollator(Collator collator) {
-		this.collator = collator;
-	}
-	
-	@Override
-	public void sort(List<String> list) {
-		Comparator<String> comparator = null;
-        if (stateNavigation.isUseSmartTagViewSorting()) {
-        	comparator = new SmartComparator(collator);
-        } else {
-            comparator = new DefaultComparator(collator);
-        }
-        Collections.sort(list, comparator);
-	}
+	Collections.sort(list, comparator);
+    }
 }

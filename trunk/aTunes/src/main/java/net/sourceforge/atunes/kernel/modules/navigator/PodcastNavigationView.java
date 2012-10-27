@@ -27,9 +27,6 @@ import java.util.Map;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
@@ -55,257 +52,285 @@ import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IIconFactory;
+import net.sourceforge.atunes.model.INavigationTree;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Navigation view for podcasts
+ * 
  * @author alex
- *
+ * 
  */
 public final class PodcastNavigationView extends AbstractNavigationView {
 
-	/** The podcast feed tree. */
-	private JTree podcastFeedTree;
+    /** The podcast feed tree. */
+    private NavigationTree podcastFeedTree;
 
-	private JPopupMenu podcastFeedTreeMenu;
+    private JPopupMenu podcastFeedTreeMenu;
 
-	private JPopupMenu podcastFeedTableMenu;
+    private JPopupMenu podcastFeedTableMenu;
 
-	/** The column set */
-	private IColumnSet podcastNavigationColumnSet;
+    /** The column set */
+    private IColumnSet podcastNavigationColumnSet;
 
-	private IPodcastFeedHandler podcastFeedHandler;
+    private IPodcastFeedHandler podcastFeedHandler;
 
-	private IIconFactory rssSmallIcon;
+    private IIconFactory rssSmallIcon;
 
-	private IBeanFactory beanFactory;
+    private IBeanFactory beanFactory;
 
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
+    /**
+     * @param beanFactory
+     */
+    public void setBeanFactory(final IBeanFactory beanFactory) {
+	this.beanFactory = beanFactory;
+    }
+
+    /**
+     * @param rssSmallIcon
+     */
+    public void setRssSmallIcon(final IIconFactory rssSmallIcon) {
+	this.rssSmallIcon = rssSmallIcon;
+    }
+
+    /**
+     * @param podcastFeedHandler
+     */
+    public void setPodcastFeedHandler(
+	    final IPodcastFeedHandler podcastFeedHandler) {
+	this.podcastFeedHandler = podcastFeedHandler;
+    }
+
+    /**
+     * @param podcastNavigationColumnSet
+     */
+    public void setPodcastNavigationColumnSet(
+	    final IColumnSet podcastNavigationColumnSet) {
+	this.podcastNavigationColumnSet = podcastNavigationColumnSet;
+    }
+
+    @Override
+    public IColorMutableImageIcon getIcon() {
+	return rssSmallIcon.getColorMutableIcon();
+    }
+
+    @Override
+    public String getTitle() {
+	return I18nUtils.getString("PODCAST_FEEDS");
+    }
+
+    @Override
+    public String getTooltip() {
+	return I18nUtils.getString("PODCAST_FEED_TAB_TOOLTIP");
+    }
+
+    @Override
+    public NavigationTree getTree() {
+	if (podcastFeedTree == null) {
+	    podcastFeedTree = new NavigationTree(
+		    I18nUtils.getString("PODCAST_FEEDS"), getTreeRenderer());
+	    podcastFeedTree.getSelectionModel().setSelectionMode(
+		    TreeSelectionModel.SINGLE_TREE_SELECTION);
+	}
+	return podcastFeedTree;
+    }
+
+    @Override
+    public JPopupMenu getTreePopupMenu() {
+	if (podcastFeedTreeMenu == null) {
+	    podcastFeedTreeMenu = new JPopupMenu();
+	    AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = beanFactory
+		    .getBean("addToPlayListFromPodcastNavigationView",
+			    AddToPlayListAction.class);
+	    addToPlayListAction.setAudioObjectsSource(this);
+	    podcastFeedTreeMenu.add(addToPlayListAction);
+
+	    SetAsPlayListAction setAsPlayListAction = beanFactory.getBean(
+		    "setAsPlaylistFromPodcastNavigationView",
+		    SetAsPlayListAction.class);
+	    setAsPlayListAction.setAudioObjectsSource(this);
+	    podcastFeedTreeMenu.add(setAsPlayListAction);
+
+	    podcastFeedTreeMenu.add(new JSeparator());
+	    podcastFeedTreeMenu.add(beanFactory
+		    .getBean(AddPodcastFeedAction.class));
+	    podcastFeedTreeMenu.add(beanFactory
+		    .getBean(RenamePodcastFeedAction.class));
+	    AbstractActionOverSelectedTreeObjects<IPodcastFeed> markListened = beanFactory
+		    .getBean(MarkPodcastListenedAction.class);
+	    markListened.setTreeObjectsSource(this);
+	    podcastFeedTreeMenu.add(markListened);
+	    podcastFeedTreeMenu.add(beanFactory
+		    .getBean(RemovePodcastFeedAction.class));
+	}
+	return podcastFeedTreeMenu;
+    }
+
+    @Override
+    public JPopupMenu getTablePopupMenu() {
+	if (podcastFeedTableMenu == null) {
+	    podcastFeedTableMenu = new JPopupMenu();
+
+	    AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = beanFactory
+		    .getBean("addToPlayListFromPodcastNavigationView",
+			    AddToPlayListAction.class);
+	    addToPlayListAction.setAudioObjectsSource(this);
+	    podcastFeedTableMenu.add(addToPlayListAction);
+
+	    AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = beanFactory
+		    .getBean(
+			    "addToPlayListAfterCurrentAudioObjectFromPodcastNavigationView",
+			    AddToPlayListAfterCurrentAudioObjectAction.class);
+	    addToPlayListAfterCurrentAudioObjectAction
+		    .setAudioObjectsSource(this);
+	    podcastFeedTableMenu
+		    .add(addToPlayListAfterCurrentAudioObjectAction);
+
+	    SetAsPlayListAction setAsPlayListAction = beanFactory.getBean(
+		    "setAsPlaylistFromPodcastNavigationView",
+		    SetAsPlayListAction.class);
+	    setAsPlayListAction.setAudioObjectsSource(this);
+	    podcastFeedTableMenu.add(setAsPlayListAction);
+
+	    podcastFeedTableMenu.add(beanFactory.getBean(PlayNowAction.class));
+	    podcastFeedTableMenu.add(new JSeparator());
+	    podcastFeedTableMenu.add(beanFactory
+		    .getBean(ShowNavigatorTableItemInfoAction.class));
+	    podcastFeedTableMenu.add(new JSeparator());
+
+	    AbstractActionOverSelectedObjects<IPodcastFeedEntry> downloadPodcastEntryAction = beanFactory
+		    .getBean(DownloadPodcastEntryAction.class);
+	    downloadPodcastEntryAction.setAudioObjectsSource(this);
+	    podcastFeedTableMenu.add(downloadPodcastEntryAction);
+
+	    RemoveOldPodcastEntryAction removeOldPodcastEntryAction = beanFactory
+		    .getBean(RemoveOldPodcastEntryAction.class);
+	    removeOldPodcastEntryAction.setAudioObjectsSource(this);
+	    podcastFeedTableMenu.add(removeOldPodcastEntryAction);
+
+	    MarkPodcastEntryListenedAction markPodcastEntryListenedAction = beanFactory
+		    .getBean(MarkPodcastEntryListenedAction.class);
+	    markPodcastEntryListenedAction.setAudioObjectsSource(this);
+	    podcastFeedTableMenu.add(markPodcastEntryListenedAction);
+
+	    podcastFeedTableMenu.add(new JSeparator());
+
+	    AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceAction = beanFactory
+		    .getBean("copyToDeviceFromPodcastNavigationView",
+			    CopyToDeviceAction.class);
+	    copyToDeviceAction.setAudioObjectsSource(this);
+	    podcastFeedTableMenu.add(copyToDeviceAction);
+
+	    podcastFeedTableMenu.add(new JSeparator());
+	    podcastFeedTableMenu.add(beanFactory
+		    .getBean(RemoveFromDiskAction.class));
+	}
+	return podcastFeedTableMenu;
+    }
+
+    @Override
+    protected Map<String, ?> getViewData(final ViewMode viewMode) {
+	Map<String, List<IPodcastFeed>> data = new HashMap<String, List<IPodcastFeed>>();
+	data.put("PODCASTS", podcastFeedHandler.getPodcastFeeds());
+	return data;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected void refreshTree(final ViewMode viewMode, final String treeFilter) {
+	Map<String, ?> data = getViewData(viewMode);
+
+	// remember selected rows (if no podcast feed was added or removed)
+	int[] selectedRows = getTree().getSelectionRows();
+	int podcastCount = ((List<PodcastFeed>) data.get("PODCASTS")).size();
+	int podcastInTreeModelCount = getTree().getModel().getChildCount(
+		getTree().getModel().getRoot());
+	if (podcastCount != podcastInTreeModelCount) {
+	    selectedRows = null;
 	}
 
-	/**
-	 * @param rssSmallIcon
-	 */
-	public void setRssSmallIcon(final IIconFactory rssSmallIcon) {
-		this.rssSmallIcon = rssSmallIcon;
+	getTree().setRoot(I18nUtils.getString("PODCAST_FEEDS"));
+
+	addPodcastFeedNodes((List<PodcastFeed>) data.get("PODCASTS"),
+		getTree(), treeFilter);
+	getTree().reload();
+
+	if (selectedRows != null) {
+	    getTree().setSelectionRows(selectedRows);
+	} else {
+	    getTree().setSelectionRow(0);
 	}
 
-	/**
-	 * @param podcastFeedHandler
-	 */
-	public void setPodcastFeedHandler(final IPodcastFeedHandler podcastFeedHandler) {
-		this.podcastFeedHandler = podcastFeedHandler;
-	}
+	getTree().expandRow(0);
 
-	/**
-	 * @param podcastNavigationColumnSet
-	 */
-	public void setPodcastNavigationColumnSet(final IColumnSet podcastNavigationColumnSet) {
-		this.podcastNavigationColumnSet = podcastNavigationColumnSet;
-	}
+    }
 
-
-	@Override
-	public IColorMutableImageIcon getIcon() {
-		return rssSmallIcon.getColorMutableIcon();
-	}
-
-	@Override
-	public String getTitle() {
-		return I18nUtils.getString("PODCAST_FEEDS");
-	}
-
-	@Override
-	public String getTooltip() {
-		return I18nUtils.getString("PODCAST_FEED_TAB_TOOLTIP");
-	}
-
-	@Override
-	public JTree getTree() {
-		if (podcastFeedTree == null) {
-			podcastFeedTree = new NavigationTree(new DefaultTreeModel(new DefaultMutableTreeNode(I18nUtils.getString("PODCAST_FEEDS"))));
-			podcastFeedTree.setToggleClickCount(0);
-			podcastFeedTree.setCellRenderer(getTreeRenderer());
-			podcastFeedTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		}
-		return podcastFeedTree;
-	}
-
-	@Override
-	public JPopupMenu getTreePopupMenu() {
-		if (podcastFeedTreeMenu == null) {
-			podcastFeedTreeMenu = new JPopupMenu();
-			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = beanFactory.getBean("addToPlayListFromPodcastNavigationView", AddToPlayListAction.class);
-			addToPlayListAction.setAudioObjectsSource(this);
-			podcastFeedTreeMenu.add(addToPlayListAction);
-
-			SetAsPlayListAction setAsPlayListAction = beanFactory.getBean("setAsPlaylistFromPodcastNavigationView", SetAsPlayListAction.class);
-			setAsPlayListAction.setAudioObjectsSource(this);
-			podcastFeedTreeMenu.add(setAsPlayListAction);
-
-			podcastFeedTreeMenu.add(new JSeparator());
-			podcastFeedTreeMenu.add(beanFactory.getBean(AddPodcastFeedAction.class));
-			podcastFeedTreeMenu.add(beanFactory.getBean(RenamePodcastFeedAction.class));
-			AbstractActionOverSelectedTreeObjects<IPodcastFeed> markListened = beanFactory.getBean(MarkPodcastListenedAction.class);
-			markListened.setTreeObjectsSource(this);
-			podcastFeedTreeMenu.add(markListened);
-			podcastFeedTreeMenu.add(beanFactory.getBean(RemovePodcastFeedAction.class));
-		}
-		return podcastFeedTreeMenu;
-	}
-
-	@Override
-	public JPopupMenu getTablePopupMenu() {
-		if (podcastFeedTableMenu == null) {
-			podcastFeedTableMenu = new JPopupMenu();
-
-			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = beanFactory.getBean("addToPlayListFromPodcastNavigationView", AddToPlayListAction.class);
-			addToPlayListAction.setAudioObjectsSource(this);
-			podcastFeedTableMenu.add(addToPlayListAction);
-
-			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = beanFactory.getBean("addToPlayListAfterCurrentAudioObjectFromPodcastNavigationView", AddToPlayListAfterCurrentAudioObjectAction.class);
-			addToPlayListAfterCurrentAudioObjectAction.setAudioObjectsSource(this);
-			podcastFeedTableMenu.add(addToPlayListAfterCurrentAudioObjectAction);
-
-			SetAsPlayListAction setAsPlayListAction = beanFactory.getBean("setAsPlaylistFromPodcastNavigationView", SetAsPlayListAction.class);
-			setAsPlayListAction.setAudioObjectsSource(this);
-			podcastFeedTableMenu.add(setAsPlayListAction);
-
-			podcastFeedTableMenu.add(beanFactory.getBean(PlayNowAction.class));
-			podcastFeedTableMenu.add(new JSeparator());
-			podcastFeedTableMenu.add(beanFactory.getBean(ShowNavigatorTableItemInfoAction.class));
-			podcastFeedTableMenu.add(new JSeparator());
-
-			AbstractActionOverSelectedObjects<IPodcastFeedEntry> downloadPodcastEntryAction = beanFactory.getBean(DownloadPodcastEntryAction.class);
-			downloadPodcastEntryAction.setAudioObjectsSource(this);
-			podcastFeedTableMenu.add(downloadPodcastEntryAction);
-
-			RemoveOldPodcastEntryAction removeOldPodcastEntryAction = beanFactory.getBean(RemoveOldPodcastEntryAction.class);
-			removeOldPodcastEntryAction.setAudioObjectsSource(this);
-			podcastFeedTableMenu.add(removeOldPodcastEntryAction);
-
-			MarkPodcastEntryListenedAction markPodcastEntryListenedAction = beanFactory.getBean(MarkPodcastEntryListenedAction.class);
-			markPodcastEntryListenedAction.setAudioObjectsSource(this);
-			podcastFeedTableMenu.add(markPodcastEntryListenedAction);
-
-			podcastFeedTableMenu.add(new JSeparator());
-
-			AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceAction = beanFactory.getBean("copyToDeviceFromPodcastNavigationView", CopyToDeviceAction.class);
-			copyToDeviceAction.setAudioObjectsSource(this);
-			podcastFeedTableMenu.add(copyToDeviceAction);
-
-			podcastFeedTableMenu.add(new JSeparator());
-			podcastFeedTableMenu.add(beanFactory.getBean(RemoveFromDiskAction.class));
-		}
-		return podcastFeedTableMenu;
-	}
-
-	@Override
-	protected Map<String, ?> getViewData(final ViewMode viewMode) {
-		Map<String, List<IPodcastFeed>> data = new HashMap<String, List<IPodcastFeed>>();
-		data.put("PODCASTS", podcastFeedHandler.getPodcastFeeds());
-		return data;
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	protected void refreshTree(final ViewMode viewMode, final String treeFilter) {
-		Logger.debug("Refreshing ", this.getClass().getName());
-
-		Map<String, ?> data = getViewData(viewMode);
-
-		// remember selected rows (if no podcast feed was added or removed)
-		int[] selectedRows = getTree().getSelectionRows();
-		int podcastCount = ((List<PodcastFeed>) data.get("PODCASTS")).size();
-		int podcastInTreeModelCount = getTree().getModel().getChildCount(getTree().getModel().getRoot());
-		if (podcastCount != podcastInTreeModelCount) {
-			selectedRows = null;
-		}
-
-		DefaultTreeModel treeModel = (DefaultTreeModel) getTree().getModel();
-
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
-		root.setUserObject(I18nUtils.getString("PODCAST_FEEDS"));
-		root.removeAllChildren();
-		addPodcastFeedNodes((List<PodcastFeed>) data.get("PODCASTS"), root, treeFilter);
-		treeModel.reload();
-
-		if (selectedRows != null) {
-			getTree().setSelectionRows(selectedRows);
-		} else {
-			getTree().setSelectionRow(0);
-		}
-
-		getTree().expandRow(0);
-
-	}
-
-	@Override
-	public List<IPodcastFeedEntry> getAudioObjectForTreeNode(final DefaultMutableTreeNode node, final ViewMode viewMode, final String treeFilter) {
-		List<IPodcastFeedEntry> songs = new ArrayList<IPodcastFeedEntry>();
-		if (node.isRoot()) {
-			if (treeFilter == null) {
-				List<IPodcastFeed> podcastFeeds = podcastFeedHandler.getPodcastFeeds();
-				for (IPodcastFeed pf : podcastFeeds) {
-					songs.addAll(pf.getAudioObjects());
-				}
-			} else {
-				for (int i = 0; i < node.getChildCount(); i++) {
-					PodcastFeed obj = (PodcastFeed) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
-					songs.addAll(obj.getAudioObjects());
-				}
-			}
-		} else {
-			PodcastFeed obj = (PodcastFeed) node.getUserObject();
-			songs = obj.getAudioObjects();
-		}
-		return songs;
-	}
-
-	/**
-	 * Adds the podcast feed nodes.
-	 * 
-	 * @param podcastFeeds
-	 *            the podcast feeds
-	 * @param root
-	 *            the root
-	 * @param currentFilter
-	 *            the current filter
-	 */
-	private static void addPodcastFeedNodes(final List<PodcastFeed> podcastFeeds, final DefaultMutableTreeNode root, final String currentFilter) {
-		if (podcastFeeds == null) {
-			return;
-		}
-
+    @Override
+    public List<IPodcastFeedEntry> getAudioObjectForTreeNode(
+	    final ITreeNode node, final ViewMode viewMode,
+	    final String treeFilter) {
+	List<IPodcastFeedEntry> songs = new ArrayList<IPodcastFeedEntry>();
+	if (node.isRoot()) {
+	    if (treeFilter == null) {
+		List<IPodcastFeed> podcastFeeds = podcastFeedHandler
+			.getPodcastFeeds();
 		for (IPodcastFeed pf : podcastFeeds) {
-			if (currentFilter == null || pf.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
-				DefaultMutableTreeNode child = new DefaultMutableTreeNode(pf);
-				root.add(child);
-			}
+		    songs.addAll(pf.getAudioObjects());
 		}
+	    } else {
+		for (int i = 0; i < node.getChildCount(); i++) {
+		    PodcastFeed obj = (PodcastFeed) node.getChildAt(i)
+			    .getUserObject();
+		    songs.addAll(obj.getAudioObjects());
+		}
+	    }
+	} else {
+	    PodcastFeed obj = (PodcastFeed) node.getUserObject();
+	    songs = obj.getAudioObjects();
+	}
+	return songs;
+    }
+
+    /**
+     * Adds the podcast feed nodes.
+     * 
+     * @param podcastFeeds
+     * @param tree
+     * @param currentFilter
+     */
+    private static void addPodcastFeedNodes(
+	    final List<PodcastFeed> podcastFeeds, final INavigationTree tree,
+	    final String currentFilter) {
+	if (podcastFeeds == null) {
+	    return;
 	}
 
-	@Override
-	public boolean isUseDefaultNavigatorColumnSet() {
-		return false;
+	for (IPodcastFeed pf : podcastFeeds) {
+	    if (currentFilter == null
+		    || pf.getName().toUpperCase()
+			    .contains(currentFilter.toUpperCase())) {
+		tree.addNode(tree.createNode(pf));
+	    }
 	}
+    }
 
-	@Override
-	public IColumnSet getCustomColumnSet() {
-		return podcastNavigationColumnSet;
-	}
+    @Override
+    public boolean isUseDefaultNavigatorColumnSet() {
+	return false;
+    }
 
-	@Override
-	public boolean isViewModeSupported() {
-		return false;
-	}
+    @Override
+    public IColumnSet getCustomColumnSet() {
+	return podcastNavigationColumnSet;
+    }
+
+    @Override
+    public boolean isViewModeSupported() {
+	return false;
+    }
 }

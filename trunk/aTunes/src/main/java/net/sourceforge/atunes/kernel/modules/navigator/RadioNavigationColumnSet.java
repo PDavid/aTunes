@@ -26,32 +26,42 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.IColumn;
 
-public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
+/**
+ * Column set for radios
+ * 
+ * @author alex
+ * 
+ */
+public final class RadioNavigationColumnSet extends
+	AbstractCustomNavigatorColumnSet {
 
-	public RadioNavigationColumnSet() {
-		super();
+    /**
+     * Default constructor
+     */
+    public RadioNavigationColumnSet() {
+	super();
 
-		List<IColumn<?>> columns = new ArrayList<IColumn<?>>();
+	List<IColumn<?>> columns = new ArrayList<IColumn<?>>();
 
-        AbstractColumn<?> property = new RadioEmptyColumn("");
-        property.setVisible(true);
-        property.setWidth(20);
-        property.setResizable(false);
-        columns.add(property);
+	AbstractColumn<?> property = new RadioEmptyColumn("");
+	property.setVisible(true);
+	property.setWidth(20);
+	property.setResizable(false);
+	columns.add(property);
 
-        AbstractColumn<?> name = new RadioNameColumn("NAME");
-        name.setVisible(true);
-        name.setWidth(150);
-        name.setUsedForFilter(true);
-        columns.add(name);
+	AbstractColumn<?> name = new RadioNameColumn("NAME");
+	name.setVisible(true);
+	name.setWidth(150);
+	name.setUsedForFilter(true);
+	columns.add(name);
 
-        AbstractColumn<?> url = new RadioUrlColumn("URL");
-        url.setVisible(true);
-        url.setWidth(400);
-        url.setUsedForFilter(true);
-        columns.add(url);
-        
-        setAllowedColumns(columns);
+	AbstractColumn<?> url = new RadioUrlColumn("URL");
+	url.setVisible(true);
+	url.setWidth(400);
+	url.setUsedForFilter(true);
+	columns.add(url);
+
+	setAllowedColumns(columns);
     }
 
 }
