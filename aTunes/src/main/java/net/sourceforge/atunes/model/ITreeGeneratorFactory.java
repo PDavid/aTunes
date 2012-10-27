@@ -22,20 +22,27 @@ package net.sourceforge.atunes.model;
 
 import java.util.Map;
 
-
+/**
+ * Returns tree generators for a view mode
+ * 
+ * @author alex
+ * 
+ */
 public interface ITreeGeneratorFactory {
 
-	/**
-	 * Initializes factory
-	 * @param generators
-	 */
-	public void setGenerators(Map<ViewMode, ITreeGenerator> generators);
+    /**
+     * Initializes factory
+     * 
+     * @param generators
+     */
+    public void setGenerators(Map<ViewMode, ITreeGenerator> generators);
 
-	/**
-	 * Returns generator for given mode
-	 * @param viewMode
-	 * @return
-	 */
-	public ITreeGenerator getTreeGenerator(ViewMode viewMode);
+    /**
+     * Returns generator for given mode
+     * 
+     * @param viewMode
+     * @return
+     */
+    public ITreeGenerator getTreeGenerator(ViewMode viewMode);
 
 }

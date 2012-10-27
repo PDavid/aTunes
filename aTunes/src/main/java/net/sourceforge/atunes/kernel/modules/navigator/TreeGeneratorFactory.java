@@ -26,24 +26,28 @@ import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.ITreeGeneratorFactory;
 import net.sourceforge.atunes.model.ViewMode;
 
+/**
+ * Returns tree generators
+ * 
+ * @author alex
+ * 
+ */
 public class TreeGeneratorFactory implements ITreeGeneratorFactory {
 
-	private Map<ViewMode, ITreeGenerator> generators;
-	
-	@Override
-	public void setGenerators(Map<ViewMode, ITreeGenerator> generators) {
-		this.generators = generators;
+    private Map<ViewMode, ITreeGenerator> generators;
+
+    @Override
+    public void setGenerators(final Map<ViewMode, ITreeGenerator> generators) {
+	this.generators = generators;
+    }
+
+    @Override
+    public ITreeGenerator getTreeGenerator(final ViewMode viewMode) {
+	ITreeGenerator generator = null;
+	if (generators != null) {
+	    generator = generators.get(viewMode);
 	}
-	
-	@Override
-	public ITreeGenerator getTreeGenerator(ViewMode viewMode) {
-		ITreeGenerator generator = null;
-		if (generators != null) {
-			generator = generators.get(viewMode);
-		}
-		return generator;
-	}
-		
-	
+	return generator;
+    }
 
 }

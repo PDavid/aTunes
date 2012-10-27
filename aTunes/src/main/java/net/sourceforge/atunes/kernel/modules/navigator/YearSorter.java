@@ -25,10 +25,16 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.INavigationViewSorter;
 
+/**
+ * Sorts navigation table by year
+ * 
+ * @author alex
+ * 
+ */
 public class YearSorter implements INavigationViewSorter {
 
-	@Override
-	public void sort(List<String> list) {
-        Collections.sort(list, new IntegerComparator());
-	}
+    @Override
+    public void sort(final List<String> list) {
+	Collections.sort(list, new IntegerComparator());
+    }
 }

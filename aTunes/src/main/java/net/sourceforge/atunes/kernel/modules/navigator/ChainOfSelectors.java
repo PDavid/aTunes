@@ -20,37 +20,47 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.INavigationTree;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ITreeObject;
 
 /**
- * Used to locate audio objects using a list of selectors where each selector selects from previous selector result
+ * Used to locate audio objects using a list of selectors where each selector
+ * selects from previous selector result
+ * 
  * @author alex
- *
+ * 
  */
 class ChainOfSelectors {
 
-	private AudioObjectSelector<ITreeObject<?>, IAudioObject>[] selectors;
-	
-	public ChainOfSelectors(AudioObjectSelector<ITreeObject<?>, IAudioObject>...audioObjectSelectors) {
-		this.selectors = audioObjectSelectors;
+    private final AudioObjectSelector<ITreeObject<?>, IAudioObject>[] selectors;
+
+    public ChainOfSelectors(
+	    final AudioObjectSelector<ITreeObject<?>, IAudioObject>... audioObjectSelectors) {
+	this.selectors = audioObjectSelectors;
+    }
+
+    /**
+     * @param tree
+     * @param audioObject
+     * @return
+     */
+    public ITreeNode selectAudioObject(final INavigationTree tree,
+	    final IAudioObject audioObject) {
+	ITreeNode node = null;
+	for (int i = 0; i < selectors.length; i++) {
+	    if (node == null) {
+		node = selectors[i].getNodeRepresentingAudioObject(tree,
+			audioObject);
+	    } else {
+		node = selectors[i].getNodeRepresentingAudioObject(tree, node,
+			audioObject);
+	    }
+	    if (node == null) {
+		return null;
+	    }
 	}
-	
-	/**
-	 * @param rootNode
-	 * @param audioObject
-	 * @return
-	 */
-	public DefaultMutableTreeNode selectAudioObject(DefaultMutableTreeNode rootNode, IAudioObject audioObject) {
-		DefaultMutableTreeNode node = rootNode;
-		for (int i = 0; i< selectors.length; i++) {
-			node = selectors[i].getNodeRepresentingAudioObject(node, audioObject);
-			if (node == null) {
-				return null;
-			}
-		}
-		return node;
-	}
+	return node;
+    }
 }

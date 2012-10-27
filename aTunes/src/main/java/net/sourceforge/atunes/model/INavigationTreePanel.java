@@ -22,24 +22,31 @@ package net.sourceforge.atunes.model;
 
 import javax.swing.TransferHandler;
 
-
+/**
+ * Panel holding navigator
+ * 
+ * @author alex
+ * 
+ */
 public interface INavigationTreePanel extends IPanel {
 
-	/**
-	 * Updates trees
-	 */
-	public void updateTrees();
+    /**
+     * Updates trees
+     */
+    public void updateTrees();
 
-	/**
-	 * Shows tree view
-	 * @param view
-	 */
-	public void showNavigationView(INavigationView view);
+    /**
+     * Shows tree view
+     * 
+     * @param view
+     */
+    public void showNavigationView(INavigationView view);
 
-	/**
-	 * Prepares component for drag and drop
-	 * @param transferHandler
-	 */
-	public void enableDragAndDrop(TransferHandler transferHandler);
+    /**
+     * Prepares component for drag and drop
+     * 
+     * @param transferHandler
+     */
+    public void enableDragAndDrop(TransferHandler transferHandler);
 
 }

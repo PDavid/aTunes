@@ -26,19 +26,25 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.INavigationViewSorter;
 
+/**
+ * Sorts navigation table by folder name
+ * 
+ * @author alex
+ * 
+ */
 public class FolderSorter implements INavigationViewSorter {
 
-	private Collator collator;
-	
-	/**
-	 * @param collator
-	 */
-	public void setCollator(Collator collator) {
-		this.collator = collator;
-	}
-	
-	@Override
-	public void sort(List<String> list) {
-        Collections.sort(list, new DefaultComparator(collator));
-	}
+    private Collator collator;
+
+    /**
+     * @param collator
+     */
+    public void setCollator(final Collator collator) {
+	this.collator = collator;
+    }
+
+    @Override
+    public void sort(final List<String> list) {
+	Collections.sort(list, new DefaultComparator(collator));
+    }
 }

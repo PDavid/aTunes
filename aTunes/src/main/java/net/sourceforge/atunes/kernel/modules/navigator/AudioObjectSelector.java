@@ -21,62 +21,93 @@
 package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-
+import net.sourceforge.atunes.model.INavigationTree;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ITreeObject;
 
 /**
  * Helps locating objects in a tree
+ * 
  * @author alex
- *
+ * 
  */
 abstract class AudioObjectSelector<T extends ITreeObject<?>, U> {
 
-	/**
-	 * Returns first tree node representing audio object using given node as root of search
-	 * @param root
-	 * @param audioObject
-	 * @return
-	 */
-	DefaultMutableTreeNode getNodeRepresentingAudioObject(DefaultMutableTreeNode root, U object) {
-		List<DefaultMutableTreeNode> nodes = getNodesRepresentingAudioObject(root, object);
-		return nodes.isEmpty() ? null : nodes.get(0);
-	}
+    /**
+     * Returns first tree node representing audio object
+     * 
+     * @param tree
+     * @param object
+     * @return
+     */
+    final ITreeNode getNodeRepresentingAudioObject(final INavigationTree tree,
+	    final U object) {
+	List<ITreeNode> nodes = getNodesRepresentingAudioObject(tree, object);
+	return nodes.isEmpty() ? null : nodes.get(0);
+    }
 
-	/**
-	 * Returns all tree nodes representing audio object using given node as root of search
-	 * @param root
-	 * @param audioObject
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	List<DefaultMutableTreeNode> getNodesRepresentingAudioObject(DefaultMutableTreeNode root, U object) {
-		List<DefaultMutableTreeNode> treeNodes = new ArrayList<DefaultMutableTreeNode>();
-		Enumeration<TreeNode> nodes = root.children();
-		while (nodes.hasMoreElements()) {
-			TreeNode node = nodes.nextElement();
-			if (node instanceof DefaultMutableTreeNode) {
-				DefaultMutableTreeNode treeNode = ((DefaultMutableTreeNode)node);
-				if (treeNode.getUserObject() instanceof ITreeObject) {
-					ITreeObject<?> treeObject = (ITreeObject<?>) treeNode.getUserObject();
-					if (equals((T) treeObject, object)) {
-						treeNodes.add(treeNode);
-					}
-				}
-			}
-		}
-		return treeNodes;
-	}
+    /**
+     * Returns first tree node representing audio object
+     * 
+     * @param node
+     * @param object
+     * @return
+     */
+    final ITreeNode getNodeRepresentingAudioObject(final INavigationTree tree,
+	    final ITreeNode node, final U object) {
+	List<ITreeNode> nodes = getNodesRepresentingAudioObject(tree, node,
+		object);
+	return nodes.isEmpty() ? null : nodes.get(0);
+    }
 
-	/**
-	 * Returns true if tree object represents object
-	 * @param treeObject
-	 * @param object
-	 * @return
-	 */
-	abstract boolean equals(T treeObject, U object);
+    /**
+     * Returns all tree nodes representing audio object
+     * 
+     * @param tree
+     * @param object
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    final List<ITreeNode> getNodesRepresentingAudioObject(
+	    final INavigationTree tree, final U object) {
+	List<ITreeNode> treeNodes = new ArrayList<ITreeNode>();
+	List<ITreeNode> rootChilds = tree.getRootChildsNodes();
+	for (ITreeNode o : rootChilds) {
+	    if (equals((T) o.getUserObject(), object)) {
+		treeNodes.add(o);
+	    }
+	}
+	return treeNodes;
+    }
+
+    /**
+     * Returns all tree nodes representing audio object
+     * 
+     * @param tree
+     * @param object
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    final List<ITreeNode> getNodesRepresentingAudioObject(
+	    final INavigationTree tree, final ITreeNode node, final U object) {
+	List<ITreeNode> treeNodes = new ArrayList<ITreeNode>();
+	List<ITreeNode> childs = tree.getChildsNodes(node);
+	for (ITreeNode o : childs) {
+	    if (equals((T) o.getUserObject(), object)) {
+		treeNodes.add(o);
+	    }
+	}
+	return treeNodes;
+    }
+
+    /**
+     * Returns true if tree object represents object
+     * 
+     * @param treeObject
+     * @param object
+     * @return
+     */
+    abstract boolean equals(T treeObject, U object);
 }

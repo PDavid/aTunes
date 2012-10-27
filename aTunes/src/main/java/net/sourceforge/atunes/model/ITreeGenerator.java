@@ -23,43 +23,44 @@ package net.sourceforge.atunes.model;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-
 /**
  * Interface for methods that generate a tree for a particular view mode
+ * 
  * @author fleax
- *
+ * 
  */
 public interface ITreeGenerator {
 
-	/**
-	 * Builds a tree
-	 * @param rootTextKey
-	 * @param view
-	 * @param structure
-	 * @param currentFilter
-	 * @param root
-	 * @param treeModel
-	 * @param objectsSelected
-	 * @param objectsExpanded
-	 */
-	public void buildTree(String rootTextKey, 
-						  INavigationView view, 
-						  Map<String, ?> structure, 
-						  String currentFilter, 
-						  DefaultMutableTreeNode root, 
-						  DefaultTreeModel treeModel, 
-						  List<ITreeObject<? extends IAudioObject>> objectsSelected, 
-						  List<ITreeObject<? extends IAudioObject>> objectsExpanded);
-	
-	public void selectAudioObject(JTree tree, IAudioObject audioObject);
+    /**
+     * Builds a tree
+     * 
+     * @param tree
+     * @param rootTextKey
+     * @param view
+     * @param structure
+     * @param currentFilter
+     * @param objectsSelected
+     * @param objectsExpanded
+     */
+    public void buildTree(INavigationTree tree, String rootTextKey,
+	    INavigationView view, Map<String, ?> structure,
+	    String currentFilter,
+	    List<ITreeObject<? extends IAudioObject>> objectsSelected,
+	    List<ITreeObject<? extends IAudioObject>> objectsExpanded);
 
-	/**
-	 * Request generator to select given artist
-	 * @param tree
-	 * @param artist
-	 */
-	public void selectArtist(JTree tree, String artist);
+    /**
+     * Request generator to select given audio object
+     * 
+     * @param tree
+     * @param audioObject
+     */
+    public void selectAudioObject(INavigationTree tree, IAudioObject audioObject);
+
+    /**
+     * Request generator to select given artist
+     * 
+     * @param tree
+     * @param artist
+     */
+    public void selectArtist(INavigationTree tree, String artist);
 }

@@ -25,10 +25,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -36,32 +33,42 @@ import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITable;
+import net.sourceforge.atunes.model.ITreeNode;
 
 /**
  * The listener interface for receiving navigationTreeMouse events.
  */
 public final class NavigationTreeMouseListener extends MouseAdapter {
 
-    private NavigationController controller;
-    
-    private INavigationHandler navigationHandler;
-    
-    private ITable navigationTable;
-    
-    private IStateNavigation stateNavigation;
+    private final NavigationController controller;
+
+    private final INavigationHandler navigationHandler;
+
+    private final ITable navigationTable;
+
+    private final IStateNavigation stateNavigation;
+
+    private final IPlayListHandler playListHandler;
 
     /**
      * Instantiates a new navigation tree mouse listener.
+     * 
      * @param controller
      * @param navigationTable
      * @param stateNavigation
      * @param navigationHandler
+     * @param playListHandler
      */
-    public NavigationTreeMouseListener(NavigationController controller, ITable navigationTable, IStateNavigation stateNavigation, INavigationHandler navigationHandler) {
-        this.controller = controller;
-        this.navigationTable = navigationTable;
-        this.stateNavigation = stateNavigation;
-        this.navigationHandler = navigationHandler;
+    public NavigationTreeMouseListener(final NavigationController controller,
+	    final ITable navigationTable,
+	    final IStateNavigation stateNavigation,
+	    final INavigationHandler navigationHandler,
+	    final IPlayListHandler playListHandler) {
+	this.controller = controller;
+	this.navigationTable = navigationTable;
+	this.stateNavigation = stateNavigation;
+	this.navigationHandler = navigationHandler;
+	this.playListHandler = playListHandler;
     }
 
     /**
@@ -74,62 +81,66 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
      * 
      * @return true, if is new row selection
      */
-    private boolean isNewRowSelection(JTree tree, MouseEvent e) {
-        int[] rowsSelected = tree.getSelectionRows();
-        if (rowsSelected == null) {
-            return false;
-        }
-        int selected = tree.getRowForLocation(e.getX(), e.getY());
-        boolean found = false;
-        int i = 0;
-        while (!found && i < rowsSelected.length) {
-            if (rowsSelected[i] == selected) {
-                found = true;
-            }
-            i++;
-        }
-        return !found;
+    private boolean isNewRowSelection(final JTree tree, final MouseEvent e) {
+	int[] rowsSelected = tree.getSelectionRows();
+	if (rowsSelected == null) {
+	    return false;
+	}
+	int selected = tree.getRowForLocation(e.getX(), e.getY());
+	boolean found = false;
+	int i = 0;
+	while (!found && i < rowsSelected.length) {
+	    if (rowsSelected[i] == selected) {
+		found = true;
+	    }
+	    i++;
+	}
+	return !found;
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        INavigationView currentView = navigationHandler.getCurrentView();
-        controller.setPopupMenuCaller(currentView.getTree());
+    public void mouseClicked(final MouseEvent e) {
+	INavigationView currentView = navigationHandler.getCurrentView();
+	controller.setPopupMenuCaller(currentView.getTree());
 
-        if (GuiUtils.isSecondaryMouseButton(e)) {
-            //	BUG 1626896
-            int row = currentView.getTree().getRowForLocation(e.getX(), e.getY());
-            if (isNewRowSelection(currentView.getTree(), e) && row != -1) {
-                currentView.getTree().setSelectionRow(row);
-            }
-            //	BUG 1626896
+	if (GuiUtils.isSecondaryMouseButton(e)) {
+	    // BUG 1626896
+	    int row = currentView.getTree().getRowForLocation(e.getX(),
+		    e.getY());
+	    if (isNewRowSelection(currentView.getTree(), e) && row != -1) {
+		currentView.getTree().setSelectionRow(row);
+	    }
+	    // BUG 1626896
 
-            currentView.updateTreePopupMenuWithTreeSelection(e);
+	    currentView.updateTreePopupMenuWithTreeSelection(e);
 
-            currentView.getTreePopupMenu().show(currentView.getTree(), e.getX(), e.getY());
-        } else {
-            int selRow = currentView.getTree().getRowForLocation(e.getX(), e.getY());
-            TreePath selPath = currentView.getTree().getPathForLocation(e.getX(), e.getY());
-            if (selRow != -1 && e.getClickCount() == 2) {
-            	DefaultMutableTreeNode node = (DefaultMutableTreeNode) selPath.getLastPathComponent();
-            	List<? extends IAudioObject> songs = controller.getAudioObjectsForTreeNode(currentView.getClass(), node);
-            	Context.getBean(IPlayListHandler.class).addToVisiblePlayList(songs);
-            }
-        }
-        
-        // When clicking in tree, table selection must be cleared
-        navigationTable.getSelectionModel().clearSelection();
+	    currentView.getTreePopupMenu().show(currentView.getTree(),
+		    e.getX(), e.getY());
+	} else {
+	    int selRow = currentView.getTree().getRowForLocation(e.getX(),
+		    e.getY());
+	    if (selRow != -1 && e.getClickCount() == 2) {
+		ITreeNode node = currentView.getTree().getSelectedNode(e);
+		List<? extends IAudioObject> songs = controller
+			.getAudioObjectsForTreeNode(currentView.getClass(),
+				node);
+		playListHandler.addToVisiblePlayList(songs);
+	    }
+	}
+
+	// When clicking in tree, table selection must be cleared
+	navigationTable.getSelectionModel().clearSelection();
     }
 
     @Override
-    public void mouseExited(MouseEvent arg0) {
-        if (!stateNavigation.isShowExtendedTooltip()) {
-            return;
-        }
+    public void mouseExited(final MouseEvent arg0) {
+	if (!stateNavigation.isShowExtendedTooltip()) {
+	    return;
+	}
 
-        controller.setCurrentExtendedToolTipContent(null);
-        controller.getExtendedToolTip().setVisible(false);
-        controller.getToolTipTimer().stop();
+	controller.setCurrentExtendedToolTipContent(null);
+	controller.getExtendedToolTip().setVisible(false);
+	controller.getToolTipTimer().stop();
     }
 
 }
