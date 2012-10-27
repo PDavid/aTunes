@@ -35,6 +35,7 @@ import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.IStateCore;
+import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -43,6 +44,7 @@ import de.umass.lastfm.Event;
 import de.umass.lastfm.ImageSize;
 import de.umass.lastfm.PaginatedResult;
 import de.umass.lastfm.Tag;
+import de.umass.lastfm.Track;
 
 /**
  * Services to retrieve information about artists
@@ -235,6 +237,15 @@ public class LastFmArtistServices {
 	// Try to get from LastFM
 	topTracks = LastFmArtistTopTracks.getTopTracks(artistName,
 		Artist.getTopTracks(artistName, lastFmAPIKey.getApiKey()));
+
+	// Complete album requesting each track
+	for (ITrackInfo trackInfo : topTracks.getTracks()) {
+	    Track fullTrack = Track.getInfo(artistName, trackInfo.getTitle(),
+		    lastFmAPIKey.getApiKey());
+	    if (fullTrack != null) {
+		trackInfo.setAlbum(fullTrack.getAlbum());
+	    }
+	}
 
 	if (topTracks != null) {
 	    lastFmCache.storeArtistTopTracks(artistName, topTracks);
