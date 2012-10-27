@@ -26,14 +26,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JTree;
-
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.TreeNavigationTransferHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationTree;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.ISearch;
@@ -241,7 +240,7 @@ public final class NavigationHandler extends AbstractHandler implements
 	return getNavigationController().openSearchDialog(dialog, b);
     }
 
-    private void updateTableContent(final JTree tree) {
+    private void updateTableContent(final INavigationTree tree) {
 	getNavigationController().updateTableContent(tree);
     }
 

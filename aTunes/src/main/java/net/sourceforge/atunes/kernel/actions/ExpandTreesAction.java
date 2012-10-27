@@ -27,31 +27,32 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Expand navigator tree
+ * 
  * @author alex
- *
+ * 
  */
 public class ExpandTreesAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = -2632581565309673327L;
+    private static final long serialVersionUID = -2632581565309673327L;
 
-	private INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
+
+    ExpandTreesAction() {
+	super(I18nUtils.getString("EXPAND"));
+	putValue(SHORT_DESCRIPTION, I18nUtils.getString("EXPAND"));
+    }
+
+    @Override
+    protected void executeAction() {
+	for (INavigationView view : navigationHandler.getNavigationViews()) {
+	    GuiUtils.expandTree(view.getTree().getSwingComponent());
 	}
-
-	ExpandTreesAction() {
-		super(I18nUtils.getString("EXPAND"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("EXPAND"));
-	}
-
-	@Override
-	protected void executeAction() {
-		for (INavigationView view : navigationHandler.getNavigationViews()) {
-			GuiUtils.expandTree(view.getTree());
-		}
-	}
+    }
 }

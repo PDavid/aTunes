@@ -251,11 +251,11 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 
 	// Add tree selection listeners to all views
 	for (INavigationView view : navigationHandler.getNavigationViews()) {
-	    view.getTree().addTreeSelectionListener(
-		    new TreeSelectionListener() {
+	    view.getTree().getSwingComponent()
+		    .addTreeSelectionListener(new TreeSelectionListener() {
 			@Override
 			public void valueChanged(final TreeSelectionEvent e) {
-			    updateTableContent((JTree) e.getSource());
+			    updateTableContent((NavigationTree) e.getSource());
 			}
 		    });
 	}
@@ -502,7 +502,7 @@ public final class NavigationController implements IAudioFilesRemovedListener,
      * @param tree
      *            the tree
      */
-    protected void updateTableContent(final JTree tree) {
+    protected void updateTableContent(final INavigationTree tree) {
 	// If navigation table is not shown then don't update it
 	if (!stateNavigation.isShowNavigationTable()) {
 	    return;

@@ -27,8 +27,6 @@ import javax.swing.Action;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
-import net.sourceforge.atunes.gui.views.controls.NavigationTree;
-
 /**
  * A view of navigator to show a content (repository, favorites, radios, etc)
  * 
@@ -56,7 +54,7 @@ public interface INavigationView extends IAudioObjectsSource,
     /**
      * @return the JTree that contains this view
      */
-    public NavigationTree getTree();
+    public INavigationTree getTree();
 
     /**
      * @return the tree popup menu of this view

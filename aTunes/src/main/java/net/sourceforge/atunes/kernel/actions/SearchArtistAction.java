@@ -22,9 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IDesktop;
@@ -39,95 +36,101 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * @author alex
- *
+ * 
  */
 public class SearchArtistAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = -4695334457704311336L;
+    private static final long serialVersionUID = -4695334457704311336L;
 
-	private IDesktop desktop;
+    private IDesktop desktop;
 
-	private INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-	private IDialogFactory dialogFactory;
+    private IDialogFactory dialogFactory;
 
-	private IStateCore stateCore;
+    private IStateCore stateCore;
 
-	private IUnknownObjectChecker unknownObjectChecker;
+    private IUnknownObjectChecker unknownObjectChecker;
 
-	/**
-	 * @param unknownObjectChecker
-	 */
-	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
-	}
+    /**
+     * @param unknownObjectChecker
+     */
+    public void setUnknownObjectChecker(
+	    final IUnknownObjectChecker unknownObjectChecker) {
+	this.unknownObjectChecker = unknownObjectChecker;
+    }
 
-	/**
-	 * @param stateCore
-	 */
-	public void setStateCore(final IStateCore stateCore) {
-		this.stateCore = stateCore;
-	}
+    /**
+     * @param stateCore
+     */
+    public void setStateCore(final IStateCore stateCore) {
+	this.stateCore = stateCore;
+    }
 
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(final IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(final IDialogFactory dialogFactory) {
+	this.dialogFactory = dialogFactory;
+    }
 
-	/**
-	 * @param desktop
-	 */
-	public void setDesktop(final IDesktop desktop) {
-		this.desktop = desktop;
-	}
+    /**
+     * @param desktop
+     */
+    public void setDesktop(final IDesktop desktop) {
+	this.desktop = desktop;
+    }
 
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public SearchArtistAction() {
-		super(I18nUtils.getString("SEARCH_ARTIST"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SEARCH_ARTIST"));
-	}
+    /**
+     * Default constructor
+     */
+    public SearchArtistAction() {
+	super(I18nUtils.getString("SEARCH_ARTIST"));
+	putValue(SHORT_DESCRIPTION, I18nUtils.getString("SEARCH_ARTIST"));
+    }
 
-	@Override
-	protected void executeAction() {
-		TreePath path = navigationHandler.getCurrentView().getTree().getSelectionPath();
-		if (((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject() instanceof IArtist) {
-			IArtist a = (IArtist) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-			ISearch search = SearchFactory.getSearchForName(stateCore.getDefaultSearch());
-			if (search == null) {
-				ISearchDialog dialog = dialogFactory.newDialog(ISearchDialog.class);
-				search = navigationHandler.openSearchDialog(dialog, false);
-				if (search != null) {
-					stateCore.setDefaultSearch(search.toString());
-				}
-			}
-
-			if (search != null) {
-				desktop.openSearch(search, a.getName());
-			}
+    @Override
+    protected void executeAction() {
+	Object o = navigationHandler.getCurrentView().getTree()
+		.getSelectedNode().getUserObject();
+	if (o instanceof IArtist) {
+	    IArtist a = (IArtist) o;
+	    ISearch search = SearchFactory.getSearchForName(stateCore
+		    .getDefaultSearch());
+	    if (search == null) {
+		ISearchDialog dialog = dialogFactory
+			.newDialog(ISearchDialog.class);
+		search = navigationHandler.openSearchDialog(dialog, false);
+		if (search != null) {
+		    stateCore.setDefaultSearch(search.toString());
 		}
-	}
+	    }
 
-	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
-		if (selection.isEmpty()) {
-			return false;
-		}
-		for (ITreeObject<?> node : selection) {
-			if (!(node instanceof IArtist) || unknownObjectChecker.isUnknownArtist((IArtist) node)) {
-				return false;
-			}
-		}
-		return true;
+	    if (search != null) {
+		desktop.openSearch(search, a.getName());
+	    }
 	}
+    }
+
+    @Override
+    public boolean isEnabledForNavigationTreeSelection(
+	    final boolean rootSelected, final List<ITreeObject<?>> selection) {
+	if (selection.isEmpty()) {
+	    return false;
+	}
+	for (ITreeObject<?> node : selection) {
+	    if (!(node instanceof IArtist)
+		    || unknownObjectChecker.isUnknownArtist((IArtist) node)) {
+		return false;
+	    }
+	}
+	return true;
+    }
 }

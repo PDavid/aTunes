@@ -42,83 +42,90 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class PlayListToDeviceDragAndDropListener implements DropTargetListener {
 
-	private IDeviceHandler deviceHandler;
-	
-	private INavigationView deviceNavigationView;
-	
-	/**
-	 * @param deviceHandler
-	 */
-	public void setDeviceHandler(IDeviceHandler deviceHandler) {
-		this.deviceHandler = deviceHandler;
-	}
-	
-	/**
-	 * @param deviceNavigationView
-	 */
-	public void setDeviceNavigationView(INavigationView deviceNavigationView) {
-		this.deviceNavigationView = deviceNavigationView;
-	}
-	
+    private IDeviceHandler deviceHandler;
+
+    private INavigationView deviceNavigationView;
+
+    /**
+     * @param deviceHandler
+     */
+    public void setDeviceHandler(final IDeviceHandler deviceHandler) {
+	this.deviceHandler = deviceHandler;
+    }
+
+    /**
+     * @param deviceNavigationView
+     */
+    public void setDeviceNavigationView(
+	    final INavigationView deviceNavigationView) {
+	this.deviceNavigationView = deviceNavigationView;
+    }
+
     /**
      * Initializes
      */
     public void initialize() {
-        // Drop targets for drag and drops operations from playlist to device tree
-        new DropTarget(deviceNavigationView.getTreeScrollPane(), this);
-        new DropTarget(deviceNavigationView.getTree(), this);
+	// Drop targets for drag and drops operations from playlist to device
+	// tree
+	new DropTarget(deviceNavigationView.getTreeScrollPane(), this);
+	new DropTarget(deviceNavigationView.getTree().getSwingComponent(), this);
     }
 
     @Override
-    public void dragEnter(DropTargetDragEvent dtde) {
-        // Nothing to do
+    public void dragEnter(final DropTargetDragEvent dtde) {
+	// Nothing to do
     }
 
     @Override
-    public void dragExit(DropTargetEvent dte) {
-        // Nothing to do
+    public void dragExit(final DropTargetEvent dte) {
+	// Nothing to do
     }
 
     @Override
-    public void dragOver(DropTargetDragEvent dtde) {
-        // Nothing to do
+    public void dragOver(final DropTargetDragEvent dtde) {
+	// Nothing to do
     }
 
     @Override
-    public void drop(DropTargetDropEvent dtde) {
-        Transferable transferable = dtde.getTransferable();
-        DataFlavor aTunesFlavorAccepted = new TransferableList<Object>(null).getTransferDataFlavors()[0];
-        if (transferable.isDataFlavorSupported(aTunesFlavorAccepted)) {
-            dtde.acceptDrop(DnDConstants.ACTION_COPY);
-            try {
-                // Get all audiofiles dragged
-                @SuppressWarnings("unchecked")
-                List<PlayListDragableRow> listOfObjectsDragged = (List<PlayListDragableRow>) transferable.getTransferData(aTunesFlavorAccepted);
+    public void drop(final DropTargetDropEvent dtde) {
+	Transferable transferable = dtde.getTransferable();
+	DataFlavor aTunesFlavorAccepted = new TransferableList<Object>(null)
+		.getTransferDataFlavors()[0];
+	if (transferable.isDataFlavorSupported(aTunesFlavorAccepted)) {
+	    dtde.acceptDrop(DnDConstants.ACTION_COPY);
+	    try {
+		// Get all audiofiles dragged
+		@SuppressWarnings("unchecked")
+		List<PlayListDragableRow> listOfObjectsDragged = (List<PlayListDragableRow>) transferable
+			.getTransferData(aTunesFlavorAccepted);
 
-                // If device is connected, then copy files to device
-                if (deviceHandler.isDeviceConnected()) {
-                    // Don't copy files already in device
-                    List<ILocalAudioObject> filesToCopy = new ArrayList<ILocalAudioObject>();
-                    for (PlayListDragableRow f : listOfObjectsDragged) {
-                        // Only accept LocalAudioObject objects
-                        if (f.getRowContent() instanceof ILocalAudioObject && !deviceHandler.isDevicePath(f.getRowContent().getUrl())) {
-                            filesToCopy.add((ILocalAudioObject) f.getRowContent());
-                        }
-                    }
-                    // Copy files
-                    if (!filesToCopy.isEmpty()) {
-                        deviceHandler.copyFilesToDevice(filesToCopy);
-                    }
-                }
-            } catch (Exception e) {
-                Logger.error(e);
-            }
-            dtde.getDropTargetContext().dropComplete(true);
-        }
+		// If device is connected, then copy files to device
+		if (deviceHandler.isDeviceConnected()) {
+		    // Don't copy files already in device
+		    List<ILocalAudioObject> filesToCopy = new ArrayList<ILocalAudioObject>();
+		    for (PlayListDragableRow f : listOfObjectsDragged) {
+			// Only accept LocalAudioObject objects
+			if (f.getRowContent() instanceof ILocalAudioObject
+				&& !deviceHandler.isDevicePath(f
+					.getRowContent().getUrl())) {
+			    filesToCopy.add((ILocalAudioObject) f
+				    .getRowContent());
+			}
+		    }
+		    // Copy files
+		    if (!filesToCopy.isEmpty()) {
+			deviceHandler.copyFilesToDevice(filesToCopy);
+		    }
+		}
+	    } catch (Exception e) {
+		Logger.error(e);
+	    }
+	    dtde.getDropTargetContext().dropComplete(true);
+	}
     }
 
     @Override
-    public void dropActionChanged(DropTargetDragEvent dtde) {
-        // Nothing to do
+    public void dropActionChanged(final DropTargetDragEvent dtde) {
+	// Nothing to do
     }
 }
