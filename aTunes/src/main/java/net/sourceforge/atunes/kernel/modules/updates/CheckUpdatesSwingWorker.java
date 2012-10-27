@@ -25,7 +25,6 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
@@ -36,59 +35,65 @@ import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
-final class CheckUpdatesSwingWorker extends SwingWorker<ApplicationVersion, Void> {
-	
-	/**
+final class CheckUpdatesSwingWorker extends
+	SwingWorker<ApplicationVersion, Void> {
+
+    /**
 	 * 
 	 */
-	private final IUpdateHandler updateHandler;
-	private final boolean showNoNewVersion;
-	private final boolean alwaysInDialog;
-	private IStateUI stateUI;
-	private IFrame frame;
-	private IDialogFactory dialogFactory;
+    private final IUpdateHandler updateHandler;
+    private final boolean showNoNewVersion;
+    private final boolean alwaysInDialog;
+    private final IStateUI stateUI;
+    private final IFrame frame;
+    private final IDialogFactory dialogFactory;
 
-	/**
-	 * @param updateHandler
-	 * @param showNoNewVersion
-	 * @param alwaysInDialog
-	 * @param stateUI
-	 * @param frame
-	 * @param dialogFactory
-	 */
-	CheckUpdatesSwingWorker(IUpdateHandler updateHandler, boolean showNoNewVersion, boolean alwaysInDialog, IStateUI stateUI, IFrame frame, IDialogFactory dialogFactory) {
-		this.updateHandler = updateHandler;
-		this.showNoNewVersion = showNoNewVersion;
-		this.alwaysInDialog = alwaysInDialog;
-		this.stateUI = stateUI;
-		this.frame = frame;
-		this.dialogFactory = dialogFactory;
-	}
+    /**
+     * @param updateHandler
+     * @param showNoNewVersion
+     * @param alwaysInDialog
+     * @param stateUI
+     * @param frame
+     * @param dialogFactory
+     */
+    CheckUpdatesSwingWorker(final IUpdateHandler updateHandler,
+	    final boolean showNoNewVersion, final boolean alwaysInDialog,
+	    final IStateUI stateUI, final IFrame frame,
+	    final IDialogFactory dialogFactory) {
+	this.updateHandler = updateHandler;
+	this.showNoNewVersion = showNoNewVersion;
+	this.alwaysInDialog = alwaysInDialog;
+	this.stateUI = stateUI;
+	this.frame = frame;
+	this.dialogFactory = dialogFactory;
+    }
 
-	@Override
-	protected ApplicationVersion doInBackground() {
-	    return this.updateHandler.getLastVersion();
-	}
+    @Override
+    protected ApplicationVersion doInBackground() {
+	return this.updateHandler.getLastVersion();
+    }
 
-	@Override
-	protected void done() {
-	    try {
-	        ApplicationVersion version = get();
-	        if (version != null && version.compareTo(Constants.VERSION) == 1) {
-	        	 if (alwaysInDialog || !stateUI.isShowStatusBar()) {
-	                 IUpdateDialog dialog = dialogFactory.newDialog(IUpdateDialog.class);
-	                 dialog.initialize(version);
-	                 dialog.showDialog();
-	             } else {
-	                 frame.showNewVersionInfo(true, version);
-	             }
-	        } else if (showNoNewVersion) {
-	            Context.getBean(IDialogFactory.class).newDialog(IMessageDialog.class).showMessage(I18nUtils.getString("NOT_NEW_VERSION"));
-	        }
-	    } catch (InterruptedException e) {
-	        Logger.error(e);
-	    } catch (ExecutionException e) {
-	        Logger.error(e);
+    @Override
+    protected void done() {
+	try {
+	    ApplicationVersion version = get();
+	    if (version != null && version.compareTo(Constants.VERSION) == 1) {
+		if (alwaysInDialog || !stateUI.isShowStatusBar()) {
+		    IUpdateDialog dialog = dialogFactory
+			    .newDialog(IUpdateDialog.class);
+		    dialog.initialize(version);
+		    dialog.showDialog();
+		} else {
+		    frame.showNewVersionInfo(true, version);
+		}
+	    } else if (showNoNewVersion) {
+		dialogFactory.newDialog(IMessageDialog.class).showMessage(
+			I18nUtils.getString("NOT_NEW_VERSION"));
 	    }
+	} catch (InterruptedException e) {
+	    Logger.error(e);
+	} catch (ExecutionException e) {
+	    Logger.error(e);
 	}
+    }
 }

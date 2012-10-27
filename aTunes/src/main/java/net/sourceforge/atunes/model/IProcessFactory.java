@@ -22,16 +22,18 @@ package net.sourceforge.atunes.model;
 
 /**
  * Returns instances of processes given a unique process name
+ * 
  * @author alex
- *
+ * 
  */
 public interface IProcessFactory {
-	
-	/**
-	 * Returns process instance for given process name
-	 * @param processName
-	 * @return
-	 */
-	IProcess getProcessByName(String processName);
+
+    /**
+     * Returns process instance for given process name
+     * 
+     * @param processName
+     * @return
+     */
+    IProcess<?> getProcessByName(String processName);
 
 }

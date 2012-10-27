@@ -42,68 +42,71 @@ class ContextInformationSwingWorker extends SwingWorker<Void, Void> {
      * The context panel content where information must be shown after
      * retrieving data
      */
-    private IContextPanelContent content;
+    private final IContextPanelContent<IContextInformationSource> content;
 
     /**
      * The context information data source used to retrieve information
      */
-    private IContextInformationSource dataSource;
+    private final IContextInformationSource dataSource;
 
     /**
      * audio object
      */
-    private IAudioObject audioObject;
-    
+    private final IAudioObject audioObject;
+
     /**
      * To be executed at finish
      */
-    private Runnable updateCallback;
+    private final Runnable updateCallback;
 
     /**
      * Constructor used to create a new ContextInformationSwingWorker
+     * 
      * @param content
      * @param dataSource
      * @param audioObject
      * @param updateCallback
      */
-    ContextInformationSwingWorker(IContextPanelContent content, IContextInformationSource dataSource, IAudioObject audioObject, Runnable updateCallback) {
-        this.content = content;
-        this.dataSource = dataSource;
-        this.audioObject = audioObject;
-        this.updateCallback = updateCallback;
+    ContextInformationSwingWorker(final IContextPanelContent<IContextInformationSource> content,
+	    final IContextInformationSource dataSource,
+	    final IAudioObject audioObject, final Runnable updateCallback) {
+	this.content = content;
+	this.dataSource = dataSource;
+	this.audioObject = audioObject;
+	this.updateCallback = updateCallback;
     }
 
     @Override
     protected Void doInBackground() {
-   		dataSource.getData(audioObject);
-   		return null;
+	dataSource.getData(audioObject);
+	return null;
     }
 
     @Override
     protected void done() {
-        super.done();
-        try {
-            content.updateContentFromDataSource(dataSource);
-            if (!isCancelled()) {
-            	// Enable task pane so user can expand or collapse
-            	content.getParentPanel().setEnabled(true);
-            	// After update data expand content
-            	content.getParentPanel().setVisible(true);
+	super.done();
+	try {
+	    content.updateContentFromDataSource(dataSource);
+	    if (!isCancelled()) {
+		// Enable task pane so user can expand or collapse
+		content.getParentPanel().setEnabled(true);
+		// After update data expand content
+		content.getParentPanel().setVisible(true);
 
-            	// Callback
-            	updateCallback.run();
-            }
-        } catch (CancellationException e) {
-            // thrown when cancelled
-            Logger.error(e);
-        }
+		// Callback
+		updateCallback.run();
+	    }
+	} catch (CancellationException e) {
+	    // thrown when cancelled
+	    Logger.error(e);
+	}
     }
-    
+
     /**
      * Cancels data retrieve
      */
     void cancel() {
-    	cancel(true);
-    	dataSource.cancel();
+	cancel(true);
+	dataSource.cancel();
     }
 }
