@@ -37,7 +37,6 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.TransferableList;
@@ -60,24 +59,14 @@ public final class NavigationTree extends JTree implements DragSourceListener,
     /**
      * Instantiates a new drag source tree.
      * 
-     * @param model
-     *            the model
-     */
-    private NavigationTree(final TreeModel model) {
-	super(model);
-	setDragSource();
-    }
-
-    /**
-     * Instantiates a new drag source tree.
-     * 
      * @param root
      * @param renderer
      */
     public NavigationTree(final String root, final TreeCellRenderer renderer) {
-	this(new DefaultTreeModel(new DefaultMutableTreeNode(root)));
+	super(new DefaultTreeModel(new DefaultMutableTreeNode(root)));
 	setToggleClickCount(0);
 	setCellRenderer(renderer);
+	setDragSource();
     }
 
     @Override
@@ -302,5 +291,17 @@ public final class NavigationTree extends JTree implements DragSourceListener,
 		    (DefaultMutableTreeNode) selPath.getLastPathComponent());
 	}
 	return null;
+    }
+
+    @Override
+    public JTree getSwingComponent() {
+	return this;
+    }
+
+    @Override
+    public ITreeNode getSelectedNode() {
+	return new NavigatorTreeNode(
+		(DefaultMutableTreeNode) getSelectionPath()
+			.getLastPathComponent());
     }
 }

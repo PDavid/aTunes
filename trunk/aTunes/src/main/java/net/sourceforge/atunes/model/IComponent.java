@@ -21,85 +21,105 @@
 package net.sourceforge.atunes.model;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JComponent;
 
 /**
  * A graphical component
+ * 
  * @author alex
- *
+ * 
  */
 public interface IComponent<T extends JComponent> {
 
-	/**
-	 * Returns the underlying Swing component
-	 * @return
-	 */
-	public T getSwingComponent();
-	
-	/**
-	 * Sets maximum size
-	 * @param size
-	 */
-	public void setMaximumSize(Dimension size);
-	
-	/**
-	 * Sets minimum size
-	 * @param size
-	 */
-	public void setMinimumSize(Dimension size);
-	
-	/**
-	 * Sets preferred size
-	 * @param size
-	 */
-	public void setPreferredSize(Dimension size);
-	
-	/**
-	 * Sets visibility
-	 * @param visible
-	 */
-	public void setVisible(boolean visible);
-	
-	/**
-	 * Returns if visible
-	 * @return
-	 */
-	public boolean isVisible();
-	
-	/**
-	 * Enables or disables component
-	 * @param b
-	 */
-	public void setEnabled(boolean b);
-	
-	/**
-	 * Returns if enabled
-	 * @return
-	 */
-	public boolean isEnabled();
-	
-	/**
-	 * @param seekListener
-	 */
-	public void addMouseListener(MouseListener seekListener);
+    /**
+     * Returns the underlying Swing component
+     * 
+     * @return
+     */
+    public T getSwingComponent();
 
-	/**
-	 * @param keyListener
-	 */
-	public void addKeyListener(KeyListener keyListener);
-	
-	/**
-	 * @param b
-	 */
-	public void setOpaque(boolean b);
-	
-	/**
-	 * @return
-	 */
-	public Dimension getPreferredSize();
+    /**
+     * Sets maximum size
+     * 
+     * @param size
+     */
+    public void setMaximumSize(Dimension size);
 
+    /**
+     * Sets minimum size
+     * 
+     * @param size
+     */
+    public void setMinimumSize(Dimension size);
+
+    /**
+     * Sets preferred size
+     * 
+     * @param size
+     */
+    public void setPreferredSize(Dimension size);
+
+    /**
+     * Sets visibility
+     * 
+     * @param visible
+     */
+    public void setVisible(boolean visible);
+
+    /**
+     * Returns if visible
+     * 
+     * @return
+     */
+    public boolean isVisible();
+
+    /**
+     * Enables or disables component
+     * 
+     * @param b
+     */
+    public void setEnabled(boolean b);
+
+    /**
+     * Returns if enabled
+     * 
+     * @return
+     */
+    public boolean isEnabled();
+
+    /**
+     * @param seekListener
+     */
+    public void addMouseListener(MouseListener seekListener);
+
+    /**
+     * @param listener
+     */
+    public void addMouseMotionListener(MouseMotionListener listener);
+
+    /**
+     * @param keyListener
+     */
+    public void addKeyListener(KeyListener keyListener);
+
+    /**
+     * @param b
+     */
+    public void setOpaque(boolean b);
+
+    /**
+     * @return
+     */
+    public Dimension getPreferredSize();
+
+    /**
+     * @return location on screen
+     */
+    Point getLocationOnScreen();
 
 }

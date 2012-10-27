@@ -101,24 +101,27 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
     @Override
     public void mouseClicked(final MouseEvent e) {
 	INavigationView currentView = navigationHandler.getCurrentView();
-	controller.setPopupMenuCaller(currentView.getTree());
+	controller
+		.setPopupMenuCaller(currentView.getTree().getSwingComponent());
 
 	if (GuiUtils.isSecondaryMouseButton(e)) {
 	    // BUG 1626896
-	    int row = currentView.getTree().getRowForLocation(e.getX(),
-		    e.getY());
-	    if (isNewRowSelection(currentView.getTree(), e) && row != -1) {
-		currentView.getTree().setSelectionRow(row);
+	    int row = currentView.getTree().getSwingComponent()
+		    .getRowForLocation(e.getX(), e.getY());
+	    if (isNewRowSelection(currentView.getTree().getSwingComponent(), e)
+		    && row != -1) {
+		currentView.getTree().getSwingComponent().setSelectionRow(row);
 	    }
 	    // BUG 1626896
 
 	    currentView.updateTreePopupMenuWithTreeSelection(e);
 
-	    currentView.getTreePopupMenu().show(currentView.getTree(),
-		    e.getX(), e.getY());
-	} else {
-	    int selRow = currentView.getTree().getRowForLocation(e.getX(),
+	    currentView.getTreePopupMenu().show(
+		    currentView.getTree().getSwingComponent(), e.getX(),
 		    e.getY());
+	} else {
+	    int selRow = currentView.getTree().getSwingComponent()
+		    .getRowForLocation(e.getX(), e.getY());
 	    if (selRow != -1 && e.getClickCount() == 2) {
 		ITreeNode node = currentView.getTree().getSelectedNode(e);
 		List<? extends IAudioObject> songs = controller

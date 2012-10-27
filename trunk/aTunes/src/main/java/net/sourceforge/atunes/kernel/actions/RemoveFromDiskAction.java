@@ -27,8 +27,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
@@ -43,8 +41,10 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
+import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -58,233 +58,259 @@ import org.apache.commons.io.FileUtils;
  */
 /**
  * @author alex
- *
+ * 
  */
 public class RemoveFromDiskAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = -6958409532399604195L;
+    private static final long serialVersionUID = -6958409532399604195L;
 
-	private IIndeterminateProgressDialog dialog;
+    private IIndeterminateProgressDialog dialog;
 
-	private INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-	private IRepositoryHandler repositoryHandler;
+    private IRepositoryHandler repositoryHandler;
 
-	private IOSManager osManager;
+    private IOSManager osManager;
 
-	private IPodcastFeedHandler podcastFeedHandler;
+    private IPodcastFeedHandler podcastFeedHandler;
 
-	private INavigationView deviceNavigationView;
+    private INavigationView deviceNavigationView;
 
-	private INavigationView podcastNavigationView;
+    private INavigationView podcastNavigationView;
 
-	private INavigationView repositoryNavigationView;
+    private INavigationView repositoryNavigationView;
 
-	private IDialogFactory dialogFactory;
+    private IDialogFactory dialogFactory;
 
-	private ILocalAudioObjectFilter localAudioObjectFilter;
+    private ILocalAudioObjectFilter localAudioObjectFilter;
 
-	/**
-	 * @param localAudioObjectFilter
-	 */
-	public void setLocalAudioObjectFilter(
-			final ILocalAudioObjectFilter localAudioObjectFilter) {
-		this.localAudioObjectFilter = localAudioObjectFilter;
+    /**
+     * @param localAudioObjectFilter
+     */
+    public void setLocalAudioObjectFilter(
+	    final ILocalAudioObjectFilter localAudioObjectFilter) {
+	this.localAudioObjectFilter = localAudioObjectFilter;
+    }
+
+    /**
+     * Constructor
+     */
+    public RemoveFromDiskAction() {
+	super(I18nUtils.getString("REMOVE_FROM_DISK"));
+	putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_FROM_DISK"));
+    }
+
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(final IDialogFactory dialogFactory) {
+	this.dialogFactory = dialogFactory;
+    }
+
+    /**
+     * @param deviceNavigationView
+     */
+    public void setDeviceNavigationView(
+	    final INavigationView deviceNavigationView) {
+	this.deviceNavigationView = deviceNavigationView;
+    }
+
+    /**
+     * @param podcastNavigationView
+     */
+    public void setPodcastNavigationView(
+	    final INavigationView podcastNavigationView) {
+	this.podcastNavigationView = podcastNavigationView;
+    }
+
+    /**
+     * @param repositoryNavigationView
+     */
+    public void setRepositoryNavigationView(
+	    final INavigationView repositoryNavigationView) {
+	this.repositoryNavigationView = repositoryNavigationView;
+    }
+
+    @Override
+    protected void executeAction() {
+	// Show confirmation
+	IConfirmationDialog confirmationDialog = dialogFactory
+		.newDialog(IConfirmationDialog.class);
+	confirmationDialog.setMessage(I18nUtils
+		.getString("REMOVE_CONFIRMATION"));
+	confirmationDialog.showDialog();
+	if (confirmationDialog.userAccepted()) {
+	    // Podcast view
+	    if (navigationHandler.getCurrentView()
+		    .equals(podcastNavigationView)) {
+		fromPodcastView();
+		// Repository or device view with folder view mode, folder
+		// selected: delete folders instead of content
+	    } else if ((navigationHandler.getCurrentView().equals(
+		    repositoryNavigationView) || navigationHandler
+		    .getCurrentView().equals(deviceNavigationView))
+		    && navigationHandler.getCurrentViewMode() == ViewMode.FOLDER
+		    && navigationHandler.isActionOverTree()) {
+		fromRepositoryOrDeviceView(repositoryHandler);
+	    } else {
+		fromOtherViews(repositoryHandler);
+	    }
 	}
+    }
 
-	/**
-	 * Constructor
-	 */
-	public RemoveFromDiskAction() {
-		super(I18nUtils.getString("REMOVE_FROM_DISK"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_FROM_DISK"));
-	}
+    private void fromOtherViews(final IRepositoryHandler repositoryHandler) {
+	final List<IAudioObject> files = navigationHandler
+		.getFilesSelectedInNavigator();
+	repositoryHandler.remove(localAudioObjectFilter
+		.getLocalAudioObjects(files));
 
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(final IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
+	dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
+	dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
+	SwingUtilities.invokeLater(new Runnable() {
+	    @Override
+	    public void run() {
+		dialog.showDialog();
+	    }
+	});
+	new DeleteFilesWorker(dialog,
+		localAudioObjectFilter.getLocalAudioObjects(files)).execute();
+    }
 
-	/**
-	 * @param deviceNavigationView
-	 */
-	public void setDeviceNavigationView(final INavigationView deviceNavigationView) {
-		this.deviceNavigationView = deviceNavigationView;
-	}
-
-	/**
-	 * @param podcastNavigationView
-	 */
-	public void setPodcastNavigationView(final INavigationView podcastNavigationView) {
-		this.podcastNavigationView = podcastNavigationView;
-	}
-
-	/**
-	 * @param repositoryNavigationView
-	 */
-	public void setRepositoryNavigationView(final INavigationView repositoryNavigationView) {
-		this.repositoryNavigationView = repositoryNavigationView;
-	}
-
-	@Override
-	protected void executeAction() {
-		// Show confirmation
-		IConfirmationDialog confirmationDialog = dialogFactory.newDialog(IConfirmationDialog.class);
-		confirmationDialog.setMessage(I18nUtils.getString("REMOVE_CONFIRMATION"));
-		confirmationDialog.showDialog();
-		if (confirmationDialog.userAccepted()) {
-			// Podcast view
-			if (navigationHandler.getCurrentView().equals(podcastNavigationView)) {
-				fromPodcastView();
-				// Repository or device view with folder view mode, folder selected: delete folders instead of content
-			} else if ((navigationHandler.getCurrentView().equals(repositoryNavigationView) || navigationHandler.getCurrentView().equals(deviceNavigationView))
-					&& navigationHandler.getCurrentViewMode() == ViewMode.FOLDER
-					&& navigationHandler.isActionOverTree()) {
-				fromRepositoryOrDeviceView(repositoryHandler);
-			} else {
-				fromOtherViews(repositoryHandler);
-			}
+    private void fromRepositoryOrDeviceView(
+	    final IRepositoryHandler repositoryHandler) {
+	List<ITreeNode> nodes = navigationHandler.getCurrentView().getTree()
+		.getSelectedNodes();
+	final List<IFolder> foldersToRemove = new ArrayList<IFolder>();
+	if (!CollectionUtils.isEmpty(nodes)) {
+	    for (ITreeNode node : nodes) {
+		Object treeNode = node.getUserObject();
+		if (treeNode instanceof IFolder) {
+		    foldersToRemove.add((IFolder) treeNode);
 		}
+	    }
 	}
-
-	private void fromOtherViews(final IRepositoryHandler repositoryHandler) {
-		final List<IAudioObject> files = navigationHandler.getFilesSelectedInNavigator();
-		repositoryHandler.remove(localAudioObjectFilter.getLocalAudioObjects(files));
-
-		dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
+	repositoryHandler.removeFolders(foldersToRemove);
+	SwingUtilities.invokeLater(new Runnable() {
+	    @Override
+	    public void run() {
+		dialog = dialogFactory
+			.newDialog(IIndeterminateProgressDialog.class);
 		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				dialog.showDialog();
-			}
-		});
-		new DeleteFilesWorker(dialog, localAudioObjectFilter.getLocalAudioObjects(files)).execute();
-	}
-
-	private void fromRepositoryOrDeviceView(final IRepositoryHandler repositoryHandler) {
-		TreePath[] paths = navigationHandler.getCurrentView().getTree().getSelectionPaths();
-		final List<IFolder> foldersToRemove = new ArrayList<IFolder>();
-		if (paths != null) {
-			for (TreePath path : paths) {
-				Object treeNode = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-				if (treeNode instanceof IFolder) {
-					foldersToRemove.add((IFolder) treeNode);
-				}
-			}
+		dialog.showDialog();
+	    }
+	});
+	new SwingWorker<Void, Void>() {
+	    @Override
+	    protected Void doInBackground() {
+		for (IFolder folder : foldersToRemove) {
+		    try {
+			FileUtils.deleteDirectory(folder
+				.getFolderPath(osManager));
+			Logger.info(StringUtils.getString("Removed folder ",
+				folder));
+		    } catch (IOException e) {
+			Logger.info(StringUtils.getString(
+				"Could not remove folder ", folder,
+				e.getMessage()));
+		    }
 		}
-		repositoryHandler.removeFolders(foldersToRemove);
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
-				dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
-				dialog.showDialog();
-			}
-		});
-		new SwingWorker<Void, Void>() {
-			@Override
-			protected Void doInBackground() {
-				for (IFolder folder : foldersToRemove) {
-					try {
-						FileUtils.deleteDirectory(folder.getFolderPath(osManager));
-						Logger.info(StringUtils.getString("Removed folder ", folder));
-					} catch (IOException e) {
-						Logger.info(StringUtils.getString("Could not remove folder ", folder, e.getMessage()));
-					}
-				}
-				return null;
-			}
+		return null;
+	    }
 
-			@Override
-			protected void done() {
-				dialog.hideDialog();
-			}
-		}.execute();
+	    @Override
+	    protected void done() {
+		dialog.hideDialog();
+	    }
+	}.execute();
+    }
+
+    private void fromPodcastView() {
+	List<IAudioObject> songsAudioObjects = navigationHandler
+		.getSelectedAudioObjectsInNavigationTable();
+	if (!songsAudioObjects.isEmpty()) {
+	    for (IAudioObject ao : songsAudioObjects) {
+		podcastFeedHandler
+			.deleteDownloadedPodcastFeedEntry((IPodcastFeedEntry) ao);
+	    }
 	}
+    }
 
-	private void fromPodcastView() {
-		List<IAudioObject> songsAudioObjects = navigationHandler.getSelectedAudioObjectsInNavigationTable();
-		if (!songsAudioObjects.isEmpty()) {
-			for (IAudioObject ao : songsAudioObjects) {
-				podcastFeedHandler.deleteDownloadedPodcastFeedEntry((IPodcastFeedEntry) ao);
-			}
+    @Override
+    public boolean isEnabledForNavigationTreeSelection(
+	    final boolean rootSelected, final List<ITreeObject<?>> selection) {
+	return !rootSelected && !selection.isEmpty();
+    }
+
+    @Override
+    public boolean isEnabledForNavigationTableSelection(
+	    final List<IAudioObject> selection) {
+	if (navigationHandler.getCurrentView().equals(podcastNavigationView)) {
+	    for (IAudioObject ao : selection) {
+		if (!((IPodcastFeedEntry) ao).isDownloaded()) {
+		    return false;
 		}
+	    }
+	    return true;
+	}
+	return !selection.isEmpty();
+    }
+
+    private static final class DeleteFilesWorker extends
+	    SwingWorker<Void, Void> {
+
+	private final IIndeterminateProgressDialog dialog;
+
+	private final List<ILocalAudioObject> files;
+
+	private DeleteFilesWorker(final IIndeterminateProgressDialog dialog,
+		final List<ILocalAudioObject> files) {
+	    this.dialog = dialog;
+	    this.files = files;
 	}
 
 	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
-		return !rootSelected && !selection.isEmpty();
+	protected Void doInBackground() {
+	    for (ILocalAudioObject audioFile : files) {
+		File file = audioFile.getFile();
+		if (file != null && !file.delete()) {
+		    Logger.error(StringUtils.getString(file, " not deleted"));
+		}
+	    }
+	    return null;
 	}
 
 	@Override
-	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
-		if (navigationHandler.getCurrentView().equals(podcastNavigationView)) {
-			for (IAudioObject ao : selection) {
-				if (!((IPodcastFeedEntry) ao).isDownloaded()) {
-					return false;
-				}
-			}
-			return true;
-		}
-		return !selection.isEmpty();
+	protected void done() {
+	    dialog.hideDialog();
 	}
+    }
 
-	private static final class DeleteFilesWorker extends SwingWorker<Void, Void> {
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
 
-		private final IIndeterminateProgressDialog dialog;
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+	this.repositoryHandler = repositoryHandler;
+    }
 
-		private final List<ILocalAudioObject> files;
+    /**
+     * @param osManager
+     */
+    public void setOsManager(final IOSManager osManager) {
+	this.osManager = osManager;
+    }
 
-		private DeleteFilesWorker(final IIndeterminateProgressDialog dialog, final List<ILocalAudioObject> files) {
-			this.dialog = dialog;
-			this.files = files;
-		}
-
-		@Override
-		protected Void doInBackground() {
-			for (ILocalAudioObject audioFile : files) {
-				File file = audioFile.getFile();
-				if (file != null && !file.delete()) {
-					Logger.error(StringUtils.getString(file, " not deleted"));
-				}
-			}
-			return null;
-		}
-
-		@Override
-		protected void done() {
-			dialog.hideDialog();
-		}
-	}
-
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-
-	/**
-	 * @param repositoryHandler
-	 */
-	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
-	}
-
-	/**
-	 * @param podcastFeedHandler
-	 */
-	public void setPodcastFeedHandler(final IPodcastFeedHandler podcastFeedHandler) {
-		this.podcastFeedHandler = podcastFeedHandler;
-	}
+    /**
+     * @param podcastFeedHandler
+     */
+    public void setPodcastFeedHandler(
+	    final IPodcastFeedHandler podcastFeedHandler) {
+	this.podcastFeedHandler = podcastFeedHandler;
+    }
 }

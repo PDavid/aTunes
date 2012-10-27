@@ -23,13 +23,15 @@ package net.sourceforge.atunes.model;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import javax.swing.JTree;
+
 /**
  * UI component for navigation tree
  * 
  * @author alex
  * 
  */
-public interface INavigationTree {
+public interface INavigationTree extends IComponent<JTree> {
 
     /**
      * Sets root text
@@ -125,6 +127,11 @@ public interface INavigationTree {
      * @return selected nodes
      */
     List<ITreeNode> getSelectedNodes();
+
+    /**
+     * @return selected node
+     */
+    ITreeNode getSelectedNode();
 
     /**
      * @param e
