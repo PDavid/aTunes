@@ -52,6 +52,16 @@ public class YearTreeGenerator implements ITreeGenerator {
 
     private IUnknownObjectChecker unknownObjectChecker;
 
+    private ArtistStructureBuilder artistStructureBuilder;
+
+    /**
+     * @param artistStructureBuilder
+     */
+    public void setArtistStructureBuilder(
+	    final ArtistStructureBuilder artistStructureBuilder) {
+	this.artistStructureBuilder = artistStructureBuilder;
+    }
+
     /**
      * @param unknownObjectChecker
      */
@@ -128,15 +138,14 @@ public class YearTreeGenerator implements ITreeGenerator {
 	    if (objectsExpanded.contains(yearNode.getUserObject())) {
 		nodesToExpand.add(yearNode);
 	    }
-	    ArtistStructureBuilder builder = new ArtistStructureBuilder(
-		    unknownObjectChecker);
 	    List<ILocalAudioObject> audioObjects = year.getAudioObjects();
 	    // Returns all artists of this year
-	    List<String> artistNamesList = builder.getArtistList(audioObjects);
+	    List<String> artistNamesList = artistStructureBuilder
+		    .getArtistList(audioObjects);
 	    Collections.sort(artistNamesList);
 	    // Returns an structure of artists and albums containing songs of
 	    // this year
-	    Map<String, IArtist> yearArtists = builder
+	    Map<String, IArtist> yearArtists = artistStructureBuilder
 		    .getArtistObjects(audioObjects);
 	    for (int j = 0; j < artistNamesList.size(); j++) {
 		buildArtistNode(tree, objectsSelected, objectsExpanded,
