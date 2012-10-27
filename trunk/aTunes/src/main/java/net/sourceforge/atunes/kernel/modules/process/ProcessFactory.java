@@ -28,20 +28,22 @@ import org.springframework.context.ApplicationContextAware;
 
 /**
  * Implements a IProcessFactory using Spring beans
+ * 
  * @author alex
- *
+ * 
  */
 public class ProcessFactory implements IProcessFactory, ApplicationContextAware {
 
-	private ApplicationContext context;
-	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
-	}
-	
-	@Override
-	public IProcess getProcessByName(String processName) {
-		return this.context.getBean(processName, IProcess.class);
-	}
+    private ApplicationContext context;
+
+    @Override
+    public void setApplicationContext(
+	    final ApplicationContext applicationContext) {
+	this.context = applicationContext;
+    }
+
+    @Override
+    public IProcess<?> getProcessByName(final String processName) {
+	return this.context.getBean(processName, IProcess.class);
+    }
 }

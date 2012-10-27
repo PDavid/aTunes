@@ -44,7 +44,8 @@ import org.commonjukebox.plugins.model.PluginApi;
  * @param <T>
  */
 @PluginApi
-public abstract class AbstractContextPanelContent<T extends IContextInformationSource> implements IContextPanelContent<T> {
+public abstract class AbstractContextPanelContent<T extends IContextInformationSource>
+	implements IContextPanelContent<T> {
 
     private static final long serialVersionUID = 7059398864514654378L;
 
@@ -57,7 +58,7 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
      * Worker used to retrieve data
      */
     private ContextInformationSwingWorker worker;
-    
+
     /**
      * Future to access worker once submitted
      */
@@ -67,14 +68,14 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
      * panel that handles this content
      */
     private JPanel parentPanel;
-    
+
     private ILookAndFeelManager lookAndFeelManager;
-    
+
     /**
      * Access to desktop
      */
     private IDesktop desktop;
-    
+
     /**
      * Task Service
      */
@@ -83,111 +84,138 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
     /**
      * @param contextTaskService
      */
-    public void setContextTaskService(ITaskService contextTaskService) {
-		this.contextTaskService = contextTaskService;
-	}
-    
+    public void setContextTaskService(final ITaskService contextTaskService) {
+	this.contextTaskService = contextTaskService;
+    }
+
     @Override
-	public final void updateContextPanelContent(IAudioObject audioObject, Runnable updateCallback) {
-        callDataSource(audioObject, updateCallback);
+    public final void updateContextPanelContent(final IAudioObject audioObject,
+	    final Runnable updateCallback) {
+	callDataSource(audioObject, updateCallback);
     }
 
     /**
      * Calls data source to get context information
+     * 
      * @param audioObject
      * @param updateCallback
      */
-    private void callDataSource(IAudioObject audioObject, Runnable updateCallback) {
-        // Create a new worker and call it
-        worker = new ContextInformationSwingWorker(this, this.dataSource, audioObject, updateCallback);
-        future = contextTaskService.submitNow(this.getClass().getName(), worker);
+    @SuppressWarnings("unchecked")
+    private void callDataSource(final IAudioObject audioObject,
+	    final Runnable updateCallback) {
+	// Create a new worker and call it
+	worker = new ContextInformationSwingWorker(
+		(IContextPanelContent<IContextInformationSource>) this,
+		this.dataSource, audioObject, updateCallback);
+	future = contextTaskService
+		.submitNow(this.getClass().getName(), worker);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#clearContextPanelContent()
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#
+     * clearContextPanelContent()
+     */
     @Override
-	public void clearContextPanelContent() {
-    	if (parentPanel != null) {
-    		parentPanel.setEnabled(false);
-    		parentPanel.setVisible(false);
-    	}
-        cancelWorker();
+    public void clearContextPanelContent() {
+	if (parentPanel != null) {
+	    parentPanel.setEnabled(false);
+	    parentPanel.setVisible(false);
+	}
+	cancelWorker();
     }
-    
+
     private void cancelWorker() {
-    	if (future != null) {
-    		future.cancel(true);
-    	}
-        if (worker != null) {
-            worker.cancel();
-        }
+	if (future != null) {
+	    future.cancel(true);
+	}
+	if (worker != null) {
+	    worker.cancel();
+	}
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#isScrollNeeded()
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#
+     * isScrollNeeded()
+     */
     @Override
-	public boolean isScrollNeeded() {
-        return false;
+    public boolean isScrollNeeded() {
+	return false;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#getOptions()
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#getOptions
+     * ()
+     */
     @Override
-	public List<Component> getOptions() {
-        return null;
+    public List<Component> getOptions() {
+	return null;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#setParentPanel(javax.swing.JPanel)
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#
+     * setParentPanel(javax.swing.JPanel)
+     */
     @Override
-	public void setParentPanel(JPanel parentPanel) {
-        this.parentPanel = parentPanel;
+    public void setParentPanel(final JPanel parentPanel) {
+	this.parentPanel = parentPanel;
     }
 
     @Override
     public JPanel getParentPanel() {
-        return parentPanel;
+	return parentPanel;
     }
-    
+
     protected IContextInformationSource getDataSource() {
-		return dataSource;
-	}
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#setDataSource(net.sourceforge.atunes.model.IContextInformationSource)
-	 */
+	return dataSource;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#
+     * setDataSource(net.sourceforge.atunes.model.IContextInformationSource)
+     */
     @Override
-	public void setDataSource(IContextInformationSource dataSource) {
-		this.dataSource = dataSource;
-	}
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#setLookAndFeelManager(net.sourceforge.atunes.model.ILookAndFeelManager)
-	 */
+    public void setDataSource(final IContextInformationSource dataSource) {
+	this.dataSource = dataSource;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#
+     * setLookAndFeelManager(net.sourceforge.atunes.model.ILookAndFeelManager)
+     */
     @Override
-	public void setLookAndFeelManager(ILookAndFeelManager iLookAndFeelManager) {
-		this.lookAndFeelManager = iLookAndFeelManager;
-	}
-    
+    public void setLookAndFeelManager(
+	    final ILookAndFeelManager iLookAndFeelManager) {
+	this.lookAndFeelManager = iLookAndFeelManager;
+    }
+
     protected ILookAndFeelManager getLookAndFeelManager() {
-		return lookAndFeelManager;
-	}
-    
+	return lookAndFeelManager;
+    }
+
     /**
      * @param desktop
      */
-    public void setDesktop(IDesktop desktop) {
-		this.desktop = desktop;
-	}
-    
+    public void setDesktop(final IDesktop desktop) {
+	this.desktop = desktop;
+    }
+
     /**
      * @return access to desktop
      */
     protected IDesktop getDesktop() {
-		return desktop;
-	}
+	return desktop;
+    }
 }

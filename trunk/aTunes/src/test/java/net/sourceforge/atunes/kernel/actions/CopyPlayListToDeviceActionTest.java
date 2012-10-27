@@ -38,23 +38,24 @@ import org.mockito.Mockito;
 
 public class CopyPlayListToDeviceActionTest {
 
-	@Test
-	public void test() {
-		CopyPlayListToDeviceAction sut = new CopyPlayListToDeviceAction();
-		IDeviceHandler deviceHandler = mock(IDeviceHandler.class);
-		IPlayListHandler playListHandler = mock(IPlayListHandler.class);
-		sut.setDeviceHandler(deviceHandler);
-		sut.setPlayListHandler(playListHandler);
-		IPlayListObjectFilter<ILocalAudioObject> filter = mock(IPlayListObjectFilter.class);
-		sut.setPlayListObjectFilter(filter);
-		ILocalAudioObject ao = mock(ILocalAudioObject.class);
-		List<ILocalAudioObject> aos = new ArrayList<ILocalAudioObject>();
-		aos.add(ao);
-		when(filter.getObjects(Mockito.any(IPlayList.class))).thenReturn(aos);
-		
-		sut.executeAction();
-		
-		verify(playListHandler).getVisiblePlayList();
-		verify(deviceHandler).copyFilesToDevice(aos);
-	}
+    @SuppressWarnings("unchecked")
+    @Test
+    public void test() {
+	CopyPlayListToDeviceAction sut = new CopyPlayListToDeviceAction();
+	IDeviceHandler deviceHandler = mock(IDeviceHandler.class);
+	IPlayListHandler playListHandler = mock(IPlayListHandler.class);
+	sut.setDeviceHandler(deviceHandler);
+	sut.setPlayListHandler(playListHandler);
+	IPlayListObjectFilter<ILocalAudioObject> filter = mock(IPlayListObjectFilter.class);
+	sut.setPlayListObjectFilter(filter);
+	ILocalAudioObject ao = mock(ILocalAudioObject.class);
+	List<ILocalAudioObject> aos = new ArrayList<ILocalAudioObject>();
+	aos.add(ao);
+	when(filter.getObjects(Mockito.any(IPlayList.class))).thenReturn(aos);
+
+	sut.executeAction();
+
+	verify(playListHandler).getVisiblePlayList();
+	verify(deviceHandler).copyFilesToDevice(aos);
+    }
 }

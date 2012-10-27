@@ -34,58 +34,58 @@ import net.sourceforge.atunes.model.IPlayListEventListener;
 import org.junit.Before;
 import org.junit.Test;
 
-
 public class PlayListEventListenersTest {
 
-	private PlayListEventListeners sut;	
-	private IPlayListEventListener mock1;
-	private IPlayListEventListener mock2;
-	
-	@Before
-	public void init() {
-		sut = new PlayListEventListeners();
-		List<IPlayListEventListener> listeners = new ArrayList<IPlayListEventListener>();
-		mock1 = mock(IPlayListEventListener.class);
-		mock2 = mock(IPlayListEventListener.class);
-		listeners.add(mock1);
-		listeners.add(mock2);
-		sut.setListeners(listeners);
-	}
+    private PlayListEventListeners sut;
+    private IPlayListEventListener mock1;
+    private IPlayListEventListener mock2;
 
-	@Test
-	public void audioObjectsAdded() {
-		List<IPlayListAudioObject> list = anyList();
-		sut.audioObjectsAdded(list);
-		
-		verify(mock1).audioObjectsAdded(list);
-		verify(mock2).audioObjectsAdded(list);
-	}
-	
-	@Test
-	public void audioObjectsRemoved() {
-		List<IPlayListAudioObject> list = anyList();
-		sut.audioObjectsRemoved(list);
-		
-		verify(mock1).audioObjectsRemoved(list);
-		verify(mock2).audioObjectsRemoved(list);
-	}
+    @Before
+    public void init() {
+	sut = new PlayListEventListeners();
+	List<IPlayListEventListener> listeners = new ArrayList<IPlayListEventListener>();
+	mock1 = mock(IPlayListEventListener.class);
+	mock2 = mock(IPlayListEventListener.class);
+	listeners.add(mock1);
+	listeners.add(mock2);
+	sut.setListeners(listeners);
+    }
 
-	@Test
-	public void playListCleared() {
-		sut.playListCleared();
-		
-		verify(mock1).playListCleared();
-		verify(mock2).playListCleared();
-	}
-	
-	@Test
-	public void selectedAudioObjectHasChanged() {
-		IAudioObject ao = mock(IAudioObject.class);
-		sut.selectedAudioObjectHasChanged(ao);
-		
-		verify(mock1).selectedAudioObjectChanged(ao);
-		verify(mock2).selectedAudioObjectChanged(ao);
-	}
+    @SuppressWarnings("unchecked")
+    @Test
+    public void audioObjectsAdded() {
+	List<IPlayListAudioObject> list = anyList();
+	sut.audioObjectsAdded(list);
 
+	verify(mock1).audioObjectsAdded(list);
+	verify(mock2).audioObjectsAdded(list);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void audioObjectsRemoved() {
+	List<IPlayListAudioObject> list = anyList();
+	sut.audioObjectsRemoved(list);
+
+	verify(mock1).audioObjectsRemoved(list);
+	verify(mock2).audioObjectsRemoved(list);
+    }
+
+    @Test
+    public void playListCleared() {
+	sut.playListCleared();
+
+	verify(mock1).playListCleared();
+	verify(mock2).playListCleared();
+    }
+
+    @Test
+    public void selectedAudioObjectHasChanged() {
+	IAudioObject ao = mock(IAudioObject.class);
+	sut.selectedAudioObjectHasChanged(ao);
+
+	verify(mock1).selectedAudioObjectChanged(ao);
+	verify(mock2).selectedAudioObjectChanged(ao);
+    }
 
 }
