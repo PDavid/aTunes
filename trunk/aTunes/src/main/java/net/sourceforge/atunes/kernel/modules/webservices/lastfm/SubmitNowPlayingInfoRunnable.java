@@ -29,63 +29,74 @@ import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * Runnable to submit now playing information
+ * 
+ * @author alex
+ * 
+ */
 public final class SubmitNowPlayingInfoRunnable implements Runnable {
 
-	private ILocalAudioObject audioFile;
-	
-	private LastFmUserServices lastFmUserServices;
-	
-	private IStateContext stateContext;
+    private ILocalAudioObject audioFile;
 
-	private IDialogFactory dialogFactory;
+    private LastFmUserServices lastFmUserServices;
 
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
-	
-	/**
-	 * @param lastFmUserServices
-	 */
-	public void setLastFmUserServices(LastFmUserServices lastFmUserServices) {
-		this.lastFmUserServices = lastFmUserServices;
-	}
-	
-	/**
-	 * @param stateContext
-	 */
-	public void setStateContext(IStateContext stateContext) {
-		this.stateContext = stateContext;
-	}
+    private IStateContext stateContext;
 
-	/**
-	 * @param audioFile
-	 */
-	public void setAudioFile(ILocalAudioObject audioFile) {
-		this.audioFile = audioFile;
-	}
-	
-	@Override
-	public void run() {
-	    try {
-	        lastFmUserServices.submitNowPlayingInfo(audioFile);
-	    } catch (ScrobblerException e) {
-	        if (e.getStatus() == 2) {
-	            Logger.error("Authentication failure on Last.fm service");
-	            SwingUtilities.invokeLater(new Runnable() {
+    private IDialogFactory dialogFactory;
 
-	                @Override
-	                public void run() {
-	                	dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
-	                    // Disable service by deleting password
-	                    stateContext.setLastFmEnabled(false);
-	                }
-	            });
-	        } else {
-	            Logger.error(e.getMessage());
-	        }
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(final IDialogFactory dialogFactory) {
+	this.dialogFactory = dialogFactory;
+    }
+
+    /**
+     * @param lastFmUserServices
+     */
+    public void setLastFmUserServices(
+	    final LastFmUserServices lastFmUserServices) {
+	this.lastFmUserServices = lastFmUserServices;
+    }
+
+    /**
+     * @param stateContext
+     */
+    public void setStateContext(final IStateContext stateContext) {
+	this.stateContext = stateContext;
+    }
+
+    /**
+     * @param audioFile
+     */
+    public void setAudioFile(final ILocalAudioObject audioFile) {
+	this.audioFile = audioFile;
+    }
+
+    @Override
+    public void run() {
+	try {
+	    lastFmUserServices.submitNowPlayingInfo(audioFile);
+	} catch (ScrobblerException e) {
+	    if (e.getStatus() == 2) {
+		Logger.error("Authentication failure on Last.fm service");
+		SwingUtilities.invokeLater(new Runnable() {
+
+		    @Override
+		    public void run() {
+			dialogFactory
+				.newDialog(IErrorDialog.class)
+				.showErrorDialog(
+					I18nUtils
+						.getString("LASTFM_USER_ERROR"));
+			// Disable service by deleting password
+			stateContext.setLastFmEnabled(false);
+		    }
+		});
+	    } else {
+		Logger.error(e.getMessage());
 	    }
 	}
+    }
 }
