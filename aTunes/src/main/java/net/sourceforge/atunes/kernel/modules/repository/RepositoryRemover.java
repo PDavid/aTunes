@@ -37,194 +37,203 @@ import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Removes from repository
+ * 
  * @author alex
- *
+ * 
  */
 public class RepositoryRemover {
 
-	private IOSManager osManager;
+    private IOSManager osManager;
 
-	private IRepositoryHandler repositoryHandler;
+    private IRepositoryHandler repositoryHandler;
 
-	private IDeviceHandler deviceHandler;
+    private IDeviceHandler deviceHandler;
 
-	private IUnknownObjectChecker unknownObjectChecker;
+    private IUnknownObjectChecker unknownObjectChecker;
 
-	/**
-	 * @param unknownObjectChecker
-	 */
-	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
+    /**
+     * @param unknownObjectChecker
+     */
+    public void setUnknownObjectChecker(
+	    final IUnknownObjectChecker unknownObjectChecker) {
+	this.unknownObjectChecker = unknownObjectChecker;
+    }
+
+    /**
+     * @param osManager
+     */
+    public void setOsManager(final IOSManager osManager) {
+	this.osManager = osManager;
+    }
+
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+	this.repositoryHandler = repositoryHandler;
+    }
+
+    /**
+     * @param deviceHandler
+     */
+    public void setDeviceHandler(final IDeviceHandler deviceHandler) {
+	this.deviceHandler = deviceHandler;
+    }
+
+    /**
+     * Permanently deletes an audio file from the repository meta-information
+     * 
+     * This method marks repository as dirty but new state is not notified To
+     * notify repository change call Repository.setDirty(true, true) when finish
+     * 
+     * @param file
+     * @param osManager
+     * @param repositoryHandler
+     * @param deviceHandler
+     */
+    public void deleteFile(final ILocalAudioObject file) {
+	// Only do this if file is in repository
+	if (getFolderForFile(file, osManager, repositoryHandler) != null) {
+	    removeFromRepository(file);
 	}
-
-
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
+	// File is on a device
+	else if (deviceHandler.isDevicePath(file.getUrl())) {
+	    Logger.info("Deleted file ", file, " from device");
 	}
+    }
 
-	/**
-	 * @param repositoryHandler
-	 */
-	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
+    /**
+     * @param file
+     */
+    private void removeFromRepository(final ILocalAudioObject file) {
+	// Remove from file structure
+	removeFromFolderStructure(file);
+
+	// Remove from tree structure
+	removeFromTreeStructure(file);
+
+	// Remove from genre structure
+	removeFromGenreStructure(file);
+
+	// Remove from year structure
+	removeFromYearStructure(file);
+
+	// Remove from repository
+	repositoryHandler.removeFile(file);
+    }
+
+    /**
+     * @param file
+     */
+    void removeFromYearStructure(final ILocalAudioObject file) {
+	String year = file.getYear();
+
+	IYear y = repositoryHandler.getYear(year);
+	if (y != null) {
+	    y.removeAudioObject(file);
+	    if (y.size() == 0) {
+		repositoryHandler.removeYear(y);
+	    }
 	}
+    }
 
-	/**
-	 * @param deviceHandler
-	 */
-	public void setDeviceHandler(final IDeviceHandler deviceHandler) {
-		this.deviceHandler = deviceHandler;
+    /**
+     * @param file
+     */
+    void removeFromGenreStructure(final ILocalAudioObject file) {
+	String genre = file.getGenre(unknownObjectChecker);
+
+	IGenre g = repositoryHandler.getGenre(genre);
+	if (g != null) {
+	    g.removeAudioObject(file);
+	    if (g.size() == 0) {
+		repositoryHandler.removeGenre(g);
+	    }
 	}
+    }
 
-	/**
-	 * Permanently deletes an audio file from the repository meta-information
-	 * 
-	 * This method marks repository as dirty but new state is not notified
-	 * To notify repository change call Repository.setDirty(true, true) when finish
-	 * 
-	 * @param file
-	 * @param osManager
-	 * @param repositoryHandler
-	 * @param deviceHandler
-	 */
-	public void deleteFile(final ILocalAudioObject file) {
-		// Only do this if file is in repository
-		if (getFolderForFile(file, osManager, repositoryHandler) != null) {
-			removeFromRepository(file);
-		}
-		// File is on a device
-		else if (deviceHandler.isDevicePath(file.getUrl())) {
-			Logger.info("Deleted file ", file, " from device");
-		}
+    /**
+     * @param file
+     */
+    void removeFromTreeStructure(final ILocalAudioObject file) {
+	String albumArtist = file.getAlbumArtist(unknownObjectChecker);
+	String artist = file.getArtist(unknownObjectChecker);
+	String album = file.getAlbum(unknownObjectChecker);
+
+	IArtist a = repositoryHandler.getArtist(albumArtist);
+	if (a == null || unknownObjectChecker.isUnknownArtist(a)) {
+	    a = repositoryHandler.getArtist(artist);
 	}
-
-	/**
-	 * @param file
-	 */
-	private void removeFromRepository(final ILocalAudioObject file) {
-		// Remove from file structure
-		removeFromFileStructure(file);
-
-		// Remove from tree structure
-		removeFromTreeStructure(file);
-
-		// Remove from genre structure
-		removeFromGenreStructure(file);
-
-		// Remove from year structure
-		removeFromYearStructure(file);
-
-		// Remove from repository
-		repositoryHandler.removeFile(file);
-	}
-
-	/**
-	 * @param file
-	 */
-	private void removeFromYearStructure(final ILocalAudioObject file) {
-		String year = file.getYear();
-
-		IYear y = repositoryHandler.getYear(year);
-		if (y != null) {
-			y.removeAudioObject(file);
-			if (y.size() <= 1) {
-				repositoryHandler.removeYear(y);
-			}
-		}
-	}
-
-	/**
-	 * @param file
-	 */
-	private void removeFromGenreStructure(final ILocalAudioObject file) {
-		String genre = file.getGenre(unknownObjectChecker);
-
-		IGenre g = repositoryHandler.getGenre(genre);
-		if (g != null) {
-			g.removeAudioObject(file);
-			if (g.size() <= 1) {
-				repositoryHandler.removeGenre(g);
-			}
-		}
-	}
-
-	/**
-	 * @param file
-	 */
-	private void removeFromTreeStructure(final ILocalAudioObject file) {
-		String albumArtist = file.getAlbumArtist(unknownObjectChecker);
-		String artist = file.getArtist(unknownObjectChecker);
-		String album = file.getAlbum(unknownObjectChecker);
-
-		IArtist a = repositoryHandler.getArtist(albumArtist);
-		if (a == null || unknownObjectChecker.isUnknownArtist(a)) {
-			a = repositoryHandler.getArtist(artist);
-		}
-		if (a != null) {
-			IAlbum alb = a.getAlbum(album);
-			if (alb != null) {
-				if (alb.size() == 1) {
-					a.removeAlbum(alb);
-				} else {
-					alb.removeAudioFile(file);
-				}
-
-				if (a.size() <= 1) {
-					repositoryHandler.removeArtist(a);
-				}
-			}
-		}
-	}
-
-	/**
-	 * @param file
-	 */
-	private void removeFromFileStructure(final ILocalAudioObject file) {
-		IFolder f = getFolderForFile(file, osManager, repositoryHandler);
-		if (f != null) {
-			f.removeAudioFile(file);
-			// Remove all empty parent folders
-			while (f != null && f.isEmpty()) {
-				f.getParentFolder().removeFolder(f);
-				f = f.getParentFolder();
-			}
-		}
-	}
-
-	/**
-	 * Finds folder that contains file.
-	 * 
-	 * @param file
-	 *            Audio file for which the folder is wanted
-	 * 
-	 * @param osManager
-	 * @param repositoryHandler
-	 * @return Either folder or null if file is not in repository
-	 */
-	private IFolder getFolderForFile(final ILocalAudioObject file, final IOSManager osManager, final IRepositoryHandler repositoryHandler) {
-		// Get repository folder where file is
-		File repositoryFolder = repositoryHandler.getRepositoryFolderContainingFile(file);
-		// If the file is not in the repository, return null
-		if (repositoryFolder == null) {
-			return null;
+	if (a != null) {
+	    IAlbum alb = a.getAlbum(album);
+	    if (alb != null) {
+		if (alb.size() == 1) {
+		    a.removeAlbum(alb);
+		} else {
+		    alb.removeAudioFile(file);
 		}
 
-		// Get root folder
-		IFolder rootFolder = repositoryHandler.getFolder(net.sourceforge.atunes.utils.FileUtils.getPath(repositoryFolder));
-
-		// Now navigate through folder until find folder that contains file
-		String path = net.sourceforge.atunes.utils.FileUtils.getPath(file.getFile().getParentFile());
-		path = path.replace(net.sourceforge.atunes.utils.FileUtils.getPath(repositoryFolder), "");
-
-		IFolder f = rootFolder;
-		StringTokenizer st = new StringTokenizer(path, osManager.getFileSeparator());
-		while (st.hasMoreTokens()) {
-			String folderName = st.nextToken();
-			f = f.getFolder(folderName);
+		if (a.isEmpty()) {
+		    repositoryHandler.removeArtist(a);
 		}
-		return f;
+	    }
 	}
+    }
+
+    /**
+     * @param file
+     */
+    void removeFromFolderStructure(final ILocalAudioObject file) {
+	IFolder f = getFolderForFile(file, osManager, repositoryHandler);
+	if (f != null) {
+	    f.removeAudioFile(file);
+	    // Remove all empty parent folders
+	    while (f != null && f.isEmpty()) {
+		f.getParentFolder().removeFolder(f);
+		f = f.getParentFolder();
+	    }
+	}
+    }
+
+    /**
+     * Finds folder that contains file.
+     * 
+     * @param file
+     *            Audio file for which the folder is wanted
+     * 
+     * @param osManager
+     * @param repositoryHandler
+     * @return Either folder or null if file is not in repository
+     */
+    private IFolder getFolderForFile(final ILocalAudioObject file,
+	    final IOSManager osManager,
+	    final IRepositoryHandler repositoryHandler) {
+	// Get repository folder where file is
+	File repositoryFolder = repositoryHandler
+		.getRepositoryFolderContainingFile(file);
+	// If the file is not in the repository, return null
+	if (repositoryFolder == null) {
+	    return null;
+	}
+
+	// Get root folder
+	IFolder rootFolder = repositoryHandler
+		.getFolder(net.sourceforge.atunes.utils.FileUtils
+			.getPath(repositoryFolder));
+
+	// Now navigate through folder until find folder that contains file
+	String path = net.sourceforge.atunes.utils.FileUtils.getPath(file
+		.getFile().getParentFile());
+	path = path.replace(net.sourceforge.atunes.utils.FileUtils
+		.getPath(repositoryFolder), "");
+
+	IFolder f = rootFolder;
+	StringTokenizer st = new StringTokenizer(path,
+		osManager.getFileSeparator());
+	while (st.hasMoreTokens()) {
+	    String folderName = st.nextToken();
+	    f = f.getFolder(folderName);
+	}
+	return f;
+    }
 }
