@@ -25,7 +25,7 @@ import java.util.List;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateNavigation;
-import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,57 +35,59 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class RefreshFolderFromNavigatorAction extends AbstractActionOverSelectedTreeObjects<IFolder> {
+public class RefreshFolderFromNavigatorAction extends
+	AbstractActionOverSelectedTreeObjects<IFolder> {
 
-	private static final long serialVersionUID = -6840836346786226858L;
+    private static final long serialVersionUID = -6840836346786226858L;
 
-	private IRepositoryHandler repositoryHandler;
+    private IRepositoryHandler repositoryHandler;
 
-	private IStateNavigation stateNavigation;
+    private IStateNavigation stateNavigation;
 
-	/**
-	 * @param stateNavigation
-	 */
-	public void setStateNavigation(final IStateNavigation stateNavigation) {
-		this.stateNavigation = stateNavigation;
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(final IStateNavigation stateNavigation) {
+	this.stateNavigation = stateNavigation;
+    }
+
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+	this.repositoryHandler = repositoryHandler;
+    }
+
+    /**
+     * Default constructor
+     */
+    public RefreshFolderFromNavigatorAction() {
+	super(I18nUtils.getString("REFRESH_FOLDER"));
+	putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH_FOLDER"));
+    }
+
+    @Override
+    protected void executeAction(final List<IFolder> folders) {
+	repositoryHandler.refreshFolders(folders);
+    }
+
+    @Override
+    public boolean isEnabledForNavigationTreeSelection(
+	    final boolean rootSelected, final List<ITreeNode> selection) {
+	if (selection.isEmpty()) {
+	    return false;
 	}
 
-	/**
-	 * @param repositoryHandler
-	 */
-	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
+	if (stateNavigation.getViewMode() != ViewMode.FOLDER) {
+	    return false;
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public RefreshFolderFromNavigatorAction() {
-		super(I18nUtils.getString("REFRESH_FOLDER"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH_FOLDER"));
+	for (ITreeNode node : selection) {
+	    if (!(node.getUserObject() instanceof IFolder)) {
+		return false;
+	    }
 	}
 
-	@Override
-	protected void executeAction(final List<IFolder> folders) {
-		repositoryHandler.refreshFolders(folders);
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
-		if (selection.isEmpty()) {
-			return false;
-		}
-
-		if (stateNavigation.getViewMode() != ViewMode.FOLDER) {
-			return false;
-		}
-
-		for (ITreeObject<?> node : selection) {
-			if (!(node instanceof IFolder)) {
-				return false;
-			}
-		}
-
-		return true;
-	}
+	return true;
+    }
 }

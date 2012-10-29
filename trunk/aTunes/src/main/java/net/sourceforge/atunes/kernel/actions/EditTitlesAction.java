@@ -24,52 +24,55 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.ITagHandler;
-import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Edit titles of an album
+ * 
  * @author alex
- *
+ * 
  */
-public class EditTitlesAction extends AbstractActionOverSelectedTreeObjects<IAlbum> {
+public class EditTitlesAction extends
+	AbstractActionOverSelectedTreeObjects<IAlbum> {
 
-	private static final long serialVersionUID = -2883223880879440970L;
+    private static final long serialVersionUID = -2883223880879440970L;
 
-	private ITagHandler tagHandler;
+    private ITagHandler tagHandler;
 
-	/**
-	 * @param tagHandler
-	 */
-	public void setTagHandler(final ITagHandler tagHandler) {
-		this.tagHandler = tagHandler;
+    /**
+     * @param tagHandler
+     */
+    public void setTagHandler(final ITagHandler tagHandler) {
+	this.tagHandler = tagHandler;
+    }
+
+    /**
+     * Default constructor
+     */
+    public EditTitlesAction() {
+	super(I18nUtils.getString("EDIT_TITLES"));
+	putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TITLES"));
+    }
+
+    @Override
+    protected void executeAction(final List<IAlbum> albums) {
+	tagHandler.editFiles(albums.get(0));
+    }
+
+    @Override
+    public boolean isEnabledForNavigationTreeSelection(
+	    final boolean rootSelected, final List<ITreeNode> selection) {
+	if (selection.isEmpty()) {
+	    return false;
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public EditTitlesAction() {
-		super(I18nUtils.getString("EDIT_TITLES"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TITLES"));
+	for (ITreeNode node : selection) {
+	    if (!(node.getUserObject() instanceof IAlbum)) {
+		return false;
+	    }
 	}
 
-	@Override
-	protected void executeAction(final List<IAlbum> albums) {
-		tagHandler.editFiles(albums.get(0));
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
-		if (selection.isEmpty()) {
-			return false;
-		}
-
-		for (ITreeObject<?> node : selection) {
-			if (!(node instanceof IAlbum)) {
-				return false;
-			}
-		}
-
-		return selection.size() == 1;
-	}
+	return selection.size() == 1;
+    }
 }

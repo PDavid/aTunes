@@ -29,7 +29,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
-import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -95,7 +95,7 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
 	}
 
 	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeNode> selection) {
 		return !rootSelected && !selection.isEmpty();
 	}
 

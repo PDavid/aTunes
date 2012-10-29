@@ -26,7 +26,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IChangeTagsProcess;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
-import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -64,7 +64,7 @@ public class AutoSetGenresAction extends AbstractActionOverSelectedObjects<ILoca
 	}
 
 	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeNode> selection) {
 		return !rootSelected && !selection.isEmpty();
 	}
 

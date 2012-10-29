@@ -25,64 +25,68 @@ import java.util.List;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
-import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Adds a radio as favorite
+ * 
  * @author alex
- *
+ * 
  */
-public class AddFavoriteRadioAction extends AbstractActionOverSelectedObjects<IRadio> {
+public class AddFavoriteRadioAction extends
+	AbstractActionOverSelectedObjects<IRadio> {
 
-	private static final long serialVersionUID = 82199784140877040L;
+    private static final long serialVersionUID = 82199784140877040L;
 
-	private IRadioHandler radioHandler;
+    private IRadioHandler radioHandler;
 
-	/**
-	 * @param radioHandler
-	 */
-	public void setRadioHandler(final IRadioHandler radioHandler) {
-		this.radioHandler = radioHandler;
+    /**
+     * @param radioHandler
+     */
+    public void setRadioHandler(final IRadioHandler radioHandler) {
+	this.radioHandler = radioHandler;
+    }
+
+    /**
+     * Default constructor
+     */
+    public AddFavoriteRadioAction() {
+	super(I18nUtils.getString("ADD_FAVORITE_RADIO"));
+    }
+
+    @Override
+    protected void initialize() {
+	super.initialize();
+	putValue(SHORT_DESCRIPTION, I18nUtils.getString("RADIO_VIEW_TOOLTIP"));
+    }
+
+    @Override
+    protected void executeAction(final List<IRadio> objects) {
+	for (IRadio r : objects) {
+	    radioHandler.addRadio(r);
+	}
+    }
+
+    @Override
+    public boolean isEnabledForNavigationTreeSelection(
+	    final boolean rootSelected, final List<ITreeNode> selection) {
+	if (rootSelected) {
+	    return false;
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public AddFavoriteRadioAction() {
-		super(I18nUtils.getString("ADD_FAVORITE_RADIO"));
+	for (ITreeNode node : selection) {
+	    if (!(node.getUserObject() instanceof IRadio)) {
+		return false;
+	    }
 	}
 
-	@Override
-	protected void initialize() {
-		super.initialize();
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("RADIO_VIEW_TOOLTIP"));
-	}
+	return true;
+    }
 
-	@Override
-	protected void executeAction(final List<IRadio> objects) {
-		for (IRadio r : objects) {
-			radioHandler.addRadio(r);
-		}
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
-		if (rootSelected) {
-			return false;
-		}
-
-		for (ITreeObject<?> node : selection) {
-			if (!(node instanceof IRadio)) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
-		return true;
-	}
+    @Override
+    public boolean isEnabledForNavigationTableSelection(
+	    final List<IAudioObject> selection) {
+	return true;
+    }
 }

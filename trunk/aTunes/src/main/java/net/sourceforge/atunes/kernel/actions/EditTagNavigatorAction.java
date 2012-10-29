@@ -26,7 +26,7 @@ import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITagHandler;
-import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -68,7 +68,7 @@ public class EditTagNavigatorAction extends AbstractActionOverSelectedObjects<IL
 	}
 
 	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeNode> selection) {
 		return !rootSelected && !selection.isEmpty();
 	}
 

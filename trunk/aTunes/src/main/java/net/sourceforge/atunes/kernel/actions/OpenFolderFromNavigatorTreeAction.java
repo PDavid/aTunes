@@ -25,7 +25,7 @@ import java.util.List;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -34,54 +34,56 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class OpenFolderFromNavigatorTreeAction extends AbstractActionOverSelectedTreeObjects<IFolder> {
+public class OpenFolderFromNavigatorTreeAction extends
+	AbstractActionOverSelectedTreeObjects<IFolder> {
 
-	private static final long serialVersionUID = 8251208528513562627L;
+    private static final long serialVersionUID = 8251208528513562627L;
 
-	private IDesktop desktop;
+    private IDesktop desktop;
 
-	private IOSManager osManager;
+    private IOSManager osManager;
 
-	/**
-	 * Default constructor
-	 */
-	public OpenFolderFromNavigatorTreeAction() {
-		super(I18nUtils.getString("OPEN_FOLDER"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("OPEN_FOLDER"));
+    /**
+     * Default constructor
+     */
+    public OpenFolderFromNavigatorTreeAction() {
+	super(I18nUtils.getString("OPEN_FOLDER"));
+	putValue(SHORT_DESCRIPTION, I18nUtils.getString("OPEN_FOLDER"));
+    }
+
+    /**
+     * @param osManager
+     */
+    public void setOsManager(final IOSManager osManager) {
+	this.osManager = osManager;
+    }
+
+    /**
+     * @param desktop
+     */
+    public void setDesktop(final IDesktop desktop) {
+	this.desktop = desktop;
+    }
+
+    @Override
+    public boolean isEnabledForNavigationTreeSelection(
+	    final boolean rootSelected, final List<ITreeNode> selection) {
+	return allNodesAreFolders(selection);
+    }
+
+    private boolean allNodesAreFolders(final List<ITreeNode> nodes) {
+	for (ITreeNode node : nodes) {
+	    if (!(node.getUserObject() instanceof IFolder)) {
+		return false;
+	    }
 	}
+	return true;
+    }
 
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
+    @Override
+    protected void executeAction(final List<IFolder> folders) {
+	for (IFolder folder : folders) {
+	    desktop.openFile(folder.getFolderPath(osManager), osManager);
 	}
-
-	/**
-	 * @param desktop
-	 */
-	public void setDesktop(final IDesktop desktop) {
-		this.desktop = desktop;
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
-		return allNodesAreFolders(selection);
-	}
-
-	private boolean allNodesAreFolders(final List<ITreeObject<?>> nodes) {
-		for (ITreeObject<?> node : nodes) {
-			if (!(node instanceof IFolder)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	protected void executeAction(final List<IFolder> folders) {
-		for (IFolder folder : folders) {
-			desktop.openFile(folder.getFolderPath(osManager), osManager);
-		}
-	}
+    }
 }
