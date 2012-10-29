@@ -30,7 +30,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IStateCore;
-import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -121,13 +121,14 @@ public class SearchArtistAction extends CustomAbstractAction {
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(
-	    final boolean rootSelected, final List<ITreeObject<?>> selection) {
+	    final boolean rootSelected, final List<ITreeNode> selection) {
 	if (selection.isEmpty()) {
 	    return false;
 	}
-	for (ITreeObject<?> node : selection) {
-	    if (!(node instanceof IArtist)
-		    || unknownObjectChecker.isUnknownArtist((IArtist) node)) {
+	for (ITreeNode node : selection) {
+	    if (!(node.getUserObject() instanceof IArtist)
+		    || unknownObjectChecker.isUnknownArtist((IArtist) node
+			    .getUserObject())) {
 		return false;
 	    }
 	}

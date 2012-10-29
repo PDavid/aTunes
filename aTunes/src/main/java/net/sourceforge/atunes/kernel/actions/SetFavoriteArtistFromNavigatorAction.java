@@ -27,76 +27,79 @@ import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IStateNavigation;
-import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Sets favorite artist
+ * 
  * @author alex
- *
+ * 
  */
-public class SetFavoriteArtistFromNavigatorAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
+public class SetFavoriteArtistFromNavigatorAction extends
+	AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-	private static final long serialVersionUID = -3551889307264609825L;
+    private static final long serialVersionUID = -3551889307264609825L;
 
-	private IFavoritesHandler favoritesHandler;
+    private IFavoritesHandler favoritesHandler;
 
-	private INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-	private IStateNavigation stateNavigation;
+    private IStateNavigation stateNavigation;
 
-	/**
-	 * @param stateNavigation
-	 */
-	public void setStateNavigation(final IStateNavigation stateNavigation) {
-		this.stateNavigation = stateNavigation;
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(final IStateNavigation stateNavigation) {
+	this.stateNavigation = stateNavigation;
+    }
+
+    /**
+     * @param favoritesHandler
+     */
+    public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
+	this.favoritesHandler = favoritesHandler;
+    }
+
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
+
+    /**
+     * Default constructor
+     */
+    public SetFavoriteArtistFromNavigatorAction() {
+	super(I18nUtils.getString("SET_FAVORITE_ARTIST"));
+	putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_ARTIST"));
+    }
+
+    @Override
+    protected void executeAction(final List<ILocalAudioObject> objects) {
+	favoritesHandler.toggleFavoriteArtists(objects);
+	navigationHandler.refreshNavigationTable();
+    }
+
+    @Override
+    public boolean isEnabledForNavigationTreeSelection(
+	    final boolean rootSelected, final List<ITreeNode> selection) {
+	if (selection.isEmpty()) {
+	    return false;
 	}
 
-	/**
-	 * @param favoritesHandler
-	 */
-	public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
-		this.favoritesHandler = favoritesHandler;
+	if (stateNavigation.getViewMode() == ViewMode.FOLDER) {
+	    return false;
 	}
 
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
+	for (ITreeNode node : selection) {
+	    if (!(node.getUserObject() instanceof IArtist)) {
+		return false;
+	    }
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public SetFavoriteArtistFromNavigatorAction() {
-		super(I18nUtils.getString("SET_FAVORITE_ARTIST"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_ARTIST"));
-	}
-
-	@Override
-	protected void executeAction(final List<ILocalAudioObject> objects) {
-		favoritesHandler.toggleFavoriteArtists(objects);
-		navigationHandler.refreshNavigationTable();
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
-		if (selection.isEmpty()) {
-			return false;
-		}
-
-		if (stateNavigation.getViewMode() == ViewMode.FOLDER) {
-			return false;
-		}
-
-		for (ITreeObject<?> node : selection) {
-			if (!(node instanceof IArtist)) {
-				return false;
-			}
-		}
-
-		return true;
-	}
+	return true;
+    }
 }

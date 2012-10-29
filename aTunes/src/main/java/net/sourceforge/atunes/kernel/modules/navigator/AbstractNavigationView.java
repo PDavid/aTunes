@@ -230,15 +230,9 @@ public abstract class AbstractNavigationView implements INavigationView {
 
     @Override
     public final void updateTreePopupMenuWithTreeSelection(final MouseEvent e) {
-	List<ITreeObject<?>> nodesSelected = new ArrayList<ITreeObject<?>>();
 	List<ITreeNode> nodes = getTree().getSelectedNodes();
-	if (!CollectionUtils.isEmpty(nodes)) {
-	    for (ITreeNode node : nodes) {
-		nodesSelected.add((ITreeObject<?>) node.getUserObject());
-	    }
-	}
 	for (Component c : getTreePopupMenu().getComponents()) {
-	    updateMenuComponent(getTree().isRowSelected(0), nodesSelected, c);
+	    updateMenuComponent(getTree().isRowSelected(0), nodes, c);
 	}
     }
 
@@ -258,7 +252,7 @@ public abstract class AbstractNavigationView implements INavigationView {
      * @param c
      */
     private void updateMenuComponent(final boolean rootSelected,
-	    final List<ITreeObject<?>> selection, final Component c) {
+	    final List<ITreeNode> selection, final Component c) {
 	if (c != null) {
 	    if (c instanceof JMenu) {
 		for (int i = 0; i < ((JMenu) c).getItemCount(); i++) {
@@ -296,7 +290,7 @@ public abstract class AbstractNavigationView implements INavigationView {
      * @param menuItem
      */
     private void updateMenuItem(final boolean rootSelected,
-	    final List<ITreeObject<?>> selection, final JMenuItem menuItem) {
+	    final List<ITreeNode> selection, final JMenuItem menuItem) {
 	Action a = menuItem.getAction();
 	if (a instanceof CustomAbstractAction) {
 	    a.setEnabled(((CustomAbstractAction) a)

@@ -25,7 +25,7 @@ import java.util.List;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectExporter;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
-import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -70,7 +70,7 @@ public class ExportNavigatorSelectionAction extends AbstractActionOverSelectedOb
 	}
 
 	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeObject<?>> selection) {
+	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeNode> selection) {
 		return !selection.isEmpty();
 	}
 

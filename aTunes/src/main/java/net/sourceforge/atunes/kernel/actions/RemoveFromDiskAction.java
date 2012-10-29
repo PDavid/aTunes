@@ -42,7 +42,6 @@ import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITreeNode;
-import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -237,7 +236,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(
-	    final boolean rootSelected, final List<ITreeObject<?>> selection) {
+	    final boolean rootSelected, final List<ITreeNode> selection) {
 	return !rootSelected && !selection.isEmpty();
     }
 

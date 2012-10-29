@@ -118,13 +118,13 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(
-	    final boolean rootSelected, final List<ITreeObject<?>> selection) {
-	for (ITreeObject<?> node : selection) {
+	    final boolean rootSelected, final List<ITreeNode> selection) {
+	for (ITreeNode node : selection) {
 	    // Only allow to remove album if does not belong to a favorite
 	    // artist
-	    if (node instanceof IAlbum) {
+	    if (node.getUserObject() instanceof IAlbum) {
 		if (favoritesHandler.getFavoriteArtistsInfo().containsKey(
-			((IAlbum) node).getArtist().getName())) {
+			((IAlbum) node.getUserObject()).getArtist().getName())) {
 		    return false;
 		}
 	    }

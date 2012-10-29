@@ -28,7 +28,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
-import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -117,7 +117,7 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(
-	    final boolean rootSelected, final List<ITreeObject<?>> selection) {
+	    final boolean rootSelected, final List<ITreeNode> selection) {
 	return !rootSelected && selection.size() == 1;
     }
 
