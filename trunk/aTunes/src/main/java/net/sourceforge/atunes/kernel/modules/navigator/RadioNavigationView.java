@@ -28,7 +28,6 @@ import java.util.Map;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
-import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
@@ -48,6 +47,7 @@ import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IIconFactory;
+import net.sourceforge.atunes.model.INavigationTree;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IStateRadio;
@@ -238,9 +238,6 @@ public final class RadioNavigationView extends AbstractNavigationView {
     protected void refreshTree(final ViewMode viewMode, final String treeFilter) {
 	Map<String, ?> data = getViewData(viewMode);
 
-	DefaultTreeModel treeModel = (DefaultTreeModel) getTree().getModel();
-	ITreeNode root = (ITreeNode) treeModel.getRoot();
-
 	// Get objects selected before refreshing tree
 	List<ITreeObject<? extends IAudioObject>> objectsSelected = getSelectedTreeObjects();
 	// Get objects expanded before refreshing tree
@@ -254,12 +251,12 @@ public final class RadioNavigationView extends AbstractNavigationView {
 	getTree().setRoot(I18nUtils.getString("RADIO"));
 
 	addRadioNodes((List<IRadio>) data.get("RADIOS"),
-		(List<IRadio>) data.get("PRESET_RADIOS"), root, treeFilter,
-		(Boolean) data.get("SHOW_ALL_STATIONS"), objectsExpanded,
-		objectsSelected, nodesToExpand, nodesToSelect);
+		(List<IRadio>) data.get("PRESET_RADIOS"), getTree(),
+		treeFilter, (Boolean) data.get("SHOW_ALL_STATIONS"),
+		objectsExpanded, objectsSelected, nodesToExpand, nodesToSelect);
 
 	// Reload the tree to refresh content
-	treeModel.reload();
+	getTree().reload();
 
 	// Expand nodes
 	getTree().expandNodes(nodesToExpand);
@@ -310,7 +307,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
      *            the show all stations
      */
     private void addRadioNodes(final List<IRadio> radios,
-	    final List<IRadio> presetRadios, final ITreeNode root,
+	    final List<IRadio> presetRadios, final INavigationTree tree,
 	    final String currentFilter, final boolean showAllStations,
 	    final List<ITreeObject<? extends IAudioObject>> objectsExpanded,
 	    final List<ITreeObject<? extends IAudioObject>> objectsSelected,
@@ -340,8 +337,8 @@ public final class RadioNavigationView extends AbstractNavigationView {
 	List<String> radioLabels = radioHandler.sortRadioLabels();
 	for (String label : radioLabels) {
 	    for (ITreeNode labelNode : radioGroups.values()) {
-		if (labelNode.toString().equals(label)) {
-		    root.add(labelNode);
+		if (labelNode.getUserObject().equals(label)) {
+		    tree.addNode(labelNode);
 		    break;
 		}
 	    }
@@ -349,7 +346,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
 
 	// Add radio nodes without labels
 	for (ITreeNode radioNode : radioGroupNoLabel.values()) {
-	    root.add(radioNode);
+	    tree.addNode(radioNode);
 	}
     }
 
