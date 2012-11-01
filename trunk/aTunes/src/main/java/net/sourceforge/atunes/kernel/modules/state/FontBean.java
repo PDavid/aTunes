@@ -33,80 +33,88 @@ public final class FontBean implements IFontBean {
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = -6799372094994034976L;
-	private String name;
-    private int style;
-    private int size;
+    private static final long serialVersionUID = -6799372094994034976L;
+    private final String name;
+    private final int style;
+    private final int size;
 
-    @ConstructorProperties( { "name", "style", "size" })
-    public FontBean(String name, int style, int size) {
-        this.name = name;
-        this.style = style;
-        this.size = size;
+    /**
+     * @param name
+     * @param style
+     * @param size
+     */
+    @ConstructorProperties({ "name", "style", "size" })
+    public FontBean(final String name, final int style, final int size) {
+	this.name = name;
+	this.style = style;
+	this.size = size;
     }
 
-    public FontBean(Font font) {
-        this.name = font.getName();
-        this.style = font.getStyle();
-        this.size = font.getSize();
-    }
-
-    @Override
-	public String getName() {
-        return name;
-    }
-
-    @Override
-	public int getStyle() {
-        return style;
-    }
-
-    @Override
-	public int getSize() {
-        return size;
+    /**
+     * @param font
+     */
+    public FontBean(final Font font) {
+	this.name = font.getName();
+	this.style = font.getStyle();
+	this.size = font.getSize();
     }
 
     @Override
-	public Font toFont() {
-        return new Font(name, style, size);
+    public String getName() {
+	return name;
+    }
+
+    @Override
+    public int getStyle() {
+	return style;
+    }
+
+    @Override
+    public int getSize() {
+	return size;
+    }
+
+    @Override
+    public Font toFont() {
+	return new Font(name, style, size);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + size;
-        result = prime * result + style;
-        return result;
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((name == null) ? 0 : name.hashCode());
+	result = prime * result + size;
+	result = prime * result + style;
+	return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        FontBean other = (FontBean) obj;
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
-        if (size != other.size) {
-            return false;
-        }
-        if (style != other.style) {
-            return false;
-        }
-        return true;
+    public boolean equals(final Object obj) {
+	if (this == obj) {
+	    return true;
+	}
+	if (obj == null) {
+	    return false;
+	}
+	if (getClass() != obj.getClass()) {
+	    return false;
+	}
+	FontBean other = (FontBean) obj;
+	if (name == null) {
+	    if (other.name != null) {
+		return false;
+	    }
+	} else if (!name.equals(other.name)) {
+	    return false;
+	}
+	if (size != other.size) {
+	    return false;
+	}
+	if (style != other.style) {
+	    return false;
+	}
+	return true;
     }
 
 }

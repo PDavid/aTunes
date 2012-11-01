@@ -27,63 +27,69 @@ import java.util.Arrays;
 import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * A preference storing a password
+ * 
+ * @author alex
+ * 
+ */
 public class PasswordPreference extends Preference {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = -6072746075893564924L;
+    private static final long serialVersionUID = -6072746075893564924L;
 
-	/**
-	 * Default constructor
-	 */
-	public PasswordPreference() {		
-	}
-	
-	/**
-	 * @param value
-	 */
-	public PasswordPreference(String value) {
-		super();
-		setPassword(value);
-	}
-	
-	@Override
-	public void setValue(Object value) {
-		throw new IllegalArgumentException("Use setPassword");
-	}
+    /**
+     * Default constructor
+     */
+    public PasswordPreference() {
+    }
 
-	@Override
-	public Object getValue() {
-		throw new IllegalArgumentException("Use getPassword");
-	}
+    /**
+     * @param value
+     */
+    public PasswordPreference(final String value) {
+	super();
+	setPassword(value);
+    }
 
-	/**
-	 * @param password
-	 */
-	public final void setPassword(String password) {
-		try {
-			byte[] encrypted = CryptoUtils.encrypt(password.getBytes());
-			Logger.debug("Encrypted password: ", Arrays.toString(encrypted));
-			super.setValue(encrypted);
-		} catch (GeneralSecurityException e) {
-			Logger.error(e);
-		} catch (IOException e) {
-			Logger.error(e);
-		}
-	}
+    @Override
+    public void setValue(final Object value) {
+	throw new IllegalArgumentException("Use setPassword");
+    }
 
-	/**
-	 * @return password
-	 */
-	public String getPassword() {
-		try {
-			return new String(CryptoUtils.decrypt((byte[])super.getValue()));
-		} catch (GeneralSecurityException e) {
-			Logger.error(e);
-		} catch (IOException e) {
-			Logger.error(e);
-		}
-		return null;
+    @Override
+    public Object getValue() {
+	throw new IllegalArgumentException("Use getPassword");
+    }
+
+    /**
+     * @param password
+     */
+    public final void setPassword(final String password) {
+	try {
+	    byte[] encrypted = CryptoUtils.encrypt(password.getBytes());
+	    Logger.debug("Encrypted password: ", Arrays.toString(encrypted));
+	    super.setValue(encrypted);
+	} catch (GeneralSecurityException e) {
+	    Logger.error(e);
+	} catch (IOException e) {
+	    Logger.error(e);
 	}
+    }
+
+    /**
+     * @return password
+     */
+    public String getPassword() {
+	try {
+	    return new String(CryptoUtils.decrypt((byte[]) super.getValue()));
+	} catch (GeneralSecurityException e) {
+	    Logger.error(e);
+	} catch (IOException e) {
+	    Logger.error(e);
+	}
+	return null;
+    }
 }
