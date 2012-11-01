@@ -23,10 +23,17 @@ package net.sourceforge.atunes.kernel.modules.state;
 import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IProxyBeanFactory;
 
+/**
+ * Creates proxy beans
+ * 
+ * @author alex
+ * 
+ */
 public class ProxyBeanFactory implements IProxyBeanFactory {
-	
-	@Override
-	public IProxyBean getProxy(String type, String url, int port, String user, String password) {
-		return new ProxyBean(type, url, port, user, password);
-	}
+
+    @Override
+    public IProxyBean getProxy(final String type, final String url,
+	    final int port, final String user, final String password) {
+	return new ProxyBean(type, url, port, user, password);
+    }
 }

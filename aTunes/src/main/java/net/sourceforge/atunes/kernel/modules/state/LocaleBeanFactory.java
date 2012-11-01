@@ -25,11 +25,17 @@ import java.util.Locale;
 import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILocaleBeanFactory;
 
+/**
+ * Creates locale beans
+ * 
+ * @author alex
+ * 
+ */
 public class LocaleBeanFactory implements ILocaleBeanFactory {
 
-	@Override
-	public ILocaleBean getLocaleBean(Locale locale) {
-		return new LocaleBean(locale);
-	}
+    @Override
+    public ILocaleBean getLocaleBean(final Locale locale) {
+	return new LocaleBean(locale);
+    }
 
 }

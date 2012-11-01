@@ -34,6 +34,12 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStatePodcast;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Panel for preferences of podcasts
+ * 
+ * @author alex
+ * 
+ */
 public final class PodcastFeedPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = -1298749333908609956L;
@@ -51,87 +57,102 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
     private JCheckBox removePodcastFeedEntriesRemovedFromPodcastFeed;
 
     private IOSManager osManager;
-    
+
     private IStatePodcast statePodcast;
-    
-	private IBeanFactory beanFactory;
-	
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
+
+    private IBeanFactory beanFactory;
+
+    /**
+     * @param beanFactory
+     */
+    public void setBeanFactory(final IBeanFactory beanFactory) {
+	this.beanFactory = beanFactory;
+    }
 
     /**
      * @param statePodcast
      */
-    public void setStatePodcast(IStatePodcast statePodcast) {
-		this.statePodcast = statePodcast;
-	}
-    
+    public void setStatePodcast(final IStatePodcast statePodcast) {
+	this.statePodcast = statePodcast;
+    }
+
     /**
      * @param osManager
      */
-    public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
-	}
-    
+    public void setOsManager(final IOSManager osManager) {
+	this.osManager = osManager;
+    }
+
     /**
      * Instantiates a new podcast feed panel.
      */
     public PodcastFeedPanel() {
-        super(I18nUtils.getString("PODCAST_FEEDS"));
+	super(I18nUtils.getString("PODCAST_FEEDS"));
     }
-    
+
     /**
      * Initializes panel
      */
     public void initialize() {
-        JLabel retrievalIntervalLabel = new JLabel(I18nUtils.getString("PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL"));
-        retrievalInterval = new JComboBox(new Long[] { 1l, 3l, 5l, 10l, 15l, 30l, 60l });
-        JLabel downloadFolderLabel = new JLabel(I18nUtils.getString("PODCAST_FEED_ENTRIES_DOWNLOAD_FOLDER"));
-        downloadFolderFileChooser = new CustomFileChooser(I18nUtils.getString("PODCAST_FEED_ENTRIES_DOWNLOAD_FOLDER"), this, 20, JFileChooser.DIRECTORIES_ONLY, osManager, beanFactory);
-        useDownloadedPodcastFeedEntries = new JCheckBox(I18nUtils.getString("USE_DOWNLOADED_PODCAST_FEED_ENTRIES"));
-        removePodcastFeedEntriesRemovedFromPodcastFeed = new JCheckBox(I18nUtils.getString("REMOVE_PODCAST_FEED_ENTRIES_REMOVED_FROM_PODCAST_FEED"));
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
-        add(retrievalIntervalLabel, c);
-        c.gridx = 1;
-        c.weightx = 1;
-        c.insets = new Insets(0, 5, 0, 0);
-        add(retrievalInterval, c);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 0;
-        c.insets = new Insets(5, 0, 0, 0);
-        add(downloadFolderLabel, c);
-        c.gridx = 1;
-        c.weightx = 1;
-        c.insets = new Insets(5, 5, 0, 0);
-        add(downloadFolderFileChooser, c);
-        c.gridx = 0;
-        c.gridy = 2;
-        c.gridwidth = 2;
-        c.insets = new Insets(5, 0, 0, 0);
-        add(useDownloadedPodcastFeedEntries, c);
-        c.gridx = 0;
-        c.gridy = 3;
-        c.weighty = 1;
-        c.insets = new Insets(0, 0, 0, 0);
-        add(removePodcastFeedEntriesRemovedFromPodcastFeed, c);
+	JLabel retrievalIntervalLabel = new JLabel(
+		I18nUtils.getString("PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL"));
+	retrievalInterval = new JComboBox(new Long[] { 1l, 3l, 5l, 10l, 15l,
+		30l, 60l });
+	JLabel downloadFolderLabel = new JLabel(
+		I18nUtils.getString("PODCAST_FEED_ENTRIES_DOWNLOAD_FOLDER"));
+	downloadFolderFileChooser = new CustomFileChooser(
+		I18nUtils.getString("PODCAST_FEED_ENTRIES_DOWNLOAD_FOLDER"),
+		this, 20, JFileChooser.DIRECTORIES_ONLY, osManager, beanFactory);
+	useDownloadedPodcastFeedEntries = new JCheckBox(
+		I18nUtils.getString("USE_DOWNLOADED_PODCAST_FEED_ENTRIES"));
+	removePodcastFeedEntriesRemovedFromPodcastFeed = new JCheckBox(
+		I18nUtils
+			.getString("REMOVE_PODCAST_FEED_ENTRIES_REMOVED_FROM_PODCAST_FEED"));
+	GridBagConstraints c = new GridBagConstraints();
+	c.gridx = 0;
+	c.gridy = 0;
+	c.weightx = 0;
+	c.anchor = GridBagConstraints.FIRST_LINE_START;
+	add(retrievalIntervalLabel, c);
+	c.gridx = 1;
+	c.weightx = 1;
+	c.insets = new Insets(0, 5, 0, 0);
+	add(retrievalInterval, c);
+	c.gridx = 0;
+	c.gridy = 1;
+	c.weightx = 0;
+	c.insets = new Insets(5, 0, 0, 0);
+	add(downloadFolderLabel, c);
+	c.gridx = 1;
+	c.weightx = 1;
+	c.insets = new Insets(5, 5, 0, 0);
+	add(downloadFolderFileChooser, c);
+	c.gridx = 0;
+	c.gridy = 2;
+	c.gridwidth = 2;
+	c.insets = new Insets(5, 0, 0, 0);
+	add(useDownloadedPodcastFeedEntries, c);
+	c.gridx = 0;
+	c.gridy = 3;
+	c.weighty = 1;
+	c.insets = new Insets(0, 0, 0, 0);
+	add(removePodcastFeedEntriesRemovedFromPodcastFeed, c);
     }
 
     @Override
     public boolean applyPreferences() {
-        statePodcast.setPodcastFeedEntriesRetrievalInterval(((Long) retrievalInterval.getSelectedItem()) * 60);
-        statePodcast.setPodcastFeedEntryDownloadPath(downloadFolderFileChooser.getResult());
-        statePodcast.setUseDownloadedPodcastFeedEntries(useDownloadedPodcastFeedEntries.isSelected());
-        statePodcast.setRemovePodcastFeedEntriesRemovedFromPodcastFeed(removePodcastFeedEntriesRemovedFromPodcastFeed.isSelected());
-        return false;
+	statePodcast
+		.setPodcastFeedEntriesRetrievalInterval(((Long) retrievalInterval
+			.getSelectedItem()) * 60);
+	statePodcast.setPodcastFeedEntryDownloadPath(downloadFolderFileChooser
+		.getResult());
+	statePodcast
+		.setUseDownloadedPodcastFeedEntries(useDownloadedPodcastFeedEntries
+			.isSelected());
+	statePodcast
+		.setRemovePodcastFeedEntriesRemovedFromPodcastFeed(removePodcastFeedEntriesRemovedFromPodcastFeed
+			.isSelected());
+	return false;
     }
 
     /**
@@ -140,8 +161,8 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
      * @param time
      *            the new retrieval interval
      */
-    private void setRetrievalInterval(long time) {
-        retrievalInterval.setSelectedItem(time / 60);
+    private void setRetrievalInterval(final long time) {
+	retrievalInterval.setSelectedItem(time / 60);
     }
 
     /**
@@ -150,8 +171,8 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
      * @param path
      *            the new download path
      */
-    private void setDownloadPath(String path) {
-        downloadFolderFileChooser.setText(path);
+    private void setDownloadPath(final String path) {
+	downloadFolderFileChooser.setText(path);
     }
 
     /**
@@ -160,8 +181,8 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
      * @param use
      *            the new use downloaded podcast feed entries
      */
-    private void setUseDownloadedPodcastFeedEntries(boolean use) {
-        useDownloadedPodcastFeedEntries.setSelected(use);
+    private void setUseDownloadedPodcastFeedEntries(final boolean use) {
+	useDownloadedPodcastFeedEntries.setSelected(use);
     }
 
     /**
@@ -171,21 +192,25 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
      *            the new removes the podcast feed entries removed from podcast
      *            feed
      */
-    private void setRemovePodcastFeedEntriesRemovedFromPodcastFeed(boolean remove) {
-        removePodcastFeedEntriesRemovedFromPodcastFeed.setSelected(remove);
+    private void setRemovePodcastFeedEntriesRemovedFromPodcastFeed(
+	    final boolean remove) {
+	removePodcastFeedEntriesRemovedFromPodcastFeed.setSelected(remove);
     }
 
     @Override
     public void updatePanel() {
-        setRetrievalInterval(statePodcast.getPodcastFeedEntriesRetrievalInterval());
-        setDownloadPath(statePodcast.getPodcastFeedEntryDownloadPath());
-        setUseDownloadedPodcastFeedEntries(statePodcast.isUseDownloadedPodcastFeedEntries());
-        setRemovePodcastFeedEntriesRemovedFromPodcastFeed(statePodcast.isRemovePodcastFeedEntriesRemovedFromPodcastFeed());
+	setRetrievalInterval(statePodcast
+		.getPodcastFeedEntriesRetrievalInterval());
+	setDownloadPath(statePodcast.getPodcastFeedEntryDownloadPath());
+	setUseDownloadedPodcastFeedEntries(statePodcast
+		.isUseDownloadedPodcastFeedEntries());
+	setRemovePodcastFeedEntriesRemovedFromPodcastFeed(statePodcast
+		.isRemovePodcastFeedEntriesRemovedFromPodcastFeed());
     }
 
     @Override
     public void resetImmediateChanges() {
-        // Do nothing
+	// Do nothing
     }
 
     @Override
@@ -193,8 +218,8 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void dialogVisibilityChanged(boolean visible) {
-        // Do nothing
+    public void dialogVisibilityChanged(final boolean visible) {
+	// Do nothing
     }
 
 }

@@ -26,8 +26,8 @@ import java.awt.event.ActionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
@@ -37,57 +37,69 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The listener interface for receiving editPreferencesDialog events.
  */
-public final class EditPreferencesDialogListener implements ListSelectionListener, ActionListener {
+public final class EditPreferencesDialogListener implements
+	ListSelectionListener, ActionListener {
 
-    private EditPreferencesDialog editPreferencesDialog;
-    private EditPreferencesDialogController editPreferencesDialogController;
-    private StateChangeListeners listeners;
+    private final EditPreferencesDialog editPreferencesDialog;
+    private final EditPreferencesDialogController editPreferencesDialogController;
+    private final IBeanFactory beanFactory;
 
     /**
      * Instantiates a new edits the preferences dialog listener.
      * 
      * @param editPreferencesDialog
      * @param editPreferencesDialogController
-     * @param listeners
+     * @param beanFactory
      */
-    public EditPreferencesDialogListener(EditPreferencesDialog editPreferencesDialog, 
-    								     EditPreferencesDialogController editPreferencesDialogController,
-    								     StateChangeListeners listeners) {
-        this.editPreferencesDialog = editPreferencesDialog;
-        this.editPreferencesDialogController = editPreferencesDialogController;
-        this.listeners = listeners;
+    public EditPreferencesDialogListener(
+	    final EditPreferencesDialog editPreferencesDialog,
+	    final EditPreferencesDialogController editPreferencesDialogController,
+	    final IBeanFactory beanFactory) {
+	this.editPreferencesDialog = editPreferencesDialog;
+	this.editPreferencesDialogController = editPreferencesDialogController;
+	this.beanFactory = beanFactory;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == editPreferencesDialog.getOk()) {
-        	try {
-            	editPreferencesDialogController.validatePreferences();
-	        	boolean needRestart = editPreferencesDialogController.processPreferences();
-	        	editPreferencesDialog.setVisible(false);
-	        	listeners.notifyApplicationStateChanged();
-        		// Let user decide if want to restart
-	        	if (needRestart) {
-	        		IConfirmationDialog dialog = Context.getBean(IDialogFactory.class).newDialog(IConfirmationDialog.class);
-	        		dialog.setMessage(I18nUtils.getString("APPLICATION_NEEDS_RESTART"));
-	        		dialog.showDialog();
-	        		if (dialog.userAccepted()) {
-	        			Context.getBean(IKernel.class).restart();
-	        		}	
-	        	}
-			} catch (PreferencesValidationException e1) {
-				Context.getBean(IDialogFactory.class).newDialog(IErrorDialog.class).showErrorDialog(e1.getMessage(), editPreferencesDialog);
-			}
-        } else if (e.getSource() == editPreferencesDialog.getCancel()) {
-            editPreferencesDialogController.resetImmediateChanges();
-            editPreferencesDialog.setVisible(false);
-        }
+    public void actionPerformed(final ActionEvent e) {
+	if (e.getSource() == editPreferencesDialog.getOk()) {
+	    try {
+		editPreferencesDialogController.validatePreferences();
+		boolean needRestart = editPreferencesDialogController
+			.processPreferences();
+		editPreferencesDialog.setVisible(false);
+		beanFactory.getBean(StateChangeListeners.class)
+			.notifyApplicationStateChanged();
+		// Let user decide if want to restart
+		if (needRestart) {
+		    IConfirmationDialog dialog = beanFactory.getBean(
+			    IDialogFactory.class).newDialog(
+			    IConfirmationDialog.class);
+		    dialog.setMessage(I18nUtils
+			    .getString("APPLICATION_NEEDS_RESTART"));
+		    dialog.showDialog();
+		    if (dialog.userAccepted()) {
+			beanFactory.getBean(IKernel.class).restart();
+		    }
+		}
+	    } catch (PreferencesValidationException e1) {
+		beanFactory
+			.getBean(IDialogFactory.class)
+			.newDialog(IErrorDialog.class)
+			.showErrorDialog(e1.getMessage(), editPreferencesDialog);
+	    }
+	} else if (e.getSource() == editPreferencesDialog.getCancel()) {
+	    editPreferencesDialogController.resetImmediateChanges();
+	    editPreferencesDialog.setVisible(false);
+	}
     }
 
     @Override
-    public void valueChanged(ListSelectionEvent e) {
-        if (e.getSource() == editPreferencesDialog.getList() && !e.getValueIsAdjusting()) {
-            editPreferencesDialog.showPanel(editPreferencesDialog.getList().getSelectedIndex());
-        }
+    public void valueChanged(final ListSelectionEvent e) {
+	if (e.getSource() == editPreferencesDialog.getList()
+		&& !e.getValueIsAdjusting()) {
+	    editPreferencesDialog.showPanel(editPreferencesDialog.getList()
+		    .getSelectedIndex());
+	}
     }
 }

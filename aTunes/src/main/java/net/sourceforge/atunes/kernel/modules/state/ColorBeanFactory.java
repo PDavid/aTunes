@@ -25,11 +25,17 @@ import java.awt.Color;
 import net.sourceforge.atunes.model.IColorBean;
 import net.sourceforge.atunes.model.IColorBeanFactory;
 
+/**
+ * Creates color beans for given color
+ * 
+ * @author alex
+ * 
+ */
 public class ColorBeanFactory implements IColorBeanFactory {
-	
-	@Override
-	public IColorBean getColorBean(Color color) {
-		return new ColorBean(color);
-	}
+
+    @Override
+    public IColorBean getColorBean(final Color color) {
+	return new ColorBean(color);
+    }
 
 }

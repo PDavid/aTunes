@@ -25,10 +25,16 @@ import java.awt.Font;
 import net.sourceforge.atunes.model.IFontBean;
 import net.sourceforge.atunes.model.IFontBeanFactory;
 
+/**
+ * Creates font bean
+ * 
+ * @author alex
+ * 
+ */
 public class FontBeanFactory implements IFontBeanFactory {
-	
-	@Override
-	public IFontBean getFontBean(Font font) {
-		return new FontBean(font);
-	}
+
+    @Override
+    public IFontBean getFontBean(final Font font) {
+	return new FontBean(font);
+    }
 }

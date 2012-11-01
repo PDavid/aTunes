@@ -22,46 +22,51 @@ package net.sourceforge.atunes.kernel.modules.state;
 
 interface IStateStore {
 
-	/**
-	 * Clears the cache.
-	 * 
-	 * @return If an Exception occurred during clearing
-	 */
-	public boolean clearCache();
+    /**
+     * Clears the cache.
+     * 
+     * @return If an Exception occurred during clearing
+     */
+    public boolean clearCache();
 
-	/**
-	 * Retrieves a Preference value from cache.
-	 * 
-	 * @param preference
-	 * @param defaultValue
-	 * @return Value
-	 */
-	public Object retrievePreference(Preferences preferenceId, Object defaultValue);
+    /**
+     * Retrieves a Preference value from cache.
+     * 
+     * @param preferenceId
+     * @param defaultValue
+     * @return
+     */
+    public Object retrievePreference(Preferences preferenceId,
+	    Object defaultValue);
 
-	/**
-	 * Stores a Preference at cache.
-	 * @param preferenceId
-	 * @param value
-	 */
-	public void storePreference(final Preferences preferenceId, final Object value);
+    /**
+     * Stores a Preference at cache.
+     * 
+     * @param preferenceId
+     * @param value
+     */
+    public void storePreference(final Preferences preferenceId,
+	    final Object value);
 
-	/**
-	 * Retrieves a Password Preference from cache
-	 * @param preferenceId
-	 * @return
-	 */
-	public String retrievePasswordPreference(Preferences preferenceId);
+    /**
+     * Retrieves a Password Preference from cache
+     * 
+     * @param preferenceId
+     * @return
+     */
+    public String retrievePasswordPreference(Preferences preferenceId);
 
-	/**
-	 * Stores a Password Preference at cache.
-	 * @param preferenceId
-	 * @param value
-	 */
-	public void storePasswordPreference(Preferences preferenceId, String value);
+    /**
+     * Stores a Password Preference at cache.
+     * 
+     * @param preferenceId
+     * @param value
+     */
+    public void storePasswordPreference(Preferences preferenceId, String value);
 
-	/**
-	 * Called when application finishes to save flush all data
-	 */
-	public void shutdown();
+    /**
+     * Called when application finishes to save flush all data
+     */
+    public void shutdown();
 
 }
