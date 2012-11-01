@@ -256,7 +256,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 
 	@Override
 	public void addFilesAndRefresh(final List<File> files) {
-		getBean(AddFilesTask.class).execute(repository, files);
+		getBean(AddFilesToRepositoryTask.class).execute(repository, files);
 	}
 
 	/**
