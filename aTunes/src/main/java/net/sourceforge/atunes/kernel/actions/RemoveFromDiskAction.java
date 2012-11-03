@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +27,12 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.kernel.modules.repository.DeleteFilesWorker;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
-import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
@@ -160,18 +159,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     private void fromOtherViews(final IRepositoryHandler repositoryHandler) {
 	final List<IAudioObject> files = navigationHandler
 		.getFilesSelectedInNavigator();
-	repositoryHandler.remove(localAudioObjectFilter
-		.getLocalAudioObjects(files));
-
-	dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
-	dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
-	SwingUtilities.invokeLater(new Runnable() {
-	    @Override
-	    public void run() {
-		dialog.showDialog();
-	    }
-	});
-	new DeleteFilesWorker(dialog,
+	new DeleteFilesWorker(dialogFactory, repositoryHandler,
 		localAudioObjectFilter.getLocalAudioObjects(files)).execute();
     }
 
@@ -252,36 +240,6 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 	    return true;
 	}
 	return !selection.isEmpty();
-    }
-
-    private static final class DeleteFilesWorker extends
-	    SwingWorker<Void, Void> {
-
-	private final IIndeterminateProgressDialog dialog;
-
-	private final List<ILocalAudioObject> files;
-
-	private DeleteFilesWorker(final IIndeterminateProgressDialog dialog,
-		final List<ILocalAudioObject> files) {
-	    this.dialog = dialog;
-	    this.files = files;
-	}
-
-	@Override
-	protected Void doInBackground() {
-	    for (ILocalAudioObject audioFile : files) {
-		File file = audioFile.getFile();
-		if (file != null && !file.delete()) {
-		    Logger.error(StringUtils.getString(file, " not deleted"));
-		}
-	    }
-	    return null;
-	}
-
-	@Override
-	protected void done() {
-	    dialog.hideDialog();
-	}
     }
 
     /**

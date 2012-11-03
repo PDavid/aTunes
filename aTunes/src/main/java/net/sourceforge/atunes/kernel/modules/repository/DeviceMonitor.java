@@ -30,113 +30,133 @@ import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Monitors when device is connected
+ * 
+ * @author alex
+ * 
+ */
 public final class DeviceMonitor implements Runnable {
 
-	private int delayInSeconds;
+    private int delayInSeconds;
 
-	private ScheduledFuture<?> future;
+    private ScheduledFuture<?> future;
 
-	private IDeviceHandler deviceHandler;
+    private IDeviceHandler deviceHandler;
 
-	private ITaskService taskService;
+    private ITaskService taskService;
 
-	private DeviceListeners deviceListeners;
+    private DeviceListeners deviceListeners;
 
-	private IStateDevice stateDevice;
+    private IStateDevice stateDevice;
 
-	/**
-	 * @param stateDevice
-	 */
-	public void setStateDevice(final IStateDevice stateDevice) {
-		this.stateDevice = stateDevice;
+    /**
+     * @param stateDevice
+     */
+    public void setStateDevice(final IStateDevice stateDevice) {
+	this.stateDevice = stateDevice;
+    }
+
+    /**
+     * @param deviceListeners
+     */
+    public void setDeviceListeners(final DeviceListeners deviceListeners) {
+	this.deviceListeners = deviceListeners;
+    }
+
+    /**
+     * @param taskService
+     */
+    public void setTaskService(final ITaskService taskService) {
+	this.taskService = taskService;
+    }
+
+    /**
+     * @param deviceHandler
+     */
+    public void setDeviceHandler(final IDeviceHandler deviceHandler) {
+	this.deviceHandler = deviceHandler;
+    }
+
+    /**
+     * @param delay
+     */
+    public void setDelayInSeconds(final int delay) {
+	this.delayInSeconds = delay;
+    }
+
+    /**
+     * Start monitor.
+     */
+    void startMonitor() {
+	future = taskService.submitPeriodically("Device Monitor",
+		delayInSeconds, delayInSeconds, this);
+    }
+
+    /**
+     * Stops monitor
+     */
+    void stopMonitor() {
+	future.cancel(true);
+    }
+
+    /**
+     * Returns if monitor is running
+     * 
+     * @return
+     */
+    boolean isMonitorRunning() {
+	return future != null;
+    }
+
+    @Override
+    public void run() {
+	checkConnection();
+	checkDisconnection();
+    }
+
+    /**
+     * Checks if device has been disconnected, returning true if so, false
+     * otherwise
+     * 
+     * @return
+     */
+    private boolean checkDisconnection() {
+	if (!deviceHandler.isDeviceConnected()) {
+	    return false;
 	}
 
-	/**
-	 * @param deviceListeners
-	 */
-	public void setDeviceListeners(final DeviceListeners deviceListeners) {
-		this.deviceListeners = deviceListeners;
+	File deviceLocationFile = new File(deviceHandler.getDeviceLocation());
+	if (!deviceLocationFile.exists()) {
+	    Logger.info("Device disconnected");
+	    deviceListeners
+		    .deviceDisconnected(net.sourceforge.atunes.utils.FileUtils
+			    .getPath(deviceLocationFile));
+	    return true;
 	}
+	return false;
+    }
 
-	/**
-	 * @param taskService
-	 */
-	public void setTaskService(final ITaskService taskService) {
-		this.taskService = taskService;
+    /**
+     * Checks if there is a device connected, returning true if so, false
+     * otherwise
+     * 
+     * @param deviceLocation
+     * @return
+     */
+    private boolean checkConnection() {
+	String deviceLocation = stateDevice.getDefaultDeviceLocation();
+	if (!StringUtils.isEmpty(deviceLocation)) {
+	    File deviceLocationFile = new File(deviceLocation);
+	    if (!deviceHandler.isDeviceConnected()
+		    && deviceLocationFile.exists()) {
+		Logger.info("Device connected");
+		deviceListeners
+			.deviceConnected(net.sourceforge.atunes.utils.FileUtils
+				.getPath(deviceLocationFile));
+		return true;
+	    }
 	}
-
-	/**
-	 * @param deviceHandler
-	 */
-	public void setDeviceHandler(final IDeviceHandler deviceHandler) {
-		this.deviceHandler = deviceHandler;
-	}
-
-	public void setDelayInSeconds(final int delay) {
-		this.delayInSeconds = delay;
-	}
-
-	/**
-	 * Start monitor.
-	 */
-	void startMonitor() {
-		future = taskService.submitPeriodically("Device Monitor", delayInSeconds, delayInSeconds, this);
-	}
-
-	/**
-	 * Stops monitor
-	 */
-	void stopMonitor() {
-		future.cancel(true);
-	}
-
-	/**
-	 * Returns if monitor is running
-	 * @return
-	 */
-	boolean isMonitorRunning() {
-		return future != null;
-	}
-
-	@Override
-	public void run() {
-		checkConnection();
-		checkDisconnection();
-	}
-
-	/**
-	 * Checks if device has been disconnected, returning true if so, false otherwise
-	 * @return
-	 */
-	private boolean checkDisconnection() {
-		if (!deviceHandler.isDeviceConnected()) {
-			return false;
-		}
-
-		File deviceLocationFile = new File(deviceHandler.getDeviceLocation());
-		if (!deviceLocationFile.exists()) {
-			Logger.info("Device disconnected");
-			deviceListeners.deviceDisconnected(net.sourceforge.atunes.utils.FileUtils.getPath(deviceLocationFile));
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Checks if there is a device connected, returning true if so, false otherwise
-	 * @param deviceLocation
-	 * @return
-	 */
-	private boolean checkConnection() {
-		String deviceLocation = stateDevice.getDefaultDeviceLocation();
-		if (!StringUtils.isEmpty(deviceLocation)) {
-			File deviceLocationFile = new File(deviceLocation);
-			if (!deviceHandler.isDeviceConnected() && deviceLocationFile.exists()) {
-				Logger.info("Device connected");
-				deviceListeners.deviceConnected(net.sourceforge.atunes.utils.FileUtils.getPath(deviceLocationFile));
-				return true;
-			}
-		}
-		return false;
-	}
+	return false;
+    }
 }

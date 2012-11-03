@@ -28,60 +28,75 @@ import net.sourceforge.atunes.model.ILocalAudioObjectReader;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 
+/**
+ * Returns local audio objects by reading or refreshing a file
+ * 
+ * @author alex
+ * 
+ */
 public class LocalAudioObjectFactory implements ILocalAudioObjectFactory {
-	
-	private ILocalAudioObjectReader localAudioObjectReader;
-	
-	private ILocalAudioObjectValidator localAudioObjectValidator;
-	
-	/**
-	 * @param localAudioObjectValidator
-	 */
-	public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
-	
-	/**
-	 * @param localAudioObjectReader
-	 */
-	public void setLocalAudioObjectReader(ILocalAudioObjectReader localAudioObjectReader) {
-		this.localAudioObjectReader = localAudioObjectReader;
-	}
-	
-	@Override
-	public ILocalAudioObject getLocalAudioObject(File file) {
-		ILocalAudioObject audioObject = new AudioFile(file);
-		readAudioObject(audioObject);
-		return audioObject;
-	}
-	
-	@Override
-	public ILocalAudioObject refreshAudioObject(ILocalAudioObject audioObject) {
-        audioObject.setTag(null);
-        readInformation(audioObject, false);
-        audioObject.setReadTime(System.currentTimeMillis());
-        return audioObject;
-	}
-	
+
+    private ILocalAudioObjectReader localAudioObjectReader;
+
+    private ILocalAudioObjectValidator localAudioObjectValidator;
+
+    /**
+     * @param localAudioObjectValidator
+     */
+    public void setLocalAudioObjectValidator(
+	    final ILocalAudioObjectValidator localAudioObjectValidator) {
+	this.localAudioObjectValidator = localAudioObjectValidator;
+    }
+
+    /**
+     * @param localAudioObjectReader
+     */
+    public void setLocalAudioObjectReader(
+	    final ILocalAudioObjectReader localAudioObjectReader) {
+	this.localAudioObjectReader = localAudioObjectReader;
+    }
+
+    @Override
+    public ILocalAudioObject getLocalAudioObject(final File file) {
+	ILocalAudioObject audioObject = new AudioFile(file);
+	readAudioObject(audioObject);
+	return audioObject;
+    }
+
+    @Override
+    public ILocalAudioObject refreshAudioObject(
+	    final ILocalAudioObject audioObject) {
+	audioObject.setTag(null);
+	readInformation(audioObject, false);
+	audioObject.setReadTime(System.currentTimeMillis());
+	return audioObject;
+    }
+
     /**
      * Reads a file
+     * 
      * @param audioObject
      */
-    private void readAudioObject(ILocalAudioObject audioObject) {
-        // Don't read from formats not supported by Jaudiotagger
-        if (!localAudioObjectValidator.isOneOfTheseFormats(audioObject.getUrl(), LocalAudioObjectFormat.APE, LocalAudioObjectFormat.MPC)) {
-            readInformation(audioObject, true);
-        }
-        audioObject.setReadTime(System.currentTimeMillis());
+    private void readAudioObject(final ILocalAudioObject audioObject) {
+	// Don't read from formats not supported by Jaudiotagger
+	if (!localAudioObjectValidator.isOneOfTheseFormats(
+		audioObject.getUrl(), LocalAudioObjectFormat.APE,
+		LocalAudioObjectFormat.MPC)) {
+	    readInformation(audioObject, true);
+	}
+	audioObject.setReadTime(System.currentTimeMillis());
     }
-    
+
     /**
      * Introspect tags. Get the tag for the file.
+     * 
      * @param audioObject
      * @param readAudioProperties
      */
-    private void readInformation(ILocalAudioObject audioObject, boolean readAudioProperties) {
-    	localAudioObjectReader.readAudioObject(audioObject, readAudioProperties);
+    private void readInformation(final ILocalAudioObject audioObject,
+	    final boolean readAudioProperties) {
+	localAudioObjectReader
+		.readAudioObject(audioObject, readAudioProperties);
     }
-    
+
 }
