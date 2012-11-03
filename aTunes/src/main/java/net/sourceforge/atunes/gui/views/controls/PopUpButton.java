@@ -53,152 +53,172 @@ public class PopUpButton extends JButton implements IPopUpButton {
 
     private static final long serialVersionUID = 5193978267971626102L;
 
+    /**
+     * Menu above button and adjusted to left
+     */
     public static final int TOP_LEFT = 0;
+
+    /**
+     * Menu above button and adjusted to right
+     */
     public static final int TOP_RIGHT = 1;
+
+    /**
+     * Menu below button and adjusted to left
+     */
     public static final int BOTTOM_LEFT = 3;
+
+    /**
+     * Menu below button and adjusted to right
+     */
     public static final int BOTTOM_RIGHT = 4;
 
     private JPopupMenu menu;
-    private int location;
+    private final int location;
     private int xLocation;
     private int yLocation;
-    private List<Component> items = new ArrayList<Component>();
-    
+    private final List<Component> items = new ArrayList<Component>();
+
     private boolean menuShown = false;
-    
+
     private Polygon topShape;
-    
+
     private ILookAndFeel lookAndFeel;
-    
+
     /**
      * Instantiates a new pop up button with an arrow
      * 
      * @param location
-     *            the location
+     * @param lookAndFeelManager
      */
-    public PopUpButton(int location, ILookAndFeelManager lookAndFeelManager) {
-        super();
-        this.location = location;
-        this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
-        setButton();
-        GuiUtils.applyComponentOrientation(menu);
-        
-        Dimension dimension = lookAndFeel.getPopUpButtonSize();
-        if (dimension != null) {
-        	setMinimumSize(dimension);
-        	setPreferredSize(dimension);
-        	setMaximumSize(dimension);
-        }
-        
-        topShape = new Polygon();
-        topShape.addPoint(- 4, 4);
-        topShape.addPoint(4, 4);
-        topShape.addPoint(0, -2);        
+    public PopUpButton(final int location,
+	    final ILookAndFeelManager lookAndFeelManager) {
+	super();
+	this.location = location;
+	this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
+	setButton();
+	GuiUtils.applyComponentOrientation(menu);
+
+	Dimension dimension = lookAndFeel.getPopUpButtonSize();
+	if (dimension != null) {
+	    setMinimumSize(dimension);
+	    setPreferredSize(dimension);
+	    setMaximumSize(dimension);
+	}
+
+	topShape = new Polygon();
+	topShape.addPoint(-4, 4);
+	topShape.addPoint(4, 4);
+	topShape.addPoint(0, -2);
     }
-    
+
     /**
      * Instantiates a new pop up button with a text
+     * 
      * @param location
      * @param text
      */
-    public PopUpButton(int location, String text) {
-        super(text);
-        this.location = location;
-        setButton();
-        GuiUtils.applyComponentOrientation(menu);
+    public PopUpButton(final int location, final String text) {
+	super(text);
+	this.location = location;
+	setButton();
+	GuiUtils.applyComponentOrientation(menu);
     }
 
     @Override
-    public Component add(Component item) {
-        if (!(item instanceof JSeparator)) {
-            items.add(item);
-        }
-        Component c = menu.add(item);
-        GuiUtils.applyComponentOrientation(menu);
-        return c;
+    public Component add(final Component item) {
+	if (!(item instanceof JSeparator)) {
+	    items.add(item);
+	}
+	Component c = menu.add(item);
+	GuiUtils.applyComponentOrientation(menu);
+	return c;
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-    	super.paintComponent(g);
+    protected void paintComponent(final Graphics g) {
+	super.paintComponent(g);
 
-    	if (topShape != null) {
-    		Graphics2D g2 = (Graphics2D) g;
-    		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);    	
-    		g2.setPaint(isEnabled() ? lookAndFeel.getPaintForSpecialControls() :
-    			lookAndFeel.getPaintForDisabledSpecialControls());
-    		g2.translate(getWidth() / 2, getHeight() / 2);
-    		if (this.location == BOTTOM_LEFT || this.location == BOTTOM_RIGHT) {
-    			g2.rotate(Math.PI);
-    		}
-    		g2.fill(topShape);
-    		g2.dispose();
-    	}
+	if (topShape != null) {
+	    Graphics2D g2 = (Graphics2D) g;
+	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		    RenderingHints.VALUE_ANTIALIAS_ON);
+	    g2.setPaint(isEnabled() ? lookAndFeel.getPaintForSpecialControls()
+		    : lookAndFeel.getPaintForDisabledSpecialControls());
+	    g2.translate(getWidth() / 2, getHeight() / 2);
+	    if (this.location == BOTTOM_LEFT || this.location == BOTTOM_RIGHT) {
+		g2.rotate(Math.PI);
+	    }
+	    g2.fill(topShape);
+	    g2.dispose();
+	}
     }
 
     /**
      * Adds a new MenuItem with an action
+     * 
      * @param action
      * @return
      */
-    public Component add(Action action) {
-    	JMenuItem item = menu.add(action);
-    	items.add(item);
-    	GuiUtils.applyComponentOrientation(menu);
-    	return item;    	
+    public Component add(final Action action) {
+	JMenuItem item = menu.add(action);
+	items.add(item);
+	GuiUtils.applyComponentOrientation(menu);
+	return item;
     }
-    
+
     /**
      * Removes the all items.
      */
     public void removeAllItems() {
-        menu.removeAll();
-        items.clear();
+	menu.removeAll();
+	items.clear();
     }
 
     /**
      * Sets the button.
      */
     private void setButton() {
-        menu = new JPopupMenu();
-        addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		if (isEnabled()) {
-        			if (!menuShown) {
-        				setMenuLocation(location);
-        				menu.show(PopUpButton.this, xLocation, yLocation);
-        			} else {
-        				menu.setVisible(false);
-        			}
-        		}
-        	}
-		});
-        menu.addPopupMenuListener(new PopupMenuListener() {
-			
-			@Override
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-				menuShown = true;
-			}
-			
-			@Override
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-				menuShown = false;
-			}
-			
-			@Override
-			public void popupMenuCanceled(PopupMenuEvent e) {
-				menuShown = false;
-			}
-		});
+	menu = new JPopupMenu();
+	addMouseListener(new MouseAdapter() {
+	    @Override
+	    public void mouseClicked(final MouseEvent e) {
+		if (isEnabled()) {
+		    if (!menuShown) {
+			setMenuLocation(location);
+			menu.show(PopUpButton.this, xLocation, yLocation);
+		    } else {
+			menu.setVisible(false);
+		    }
+		}
+	    }
+	});
+	menu.addPopupMenuListener(new PopupMenuListener() {
+
+	    @Override
+	    public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+		menuShown = true;
+	    }
+
+	    @Override
+	    public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+		menuShown = false;
+	    }
+
+	    @Override
+	    public void popupMenuCanceled(final PopupMenuEvent e) {
+		menuShown = false;
+	    }
+	});
     }
-    
+
     /**
      * Adds a new popup menu listener
+     * 
      * @param listener
      */
-    public void addPopupMenuListener(PopupMenuListener listener) {
-    	menu.addPopupMenuListener(listener);
+    public void addPopupMenuListener(final PopupMenuListener listener) {
+	menu.addPopupMenuListener(listener);
     }
 
     /**
@@ -207,40 +227,46 @@ public class PopUpButton extends JButton implements IPopUpButton {
      * @param location
      *            the new menu location
      */
-    final void setMenuLocation(int location) {
-        if (!items.isEmpty()) {
-            if (location == TOP_LEFT || location == TOP_RIGHT) {
-                yLocation = -(int) items.get(0).getPreferredSize().getHeight() * items.size() - 5;
-            } else {
-                yLocation = 21;
-            }
-            if (location == TOP_LEFT || location == BOTTOM_LEFT) {
-                int maxWidth = 0;
-                for (int i = 0; i < items.size(); i++) {
-                    if ((int) items.get(i).getPreferredSize().getWidth() > maxWidth) {
-                        maxWidth = (int) items.get(i).getPreferredSize().getWidth();
-                    }
-                }
-                xLocation = -maxWidth + (int) getPreferredSize().getWidth();
-            } else {
-                xLocation = 0;
-            }
-        }
+    final void setMenuLocation(final int location) {
+	if (!items.isEmpty()) {
+	    if (location == TOP_LEFT || location == TOP_RIGHT) {
+		yLocation = -(int) items.get(0).getPreferredSize().getHeight()
+			* items.size() - 5;
+	    } else {
+		yLocation = 21;
+	    }
+	    if (location == TOP_LEFT || location == BOTTOM_LEFT) {
+		int maxWidth = 0;
+		for (int i = 0; i < items.size(); i++) {
+		    if ((int) items.get(i).getPreferredSize().getWidth() > maxWidth) {
+			maxWidth = (int) items.get(i).getPreferredSize()
+				.getWidth();
+		    }
+		}
+		xLocation = -maxWidth + (int) getPreferredSize().getWidth();
+	    } else {
+		xLocation = 0;
+	    }
+	}
     }
 
-	public void addSeparator() {
-		menu.addSeparator();
-	}	
-	
-	/**
-	 * In certain situations we need to hide menu programmatically without clicking button again
-	 */
-	public void hideMenu() {
-		menu.setVisible(false);
-	}
-	
-	@Override
-	public Component getSwingComponent() {
-		return this;
-	}
+    /**
+     * Add a separator
+     */
+    public void addSeparator() {
+	menu.addSeparator();
+    }
+
+    /**
+     * In certain situations we need to hide menu programmatically without
+     * clicking button again
+     */
+    public void hideMenu() {
+	menu.setVisible(false);
+    }
+
+    @Override
+    public Component getSwingComponent() {
+	return this;
+    }
 }
