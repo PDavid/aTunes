@@ -28,25 +28,22 @@ import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 
 import org.apache.commons.io.FilenameUtils;
 
+/**
+ * Validates a file is a local audio object
+ * 
+ * @author alex
+ * 
+ */
 public class LocalAudioObjectValidator implements ILocalAudioObjectValidator {
-	
-	private FileFilter validLocalAudioObjectFileFilter;
-	
-	public void setValidLocalAudioObjectFileFilter(FileFilter validLocalAudioObjectFileFilter) {
-		this.validLocalAudioObjectFileFilter = validLocalAudioObjectFileFilter;
-	}
-	
+
+    private FileFilter validLocalAudioObjectFileFilter;
+
     /**
-     * Checks if is valid audio file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is valid audio file
+     * @param validLocalAudioObjectFileFilter
      */
-    @Override
-	public boolean isValidAudioFile(String file) {
-        return isValidAudioFile(new File(file));
+    public void setValidLocalAudioObjectFileFilter(
+	    final FileFilter validLocalAudioObjectFileFilter) {
+	this.validLocalAudioObjectFileFilter = validLocalAudioObjectFileFilter;
     }
 
     /**
@@ -58,10 +55,27 @@ public class LocalAudioObjectValidator implements ILocalAudioObjectValidator {
      * @return true, if is valid audio file
      */
     @Override
-	public boolean isValidAudioFile(File file) {
-        return file != null && file.exists() && !file.isDirectory() && isOneOfTheseFormats(file.getName(), LocalAudioObjectFormat.values());
+    public boolean isValidAudioFile(final String file) {
+	return isValidAudioFile(new File(file));
     }
-    
+
+    /**
+     * Checks if is valid audio file.
+     * 
+     * @param file
+     *            the file
+     * 
+     * @return true, if is valid audio file
+     */
+    @Override
+    public boolean isValidAudioFile(final File file) {
+	return file != null
+		&& file.exists()
+		&& !file.isDirectory()
+		&& isOneOfTheseFormats(file.getName(),
+			LocalAudioObjectFormat.values());
+    }
+
     /**
      * Checks if a file is a valid audio file given its name
      * 
@@ -70,21 +84,22 @@ public class LocalAudioObjectValidator implements ILocalAudioObjectValidator {
      * @return if the file is a valid audio file
      */
     @Override
-	public boolean isOneOfTheseFormats(String fileName, LocalAudioObjectFormat... formats) {
-    	if (fileName == null) {
-    		return false;
-    	}
-        String extension = FilenameUtils.getExtension(fileName);
-        for (LocalAudioObjectFormat format : formats) {
-            if (extension.equalsIgnoreCase(format.getExtension())) {
-                return true;
-            }
-        }
-        return false;
+    public boolean isOneOfTheseFormats(final String fileName,
+	    final LocalAudioObjectFormat... formats) {
+	if (fileName == null) {
+	    return false;
+	}
+	String extension = FilenameUtils.getExtension(fileName);
+	for (LocalAudioObjectFormat format : formats) {
+	    if (extension.equalsIgnoreCase(format.getExtension())) {
+		return true;
+	    }
+	}
+	return false;
     }
-    
+
     @Override
     public FileFilter getValidLocalAudioObjectFileFilter() {
-    	return validLocalAudioObjectFileFilter;
-    }    
+	return validLocalAudioObjectFileFilter;
+    }
 }

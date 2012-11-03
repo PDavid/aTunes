@@ -24,16 +24,22 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Checks for "unknown" tag attributes
+ * 
+ * @author alex
+ * 
+ */
 public final class UnknownObjectChecker implements IUnknownObjectChecker {
-	
+
     /**
      * Return unknown artist text
      * 
      * @return
      */
     @Override
-	public String getUnknownArtist() {
-        return I18nUtils.getString("UNKNOWN_ARTIST");
+    public String getUnknownArtist() {
+	return I18nUtils.getString("UNKNOWN_ARTIST");
     }
 
     /**
@@ -42,8 +48,9 @@ public final class UnknownObjectChecker implements IUnknownObjectChecker {
      * @return
      */
     @Override
-	public boolean isUnknownArtist(IArtist artist) {
-        return artist != null && artist.getName().equalsIgnoreCase(getUnknownArtist());
+    public boolean isUnknownArtist(final IArtist artist) {
+	return artist != null
+		&& artist.getName().equalsIgnoreCase(getUnknownArtist());
     }
 
     /**
@@ -52,18 +59,18 @@ public final class UnknownObjectChecker implements IUnknownObjectChecker {
      * @return
      */
     @Override
-	public boolean isUnknownArtist(String artist) {
-        return getUnknownArtist().equalsIgnoreCase(artist);
+    public boolean isUnknownArtist(final String artist) {
+	return getUnknownArtist().equalsIgnoreCase(artist);
     }
-    
+
     /**
      * Return unknown album text
      * 
      * @return
      */
     @Override
-	public String getUnknownAlbum() {
-        return I18nUtils.getString("UNKNOWN_ALBUM");
+    public String getUnknownAlbum() {
+	return I18nUtils.getString("UNKNOWN_ALBUM");
     }
 
     /**
@@ -72,18 +79,18 @@ public final class UnknownObjectChecker implements IUnknownObjectChecker {
      * @return
      */
     @Override
-	public boolean isUnknownAlbum(String album) {
-        return getUnknownAlbum().equalsIgnoreCase(album);
+    public boolean isUnknownAlbum(final String album) {
+	return getUnknownAlbum().equalsIgnoreCase(album);
     }
-    
+
     /**
      * Return unknown genre text
      * 
      * @return
      */
     @Override
-	public String getUnknownGenre() {
-        return I18nUtils.getString("UNKNOWN_GENRE");
+    public String getUnknownGenre() {
+	return I18nUtils.getString("UNKNOWN_GENRE");
     }
 
     /**
@@ -92,8 +99,8 @@ public final class UnknownObjectChecker implements IUnknownObjectChecker {
      * @return
      */
     @Override
-	public boolean isUnknownGenre(String genre) {
-        return getUnknownGenre().equalsIgnoreCase(genre);
+    public boolean isUnknownGenre(final String genre) {
+	return getUnknownGenre().equalsIgnoreCase(genre);
     }
 
     /**
@@ -102,8 +109,8 @@ public final class UnknownObjectChecker implements IUnknownObjectChecker {
      * @return
      */
     @Override
-	public String getUnknownYear() {
-        return I18nUtils.getString("UNKNOWN_YEAR");
+    public String getUnknownYear() {
+	return I18nUtils.getString("UNKNOWN_YEAR");
     }
 
     /**
@@ -112,7 +119,7 @@ public final class UnknownObjectChecker implements IUnknownObjectChecker {
      * @return
      */
     @Override
-	public boolean isUnknownYear(String year) {
-        return getUnknownYear().equalsIgnoreCase(year);
+    public boolean isUnknownYear(final String year) {
+	return getUnknownYear().equalsIgnoreCase(year);
     }
 }
