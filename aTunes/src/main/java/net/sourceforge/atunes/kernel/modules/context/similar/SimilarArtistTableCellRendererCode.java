@@ -30,43 +30,61 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.model.IArtistInfo;
-import net.sourceforge.atunes.model.IDesktop;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Renderer for similar artists in context panel
+ * 
  * @author alex
- *
+ * 
  */
-public class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInfo> {
+public class SimilarArtistTableCellRendererCode extends
+	ContextTableRowPanel<IArtistInfo> {
 
-	private IDesktop desktop;
+    private IBeanFactory beanFactory;
 
-	/**
-	 * @param desktop
-	 */
-	public void setDesktop(final IDesktop desktop) {
-		this.desktop = desktop;
+    /**
+     * @param beanFactory
+     */
+    public void setBeanFactory(final IBeanFactory beanFactory) {
+	this.beanFactory = beanFactory;
+    }
+
+    @Override
+    public JComponent getComponent(final JComponent superComponent,
+	    final JTable t, final IArtistInfo value, final boolean isSelected,
+	    final boolean hasFocus, final int row, final int column) {
+	if (value != null) {
+	    return getPanelForTableRenderer(value.getImage(),
+		    StringUtils.getString(
+			    "<html><br>",
+			    value.getName(),
+			    "<br>",
+			    value.getMatch(),
+			    "%<br>",
+			    value.isAvailable() ? I18nUtils
+				    .getString("AVAILABLE_IN_REPOSITORY") : "",
+			    "</html>"), superComponent.getBackground(),
+		    superComponent.getForeground(),
+		    Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT,
+		    hasFocus);
 	}
+	return superComponent;
+    }
 
-	@Override
-	public JComponent getComponent(final JComponent superComponent, final JTable t, final IArtistInfo value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
-		return getPanelForTableRenderer(value.getImage(),
-				StringUtils.getString("<html><br>", value.getName(), "<br>", value.getMatch(), "%<br>", value.isAvailable() ? I18nUtils.getString("AVAILABLE_IN_REPOSITORY") : "", "</html>"),
-				superComponent.getBackground(),
-				superComponent.getForeground(),
-				Constants.THUMB_IMAGE_WIDTH,
-				Constants.THUMB_IMAGE_HEIGHT,
-				hasFocus);
-	}
-
-	@Override
-	public List<ContextTableAction<IArtistInfo>> getActions() {
-		List<ContextTableAction<IArtistInfo>> actions = new ArrayList<ContextTableAction<IArtistInfo>>();
-		actions.add(new ReadMoreContextTableAction(I18nUtils.getString("READ_MORE"), getTable(), desktop));
-		actions.add(new AddAlbumArtistToPlayListContextTableAction(I18nUtils.getString("ADD_ALBUM_ARTIST_TO_PLAYLIST"),
-				getTable(), desktop));
-		return actions;
-	}
+    @Override
+    public List<ContextTableAction<IArtistInfo>> getActions() {
+	List<ContextTableAction<IArtistInfo>> actions = new ArrayList<ContextTableAction<IArtistInfo>>();
+	ContextTableAction<IArtistInfo> readMore = beanFactory
+		.getBean(ReadMoreContextTableAction.class);
+	readMore.setTable(getTable());
+	ContextTableAction<IArtistInfo> addAlbum = beanFactory
+		.getBean(AddAlbumArtistToPlayListContextTableAction.class);
+	addAlbum.setTable(getTable());
+	actions.add(readMore);
+	actions.add(addAlbum);
+	return actions;
+    }
 }

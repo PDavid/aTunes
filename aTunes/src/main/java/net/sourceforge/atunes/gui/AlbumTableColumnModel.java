@@ -26,37 +26,37 @@ import net.sourceforge.atunes.model.IColumnSet;
 
 /**
  * Column model used for table displaying album information
+ * 
  * @author loran
- *
+ * 
  */
 public final class AlbumTableColumnModel extends AbstractCommonColumnModel {
 
-	private static final long serialVersionUID = 8480107980198328642L;
+    private static final long serialVersionUID = 8480107980198328642L;
 
-	private IColumnSet albumColumnSet;
+    private IColumnSet albumColumnSet;
 
-	/**
-	 * @param albumColumnSet
-	 */
-	public void setAlbumColumnSet(final IColumnSet albumColumnSet) {
-		this.albumColumnSet = albumColumnSet;
-	}
+    /**
+     * @param albumColumnSet
+     */
+    public void setAlbumColumnSet(final IColumnSet albumColumnSet) {
+	this.albumColumnSet = albumColumnSet;
+    }
 
-	/**
-	 * Initialization needed
-	 */
-	public void initialize() {
-		setColumnSet(albumColumnSet);
-		enableColumnChange(true);
-	}
+    /**
+     * Initialization needed
+     */
+    public void initialize() {
+	setColumnSet(albumColumnSet);
+    }
 
-	@Override
-	protected void reapplyFilter() {
-	}
+    @Override
+    protected void reapplyFilter() {
+    }
 
-	@Override
-	public void addColumn(final TableColumn aColumn) {
-		super.addColumn(aColumn);
-		updateColumnSettings(aColumn);
-	}
+    @Override
+    public void addColumn(final TableColumn aColumn) {
+	super.addColumn(aColumn);
+	updateColumnSettings(aColumn);
+    }
 }

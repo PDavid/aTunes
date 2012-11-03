@@ -49,6 +49,7 @@
 				<bean
 					class="net.sourceforge.atunes.kernel.modules.context.artist.ArtistAlbumsSelector"
 					factory-method="getContextPanelContent">
+					<constructor-arg ref="beanFactory" />
 					<constructor-arg ref="stateContext" />
 				</bean>
 			</list>
@@ -162,6 +163,17 @@
 		class="net.sourceforge.atunes.kernel.modules.context.youtube.YoutubeContent"
 		parent="contextPanelContent">
 		<property name="dataSource" ref="youtubeDataSource" />
-
 	</bean>
+	
+	
+	
+	<!-- ACTIONS -->
+	<bean id="contextTableAction" class="net.sourceforge.atunes.kernel.modules.context.ContextTableAction" abstract="true"/>
+	
+	<bean class="net.sourceforge.atunes.kernel.modules.context.similar.ReadMoreContextTableAction" parent="contextTableAction" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.context.similar.AddAlbumArtistToPlayListContextTableAction" parent="contextTableAction" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.context.artist.OpenAlbumUrlAction" parent="contextTableAction" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.context.youtube.OpenYoutubeVideoAction" parent="contextTableAction" scope="prototype"/>
+	
+	
 </beans>

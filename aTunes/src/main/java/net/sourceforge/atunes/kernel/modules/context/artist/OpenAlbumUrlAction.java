@@ -20,34 +20,39 @@
 
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.model.IAlbumInfo;
-import net.sourceforge.atunes.model.IDesktop;
+import net.sourceforge.atunes.utils.I18nUtils;
 
-final class OpenAlbumUrlAction extends ContextTableAction<IAlbumInfo> {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4367597772680455920L;
+/**
+ * Opens url of an album
+ * 
+ * @author alex
+ * 
+ */
+public final class OpenAlbumUrlAction extends ContextTableAction<IAlbumInfo> {
 
-	OpenAlbumUrlAction(String name, ContextTable table,
-			IDesktop desktop) {
-		super(name, table, desktop);
-	}
+    private static final long serialVersionUID = 4367597772680455920L;
 
-	@Override
-	protected void execute(IAlbumInfo object) {
-		getDesktop().openURL(object.getUrl());
-	}
+    /**
+     * 
+     */
+    public OpenAlbumUrlAction() {
+	super(I18nUtils.getString("READ_MORE"));
+    }
 
-	@Override
-	protected IAlbumInfo getSelectedObject(int row) {
-		return  ((ContextAlbumsTableModel) getTable().getModel()).getAlbum(row);
-	}
+    @Override
+    protected void execute(final IAlbumInfo object) {
+	getDesktop().openURL(object.getUrl());
+    }
 
-	@Override
-	protected boolean isEnabledForObject(IAlbumInfo object) {
-		return true;
-	}
+    @Override
+    protected IAlbumInfo getSelectedObject(final int row) {
+	return ((ContextAlbumsTableModel) getTable().getModel()).getAlbum(row);
+    }
+
+    @Override
+    protected boolean isEnabledForObject(final IAlbumInfo object) {
+	return true;
+    }
 }
