@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
-import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IContextPanelContent;
 import net.sourceforge.atunes.model.IStateContext;
 
@@ -38,12 +38,13 @@ public final class ArtistAlbumsSelector {
     /**
      * Selects albums content
      * 
+     * @param beanFactory
      * @param stateContext
      * @return
      */
     public static IContextPanelContent<?> getContextPanelContent(
-	    final IStateContext stateContext) {
-	return Context
+	    final IBeanFactory beanFactory, final IStateContext stateContext) {
+	return beanFactory
 		.getBean(
 			stateContext.isShowContextAlbumsInGrid() ? "artistAlbumsFlowContent"
 				: "artistAlbumsContent",

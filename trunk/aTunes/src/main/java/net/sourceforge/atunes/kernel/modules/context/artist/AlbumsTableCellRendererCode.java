@@ -30,49 +30,53 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.model.IAlbumInfo;
-import net.sourceforge.atunes.model.IDesktop;
-import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Renderer for albums of an artist in context panel
+ * 
  * @author alex
- *
+ * 
  */
-public class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
+public class AlbumsTableCellRendererCode extends
+	ContextTableRowPanel<IAlbumInfo> {
 
-	private IDesktop desktop;
+    private IBeanFactory beanFactory;
 
-	private ArtistAlbumListImagesDataSource source;
+    private ArtistAlbumListImagesDataSource source;
 
-	/**
-	 * @param desktop
-	 */
-	public void setDesktop(final IDesktop desktop) {
-		this.desktop = desktop;
-	}
+    /**
+     * @param beanFactory
+     */
+    public void setBeanFactory(final IBeanFactory beanFactory) {
+	this.beanFactory = beanFactory;
+    }
 
-	/**
-	 * @param source
-	 */
-	public void setSource(final ArtistAlbumListImagesDataSource source) {
-		this.source = source;
-	}
+    /**
+     * @param source
+     */
+    public void setSource(final ArtistAlbumListImagesDataSource source) {
+	this.source = source;
+    }
 
-	@Override
-	public JComponent getComponent(final JComponent superComponent, final JTable table, final IAlbumInfo value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
-		return getPanelForTableRenderer(source.getCovers().get(value),
-				StringUtils.getString("<html>", value.getTitle(), "</html>"),
-				superComponent.getBackground(),
-				superComponent.getForeground(),
-				Constants.THUMB_IMAGE_WIDTH,
-				Constants.THUMB_IMAGE_HEIGHT,
-				hasFocus);
-	}
+    @Override
+    public JComponent getComponent(final JComponent superComponent,
+	    final JTable table, final IAlbumInfo value,
+	    final boolean isSelected, final boolean hasFocus, final int row,
+	    final int column) {
+	return getPanelForTableRenderer(source.getCovers().get(value),
+		StringUtils.getString("<html>", value.getTitle(), "</html>"),
+		superComponent.getBackground(), superComponent.getForeground(),
+		Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT,
+		hasFocus);
+    }
 
-	@Override
-	public List<ContextTableAction<IAlbumInfo>> getActions() {
-		ContextTableAction<IAlbumInfo> action = new OpenAlbumUrlAction(I18nUtils.getString("READ_MORE"), getTable(), desktop);
-		return Collections.singletonList(action);
-	}
+    @Override
+    public List<ContextTableAction<IAlbumInfo>> getActions() {
+	ContextTableAction<IAlbumInfo> action = beanFactory
+		.getBean(OpenAlbumUrlAction.class);
+	action.setTable(getTable());
+	return Collections.singletonList(action);
+    }
 }

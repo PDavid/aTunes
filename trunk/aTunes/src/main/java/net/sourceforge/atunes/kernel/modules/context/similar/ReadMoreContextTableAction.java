@@ -20,34 +20,41 @@
 
 package net.sourceforge.atunes.kernel.modules.context.similar;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.model.IArtistInfo;
-import net.sourceforge.atunes.model.IDesktop;
+import net.sourceforge.atunes.utils.I18nUtils;
 
-final class ReadMoreContextTableAction extends ContextTableAction<IArtistInfo> {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4964635263019533125L;
+/**
+ * Opens url to read more information about an artist
+ * 
+ * @author alex
+ * 
+ */
+public final class ReadMoreContextTableAction extends
+	ContextTableAction<IArtistInfo> {
 
-	ReadMoreContextTableAction(String name, ContextTable table, IDesktop desktop) {
-		super(name, table, desktop);
-	}
+    private static final long serialVersionUID = -4964635263019533125L;
 
-	@Override
-	protected void execute(IArtistInfo object) {
-		getDesktop().openURL(object.getUrl());
-	}
+    /**
+     * 
+     */
+    public ReadMoreContextTableAction() {
+	super(I18nUtils.getString("READ_MORE"));
+    }
 
-	@Override
-	protected IArtistInfo getSelectedObject(int row) {
-		return ((SimilarArtistsTableModel) getTable().getModel()).getArtist(row);
-	}
+    @Override
+    protected void execute(final IArtistInfo object) {
+	getDesktop().openURL(object.getUrl());
+    }
 
-	@Override
-	protected boolean isEnabledForObject(IArtistInfo object) {
-		return true;
-	}
+    @Override
+    protected IArtistInfo getSelectedObject(final int row) {
+	return ((SimilarArtistsTableModel) getTable().getModel())
+		.getArtist(row);
+    }
+
+    @Override
+    protected boolean isEnabledForObject(final IArtistInfo object) {
+	return true;
+    }
 }

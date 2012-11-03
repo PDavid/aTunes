@@ -28,70 +28,87 @@ import net.sourceforge.atunes.model.IDesktop;
 
 /**
  * Action over an element of a context table
+ * 
  * @author alex
- *
+ * 
  * @param <T>
  */
 public abstract class ContextTableAction<T> extends AbstractAction {
-	
-	/**
+
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = -2310966691761526236L;
-	
-	private ContextTable table;
-	
-	private IDesktop desktop;
-	
-	public ContextTableAction(String name, ContextTable table, IDesktop desktop) {
-		super(name);
-		this.table = table;
-		this.desktop = desktop;
-		
-	}
-	
-	@Override
-	public final void actionPerformed(ActionEvent e) {
-		int row = this.table.getSelectedRow();
-		if (row != -1) {
-			T object = getSelectedObject(row);
-			execute(object);
-		}
-	}
+    private static final long serialVersionUID = -2310966691761526236L;
 
-	/**
-	 * @return context table
-	 */
-	public ContextTable getTable() {
-		return table;
-	}
-	
-	/**
-	 * @return desktop
-	 */
-	protected IDesktop getDesktop() {
-		return desktop;
-	}
-	
-	/**
-	 * Executes the action over the given object
-	 * @param object
-	 */
-	protected abstract void execute(T object);
+    private ContextTable table;
 
-	/**
-	 * Returns selected object
-	 * @param row
-	 * @return
-	 */
-	protected abstract T getSelectedObject(int row);
-	
-	/**
-	 * Returns if this action is available for given object
-	 * @param object
-	 * @return
-	 */
-	protected abstract boolean isEnabledForObject(T object);
-	
+    private IDesktop desktop;
+
+    /**
+     * @param name
+     */
+    public ContextTableAction(final String name) {
+	super(name);
+    }
+
+    /**
+     * @param desktop
+     */
+    public void setDesktop(final IDesktop desktop) {
+	this.desktop = desktop;
+    }
+
+    /**
+     * @param table
+     */
+    public void setTable(final ContextTable table) {
+	this.table = table;
+    }
+
+    @Override
+    public final void actionPerformed(final ActionEvent e) {
+	int row = this.table.getSelectedRow();
+	if (row != -1) {
+	    T object = getSelectedObject(row);
+	    execute(object);
+	}
+    }
+
+    /**
+     * @return context table
+     */
+    public ContextTable getTable() {
+	return table;
+    }
+
+    /**
+     * @return desktop
+     */
+    protected IDesktop getDesktop() {
+	return desktop;
+    }
+
+    /**
+     * Executes the action over the given object
+     * 
+     * @param object
+     */
+    protected abstract void execute(T object);
+
+    /**
+     * Returns selected object
+     * 
+     * @param row
+     * @return
+     */
+    protected abstract T getSelectedObject(int row);
+
+    /**
+     * Returns if this action is available for given object
+     * 
+     * @param object
+     * @return
+     */
+    protected abstract boolean isEnabledForObject(T object);
 
 }

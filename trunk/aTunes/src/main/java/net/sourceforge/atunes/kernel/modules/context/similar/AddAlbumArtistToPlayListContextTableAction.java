@@ -20,56 +20,85 @@
 
 package net.sourceforge.atunes.kernel.modules.context.similar;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IArtistInfo;
-import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.utils.I18nUtils;
 
-final class AddAlbumArtistToPlayListContextTableAction extends ContextTableAction<IArtistInfo> {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3920095074089169426L;
+/**
+ * Adds an album of select artist to play list
+ * 
+ * @author alex
+ * 
+ */
+public final class AddAlbumArtistToPlayListContextTableAction extends
+	ContextTableAction<IArtistInfo> {
 
-	/**
-	 * @param name
-	 * @param table
-	 * @param desktop
-	 */
-	AddAlbumArtistToPlayListContextTableAction(String name, ContextTable table, IDesktop desktop) {
-		super(name, table, desktop);
+    private static final long serialVersionUID = -3920095074089169426L;
+
+    private IRepositoryHandler repositoryHandler;
+
+    private IDialogFactory dialogFactory;
+
+    private IPlayListHandler playListHandler;
+
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(final IPlayListHandler playListHandler) {
+	this.playListHandler = playListHandler;
+    }
+
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(final IDialogFactory dialogFactory) {
+	this.dialogFactory = dialogFactory;
+    }
+
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+	this.repositoryHandler = repositoryHandler;
+    }
+
+    /**
+     * 
+     */
+    AddAlbumArtistToPlayListContextTableAction() {
+	super(I18nUtils.getString("ADD_ALBUM_ARTIST_TO_PLAYLIST"));
+    }
+
+    @Override
+    protected void execute(final IArtistInfo object) {
+	showAddArtistDragDialog(repositoryHandler.getArtist(object.getName()));
+    }
+
+    @Override
+    protected IArtistInfo getSelectedObject(final int row) {
+	return ((SimilarArtistsTableModel) getTable().getModel())
+		.getArtist(row);
+    }
+
+    @Override
+    protected boolean isEnabledForObject(final IArtistInfo object) {
+	return repositoryHandler.getArtist(object.getName()) != null;
+    }
+
+    private void showAddArtistDragDialog(final IArtist currentArtist) {
+	IArtistAlbumSelectorDialog dialog = dialogFactory
+		.newDialog(IArtistAlbumSelectorDialog.class);
+	dialog.setArtist(currentArtist);
+	dialog.showDialog();
+	IAlbum album = dialog.getAlbum();
+	if (album != null) {
+	    playListHandler.addToVisiblePlayList(album.getAudioObjects());
 	}
-
-	@Override
-	protected void execute(IArtistInfo object) {
-		showAddArtistDragDialog(Context.getBean(IRepositoryHandler.class).getArtist(object.getName()));
-	}
-
-	@Override
-	protected IArtistInfo getSelectedObject(int row) {
-		return ((SimilarArtistsTableModel) getTable().getModel()).getArtist(row);
-	}
-
-	@Override
-	protected boolean isEnabledForObject(IArtistInfo object) {
-		return Context.getBean(IRepositoryHandler.class).getArtist(object.getName()) != null;
-	}
-	
-	private void showAddArtistDragDialog(IArtist currentArtist) {
-    	IArtistAlbumSelectorDialog dialog = Context.getBean(IDialogFactory.class).newDialog(IArtistAlbumSelectorDialog.class);
-    	dialog.setArtist(currentArtist);
-    	dialog.showDialog();
-    	IAlbum album = dialog.getAlbum();
-    	if (album != null) {
-    		Context.getBean(IPlayListHandler.class).addToVisiblePlayList(album.getAudioObjects());
-    	}
     }
 }

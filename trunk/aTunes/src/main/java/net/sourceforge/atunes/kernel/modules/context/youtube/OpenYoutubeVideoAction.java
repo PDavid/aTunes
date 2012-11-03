@@ -20,43 +20,55 @@
 
 package net.sourceforge.atunes.kernel.modules.context.youtube;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
-import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IVideoEntry;
+import net.sourceforge.atunes.utils.I18nUtils;
 
-final class OpenYoutubeVideoAction extends ContextTableAction<IVideoEntry> {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7758596564970276630L;
-	
-	private IPlayerHandler playerHandler;
+/**
+ * Opens a youtube video
+ * 
+ * @author alex
+ * 
+ */
+public final class OpenYoutubeVideoAction extends
+	ContextTableAction<IVideoEntry> {
 
-	OpenYoutubeVideoAction(String name, ContextTable table, IDesktop desktop, IPlayerHandler playerHandler) {
-		super(name, table, desktop);
-		this.playerHandler = playerHandler;
+    private static final long serialVersionUID = -7758596564970276630L;
+
+    private IPlayerHandler playerHandler;
+
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(final IPlayerHandler playerHandler) {
+	this.playerHandler = playerHandler;
+    }
+
+    /**
+     * 
+     */
+    public OpenYoutubeVideoAction() {
+	super(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE"));
+    }
+
+    @Override
+    protected void execute(final IVideoEntry entry) {
+	// open youtube url
+	getDesktop().openURL(entry.getUrl());
+	// When playing a video in web browser automatically pause current song
+	if (playerHandler.isEnginePlaying()) {
+	    playerHandler.resumeOrPauseCurrentAudioObject();
 	}
+    }
 
-	@Override
-	protected void execute(IVideoEntry entry) {
-	     //open youtube url
-		getDesktop().openURL(entry.getUrl());
-	    // When playing a video in web browser automatically pause current song
-	    if (playerHandler.isEnginePlaying()) {
-	        playerHandler.resumeOrPauseCurrentAudioObject();
-	    }
-	}
+    @Override
+    protected IVideoEntry getSelectedObject(final int row) {
+	return ((YoutubeResultTableModel) getTable().getModel()).getEntry(row);
+    }
 
-	@Override
-	protected IVideoEntry getSelectedObject(int row) {
-		return ((YoutubeResultTableModel) getTable().getModel()).getEntry(row);
-	}
-
-	@Override
-	protected boolean isEnabledForObject(IVideoEntry object) {
-		return true;
-	}
+    @Override
+    protected boolean isEnabledForObject(final IVideoEntry object) {
+	return true;
+    }
 }
