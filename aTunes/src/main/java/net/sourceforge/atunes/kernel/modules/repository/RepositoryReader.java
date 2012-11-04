@@ -565,12 +565,14 @@ public class RepositoryReader implements IRepositoryLoaderListener {
     }
 
     void notifyCancel() {
-	currentLoader.interruptLoad();
-	repository = currentLoader.getOldRepository();
-	if (repository == null) {
-	    repository = new VoidRepository();
+	if (currentLoader != null) {
+	    currentLoader.interruptLoad();
+	    repository = currentLoader.getOldRepository();
+	    if (repository == null) {
+		repository = new VoidRepository();
+	    }
+	    repositoryReadCompleted();
 	}
-	repositoryReadCompleted();
     }
 
     /**
