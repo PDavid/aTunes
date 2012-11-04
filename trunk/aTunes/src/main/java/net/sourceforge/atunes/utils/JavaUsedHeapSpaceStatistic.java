@@ -22,16 +22,22 @@ package net.sourceforge.atunes.utils;
 
 import java.lang.management.ManagementFactory;
 
-
+/**
+ * Used heap space
+ * 
+ * @author alex
+ * 
+ */
 public final class JavaUsedHeapSpaceStatistic extends
-		JavaVirtualMachineStatistic {
-	@Override
-	public String getValue() {
-		return StringUtils.fromByteToMegaOrGiga(ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed());
-	}
+	JavaVirtualMachineStatistic {
+    @Override
+    public String getValue() {
+	return StringUtils.fromByteToMegaOrGiga(ManagementFactory
+		.getMemoryMXBean().getHeapMemoryUsage().getUsed());
+    }
 
-	@Override
-	public String getDescription() {
-	    return "Used Heap Space";
-	}
+    @Override
+    public String getDescription() {
+	return "Used Heap Space";
+    }
 }

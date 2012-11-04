@@ -59,39 +59,45 @@ public final class FileNameUtils {
     }
 
     static {
-        try {
-            Native.setProtected(true);
-            kernel32 = (Kernel32) Native.loadLibrary("Kernel32", Kernel32.class);
-        } catch (UnsatisfiedLinkError e) {
-            Logger.debug("kernel32 not found");
-        }
+	try {
+	    Native.setProtected(true);
+	    kernel32 = (Kernel32) Native
+		    .loadLibrary("Kernel32", Kernel32.class);
+	} catch (UnsatisfiedLinkError e) {
+	    Logger.debug("kernel32 not found");
+	}
     }
 
+    /**
+     * @author alex
+     * 
+     */
     public interface Kernel32 extends Library {
 
-        /*
-         * http://msdn2.microsoft.com/en-us/library/aa364989(VS.85).aspx
-         */
-        /**
-         * <p>
-         * Unicode (wchar_t*) version of GetShortPathName()
-         * </p>
-         * <code>
-         * DWORD WINAPI GetShortPathNameW( __in LPCTSTR lpszLongPath,
-         * __out LPTSTR lpdzShortPath,
-         * __in DWORD cchBuffer );
-         * </code>.
-         * 
-         * @param inPath
-         *            the in path
-         * @param outPathBuffer
-         *            the out path buffer
-         * @param outPathBufferSize
-         *            the out path buffer size
-         * 
-         * @return the int
-         */
-        public int GetShortPathNameW(WString inPath, Memory outPathBuffer, int outPathBufferSize);
+	/*
+	 * http://msdn2.microsoft.com/en-us/library/aa364989(VS.85).aspx
+	 */
+	/**
+	 * <p>
+	 * Unicode (wchar_t*) version of GetShortPathName()
+	 * </p>
+	 * <code>
+	 * DWORD WINAPI GetShortPathNameW( __in LPCTSTR lpszLongPath,
+	 * __out LPTSTR lpdzShortPath,
+	 * __in DWORD cchBuffer );
+	 * </code>.
+	 * 
+	 * @param inPath
+	 *            the in path
+	 * @param outPathBuffer
+	 *            the out path buffer
+	 * @param outPathBufferSize
+	 *            the out path buffer size
+	 * 
+	 * @return the int
+	 */
+	public int GetShortPathNameW(WString inPath, Memory outPathBuffer,
+		int outPathBufferSize);
 
     }
 
@@ -105,11 +111,13 @@ public final class FileNameUtils {
      *            The filename to be checked. Please make sure to check for
      *            escape sequences (\, $) and add a \ before them before calling
      *            this method.
+     * @param osManager
      * 
      * @return Returns the filename with known illegal characters substituted.
      */
-    public static String getValidFileName(String fileName, IOSManager osManager) {
-        return getValidFileName(fileName, false, osManager);
+    public static String getValidFileName(final String fileName,
+	    final IOSManager osManager) {
+	return getValidFileName(fileName, false, osManager);
     }
 
     /**
@@ -124,29 +132,31 @@ public final class FileNameUtils {
      *            this method.
      * @param isMp3Device
      *            if valid file name for Mp3 device (->FAT/FAT32)
+     * @param osManager
      * 
      * @return Returns the filename with known illegal characters substituted.
      */
-    public static String getValidFileName(String fileNameStr, boolean isMp3Device, IOSManager osManager) {
-        // First call generic function
-        String fileName = getValidName(fileNameStr, isMp3Device, osManager);
+    public static String getValidFileName(final String fileNameStr,
+	    final boolean isMp3Device, final IOSManager osManager) {
+	// First call generic function
+	String fileName = getValidName(fileNameStr, isMp3Device, osManager);
 
-        // Most OS do not like a slash, so replace it by default.
-        fileName = fileName.replaceAll("/", "-");
-        // Do the same with double quotes...
-        fileName = fileName.replaceAll("\"", "'");
-        // ...question mark ?
-        fileName = fileName.replaceAll("\\?", "");
-        // ... asterisk
-        fileName = fileName.replaceAll("\\*", "");
-        // ... colon
-        fileName = fileName.replaceAll(":", "");
+	// Most OS do not like a slash, so replace it by default.
+	fileName = fileName.replaceAll("/", "-");
+	// Do the same with double quotes...
+	fileName = fileName.replaceAll("\"", "'");
+	// ...question mark ?
+	fileName = fileName.replaceAll("\\?", "");
+	// ... asterisk
+	fileName = fileName.replaceAll("\\*", "");
+	// ... colon
+	fileName = fileName.replaceAll(":", "");
 
-        // This list is probably incomplete. Windows is quite picky.
-        if (osManager.isWindows() || isMp3Device) {
-            fileName = fileName.replace("\\", "-");
-        }
-        return fileName;
+	// This list is probably incomplete. Windows is quite picky.
+	if (osManager.isWindows() || isMp3Device) {
+	    fileName = fileName.replace("\\", "-");
+	}
+	return fileName;
     }
 
     /**
@@ -157,11 +167,13 @@ public final class FileNameUtils {
      * 
      * @param folderName
      *            The folder name to be checked.
+     * @param osManager
      * 
      * @return Returns the path name with known illegal characters substituted.
      */
-    public static String getValidFolderName(String folderName, IOSManager osManager) {
-        return getValidFolderName(folderName, false, osManager);
+    public static String getValidFolderName(final String folderName,
+	    final IOSManager osManager) {
+	return getValidFolderName(folderName, false, osManager);
     }
 
     /**
@@ -174,26 +186,28 @@ public final class FileNameUtils {
      *            The folder name to be checked.
      * @param isMp3Device
      *            if valid folder name for Mp3 device (->FAT/FAT32)
+     * @param osManager
      * 
      * @return Returns the path name with known illegal characters substituted.
      */
-    public static String getValidFolderName(String folderNameStr, boolean isMp3Device, IOSManager osManager) {
-        // First call generic function
-        String folderName = getValidName(folderNameStr, isMp3Device, osManager);
+    public static String getValidFolderName(final String folderNameStr,
+	    final boolean isMp3Device, final IOSManager osManager) {
+	// First call generic function
+	String folderName = getValidName(folderNameStr, isMp3Device, osManager);
 
-        // This list is probably incomplete. Windows is quite picky.
-        if (osManager.isWindows() || isMp3Device) {
-            folderName = folderName.replace("\\.", "\\_");
-            if (osManager.isWindows()) {
-                folderName = folderName + "\\";
-            }
-            folderName = folderName.replace(".\\", "_\\");
-            if (osManager.isWindows()) {
-                folderName = folderName.replace("/", "-");
-            }
-        }
+	// This list is probably incomplete. Windows is quite picky.
+	if (osManager.isWindows() || isMp3Device) {
+	    folderName = folderName.replace("\\.", "\\_");
+	    if (osManager.isWindows()) {
+		folderName = folderName + "\\";
+	    }
+	    folderName = folderName.replace(".\\", "_\\");
+	    if (osManager.isWindows()) {
+		folderName = folderName.replace("/", "-");
+	    }
+	}
 
-        return folderName;
+	return folderName;
     }
 
     /*
@@ -211,30 +225,32 @@ public final class FileNameUtils {
      * 
      * @return the valid name
      */
-    private static String getValidName(String fileNameStr, boolean isMp3Device, IOSManager osManager) {
-        /*
-         * This list is probably incomplete. Windows is quite picky. We do not
-         * check for maximum length.
-         */
-        String fileName = fileNameStr;
-        if (osManager.isWindows() || isMp3Device) {
-            fileName = fileName.replace("\"", "'");
-            fileName = fileName.replace("?", "_");
-            // Replace all ":" except at the drive letter
-            if (fileName.length() > 2) {
-                fileName = fileName.substring(0, 2) + fileName.substring(2).replace(":", "-");
-            }
-            fileName = fileName.replace("<", "-");
-            fileName = fileName.replace(">", "-");
-            fileName = fileName.replace("|", "-");
-            fileName = fileName.replace("*", "-");
-        }
+    private static String getValidName(final String fileNameStr,
+	    final boolean isMp3Device, final IOSManager osManager) {
+	/*
+	 * This list is probably incomplete. Windows is quite picky. We do not
+	 * check for maximum length.
+	 */
+	String fileName = fileNameStr;
+	if (osManager.isWindows() || isMp3Device) {
+	    fileName = fileName.replace("\"", "'");
+	    fileName = fileName.replace("?", "_");
+	    // Replace all ":" except at the drive letter
+	    if (fileName.length() > 2) {
+		fileName = fileName.substring(0, 2)
+			+ fileName.substring(2).replace(":", "-");
+	    }
+	    fileName = fileName.replace("<", "-");
+	    fileName = fileName.replace(">", "-");
+	    fileName = fileName.replace("|", "-");
+	    fileName = fileName.replace("*", "-");
+	}
 
-        // Unconfirmed, as no Mac available for testing.
-        if (osManager.isMacOsX()) {
-            fileName = fileName.replace("|", "-");
-        }
-        return fileName;
+	// Unconfirmed, as no Mac available for testing.
+	if (osManager.isMacOsX()) {
+	    fileName = fileName.replace("|", "-");
+	}
+	return fileName;
     }
 
     /*
@@ -250,20 +266,23 @@ public final class FileNameUtils {
      * 
      * @param longPathName
      *            the long path name
+     * @param osManager
      * 
      * @return File/Path in 8.3 format
      */
-    public static String getShortPathNameW(String longPathName, IOSManager osManager) {
-        if (!osManager.usesShortPathNames()) {
-            return longPathName;
-        }
-        WString pathname = new WString(longPathName);
-        int bufferSize = (pathname.length() * CHAR_BYTE_WIDTH) + CHAR_BYTE_WIDTH;
-        Memory buffer = new Memory(bufferSize);
+    public static String getShortPathNameW(final String longPathName,
+	    final IOSManager osManager) {
+	if (!osManager.usesShortPathNames()) {
+	    return longPathName;
+	}
+	WString pathname = new WString(longPathName);
+	int bufferSize = (pathname.length() * CHAR_BYTE_WIDTH)
+		+ CHAR_BYTE_WIDTH;
+	Memory buffer = new Memory(bufferSize);
 
-        if (kernel32.GetShortPathNameW(pathname, buffer, bufferSize) == 0) {
-            return "";
-        }
-        return buffer.getString(0, true);
+	if (kernel32.GetShortPathNameW(pathname, buffer, bufferSize) == 0) {
+	    return "";
+	}
+	return buffer.getString(0, true);
     }
 }

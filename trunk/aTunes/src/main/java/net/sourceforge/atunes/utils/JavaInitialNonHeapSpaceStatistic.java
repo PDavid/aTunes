@@ -22,15 +22,22 @@ package net.sourceforge.atunes.utils;
 
 import java.lang.management.ManagementFactory;
 
+/**
+ * Initial non heap space
+ * 
+ * @author alex
+ * 
+ */
+public final class JavaInitialNonHeapSpaceStatistic extends
+	JavaVirtualMachineStatistic {
+    @Override
+    public String getValue() {
+	return StringUtils.fromByteToMegaOrGiga(ManagementFactory
+		.getMemoryMXBean().getNonHeapMemoryUsage().getInit());
+    }
 
-public final class JavaInitialNonHeapSpaceStatistic extends JavaVirtualMachineStatistic {
-	@Override
-	public String getValue() {
-	   return StringUtils.fromByteToMegaOrGiga(ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage().getInit());
-	}
-
-	@Override
-	public String getDescription() {
-		return "Initial Non Heap Space";
-	}
+    @Override
+    public String getDescription() {
+	return "Initial Non Heap Space";
+    }
 }
