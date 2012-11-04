@@ -35,153 +35,169 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Abstract encoder
+ * 
  * @author alex
- *
+ * 
  */
 public abstract class AbstractEncoder implements Encoder {
 
-	private String extensionOfEncodedFiles;
-	
+    private String extensionOfEncodedFiles;
+
     private ProgressListener listener;
-    
+
     private String quality;
 
-	private String[] availableQualities;
+    private String[] availableQualities;
 
-	private String defaultQuality;
+    private String defaultQuality;
 
-	private String formatName;
-	
-	private ILocalAudioObjectFactory localAudioObjectFactory;
-	
-	private IOSManager osManager;
-	
-	private ITagHandler tagHandler;
-	
-	private IUnknownObjectChecker unknownObjectChecker;
+    private String formatName;
 
-	/**
-	 * @param extensionOfEncodedFiles
-	 * @param availableQualities
-	 * @param defaultQuality
-	 * @param formatName
-	 */
-	public AbstractEncoder(String extensionOfEncodedFiles, String[] availableQualities, String defaultQuality, String formatName) {
-		this.extensionOfEncodedFiles = extensionOfEncodedFiles;
-		this.availableQualities = Arrays.copyOf(availableQualities, availableQualities.length);
-		this.defaultQuality = defaultQuality;
-		this.formatName = formatName;
-	}
-	
-	/**
-	 * @param unknownObjectChecker
-	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
-	}
-	
-	/**
-	 * @param tagHandler
-	 */
-	public void setTagHandler(ITagHandler tagHandler) {
-		this.tagHandler = tagHandler;
-	}
-	
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
-	}
-	
-	/**
-	 * @return os manager
-	 */
-	public IOSManager getOsManager() {
-		return osManager;
-	}
-	
-	/**
-	 * @param localAudioObjectFactory
-	 */
-	public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
-		this.localAudioObjectFactory = localAudioObjectFactory;
-	}
-	
-	public final String getExtensionOfEncodedFiles() {
-		return extensionOfEncodedFiles;
-	}
-	
-    @Override
-    public final void setListener(ProgressListener listener) {
-        this.listener = listener;
+    private ILocalAudioObjectFactory localAudioObjectFactory;
+
+    private IOSManager osManager;
+
+    private ITagHandler tagHandler;
+
+    private IUnknownObjectChecker unknownObjectChecker;
+
+    /**
+     * Empty constructor
+     */
+    public AbstractEncoder() {
+
+    }
+
+    /**
+     * @param extensionOfEncodedFiles
+     * @param availableQualities
+     * @param defaultQuality
+     * @param formatName
+     */
+    public AbstractEncoder(final String extensionOfEncodedFiles,
+	    final String[] availableQualities, final String defaultQuality,
+	    final String formatName) {
+	this.extensionOfEncodedFiles = extensionOfEncodedFiles;
+	this.availableQualities = Arrays.copyOf(availableQualities,
+		availableQualities.length);
+	this.defaultQuality = defaultQuality;
+	this.formatName = formatName;
+    }
+
+    /**
+     * @param unknownObjectChecker
+     */
+    public void setUnknownObjectChecker(
+	    final IUnknownObjectChecker unknownObjectChecker) {
+	this.unknownObjectChecker = unknownObjectChecker;
+    }
+
+    /**
+     * @param tagHandler
+     */
+    public void setTagHandler(final ITagHandler tagHandler) {
+	this.tagHandler = tagHandler;
+    }
+
+    /**
+     * @param osManager
+     */
+    public void setOsManager(final IOSManager osManager) {
+	this.osManager = osManager;
+    }
+
+    /**
+     * @return os manager
+     */
+    public IOSManager getOsManager() {
+	return osManager;
+    }
+
+    /**
+     * @param localAudioObjectFactory
+     */
+    public void setLocalAudioObjectFactory(
+	    final ILocalAudioObjectFactory localAudioObjectFactory) {
+	this.localAudioObjectFactory = localAudioObjectFactory;
     }
 
     @Override
-    public final void setQuality(String quality) {
-        this.quality = quality;
+    public final String getExtensionOfEncodedFiles() {
+	return extensionOfEncodedFiles;
+    }
+
+    @Override
+    public final void setListener(final ProgressListener listener) {
+	this.listener = listener;
+    }
+
+    @Override
+    public final void setQuality(final String quality) {
+	this.quality = quality;
     }
 
     /**
      * @return progress listener
      */
     public final ProgressListener getListener() {
-		return listener;
-	}
-    
+	return listener;
+    }
+
     /**
      * @return quality
      */
     public final String getQuality() {
-		return quality;
-	}
+	return quality;
+    }
 
     @Override
     public final String[] getAvailableQualities() {
-        return Arrays.copyOf(availableQualities, availableQualities.length);
+	return Arrays.copyOf(availableQualities, availableQualities.length);
     }
 
     @Override
     public final String getDefaultQuality() {
-        return defaultQuality;
+	return defaultQuality;
     }
 
     @Override
     public final String getFormatName() {
-        return formatName;
+	return formatName;
     }
-    
+
     @Override
-    public boolean setTag(File file, int trackNumber, CDMetadata metadata) {
-        try {
-            ILocalAudioObject audiofile = localAudioObjectFactory.getLocalAudioObject(file);
-            ITag tag = tagHandler.getNewTag();
+    public boolean setTag(final File file, final int trackNumber,
+	    final CDMetadata metadata) {
+	try {
+	    ILocalAudioObject audiofile = localAudioObjectFactory
+		    .getLocalAudioObject(file);
+	    ITag tag = tagHandler.getNewTag();
 
-            tag.setAlbum(metadata.getAlbum());
-            String albumArtist = metadata.getAlbumArtist();
-            String artist = metadata.getArtist(trackNumber);
-            tag.setAlbumArtist(albumArtist);
-            if (!StringUtils.isEmpty(artist)) {
-            	tag.setArtist(artist);
-            } else if (!StringUtils.isEmpty(albumArtist)) {
-            	tag.setArtist(albumArtist);
-            } else {
-            	tag.setArtist(unknownObjectChecker.getUnknownArtist());
-            }
-            tag.setYear(metadata.getYear());
-            tag.setGenre(metadata.getGenre());
-            tag.setTitle(metadata.getTitle(trackNumber));
-            tag.setComposer(metadata.getComposer(trackNumber));
-            tag.setTrackNumber(trackNumber);
-            tag.setDiscNumber(metadata.getDisc());
+	    tag.setAlbum(metadata.getAlbum());
+	    String albumArtist = metadata.getAlbumArtist();
+	    String artist = metadata.getArtist(trackNumber);
+	    tag.setAlbumArtist(albumArtist);
+	    if (!StringUtils.isEmpty(artist)) {
+		tag.setArtist(artist);
+	    } else if (!StringUtils.isEmpty(albumArtist)) {
+		tag.setArtist(albumArtist);
+	    } else {
+		tag.setArtist(unknownObjectChecker.getUnknownArtist());
+	    }
+	    tag.setYear(metadata.getYear());
+	    tag.setGenre(metadata.getGenre());
+	    tag.setTitle(metadata.getTitle(trackNumber));
+	    tag.setComposer(metadata.getComposer(trackNumber));
+	    tag.setTrackNumber(trackNumber);
+	    tag.setDiscNumber(metadata.getDisc());
 
-            tagHandler.setTag(audiofile, tag);
+	    tagHandler.setTag(audiofile, tag);
 
-            return true;
-        } catch (Exception e) {
-            Logger.error(StringUtils.getString("Tag Process execution caused exception ", e));
-            return false;
-        }
-    }    
+	    return true;
+	} catch (Exception e) {
+	    Logger.error(StringUtils.getString(
+		    "Tag Process execution caused exception ", e));
+	    return false;
+	}
+    }
 }
-

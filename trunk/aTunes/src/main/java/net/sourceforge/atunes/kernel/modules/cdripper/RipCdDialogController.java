@@ -26,7 +26,6 @@ import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.tags.Genres;
@@ -38,21 +37,22 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
 
     // Default encoder "quality" settings.
 
-	/**
-	 * Initially true (as user can press escape key)
-	 */
+    /**
+     * Initially true (as user can press escape key)
+     */
     private boolean cancelled = true;
-    
+
     private boolean encoderSettingChanged;
     private String artist;
     private String album;
     private int year;
     private String genre;
     private int discNumber;
-    
-    private RipperHandler ripperHandler;
-    
-    private IStateRipper stateRipper;
+    private final Genres genres;
+
+    private final RipperHandler ripperHandler;
+
+    private final IStateRipper stateRipper;
 
     /**
      * Instantiates a new rip cd dialog controller.
@@ -60,37 +60,46 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * @param dialogControlled
      * @param stateRipper
      * @param ripperHandler
+     * @param genres
      */
-    RipCdDialogController(RipCdDialog dialogControlled, IStateRipper stateRipper, RipperHandler ripperHandler) {
-        super(dialogControlled);
-        this.stateRipper = stateRipper;
-        this.ripperHandler = ripperHandler;
-        addBindings();
+    RipCdDialogController(final RipCdDialog dialogControlled,
+	    final IStateRipper stateRipper, final RipperHandler ripperHandler,
+	    final Genres genres) {
+	super(dialogControlled);
+	this.stateRipper = stateRipper;
+	this.ripperHandler = ripperHandler;
+	this.genres = genres;
+	addBindings();
     }
 
     @Override
-	public void addBindings() {
+    public void addBindings() {
 
-        // Add genres combo box items
-        List<String> genresSorted = Context.getBean(Genres.class).getGenres();
-        Collections.sort(genresSorted);
-        getComponentControlled().getGenreComboBox().setModel(new ListComboBoxModel<String>(genresSorted));
+	// Add genres combo box items
+	List<String> genresSorted = genres.getGenres();
+	Collections.sort(genresSorted);
+	getComponentControlled().getGenreComboBox().setModel(
+		new ListComboBoxModel<String>(genresSorted));
 
-        Set<String> encoders = ripperHandler.getAvailableEncodersNames();
-        String[] avaibleEncoders = encoders.toArray(new String[encoders.size()]);
+	Set<String> encoders = ripperHandler.getAvailableEncodersNames();
+	String[] avaibleEncoders = encoders
+		.toArray(new String[encoders.size()]);
 
-        getComponentControlled().getFormat().setModel(new DefaultComboBoxModel(avaibleEncoders));
+	getComponentControlled().getFormat().setModel(
+		new DefaultComboBoxModel(avaibleEncoders));
 
-        // Add autocompletion
-        AutoCompleteDecorator.decorate(getComponentControlled().getGenreComboBox());
+	// Add autocompletion
+	AutoCompleteDecorator.decorate(getComponentControlled()
+		.getGenreComboBox());
 
-        RipCdDialogListener listener = new RipCdDialogListener(getComponentControlled(), this, ripperHandler);
-        getComponentControlled().getOk().addActionListener(listener);
-        getComponentControlled().getCancel().addActionListener(listener);
-        getComponentControlled().getFormat().addActionListener(listener);
-        getComponentControlled().getTitlesButton().addActionListener(listener);
-        getComponentControlled().getArtistTextField().addKeyListener(listener);
-        getComponentControlled().getAlbumTextField().addKeyListener(listener);
+	RipCdDialogListener listener = new RipCdDialogListener(
+		getComponentControlled(), this, ripperHandler);
+	getComponentControlled().getOk().addActionListener(listener);
+	getComponentControlled().getCancel().addActionListener(listener);
+	getComponentControlled().getFormat().addActionListener(listener);
+	getComponentControlled().getTitlesButton().addActionListener(listener);
+	getComponentControlled().getArtistTextField().addKeyListener(listener);
+	getComponentControlled().getAlbumTextField().addKeyListener(listener);
     }
 
     /**
@@ -99,7 +108,7 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * @return the album
      */
     String getAlbum() {
-        return album;
+	return album;
     }
 
     /**
@@ -108,30 +117,30 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * @return the artist
      */
     String getArtist() {
-        return artist;
+	return artist;
     }
-    
+
     /**
      * @return disc number
      */
     int getDiscNumber() {
-		return discNumber;
-	}
-    
+	return discNumber;
+    }
+
     /**
      * @param discNumber
      */
-    void setDiscNumber(int discNumber) {
-		this.discNumber = discNumber;
-	}
-    
+    void setDiscNumber(final int discNumber) {
+	this.discNumber = discNumber;
+    }
+
     /**
      * Gets the genre.
      * 
      * @return the genre
      */
     String getGenre() {
-        return genre;
+	return genre;
     }
 
     /**
@@ -140,7 +149,7 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * @return the year
      */
     int getYear() {
-        return year;
+	return year;
     }
 
     /**
@@ -149,7 +158,7 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * @return the canceled
      */
     boolean isCancelled() {
-        return cancelled;
+	return cancelled;
     }
 
     /**
@@ -158,7 +167,7 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * @return the encoderSettingChanged
      */
     boolean isEncoderSettingChanged() {
-        return encoderSettingChanged;
+	return encoderSettingChanged;
     }
 
     /**
@@ -167,8 +176,8 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * @param album
      *            the album to set
      */
-    void setAlbum(String album) {
-        this.album = album;
+    void setAlbum(final String album) {
+	this.album = album;
     }
 
     /**
@@ -177,18 +186,18 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * @param artist
      *            the artist to set
      */
-    void setArtist(String artist) {
-        this.artist = artist;
+    void setArtist(final String artist) {
+	this.artist = artist;
     }
-    
+
     /**
      * Sets the cancelled.
      * 
      * @param cancelled
      *            the cancelled to set
      */
-    void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    void setCancelled(final boolean cancelled) {
+	this.cancelled = cancelled;
     }
 
     /**
@@ -197,8 +206,8 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * @param encoderSettingChanged
      *            the encoderSettingChanged to set
      */
-    void setEncoderSettingChanged(boolean encoderSettingChanged) {
-        this.encoderSettingChanged = encoderSettingChanged;
+    void setEncoderSettingChanged(final boolean encoderSettingChanged) {
+	this.encoderSettingChanged = encoderSettingChanged;
     }
 
     /**
@@ -207,8 +216,8 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * @param genre
      *            the genre to set
      */
-    void setGenre(String genre) {
-        this.genre = genre;
+    void setGenre(final String genre) {
+	this.genre = genre;
     }
 
     /**
@@ -217,69 +226,76 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * @param year
      *            the year to set
      */
-    void setYear(int year) {
-        this.year = year;
+    void setYear(final int year) {
+	this.year = year;
     }
 
     /**
      * Show cd info and let user select settings
+     * 
      * @param cdInfo
      */
-    void showCdInfo(CDInfo cdInfo) {
-        showArtist(cdInfo);
-        showAlbum(cdInfo);
-        showYear();
-        showDiscNumber();
-        showGenre(cdInfo);
-        enableGetTitlesButton(cdInfo);
-        getComponentControlled().getFormat().setSelectedItem(ripperHandler.getEncoderName());
-        getComponentControlled().getQualityComboBox().setSelectedItem(stateRipper.getEncoderQuality());
-        getComponentControlled().getUseCdErrorCorrection().setSelected(stateRipper.isUseCdErrorCorrection());
-        getComponentControlled().setTableData(cdInfo);
-        getComponentControlled().updateTrackNames(cdInfo.getTitles());
-        getComponentControlled().updateArtistNames(cdInfo);
-        getComponentControlled().updateComposerNames(cdInfo.getComposers());
-        getComponentControlled().setVisible(true);
+    void showCdInfo(final CDInfo cdInfo) {
+	showArtist(cdInfo);
+	showAlbum(cdInfo);
+	showYear();
+	showDiscNumber();
+	showGenre(cdInfo);
+	enableGetTitlesButton(cdInfo);
+	getComponentControlled().getFormat().setSelectedItem(
+		ripperHandler.getEncoderName());
+	getComponentControlled().getQualityComboBox().setSelectedItem(
+		stateRipper.getEncoderQuality());
+	getComponentControlled().getUseCdErrorCorrection().setSelected(
+		stateRipper.isUseCdErrorCorrection());
+	getComponentControlled().setTableData(cdInfo);
+	getComponentControlled().updateTrackNames(cdInfo.getTitles());
+	getComponentControlled().updateArtistNames(cdInfo);
+	getComponentControlled().updateComposerNames(cdInfo.getComposers());
+	getComponentControlled().setVisible(true);
     }
-    
-    private boolean artistAndAlbumRetrieved(CDInfo cdInfo) {
-    	return cdInfo.getArtist() != null && cdInfo.getAlbum() != null;
+
+    private boolean artistAndAlbumRetrieved(final CDInfo cdInfo) {
+	return cdInfo.getArtist() != null && cdInfo.getAlbum() != null;
     }
 
-	private void enableGetTitlesButton(CDInfo cdInfo) {
-		getComponentControlled().getTitlesButton().setEnabled(artistAndAlbumRetrieved(cdInfo));
-	}
+    private void enableGetTitlesButton(final CDInfo cdInfo) {
+	getComponentControlled().getTitlesButton().setEnabled(
+		artistAndAlbumRetrieved(cdInfo));
+    }
 
-	private void showGenre(CDInfo cdInfo) {
-		if (artistAndAlbumRetrieved(cdInfo)) {
-			if (cdInfo.getGenre() != null) {
-				getComponentControlled().getGenreComboBox().setSelectedItem(cdInfo.getGenre());
-				setGenre(cdInfo.getGenre());
-			}
-        } else {
-        	getComponentControlled().getGenreComboBox().setSelectedItem("");
-			setGenre(null);
-        }
+    private void showGenre(final CDInfo cdInfo) {
+	if (artistAndAlbumRetrieved(cdInfo)) {
+	    if (cdInfo.getGenre() != null) {
+		getComponentControlled().getGenreComboBox().setSelectedItem(
+			cdInfo.getGenre());
+		setGenre(cdInfo.getGenre());
+	    }
+	} else {
+	    getComponentControlled().getGenreComboBox().setSelectedItem("");
+	    setGenre(null);
 	}
+    }
 
-	private void showYear() {
-		setYear(0);
-        getComponentControlled().getYearTextField().setText("");
-	}
-	
-	private void showDiscNumber() {
-		setDiscNumber(0);
-		getComponentControlled().getDiscNumberField().setText("");
-	}
+    private void showYear() {
+	setYear(0);
+	getComponentControlled().getYearTextField().setText("");
+    }
 
-	private void showAlbum(CDInfo cdInfo) {
-		setAlbum(cdInfo.getAlbum());
-        getComponentControlled().getAlbumTextField().setText(cdInfo.getAlbum());
-	}
+    private void showDiscNumber() {
+	setDiscNumber(0);
+	getComponentControlled().getDiscNumberField().setText("");
+    }
 
-	private void showArtist(CDInfo cdInfo) {
-		setArtist(cdInfo.getArtist());
-        getComponentControlled().getArtistTextField().setText(cdInfo.getArtist());
-	}
+    private void showAlbum(final CDInfo cdInfo) {
+	setAlbum(cdInfo.getAlbum());
+	getComponentControlled().getAlbumTextField().setText(cdInfo.getAlbum());
+    }
+
+    private void showArtist(final CDInfo cdInfo) {
+	setArtist(cdInfo.getArtist());
+	getComponentControlled().getArtistTextField().setText(
+		cdInfo.getArtist());
+    }
 
 }

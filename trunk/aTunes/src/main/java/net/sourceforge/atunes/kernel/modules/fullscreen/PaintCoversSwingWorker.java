@@ -29,55 +29,64 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * Gets image and paints in a cover of full screen window
+ * 
+ * @author alex
+ * 
+ */
 public final class PaintCoversSwingWorker extends SwingWorker<Void, Void> {
-	
-	private Cover cover;
-	private IAudioObject audioObject;
-	private int imageSize;
-	
-	private FullScreenCoverImageRetriever fullScreenCoverImageRetriever;
-	
-	/**
-	 * @param fullScreenCoverImageRetriever
-	 */
-	public void setFullScreenCoverImageRetriever(FullScreenCoverImageRetriever fullScreenCoverImageRetriever) {
-		this.fullScreenCoverImageRetriever = fullScreenCoverImageRetriever;
-	}
-	
-	void getCover(Cover cover, IAudioObject audioObject, int imageSize) {
-		this.cover = cover;
-		this.audioObject = audioObject;
-		this.imageSize = imageSize;
-		execute();
-	}
-	
-	@Override
-	protected Void doInBackground() {
-		ImageIcon image = fullScreenCoverImageRetriever.getPicture(audioObject);
-	    
-        if (cover != null) {
-            if (image == null) {
-                cover.setImage(null, 0, 0);
-            } else if (audioObject == null) {
-                cover.setImage(Images.getImage(Images.APP_LOGO_300).getImage(), imageSize, imageSize);
-            } else {
-                cover.setImage(image.getImage(), imageSize, imageSize);
-            }
-        }
-        return null;
-	}
 
-	@Override
-	protected void done() {
-		try {
-			get();
-		} catch (InterruptedException e) {
-			Logger.error(e);
-		} catch (ExecutionException e) {
-			Logger.error(e);
-		}
-		if (cover != null) {
-			cover.repaint();
-		}
-	}	
+    private Cover cover;
+    private IAudioObject audioObject;
+    private int imageSize;
+
+    private FullScreenCoverImageRetriever fullScreenCoverImageRetriever;
+
+    /**
+     * @param fullScreenCoverImageRetriever
+     */
+    public void setFullScreenCoverImageRetriever(
+	    final FullScreenCoverImageRetriever fullScreenCoverImageRetriever) {
+	this.fullScreenCoverImageRetriever = fullScreenCoverImageRetriever;
+    }
+
+    void getCover(final Cover cover, final IAudioObject audioObject,
+	    final int imageSize) {
+	this.cover = cover;
+	this.audioObject = audioObject;
+	this.imageSize = imageSize;
+	execute();
+    }
+
+    @Override
+    protected Void doInBackground() {
+	ImageIcon image = fullScreenCoverImageRetriever.getPicture(audioObject);
+
+	if (cover != null) {
+	    if (image == null) {
+		cover.setImage(null, 0, 0);
+	    } else if (audioObject == null) {
+		cover.setImage(Images.getImage(Images.APP_LOGO_300).getImage(),
+			imageSize, imageSize);
+	    } else {
+		cover.setImage(image.getImage(), imageSize, imageSize);
+	    }
+	}
+	return null;
+    }
+
+    @Override
+    protected void done() {
+	try {
+	    get();
+	} catch (InterruptedException e) {
+	    Logger.error(e);
+	} catch (ExecutionException e) {
+	    Logger.error(e);
+	}
+	if (cover != null) {
+	    cover.repaint();
+	}
+    }
 }

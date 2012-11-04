@@ -22,22 +22,37 @@ package net.sourceforge.atunes.kernel.modules.draganddrop;
 
 import net.sourceforge.atunes.model.IArtistInfo;
 
+/**
+ * Draggable artist information
+ * 
+ * @author alex
+ * 
+ */
 public class DragableArtist {
 
-	private IArtistInfo artistInfo;
+    private IArtistInfo artistInfo;
 
-	public IArtistInfo getArtistInfo() {
-		return artistInfo;
-	}
+    /**
+     * @return artist info
+     */
+    public IArtistInfo getArtistInfo() {
+	return artistInfo;
+    }
 
-	public void setArtistInfo(IArtistInfo artistInfo) {
-		this.artistInfo = artistInfo;
-	}
+    /**
+     * @param artistInfo
+     */
+    public void setArtistInfo(final IArtistInfo artistInfo) {
+	this.artistInfo = artistInfo;
+    }
 
-	public DragableArtist(IArtistInfo artistInfo) {
-		super();
-		this.artistInfo = artistInfo;
-	}
-	
-	
+    /**
+     * Constructor
+     * 
+     * @param artistInfo
+     */
+    public DragableArtist(final IArtistInfo artistInfo) {
+	this.artistInfo = artistInfo;
+    }
+
 }

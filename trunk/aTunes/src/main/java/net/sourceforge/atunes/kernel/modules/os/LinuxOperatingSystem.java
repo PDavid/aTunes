@@ -24,92 +24,99 @@ import java.io.File;
 
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.tray.CommonPlayerTrayIconsHandler;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+/**
+ * Adapter for Linux
+ * 
+ * @author alex
+ * 
+ */
+public class LinuxOperatingSystem extends OperatingSystemAdapter {
 
-public class LinuxOperatingSystem extends OperatingSystemAdapter implements ApplicationContextAware {
+    /**
+     * Name of the Linux command
+     */
+    private static final String COMMAND_LINUX = "aTunes.sh";
 
-	private ApplicationContext context;
+    /**
+     * Command to be executed on Linux systems to launch mplayer. Mplayer should
+     * be in $PATH
+     */
+    private static final String MPLAYER_LINUX_COMMAND = "mplayer";
 
-	@Override
-	public void setApplicationContext(final ApplicationContext applicationContext) {
-		this.context = applicationContext;
-	}
+    private IBeanFactory beanFactory;
 
-	/**
-	 * Name of the Linux command
-	 */
-	private static final String COMMAND_LINUX = "aTunes.sh";
+    /**
+     * @param beanFactory
+     */
+    public void setBeanFactory(final IBeanFactory beanFactory) {
+	this.beanFactory = beanFactory;
+    }
 
-	/**
-	 * Command to be executed on Linux systems to launch mplayer. Mplayer should
-	 * be in $PATH
-	 */
-	private static final String MPLAYER_LINUX_COMMAND = "mplayer";
+    @Override
+    public String getAppDataFolder() {
+	return StringUtils.getString(getUserHome(), "/.atunes");
+    }
 
-	@Override
-	public String getAppDataFolder() {
-		return StringUtils.getString(getUserHome(), "/.atunes");
-	}
+    @Override
+    public String getLaunchCommand() {
+	return FileUtils.getPath(new File(StringUtils.getString("./",
+		COMMAND_LINUX)));
+    }
 
-	@Override
-	public String getLaunchCommand() {
-		return FileUtils.getPath(new File(StringUtils.getString("./", COMMAND_LINUX)));
-	}
+    @Override
+    public String getLaunchParameters() {
+	return null;
+    }
 
-	@Override
-	public String getLaunchParameters() {
-		return null;
-	}
+    @Override
+    public boolean isPlayerEngineSupported(final IPlayerEngine engine) {
+	return true; // all supported
+    }
 
-	@Override
-	public boolean isPlayerEngineSupported(final IPlayerEngine engine) {
-		return true; // all supported
-	}
+    @Override
+    public String getPlayerEngineCommand(final IPlayerEngine engine) {
+	return engine instanceof MPlayerEngine ? MPLAYER_LINUX_COMMAND : null;
+    }
 
-	@Override
-	public String getPlayerEngineCommand(final IPlayerEngine engine) {
-		return engine instanceof MPlayerEngine ? MPLAYER_LINUX_COMMAND : null;
-	}
+    @Override
+    public boolean areTrayIconsSupported() {
+	return true;
+    }
 
-	@Override
-	public boolean areTrayIconsSupported() {
-		return true;
-	}
+    @Override
+    public void setupFrame(final IFrame frame) {
+    }
 
-	@Override
-	public void setupFrame(final IFrame frame) {
-	}
+    @Override
+    public boolean areMenuEntriesDelegated() {
+	return false;
+    }
 
-	@Override
-	public boolean areMenuEntriesDelegated() {
-		return false;
-	}
+    @Override
+    public boolean isClosingMainWindowClosesApplication() {
+	return true;
+    }
 
-	@Override
-	public boolean isClosingMainWindowClosesApplication() {
-		return true;
-	}
+    @Override
+    public boolean isRipSupported() {
+	return true;
+    }
 
-	@Override
-	public boolean isRipSupported() {
-		return true;
-	}
+    @Override
+    public boolean isMultipleInstancesSupported() {
+	return true;
+    }
 
-	@Override
-	public boolean isMultipleInstancesSupported() {
-		return true;
-	}
-
-	@Override
-	public IPlayerTrayIconsHandler getPlayerTrayIcons() {
-		return context.getBean(CommonPlayerTrayIconsHandler.class);
-	}
+    @Override
+    public IPlayerTrayIconsHandler getPlayerTrayIcons() {
+	return beanFactory.getBean(CommonPlayerTrayIconsHandler.class);
+    }
 
 }

@@ -23,10 +23,9 @@ package net.sourceforge.atunes.kernel.modules.draganddrop;
 import java.awt.datatransfer.DataFlavor;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
-import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.TransferableList;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.utils.Logger;
@@ -35,69 +34,76 @@ import net.sourceforge.atunes.utils.Logger;
  * Some methods of this class about how to drag and drop from Gnome/KDE file
  * managers taken from:
  * 
- * http://www.davidgrant.ca/drag_drop_from_linux_kde_gnome_file_managers_konqueror_nautilus_to_java_applications
+ * http://www.davidgrant.ca/
+ * drag_drop_from_linux_kde_gnome_file_managers_konqueror_nautilus_to_java_applications
  * 
  */
 public class TreeNavigationTransferHandler extends TransferHandler {
 
+    private static final long serialVersionUID = 4589661138322620954L;
 
-	private static final long serialVersionUID = 4589661138322620954L;
-
-	/**
+    /**
      * Data flavor of a list of objects dragged from inside application
      */
-    private static DataFlavor internalDataFlavor;
+    private DataFlavor internalDataFlavor;
 
-   
-    static {
-        try {
-            internalDataFlavor = new DataFlavor(TransferableList.MIMETYPE);
-        } catch (ClassNotFoundException e) {
-            Logger.error(e);
-        }
+    private final INavigationHandler navigationHandler;
+
+    /**
+     * Default constructor
+     * 
+     * @param navigationHandler
+     */
+    public TreeNavigationTransferHandler(
+	    final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+	try {
+	    internalDataFlavor = new DataFlavor(TransferableList.MIMETYPE);
+	} catch (ClassNotFoundException e) {
+	    Logger.error(e);
+	}
     }
 
     @Override
-    public boolean canImport(TransferSupport support) {
-        // Check if internal data flavor is supported
-        if (support.getTransferable().isDataFlavorSupported(internalDataFlavor)) {
-            try {
-                List<?> listOfObjectsDragged = (List<?>) support.getTransferable().getTransferData(internalDataFlavor);
-                if (listOfObjectsDragged == null || listOfObjectsDragged.isEmpty()) {
-                    return false;
-                }
+    public boolean canImport(final TransferSupport support) {
+	// Check if internal data flavor is supported
+	if (support.getTransferable().isDataFlavorSupported(internalDataFlavor)) {
+	    try {
+		List<?> listOfObjectsDragged = (List<?>) support
+			.getTransferable().getTransferData(internalDataFlavor);
+		if (listOfObjectsDragged == null
+			|| listOfObjectsDragged.isEmpty()) {
+		    return false;
+		}
 
-                // Drag is made from another component...
-                if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
-                    return true;
-                }
+		// Drag is made from another component...
+		if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
+		    return true;
+		}
 
-                return true;
-            } catch (Exception e) {
-                Logger.error(e);
-            }
+		return true;
+	    } catch (Exception e) {
+		Logger.error(e);
+	    }
 
-            support.setShowDropLocation(true);
-            return true;
-        }
+	    support.setShowDropLocation(true);
+	    return true;
+	}
 
-        
-        return false;
+	return false;
     }
 
-    
-   
     @Override
-    public boolean importData(TransferSupport support) {
-        if (!canImport(support)) {
-            return false;
-        }
+    public boolean importData(final TransferSupport support) {
+	if (!canImport(support)) {
+	    return false;
+	}
 
-        if (support.getTransferable().isDataFlavorSupported(internalDataFlavor)) {
-            return processInternalImport(support);
-        }
+	if (support.getTransferable().isDataFlavorSupported(internalDataFlavor)) {
+	    return processInternalImport(support);
+	}
 
-        return false;
+	return false;
     }
 
     /**
@@ -106,47 +112,47 @@ public class TreeNavigationTransferHandler extends TransferHandler {
      * @param support
      * @return
      */
-    private static boolean processInternalImport(TransferSupport support) {
-        try {
-            List<?> listOfObjectsDragged = (List<?>) support.getTransferable().getTransferData(internalDataFlavor);
-            if (listOfObjectsDragged == null || listOfObjectsDragged.isEmpty()) {
-                return false;
-            }
+    private boolean processInternalImport(final TransferSupport support) {
+	try {
+	    List<?> listOfObjectsDragged = (List<?>) support.getTransferable()
+		    .getTransferData(internalDataFlavor);
+	    if (listOfObjectsDragged == null || listOfObjectsDragged.isEmpty()) {
+		return false;
+	    }
 
-            
-            // DRAG AND DROP OF AN ARTIST -> SELECT IN NAVIGATOR
-            if (listOfObjectsDragged.get(0) instanceof DragableArtist) {
-            	final DragableArtist draggedArtist = (DragableArtist)listOfObjectsDragged.get(0);
-            	SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						Context.getBean(INavigationHandler.class).selectArtist(draggedArtist.getArtistInfo().getName());
-					}
-				});
-            	
-            }
-            
-            // DRAG AND DROP OF A PLAY LIST ITEM -> SELECT IN NAVIGATOR
-            if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow){
-            	final PlayListDragableRow playlistRow = (PlayListDragableRow)listOfObjectsDragged.get(0);
-            	SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						Context.getBean(INavigationHandler.class).selectAudioObject(playlistRow.getRowContent());
-					}
-				});
-            	
-            }
+	    // DRAG AND DROP OF AN ARTIST -> SELECT IN NAVIGATOR
+	    if (listOfObjectsDragged.get(0) instanceof DragableArtist) {
+		final DragableArtist draggedArtist = (DragableArtist) listOfObjectsDragged
+			.get(0);
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+		    @Override
+		    public void run() {
+			navigationHandler.selectArtist(draggedArtist
+				.getArtistInfo().getName());
+		    }
+		});
 
-            
-        } catch (Exception e) {
-            Logger.error(e);
-        }
+	    }
 
-        return false;
+	    // DRAG AND DROP OF A PLAY LIST ITEM -> SELECT IN NAVIGATOR
+	    if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
+		final PlayListDragableRow playlistRow = (PlayListDragableRow) listOfObjectsDragged
+			.get(0);
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+		    @Override
+		    public void run() {
+			navigationHandler.selectAudioObject(playlistRow
+				.getRowContent());
+		    }
+		});
+
+	    }
+
+	} catch (Exception e) {
+	    Logger.error(e);
+	}
+
+	return false;
     }
 
-
-   
-    
 }

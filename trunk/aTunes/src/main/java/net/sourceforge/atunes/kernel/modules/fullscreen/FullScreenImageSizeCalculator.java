@@ -22,6 +22,12 @@ package net.sourceforge.atunes.kernel.modules.fullscreen;
 
 import java.awt.Dimension;
 
+/**
+ * Calculates image size for full screen window
+ * 
+ * @author alex
+ * 
+ */
 public class FullScreenImageSizeCalculator {
 
     private Dimension fullScreenCoverSize;
@@ -29,18 +35,18 @@ public class FullScreenImageSizeCalculator {
     /**
      * @param fullScreenCoverSize
      */
-    public void setFullScreenCoverSize(Dimension fullScreenCoverSize) {
-		this.fullScreenCoverSize = fullScreenCoverSize;
+    public void setFullScreenCoverSize(final Dimension fullScreenCoverSize) {
+	this.fullScreenCoverSize = fullScreenCoverSize;
+    }
+
+    int getImageSize(final int index) {
+	int imageSize = fullScreenCoverSize.height;
+	if (index == 2) {
+	    return imageSize;
+	} else if (index == 1 || index == 3) {
+	    return imageSize * 3 / 4;
+	} else {
+	    return imageSize * 9 / 16;
 	}
-    
-    int getImageSize(int index) {
-    	int imageSize = fullScreenCoverSize.height;
-        if (index == 2) {
-            return imageSize;
-        } else if (index == 1 || index == 3) {
-            return imageSize * 3 / 4;
-        } else {
-            return imageSize * 9 / 16;
-        }
     }
 }
