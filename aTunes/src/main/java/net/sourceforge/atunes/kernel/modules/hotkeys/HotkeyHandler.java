@@ -171,9 +171,11 @@ public final class HotkeyHandler extends AbstractHandler implements
     @Override
     public IHotkeysConfig getHotkeysConfig() {
 	HotkeysConfig config = new HotkeysConfig();
-	for (IHotkey hotkey : hotkeysConfig) {
-	    config.putHotkey(new Hotkey(hotkey.getId(), hotkey.getMod(), hotkey
-		    .getKey(), hotkey.getDescription()));
+	if (hotkeysConfig != null) {
+	    for (IHotkey hotkey : hotkeysConfig) {
+		config.putHotkey(new Hotkey(hotkey.getId(), hotkey.getMod(),
+			hotkey.getKey(), hotkey.getDescription()));
+	    }
 	}
 	return config;
     }
