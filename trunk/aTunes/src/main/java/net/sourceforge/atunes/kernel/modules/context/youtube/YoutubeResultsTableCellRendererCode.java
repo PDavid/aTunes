@@ -24,11 +24,11 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JComponent;
-import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
+import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanelRendererCode;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  */
 public class YoutubeResultsTableCellRendererCode extends
-	ContextTableRowPanel<IVideoEntry> {
+	ContextTableRowPanelRendererCode<IVideoEntry> {
 
     private IBeanFactory beanFactory;
 
@@ -52,9 +52,9 @@ public class YoutubeResultsTableCellRendererCode extends
     }
 
     @Override
-    public JComponent getComponent(final JComponent superComponent,
-	    final JTable t, final IVideoEntry value, final boolean isSelected,
-	    final boolean hasFocus, final int row, final int column) {
+    public ContextTableRowPanel<IVideoEntry> createPanel(
+	    final JComponent superComponent, final IVideoEntry value,
+	    final boolean hasFocus) {
 	return getPanelForTableRenderer(
 		value.getImage(),
 		StringUtils.getString("<html>", value.getName(), "<br>(",
@@ -62,6 +62,11 @@ public class YoutubeResultsTableCellRendererCode extends
 		superComponent.getBackground(), superComponent.getForeground(),
 		Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT,
 		hasFocus);
+    }
+
+    @Override
+    public String getCacheKeyControl(final IVideoEntry v) {
+	return v.getArtist();
     }
 
     @Override

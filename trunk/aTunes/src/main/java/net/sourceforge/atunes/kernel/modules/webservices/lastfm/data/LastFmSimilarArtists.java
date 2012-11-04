@@ -64,7 +64,8 @@ public class LastFmSimilarArtists implements ISimilarArtistsInfo {
 	    if (i == max) {
 		break;
 	    }
-	    similar.artists.add(LastFmArtist.getArtist(list.get(i)));
+	    similar.artists.add(LastFmArtist.getArtist(list.get(i),
+		    similar.artistName));
 	}
 
 	return similar;

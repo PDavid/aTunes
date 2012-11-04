@@ -37,6 +37,7 @@ public class LastFmArtist implements IArtistInfo {
     private static final long serialVersionUID = 2077813440652134441L;
 
     private String name;
+    private String similarTo;
     private String match;
     private String url;
     private String imageUrl;
@@ -51,9 +52,12 @@ public class LastFmArtist implements IArtistInfo {
     /**
      * Gets the artist.
      * 
-     * @return the artist
+     * @param a
+     * @param similarTo
+     * @return
      */
-    protected static LastFmArtist getArtist(final Artist a) {
+    protected static LastFmArtist getArtist(final Artist a,
+	    final String similarTo) {
 	LastFmArtist artist = new LastFmArtist();
 	artist.name = a.getName();
 	// Match is returned in [0-1] range and we show a percentage
@@ -63,6 +67,7 @@ public class LastFmArtist implements IArtistInfo {
 	// SMALL images have low quality when scaling. Better to get largest
 	// image
 	artist.imageUrl = a.getImageURL(ImageSize.LARGE);
+	artist.similarTo = similarTo;
 	return artist;
     }
 
@@ -216,6 +221,23 @@ public class LastFmArtist implements IArtistInfo {
 	    return false;
 	}
 	return true;
+    }
+
+    /**
+     * @return the similarTo
+     */
+    @Override
+    public String getSimilarTo() {
+	return similarTo;
+    }
+
+    /**
+     * @param similarTo
+     *            the similarTo to set
+     */
+    @Override
+    public void setSimilarTo(final String similarTo) {
+	this.similarTo = similarTo;
     }
 
 }

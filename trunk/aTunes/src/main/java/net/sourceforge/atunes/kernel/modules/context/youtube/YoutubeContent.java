@@ -34,6 +34,7 @@ import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -43,120 +44,142 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class YoutubeContent extends AbstractContextPanelContent<YoutubeDataSource> {
+public class YoutubeContent extends
+	AbstractContextPanelContent<YoutubeDataSource> {
 
-	private static final long serialVersionUID = 5041098100868186051L;
+    private static final long serialVersionUID = 5041098100868186051L;
 
-	private ContextTable youtubeResultTable;
+    private ContextTable youtubeResultTable;
 
-	private final JMenuItem moreResults;
+    private final JMenuItem moreResults;
 
-	private final JMenuItem openYoutube;
+    private final JMenuItem openYoutube;
 
-	private YoutubeService youtubeService;
+    private YoutubeService youtubeService;
 
-	private IContextHandler contextHandler;
+    private IContextHandler contextHandler;
 
-	private IBeanFactory beanFactory;
+    private IBeanFactory beanFactory;
 
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
+    private IUnknownObjectChecker unknownObjectChecker;
+
+    /**
+     * @param unknownObjectChecker
+     */
+    public void setUnknownObjectChecker(
+	    final IUnknownObjectChecker unknownObjectChecker) {
+	this.unknownObjectChecker = unknownObjectChecker;
+    }
+
+    /**
+     * @param beanFactory
+     */
+    public void setBeanFactory(final IBeanFactory beanFactory) {
+	this.beanFactory = beanFactory;
+    }
+
+    /**
+     * Default constructor
+     */
+    public YoutubeContent() {
+	moreResults = new JMenuItem(I18nUtils.getString("SEE_MORE_RESULTS"));
+	moreResults.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(final ActionEvent e) {
+		searchMoreResultsInYoutube();
+	    }
+	});
+	openYoutube = new JMenuItem(I18nUtils.getString("GO_TO_YOUTUBE"));
+	openYoutube.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(final ActionEvent e) {
+		openYoutube();
+	    }
+	});
+    }
+
+    @Override
+    public String getContentName() {
+	return I18nUtils.getString("YOUTUBE_VIDEOS");
+    }
+
+    @Override
+    public void updateContentFromDataSource(final YoutubeDataSource source) {
+	((YoutubeResultTableModel) youtubeResultTable.getModel())
+		.setEntries(source.getVideos());
+	moreResults.setEnabled(true);
+	openYoutube.setEnabled(true);
+    }
+
+    @Override
+    public void clearContextPanelContent() {
+	super.clearContextPanelContent();
+	((YoutubeResultTableModel) youtubeResultTable.getModel())
+		.setEntries(null);
+	moreResults.setEnabled(false);
+	openYoutube.setEnabled(false);
+    }
+
+    @Override
+    public Component getComponent() {
+	// Create components
+	youtubeResultTable = new ContextTable(getLookAndFeelManager()
+		.getCurrentLookAndFeel());
+	youtubeResultTable.setModel(new YoutubeResultTableModel());
+	youtubeResultTable.addContextRowPanel(beanFactory
+		.getBean(YoutubeResultsTableCellRendererCode.class));
+	return youtubeResultTable;
+    }
+
+    @Override
+    public List<Component> getOptions() {
+	List<Component> options = new ArrayList<Component>();
+	options.add(moreResults);
+	options.add(openYoutube);
+	return options;
+    }
+
+    /**
+     * Searches for more results of the last search
+     * 
+     * @return
+     */
+    private void searchMoreResultsInYoutube() {
+	String searchString = youtubeService
+		.getSearchForAudioObject(contextHandler.getCurrentAudioObject());
+	if (searchString.length() > 0) {
+	    final List<IVideoEntry> result = youtubeService.searchInYoutube(
+		    contextHandler.getCurrentAudioObject().getArtist(
+			    unknownObjectChecker), searchString,
+		    youtubeResultTable.getRowCount() + 1);
+	    ((YoutubeResultTableModel) youtubeResultTable.getModel())
+		    .addEntries(result);
 	}
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public YoutubeContent() {
-		moreResults = new JMenuItem(I18nUtils.getString("SEE_MORE_RESULTS"));
-		moreResults.addActionListener(new ActionListener() {
+    /**
+     * Opens a web browser to show youtube results
+     */
+    protected void openYoutube() {
+	getDesktop().openSearch(
+		SearchFactory.getSearchForName("YouTube"),
+		youtubeService.getSearchForAudioObject(contextHandler
+			.getCurrentAudioObject()));
+    }
 
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				searchMoreResultsInYoutube();
-			}
-		});
-		openYoutube = new JMenuItem(I18nUtils.getString("GO_TO_YOUTUBE"));
-		openYoutube.addActionListener(new ActionListener() {
+    /**
+     * @param youtubeService
+     */
+    public void setYoutubeService(final YoutubeService youtubeService) {
+	this.youtubeService = youtubeService;
+    }
 
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				openYoutube();
-			}
-		});
-	}
-
-	@Override
-	public String getContentName() {
-		return I18nUtils.getString("YOUTUBE_VIDEOS");
-	}
-
-	@Override
-	public void updateContentFromDataSource(final YoutubeDataSource source) {
-		((YoutubeResultTableModel)youtubeResultTable.getModel()).setEntries(source.getVideos());
-		moreResults.setEnabled(true);
-		openYoutube.setEnabled(true);
-	}
-
-	@Override
-	public void clearContextPanelContent() {
-		super.clearContextPanelContent();
-		((YoutubeResultTableModel)youtubeResultTable.getModel()).setEntries(null);
-		moreResults.setEnabled(false);
-		openYoutube.setEnabled(false);
-	}
-
-	@Override
-	public Component getComponent() {
-		// Create components
-		youtubeResultTable = new ContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
-		youtubeResultTable.setModel(new YoutubeResultTableModel());
-		youtubeResultTable.addContextRowPanel(beanFactory.getBean(YoutubeResultsTableCellRendererCode.class));
-		return youtubeResultTable;
-	}
-
-	@Override
-	public List<Component> getOptions() {
-		List<Component> options = new ArrayList<Component>();
-		options.add(moreResults);
-		options.add(openYoutube);
-		return options;
-	}
-
-	/**
-	 * Searches for more results of the last search
-	 * 
-	 * @return
-	 */
-	private void searchMoreResultsInYoutube() {
-		String searchString = youtubeService.getSearchForAudioObject(contextHandler.getCurrentAudioObject());
-		if (searchString.length() > 0) {
-			final List<IVideoEntry> result = youtubeService.searchInYoutube(searchString, youtubeResultTable.getRowCount() + 1);
-			((YoutubeResultTableModel) youtubeResultTable.getModel()).addEntries(result);
-		}
-	}
-
-	/**
-	 * Opens a web browser to show youtube results
-	 */
-	protected void openYoutube() {
-		getDesktop().openSearch(SearchFactory.getSearchForName("YouTube"), youtubeService.getSearchForAudioObject(
-				contextHandler.getCurrentAudioObject()));
-	}
-
-	/**
-	 * @param youtubeService
-	 */
-	public void setYoutubeService(final YoutubeService youtubeService) {
-		this.youtubeService = youtubeService;
-	}
-
-	/**
-	 * @param contextHandler
-	 */
-	public void setContextHandler(final IContextHandler contextHandler) {
-		this.contextHandler = contextHandler;
-	}
+    /**
+     * @param contextHandler
+     */
+    public void setContextHandler(final IContextHandler contextHandler) {
+	this.contextHandler = contextHandler;
+    }
 }

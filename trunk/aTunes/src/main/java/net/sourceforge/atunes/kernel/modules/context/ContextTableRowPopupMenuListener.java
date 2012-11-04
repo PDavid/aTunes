@@ -26,29 +26,30 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 final class ContextTableRowPopupMenuListener<T> implements PopupMenuListener {
-	
-	private final List<ContextTableAction<T>> actions;
-	private final ContextTable table;
 
-	ContextTableRowPopupMenuListener(
-			List<ContextTableAction<T>> actions, ContextTable table) {
-		this.actions = actions;
-		this.table = table;
-	}
+    private final List<ContextTableAction<T>> actions;
+    private final ContextTable table;
 
-	@Override
-	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-		for (ContextTableAction<T> action : actions) {
-			int row = table.getSelectedRow();
-			action.setEnabled(row != -1 && action.isEnabledForObject(action.getSelectedObject(row)));
-		}
-	}
+    ContextTableRowPopupMenuListener(final List<ContextTableAction<T>> actions,
+	    final ContextTable table) {
+	this.actions = actions;
+	this.table = table;
+    }
 
-	@Override
-	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+    @Override
+    public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+	for (ContextTableAction<T> action : actions) {
+	    int row = table.getSelectedRow();
+	    action.setEnabled(row != -1
+		    && action.isEnabledForObject(action.getSelectedObject(row)));
 	}
+    }
 
-	@Override
-	public void popupMenuCanceled(PopupMenuEvent e) {
-	}
+    @Override
+    public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+    }
+
+    @Override
+    public void popupMenuCanceled(final PopupMenuEvent e) {
+    }
 }

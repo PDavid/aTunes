@@ -59,7 +59,7 @@ public class ContextTable extends JTable {
 	 * Adds row panel used to render and edit cells
 	 * @param rowPanel
 	 */
-	public void addContextRowPanel(ContextTableRowPanel<?> rowPanel) {
+	public void addContextRowPanel(ContextTableRowPanelRendererCode<?> rowPanel) {
 		rowPanel.bind(this);
 	}
 
