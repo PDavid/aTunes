@@ -39,21 +39,25 @@ public class PodcastFeedEntryRetrieverTest {
 
     @Before
     public void init() {
-        testedObject = new PodcastFeed("", PodcastFeedEntryRetrieverTest.class.getResource("/podcast/feed.rss").toString());
-        testedObject.setRetrieveNameFromFeed(true);
+	testedObject = new PodcastFeed("", PodcastFeedEntryRetrieverTest.class
+		.getResource("/podcast/feed.rss").toString());
+	testedObject.setRetrieveNameFromFeed(true);
     }
 
     @Test
     public void testRetrievePodcastFeedEntries() {
-    	NetworkHandler networkHandler = new NetworkHandler();
-    	networkHandler.setStateCore(mock(IStateCore.class));
-    	
-        PodcastFeedEntryRetriever podcastFeedEntryRetriever = new PodcastFeedEntryRetriever(Arrays.asList(testedObject), null, null, null, null, networkHandler, null);
-        List<IPodcastFeed> podcastFeedsWithNewEntries = podcastFeedEntryRetriever.retrievePodcastFeedEntries(true);
+	NetworkHandler networkHandler = new NetworkHandler();
+	networkHandler.setStateCore(mock(IStateCore.class));
 
-        Assert.assertEquals("RadioTux GNU/Linux", testedObject.getName());
-        Assert.assertEquals(1, podcastFeedsWithNewEntries.size());
-        //TODO more checks
+	PodcastFeedEntryRetriever podcastFeedEntryRetriever = new PodcastFeedEntryRetriever(
+		Arrays.asList(testedObject), null, null, null, null,
+		networkHandler, null, null);
+	List<IPodcastFeed> podcastFeedsWithNewEntries = podcastFeedEntryRetriever
+		.retrievePodcastFeedEntries(true);
+
+	Assert.assertEquals("RadioTux GNU/Linux", testedObject.getName());
+	Assert.assertEquals(1, podcastFeedsWithNewEntries.size());
+	// TODO more checks
     }
 
 }

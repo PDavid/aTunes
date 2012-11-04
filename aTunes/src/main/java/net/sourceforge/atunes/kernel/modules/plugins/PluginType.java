@@ -22,54 +22,61 @@ package net.sourceforge.atunes.kernel.modules.plugins;
 
 import org.commonjukebox.plugins.model.PluginListener;
 
+/**
+ * A type of plugin
+ * 
+ * @author alex
+ * 
+ */
 public class PluginType {
 
     /**
      * The class type of a set of plugins
      */
-    private String classType;
+    private final String classType;
 
     /**
      * Listener of plugins
      */
-    private PluginListener listener;
+    private final PluginListener listener;
 
     /**
      * Indicates if application must be restarted after a change in
      * configuration or an activation or deactivation of a plugin of this type
      */
-    private boolean applicationNeedsRestart;
+    private final boolean applicationNeedsRestart;
 
     /**
      * @param classType
      * @param listener
      * @param applicationNeedsRestart
      */
-    protected PluginType(String classType, PluginListener listener, boolean applicationNeedsRestart) {
-        this.classType = classType;
-        this.listener = listener;
-        this.applicationNeedsRestart = applicationNeedsRestart;
+    protected PluginType(final String classType, final PluginListener listener,
+	    final boolean applicationNeedsRestart) {
+	this.classType = classType;
+	this.listener = listener;
+	this.applicationNeedsRestart = applicationNeedsRestart;
     }
 
     /**
      * @return the classType
      */
     protected String getClassType() {
-        return classType;
+	return classType;
     }
 
     /**
      * @return the listener
      */
     protected PluginListener getListener() {
-        return listener;
+	return listener;
     }
 
     /**
      * @return the applicationNeedsRestart
      */
     protected boolean isApplicationNeedsRestart() {
-        return applicationNeedsRestart;
+	return applicationNeedsRestart;
     }
 
 }

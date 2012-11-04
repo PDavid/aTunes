@@ -27,6 +27,7 @@ import java.util.List;
 import javax.swing.table.TableCellEditor;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.model.ITagHandler;
@@ -47,11 +48,16 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
 
     private final ITagHandler tagHandler;
 
+    private final IRepositoryHandler repositoryHandler;
+
     /**
      * @param tagHandler
+     * @param repositoryHandler
      */
-    TagAttributesReviewed(final ITagHandler tagHandler) {
+    TagAttributesReviewed(final ITagHandler tagHandler,
+	    final IRepositoryHandler repositoryHandler) {
 	this.tagHandler = tagHandler;
+	this.repositoryHandler = repositoryHandler;
     }
 
     /**
@@ -62,7 +68,8 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
     private List<AbstractTagAttributeReviewed> getTagAttributes() {
 	if (tagAttributes == null) {
 	    tagAttributes = new ArrayList<AbstractTagAttributeReviewed>();
-	    tagAttributes.add(new ArtistTagAttributeReviewed("ARTIST"));
+	    tagAttributes.add(new ArtistTagAttributeReviewed("ARTIST",
+		    repositoryHandler));
 	    tagAttributes.add(new AlbumArtistTagAttributeReviewed(
 		    "ALBUM_ARTIST"));
 	    tagAttributes.add(new ComposerTagAttributeReviewed("COMPOSER"));

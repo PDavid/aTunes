@@ -28,18 +28,24 @@ import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListObjectFilter;
 import net.sourceforge.atunes.model.IRadio;
 
+/**
+ * Filters radios from play list
+ * 
+ * @author alex
+ * 
+ */
 public class PlayListRadioFilter implements IPlayListObjectFilter<IRadio> {
-	
-	@Override
-	public List<IRadio> getObjects(IPlayList playList) {
-        List<IRadio> result = new ArrayList<IRadio>();
-        for (int i = 0; i < playList.size(); i++) {
-        	IAudioObject ao = playList.get(i);
-            if (ao instanceof IRadio) {
-                result.add((IRadio)ao);
-            }
-        }
-        return result;
+
+    @Override
+    public List<IRadio> getObjects(final IPlayList playList) {
+	List<IRadio> result = new ArrayList<IRadio>();
+	for (int i = 0; i < playList.size(); i++) {
+	    IAudioObject ao = playList.get(i);
+	    if (ao instanceof IRadio) {
+		result.add((IRadio) ao);
+	    }
 	}
+	return result;
+    }
 
 }

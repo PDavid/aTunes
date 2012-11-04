@@ -28,55 +28,66 @@ import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListObjectFilter;
 
+/**
+ * Removes device audio objects from play list
+ * 
+ * @author alex
+ * 
+ */
 public class PlayListRemoverFromDevice {
 
     private IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter;
-    
+
     private IPlayListController playListController;
-    
+
     private IPlayListHandler playListHandler;
-    
+
     /**
      * @param playListHandler
      */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-    
+    public void setPlayListHandler(final IPlayListHandler playListHandler) {
+	this.playListHandler = playListHandler;
+    }
+
     /**
      * @param playListController
      */
-    public void setPlayListController(IPlayListController playListController) {
-		this.playListController = playListController;
-	}
-    
+    public void setPlayListController(
+	    final IPlayListController playListController) {
+	this.playListController = playListController;
+    }
+
     /**
      * @param playListLocalAudioObjectFilter
      */
-    public void setPlayListLocalAudioObjectFilter(IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter) {
-		this.playListLocalAudioObjectFilter = playListLocalAudioObjectFilter;
-	}
-    
-	/**
-	 * Remove audio objects of device from given playlist
-	 * @param playList
-	 * @param location
-	 */
-	void removeAudioObjectsOfDevice(IPlayList playList, String location) {
-        List<Integer> songsToRemove = new ArrayList<Integer>();
-        for (ILocalAudioObject audioFile : playListLocalAudioObjectFilter.getObjects(playList)) {
-            if (audioFile.getFile().getPath().startsWith(location)) {
-                songsToRemove.add(playList.indexOf(audioFile));
-            }
-        }
-        int[] indexes = new int[songsToRemove.size()];
-        for (int i = 0; i < songsToRemove.size(); i++) {
-            indexes[i] = songsToRemove.get(i);
-        }
+    public void setPlayListLocalAudioObjectFilter(
+	    final IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter) {
+	this.playListLocalAudioObjectFilter = playListLocalAudioObjectFilter;
+    }
 
-        if (indexes.length > 0) {
-            playListController.clearSelection();
-            playListHandler.removeAudioObjects(indexes);
-        }
+    /**
+     * Remove audio objects of device from given playlist
+     * 
+     * @param playList
+     * @param location
+     */
+    void removeAudioObjectsOfDevice(final IPlayList playList,
+	    final String location) {
+	List<Integer> songsToRemove = new ArrayList<Integer>();
+	for (ILocalAudioObject audioFile : playListLocalAudioObjectFilter
+		.getObjects(playList)) {
+	    if (audioFile.getFile().getPath().startsWith(location)) {
+		songsToRemove.add(playList.indexOf(audioFile));
+	    }
 	}
+	int[] indexes = new int[songsToRemove.size()];
+	for (int i = 0; i < songsToRemove.size(); i++) {
+	    indexes[i] = songsToRemove.get(i);
+	}
+
+	if (indexes.length > 0) {
+	    playListController.clearSelection();
+	    playListHandler.removeAudioObjects(indexes);
+	}
+    }
 }

@@ -27,7 +27,6 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.table.TableCellEditor;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -36,33 +35,40 @@ import net.sourceforge.atunes.model.ITag;
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
 final class ArtistTagAttributeReviewed extends AbstractTagAttributeReviewed {
-	ArtistTagAttributeReviewed(final String name) {
-		super(name);
-	}
 
-	@Override
-	String getValue(final ILocalAudioObject audioFile) {
-		// Don't want to return unknown artist
-		return audioFile.getArtist(null);
-	}
+    private final IRepositoryHandler repositoryHandler;
 
-	@Override
-	ITag changeTag(final ITag tag, final String value) {
-		tag.setArtist(value);
-		return tag;
-	}
+    ArtistTagAttributeReviewed(final String name,
+	    final IRepositoryHandler repositoryHandler) {
+	super(name);
+	this.repositoryHandler = repositoryHandler;
+    }
 
-	@Override
-	TableCellEditor getCellEditor() {
-		List<IArtist> artistList = Context.getBean(IRepositoryHandler.class).getArtists();
-		List<String> artistNames = new ArrayList<String>();
-		for (IArtist a : artistList) {
-			artistNames.add(a.getName());
-		}
-		JComboBox artistsCombo = new JComboBox(new ListComboBoxModel<String>(artistNames));
-		artistsCombo.setEditable(true);
-		// Automcomplete seems to work incorrectly when using it in a cell editor
-		// AutoCompleteDecorator.decorate(artistsCombo);
-		return new DefaultCellEditor(artistsCombo);
+    @Override
+    String getValue(final ILocalAudioObject audioFile) {
+	// Don't want to return unknown artist
+	return audioFile.getArtist(null);
+    }
+
+    @Override
+    ITag changeTag(final ITag tag, final String value) {
+	tag.setArtist(value);
+	return tag;
+    }
+
+    @Override
+    TableCellEditor getCellEditor() {
+	List<IArtist> artistList = repositoryHandler.getArtists();
+	List<String> artistNames = new ArrayList<String>();
+	for (IArtist a : artistList) {
+	    artistNames.add(a.getName());
 	}
+	JComboBox artistsCombo = new JComboBox(new ListComboBoxModel<String>(
+		artistNames));
+	artistsCombo.setEditable(true);
+	// Automcomplete seems to work incorrectly when using it in a cell
+	// editor
+	// AutoCompleteDecorator.decorate(artistsCombo);
+	return new DefaultCellEditor(artistsCombo);
+    }
 }

@@ -48,6 +48,7 @@ import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IReviewImportDialog;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
@@ -87,6 +88,15 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
     private PatternMatcher patternMatcher;
 
     private ITagHandler tagHandler;
+
+    private IRepositoryHandler repositoryHandler;
+
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+	this.repositoryHandler = repositoryHandler;
+    }
 
     /**
      * @param tagHandler
@@ -287,7 +297,8 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
     @Override
     public void showDialog() {
 	treeTable.setTreeTableModel(new ReviewImportTreeTableModel(folders,
-		filesToLoad, treeTable, new TagAttributesReviewed(tagHandler)));
+		filesToLoad, treeTable, new TagAttributesReviewed(tagHandler,
+			repositoryHandler)));
 	treeTable.getColumnExt(0).setPreferredWidth(300);
 	((ReviewImportTreeTableModel) treeTable.getTreeTableModel())
 		.setCellEditors();
