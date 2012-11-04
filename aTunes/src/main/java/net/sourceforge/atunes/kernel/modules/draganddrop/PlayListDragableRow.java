@@ -22,36 +22,47 @@ package net.sourceforge.atunes.kernel.modules.draganddrop;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
+/**
+ * Represents a draggable play list row
+ * 
+ * @author alex
+ * 
+ */
 public class PlayListDragableRow {
 
     /**
      * Content of the row
      */
-    private IAudioObject rowContent;
+    private final IAudioObject rowContent;
 
     /**
      * Original index of row when started drag and drop
      */
-    private int rowPosition;
+    private final int rowPosition;
 
     /**
      * @return the rowContent
      */
     public IAudioObject getRowContent() {
-        return rowContent;
+	return rowContent;
     }
 
     /**
      * @return the rowPosition
      */
     public int getRowPosition() {
-        return rowPosition;
+	return rowPosition;
     }
 
-    public PlayListDragableRow(IAudioObject rowContent, int rowPosition) {
-        super();
-        this.rowContent = rowContent;
-        this.rowPosition = rowPosition;
+    /**
+     * @param rowContent
+     * @param rowPosition
+     */
+    public PlayListDragableRow(final IAudioObject rowContent,
+	    final int rowPosition) {
+	super();
+	this.rowContent = rowContent;
+	this.rowPosition = rowPosition;
     }
 
 }

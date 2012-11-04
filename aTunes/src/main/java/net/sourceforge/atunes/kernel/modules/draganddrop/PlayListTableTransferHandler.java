@@ -26,6 +26,7 @@ import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
 import net.sourceforge.atunes.model.IAudioObjectComparator;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
@@ -39,7 +40,8 @@ import net.sourceforge.atunes.utils.Logger;
  * Some methods of this class about how to drag and drop from Gnome/KDE file
  * managers taken from:
  * 
- * http://www.davidgrant.ca/drag_drop_from_linux_kde_gnome_file_managers_konqueror_nautilus_to_java_applications
+ * http://www.davidgrant.ca/
+ * drag_drop_from_linux_kde_gnome_file_managers_konqueror_nautilus_to_java_applications
  * 
  */
 public class PlayListTableTransferHandler extends TransferHandler {
@@ -49,127 +51,148 @@ public class PlayListTableTransferHandler extends TransferHandler {
     private IPlayListHandler playListHandler;
 
     private INavigationHandler navigationHandler;
-    
+
     private IPlayListTable playListTable;
-    
+
     private ILocalAudioObjectFactory localAudioObjectFactory;
-    
+
     private ILocalAudioObjectValidator localAudioObjectValidator;
-    
+
     private IAudioObjectComparator audioObjectComparator;
-    
+
     private ILocalAudioObjectLocator localAudioObjectLocator;
-    
+
     private IPlayListIOService playListIOService;
-    
+
+    private IDialogFactory dialogFactory;
+
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(final IDialogFactory dialogFactory) {
+	this.dialogFactory = dialogFactory;
+    }
+
     /**
      * @param playListTable
      */
-    public void setPlayListTable(IPlayListTable playListTable) {
-		this.playListTable = playListTable;
-	}
-    
+    public void setPlayListTable(final IPlayListTable playListTable) {
+	this.playListTable = playListTable;
+    }
+
     /**
      * @param playListHandler
      */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-    
+    public void setPlayListHandler(final IPlayListHandler playListHandler) {
+	this.playListHandler = playListHandler;
+    }
+
     /**
      * @param navigationHandler
      */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-    
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
+
     /**
      * @param localAudioObjectFactory
      */
     public void setLocalAudioObjectFactory(
-			ILocalAudioObjectFactory localAudioObjectFactory) {
-		this.localAudioObjectFactory = localAudioObjectFactory;
-	}
-    
+	    final ILocalAudioObjectFactory localAudioObjectFactory) {
+	this.localAudioObjectFactory = localAudioObjectFactory;
+    }
+
     /**
      * @param localAudioObjectValidator
      */
     public void setLocalAudioObjectValidator(
-			ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
-    
+	    final ILocalAudioObjectValidator localAudioObjectValidator) {
+	this.localAudioObjectValidator = localAudioObjectValidator;
+    }
+
     /**
      * @param audioObjectComparator
      */
     public void setAudioObjectComparator(
-			IAudioObjectComparator audioObjectComparator) {
-		this.audioObjectComparator = audioObjectComparator;
-	}
-    
+	    final IAudioObjectComparator audioObjectComparator) {
+	this.audioObjectComparator = audioObjectComparator;
+    }
+
     /**
      * @param localAudioObjectLocator
      */
     public void setLocalAudioObjectLocator(
-			ILocalAudioObjectLocator localAudioObjectLocator) {
-		this.localAudioObjectLocator = localAudioObjectLocator;
-	}
-    
+	    final ILocalAudioObjectLocator localAudioObjectLocator) {
+	this.localAudioObjectLocator = localAudioObjectLocator;
+    }
+
     /**
      * @param playListIOService
      */
-    public void setPlayListIOService(IPlayListIOService playListIOService) {
-		this.playListIOService = playListIOService;
-	}
-    
-    @Override
-    public boolean canImport(TransferSupport support) {
-        // Check if internal data flavor is supported
-        if (support.getTransferable().isDataFlavorSupported(DragAndDropHelper.getInternalDataFlavor())) {
-            try {
-                List<?> listOfObjectsDragged = (List<?>) support.getTransferable().getTransferData(DragAndDropHelper.getInternalDataFlavor());
-                if (listOfObjectsDragged == null || listOfObjectsDragged.isEmpty()) {
-                    return false;
-                }
-
-                // Drag is made from another component...
-                if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
-                    try {
-                        ((JTable.DropLocation) support.getDropLocation()).getRow();
-                    } catch (ClassCastException e) {
-                        // Drop is made at the top or bottom of JTable -> This is only allowed when dragging from another component
-                        return false;
-                    }
-                }
-
-                return true;
-            } catch (Exception e) {
-                Logger.error(e);
-            }
-
-            support.setShowDropLocation(true);
-            return true;
-        }
-
-        if (DragAndDropHelper.hasFileFlavor(support.getDataFlavors())) {
-            return true;
-        }
-        if (DragAndDropHelper.hasStringFlavor(support.getDataFlavors())) {
-            return true;
-        }
-        return false;
+    public void setPlayListIOService(final IPlayListIOService playListIOService) {
+	this.playListIOService = playListIOService;
     }
 
     @Override
-    public boolean importData(TransferSupport support) {
-        if (!canImport(support)) {
-            return false;
-        }
+    public boolean canImport(final TransferSupport support) {
+	// Check if internal data flavor is supported
+	if (support.getTransferable().isDataFlavorSupported(
+		DragAndDropHelper.getInternalDataFlavor())) {
+	    try {
+		List<?> listOfObjectsDragged = (List<?>) support
+			.getTransferable().getTransferData(
+				DragAndDropHelper.getInternalDataFlavor());
+		if (listOfObjectsDragged == null
+			|| listOfObjectsDragged.isEmpty()) {
+		    return false;
+		}
 
-        if (support.getTransferable().isDataFlavorSupported(DragAndDropHelper.getInternalDataFlavor())) {
-            return new InternalImportProcessor(navigationHandler, playListTable, playListHandler, audioObjectComparator).processInternalImport(support);
-        }
+		// Drag is made from another component...
+		if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
+		    try {
+			((JTable.DropLocation) support.getDropLocation())
+				.getRow();
+		    } catch (ClassCastException e) {
+			// Drop is made at the top or bottom of JTable -> This
+			// is only allowed when dragging from another component
+			return false;
+		    }
+		}
 
-        return new ExternalImportProcessor(localAudioObjectFactory, localAudioObjectValidator, localAudioObjectLocator, playListIOService, playListTable, playListHandler, audioObjectComparator).processExternalImport(support);
+		return true;
+	    } catch (Exception e) {
+		Logger.error(e);
+	    }
+
+	    support.setShowDropLocation(true);
+	    return true;
+	}
+
+	if (DragAndDropHelper.hasFileFlavor(support.getDataFlavors())) {
+	    return true;
+	}
+	if (DragAndDropHelper.hasStringFlavor(support.getDataFlavors())) {
+	    return true;
+	}
+	return false;
+    }
+
+    @Override
+    public boolean importData(final TransferSupport support) {
+	if (!canImport(support)) {
+	    return false;
+	}
+
+	if (support.getTransferable().isDataFlavorSupported(
+		DragAndDropHelper.getInternalDataFlavor())) {
+	    return new InternalImportProcessor(navigationHandler,
+		    playListTable, playListHandler, audioObjectComparator,
+		    dialogFactory).processInternalImport(support);
+	}
+
+	return new ExternalImportProcessor(localAudioObjectFactory,
+		localAudioObjectValidator, localAudioObjectLocator,
+		playListIOService, playListTable, playListHandler,
+		audioObjectComparator).processExternalImport(support);
     }
 }

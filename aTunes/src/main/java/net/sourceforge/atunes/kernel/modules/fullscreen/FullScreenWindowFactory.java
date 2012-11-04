@@ -27,32 +27,42 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * Creates full screen window
+ * 
+ * @author alex
+ * 
+ */
 public class FullScreenWindowFactory implements ApplicationContextAware {
-	
-	private ILookAndFeelManager lookAndFeelManager;
-	
-	private ApplicationContext context;
-	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
-	}
-	
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-	
-	/**
-	 * Creates a new full screen window
-	 * @return
-	 */
-	public FullScreenWindow getFullScreenWindow() {
-		JDialog.setDefaultLookAndFeelDecorated(false);
-		FullScreenWindow window = context.getBean(FullScreenWindow.class);
-        JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager.getCurrentLookAndFeel().isDialogUndecorated());
-        return window;
-	}
+
+    private ILookAndFeelManager lookAndFeelManager;
+
+    private ApplicationContext context;
+
+    @Override
+    public void setApplicationContext(
+	    final ApplicationContext applicationContext) {
+	this.context = applicationContext;
+    }
+
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(
+	    final ILookAndFeelManager lookAndFeelManager) {
+	this.lookAndFeelManager = lookAndFeelManager;
+    }
+
+    /**
+     * Creates a new full screen window
+     * 
+     * @return
+     */
+    public FullScreenWindow getFullScreenWindow() {
+	JDialog.setDefaultLookAndFeelDecorated(false);
+	FullScreenWindow window = context.getBean(FullScreenWindow.class);
+	JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager
+		.getCurrentLookAndFeel().isDialogUndecorated());
+	return window;
+    }
 }

@@ -108,7 +108,7 @@ public final class NavigationHandler extends AbstractHandler implements
 		stateNavigation.getNavigationView(), false);
 
 	getNavigationController().getNavigationTreePanel().enableDragAndDrop(
-		new TreeNavigationTransferHandler());
+		new TreeNavigationTransferHandler(this));
     }
 
     @Override

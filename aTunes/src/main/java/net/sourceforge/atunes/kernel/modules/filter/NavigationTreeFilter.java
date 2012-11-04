@@ -24,29 +24,35 @@ import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Filter for navigation tree
+ * 
+ * @author alex
+ * 
+ */
 public final class NavigationTreeFilter implements IFilter {
-	
-	private INavigationHandler navigationHandler;
-	
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-	
-	@Override
+
+    private INavigationHandler navigationHandler;
+
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
+
+    @Override
     public String getName() {
-        return "NAVIGATION_TREE";
+	return "NAVIGATION_TREE";
     }
 
-	@Override
+    @Override
     public String getDescription() {
-        return I18nUtils.getString("NAVIGATOR");
+	return I18nUtils.getString("NAVIGATOR");
     }
 
-	@Override
-    public void applyFilter(String filter) {
-        navigationHandler.refreshCurrentView();
+    @Override
+    public void applyFilter(final String filter) {
+	navigationHandler.refreshCurrentView();
     }
 }

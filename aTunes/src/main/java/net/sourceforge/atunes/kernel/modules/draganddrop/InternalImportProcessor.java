@@ -30,7 +30,6 @@ import javax.swing.JTable;
 import javax.swing.TransferHandler.TransferSupport;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.api.RepositoryApi;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
@@ -61,20 +60,25 @@ class InternalImportProcessor {
 
     private final IAudioObjectComparator audioObjectComparator;
 
+    private final IDialogFactory dialogFactory;
+
     /**
      * @param navigationHandler
      * @param playListTable
      * @param playListHandler
      * @param audioObjectComparator
+     * @param dialogFactory
      */
     public InternalImportProcessor(final INavigationHandler navigationHandler,
 	    final IPlayListTable playListTable,
 	    final IPlayListHandler playListHandler,
-	    final IAudioObjectComparator audioObjectComparator) {
+	    final IAudioObjectComparator audioObjectComparator,
+	    final IDialogFactory dialogFactory) {
 	this.navigationHandler = navigationHandler;
 	this.playListTable = playListTable;
 	this.playListHandler = playListHandler;
 	this.audioObjectComparator = audioObjectComparator;
+	this.dialogFactory = dialogFactory;
     }
 
     /**
@@ -178,9 +182,8 @@ class InternalImportProcessor {
     }
 
     private void showAddArtistDragDialog(final IArtist currentArtist) {
-	IArtistAlbumSelectorDialog dialog = Context.getBean(
-		IDialogFactory.class).newDialog(
-		IArtistAlbumSelectorDialog.class);
+	IArtistAlbumSelectorDialog dialog = dialogFactory
+		.newDialog(IArtistAlbumSelectorDialog.class);
 	dialog.setArtist(currentArtist);
 	dialog.showDialog();
 	IAlbum album = dialog.getAlbum();

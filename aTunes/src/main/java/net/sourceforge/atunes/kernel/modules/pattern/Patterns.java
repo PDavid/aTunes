@@ -28,6 +28,12 @@ import java.util.Map.Entry;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
+/**
+ * Returns all possible patterns
+ * 
+ * @author alex
+ * 
+ */
 public final class Patterns {
 
     /**
@@ -39,49 +45,50 @@ public final class Patterns {
      * DUMMY PATTERN, USED TO MATCH ANYTHING
      */
     private AbstractPattern anyPattern;
-    
+
     /**
      * @param anyPattern
      */
-    public void setAnyPattern(AbstractPattern anyPattern) {
-		this.anyPattern = anyPattern;
-	}
+    public void setAnyPattern(final AbstractPattern anyPattern) {
+	this.anyPattern = anyPattern;
+    }
 
     /**
      * @param patternsList
      */
-    public void setPatternsList(List<AbstractPattern> patternsList) {
-		this.patternsList = patternsList;
-	}
-    
+    public void setPatternsList(final List<AbstractPattern> patternsList) {
+	this.patternsList = patternsList;
+    }
+
     /**
      * Returns "any" pattern
+     * 
      * @return
      */
     AbstractPattern getAnyPattern() {
-    	return anyPattern;
+	return anyPattern;
     }
 
     /**
      * @return
      */
     public List<AbstractPattern> getPatternsList() {
-		return patternsList;
-	}
-    
+	return patternsList;
+    }
+
     /**
      * Return only patterns used for massive recognition
      * 
      * @return
      */
     public List<AbstractPattern> getMassiveRecognitionPatterns() {
-        List<AbstractPattern> result = new ArrayList<AbstractPattern>();
-        for (AbstractPattern p : patternsList) {
-            if (p.isMassiveRecognitionPattern()) {
-                result.add(p);
-            }
-        }
-        return result;
+	List<AbstractPattern> result = new ArrayList<AbstractPattern>();
+	for (AbstractPattern p : patternsList) {
+	    if (p.isMassiveRecognitionPattern()) {
+		result.add(p);
+	    }
+	}
+	return result;
     }
 
     /**
@@ -90,15 +97,15 @@ public final class Patterns {
      * @return
      */
     public List<AbstractPattern> getRecognitionPatterns() {
-        List<AbstractPattern> result = new ArrayList<AbstractPattern>();
-        for (AbstractPattern p : patternsList) {
-            if (p.isRecognitionPattern()) {
-                result.add(p);
-            }
-        }
-        return result;
+	List<AbstractPattern> result = new ArrayList<AbstractPattern>();
+	for (AbstractPattern p : patternsList) {
+	    if (p.isRecognitionPattern()) {
+		result.add(p);
+	    }
+	}
+	return result;
     }
-    
+
     /**
      * Returns a String as result of applying all defined patterns over a
      * pattern string and a AudioFile
@@ -107,40 +114,45 @@ public final class Patterns {
      * @param song
      * @return
      */
-    public String applyPatternTransformations(String pattern, ILocalAudioObject song) {
-        String result = pattern;
-        for (AbstractPattern transform : patternsList) {
-            result = applyPattern(transform, result, song);
-        }
-        return result;
+    public String applyPatternTransformations(final String pattern,
+	    final ILocalAudioObject song) {
+	String result = pattern;
+	for (AbstractPattern transform : patternsList) {
+	    result = applyPattern(transform, result, song);
+	}
+	return result;
     }
 
     /**
      * Returns a string, result of apply this pattern to an audio file object
+     * 
      * @param pattern
      * @param sourceString
      * @param audioFile
      * @return
      */
-    private String applyPattern(AbstractPattern pattern, String sourceString, ILocalAudioObject audioFile) {
-        if (!pattern.getPattern().equals(getAnyPattern().getPattern())) {
-            return sourceString.replace(pattern.getPattern(), pattern.getAudioFileStringValue(audioFile));
-        }
-        return sourceString;
+    private String applyPattern(final AbstractPattern pattern,
+	    final String sourceString, final ILocalAudioObject audioFile) {
+	if (!pattern.getPattern().equals(getAnyPattern().getPattern())) {
+	    return sourceString.replace(pattern.getPattern(),
+		    pattern.getAudioFileStringValue(audioFile));
+	}
+	return sourceString;
     }
 
     /**
-     * Returns a map object from a map of matches. Every attribute is
-     * filled with the matched value if found in map
+     * Returns a map object from a map of matches. Every attribute is filled
+     * with the matched value if found in map
      * 
      * @param matches
      * @return
      */
-    public Map<String, Object> getEditTagInfoFromMatches(Map<String, String> matches) {
-        Map<String, Object> tagInfo = new HashMap<String, Object>();
-        for (Entry<String, String> entry : matches.entrySet()) {
-            tagInfo.put(entry.getKey(), entry.getValue());
-        }
-        return tagInfo;
+    public Map<String, Object> getEditTagInfoFromMatches(
+	    final Map<String, String> matches) {
+	Map<String, Object> tagInfo = new HashMap<String, Object>();
+	for (Entry<String, String> entry : matches.entrySet()) {
+	    tagInfo.put(entry.getKey(), entry.getValue());
+	}
+	return tagInfo;
     }
 }

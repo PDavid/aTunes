@@ -56,14 +56,14 @@ public final class Notify {
      * true if everything occurs successfully.
      */
     static {
-        Logger.info("Starting libnotify...");
-        try {
-            Native.register("notify");
-            notifyPresent = true;
-            Logger.info("libnotify started");
-        } catch (UnsatisfiedLinkError e) {
-            Logger.info("libnotify is not present");
-        }
+	Logger.info("Starting libnotify...");
+	try {
+	    Native.register("notify");
+	    notifyPresent = true;
+	    Logger.info("libnotify started");
+	} catch (UnsatisfiedLinkError e) {
+	    Logger.info("libnotify is not present");
+	}
     }
 
     private Notify() {
@@ -77,11 +77,15 @@ public final class Notify {
      */
     public static final class NotifyNotification extends Structure {
 
-        /* Must be public in order to JNA work */
-        public Pointer parent_object;
+	/**
+	 * Must be public in order to JNA work
+	 */
+	public Pointer parent_object;
 
-        /* Must be public in order to JNA work */
-        public Pointer priv;
+	/**
+	 * Must be public in order to JNA work
+	 */
+	public Pointer priv;
 
     }
 
@@ -92,7 +96,7 @@ public final class Notify {
      *         otherwise
      */
     public static boolean isNotifyPresent() {
-        return notifyPresent;
+	return notifyPresent;
     }
 
     /**
@@ -104,8 +108,8 @@ public final class Notify {
      *         <code>false</code> otherwise
      * @see #uninit()
      */
-    public static boolean init(String appName) {
-        return notify_init(appName);
+    public static boolean init(final String appName) {
+	return notify_init(appName);
     }
 
     /**
@@ -114,7 +118,7 @@ public final class Notify {
      * @see #init(String)
      */
     public static void uninit() {
-        notify_uninit();
+	notify_uninit();
     }
 
     /**
@@ -126,7 +130,7 @@ public final class Notify {
      * @see #uninit()
      */
     public static boolean isInitted() {
-        return notify_is_initted();
+	return notify_is_initted();
     }
 
     /**
@@ -136,7 +140,7 @@ public final class Notify {
      * @see #init(String)
      */
     public static String getAppName() {
-        return notify_get_app_name();
+	return notify_get_app_name();
     }
 
     /**
@@ -151,8 +155,9 @@ public final class Notify {
      *            the path to icon or null if it will not be used
      * @return a {@link NotifyNotification} containing the given information
      */
-    public static NotifyNotification newNotification(String summary, String body, String icon) {
-        return notify_notification_new(summary, body, icon, null);
+    public static NotifyNotification newNotification(final String summary,
+	    final String body, final String icon) {
+	return notify_notification_new(summary, body, icon, null);
     }
 
     /**
@@ -170,8 +175,9 @@ public final class Notify {
      *            {@link #NOTIFY_EXPIRES_DEFAULT}, {@link #NOTIFY_EXPIRES_NEVER}
      *            or the time in milliseconds
      */
-    public static void setTimeout(NotifyNotification notification, int timeout) {
-        notify_notification_set_timeout(notification, timeout);
+    public static void setTimeout(final NotifyNotification notification,
+	    final int timeout) {
+	notify_notification_set_timeout(notification, timeout);
     }
 
     /**
@@ -183,8 +189,8 @@ public final class Notify {
      *         <code>false</code> otherwise
      * @see #setTimeout(NotifyNotification, int)
      */
-    public static boolean show(NotifyNotification notification) {
-        return notify_notification_show(notification, null);
+    public static boolean show(final NotifyNotification notification) {
+	return notify_notification_show(notification, null);
     }
 
     /**
@@ -197,8 +203,8 @@ public final class Notify {
      * @return <code>true</code> if everything occurs without errors,
      *         <code>false</code> otherwise
      */
-    public static boolean close(NotifyNotification notification) {
-        return notify_notification_close(notification, null);
+    public static boolean close(final NotifyNotification notification) {
+	return notify_notification_close(notification, null);
     }
 
     // private native methods
@@ -211,12 +217,16 @@ public final class Notify {
 
     private static native String notify_get_app_name();
 
-    private static native NotifyNotification notify_notification_new(String summary, String body, String icon, Structure attach);
+    private static native NotifyNotification notify_notification_new(
+	    String summary, String body, String icon, Structure attach);
 
-    private static native void notify_notification_set_timeout(NotifyNotification notification, int timeout);
+    private static native void notify_notification_set_timeout(
+	    NotifyNotification notification, int timeout);
 
-    private static native boolean notify_notification_show(NotifyNotification notification, Structure error);
+    private static native boolean notify_notification_show(
+	    NotifyNotification notification, Structure error);
 
-    private static native boolean notify_notification_close(NotifyNotification notification, Structure error);
+    private static native boolean notify_notification_close(
+	    NotifyNotification notification, Structure error);
 
 }
