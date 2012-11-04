@@ -24,53 +24,64 @@ import javax.swing.ImageIcon;
 
 /**
  * A video entry related to some audio object
+ * 
  * @author alex
- *
+ * 
  */
 public interface IVideoEntry {
 
-	/**
-	 * @return the name
-	 */
-	public String getName();
+    /**
+     * @return the name
+     */
+    public String getName();
 
-	/**
-	 * @param name
-	 *            the name to set
-	 */
-	public void setName(String name);
+    /**
+     * @param name
+     *            the name to set
+     */
+    public void setName(String name);
 
-	/**
-	 * @return the url
-	 */
-	public String getUrl();
+    /**
+     * @return the url
+     */
+    public String getUrl();
 
-	/**
-	 * @param url
-	 *            the url to set
-	 */
-	public void setUrl(String url);
+    /**
+     * @param url
+     *            the url to set
+     */
+    public void setUrl(String url);
 
-	/**
-	 * @return the image
-	 */
-	public ImageIcon getImage();
+    /**
+     * @return the image
+     */
+    public ImageIcon getImage();
 
-	/**
-	 * @param image
-	 *            the image to set
-	 */
-	public void setImage(ImageIcon image);
+    /**
+     * @param image
+     *            the image to set
+     */
+    public void setImage(ImageIcon image);
 
-	/**
-	 * @return the duration
-	 */
-	public String getDuration();
+    /**
+     * @return the duration
+     */
+    public String getDuration();
 
-	/**
-	 * @param duration
-	 *            the duration to set
-	 */
-	public void setDuration(String duration);
+    /**
+     * @param duration
+     *            the duration to set
+     */
+    public void setDuration(String duration);
+
+    /**
+     * @return artist of video
+     */
+    public String getArtist();
+
+    /**
+     * @param artist
+     */
+    public void setArtist(String artist);
 
 }

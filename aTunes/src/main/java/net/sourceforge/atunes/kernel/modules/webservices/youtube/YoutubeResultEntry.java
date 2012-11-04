@@ -38,6 +38,11 @@ class YoutubeResultEntry implements IVideoEntry {
     private String name;
 
     /**
+     * Artist of video
+     */
+    private String artist;
+
+    /**
      * Url of video
      */
     private String url;
@@ -56,8 +61,8 @@ class YoutubeResultEntry implements IVideoEntry {
      * @return the name
      */
     @Override
-	public String getName() {
-        return name;
+    public String getName() {
+	return name;
     }
 
     /**
@@ -65,16 +70,16 @@ class YoutubeResultEntry implements IVideoEntry {
      *            the name to set
      */
     @Override
-	public void setName(String name) {
-        this.name = name;
+    public void setName(final String name) {
+	this.name = name;
     }
 
     /**
      * @return the url
      */
     @Override
-	public String getUrl() {
-        return url;
+    public String getUrl() {
+	return url;
     }
 
     /**
@@ -82,16 +87,16 @@ class YoutubeResultEntry implements IVideoEntry {
      *            the url to set
      */
     @Override
-	public void setUrl(String url) {
-        this.url = url;
+    public void setUrl(final String url) {
+	this.url = url;
     }
 
     /**
      * @return the image
      */
     @Override
-	public ImageIcon getImage() {
-        return image;
+    public ImageIcon getImage() {
+	return image;
     }
 
     /**
@@ -99,16 +104,16 @@ class YoutubeResultEntry implements IVideoEntry {
      *            the image to set
      */
     @Override
-	public void setImage(ImageIcon image) {
-        this.image = image;
+    public void setImage(final ImageIcon image) {
+	this.image = image;
     }
 
     /**
      * @return the duration
      */
     @Override
-	public String getDuration() {
-        return duration;
+    public String getDuration() {
+	return duration;
     }
 
     /**
@@ -116,7 +121,17 @@ class YoutubeResultEntry implements IVideoEntry {
      *            the duration to set
      */
     @Override
-	public void setDuration(String duration) {
-        this.duration = duration;
+    public void setDuration(final String duration) {
+	this.duration = duration;
+    }
+
+    @Override
+    public String getArtist() {
+	return artist;
+    }
+
+    @Override
+    public void setArtist(final String artist) {
+	this.artist = artist;
     }
 }

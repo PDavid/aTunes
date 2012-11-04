@@ -21,110 +21,145 @@
 package net.sourceforge.atunes.kernel.modules.context;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.lang.reflect.ParameterizedType;
-import java.util.EventObject;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.event.CellEditorListener;
-import javax.swing.table.TableCellEditor;
+import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * Renderer for context table rows
+ * A panel to render each row of a context table
+ * 
  * @author alex
- *
+ * 
  * @param <T>
  */
-public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererCode<JComponent, T> implements TableCellEditor {
+public class ContextTableRowPanel<T> extends JPanel {
 
-	private final Class<?> clazz;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3227801852177772588L;
 
-	private ContextTable table;
+    private JLabel imageLabel;
 
-	/**
-	 * @param lookAndFeel
-	 */
-	@SuppressWarnings("unchecked")
-	public ContextTableRowPanel() {
-		this.clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    private JLabel textLabel;
+
+    private PopUpButton button;
+
+    /**
+     * Default constructor
+     */
+    public ContextTableRowPanel() {
+	setLayout(new GridBagLayout());
+	setOpaque(false);
+    }
+
+    /**
+     * Updates colors
+     * 
+     * @param backgroundColor
+     * @param foregroundColor
+     */
+    public void setColors(final Color backgroundColor,
+	    final Color foregroundColor) {
+	if (backgroundColor != null) {
+	    textLabel.setBackground(backgroundColor);
+	    setBackground(backgroundColor);
+	    imageLabel.setBackground(backgroundColor);
 	}
-
-	/**
-	 * Binds as renderer and editor to table
-	 * @param table
-	 */
-	public void bind(final ContextTable table) {
-		this.table = table;
-		this.table.setDefaultRenderer(clazz, getLookAndFeel().getTableCellRenderer(this));
-		this.table.setDefaultEditor(clazz, this);
+	if (foregroundColor != null) {
+	    textLabel.setForeground(foregroundColor);
 	}
+    }
 
-	/**
-	 * @return
-	 */
-	protected ContextTable getTable() {
-		return table;
+    /**
+     * Sets image
+     * 
+     * @param image
+     */
+    public void setImage(final ImageIcon image) {
+	imageLabel = new JLabel(image);
+	imageLabel.setOpaque(false);
+    }
+
+    /**
+     * Sets text
+     * 
+     * @param text
+     */
+    public void setText(final String text) {
+	textLabel = new JLabel(text);
+	textLabel.setOpaque(false);
+	textLabel.setVerticalAlignment(SwingConstants.TOP);
+    }
+
+    /**
+     * @param imageMaxWidth
+     * @param actions
+     * @param table
+     */
+    public void build(final int imageMaxWidth,
+	    final List<ContextTableAction<T>> actions, final ContextTable table) {
+	GridBagConstraints c = new GridBagConstraints();
+	c.gridx = 0;
+	c.gridy = 0;
+	c.anchor = GridBagConstraints.WEST;
+	c.insets = new Insets(2, (imageMaxWidth + 20)
+		/ 2
+		- (imageLabel.getIcon() != null ? imageLabel.getIcon()
+			.getIconWidth() : 0) / 2, 0, 0);
+	add(imageLabel, c);
+	c.gridx = 1;
+	c.weightx = 1;
+	c.weighty = 1;
+	c.fill = GridBagConstraints.BOTH;
+	c.insets = new Insets(0, (imageMaxWidth + 20)
+		/ 2
+		- (imageLabel.getIcon() != null ? imageLabel.getIcon()
+			.getIconWidth() : 0) / 2, 0, 0);
+	add(textLabel, c);
+
+	GuiUtils.applyComponentOrientation(this);
+
+	if (!net.sourceforge.atunes.utils.CollectionUtils.isEmpty(actions)) {
+	    button = new PopUpButton(
+		    GuiUtils.getComponentOrientationAsSwingConstant() == SwingConstants.LEFT ? PopUpButton.TOP_LEFT
+			    : PopUpButton.TOP_RIGHT, I18nUtils
+			    .getString("OPTIONS"));
+	    for (AbstractAction action : actions) {
+		button.add(action);
+	    }
+	    c.gridx = 2;
+	    c.fill = GridBagConstraints.NONE;
+	    c.anchor = GridBagConstraints.EAST;
+	    c.insets = new Insets(0, 0, 0, 10);
+	    add(button, c);
+
+	    addMouseListener(new ContextTableRowPanelMouseAdapter(this, table,
+		    button));
+	    button.addPopupMenuListener(new ContextTableRowPopupMenuListener<T>(
+		    actions, table));
 	}
+    }
 
-	@Override
-	public Component getTableCellEditorComponent(final JTable table, final Object value, final boolean isSelected, final int row, final int column) {
-		return table.getDefaultRenderer(clazz).getTableCellRendererComponent(table, value, isSelected, true, row, column);
+    /**
+     * Shows or hides options if panel has focus
+     * 
+     * @param hasFocus
+     */
+    public void setFocus(final boolean hasFocus) {
+	if (button != null) {
+	    button.setVisible(hasFocus);
 	}
-
-	@Override
-	public void cancelCellEditing() {
-	}
-
-	@Override
-	public boolean stopCellEditing() {
-		return true;
-	}
-
-	@Override
-	public Object getCellEditorValue() {
-		return null;
-	}
-
-	@Override
-	public boolean isCellEditable(final EventObject anEvent) {
-		return true;
-	}
-
-	@Override
-	public boolean shouldSelectCell(final EventObject anEvent) {
-		return true;
-	}
-
-	@Override
-	public void addCellEditorListener(final CellEditorListener l) {
-	}
-
-	@Override
-	public void removeCellEditorListener(final CellEditorListener l) {
-	}
-
-	protected JPanel getPanelForTableRenderer(final ImageIcon image,
-			final String text,
-			final Color backgroundColor,
-			final Color foregroundColor,
-			final int imageMaxWidth,
-			final int imageMaxHeight,
-			final boolean hasFocus) {
-
-		return new ContextTableRowPanelFactory<T>().getPanelForTableRenderer(this.getActions(), table, image, text, backgroundColor, foregroundColor, imageMaxWidth, imageMaxHeight, hasFocus);
-	}
-
-	@Override
-	public abstract JComponent getComponent(JComponent superComponent, JTable t, T value, boolean isSelected, boolean hasFocus, int row, int column);
-
-	/**
-	 * @return list of actions available in this row
-	 */
-	public abstract List<ContextTableAction<T>> getActions();
+    }
 }

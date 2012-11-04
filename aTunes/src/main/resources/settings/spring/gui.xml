@@ -107,7 +107,7 @@
 	<bean class="net.sourceforge.atunes.gui.ColorMutableTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype"/>
 	<bean id="stringTableCellRendererCode" class="net.sourceforge.atunes.gui.StringTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype"/>
-	<bean id="contextTableRowPanel" class="net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel" parent="abstractTableCellRenderer" abstract="true"/>
+	<bean id="contextTableRowPanel" class="net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanelRendererCode" parent="abstractTableCellRenderer" abstract="true"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.context.artist.AlbumsTableCellRendererCode" parent="contextTableRowPanel" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.context.youtube.YoutubeResultsTableCellRendererCode" parent="contextTableRowPanel" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.gui.ImageIconTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype"/>

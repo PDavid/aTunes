@@ -28,8 +28,9 @@ import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * Represents information about an artist
+ * 
  * @author alex
- *
+ * 
  */
 @PluginApi
 public interface IArtistInfo extends Serializable {
@@ -47,6 +48,11 @@ public interface IArtistInfo extends Serializable {
      * @return the image url
      */
     public String getImageUrl();
+
+    /**
+     * @return
+     */
+    public String getSimilarTo();
 
     /**
      * Gets the match.
@@ -84,6 +90,11 @@ public interface IArtistInfo extends Serializable {
      *            the imageUrl to set
      */
     public void setImageUrl(String imageUrl);
+
+    /**
+     * @param artist
+     */
+    public void setSimilarTo(String artist);
 
     /**
      * Sets the match.

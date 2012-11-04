@@ -24,11 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
-import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
+import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanelRendererCode;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -41,7 +41,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  */
 public class SimilarArtistTableCellRendererCode extends
-	ContextTableRowPanel<IArtistInfo> {
+	ContextTableRowPanelRendererCode<IArtistInfo> {
 
     private IBeanFactory beanFactory;
 
@@ -53,25 +53,26 @@ public class SimilarArtistTableCellRendererCode extends
     }
 
     @Override
-    public JComponent getComponent(final JComponent superComponent,
-	    final JTable t, final IArtistInfo value, final boolean isSelected,
-	    final boolean hasFocus, final int row, final int column) {
-	if (value != null) {
-	    return getPanelForTableRenderer(value.getImage(),
-		    StringUtils.getString(
-			    "<html><br>",
-			    value.getName(),
-			    "<br>",
-			    value.getMatch(),
-			    "%<br>",
-			    value.isAvailable() ? I18nUtils
-				    .getString("AVAILABLE_IN_REPOSITORY") : "",
-			    "</html>"), superComponent.getBackground(),
-		    superComponent.getForeground(),
-		    Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT,
-		    hasFocus);
-	}
-	return superComponent;
+    public String getCacheKeyControl(final IArtistInfo a) {
+	return a.getSimilarTo();
+    }
+
+    @Override
+    public ContextTableRowPanel<IArtistInfo> createPanel(
+	    final JComponent superComponent, final IArtistInfo value,
+	    final boolean hasFocus) {
+	return getPanelForTableRenderer(value.getImage(),
+		StringUtils.getString(
+			"<html><br>",
+			value.getName(),
+			"<br>",
+			value.getMatch(),
+			"%<br>",
+			value.isAvailable() ? I18nUtils
+				.getString("AVAILABLE_IN_REPOSITORY") : "",
+			"</html>"), superComponent.getBackground(),
+		superComponent.getForeground(), Constants.THUMB_IMAGE_WIDTH,
+		Constants.THUMB_IMAGE_HEIGHT, hasFocus);
     }
 
     @Override

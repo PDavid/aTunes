@@ -24,11 +24,11 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JComponent;
-import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
+import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanelRendererCode;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  */
 public class AlbumsTableCellRendererCode extends
-	ContextTableRowPanel<IAlbumInfo> {
+	ContextTableRowPanelRendererCode<IAlbumInfo> {
 
     private IBeanFactory beanFactory;
 
@@ -61,10 +61,14 @@ public class AlbumsTableCellRendererCode extends
     }
 
     @Override
-    public JComponent getComponent(final JComponent superComponent,
-	    final JTable table, final IAlbumInfo value,
-	    final boolean isSelected, final boolean hasFocus, final int row,
-	    final int column) {
+    public String getCacheKeyControl(final IAlbumInfo a) {
+	return a.getArtist();
+    }
+
+    @Override
+    public ContextTableRowPanel<IAlbumInfo> createPanel(
+	    final JComponent superComponent, final IAlbumInfo value,
+	    final boolean hasFocus) {
 	return getPanelForTableRenderer(source.getCovers().get(value),
 		StringUtils.getString("<html>", value.getTitle(), "</html>"),
 		superComponent.getBackground(), superComponent.getForeground(),
