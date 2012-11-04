@@ -53,9 +53,10 @@ import net.sourceforge.atunes.model.IProgressSlider;
  */
 /**
  * @author alex
- *
+ * 
  */
-public final class PlayerControlsPanel extends JPanel implements IPlayerControlsPanel {
+public final class PlayerControlsPanel extends JPanel implements
+	IPlayerControlsPanel {
 
     private static final long serialVersionUID = -8647737014195638177L;
 
@@ -67,178 +68,197 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
     private JPanel secondaryControls;
 
     private ILookAndFeelManager lookAndFeelManager;
-    
+
     private IProgressSlider playerControlsProgressSlider;
-    
+
     private MuteButton volumeButton;
-    
+
     private SecondaryPlayerControlsBuilder secondaryPlayerControlsBuilder;
-    
+
     private Dimension secondaryControlSize;
-    
+
     private IBeanFactory beanFactory;
-    
+
     /**
      * @param beanFactory
      */
-    public void setBeanFactory(IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
-    
+    public void setBeanFactory(final IBeanFactory beanFactory) {
+	this.beanFactory = beanFactory;
+    }
+
     /**
      * Instantiates a new player controls panel.
      */
     public PlayerControlsPanel() {
-        super(new GridBagLayout());
+	super(new GridBagLayout());
     }
-    
+
     /**
      * @param secondaryControlSize
      */
-    public void setSecondaryControlSize(Dimension secondaryControlSize) {
-		this.secondaryControlSize = secondaryControlSize;
-	}
-    
+    public void setSecondaryControlSize(final Dimension secondaryControlSize) {
+	this.secondaryControlSize = secondaryControlSize;
+    }
+
     /**
      * @param secondaryPlayerControlsBuilder
      */
-    public void setSecondaryPlayerControlsBuilder(SecondaryPlayerControlsBuilder secondaryPlayerControlsBuilder) {
-		this.secondaryPlayerControlsBuilder = secondaryPlayerControlsBuilder;
-	}
-    
+    public void setSecondaryPlayerControlsBuilder(
+	    final SecondaryPlayerControlsBuilder secondaryPlayerControlsBuilder) {
+	this.secondaryPlayerControlsBuilder = secondaryPlayerControlsBuilder;
+    }
+
     /**
      * @param equalizerButton
      */
-    public void setEqualizerButton(SecondaryControl equalizerButton) {
-		this.equalizerButton = equalizerButton;
-	}
-    
+    public void setEqualizerButton(final SecondaryControl equalizerButton) {
+	this.equalizerButton = equalizerButton;
+    }
+
     /**
      * @param normalizeButton
      */
-    public void setNormalizeButton(SecondaryToggleControl normalizeButton) {
-		this.normalizeButton = normalizeButton;
-	}
-    
+    public void setNormalizeButton(final SecondaryToggleControl normalizeButton) {
+	this.normalizeButton = normalizeButton;
+    }
+
     /**
-     * @param similarArtistModeButton
+     * @param similarModeButton
      */
-    public void setSimilarModeButton(SecondaryToggleControl similarModeButton) {
-		this.similarModeButton = similarModeButton;
-	}
+    public void setSimilarModeButton(
+	    final SecondaryToggleControl similarModeButton) {
+	this.similarModeButton = similarModeButton;
+    }
 
     /**
      * @param volumeSlider
      */
-    public void setVolumeSlider(VolumeSlider volumeSlider) {
-		this.volumeSlider = volumeSlider;
-	}
-    
+    public void setVolumeSlider(final VolumeSlider volumeSlider) {
+	this.volumeSlider = volumeSlider;
+    }
+
     /**
      * @param volumeButton
      */
-    public void setVolumeButton(MuteButton volumeButton) {
-		this.volumeButton = volumeButton;
-	}
-    
+    public void setVolumeButton(final MuteButton volumeButton) {
+	this.volumeButton = volumeButton;
+    }
+
     /**
      * @param playerControlsProgressSlider
      */
-    public void setPlayerControlsProgressSlider(IProgressSlider playerControlsProgressSlider) {
-		this.playerControlsProgressSlider = playerControlsProgressSlider;
-	}
-    
+    public void setPlayerControlsProgressSlider(
+	    final IProgressSlider playerControlsProgressSlider) {
+	this.playerControlsProgressSlider = playerControlsProgressSlider;
+    }
+
     /**
      * @param lookAndFeelManager
      */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-    
+    public void setLookAndFeelManager(
+	    final ILookAndFeelManager lookAndFeelManager) {
+	this.lookAndFeelManager = lookAndFeelManager;
+    }
+
     /**
      * Adds the content.
      */
     public void initialize() {
-    	JPanel progressSliderContainer = new JPanel(new BorderLayout());
-    	progressSliderContainer.add(playerControlsProgressSlider.getSwingComponent(), BorderLayout.CENTER);
+	JPanel progressSliderContainer = new JPanel(new BorderLayout());
+	progressSliderContainer.add(
+		playerControlsProgressSlider.getSwingComponent(),
+		BorderLayout.CENTER);
 
-    	JPanel mainControls = getMainControlsPanel();
-        JPanel secondaryControlsPanel = getSecondaryControls();
-        adjustControlsSize(mainControls, secondaryControlsPanel);
-        
-        GridBagConstraints c = new GridBagConstraints();
-        
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0;
-        c.weighty = 1;
-        c.insets = new Insets(5, 10, 5, 0);
-        c.anchor = GridBagConstraints.WEST;
-        c.fill = GridBagConstraints.VERTICAL;
-        add(mainControls, c);
-        
-        c.gridx = 1;
-        c.weightx = 1;
-        c.insets = new Insets(10, 10, 8, 10);
-        c.fill = GridBagConstraints.BOTH;
-        add(progressSliderContainer, c);
+	JPanel mainControls = getMainControlsPanel();
+	JPanel secondaryControlsPanel = getSecondaryControls();
+	adjustControlsSize(mainControls, secondaryControlsPanel);
 
-        c.gridx = 2;
-        c.weightx = 0;
-        c.anchor = GridBagConstraints.EAST;
-        c.fill = GridBagConstraints.VERTICAL;
-        c.insets = new Insets(5, 0, 5, 10);
-        add(secondaryControlsPanel, c);
-                
-        GuiUtils.applyComponentOrientation(this);
+	GridBagConstraints c = new GridBagConstraints();
+
+	c.gridx = 0;
+	c.gridy = 0;
+	c.weightx = 0;
+	c.weighty = 1;
+	c.insets = new Insets(5, 10, 5, 0);
+	c.anchor = GridBagConstraints.WEST;
+	c.fill = GridBagConstraints.VERTICAL;
+	add(mainControls, c);
+
+	c.gridx = 1;
+	c.weightx = 1;
+	c.insets = new Insets(10, 10, 8, 10);
+	c.fill = GridBagConstraints.BOTH;
+	add(progressSliderContainer, c);
+
+	c.gridx = 2;
+	c.weightx = 0;
+	c.anchor = GridBagConstraints.EAST;
+	c.fill = GridBagConstraints.VERTICAL;
+	c.insets = new Insets(5, 0, 5, 10);
+	add(secondaryControlsPanel, c);
+
+	GuiUtils.applyComponentOrientation(this);
     }
 
-	/**
-	 * @param mainControls
-	 * @param secondaryControlsPanel
-	 */
-	private void adjustControlsSize(JPanel mainControls, JPanel secondaryControlsPanel) {
-		secondaryControlsPanel.setMinimumSize(mainControls.getPreferredSize());
-        secondaryControlsPanel.setPreferredSize(mainControls.getPreferredSize());
-        secondaryControlsPanel.setMaximumSize(mainControls.getPreferredSize());
-        mainControls.setMaximumSize(mainControls.getPreferredSize());
-	}
+    /**
+     * @param mainControls
+     * @param secondaryControlsPanel
+     */
+    private void adjustControlsSize(final JPanel mainControls,
+	    final JPanel secondaryControlsPanel) {
+	secondaryControlsPanel.setMinimumSize(mainControls.getPreferredSize());
+	secondaryControlsPanel
+		.setPreferredSize(mainControls.getPreferredSize());
+	secondaryControlsPanel.setMaximumSize(mainControls.getPreferredSize());
+	mainControls.setMaximumSize(mainControls.getPreferredSize());
+    }
 
     @Override
-	public IProgressSlider getProgressSlider() {
-        return playerControlsProgressSlider;
+    public IProgressSlider getProgressSlider() {
+	return playerControlsProgressSlider;
     }
 
     @Override
-	public void setProgress(long time, long remainingTime) {
-    	playerControlsProgressSlider.setProgress(time, remainingTime);
+    public void setProgress(final long time, final long remainingTime) {
+	playerControlsProgressSlider.setProgress(time, remainingTime);
     }
-    
+
     /**
      * Updates volume controls with the volume level
+     * 
      * @param volume
      */
     @Override
-	public void setVolume(int volume) {
-        volumeSlider.setValue(volume);
-        volumeButton.updateIcon();
+    public void setVolume(final int volume) {
+	volumeSlider.setValue(volume);
+	volumeButton.updateIcon();
     }
 
     @Override
-	public void setPlaying(boolean playing) {
-        playButton.setPlaying(playing);
+    public void setPlaying(final boolean playing) {
+	playButton.setPlaying(playing);
     }
 
     private JPanel getMainControlsPanel() {
-        PreviousButton previousButton = new PreviousButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
-        playButton = new PlayPauseButton(PlayerControlsSize.PLAY_BUTTON_SIZE, lookAndFeelManager);
-        StopButton stopButton = new StopButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
-        NextButton nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager, beanFactory.getBean("nextAction", Action.class), beanFactory.getBean("nextIcon", IIconFactory.class));
-        volumeButton.setText("");
-        JPanel panel = getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, lookAndFeelManager);
-        // add a small border to separate from other components
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
-        return panel;
+	PreviousButton previousButton = new PreviousButton(
+		PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE,
+		lookAndFeelManager);
+	playButton = new PlayPauseButton(PlayerControlsSize.PLAY_BUTTON_SIZE,
+		lookAndFeelManager);
+	StopButton stopButton = new StopButton(
+		PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
+	NextButton nextButton = new NextButton(
+		PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE,
+		lookAndFeelManager, beanFactory.getBean("nextAction",
+			Action.class), beanFactory.getBean("nextIcon",
+			IIconFactory.class));
+	volumeButton.setText("");
+	JPanel panel = getPanelWithPlayerControls(stopButton, previousButton,
+		playButton, nextButton, volumeButton, volumeSlider,
+		lookAndFeelManager);
+	// add a small border to separate from other components
+	panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
+	return panel;
     }
 
     /**
@@ -254,19 +274,29 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
      * @param lookAndFeelManager
      * @return
      */
-    private JPanel getPanelWithPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider, ILookAndFeelManager lookAndFeelManager) {
-        if (lookAndFeelManager.getCurrentLookAndFeel().isCustomPlayerControlsSupported()) { 
-        	return new CustomPlayerControlsBuilder().getCustomPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider);
-        } else {
-        	return new StandardPlayerControlsBuilder().getStandardPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider);
-        }
+    private JPanel getPanelWithPlayerControls(final StopButton stopButton,
+	    final PreviousButton previousButton,
+	    final PlayPauseButton playButton, final NextButton nextButton,
+	    final MuteButton volumeButton, final JSlider volumeSlider,
+	    final ILookAndFeelManager lookAndFeelManager) {
+	if (lookAndFeelManager.getCurrentLookAndFeel()
+		.isCustomPlayerControlsSupported()) {
+	    return new CustomPlayerControlsBuilder().getCustomPlayerControls(
+		    stopButton, previousButton, playButton, nextButton,
+		    volumeButton, volumeSlider);
+	} else {
+	    return new StandardPlayerControlsBuilder()
+		    .getStandardPlayerControls(stopButton, previousButton,
+			    playButton, nextButton, volumeButton, volumeSlider);
+	}
     }
 
     private JPanel getSecondaryControls() {
-        if (secondaryControls == null) {
-            secondaryControls = secondaryPlayerControlsBuilder.getSecondaryControls();
-        }
-        return secondaryControls;
+	if (secondaryControls == null) {
+	    secondaryControls = secondaryPlayerControlsBuilder
+		    .getSecondaryControls();
+	}
+	return secondaryControls;
     }
 
     /**
@@ -275,15 +305,15 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
      * @param button
      */
     @Override
-	public void addSecondaryControl(Action action) {
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = getSecondaryControls().getComponentCount();
-        c.gridy = 0;
-        c.insets = new Insets(0, 1, 0, 0);
-        JButton button = new SecondaryControl(action);
-        button.setPreferredSize(secondaryControlSize);
-        getSecondaryControls().add(button, c);
-        getSecondaryControls().repaint();
+    public void addSecondaryControl(final Action action) {
+	GridBagConstraints c = new GridBagConstraints();
+	c.gridx = getSecondaryControls().getComponentCount();
+	c.gridy = 0;
+	c.insets = new Insets(0, 1, 0, 0);
+	JButton button = new SecondaryControl(action);
+	button.setPreferredSize(secondaryControlSize);
+	getSecondaryControls().add(button, c);
+	getSecondaryControls().repaint();
     }
 
     /**
@@ -292,30 +322,31 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
      * @param button
      */
     @Override
-	public void addSecondaryToggleControl(Action action) {
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = getSecondaryControls().getComponentCount();
-        c.gridy = 0;
-        c.insets = new Insets(0, 1, 0, 0);
-        JToggleButton button = new SecondaryToggleControl(action);
-        button.setPreferredSize(secondaryControlSize);
-        getSecondaryControls().add(button, c);
-        getSecondaryControls().repaint();
+    public void addSecondaryToggleControl(final Action action) {
+	GridBagConstraints c = new GridBagConstraints();
+	c.gridx = getSecondaryControls().getComponentCount();
+	c.gridy = 0;
+	c.insets = new Insets(0, 1, 0, 0);
+	JToggleButton button = new SecondaryToggleControl(action);
+	button.setPreferredSize(secondaryControlSize);
+	getSecondaryControls().add(button, c);
+	getSecondaryControls().repaint();
     }
 
     /**
      * Hides or shows advanced controls
+     * 
      * @param show
      */
     @Override
-	public void showAdvancedPlayerControls(boolean show) {
-    	equalizerButton.setVisible(show);
-    	normalizeButton.setVisible(show);
-    	similarModeButton.setVisible(show);
+    public void showAdvancedPlayerControls(final boolean show) {
+	equalizerButton.setVisible(show);
+	normalizeButton.setVisible(show);
+	similarModeButton.setVisible(show);
     }
 
-	@Override
-	public JPanel getSwingComponent() {
-		return this;
-	}
+    @Override
+    public JPanel getSwingComponent() {
+	return this;
+    }
 }

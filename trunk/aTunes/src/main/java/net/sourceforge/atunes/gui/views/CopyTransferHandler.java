@@ -23,12 +23,18 @@ package net.sourceforge.atunes.gui.views;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
+/**
+ * A transfer handler implementing copy drag and drop
+ * 
+ * @author alex
+ * 
+ */
 public final class CopyTransferHandler extends TransferHandler {
-	
-	private static final long serialVersionUID = -9033178513246597067L;
 
-	@Override
-	public int getSourceActions(JComponent c) {
-		return TransferHandler.COPY;
-	}
+    private static final long serialVersionUID = -9033178513246597067L;
+
+    @Override
+    public int getSourceActions(final JComponent c) {
+	return TransferHandler.COPY;
+    }
 }

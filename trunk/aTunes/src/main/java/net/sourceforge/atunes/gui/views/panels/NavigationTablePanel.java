@@ -30,58 +30,69 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.ITable;
 
-public final class NavigationTablePanel extends JPanel implements INavigationTablePanel {
+/**
+ * Panel holding navigation table
+ * 
+ * @author alex
+ * 
+ */
+public final class NavigationTablePanel extends JPanel implements
+	INavigationTablePanel {
 
     private static final long serialVersionUID = -2900418193013495812L;
 
     private ITable navigationTable;
 
-	private ILookAndFeelManager lookAndFeelManager;
+    private ILookAndFeelManager lookAndFeelManager;
 
     /**
      * Instantiates a new navigation panel.
      */
     public NavigationTablePanel() {
-        super(new BorderLayout(), true);
+	super(new BorderLayout(), true);
     }
-    
+
     /**
      * Adds the content.
-     * @param lookAndFeelManager 
+     * 
+     * @param lookAndFeelManager
      */
     public void initialize() {
-        navigationTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+	navigationTable
+		.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        // Disable autoresize, as we will control it
-        navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        add(lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(navigationTable.getSwingComponent()), BorderLayout.CENTER);
+	// Disable autoresize, as we will control it
+	navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	add(lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(
+		navigationTable.getSwingComponent()), BorderLayout.CENTER);
     }
 
     /**
      * @param navigationTable
      */
-    public void setNavigationTable(ITable navigationTable) {
-		this.navigationTable = navigationTable;
-	}
-    
+    public void setNavigationTable(final ITable navigationTable) {
+	this.navigationTable = navigationTable;
+    }
+
     /**
      * @param lookAndFeelManager
      */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-    
+    public void setLookAndFeelManager(
+	    final ILookAndFeelManager lookAndFeelManager) {
+	this.lookAndFeelManager = lookAndFeelManager;
+    }
+
     /**
      * Gets the navigation table.
      * 
      * @return the navigation table
      */
     public ITable getNavigationTable() {
-        return navigationTable;
+	return navigationTable;
     }
-    
+
     @Override
     public JPanel getSwingComponent() {
-    	return this;
+	return this;
     }
 }

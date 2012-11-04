@@ -38,69 +38,79 @@ import net.sourceforge.atunes.gui.views.CopyTransferHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ITable;
 
-public final class NavigationTable extends JTable implements DragSourceListener, DragGestureListener, ITable {
+/**
+ * Shows items of current selected elements in navigator tree
+ * 
+ * @author alex
+ * 
+ */
+public final class NavigationTable extends JTable implements
+	DragSourceListener, DragGestureListener, ITable {
 
     private static final long serialVersionUID = -607346309523708685L;
     private DragSource dragSource;
 
     /**
      * Instantiates a new drag source table.
+     * 
      * @param lookAndFeelManager
      */
-    public NavigationTable(ILookAndFeelManager lookAndFeelManager) {
-    	super();
-    	lookAndFeelManager.getCurrentLookAndFeel().decorateTable(this);
-    	setDragSource();
-    	setDragEnabled(true);
-    	setTransferHandler(new CopyTransferHandler());
+    public NavigationTable(final ILookAndFeelManager lookAndFeelManager) {
+	super();
+	lookAndFeelManager.getCurrentLookAndFeel().decorateTable(this);
+	setDragSource();
+	setDragEnabled(true);
+	setTransferHandler(new CopyTransferHandler());
     }
 
     @Override
-    public void dragDropEnd(DragSourceDropEvent dsde) {
-        // Nothing to do
+    public void dragDropEnd(final DragSourceDropEvent dsde) {
+	// Nothing to do
     }
 
     @Override
-    public void dragEnter(DragSourceDragEvent dsde) {
-        // Nothing to do
+    public void dragEnter(final DragSourceDragEvent dsde) {
+	// Nothing to do
     }
 
     @Override
-    public void dragExit(DragSourceEvent dse) {
-        // Nothing to do
+    public void dragExit(final DragSourceEvent dse) {
+	// Nothing to do
     }
 
     @Override
-    public void dragGestureRecognized(DragGestureEvent dge) {
-        int[] rows = getSelectedRows();
-        List<Integer> rowsToDrag = new ArrayList<Integer>();
-        for (int element : rows) {
-            rowsToDrag.add(element);
-        }
-        TransferableList<Integer> items = new TransferableList<Integer>(rowsToDrag);
-        dragSource.startDrag(dge, DragSource.DefaultCopyDrop, items, this);
+    public void dragGestureRecognized(final DragGestureEvent dge) {
+	int[] rows = getSelectedRows();
+	List<Integer> rowsToDrag = new ArrayList<Integer>();
+	for (int element : rows) {
+	    rowsToDrag.add(element);
+	}
+	TransferableList<Integer> items = new TransferableList<Integer>(
+		rowsToDrag);
+	dragSource.startDrag(dge, DragSource.DefaultCopyDrop, items, this);
     }
 
     @Override
-    public void dragOver(DragSourceDragEvent dsde) {
-        // Nothing to do
+    public void dragOver(final DragSourceDragEvent dsde) {
+	// Nothing to do
     }
 
     @Override
-    public void dropActionChanged(DragSourceDragEvent dsde) {
-        // Nothing to do
+    public void dropActionChanged(final DragSourceDragEvent dsde) {
+	// Nothing to do
     }
 
     /**
      * Sets the drag source.
      */
     private void setDragSource() {
-        dragSource = new DragSource();
-        dragSource.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY, this);
+	dragSource = new DragSource();
+	dragSource.createDefaultDragGestureRecognizer(this,
+		DnDConstants.ACTION_COPY, this);
     }
-    
+
     @Override
     public JTable getSwingComponent() {
-    	return this;
+	return this;
     }
 }
