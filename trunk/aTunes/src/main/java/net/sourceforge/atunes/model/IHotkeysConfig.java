@@ -26,31 +26,40 @@ import java.util.Set;
 
 /**
  * Represents a configuration of hotkeys
+ * 
  * @author alex
- *
+ * 
  */
 public interface IHotkeysConfig extends Iterable<IHotkey>, Serializable {
 
-	/**
-	 * Returns number of hotkeys defined
-	 * @return
-	 */
-	public int size();
+    /**
+     * Returns number of hotkeys defined
+     * 
+     * @return
+     */
+    public int size();
 
-	public Iterator<IHotkey> iterator();
+    @Override
+    public Iterator<IHotkey> iterator();
 
-	public IHotkey getHotkeyByOrder(int i);
+    /**
+     * @param i
+     * @return hotkey
+     */
+    public IHotkey getHotkeyByOrder(int i);
 
-	/**
-	 * Returns conflicts (duplicte hotkeys) of this configuration
-	 * @return
-	 */
-	public Set<Integer> conflicts();
+    /**
+     * Returns conflicts (duplicte hotkeys) of this configuration
+     * 
+     * @return
+     */
+    public Set<Integer> conflicts();
 
-	/**
-	 * Returns hotkeys not recommended of this configuration
-	 * @return
-	 */
-	public Set<Integer> notRecommendedKeys();
+    /**
+     * Returns hotkeys not recommended of this configuration
+     * 
+     * @return
+     */
+    public Set<Integer> notRecommendedKeys();
 
 }
