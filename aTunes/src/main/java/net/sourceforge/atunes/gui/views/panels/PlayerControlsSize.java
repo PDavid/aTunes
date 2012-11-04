@@ -25,37 +25,51 @@ import java.awt.Dimension;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
+/**
+ * Sizes of player controls
+ * 
+ * @author alex
+ * 
+ */
 public final class PlayerControlsSize {
 
     /**
      * Size of main controls by standard layout (not Substance)
      */
-    public static final Dimension PLAY_PREVIOUS_NEXT_BUTTONS_SIZE = new Dimension(40, 40);
-    
+    public static final Dimension PLAY_PREVIOUS_NEXT_BUTTONS_SIZE = new Dimension(
+	    40, 40);
+
     /**
      * Size of main controls by standard layout (not Substance)
      */
     public static final Dimension DEFAULT_BUTTONS_SIZE = new Dimension(34, 34);
-    
-    private PlayerControlsSize() {}
+
+    private PlayerControlsSize() {
+    }
 
     /** Size of play / pause button */
-    public static final Dimension PLAY_BUTTON_SIZE = Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(45, 45)
-            : PLAY_PREVIOUS_NEXT_BUTTONS_SIZE;
+    public static final Dimension PLAY_BUTTON_SIZE = Context
+	    .getBean(ILookAndFeelManager.class).getCurrentLookAndFeel()
+	    .isCustomPlayerControlsSupported() ? new Dimension(45, 45)
+	    : PLAY_PREVIOUS_NEXT_BUTTONS_SIZE;
 
     /** Size of previous and next buttons */
-    public static final Dimension PREVIOUS_NEXT_BUTTONS_SIZE = Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(62, 30)
-            : PLAY_PREVIOUS_NEXT_BUTTONS_SIZE;
+    public static final Dimension PREVIOUS_NEXT_BUTTONS_SIZE = Context
+	    .getBean(ILookAndFeelManager.class).getCurrentLookAndFeel()
+	    .isCustomPlayerControlsSupported() ? new Dimension(62, 30)
+	    : PLAY_PREVIOUS_NEXT_BUTTONS_SIZE;
 
     /** Size of stop and mute buttons */
-    public static final Dimension STOP_MUTE_BUTTONS_SIZE = Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(30, 26)
-            : DEFAULT_BUTTONS_SIZE;
+    public static final Dimension STOP_MUTE_BUTTONS_SIZE = Context
+	    .getBean(ILookAndFeelManager.class).getCurrentLookAndFeel()
+	    .isCustomPlayerControlsSupported() ? new Dimension(30, 26)
+	    : DEFAULT_BUTTONS_SIZE;
 
     public static Dimension getPreviousNextButtonsSize() {
-    	return PREVIOUS_NEXT_BUTTONS_SIZE;
+	return PREVIOUS_NEXT_BUTTONS_SIZE;
     }
-    
+
     public static Dimension getStopMuteButtonsSize() {
-		return STOP_MUTE_BUTTONS_SIZE;
-	}
+	return STOP_MUTE_BUTTONS_SIZE;
+    }
 }

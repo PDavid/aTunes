@@ -33,6 +33,12 @@ import net.sourceforge.atunes.gui.views.controls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.StopButton;
 
+/**
+ * Builds player controls panel
+ * 
+ * @author alex
+ * 
+ */
 public class CustomPlayerControlsBuilder {
 
     /**
@@ -46,37 +52,39 @@ public class CustomPlayerControlsBuilder {
      * @param volumeSlider
      * @return
      */
-    public JPanel getCustomPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider) {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setOpaque(false);
+    public JPanel getCustomPlayerControls(final StopButton stopButton,
+	    final PreviousButton previousButton,
+	    final PlayPauseButton playButton, final NextButton nextButton,
+	    final MuteButton volumeButton, final JSlider volumeSlider) {
+	JPanel panel = new JPanel(new GridBagLayout());
+	panel.setOpaque(false);
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0;
-        c.fill = GridBagConstraints.NONE;
-        panel.add(stopButton, c);
-        c.gridx = 1;
-        c.insets = new Insets(0, -6, 0, 0);
-        panel.add(previousButton, c);
-        c.gridx = 2;
-        c.insets = new Insets(-1, -16, 0, 0);
-        panel.add(playButton, c);
-        c.gridx = 3;
-        c.insets = new Insets(0, -16, 0, 0);
-        panel.add(nextButton, c);
-        if (volumeButton != null && volumeSlider != null) {
-            c.gridx = 4;
-            c.insets = new Insets(0, -7, 0, 0);
-            panel.add(volumeButton, c);
-            c.gridx = 5;
-            c.weightx = 0;
-            c.fill = GridBagConstraints.NONE;
-            c.insets = new Insets(0, -1, 3, 0);
-            panel.add(volumeSlider, c);
-        }
-        return panel;
+	GridBagConstraints c = new GridBagConstraints();
+	c.gridx = 0;
+	c.gridy = 0;
+	c.weightx = 0;
+	c.fill = GridBagConstraints.NONE;
+	panel.add(stopButton, c);
+	c.gridx = 1;
+	c.insets = new Insets(0, -6, 0, 0);
+	panel.add(previousButton, c);
+	c.gridx = 2;
+	c.insets = new Insets(-1, -16, 0, 0);
+	panel.add(playButton, c);
+	c.gridx = 3;
+	c.insets = new Insets(0, -16, 0, 0);
+	panel.add(nextButton, c);
+	if (volumeButton != null && volumeSlider != null) {
+	    c.gridx = 4;
+	    c.insets = new Insets(0, -7, 0, 0);
+	    panel.add(volumeButton, c);
+	    c.gridx = 5;
+	    c.weightx = 0;
+	    c.fill = GridBagConstraints.NONE;
+	    c.insets = new Insets(0, -1, 3, 0);
+	    panel.add(volumeSlider, c);
+	}
+	return panel;
     }
-
 
 }

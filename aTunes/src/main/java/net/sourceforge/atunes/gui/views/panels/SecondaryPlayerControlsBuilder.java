@@ -29,71 +29,80 @@ import javax.swing.JPanel;
 import net.sourceforge.atunes.gui.views.controls.SecondaryControl;
 import net.sourceforge.atunes.gui.views.controls.SecondaryToggleControl;
 
+/**
+ * Builds panel with secondary controls
+ * 
+ * @author alex
+ * 
+ */
 public class SecondaryPlayerControlsBuilder {
 
-	private SecondaryToggleControl shuffleButton;
-	private SecondaryToggleControl repeatButton;
-	private SecondaryControl equalizerButton;
-	private SecondaryToggleControl normalizeButton;
-	private SecondaryToggleControl similarModeButton;
-	
-	/**
-	 * @param shuffleButton
-	 */
-	public void setShuffleButton(SecondaryToggleControl shuffleButton) {
-		this.shuffleButton = shuffleButton;
-	}
-	
-	/**
-	 * @param repeatButton
-	 */
-	public void setRepeatButton(SecondaryToggleControl repeatButton) {
-		this.repeatButton = repeatButton;
-	}
-	
-	/**
-	 * @param equalizerButton
-	 */
-	public void setEqualizerButton(SecondaryControl equalizerButton) {
-		this.equalizerButton = equalizerButton;
-	}
-	
-	/**
-	 * @param normalizeButton
-	 */
-	public void setNormalizeButton(SecondaryToggleControl normalizeButton) {
-		this.normalizeButton = normalizeButton;
-	}
-	
-	/**
-	 * @param similarModeButton
-	 */
-	public void setSimilarModeButton(SecondaryToggleControl similarModeButton) {
-		this.similarModeButton = similarModeButton;
-	}
+    private SecondaryToggleControl shuffleButton;
+    private SecondaryToggleControl repeatButton;
+    private SecondaryControl equalizerButton;
+    private SecondaryToggleControl normalizeButton;
+    private SecondaryToggleControl similarModeButton;
+
+    /**
+     * @param shuffleButton
+     */
+    public void setShuffleButton(final SecondaryToggleControl shuffleButton) {
+	this.shuffleButton = shuffleButton;
+    }
+
+    /**
+     * @param repeatButton
+     */
+    public void setRepeatButton(final SecondaryToggleControl repeatButton) {
+	this.repeatButton = repeatButton;
+    }
+
+    /**
+     * @param equalizerButton
+     */
+    public void setEqualizerButton(final SecondaryControl equalizerButton) {
+	this.equalizerButton = equalizerButton;
+    }
+
+    /**
+     * @param normalizeButton
+     */
+    public void setNormalizeButton(final SecondaryToggleControl normalizeButton) {
+	this.normalizeButton = normalizeButton;
+    }
+
+    /**
+     * @param similarModeButton
+     */
+    public void setSimilarModeButton(
+	    final SecondaryToggleControl similarModeButton) {
+	this.similarModeButton = similarModeButton;
+    }
+
     /**
      * Returns a panel with secondary controls
+     * 
      * @return
      */
     public JPanel getSecondaryControls() {
-    	JPanel secondaryControls = new JPanel(new GridBagLayout());
+	JPanel secondaryControls = new JPanel(new GridBagLayout());
 
-    	GridBagConstraints c = new GridBagConstraints();
-    	c.gridx = 0;
-    	c.gridy = 0;
-    	c.insets = new Insets(0, 5, 0, 0);
-    	secondaryControls.add(shuffleButton, c);
-    	c.gridx = 1;
-    	c.insets = new Insets(0, 1, 0, 0);
-    	secondaryControls.add(repeatButton, c);
-    	c.gridx = 2;
-    	secondaryControls.add(equalizerButton, c);
-    	c.gridx = 3;
-    	secondaryControls.add(normalizeButton, c);
-    	c.gridx = 4;
-    	secondaryControls.add(similarModeButton, c);
-    	
-    	return secondaryControls;
+	GridBagConstraints c = new GridBagConstraints();
+	c.gridx = 0;
+	c.gridy = 0;
+	c.insets = new Insets(0, 5, 0, 0);
+	secondaryControls.add(shuffleButton, c);
+	c.gridx = 1;
+	c.insets = new Insets(0, 1, 0, 0);
+	secondaryControls.add(repeatButton, c);
+	c.gridx = 2;
+	secondaryControls.add(equalizerButton, c);
+	c.gridx = 3;
+	secondaryControls.add(normalizeButton, c);
+	c.gridx = 4;
+	secondaryControls.add(similarModeButton, c);
+
+	return secondaryControls;
     }
 
 }
