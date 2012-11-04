@@ -33,7 +33,14 @@ import org.commonjukebox.plugins.exceptions.PluginSystemException;
 import org.commonjukebox.plugins.model.Plugin;
 import org.commonjukebox.plugins.model.PluginInfo;
 
-public class GeneralPurposePluginsHandler extends AbstractHandler implements IGeneralPurposePluginsHandler {
+/**
+ * Handles general purpose plugins
+ * 
+ * @author alex
+ * 
+ */
+public class GeneralPurposePluginsHandler extends AbstractHandler implements
+	IGeneralPurposePluginsHandler {
 
     /**
      * List of plugins created
@@ -42,37 +49,39 @@ public class GeneralPurposePluginsHandler extends AbstractHandler implements IGe
 
     @Override
     public void applicationFinish() {
-        // Deactivate all plugins yet active
-        if (plugins != null) {
-            for (AbstractGeneralPurposePlugin plugin : plugins) {
-                plugin.deactivate();
-            }
-        }
+	// Deactivate all plugins yet active
+	if (plugins != null) {
+	    for (AbstractGeneralPurposePlugin plugin : plugins) {
+		plugin.deactivate();
+	    }
+	}
     }
 
     @Override
-    public void pluginActivated(PluginInfo plugin) {
-        try {
-            AbstractGeneralPurposePlugin instance = (AbstractGeneralPurposePlugin) getBean(IPluginsHandler.class).getNewInstance(plugin);
-            if (plugins == null) {
-                plugins = new ArrayList<AbstractGeneralPurposePlugin>();
-            }
-            plugins.add(instance);
-            // Activate plugin
-            instance.activate();
-        } catch (PluginSystemException e) {
-            Logger.error(e);
-        }
+    public void pluginActivated(final PluginInfo plugin) {
+	try {
+	    AbstractGeneralPurposePlugin instance = (AbstractGeneralPurposePlugin) getBean(
+		    IPluginsHandler.class).getNewInstance(plugin);
+	    if (plugins == null) {
+		plugins = new ArrayList<AbstractGeneralPurposePlugin>();
+	    }
+	    plugins.add(instance);
+	    // Activate plugin
+	    instance.activate();
+	} catch (PluginSystemException e) {
+	    Logger.error(e);
+	}
     }
 
     @Override
-    public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
-        // Call to deactivate all plugins and remove from plugins list
-        for (Plugin instance : createdInstances) {
-            ((AbstractGeneralPurposePlugin) instance).deactivate();
-            if (plugins != null) {
-                plugins.remove(instance);
-            }
-        }
+    public void pluginDeactivated(final PluginInfo plugin,
+	    final Collection<Plugin> createdInstances) {
+	// Call to deactivate all plugins and remove from plugins list
+	for (Plugin instance : createdInstances) {
+	    ((AbstractGeneralPurposePlugin) instance).deactivate();
+	    if (plugins != null) {
+		plugins.remove(instance);
+	    }
+	}
     }
 }

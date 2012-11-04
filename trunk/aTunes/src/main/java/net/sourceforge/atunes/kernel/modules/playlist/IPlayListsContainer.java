@@ -22,99 +22,117 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import net.sourceforge.atunes.model.IPlayList;
 
+/**
+ * Holds references to all play lists
+ * 
+ * @author alex
+ * 
+ */
 public interface IPlayListsContainer {
 
-	/**
-	 * Returns number of play lists
-	 * @return
-	 */
-	int getPlayListsCount();
+    /**
+     * Returns number of play lists
+     * 
+     * @return
+     */
+    int getPlayListsCount();
 
-	/**
-	 * Returns play list
-	 * @param i
-	 * @return
-	 */
-	IPlayList getPlayListAt(int i);
+    /**
+     * Returns play list
+     * 
+     * @param i
+     * @return
+     */
+    IPlayList getPlayListAt(int i);
 
-	/**
-	 * @return active play list
-	 */
-	int getActivePlayListIndex();
+    /**
+     * @return active play list
+     */
+    int getActivePlayListIndex();
 
-	/**
-	 * @return visible play list
-	 */
-	int getVisiblePlayListIndex();
+    /**
+     * @return visible play list
+     */
+    int getVisiblePlayListIndex();
 
-	/**
-	 * Adds play list
-	 * @param position
-	 * @param playList
-	 */
-	void addPlayList(int position, IPlayList playList);
+    /**
+     * Adds play list
+     * 
+     * @param position
+     * @param playList
+     */
+    void addPlayList(int position, IPlayList playList);
 
-	/**
-	 * Clear play list
-	 */
-	void clear();
+    /**
+     * Clear play list
+     */
+    void clear();
 
-	/**
-	 * Returns visible play list
-	 * @return
-	 */
-	IPlayList getVisiblePlayList();
+    /**
+     * Returns visible play list
+     * 
+     * @return
+     */
+    IPlayList getVisiblePlayList();
 
-	/**
-	 * Returns active play list
-	 * @return
-	 */
-	IPlayList getActivePlayList();
+    /**
+     * Returns active play list
+     * 
+     * @return
+     */
+    IPlayList getActivePlayList();
 
-	/**
-	 * Adds play list
-	 * @param newPlayList
-	 */
-	void addPlayList(IPlayList newPlayList);
+    /**
+     * Adds play list
+     * 
+     * @param newPlayList
+     */
+    void addPlayList(IPlayList newPlayList);
 
-	/**
-	 * Removes play list with given index
-	 * @param index
-	 */
-	void removePlayList(int index);
+    /**
+     * Removes play list with given index
+     * 
+     * @param index
+     */
+    void removePlayList(int index);
 
-	/**
-	 * Sets visible play list
-	 * @param visiblePlayListIndex
-	 */
-	void setVisiblePlayListIndex(int visiblePlayListIndex);
+    /**
+     * Sets visible play list
+     * 
+     * @param visiblePlayListIndex
+     */
+    void setVisiblePlayListIndex(int visiblePlayListIndex);
 
-	/**
-	 * Sets active play list
-	 * @param activePlayListIndex
-	 */
-	void setActivePlayListIndex(int activePlayListIndex);
+    /**
+     * Sets active play list
+     * 
+     * @param activePlayListIndex
+     */
+    void setActivePlayListIndex(int activePlayListIndex);
 
-	/**
-	 * Sets visible play list as active
-	 */
-	void setVisiblePlayListActive();
+    /**
+     * Sets visible play list as active
+     */
+    void setVisiblePlayListActive();
 
-	/**
-	 * Play list previous to being filtered
-	 * @return
-	 */
-	IPlayList getNonFilteredPlayList();
+    /**
+     * Play list previous to being filtered
+     * 
+     * @return
+     */
+    IPlayList getNonFilteredPlayList();
 
-	/**
-	 * Returns if play list is filtered
-	 * @return
-	 */
-	boolean isFiltered();
+    /**
+     * Returns if play list is filtered
+     * 
+     * @return
+     */
+    boolean isFiltered();
 
-	/**
-	 * Set filter
-	 * @param filter
-	 */
-	void setFilter(String filter);
+    /**
+     * Set filter
+     * 
+     * @param filter
+     */
+    void setFilter(String filter);
 }

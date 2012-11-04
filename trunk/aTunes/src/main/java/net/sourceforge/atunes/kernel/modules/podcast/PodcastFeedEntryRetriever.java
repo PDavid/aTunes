@@ -26,7 +26,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.FeedType;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
@@ -58,28 +58,30 @@ import org.w3c.dom.NodeList;
 public class PodcastFeedEntryRetriever implements Runnable {
 
     private class RefreshViewRunnable implements Runnable {
-        @Override
-        public void run() {
-            // refresh view
-            navigationHandler.refreshView(podcastNavigationView);
-            Logger.info("Podcast feed entries retrieval done");
-        }
+	@Override
+	public void run() {
+	    // refresh view
+	    navigationHandler.refreshView(podcastNavigationView);
+	    Logger.info("Podcast feed entries retrieval done");
+	}
     }
 
-    private List<IPodcastFeed> podcastFeeds;
-    
-    private IStateUI stateUI;
-    
-    private IFrame frame;
-    
-    private INavigationHandler navigationHandler;
-    
-    private INetworkHandler networkHandler;
-    
-    private INavigationView podcastNavigationView;
-    
-    private IStatePodcast statePodcast;
-    
+    private final List<IPodcastFeed> podcastFeeds;
+
+    private final IStateUI stateUI;
+
+    private final IFrame frame;
+
+    private final INavigationHandler navigationHandler;
+
+    private final INetworkHandler networkHandler;
+
+    private final INavigationView podcastNavigationView;
+
+    private final IStatePodcast statePodcast;
+
+    private final IDialogFactory dialogFactory;
+
     /**
      * @param podcastFeeds
      * @param statePodcast
@@ -88,255 +90,295 @@ public class PodcastFeedEntryRetriever implements Runnable {
      * @param navigationHandler
      * @param networkHandler
      * @param podcastNavigationView
+     * @param dialogFactory
      */
-    public PodcastFeedEntryRetriever(List<IPodcastFeed> podcastFeeds, IStatePodcast statePodcast, IStateUI stateUI, IFrame frame, INavigationHandler navigationHandler, INetworkHandler networkHandler, INavigationView podcastNavigationView) {
-        this.podcastFeeds = podcastFeeds;
-        this.statePodcast = statePodcast;
-        this.stateUI = stateUI;
-        this.frame = frame;
-        this.navigationHandler = navigationHandler;
-        this.networkHandler = networkHandler;
-        this.podcastNavigationView = podcastNavigationView;
+    public PodcastFeedEntryRetriever(final List<IPodcastFeed> podcastFeeds,
+	    final IStatePodcast statePodcast, final IStateUI stateUI,
+	    final IFrame frame, final INavigationHandler navigationHandler,
+	    final INetworkHandler networkHandler,
+	    final INavigationView podcastNavigationView,
+	    final IDialogFactory dialogFactory) {
+	this.podcastFeeds = podcastFeeds;
+	this.statePodcast = statePodcast;
+	this.stateUI = stateUI;
+	this.frame = frame;
+	this.navigationHandler = navigationHandler;
+	this.networkHandler = networkHandler;
+	this.podcastNavigationView = podcastNavigationView;
+	this.dialogFactory = dialogFactory;
     }
 
     /**
      * Retrieves Podcast Feed Entries and refreshes view
+     * 
      * @param removePodcastFeedEntriesRemovedFromPodcastFeed
      * @return
      */
-    public List<IPodcastFeed> retrievePodcastFeedEntries(final boolean removePodcastFeedEntriesRemovedFromPodcastFeed) {
+    public List<IPodcastFeed> retrievePodcastFeedEntries(
+	    final boolean removePodcastFeedEntriesRemovedFromPodcastFeed) {
 
-        final List<IPodcastFeed> podcastFeedsWithNewEntries = new ArrayList<IPodcastFeed>();
+	final List<IPodcastFeed> podcastFeedsWithNewEntries = new ArrayList<IPodcastFeed>();
 
-        for (final IPodcastFeed podcastFeed : podcastFeeds) {
-            try {
-                Document feedXml = XMLUtils.getXMLDocument(networkHandler.readURL(networkHandler.getConnection(podcastFeed.getUrl())));
+	for (final IPodcastFeed podcastFeed : podcastFeeds) {
+	    try {
+		Document feedXml = XMLUtils.getXMLDocument(networkHandler
+			.readURL(networkHandler.getConnection(podcastFeed
+				.getUrl())));
 
-                if (feedXml != null) {
+		if (feedXml != null) {
 
-                    // Determine the feed type
-                    FeedType feedType = determineFeedType(feedXml);
-                    if (feedType != null) {
-                        podcastFeed.setFeedType(feedType);
-                    } else {
-                        Logger.info(podcastFeed + " is not a rss or atom feed");
-                        continue;
-                    }
+		    // Determine the feed type
+		    FeedType feedType = determineFeedType(feedXml);
+		    if (feedType != null) {
+			podcastFeed.setFeedType(feedType);
+		    } else {
+			Logger.info(podcastFeed + " is not a rss or atom feed");
+			continue;
+		    }
 
-                    // Retrieve feed name if necessary
-                    if (podcastFeed.isRetrieveNameFromFeed()) {
-                        retrieveNameFromFeed(podcastFeed, feedXml);
-                    }
+		    // Retrieve feed name if necessary
+		    if (podcastFeed.isRetrieveNameFromFeed()) {
+			retrieveNameFromFeed(podcastFeed, feedXml);
+		    }
 
-                    // Get entry nodes
-                    NodeList entries = XPathUtils.evaluateXPathExpressionAndReturnNodeList(feedType.getEntryXPath(), feedXml);
+		    // Get entry nodes
+		    NodeList entries = XPathUtils
+			    .evaluateXPathExpressionAndReturnNodeList(
+				    feedType.getEntryXPath(), feedXml);
 
-                    final List<IPodcastFeedEntry> newEntries = new ArrayList<IPodcastFeedEntry>();
-                    for (int i = 0; i < entries.getLength(); i++) {
-                    	PodcastFeedEntry entry = getEntry(feedType, entries.item(i), podcastFeed);
-                    	if (entry != null) {
-                    		newEntries.add(entry);
-                    	}
-                    }
+		    final List<IPodcastFeedEntry> newEntries = new ArrayList<IPodcastFeedEntry>();
+		    for (int i = 0; i < entries.getLength(); i++) {
+			PodcastFeedEntry entry = getEntry(feedType,
+				entries.item(i), podcastFeed);
+			if (entry != null) {
+			    newEntries.add(entry);
+			}
+		    }
 
-                    podcastFeed.addEntries(newEntries, removePodcastFeedEntriesRemovedFromPodcastFeed);
-                    if (podcastFeed.hasNewEntries()) {
-                        podcastFeedsWithNewEntries.add(podcastFeed);
-                    }
+		    podcastFeed.addEntries(newEntries,
+			    removePodcastFeedEntriesRemovedFromPodcastFeed);
+		    if (podcastFeed.hasNewEntries()) {
+			podcastFeedsWithNewEntries.add(podcastFeed);
+		    }
 
-                }
-            } catch (DOMException e) {
-                Logger.error(StringUtils.getString("Could not retrieve podcast feed entries from ", podcastFeed, ": ", e));
-            } catch (IOException e) {
-                Logger.error(StringUtils.getString("Could not retrieve podcast feed entries from ", podcastFeed, ": ", e));
-            }
-        }
+		}
+	    } catch (DOMException e) {
+		Logger.error(StringUtils.getString(
+			"Could not retrieve podcast feed entries from ",
+			podcastFeed, ": ", e));
+	    } catch (IOException e) {
+		Logger.error(StringUtils.getString(
+			"Could not retrieve podcast feed entries from ",
+			podcastFeed, ": ", e));
+	    }
+	}
 
-        return podcastFeedsWithNewEntries;
-    }
-    
-    private PodcastFeedEntry getEntry(FeedType feedType, Node entry, IPodcastFeed podcastFeed) {
-        // Check if audio podcast feed entry
-        Node typeNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getTypeXPath(), entry);
-        if (typeNode == null || !typeNode.getTextContent().matches(".*audio.*")) {
-            Logger.info(StringUtils.getString("podcast feed entry is not from type audio: ", (typeNode != null ? typeNode.getTextContent() : "no type node")));
-            return null;
-        }
-
-        String title = getTitle(feedType, entry);
-        String url = getUrl(feedType, entry);
-        if (url == null) {
-        	return null;
-        }
-
-        String author = getAuthor(feedType, entry);
-        String description = getDescription(feedType, entry);
-
-        DateTime date = getDate(feedType, entry);
-
-        int duration = getDuration(feedType, entry);
-        return new PodcastFeedEntry(title, author, url, description, date, duration, podcastFeed);
+	return podcastFeedsWithNewEntries;
     }
 
-	/**
-	 * @param feedType
-	 * @param entry
-	 * @return
-	 */
-	private int getDuration(FeedType feedType, Node entry) {
-		int duration = 0;
-		// Try to find out duration
-        Node durationNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getDurationXPath(), entry);
-        if (durationNode != null) {
-            String durationText = durationNode.getTextContent();
-            // Transform "01:01:22" to seconds
-            if (durationText != null) {
-                String[] result = durationText.split(":");
-                try {
-                    for (int j = result.length - 1; j >= 0; j--) {
-                        duration = duration + Integer.parseInt(result[j]) * (int) Math.pow(60, result.length - 1 - j);
-                    }
-                } catch (NumberFormatException e) {
-                    duration = 0;
-                    Logger.info("could not extract podcast feed entry duration");
-                }
-            }
-        }
-		return duration;
+    private PodcastFeedEntry getEntry(final FeedType feedType,
+	    final Node entry, final IPodcastFeed podcastFeed) {
+	// Check if audio podcast feed entry
+	Node typeNode = XPathUtils.evaluateXPathExpressionAndReturnNode(
+		feedType.getTypeXPath(), entry);
+	if (typeNode == null || !typeNode.getTextContent().matches(".*audio.*")) {
+	    Logger.info(StringUtils.getString(
+		    "podcast feed entry is not from type audio: ",
+		    (typeNode != null ? typeNode.getTextContent()
+			    : "no type node")));
+	    return null;
 	}
 
-	/**
-	 * @param feedType
-	 * @param entry
-	 * @return
-	 */
-	private DateTime getDate(FeedType feedType, Node entry) {
-		// Get date of podcast entry
-        Node dateNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getDateXPath(), entry);
-        if (dateNode != null) {
-            DateTime date = DateUtils.parseRFC822Date(dateNode.getTextContent());
-            if (date == null) {
-                date = DateUtils.parseRFC3339Date(dateNode.getTextContent());
-            }
-            return date;
-        }
-		return null;
+	String title = getTitle(feedType, entry);
+	String url = getUrl(feedType, entry);
+	if (url == null) {
+	    return null;
 	}
 
-	/**
-	 * @param feedType
-	 * @param entry
-	 * @return
-	 */
-	private String getDescription(FeedType feedType, Node entry) {
-		// Get description of podcast entry
-        Node descriptionNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getDescriptionXPath(), entry);
-        if (descriptionNode != null) {
-            String description = descriptionNode.getTextContent();
-            description = description.replaceAll("\\<.*?\\>", "");
-            return description;
-        }
-		return "";
-	}
+	String author = getAuthor(feedType, entry);
+	String description = getDescription(feedType, entry);
 
-	/**
-	 * @param feedType
-	 * @param entry
-	 * @return
-	 */
-	private String getAuthor(FeedType feedType, Node entry) {
-		// Get Author of podcast entry
-        Node authorNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getAuthorXPath(), entry);
-        if (authorNode != null) {
-            return authorNode.getTextContent();
-        }
-        return "";
-	}
+	DateTime date = getDate(feedType, entry);
 
-	/**
-	 * @param feedType
-	 * @param entry
-	 * @return
-	 */
-	private String getUrl(FeedType feedType, Node entry) {
-		// Get url of podcast entry
-        Node urlNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getUrlXPath(), entry);
-        if (urlNode != null) {
-            return urlNode.getTextContent();
-        } else {
-            return null;
-        }
-	}
+	int duration = getDuration(feedType, entry);
+	return new PodcastFeedEntry(title, author, url, description, date,
+		duration, podcastFeed);
+    }
 
-	/**
-	 * @param feedType
-	 * @param entry
-	 * @return
-	 */
-	private String getTitle(FeedType feedType, Node entry) {
-		// Get title of podcast entry
-        Node titleNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getTitleXPath(), entry);
-        if (titleNode != null) {
-            return titleNode.getTextContent();
-        }
-		return "";
+    /**
+     * @param feedType
+     * @param entry
+     * @return
+     */
+    private int getDuration(final FeedType feedType, final Node entry) {
+	int duration = 0;
+	// Try to find out duration
+	Node durationNode = XPathUtils.evaluateXPathExpressionAndReturnNode(
+		feedType.getDurationXPath(), entry);
+	if (durationNode != null) {
+	    String durationText = durationNode.getTextContent();
+	    // Transform "01:01:22" to seconds
+	    if (durationText != null) {
+		String[] result = durationText.split(":");
+		try {
+		    for (int j = result.length - 1; j >= 0; j--) {
+			duration = duration + Integer.parseInt(result[j])
+				* (int) Math.pow(60, result.length - 1 - j);
+		    }
+		} catch (NumberFormatException e) {
+		    duration = 0;
+		    Logger.info("could not extract podcast feed entry duration");
+		}
+	    }
 	}
+	return duration;
+    }
+
+    /**
+     * @param feedType
+     * @param entry
+     * @return
+     */
+    private DateTime getDate(final FeedType feedType, final Node entry) {
+	// Get date of podcast entry
+	Node dateNode = XPathUtils.evaluateXPathExpressionAndReturnNode(
+		feedType.getDateXPath(), entry);
+	if (dateNode != null) {
+	    DateTime date = DateUtils
+		    .parseRFC822Date(dateNode.getTextContent());
+	    if (date == null) {
+		date = DateUtils.parseRFC3339Date(dateNode.getTextContent());
+	    }
+	    return date;
+	}
+	return null;
+    }
+
+    /**
+     * @param feedType
+     * @param entry
+     * @return
+     */
+    private String getDescription(final FeedType feedType, final Node entry) {
+	// Get description of podcast entry
+	Node descriptionNode = XPathUtils.evaluateXPathExpressionAndReturnNode(
+		feedType.getDescriptionXPath(), entry);
+	if (descriptionNode != null) {
+	    String description = descriptionNode.getTextContent();
+	    description = description.replaceAll("\\<.*?\\>", "");
+	    return description;
+	}
+	return "";
+    }
+
+    /**
+     * @param feedType
+     * @param entry
+     * @return
+     */
+    private String getAuthor(final FeedType feedType, final Node entry) {
+	// Get Author of podcast entry
+	Node authorNode = XPathUtils.evaluateXPathExpressionAndReturnNode(
+		feedType.getAuthorXPath(), entry);
+	if (authorNode != null) {
+	    return authorNode.getTextContent();
+	}
+	return "";
+    }
+
+    /**
+     * @param feedType
+     * @param entry
+     * @return
+     */
+    private String getUrl(final FeedType feedType, final Node entry) {
+	// Get url of podcast entry
+	Node urlNode = XPathUtils.evaluateXPathExpressionAndReturnNode(
+		feedType.getUrlXPath(), entry);
+	if (urlNode != null) {
+	    return urlNode.getTextContent();
+	} else {
+	    return null;
+	}
+    }
+
+    /**
+     * @param feedType
+     * @param entry
+     * @return
+     */
+    private String getTitle(final FeedType feedType, final Node entry) {
+	// Get title of podcast entry
+	Node titleNode = XPathUtils.evaluateXPathExpressionAndReturnNode(
+		feedType.getTitleXPath(), entry);
+	if (titleNode != null) {
+	    return titleNode.getTextContent();
+	}
+	return "";
+    }
 
     private void refreshView() {
-        SwingUtilities.invokeLater(new RefreshViewRunnable());
+	SwingUtilities.invokeLater(new RefreshViewRunnable());
     }
 
     private void showMessage(final List<IPodcastFeed> podcastFeedsWithNewEntries) {
-        synchronized (podcastFeeds) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    for (IPodcastFeed podcastFeedWithNewEntries : podcastFeedsWithNewEntries) {
-                        // Check if podcast feed wasn't removed during retrieval
-                        if (podcastFeeds.contains(podcastFeedWithNewEntries)) {
-                            // Remove "new" flag from podcasts
-                            for (IPodcastFeed podcastFeed : podcastFeeds) {
-                                podcastFeed.markEntriesAsNotNew();
-                            }
-                            if (!stateUI.isShowStatusBar()) {
-                            	Context.getBean(IDialogFactory.class).newDialog(IMessageDialog.class).showMessage(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
-                            } else {
-                                frame.showNewPodcastFeedEntriesInfo(true);
-                            }
-                            break;
-                        }
-                    }
-                }
-            });
-        }
+	synchronized (podcastFeeds) {
+	    GuiUtils.callInEventDispatchThread(new Runnable() {
+		@Override
+		public void run() {
+		    for (IPodcastFeed podcastFeedWithNewEntries : podcastFeedsWithNewEntries) {
+			// Check if podcast feed wasn't removed during retrieval
+			if (podcastFeeds.contains(podcastFeedWithNewEntries)) {
+			    // Remove "new" flag from podcasts
+			    for (IPodcastFeed podcastFeed : podcastFeeds) {
+				podcastFeed.markEntriesAsNotNew();
+			    }
+			    if (!stateUI.isShowStatusBar()) {
+				dialogFactory
+					.newDialog(IMessageDialog.class)
+					.showMessage(
+						I18nUtils
+							.getString("NEW_PODCAST_ENTRIES"));
+			    } else {
+				frame.showNewPodcastFeedEntriesInfo(true);
+			    }
+			    break;
+			}
+		    }
+		}
+	    });
+	}
     }
 
-    private FeedType determineFeedType(Document feed) {
-        if (XPathUtils.evaluateXPathExpressionAndReturnNode("/rss", feed) != null) {
-            return FeedType.RSS;
-        } else {
-            if (XPathUtils.evaluateXPathExpressionAndReturnNode("/feed", feed) != null) {
-                return FeedType.ATOM;
-            } else {
-                return null;
-            }
-        }
+    private FeedType determineFeedType(final Document feed) {
+	if (XPathUtils.evaluateXPathExpressionAndReturnNode("/rss", feed) != null) {
+	    return FeedType.RSS;
+	} else {
+	    if (XPathUtils.evaluateXPathExpressionAndReturnNode("/feed", feed) != null) {
+		return FeedType.ATOM;
+	    } else {
+		return null;
+	    }
+	}
     }
 
-    private void retrieveNameFromFeed(final IPodcastFeed podcastFeed, Document feed) {
-        Node node = XPathUtils.evaluateXPathExpressionAndReturnNode(podcastFeed.getFeedType().getNameXPath(), feed);
-        if (node != null) {
-            String name = node.getTextContent();
-            podcastFeed.setName(name == null ? "" : name);
-        }
+    private void retrieveNameFromFeed(final IPodcastFeed podcastFeed,
+	    final Document feed) {
+	Node node = XPathUtils.evaluateXPathExpressionAndReturnNode(podcastFeed
+		.getFeedType().getNameXPath(), feed);
+	if (node != null) {
+	    String name = node.getTextContent();
+	    podcastFeed.setName(name == null ? "" : name);
+	}
     }
 
     @Override
     public void run() {
-    	boolean removePodcastFeedEntriesRemovedFromPodcastFeed = statePodcast.isRemovePodcastFeedEntriesRemovedFromPodcastFeed();
-    	List<IPodcastFeed> podcastFeedsWithNewEntries = retrievePodcastFeedEntries(removePodcastFeedEntriesRemovedFromPodcastFeed);
-    	// If there are new entries show a message and refresh view
-    	showMessage(podcastFeedsWithNewEntries);
-    	refreshView();
+	boolean removePodcastFeedEntriesRemovedFromPodcastFeed = statePodcast
+		.isRemovePodcastFeedEntriesRemovedFromPodcastFeed();
+	List<IPodcastFeed> podcastFeedsWithNewEntries = retrievePodcastFeedEntries(removePodcastFeedEntriesRemovedFromPodcastFeed);
+	// If there are new entries show a message and refresh view
+	showMessage(podcastFeedsWithNewEntries);
+	refreshView();
     }
 }

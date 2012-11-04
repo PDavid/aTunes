@@ -28,18 +28,25 @@ import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListObjectFilter;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 
-public class PlayListPodcastFeedEntryFilter implements IPlayListObjectFilter<IPodcastFeedEntry> {
-	
-	@Override
-	public List<IPodcastFeedEntry> getObjects(IPlayList playList) {
-        List<IPodcastFeedEntry> result = new ArrayList<IPodcastFeedEntry>();
-        for (int i = 0; i < playList.size(); i++) {
-        	IAudioObject ao = playList.get(i);
-            if (ao instanceof IPodcastFeedEntry) {
-                result.add((IPodcastFeedEntry)ao);
-            }
-        }
-        return result;
+/**
+ * Filters podcasts from play list
+ * 
+ * @author alex
+ * 
+ */
+public class PlayListPodcastFeedEntryFilter implements
+	IPlayListObjectFilter<IPodcastFeedEntry> {
+
+    @Override
+    public List<IPodcastFeedEntry> getObjects(final IPlayList playList) {
+	List<IPodcastFeedEntry> result = new ArrayList<IPodcastFeedEntry>();
+	for (int i = 0; i < playList.size(); i++) {
+	    IAudioObject ao = playList.get(i);
+	    if (ao instanceof IPodcastFeedEntry) {
+		result.add((IPodcastFeedEntry) ao);
+	    }
 	}
+	return result;
+    }
 
 }

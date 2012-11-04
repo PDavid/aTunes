@@ -25,36 +25,41 @@ import net.sourceforge.atunes.model.ITaskService;
 
 /**
  * Responsible of storing statistics
+ * 
  * @author alex
- *
+ * 
  */
 class StoreStatistics implements Runnable {
 
-	private final ITaskService taskService;
-	
-	private final IStateHandler stateHandler;
-	
-	private final StatisticsHandler statisticsHandler;
-	
-	/**
-	 * @param taskService
-	 */
-	public StoreStatistics(ITaskService taskService, IStateHandler stateHandler, StatisticsHandler staticticsHandler) {
-		this.taskService = taskService;
-		this.stateHandler = stateHandler;
-		this.statisticsHandler = staticticsHandler;
-	}
-	
+    private final ITaskService taskService;
+
+    private final IStateHandler stateHandler;
+
+    private final StatisticsHandler statisticsHandler;
+
+    /**
+     * @param taskService
+     * @param stateHandler
+     * @param staticticsHandler
+     */
+    public StoreStatistics(final ITaskService taskService,
+	    final IStateHandler stateHandler,
+	    final StatisticsHandler staticticsHandler) {
+	this.taskService = taskService;
+	this.stateHandler = stateHandler;
+	this.statisticsHandler = staticticsHandler;
+    }
+
     /**
      * Stores statistics
      * 
      */
     void storeStatistics() {
-    	taskService.submitNow("Persist statistics", this);
+	taskService.submitNow("Persist statistics", this);
     }
 
     @Override
     public void run() {
-    	stateHandler.persistStatisticsCache(statisticsHandler.getStatistics());
+	stateHandler.persistStatisticsCache(statisticsHandler.getStatistics());
     }
 }

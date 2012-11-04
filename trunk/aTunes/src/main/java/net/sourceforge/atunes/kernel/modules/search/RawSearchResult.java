@@ -33,12 +33,16 @@ import org.apache.lucene.document.Fieldable;
  */
 public class RawSearchResult implements ISearchResult {
 
-    private Document document;
-    private float score;
+    private final Document document;
+    private final float score;
 
-    public RawSearchResult(Document document, float score) {
-        this.document = document;
-        this.score = score;
+    /**
+     * @param document
+     * @param score
+     */
+    public RawSearchResult(final Document document, final float score) {
+	this.document = document;
+	this.score = score;
     }
 
     /**
@@ -46,11 +50,11 @@ public class RawSearchResult implements ISearchResult {
      */
     @Override
     public Map<String, String> getObject() {
-    	Map<String, String> objects = new HashMap<String, String>();
-    	for (Fieldable field : document.getFields()) {
-    		objects.put(field.name(), document.get(field.name()));
-    	}
-        return objects;
+	Map<String, String> objects = new HashMap<String, String>();
+	for (Fieldable field : document.getFields()) {
+	    objects.put(field.name(), document.get(field.name()));
+	}
+	return objects;
     }
 
     /**
@@ -58,7 +62,7 @@ public class RawSearchResult implements ISearchResult {
      */
     @Override
     public float getScore() {
-        return score;
+	return score;
     }
 
 }

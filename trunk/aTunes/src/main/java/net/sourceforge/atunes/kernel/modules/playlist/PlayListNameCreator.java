@@ -24,9 +24,15 @@ import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Creates names for play lists
+ * 
+ * @author alex
+ * 
+ */
 public class PlayListNameCreator {
-	
-	/**
+
+    /**
      * The play list counter used when creating new play lists with default
      * name.
      */
@@ -40,39 +46,44 @@ public class PlayListNameCreator {
      * 
      * @return the name for playlist
      */
-    String getNameForPlaylist(IPlayListsContainer playLists, IPlayList pl) {
-        if (pl == null || StringUtils.isEmpty(pl.getName())) {
-            return createPlayListName(playLists);
-        }
-        return pl.getName();
+    String getNameForPlaylist(final IPlayListsContainer playLists,
+	    final IPlayList pl) {
+	if (pl == null || StringUtils.isEmpty(pl.getName())) {
+	    return createPlayListName(playLists);
+	}
+	return pl.getName();
     }
 
-	/**
-	 * @param playLists
-	 * @return
-	 */
-	private String createPlayListName(IPlayListsContainer playLists) {
-		String name = null;
-		do {
-			name = StringUtils.getString(I18nUtils.getString("PLAYLIST"), " ", playListNameCounter++);
-		} while (checkIfNameExists(playLists, name));
-		return name;
-	}
+    /**
+     * @param playLists
+     * @return
+     */
+    private String createPlayListName(final IPlayListsContainer playLists) {
+	String name = null;
+	do {
+	    name = StringUtils.getString(I18nUtils.getString("PLAYLIST"), " ",
+		    playListNameCounter++);
+	} while (checkIfNameExists(playLists, name));
+	return name;
+    }
 
     /**
      * @param playLists
      * @param name
      * @return
      */
-    private boolean checkIfNameExists(IPlayListsContainer playLists, String name) {
-    	if (playLists != null) {
-    		for (int i = 0; i < playLists.getPlayListsCount(); i++) {
-    			IPlayList playList = playLists.getPlayListAt(i);
-    			if (playList.getName() != null && name.trim().equalsIgnoreCase(playList.getName().trim())) {
-    				return true;
-    			}
-    		}
-    	}
-        return false;
+    private boolean checkIfNameExists(final IPlayListsContainer playLists,
+	    final String name) {
+	if (playLists != null) {
+	    for (int i = 0; i < playLists.getPlayListsCount(); i++) {
+		IPlayList playList = playLists.getPlayListAt(i);
+		if (playList.getName() != null
+			&& name.trim().equalsIgnoreCase(
+				playList.getName().trim())) {
+		    return true;
+		}
+	    }
+	}
+	return false;
     }
 }

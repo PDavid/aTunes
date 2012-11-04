@@ -60,7 +60,8 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The handler for podcast feeds.
  */
-public final class PodcastFeedHandler extends AbstractHandler implements IPodcastFeedHandler {
+public final class PodcastFeedHandler extends AbstractHandler implements
+	IPodcastFeedHandler {
 
     /**
      * Time in seconds between two podcast retrieval checks
@@ -78,122 +79,126 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
      * Podcast Feed Entry downloading
      */
     private ExecutorService podcastFeedEntryDownloaderExecutorService;
-    
+
     /** The running downloads. */
-    private volatile List<PodcastFeedEntryDownloader> runningDownloads = Collections.synchronizedList(new ArrayList<PodcastFeedEntryDownloader>());
-    
+    private volatile List<PodcastFeedEntryDownloader> runningDownloads = Collections
+	    .synchronizedList(new ArrayList<PodcastFeedEntryDownloader>());
+
     private ScheduledFuture<?> scheduledPodcastFeedEntryRetrieverFuture;
 
     private ScheduledFuture<?> scheduledPodcastFeedEntryDownloadCheckerFuture;
 
     private IIconFactory rssMediumIcon;
-    
+
     private INetworkHandler networkHandler;
-    
+
     private INavigationHandler navigationHandler;
-    
+
     private IStateHandler stateHandler;
-    
+
     private ITaskService taskService;
-    
+
     private ILookAndFeelManager lookAndFeelManager;
-    
+
     private INavigationView podcastNavigationView;
-    
+
     private IStateUI stateUI;
-    
+
     private IStatePodcast statePodcast;
-    
+
     private IDialogFactory dialogFactory;
-    
+
     /**
      * @param dialogFactory
      */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
-    
+    public void setDialogFactory(final IDialogFactory dialogFactory) {
+	this.dialogFactory = dialogFactory;
+    }
+
     /**
      * @param statePodcast
      */
-    public void setStatePodcast(IStatePodcast statePodcast) {
-		this.statePodcast = statePodcast;
-	}
-    
+    public void setStatePodcast(final IStatePodcast statePodcast) {
+	this.statePodcast = statePodcast;
+    }
+
     /**
      * @param stateUI
      */
-    public void setStateUI(IStateUI stateUI) {
-		this.stateUI = stateUI;
-	}
-    
+    public void setStateUI(final IStateUI stateUI) {
+	this.stateUI = stateUI;
+    }
+
     /**
      * @param podcastNavigationView
      */
-    public void setPodcastNavigationView(INavigationView podcastNavigationView) {
-		this.podcastNavigationView = podcastNavigationView;
-	}
-    
+    public void setPodcastNavigationView(
+	    final INavigationView podcastNavigationView) {
+	this.podcastNavigationView = podcastNavigationView;
+    }
+
     /**
      * @param lookAndFeelManager
      */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-    
+    public void setLookAndFeelManager(
+	    final ILookAndFeelManager lookAndFeelManager) {
+	this.lookAndFeelManager = lookAndFeelManager;
+    }
+
     /**
      * @param taskService
      */
-    public void setTaskService(ITaskService taskService) {
-		this.taskService = taskService;
-	}
-    
+    public void setTaskService(final ITaskService taskService) {
+	this.taskService = taskService;
+    }
+
     /**
      * @param stateHandler
      */
-    public void setStateHandler(IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
-	}
-    
+    public void setStateHandler(final IStateHandler stateHandler) {
+	this.stateHandler = stateHandler;
+    }
+
     /**
      * @param navigationHandler
      */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-    
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
+
     /**
      * @param networkHandler
      */
-    public void setNetworkHandler(INetworkHandler networkHandler) {
-		this.networkHandler = networkHandler;
-	}
-    
+    public void setNetworkHandler(final INetworkHandler networkHandler) {
+	this.networkHandler = networkHandler;
+    }
+
     /**
      * @param rssMediumIcon
      */
-    public void setRssMediumIcon(IIconFactory rssMediumIcon) {
-		this.rssMediumIcon = rssMediumIcon;
-	}
+    public void setRssMediumIcon(final IIconFactory rssMediumIcon) {
+	this.rssMediumIcon = rssMediumIcon;
+    }
 
     @Override
     public void deferredInitialization() {
-        startPodcastFeedEntryDownloadChecker();
-        startPodcastFeedEntryRetriever();
+	startPodcastFeedEntryDownloadChecker();
+	startPodcastFeedEntryRetriever();
     }
-    
+
     @Override
-	public void addPodcastFeed() {
-    	IAddPodcastFeedDialog dialog = dialogFactory.newDialog(IAddPodcastFeedDialog.class);
-    	dialog.showDialog();    	
-        IPodcastFeed podcastFeed = dialog.getPodcastFeed(); 
-        if (podcastFeed != null) {
-            addPodcastFeed(podcastFeed);
-            navigationHandler.refreshView(podcastNavigationView);
-            retrievePodcastFeedEntries();
-            startPodcastFeedEntryDownloadChecker();
-            startPodcastFeedEntryRetriever();
-        }
+    public void addPodcastFeed() {
+	IAddPodcastFeedDialog dialog = dialogFactory
+		.newDialog(IAddPodcastFeedDialog.class);
+	dialog.showDialog();
+	IPodcastFeed podcastFeed = dialog.getPodcastFeed();
+	if (podcastFeed != null) {
+	    addPodcastFeed(podcastFeed);
+	    navigationHandler.refreshView(podcastNavigationView);
+	    retrievePodcastFeedEntries();
+	    startPodcastFeedEntryDownloadChecker();
+	    startPodcastFeedEntryRetriever();
+	}
     }
 
     /**
@@ -202,98 +207,110 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
      * @param podcastFeed
      *            A Podcast Feed that should be added
      */
-    private void addPodcastFeed(IPodcastFeed podcastFeed) {
-        Logger.info("Adding podcast feed");
-        // Note: Do not use Collection.sort(...);
-        boolean added = false;
-        for (int i = 0; i < getPodcastFeeds().size(); i++) {
-            if (new PodcastFeedComparator().compare(podcastFeed, getPodcastFeeds().get(i)) < 0) {
-                getPodcastFeeds().add(i, podcastFeed);
-                added = true;
-                break;
-            }
-        }
-        if (!added) {
-            getPodcastFeeds().add(podcastFeed);
-        }
-        podcastFeedsDirty = true;
+    private void addPodcastFeed(final IPodcastFeed podcastFeed) {
+	Logger.info("Adding podcast feed");
+	// Note: Do not use Collection.sort(...);
+	boolean added = false;
+	for (int i = 0; i < getPodcastFeeds().size(); i++) {
+	    if (new PodcastFeedComparator().compare(podcastFeed,
+		    getPodcastFeeds().get(i)) < 0) {
+		getPodcastFeeds().add(i, podcastFeed);
+		added = true;
+		break;
+	    }
+	}
+	if (!added) {
+	    getPodcastFeeds().add(podcastFeed);
+	}
+	podcastFeedsDirty = true;
     }
 
     /**
      * Finish.
      */
+    @Override
     public void applicationFinish() {
-        synchronized (runningDownloads) {
-            for (int i = 0; i < runningDownloads.size(); i++) {
-                PodcastFeedEntryDownloader podcastFeedEntryDownloader = runningDownloads.get(i);
-                podcastFeedEntryDownloader.cancel(true);
-                new File(getDownloadPath(podcastFeedEntryDownloader.getPodcastFeedEntry())).deleteOnExit();
-            }
-        }
-        if (podcastFeedsDirty) {
-        	stateHandler.persistPodcastFeedCache(getPodcastFeeds());
-        } else {
-            Logger.info("Podcast list is clean");
-        }
-
-    }
-
-    @Override
-	public List<IPodcastFeed> getPodcastFeeds() {
-        return podcastFeeds;
-    }
-
-    @Override
-	public List<IPodcastFeedEntry> getPodcastFeedEntries() {
-        List<IPodcastFeedEntry> podcastFeedEntries = new ArrayList<IPodcastFeedEntry>();
-        for (IPodcastFeed podcastFeed : getPodcastFeeds()) {
-            podcastFeedEntries.addAll(podcastFeed.getPodcastFeedEntries());
-        }
-        return podcastFeedEntries;
-    }
-
-    @Override
-	public void removePodcastFeed(IPodcastFeed podcastFeed) {
-        Logger.info("Removing podcast feed");
-        getPodcastFeeds().remove(podcastFeed);
-        podcastFeedsDirty = true;
-        navigationHandler.refreshView(podcastNavigationView);
-        if (CollectionUtils.isEmpty(getPodcastFeeds())) {
-        	stopPodcastFeedEntryDownloadChecker();
-        	stopPodcastFeedEntryRetriever();
-        }
-    }
-
-	private void startPodcastFeedEntryRetriever() {
-        // When upgrading from a previous version, retrievel interval can be 0
-        long retrieval = statePodcast.getPodcastFeedEntriesRetrievalInterval();
-        long retrievalInterval = retrieval > 0 ? retrieval : DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL;
-
-        schedulePodcastFeedEntryRetriever(retrievalInterval);
-    }
-
-	private void startPodcastFeedEntryDownloadChecker() {
-    	// Start only if podcast feeds created
-    	if (!CollectionUtils.isEmpty(getPodcastFeeds())) {
-    		scheduledPodcastFeedEntryDownloadCheckerFuture = taskService.submitPeriodically("PodcastFeedEntryDownloadChecker", 30, 30, new PodcastFeedEntryDownloadChecker((ITable)getBean("navigationTable", ITable.class), this));
-    	} else {
-    		Logger.debug("Not scheduling PodcastFeedEntryDownloadChecker");
-    	}
-    }
-	
-	private void stopPodcastFeedEntryRetriever() {
-		if (scheduledPodcastFeedEntryRetrieverFuture != null) {
-			scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
-			Logger.debug("Stopped PodcastFeedEntryRetrieverChecker");
-		}
+	synchronized (runningDownloads) {
+	    for (int i = 0; i < runningDownloads.size(); i++) {
+		PodcastFeedEntryDownloader podcastFeedEntryDownloader = runningDownloads
+			.get(i);
+		podcastFeedEntryDownloader.cancel(true);
+		new File(
+			getDownloadPath(podcastFeedEntryDownloader
+				.getPodcastFeedEntry())).deleteOnExit();
+	    }
 	}
-	
-	private void stopPodcastFeedEntryDownloadChecker() {
-		if (scheduledPodcastFeedEntryDownloadCheckerFuture != null) {
-			scheduledPodcastFeedEntryDownloadCheckerFuture.cancel(true);
-			Logger.debug("Stopped PodcastFeedEntryDownloadChecker");
-		}
+	if (podcastFeedsDirty) {
+	    stateHandler.persistPodcastFeedCache(getPodcastFeeds());
+	} else {
+	    Logger.info("Podcast list is clean");
 	}
+
+    }
+
+    @Override
+    public List<IPodcastFeed> getPodcastFeeds() {
+	return podcastFeeds;
+    }
+
+    @Override
+    public List<IPodcastFeedEntry> getPodcastFeedEntries() {
+	List<IPodcastFeedEntry> podcastFeedEntries = new ArrayList<IPodcastFeedEntry>();
+	for (IPodcastFeed podcastFeed : getPodcastFeeds()) {
+	    podcastFeedEntries.addAll(podcastFeed.getPodcastFeedEntries());
+	}
+	return podcastFeedEntries;
+    }
+
+    @Override
+    public void removePodcastFeed(final IPodcastFeed podcastFeed) {
+	Logger.info("Removing podcast feed");
+	getPodcastFeeds().remove(podcastFeed);
+	podcastFeedsDirty = true;
+	navigationHandler.refreshView(podcastNavigationView);
+	if (CollectionUtils.isEmpty(getPodcastFeeds())) {
+	    stopPodcastFeedEntryDownloadChecker();
+	    stopPodcastFeedEntryRetriever();
+	}
+    }
+
+    private void startPodcastFeedEntryRetriever() {
+	// When upgrading from a previous version, retrievel interval can be 0
+	long retrieval = statePodcast.getPodcastFeedEntriesRetrievalInterval();
+	long retrievalInterval = retrieval > 0 ? retrieval
+		: DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL;
+
+	schedulePodcastFeedEntryRetriever(retrievalInterval);
+    }
+
+    private void startPodcastFeedEntryDownloadChecker() {
+	// Start only if podcast feeds created
+	if (!CollectionUtils.isEmpty(getPodcastFeeds())) {
+	    scheduledPodcastFeedEntryDownloadCheckerFuture = taskService
+		    .submitPeriodically(
+			    "PodcastFeedEntryDownloadChecker",
+			    30,
+			    30,
+			    new PodcastFeedEntryDownloadChecker(getBean(
+				    "navigationTable", ITable.class), this));
+	} else {
+	    Logger.debug("Not scheduling PodcastFeedEntryDownloadChecker");
+	}
+    }
+
+    private void stopPodcastFeedEntryRetriever() {
+	if (scheduledPodcastFeedEntryRetrieverFuture != null) {
+	    scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
+	    Logger.debug("Stopped PodcastFeedEntryRetrieverChecker");
+	}
+    }
+
+    private void stopPodcastFeedEntryDownloadChecker() {
+	if (scheduledPodcastFeedEntryDownloadCheckerFuture != null) {
+	    scheduledPodcastFeedEntryDownloadCheckerFuture.cancel(true);
+	    Logger.debug("Stopped PodcastFeedEntryDownloadChecker");
+	}
+    }
 
     /**
      * Sets the Podcast Feed Entry retrieval interval.
@@ -301,11 +318,13 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
      * @param newRetrievalInterval
      *            The Podcast Feed Entry retrieval interval
      */
-    private void setPodcastFeedEntryRetrievalInterval(long newRetrievalInterval) {
-        if (newRetrievalInterval < 0) {
-            throw new IllegalArgumentException("sleeping time must not be smaller than 0");
-        }
-        schedulePodcastFeedEntryRetriever(newRetrievalInterval);
+    private void setPodcastFeedEntryRetrievalInterval(
+	    final long newRetrievalInterval) {
+	if (newRetrievalInterval < 0) {
+	    throw new IllegalArgumentException(
+		    "sleeping time must not be smaller than 0");
+	}
+	schedulePodcastFeedEntryRetriever(newRetrievalInterval);
     }
 
     /**
@@ -314,44 +333,64 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
      * @param newRetrievalInterval
      *            The Podcast Feed Entry retrieval interval
      */
-    private void schedulePodcastFeedEntryRetriever(long newRetrievalInterval) {
-    	stopPodcastFeedEntryRetriever();
-    	
-        // Start only if podcast feeds created
-        if (!CollectionUtils.isEmpty(getPodcastFeeds())) {
-        	scheduledPodcastFeedEntryRetrieverFuture = taskService.submitPeriodically("Periodically Retrieve Podcast Feed Entries", newRetrievalInterval, newRetrievalInterval, new PodcastFeedEntryRetriever(getPodcastFeeds(), statePodcast, stateUI, getFrame(), navigationHandler, networkHandler, podcastNavigationView));
-        } else {
-        	Logger.debug("Not scheduling PodcastFeedEntryRetriever");
-        }
+    private void schedulePodcastFeedEntryRetriever(
+	    final long newRetrievalInterval) {
+	stopPodcastFeedEntryRetriever();
+
+	// Start only if podcast feeds created
+	if (!CollectionUtils.isEmpty(getPodcastFeeds())) {
+	    scheduledPodcastFeedEntryRetrieverFuture = taskService
+		    .submitPeriodically(
+			    "Periodically Retrieve Podcast Feed Entries",
+			    newRetrievalInterval, newRetrievalInterval,
+			    new PodcastFeedEntryRetriever(getPodcastFeeds(),
+				    statePodcast, stateUI, getFrame(),
+				    navigationHandler, networkHandler,
+				    podcastNavigationView, dialogFactory));
+	} else {
+	    Logger.debug("Not scheduling PodcastFeedEntryRetriever");
+	}
     }
 
     @Override
-	public void retrievePodcastFeedEntries() {
-    	taskService.submitNow("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), statePodcast, stateUI, getFrame(), navigationHandler, networkHandler, podcastNavigationView));
+    public void retrievePodcastFeedEntries() {
+	taskService.submitNow("Retrieve Podcast Feed Entries",
+		new PodcastFeedEntryRetriever(getPodcastFeeds(), statePodcast,
+			stateUI, getFrame(), navigationHandler, networkHandler,
+			podcastNavigationView, dialogFactory));
     }
 
     @Override
-	public void downloadPodcastFeedEntry(final IPodcastFeedEntry podcastFeedEntry) {
-        if (isDownloading(podcastFeedEntry)) {
-            return;
-        }
-        final IProgressDialog d = dialogFactory.newDialog("transferDialog", IProgressDialog.class);
-        d.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
-        d.setIcon(rssMediumIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
-        final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, (ITable)getBean("navigationTable", ITable.class), this, networkHandler);
-        synchronized (runningDownloads) {
-            runningDownloads.add(downloadPodcastFeedEntry);
-        }
-        downloadPodcastFeedEntry.addPropertyChangeListener(new DownloadPodcastFeedEntryPropertyChangeListener(this, podcastFeedEntry, d, downloadPodcastFeedEntry, runningDownloads));
-        d.addCancelButtonActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cancelDownloading(podcastFeedEntry, d, downloadPodcastFeedEntry);
-            }
-        });
-        d.setInfoText(podcastFeedEntry.getTitle());
-        getPodcastFeedEntryDownloaderExecutorService().execute(downloadPodcastFeedEntry);
-        d.showDialog();
+    public void downloadPodcastFeedEntry(
+	    final IPodcastFeedEntry podcastFeedEntry) {
+	if (isDownloading(podcastFeedEntry)) {
+	    return;
+	}
+	final IProgressDialog d = dialogFactory.newDialog("transferDialog",
+		IProgressDialog.class);
+	d.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
+	d.setIcon(rssMediumIcon.getIcon(lookAndFeelManager
+		.getCurrentLookAndFeel().getPaintForSpecialControls()));
+	final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(
+		podcastFeedEntry, getBean("navigationTable", ITable.class),
+		this, networkHandler);
+	synchronized (runningDownloads) {
+	    runningDownloads.add(downloadPodcastFeedEntry);
+	}
+	downloadPodcastFeedEntry
+		.addPropertyChangeListener(new DownloadPodcastFeedEntryPropertyChangeListener(
+			this, podcastFeedEntry, d, downloadPodcastFeedEntry,
+			runningDownloads));
+	d.addCancelButtonActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(final ActionEvent e) {
+		cancelDownloading(podcastFeedEntry, d, downloadPodcastFeedEntry);
+	    }
+	});
+	d.setInfoText(podcastFeedEntry.getTitle());
+	getPodcastFeedEntryDownloaderExecutorService().execute(
+		downloadPodcastFeedEntry);
+	d.showDialog();
     }
 
     /**
@@ -364,157 +403,185 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
      * @param downloadPodcastFeedEntry
      *            the download podcast feed entry
      */
-    void cancelDownloading(final IPodcastFeedEntry podcastFeedEntry, final IProgressDialog d, final PodcastFeedEntryDownloader downloadPodcastFeedEntry) {
-        try {
-            downloadPodcastFeedEntry.cancel(false);
-        } catch (CancellationException ex) {
-            // Nothing to do
-        }
-        d.hideDialog();
+    void cancelDownloading(final IPodcastFeedEntry podcastFeedEntry,
+	    final IProgressDialog d,
+	    final PodcastFeedEntryDownloader downloadPodcastFeedEntry) {
+	try {
+	    downloadPodcastFeedEntry.cancel(false);
+	} catch (CancellationException ex) {
+	    // Nothing to do
+	}
+	d.hideDialog();
 
-        final File f = new File(getDownloadPath(podcastFeedEntry));
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                while (f.exists() && !Thread.currentThread().isInterrupted()) {
-                    if (!f.delete()) {
-                    	Logger.error(StringUtils.getString(f, " not deleted"));
-                    }
-                }
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    // Nothing to do
-                }
-                synchronized (runningDownloads) {
-                    runningDownloads.remove(downloadPodcastFeedEntry);
-                }
-                Logger.info("podcast entry download cancelled: " + podcastFeedEntry.getTitle());
-            }
-        };
-        new Thread(r).start();
+	final File f = new File(getDownloadPath(podcastFeedEntry));
+	Runnable r = new Runnable() {
+	    @Override
+	    public void run() {
+		while (f.exists() && !Thread.currentThread().isInterrupted()) {
+		    if (!f.delete()) {
+			Logger.error(StringUtils.getString(f, " not deleted"));
+		    }
+		}
+		try {
+		    Thread.sleep(3000);
+		} catch (InterruptedException e) {
+		    // Nothing to do
+		}
+		synchronized (runningDownloads) {
+		    runningDownloads.remove(downloadPodcastFeedEntry);
+		}
+		Logger.info("podcast entry download cancelled: "
+			+ podcastFeedEntry.getTitle());
+	    }
+	};
+	new Thread(r).start();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#getDownloadPath(net.sourceforge.atunes.model.IPodcastFeedEntry)
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#
+     * getDownloadPath(net.sourceforge.atunes.model.IPodcastFeedEntry)
+     */
     @Override
-	public String getDownloadPath(IPodcastFeedEntry podcastFeedEntry) {
-        File podcastFeedsDownloadFolder = getPodcastFeedsDownloadFolder();
+    public String getDownloadPath(final IPodcastFeedEntry podcastFeedEntry) {
+	File podcastFeedsDownloadFolder = getPodcastFeedsDownloadFolder();
 
-        if (!createFolder(podcastFeedsDownloadFolder)) {
-        	return "";
-        }
-
-        if (podcastFeedEntry.getPodcastFeed().getName() == null || podcastFeedEntry.getPodcastFeed().getName().trim().isEmpty()) {
-            return "";
-        }
-
-        // Check if subfolder exists and otherwise create
-        File podcastFeedDownloadFolder = new File(podcastFeedsDownloadFolder, FileNameUtils
-                .getValidFileName(String.valueOf(podcastFeedEntry.getPodcastFeed().getName().hashCode()), getOsManager()));
-        
-        if (!createFolder(podcastFeedDownloadFolder)) {
-        	return "";
-        }
-
-        try {
-            String url = new URI(podcastFeedEntry.getUrl()).getPath();
-            String[] elements = url.split("/");
-            if (elements.length > 0) {
-                String filename = elements[elements.length - 1];
-                int index = filename.lastIndexOf('.');
-                if (index != -1) {
-                    filename = StringUtils.getString(filename.hashCode(), ".", filename.substring(index, filename.length()));
-                } else {
-                    filename = String.valueOf(filename.hashCode());
-                }
-                return StringUtils.getString(podcastFeedDownloadFolder.toString(), "/", FileNameUtils.getValidFileName(filename, getOsManager()));
-            }
-        } catch (URISyntaxException e) {
-            Logger.error(e);
-        }
-        throw new IllegalArgumentException();
-    }
-
-	/**
-	 * @param podcastFeedsDownloadFolder
-	 */
-	private boolean createFolder(File podcastFeedsDownloadFolder) {
-		// Check if podcast folder exists
-        if (!podcastFeedsDownloadFolder.exists()) {
-            boolean check = podcastFeedsDownloadFolder.mkdir();
-            if (!check) {
-                Logger.error("Problem Creating file!");
-                return false;
-            }
-        }
-        return true;
+	if (!createFolder(podcastFeedsDownloadFolder)) {
+	    return "";
 	}
 
-	/**
-	 * @return
-	 */
-	private File getPodcastFeedsDownloadFolder() {
-		String path = statePodcast.getPodcastFeedEntryDownloadPath();
-        if (path == null || path.isEmpty()) {
-            path = StringUtils.getString(getOsManager().getUserConfigFolder(), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
-        }
-		return new File(path);
+	if (podcastFeedEntry.getPodcastFeed().getName() == null
+		|| podcastFeedEntry.getPodcastFeed().getName().trim().isEmpty()) {
+	    return "";
 	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#isDownloaded(net.sourceforge.atunes.model.IPodcastFeedEntry)
-	 */
-    @Override
-	public boolean isDownloaded(IPodcastFeedEntry podcastFeedEntry) {
-        File f = new File(getDownloadPath(podcastFeedEntry));
-        return f.exists();
+	// Check if subfolder exists and otherwise create
+	File podcastFeedDownloadFolder = new File(podcastFeedsDownloadFolder,
+		FileNameUtils.getValidFileName(
+			String.valueOf(podcastFeedEntry.getPodcastFeed()
+				.getName().hashCode()), getOsManager()));
+
+	if (!createFolder(podcastFeedDownloadFolder)) {
+	    return "";
+	}
+
+	try {
+	    String url = new URI(podcastFeedEntry.getUrl()).getPath();
+	    String[] elements = url.split("/");
+	    if (elements.length > 0) {
+		String filename = elements[elements.length - 1];
+		int index = filename.lastIndexOf('.');
+		if (index != -1) {
+		    filename = StringUtils.getString(filename.hashCode(), ".",
+			    filename.substring(index, filename.length()));
+		} else {
+		    filename = String.valueOf(filename.hashCode());
+		}
+		return StringUtils.getString(podcastFeedDownloadFolder
+			.toString(), "/", FileNameUtils.getValidFileName(
+			filename, getOsManager()));
+	    }
+	} catch (URISyntaxException e) {
+	    Logger.error(e);
+	}
+	throw new IllegalArgumentException();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#deleteDownloadedPodcastFeedEntry(net.sourceforge.atunes.model.IPodcastFeedEntry)
-	 */
-    @Override
-	public void deleteDownloadedPodcastFeedEntry(final IPodcastFeedEntry podcastFeedEntry) {
-        File f = new File(getDownloadPath(podcastFeedEntry));
-        new DeleteDownloadedPodcastFeedEntryWorker(f, podcastFeedEntry, (ITable)getBean("navigationTable", ITable.class)).execute();
+    /**
+     * @param podcastFeedsDownloadFolder
+     */
+    private boolean createFolder(final File podcastFeedsDownloadFolder) {
+	// Check if podcast folder exists
+	if (!podcastFeedsDownloadFolder.exists()) {
+	    boolean check = podcastFeedsDownloadFolder.mkdir();
+	    if (!check) {
+		Logger.error("Problem Creating file!");
+		return false;
+	    }
+	}
+	return true;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#isDownloading(net.sourceforge.atunes.model.IPodcastFeedEntry)
-	 */
+    /**
+     * @return
+     */
+    private File getPodcastFeedsDownloadFolder() {
+	String path = statePodcast.getPodcastFeedEntryDownloadPath();
+	if (path == null || path.isEmpty()) {
+	    path = StringUtils.getString(getOsManager().getUserConfigFolder(),
+		    "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
+	}
+	return new File(path);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#
+     * isDownloaded(net.sourceforge.atunes.model.IPodcastFeedEntry)
+     */
     @Override
-	public boolean isDownloading(IPodcastFeedEntry podcastFeedEntry) {
-        synchronized (runningDownloads) {
-            for (int i = 0; i < runningDownloads.size(); i++) {
-                if (runningDownloads.get(i).getPodcastFeedEntry().equals(podcastFeedEntry)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public boolean isDownloaded(final IPodcastFeedEntry podcastFeedEntry) {
+	File f = new File(getDownloadPath(podcastFeedEntry));
+	return f.exists();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#
+     * deleteDownloadedPodcastFeedEntry
+     * (net.sourceforge.atunes.model.IPodcastFeedEntry)
+     */
+    @Override
+    public void deleteDownloadedPodcastFeedEntry(
+	    final IPodcastFeedEntry podcastFeedEntry) {
+	File f = new File(getDownloadPath(podcastFeedEntry));
+	new DeleteDownloadedPodcastFeedEntryWorker(f, podcastFeedEntry,
+		getBean("navigationTable", ITable.class)).execute();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#
+     * isDownloading(net.sourceforge.atunes.model.IPodcastFeedEntry)
+     */
+    @Override
+    public boolean isDownloading(final IPodcastFeedEntry podcastFeedEntry) {
+	synchronized (runningDownloads) {
+	    for (int i = 0; i < runningDownloads.size(); i++) {
+		if (runningDownloads.get(i).getPodcastFeedEntry()
+			.equals(podcastFeedEntry)) {
+		    return true;
+		}
+	    }
+	}
+	return false;
     }
 
     @Override
     public void applicationStateChanged() {
-        setPodcastFeedEntryRetrievalInterval(statePodcast.getPodcastFeedEntriesRetrievalInterval());
+	setPodcastFeedEntryRetrievalInterval(statePodcast
+		.getPodcastFeedEntriesRetrievalInterval());
     }
-    
-	/**
-	 * @return the podcastFeedEntryDownloaderExecutorService
-	 */
-	private ExecutorService getPodcastFeedEntryDownloaderExecutorService() {
-		if (podcastFeedEntryDownloaderExecutorService == null) {
-			podcastFeedEntryDownloaderExecutorService = Executors.newCachedThreadPool();
-		}
-		return podcastFeedEntryDownloaderExecutorService;
+
+    /**
+     * @return the podcastFeedEntryDownloaderExecutorService
+     */
+    private ExecutorService getPodcastFeedEntryDownloaderExecutorService() {
+	if (podcastFeedEntryDownloaderExecutorService == null) {
+	    podcastFeedEntryDownloaderExecutorService = Executors
+		    .newCachedThreadPool();
 	}
-	
-	/**
-	 * @param podcastFeeds
-	 */
-	void setPodcastFeeds(List<IPodcastFeed> podcastFeeds) {
-		this.podcastFeeds = podcastFeeds;
-	}
+	return podcastFeedEntryDownloaderExecutorService;
+    }
+
+    /**
+     * @param podcastFeeds
+     */
+    void setPodcastFeeds(final List<IPodcastFeed> podcastFeeds) {
+	this.podcastFeeds = podcastFeeds;
+    }
 }
