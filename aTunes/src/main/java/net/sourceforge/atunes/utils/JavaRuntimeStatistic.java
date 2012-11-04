@@ -20,16 +20,20 @@
 
 package net.sourceforge.atunes.utils;
 
+/**
+ * Java runtime
+ * 
+ * @author alex
+ * 
+ */
+public final class JavaRuntimeStatistic extends JavaVirtualMachineStatistic {
+    @Override
+    public String getDescription() {
+	return "Java Runtime Enviroment";
+    }
 
-public final class JavaRuntimeStatistic extends
-		JavaVirtualMachineStatistic {
-	@Override
-	public String getDescription() {
-		return "Java Runtime Enviroment";
-	}
-
-	@Override
-	public String getValue() {
-		return System.getProperty("java.version");
-	}
+    @Override
+    public String getValue() {
+	return System.getProperty("java.version");
+    }
 }

@@ -22,16 +22,24 @@ package net.sourceforge.atunes.utils;
 
 import java.util.Collection;
 
+/**
+ * Utilities for collections
+ * 
+ * @author alex
+ * 
+ */
 public final class CollectionUtils {
-	
-	private CollectionUtils() {}
 
-	/**
-	 * Returns if collection is empty or null
-	 * @param collection
-	 * @return
-	 */
-	public static boolean isEmpty(Collection<?> collection) {
-		return collection == null || collection.isEmpty();
-	}
+    private CollectionUtils() {
+    }
+
+    /**
+     * Returns if collection is empty or null
+     * 
+     * @param collection
+     * @return
+     */
+    public static boolean isEmpty(final Collection<?> collection) {
+	return collection == null || collection.isEmpty();
+    }
 }

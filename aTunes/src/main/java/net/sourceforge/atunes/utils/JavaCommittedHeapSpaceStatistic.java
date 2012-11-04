@@ -22,16 +22,23 @@ package net.sourceforge.atunes.utils;
 
 import java.lang.management.ManagementFactory;
 
-public final class JavaCommittedHeapSpaceStatistic extends JavaVirtualMachineStatistic {
-	
-	@Override
-	public String getValue() {
-		return StringUtils.fromByteToMegaOrGiga(ManagementFactory
-				.getMemoryMXBean().getHeapMemoryUsage().getCommitted());
-	}
+/**
+ * Committed heap space
+ * 
+ * @author alex
+ * 
+ */
+public final class JavaCommittedHeapSpaceStatistic extends
+	JavaVirtualMachineStatistic {
 
-	@Override
-	public String getDescription() {
-		return "Committed Heap Space";
-	}
+    @Override
+    public String getValue() {
+	return StringUtils.fromByteToMegaOrGiga(ManagementFactory
+		.getMemoryMXBean().getHeapMemoryUsage().getCommitted());
+    }
+
+    @Override
+    public String getDescription() {
+	return "Committed Heap Space";
+    }
 }

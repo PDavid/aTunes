@@ -31,51 +31,62 @@ import net.sourceforge.atunes.model.ITemporalDiskStorage;
 
 import org.apache.commons.io.FileUtils;
 
+/**
+ * A temporal folder where store files removed when application finishes
+ * 
+ * @author alex
+ * 
+ */
 public class TempFolder implements ITemporalDiskStorage {
 
     private IOSManager osManager;
-    
-    @Override
-	public File addFile(File srcFile) {
-        File destFile = new File(StringUtils.getString(osManager.getTempFolder(), osManager.getFileSeparator(), srcFile.getName()));
-        try {
-            FileUtils.copyFile(srcFile, destFile);
-        } catch (IOException e) {
-            return null;
-        }
-        return destFile;
-    }
 
     @Override
-	public File addImage(RenderedImage image, String fileName) {
-        try {
-            File file = new File(osManager.getTempFolder(), fileName);
-            ImageIO.write(image, "png", file);
-            return file;
-        } catch (IOException e) {
-            return null;
-        }
-    }
-
-    @Override
-	public boolean removeFile(File tempFile) {
-        return tempFile.delete();
-    }
-
-    @Override
-	public void removeAll() {
-        File tempFolder = new File(osManager.getTempFolder());
-        File[] files = tempFolder.listFiles();
-        for (File f : files) {
-            if (f.delete()) {
-            	Logger.info(f, " deleted");
-            } else {
-            	Logger.error(StringUtils.getString(f, " not deleted"));
-            }
-        }
-    }
-    
-    public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
+    public File addFile(final File srcFile) {
+	File destFile = new File(StringUtils.getString(
+		osManager.getTempFolder(), osManager.getFileSeparator(),
+		srcFile.getName()));
+	try {
+	    FileUtils.copyFile(srcFile, destFile);
+	} catch (IOException e) {
+	    return null;
 	}
+	return destFile;
+    }
+
+    @Override
+    public File addImage(final RenderedImage image, final String fileName) {
+	try {
+	    File file = new File(osManager.getTempFolder(), fileName);
+	    ImageIO.write(image, "png", file);
+	    return file;
+	} catch (IOException e) {
+	    return null;
+	}
+    }
+
+    @Override
+    public boolean removeFile(final File tempFile) {
+	return tempFile.delete();
+    }
+
+    @Override
+    public void removeAll() {
+	File tempFolder = new File(osManager.getTempFolder());
+	File[] files = tempFolder.listFiles();
+	for (File f : files) {
+	    if (f.delete()) {
+		Logger.info(f, " deleted");
+	    } else {
+		Logger.error(StringUtils.getString(f, " not deleted"));
+	    }
+	}
+    }
+
+    /**
+     * @param osManager
+     */
+    public void setOsManager(final IOSManager osManager) {
+	this.osManager = osManager;
+    }
 }

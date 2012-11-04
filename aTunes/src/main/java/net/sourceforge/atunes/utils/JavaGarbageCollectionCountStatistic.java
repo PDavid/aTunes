@@ -23,20 +23,28 @@ package net.sourceforge.atunes.utils;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 
+/**
+ * Number of garbage collection count
+ * 
+ * @author alex
+ * 
+ */
+public final class JavaGarbageCollectionCountStatistic extends
+	JavaVirtualMachineStatistic {
 
-public final class JavaGarbageCollectionCountStatistic extends JavaVirtualMachineStatistic {
-	
-	@Override
-	public String getValue() {
-	    long collectionCount = 0;
-	    for (GarbageCollectorMXBean garbageCollectorMXBean : ManagementFactory.getGarbageCollectorMXBeans()) {
-	        collectionCount += Math.max(0, garbageCollectorMXBean.getCollectionCount());
-	    }
-	    return String.valueOf(collectionCount);
+    @Override
+    public String getValue() {
+	long collectionCount = 0;
+	for (GarbageCollectorMXBean garbageCollectorMXBean : ManagementFactory
+		.getGarbageCollectorMXBeans()) {
+	    collectionCount += Math.max(0,
+		    garbageCollectorMXBean.getCollectionCount());
 	}
+	return String.valueOf(collectionCount);
+    }
 
-	@Override
-	public String getDescription() {
-		return "Garbage Collection Count";
-	}
+    @Override
+    public String getDescription() {
+	return "Garbage Collection Count";
+    }
 }

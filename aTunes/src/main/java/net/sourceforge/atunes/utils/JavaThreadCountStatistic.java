@@ -22,16 +22,21 @@ package net.sourceforge.atunes.utils;
 
 import java.lang.management.ManagementFactory;
 
+/**
+ * Thread count
+ * 
+ * @author alex
+ * 
+ */
+public final class JavaThreadCountStatistic extends JavaVirtualMachineStatistic {
+    @Override
+    public String getValue() {
+	return String.valueOf(ManagementFactory.getThreadMXBean()
+		.getThreadCount());
+    }
 
-public final class JavaThreadCountStatistic extends
-		JavaVirtualMachineStatistic {
-	@Override
-	public String getValue() {
-		return String.valueOf(ManagementFactory.getThreadMXBean().getThreadCount());
-	}
-
-	@Override
-	public String getDescription() {
-		return "Thread Count";
-	}
+    @Override
+    public String getDescription() {
+	return "Thread Count";
+    }
 }

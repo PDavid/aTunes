@@ -22,16 +22,22 @@ package net.sourceforge.atunes.utils;
 
 import java.lang.management.ManagementFactory;
 
-
+/**
+ * Number of classes loaded
+ * 
+ * @author alex
+ * 
+ */
 public final class JavaLoadedClassesCountStatistic extends
-		JavaVirtualMachineStatistic {
-	@Override
-	public String getValue() {
-	    return String.valueOf(ManagementFactory.getClassLoadingMXBean().getLoadedClassCount());
-	}
+	JavaVirtualMachineStatistic {
+    @Override
+    public String getValue() {
+	return String.valueOf(ManagementFactory.getClassLoadingMXBean()
+		.getLoadedClassCount());
+    }
 
-	@Override
-	public String getDescription() {
-		return "Loaded Classes Count";
-	}
+    @Override
+    public String getDescription() {
+	return "Loaded Classes Count";
+    }
 }

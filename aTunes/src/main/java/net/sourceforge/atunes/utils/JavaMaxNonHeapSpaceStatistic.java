@@ -22,16 +22,22 @@ package net.sourceforge.atunes.utils;
 
 import java.lang.management.ManagementFactory;
 
-
+/**
+ * Maximum non heap space
+ * 
+ * @author alex
+ * 
+ */
 public final class JavaMaxNonHeapSpaceStatistic extends
-		JavaVirtualMachineStatistic {
-	@Override
-	public String getValue() {
-	    return StringUtils.fromByteToMegaOrGiga(ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage().getMax());
-	}
+	JavaVirtualMachineStatistic {
+    @Override
+    public String getValue() {
+	return StringUtils.fromByteToMegaOrGiga(ManagementFactory
+		.getMemoryMXBean().getNonHeapMemoryUsage().getMax());
+    }
 
-	@Override
-	public String getDescription() {
-		return "Max Non Heap Space";
-	}
+    @Override
+    public String getDescription() {
+	return "Max Non Heap Space";
+    }
 }
