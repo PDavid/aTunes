@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
-import java.awt.Color;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -36,19 +35,13 @@ class ContextTableRowPanelFactory<T> {
      * @param table
      * @param image
      * @param text
-     * @param backgroundColor
-     * @param foregroundColor
      * @param imageMaxWidth
-     * @param imageMaxHeight
-     * @param hasFocus
      * @return
      */
     public ContextTableRowPanel<T> getPanelForTableRenderer(
 	    final List<ContextTableAction<T>> actions,
 	    final ContextTable table, final ImageIcon image, final String text,
-	    final Color backgroundColor, final Color foregroundColor,
-	    final int imageMaxWidth, final int imageMaxHeight,
-	    final boolean hasFocus) {
+	    final int imageMaxWidth) {
 
 	Logger.debug("Building ContextTableRowPanel for ", text);
 
@@ -61,9 +54,7 @@ class ContextTableRowPanelFactory<T> {
 	final ContextTableRowPanel<T> panel = new ContextTableRowPanel<T>();
 	panel.setImage(image);
 	panel.setText(text);
-	panel.setColors(backgroundColor, foregroundColor);
 	panel.build(imageMaxWidth, actions, table);
-
 	return panel;
     }
 

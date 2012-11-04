@@ -53,15 +53,12 @@ public class YoutubeResultsTableCellRendererCode extends
 
     @Override
     public ContextTableRowPanel<IVideoEntry> createPanel(
-	    final JComponent superComponent, final IVideoEntry value,
-	    final boolean hasFocus) {
+	    final JComponent superComponent, final IVideoEntry value) {
 	return getPanelForTableRenderer(
 		value.getImage(),
 		StringUtils.getString("<html>", value.getName(), "<br>(",
 			value.getDuration(), ")</html>"),
-		superComponent.getBackground(), superComponent.getForeground(),
-		Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT,
-		hasFocus);
+		Constants.THUMB_IMAGE_WIDTH);
     }
 
     @Override

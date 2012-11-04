@@ -67,13 +67,10 @@ public class AlbumsTableCellRendererCode extends
 
     @Override
     public ContextTableRowPanel<IAlbumInfo> createPanel(
-	    final JComponent superComponent, final IAlbumInfo value,
-	    final boolean hasFocus) {
+	    final JComponent superComponent, final IAlbumInfo value) {
 	return getPanelForTableRenderer(source.getCovers().get(value),
 		StringUtils.getString("<html>", value.getTitle(), "</html>"),
-		superComponent.getBackground(), superComponent.getForeground(),
-		Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT,
-		hasFocus);
+		Constants.THUMB_IMAGE_WIDTH);
     }
 
     @Override
