@@ -20,50 +20,55 @@
 
 package net.sourceforge.atunes.model;
 
-
-
-
 /**
  * Component to show a progress slider that user can move
+ * 
  * @author alex
- *
+ * 
  */
 public interface IProgressSlider extends IPanel {
 
-	/**
-	 * Sets played time
-	 * @param time in milliseconds
-	 */
-	public void setProgress(long time, long remainingTime);
+    /**
+     * Sets played time
+     * 
+     * @param time
+     * @param remainingTime
+     */
+    public void setProgress(long time, long remainingTime);
 
-	/**
-	 * Delegate method
-	 * @param value
-	 */
-	public void setValue(int value);
+    /**
+     * Delegate method
+     * 
+     * @param value
+     */
+    public void setValue(int value);
 
-	/**
-	 * Delegate method
-	 * @return
-	 */
-	public int getMaximum();
+    /**
+     * Delegate method
+     * 
+     * @return
+     */
+    public int getMaximum();
 
-	/**
-	 * Delegate method
-	 * @return
-	 */
-	public int getProgressBarWidth();
+    /**
+     * Delegate method
+     * 
+     * @return
+     */
+    public int getProgressBarWidth();
 
-	/**
-	 * Delegate method
-	 * @param length
-	 */
-	public void setMaximum(int length);
+    /**
+     * Delegate method
+     * 
+     * @param length
+     */
+    public void setMaximum(int length);
 
-	/**
-	 * Delegate method
-	 * @return
-	 */
-	public int getValue();
+    /**
+     * Delegate method
+     * 
+     * @return
+     */
+    public int getValue();
 
 }

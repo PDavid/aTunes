@@ -34,105 +34,113 @@ import org.commonjukebox.plugins.model.PluginInfo;
 
 /**
  * Manages plugins
+ * 
  * @author alex
- *
+ * 
  */
 public interface IPluginsHandler extends IHandler {
 
-	/**
-	 * Return list of available plugins
-	 * 
-	 * @return
-	 */
-	public List<PluginInfo> getAvailablePlugins();
+    /**
+     * Return list of available plugins
+     * 
+     * @return
+     */
+    public List<PluginInfo> getAvailablePlugins();
 
-	/**
-	 * Unzips a zip file in user plugins directory and updates plugins
-	 * 
-	 * @param zipFile
-	 * @throws PluginSystemException
-	 *             , IOException
-	 */
-	public Map<PluginFolder, PluginSystemException> installPlugin(File zipFile)
-			throws PluginSystemException;
+    /**
+     * Unzips a zip file in user plugins directory and updates plugins
+     * 
+     * @param zipFile
+     * @return
+     * @throws PluginSystemException
+     */
+    public Map<PluginFolder, PluginSystemException> installPlugin(File zipFile)
+	    throws PluginSystemException;
 
-	/**
-	 * Removes a plugin from user plugins folder and updates plugins
-	 * 
-	 * @param plugin
-	 * @throws IOException
-	 * @throws PluginSystemException
-	 */
-	public Map<PluginFolder, PluginSystemException> uninstallPlugin(
-			PluginInfo plugin) throws IOException, PluginSystemException;
+    /**
+     * Removes a plugin from user plugins folder and updates plugins
+     * 
+     * @param plugin
+     * @return
+     * @throws IOException
+     * @throws PluginSystemException
+     */
+    public Map<PluginFolder, PluginSystemException> uninstallPlugin(
+	    PluginInfo plugin) throws IOException, PluginSystemException;
 
-	/**
-	 * Activates or deactivates given plugin
-	 * 
-	 * @param plugin
-	 * @param active
-	 */
-	public void setPluginActive(PluginInfo plugin, boolean active);
+    /**
+     * Activates or deactivates given plugin
+     * 
+     * @param plugin
+     * @param active
+     */
+    public void setPluginActive(PluginInfo plugin, boolean active);
 
-	/**
-	 * Returns <code>true</code> if the application must be restarted after
-	 * changing or activating / deactivating the given plugin
-	 * 
-	 * @param plugin
-	 * @return
-	 */
-	public boolean pluginNeedsRestart(PluginInfo plugin);
+    /**
+     * Returns <code>true</code> if the application must be restarted after
+     * changing or activating / deactivating the given plugin
+     * 
+     * @param plugin
+     * @return
+     */
+    public boolean pluginNeedsRestart(PluginInfo plugin);
 
-	/**
-	 * Returns new instance of plugin
-	 * @param pluginInfo
-	 * @return
-	 * @throws PluginSystemException
-	 */
-	public Plugin getNewInstance(PluginInfo pluginInfo)
-			throws PluginSystemException;
+    /**
+     * Returns new instance of plugin
+     * 
+     * @param pluginInfo
+     * @return
+     * @throws PluginSystemException
+     */
+    public Plugin getNewInstance(PluginInfo pluginInfo)
+	    throws PluginSystemException;
 
-	/**
-	 * Activates plugin
-	 * @param plugin
-	 * @throws PluginSystemException
-	 */
-	public void activatePlugin(PluginInfo plugin) throws PluginSystemException;
+    /**
+     * Activates plugin
+     * 
+     * @param plugin
+     * @throws PluginSystemException
+     */
+    public void activatePlugin(PluginInfo plugin) throws PluginSystemException;
 
-	/**
-	 * Deactivates plugin
-	 * @param plugin
-	 * @throws PluginSystemException 
-	 */
-	public void deactivatePlugin(PluginInfo plugin)
-			throws PluginSystemException;
+    /**
+     * Deactivates plugin
+     * 
+     * @param plugin
+     * @throws PluginSystemException
+     */
+    public void deactivatePlugin(PluginInfo plugin)
+	    throws PluginSystemException;
 
-	/**
-	 * Validates plugin configuration
-	 * @param plugin
-	 * @param configuration
-	 * @throws InvalidPluginConfigurationException
-	 */
-	public void validateConfiguration(PluginInfo plugin,
-			PluginConfiguration configuration)
-			throws InvalidPluginConfigurationException;
+    /**
+     * Validates plugin configuration
+     * 
+     * @param plugin
+     * @param configuration
+     * @throws InvalidPluginConfigurationException
+     */
+    public void validateConfiguration(PluginInfo plugin,
+	    PluginConfiguration configuration)
+	    throws InvalidPluginConfigurationException;
 
-	/**
-	 * Sets plugin configuration
-	 * @param plugin
-	 * @param configuration
-	 * @throws PluginSystemException
-	 */
-	public void setConfiguration(PluginInfo plugin,
-			PluginConfiguration configuration) throws PluginSystemException;
+    /**
+     * Sets plugin configuration
+     * 
+     * @param plugin
+     * @param configuration
+     * @throws PluginSystemException
+     */
+    public void setConfiguration(PluginInfo plugin,
+	    PluginConfiguration configuration) throws PluginSystemException;
 
-	/**
-	 * Returns plugin configuration
-	 * @param plugin
-	 * @return plugin configuration
-	 * @throws PluginSystemException
-	 */
-	public PluginConfiguration getConfiguration(PluginInfo plugin)
-			throws PluginSystemException;
+    /**
+     * Returns plugin configuration
+     * 
+     * @param plugin
+     * @return plugin configuration
+     * @throws PluginSystemException
+     */
+    public PluginConfiguration getConfiguration(PluginInfo plugin)
+	    throws PluginSystemException;
 
 }

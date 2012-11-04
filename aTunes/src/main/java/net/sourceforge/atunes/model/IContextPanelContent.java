@@ -75,6 +75,8 @@ public interface IContextPanelContent<T extends IContextInformationSource> {
 
     /**
      * Method to return a Swing component with panel content
+     * 
+     * @return
      */
     public Component getComponent();
 

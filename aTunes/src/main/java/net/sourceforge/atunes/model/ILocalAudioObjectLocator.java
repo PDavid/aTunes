@@ -23,15 +23,22 @@ package net.sourceforge.atunes.model;
 import java.io.File;
 import java.util.List;
 
-
+/**
+ * Locates local audio objects in a folder
+ * 
+ * @author alex
+ * 
+ */
 public interface ILocalAudioObjectLocator {
 
-	/**
-	 * Gets the local audio objects from folder
-	 * @param folder
-	 * @param listener
-	 * @return
-	 */
-	public List<ILocalAudioObject> locateLocalAudioObjectsInFolder(File folder, IRepositoryLoaderListener listener);
+    /**
+     * Gets the local audio objects from folder
+     * 
+     * @param folder
+     * @param listener
+     * @return
+     */
+    public List<ILocalAudioObject> locateLocalAudioObjectsInFolder(File folder,
+	    IRepositoryLoaderListener listener);
 
 }

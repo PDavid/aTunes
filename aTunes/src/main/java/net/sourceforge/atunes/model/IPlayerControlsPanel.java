@@ -22,57 +22,62 @@ package net.sourceforge.atunes.model;
 
 import javax.swing.Action;
 
-
 /**
  * A panel with player controls
+ * 
  * @author alex
- *
+ * 
  */
 public interface IPlayerControlsPanel extends IPanel {
 
-	/**
-	 * Returns progress slider
-	 * @return
-	 */
-	public IProgressSlider getProgressSlider();
+    /**
+     * Returns progress slider
+     * 
+     * @return
+     */
+    public IProgressSlider getProgressSlider();
 
-	/**
-	 * Set progress 
-	 * @param time
-	 * @param remainingTime
-	 */
-	public void setProgress(long time, long remainingTime);
+    /**
+     * Set progress
+     * 
+     * @param time
+     * @param remainingTime
+     */
+    public void setProgress(long time, long remainingTime);
 
-	/**
-	 * Updates volume controls with the volume level
-	 * @param volume
-	 */
-	public void setVolume(int volume);
+    /**
+     * Updates volume controls with the volume level
+     * 
+     * @param volume
+     */
+    public void setVolume(int volume);
 
-	/**
-	 * Set if app is playing or not
-	 * @param playing
-	 */
-	public void setPlaying(boolean playing);
+    /**
+     * Set if app is playing or not
+     * 
+     * @param playing
+     */
+    public void setPlaying(boolean playing);
 
-	/**
-	 * Adds a secondary control
-	 * 
-	 * @param button
-	 */
-	public void addSecondaryControl(Action action);
+    /**
+     * Adds a secondary control
+     * 
+     * @param action
+     */
+    public void addSecondaryControl(Action action);
 
-	/**
-	 * Adds a secondary toggle control
-	 * 
-	 * @param button
-	 */
-	public void addSecondaryToggleControl(Action action);
+    /**
+     * Adds a secondary toggle control
+     * 
+     * @param action
+     */
+    public void addSecondaryToggleControl(Action action);
 
-	/**
-	 * Hides or shows advanced controls
-	 * @param show
-	 */
-	public void showAdvancedPlayerControls(boolean show);
+    /**
+     * Hides or shows advanced controls
+     * 
+     * @param show
+     */
+    public void showAdvancedPlayerControls(boolean show);
 
 }

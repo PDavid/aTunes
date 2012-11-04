@@ -20,20 +20,18 @@
 
 package net.sourceforge.atunes.model;
 
-
 /**
  * A dialog to select which columns show in tables
+ * 
  * @author alex
- *
+ * 
  */
 public interface IColumnSelectorDialog extends IDialog {
 
-	/**
-	 * Sets the columns set to be changed
-	 * 
-	 * @param column
-	 *            set
-	 * 
-	 */
-	void setColumnSetToSelect(IColumnSet columnSet);
+    /**
+     * Sets the columns set to be changed
+     * 
+     * @param columnSet
+     */
+    void setColumnSetToSelect(IColumnSet columnSet);
 }

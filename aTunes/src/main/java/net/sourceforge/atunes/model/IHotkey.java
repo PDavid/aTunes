@@ -24,25 +24,50 @@ import java.io.Serializable;
 
 /**
  * A hotkey: a key typed which fires an action in application
+ * 
  * @author alex
- *
+ * 
  */
 public interface IHotkey extends Serializable {
 
-	public int getId();
+    /**
+     * @return id of hotkey
+     */
+    public int getId();
 
-	public int getMod();
+    /**
+     * @return modifier
+     */
+    public int getMod();
 
-	public int getKey();
+    /**
+     * @return key
+     */
+    public int getKey();
 
-	public String getDescription();
+    /**
+     * @return description
+     */
+    public String getDescription();
 
-	public void setMod(int mod);
+    /**
+     * @param mod
+     */
+    public void setMod(int mod);
 
-	public void setKey(int key);
+    /**
+     * @param key
+     */
+    public void setKey(int key);
 
-	public String getKeyDescription();
+    /**
+     * @return description of key
+     */
+    public String getKeyDescription();
 
-	public boolean isRecommended();
+    /**
+     * @return true if hotkey is recommended (default)
+     */
+    public boolean isRecommended();
 
 }

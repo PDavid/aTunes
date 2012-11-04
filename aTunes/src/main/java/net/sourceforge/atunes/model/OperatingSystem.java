@@ -20,19 +20,42 @@
 
 package net.sourceforge.atunes.model;
 
-
+/**
+ * Type of operating system
+ * 
+ * @author alex
+ * 
+ */
 public enum OperatingSystem {
-	
-    WINDOWS, LINUX, MACOSX, SOLARIS;
 
     /**
-     * Returns <code>true</code> if Windows (any version) is the current operating
-     * system.
+     * All windows family
+     */
+    WINDOWS,
+
+    /**
+     * All linux family
+     */
+    LINUX,
+
+    /**
+     * Max OS X
+     */
+    MACOSX,
+
+    /**
+     * Solaris
+     */
+    SOLARIS;
+
+    /**
+     * Returns <code>true</code> if Windows (any version) is the current
+     * operating system.
      * 
      * @return If Windows is the current operating system
      */
     public boolean isWindows() {
-        return (this.equals(OperatingSystem.WINDOWS));
+	return (this.equals(OperatingSystem.WINDOWS));
     }
 
     /**
@@ -42,28 +65,30 @@ public enum OperatingSystem {
      * @return If Windows Vista is the current operating system
      */
     public boolean isWindowsVista() {
-        return (this.equals(OperatingSystem.WINDOWS) && System.getProperty("os.name").toLowerCase().contains("vista"));
+	return (this.equals(OperatingSystem.WINDOWS) && System
+		.getProperty("os.name").toLowerCase().contains("vista"));
     }
 
     /**
-     * Returns <code>true</code> if Windows 7 is the current operating
-     * system.
+     * Returns <code>true</code> if Windows 7 is the current operating system.
      * 
      * @return If Windows 7 is the current operating system
      */
     public boolean isWindows7() {
-        return (this.equals(OperatingSystem.WINDOWS) && System.getProperty("os.name").toLowerCase().contains("7"));
+	return (this.equals(OperatingSystem.WINDOWS) && System
+		.getProperty("os.name").toLowerCase().contains("7"));
     }
 
     /**
-     * Returns <code>true</code> if Windows is the current operating system,
-     * but is not Windows Vista.
+     * Returns <code>true</code> if Windows is the current operating system, but
+     * is not Windows Vista.
      * 
      * @return If an old Windows version (XP,...) is the current operating
      *         system
      */
     public boolean isOldWindows() {
-        return (this.equals(OperatingSystem.WINDOWS) && !System.getProperty("os.name").toLowerCase().contains("vista"));
+	return (this.equals(OperatingSystem.WINDOWS) && !System
+		.getProperty("os.name").toLowerCase().contains("vista"));
     }
 
     /**
@@ -72,7 +97,7 @@ public enum OperatingSystem {
      * @return If Linux is the current operating system
      */
     public boolean isLinux() {
-        return this.equals(OperatingSystem.LINUX);
+	return this.equals(OperatingSystem.LINUX);
     }
 
     /**
@@ -81,7 +106,7 @@ public enum OperatingSystem {
      * @return If MacOsX is the current operating system
      */
     public boolean isMacOsX() {
-        return this.equals(OperatingSystem.MACOSX);
+	return this.equals(OperatingSystem.MACOSX);
     }
 
     /**
@@ -90,7 +115,7 @@ public enum OperatingSystem {
      * @return If Solaris is the current operating system
      */
     public boolean isSolaris() {
-        return this.equals(OperatingSystem.SOLARIS);
+	return this.equals(OperatingSystem.SOLARIS);
     }
 
 }

@@ -22,84 +22,89 @@ package net.sourceforge.atunes.model;
 
 import java.util.Map;
 
-
+/**
+ * Listening statistics
+ * 
+ * @author alex
+ * 
+ */
 public interface IStatistics {
 
-	/**
-	 * Gets the albums ranking.
-	 * 
-	 * @return the albums ranking
-	 */
-	public RankList<IStatisticsAlbum> getAlbumsRanking();
+    /**
+     * Gets the albums ranking.
+     * 
+     * @return the albums ranking
+     */
+    public RankList<IStatisticsAlbum> getAlbumsRanking();
 
-	/**
-	 * Gets the artists ranking.
-	 * 
-	 * @return the artists ranking
-	 */
-	public RankList<String> getArtistsRanking();
+    /**
+     * Gets the artists ranking.
+     * 
+     * @return the artists ranking
+     */
+    public RankList<String> getArtistsRanking();
 
-	/**
-	 * Gets the different audio files played.
-	 * 
-	 * @return the different audio files played
-	 */
-	public int getDifferentAudioFilesPlayed();
+    /**
+     * Gets the different audio files played.
+     * 
+     * @return the different audio files played
+     */
+    public int getDifferentAudioFilesPlayed();
 
-	/**
-	 * Gets the audio files ranking.
-	 * 
-	 * @return the audio files ranking
-	 */
-	public RankList<String> getAudioFilesRanking();
+    /**
+     * Gets the audio files ranking.
+     * 
+     * @return the audio files ranking
+     */
+    public RankList<String> getAudioFilesRanking();
 
-	/**
-	 * Gets the audio files stats.
-	 * 
-	 * @return the audio files stats
-	 */
-	public Map<String, IAudioObjectStatistics> getAudioFilesStats();
+    /**
+     * Gets the audio files stats.
+     * 
+     * @return the audio files stats
+     */
+    public Map<String, IAudioObjectStatistics> getAudioFilesStats();
 
-	/**
-	 * Gets the stats for file.
-	 * 
-	 * @param audioFile
-	 *            the audio file
-	 * 
-	 * @return the stats for file
-	 */
-	public IAudioObjectStatistics getStatsForAudioFile(IAudioObject audioFile);
+    /**
+     * Gets the stats for file.
+     * 
+     * @param audioFile
+     *            the audio file
+     * 
+     * @return the stats for file
+     */
+    public IAudioObjectStatistics getStatsForAudioFile(IAudioObject audioFile);
 
-	/**
-	 * Gets the total plays.
-	 * 
-	 * @return the total plays
-	 */
-	public int getTotalPlays();
+    /**
+     * Gets the total plays.
+     * 
+     * @return the total plays
+     */
+    public int getTotalPlays();
 
-	/**
-	 * Sets the different audio files played.
-	 * 
-	 * @param differentAudioFilesPlayed
-	 *            the new different audio files played
-	 */
-	public void setDifferentAudioFilesPlayed(int differentAudioFilesPlayed);
+    /**
+     * Sets the different audio files played.
+     * 
+     * @param differentAudioFilesPlayed
+     *            the new different audio files played
+     */
+    public void setDifferentAudioFilesPlayed(int differentAudioFilesPlayed);
 
-	/**
-	 * Sets the auio files stats.
-	 * 
-	 * @param audioFilesStats
-	 *            the audio files stats
-	 */
-	public void setAudioFilesStats(
-			Map<String, IAudioObjectStatistics> audioFilesStats);
+    /**
+     * Sets the auio files stats.
+     * 
+     * @param audioFilesStats
+     *            the audio files stats
+     */
+    public void setAudioFilesStats(
+	    Map<String, IAudioObjectStatistics> audioFilesStats);
 
-	/**
-	 * Sets the total plays.
-	 * 
-	 * @param totalPlays
-	 *            the new total plays
-	 */
-	public void setTotalPlays(int totalPlays);
+    /**
+     * Sets the total plays.
+     * 
+     * @param totalPlays
+     *            the new total plays
+     */
+    public void setTotalPlays(int totalPlays);
 
 }

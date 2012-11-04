@@ -22,13 +22,18 @@ package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-
+/**
+ * Listener to be called when audio files are removed physically
+ * 
+ * @author alex
+ * 
+ */
 public interface IAudioFilesRemovedListener {
 
-	/**
-	 * Called when audio files are removed physically
-	 * 
-	 * @param audioFiles
-	 */
-	public void audioFilesRemoved(List<ILocalAudioObject> audioFiles);
+    /**
+     * Called when audio files are removed physically
+     * 
+     * @param audioFiles
+     */
+    public void audioFilesRemoved(List<ILocalAudioObject> audioFiles);
 }

@@ -22,80 +22,89 @@ package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-
 /**
  * Responsible of managing look and feels
+ * 
  * @author alex
- *
+ * 
  */
 public interface ILookAndFeelManager {
 
-	/**
-	 * Sets the look and feel.
-	 * @param lookAndFeelBean
-	 * @param stateCore
-	 * @param stateUI
-	 * @param osManager
-	 */
-	public void setLookAndFeel(LookAndFeelBean lookAndFeelBean, IStateCore stateCore, IStateUI stateUI, IOSManager osManager);
+    /**
+     * Sets the look and feel.
+     * 
+     * @param lookAndFeelBean
+     * @param stateCore
+     * @param stateUI
+     * @param osManager
+     */
+    public void setLookAndFeel(LookAndFeelBean lookAndFeelBean,
+	    IStateCore stateCore, IStateUI stateUI, IOSManager osManager);
 
-	/**
-	 * Returns available look and feels
-	 */
-	public List<String> getAvailableLookAndFeels();
+    /**
+     * Returns available look and feels
+     * 
+     * @return
+     */
+    public List<String> getAvailableLookAndFeels();
 
-	/**
-	 * Returns available skins for given look and feel
-	 * 
-	 * @param lookAndFeelName
-	 * @return
-	 */
-	public List<String> getAvailableSkins(String lookAndFeelName);
+    /**
+     * Returns available skins for given look and feel
+     * 
+     * @param lookAndFeelName
+     * @return
+     */
+    public List<String> getAvailableSkins(String lookAndFeelName);
 
-	/**
-	 * Returns the name of the current look and feel
-	 * 
-	 * @return
-	 */
-	public String getCurrentLookAndFeelName();
+    /**
+     * Returns the name of the current look and feel
+     * 
+     * @return
+     */
+    public String getCurrentLookAndFeelName();
 
-	/**
-	 * Updates the user interface to use a new skin
-	 * @param selectedSkin
-	 * @param stateCore
-	 * @param stateUI
-	 * @param osManager
-	 */
-	public void applySkin(String selectedSkin, IStateCore stateCore, IStateUI stateUI, IOSManager osManager);
+    /**
+     * Updates the user interface to use a new skin
+     * 
+     * @param selectedSkin
+     * @param stateCore
+     * @param stateUI
+     * @param osManager
+     */
+    public void applySkin(String selectedSkin, IStateCore stateCore,
+	    IStateUI stateUI, IOSManager osManager);
 
-	/**
-	 * @return the currentLookAndFeel
-	 */
-	public ILookAndFeel getCurrentLookAndFeel();
+    /**
+     * @return the currentLookAndFeel
+     */
+    public ILookAndFeel getCurrentLookAndFeel();
 
-	/**
-	 * Returns default skin for a given look and feel
-	 * 
-	 * @param lookAndFeelName
-	 * @return
-	 */
-	public String getDefaultSkin(String lookAndFeelName);
+    /**
+     * Returns default skin for a given look and feel
+     * 
+     * @param lookAndFeelName
+     * @return
+     */
+    public String getDefaultSkin(String lookAndFeelName);
 
-	/**
-	 * @return the defaultLookAndFeel
-	 */
-	public ILookAndFeel getDefaultLookAndFeel();
+    /**
+     * @return the defaultLookAndFeel
+     */
+    public ILookAndFeel getDefaultLookAndFeel();
 
-	/**
-	 * Adds a new look and feel change listener
-	 * @param listener
-	 */
-	public void addLookAndFeelChangeListener(ILookAndFeelChangeListener listener);
+    /**
+     * Adds a new look and feel change listener
+     * 
+     * @param listener
+     */
+    public void addLookAndFeelChangeListener(ILookAndFeelChangeListener listener);
 
-	/**
-	 * Removes a look and feel change listener
-	 * @param listener
-	 */
-	public void removeLookAndFeelChangeListener(ILookAndFeelChangeListener listener);
+    /**
+     * Removes a look and feel change listener
+     * 
+     * @param listener
+     */
+    public void removeLookAndFeelChangeListener(
+	    ILookAndFeelChangeListener listener);
 
 }

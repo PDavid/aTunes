@@ -20,7 +20,12 @@
 
 package net.sourceforge.atunes.model;
 
-
+/**
+ * Common interface for controllers
+ * 
+ * @author alex
+ * 
+ */
 public interface IController {
 
     /**

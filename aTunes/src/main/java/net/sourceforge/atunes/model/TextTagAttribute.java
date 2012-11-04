@@ -22,11 +22,65 @@ package net.sourceforge.atunes.model;
 
 /**
  * Attributes of a tag that can be changed by application (not including cover)
+ * 
  * @author alex
- *
+ * 
  */
 public enum TextTagAttribute {
 
-    TITLE, ARTIST, ALBUM, YEAR, COMMENT, GENRE, LYRICS, COMPOSER, ALBUM_ARTIST, TRACK, DISC_NUMBER;
+    /**
+     * Title
+     */
+    TITLE,
+
+    /**
+     * Artist
+     */
+    ARTIST,
+
+    /**
+     * Album
+     */
+    ALBUM,
+
+    /**
+     * Year
+     */
+    YEAR,
+
+    /**
+     * Comment
+     */
+    COMMENT,
+
+    /**
+     * Genre
+     */
+    GENRE,
+
+    /**
+     * Lyrics
+     */
+    LYRICS,
+
+    /**
+     * Composer
+     */
+    COMPOSER,
+
+    /**
+     * Artist of album
+     */
+    ALBUM_ARTIST,
+
+    /**
+     * Track
+     */
+    TRACK,
+
+    /**
+     * Disc number
+     */
+    DISC_NUMBER;
 
 }

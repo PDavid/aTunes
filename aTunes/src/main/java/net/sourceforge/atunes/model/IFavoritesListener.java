@@ -20,10 +20,16 @@
 
 package net.sourceforge.atunes.model;
 
+/**
+ * Interface when favorites change
+ * 
+ * @author alex
+ * 
+ */
 public interface IFavoritesListener {
 
-	/**
-	 * Called after a favorites change
-	 */
-	public void favoritesChanged();
+    /**
+     * Called after a favorites change
+     */
+    public void favoritesChanged();
 }

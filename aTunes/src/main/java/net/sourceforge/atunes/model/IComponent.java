@@ -32,7 +32,7 @@ import javax.swing.JComponent;
  * A graphical component
  * 
  * @author alex
- * 
+ * @param <T>
  */
 public interface IComponent<T extends JComponent> {
 

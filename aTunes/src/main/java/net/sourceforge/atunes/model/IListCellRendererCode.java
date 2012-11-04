@@ -27,13 +27,24 @@ import javax.swing.JList;
 
 /**
  * Code to implement to decorate a cell of a list
+ * 
  * @author alex
- *
+ * 
  * @param <T>
  * @param <U>
  */
 public interface IListCellRendererCode<T extends Component, U> {
 
-	public JComponent getComponent(T superComponent, JList list, U value, int index, boolean isSelected, boolean cellHasFocus);
+    /**
+     * @param superComponent
+     * @param list
+     * @param value
+     * @param index
+     * @param isSelected
+     * @param cellHasFocus
+     * @return
+     */
+    public JComponent getComponent(T superComponent, JList list, U value,
+	    int index, boolean isSelected, boolean cellHasFocus);
 
 }

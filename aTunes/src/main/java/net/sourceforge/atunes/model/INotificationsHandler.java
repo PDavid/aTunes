@@ -22,34 +22,37 @@ package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-
 /**
  * Responsible of showing notifications to user
+ * 
  * @author alex
- *
+ * 
  */
 public interface INotificationsHandler extends IHandler {
 
-	/**
-	 * Show notification
-	 */
-	public void showNotification(IAudioObject audioObject);
+    /**
+     * Show notification
+     * 
+     * @param audioObject
+     */
+    public void showNotification(IAudioObject audioObject);
 
-	/**
-	 * @return set of names of notification engines, default is the first one
-	 */
-	public List<String> getNotificationEngines();
+    /**
+     * @return set of names of notification engines, default is the first one
+     */
+    public List<String> getNotificationEngines();
 
-	/**
-	 * @param name
-	 * @return notification engine by name
-	 */
-	public INotificationEngine getNotificationEngine(String name);
+    /**
+     * @param name
+     * @return notification engine by name
+     */
+    public INotificationEngine getNotificationEngine(String name);
 
-	/**
-	 * Returns default notification engine used by application
-	 * @return
-	 */
-	public INotificationEngine getDefaultEngine();
+    /**
+     * Returns default notification engine used by application
+     * 
+     * @return
+     */
+    public INotificationEngine getDefaultEngine();
 
 }

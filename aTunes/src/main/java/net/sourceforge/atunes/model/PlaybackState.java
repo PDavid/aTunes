@@ -31,6 +31,34 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public enum PlaybackState {
 
-    PLAYING, RESUMING, PAUSED, STOPPED, PLAY_FINISHED, PLAY_INTERRUPTED
+    /**
+     * Playing
+     */
+    PLAYING,
+
+    /**
+     * Restarting from pause
+     */
+    RESUMING,
+
+    /**
+     * Paused
+     */
+    PAUSED,
+
+    /**
+     * Stopped
+     */
+    STOPPED,
+
+    /**
+     * Playback finished
+     */
+    PLAY_FINISHED,
+
+    /**
+     * Playback interrupted
+     */
+    PLAY_INTERRUPTED
 
 }

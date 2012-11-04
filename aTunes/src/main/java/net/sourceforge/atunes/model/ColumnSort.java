@@ -24,5 +24,14 @@ package net.sourceforge.atunes.model;
  * Column sort: ascending or descending
  */
 public enum ColumnSort {
-    ASCENDING, DESCENDING
+
+    /**
+     * Ascending
+     */
+    ASCENDING,
+
+    /**
+     * Descending
+     */
+    DESCENDING
 }
