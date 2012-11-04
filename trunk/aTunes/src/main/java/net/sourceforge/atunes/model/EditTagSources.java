@@ -22,10 +22,19 @@ package net.sourceforge.atunes.model;
 
 /**
  * Represents sources of files to be edited
+ * 
  * @author alex
- *
+ * 
  */
 public enum EditTagSources {
 
-	PLAYLIST, NAVIGATOR
+    /**
+     * When editing from play list
+     */
+    PLAYLIST,
+
+    /**
+     * When editing from navigator
+     */
+    NAVIGATOR
 }

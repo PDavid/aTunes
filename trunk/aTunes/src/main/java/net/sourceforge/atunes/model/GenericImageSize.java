@@ -22,7 +22,27 @@ package net.sourceforge.atunes.model;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
+/**
+ * Sizes of images
+ * 
+ * @author alex
+ * 
+ */
 @PluginApi
 public enum GenericImageSize {
-    SMALL, MEDIUM, BIG;
+
+    /**
+     * Small image
+     */
+    SMALL,
+
+    /**
+     * Medium image
+     */
+    MEDIUM,
+
+    /**
+     * Big image
+     */
+    BIG;
 }

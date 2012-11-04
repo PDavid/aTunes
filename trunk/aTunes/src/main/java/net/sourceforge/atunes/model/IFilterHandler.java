@@ -20,26 +20,27 @@
 
 package net.sourceforge.atunes.model;
 
-
 /**
  * Responsible of filtering navigator, playlist, etc
+ * 
  * @author alex
- *
+ * 
  */
 public interface IFilterHandler extends IHandler {
 
-	/**
-	 * Applies given filter text to given filter
-	 * 
-	 * @param filter
-	 * @param filterText
-	 */
-	public void applyFilter(IFilter filter, String filterText);
+    /**
+     * Applies given filter text to given filter
+     * 
+     * @param filter
+     * @param filterText
+     */
+    public void applyFilter(IFilter filter, String filterText);
 
-	/**
-	 * Returns filter text for given filter
-	 * 
-	 * @return
-	 */
-	public String getFilterText(IFilter filter);
+    /**
+     * Returns filter text for given filter
+     * 
+     * @param filter
+     * @return
+     */
+    public String getFilterText(IFilter filter);
 }

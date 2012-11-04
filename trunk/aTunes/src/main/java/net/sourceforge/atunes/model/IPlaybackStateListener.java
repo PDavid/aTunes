@@ -20,9 +20,14 @@
 
 package net.sourceforge.atunes.model;
 
-
 import org.commonjukebox.plugins.model.PluginApi;
 
+/**
+ * Called when play back changes
+ * 
+ * @author alex
+ * 
+ */
 @PluginApi
 public interface IPlaybackStateListener {
 
@@ -32,6 +37,7 @@ public interface IPlaybackStateListener {
      * @param newState
      * @param currentAudioObject
      */
-    public void playbackStateChanged(PlaybackState newState, IAudioObject currentAudioObject);
+    public void playbackStateChanged(PlaybackState newState,
+	    IAudioObject currentAudioObject);
 
 }

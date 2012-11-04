@@ -20,58 +20,72 @@
 
 package net.sourceforge.atunes.model;
 
+/**
+ * State specific for podcasts
+ * 
+ * @author alex
+ * 
+ */
 public interface IStatePodcast {
 
-	/**
-	 * Podcast retrieval interval
-	 * @return
-	 */
-	public long getPodcastFeedEntriesRetrievalInterval();
+    /**
+     * Podcast retrieval interval
+     * 
+     * @return
+     */
+    public long getPodcastFeedEntriesRetrievalInterval();
 
-	/**
-	 * Podcast retrieval interval
-	 * @param podcastFeedEntriesRetrievalInterval
-	 */
-	public void setPodcastFeedEntriesRetrievalInterval(
-			long podcastFeedEntriesRetrievalInterval);
+    /**
+     * Podcast retrieval interval
+     * 
+     * @param podcastFeedEntriesRetrievalInterval
+     */
+    public void setPodcastFeedEntriesRetrievalInterval(
+	    long podcastFeedEntriesRetrievalInterval);
 
-	/**
-	 * Podcast download path
-	 * @return
-	 */
-	public String getPodcastFeedEntryDownloadPath();
+    /**
+     * Podcast download path
+     * 
+     * @return
+     */
+    public String getPodcastFeedEntryDownloadPath();
 
-	/**
-	 * Podcast download path
-	 * @param podcastFeedEntryDownloadPath
-	 */
-	public void setPodcastFeedEntryDownloadPath(
-			String podcastFeedEntryDownloadPath);
+    /**
+     * Podcast download path
+     * 
+     * @param podcastFeedEntryDownloadPath
+     */
+    public void setPodcastFeedEntryDownloadPath(
+	    String podcastFeedEntryDownloadPath);
 
-	/**
-	 * Use downloaded podcasts
-	 * @return
-	 */
-	public boolean isUseDownloadedPodcastFeedEntries();
+    /**
+     * Use downloaded podcasts
+     * 
+     * @return
+     */
+    public boolean isUseDownloadedPodcastFeedEntries();
 
-	/**
-	 * Use downloaded podcasts
-	 * @param useDownloadedPodcastFeedEntries
-	 */
-	public void setUseDownloadedPodcastFeedEntries(
-			boolean useDownloadedPodcastFeedEntries);
+    /**
+     * Use downloaded podcasts
+     * 
+     * @param useDownloadedPodcastFeedEntries
+     */
+    public void setUseDownloadedPodcastFeedEntries(
+	    boolean useDownloadedPodcastFeedEntries);
 
-	/**
-	 * Remove podcast entries
-	 * @return
-	 */
-	public boolean isRemovePodcastFeedEntriesRemovedFromPodcastFeed();
+    /**
+     * Remove podcast entries
+     * 
+     * @return
+     */
+    public boolean isRemovePodcastFeedEntriesRemovedFromPodcastFeed();
 
-	/**
-	 * Remove podcast entries 
-	 * @param removePodcastFeedEntriesRemovedFromPodcastFeed
-	 */
-	public void setRemovePodcastFeedEntriesRemovedFromPodcastFeed(
-			boolean removePodcastFeedEntriesRemovedFromPodcastFeed);
+    /**
+     * Remove podcast entries
+     * 
+     * @param removePodcastFeedEntriesRemovedFromPodcastFeed
+     */
+    public void setRemovePodcastFeedEntriesRemovedFromPodcastFeed(
+	    boolean removePodcastFeedEntriesRemovedFromPodcastFeed);
 
 }

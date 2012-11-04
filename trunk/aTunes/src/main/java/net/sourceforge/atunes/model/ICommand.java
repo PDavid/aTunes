@@ -32,8 +32,11 @@ import java.util.List;
 public interface ICommand {
 
     /**
-     * Called to run the command with given parameters, returning a String response or null
+     * Called to run the command with given parameters, returning a String
+     * response or null
+     * 
      * @param parameters
+     * @return
      */
     public String runCommand(List<String> parameters);
 
@@ -41,7 +44,7 @@ public interface ICommand {
      * @return true if the command requires a response to be sent.
      */
     public boolean isSynchronousResponse();
-    
+
     /**
      * @return name of command to be called
      */

@@ -22,33 +22,38 @@ package net.sourceforge.atunes.model;
 
 import java.io.File;
 
-
+/**
+ * Interface for operations requested to operating system desktop
+ * 
+ * @author alex
+ * 
+ */
 public interface IDesktop {
 
-	/**
-	 * Starts web browser.
-	 * 
-	 * @param search
-	 *            Search object
-	 * @param query
-	 *            query
-	 */
-	public void openSearch(ISearch search, String query);
+    /**
+     * Starts web browser.
+     * 
+     * @param search
+     *            Search object
+     * @param query
+     *            query
+     */
+    public void openSearch(ISearch search, String query);
 
-	/**
-	 * Starts web browser with specified URL.
-	 * 
-	 * @param url
-	 *            URL
-	 */
-	public void openURL(String url);
+    /**
+     * Starts web browser with specified URL.
+     * 
+     * @param url
+     *            URL
+     */
+    public void openURL(String url);
 
-	/**
-	 * Opens a file with the associated program.
-	 * 
-	 * @param file
-	 * @param osManager
-	 */
-	public void openFile(File file, IOSManager osManager);
+    /**
+     * Opens a file with the associated program.
+     * 
+     * @param file
+     * @param osManager
+     */
+    public void openFile(File file, IOSManager osManager);
 
 }

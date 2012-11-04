@@ -20,42 +20,54 @@
 
 package net.sourceforge.atunes.model;
 
+/**
+ * Properties of size of a frame
+ * 
+ * @author alex
+ * 
+ */
 public interface IFrameSize {
 
-	/**
-	 * Returns if frame is maximized
-	 * @return
-	 */
-	public boolean isMaximized();
+    /**
+     * Returns if frame is maximized
+     * 
+     * @return
+     */
+    public boolean isMaximized();
 
-	/**
-	 * Sets frame maximized
-	 * @param maximized
-	 */
-	public void setMaximized(boolean maximized);
+    /**
+     * Sets frame maximized
+     * 
+     * @param maximized
+     */
+    public void setMaximized(boolean maximized);
 
-	/**
-	 * Returns frame width
-	 * @return
-	 */
-	public int getWindowWidth();
+    /**
+     * Returns frame width
+     * 
+     * @return
+     */
+    public int getWindowWidth();
 
-	/**
-	 * Sets frame width
-	 * @param windowWidth
-	 */
-	public void setWindowWidth(int windowWidth);
+    /**
+     * Sets frame width
+     * 
+     * @param windowWidth
+     */
+    public void setWindowWidth(int windowWidth);
 
-	/**
-	 * Returns frame height
-	 * @return
-	 */
-	public int getWindowHeight();
+    /**
+     * Returns frame height
+     * 
+     * @return
+     */
+    public int getWindowHeight();
 
-	/**
-	 * Sets window height
-	 * @param windowHeight
-	 */
-	public void setWindowHeight(int windowHeight);
+    /**
+     * Sets window height
+     * 
+     * @param windowHeight
+     */
+    public void setWindowHeight(int windowHeight);
 
 }

@@ -22,32 +22,87 @@ package net.sourceforge.atunes.model;
 
 /**
  * Formats for local audio objects supported by application
+ * 
  * @author alex
- *
+ * 
  */
 public enum LocalAudioObjectFormat {
 
-    MP3("mp3"), 
-    OGG("ogg"), 
-    MP4_1("m4a"), 
-    MP4_2("mp4"), 
-    WAV("wav"), 
-    WMA("wma"), 
-    FLAC("flac"), 
-    APE("ape"), 
-    MPC("mpc"), 
-    REAL_1("ra"), 
-    REAL_2("rm"), 
-    MPPLUS("mp+"), 
+    /**
+     * MP3
+     */
+    MP3("mp3"),
+
+    /**
+     * OGG
+     */
+    OGG("ogg"),
+
+    /**
+     * MP4
+     */
+    MP4_1("m4a"),
+
+    /**
+     * MP4
+     */
+    MP4_2("mp4"),
+
+    /**
+     * WAV
+     */
+    WAV("wav"),
+
+    /**
+     * WMA
+     */
+    WMA("wma"),
+
+    /**
+     * FLAC
+     */
+    FLAC("flac"),
+
+    /**
+     * APE
+     */
+    APE("ape"),
+
+    /**
+     * MPC
+     */
+    MPC("mpc"),
+
+    /**
+     * Real media
+     */
+    REAL_1("ra"),
+
+    /**
+     * Real media
+     */
+    REAL_2("rm"),
+
+    /**
+     * mp+
+     */
+    MPPLUS("mp+"),
+
+    /**
+     * mac
+     */
     MAC("mac");
 
     private String extension;
 
-    private LocalAudioObjectFormat(String extension) {
-        this.extension = extension;
+    private LocalAudioObjectFormat(final String extension) {
+	this.extension = extension;
     }
 
+    /**
+     * @return
+     */
     public String getExtension() {
-        return extension;
+	return extension;
     }
 }

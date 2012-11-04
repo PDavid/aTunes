@@ -22,19 +22,51 @@ package net.sourceforge.atunes.model;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
+/**
+ * Image sizes
+ * 
+ * @author alex
+ * 
+ */
 @PluginApi
 public enum ImageSize {
 
-    SIZE_90(90), SIZE_120(120), SIZE_150(150), SIZE_200(200), SIZE_MAX(-1);
+    /**
+     * 90 pixels
+     */
+    SIZE_90(90),
+
+    /**
+     * 120 pixels
+     */
+    SIZE_120(120),
+
+    /**
+     * 150 pixels
+     */
+    SIZE_150(150),
+
+    /**
+     * 200 pixels
+     */
+    SIZE_200(200),
+
+    /**
+     * maximum size
+     */
+    SIZE_MAX(-1);
 
     private int size;
 
-    private ImageSize(int size) {
-        this.size = size;
+    private ImageSize(final int size) {
+	this.size = size;
     }
 
+    /**
+     * @return size
+     */
     public int getSize() {
-        return size;
+	return size;
     }
 
 }

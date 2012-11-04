@@ -26,62 +26,67 @@ import javax.swing.ImageIcon;
 
 /**
  * A dialog to show progress of a task
+ * 
  * @author alex
- *
+ * 
  */
 public interface IProgressDialog extends IDialog {
 
-	/**
-	 * Sets title of dialog
-	 * @param title
-	 */
-	void setTitle(String title);
-	
-	/**
-	 * Sets the info text.
-	 * 
-	 * @param s
-	 *            the new info text
-	 */
-	void setInfoText(String s);
+    /**
+     * Sets title of dialog
+     * 
+     * @param title
+     */
+    @Override
+    void setTitle(String title);
 
-	/**
-	 * Sets the progress bar value
-	 * 
-	 * @param value
-	 *            the new progress
-	 */
-	void setProgressBarValue(int value);
+    /**
+     * Sets the info text.
+     * 
+     * @param s
+     *            the new info text
+     */
+    void setInfoText(String s);
 
-	/**
-	 * Sets the  progress.
-	 * 
-	 */
-	void setCurrentProgress(long value);
+    /**
+     * Sets the progress bar value
+     * 
+     * @param value
+     *            the new progress
+     */
+    void setProgressBarValue(int value);
 
-	/**
-	 * Sets the total.
-	 * 
-	 */
-	void setTotalProgress(long value);
+    /**
+     * Sets the progress.
+     * 
+     * @param value
+     */
+    void setCurrentProgress(long value);
 
-	/**
-	 * Adds the cancel button action listener.
-	 * 
-	 * @param a
-	 *            the a
-	 */
-	void addCancelButtonActionListener(ActionListener a);
+    /**
+     * Sets the total.
+     * 
+     * @param value
+     */
+    void setTotalProgress(long value);
 
-	/**
-	 * Disables cancel button
-	 */
-	void disableCancelButton();
+    /**
+     * Adds the cancel button action listener.
+     * 
+     * @param a
+     *            the a
+     */
+    void addCancelButtonActionListener(ActionListener a);
 
-	/**
-	 * Overrides default icon
-	 * 
-	 * @param icon
-	 */
-	void setIcon(ImageIcon icon);
+    /**
+     * Disables cancel button
+     */
+    void disableCancelButton();
+
+    /**
+     * Overrides default icon
+     * 
+     * @param icon
+     */
+    void setIcon(ImageIcon icon);
 }

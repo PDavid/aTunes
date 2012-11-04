@@ -32,14 +32,18 @@ public enum FeedType {
      * href="http://en.wikipedia.org/wiki/RSS">http://en.
      * wikipedia.org/wiki/RSS</a>
      */
-    RSS("./author", "./pubDate", "./description", "./duration", "/rss/channel/item", "/rss/channel/title", "./title", "./enclosure/@type", "./enclosure/@url"),
+    RSS("./author", "./pubDate", "./description", "./duration",
+	    "/rss/channel/item", "/rss/channel/title", "./title",
+	    "./enclosure/@type", "./enclosure/@url"),
 
     /**
      * Atom feed, more info: <a
      * href="http://en.wikipedia.org/wiki/Atom_%28standard%29"
      * >http://en.wikipedia.org/wiki/Atom_%28standard%29</a>
      */
-    ATOM("./author/name", "./updated", "./summary", "", "/feed/entry", "/feed/title", "./title", "./link[@rel='enclosure']/@type", "./link[@rel='enclosure']/@href");
+    ATOM("./author/name", "./updated", "./summary", "", "/feed/entry",
+	    "/feed/title", "./title", "./link[@rel='enclosure']/@type",
+	    "./link[@rel='enclosure']/@href");
 
     private String authorXPath;
     private String dateXPath;
@@ -51,53 +55,83 @@ public enum FeedType {
     private String typeXPath;
     private String urlXPath;
 
-    private FeedType(String authorXPath, String dateXPath, String descriptionXPath, String durationXPath, String entryXPath, String nameXPath, String titleXPath, String typeXPath,
-            String urlXPath) {
-        this.authorXPath = authorXPath;
-        this.dateXPath = dateXPath;
-        this.descriptionXPath = descriptionXPath;
-        this.durationXPath = durationXPath;
-        this.entryXPath = entryXPath;
-        this.nameXPath = nameXPath;
-        this.titleXPath = titleXPath;
-        this.typeXPath = typeXPath;
-        this.urlXPath = urlXPath;
+    private FeedType(final String authorXPath, final String dateXPath,
+	    final String descriptionXPath, final String durationXPath,
+	    final String entryXPath, final String nameXPath,
+	    final String titleXPath, final String typeXPath,
+	    final String urlXPath) {
+	this.authorXPath = authorXPath;
+	this.dateXPath = dateXPath;
+	this.descriptionXPath = descriptionXPath;
+	this.durationXPath = durationXPath;
+	this.entryXPath = entryXPath;
+	this.nameXPath = nameXPath;
+	this.titleXPath = titleXPath;
+	this.typeXPath = typeXPath;
+	this.urlXPath = urlXPath;
     }
 
+    /**
+     * @return author
+     */
     public String getAuthorXPath() {
-        return authorXPath;
+	return authorXPath;
     }
 
+    /**
+     * @return date
+     */
     public String getDateXPath() {
-        return dateXPath;
+	return dateXPath;
     }
 
+    /**
+     * @return description
+     */
     public String getDescriptionXPath() {
-        return descriptionXPath;
+	return descriptionXPath;
     }
 
+    /**
+     * @return duration
+     */
     public String getDurationXPath() {
-        return durationXPath;
+	return durationXPath;
     }
 
+    /**
+     * @return entry
+     */
     public String getEntryXPath() {
-        return entryXPath;
+	return entryXPath;
     }
 
+    /**
+     * @return name
+     */
     public String getNameXPath() {
-        return nameXPath;
+	return nameXPath;
     }
 
+    /**
+     * @return title
+     */
     public String getTitleXPath() {
-        return titleXPath;
+	return titleXPath;
     }
 
+    /**
+     * @return type
+     */
     public String getTypeXPath() {
-        return typeXPath;
+	return typeXPath;
     }
 
+    /**
+     * @return url
+     */
     public String getUrlXPath() {
-        return urlXPath;
+	return urlXPath;
     }
 
 }

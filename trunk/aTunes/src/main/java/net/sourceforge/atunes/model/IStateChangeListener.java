@@ -20,7 +20,12 @@
 
 package net.sourceforge.atunes.model;
 
-
+/**
+ * Called when state changes
+ * 
+ * @author alex
+ * 
+ */
 public interface IStateChangeListener {
 
     /**

@@ -23,34 +23,70 @@ package net.sourceforge.atunes.model;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * Ways of organize repository information
+ * 
+ * @author alex
+ * 
+ */
 public enum ViewMode {
 
-    ARTIST, ALBUM, GENRE, FOLDER, YEAR;
-    
+    /**
+     * By artist
+     */
+    ARTIST,
+
+    /**
+     * By album
+     */
+    ALBUM,
+
+    /**
+     * By genre
+     */
+    GENRE,
+
+    /**
+     * By folder
+     */
+    FOLDER,
+
+    /**
+     * By year
+     */
+    YEAR;
+
     /**
      * Returns data from repository for this view
+     * 
      * @param repository
      * @return
      */
-    public Map<String, ?> getDataForView(IRepository repository) {
-		if (repository != null) {
-			return getStructure(repository);
-		} else {
-			return Collections.emptyMap();
-		}
+    public Map<String, ?> getDataForView(final IRepository repository) {
+	if (repository != null) {
+	    return getStructure(repository);
+	} else {
+	    return Collections.emptyMap();
+	}
     }
 
-	/**
-	 * @param repository
-	 */
-	private Map<String, ?> getStructure(IRepository repository) {
-		switch (this) {
-		case YEAR: return repository.getYearStructure();
-		case GENRE: return repository.getGenreStructure();
-		case FOLDER : return repository.getFolderStructure();
-		case ALBUM : return repository.getAlbumStructure();
-		case ARTIST : return repository.getArtistStructure();
-		default: return null;
-		}
+    /**
+     * @param repository
+     */
+    private Map<String, ?> getStructure(final IRepository repository) {
+	switch (this) {
+	case YEAR:
+	    return repository.getYearStructure();
+	case GENRE:
+	    return repository.getGenreStructure();
+	case FOLDER:
+	    return repository.getFolderStructure();
+	case ALBUM:
+	    return repository.getAlbumStructure();
+	case ARTIST:
+	    return repository.getArtistStructure();
+	default:
+	    return null;
 	}
+    }
 }

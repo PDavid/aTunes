@@ -22,9 +22,23 @@ package net.sourceforge.atunes.model;
 
 /**
  * State of an audio object when being submitted to a web service
+ * 
  * @author alex
- *
+ * 
  */
 public enum SubmissionState {
-    NOT_SUBMITTED, PENDING, SUBMITTED;
+    /**
+     * Not submitted
+     */
+    NOT_SUBMITTED,
+
+    /**
+     * Submission pending
+     */
+    PENDING,
+
+    /**
+     * Submission done
+     */
+    SUBMITTED;
 }

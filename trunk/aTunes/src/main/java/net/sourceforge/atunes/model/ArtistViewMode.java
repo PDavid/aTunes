@@ -21,11 +21,26 @@
 package net.sourceforge.atunes.model;
 
 /**
- * Ways to view an artist tree: organize music using artist tag, artist of album tag, or both
+ * Ways to view an artist tree: organize music using artist tag, artist of album
+ * tag, or both
+ * 
  * @author alex
- *
+ * 
  */
 public enum ArtistViewMode {
 
-    ARTIST, ARTIST_OF_ALBUM, BOTH;
+    /**
+     * By artist
+     */
+    ARTIST,
+
+    /**
+     * By artist of album
+     */
+    ARTIST_OF_ALBUM,
+
+    /**
+     * Use both fields
+     */
+    BOTH;
 }

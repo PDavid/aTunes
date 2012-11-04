@@ -49,6 +49,7 @@ public interface ISearchableObject {
      * Returns the index directory.
      * 
      * @return the index directory
+     * @throws IOException
      */
     public FSDirectory getIndexDirectory() throws IOException;
 
@@ -61,7 +62,8 @@ public interface ISearchableObject {
      * @return the search result
      * 
      */
-    public List<IAudioObject> getSearchResult(List<ISearchResult> rawSearchResults);
+    public List<IAudioObject> getSearchResult(
+	    List<ISearchResult> rawSearchResults);
 
     /**
      * Returns elements to index.

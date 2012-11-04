@@ -30,15 +30,29 @@ import java.beans.ConstructorProperties;
  */
 public class ApplicationVersion implements Comparable<ApplicationVersion> {
 
+    /**
+     * Type of version: beta, release candidate or final
+     * 
+     * @author alex
+     * 
+     */
+    public enum VersionType {
 	/**
-	 * Type of version: beta, release candidate or final
-	 * @author alex
-	 *
+	 * In development
 	 */
-	public enum VersionType {
-	    BETA, RELEASE_CANDIDATE, FINAL
-	}
-	
+	BETA,
+
+	/**
+	 * Candidate to be released as final
+	 */
+	RELEASE_CANDIDATE,
+
+	/**
+	 * Development of version finished
+	 */
+	FINAL
+    }
+
     /** Release date of version. */
     private String date;
 
@@ -61,32 +75,47 @@ public class ApplicationVersion implements Comparable<ApplicationVersion> {
     private String downloadURL;
 
     ApplicationVersion() {
-        super();
+	super();
     }
 
-    @ConstructorProperties( { "date", "majorNumber", "minorNumber", "revisionNumber", "versionType", "name", "downloadURL" })
-    public ApplicationVersion(String date, int majorNumber, int minorNumber, int revisionNumber, VersionType versionType, String name, String downloadURL) {
-        super();
-        this.date = date;
-        this.majorNumber = majorNumber;
-        this.minorNumber = minorNumber;
-        this.revisionNumber = revisionNumber;
-        this.versionType = versionType;
-        this.name = name;
-        this.downloadURL = downloadURL;
+    /**
+     * @param date
+     * @param majorNumber
+     * @param minorNumber
+     * @param revisionNumber
+     * @param versionType
+     * @param name
+     * @param downloadURL
+     */
+    @ConstructorProperties({ "date", "majorNumber", "minorNumber",
+	    "revisionNumber", "versionType", "name", "downloadURL" })
+    public ApplicationVersion(final String date, final int majorNumber,
+	    final int minorNumber, final int revisionNumber,
+	    final VersionType versionType, final String name,
+	    final String downloadURL) {
+	super();
+	this.date = date;
+	this.majorNumber = majorNumber;
+	this.minorNumber = minorNumber;
+	this.revisionNumber = revisionNumber;
+	this.versionType = versionType;
+	this.name = name;
+	this.downloadURL = downloadURL;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof ApplicationVersion) {
-            return compareTo((ApplicationVersion) obj) == 0;
-        }
-        return false;
+    public boolean equals(final Object obj) {
+	if (obj instanceof ApplicationVersion) {
+	    return compareTo((ApplicationVersion) obj) == 0;
+	}
+	return false;
     }
 
     @Override
     public int hashCode() {
-    	return new StringBuilder().append(majorNumber).append(".").append(minorNumber).append(".").append(revisionNumber).append(".").append(versionType).toString().hashCode();
+	return new StringBuilder().append(majorNumber).append(".")
+		.append(minorNumber).append(".").append(revisionNumber)
+		.append(".").append(versionType).toString().hashCode();
     }
 
     /**
@@ -95,7 +124,7 @@ public class ApplicationVersion implements Comparable<ApplicationVersion> {
      * @return the date
      */
     public String getDate() {
-        return date;
+	return date;
     }
 
     /**
@@ -104,14 +133,14 @@ public class ApplicationVersion implements Comparable<ApplicationVersion> {
      * @return the download url
      */
     public String getDownloadURL() {
-        return downloadURL;
+	return downloadURL;
     }
 
     /**
      * @return the name
      */
     public String getName() {
-        return name;
+	return name;
     }
 
     /**
@@ -120,7 +149,7 @@ public class ApplicationVersion implements Comparable<ApplicationVersion> {
      * @return the major number
      */
     public int getMajorNumber() {
-        return majorNumber;
+	return majorNumber;
     }
 
     /**
@@ -129,7 +158,7 @@ public class ApplicationVersion implements Comparable<ApplicationVersion> {
      * @return the minor number
      */
     public int getMinorNumber() {
-        return minorNumber;
+	return minorNumber;
     }
 
     /**
@@ -138,7 +167,7 @@ public class ApplicationVersion implements Comparable<ApplicationVersion> {
      * @return the revision number
      */
     public int getRevisionNumber() {
-        return revisionNumber;
+	return revisionNumber;
     }
 
     /**
@@ -148,7 +177,11 @@ public class ApplicationVersion implements Comparable<ApplicationVersion> {
      */
     @Override
     public String toString() {
-        return new StringBuilder().append(majorNumber).append(".").append(minorNumber).append(".").append(revisionNumber).append(" ").append(name).append(" ").append(versionType != VersionType.FINAL ? versionType : "").toString();
+	return new StringBuilder().append(majorNumber).append(".")
+		.append(minorNumber).append(".").append(revisionNumber)
+		.append(" ").append(name).append(" ")
+		.append(versionType != VersionType.FINAL ? versionType : "")
+		.toString();
     }
 
     /**
@@ -157,7 +190,11 @@ public class ApplicationVersion implements Comparable<ApplicationVersion> {
      * @return the short version in string format
      */
     public String toShortString() {
-        return new StringBuilder().append(majorNumber).append(".").append(minorNumber).append(".").append(revisionNumber).append(" ").append(versionType != VersionType.FINAL ? versionType : "").toString();
+	return new StringBuilder().append(majorNumber).append(".")
+		.append(minorNumber).append(".").append(revisionNumber)
+		.append(" ")
+		.append(versionType != VersionType.FINAL ? versionType : "")
+		.toString();
     }
 
     /**
@@ -166,30 +203,30 @@ public class ApplicationVersion implements Comparable<ApplicationVersion> {
      * @return VersionType
      */
     public VersionType getVersionType() {
-        return versionType;
+	return versionType;
     }
 
     @Override
-    public int compareTo(ApplicationVersion version) {
-        if (version == null) {
-            throw new IllegalArgumentException();
-        }
+    public int compareTo(final ApplicationVersion version) {
+	if (version == null) {
+	    throw new IllegalArgumentException();
+	}
 
-        if (majorNumber > version.getMajorNumber()) {
-            return 1;
-        } else if (majorNumber < version.getMajorNumber()) {
-            return -1;
-        } else if (minorNumber > version.getMinorNumber()) {
-            return 1;
-        } else if (minorNumber < version.getMinorNumber()) {
-            return -1;
-        } else if (revisionNumber > version.getRevisionNumber()) {
-            return 1;
-        } else if (revisionNumber < version.getRevisionNumber()) {
-            return -1;
-        } else {
-            return this.versionType.compareTo(version.getVersionType());
-        }
+	if (majorNumber > version.getMajorNumber()) {
+	    return 1;
+	} else if (majorNumber < version.getMajorNumber()) {
+	    return -1;
+	} else if (minorNumber > version.getMinorNumber()) {
+	    return 1;
+	} else if (minorNumber < version.getMinorNumber()) {
+	    return -1;
+	} else if (revisionNumber > version.getRevisionNumber()) {
+	    return 1;
+	} else if (revisionNumber < version.getRevisionNumber()) {
+	    return -1;
+	} else {
+	    return this.versionType.compareTo(version.getVersionType());
+	}
     }
 
 }

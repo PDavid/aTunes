@@ -24,69 +24,71 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * An object containing information about favorites
+ * 
  * @author alex
- *
+ * 
  */
 public interface IFavorites extends Serializable {
 
-	/**
-	 * Gets the all favorite songs.
-	 * 
-	 * @return the all favorite songs
-	 */
-	public List<ILocalAudioObject> getAllFavoriteSongs();
+    /**
+     * Gets the all favorite songs.
+     * 
+     * @return the all favorite songs
+     */
+    public List<ILocalAudioObject> getAllFavoriteSongs();
 
-	/**
-	 * Gets a map with all favorite songs, with url as key
-	 */
-	public Map<String, ILocalAudioObject> getAllFavoriteSongsMap();
+    /**
+     * Gets a map with all favorite songs, with url as key
+     * 
+     * @return
+     */
+    public Map<String, ILocalAudioObject> getAllFavoriteSongsMap();
 
-	/**
-	 * Gets the favorite albums.
-	 * 
-	 * @return the favorite albums
-	 */
-	public Map<String, IAlbum> getFavoriteAlbums();
+    /**
+     * Gets the favorite albums.
+     * 
+     * @return the favorite albums
+     */
+    public Map<String, IAlbum> getFavoriteAlbums();
 
-	/**
-	 * Gets the favorite artists.
-	 * 
-	 * @return the favorite artists
-	 */
-	public Map<String, IArtist> getFavoriteArtists();
+    /**
+     * Gets the favorite artists.
+     * 
+     * @return the favorite artists
+     */
+    public Map<String, IArtist> getFavoriteArtists();
 
-	/**
-	 * Gets the favorite songs.
-	 * 
-	 * @return the favorite songs
-	 */
-	public Map<String, ILocalAudioObject> getFavoriteAudioFiles();
+    /**
+     * Gets the favorite songs.
+     * 
+     * @return the favorite songs
+     */
+    public Map<String, ILocalAudioObject> getFavoriteAudioFiles();
 
-	/**
-	 * Sets the favorite albums.
-	 * 
-	 * @param favoriteAlbums
-	 *            the favorite albums
-	 */
-	public void setFavoriteAlbums(Map<String, IAlbum> favoriteAlbums);
+    /**
+     * Sets the favorite albums.
+     * 
+     * @param favoriteAlbums
+     *            the favorite albums
+     */
+    public void setFavoriteAlbums(Map<String, IAlbum> favoriteAlbums);
 
-	/**
-	 * Sets the favorite artists.
-	 * 
-	 * @param favoriteArtists
-	 *            the favorite artists
-	 */
-	public void setFavoriteArtists(Map<String, IArtist> favoriteArtists);
+    /**
+     * Sets the favorite artists.
+     * 
+     * @param favoriteArtists
+     *            the favorite artists
+     */
+    public void setFavoriteArtists(Map<String, IArtist> favoriteArtists);
 
-	/**
-	 * Sets the favorite songs.
-	 * 
-	 * @param favoriteSongs
-	 *            the favorite songs
-	 */
-	public void setFavoriteSongs(Map<String, ILocalAudioObject> favoriteSongs);
+    /**
+     * Sets the favorite songs.
+     * 
+     * @param favoriteSongs
+     *            the favorite songs
+     */
+    public void setFavoriteSongs(Map<String, ILocalAudioObject> favoriteSongs);
 
 }

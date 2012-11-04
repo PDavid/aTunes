@@ -22,13 +22,20 @@ package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-
+/**
+ * Filters play list for a given type of audio objects
+ * 
+ * @author alex
+ * 
+ * @param <T>
+ */
 public interface IPlayListObjectFilter<T extends IAudioObject> {
 
-	/**
-	 * Returns only objects of a subtype
-	 * @param playList
-	 * @return
-	 */
-	public List<T> getObjects(IPlayList playList);
+    /**
+     * Returns only objects of a subtype
+     * 
+     * @param playList
+     * @return
+     */
+    public List<T> getObjects(IPlayList playList);
 }
