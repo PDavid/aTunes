@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.lang.reflect.ParameterizedType;
 import java.util.EventObject;
@@ -79,8 +78,7 @@ public abstract class ContextTableRowPanelRendererCode<T> extends
 
 	    // Create if necessary
 	    if (!cachedPanels.containsKey(value)) {
-		cachedPanels.put(value,
-			createPanel(superComponent, value, hasFocus));
+		cachedPanels.put(value, createPanel(superComponent, value));
 	    }
 
 	    // Get panel
@@ -155,15 +153,11 @@ public abstract class ContextTableRowPanelRendererCode<T> extends
     public void removeCellEditorListener(final CellEditorListener l) {
     }
 
-    protected ContextTableRowPanel<T> getPanelForTableRenderer(
-	    final ImageIcon image, final String text,
-	    final Color backgroundColor, final Color foregroundColor,
-	    final int imageMaxWidth, final int imageMaxHeight,
-	    final boolean hasFocus) {
+    protected final ContextTableRowPanel<T> getPanelForTableRenderer(
+	    final ImageIcon image, final String text, final int imageMaxWidth) {
 
 	return factory.getPanelForTableRenderer(this.getActions(), table,
-		image, text, backgroundColor, foregroundColor, imageMaxWidth,
-		imageMaxHeight, hasFocus);
+		image, text, imageMaxWidth);
     }
 
     /**
@@ -180,11 +174,9 @@ public abstract class ContextTableRowPanelRendererCode<T> extends
     /**
      * @param superComponent
      * @param value
-     * @param hasFocus
      * @return
      */
     public abstract ContextTableRowPanel<T> createPanel(
-	    final JComponent superComponent, final T value,
-	    final boolean hasFocus);
+	    final JComponent superComponent, final T value);
 
 }

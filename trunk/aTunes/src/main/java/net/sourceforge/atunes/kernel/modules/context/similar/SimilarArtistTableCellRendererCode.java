@@ -59,8 +59,7 @@ public class SimilarArtistTableCellRendererCode extends
 
     @Override
     public ContextTableRowPanel<IArtistInfo> createPanel(
-	    final JComponent superComponent, final IArtistInfo value,
-	    final boolean hasFocus) {
+	    final JComponent superComponent, final IArtistInfo value) {
 	return getPanelForTableRenderer(value.getImage(),
 		StringUtils.getString(
 			"<html><br>",
@@ -70,9 +69,7 @@ public class SimilarArtistTableCellRendererCode extends
 			"%<br>",
 			value.isAvailable() ? I18nUtils
 				.getString("AVAILABLE_IN_REPOSITORY") : "",
-			"</html>"), superComponent.getBackground(),
-		superComponent.getForeground(), Constants.THUMB_IMAGE_WIDTH,
-		Constants.THUMB_IMAGE_HEIGHT, hasFocus);
+			"</html>"), Constants.THUMB_IMAGE_WIDTH);
     }
 
     @Override
