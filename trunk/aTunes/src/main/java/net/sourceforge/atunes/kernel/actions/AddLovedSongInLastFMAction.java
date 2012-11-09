@@ -41,58 +41,59 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
     private static final long serialVersionUID = -2687851398606488392L;
 
     private IContextHandler contextHandler;
-    
+
     private IWebServicesHandler webServicesHandler;
-    
+
     private IBackgroundWorkerFactory backgroundWorkerFactory;
-    
+
     private IStateContext stateContext;
-    
+
     /**
      * @param stateContext
      */
-    public void setStateContext(IStateContext stateContext) {
-		this.stateContext = stateContext;
-	}
-    
+    public void setStateContext(final IStateContext stateContext) {
+	this.stateContext = stateContext;
+    }
+
     /**
      * @param contextHandler
      */
-    public void setContextHandler(IContextHandler contextHandler) {
-		this.contextHandler = contextHandler;
-	}
-    
+    public void setContextHandler(final IContextHandler contextHandler) {
+	this.contextHandler = contextHandler;
+    }
+
     /**
      * @param webServicesHandler
      */
-    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
-		this.webServicesHandler = webServicesHandler;
-	}
+    public void setWebServicesHandler(
+	    final IWebServicesHandler webServicesHandler) {
+	this.webServicesHandler = webServicesHandler;
+    }
 
     /**
      * @param backgroundWorkerFactory
      */
-    public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
-		this.backgroundWorkerFactory = backgroundWorkerFactory;
-	}
-    
+    public void setBackgroundWorkerFactory(
+	    final IBackgroundWorkerFactory backgroundWorkerFactory) {
+	this.backgroundWorkerFactory = backgroundWorkerFactory;
+    }
+
     /**
      * 
      */
     public AddLovedSongInLastFMAction() {
-        super(I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
+	super(I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
     }
 
     @Override
     protected void initialize() {
-    	super.initialize();
-        setEnabled(stateContext.isLastFmEnabled());
+	super.initialize();
+	setEnabled(stateContext.isLastFmEnabled());
     }
-    
+
     @Override
     protected void executeAction() {
-        loveSong(contextHandler.getCurrentAudioObject());
+	loveSong(contextHandler.getCurrentAudioObject());
     }
 
     /**
@@ -101,22 +102,24 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
      * @param song
      */
     public void loveSong(final IAudioObject song) {
-        setEnabled(false);
-        IBackgroundWorker<Void> backgroundWorker = backgroundWorkerFactory.getWorker();
-        backgroundWorker.setBackgroundActions(new Callable<Void>() {
-        	@Override
-        	public Void call() {
-        		webServicesHandler.addLovedSong(song);
-        		return null;
-        	}
-        });
-        backgroundWorker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
-        	@Override
-        	public void call(Void result) {
-		        setEnabled(true);
-        	}
-        });
-        backgroundWorker.execute();
+	setEnabled(false);
+	IBackgroundWorker<Void> backgroundWorker = backgroundWorkerFactory
+		.getWorker();
+	backgroundWorker.setBackgroundActions(new Callable<Void>() {
+	    @Override
+	    public Void call() {
+		webServicesHandler.addLovedSong(song);
+		return null;
+	    }
+	});
+	backgroundWorker
+		.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
+		    @Override
+		    public void call(final Void result) {
+			setEnabled(true);
+		    }
+		});
+	backgroundWorker.execute();
     }
 
 }

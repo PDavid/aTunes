@@ -66,7 +66,6 @@ public class RemovePodcastFeedAction extends CustomAbstractAction {
      */
     public RemovePodcastFeedAction() {
 	super(I18nUtils.getString("REMOVE_PODCAST_FEED"));
-	putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_PODCAST_FEED"));
     }
 
     @Override

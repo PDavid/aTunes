@@ -31,44 +31,48 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Action to copy files to repository
+ * 
  * @author alex
- *
+ * 
  */
-public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
+public class CopyToRepositoryAction extends
+	AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-	private static final long serialVersionUID = 2416674807979541242L;
+    private static final long serialVersionUID = 2416674807979541242L;
 
-	private IProcessFactory processFactory;
+    private IProcessFactory processFactory;
 
-	/**
-	 * @param processFactory
-	 */
-	public void setProcessFactory(final IProcessFactory processFactory) {
-		this.processFactory = processFactory;
-	}
+    /**
+     * @param processFactory
+     */
+    public void setProcessFactory(final IProcessFactory processFactory) {
+	this.processFactory = processFactory;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public CopyToRepositoryAction() {
-		super(I18nUtils.getString("COPY_TO_REPOSITORY"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_TO_REPOSITORY"));
-	}
+    /**
+     * Default constructor
+     */
+    public CopyToRepositoryAction() {
+	super(I18nUtils.getString("COPY_TO_REPOSITORY"));
+    }
 
-	@Override
-	protected void executeAction(final List<ILocalAudioObject> objects) {
-		ILocalAudioObjectTransferProcess importer = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("transferToRepositoryProcess");
-		importer.setFilesToTransfer(objects);
-		importer.execute();
-	}
+    @Override
+    protected void executeAction(final List<ILocalAudioObject> objects) {
+	ILocalAudioObjectTransferProcess importer = (ILocalAudioObjectTransferProcess) processFactory
+		.getProcessByName("transferToRepositoryProcess");
+	importer.setFilesToTransfer(objects);
+	importer.execute();
+    }
 
-	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeNode> selection) {
-		return !rootSelected && !selection.isEmpty();
-	}
+    @Override
+    public boolean isEnabledForNavigationTreeSelection(
+	    final boolean rootSelected, final List<ITreeNode> selection) {
+	return !rootSelected && !selection.isEmpty();
+    }
 
-	@Override
-	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
-		return !selection.isEmpty();
-	}
+    @Override
+    public boolean isEnabledForNavigationTableSelection(
+	    final List<IAudioObject> selection) {
+	return !selection.isEmpty();
+    }
 }

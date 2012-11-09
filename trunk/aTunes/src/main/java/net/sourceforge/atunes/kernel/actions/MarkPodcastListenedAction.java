@@ -64,8 +64,6 @@ public class MarkPodcastListenedAction extends
      */
     public MarkPodcastListenedAction() {
 	super(I18nUtils.getString("MARK_PODCAST_AS_LISTENED"));
-	putValue(SHORT_DESCRIPTION,
-		I18nUtils.getString("MARK_PODCAST_AS_LISTENED"));
     }
 
     @Override

@@ -34,91 +34,93 @@ import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * this action show a dialog to add album of artists to the current playlist
- * If more than one artist is selected, a dialog is show for each artist
+ * this action show a dialog to add album of artists to the current playlist If
+ * more than one artist is selected, a dialog is show for each artist
  * 
  * @author encestre
  * 
  */
-public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelectedObjects<IAudioObject> {
+public class AddAlbumWithSelectedArtistsAction extends
+	AbstractActionOverSelectedObjects<IAudioObject> {
 
-	private static final long serialVersionUID = 242525309967706255L;
+    private static final long serialVersionUID = 242525309967706255L;
 
-	private IRepositoryHandler repositoryHandler;
+    private IRepositoryHandler repositoryHandler;
 
-	private IPlayListHandler playListHandler;
+    private IPlayListHandler playListHandler;
 
-	private IDialogFactory dialogFactory;
+    private IDialogFactory dialogFactory;
 
-	private IUnknownObjectChecker unknownObjectChecker;
+    private IUnknownObjectChecker unknownObjectChecker;
 
-	/**
-	 * @param unknownObjectChecker
-	 */
-	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
+    /**
+     * @param unknownObjectChecker
+     */
+    public void setUnknownObjectChecker(
+	    final IUnknownObjectChecker unknownObjectChecker) {
+	this.unknownObjectChecker = unknownObjectChecker;
+    }
+
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(final IDialogFactory dialogFactory) {
+	this.dialogFactory = dialogFactory;
+    }
+
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+	this.repositoryHandler = repositoryHandler;
+    }
+
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(final IPlayListHandler playListHandler) {
+	this.playListHandler = playListHandler;
+    }
+
+    /**
+     * Constructor
+     */
+    public AddAlbumWithSelectedArtistsAction() {
+	super(I18nUtils.getString("ADD_ALBUM_ARTIST_TO_PLAYLIST"));
+    }
+
+    @Override
+    protected void initialize() {
+	super.initialize();
+	setEnabled(false);
+    }
+
+    @Override
+    protected void executeAction(final List<IAudioObject> objects) {
+	// Get selected artists from play list
+	List<IArtist> selectedArtists = new ArrayList<IArtist>();
+	for (IAudioObject ao : objects) {
+	    String artistName = ao.getArtist(unknownObjectChecker);
+	    IArtist a = repositoryHandler.getArtist(artistName);
+	    if (a != null && !selectedArtists.contains(a)) {
+		selectedArtists.add(a);
+	    }
 	}
 
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(final IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
+	// For every artist
+	for (IArtist artist : selectedArtists) {
+	    showAddArtistDragDialog(artist);
 	}
+    }
 
-	/**
-	 * @param repositoryHandler
-	 */
-	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
+    private void showAddArtistDragDialog(final IArtist currentArtist) {
+	IArtistAlbumSelectorDialog dialog = dialogFactory
+		.newDialog(IArtistAlbumSelectorDialog.class);
+	dialog.setArtist(currentArtist);
+	dialog.showDialog();
+	IAlbum album = dialog.getAlbum();
+	if (album != null) {
+	    playListHandler.addToVisiblePlayList(album.getAudioObjects());
 	}
-
-	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(final IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-
-	/**
-	 * Constructor
-	 */
-	public AddAlbumWithSelectedArtistsAction() {
-		super(I18nUtils.getString("ADD_ALBUM_ARTIST_TO_PLAYLIST"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_ALBUM_ARTIST_TOOLTIP"));
-	}
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		setEnabled(false);
-	}
-
-	@Override
-	protected void executeAction(final List<IAudioObject> objects) {
-		// Get selected artists from play list
-		List<IArtist> selectedArtists = new ArrayList<IArtist>();
-		for (IAudioObject ao : objects) {
-			String artistName = ao.getArtist(unknownObjectChecker);
-			IArtist a = repositoryHandler.getArtist(artistName);
-			if (a != null && !selectedArtists.contains(a)) {
-				selectedArtists.add(a);
-			}
-		}
-
-		// For every artist
-		for (IArtist artist : selectedArtists) {
-			showAddArtistDragDialog(artist);
-		}
-	}
-
-	private void showAddArtistDragDialog(final IArtist currentArtist) {
-		IArtistAlbumSelectorDialog dialog = dialogFactory.newDialog(IArtistAlbumSelectorDialog.class);
-		dialog.setArtist(currentArtist);
-		dialog.showDialog();
-		IAlbum album = dialog.getAlbum();
-		if (album != null) {
-			playListHandler.addToVisiblePlayList(album.getAudioObjects());
-		}
-	}
+    }
 }

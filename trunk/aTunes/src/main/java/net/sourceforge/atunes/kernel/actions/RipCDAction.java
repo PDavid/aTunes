@@ -36,38 +36,39 @@ public class RipCDAction extends CustomAbstractAction {
     private static final long serialVersionUID = -362457188090138933L;
 
     private IRipperHandler ripperHandler;
-    
+
     private IApplicationArguments applicationArguments;
-    
+
     /**
      * @param applicationArguments
      */
-    public void setApplicationArguments(IApplicationArguments applicationArguments) {
-		this.applicationArguments = applicationArguments;
-	}
-    
+    public void setApplicationArguments(
+	    final IApplicationArguments applicationArguments) {
+	this.applicationArguments = applicationArguments;
+    }
+
     /**
      * @param ripperHandler
      */
-    public void setRipperHandler(IRipperHandler ripperHandler) {
-		this.ripperHandler = ripperHandler;
-	}
-    
+    public void setRipperHandler(final IRipperHandler ripperHandler) {
+	this.ripperHandler = ripperHandler;
+    }
+
     /**
      * Defult constructor
      */
     public RipCDAction() {
-        super(StringUtils.getString(I18nUtils.getString("RIP_CD"), "..."));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("RIP_CD"));
+	super(StringUtils.getString(I18nUtils.getString("RIP_CD"), "..."));
     }
 
     @Override
     public boolean isEnabled() {
-    	return (applicationArguments.isSimulateCD() || ripperHandler.isRipSupported()) && super.isEnabled();
+	return (applicationArguments.isSimulateCD() || ripperHandler
+		.isRipSupported()) && super.isEnabled();
     }
-    
+
     @Override
     protected void executeAction() {
-    	ripperHandler.startCdRipper();
+	ripperHandler.startCdRipper();
     }
 }

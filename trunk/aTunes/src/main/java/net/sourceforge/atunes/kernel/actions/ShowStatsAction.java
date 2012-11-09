@@ -31,27 +31,26 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ShowStatsAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = -7828653987968794083L;
+    private static final long serialVersionUID = -7828653987968794083L;
 
-	private IStatisticsHandler statisticsHandler;
+    private IStatisticsHandler statisticsHandler;
 
-	/**
-	 * @param statisticsHandler
-	 */
-	public void setStatisticsHandler(final IStatisticsHandler statisticsHandler) {
-		this.statisticsHandler = statisticsHandler;
-	}
+    /**
+     * @param statisticsHandler
+     */
+    public void setStatisticsHandler(final IStatisticsHandler statisticsHandler) {
+	this.statisticsHandler = statisticsHandler;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public ShowStatsAction() {
-		super(I18nUtils.getString("STATS"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("STATS"));
-	}
+    /**
+     * Default constructor
+     */
+    public ShowStatsAction() {
+	super(I18nUtils.getString("STATS"));
+    }
 
-	@Override
-	protected void executeAction() {
-		statisticsHandler.showStatistics();
-	}
+    @Override
+    protected void executeAction() {
+	statisticsHandler.showStatistics();
+    }
 }

@@ -34,47 +34,46 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class RepeatModeAction extends ActionWithColorMutableIcon {
 
-	private static final long serialVersionUID = 2032609750151412458L;
+    private static final long serialVersionUID = 2032609750151412458L;
 
-	private IIconFactory repeatIcon;
+    private IIconFactory repeatIcon;
 
-	private IStatePlayer statePlayer;
+    private IStatePlayer statePlayer;
 
-	/**
-	 * @param statePlayer
-	 */
-	public void setStatePlayer(final IStatePlayer statePlayer) {
-		this.statePlayer = statePlayer;
-	}
+    /**
+     * @param statePlayer
+     */
+    public void setStatePlayer(final IStatePlayer statePlayer) {
+	this.statePlayer = statePlayer;
+    }
 
-	/**
-	 * @param repeatIcon
-	 */
-	public void setRepeatIcon(final IIconFactory repeatIcon) {
-		this.repeatIcon = repeatIcon;
-	}
+    /**
+     * @param repeatIcon
+     */
+    public void setRepeatIcon(final IIconFactory repeatIcon) {
+	this.repeatIcon = repeatIcon;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public RepeatModeAction() {
-		super(I18nUtils.getString("REPEAT"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPEAT"));
-	}
+    /**
+     * Default constructor
+     */
+    public RepeatModeAction() {
+	super(I18nUtils.getString("REPEAT"));
+    }
 
-	@Override
-	protected void initialize() {
-		super.initialize();
-		putValue(SELECTED_KEY, statePlayer.isRepeat());
-	}
+    @Override
+    protected void initialize() {
+	super.initialize();
+	putValue(SELECTED_KEY, statePlayer.isRepeat());
+    }
 
-	@Override
-	protected void executeAction() {
-		statePlayer.setRepeat((Boolean) getValue(SELECTED_KEY));
-	}
+    @Override
+    protected void executeAction() {
+	statePlayer.setRepeat((Boolean) getValue(SELECTED_KEY));
+    }
 
-	@Override
-	public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-		return repeatIcon.getColorMutableIcon();
-	}
+    @Override
+    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
+	return repeatIcon.getColorMutableIcon();
+    }
 }

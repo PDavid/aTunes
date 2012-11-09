@@ -28,37 +28,38 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Refreshes radios
+ * 
  * @author alex
- *
+ * 
  */
 public class RefreshRadioAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = 2614238225399634969L;
+    private static final long serialVersionUID = 2614238225399634969L;
 
-	private IRadioHandler radioHandler;
+    private IRadioHandler radioHandler;
 
-	/**
-	 * @param radioHandler
-	 */
-	public void setRadioHandler(final IRadioHandler radioHandler) {
-		this.radioHandler = radioHandler;
-	}
+    /**
+     * @param radioHandler
+     */
+    public void setRadioHandler(final IRadioHandler radioHandler) {
+	this.radioHandler = radioHandler;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public RefreshRadioAction() {
-		super(I18nUtils.getString("REFRESH"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH"));
-	}
+    /**
+     * Default constructor
+     */
+    public RefreshRadioAction() {
+	super(I18nUtils.getString("REFRESH"));
+    }
 
-	@Override
-	protected void executeAction() {
-		radioHandler.retrieveRadios();
-	}
+    @Override
+    protected void executeAction() {
+	radioHandler.retrieveRadios();
+    }
 
-	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeNode> selection) {
-		return true;
-	}
+    @Override
+    public boolean isEnabledForNavigationTreeSelection(
+	    final boolean rootSelected, final List<ITreeNode> selection) {
+	return true;
+    }
 }

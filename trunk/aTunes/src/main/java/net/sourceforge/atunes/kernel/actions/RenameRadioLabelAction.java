@@ -82,7 +82,6 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
      */
     public RenameRadioLabelAction() {
 	super(I18nUtils.getString("RENAME_LABEL"));
-	putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_LABEL"));
     }
 
     @Override

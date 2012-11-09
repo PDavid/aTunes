@@ -31,32 +31,31 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class NewPlayListAction extends CustomAbstractAction {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 3866441529401824151L;
+    private static final long serialVersionUID = 3866441529401824151L;
 
-	private IPlayListHandler playListHandler;
+    private IPlayListHandler playListHandler;
 
-	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(final IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(final IPlayListHandler playListHandler) {
+	this.playListHandler = playListHandler;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public NewPlayListAction() {
-		super(I18nUtils.getString("NEW_PLAYLIST"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("NEW_PLAYLIST"));
-	}
+    /**
+     * Default constructor
+     */
+    public NewPlayListAction() {
+	super(I18nUtils.getString("NEW_PLAYLIST"));
+    }
 
-	@Override
-	protected void executeAction() {
-		// Create a new empty play list
-		playListHandler.newPlayList(null);
-	}
+    @Override
+    protected void executeAction() {
+	// Create a new empty play list
+	playListHandler.newPlayList(null);
+    }
 
 }

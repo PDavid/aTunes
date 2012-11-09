@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-
-
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -32,64 +30,64 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Changes view mode to show folders
+ * 
  * @author alex
- *
+ * 
  */
 public class ShowFoldersInNavigatorAction extends ActionWithColorMutableIcon {
 
-	private static final long serialVersionUID = -3422236983060989235L;
+    private static final long serialVersionUID = -3422236983060989235L;
 
-	private INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-	private IIconFactory folderIcon;
+    private IIconFactory folderIcon;
 
-	private IStateNavigation stateNavigation;
+    private IStateNavigation stateNavigation;
 
-	/**
-	 * @param stateNavigation
-	 */
-	public void setStateNavigation(final IStateNavigation stateNavigation) {
-		this.stateNavigation = stateNavigation;
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(final IStateNavigation stateNavigation) {
+	this.stateNavigation = stateNavigation;
+    }
+
+    /**
+     * @param folderIcon
+     */
+    public void setFolderIcon(final IIconFactory folderIcon) {
+	this.folderIcon = folderIcon;
+    }
+
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
+
+    /**
+     * Default constructor
+     */
+    public ShowFoldersInNavigatorAction() {
+	super(I18nUtils.getString("SHOW_FOLDERS"));
+    }
+
+    @Override
+    protected void initialize() {
+	super.initialize();
+	putValue(SELECTED_KEY, stateNavigation.getViewMode() == ViewMode.FOLDER);
+    }
+
+    @Override
+    protected void executeAction() {
+	if (stateNavigation.getViewMode() != ViewMode.FOLDER) {
+	    stateNavigation.setViewMode(ViewMode.FOLDER);
+	    navigationHandler.refreshCurrentView();
 	}
+    }
 
-	/**
-	 * @param folderIcon
-	 */
-	public void setFolderIcon(final IIconFactory folderIcon) {
-		this.folderIcon = folderIcon;
-	}
-
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-
-	/**
-	 * Default constructor
-	 */
-	public ShowFoldersInNavigatorAction() {
-		super(I18nUtils.getString("SHOW_FOLDERS"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_FOLDERS"));
-	}
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		putValue(SELECTED_KEY, stateNavigation.getViewMode() == ViewMode.FOLDER);
-	}
-
-	@Override
-	protected void executeAction() {
-		if (stateNavigation.getViewMode() != ViewMode.FOLDER) {
-			stateNavigation.setViewMode(ViewMode.FOLDER);
-			navigationHandler.refreshCurrentView();
-		}
-	}
-
-	@Override
-	public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-		return folderIcon.getColorMutableIcon();
-	}
+    @Override
+    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
+	return folderIcon.getColorMutableIcon();
+    }
 }

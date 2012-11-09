@@ -63,7 +63,6 @@ public class RefreshFolderFromNavigatorAction extends
      */
     public RefreshFolderFromNavigatorAction() {
 	super(I18nUtils.getString("REFRESH_FOLDER"));
-	putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH_FOLDER"));
     }
 
     @Override

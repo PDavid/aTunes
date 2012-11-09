@@ -29,34 +29,36 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Clears tags of audio objects from play list
+ * 
  * @author alex
- *
+ * 
  */
-public class ClearTagPlaylistAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
+public class ClearTagPlaylistAction extends
+	AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-	private static final long serialVersionUID = 4476719536754930347L;
+    private static final long serialVersionUID = 4476719536754930347L;
 
-	private IProcessFactory processFactory;
+    private IProcessFactory processFactory;
 
-	/**
-	 * @param processFactory
-	 */
-	public void setProcessFactory(final IProcessFactory processFactory) {
-		this.processFactory = processFactory;
-	}
+    /**
+     * @param processFactory
+     */
+    public void setProcessFactory(final IProcessFactory processFactory) {
+	this.processFactory = processFactory;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public ClearTagPlaylistAction() {
-		super(I18nUtils.getString("CLEAR_TAG"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TAG"));
-	}
+    /**
+     * Default constructor
+     */
+    public ClearTagPlaylistAction() {
+	super(I18nUtils.getString("CLEAR_TAG"));
+    }
 
-	@Override
-	protected void executeAction(final List<ILocalAudioObject> objects) {
-		IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("clearTagsProcess");
-		process.setFilesToChange(objects);
-		process.execute();
-	}
+    @Override
+    protected void executeAction(final List<ILocalAudioObject> objects) {
+	IChangeTagsProcess process = (IChangeTagsProcess) processFactory
+		.getProcessByName("clearTagsProcess");
+	process.setFilesToChange(objects);
+	process.execute();
+    }
 }

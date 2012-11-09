@@ -118,8 +118,6 @@ public class AddArtistTopTracksToPlayListAction extends
      */
     public AddArtistTopTracksToPlayListAction() {
 	super(I18nUtils.getString("ADD_ARTIST_TOP_TRACKS_TO_PLAYLIST"));
-	putValue(SHORT_DESCRIPTION,
-		I18nUtils.getString("ADD_ARTIST_TOP_TRACKS_TO_PLAYLIST"));
     }
 
     @Override

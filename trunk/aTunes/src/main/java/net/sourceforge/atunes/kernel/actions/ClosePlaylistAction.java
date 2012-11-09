@@ -25,32 +25,32 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Closes visible play list
+ * 
  * @author alex
- *
+ * 
  */
 public class ClosePlaylistAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = -710334709397174680L;
+    private static final long serialVersionUID = -710334709397174680L;
 
-	private IPlayListHandler playListHandler;
+    private IPlayListHandler playListHandler;
 
-	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(final IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(final IPlayListHandler playListHandler) {
+	this.playListHandler = playListHandler;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public ClosePlaylistAction() {
-		super(I18nUtils.getString("CLOSE"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLOSE"));
-	}
+    /**
+     * Default constructor
+     */
+    public ClosePlaylistAction() {
+	super(I18nUtils.getString("CLOSE"));
+    }
 
-	@Override
-	protected void executeAction() {
-		playListHandler.closeCurrentPlaylist();
-	}
+    @Override
+    protected void executeAction() {
+	playListHandler.closeCurrentPlaylist();
+    }
 }

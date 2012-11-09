@@ -39,80 +39,83 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class OpenFolderFromNavigatorTableAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
+public class OpenFolderFromNavigatorTableAction extends
+	AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-	private static final long serialVersionUID = 8251208528513562627L;
+    private static final long serialVersionUID = 8251208528513562627L;
 
-	private IDesktop desktop;
+    private IDesktop desktop;
 
-	private IOSManager osManager;
+    private IOSManager osManager;
 
-	private ILocalAudioObjectFilter localAudioObjectFilter;
+    private ILocalAudioObjectFilter localAudioObjectFilter;
 
-	/**
-	 * @param localAudioObjectFilter
-	 */
-	public void setLocalAudioObjectFilter(
-			final ILocalAudioObjectFilter localAudioObjectFilter) {
-		this.localAudioObjectFilter = localAudioObjectFilter;
+    /**
+     * @param localAudioObjectFilter
+     */
+    public void setLocalAudioObjectFilter(
+	    final ILocalAudioObjectFilter localAudioObjectFilter) {
+	this.localAudioObjectFilter = localAudioObjectFilter;
+    }
+
+    /**
+     * Default constructor
+     */
+    public OpenFolderFromNavigatorTableAction() {
+	super(I18nUtils.getString("OPEN_FOLDER"));
+    }
+
+    /**
+     * @param osManager
+     */
+    public void setOsManager(final IOSManager osManager) {
+	this.osManager = osManager;
+    }
+
+    /**
+     * @param desktop
+     */
+    public void setDesktop(final IDesktop desktop) {
+	this.desktop = desktop;
+    }
+
+    @Override
+    public boolean isEnabledForNavigationTableSelection(
+	    final List<IAudioObject> selection) {
+	return sameParentFile(localAudioObjectFilter
+		.getLocalAudioObjects(selection));
+    }
+
+    /**
+     * Checks if a collection of files have the same parent file.
+     * 
+     * @param c
+     *            collection of files
+     * @return if a collection of files have the same parent file
+     */
+    private boolean sameParentFile(
+	    final Collection<? extends ILocalAudioObject> c) {
+	Set<File> set = new HashSet<File>();
+	for (ILocalAudioObject af : c) {
+	    set.add(af.getFile().getParentFile());
+	}
+	return set.size() == 1;
+    }
+
+    @Override
+    protected void executeAction(final List<ILocalAudioObject> objects) {
+	HashSet<File> foldersToOpen = new HashSet<File>();
+
+	// Get folders ...
+	for (ILocalAudioObject ao : objects) {
+	    if (!foldersToOpen.contains(ao.getFile().getParentFile())) {
+		foldersToOpen.add(ao.getFile().getParentFile());
+	    }
 	}
 
-	/**
-	 * Default constructor
-	 */
-	public OpenFolderFromNavigatorTableAction() {
-		super(I18nUtils.getString("OPEN_FOLDER"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("OPEN_FOLDER"));
+	// ... then open
+	for (File folder : foldersToOpen) {
+	    desktop.openFile(folder, osManager);
 	}
-
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
-	}
-
-	/**
-	 * @param desktop
-	 */
-	public void setDesktop(final IDesktop desktop) {
-		this.desktop = desktop;
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
-		return sameParentFile(localAudioObjectFilter.getLocalAudioObjects(selection));
-	}
-
-	/**
-	 * Checks if a collection of files have the same parent file.
-	 * 
-	 * @param c
-	 *            collection of files
-	 * @return if a collection of files have the same parent file
-	 */
-	private boolean sameParentFile(final Collection<? extends ILocalAudioObject> c) {
-		Set<File> set = new HashSet<File>();
-		for (ILocalAudioObject af : c) {
-			set.add(af.getFile().getParentFile());
-		}
-		return set.size() == 1;
-	}
-
-	@Override
-	protected void executeAction(final List<ILocalAudioObject> objects) {
-		HashSet<File> foldersToOpen = new HashSet<File>();
-
-		// Get folders ...
-		for (ILocalAudioObject ao : objects) {
-			if (!foldersToOpen.contains(ao.getFile().getParentFile())) {
-				foldersToOpen.add(ao.getFile().getParentFile());
-			}
-		}
-
-		// ... then open
-		for (File folder : foldersToOpen) {
-			desktop.openFile(folder, osManager);
-		}
-	}
+    }
 }

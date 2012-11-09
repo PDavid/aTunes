@@ -37,48 +37,51 @@ public class AddAlbumsMostPlayedAction extends CustomAbstractAction {
     private static final long serialVersionUID = -5006402582163507581L;
 
     private String i18nKey;
-    
+
     private int albums;
-    
+
     private ISmartPlayListHandler smartPlayListHandler;
-    
+
     /**
      * @param smartPlayListHandler
      */
-    public void setSmartPlayListHandler(ISmartPlayListHandler smartPlayListHandler) {
-		this.smartPlayListHandler = smartPlayListHandler;
-	}
-    
+    public void setSmartPlayListHandler(
+	    final ISmartPlayListHandler smartPlayListHandler) {
+	this.smartPlayListHandler = smartPlayListHandler;
+    }
+
     /**
      * Sets albums to add
+     * 
      * @param albums
      */
-    public void setAlbums(int albums) {
-		this.albums = albums;
-	}
-    
+    public void setAlbums(final int albums) {
+	this.albums = albums;
+    }
+
     /**
      * Translation key
+     * 
      * @param i18nKey
      */
-    public void setI18nKey(String i18nKey) {
-		this.i18nKey = i18nKey;
-	}
-    
+    public void setI18nKey(final String i18nKey) {
+	this.i18nKey = i18nKey;
+    }
+
     @Override
     protected void initialize() {
-    	super.initialize();
-        putValue(NAME, I18nUtils.getString(i18nKey));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString(i18nKey));
+	super.initialize();
+	putValue(NAME, I18nUtils.getString(i18nKey));
     }
 
     @Override
     protected void executeAction() {
-    	smartPlayListHandler.addAlbumsMostPlayed(albums);
+	smartPlayListHandler.addAlbumsMostPlayed(albums);
     }
-    
+
     @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return true;
+    public boolean isEnabledForPlayListSelection(
+	    final List<IAudioObject> selection) {
+	return true;
     }
 }

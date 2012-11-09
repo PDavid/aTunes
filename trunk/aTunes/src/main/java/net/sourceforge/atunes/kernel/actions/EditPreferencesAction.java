@@ -32,27 +32,26 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class EditPreferencesAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = -6303396973997577995L;
+    private static final long serialVersionUID = -6303396973997577995L;
 
-	private IStateHandler stateHandler;
+    private IStateHandler stateHandler;
 
-	/**
-	 * @param stateHandler
-	 */
-	public void setStateHandler(final IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
-	}
+    /**
+     * @param stateHandler
+     */
+    public void setStateHandler(final IStateHandler stateHandler) {
+	this.stateHandler = stateHandler;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public EditPreferencesAction() {
-		super(StringUtils.getString(I18nUtils.getString("PREFERENCES"), "..."));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("PREFERENCES"));
-	}
+    /**
+     * Default constructor
+     */
+    public EditPreferencesAction() {
+	super(StringUtils.getString(I18nUtils.getString("PREFERENCES"), "..."));
+    }
 
-	@Override
-	protected void executeAction() {
-		stateHandler.editPreferences();
-	}
+    @Override
+    protected void executeAction() {
+	stateHandler.editPreferences();
+    }
 }

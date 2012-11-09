@@ -28,43 +28,49 @@ import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * Adds audio objects to play list after the current audio object which is being played
+ * Adds audio objects to play list after the current audio object which is being
+ * played
+ * 
  * @author alex
- *
+ * 
  */
-public class AddToPlayListAfterCurrentAudioObjectAction extends AbstractActionOverSelectedObjects<IAudioObject> {
+public class AddToPlayListAfterCurrentAudioObjectAction extends
+	AbstractActionOverSelectedObjects<IAudioObject> {
 
-	private static final long serialVersionUID = 1625697867534974341L;
+    private static final long serialVersionUID = 1625697867534974341L;
 
-	private IPlayListHandler playListHandler;
+    private IPlayListHandler playListHandler;
 
-	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(final IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(final IPlayListHandler playListHandler) {
+	this.playListHandler = playListHandler;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public AddToPlayListAfterCurrentAudioObjectAction() {
-		super(I18nUtils.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"));
-	}
+    /**
+     * Default constructor
+     */
+    public AddToPlayListAfterCurrentAudioObjectAction() {
+	super(I18nUtils
+		.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"));
+    }
 
-	@Override
-	protected void executeAction(final List<IAudioObject> objects) {
-		playListHandler.addToActivePlayList(playListHandler.getActivePlayList().getCurrentAudioObjectIndex() + 1, objects);
-	}
+    @Override
+    protected void executeAction(final List<IAudioObject> objects) {
+	playListHandler.addToActivePlayList(playListHandler.getActivePlayList()
+		.getCurrentAudioObjectIndex() + 1, objects);
+    }
 
-	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeNode> selection) {
-		return !selection.isEmpty();
-	}
+    @Override
+    public boolean isEnabledForNavigationTreeSelection(
+	    final boolean rootSelected, final List<ITreeNode> selection) {
+	return !selection.isEmpty();
+    }
 
-	@Override
-	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
-		return !selection.isEmpty();
-	}
+    @Override
+    public boolean isEnabledForNavigationTableSelection(
+	    final List<IAudioObject> selection) {
+	return !selection.isEmpty();
+    }
 }

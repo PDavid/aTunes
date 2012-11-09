@@ -40,68 +40,75 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
+public class AutoSetTagFromFolderNamePatternAction extends
+	AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-	private static final long serialVersionUID = -1253820711948217089L;
+    private static final long serialVersionUID = -1253820711948217089L;
 
-	private IProcessFactory processFactory;
+    private IProcessFactory processFactory;
 
-	private IDialogFactory dialogFactory;
+    private IDialogFactory dialogFactory;
 
-	private Patterns patterns;
+    private Patterns patterns;
 
-	/**
-	 * @param patterns
-	 */
-	public void setPatterns(final Patterns patterns) {
-		this.patterns = patterns;
+    /**
+     * @param patterns
+     */
+    public void setPatterns(final Patterns patterns) {
+	this.patterns = patterns;
+    }
+
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(final IDialogFactory dialogFactory) {
+	this.dialogFactory = dialogFactory;
+    }
+
+    /**
+     * @param processFactory
+     */
+    public void setProcessFactory(final IProcessFactory processFactory) {
+	this.processFactory = processFactory;
+    }
+
+    /**
+     * Default constructor
+     */
+    public AutoSetTagFromFolderNamePatternAction() {
+	super(StringUtils.getString(
+		I18nUtils.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"),
+		"..."));
+    }
+
+    @Override
+    protected void executeAction(final List<ILocalAudioObject> objects) {
+	// Show pattern input dialog
+	PatternInputDialog inputDialog = dialogFactory.newDialog(
+		"nonMassivePatternInputDialog", PatternInputDialog.class);
+	inputDialog.show(patterns.getRecognitionPatterns(),
+		FileUtils.getPath(objects.get(0).getFile().getParentFile()));
+	String pattern = inputDialog.getResult();
+
+	// If user entered a pattern apply to files
+	if (pattern != null) {
+	    EditTagFromFolderNamePatternProcess process = (EditTagFromFolderNamePatternProcess) processFactory
+		    .getProcessByName("editTagFromFolderNamePatternProcess");
+	    process.setFilesToChange(objects);
+	    process.setPattern(pattern);
+	    process.execute();
 	}
+    }
 
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(final IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
+    @Override
+    public boolean isEnabledForNavigationTreeSelection(
+	    final boolean rootSelected, final List<ITreeNode> selection) {
+	return !rootSelected && !selection.isEmpty();
+    }
 
-	/**
-	 * @param processFactory
-	 */
-	public void setProcessFactory(final IProcessFactory processFactory) {
-		this.processFactory = processFactory;
-	}
-
-	/**
-	 * Default constructor
-	 */
-	public AutoSetTagFromFolderNamePatternAction() {
-		super(StringUtils.getString(I18nUtils.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"), "..."));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"));
-	}
-
-	@Override
-	protected void executeAction(final List<ILocalAudioObject> objects) {
-		// Show pattern input dialog
-		PatternInputDialog inputDialog = dialogFactory.newDialog("nonMassivePatternInputDialog", PatternInputDialog.class);
-		inputDialog.show(patterns.getRecognitionPatterns(), FileUtils.getPath(objects.get(0).getFile().getParentFile()));
-		String pattern = inputDialog.getResult();
-
-		// If user entered a pattern apply to files
-		if (pattern != null) {
-			EditTagFromFolderNamePatternProcess process = (EditTagFromFolderNamePatternProcess) processFactory.getProcessByName("editTagFromFolderNamePatternProcess");
-			process.setFilesToChange(objects);
-			process.setPattern(pattern);
-			process.execute();
-		}
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeNode> selection) {
-		return !rootSelected && !selection.isEmpty();
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
-		return !selection.isEmpty();
-	}
+    @Override
+    public boolean isEnabledForNavigationTableSelection(
+	    final List<IAudioObject> selection) {
+	return !selection.isEmpty();
+    }
 }

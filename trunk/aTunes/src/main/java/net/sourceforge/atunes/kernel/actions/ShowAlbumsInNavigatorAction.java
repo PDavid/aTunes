@@ -30,64 +30,64 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Changes view mode to show albums
+ * 
  * @author alex
- *
+ * 
  */
 public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {
 
-	private static final long serialVersionUID = -3691606154694473768L;
+    private static final long serialVersionUID = -3691606154694473768L;
 
-	private INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-	private IIconFactory albumSmallIcon;
+    private IIconFactory albumSmallIcon;
 
-	private IStateNavigation stateNavigation;
+    private IStateNavigation stateNavigation;
 
-	/**
-	 * @param stateNavigation
-	 */
-	public void setStateNavigation(final IStateNavigation stateNavigation) {
-		this.stateNavigation = stateNavigation;
-	}
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(final IStateNavigation stateNavigation) {
+	this.stateNavigation = stateNavigation;
+    }
 
-	/**
-	 * @param albumSmallIcon
-	 */
-	public void setAlbumSmallIcon(final IIconFactory albumSmallIcon) {
-		this.albumSmallIcon = albumSmallIcon;
-	}
+    /**
+     * @param albumSmallIcon
+     */
+    public void setAlbumSmallIcon(final IIconFactory albumSmallIcon) {
+	this.albumSmallIcon = albumSmallIcon;
+    }
 
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
 
-	/**
+    /**
 	 * 
 	 */
-	public ShowAlbumsInNavigatorAction() {
-		super(I18nUtils.getString("SHOW_ALBUMS"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_ALBUMS"));
-	}
+    public ShowAlbumsInNavigatorAction() {
+	super(I18nUtils.getString("SHOW_ALBUMS"));
+    }
 
-	@Override
-	protected void initialize() {
-		super.initialize();
-		putValue(SELECTED_KEY, stateNavigation.getViewMode() == ViewMode.ALBUM);
-	}
+    @Override
+    protected void initialize() {
+	super.initialize();
+	putValue(SELECTED_KEY, stateNavigation.getViewMode() == ViewMode.ALBUM);
+    }
 
-	@Override
-	protected void executeAction() {
-		if (stateNavigation.getViewMode() != ViewMode.ALBUM) {
-			stateNavigation.setViewMode(ViewMode.ALBUM);
-			navigationHandler.refreshCurrentView();
-		}
+    @Override
+    protected void executeAction() {
+	if (stateNavigation.getViewMode() != ViewMode.ALBUM) {
+	    stateNavigation.setViewMode(ViewMode.ALBUM);
+	    navigationHandler.refreshCurrentView();
 	}
+    }
 
-	@Override
-	public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-		return albumSmallIcon.getColorMutableIcon();
-	}
+    @Override
+    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
+	return albumSmallIcon.getColorMutableIcon();
+    }
 }

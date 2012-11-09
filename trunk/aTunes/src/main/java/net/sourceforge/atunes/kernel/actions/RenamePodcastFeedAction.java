@@ -61,7 +61,6 @@ public class RenamePodcastFeedAction extends CustomAbstractAction {
      */
     public RenamePodcastFeedAction() {
 	super(I18nUtils.getString("RENAME_PODCAST_FEED"));
-	putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_PODCAST_FEED"));
     }
 
     @Override

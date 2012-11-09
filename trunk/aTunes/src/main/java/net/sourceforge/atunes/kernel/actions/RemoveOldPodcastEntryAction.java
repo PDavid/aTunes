@@ -30,55 +30,59 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Removes podcast feed entries
+ * 
  * @author alex
- *
+ * 
  */
-public class RemoveOldPodcastEntryAction extends AbstractActionOverSelectedObjects<IPodcastFeedEntry> {
+public class RemoveOldPodcastEntryAction extends
+	AbstractActionOverSelectedObjects<IPodcastFeedEntry> {
 
-	private static final long serialVersionUID = -1499729879534990802L;
+    private static final long serialVersionUID = -1499729879534990802L;
 
-	private INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-	private INavigationView podcastNavigationView;
+    private INavigationView podcastNavigationView;
 
-	/**
-	 * @param podcastNavigationView
-	 */
-	public void setPodcastNavigationView(final INavigationView podcastNavigationView) {
-		this.podcastNavigationView = podcastNavigationView;
+    /**
+     * @param podcastNavigationView
+     */
+    public void setPodcastNavigationView(
+	    final INavigationView podcastNavigationView) {
+	this.podcastNavigationView = podcastNavigationView;
+    }
+
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
+
+    /**
+     * Default constructor
+     */
+    public RemoveOldPodcastEntryAction() {
+	super(I18nUtils.getString("REMOVE_OLD_PODCAST_ENTRY"));
+    }
+
+    @Override
+    protected void executeAction(final List<IPodcastFeedEntry> objects) {
+	for (IPodcastFeedEntry pfe : objects) {
+	    pfe.getPodcastFeed().removeEntry(pfe);
 	}
+	navigationHandler.refreshView(podcastNavigationView);
+    }
 
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
+    @Override
+    public boolean isEnabledForNavigationTableSelection(
+	    final List<IAudioObject> selection) {
+	for (IAudioObject ao : selection) {
+	    if (!(ao instanceof IPodcastFeedEntry)
+		    || !((IPodcastFeedEntry) ao).isOld()) {
+		return false;
+	    }
 	}
-
-	/**
-	 * Default constructor
-	 */
-	public RemoveOldPodcastEntryAction() {
-		super(I18nUtils.getString("REMOVE_OLD_PODCAST_ENTRY"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_OLD_PODCAST_ENTRY"));
-	}
-
-	@Override
-	protected void executeAction(final List<IPodcastFeedEntry> objects) {
-		for (IPodcastFeedEntry pfe : objects) {
-			pfe.getPodcastFeed().removeEntry(pfe);
-		}
-		navigationHandler.refreshView(podcastNavigationView);
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
-		for (IAudioObject ao : selection) {
-			if (!(ao instanceof IPodcastFeedEntry) || !((IPodcastFeedEntry) ao).isOld()) {
-				return false;
-			}
-		}
-		return true;
-	}
+	return true;
+    }
 
 }

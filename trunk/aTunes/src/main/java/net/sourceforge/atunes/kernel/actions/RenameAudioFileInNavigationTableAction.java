@@ -35,66 +35,71 @@ import org.apache.commons.io.FilenameUtils;
 
 /**
  * Renames an audio file
+ * 
  * @author alex
- *
+ * 
  */
-public class RenameAudioFileInNavigationTableAction extends CustomAbstractAction {
+public class RenameAudioFileInNavigationTableAction extends
+	CustomAbstractAction {
 
-	private static final long serialVersionUID = 5607758675193509752L;
+    private static final long serialVersionUID = 5607758675193509752L;
 
-	private INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-	private IRepositoryHandler repositoryHandler;
+    private IRepositoryHandler repositoryHandler;
 
-	private IDialogFactory dialogFactory;
+    private IDialogFactory dialogFactory;
 
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(final IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(final IDialogFactory dialogFactory) {
+	this.dialogFactory = dialogFactory;
+    }
+
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
+
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+	this.repositoryHandler = repositoryHandler;
+    }
+
+    /**
+     * Default constructor
+     */
+    public RenameAudioFileInNavigationTableAction() {
+	super(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"));
+    }
+
+    @Override
+    protected void executeAction() {
+	List<IAudioObject> audioFiles = navigationHandler
+		.getFilesSelectedInNavigator();
+	if (audioFiles.size() == 1
+		&& audioFiles.get(0) instanceof ILocalAudioObject) {
+	    ILocalAudioObject ao = (ILocalAudioObject) audioFiles.get(0);
+	    IInputDialog dialog = dialogFactory.newDialog(IInputDialog.class);
+	    dialog.setTitle(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"));
+	    dialog.setText(FilenameUtils.getBaseName(FileUtils.getPath(ao
+		    .getFile())));
+	    dialog.showDialog();
+	    String name = dialog.getResult();
+	    if (name != null && !name.isEmpty()) {
+		repositoryHandler.rename(ao, name);
+	    }
 	}
+    }
 
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-
-	/**
-	 * @param repositoryHandler
-	 */
-	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-
-	/**
-	 * Default constructor
-	 */
-	public RenameAudioFileInNavigationTableAction() {
-		super(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_AUDIO_FILE_NAME"));
-	}
-
-	@Override
-	protected void executeAction() {
-		List<IAudioObject> audioFiles = navigationHandler.getFilesSelectedInNavigator();
-		if (audioFiles.size() == 1 && audioFiles.get(0) instanceof ILocalAudioObject) {
-			ILocalAudioObject ao = (ILocalAudioObject) audioFiles.get(0);
-			IInputDialog dialog = dialogFactory.newDialog(IInputDialog.class);
-			dialog.setTitle(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"));
-			dialog.setText(FilenameUtils.getBaseName(FileUtils.getPath(ao.getFile())));
-			dialog.showDialog();
-			String name = dialog.getResult();
-			if (name != null && !name.isEmpty()) {
-				repositoryHandler.rename(ao, name);
-			}
-		}
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
-		return selection.size() == 1;
-	}
+    @Override
+    public boolean isEnabledForNavigationTableSelection(
+	    final List<IAudioObject> selection) {
+	return selection.size() == 1;
+    }
 }

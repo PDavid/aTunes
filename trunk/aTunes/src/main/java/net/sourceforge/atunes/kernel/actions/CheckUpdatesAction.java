@@ -31,24 +31,23 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class CheckUpdatesAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = 999420226547524484L;
+    private static final long serialVersionUID = 999420226547524484L;
 
-	private IUpdateHandler updateHandler;
+    private IUpdateHandler updateHandler;
 
-	/**
-	 * @param updateHandler
-	 */
-	public void setUpdateHandler(final IUpdateHandler updateHandler) {
-		this.updateHandler = updateHandler;
-	}
+    /**
+     * @param updateHandler
+     */
+    public void setUpdateHandler(final IUpdateHandler updateHandler) {
+	this.updateHandler = updateHandler;
+    }
 
-	CheckUpdatesAction() {
-		super(I18nUtils.getString("CHECK_FOR_UPDATES"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("CHECK_FOR_UPDATES"));
-	}
+    CheckUpdatesAction() {
+	super(I18nUtils.getString("CHECK_FOR_UPDATES"));
+    }
 
-	@Override
-	protected void executeAction() {
-		updateHandler.checkUpdates(true, true);
-	}
+    @Override
+    protected void executeAction() {
+	updateHandler.checkUpdates(true, true);
+    }
 }

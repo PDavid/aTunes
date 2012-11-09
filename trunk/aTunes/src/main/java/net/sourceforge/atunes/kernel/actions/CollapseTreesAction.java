@@ -46,7 +46,6 @@ public class CollapseTreesAction extends CustomAbstractAction {
 
     CollapseTreesAction() {
 	super(I18nUtils.getString("COLLAPSE"));
-	putValue(SHORT_DESCRIPTION, I18nUtils.getString("COLLAPSE"));
     }
 
     @Override

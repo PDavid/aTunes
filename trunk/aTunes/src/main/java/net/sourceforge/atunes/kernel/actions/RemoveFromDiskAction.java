@@ -95,7 +95,6 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
      */
     public RemoveFromDiskAction() {
 	super(I18nUtils.getString("REMOVE_FROM_DISK"));
-	putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_FROM_DISK"));
     }
 
     /**

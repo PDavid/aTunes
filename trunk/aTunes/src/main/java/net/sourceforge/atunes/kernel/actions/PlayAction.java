@@ -28,42 +28,44 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Causes player to start or pause play back
+ * 
  * @author alex
- *
+ * 
  */
 public class PlayAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = -1122746023245126869L;
+    private static final long serialVersionUID = -1122746023245126869L;
 
-	private IPlayerHandler playerHandler;
+    private IPlayerHandler playerHandler;
 
-	/**
-	 * @param playerHandler
-	 */
-	public void setPlayerHandler(final IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(final IPlayerHandler playerHandler) {
+	this.playerHandler = playerHandler;
+    }
+
+    /**
+     * Default constructor
+     */
+    public PlayAction() {
+	super(I18nUtils.getString("PLAY"));
+    }
+
+    @Override
+    protected void executeAction() {
+	if (playerHandler.isEnginePlaying() || playerHandler.isEnginePaused()) {
+	    playerHandler.resumeOrPauseCurrentAudioObject();
+	} else {
+	    playerHandler.startPlayingAudioObjectInActivePlayList();
 	}
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public PlayAction() {
-		super(I18nUtils.getString("PLAY"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY"));
-	}
-
-	@Override
-	protected void executeAction() {
-		if (playerHandler.isEnginePlaying() || playerHandler.isEnginePaused()) {
-			playerHandler.resumeOrPauseCurrentAudioObject();
-		} else {
-			playerHandler.startPlayingAudioObjectInActivePlayList();
-		}
-	}
-
-	@Override
-	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
-		// Play action is always enabled even if play list or selection are empty, because this action is used in play button
-		return true;
-	}
+    @Override
+    public boolean isEnabledForPlayListSelection(
+	    final List<IAudioObject> selection) {
+	// Play action is always enabled even if play list or selection are
+	// empty, because this action is used in play button
+	return true;
+    }
 }

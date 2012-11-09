@@ -74,7 +74,6 @@ public class SetFavoriteAlbumFromNavigatorAction extends
      */
     public SetFavoriteAlbumFromNavigatorAction() {
 	super(I18nUtils.getString("SET_FAVORITE_ALBUM"));
-	putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_ALBUM"));
     }
 
     @Override
