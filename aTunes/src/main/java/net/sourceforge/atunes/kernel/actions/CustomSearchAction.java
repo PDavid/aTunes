@@ -39,29 +39,31 @@ public class CustomSearchAction extends CustomAbstractAction {
     private static final long serialVersionUID = 7036619806075628842L;
 
     private ISearchHandler searchHandler;
-    
+
     /**
      * @param searchHandler
      */
-    public void setSearchHandler(ISearchHandler searchHandler) {
-		this.searchHandler = searchHandler;
-	}
-    
+    public void setSearchHandler(final ISearchHandler searchHandler) {
+	this.searchHandler = searchHandler;
+    }
+
     /**
      * Default constructor
      */
     public CustomSearchAction() {
-        super(I18nUtils.getString("SEARCH"));
+	super(I18nUtils.getString("SEARCH"));
     }
-    
+
     @Override
     protected void initialize() {
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SEARCH"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D, GuiUtils.getCtrlOrMetaActionEventMask()));
+	putValue(
+		ACCELERATOR_KEY,
+		KeyStroke.getKeyStroke(KeyEvent.VK_D,
+			GuiUtils.getCtrlOrMetaActionEventMask()));
     }
 
     @Override
     protected void executeAction() {
-    	searchHandler.startSearch();
+	searchHandler.startSearch();
     }
 }

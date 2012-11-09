@@ -37,52 +37,56 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class ExportPlayListAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = -6661702915765846089L;
+    private static final long serialVersionUID = -6661702915765846089L;
 
-	private IPlayListHandler playListHandler;
+    private IPlayListHandler playListHandler;
 
-	private IAudioObjectExporter audioObjectExporter;
+    private IAudioObjectExporter audioObjectExporter;
 
-	private ILocalAudioObjectFilter localAudioObjectFilter;
+    private ILocalAudioObjectFilter localAudioObjectFilter;
 
-	/**
-	 * @param localAudioObjectFilter
-	 */
-	public void setLocalAudioObjectFilter(
-			final ILocalAudioObjectFilter localAudioObjectFilter) {
-		this.localAudioObjectFilter = localAudioObjectFilter;
-	}
+    /**
+     * @param localAudioObjectFilter
+     */
+    public void setLocalAudioObjectFilter(
+	    final ILocalAudioObjectFilter localAudioObjectFilter) {
+	this.localAudioObjectFilter = localAudioObjectFilter;
+    }
 
-	/**
-	 * Constructor
-	 */
-	public ExportPlayListAction() {
-		super(StringUtils.getString(I18nUtils.getString("EXPORT_PLAYLIST"), "..."));
-		putValue(SHORT_DESCRIPTION, StringUtils.getString(I18nUtils.getString("EXPORT_PLAYLIST"), "..."));
-	}
+    /**
+     * Constructor
+     */
+    public ExportPlayListAction() {
+	super(StringUtils.getString(I18nUtils.getString("EXPORT_PLAYLIST"),
+		"..."));
+    }
 
-	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(final IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(final IPlayListHandler playListHandler) {
+	this.playListHandler = playListHandler;
+    }
 
-	/**
-	 * @param audioObjectExporter
-	 */
-	public void setAudioObjectExporter(final IAudioObjectExporter audioObjectExporter) {
-		this.audioObjectExporter = audioObjectExporter;
-	}
+    /**
+     * @param audioObjectExporter
+     */
+    public void setAudioObjectExporter(
+	    final IAudioObjectExporter audioObjectExporter) {
+	this.audioObjectExporter = audioObjectExporter;
+    }
 
-	@Override
-	protected void executeAction() {
-		// Get only LocalAudioObject objects of current play list
-		audioObjectExporter.exportAudioObject(localAudioObjectFilter.getLocalAudioObjects(playListHandler.getVisiblePlayList().getAudioObjectsList()));
-	}
+    @Override
+    protected void executeAction() {
+	// Get only LocalAudioObject objects of current play list
+	audioObjectExporter.exportAudioObject(localAudioObjectFilter
+		.getLocalAudioObjects(playListHandler.getVisiblePlayList()
+			.getAudioObjectsList()));
+    }
 
-	@Override
-	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
-		return !playListHandler.getVisiblePlayList().isEmpty();
-	}
+    @Override
+    public boolean isEnabledForPlayListSelection(
+	    final List<IAudioObject> selection) {
+	return !playListHandler.getVisiblePlayList().isEmpty();
+    }
 }

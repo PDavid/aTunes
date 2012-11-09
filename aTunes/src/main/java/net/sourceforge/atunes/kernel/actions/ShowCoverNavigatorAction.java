@@ -39,54 +39,56 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction {
     private static final long serialVersionUID = 4927892497869144235L;
 
     private IRepositoryHandler repositoryHandler;
-    
+
     private IAudioObjectImageLocator audioObjectImageLocator;
-    
+
     private IProcessFactory processFactory;
-    
+
     private IDialogFactory dialogFactory;
-    
+
     /**
      * @param dialogFactory
      */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
-    
+    public void setDialogFactory(final IDialogFactory dialogFactory) {
+	this.dialogFactory = dialogFactory;
+    }
+
     /**
      * @param processFactory
      */
-    public void setProcessFactory(IProcessFactory processFactory) {
-		this.processFactory = processFactory;
-	}
-    
+    public void setProcessFactory(final IProcessFactory processFactory) {
+	this.processFactory = processFactory;
+    }
+
     /**
      * @param audioObjectImageLocator
      */
-    public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
-		this.audioObjectImageLocator = audioObjectImageLocator;
-	}
-    
+    public void setAudioObjectImageLocator(
+	    final IAudioObjectImageLocator audioObjectImageLocator) {
+	this.audioObjectImageLocator = audioObjectImageLocator;
+    }
+
     /**
      * @param repositoryHandler
      */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
+    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+	this.repositoryHandler = repositoryHandler;
+    }
 
     /**
      * Default constructor
      */
     public ShowCoverNavigatorAction() {
-        super(I18nUtils.getString("COVER_NAVIGATOR"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("COVER_NAVIGATOR"));
+	super(I18nUtils.getString("COVER_NAVIGATOR"));
     }
 
     @Override
     protected void executeAction() {
-        CoverNavigatorDialog coverNavigator = dialogFactory.newDialog(CoverNavigatorDialog.class); 
-        coverNavigator.setArtists(repositoryHandler.getArtists());
-        new CoverNavigatorController(coverNavigator, audioObjectImageLocator, processFactory);
-        coverNavigator.setVisible(true);
+	CoverNavigatorDialog coverNavigator = dialogFactory
+		.newDialog(CoverNavigatorDialog.class);
+	coverNavigator.setArtists(repositoryHandler.getArtists());
+	new CoverNavigatorController(coverNavigator, audioObjectImageLocator,
+		processFactory);
+	coverNavigator.setVisible(true);
     }
 }

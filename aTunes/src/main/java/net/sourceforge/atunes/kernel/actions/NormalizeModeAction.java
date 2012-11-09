@@ -34,99 +34,102 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Enables or disables normalization
+ * 
  * @author alex
- *
+ * 
  */
 public class NormalizeModeAction extends ActionWithColorMutableIcon {
 
-	private final class WarningActionListener implements ActionListener {
+    private final class WarningActionListener implements ActionListener {
 
-		private boolean showWarning;
-
-		@Override
-		public void actionPerformed(final ActionEvent arg0) {
-			if (showWarning) {
-				putValue(SMALL_ICON, normalizationIcon.getIcon(getLookAndFeel().getPaintForSpecialControls()));
-			} else {
-				putValue(SMALL_ICON, warningIcon.getIcon(getLookAndFeel().getPaintForSpecialControls()));
-			}
-			showWarning = !showWarning;
-		}
-	}
-
-	private static final long serialVersionUID = 6993968558006979367L;
-
-	private Timer timer;
-
-	private IPlayerHandler playerHandler;
-
-	private IIconFactory normalizationIcon;
-
-	private IIconFactory warningIcon;
-
-	private IStatePlayer statePlayer;
-
-	/**
-	 * @param statePlayer
-	 */
-	public void setStatePlayer(final IStatePlayer statePlayer) {
-		this.statePlayer = statePlayer;
-	}
-
-	/**
-	 * @param warningIcon
-	 */
-	public void setWarningIcon(final IIconFactory warningIcon) {
-		this.warningIcon = warningIcon;
-	}
-
-	/**
-	 * @param normalizationIcon
-	 */
-	public void setNormalizationIcon(final IIconFactory normalizationIcon) {
-		this.normalizationIcon = normalizationIcon;
-	}
-
-	/**
-	 * @param playerHandler
-	 */
-	public void setPlayerHandler(final IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-
-	/**
-	 * Default constructor
-	 */
-	public NormalizeModeAction() {
-		super(I18nUtils.getString("NORMALIZE"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("NORMALIZE"));
-	}
+	private boolean showWarning;
 
 	@Override
-	protected void initialize() {
-		super.initialize();
-		putValue(SELECTED_KEY, statePlayer.isUseNormalisation());
-		timer = new Timer(1000, new WarningActionListener());
-		if (statePlayer.isUseNormalisation()) {
-			timer.start();
-		}
+	public void actionPerformed(final ActionEvent arg0) {
+	    if (showWarning) {
+		putValue(SMALL_ICON, normalizationIcon.getIcon(getLookAndFeel()
+			.getPaintForSpecialControls()));
+	    } else {
+		putValue(SMALL_ICON, warningIcon.getIcon(getLookAndFeel()
+			.getPaintForSpecialControls()));
+	    }
+	    showWarning = !showWarning;
 	}
+    }
 
-	@Override
-	protected void executeAction() {
-		boolean isNormalized = !statePlayer.isUseNormalisation();
-		statePlayer.setUseNormalisation(isNormalized);
-		playerHandler.applyNormalization();
-		if (timer.isRunning()) {
-			timer.stop();
-			putValue(SMALL_ICON, normalizationIcon.getIcon(getLookAndFeel().getPaintForSpecialControls()));
-		} else {
-			timer.start();
-		}
-	}
+    private static final long serialVersionUID = 6993968558006979367L;
 
-	@Override
-	public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-		return normalizationIcon.getColorMutableIcon();
+    private Timer timer;
+
+    private IPlayerHandler playerHandler;
+
+    private IIconFactory normalizationIcon;
+
+    private IIconFactory warningIcon;
+
+    private IStatePlayer statePlayer;
+
+    /**
+     * @param statePlayer
+     */
+    public void setStatePlayer(final IStatePlayer statePlayer) {
+	this.statePlayer = statePlayer;
+    }
+
+    /**
+     * @param warningIcon
+     */
+    public void setWarningIcon(final IIconFactory warningIcon) {
+	this.warningIcon = warningIcon;
+    }
+
+    /**
+     * @param normalizationIcon
+     */
+    public void setNormalizationIcon(final IIconFactory normalizationIcon) {
+	this.normalizationIcon = normalizationIcon;
+    }
+
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(final IPlayerHandler playerHandler) {
+	this.playerHandler = playerHandler;
+    }
+
+    /**
+     * Default constructor
+     */
+    public NormalizeModeAction() {
+	super(I18nUtils.getString("NORMALIZE"));
+    }
+
+    @Override
+    protected void initialize() {
+	super.initialize();
+	putValue(SELECTED_KEY, statePlayer.isUseNormalisation());
+	timer = new Timer(1000, new WarningActionListener());
+	if (statePlayer.isUseNormalisation()) {
+	    timer.start();
 	}
+    }
+
+    @Override
+    protected void executeAction() {
+	boolean isNormalized = !statePlayer.isUseNormalisation();
+	statePlayer.setUseNormalisation(isNormalized);
+	playerHandler.applyNormalization();
+	if (timer.isRunning()) {
+	    timer.stop();
+	    putValue(SMALL_ICON, normalizationIcon.getIcon(getLookAndFeel()
+		    .getPaintForSpecialControls()));
+	} else {
+	    timer.start();
+	}
+    }
+
+    @Override
+    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
+	return normalizationIcon.getColorMutableIcon();
+    }
 }

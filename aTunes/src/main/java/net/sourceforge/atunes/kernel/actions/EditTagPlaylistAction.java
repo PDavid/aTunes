@@ -37,40 +37,40 @@ import net.sourceforge.atunes.utils.Logger;
  * @author fleax
  * 
  */
-public class EditTagPlaylistAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
+public class EditTagPlaylistAction extends
+	AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-	private static final long serialVersionUID = -4310895355731333072L;
+    private static final long serialVersionUID = -4310895355731333072L;
 
-	private ITagHandler tagHandler;
+    private ITagHandler tagHandler;
 
-	/**
-	 * @param tagHandler
-	 */
-	public void setTagHandler(final ITagHandler tagHandler) {
-		this.tagHandler = tagHandler;
+    /**
+     * @param tagHandler
+     */
+    public void setTagHandler(final ITagHandler tagHandler) {
+	this.tagHandler = tagHandler;
+    }
+
+    /**
+     * Default constructor
+     */
+    public EditTagPlaylistAction() {
+	super(I18nUtils.getString("EDIT_TAG"));
+    }
+
+    @Override
+    protected void initialize() {
+	super.initialize();
+	putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_INSERT, 0));
+    }
+
+    @Override
+    protected void executeAction(final List<ILocalAudioObject> objects) {
+	// Start edit by opening edit dialog
+	try {
+	    tagHandler.editFiles(EditTagSources.PLAYLIST, objects);
+	} catch (IllegalArgumentException iae) {
+	    Logger.error(iae);
 	}
-
-	/**
-	 * Default constructor
-	 */
-	public EditTagPlaylistAction() {
-		super(I18nUtils.getString("EDIT_TAG"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TAG"));
-	}
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_INSERT, 0));
-	}
-
-	@Override
-	protected void executeAction(final List<ILocalAudioObject> objects) {
-		// Start edit by opening edit dialog
-		try {
-			tagHandler.editFiles(EditTagSources.PLAYLIST, objects);
-		} catch (IllegalArgumentException iae) {
-			Logger.error(iae);
-		}
-	}
+    }
 }

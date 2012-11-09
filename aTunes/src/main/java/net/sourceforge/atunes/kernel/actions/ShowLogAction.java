@@ -33,36 +33,37 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ShowLogAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = 3596625443325726180L;
+    private static final long serialVersionUID = 3596625443325726180L;
 
-	private IOSManager osManager;
+    private IOSManager osManager;
 
-	private IDesktop desktop;
+    private IDesktop desktop;
 
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
-	}
+    /**
+     * @param osManager
+     */
+    public void setOsManager(final IOSManager osManager) {
+	this.osManager = osManager;
+    }
 
-	/**
-	 * @param desktop
-	 */
-	public void setDesktop(final IDesktop desktop) {
-		this.desktop = desktop;
-	}
+    /**
+     * @param desktop
+     */
+    public void setDesktop(final IDesktop desktop) {
+	this.desktop = desktop;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public ShowLogAction() {
-		super(I18nUtils.getString("SHOW_LOG"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_LOG"));
-	}
+    /**
+     * Default constructor
+     */
+    public ShowLogAction() {
+	super(I18nUtils.getString("SHOW_LOG"));
+    }
 
-	@Override
-	protected void executeAction() {
-		desktop.openFile(osManager.getFileFromUserConfigFolder(Constants.LOG_FILE), osManager);
-	}
+    @Override
+    protected void executeAction() {
+	desktop.openFile(
+		osManager.getFileFromUserConfigFolder(Constants.LOG_FILE),
+		osManager);
+    }
 }

@@ -93,7 +93,6 @@ public class SearchArtistAction extends CustomAbstractAction {
      */
     public SearchArtistAction() {
 	super(I18nUtils.getString("SEARCH_ARTIST"));
-	putValue(SHORT_DESCRIPTION, I18nUtils.getString("SEARCH_ARTIST"));
     }
 
     @Override

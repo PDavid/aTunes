@@ -32,28 +32,27 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class GoToWikiAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = -2614037760672140565L;
+    private static final long serialVersionUID = -2614037760672140565L;
 
-	private IDesktop desktop;
+    private IDesktop desktop;
 
-	/**
-	 * @param desktop
-	 */
-	public void setDesktop(final IDesktop desktop) {
-		this.desktop = desktop;
-	}
+    /**
+     * @param desktop
+     */
+    public void setDesktop(final IDesktop desktop) {
+	this.desktop = desktop;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public GoToWikiAction() {
-		super(I18nUtils.getString("GO_TO_WIKI"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("GO_TO_WIKI"));
-	}
+    /**
+     * Default constructor
+     */
+    public GoToWikiAction() {
+	super(I18nUtils.getString("GO_TO_WIKI"));
+    }
 
-	@Override
-	protected void executeAction() {
-		desktop.openURL(Constants.APP_WIKI);
-	}
+    @Override
+    protected void executeAction() {
+	desktop.openURL(Constants.APP_WIKI);
+    }
 
 }

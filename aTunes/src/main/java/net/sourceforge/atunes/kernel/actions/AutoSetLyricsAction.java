@@ -35,41 +35,44 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AutoSetLyricsAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
+public class AutoSetLyricsAction extends
+	AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-	private static final long serialVersionUID = 4778415252933283915L;
+    private static final long serialVersionUID = 4778415252933283915L;
 
-	private IProcessFactory processFactory;
+    private IProcessFactory processFactory;
 
-	/**
-	 * @param processFactory
-	 */
-	public void setProcessFactory(final IProcessFactory processFactory) {
-		this.processFactory = processFactory;
-	}
+    /**
+     * @param processFactory
+     */
+    public void setProcessFactory(final IProcessFactory processFactory) {
+	this.processFactory = processFactory;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public AutoSetLyricsAction() {
-		super(I18nUtils.getString("AUTO_SET_LYRICS"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_LYRICS"));
-	}
+    /**
+     * Default constructor
+     */
+    public AutoSetLyricsAction() {
+	super(I18nUtils.getString("AUTO_SET_LYRICS"));
+    }
 
-	@Override
-	protected void executeAction(final List<ILocalAudioObject> objects) {
-		IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("setLyricsProcess");
-		process.setFilesToChange(objects);
-		process.execute();
-	}
+    @Override
+    protected void executeAction(final List<ILocalAudioObject> objects) {
+	IChangeTagsProcess process = (IChangeTagsProcess) processFactory
+		.getProcessByName("setLyricsProcess");
+	process.setFilesToChange(objects);
+	process.execute();
+    }
 
-	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeNode> selection) {
-		return !rootSelected && !selection.isEmpty();
-	}
+    @Override
+    public boolean isEnabledForNavigationTreeSelection(
+	    final boolean rootSelected, final List<ITreeNode> selection) {
+	return !rootSelected && !selection.isEmpty();
+    }
 
-	@Override
-	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
-		return !selection.isEmpty();
-	}
+    @Override
+    public boolean isEnabledForNavigationTableSelection(
+	    final List<IAudioObject> selection) {
+	return !selection.isEmpty();
+    }
 }

@@ -40,73 +40,80 @@ import org.apache.sanselan.ImageWriteException;
 
 /**
  * Extracts a picture of an audio object
+ * 
  * @author alex
- *
+ * 
  */
-public class ExtractPictureAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
+public class ExtractPictureAction extends
+	AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-	private static final long serialVersionUID = -8618297820141610193L;
+    private static final long serialVersionUID = -8618297820141610193L;
 
-	private IDialogFactory dialogFactory;
+    private IDialogFactory dialogFactory;
 
-	private IOSManager osManager;
+    private IOSManager osManager;
 
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
+    /**
+     * @param osManager
+     */
+    public void setOsManager(final IOSManager osManager) {
+	this.osManager = osManager;
+    }
+
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(final IDialogFactory dialogFactory) {
+	this.dialogFactory = dialogFactory;
+    }
+
+    /**
+     * Default constructor
+     */
+    public ExtractPictureAction() {
+	super(I18nUtils.getString("EXTRACT_PICTURE"));
+    }
+
+    @Override
+    protected void executeAction(final List<ILocalAudioObject> objects) {
+	IFileSelectorDialog dialog = dialogFactory
+		.newDialog(IFileSelectorDialog.class);
+	FilenameFilter filter = new FilenameFilter() {
+
+	    @Override
+	    public boolean accept(final File dir, final String name) {
+		return name.toUpperCase().endsWith("PNG");
+	    }
+
+	    @Override
+	    public String toString() {
+		return ".png";
+	    }
+	};
+	dialog.setFileFilter(filter);
+
+	File selectedFile = dialog.saveFile(osManager.getUserHome());
+	if (!selectedFile.getName().toUpperCase().endsWith("PNG")) {
+	    selectedFile = new File(StringUtils.getString(
+		    FileUtils.getPath(selectedFile), ".png"));
 	}
 
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(final IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
+	// Export only first picture
+	try {
+	    AudioFilePictureUtils.savePictureToFile(objects.get(0),
+		    selectedFile);
+	} catch (ImageWriteException e) {
+	    Logger.error(e);
+	} catch (IOException e) {
+	    Logger.error(e);
 	}
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public ExtractPictureAction() {
-		super(I18nUtils.getString("EXTRACT_PICTURE"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("EXTRACT_PICTURE"));
-	}
-
-	@Override
-	protected void executeAction(final List<ILocalAudioObject> objects) {
-		IFileSelectorDialog dialog = dialogFactory.newDialog(IFileSelectorDialog.class);
-		FilenameFilter filter = new FilenameFilter() {
-
-			@Override
-			public boolean accept(final File dir, final String name) {
-				return name.toUpperCase().endsWith("PNG");
-			}
-
-			@Override
-			public String toString() {
-				return ".png";
-			}
-		};
-		dialog.setFileFilter(filter);
-
-		File selectedFile = dialog.saveFile(osManager.getUserHome());
-		if (!selectedFile.getName().toUpperCase().endsWith("PNG")) {
-			selectedFile = new File(StringUtils.getString(FileUtils.getPath(selectedFile), ".png"));
-		}
-
-		// Export only first picture
-		try {
-			AudioFilePictureUtils.savePictureToFile(objects.get(0), selectedFile);
-		} catch (ImageWriteException e) {
-			Logger.error(e);
-		} catch (IOException e) {
-			Logger.error(e);
-		}
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
-		return selection.size() == 1 && selection.get(0) instanceof ILocalAudioObject && ((ILocalAudioObject) selection.get(0)).hasInternalPicture();
-	}
+    @Override
+    public boolean isEnabledForNavigationTableSelection(
+	    final List<IAudioObject> selection) {
+	return selection.size() == 1
+		&& selection.get(0) instanceof ILocalAudioObject
+		&& ((ILocalAudioObject) selection.get(0)).hasInternalPicture();
+    }
 }

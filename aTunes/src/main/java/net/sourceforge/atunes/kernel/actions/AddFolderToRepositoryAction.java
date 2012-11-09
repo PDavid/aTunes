@@ -28,31 +28,31 @@ import net.sourceforge.atunes.utils.StringUtils;
  * This action show a window to select folders to set as repository
  * 
  * @author fleax
- *  
+ * 
  */
 public class AddFolderToRepositoryAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 6921256152199287639L;
 
     private IRepositoryHandler repositoryHandler;
-    
+
     /**
      * @param repositoryHandler
      */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-    
+    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+	this.repositoryHandler = repositoryHandler;
+    }
+
     /**
-     * Default constructor 
+     * Default constructor
      */
     public AddFolderToRepositoryAction() {
-        super(StringUtils.getString(I18nUtils.getString("ADD_FOLDER_TO_REPOSITORY"), "..."));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_FOLDER_TO_REPOSITORY"));
+	super(StringUtils.getString(
+		I18nUtils.getString("ADD_FOLDER_TO_REPOSITORY"), "..."));
     }
 
     @Override
     protected void executeAction() {
-        repositoryHandler.addFolderToRepository();
+	repositoryHandler.addFolderToRepository();
     }
 }

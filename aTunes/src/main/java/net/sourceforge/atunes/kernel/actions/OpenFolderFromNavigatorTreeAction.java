@@ -48,7 +48,6 @@ public class OpenFolderFromNavigatorTreeAction extends
      */
     public OpenFolderFromNavigatorTreeAction() {
 	super(I18nUtils.getString("OPEN_FOLDER"));
-	putValue(SHORT_DESCRIPTION, I18nUtils.getString("OPEN_FOLDER"));
     }
 
     /**

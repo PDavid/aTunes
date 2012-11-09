@@ -30,65 +30,65 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Changes view mode to show genres
+ * 
  * @author alex
- *
+ * 
  */
 public class ShowGenresInNavigatorAction extends ActionWithColorMutableIcon {
 
-	private static final long serialVersionUID = 8717980405436543347L;
+    private static final long serialVersionUID = 8717980405436543347L;
 
-	private INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-	private IIconFactory genreIcon;
+    private IIconFactory genreIcon;
 
-	private IStateNavigation stateNavigation;
+    private IStateNavigation stateNavigation;
 
-	/**
-	 * @param stateNavigation
-	 */
-	public void setStateNavigation(final IStateNavigation stateNavigation) {
-		this.stateNavigation = stateNavigation;
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(final IStateNavigation stateNavigation) {
+	this.stateNavigation = stateNavigation;
+    }
+
+    /**
+     * @param genreIcon
+     */
+    public void setGenreIcon(final IIconFactory genreIcon) {
+	this.genreIcon = genreIcon;
+    }
+
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
+
+    /**
+     * Default constructor
+     */
+    public ShowGenresInNavigatorAction() {
+	super(I18nUtils.getString("SHOW_GENRE"));
+    }
+
+    @Override
+    protected void initialize() {
+	super.initialize();
+	putValue(SELECTED_KEY, stateNavigation.getViewMode() == ViewMode.GENRE);
+    }
+
+    @Override
+    protected void executeAction() {
+	if (stateNavigation.getViewMode() != ViewMode.GENRE) {
+	    stateNavigation.setViewMode(ViewMode.GENRE);
+	    navigationHandler.refreshCurrentView();
 	}
+    }
 
-	/**
-	 * @param genreIcon
-	 */
-	public void setGenreIcon(final IIconFactory genreIcon) {
-		this.genreIcon = genreIcon;
-	}
-
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-
-	/**
-	 * Default constructor
-	 */
-	public ShowGenresInNavigatorAction() {
-		super(I18nUtils.getString("SHOW_GENRE"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_GENRE"));
-	}
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		putValue(SELECTED_KEY, stateNavigation.getViewMode() == ViewMode.GENRE);
-	}
-
-	@Override
-	protected void executeAction() {
-		if (stateNavigation.getViewMode() != ViewMode.GENRE) {
-			stateNavigation.setViewMode(ViewMode.GENRE);
-			navigationHandler.refreshCurrentView();
-		}
-	}
-
-	@Override
-	public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-		return genreIcon.getColorMutableIcon();
-	}
+    @Override
+    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
+	return genreIcon.getColorMutableIcon();
+    }
 
 }

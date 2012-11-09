@@ -46,7 +46,6 @@ public class ExpandTreesAction extends CustomAbstractAction {
 
     ExpandTreesAction() {
 	super(I18nUtils.getString("EXPAND"));
-	putValue(SHORT_DESCRIPTION, I18nUtils.getString("EXPAND"));
     }
 
     @Override

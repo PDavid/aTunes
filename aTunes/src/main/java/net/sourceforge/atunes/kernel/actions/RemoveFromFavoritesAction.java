@@ -87,8 +87,6 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
      */
     public RemoveFromFavoritesAction() {
 	super(I18nUtils.getString("REMOVE_FROM_FAVORITES"));
-	putValue(SHORT_DESCRIPTION,
-		I18nUtils.getString("REMOVE_FROM_FAVORITES"));
     }
 
     @SuppressWarnings("unchecked")

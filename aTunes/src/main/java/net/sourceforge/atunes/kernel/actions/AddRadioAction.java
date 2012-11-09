@@ -34,33 +34,33 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class AddRadioAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = -5764149587317233484L;
+    private static final long serialVersionUID = -5764149587317233484L;
 
-	private IRadioHandler radioHandler;
+    private IRadioHandler radioHandler;
 
-	/**
-	 * Default constructor
-	 */
-	public AddRadioAction() {
-		super(I18nUtils.getString("ADD_RADIO"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_RADIO"));
-	}
+    /**
+     * Default constructor
+     */
+    public AddRadioAction() {
+	super(I18nUtils.getString("ADD_RADIO"));
+    }
 
-	/**
-	 * @param radioHandler
-	 */
-	public void setRadioHandler(final IRadioHandler radioHandler) {
-		this.radioHandler = radioHandler;
-	}
+    /**
+     * @param radioHandler
+     */
+    public void setRadioHandler(final IRadioHandler radioHandler) {
+	this.radioHandler = radioHandler;
+    }
 
-	@Override
-	protected void executeAction() {
-		radioHandler.addRadio();
-	}
+    @Override
+    protected void executeAction() {
+	radioHandler.addRadio();
+    }
 
-	@Override
-	public boolean isEnabledForNavigationTreeSelection(final boolean rootSelected, final List<ITreeNode> selection) {
-		return true;
-	}
+    @Override
+    public boolean isEnabledForNavigationTreeSelection(
+	    final boolean rootSelected, final List<ITreeNode> selection) {
+	return true;
+    }
 
 }

@@ -52,7 +52,6 @@ public class EditTitlesAction extends
      */
     public EditTitlesAction() {
 	super(I18nUtils.getString("EDIT_TITLES"));
-	putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TITLES"));
     }
 
     @Override

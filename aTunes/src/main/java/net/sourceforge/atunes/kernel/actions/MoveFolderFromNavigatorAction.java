@@ -120,7 +120,6 @@ public class MoveFolderFromNavigatorAction extends
      */
     public MoveFolderFromNavigatorAction() {
 	super(I18nUtils.getString("MOVE_FOLDER"));
-	putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_FOLDER"));
     }
 
     @Override

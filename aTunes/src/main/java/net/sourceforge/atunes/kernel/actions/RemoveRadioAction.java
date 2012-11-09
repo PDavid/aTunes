@@ -53,7 +53,6 @@ public class RemoveRadioAction extends
      */
     public RemoveRadioAction() {
 	super(I18nUtils.getString("REMOVE_RADIO"));
-	putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_RADIO"));
     }
 
     @Override

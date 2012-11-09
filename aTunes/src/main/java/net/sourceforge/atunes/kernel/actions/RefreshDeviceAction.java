@@ -31,29 +31,28 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class RefreshDeviceAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = -5047885921099142L;
+    private static final long serialVersionUID = -5047885921099142L;
 
-	private IDeviceHandler deviceHandler;
+    private IDeviceHandler deviceHandler;
 
-	/**
-	 * @param deviceHandler
-	 */
-	public void setDeviceHandler(final IDeviceHandler deviceHandler) {
-		this.deviceHandler = deviceHandler;
-	}
+    /**
+     * @param deviceHandler
+     */
+    public void setDeviceHandler(final IDeviceHandler deviceHandler) {
+	this.deviceHandler = deviceHandler;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public RefreshDeviceAction() {
-		super(I18nUtils.getString("REFRESH"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH"));
-		setEnabled(false);
-	}
+    /**
+     * Default constructor
+     */
+    public RefreshDeviceAction() {
+	super(I18nUtils.getString("REFRESH"));
+	setEnabled(false);
+    }
 
-	@Override
-	protected void executeAction() {
-		deviceHandler.refreshDevice();
-	}
+    @Override
+    protected void executeAction() {
+	deviceHandler.refreshDevice();
+    }
 
 }

@@ -74,7 +74,6 @@ public class SetFavoriteArtistFromNavigatorAction extends
      */
     public SetFavoriteArtistFromNavigatorAction() {
 	super(I18nUtils.getString("SET_FAVORITE_ARTIST"));
-	putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_ARTIST"));
     }
 
     @Override

@@ -30,47 +30,49 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Sets favorite song
+ * 
  * @author alex
- *
+ * 
  */
-public class SetFavoriteSongFromNavigatorAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
+public class SetFavoriteSongFromNavigatorAction extends
+	AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-	private static final long serialVersionUID = 4023700964403110853L;
+    private static final long serialVersionUID = 4023700964403110853L;
 
-	private IFavoritesHandler favoritesHandler;
+    private IFavoritesHandler favoritesHandler;
 
-	private INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-	/**
-	 * @param favoritesHandler
-	 */
-	public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
-		this.favoritesHandler = favoritesHandler;
-	}
+    /**
+     * @param favoritesHandler
+     */
+    public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
+	this.favoritesHandler = favoritesHandler;
+    }
 
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public SetFavoriteSongFromNavigatorAction() {
-		super(I18nUtils.getString("SET_FAVORITE_SONG"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_SONG"));
-	}
+    /**
+     * Default constructor
+     */
+    public SetFavoriteSongFromNavigatorAction() {
+	super(I18nUtils.getString("SET_FAVORITE_SONG"));
+    }
 
-	@Override
-	protected void executeAction(final List<ILocalAudioObject> objects) {
-		favoritesHandler.toggleFavoriteSongs(objects);
-		navigationHandler.refreshNavigationTable();
-	}
+    @Override
+    protected void executeAction(final List<ILocalAudioObject> objects) {
+	favoritesHandler.toggleFavoriteSongs(objects);
+	navigationHandler.refreshNavigationTable();
+    }
 
-	@Override
-	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
-		return true;
-	}
+    @Override
+    public boolean isEnabledForNavigationTableSelection(
+	    final List<IAudioObject> selection) {
+	return true;
+    }
 }

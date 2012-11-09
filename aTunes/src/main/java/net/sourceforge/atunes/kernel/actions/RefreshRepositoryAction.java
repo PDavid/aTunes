@@ -38,26 +38,25 @@ public class RefreshRepositoryAction extends CustomAbstractAction {
     private static final long serialVersionUID = -5708270585764283210L;
 
     private IRepositoryHandler repositoryHandler;
-    
+
     /**
      * @param repositoryHandler
      */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-    
+    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+	this.repositoryHandler = repositoryHandler;
+    }
+
     /**
      * Default constructor
      */
     public RefreshRepositoryAction() {
-        super(I18nUtils.getString("REFRESH_REPOSITORY"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH_REPOSITORY"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
-        setEnabled(false); // Disabled until select repository
+	super(I18nUtils.getString("REFRESH_REPOSITORY"));
+	putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+	setEnabled(false); // Disabled until select repository
     }
 
     @Override
     protected void executeAction() {
-    	repositoryHandler.refreshRepository();
+	repositoryHandler.refreshRepository();
     }
 }

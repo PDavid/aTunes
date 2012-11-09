@@ -41,35 +41,38 @@ public class ShufflePlayListAction extends CustomAbstractAction {
     private static final long serialVersionUID = -6608120075596882123L;
 
     private IPlayListHandler playListHandler;
-    
+
     /**
      * @param playListHandler
      */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-    
+    public void setPlayListHandler(final IPlayListHandler playListHandler) {
+	this.playListHandler = playListHandler;
+    }
+
     /**
      * Default constructor
      */
     public ShufflePlayListAction() {
-        super(I18nUtils.getString("SHUFFLE_PLAYLIST"));
-    }
-    
-    @Override
-    protected void initialize() {
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHUFFLE_PLAYLIST"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_M, GuiUtils.getCtrlOrMetaActionEventMask()));
-        setEnabled(false);
-    }
-    
-    @Override
-    protected void executeAction() {
-    	playListHandler.shuffle();
+	super(I18nUtils.getString("SHUFFLE_PLAYLIST"));
     }
 
     @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return true;
+    protected void initialize() {
+	putValue(
+		ACCELERATOR_KEY,
+		KeyStroke.getKeyStroke(KeyEvent.VK_M,
+			GuiUtils.getCtrlOrMetaActionEventMask()));
+	setEnabled(false);
+    }
+
+    @Override
+    protected void executeAction() {
+	playListHandler.shuffle();
+    }
+
+    @Override
+    public boolean isEnabledForPlayListSelection(
+	    final List<IAudioObject> selection) {
+	return true;
     }
 }
