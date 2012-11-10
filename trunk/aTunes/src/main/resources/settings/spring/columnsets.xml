@@ -5,7 +5,7 @@
 	default-autowire="byName" default-lazy-init="true">
 
 	<bean id="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet" abstract="true" />
-		
+	
 	<bean id="navigatorColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet">
 		<property name="allowedColumns" ref="noPlaylistColumnSetColumns"/>
 	</bean>
@@ -22,12 +22,14 @@
 		<property name="allowedColumns" ref="noPlaylistColumnSetColumns"/>
 	</bean>
 
-	<bean id="podcastNavigationColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationColumnSet">
+	<bean id="podcastNavigationColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.navigator.CustomNavigatorColumnSet">
 		<property name="columnSetName" value="PodcastNavigationView" />
+		<property name="allowedColumns" ref="podcastColumnSetColumns"/>
 	</bean>
 
-	<bean id="radioNavigationColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationColumnSet">
+	<bean id="radioNavigationColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.navigator.CustomNavigatorColumnSet">
 		<property name="columnSetName" value="RadioNavigationView" />
+		<property name="allowedColumns" ref="radioColumnSetColumns"/>
 	</bean>
 	
 	<bean id="noPlaylistColumnSetColumns" class="java.util.ArrayList" scope="prototype">
@@ -97,6 +99,31 @@
 			</list>
 		</constructor-arg>
 	</bean>
+
+	<bean id="podcastColumnSetColumns" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<ref bean="podcastNotListenedColumn"/>
+				<ref bean="podcastDownloadedColumn"/>
+				<ref bean="podcastOldEntryColumn"/>
+				<ref bean="podcastEntriesColumn"/>
+				<ref bean="podcastDurationColumn"/>
+				<bean class="net.sourceforge.atunes.kernel.modules.columns.DateColumn">
+					<property name="visible" value="true"/>
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="radioColumnSetColumns" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<ref bean="radioEmptyColumn"/>
+				<ref bean="radioNameColumn"/>
+				<ref bean="radioUrlColumn"/>
+			</list>
+		</constructor-arg>
+	</bean>
 	
 	<bean id="playingColumn" class="net.sourceforge.atunes.kernel.modules.columns.PlayingColumn" scope="prototype"/>
     <bean id="favoriteColumn" class="net.sourceforge.atunes.kernel.modules.columns.FavoriteColumn" scope="prototype"/>
@@ -119,5 +146,15 @@
     <bean id="frequencyColumn" class="net.sourceforge.atunes.kernel.modules.columns.FrequencyColumn" scope="prototype"/>
     <bean id="timesPlayerColumn" class="net.sourceforge.atunes.kernel.modules.columns.TimesPlayedColumn" scope="prototype"/>
     <bean id="discNumberColumn" class="net.sourceforge.atunes.kernel.modules.columns.DiscNumberColumn" scope="prototype"/>
+    
+    <bean id="podcastNotListenedColumn" class="net.sourceforge.atunes.kernel.modules.navigator.PodcastNotListenedPropertyColumn" scope="prototype"/>
+    <bean id="podcastDownloadedColumn" class="net.sourceforge.atunes.kernel.modules.navigator.PodcastDownloadedPropertyColumn" scope="prototype"/>
+    <bean id="podcastOldEntryColumn" class="net.sourceforge.atunes.kernel.modules.navigator.PodcastOldEntryPropertyColumn" scope="prototype"/>
+    <bean id="podcastEntriesColumn" class="net.sourceforge.atunes.kernel.modules.navigator.PodcastEntriesColumn" scope="prototype"/>
+    <bean id="podcastDurationColumn" class="net.sourceforge.atunes.kernel.modules.navigator.PodcastDurationColumn" scope="prototype"/>
+    
+    <bean id="radioEmptyColumn" class="net.sourceforge.atunes.kernel.modules.navigator.RadioEmptyColumn" scope="prototype"/>
+    <bean id="radioNameColumn" class="net.sourceforge.atunes.kernel.modules.navigator.RadioNameColumn" scope="prototype"/>
+    <bean id="radioUrlColumn" class="net.sourceforge.atunes.kernel.modules.navigator.RadioUrlColumn" scope="prototype"/>
 
 </beans>

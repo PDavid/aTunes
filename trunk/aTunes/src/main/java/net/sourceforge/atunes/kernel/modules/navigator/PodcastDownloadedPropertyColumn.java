@@ -25,34 +25,48 @@ import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 
-final class PodcastDownloadedPropertyColumn extends AbstractColumn<AudioObjectProperty> {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+/**
+ * Column to show if podcast feed entry has been downloaded
+ * 
+ * @author alex
+ * 
+ */
+public final class PodcastDownloadedPropertyColumn extends
+	AbstractColumn<AudioObjectProperty> {
 
-	PodcastDownloadedPropertyColumn(final String name) {
-		super(name);
-	}
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public AudioObjectProperty getValueFor(final IAudioObject audioObject, final int row) {
-		if (audioObject instanceof IPodcastFeedEntry) {
-			return ((IPodcastFeedEntry) audioObject).isDownloaded() ? AudioObjectProperty.DOWNLOADED_ENTRY : AudioObjectProperty.NO_PROPERTIES;
-		}
-		return AudioObjectProperty.NO_PROPERTIES;
-	}
+    PodcastDownloadedPropertyColumn() {
+	super("");
+	setVisible(true);
+	setWidth(20);
+	setResizable(false);
+    }
 
-	@Override
-	protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
-		if (o1 instanceof IPodcastFeedEntry && o2 instanceof IPodcastFeedEntry) {
-			return Boolean.valueOf(((IPodcastFeedEntry) o1).isDownloaded()).compareTo(Boolean.valueOf(((IPodcastFeedEntry) o2).isDownloaded()));
-		}
-		return 0;
+    @Override
+    public AudioObjectProperty getValueFor(final IAudioObject audioObject,
+	    final int row) {
+	if (audioObject instanceof IPodcastFeedEntry) {
+	    return ((IPodcastFeedEntry) audioObject).isDownloaded() ? AudioObjectProperty.DOWNLOADED_ENTRY
+		    : AudioObjectProperty.NO_PROPERTIES;
 	}
+	return AudioObjectProperty.NO_PROPERTIES;
+    }
 
-	@Override
-	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return - ascendingCompare(ao1, ao2);
+    @Override
+    protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
+	if (o1 instanceof IPodcastFeedEntry && o2 instanceof IPodcastFeedEntry) {
+	    return Boolean.valueOf(((IPodcastFeedEntry) o1).isDownloaded())
+		    .compareTo(
+			    Boolean.valueOf(((IPodcastFeedEntry) o2)
+				    .isDownloaded()));
 	}
+	return 0;
+    }
+
+    @Override
+    protected int descendingCompare(final IAudioObject ao1,
+	    final IAudioObject ao2) {
+	return -ascendingCompare(ao1, ao2);
+    }
 }

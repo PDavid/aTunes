@@ -25,34 +25,49 @@ import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 
-final class PodcastOldEntryPropertyColumn extends AbstractColumn<AudioObjectProperty> {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+/**
+ * Column to show if podcast feed entry is new
+ * 
+ * @author alex
+ * 
+ */
+public final class PodcastOldEntryPropertyColumn extends
+	AbstractColumn<AudioObjectProperty> {
 
-	PodcastOldEntryPropertyColumn(final String name) {
-		super(name);
-	}
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -274069269769689184L;
 
-	@Override
-	public AudioObjectProperty getValueFor(final IAudioObject audioObject, final int row) {
-		if (audioObject instanceof IPodcastFeedEntry) {
-			return ((IPodcastFeedEntry) audioObject).isOld() ? AudioObjectProperty.OLD_ENTRY : AudioObjectProperty.NO_PROPERTIES;
-		}
-		return AudioObjectProperty.NO_PROPERTIES;
-	}
+    PodcastOldEntryPropertyColumn() {
+	super("");
+	setVisible(true);
+	setWidth(20);
+	setResizable(false);
+    }
 
-	@Override
-	protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
-		if (o1 instanceof IPodcastFeedEntry && o2 instanceof IPodcastFeedEntry) {
-			return Boolean.valueOf(((IPodcastFeedEntry) o1).isOld()).compareTo(Boolean.valueOf(((IPodcastFeedEntry) o2).isOld()));
-		}
-		return 0;
+    @Override
+    public AudioObjectProperty getValueFor(final IAudioObject audioObject,
+	    final int row) {
+	if (audioObject instanceof IPodcastFeedEntry) {
+	    return ((IPodcastFeedEntry) audioObject).isOld() ? AudioObjectProperty.OLD_ENTRY
+		    : AudioObjectProperty.NO_PROPERTIES;
 	}
+	return AudioObjectProperty.NO_PROPERTIES;
+    }
 
-	@Override
-	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return - ascendingCompare(ao1, ao2);
+    @Override
+    protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
+	if (o1 instanceof IPodcastFeedEntry && o2 instanceof IPodcastFeedEntry) {
+	    return Boolean.valueOf(((IPodcastFeedEntry) o1).isOld()).compareTo(
+		    Boolean.valueOf(((IPodcastFeedEntry) o2).isOld()));
 	}
+	return 0;
+    }
+
+    @Override
+    protected int descendingCompare(final IAudioObject ao1,
+	    final IAudioObject ao2) {
+	return -ascendingCompare(ao1, ao2);
+    }
 }

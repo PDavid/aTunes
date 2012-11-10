@@ -23,28 +23,38 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.IAudioObject;
 
-final class PodcastEntriesColumn extends AbstractColumn<String> {
-	/**
+/**
+ * Column to show podcast feed entry title
+ * 
+ * @author alex
+ * 
+ */
+public final class PodcastEntriesColumn extends AbstractColumn<String> {
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = -1788596965509543581L;
+    private static final long serialVersionUID = -1788596965509543581L;
 
-	PodcastEntriesColumn(final String name) {
-		super(name);
-	}
+    PodcastEntriesColumn() {
+	super("PODCAST_ENTRIES");
+	setVisible(true);
+	setWidth(300);
+	setUsedForFilter(true);
+    }
 
-	@Override
-	public String getValueFor(final IAudioObject audioObject, final int row) {
-		return audioObject.getTitleOrFileName();
-	}
+    @Override
+    public String getValueFor(final IAudioObject audioObject, final int row) {
+	return audioObject.getTitleOrFileName();
+    }
 
-	@Override
-	protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
-		return compare(o1.getTitleOrFileName(), o2.getTitleOrFileName());
-	}
+    @Override
+    protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
+	return compare(o1.getTitleOrFileName(), o2.getTitleOrFileName());
+    }
 
-	@Override
-	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return - ascendingCompare(ao1, ao2);
-	}
+    @Override
+    protected int descendingCompare(final IAudioObject ao1,
+	    final IAudioObject ao2) {
+	return -ascendingCompare(ao1, ao2);
+    }
 }

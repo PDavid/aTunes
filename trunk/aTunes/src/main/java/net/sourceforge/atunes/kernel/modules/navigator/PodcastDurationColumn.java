@@ -24,28 +24,38 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.TimeUtils;
 
-final class PodcastDurationColumn extends AbstractColumn<String> {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5577224920500040774L;
+/**
+ * Shows duration of podcast
+ * 
+ * @author alex
+ * 
+ */
+public final class PodcastDurationColumn extends AbstractColumn<String> {
 
-	PodcastDurationColumn(final String name) {
-		super(name);
-	}
+    private static final long serialVersionUID = -5577224920500040774L;
 
-	@Override
-	public String getValueFor(final IAudioObject audioObject, final int row) {
-		return TimeUtils.secondsToHoursMinutesSeconds(audioObject.getDuration());
-	}
+    PodcastDurationColumn() {
+	super("DURATION");
+	setVisible(true);
+	setWidth(60);
+	setUsedForFilter(true);
+    }
 
-	@Override
-	protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
-		return Integer.valueOf(o1.getDuration()).compareTo(Integer.valueOf(o2.getDuration()));
-	}
+    @Override
+    public String getValueFor(final IAudioObject audioObject, final int row) {
+	return TimeUtils
+		.secondsToHoursMinutesSeconds(audioObject.getDuration());
+    }
 
-	@Override
-	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return - ascendingCompare(ao1, ao2);
-	}
+    @Override
+    protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
+	return Integer.valueOf(o1.getDuration()).compareTo(
+		Integer.valueOf(o2.getDuration()));
+    }
+
+    @Override
+    protected int descendingCompare(final IAudioObject ao1,
+	    final IAudioObject ao2) {
+	return -ascendingCompare(ao1, ao2);
+    }
 }
