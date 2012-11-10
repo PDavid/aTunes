@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateRadio;
@@ -55,6 +56,15 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     private ILocalAudioObjectValidator localAudioObjectValidator;
 
     private IStateRadio stateRadio;
+
+    private IContextHandler contextHandler;
+
+    /**
+     * @param contextHandler
+     */
+    public void setContextHandler(final IContextHandler contextHandler) {
+	this.contextHandler = contextHandler;
+    }
 
     /**
      * @param stateRadio
@@ -154,7 +164,8 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 		// the cached one
 		mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(
 			this, process, audioObject, stateRadio, getFrame(),
-			getPlayListHandler(), localAudioObjectValidator);
+			getPlayListHandler(), localAudioObjectValidator,
+			contextHandler);
 		mPlayerErrorReader = new MPlayerErrorReader(this, process,
 			mPlayerOutputReader, audioObjectToPlay);
 		mPlayerOutputReader.start();

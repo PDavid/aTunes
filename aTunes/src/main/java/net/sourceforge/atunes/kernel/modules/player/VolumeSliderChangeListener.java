@@ -25,28 +25,34 @@ import javax.swing.event.ChangeListener;
 
 import net.sourceforge.atunes.gui.views.controls.VolumeSlider;
 
+/**
+ * Listener for volume changes from UI component
+ * 
+ * @author alex
+ * 
+ */
 public final class VolumeSliderChangeListener implements ChangeListener {
-	
-	private VolumeSlider volumeSlider;
-	
-	private Volume volumeController;
-	
-	/**
-	 * @param volumeController
-	 */
-	public void setVolumeController(Volume volumeController) {
-		this.volumeController = volumeController;
-	}
-	
-	/**
-	 * @param volumeSlider
-	 */
-	public void setVolumeSlider(VolumeSlider volumeSlider) {
-		this.volumeSlider = volumeSlider;
-	}
-	
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		volumeController.setVolume(volumeSlider.getValue());
-	}
+
+    private VolumeSlider volumeSlider;
+
+    private Volume volumeController;
+
+    /**
+     * @param volumeController
+     */
+    public void setVolumeController(final Volume volumeController) {
+	this.volumeController = volumeController;
+    }
+
+    /**
+     * @param volumeSlider
+     */
+    public void setVolumeSlider(final VolumeSlider volumeSlider) {
+	this.volumeSlider = volumeSlider;
+    }
+
+    @Override
+    public void stateChanged(final ChangeEvent e) {
+	volumeController.setVolume(volumeSlider.getValue());
+    }
 }
