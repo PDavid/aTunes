@@ -23,28 +23,35 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.IAudioObject;
 
-final class RadioUrlColumn extends AbstractColumn<String> {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1615880013918017198L;
+/**
+ * Radio URL
+ * 
+ * @author alex
+ * 
+ */
+public final class RadioUrlColumn extends AbstractColumn<String> {
+    private static final long serialVersionUID = -1615880013918017198L;
 
-	RadioUrlColumn(final String name) {
-		super(name);
-	}
+    RadioUrlColumn() {
+	super("URL");
+	setVisible(true);
+	setWidth(400);
+	setUsedForFilter(true);
+    }
 
-	@Override
-	protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
-		return compare(o1.getUrl(), o2.getUrl());
-	}
+    @Override
+    protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
+	return compare(o1.getUrl(), o2.getUrl());
+    }
 
-	@Override
-	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return - ascendingCompare(ao1, ao2);
-	}
+    @Override
+    protected int descendingCompare(final IAudioObject ao1,
+	    final IAudioObject ao2) {
+	return -ascendingCompare(ao1, ao2);
+    }
 
-	@Override
-	public String getValueFor(final IAudioObject audioObject, final int row) {
-		return audioObject.getUrl();
-	}
+    @Override
+    public String getValueFor(final IAudioObject audioObject, final int row) {
+	return audioObject.getUrl();
+    }
 }

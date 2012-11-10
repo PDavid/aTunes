@@ -24,28 +24,37 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IAudioObject;
 
-final class RadioEmptyColumn extends AbstractColumn<AudioObjectProperty> {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3613237620716484881L;
+/**
+ * Empty radio column
+ * 
+ * @author alex
+ * 
+ */
+public final class RadioEmptyColumn extends AbstractColumn<AudioObjectProperty> {
 
-	RadioEmptyColumn(final String name) {
-		super(name);
-	}
+    private static final long serialVersionUID = 3613237620716484881L;
 
-	@Override
-	protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
-		return 0;
-	}
+    RadioEmptyColumn() {
+	super("");
+	setVisible(true);
+	setWidth(20);
+	setResizable(false);
+    }
 
-	@Override
-	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return 0;
-	}
+    @Override
+    protected int ascendingCompare(final IAudioObject o1, final IAudioObject o2) {
+	return 0;
+    }
 
-	@Override
-	public AudioObjectProperty getValueFor(final IAudioObject audioObject, final int row) {
-		return AudioObjectProperty.NO_PROPERTIES;
-	}
+    @Override
+    protected int descendingCompare(final IAudioObject ao1,
+	    final IAudioObject ao2) {
+	return 0;
+    }
+
+    @Override
+    public AudioObjectProperty getValueFor(final IAudioObject audioObject,
+	    final int row) {
+	return AudioObjectProperty.NO_PROPERTIES;
+    }
 }

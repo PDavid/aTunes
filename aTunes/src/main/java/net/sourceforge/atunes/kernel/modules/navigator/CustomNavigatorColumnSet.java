@@ -35,59 +35,63 @@ import net.sourceforge.atunes.model.ITable;
  * @author fleax
  * 
  */
-public abstract class AbstractCustomNavigatorColumnSet extends AbstractColumnSet {
+public final class CustomNavigatorColumnSet extends AbstractColumnSet {
 
-	private ITable navigationTable;
-	
+    private ITable navigationTable;
+
     /**
      * Name of column set. Used to store and retrieve settings
      */
     private String columnSetName;
-    
+
     private IStateNavigation stateNavigation;
-    
+
     /**
      * @param stateNavigation
      */
-    public void setStateNavigation(IStateNavigation stateNavigation) {
-		this.stateNavigation = stateNavigation;
-	}
-    
+    public void setStateNavigation(final IStateNavigation stateNavigation) {
+	this.stateNavigation = stateNavigation;
+    }
+
     /**
      * @param columnSetName
      */
-    public void setColumnSetName(String columnSetName) {
-		this.columnSetName = columnSetName;
-	}
-    
+    public void setColumnSetName(final String columnSetName) {
+	this.columnSetName = columnSetName;
+    }
+
     /**
      * @param navigationTable
      */
-    public void setNavigationTable(ITable navigationTable) {
-		this.navigationTable = navigationTable;
-	}
+    public void setNavigationTable(final ITable navigationTable) {
+	this.navigationTable = navigationTable;
+    }
 
     @Override
-    protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-        Map<String, Map<String, ColumnBean>> configuration = stateNavigation.getCustomNavigatorColumns();
-        if (configuration == null) {
-            configuration = new HashMap<String, Map<String, ColumnBean>>();
-        }
-        configuration.put(this.columnSetName, columnsConfiguration);
-        stateNavigation.setCustomNavigatorColumns(configuration);
+    protected void setColumnsConfiguration(
+	    final Map<String, ColumnBean> columnsConfiguration) {
+	Map<String, Map<String, ColumnBean>> configuration = stateNavigation
+		.getCustomNavigatorColumns();
+	if (configuration == null) {
+	    configuration = new HashMap<String, Map<String, ColumnBean>>();
+	}
+	configuration.put(this.columnSetName, columnsConfiguration);
+	stateNavigation.setCustomNavigatorColumns(configuration);
     }
 
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-        Map<String, Map<String, ColumnBean>> configuration = stateNavigation.getCustomNavigatorColumns();
-        if (configuration != null) {
-            return configuration.get(this.columnSetName);
-        }
-        return null;
+	Map<String, Map<String, ColumnBean>> configuration = stateNavigation
+		.getCustomNavigatorColumns();
+	if (configuration != null) {
+	    return configuration.get(this.columnSetName);
+	}
+	return null;
     }
 
     @Override
     protected void refreshColumns() {
-        ((NavigationTableColumnModel) navigationTable.getColumnModel()).arrangeColumns(false);
-    }    
+	((NavigationTableColumnModel) navigationTable.getColumnModel())
+		.arrangeColumns(false);
+    }
 }
