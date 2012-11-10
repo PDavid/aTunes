@@ -141,9 +141,9 @@ public final class ContextPanel extends AbstractPreferencesPanel {
 	info.addMouseListener(new OpenLastFmMouseAdapter(desktop));
 	JLabel enginesTableLabel = new JLabel(
 		I18nUtils.getString("LYRICS_ENGINES_SELECTION"));
+	enginesTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
 	final LyricsEnginesTableModel model = new LyricsEnginesTableModel(
 		enginesTable);
-	enginesTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
 	enginesTable.setModel(model);
 	enginesTable.setTableHeader(null);
 	enginesTable.getColumnModel().getColumn(0).setMaxWidth(20);
