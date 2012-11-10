@@ -43,13 +43,13 @@ import org.jaudiotagger.tag.TagException;
  */
 public final class TagReader implements ILocalAudioObjectReader {
 
-    private Genres genres;
+    private Genres genresHelper;
 
     /**
-     * @param genres
+     * @param genresHelper
      */
-    public void setGenres(final Genres genres) {
-	this.genres = genres;
+    public void setGenresHelper(final Genres genresHelper) {
+	this.genresHelper = genresHelper;
     }
 
     @Override
@@ -71,7 +71,7 @@ public final class TagReader implements ILocalAudioObjectReader {
     private void setTag(final ILocalAudioObject ao, final AudioFile f) {
 	Tag tag = f.getTag();
 	if (tag != null) {
-	    ao.setTag(new DefaultTag(tag, genres));
+	    ao.setTag(new DefaultTag(tag, genresHelper));
 	}
     }
 

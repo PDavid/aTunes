@@ -4,6 +4,37 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	default-autowire="byName" default-lazy-init="true">
 
+	<!-- TYPES OF FRAMES -->
+	<bean id="frameTypes" class="net.sourceforge.atunes.gui.frame.Frames">
+		<property name="frames">
+			<list>
+				<ref bean="defaultFrame"/>
+				<ref bean="enhancedFrame"/>
+				<ref bean="navigatorTopPlayListBottomFrame"/>
+			</list>
+		</property>
+		<property name="images">
+			<map>
+				<entry key-ref="defaultFrame" value="/images/windows/1.png"/>
+				<entry key-ref="enhancedFrame" value="/images/windows/2.png"/>
+				<entry key-ref="navigatorTopPlayListBottomFrame" value="/images/windows/3.png"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="defaultFrame" class="java.lang.Class" factory-method="forName">
+		<constructor-arg value="net.sourceforge.atunes.gui.frame.DefaultSingleFrame"/>
+	</bean>
+	<bean id="enhancedFrame" class="java.lang.Class" factory-method="forName">
+		<constructor-arg value="net.sourceforge.atunes.gui.frame.EnhancedSingleFrame"/>
+	</bean>
+	<bean id="navigatorTopPlayListBottomFrame" class="java.lang.Class" factory-method="forName">
+		<constructor-arg value="net.sourceforge.atunes.gui.frame.NavigatorTopPlayListBottomSingleFrame"/>
+	</bean>
+	
+	
+	
+
 
 	<bean id="frameFactory" class="net.sourceforge.atunes.kernel.modules.ui.FrameFactory">
 		<property name="defaultFrameClass" value="net.sourceforge.atunes.gui.frame.DefaultSingleFrame"/>

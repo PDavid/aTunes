@@ -25,22 +25,28 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for similar artist
+ * 
+ * @author alex
+ * 
+ */
 public class ArtistSimilarImageIcon extends CachedIconFactory {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 2194637429534374433L;
-	
-	private static final int WIDTH = 16;
-	private static final int HEIGHT = 16;
-	
-	@Override
-	protected ImageIcon createIcon(Color color) {
-		Rectangle s = new Rectangle(WIDTH - 6, 5, 6, 2);
-		Rectangle s2 = new Rectangle (WIDTH - 4, 3, 2, 6);
-		Rectangle clip = new Rectangle(0, 1, WIDTH, HEIGHT - 2);
-		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, ArtistImageIcon.getArtistIconArea(-2), s, s2);
-	}
+    private static final long serialVersionUID = 2194637429534374433L;
+
+    private static final int WIDTH = 16;
+    private static final int HEIGHT = 16;
+
+    @Override
+    protected ImageIcon createIcon(final Color color) {
+	Rectangle s = new Rectangle(WIDTH - 6, 5, 6, 2);
+	Rectangle s2 = new Rectangle(WIDTH - 4, 3, 2, 6);
+	Rectangle clip = new Rectangle(0, 1, WIDTH, HEIGHT - 2);
+	return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT,
+		ArtistImageIcon.getArtistIconArea(-2), s, s2);
+    }
 }

@@ -26,21 +26,27 @@ import java.awt.geom.Area;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for favorite artist
+ * 
+ * @author alex
+ * 
+ */
 public class ArtistFavoriteImageIcon extends CachedIconFactory {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 5699311532940378979L;
-	
-	private static final int WIDTH = 26;
-	private static final int HEIGHT = 16;
+    private static final long serialVersionUID = 5699311532940378979L;
 
-	@Override
-	protected ImageIcon createIcon(Color color) {
-		Rectangle clip = new Rectangle(0, 1, WIDTH, HEIGHT - 2);
-		Area heart = FavoriteImageIcon.getIconArea(10, 10, WIDTH - 10, 1);
-		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, ArtistImageIcon.getArtistIconArea(0), heart);
-	}
+    private static final int WIDTH = 26;
+    private static final int HEIGHT = 16;
+
+    @Override
+    protected ImageIcon createIcon(final Color color) {
+	Rectangle clip = new Rectangle(0, 1, WIDTH, HEIGHT - 2);
+	Area heart = FavoriteImageIcon.getIconArea(10, 10, WIDTH - 10, 1);
+	return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT,
+		ArtistImageIcon.getArtistIconArea(0), heart);
+    }
 }

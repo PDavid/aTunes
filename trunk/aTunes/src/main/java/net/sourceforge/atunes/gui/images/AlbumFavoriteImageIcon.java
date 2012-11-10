@@ -25,20 +25,26 @@ import java.awt.geom.Area;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for favorite album
+ * 
+ * @author alex
+ * 
+ */
 public class AlbumFavoriteImageIcon extends CachedIconFactory {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 7933546099983043598L;
-	
-	private static final int WIDTH = 26;
-	private static final int HEIGHT = 16;
+    private static final long serialVersionUID = 7933546099983043598L;
 
-	@Override
-	protected ImageIcon createIcon(Color color) {
-		Area heart = FavoriteImageIcon.getIconArea(10, 10, WIDTH - 10, 1);
-		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, AlbumImageIcon.getIconArea(HEIGHT, HEIGHT, 0, 0), heart);
-	}
+    private static final int WIDTH = 26;
+    private static final int HEIGHT = 16;
+
+    @Override
+    protected ImageIcon createIcon(final Color color) {
+	Area heart = FavoriteImageIcon.getIconArea(10, 10, WIDTH - 10, 1);
+	return IconGenerator.generateIcon(color, WIDTH, HEIGHT,
+		AlbumImageIcon.getIconArea(HEIGHT, HEIGHT, 0, 0), heart);
+    }
 }

@@ -25,23 +25,28 @@ import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for left arrow
+ * 
+ * @author alex
+ * 
+ */
 public class ArrowLeftImageIcon extends CachedIconFactory {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = -939539268509387704L;
-	
-	private static final int SIZE = 14;
+    private static final long serialVersionUID = -939539268509387704L;
 
-	@Override
-	protected ImageIcon createIcon(Color color) {
-		Polygon shape = new Polygon();
-		shape.addPoint(3, 7);
-		shape.addPoint(11, 11);
-		shape.addPoint(11, 3);        
-		
-		return IconGenerator.generateIcon(color, SIZE, SIZE, shape);
-	}
+    private static final int SIZE = 14;
+
+    @Override
+    protected ImageIcon createIcon(final Color color) {
+	Polygon shape = new Polygon();
+	shape.addPoint(3, 7);
+	shape.addPoint(11, 11);
+	shape.addPoint(11, 3);
+
+	return IconGenerator.generateIcon(color, SIZE, SIZE, shape);
+    }
 }

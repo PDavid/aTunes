@@ -21,8 +21,6 @@
 package net.sourceforge.atunes.gui.frame;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,43 +28,52 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.IFrame;
 
+/**
+ * Types of frames and an image representing each one
+ * 
+ * @author alex
+ * 
+ */
 public final class Frames {
 
-    private Frames() {
+    private List<Class<? extends IFrame>> frames;
+
+    private Map<Class<? extends IFrame>, String> images;
+
+    /**
+     * @param images
+     */
+    public void setImages(final Map<Class<? extends IFrame>, String> images) {
+	this.images = images;
     }
 
-    private static final List<Class<? extends IFrame>> CLASSES;
-
-    private static Map<Class<? extends IFrame>, String> images = new HashMap<Class<? extends IFrame>, String>();
-
-    static {
-        CLASSES = new ArrayList<Class<? extends IFrame>>();
-
-        add(DefaultSingleFrame.class, "1.png");
-        add(EnhancedSingleFrame.class, "2.png");
-        add(NavigatorTopPlayListBottomSingleFrame.class, "3.png");
+    /**
+     * @param frames
+     */
+    public void setFrames(final List<Class<? extends IFrame>> frames) {
+	this.frames = frames;
     }
 
-    private static void add(Class<? extends IFrame> clazz, String image) {
-        CLASSES.add(clazz);
-        images.put(clazz, image);
+    /**
+     * @return
+     */
+    public List<Class<? extends IFrame>> getFrames() {
+	return frames;
     }
 
-    public static List<Class<? extends IFrame>> getClasses() {
-        return new ArrayList<Class<? extends IFrame>>(CLASSES);
+    /**
+     * @param clazz
+     * @return image for given frame type
+     */
+    public ImageIcon getImage(final Class<? extends IFrame> clazz) {
+	if (clazz == null) {
+	    throw new IllegalArgumentException("class null");
+	}
+	return getImage(images.get(clazz));
     }
 
-    public static ImageIcon getImage(Class<? extends IFrame> clazz) {
-        if (clazz == null) {
-            return null;
-        }
-        String string = images.get(clazz);
-        return getImage(string);
+    private static ImageIcon getImage(final String string) {
+	URL imgURL = Frames.class.getResource(string);
+	return imgURL != null ? new ImageIcon(imgURL) : null;
     }
-
-    private static ImageIcon getImage(String string) {
-        URL imgURL = Frames.class.getResource("/images/windows/" + string);
-        return imgURL != null ? new ImageIcon(imgURL) : null;
-    }
-
 }

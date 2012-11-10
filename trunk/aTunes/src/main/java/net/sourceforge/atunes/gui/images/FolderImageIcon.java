@@ -26,28 +26,33 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for folder
+ * 
+ * @author alex
+ * 
+ */
 public class FolderImageIcon extends CachedIconFactory {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = -827295313871199188L;
-	
-	private static final int SIZE = 18;
+    private static final long serialVersionUID = -827295313871199188L;
 
-	@Override
-	protected ImageIcon createIcon(Color color) {
-		RoundRectangle2D r = new RoundRectangle2D.Float(2, 5, 14, 10, 4, 4);
-		Polygon p = new Polygon();
-		p.addPoint(2, 8);
-		p.addPoint(2, 5);
-		p.addPoint(4, 3);
-		p.addPoint(8, 3);
-		p.addPoint(10, 5);
-		p.addPoint(10, 8);
-		
-		return IconGenerator.generateIcon(color, SIZE, SIZE, r, p);
-	}
+    private static final int SIZE = 18;
+
+    @Override
+    protected ImageIcon createIcon(final Color color) {
+	RoundRectangle2D r = new RoundRectangle2D.Float(2, 5, 14, 10, 4, 4);
+	Polygon p = new Polygon();
+	p.addPoint(2, 8);
+	p.addPoint(2, 5);
+	p.addPoint(4, 3);
+	p.addPoint(8, 3);
+	p.addPoint(10, 5);
+	p.addPoint(10, 8);
+
+	return IconGenerator.generateIcon(color, SIZE, SIZE, r, p);
+    }
 
 }

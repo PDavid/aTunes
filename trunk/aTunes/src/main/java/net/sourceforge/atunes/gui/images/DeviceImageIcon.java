@@ -31,39 +31,50 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for device
+ * 
+ * @author alex
+ * 
+ */
 public class DeviceImageIcon extends CachedIconFactory {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 3899061042448834823L;
-	
-	private static final int WIDTH = 16;
-	private static final int HEIGHT = 16;
-	
-	@Override
-	protected ImageIcon createIcon(Color color) {
-		int marginX = 3;
-		int marginY = 1;
-		int arc = 4;
+    private static final long serialVersionUID = 3899061042448834823L;
 
-		int internalMarginX = 5;
-		int internalMarginY = 3;
-		
-		int circleDiameter = HEIGHT / 4;
-		
-		BufferedImage bi = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g = bi.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setPaint(color);
-        
-       	g.fill(new RoundRectangle2D.Float(marginX, marginY, WIDTH - 2 * marginX, HEIGHT - 2 * marginY, arc, arc));
-       	g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-       	g.fill(new Rectangle(internalMarginX, internalMarginY, WIDTH - 2 * internalMarginX, HEIGHT / 2 - internalMarginY - 1));
-       	g.fill(new Ellipse2D.Float(WIDTH / 2 - circleDiameter / 2, HEIGHT - internalMarginY - circleDiameter, circleDiameter, circleDiameter));
-       	
-        g.dispose();
-        return new ImageIcon(bi);
-	}
+    private static final int WIDTH = 16;
+    private static final int HEIGHT = 16;
+
+    @Override
+    protected ImageIcon createIcon(final Color color) {
+	int marginX = 3;
+	int marginY = 1;
+	int arc = 4;
+
+	int internalMarginX = 5;
+	int internalMarginY = 3;
+
+	int circleDiameter = HEIGHT / 4;
+
+	BufferedImage bi = new BufferedImage(WIDTH, HEIGHT,
+		BufferedImage.TYPE_4BYTE_ABGR);
+	Graphics2D g = bi.createGraphics();
+	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		RenderingHints.VALUE_ANTIALIAS_ON);
+	g.setPaint(color);
+
+	g.fill(new RoundRectangle2D.Float(marginX, marginY,
+		WIDTH - 2 * marginX, HEIGHT - 2 * marginY, arc, arc));
+	g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+	g.fill(new Rectangle(internalMarginX, internalMarginY, WIDTH - 2
+		* internalMarginX, HEIGHT / 2 - internalMarginY - 1));
+	g.fill(new Ellipse2D.Float(WIDTH / 2 - circleDiameter / 2, HEIGHT
+		- internalMarginY - circleDiameter, circleDiameter,
+		circleDiameter));
+
+	g.dispose();
+	return new ImageIcon(bi);
+    }
 }

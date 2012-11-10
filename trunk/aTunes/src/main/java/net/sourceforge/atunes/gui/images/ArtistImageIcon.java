@@ -27,29 +27,38 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for artist
+ * 
+ * @author alex
+ * 
+ */
 public class ArtistImageIcon extends CachedIconFactory {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = -9026267553013591250L;
-	
-	private static final int WIDTH = 16;
-	private static final int HEIGHT = 16;
+    private static final long serialVersionUID = -9026267553013591250L;
 
-	@Override
-	protected ImageIcon createIcon(Color color) {
-		Rectangle clip = new Rectangle(2, 1, WIDTH - 4, HEIGHT - 2);
-		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, getArtistIconArea(0));
-	}
-	
-	protected static Area getArtistIconArea(int distanceFromCenter) {
-		Area a = new Area();
-		a.add(new Area(new Ellipse2D.Float(WIDTH / 2 - WIDTH * 2/6 + distanceFromCenter, HEIGHT / 2, WIDTH * 2/3, HEIGHT)));
-		float headWidth = WIDTH / 2.5f;
-		float headHeight = HEIGHT / 2.5f;
-		a.add(new Area(new Ellipse2D.Float(WIDTH / 2 - headWidth / 2 + distanceFromCenter, HEIGHT / 2 - headHeight * 0.8f, headWidth, headHeight)));
-		return a;
-	}
+    private static final int WIDTH = 16;
+    private static final int HEIGHT = 16;
+
+    @Override
+    protected ImageIcon createIcon(final Color color) {
+	Rectangle clip = new Rectangle(2, 1, WIDTH - 4, HEIGHT - 2);
+	return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT,
+		getArtistIconArea(0));
+    }
+
+    protected static Area getArtistIconArea(final int distanceFromCenter) {
+	Area a = new Area();
+	a.add(new Area(new Ellipse2D.Float(WIDTH / 2 - WIDTH * 2 / 6
+		+ distanceFromCenter, HEIGHT / 2, WIDTH * 2 / 3, HEIGHT)));
+	float headWidth = WIDTH / 2.5f;
+	float headHeight = HEIGHT / 2.5f;
+	a.add(new Area(new Ellipse2D.Float(WIDTH / 2 - headWidth / 2
+		+ distanceFromCenter, HEIGHT / 2 - headHeight * 0.8f,
+		headWidth, headHeight)));
+	return a;
+    }
 }
