@@ -23,14 +23,23 @@ package net.sourceforge.atunes.kernel.modules.tags;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Access genres
+ * 
+ * @author alex
+ * 
+ */
 public class Genres {
 
-	private List<String> genres;
-	
-	public void setGenres(List<String> genres) {
-		this.genres = genres;
-	}
-	
+    private List<String> genres;
+
+    /**
+     * @param genres
+     */
+    public void setGenres(final List<String> genres) {
+	this.genres = genres;
+    }
+
     /**
      * Tries to find the string provided in the table and returns the
      * corresponding int code if successful. Returns -1 if the genres is not
@@ -41,17 +50,17 @@ public class Genres {
      * 
      * @return the integer code for the genre or -1 if the genre is not found
      */
-    public int getGenre(String str) {
-        int retval = -1;
+    public int getGenre(final String str) {
+	int retval = -1;
 
-        for (int i = 0; (i < genres.size()); i++) {
-            if (genres.get(i).equalsIgnoreCase(str)) {
-                retval = i;
-                break;
-            }
-        }
+	for (int i = 0; (i < genres.size()); i++) {
+	    if (genres.get(i).equalsIgnoreCase(str)) {
+		retval = i;
+		break;
+	    }
+	}
 
-        return retval;
+	return retval;
     }
 
     /**
@@ -62,13 +71,14 @@ public class Genres {
      * 
      * @return the genre for code
      */
-    public final String getGenreForCode(int code) {
-        return code >= 0 && code < genres.size() ? genres.get(code) : "";
+    public final String getGenreForCode(final int code) {
+	return code >= 0 && code < genres.size() ? genres.get(code) : "";
     }
-    
+
+    /**
+     * @return genres list
+     */
     public List<String> getGenres() {
-		return new ArrayList<String>(this.genres);
-	}
-
-
+	return new ArrayList<String>(this.genres);
+    }
 }

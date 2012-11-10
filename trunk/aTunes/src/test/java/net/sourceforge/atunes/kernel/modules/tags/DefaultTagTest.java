@@ -28,38 +28,38 @@ import org.junit.Test;
 
 public class DefaultTagTest {
 
-	@Test
-	public void testNullInConstructor() {
-		DefaultTag tag = new DefaultTag(null);
-		assertEquals("", tag.getAlbum());
-		assertEquals("", tag.getAlbumArtist());
-		assertEquals("", tag.getArtist());
-		assertEquals("", tag.getComment());
-		assertEquals("", tag.getComposer());
-		assertNull(tag.getDate());
-		assertEquals(0, tag.getDiscNumber());
-		assertEquals("", tag.getGenre());
-		assertEquals("", tag.getLyrics());
-		assertEquals("", tag.getTitle());
-		assertEquals(0, tag.getTrackNumber());
-		assertEquals(0, tag.getYear());
-	}
-	
-	@Test
-	public void testUnsupportedOperationException() {
-		Tag wrongTag = new WrongTag();
-		DefaultTag tag = new DefaultTag(wrongTag);
-		assertEquals("", tag.getAlbum());
-		assertEquals("", tag.getAlbumArtist());
-		assertEquals("", tag.getArtist());
-		assertEquals("", tag.getComment());
-		assertEquals("", tag.getComposer());
-		assertNull(tag.getDate());
-		assertEquals(0, tag.getDiscNumber());
-		assertEquals("", tag.getGenre());
-		assertEquals("", tag.getLyrics());
-		assertEquals("", tag.getTitle());
-		assertEquals(0, tag.getTrackNumber());
-		assertEquals(0, tag.getYear());
-	}
+    @Test
+    public void testNullInConstructor() {
+	DefaultTag tag = new DefaultTag(null, null);
+	assertEquals("", tag.getAlbum());
+	assertEquals("", tag.getAlbumArtist());
+	assertEquals("", tag.getArtist());
+	assertEquals("", tag.getComment());
+	assertEquals("", tag.getComposer());
+	assertNull(tag.getDate());
+	assertEquals(0, tag.getDiscNumber());
+	assertEquals("", tag.getGenre());
+	assertEquals("", tag.getLyrics());
+	assertEquals("", tag.getTitle());
+	assertEquals(0, tag.getTrackNumber());
+	assertEquals(0, tag.getYear());
+    }
+
+    @Test
+    public void testUnsupportedOperationException() {
+	Tag wrongTag = new WrongTag();
+	DefaultTag tag = new DefaultTag(wrongTag, null);
+	assertEquals("", tag.getAlbum());
+	assertEquals("", tag.getAlbumArtist());
+	assertEquals("", tag.getArtist());
+	assertEquals("", tag.getComment());
+	assertEquals("", tag.getComposer());
+	assertNull(tag.getDate());
+	assertEquals(0, tag.getDiscNumber());
+	assertEquals("", tag.getGenre());
+	assertEquals("", tag.getLyrics());
+	assertEquals("", tag.getTitle());
+	assertEquals(0, tag.getTrackNumber());
+	assertEquals(0, tag.getYear());
+    }
 }
