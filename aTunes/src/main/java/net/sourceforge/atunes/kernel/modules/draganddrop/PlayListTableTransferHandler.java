@@ -34,6 +34,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IPlayListTable;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -65,6 +66,15 @@ public class PlayListTableTransferHandler extends TransferHandler {
     private IPlayListIOService playListIOService;
 
     private IDialogFactory dialogFactory;
+
+    private IRepositoryHandler repositoryHandler;
+
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+	this.repositoryHandler = repositoryHandler;
+    }
 
     /**
      * @param dialogFactory
@@ -187,7 +197,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
 		DragAndDropHelper.getInternalDataFlavor())) {
 	    return new InternalImportProcessor(navigationHandler,
 		    playListTable, playListHandler, audioObjectComparator,
-		    dialogFactory).processInternalImport(support);
+		    dialogFactory, repositoryHandler)
+		    .processInternalImport(support);
 	}
 
 	return new ExternalImportProcessor(localAudioObjectFactory,

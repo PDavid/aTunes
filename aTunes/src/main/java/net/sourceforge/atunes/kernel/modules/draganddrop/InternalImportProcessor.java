@@ -30,7 +30,6 @@ import javax.swing.JTable;
 import javax.swing.TransferHandler.TransferSupport;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.api.RepositoryApi;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
@@ -40,6 +39,7 @@ import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -62,23 +62,28 @@ class InternalImportProcessor {
 
     private final IDialogFactory dialogFactory;
 
+    private final IRepositoryHandler repositoryHandler;
+
     /**
      * @param navigationHandler
      * @param playListTable
      * @param playListHandler
      * @param audioObjectComparator
      * @param dialogFactory
+     * @param repositoryHandler
      */
     public InternalImportProcessor(final INavigationHandler navigationHandler,
 	    final IPlayListTable playListTable,
 	    final IPlayListHandler playListHandler,
 	    final IAudioObjectComparator audioObjectComparator,
-	    final IDialogFactory dialogFactory) {
+	    final IDialogFactory dialogFactory,
+	    final IRepositoryHandler repositoryHandler) {
 	this.navigationHandler = navigationHandler;
 	this.playListTable = playListTable;
 	this.playListHandler = playListHandler;
 	this.audioObjectComparator = audioObjectComparator;
 	this.dialogFactory = dialogFactory;
+	this.repositoryHandler = repositoryHandler;
     }
 
     /**
@@ -175,7 +180,7 @@ class InternalImportProcessor {
     private boolean getArtistSongs(
 	    final List<DragableArtist> listOfObjectsDragged) {
 	DragableArtist dragabreArtist = listOfObjectsDragged.get(0);
-	IArtist currentArtist = RepositoryApi.getArtist(dragabreArtist
+	IArtist currentArtist = repositoryHandler.getArtist(dragabreArtist
 		.getArtistInfo().getName());
 	showAddArtistDragDialog(currentArtist);
 	return true;
