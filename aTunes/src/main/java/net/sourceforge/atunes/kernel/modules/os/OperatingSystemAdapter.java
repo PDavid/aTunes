@@ -32,10 +32,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
@@ -64,6 +64,15 @@ public abstract class OperatingSystemAdapter {
     private IOSManager osManager;
 
     private ITrayIcon trayIcon;
+
+    private IBeanFactory beanFactory;
+
+    /**
+     * @param beanFactory
+     */
+    public void setBeanFactory(final IBeanFactory beanFactory) {
+	this.beanFactory = beanFactory;
+    }
 
     /**
      * @return
@@ -265,7 +274,7 @@ public abstract class OperatingSystemAdapter {
      */
     public void manageNoPlayerEngine(final IFrame frame) {
 	// By default no management is done, only an error message
-	Context.getBean(IDialogFactory.class).newDialog(IErrorDialog.class)
+	beanFactory.getBean(IDialogFactory.class).newDialog(IErrorDialog.class)
 		.showErrorDialog(I18nUtils.getString("NO_PLAYER_ENGINE"));
     }
 
@@ -323,7 +332,7 @@ public abstract class OperatingSystemAdapter {
      * Called when player engine is found (after searching or entering manually)
      */
     public final void playerEngineFound() {
-	Context.getBean(IPlayerHandler.class).initializeAndCheck();
+	beanFactory.getBean(IPlayerHandler.class).initializeAndCheck();
     }
 
     /**

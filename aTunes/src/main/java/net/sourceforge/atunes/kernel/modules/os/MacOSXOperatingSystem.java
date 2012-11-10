@@ -26,6 +26,7 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -33,137 +34,144 @@ import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
 /**
  * Adapter for Mac OS X
+ * 
  * @author alex
- *
+ * 
  */
-public class MacOSXOperatingSystem extends OperatingSystemAdapter implements ApplicationContextAware {
+public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 
-	/**
+    /**
      * Name of the MacOsX command
      */
     private static final String COMMAND_MACOSX = "/usr/bin/open";
-    
+
     protected static final String MPLAYER_COMMAND = "mplayer.command";
-    
+
     private IDialogFactory dialogFactory;
-    
+
     private IPlayerTrayIconsHandler macPlayerTrayIconsHandler;
-    
-    private ApplicationContext context;
-    
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-    	this.context = applicationContext;
+
+    private IBeanFactory beanFactory;
+
+    /**
+     * @param beanFactory
+     */
+    public void setBeanFactory(final IBeanFactory beanFactory) {
+	this.beanFactory = beanFactory;
     }
-    
+
     /**
      * @param macPlayerTrayIconsHandler
      */
-    public void setMacPlayerTrayIconsHandler(IPlayerTrayIconsHandler macPlayerTrayIconsHandler) {
-		this.macPlayerTrayIconsHandler = macPlayerTrayIconsHandler;
-	}
-    
+    public void setMacPlayerTrayIconsHandler(
+	    final IPlayerTrayIconsHandler macPlayerTrayIconsHandler) {
+	this.macPlayerTrayIconsHandler = macPlayerTrayIconsHandler;
+    }
+
     /**
      * @param dialogFactory
      */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
-    
-	@Override
-	public String getAppDataFolder() {
-		return StringUtils.getString(getUserHome(), "/Library/Preferences/aTunes");
-	}
+    public void setDialogFactory(final IDialogFactory dialogFactory) {
+	this.dialogFactory = dialogFactory;
+    }
 
-	@Override
-	public String getLaunchCommand() {
-		return COMMAND_MACOSX;
-	}
-	
-	@Override
-	public String getLaunchParameters() {
-		return System.getProperty("atunes.package"); // This property is set in Info.plist
-	}	
-	
-	@Override
-	public void setupFrame(IFrame frame) {
-		// Can't be created when creating this object
-		context.getBean(MacOSXInitializer.class).initialize();
-	}
-	
-	@Override
-	public boolean isPlayerEngineSupported(IPlayerEngine engine) {
-		return engine instanceof MPlayerEngine ? true : false; // Only MPLAYER
-	}
-	
-	@Override
-	public String getPlayerEngineCommand(IPlayerEngine engine) {
-		return engine instanceof MPlayerEngine ? getOsManager().getOSProperty(MPLAYER_COMMAND) : null;
-	}
+    @Override
+    public String getAppDataFolder() {
+	return StringUtils.getString(getUserHome(),
+		"/Library/Preferences/aTunes");
+    }
 
-	/**
-	 * Returns list of supported look and feels
-	 * @return
-	 */
-	@Override
-	public Map<String, Class<? extends ILookAndFeel>> getSupportedLookAndFeels() {
-	    Map<String, Class<? extends ILookAndFeel>> lookAndFeels = new HashMap<String, Class<? extends ILookAndFeel>>();
-        lookAndFeels.put(SubstanceLookAndFeel.SUBSTANCE, SubstanceLookAndFeel.class);
-        lookAndFeels.put(MacOSXLookAndFeel.SYSTEM, MacOSXLookAndFeel.class);
-        return lookAndFeels;
-	}
+    @Override
+    public String getLaunchCommand() {
+	return COMMAND_MACOSX;
+    }
 
-	/**
-	 * Returns default look and feel class
-	 * @return
-	 */
-	@Override
-	public Class<? extends ILookAndFeel> getDefaultLookAndFeel() {
-		return SubstanceLookAndFeel.class;
-	}
-	
-	@Override
-	public void manageNoPlayerEngine(IFrame frame) {
-		dialogFactory.newDialog(MacOSXPlayerSelectionDialog.class).showDialog();
-	}
-	
-	@Override
-	public boolean areTrayIconsSupported() {
-		return true;
-	}
-	
-	@Override
-	public boolean areMenuEntriesDelegated() {
-		return true;
-	}
-	
-	@Override
-	public boolean isClosingMainWindowClosesApplication() {
-		return false;
-	}
-	
-	@Override
-	public boolean isRipSupported() {
-		return false;
-	}
-	
-	@Override
-	public boolean isMultipleInstancesSupported() {
-		return true;
-	}
-	
-	@Override
-	public IPlayerTrayIconsHandler getPlayerTrayIcons() {
-		return macPlayerTrayIconsHandler;
-	}
+    @Override
+    public String getLaunchParameters() {
+	return System.getProperty("atunes.package"); // This property is set in
+						     // Info.plist
+    }
 
-	@Override
-	public boolean areTrayIconsColorsSupported() {
-		return false;
-	}
+    @Override
+    public void setupFrame(final IFrame frame) {
+	// Can't be created when creating this object
+	beanFactory.getBean(MacOSXInitializer.class).initialize();
+    }
+
+    @Override
+    public boolean isPlayerEngineSupported(final IPlayerEngine engine) {
+	return engine instanceof MPlayerEngine ? true : false; // Only MPLAYER
+    }
+
+    @Override
+    public String getPlayerEngineCommand(final IPlayerEngine engine) {
+	return engine instanceof MPlayerEngine ? getOsManager().getOSProperty(
+		MPLAYER_COMMAND) : null;
+    }
+
+    /**
+     * Returns list of supported look and feels
+     * 
+     * @return
+     */
+    @Override
+    public Map<String, Class<? extends ILookAndFeel>> getSupportedLookAndFeels() {
+	Map<String, Class<? extends ILookAndFeel>> lookAndFeels = new HashMap<String, Class<? extends ILookAndFeel>>();
+	lookAndFeels.put(SubstanceLookAndFeel.SUBSTANCE,
+		SubstanceLookAndFeel.class);
+	lookAndFeels.put(MacOSXLookAndFeel.SYSTEM, MacOSXLookAndFeel.class);
+	return lookAndFeels;
+    }
+
+    /**
+     * Returns default look and feel class
+     * 
+     * @return
+     */
+    @Override
+    public Class<? extends ILookAndFeel> getDefaultLookAndFeel() {
+	return SubstanceLookAndFeel.class;
+    }
+
+    @Override
+    public void manageNoPlayerEngine(final IFrame frame) {
+	dialogFactory.newDialog(MacOSXPlayerSelectionDialog.class).showDialog();
+    }
+
+    @Override
+    public boolean areTrayIconsSupported() {
+	return true;
+    }
+
+    @Override
+    public boolean areMenuEntriesDelegated() {
+	return true;
+    }
+
+    @Override
+    public boolean isClosingMainWindowClosesApplication() {
+	return false;
+    }
+
+    @Override
+    public boolean isRipSupported() {
+	return false;
+    }
+
+    @Override
+    public boolean isMultipleInstancesSupported() {
+	return true;
+    }
+
+    @Override
+    public IPlayerTrayIconsHandler getPlayerTrayIcons() {
+	return macPlayerTrayIconsHandler;
+    }
+
+    @Override
+    public boolean areTrayIconsColorsSupported() {
+	return false;
+    }
 }
