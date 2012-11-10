@@ -7,17 +7,18 @@
 	
 	<bean id="osManager" class="net.sourceforge.atunes.kernel.modules.os.OsManager" init-method="initialize"/>
 	
+	<bean id="operatingSystem" class="net.sourceforge.atunes.kernel.modules.os.OperatingSystemAdapter" abstract="true"/>
 	
-	<bean class="net.sourceforge.atunes.kernel.modules.os.LinuxOperatingSystem" scope="prototype">
+	<bean class="net.sourceforge.atunes.kernel.modules.os.LinuxOperatingSystem" parent="operatingSystem" scope="prototype">
 		<property name="trayIcon" ref="commonTrayIcon"></property>
 	</bean>
-	<bean class="net.sourceforge.atunes.kernel.modules.os.MacOSXOperatingSystem" scope="prototype">
+	<bean class="net.sourceforge.atunes.kernel.modules.os.MacOSXOperatingSystem" parent="operatingSystem" scope="prototype">
 		<property name="trayIcon" ref="macOsTrayIcon"></property>
 	</bean>
-	<bean class="net.sourceforge.atunes.kernel.modules.os.SolarisOperatingSystem" scope="prototype">
+	<bean class="net.sourceforge.atunes.kernel.modules.os.SolarisOperatingSystem" parent="operatingSystem" scope="prototype">
 		<property name="trayIcon" ref="commonTrayIcon"></property>
 	</bean>
-	<bean class="net.sourceforge.atunes.kernel.modules.os.WindowsOperatingSystem" scope="prototype">
+	<bean class="net.sourceforge.atunes.kernel.modules.os.WindowsOperatingSystem" parent="operatingSystem" scope="prototype">
 		<property name="trayIcon" ref="commonTrayIcon"></property>
 	</bean>
 
