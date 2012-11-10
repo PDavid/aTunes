@@ -25,16 +25,7 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
-import net.sourceforge.atunes.model.IAudioObjectComparator;
-import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
-import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayListIOService;
-import net.sourceforge.atunes.model.IPlayListTable;
-import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -49,98 +40,13 @@ public class PlayListTableTransferHandler extends TransferHandler {
 
     private static final long serialVersionUID = 4366983690375897364L;
 
-    private IPlayListHandler playListHandler;
-
-    private INavigationHandler navigationHandler;
-
-    private IPlayListTable playListTable;
-
-    private ILocalAudioObjectFactory localAudioObjectFactory;
-
-    private ILocalAudioObjectValidator localAudioObjectValidator;
-
-    private IAudioObjectComparator audioObjectComparator;
-
-    private ILocalAudioObjectLocator localAudioObjectLocator;
-
-    private IPlayListIOService playListIOService;
-
-    private IDialogFactory dialogFactory;
-
-    private IRepositoryHandler repositoryHandler;
+    private IBeanFactory beanFactory;
 
     /**
-     * @param repositoryHandler
+     * @param beanFactory
      */
-    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-	this.repositoryHandler = repositoryHandler;
-    }
-
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(final IDialogFactory dialogFactory) {
-	this.dialogFactory = dialogFactory;
-    }
-
-    /**
-     * @param playListTable
-     */
-    public void setPlayListTable(final IPlayListTable playListTable) {
-	this.playListTable = playListTable;
-    }
-
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(final IPlayListHandler playListHandler) {
-	this.playListHandler = playListHandler;
-    }
-
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(final INavigationHandler navigationHandler) {
-	this.navigationHandler = navigationHandler;
-    }
-
-    /**
-     * @param localAudioObjectFactory
-     */
-    public void setLocalAudioObjectFactory(
-	    final ILocalAudioObjectFactory localAudioObjectFactory) {
-	this.localAudioObjectFactory = localAudioObjectFactory;
-    }
-
-    /**
-     * @param localAudioObjectValidator
-     */
-    public void setLocalAudioObjectValidator(
-	    final ILocalAudioObjectValidator localAudioObjectValidator) {
-	this.localAudioObjectValidator = localAudioObjectValidator;
-    }
-
-    /**
-     * @param audioObjectComparator
-     */
-    public void setAudioObjectComparator(
-	    final IAudioObjectComparator audioObjectComparator) {
-	this.audioObjectComparator = audioObjectComparator;
-    }
-
-    /**
-     * @param localAudioObjectLocator
-     */
-    public void setLocalAudioObjectLocator(
-	    final ILocalAudioObjectLocator localAudioObjectLocator) {
-	this.localAudioObjectLocator = localAudioObjectLocator;
-    }
-
-    /**
-     * @param playListIOService
-     */
-    public void setPlayListIOService(final IPlayListIOService playListIOService) {
-	this.playListIOService = playListIOService;
+    public void setBeanFactory(final IBeanFactory beanFactory) {
+	this.beanFactory = beanFactory;
     }
 
     @Override
@@ -195,15 +101,11 @@ public class PlayListTableTransferHandler extends TransferHandler {
 
 	if (support.getTransferable().isDataFlavorSupported(
 		DragAndDropHelper.getInternalDataFlavor())) {
-	    return new InternalImportProcessor(navigationHandler,
-		    playListTable, playListHandler, audioObjectComparator,
-		    dialogFactory, repositoryHandler)
+	    return beanFactory.getBean(InternalImportProcessor.class)
 		    .processInternalImport(support);
 	}
 
-	return new ExternalImportProcessor(localAudioObjectFactory,
-		localAudioObjectValidator, localAudioObjectLocator,
-		playListIOService, playListTable, playListHandler,
-		audioObjectComparator).processExternalImport(support);
+	return beanFactory.getBean(ExternalImportProcessor.class)
+		.processExternalImport(support);
     }
 }

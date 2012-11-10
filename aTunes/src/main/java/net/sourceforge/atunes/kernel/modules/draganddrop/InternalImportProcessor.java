@@ -50,39 +50,60 @@ import net.sourceforge.atunes.utils.Logger;
  * @author alex
  * 
  */
-class InternalImportProcessor {
+public class InternalImportProcessor {
 
-    private final INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-    private final IPlayListTable playListTable;
+    private IPlayListTable playListTable;
 
-    private final IPlayListHandler playListHandler;
+    private IPlayListHandler playListHandler;
 
-    private final IAudioObjectComparator audioObjectComparator;
+    private IAudioObjectComparator audioObjectComparator;
 
-    private final IDialogFactory dialogFactory;
+    private IDialogFactory dialogFactory;
 
-    private final IRepositoryHandler repositoryHandler;
+    private IRepositoryHandler repositoryHandler;
 
     /**
      * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
+
+    /**
      * @param playListTable
+     */
+    public void setPlayListTable(final IPlayListTable playListTable) {
+	this.playListTable = playListTable;
+    }
+
+    /**
      * @param playListHandler
+     */
+    public void setPlayListHandler(final IPlayListHandler playListHandler) {
+	this.playListHandler = playListHandler;
+    }
+
+    /**
      * @param audioObjectComparator
+     */
+    public void setAudioObjectComparator(
+	    final IAudioObjectComparator audioObjectComparator) {
+	this.audioObjectComparator = audioObjectComparator;
+    }
+
+    /**
      * @param dialogFactory
+     */
+    public void setDialogFactory(final IDialogFactory dialogFactory) {
+	this.dialogFactory = dialogFactory;
+    }
+
+    /**
      * @param repositoryHandler
      */
-    public InternalImportProcessor(final INavigationHandler navigationHandler,
-	    final IPlayListTable playListTable,
-	    final IPlayListHandler playListHandler,
-	    final IAudioObjectComparator audioObjectComparator,
-	    final IDialogFactory dialogFactory,
-	    final IRepositoryHandler repositoryHandler) {
-	this.navigationHandler = navigationHandler;
-	this.playListTable = playListTable;
-	this.playListHandler = playListHandler;
-	this.audioObjectComparator = audioObjectComparator;
-	this.dialogFactory = dialogFactory;
+    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 	this.repositoryHandler = repositoryHandler;
     }
 
@@ -252,5 +273,4 @@ class InternalImportProcessor {
 
 	return true;
     }
-
 }

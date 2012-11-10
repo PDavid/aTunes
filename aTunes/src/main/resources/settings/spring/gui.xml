@@ -128,4 +128,9 @@
 	<bean class="net.sourceforge.atunes.gui.AlbumTableColumnModel" parent="abstractCommonColumnModel" scope="prototype" init-method="initialize"/>
 	<bean class="net.sourceforge.atunes.gui.NavigationTableColumnModel" parent="abstractCommonColumnModel" scope="prototype" init-method="initialize"/>
 	<bean class="net.sourceforge.atunes.gui.PlayListColumnModel" parent="abstractCommonColumnModel" scope="prototype" init-method="initialize"/>
+	
+	<!-- DRAG AND DROP PROCESSORS -->
+	<bean class="net.sourceforge.atunes.kernel.modules.draganddrop.InternalImportProcessor" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.draganddrop.ExternalImportProcessor" scope="prototype"/>
+	
 </beans>
