@@ -61,42 +61,70 @@ public class ExternalImportProcessor {
      */
     private DataFlavor uriListFlavor;
 
-    private final ILocalAudioObjectFactory localAudioObjectFactory;
+    private ILocalAudioObjectFactory localAudioObjectFactory;
 
-    private final ILocalAudioObjectValidator localAudioObjectValidator;
+    private ILocalAudioObjectValidator localAudioObjectValidator;
 
-    private final ILocalAudioObjectLocator localAudioObjectLocator;
+    private ILocalAudioObjectLocator localAudioObjectLocator;
 
-    private final IPlayListIOService playListIOService;
+    private IPlayListIOService playListIOService;
 
-    private final IPlayListTable playListTable;
+    private IPlayListTable playListTable;
 
-    private final IPlayListHandler playListHandler;
+    private IPlayListHandler playListHandler;
 
-    private final IAudioObjectComparator audioObjectComparator;
+    private IAudioObjectComparator audioObjectComparator;
 
     /**
      * @param localAudioObjectFactory
-     * @param localAudioObjectValidator
+     */
+    public void setLocalAudioObjectFactory(
+	    final ILocalAudioObjectFactory localAudioObjectFactory) {
+	this.localAudioObjectFactory = localAudioObjectFactory;
+    }
+
+    /**
      * @param localAudioObjectLocator
+     */
+    public void setLocalAudioObjectLocator(
+	    final ILocalAudioObjectLocator localAudioObjectLocator) {
+	this.localAudioObjectLocator = localAudioObjectLocator;
+    }
+
+    /**
+     * @param localAudioObjectValidator
+     */
+    public void setLocalAudioObjectValidator(
+	    final ILocalAudioObjectValidator localAudioObjectValidator) {
+	this.localAudioObjectValidator = localAudioObjectValidator;
+    }
+
+    /**
      * @param playListIOService
+     */
+    public void setPlayListIOService(final IPlayListIOService playListIOService) {
+	this.playListIOService = playListIOService;
+    }
+
+    /**
      * @param playListTable
+     */
+    public void setPlayListTable(final IPlayListTable playListTable) {
+	this.playListTable = playListTable;
+    }
+
+    /**
      * @param playListHandler
      */
-    ExternalImportProcessor(
-	    final ILocalAudioObjectFactory localAudioObjectFactory,
-	    final ILocalAudioObjectValidator localAudioObjectValidator,
-	    final ILocalAudioObjectLocator localAudioObjectLocator,
-	    final IPlayListIOService playListIOService,
-	    final IPlayListTable playListTable,
-	    final IPlayListHandler playListHandler,
-	    final IAudioObjectComparator audioObjectComparator) {
-	this.localAudioObjectFactory = localAudioObjectFactory;
-	this.localAudioObjectValidator = localAudioObjectValidator;
-	this.localAudioObjectLocator = localAudioObjectLocator;
-	this.playListIOService = playListIOService;
-	this.playListTable = playListTable;
+    public void setPlayListHandler(final IPlayListHandler playListHandler) {
 	this.playListHandler = playListHandler;
+    }
+
+    /**
+     * @param audioObjectComparator
+     */
+    public void setAudioObjectComparator(
+	    final IAudioObjectComparator audioObjectComparator) {
 	this.audioObjectComparator = audioObjectComparator;
     }
 
