@@ -27,30 +27,36 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for audio file
+ * 
+ * @author alex
+ * 
+ */
 public class AudioFileImageSmallIcon extends CachedIconFactory {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 4256539676766817966L;
-	
-	private static final int SMALL_WIDTH = 16;
-	private static final int SMALL_HEIGHT = 16;
+    private static final long serialVersionUID = 4256539676766817966L;
 
-	@Override
-	protected ImageIcon createIcon(Color color) {
-		Ellipse2D.Float e1 = new Ellipse2D.Float(1, 11, 6, 3);
-		Ellipse2D.Float e2 = new Ellipse2D.Float(8, 10, 6, 3);
-		
-		Rectangle r1 = new Rectangle(5, 4, 2, 8);
-		Rectangle r2 = new Rectangle(12, 3, 2, 8);
-		Polygon r3 = new Polygon();
-		r3.addPoint(5, 4);
-		r3.addPoint(5, 7);
-		r3.addPoint(14, 4);
-		r3.addPoint(14, 2);		
-		
-		return IconGenerator.generateIcon(color, SMALL_WIDTH, SMALL_HEIGHT, e1, e2, r1, r2, r3);
-	}
+    private static final int SMALL_WIDTH = 16;
+    private static final int SMALL_HEIGHT = 16;
+
+    @Override
+    protected ImageIcon createIcon(final Color color) {
+	Ellipse2D.Float e1 = new Ellipse2D.Float(1, 11, 6, 3);
+	Ellipse2D.Float e2 = new Ellipse2D.Float(8, 10, 6, 3);
+
+	Rectangle r1 = new Rectangle(5, 4, 2, 8);
+	Rectangle r2 = new Rectangle(12, 3, 2, 8);
+	Polygon r3 = new Polygon();
+	r3.addPoint(5, 4);
+	r3.addPoint(5, 7);
+	r3.addPoint(14, 4);
+	r3.addPoint(14, 2);
+
+	return IconGenerator.generateIcon(color, SMALL_WIDTH, SMALL_HEIGHT, e1,
+		e2, r1, r2, r3);
+    }
 }

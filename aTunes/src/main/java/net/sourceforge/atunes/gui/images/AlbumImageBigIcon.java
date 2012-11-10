@@ -24,18 +24,24 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for album
+ * 
+ * @author alex
+ * 
+ */
 public class AlbumImageBigIcon extends CachedIconFactory {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 7647875468552959504L;
-	
-	private static final int BIG_SIZE = 90;
+    private static final long serialVersionUID = 7647875468552959504L;
 
-	@Override
-	protected ImageIcon createIcon(Color color) {
-        return IconGenerator.generateIcon(color, BIG_SIZE, BIG_SIZE, AlbumImageIcon.getIconArea(BIG_SIZE, BIG_SIZE, 0, 0));
-	}
+    private static final int BIG_SIZE = 90;
+
+    @Override
+    protected ImageIcon createIcon(final Color color) {
+	return IconGenerator.generateIcon(color, BIG_SIZE, BIG_SIZE,
+		AlbumImageIcon.getIconArea(BIG_SIZE, BIG_SIZE, 0, 0));
+    }
 }

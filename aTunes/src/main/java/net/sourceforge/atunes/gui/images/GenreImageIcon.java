@@ -27,37 +27,42 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for genre
+ * 
+ * @author alex
+ * 
+ */
 public class GenreImageIcon extends CachedIconFactory {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = -939539268509387704L;
-	
-	private static final int SIZE = 18;
+    private static final long serialVersionUID = -939539268509387704L;
 
-	@Override
-	protected ImageIcon createIcon(Color color) {
-		Ellipse2D e1 = new Ellipse2D.Float(2, 10, 7, 7);
-		Ellipse2D e2 = new Ellipse2D.Float(6, 8, 5, 5);
-		Polygon p = new Polygon();
-		p.addPoint(8, 10);
-		p.addPoint(14, 4);
-		p.addPoint(14, 3);
-		p.addPoint(15, 3);
-		p.addPoint(16, 4);
-		p.addPoint(16, 5);
-		p.addPoint(15, 5);
-		p.addPoint(9, 11);
+    private static final int SIZE = 18;
 
-		Ellipse2D e3 = new Ellipse2D.Float(8, 10, 1, 1);
-		
-		Area a = new Area(e1);
-		a.add(new Area(e2));
-		a.add(new Area(p));
-		a.subtract(new Area(e3));
-		
-		return IconGenerator.generateIcon(color, SIZE, SIZE, a);
-	}
+    @Override
+    protected ImageIcon createIcon(final Color color) {
+	Ellipse2D e1 = new Ellipse2D.Float(2, 10, 7, 7);
+	Ellipse2D e2 = new Ellipse2D.Float(6, 8, 5, 5);
+	Polygon p = new Polygon();
+	p.addPoint(8, 10);
+	p.addPoint(14, 4);
+	p.addPoint(14, 3);
+	p.addPoint(15, 3);
+	p.addPoint(16, 4);
+	p.addPoint(16, 5);
+	p.addPoint(15, 5);
+	p.addPoint(9, 11);
+
+	Ellipse2D e3 = new Ellipse2D.Float(8, 10, 1, 1);
+
+	Area a = new Area(e1);
+	a.add(new Area(e2));
+	a.add(new Area(p));
+	a.subtract(new Area(e3));
+
+	return IconGenerator.generateIcon(color, SIZE, SIZE, a);
+    }
 }

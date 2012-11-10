@@ -27,45 +27,53 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for filter
+ * 
+ * @author alex
+ * 
+ */
 public class FilterImageIcon extends CachedIconFactory {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 2262229990261535398L;
+    private static final long serialVersionUID = 2262229990261535398L;
 
-	private static final int SIZE = 16;
+    private static final int SIZE = 16;
 
-	@Override
-	protected ImageIcon createIcon(Color color) {
-		return IconGenerator.generateIcon(color, SIZE, SIZE, getIconArea(SIZE, SIZE, 0, 0));
-	}
+    @Override
+    protected ImageIcon createIcon(final Color color) {
+	return IconGenerator.generateIcon(color, SIZE, SIZE,
+		getIconArea(SIZE, SIZE, 0, 0));
+    }
 
-	/**
-	 * @param width
-	 * @param height
-	 * @param xAxis
-	 * @param yAxis
-	 * @return
-	 */
-	protected static Area getIconArea(int width, int height, int xAxis, int yAxis) {
-		Ellipse2D.Float p = new Ellipse2D.Float(0, 1, width / 2 + 2, height / 2 + 2);
-		Ellipse2D.Float p2 = new Ellipse2D.Float(2, 3, width / 2 - 2, height / 2 - 2);
+    /**
+     * @param width
+     * @param height
+     * @param xAxis
+     * @param yAxis
+     * @return
+     */
+    protected static Area getIconArea(final int width, final int height,
+	    final int xAxis, final int yAxis) {
+	Ellipse2D.Float p = new Ellipse2D.Float(0, 1, width / 2 + 2,
+		height / 2 + 2);
+	Ellipse2D.Float p2 = new Ellipse2D.Float(2, 3, width / 2 - 2,
+		height / 2 - 2);
 
-		Area a = new Area(p);
-		a.subtract(new Area(p2));
-		
-		Polygon p3 = new Polygon();
-		p3.addPoint(width / 2, height / 2 + 1);
-		p3.addPoint(width - 3, height - 2);
-		p3.addPoint(width - 5, height - 1);
-		p3.addPoint(width / 2 - 3, height / 2 + 1);
-		
-		a.add(new Area(p3));
+	Area a = new Area(p);
+	a.subtract(new Area(p2));
 
+	Polygon p3 = new Polygon();
+	p3.addPoint(width / 2, height / 2 + 1);
+	p3.addPoint(width - 3, height - 2);
+	p3.addPoint(width - 5, height - 1);
+	p3.addPoint(width / 2 - 3, height / 2 + 1);
 
-		return a;
-	}
+	a.add(new Area(p3));
+
+	return a;
+    }
 
 }

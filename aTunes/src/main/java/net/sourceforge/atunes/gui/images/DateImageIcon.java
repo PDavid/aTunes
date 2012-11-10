@@ -30,37 +30,44 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for a date
+ * 
+ * @author alex
+ * 
+ */
 public class DateImageIcon extends CachedIconFactory {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = -3113996469467317328L;
-	
-	private static final int SIZE = 18;
+    private static final long serialVersionUID = -3113996469467317328L;
 
-	@Override
-	protected ImageIcon createIcon(Color color) {
-		Rectangle r = new Rectangle(1, 2, 16, 14);
-		Rectangle r2 = new Rectangle(2, 5, 14, 10);
+    private static final int SIZE = 18;
 
-		BufferedImage bi = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g = bi.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setPaint(color);
+    @Override
+    protected ImageIcon createIcon(final Color color) {
+	Rectangle r = new Rectangle(1, 2, 16, 14);
+	Rectangle r2 = new Rectangle(2, 5, 14, 10);
 
-        g.fill(r);
-        
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-        g.fill(r2);
-        
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
-        
-        g.setFont(new Font("Dialog", Font.BOLD, 8));
-        g.drawString("31", 3, 13);
-        
-        g.dispose();
-        return new ImageIcon(bi);
-	}
+	BufferedImage bi = new BufferedImage(SIZE, SIZE,
+		BufferedImage.TYPE_4BYTE_ABGR);
+	Graphics2D g = bi.createGraphics();
+	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		RenderingHints.VALUE_ANTIALIAS_ON);
+	g.setPaint(color);
+
+	g.fill(r);
+
+	g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+	g.fill(r2);
+
+	g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
+
+	g.setFont(new Font("Dialog", Font.BOLD, 8));
+	g.drawString("31", 3, 13);
+
+	g.dispose();
+	return new ImageIcon(bi);
+    }
 }
