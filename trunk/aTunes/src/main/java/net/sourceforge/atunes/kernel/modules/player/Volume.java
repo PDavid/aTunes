@@ -23,65 +23,71 @@ package net.sourceforge.atunes.kernel.modules.player;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IStatePlayer;
 
+/**
+ * Manages volume
+ * 
+ * @author alex
+ * 
+ */
 public final class Volume {
 
-	private IPlayerHandler playerHandler;
+    private IPlayerHandler playerHandler;
 
-	private IStatePlayer statePlayer;
-	
-	/**
-	 * @param statePlayer
-	 */
-	public void setStatePlayer(IStatePlayer statePlayer) {
-		this.statePlayer = statePlayer;
-	}
-	
-	/**
-	 * @param playerHandler
-	 */
-	public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-	
+    private IStatePlayer statePlayer;
+
+    /**
+     * @param statePlayer
+     */
+    public void setStatePlayer(final IStatePlayer statePlayer) {
+	this.statePlayer = statePlayer;
+    }
+
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(final IPlayerHandler playerHandler) {
+	this.playerHandler = playerHandler;
+    }
+
     /**
      * @param volume
      * @param saveVolume
      */
-    public void setVolume(int volume, boolean saveVolume) {
-        applyVolume(saveVolume, getVolumeLevel(volume));
+    public void setVolume(final int volume, final boolean saveVolume) {
+	applyVolume(saveVolume, getVolumeLevel(volume));
     }
-    
+
     /**
      * @param volume
      * @param state
      * @param playerHandler
      */
-    public void setVolume(int volume) {
-    	setVolume(volume, true);
+    public void setVolume(final int volume) {
+	setVolume(volume, true);
     }
 
-	/**
-	 * @param saveVolume
-	 * @param finalVolume
-	 */
-	private void applyVolume(boolean saveVolume, final int finalVolume) {
-		if (saveVolume) {
-			statePlayer.setVolume(finalVolume);
-        }
-        playerHandler.setVolume(finalVolume);
+    /**
+     * @param saveVolume
+     * @param finalVolume
+     */
+    private void applyVolume(final boolean saveVolume, final int finalVolume) {
+	if (saveVolume) {
+	    statePlayer.setVolume(finalVolume);
 	}
+	playerHandler.setVolume(finalVolume);
+    }
 
-	/**
-	 * @param volume
-	 * @return
-	 */
-	private int getVolumeLevel(int volume) {
-		int volumeLevel = volume;
-        if (volumeLevel < 0) {
-            volumeLevel = 0;
-        } else if (volumeLevel > 100) {
-            volumeLevel = 100;
-        }
-		return volumeLevel;
-	}    
+    /**
+     * @param volume
+     * @return
+     */
+    private int getVolumeLevel(final int volume) {
+	int volumeLevel = volume;
+	if (volumeLevel < 0) {
+	    volumeLevel = 0;
+	} else if (volumeLevel > 100) {
+	    volumeLevel = 100;
+	}
+	return volumeLevel;
+    }
 }

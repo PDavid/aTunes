@@ -31,17 +31,21 @@ import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Reads equalizer presets
+ * 
  * @author alex
- *
+ * 
  */
 public class EqualizerPresetsReader {
 
-	private String presetsFile;
+    private String presetsFile;
 
-	public void setPresetsFile(String presetsFile) {
-		this.presetsFile = presetsFile;
-	}
-	
+    /**
+     * @param presetsFile
+     */
+    public void setPresetsFile(final String presetsFile) {
+	this.presetsFile = presetsFile;
+    }
+
     /**
      * Returns presets loaded from properties file. Keys are transformed to be
      * shown on GUI
@@ -49,37 +53,38 @@ public class EqualizerPresetsReader {
      * @return the presets from bundle
      */
     public Map<String, Integer[]> getPresetsFromBundle() {
-        Map<String, Integer[]> result = new HashMap<String, Integer[]>();
+	Map<String, Integer[]> result = new HashMap<String, Integer[]>();
 
-        try {
-            PropertyResourceBundle presetsBundle = new PropertyResourceBundle(EqualizerPresetsReader.class.getResourceAsStream(presetsFile));
-            Enumeration<String> keys = presetsBundle.getKeys();
+	try {
+	    PropertyResourceBundle presetsBundle = new PropertyResourceBundle(
+		    EqualizerPresetsReader.class
+			    .getResourceAsStream(presetsFile));
+	    Enumeration<String> keys = presetsBundle.getKeys();
 
-            while (keys.hasMoreElements()) {
-                String key = keys.nextElement();
-                String preset = presetsBundle.getString(key);
+	    while (keys.hasMoreElements()) {
+		String key = keys.nextElement();
+		String preset = presetsBundle.getString(key);
 
-                // Transform key
-                key = key.replace('.', ' ');
+		// Transform key
+		key = key.replace('.', ' ');
 
-                // Parse preset
-                StringTokenizer st = new StringTokenizer(preset, ",");
-                Integer[] presetsArray = new Integer[10];
-                int i = 0;
-                while (st.hasMoreTokens()) {
-                    String token = st.nextToken();
-                    presetsArray[i++] = Integer.parseInt(token);
-                }
+		// Parse preset
+		StringTokenizer st = new StringTokenizer(preset, ",");
+		Integer[] presetsArray = new Integer[10];
+		int i = 0;
+		while (st.hasMoreTokens()) {
+		    String token = st.nextToken();
+		    presetsArray[i++] = Integer.parseInt(token);
+		}
 
-                result.put(key, presetsArray);
-            }
-        } catch (IOException ioe) {
-            Logger.error(ioe);
-        } catch (NumberFormatException nfe) {
-            Logger.error(nfe);
-        }
-        return result;
+		result.put(key, presetsArray);
+	    }
+	} catch (IOException ioe) {
+	    Logger.error(ioe);
+	} catch (NumberFormatException nfe) {
+	    Logger.error(nfe);
+	}
+	return result;
     }
-
 
 }
