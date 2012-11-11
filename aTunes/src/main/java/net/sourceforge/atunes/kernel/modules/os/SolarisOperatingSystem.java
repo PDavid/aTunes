@@ -27,7 +27,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.tray.CommonPlayerTrayIconsHandler;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
@@ -57,15 +56,6 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
     private static final String MPLAYER_SOLARISOPTAO = "-ao";
 
     private static final String MPLAYER_SOLARISOPTTYPE = "sun";
-
-    private IBeanFactory beanFactory;
-
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
 
     @Override
     public String getAppDataFolder() {
@@ -137,7 +127,7 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
 
     @Override
     public IPlayerTrayIconsHandler getPlayerTrayIcons() {
-	return beanFactory.getBean(CommonPlayerTrayIconsHandler.class);
+	return getBeanFactory().getBean(CommonPlayerTrayIconsHandler.class);
     }
 
 }

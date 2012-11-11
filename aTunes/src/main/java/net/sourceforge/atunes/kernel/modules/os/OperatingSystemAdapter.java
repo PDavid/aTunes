@@ -77,6 +77,13 @@ public abstract class OperatingSystemAdapter {
     /**
      * @return
      */
+    protected IBeanFactory getBeanFactory() {
+	return beanFactory;
+    }
+
+    /**
+     * @return
+     */
     public IOSManager getOsManager() {
 	return osManager;
     }

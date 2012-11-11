@@ -26,7 +26,6 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -52,15 +51,6 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
     private IDialogFactory dialogFactory;
 
     private IPlayerTrayIconsHandler macPlayerTrayIconsHandler;
-
-    private IBeanFactory beanFactory;
-
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
 
     /**
      * @param macPlayerTrayIconsHandler
@@ -97,7 +87,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
     @Override
     public void setupFrame(final IFrame frame) {
 	// Can't be created when creating this object
-	beanFactory.getBean(MacOSXInitializer.class).initialize();
+	getBeanFactory().getBean(MacOSXInitializer.class).initialize();
     }
 
     @Override
