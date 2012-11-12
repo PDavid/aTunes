@@ -26,113 +26,147 @@ import java.awt.Rectangle;
 
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * Creates Dimension objects according to screen size and proportions
+ * 
+ * @author alex
+ * 
+ */
 public final class DimensionBuilder {
 
-	private static Rectangle screenSize;
-	
-	private DimensionBuilder() {}
-	 
-	static {
-		retrieveScreenSize();
-	}
-	
-	/**
-	 * Retrieves screen resolution
-	 */
-	private static void retrieveScreenSize() {
-		if (!GraphicsEnvironment.isHeadless()) {
-			screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
-			if (screenSize != null) {
-				Logger.debug("Screen size: ", screenSize.width, "x", screenSize.height);
-			} else {
-				Logger.error("Can't retrieve screen size");
-			}
-		} else {
-			Logger.error("This graphic environment is headless!!");
-		}
-		
-		if (screenSize == null) {
-			// Set a default screen size if not retrieved
-			screenSize = new Rectangle(0, 0);
-		}
-	}
+    private static Rectangle screenSize;
 
-	/**
-	 * Returns a dimension with variable width and height according to screen resolution
-	 * @param screenWidthFactor
-	 * @param screenHeightFactor
-	 * @return
-	 */
-	public static Dimension getVariableDimension(float screenWidthFactor, float screenHeightFactor) {
-		return new Dimension(getWidthForResolution(screenWidthFactor), getHeightForResolution(screenHeightFactor));
-	}
+    private DimensionBuilder() {
+    }
 
-	/**
-	 * Returns a dimension with variable width and height according to screen resolution
-	 * @param screenWidthFactor
-	 * @param minimumWidth
-	 * @param screenHeightFactor
-	 * @param minimumHeight
-	 * @return
-	 */
-	public static Dimension getVariableDimension(float screenWidthFactor, int minimumWidth, float screenHeightFactor, int minimumHeight) {
-		return new Dimension(getWidthForResolution(screenWidthFactor, minimumWidth), getHeightForResolution(screenHeightFactor, minimumHeight));
-	}
-	
-	/**
-	 * Returns a dimension with variable width according to screen resolution
-	 * @param screenWidthFactor
-	 * @param minimumWidth
-	 * @param height
-	 * @return
-	 */
-	public static Dimension getVariableWidthDimension(float screenWidthFactor, int minimumWidth, int height) {
-		return new Dimension(getWidthForResolution(screenWidthFactor, minimumWidth), height);
-	}
+    static {
+	retrieveScreenSize();
+    }
 
-	/**
-	 * Returns a dimension with variable width according to screen resolution
-	 * @param screenWidthFactor
-	 * @param height
-	 * @return
-	 */
-	public static Dimension getVariableWidthDimension(float screenWidthFactor, int height) {
-		return new Dimension(getWidthForResolution(screenWidthFactor), height);
-	}
-
-	/**
-	 * Returns a dimension with variable height according to screen resolution
-	 * @param width
-	 * @param screenHeightFactor
-	 * @param minimumHeight
-	 * @return
-	 */
-	public static Dimension getVariableHeightDimension(int width, float screenHeightFactor, int minimumHeight) {
-		return new Dimension(width, getHeightForResolution(screenHeightFactor, minimumHeight));
-	}
-	
     /**
-     * Returns a proportional width according to given factor for the current screen resolution or the given minimum width if
-     * calculated value is lower
+     * Retrieves screen resolution
+     */
+    private static void retrieveScreenSize() {
+	if (!GraphicsEnvironment.isHeadless()) {
+	    screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment()
+		    .getDefaultScreenDevice().getDefaultConfiguration()
+		    .getBounds();
+	    if (screenSize != null) {
+		Logger.debug("Screen size: ", screenSize.width, "x",
+			screenSize.height);
+	    } else {
+		Logger.error("Can't retrieve screen size");
+	    }
+	} else {
+	    Logger.error("This graphic environment is headless!!");
+	}
+
+	if (screenSize == null) {
+	    // Set a default screen size if not retrieved
+	    screenSize = new Rectangle(0, 0);
+	}
+    }
+
+    /**
+     * Returns a dimension with variable width and height according to screen
+     * resolution
+     * 
+     * @param screenWidthFactor
+     * @param screenHeightFactor
+     * @return
+     */
+    public static Dimension getVariableDimension(final float screenWidthFactor,
+	    final float screenHeightFactor) {
+	return new Dimension(getWidthForResolution(screenWidthFactor),
+		getHeightForResolution(screenHeightFactor));
+    }
+
+    /**
+     * Returns a dimension with variable width and height according to screen
+     * resolution
+     * 
+     * @param screenWidthFactor
+     * @param minimumWidth
+     * @param screenHeightFactor
+     * @param minimumHeight
+     * @return
+     */
+    public static Dimension getVariableDimension(final float screenWidthFactor,
+	    final int minimumWidth, final float screenHeightFactor,
+	    final int minimumHeight) {
+	return new Dimension(getWidthForResolution(screenWidthFactor,
+		minimumWidth), getHeightForResolution(screenHeightFactor,
+		minimumHeight));
+    }
+
+    /**
+     * Returns a dimension with variable width according to screen resolution
+     * 
+     * @param screenWidthFactor
+     * @param minimumWidth
+     * @param height
+     * @return
+     */
+    public static Dimension getVariableWidthDimension(
+	    final float screenWidthFactor, final int minimumWidth,
+	    final int height) {
+	return new Dimension(getWidthForResolution(screenWidthFactor,
+		minimumWidth), height);
+    }
+
+    /**
+     * Returns a dimension with variable width according to screen resolution
+     * 
+     * @param screenWidthFactor
+     * @param height
+     * @return
+     */
+    public static Dimension getVariableWidthDimension(
+	    final float screenWidthFactor, final int height) {
+	return new Dimension(getWidthForResolution(screenWidthFactor), height);
+    }
+
+    /**
+     * Returns a dimension with variable height according to screen resolution
+     * 
+     * @param width
+     * @param screenHeightFactor
+     * @param minimumHeight
+     * @return
+     */
+    public static Dimension getVariableHeightDimension(final int width,
+	    final float screenHeightFactor, final int minimumHeight) {
+	return new Dimension(width, getHeightForResolution(screenHeightFactor,
+		minimumHeight));
+    }
+
+    /**
+     * Returns a proportional width according to given factor for the current
+     * screen resolution or the given minimum width if calculated value is lower
+     * 
      * @param screenWidthFactor
      * @param minimumWidth
      * @return
      */
-    private static int getWidthForResolution(float screenWidthFactor, int minimumWidth) {
-    	return Math.max(getWidthForResolution(screenWidthFactor), minimumWidth);
+    private static int getWidthForResolution(final float screenWidthFactor,
+	    final int minimumWidth) {
+	return Math.max(getWidthForResolution(screenWidthFactor), minimumWidth);
     }
-    
+
     /**
-     * Returns a proportional width according to given factor for the current screen resolution.
+     * Returns a proportional width according to given factor for the current
+     * screen resolution.
+     * 
      * @param screenWidthFactor
      * @return the component width for resolution
      */
-    private static int getWidthForResolution(float screenWidthFactor) {
-   		return (int) (screenSize.width * screenWidthFactor);
+    private static int getWidthForResolution(final float screenWidthFactor) {
+	return (int) (screenSize.width * screenWidthFactor);
     }
-    
+
     /**
-     * Returns a proportional height according to given screen height factor for the current screen resolution.
+     * Returns a proportional height according to given screen height factor for
+     * the current screen resolution.
      * 
      * @param screenHeight
      *            the screen height
@@ -141,19 +175,22 @@ public final class DimensionBuilder {
      * 
      * @return the component height for resolution
      */
-    private static int getHeightForResolution(float screenHeightFactor) {
-   		return (int) (screenSize.height * screenHeightFactor);
+    private static int getHeightForResolution(final float screenHeightFactor) {
+	return (int) (screenSize.height * screenHeightFactor);
     }
 
     /**
-     * Returns a proportional height according to given screen height factor for the current screen resolution or the given minimum height
-     * if calculated value is lower
+     * Returns a proportional height according to given screen height factor for
+     * the current screen resolution or the given minimum height if calculated
+     * value is lower
      * 
      * @param screenHeightFactor
      * @param minimumHeight
      * @return
      */
-    private static int getHeightForResolution(float screenHeightFactor, int minimumHeight) {
-    	return Math.max(getHeightForResolution(screenHeightFactor), minimumHeight);
+    private static int getHeightForResolution(final float screenHeightFactor,
+	    final int minimumHeight) {
+	return Math.max(getHeightForResolution(screenHeightFactor),
+		minimumHeight);
     }
 }
