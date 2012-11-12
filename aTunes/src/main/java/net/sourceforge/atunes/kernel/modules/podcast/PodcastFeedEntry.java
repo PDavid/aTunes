@@ -36,297 +36,342 @@ import org.joda.time.base.BaseDateTime;
  */
 public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
-	private static final long serialVersionUID = 4185336290582212484L;
+    private static final long serialVersionUID = 4185336290582212484L;
 
-	String title;
-	String author;
-	String url;
-	String description;
-	int duration;
-	BaseDateTime date;
-	IPodcastFeed podcastFeed;
-	boolean listened;
-	boolean downloaded;
-	boolean old;
+    String title;
+    String author;
+    String url;
+    String description;
+    int duration;
+    BaseDateTime date;
+    IPodcastFeed podcastFeed;
+    boolean listened;
+    boolean downloaded;
+    boolean old;
 
-	/**
-	 * No arg constructor for serialization
-	 */
-	PodcastFeedEntry() {
+    /**
+     * No arg constructor for serialization
+     */
+    PodcastFeedEntry() {
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param title
+     *            the title of the podcast feed entry
+     * @param author
+     *            the author of the podcast feed entry
+     * @param url
+     *            the url of the podcast feed entry
+     * @param description
+     *            the description of the podcast feed entry
+     * @param date
+     *            the date of the podcast feed entry
+     * @param duration
+     *            the duration of the podcast feed entry
+     * @param podcastFeed
+     *            the corresponding podcast feed of the podcast feed entry
+     */
+    public PodcastFeedEntry(final String title, final String author,
+	    final String url, final String description,
+	    final BaseDateTime date, final int duration,
+	    final IPodcastFeed podcastFeed) {
+	this.title = title;
+	this.author = author;
+	this.url = url;
+	this.description = description;
+	this.date = date;
+	this.podcastFeed = podcastFeed;
+	this.duration = duration;
+	listened = false;
+    }
+
+    /**
+     * Gets the podcast feed entries.
+     * 
+     * @param audioObjects
+     *            the audio objects
+     * 
+     * @return the podcast feed entries
+     */
+    public static List<IPodcastFeedEntry> getPodcastFeedEntries(
+	    final List<IAudioObject> audioObjects) {
+	List<IPodcastFeedEntry> result = new ArrayList<IPodcastFeedEntry>();
+	for (IAudioObject audioObject : audioObjects) {
+	    if (audioObject instanceof IPodcastFeedEntry) {
+		result.add((IPodcastFeedEntry) audioObject);
+	    }
 	}
+	return result;
+    }
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param title
-	 *            the title of the podcast feed entry
-	 * @param author
-	 *            the author of the podcast feed entry
-	 * @param url
-	 *            the url of the podcast feed entry
-	 * @param description
-	 *            the description of the podcast feed entry
-	 * @param date
-	 *            the date of the podcast feed entry
-	 * @param duration
-	 *            the duration of the podcast feed entry
-	 * @param podcastFeed
-	 *            the corresponding podcast feed of the podcast feed entry
-	 */
-	public PodcastFeedEntry(final String title, final String author, final String url, final String description, final BaseDateTime date, final int duration, final IPodcastFeed podcastFeed) {
-		this.title = title;
-		this.author = author;
-		this.url = url;
-		this.description = description;
-		this.date = date;
-		this.podcastFeed = podcastFeed;
-		this.duration = duration;
-		listened = false;
+    @Override
+    public boolean equals(final Object o) {
+	if (!(o instanceof IPodcastFeedEntry)) {
+	    return false;
 	}
+	return getUrl().equals(((IPodcastFeedEntry) o).getUrl());
+    }
 
-	/**
-	 * Gets the podcast feed entries.
-	 * 
-	 * @param audioObjects
-	 *            the audio objects
-	 * 
-	 * @return the podcast feed entries
-	 */
-	public static List<IPodcastFeedEntry> getPodcastFeedEntries(final List<IAudioObject> audioObjects) {
-		List<IPodcastFeedEntry> result = new ArrayList<IPodcastFeedEntry>();
-		for (IAudioObject audioObject : audioObjects) {
-			if (audioObject instanceof IPodcastFeedEntry) {
-				result.add((IPodcastFeedEntry) audioObject);
-			}
-		}
-		return result;
-	}
+    @Override
+    public String getAlbum(final IUnknownObjectChecker unknownObjectChecker) {
+	return getPodcastFeed().getName();
+    }
 
-	@Override
-	public boolean equals(final Object o) {
-		if (!(o instanceof IPodcastFeedEntry)) {
-			return false;
-		}
-		return getUrl().equals(((IPodcastFeedEntry) o).getUrl());
-	}
+    @Override
+    public String getAlbumArtist(
+	    final IUnknownObjectChecker unknownObjectChecker) {
+	return "";
+    }
 
-	@Override
-	public String getAlbum(final IUnknownObjectChecker unknownObjectChecker) {
-		return getPodcastFeed().getName();
-	}
+    @Override
+    public String getAlbumArtistOrArtist(
+	    final IUnknownObjectChecker unknownObjectChecker) {
+	return author;
+    }
 
-	@Override
-	public String getAlbumArtist(final IUnknownObjectChecker unknownObjectChecker) {
-		return "";
-	}
+    @Override
+    public String getArtist(final IUnknownObjectChecker unknownObjectChecker) {
+	return author;
+    }
 
-	@Override
-	public String getAlbumArtistOrArtist(final IUnknownObjectChecker unknownObjectChecker) {
-		return author;
-	}
+    @Override
+    public long getBitrate() {
+	return 0;
+    }
 
-	@Override
-	public String getArtist(final IUnknownObjectChecker unknownObjectChecker) {
-		return author;
-	}
+    @Override
+    public String getComposer() {
+	return "";
+    }
 
-	@Override
-	public long getBitrate() {
-		return 0;
-	}
+    /**
+     * Gets the date.
+     * 
+     * @return the date
+     */
+    @Override
+    public BaseDateTime getDate() {
+	return date;
+    }
 
-	@Override
-	public String getComposer() {
-		return "";
-	}
+    @Override
+    public String getDescription() {
+	return description;
+    }
 
-	/**
-	 * Gets the date.
-	 * 
-	 * @return the date
-	 */
-	@Override
-	public BaseDateTime getDate() {
-		return date;
-	}
+    @Override
+    public int getDuration() {
+	return duration;
+    }
 
-	@Override
-	public String getDescription() {
-		return description;
-	}
+    @Override
+    public int getFrequency() {
+	return 0;
+    }
 
-	@Override
-	public int getDuration() {
-		return duration;
-	}
+    @Override
+    public String getGenre(final IUnknownObjectChecker unknownObjectChecker) {
+	return "";
+    }
 
-	@Override
-	public int getFrequency() {
-		return 0;
-	}
+    @Override
+    public String getLyrics() {
+	return "";
+    }
 
-	@Override
-	public String getGenre(final IUnknownObjectChecker unknownObjectChecker) {
-		return "";
-	}
+    @Override
+    public void setOld(final boolean old) {
+	this.old = old;
+    }
 
-	@Override
-	public String getLyrics() {
-		return "";
-	}
+    @Override
+    public IPodcastFeed getPodcastFeed() {
+	return podcastFeed;
+    }
 
-	@Override
-	public void setOld(final boolean old) {
-		this.old = old;
-	}
+    @Override
+    public int getStars() {
+	return 0;
+    }
 
-	@Override
-	public IPodcastFeed getPodcastFeed() {
-		return podcastFeed;
-	}
+    @Override
+    public String getTitle() {
+	return title;
+    }
 
-	@Override
-	public int getStars() {
-		return 0;
-	}
+    @Override
+    public String getTitleOrFileName() {
+	return getTitle();
+    }
 
-	@Override
-	public String getTitle() {
-		return title;
-	}
+    @Override
+    public int getTrackNumber() {
+	return 0;
+    }
 
-	@Override
-	public String getTitleOrFileName() {
-		return getTitle();
-	}
+    @Override
+    public String getUrl() {
+	return url;
+    }
 
-	@Override
-	public int getTrackNumber() {
-		return 0;
+    @Override
+    public String getYear() {
+	if (date != null) {
+	    date.getYear();
 	}
+	return "";
+    }
 
-	@Override
-	public String getUrl() {
-		return url;
-	}
+    @Override
+    public String getComment() {
+	return "";
+    }
 
-	@Override
-	public String getYear() {
-		if (date != null) {
-			date.getYear();
-		}
-		return "";
-	}
+    @Override
+    public int hashCode() {
+	return getUrl().hashCode();
+    }
 
-	@Override
-	public String getComment() {
-		return "";
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#isListened
+     * ()
+     */
+    @Override
+    public boolean isListened() {
+	return listened;
+    }
 
-	@Override
-	public int hashCode() {
-		return getUrl().hashCode();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#isDownloaded
+     * ()
+     */
+    @Override
+    public boolean isDownloaded() {
+	return downloaded;
+    }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#isListened()
-	 */
-	@Override
-	public boolean isListened() {
-		return listened;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#isOld()
+     */
+    @Override
+    public boolean isOld() {
+	return old;
+    }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#isDownloaded()
-	 */
-	@Override
-	public boolean isDownloaded() {
-		return downloaded;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setDate
+     * (org.joda.time.DateTime)
+     */
+    @Override
+    public void setDate(final DateTime date) {
+	this.date = date;
+    }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#isOld()
-	 */
-	@Override
-	public boolean isOld() {
-		return old;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#
+     * setDescription(java.lang.String)
+     */
+    @Override
+    public void setDescription(final String description) {
+	this.description = description;
+    }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setDate(org.joda.time.DateTime)
-	 */
-	@Override
-	public void setDate(final DateTime date) {
-		this.date = date;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setDownloaded
+     * (boolean)
+     */
+    @Override
+    public void setDownloaded(final boolean downloaded) {
+	this.downloaded = downloaded;
+    }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setDescription(java.lang.String)
-	 */
-	@Override
-	public void setDescription(final String description) {
-		this.description = description;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setListened
+     * (boolean)
+     */
+    @Override
+    public void setListened(final boolean listened) {
+	this.listened = listened;
+    }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setDownloaded(boolean)
-	 */
-	@Override
-	public void setDownloaded(final boolean downloaded) {
-		this.downloaded = downloaded;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#
+     * setPodcastFeed(net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed)
+     */
+    @Override
+    public void setPodcastFeed(final IPodcastFeed podcastFeed) {
+	this.podcastFeed = podcastFeed;
+    }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setListened(boolean)
-	 */
-	@Override
-	public void setListened(final boolean listened) {
-		this.listened = listened;
-	}
+    @Override
+    public void setStars(final int stars) {
+	// Nothing to do
+    }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setPodcastFeed(net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed)
-	 */
-	@Override
-	public void setPodcastFeed(final IPodcastFeed podcastFeed) {
-		this.podcastFeed = podcastFeed;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setUrl
+     * (java.lang.String)
+     */
+    @Override
+    public void setUrl(final String url) {
+	this.url = url;
+    }
 
-	@Override
-	public void setStars(final int stars) {
-		// Nothing to do
-	}
+    @Override
+    public String toString() {
+	return title;
+    }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setUrl(java.lang.String)
-	 */
-	@Override
-	public void setUrl(final String url) {
-		this.url = url;
-	}
+    @Override
+    public boolean isSeekable() {
+	return downloaded;
+    }
 
-	@Override
-	public String toString() {
-		return title;
-	}
+    @Override
+    public int compareTo(final IPodcastFeedEntry o1) {
+	return title.compareTo(o1.getTitle());
+    }
 
-	@Override
-	public boolean isSeekable() {
-		return downloaded;
-	}
+    @Override
+    public int getDiscNumber() {
+	return 0;
+    }
 
-	@Override
-	public int compareTo(final IPodcastFeedEntry o1) {
-		return title.compareTo(o1.getTitle());
-	}
+    @Override
+    public String getAudioObjectDescription(
+	    final IUnknownObjectChecker unknownObjectChecker) {
+	return getTitle();
+    }
 
-	@Override
-	public int getDiscNumber() {
-		return 0;
-	}
-
-	@Override
-	public String getAudioObjectDescription(final IUnknownObjectChecker unknownObjectChecker) {
-		return getTitle();
-	}
+    @Override
+    public boolean exists() {
+	return true;
+    }
 }
