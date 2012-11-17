@@ -37,26 +37,33 @@ class MPlayerCommandWriter {
     private volatile PrintStream streamToProcess;
 
     /**
+     * Indicates if process must send more commands or not
+     */
+    private volatile boolean stopSendingCommands;
+
+    /**
      * Returns new command writer for mplayer instance
+     * 
      * @param process
      * @param osManager
      * @return
      */
-    static MPlayerCommandWriter newCommandWriter(Process process, IOSManager osManager) {
-    	if (osManager.isMacOsX()) {
-    		return new MPlayerXCommandWriter(process);
-    	}
-    	return new MPlayerCommandWriter(process);
+    static MPlayerCommandWriter newCommandWriter(final Process process,
+	    final IOSManager osManager) {
+	if (osManager.isMacOsX()) {
+	    return new MPlayerXCommandWriter(process);
+	}
+	return new MPlayerCommandWriter(process);
     }
-    
+
     /**
      * Instantiates a new m player command writer.
      * 
      * @param process
      *            the process
      */
-    protected MPlayerCommandWriter(Process process) {
-        this.process = process;
+    protected MPlayerCommandWriter(final Process process) {
+	this.process = process;
     }
 
     /**
@@ -65,73 +72,84 @@ class MPlayerCommandWriter {
      * @param command
      *            the command
      */
-    protected void sendCommand(String command) {
-        if (process != null) {
-            if (streamToProcess == null) {
-                streamToProcess = new PrintStream(process.getOutputStream());
-            }
-            streamToProcess.print(command);
-            streamToProcess.print('\n');
-            streamToProcess.flush();
-        }
+    protected void sendCommand(final String command) {
+	// Must check process and stream for null as they can be changed from
+	// another thread
+	if (!stopSendingCommands) {
+	    if (process != null) {
+		if (streamToProcess == null) {
+		    streamToProcess = new PrintStream(process.getOutputStream());
+		}
+		if (streamToProcess != null) {
+		    streamToProcess.print(command);
+		}
+		if (streamToProcess != null) {
+		    streamToProcess.print('\n');
+		}
+		if (streamToProcess != null) {
+		    streamToProcess.flush();
+		}
+	    }
+	}
     }
 
     /**
      * Send get duration command.
      */
     void sendGetDurationCommand() {
-        sendCommand("get_time_length");
+	sendCommand("get_time_length");
     }
 
     /**
      * Send get position command.
      */
     void sendGetPositionCommand() {
-        sendCommand("get_time_pos");
+	sendCommand("get_time_pos");
     }
 
     /**
      * Send mute command.
      */
     void sendMuteCommand() {
-        sendCommand("mute");
+	sendCommand("mute");
     }
 
     /**
      * Send pause command.
      */
     void sendPauseCommand() {
-        sendCommand("pause");
+	sendCommand("pause");
     }
 
     /**
      * Send resume command.
      */
     void sendResumeCommand() {
-        sendCommand("pause");
+	sendCommand("pause");
     }
 
     /**
      * Send seek command.
+     * 
      * @param milliseconds
      */
-    void sendSeekCommandMilliseconds(long milliseconds) {
-        sendCommand(StringUtils.getString("seek ", milliseconds / 1000, " 2"));
-        sendPauseCommand();
+    void sendSeekCommandMilliseconds(final long milliseconds) {
+	sendCommand(StringUtils.getString("seek ", milliseconds / 1000, " 2"));
+	sendPauseCommand();
     }
 
     /**
-     * Send seek command 
+     * Send seek command
      */
-    void sendSeekCommandPerCent(int perCent) {
-        sendCommand(StringUtils.getString("seek ", perCent, " 1"));
+    void sendSeekCommandPerCent(final int perCent) {
+	sendCommand(StringUtils.getString("seek ", perCent, " 1"));
     }
 
     /**
      * Send stop command.
      */
     void sendStopCommand() {
-        sendCommand("quit");
+	sendCommand("quit");
     }
 
     /**
@@ -141,8 +159,9 @@ class MPlayerCommandWriter {
      *            the per cent
      */
 
-    void sendVolumeCommand(int perCent) {
-        sendCommand(StringUtils.getString("pausing_keep volume ", perCent, " 1"));
+    void sendVolumeCommand(final int perCent) {
+	sendCommand(StringUtils
+		.getString("pausing_keep volume ", perCent, " 1"));
     }
 
     /**
@@ -151,7 +170,7 @@ class MPlayerCommandWriter {
      * @return the process
      */
     Process getProcess() {
-        return process;
+	return process;
     }
 
     /**
@@ -161,9 +180,9 @@ class MPlayerCommandWriter {
      *            the new process
      */
     void finishProcess() {
-    	// Set process to null before streamToProcess to avoid NPE in sendCommand method
-        this.process = null;
-        this.streamToProcess.close();
-        this.streamToProcess = null;
+	this.stopSendingCommands = true;
+	this.process = null;
+	this.streamToProcess.close();
+	this.streamToProcess = null;
     }
 }
