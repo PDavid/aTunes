@@ -38,6 +38,7 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.model.IErrorReport;
+import net.sourceforge.atunes.model.IErrorReportCreator;
 import net.sourceforge.atunes.model.IErrorReporter;
 import net.sourceforge.atunes.model.IExceptionDialog;
 import net.sourceforge.atunes.model.IFrame;
@@ -46,149 +47,168 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Dialog used to show an exception
+ * 
  * @author alex
- *
+ * 
  */
-public class ExceptionDialog extends AbstractCustomDialog implements IExceptionDialog {
-	
-	private static final int BORDER = 10;
-	
-	private static final int WIDTH = 600;
-	
-	private static final int HEIGHT = 500;
-	
-	private static final long serialVersionUID = -2528275301092742608L;
-	
-	private IErrorReporter errorReporter;
-	
-	private ILookAndFeelManager lookAndFeelManager;
-	
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-	
-	/**
-	 * @param errorReporter
-	 */
-	public void setErrorReporter(IErrorReporter errorReporter) {
-		this.errorReporter = errorReporter;
-	}
-	
+public class ExceptionDialog extends AbstractCustomDialog implements
+	IExceptionDialog {
+
+    private static final int BORDER = 10;
+
+    private static final int WIDTH = 600;
+
+    private static final int HEIGHT = 500;
+
+    private static final long serialVersionUID = -2528275301092742608L;
+
+    private IErrorReportCreator errorReportCreator;
+
+    private IErrorReporter errorReporter;
+
+    private ILookAndFeelManager lookAndFeelManager;
+
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(
+	    final ILookAndFeelManager lookAndFeelManager) {
+	this.lookAndFeelManager = lookAndFeelManager;
+    }
+
+    /**
+     * @param errorReportCreator
+     */
+    public void setErrorReportCreator(
+	    final IErrorReportCreator errorReportCreator) {
+	this.errorReportCreator = errorReportCreator;
+    }
+
+    /**
+     * @param errorReporter
+     */
+    public void setErrorReporter(final IErrorReporter errorReporter) {
+	this.errorReporter = errorReporter;
+    }
+
     /**
      * Default constructor
+     * 
      * @param frame
      */
-    public ExceptionDialog(IFrame frame) {
-    	super(frame, WIDTH, HEIGHT, false, CloseAction.DISPOSE);
+    public ExceptionDialog(final IFrame frame) {
+	super(frame, WIDTH, HEIGHT, false, CloseAction.DISPOSE);
     }
-    
+
     @Override
-    public void showExceptionDialog(Throwable throwable) {
-    	showDialog(errorReporter.createReport(null, throwable));
+    public void showExceptionDialog(final Throwable throwable) {
+	showDialog(errorReportCreator.createReport(null, throwable));
     }
-    
+
     @Override
-    public void showExceptionDialog(String descriptionError, Throwable t) {
-    	showDialog(errorReporter.createReport(descriptionError, t));
+    public void showExceptionDialog(final String descriptionError,
+	    final Throwable t) {
+	showDialog(errorReportCreator.createReport(descriptionError, t));
     }
 
     /**
      * Shows a exception report dialog
+     * 
      * @param t
      */
     private void showDialog(final IErrorReport errorReport) {
-    	JPanel panel = new JPanel(new GridBagLayout());
-    	panel.setBorder(BorderFactory.createEmptyBorder(BORDER, BORDER, BORDER, BORDER));
-    	JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
-    	CustomTextArea messageLabel = new CustomTextArea(I18nUtils.getString("ERROR_TO_REPORT"));
-    	messageLabel.setEditable(false);
-    	messageLabel.setEnabled(false);
-    	messageLabel.setWrapStyleWord(true);
-    	messageLabel.setOpaque(false);
-    	messageLabel.setLineWrap(true);
+	JPanel panel = new JPanel(new GridBagLayout());
+	panel.setBorder(BorderFactory.createEmptyBorder(BORDER, BORDER, BORDER,
+		BORDER));
+	JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
+	CustomTextArea messageLabel = new CustomTextArea(
+		I18nUtils.getString("ERROR_TO_REPORT"));
+	messageLabel.setEditable(false);
+	messageLabel.setEnabled(false);
+	messageLabel.setWrapStyleWord(true);
+	messageLabel.setOpaque(false);
+	messageLabel.setLineWrap(true);
 
-    	JButton sendButton = new JButton(I18nUtils.getString("SEND"));
-    	JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
-    	final CustomTextArea textArea = new CustomTextArea();
-    	textArea.setEditable(false);
-    	JScrollPane scrollPane = lookAndFeelManager.getCurrentLookAndFeel().getScrollPane(textArea);
-    	
-    	JPanel buttonsPanel = new JPanel(new GridLayout(1, 2, BORDER, BORDER));
-    	buttonsPanel.add(sendButton);
-    	buttonsPanel.add(cancelButton);
-    	
-    	GridBagConstraints c = new GridBagConstraints();
-    	c.gridx = 0;
-    	c.gridy = 0;
-    	c.gridheight = 2;
-    	c.anchor = GridBagConstraints.NORTH;
-    	c.insets = new Insets(BORDER, BORDER, BORDER, BORDER);
-    	panel.add(icon, c);
-    	c.gridx = 1;
-    	c.weightx = 1;
-    	c.gridwidth = 3;
-    	c.gridheight = 1;
-    	c.fill = GridBagConstraints.BOTH;
-    	c.anchor = GridBagConstraints.CENTER;
-    	panel.add(messageLabel, c);
-    	c.gridy = 1;
-    	c.weighty = 1;
-    	panel.add(scrollPane, c);
-    	c.gridx = 1;
-    	c.gridy = 2;
-    	c.fill = GridBagConstraints.NONE;
-    	c.gridwidth = 1;
-    	c.weighty = 0;
-    	c.anchor = GridBagConstraints.EAST;
-    	panel.add(buttonsPanel, c);
-    	
-    	sendButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				errorReporter.reportError(errorReport);
-				ExceptionDialog.this.setVisible(false);
-			}
-		});
-    	
-    	cancelButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				ExceptionDialog.this.setVisible(false);
-			}
-		});
-    	
-    	add(panel);
-    	super.setTitle(I18nUtils.getString("ERROR"));
-    	
-    	textArea.setText(errorReport.toString());
-    	textArea.setCaretPosition(0);
-    	
-    	setVisible(true);
+	JButton sendButton = new JButton(I18nUtils.getString("SEND"));
+	JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
+	final CustomTextArea textArea = new CustomTextArea();
+	textArea.setEditable(false);
+	JScrollPane scrollPane = lookAndFeelManager.getCurrentLookAndFeel()
+		.getScrollPane(textArea);
+
+	JPanel buttonsPanel = new JPanel(new GridLayout(1, 2, BORDER, BORDER));
+	buttonsPanel.add(sendButton);
+	buttonsPanel.add(cancelButton);
+
+	GridBagConstraints c = new GridBagConstraints();
+	c.gridx = 0;
+	c.gridy = 0;
+	c.gridheight = 2;
+	c.anchor = GridBagConstraints.NORTH;
+	c.insets = new Insets(BORDER, BORDER, BORDER, BORDER);
+	panel.add(icon, c);
+	c.gridx = 1;
+	c.weightx = 1;
+	c.gridwidth = 3;
+	c.gridheight = 1;
+	c.fill = GridBagConstraints.BOTH;
+	c.anchor = GridBagConstraints.CENTER;
+	panel.add(messageLabel, c);
+	c.gridy = 1;
+	c.weighty = 1;
+	panel.add(scrollPane, c);
+	c.gridx = 1;
+	c.gridy = 2;
+	c.fill = GridBagConstraints.NONE;
+	c.gridwidth = 1;
+	c.weighty = 0;
+	c.anchor = GridBagConstraints.EAST;
+	panel.add(buttonsPanel, c);
+
+	sendButton.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(final ActionEvent e) {
+		errorReporter.reportError(errorReport);
+		ExceptionDialog.this.setVisible(false);
+	    }
+	});
+
+	cancelButton.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(final ActionEvent arg0) {
+		ExceptionDialog.this.setVisible(false);
+	    }
+	});
+
+	add(panel);
+	super.setTitle(I18nUtils.getString("ERROR"));
+
+	textArea.setText(errorReport.toString());
+	textArea.setCaretPosition(0);
+
+	setVisible(true);
     }
 
     @Override
     public void initialize() {
-    	// Do nothing
+	// Do nothing
     }
-    
+
     @Override
     public void hideDialog() {
-    	throw new UnsupportedOperationException();
+	throw new UnsupportedOperationException();
     }
-    
+
     @Override
     public void showDialog() {
-    	throw new UnsupportedOperationException();
+	throw new UnsupportedOperationException();
     }
-    
-	@Override
-	@Deprecated
-	public void setTitle(String title) {
-		// Not used
-	}
+
+    @Override
+    @Deprecated
+    public void setTitle(final String title) {
+	// Not used
+    }
 }

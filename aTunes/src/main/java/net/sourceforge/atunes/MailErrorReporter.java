@@ -21,85 +21,68 @@
 package net.sourceforge.atunes;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-import net.sourceforge.atunes.model.IApplicationStateGenerator;
 import net.sourceforge.atunes.model.IErrorReport;
 import net.sourceforge.atunes.model.IErrorReporter;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.StringUtils;
-
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * Reports errors by mail
+ * 
  * @author alex
- *
+ * 
  */
 public class MailErrorReporter implements IErrorReporter, Runnable {
-	
-	private IApplicationStateGenerator applicationStateGenerator;
-	
-	private INetworkHandler networkHandler;
-	
-	private ITaskService taskService;
 
-	private IErrorReport report;
-	
-	private String url;
-	
-	/**
-	 * @param url
-	 */
-	public void setUrl(String url) {
-		this.url = url;
+    private INetworkHandler networkHandler;
+
+    private ITaskService taskService;
+
+    private IErrorReport report;
+
+    private String url;
+
+    /**
+     * @param url
+     */
+    public void setUrl(final String url) {
+	this.url = url;
+    }
+
+    /**
+     * @param taskService
+     */
+    public void setTaskService(final ITaskService taskService) {
+	this.taskService = taskService;
+    }
+
+    /**
+     * @param networkHandler
+     */
+    public void setNetworkHandler(final INetworkHandler networkHandler) {
+	this.networkHandler = networkHandler;
+    }
+
+    @Override
+    public void reportError(final IErrorReport errorReport) {
+	this.report = errorReport;
+	taskService.submitNow("Report Error", this);
+    }
+
+    @Override
+    public void run() {
+	try {
+	    Map<String, String> map = new HashMap<String, String>();
+	    map.put("report", report.toString());
+	    map.put("build", Integer.toString(BuildNumber.getBuildNumber()));
+	    map.put("version", Constants.VERSION.toString());
+	    networkHandler.readURL(url, map, "UTF-8");
+	} catch (IOException e) {
+	    Logger.error(e);
 	}
-	
-	/**
-	 * @param taskService
-	 */
-	public void setTaskService(ITaskService taskService) {
-		this.taskService = taskService;
-	}
-	
-	/**
-	 * @param networkHandler
-	 */
-	public void setNetworkHandler(INetworkHandler networkHandler) {
-		this.networkHandler = networkHandler;
-	}
-	
-	/**
-	 * @param applicationStateGenerator
-	 */
-	public void setApplicationStateGenerator(IApplicationStateGenerator applicationStateGenerator) {
-		this.applicationStateGenerator = applicationStateGenerator;
-	}
-	
-	@Override
-	public void reportError(IErrorReport errorReport) {
-		this.report = errorReport;
-		taskService.submitNow("Report Error", this);
-	}
-	
-	@Override
-	public void run() {
-		String reportString = Base64.encodeBase64String(report.toString().getBytes());
-		String fullUrl = StringUtils.getString(url, reportString);
-		try {
-			networkHandler.readURL(networkHandler.getConnection(fullUrl));
-		} catch (IOException e) {
-			Logger.error(e);
-		}
-	}
-	
-	@Override
-	public IErrorReport createReport(String descriptionError, Throwable throwable) {
-		IErrorReport result = new ErrorReport();
-		result.setState(applicationStateGenerator.generateState());
-		result.setThrowable(throwable);
-		result.setErrorDescription(descriptionError);
-		return result;
-	}
+    }
 }

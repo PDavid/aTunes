@@ -16,8 +16,9 @@
 	<bean id="applicationArguments" class="net.sourceforge.atunes.ApplicationArguments"/>
 	
 	<bean class="net.sourceforge.atunes.UncaughtExceptionHandler"/>
+	<bean id="errorReportCreator" class="net.sourceforge.atunes.ErrorReportCreator"/>
 	<bean id="errorReporter" class="net.sourceforge.atunes.MailErrorReporter">
-		<property name="url" value="http://www.atunes.org/bug_report.php?report="/>
+		<property name="url" value="http://www.atunes.org/bug_report_post.php"/>
 	</bean>
 	
 	<bean id="applicationStateGenerator" class="net.sourceforge.atunes.ApplicationStateGenerator"/>
