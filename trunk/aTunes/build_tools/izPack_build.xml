@@ -22,12 +22,11 @@
 		</authors>
 		<javaversion>1.6</javaversion>
 	</info>
-	<guiprefs width="640" height="500" resizable="no">
+	<guiprefs width="800" height="600" resizable="yes">
 		<modifier key="langDisplayType" value="native" />
 		<laf name='substance'>
-			<param name="variant" value="business-black" />
+			<param name="variant" value="business" />
 			<os family="unix" />
-			<os family="windows" />
 		</laf>
 	</guiprefs>
 	<locale>
