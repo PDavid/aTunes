@@ -16,6 +16,6 @@
     <initialHeapPercent>5</initialHeapPercent>
     <maxHeapSize>64</maxHeapSize>
     <maxHeapPercent>10</maxHeapPercent>
-    <args>-splash:splash.gif -cp aTunes.jar;lib/* net.sourceforge.atunes.Main</args>
+    <args>-Dinsubstantial.looseTableCellRenderers=true -splash:splash.gif -cp aTunes.jar;lib/* net.sourceforge.atunes.Main</args>
   </jre>
 </launch4jConfig>
