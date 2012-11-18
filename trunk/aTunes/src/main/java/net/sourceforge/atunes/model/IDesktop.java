@@ -52,8 +52,7 @@ public interface IDesktop {
      * Opens a file with the associated program.
      * 
      * @param file
-     * @param osManager
      */
-    public void openFile(File file, IOSManager osManager);
+    public void openFile(File file);
 
 }
