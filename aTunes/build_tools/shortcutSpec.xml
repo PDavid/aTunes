@@ -68,49 +68,14 @@
         applications='no'
         startMenu='no'
         startup='no'
-        target='javaw'
-        commandLine='-jar "$INSTALL_PATH/Uninstaller/uninstaller.jar"'
-        workingDirectory='$INSTALL_PATH/Uninstaller'
+        target='$INSTALL_PATH/Uninstaller/uninstaller.jar'
+        commandLine=''
+        workingDirectory='$INSTALL_PATH\'
         description='Uninstall aTunes'
         iconIndex='0'
         iconFile='$INSTALL_PATH/uninstall.ico'
         initialState='noShow'
         os='windows'>
         <createForPack name='aTunes Base'/>
-      </shortcut>
-      <!-- Mac OS -->
-      <shortcut
-	       name='aTunes'
-	       programGroup='yes'
-	       desktop='yes'
-	       applications='no'
-	       startMenu='no'
-	       startup='no'
-	       target='$INSTALL_PATH\aTunes.command'
-	       commandLine=''
-	       workingDirectory="$INSTALL_PATH\"
-	       description='aTunes'
-	       iconIndex='0'
-	       iconFile='$INSTALL_PATH/aTunes.ico'
-	       initialState='noShow'
-	       os='mac'>
-	      <createForPack name='aTunes Base'/>
-      </shortcut>
-      <shortcut
-	       name='Uninstall aTunes'
-	       programGroup='yes'
-	       desktop='no'
-	       applications='no'
-	       startMenu='no'
-	       startup='no'
-	       target='javaw'
-	       commandLine='-jar "$INSTALL_PATH/Uninstaller/uninstaller.jar"'
-	       workingDirectory='$INSTALL_PATH/Uninstaller'
-	       description='Uninstall aTunes'
-	       iconIndex='0'
-	       iconFile='$INSTALL_PATH/uninstall.ico'
-	       initialState='noShow'
-	       os='mac'>
-	      <createForPack name='aTunes Base'/>
       </shortcut>
     </shortcuts>
