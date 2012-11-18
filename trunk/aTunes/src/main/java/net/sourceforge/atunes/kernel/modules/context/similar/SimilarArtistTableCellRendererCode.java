@@ -62,7 +62,7 @@ public class SimilarArtistTableCellRendererCode extends
 	    final JComponent superComponent, final IArtistInfo value) {
 	return getPanelForTableRenderer(value.getImage(),
 		StringUtils.getString(
-			"<html><br>",
+			"<html>",
 			value.getName(),
 			"<br>",
 			value.getMatch(),
