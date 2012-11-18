@@ -476,19 +476,14 @@
 			<version>1.5-custom</version>
 		</dependency>
 		<dependency>
-			<groupId>substance</groupId>
+			<groupId>com.github.insubstantial</groupId>
 			<artifactId>substance</artifactId>
-			<version>6.0</version>
+			<version>7.1</version>
 		</dependency>
 		<dependency>
-			<groupId>substance</groupId>
+			<groupId>com.github.insubstantial</groupId>
 			<artifactId>substance-swingx</artifactId>
-			<version>6.0</version>
-		</dependency>
-		<dependency>
-			<groupId>trident</groupId>
-			<artifactId>trident</artifactId>
-			<version>1.2</version>
+			<version>7.1</version>
 		</dependency>
 		<dependency>
 			<groupId>libxine</groupId>
