@@ -20,24 +20,16 @@
 
 package net.sourceforge.atunes.model;
 
-
 /**
- * Responsible of report information of an error
+ * Responsible of send report information of an error
+ * 
  * @author alex
- *
+ * 
  */
 public interface IErrorReporter {
 
-	/**
-	 * @param t
-	 */
-	void reportError(IErrorReport t);
-	
-	/**
-	 * @param throwable
-	 * @param descriptionError
-	 * @param throwable
-	 * @return
-	 */
-	IErrorReport createReport(String descriptionError, Throwable throwable);
+    /**
+     * @param t
+     */
+    void reportError(IErrorReport t);
 }

@@ -46,16 +46,19 @@ public final class StringUtils {
      * 
      * @return String representation in Bytes, Kilobytes, Megabytes or Gigabytes
      */
-    public static String fromByteToMegaOrGiga(long size) {
-        if (size < FileUtils.KILOBYTE) {
-            return StringUtils.getString(String.valueOf(size), " Bytes");
-        } else if (size < FileUtils.MEGABYTE) {
-            return StringUtils.getString(toString((double) size / FileUtils.KILOBYTE, 2), " KB");
-        } else if (size < FileUtils.GIGABYTE) {
-            return StringUtils.getString(toString((double) size / FileUtils.MEGABYTE, 2), " MB");
-        } else {
-            return StringUtils.getString(toString((double) size / FileUtils.GIGABYTE, 2), " GB");
-        }
+    public static String fromByteToMegaOrGiga(final long size) {
+	if (size < FileUtils.KILOBYTE) {
+	    return StringUtils.getString(String.valueOf(size), " Bytes");
+	} else if (size < FileUtils.MEGABYTE) {
+	    return StringUtils.getString(
+		    toString((double) size / FileUtils.KILOBYTE, 2), " KB");
+	} else if (size < FileUtils.GIGABYTE) {
+	    return StringUtils.getString(
+		    toString((double) size / FileUtils.MEGABYTE, 2), " MB");
+	} else {
+	    return StringUtils.getString(
+		    toString((double) size / FileUtils.GIGABYTE, 2), " GB");
+	}
     }
 
     /**
@@ -73,27 +76,28 @@ public final class StringUtils {
      * 
      * @return List containing strings of the array
      */
-    public static List<String> fromStringArrayToList(String... str) {
-        List<String> result = new ArrayList<String>();
-        boolean openedQuotes = false;
-        String auxStr = "";
-        for (String s : str) {
-            if (s.startsWith("\"") && s.endsWith("\"")) {
-                result.add(s.replaceAll("\"", ""));
-            } else if (s.endsWith("\"")) {
-                openedQuotes = false;
-                auxStr = StringUtils.getString(auxStr, " ", s.replaceAll("\"", ""));
-                result.add(auxStr);
-            } else if (s.startsWith("\"")) {
-                openedQuotes = true;
-                auxStr = s.replaceFirst("\"", "");
-            } else if (openedQuotes) {
-                auxStr = StringUtils.getString(auxStr, " ", s);
-            } else {
-                result.add(s);
-            }
-        }
-        return result;
+    public static List<String> fromStringArrayToList(final String... str) {
+	List<String> result = new ArrayList<String>();
+	boolean openedQuotes = false;
+	String auxStr = "";
+	for (String s : str) {
+	    if (s.startsWith("\"") && s.endsWith("\"")) {
+		result.add(s.replaceAll("\"", ""));
+	    } else if (s.endsWith("\"")) {
+		openedQuotes = false;
+		auxStr = StringUtils.getString(auxStr, " ",
+			s.replaceAll("\"", ""));
+		result.add(auxStr);
+	    } else if (s.startsWith("\"")) {
+		openedQuotes = true;
+		auxStr = s.replaceFirst("\"", "");
+	    } else if (openedQuotes) {
+		auxStr = StringUtils.getString(auxStr, " ", s);
+	    } else {
+		result.add(s);
+	    }
+	}
+	return result;
     }
 
     /**
@@ -104,14 +108,14 @@ public final class StringUtils {
      * 
      * @return concatenation of argument array
      */
-    public static String getString(Object... strings) {
-        StringBuilder objStringBuilder = new StringBuilder();
+    public static String getString(final Object... strings) {
+	StringBuilder objStringBuilder = new StringBuilder();
 
-        for (Object element : strings) {
-            objStringBuilder.append(element);
-        }
+	for (Object element : strings) {
+	    objStringBuilder.append(element);
+	}
 
-        return objStringBuilder.toString();
+	return objStringBuilder.toString();
     }
 
     /**
@@ -124,10 +128,10 @@ public final class StringUtils {
      * 
      * @return string with a given number of decimal digits
      */
-    public static String toString(double value, int numberOfDecimals) {
-        DecimalFormat df = new DecimalFormat("#.#");
-        df.setMinimumFractionDigits(numberOfDecimals);
-        return df.format(value);
+    public static String toString(final double value, final int numberOfDecimals) {
+	DecimalFormat df = new DecimalFormat("#.#");
+	df.setMinimumFractionDigits(numberOfDecimals);
+	return df.format(value);
     }
 
     /**
@@ -138,16 +142,16 @@ public final class StringUtils {
      * 
      * @return The String with the first character converted to uppercase
      */
-    public static String convertFirstCharacterToUppercase(String s) {
-        if (s != null && !s.isEmpty()) {
-            String result;
-            result = String.valueOf(Character.toUpperCase(s.charAt(0)));
-            if (s.length() > 1) {
-                result += s.substring(1);
-            }
-            return result;
-        }
-        return s;
+    public static String convertFirstCharacterToUppercase(final String s) {
+	if (s != null && !s.isEmpty()) {
+	    String result;
+	    result = String.valueOf(Character.toUpperCase(s.charAt(0)));
+	    if (s.length() > 1) {
+		result += s.substring(1);
+	    }
+	    return result;
+	}
+	return s;
     }
 
     /**
@@ -158,8 +162,8 @@ public final class StringUtils {
      * 
      * @return If the specified String is empty
      */
-    public static boolean isEmpty(String s) {
-        return s == null || s.trim().isEmpty();
+    public static boolean isEmpty(final String s) {
+	return s == null || s.trim().isEmpty();
     }
 
     /**
@@ -171,8 +175,8 @@ public final class StringUtils {
      *            the start position
      * @return the unescaped HTML string
      */
-    public static String unescapeHTML(String source, int start) {
-        return StringEscapeUtils.unescapeHtml(source.substring(start));
+    public static String unescapeHTML(final String source, final int start) {
+	return StringEscapeUtils.unescapeHtml(source.substring(start));
     }
 
     /**
@@ -181,15 +185,15 @@ public final class StringUtils {
      * @param number
      * @return
      */
-    public static int getNumberOrZero(String number) {
-        if (isEmpty(number)) {
-            return 0;
-        }
-        try {
-            return Integer.parseInt(number);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
+    public static int getNumberOrZero(final String number) {
+	if (isEmpty(number)) {
+	    return 0;
+	}
+	try {
+	    return Integer.parseInt(number);
+	} catch (NumberFormatException e) {
+	    return 0;
+	}
     }
 
     /**
@@ -203,43 +207,47 @@ public final class StringUtils {
      * @param endChar
      * @return
      */
-    public static List<String> getTextBetweenChars(String string, char beginChar, char endChar) {
-        List<String> result = new ArrayList<String>();
+    public static List<String> getTextBetweenChars(final String string,
+	    final char beginChar, final char endChar) {
+	List<String> result = new ArrayList<String>();
 
-        if (string == null || string.indexOf(beginChar) == -1 || string.indexOf(endChar) == -1) {
-            return result;
-        }
+	if (string == null || string.indexOf(beginChar) == -1
+		|| string.indexOf(endChar) == -1) {
+	    return result;
+	}
 
-        String auxStr = string;
-        int beginIndex = auxStr.indexOf(beginChar);
-        int endIndex = auxStr.indexOf(endChar);
-        while (beginIndex != -1 && endIndex != -1) {
-            if (beginIndex < endIndex) {
-                result.add(auxStr.substring(beginIndex, endIndex + 1));
-            }
-            auxStr = auxStr.substring(endIndex + 1);
-            beginIndex = auxStr.indexOf(beginChar);
-            endIndex = auxStr.indexOf(endChar);
-        }
+	String auxStr = string;
+	int beginIndex = auxStr.indexOf(beginChar);
+	int endIndex = auxStr.indexOf(endChar);
+	while (beginIndex != -1 && endIndex != -1) {
+	    if (beginIndex < endIndex) {
+		result.add(auxStr.substring(beginIndex, endIndex + 1));
+	    }
+	    auxStr = auxStr.substring(endIndex + 1);
+	    beginIndex = auxStr.indexOf(beginChar);
+	    endIndex = auxStr.indexOf(endChar);
+	}
 
-        return result;
+	return result;
     }
-    
+
     /**
      * Returns true if first string is equals to any of others, false if null
+     * 
      * @param string
      * @param strings
      * @return
      */
-    public static boolean equalsToStrings(String string, String... strings) {
-    	if (string == null) {
-    		return false;
-    	}
-    	for (String s: strings) {
-    		if (string.equals(s)) {
-    			return true;
-    		}
-    	}
-    	return false;
+    public static boolean equalsToStrings(final String string,
+	    final String... strings) {
+	if (string == null) {
+	    return false;
+	}
+	for (String s : strings) {
+	    if (string.equals(s)) {
+		return true;
+	    }
+	}
+	return false;
     }
 }
