@@ -62,8 +62,7 @@ public class ShowLogAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-	desktop.openFile(
-		osManager.getFileFromUserConfigFolder(Constants.LOG_FILE),
-		osManager);
+	desktop.openFile(osManager
+		.getFileFromUserConfigFolder(Constants.LOG_FILE));
     }
 }

@@ -82,7 +82,7 @@ public class OpenFolderFromNavigatorTreeAction extends
     @Override
     protected void executeAction(final List<IFolder> folders) {
 	for (IFolder folder : folders) {
-	    desktop.openFile(folder.getFolderPath(osManager), osManager);
+	    desktop.openFile(folder.getFolderPath(osManager));
 	}
     }
 }

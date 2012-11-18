@@ -30,7 +30,6 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -45,8 +44,6 @@ public class OpenFolderFromNavigatorTableAction extends
     private static final long serialVersionUID = 8251208528513562627L;
 
     private IDesktop desktop;
-
-    private IOSManager osManager;
 
     private ILocalAudioObjectFilter localAudioObjectFilter;
 
@@ -63,13 +60,6 @@ public class OpenFolderFromNavigatorTableAction extends
      */
     public OpenFolderFromNavigatorTableAction() {
 	super(I18nUtils.getString("OPEN_FOLDER"));
-    }
-
-    /**
-     * @param osManager
-     */
-    public void setOsManager(final IOSManager osManager) {
-	this.osManager = osManager;
     }
 
     /**
@@ -115,7 +105,7 @@ public class OpenFolderFromNavigatorTableAction extends
 
 	// ... then open
 	for (File folder : foldersToOpen) {
-	    desktop.openFile(folder, osManager);
+	    desktop.openFile(folder);
 	}
     }
 }

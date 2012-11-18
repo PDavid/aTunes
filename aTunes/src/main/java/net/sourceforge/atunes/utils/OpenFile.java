@@ -18,41 +18,33 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.utils;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.Callable;
 
 /**
- * Interface for operations requested to operating system desktop
+ * Calls desktop to open a file
  * 
  * @author alex
  * 
  */
-public interface IDesktop {
+final class OpenFile implements Callable<Void> {
+    private final File fileToOpen;
 
-    /**
-     * Starts web browser.
-     * 
-     * @param search
-     *            Search object
-     * @param query
-     *            query
-     */
-    public void openSearch(ISearch search, String query);
+    OpenFile(final File fileToOpen) {
+        this.fileToOpen = fileToOpen;
+    }
 
-    /**
-     * Starts web browser with specified URL.
-     * 
-     * @param url
-     *            URL
-     */
-    public void openURL(String url);
-
-    /**
-     * Opens a file with the associated program.
-     * 
-     * @param file
-     */
-    public void openFile(File file);
-
+    @Override
+    public Void call() {
+        try {
+    	Desktop.getDesktop().open(fileToOpen);
+        } catch (IOException e) {
+    	Logger.error(e);
+        }
+        return null;
+    }
 }

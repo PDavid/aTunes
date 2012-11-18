@@ -26,7 +26,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -40,16 +39,7 @@ public class OpenFolderAction extends
 
     private static final long serialVersionUID = 1682289345922375850L;
 
-    private IOSManager osManager;
-
     private IDesktop desktop;
-
-    /**
-     * @param osManager
-     */
-    public void setOsManager(final IOSManager osManager) {
-	this.osManager = osManager;
-    }
 
     /**
      * @param desktop
@@ -78,7 +68,7 @@ public class OpenFolderAction extends
 
 	// ... then open
 	for (File folder : foldersToOpen) {
-	    desktop.openFile(folder, osManager);
+	    desktop.openFile(folder);
 	}
     }
 }
