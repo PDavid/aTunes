@@ -33,7 +33,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
-import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.ColumnRenderers;
 import net.sourceforge.atunes.gui.NavigationTableColumnModel;
 import net.sourceforge.atunes.gui.NavigationTableModel;
@@ -110,6 +109,10 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 
     private ITable navigationTable;
 
+    private NavigationTableColumnModel navigationTableColumnModel;
+
+    private NavigationTableModel navigationTableModel;
+
     private IRepositoryHandler repositoryHandler;
 
     private IFilter navigationTreeFilter;
@@ -121,6 +124,22 @@ public final class NavigationController implements IAudioFilesRemovedListener,
     private IUnknownObjectChecker unknownObjectChecker;
 
     private IPlayListHandler playListHandler;
+
+    /**
+     * @param navigationTableColumnModel
+     */
+    public void setNavigationTableColumnModel(
+	    final NavigationTableColumnModel navigationTableColumnModel) {
+	this.navigationTableColumnModel = navigationTableColumnModel;
+    }
+
+    /**
+     * @param navigationTableModel
+     */
+    public void setNavigationTableModel(
+	    final NavigationTableModel navigationTableModel) {
+	this.navigationTableModel = navigationTableModel;
+    }
 
     /**
      * @param playListHandler
@@ -233,21 +252,16 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 
     @Override
     public void addBindings() {
-	NavigationTableModel model = new NavigationTableModel();
-	navigationTable.setModel(model);
-	AbstractCommonColumnModel columnModel = beanFactory
-		.getBean(NavigationTableColumnModel.class);
-	columnModel.setModel(model);
-	navigationTable.setColumnModel(columnModel);
 	ColumnRenderers.addRenderers(navigationTable.getSwingComponent(),
-		columnModel, lookAndFeelManager.getCurrentLookAndFeel());
+		navigationTableColumnModel,
+		lookAndFeelManager.getCurrentLookAndFeel());
 
-	new ColumnSetRowSorter(navigationTable.getSwingComponent(), model,
-		columnModel);
+	new ColumnSetRowSorter(navigationTable.getSwingComponent(),
+		navigationTableModel, navigationTableColumnModel);
 
 	// Bind column set popup menu
 	columnSetPopupMenu = new ColumnSetPopupMenu(
-		navigationTable.getSwingComponent(), columnModel);
+		navigationTable.getSwingComponent(), navigationTableColumnModel);
 
 	// Add tree selection listeners to all views
 	for (INavigationView view : navigationHandler.getNavigationViews()) {

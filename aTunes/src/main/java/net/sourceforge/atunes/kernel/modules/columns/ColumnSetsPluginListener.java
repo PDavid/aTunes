@@ -20,11 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.utils.Logger;
@@ -39,57 +37,54 @@ import org.commonjukebox.plugins.model.PluginListener;
  * 
  * @author fleax
  */
-public class ColumnSets implements PluginListener {
+public class ColumnSetsPluginListener implements PluginListener {
 
     /**
      * Column sets
      */
-    private static List<AbstractColumnSet> columnSets = new ArrayList<AbstractColumnSet>();
+    private List<AbstractColumnSet> columnSets;
+
+    private IPluginsHandler pluginsHandler;
 
     /**
-     * Singleton instance
+     * @param pluginsHandler
      */
-    private static ColumnSets instance = new ColumnSets();
-
-    /**
-     * @return
-     */
-    public static ColumnSets getInstance() {
-        return instance;
+    public void setPluginsHandler(final IPluginsHandler pluginsHandler) {
+	this.pluginsHandler = pluginsHandler;
     }
 
     /**
-     * Register a new column set
-     * 
-     * @param columnSet
+     * @param columnSets
      */
-    protected static void registerColumnSet(AbstractColumnSet columnSet) {
-    	columnSets.add(columnSet);
+    public void setColumnSets(final List<AbstractColumnSet> columnSets) {
+	this.columnSets = columnSets;
     }
 
     @SuppressWarnings("rawtypes")
-	@Override
-    public void pluginActivated(PluginInfo plugin) {
-        try {
-            for (AbstractColumnSet columnSet : columnSets) {
-                columnSet.addNewColumn((AbstractColumn) Context.getBean(IPluginsHandler.class).getNewInstance(plugin));
-            }
-        } catch (PluginSystemException e) {
-            Logger.error(e);
-        }
+    @Override
+    public void pluginActivated(final PluginInfo plugin) {
+	try {
+	    for (AbstractColumnSet columnSet : columnSets) {
+		columnSet.addNewColumn((AbstractColumn) pluginsHandler
+			.getNewInstance(plugin));
+	    }
+	} catch (PluginSystemException e) {
+	    Logger.error(e);
+	}
     }
 
     @Override
-    public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
-        // Take class of column (just the first)
-        Class<?> columnClass = null;
-        for (Plugin instancedColumn : createdInstances) {
-            columnClass = instancedColumn.getClass();
-            break;
-        }
+    public void pluginDeactivated(final PluginInfo plugin,
+	    final Collection<Plugin> createdInstances) {
+	// Take class of column (just the first)
+	Class<?> columnClass = null;
+	for (Plugin instancedColumn : createdInstances) {
+	    columnClass = instancedColumn.getClass();
+	    break;
+	}
 
-        for (IColumnSet columnSet : columnSets) {
-            columnSet.removeColumn(columnClass);
-        }
+	for (IColumnSet columnSet : columnSets) {
+	    columnSet.removeColumn(columnClass);
+	}
     }
 }

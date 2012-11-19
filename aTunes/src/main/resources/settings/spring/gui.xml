@@ -76,9 +76,15 @@
 	
 	<bean id="navigationTreePanel" class="net.sourceforge.atunes.gui.views.panels.NavigationTreePanel" init-method="initialize"/>
 	<bean id="navigationTablePanel" class="net.sourceforge.atunes.gui.views.panels.NavigationTablePanel" init-method="initialize"/>
+
+	<bean id="navigationTableModel" class="net.sourceforge.atunes.gui.NavigationTableModel"/>
+	
 	<bean id="navigationTable" class="net.sourceforge.atunes.gui.views.controls.NavigationTable">
 		<constructor-arg ref="lookAndFeelManager"/>
+		<property name="model" ref="navigationTableModel"/>
+		<property name="columnModel" ref="navigationTableColumnModel"/>
 	</bean>
+	
 	<bean id="playListPanel" class="net.sourceforge.atunes.gui.views.panels.PlayListPanel" init-method="initialize"/>
 	<bean id="playListSelectorPanel" class="net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel" init-method="initialize"/>
 	<bean id="playListSelectorWrapper" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListSelectorWrapper" init-method="initialize"/>
@@ -157,7 +163,10 @@
 	<!-- COLUMN MODELS -->
 	<bean id="abstractCommonColumnModel" class="net.sourceforge.atunes.gui.AbstractCommonColumnModel" abstract="true"/>
 	<bean class="net.sourceforge.atunes.gui.AlbumTableColumnModel" parent="abstractCommonColumnModel" scope="prototype" init-method="initialize"/>
-	<bean class="net.sourceforge.atunes.gui.NavigationTableColumnModel" parent="abstractCommonColumnModel" scope="prototype" init-method="initialize"/>
+	<bean id="navigationTableColumnModel" class="net.sourceforge.atunes.gui.NavigationTableColumnModel" parent="abstractCommonColumnModel" scope="prototype" init-method="initialize">
+		<property name="model" ref="navigationTableModel"/>
+		<property name="columnSet" ref="navigatorColumnSet"/>
+	</bean>
 	<bean class="net.sourceforge.atunes.gui.PlayListColumnModel" parent="abstractCommonColumnModel" scope="prototype" init-method="initialize"/>
 	
 	<!-- DRAG AND DROP PROCESSORS -->
