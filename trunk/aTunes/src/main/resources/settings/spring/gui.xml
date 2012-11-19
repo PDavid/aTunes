@@ -163,5 +163,12 @@
 	<!-- DRAG AND DROP PROCESSORS -->
 	<bean class="net.sourceforge.atunes.kernel.modules.draganddrop.InternalImportProcessor" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.draganddrop.ExternalImportProcessor" scope="prototype"/>
+
+	<!-- COLORS -->
+	<bean id="unknownElementForegroundColor" class="java.awt.Color">
+		<constructor-arg value="1.0"/>
+		<constructor-arg value="0"/>
+		<constructor-arg value="0"/>
+	</bean>
 	
 </beans>

@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.lookandfeel;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Window;
 import java.util.ArrayList;
@@ -27,10 +28,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
-import net.sourceforge.atunes.gui.ColorDefinitions;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.FontSettings;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IBeanFactory;
@@ -181,7 +184,17 @@ public final class LookAndFeelManager implements PluginListener,
 	currentLookAndFeel.initializeLookAndFeel(beanFactory);
 	currentLookAndFeel.setLookAndFeel(lookAndFeelBean.getSkin());
 	initializeFonts(currentLookAndFeel, stateCore, stateUI);
-	ColorDefinitions.initColors();
+	initializeColors();
+    }
+
+    /**
+     * Color initialization for some ui components
+     */
+    private void initializeColors() {
+	UIManager.put("ToolTip.border",
+		BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
+	UIManager.put("ToolTip.background", new ColorUIResource(Color.WHITE));
+	UIManager.put("ToolTip.foreground", new ColorUIResource(Color.BLACK));
     }
 
     /**

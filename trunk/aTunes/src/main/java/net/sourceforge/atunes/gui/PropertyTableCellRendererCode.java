@@ -24,30 +24,63 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IIconFactory;
 
 /**
  * Renderer for properties of audio objects in navigation table
+ * 
  * @author alex
- *
+ * 
  */
-public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, AudioObjectProperty> {
+public class PropertyTableCellRendererCode extends
+	AbstractTableCellRendererCode<JLabel, AudioObjectProperty> {
 
-	@Override
-	public JLabel getComponent(final JLabel comp, final JTable table, final AudioObjectProperty val, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
-		ImageIcon icon = null;
-		if (val == AudioObjectProperty.FAVORITE) {
-			icon = Context.getBean("favoriteIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
-		} else if (val == AudioObjectProperty.NOT_LISTENED_ENTRY) {
-			icon = Context.getBean("newIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
-		} else if (val == AudioObjectProperty.DOWNLOADED_ENTRY) {
-			icon = Context.getBean("downloadIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
-		}
-		comp.setIcon(icon);
-		comp.setText(null);
-		return comp;
+    private IIconFactory favoriteIcon;
+
+    private IIconFactory newIcon;
+
+    private IIconFactory downloadIcon;
+
+    /**
+     * @param favoriteIcon
+     */
+    public void setFavoriteIcon(final IIconFactory favoriteIcon) {
+	this.favoriteIcon = favoriteIcon;
+    }
+
+    /**
+     * @param newIcon
+     */
+    public void setNewIcon(final IIconFactory newIcon) {
+	this.newIcon = newIcon;
+    }
+
+    /**
+     * @param downloadIcon
+     */
+    public void setDownloadIcon(final IIconFactory downloadIcon) {
+	this.downloadIcon = downloadIcon;
+    }
+
+    @Override
+    public JLabel getComponent(final JLabel comp, final JTable table,
+	    final AudioObjectProperty val, final boolean isSelected,
+	    final boolean hasFocus, final int row, final int column) {
+	ImageIcon icon = null;
+	if (val == AudioObjectProperty.FAVORITE) {
+	    icon = favoriteIcon.getIcon(getLookAndFeel()
+		    .getPaintForColorMutableIcon(comp, isSelected));
+	} else if (val == AudioObjectProperty.NOT_LISTENED_ENTRY) {
+	    icon = newIcon.getIcon(getLookAndFeel()
+		    .getPaintForColorMutableIcon(comp, isSelected));
+	} else if (val == AudioObjectProperty.DOWNLOADED_ENTRY) {
+	    icon = downloadIcon.getIcon(getLookAndFeel()
+		    .getPaintForColorMutableIcon(comp, isSelected));
 	}
+	comp.setIcon(icon);
+	comp.setText(null);
+	return comp;
+    }
 
 }

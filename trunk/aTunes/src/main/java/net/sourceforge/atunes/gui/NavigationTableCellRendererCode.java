@@ -35,78 +35,87 @@ import net.sourceforge.atunes.model.ITagHandler;
 
 /**
  * Renderer for navigation table, includes highlight of incomplete tags
+ * 
  * @author alex
- *
+ * 
  */
-public class NavigationTableCellRendererCode extends AbstractTableCellRendererCode<JComponent, Object> {
+public class NavigationTableCellRendererCode extends
+	AbstractTableCellRendererCode<JComponent, Object> {
 
-	private ITableCellRendererCode renderer;
+    private ITableCellRendererCode<JComponent, Object> renderer;
 
-	private INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-	private boolean isSubstance;
+    private boolean isSubstance;
 
-	private ITagHandler tagHandler;
+    private ITagHandler tagHandler;
 
-	private IStateNavigation stateNavigation;
+    private IStateNavigation stateNavigation;
 
-	/**
-	 * @param renderer
-	 */
-	public void setRenderer(final ITableCellRendererCode renderer) {
-		this.renderer = renderer;
-	}
+    /**
+     * @param renderer
+     */
+    public void setRenderer(
+	    final ITableCellRendererCode<JComponent, Object> renderer) {
+	this.renderer = renderer;
+    }
 
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
 
-	/**
-	 * @param tagHandler
-	 */
-	public void setTagHandler(final ITagHandler tagHandler) {
-		this.tagHandler = tagHandler;
-	}
+    /**
+     * @param tagHandler
+     */
+    public void setTagHandler(final ITagHandler tagHandler) {
+	this.tagHandler = tagHandler;
+    }
 
-	/**
-	 * @param stateNavigation
-	 */
-	public void setStateNavigation(final IStateNavigation stateNavigation) {
-		this.stateNavigation = stateNavigation;
-	}
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(final IStateNavigation stateNavigation) {
+	this.stateNavigation = stateNavigation;
+    }
 
-	/**
-	 * Initialization needed
-	 */
-	public void initialize() {
-		this.isSubstance = getLookAndFeel().getName().equalsIgnoreCase("Substance");
-	}
+    /**
+     * Initialization needed
+     */
+    public void initialize() {
+	this.isSubstance = getLookAndFeel().getName().equalsIgnoreCase(
+		"Substance");
+    }
 
-	@Override
-	public JComponent getComponent(final JComponent superComponent, final JTable t, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
-		// Get result from super renderer
-		JComponent c = renderer.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
-		// Check incomplete tags if necessary
-		if (stateNavigation.isHighlightIncompleteTagElements()) {
-			IAudioObject audioObject = navigationHandler.getAudioObjectInNavigationTable(row);
-			if (tagHandler.hasIncompleteTags(audioObject)) {
-				((JLabel) c).setForeground(Color.red);
-			} else {
-				// Only Substance doesn't need this workaround
-				if (!isSubstance) {
-					((JLabel) c).setForeground(c.getForeground());
-					if( isSelected ) {
-						((JLabel) c).setForeground(UIManager.getColor("List.selectionForeground"));
-					}
-					else {
-						((JLabel) c).setForeground(UIManager.getColor("List.foreground"));
-					}
-				}
-			}
+    @Override
+    public JComponent getComponent(final JComponent superComponent,
+	    final JTable t, final Object value, final boolean isSelected,
+	    final boolean hasFocus, final int row, final int column) {
+	// Get result from super renderer
+	JComponent c = renderer.getComponent(superComponent, t, value,
+		isSelected, hasFocus, row, column);
+	// Check incomplete tags if necessary
+	if (stateNavigation.isHighlightIncompleteTagElements()) {
+	    IAudioObject audioObject = navigationHandler
+		    .getAudioObjectInNavigationTable(row);
+	    if (tagHandler.hasIncompleteTags(audioObject)) {
+		((JLabel) c).setForeground(Color.red);
+	    } else {
+		// Only Substance doesn't need this workaround
+		if (!isSubstance) {
+		    ((JLabel) c).setForeground(c.getForeground());
+		    if (isSelected) {
+			((JLabel) c).setForeground(UIManager
+				.getColor("List.selectionForeground"));
+		    } else {
+			((JLabel) c).setForeground(UIManager
+				.getColor("List.foreground"));
+		    }
 		}
-		return c;
+	    }
 	}
+	return c;
+    }
 }

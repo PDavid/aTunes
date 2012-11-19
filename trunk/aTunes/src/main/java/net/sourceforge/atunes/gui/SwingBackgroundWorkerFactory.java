@@ -23,10 +23,16 @@ package net.sourceforge.atunes.gui;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 
+/**
+ * Factory of swing workers
+ * 
+ * @author alex
+ * 
+ */
 public class SwingBackgroundWorkerFactory implements IBackgroundWorkerFactory {
 
-	@Override
-	public <T> IBackgroundWorker<T> getWorker() {
-		return new SwingBackgroundWorker<T>();
-	}
+    @Override
+    public <T> IBackgroundWorker<T> getWorker() {
+	return new SwingBackgroundWorker<T>();
+    }
 }
