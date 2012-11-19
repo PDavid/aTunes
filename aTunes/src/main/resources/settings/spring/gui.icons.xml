@@ -33,7 +33,9 @@
 	<bean id="newIcon" class="net.sourceforge.atunes.gui.images.NewImageIcon"/>
 	<bean id="nextIcon" class="net.sourceforge.atunes.gui.images.NextImageIcon">
 		<property name="size">
-			<bean class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getPreviousNextButtonsSize"/>
+			<bean class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getPreviousNextButtonsSize">
+				<constructor-arg ref="lookAndFeelManager"/>
+			</bean>
 		</property>
 	</bean>
 	<bean id="nextTrayIcon" class="net.sourceforge.atunes.gui.images.NextTrayImageIcon"/>
@@ -47,7 +49,9 @@
 	<bean id="playListStopStateIcon" class="net.sourceforge.atunes.gui.images.PlayListStopStateImageIcon"/>
 	<bean id="previousIcon" class="net.sourceforge.atunes.gui.images.PreviousImageIcon">
 		<property name="size">
-			<bean class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getPreviousNextButtonsSize"/>
+			<bean class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getPreviousNextButtonsSize">
+				<constructor-arg ref="lookAndFeelManager"/>
+			</bean>
 		</property>
 	</bean>
 	<bean id="previousTrayIcon" class="net.sourceforge.atunes.gui.images.PreviousTrayImageIcon"/>
@@ -66,7 +70,9 @@
 	<bean id="star5Icon" class="net.sourceforge.atunes.gui.images.Star5ImageIcon"/>
 	<bean id="stopIcon" class="net.sourceforge.atunes.gui.images.StopImageIcon">
 		<property name="size">
-			<bean class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getStopMuteButtonsSize"/>
+			<bean class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getStopMuteButtonsSize">
+				<constructor-arg ref="lookAndFeelManager"/>
+			</bean>
 		</property>
 	</bean>
 	<bean id="stopTrayIcon" class="net.sourceforge.atunes.gui.images.StopTrayImageIcon"/>

@@ -79,6 +79,33 @@ public final class PlayerControlsPanel extends JPanel implements
 
     private IBeanFactory beanFactory;
 
+    private Dimension playButtonSize;
+
+    private Dimension previousNextButtonSize;
+
+    private Dimension stopMuteButtonSize;
+
+    /**
+     * @param playButtonSize
+     */
+    public void setPlayButtonSize(final Dimension playButtonSize) {
+	this.playButtonSize = playButtonSize;
+    }
+
+    /**
+     * @param previousNextButtonSize
+     */
+    public void setPreviousNextButtonSize(final Dimension previousNextButtonSize) {
+	this.previousNextButtonSize = previousNextButtonSize;
+    }
+
+    /**
+     * @param stopMuteButtonSize
+     */
+    public void setStopMuteButtonSize(final Dimension stopMuteButtonSize) {
+	this.stopMuteButtonSize = stopMuteButtonSize;
+    }
+
     /**
      * @param beanFactory
      */
@@ -241,14 +268,11 @@ public final class PlayerControlsPanel extends JPanel implements
 
     private JPanel getMainControlsPanel() {
 	PreviousButton previousButton = new PreviousButton(
-		PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE,
+		previousNextButtonSize, lookAndFeelManager);
+	playButton = new PlayPauseButton(playButtonSize, lookAndFeelManager);
+	StopButton stopButton = new StopButton(stopMuteButtonSize,
 		lookAndFeelManager);
-	playButton = new PlayPauseButton(PlayerControlsSize.PLAY_BUTTON_SIZE,
-		lookAndFeelManager);
-	StopButton stopButton = new StopButton(
-		PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
-	NextButton nextButton = new NextButton(
-		PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE,
+	NextButton nextButton = new NextButton(previousNextButtonSize,
 		lookAndFeelManager, beanFactory.getBean("nextAction",
 			Action.class), beanFactory.getBean("nextIcon",
 			IIconFactory.class));

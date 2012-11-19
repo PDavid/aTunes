@@ -27,25 +27,22 @@ import java.awt.geom.GeneralPath;
 
 import javax.swing.AbstractButton;
 
-/*
- * based on code from Xtreme Media Player
+/**
+ * Based on code from Xtreme Media Player
+ * 
+ * @author alex
  */
 public final class CircleButtonShaper extends AbstractButtonShaper {
 
     @Override
     public String getDisplayName() {
-        return "Circle";
+	return "Circle";
     }
 
     @Override
-    public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
-        int width = w - 1;
-        int height = h - 1;
-
-        Shape shape = new Ellipse2D.Double(0, 0, width, height);
-        GeneralPath generalPath = new GeneralPath(shape);
-
-        return generalPath;
+    public Shape getButtonOutline(final AbstractButton button,
+	    final Insets insets, final int w, final int h, final boolean isInner) {
+	return new GeneralPath(new Ellipse2D.Double(0, 0, w - 1, h - 1));
     }
 
 }

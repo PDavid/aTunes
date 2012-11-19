@@ -20,32 +20,14 @@
 
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
-/**
- * Custom look and feel
- * 
- * @author alex
- * 
- */
-public final class SubstanceATunesDarkLookAndFeel extends
-	org.pushingpixels.substance.api.SubstanceLookAndFeel {
+import java.awt.Color;
 
-    private static final long serialVersionUID = -3907225219153995877L;
+import org.pushingpixels.substance.api.colorscheme.DarkGrayColorScheme;
 
-    /**
-     * Default constructor
-     */
-    public SubstanceATunesDarkLookAndFeel() {
-	super(new SubstanceATunesDarkSkin());
-    }
-
+final class CustomDarkGrayColorScheme extends
+        DarkGrayColorScheme {
     @Override
-    public String getID() {
-	return "Substance aTunes Dark";
+    public Color getForegroundColor() {
+        return new Color(200, 200, 200);
     }
-
-    @Override
-    public String getName() {
-	return "Substance aTunes Dark";
-    }
-
 }

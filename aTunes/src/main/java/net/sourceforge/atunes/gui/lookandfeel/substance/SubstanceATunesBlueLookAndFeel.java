@@ -20,22 +20,32 @@
 
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
-public final class SubstanceATunesBlueLookAndFeel extends org.pushingpixels.substance.api.SubstanceLookAndFeel {
+/**
+ * Custom look and feel
+ * 
+ * @author alex
+ * 
+ */
+public final class SubstanceATunesBlueLookAndFeel extends
+	org.pushingpixels.substance.api.SubstanceLookAndFeel {
 
     private static final long serialVersionUID = -3907225219153995877L;
 
+    /**
+     * Default constructor
+     */
     public SubstanceATunesBlueLookAndFeel() {
-        super(new SubstanceATunesBlueSkin());
+	super(new SubstanceATunesBlueSkin());
     }
 
     @Override
     public String getID() {
-        return "Substance aTunes Blue";
+	return "Substance aTunes Blue";
     }
 
     @Override
     public String getName() {
-        return "Substance aTunes Blue";
+	return "Substance aTunes Blue";
     }
 
 }

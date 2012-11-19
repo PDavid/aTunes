@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
-import java.awt.Color;
 
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
@@ -36,50 +35,61 @@ import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.internal.colorscheme.TintColorScheme;
 
+/**
+ * Custom skin
+ * 
+ * @author alex
+ * 
+ */
 public final class SubstanceATunesDarkSkin extends SubstanceSkin {
 
-	private static final class CustomDarkGrayColorScheme extends DarkGrayColorScheme {
-		@Override
-		public Color getForegroundColor() {
-			return new Color(200, 200, 200);
-		}
-	}
+    /**
+     * Creates a new skin.
+     */
+    public SubstanceATunesDarkSkin() {
 
-	/**
-	 * Creates a new skin.
-	 */
-	public SubstanceATunesDarkSkin() {
+	SubstanceColorScheme activeScheme = new TintColorScheme(
+		new EbonyColorScheme(), 0.1f);
+	SubstanceColorScheme defaultScheme = new TintColorScheme(
+		new CustomDarkGrayColorScheme(), 0.1f);
+	SubstanceColorScheme disabledScheme = new TintColorScheme(
+		new DarkGrayColorScheme(), 0.5f);
 
-		SubstanceColorScheme activeScheme = new TintColorScheme(new EbonyColorScheme(), 0.1f);
-		SubstanceColorScheme defaultScheme = new TintColorScheme(new CustomDarkGrayColorScheme(), 0.1f);
-		SubstanceColorScheme disabledScheme = new TintColorScheme(new DarkGrayColorScheme(), 0.5f);
+	// the default theme bundle
+	SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
+		activeScheme, defaultScheme, disabledScheme);
+	defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f,
+		ComponentState.ROLLOVER_UNSELECTED);
+	defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f,
+		ComponentState.SELECTED);
+	defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f,
+		ComponentState.ROLLOVER_SELECTED);
+	defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f,
+		ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
+	this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
+		DecorationAreaType.NONE);
 
-		// the default theme bundle
-		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(activeScheme, defaultScheme, disabledScheme);
-		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f, ComponentState.ROLLOVER_UNSELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f, ComponentState.SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f,ComponentState.ROLLOVER_SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f, ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
-		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, DecorationAreaType.NONE);
+	// the special theme bundle
+	SubstanceColorSchemeBundle specialSchemeBundle = new SubstanceColorSchemeBundle(
+		activeScheme, activeScheme, disabledScheme);
+	this.registerDecorationAreaSchemeBundle(specialSchemeBundle,
+		DecorationAreaType.PRIMARY_TITLE_PANE,
+		DecorationAreaType.SECONDARY_TITLE_PANE);
 
-		// the special theme bundle
-		SubstanceColorSchemeBundle specialSchemeBundle = new SubstanceColorSchemeBundle(activeScheme, activeScheme, disabledScheme);
-		this.registerDecorationAreaSchemeBundle(specialSchemeBundle, DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE);
+	this.setSelectedTabFadeStart(1);
+	this.setSelectedTabFadeEnd(1);
 
-		this.setSelectedTabFadeStart(1);
-		this.setSelectedTabFadeEnd(1);
+	this.buttonShaper = new ClassicButtonShaper();
+	this.fillPainter = new ClassicFillPainter();
+	this.borderPainter = new ClassicBorderPainter();
+	this.decorationPainter = new MatteDecorationPainter();
+	this.highlightPainter = new ClassicHighlightPainter();
 
-		this.buttonShaper = new ClassicButtonShaper();
-		this.fillPainter = new ClassicFillPainter();
-		this.borderPainter = new ClassicBorderPainter();
-		this.decorationPainter = new MatteDecorationPainter();
-		this.highlightPainter = new ClassicHighlightPainter();
+    }
 
-	}
-
-	@Override
-	public String getDisplayName() {
-		return "aTunes Dark skin";
-	}
+    @Override
+    public String getDisplayName() {
+	return "aTunes Dark skin";
+    }
 
 }

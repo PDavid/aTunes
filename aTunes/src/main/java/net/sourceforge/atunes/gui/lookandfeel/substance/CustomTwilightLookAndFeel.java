@@ -20,22 +20,32 @@
 
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
-public final class CustomTwilightLookAndFeel extends org.pushingpixels.substance.api.SubstanceLookAndFeel {
+/**
+ * Custom look and feel using a custom skin
+ * 
+ * @author alex
+ * 
+ */
+public final class CustomTwilightLookAndFeel extends
+	org.pushingpixels.substance.api.SubstanceLookAndFeel {
 
     private static final long serialVersionUID = -3907225219153995877L;
 
+    /**
+     * Default constructor
+     */
     public CustomTwilightLookAndFeel() {
-        super(new CustomTwilightSkin());
+	super(new CustomTwilightSkin());
     }
 
     @Override
     public String getID() {
-        return "Twilight";
+	return "Twilight";
     }
 
     @Override
     public String getName() {
-        return "Twilight";
+	return "Twilight";
     }
 
 }

@@ -27,18 +27,23 @@ import net.sourceforge.atunes.model.IListCellRendererCode;
 
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultListCellRenderer;
 
-final class SubstanceLookAndFeelListCellRenderer extends SubstanceDefaultListCellRenderer {
+final class SubstanceLookAndFeelListCellRenderer extends
+	SubstanceDefaultListCellRenderer {
     private final IListCellRendererCode code;
 
     private static final long serialVersionUID = 2572603555660744197L;
 
-    SubstanceLookAndFeelListCellRenderer(IListCellRendererCode code) {
-        this.code = code;
+    SubstanceLookAndFeelListCellRenderer(final IListCellRendererCode code) {
+	this.code = code;
     }
 
     @Override
-    public JComponent getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-    	JComponent c = (JComponent) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        return code.getComponent(c, list, value, index, isSelected, cellHasFocus);
+    public JComponent getListCellRendererComponent(final JList list,
+	    final Object value, final int index, final boolean isSelected,
+	    final boolean cellHasFocus) {
+	JComponent c = (JComponent) super.getListCellRendererComponent(list,
+		value, index, isSelected, cellHasFocus);
+	return code.getComponent(c, list, value, index, isSelected,
+		cellHasFocus);
     }
 }
