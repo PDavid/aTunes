@@ -28,13 +28,20 @@ import java.util.List;
 
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * List of objects to be transferred in a drag and drop operation
+ * 
+ * @author alex
+ * 
+ * @param <T>
+ */
 public final class TransferableList<T> implements Transferable {
 
     /** The Constant mimeType. */
     public static final String MIMETYPE = "aTunes/objects; class=java.io.InputStream";
 
     /** The list. */
-    private List<T> list;
+    private final List<T> list;
 
     /**
      * Instantiates a new transferable list.
@@ -42,46 +49,29 @@ public final class TransferableList<T> implements Transferable {
      * @param list
      *            the list
      */
-    public TransferableList(List<T> list) {
-        this.list = list;
+    public TransferableList(final List<T> list) {
+	this.list = list;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer
-     * .DataFlavor)
-     */
     @Override
-    public List<T> getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-        return list;
+    public List<T> getTransferData(final DataFlavor flavor)
+	    throws UnsupportedFlavorException, IOException {
+	return list;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
-     */
     @Override
     public DataFlavor[] getTransferDataFlavors() {
-        DataFlavor[] flavors = new DataFlavor[1];
-        try {
-            flavors[0] = new DataFlavor(MIMETYPE);
-        } catch (ClassNotFoundException e) {
-            Logger.error(e);
-        }
-        return flavors;
+	DataFlavor[] flavors = new DataFlavor[1];
+	try {
+	    flavors[0] = new DataFlavor(MIMETYPE);
+	} catch (ClassNotFoundException e) {
+	    Logger.error(e);
+	}
+	return flavors;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seejava.awt.datatransfer.Transferable#isDataFlavorSupported(java.awt.
-     * datatransfer.DataFlavor)
-     */
     @Override
-    public boolean isDataFlavorSupported(DataFlavor flavor) {
-        return flavor.getMimeType().equalsIgnoreCase(MIMETYPE);
+    public boolean isDataFlavorSupported(final DataFlavor flavor) {
+	return flavor.getMimeType().equalsIgnoreCase(MIMETYPE);
     }
 }

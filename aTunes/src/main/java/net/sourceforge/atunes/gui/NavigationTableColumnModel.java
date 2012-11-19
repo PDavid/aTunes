@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.gui;
 
-
+import javax.swing.JComponent;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -29,55 +29,59 @@ import net.sourceforge.atunes.model.ITableCellRendererCode;
 
 /**
  * Column model for navigation table
+ * 
  * @author alex
- *
+ * 
  */
 public final class NavigationTableColumnModel extends AbstractCommonColumnModel {
 
-	private static final long serialVersionUID = 1071222881574684439L;
+    private static final long serialVersionUID = 1071222881574684439L;
 
-	private INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-	private ITable navigationTable;
+    private ITable navigationTable;
 
-	/**
-	 * @param navigationTable
-	 */
-	public void setNavigationTable(final ITable navigationTable) {
-		this.navigationTable = navigationTable;
-	}
+    /**
+     * @param navigationTable
+     */
+    public void setNavigationTable(final ITable navigationTable) {
+	this.navigationTable = navigationTable;
+    }
 
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
 
-	/**
-	 * Initialization needed
-	 */
-	public void initialize() {
-		setTable(navigationTable.getSwingComponent());
-		enableColumnChange(true);
-	}
+    /**
+     * Initialization needed
+     */
+    public void initialize() {
+	setTable(navigationTable.getSwingComponent());
+	enableColumnChange(true);
+    }
 
-	@Override
-	public void addColumn(final TableColumn aColumn) {
-		updateColumnSettings(aColumn);
-		super.addColumn(aColumn);
-	}
+    @Override
+    public void addColumn(final TableColumn aColumn) {
+	updateColumnSettings(aColumn);
+	super.addColumn(aColumn);
+    }
 
-	@Override
-	protected void reapplyFilter() {
-		navigationHandler.updateViewTable();
-	}
+    @Override
+    protected void reapplyFilter() {
+	navigationHandler.updateViewTable();
+    }
 
-	@Override
-	public ITableCellRendererCode<?, ?> getRendererCodeFor(final Class<?> clazz) {
-		ITableCellRendererCode<?, ?> renderer = super.getRendererCodeFor(clazz);
-		NavigationTableCellRendererCode navigationRenderer = getBeanFactory().getBean(NavigationTableCellRendererCode.class);
-		navigationRenderer.setRenderer(renderer);
-		return navigationRenderer;
-	}
+    @Override
+    public ITableCellRendererCode<?, ?> getRendererCodeFor(final Class<?> clazz) {
+	@SuppressWarnings("unchecked")
+	ITableCellRendererCode<JComponent, Object> renderer = (ITableCellRendererCode<JComponent, Object>) super
+		.getRendererCodeFor(clazz);
+	NavigationTableCellRendererCode navigationRenderer = getBeanFactory()
+		.getBean(NavigationTableCellRendererCode.class);
+	navigationRenderer.setRenderer(renderer);
+	return navigationRenderer;
+    }
 }

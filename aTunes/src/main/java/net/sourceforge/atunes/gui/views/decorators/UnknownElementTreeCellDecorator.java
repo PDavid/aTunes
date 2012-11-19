@@ -20,43 +20,57 @@
 
 package net.sourceforge.atunes.gui.views.decorators;
 
+import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 /**
  * Tree cell decorator for unknown elements
+ * 
  * @author alex
- *
+ * 
  */
-public class UnknownElementTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, Object> {
+public class UnknownElementTreeCellDecorator extends
+	AbstractTreeCellDecorator<JLabel, Object> {
 
-	private IUnknownObjectChecker unknownObjectChecker;
+    private IUnknownObjectChecker unknownObjectChecker;
 
-	/**
-	 * @param unknownObjectChecker
-	 */
-	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
+    private Color unknownElementForegroundColor;
+
+    /**
+     * @param unknownElementForegroundColor
+     */
+    public void setUnknownElementForegroundColor(
+	    final Color unknownElementForegroundColor) {
+	this.unknownElementForegroundColor = unknownElementForegroundColor;
+    }
+
+    /**
+     * @param unknownObjectChecker
+     */
+    public void setUnknownObjectChecker(
+	    final IUnknownObjectChecker unknownObjectChecker) {
+	this.unknownObjectChecker = unknownObjectChecker;
+    }
+
+    @Override
+    public Component decorateTreeCellComponent(final JLabel component,
+	    final Object userObject, final boolean isSelected) {
+	if (checkUnknown(userObject.toString())) {
+	    component.setForeground(unknownElementForegroundColor);
 	}
+	return component;
+    }
 
-	@Override
-	public Component decorateTreeCellComponent(final JLabel component, final Object userObject, final boolean isSelected) {
-		if (checkUnknown(userObject.toString())) {
-			component.setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
-		}
-		return component;
-	}
-
-	private boolean checkUnknown(final String string) {
-		return unknownObjectChecker.isUnknownAlbum(string) ||
-		unknownObjectChecker.isUnknownArtist(string) ||
-		unknownObjectChecker.isUnknownGenre(string) ||
-		unknownObjectChecker.isUnknownYear(string);
-	}
+    private boolean checkUnknown(final String string) {
+	return unknownObjectChecker.isUnknownAlbum(string)
+		|| unknownObjectChecker.isUnknownArtist(string)
+		|| unknownObjectChecker.isUnknownGenre(string)
+		|| unknownObjectChecker.isUnknownYear(string);
+    }
 
 }

@@ -22,38 +22,50 @@ package net.sourceforge.atunes.gui;
 
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 
+/**
+ * A bean containing text and icon to be drawn in UI
+ * 
+ * @author alex
+ * 
+ */
 public class TextAndIcon {
 
-	private String text;
-	
-	private IColorMutableImageIcon icon;
-	
-	private int horizontalTextPosition;
-	
-	public TextAndIcon(String text, IColorMutableImageIcon icon, int horizontalAlignment) {
-		this.text = text;
-		this.icon = icon;
-		this.horizontalTextPosition = horizontalAlignment;
-	}
+    private final String text;
 
-	/**
-	 * @return the text
-	 */
-	public String getText() {
-		return text;
-	}
+    private final IColorMutableImageIcon icon;
 
-	/**
-	 * @return the icon
-	 */
-	public IColorMutableImageIcon getIcon() {
-		return icon;
-	}
+    private final int horizontalTextPosition;
 
-	/**
-	 * @return the horizontalAlignment
-	 */
-	public int getHorizontalTextPosition() {
-		return horizontalTextPosition;
-	}
+    /**
+     * @param text
+     * @param icon
+     * @param horizontalAlignment
+     */
+    public TextAndIcon(final String text, final IColorMutableImageIcon icon,
+	    final int horizontalAlignment) {
+	this.text = text;
+	this.icon = icon;
+	this.horizontalTextPosition = horizontalAlignment;
+    }
+
+    /**
+     * @return the text
+     */
+    public String getText() {
+	return text;
+    }
+
+    /**
+     * @return the icon
+     */
+    public IColorMutableImageIcon getIcon() {
+	return icon;
+    }
+
+    /**
+     * @return the horizontalAlignment
+     */
+    public int getHorizontalTextPosition() {
+	return horizontalTextPosition;
+    }
 }

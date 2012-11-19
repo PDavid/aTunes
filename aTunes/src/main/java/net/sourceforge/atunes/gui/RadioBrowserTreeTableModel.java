@@ -50,9 +50,12 @@ public final class RadioBrowserTreeTableModel extends AbstractTreeTableModel {
      */
     private static final String ROOT = "ROOT";
 
-    public RadioBrowserTreeTableModel(List<IRadio> radios) {
-        super(new DefaultMutableTreeTableNode(ROOT));
-        setRadios(radios);
+    /**
+     * @param radios
+     */
+    public RadioBrowserTreeTableModel(final List<IRadio> radios) {
+	super(new DefaultMutableTreeTableNode(ROOT));
+	setRadios(radios);
     }
 
     /**
@@ -60,20 +63,20 @@ public final class RadioBrowserTreeTableModel extends AbstractTreeTableModel {
      * 
      * @param radios
      */
-    private void setRadios(List<IRadio> radios) {
-        radiosMap = new HashMap<String, List<IRadio>>();
-        radioLabels = new ArrayList<String>();
-        for (IRadio r : radios) {
-            if (radiosMap.containsKey(r.getLabel())) {
-                radiosMap.get(r.getLabel()).add(r);
-            } else {
-                List<IRadio> radioList = new ArrayList<IRadio>();
-                radioList.add(r);
-                radiosMap.put(r.getLabel(), radioList);
-                radioLabels.add(r.getLabel());
-            }
-        }
-        Collections.sort(radioLabels);
+    private void setRadios(final List<IRadio> radios) {
+	radiosMap = new HashMap<String, List<IRadio>>();
+	radioLabels = new ArrayList<String>();
+	for (IRadio r : radios) {
+	    if (radiosMap.containsKey(r.getLabel())) {
+		radiosMap.get(r.getLabel()).add(r);
+	    } else {
+		List<IRadio> radioList = new ArrayList<IRadio>();
+		radioList.add(r);
+		radiosMap.put(r.getLabel(), radioList);
+		radioLabels.add(r.getLabel());
+	    }
+	}
+	Collections.sort(radioLabels);
     }
 
     /**
@@ -81,8 +84,8 @@ public final class RadioBrowserTreeTableModel extends AbstractTreeTableModel {
      * @param node
      * @return <code>true</code> if node is root
      */
-    private boolean isRoot(DefaultMutableTreeTableNode node) {
-        return node.getUserObject().equals(ROOT);
+    private boolean isRoot(final DefaultMutableTreeTableNode node) {
+	return node.getUserObject().equals(ROOT);
     }
 
     /**
@@ -90,78 +93,85 @@ public final class RadioBrowserTreeTableModel extends AbstractTreeTableModel {
      * @param node
      * @return <code>true</code> if node is a radio label
      */
-    private boolean isLabel(DefaultMutableTreeTableNode node) {
-        return node.getUserObject() instanceof String;
+    private boolean isLabel(final DefaultMutableTreeTableNode node) {
+	return node.getUserObject() instanceof String;
     }
 
     @Override
-    public Object getChild(Object parent, int index) {
-        if (isRoot((DefaultMutableTreeTableNode) parent)) {
-            return new DefaultMutableTreeTableNode(radioLabels.get(index));
-        }
-        if (isLabel((DefaultMutableTreeTableNode) parent)) {
-            String label = (String) ((DefaultMutableTreeTableNode) parent).getUserObject();
-            return new DefaultMutableTreeTableNode(radiosMap.get(label).get(index));
-        }
-        return "jj";
+    public Object getChild(final Object parent, final int index) {
+	if (isRoot((DefaultMutableTreeTableNode) parent)) {
+	    return new DefaultMutableTreeTableNode(radioLabels.get(index));
+	}
+	if (isLabel((DefaultMutableTreeTableNode) parent)) {
+	    String label = (String) ((DefaultMutableTreeTableNode) parent)
+		    .getUserObject();
+	    return new DefaultMutableTreeTableNode(radiosMap.get(label).get(
+		    index));
+	}
+	return "jj";
     }
 
     @Override
-    public int getChildCount(Object parent) {
-        if (isRoot((DefaultMutableTreeTableNode) parent)) {
-            return radioLabels.size();
-        }
-        if (isLabel((DefaultMutableTreeTableNode) parent)) {
-            String label = (String) ((DefaultMutableTreeTableNode) parent).getUserObject();
-            return radiosMap.get(label).size();
-        }
-        return 0;
+    public int getChildCount(final Object parent) {
+	if (isRoot((DefaultMutableTreeTableNode) parent)) {
+	    return radioLabels.size();
+	}
+	if (isLabel((DefaultMutableTreeTableNode) parent)) {
+	    String label = (String) ((DefaultMutableTreeTableNode) parent)
+		    .getUserObject();
+	    return radiosMap.get(label).size();
+	}
+	return 0;
     }
 
     @Override
-    public int getIndexOfChild(Object parent, Object child) {
-        if (isLabel((DefaultMutableTreeTableNode) child)) {
-            String label = (String) ((DefaultMutableTreeTableNode) child).getUserObject();
-            return radioLabels.indexOf(label);
-        }
-        // Is a radio
-        String label = (String) ((DefaultMutableTreeTableNode) parent).getUserObject();
-        IRadio r = (IRadio) ((DefaultMutableTreeTableNode) child).getUserObject();
-        return radiosMap.get(label).indexOf(r);
+    public int getIndexOfChild(final Object parent, final Object child) {
+	if (isLabel((DefaultMutableTreeTableNode) child)) {
+	    String label = (String) ((DefaultMutableTreeTableNode) child)
+		    .getUserObject();
+	    return radioLabels.indexOf(label);
+	}
+	// Is a radio
+	String label = (String) ((DefaultMutableTreeTableNode) parent)
+		.getUserObject();
+	IRadio r = (IRadio) ((DefaultMutableTreeTableNode) child)
+		.getUserObject();
+	return radiosMap.get(label).indexOf(r);
     }
 
     @Override
     public int getColumnCount() {
-        return 3;
+	return 3;
     }
 
     @Override
-    public String getColumnName(int column) {
-        if (column == 0) {
-            return I18nUtils.getString("LABEL");
-        } else if (column == 1) {
-            return I18nUtils.getString("NAME");
-        } else {
-            return I18nUtils.getString("URL");
-        }
+    public String getColumnName(final int column) {
+	if (column == 0) {
+	    return I18nUtils.getString("LABEL");
+	} else if (column == 1) {
+	    return I18nUtils.getString("NAME");
+	} else {
+	    return I18nUtils.getString("URL");
+	}
     }
 
     @Override
-    public Object getValueAt(Object node, int column) {
-        if (isLabel((DefaultMutableTreeTableNode) node)) {
-            return column == 0 ? node : null;
-        }
+    public Object getValueAt(final Object node, final int column) {
+	if (isLabel((DefaultMutableTreeTableNode) node)) {
+	    return column == 0 ? node : null;
+	}
 
-        // Is a radio
-        IRadio r = (IRadio) ((DefaultMutableTreeTableNode) node).getUserObject();
-        if (column == 0) {
-            return null;
-        } else if (column == 1) {
-            return r.getName();
-        } else if (column == 2) {
-            return r.getUrl();
-        }
-        return null;
+	// Is a radio
+	IRadio r = (IRadio) ((DefaultMutableTreeTableNode) node)
+		.getUserObject();
+	if (column == 0) {
+	    return null;
+	} else if (column == 1) {
+	    return r.getName();
+	} else if (column == 2) {
+	    return r.getUrl();
+	}
+	return null;
     }
 
 }
