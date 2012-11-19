@@ -6,6 +6,21 @@
 
 	<bean id="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet" abstract="true" />
 	
+	<bean id="columnSets" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<ref bean="navigatorColumnSet"/>
+				<ref bean="playListColumnSet"/>
+				<ref bean="albumColumnSet"/>
+				<ref bean="searchResultsColumnSet"/>
+				<ref bean="podcastNavigationColumnSet"/>
+				<ref bean="radioNavigationColumnSet"/>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="columnSetsPluginListener" class="net.sourceforge.atunes.kernel.modules.columns.ColumnSetsPluginListener"/>
+	
 	<bean id="navigatorColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet">
 		<property name="allowedColumns" ref="noPlaylistColumnSetColumns"/>
 	</bean>
