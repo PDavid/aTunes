@@ -27,25 +27,27 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.AbstractButton;
 
-/*
+/**
  * based on code from Xtreme Media Player
+ * 
+ * @author alex
+ * 
  */
 public final class RoundRectButtonShaper extends AbstractButtonShaper {
 
     @Override
     public String getDisplayName() {
-        return "RoundRect";
+	return "RoundRect";
     }
 
     @Override
-    public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
-        int width = w - 1;
-        int height = h - 1;
+    public Shape getButtonOutline(final AbstractButton button,
+	    final Insets insets, final int w, final int h, final boolean isInner) {
+	int width = w - 1;
+	int height = h - 1;
 
-        Shape shape = new RoundRectangle2D.Double(0, 0, width, height, 10, 10);
-        GeneralPath generalPath = new GeneralPath(shape);
-
-        return generalPath;
+	return new GeneralPath(new RoundRectangle2D.Double(0, 0, width, height,
+		10, 10));
     }
 
 }

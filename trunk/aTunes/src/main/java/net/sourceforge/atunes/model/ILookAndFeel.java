@@ -60,8 +60,10 @@ public interface ILookAndFeel {
 
     /**
      * Steps needed to initialize look and feel
+     * 
+     * @param beanFactory
      */
-    public void initializeLookAndFeel();
+    public void initializeLookAndFeel(IBeanFactory beanFactory);
 
     /**
      * Steps needed to set up look and feel

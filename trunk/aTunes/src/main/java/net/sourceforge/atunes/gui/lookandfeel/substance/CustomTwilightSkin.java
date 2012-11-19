@@ -26,37 +26,50 @@ import java.awt.Component;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.skin.TwilightSkin;
 
-public class CustomTwilightSkin extends TwilightSkin implements ICustomSubstanceSkin {
+/**
+ * Custom skin
+ * 
+ * @author alex
+ * 
+ */
+public class CustomTwilightSkin extends TwilightSkin implements
+	ICustomSubstanceSkin {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 4543287686553802647L;
+    private static final long serialVersionUID = 4543287686553802647L;
 
-	public CustomTwilightSkin() {
-		super();
+    @Override
+    public Color getPaintForColorMutableIcon(final Component component,
+	    final boolean isSelected) {
+	if (isSelected) {
+	    return component.getForeground();
+	} else {
+	    Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel
+		    .getCurrentSkin()
+		    .getActiveColorScheme(DecorationAreaType.HEADER)
+		    .getUltraLightColor();
+	    return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
 	}
-	
-	@Override
-	public Color getPaintForColorMutableIcon(Component component, boolean isSelected) {
-    	if (isSelected) {
-    		return component.getForeground();    		
-    	} else {
-    		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.HEADER).getUltraLightColor();    		
-    		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
-    	}
-	}
-	
-	@Override
-	public Color getPaintForSpecialControls() {
-		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.HEADER).getUltraLightColor();    		
-		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
-	}
-	
-	@Override
-	public Color getPaintForDisabledSpecialControls() {
-		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.HEADER).getUltraLightColor();    		
-		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 150);
-	}
-	
+    }
+
+    @Override
+    public Color getPaintForSpecialControls() {
+	Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel
+		.getCurrentSkin()
+		.getActiveColorScheme(DecorationAreaType.HEADER)
+		.getUltraLightColor();
+	return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
+    }
+
+    @Override
+    public Color getPaintForDisabledSpecialControls() {
+	Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel
+		.getCurrentSkin()
+		.getActiveColorScheme(DecorationAreaType.HEADER)
+		.getUltraLightColor();
+	return new Color(c.getRed(), c.getGreen(), c.getBlue(), 150);
+    }
+
 }

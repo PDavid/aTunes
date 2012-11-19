@@ -79,13 +79,10 @@
 		<constructor-arg value="0.4"/>
 	</bean>
 	
-	
 	<bean id="fullScreenCoverSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
 		<constructor-arg value="0.4"/>
 		<constructor-arg value="0.4"/>
 	</bean>
-	
-	
 	
 	<bean id="volumeSliderSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableWidthDimension">
 		<constructor-arg value="0.035"/>
@@ -93,5 +90,18 @@
 		<constructor-arg value="20"/>
 	</bean>
 
+	<bean id="playButtonSize" class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getPlayButtonSize">
+		<constructor-arg ref="lookAndFeelManager"/>
+	</bean>
+	
+	<bean id="previousNextButtonSize" class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getPreviousNextButtonsSize">
+		<constructor-arg ref="lookAndFeelManager"/>
+	</bean>
+	
+	<bean id="stopMuteButtonSize" class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getStopMuteButtonsSize">
+		<constructor-arg ref="lookAndFeelManager"/>
+	</bean>
+	
+	
 
 </beans>
