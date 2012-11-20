@@ -30,28 +30,27 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
 
 import org.junit.Test;
 
 public class ShowPlayListItemInfoActionTest {
 
-	@Test
-	public void test() {
-		ShowPlayListItemInfoAction sut = new ShowPlayListItemInfoAction();
-		IPlayListHandler playListHandler = mock(IPlayListHandler.class);
-		sut.setPlayListHandler(playListHandler);
-		IPlayerHandler playerHandler = mock(IPlayerHandler.class);
-		sut.setPlayerHandler(playerHandler);
-		IAudioObject ao = mock(IAudioObject.class);
-		when(playListHandler.getSelectedAudioObjects()).thenReturn(Arrays.asList(ao));
-		IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory = mock(IAudioObjectPropertiesDialogFactory.class);
-		sut.setAudioObjectPropertiesDialogFactory(audioObjectPropertiesDialogFactory);
-		IAudioObjectPropertiesDialog dialog = mock(IAudioObjectPropertiesDialog.class);
-		when(audioObjectPropertiesDialogFactory.newInstance(ao, playerHandler)).thenReturn(dialog);
-		
-		sut.executeAction();
-		
-		verify(dialog).showDialog();
-	}
+    @Test
+    public void test() {
+	ShowPlayListItemInfoAction sut = new ShowPlayListItemInfoAction();
+	IPlayListHandler playListHandler = mock(IPlayListHandler.class);
+	sut.setPlayListHandler(playListHandler);
+	IAudioObject ao = mock(IAudioObject.class);
+	when(playListHandler.getSelectedAudioObjects()).thenReturn(
+		Arrays.asList(ao));
+	IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory = mock(IAudioObjectPropertiesDialogFactory.class);
+	sut.setAudioObjectPropertiesDialogFactory(audioObjectPropertiesDialogFactory);
+	IAudioObjectPropertiesDialog dialog = mock(IAudioObjectPropertiesDialog.class);
+	when(audioObjectPropertiesDialogFactory.newInstance(ao)).thenReturn(
+		dialog);
+
+	sut.executeAction();
+
+	verify(dialog).showDialog();
+    }
 }

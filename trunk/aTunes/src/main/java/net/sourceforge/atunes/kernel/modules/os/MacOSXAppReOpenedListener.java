@@ -29,30 +29,38 @@ import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
  * Listener to be called when application is reopened, usually from dock
+ * 
  * @author alex
- *
+ * 
  */
 final class MacOSXAppReOpenedListener implements InvocationHandler {
-	
-	private Object targetObject;
-	private Method targetMethod;
 
-	public MacOSXAppReOpenedListener(Object target, String methodName) {
-        this.targetObject = target;
-        this.targetMethod = ReflectionUtils.getMethod(target.getClass(), methodName);
+    private final Object targetObject;
+    private final Method targetMethod;
+
+    /**
+     * @param target
+     * @param methodName
+     */
+    public MacOSXAppReOpenedListener(final Object target,
+	    final String methodName) {
+	this.targetObject = target;
+	this.targetMethod = ReflectionUtils.getMethod(target.getClass(),
+		methodName);
+    }
+
+    @Override
+    public Object invoke(final Object proxy, final Method method,
+	    final Object[] args) {
+	try {
+	    targetMethod.invoke(targetObject, (Object[]) null);
+	} catch (IllegalArgumentException e) {
+	    Logger.error(e);
+	} catch (IllegalAccessException e) {
+	    Logger.error(e);
+	} catch (InvocationTargetException e) {
+	    Logger.error(e);
 	}
-	
-	@Override
-	public Object invoke(Object proxy, Method method, Object[] args) {
-		try {
-			targetMethod.invoke(targetObject, (Object[]) null);
-		} catch (IllegalArgumentException e) {
-			Logger.error(e);
-		} catch (IllegalAccessException e) {
-			Logger.error(e);
-		} catch (InvocationTargetException e) {
-			Logger.error(e);
-		}
-		return null;
-	}
+	return null;
+    }
 }

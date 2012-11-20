@@ -26,97 +26,105 @@ import javax.swing.JSeparator;
 
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * "Tools" menu
+ * 
+ * @author alex
+ * 
+ */
 public class ToolsMenu extends JMenu {
 
-	private static final long serialVersionUID = -3624790857729577320L;
+    private static final long serialVersionUID = -3624790857729577320L;
 
-	private Action ripCDAction;
-	private Action showStatsAction;
-	private Action showCoverNavigatorAction;
-	private Action addRadioAction;
-	private Action showRadioBrowserAction;
-	private Action addPodcastFeedAction;
-	private Action customSearchAction;
-	private Action importLovedTracksFromLastFMAction;
-	
-	/**
-	 * @param i18nKey
-	 */
-	public ToolsMenu(String i18nKey) {
-		super(I18nUtils.getString(i18nKey));
-	}
-	
-	/**
-	 * @param ripCDAction
-	 */
-	public void setRipCDAction(Action ripCDAction) {
-		this.ripCDAction = ripCDAction;
-	}
-	
-	/**
-	 * @param showStatsAction
-	 */
-	public void setShowStatsAction(Action showStatsAction) {
-		this.showStatsAction = showStatsAction;
-	}
-	
-	/**
-	 * @param showCoverNavigatorAction
-	 */
-	public void setShowCoverNavigatorAction(Action showCoverNavigatorAction) {
-		this.showCoverNavigatorAction = showCoverNavigatorAction;
-	}
-	
-	/**
-	 * @param addRadioAction
-	 */
-	public void setAddRadioAction(Action addRadioAction) {
-		this.addRadioAction = addRadioAction;
-	}
-	
-	/**
-	 * @param showRadioBrowserAction
-	 */
-	public void setShowRadioBrowserAction(Action showRadioBrowserAction) {
-		this.showRadioBrowserAction = showRadioBrowserAction;
-	}
-	
-	/**
-	 * @param addPodcastFeedAction
-	 */
-	public void setAddPodcastFeedAction(Action addPodcastFeedAction) {
-		this.addPodcastFeedAction = addPodcastFeedAction;
-	}
-	
-	/**
-	 * @param customSearchAction
-	 */
-	public void setCustomSearchAction(Action customSearchAction) {
-		this.customSearchAction = customSearchAction;
-	}
-	
-	/**
-	 * @param importLovedTracksFromLastFMAction
-	 */
-	public void setImportLovedTracksFromLastFMAction(Action importLovedTracksFromLastFMAction) {
-		this.importLovedTracksFromLastFMAction = importLovedTracksFromLastFMAction;
-	}
-	
-	/**
-	 * Initializes menu
-	 */
-	public void initialize() {
-        add(ripCDAction);
-        add(new JSeparator());
-        add(showStatsAction);
-        add(showCoverNavigatorAction);
-        add(new JSeparator());
-        add(addRadioAction);
-        add(showRadioBrowserAction);
-        add(addPodcastFeedAction);
-        add(new JSeparator());
-        add(customSearchAction);
-        add(new JSeparator());
-        add(importLovedTracksFromLastFMAction);
-	}
+    private Action ripCDAction;
+    private Action showStatsAction;
+    private Action showCoverNavigatorAction;
+    private Action addRadioAction;
+    private Action showRadioBrowserAction;
+    private Action addPodcastFeedAction;
+    private Action customSearchAction;
+    private Action importLovedTracksFromLastFMAction;
+
+    /**
+     * @param i18nKey
+     */
+    public ToolsMenu(final String i18nKey) {
+	super(I18nUtils.getString(i18nKey));
+    }
+
+    /**
+     * @param ripCDAction
+     */
+    public void setRipCDAction(final Action ripCDAction) {
+	this.ripCDAction = ripCDAction;
+    }
+
+    /**
+     * @param showStatsAction
+     */
+    public void setShowStatsAction(final Action showStatsAction) {
+	this.showStatsAction = showStatsAction;
+    }
+
+    /**
+     * @param showCoverNavigatorAction
+     */
+    public void setShowCoverNavigatorAction(
+	    final Action showCoverNavigatorAction) {
+	this.showCoverNavigatorAction = showCoverNavigatorAction;
+    }
+
+    /**
+     * @param addRadioAction
+     */
+    public void setAddRadioAction(final Action addRadioAction) {
+	this.addRadioAction = addRadioAction;
+    }
+
+    /**
+     * @param showRadioBrowserAction
+     */
+    public void setShowRadioBrowserAction(final Action showRadioBrowserAction) {
+	this.showRadioBrowserAction = showRadioBrowserAction;
+    }
+
+    /**
+     * @param addPodcastFeedAction
+     */
+    public void setAddPodcastFeedAction(final Action addPodcastFeedAction) {
+	this.addPodcastFeedAction = addPodcastFeedAction;
+    }
+
+    /**
+     * @param customSearchAction
+     */
+    public void setCustomSearchAction(final Action customSearchAction) {
+	this.customSearchAction = customSearchAction;
+    }
+
+    /**
+     * @param importLovedTracksFromLastFMAction
+     */
+    public void setImportLovedTracksFromLastFMAction(
+	    final Action importLovedTracksFromLastFMAction) {
+	this.importLovedTracksFromLastFMAction = importLovedTracksFromLastFMAction;
+    }
+
+    /**
+     * Initializes menu
+     */
+    public void initialize() {
+	add(ripCDAction);
+	add(new JSeparator());
+	add(showStatsAction);
+	add(showCoverNavigatorAction);
+	add(new JSeparator());
+	add(addRadioAction);
+	add(showRadioBrowserAction);
+	add(addPodcastFeedAction);
+	add(new JSeparator());
+	add(customSearchAction);
+	add(new JSeparator());
+	add(importLovedTracksFromLastFMAction);
+    }
 }

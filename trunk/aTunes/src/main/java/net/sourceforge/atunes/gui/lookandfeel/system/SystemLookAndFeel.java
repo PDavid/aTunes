@@ -31,8 +31,17 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * Native look and feel for any OS
+ * 
+ * @author alex
+ * 
+ */
 public class SystemLookAndFeel extends AbstractLookAndFeel {
 
+    /**
+     * Name of look and feel
+     */
     public static final String SYSTEM = "System";
 
     @Override

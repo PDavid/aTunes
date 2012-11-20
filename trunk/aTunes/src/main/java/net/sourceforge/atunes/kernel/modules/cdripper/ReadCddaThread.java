@@ -32,272 +32,292 @@ import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 final class ReadCddaThread extends Thread {
-	
-	private final Cdda2wav cdda2wav;
+
+    private final Cdda2wav cdda2wav;
 
     private String id = null;
 
     private String title;
-	
+
     private String album;
-    
+
     private String artist;
-    
+
     private int tracks;
-    
+
     private String totalDuration;
 
-    private List<String> durations = new ArrayList<String>();
-    
-    private List<String> titles = new ArrayList<String>();
-    
-    private List<String> artists = new ArrayList<String>();
-    
-    private List<String> composers = new ArrayList<String>();
-    
+    private final List<String> durations = new ArrayList<String>();
+
+    private final List<String> titles = new ArrayList<String>();
+
+    private final List<String> artists = new ArrayList<String>();
+
+    private final List<String> composers = new ArrayList<String>();
+
     private boolean cddbError = false;
-    
-	public ReadCddaThread(Cdda2wav cdda2wav) {
-		super();
-		this.cdda2wav = cdda2wav;
-	}
-	
-	@Override
-	public void run() {
-	    BufferedReader stdInput = null;
-	    try {
-	        stdInput = new BufferedReader(new InputStreamReader(cdda2wav.getProcess().getErrorStream(), "ISO8859_1"));
-	        Logger.info("Trying to read cdda2wav stream");
 
-	        String s = null;
-	        
-	        //	read the output from the command
-	        while ((s = stdInput.readLine()) != null) {
-	            Logger.info(StringUtils.getString("While loop: ", s));
-	            analyzeOutputLine(s);
-	        }
+    /**
+     * @param cdda2wav
+     */
+    public ReadCddaThread(final Cdda2wav cdda2wav) {
+	super();
+	this.cdda2wav = cdda2wav;
+    }
 
-	        // Write data to variable cd
-	        if (!cddbError) {
-	            artist = artist != null ? artist.replace("\\", "\'") : null;
-	            album = album != null ? album.replace("\\", "\'") : null;
-	        }
+    @Override
+    public void run() {
+	BufferedReader stdInput = null;
+	try {
+	    stdInput = new BufferedReader(new InputStreamReader(cdda2wav
+		    .getProcess().getErrorStream(), "ISO8859_1"));
+	    Logger.info("Trying to read cdda2wav stream");
 
-	        artist = artist != null ? artist.trim() : null;
-	        album = album != null ? album.trim() : null;
+	    String s = null;
 
-	        fillCdInfo();
-	    } catch (IOException e) {
-	        Logger.error(e);
-	    } finally {
-	        ClosingUtils.close(stdInput);
+	    // read the output from the command
+	    while ((s = stdInput.readLine()) != null) {
+		Logger.info(StringUtils.getString("While loop: ", s));
+		analyzeOutputLine(s);
 	    }
-	}
-	
-	/**
-	 * Fills cd info object
-	 */
-	private void fillCdInfo() {
-		CDInfo info = cdda2wav.getCDInfo();
-        info.setTracks(tracks);
-        info.setDurations(durations);
-        info.setDuration(totalDuration);
-        info.setID(id);
-        if (album != null && !album.equals("")) {
-        	info.setAlbum(album);
-        }
 
-        if (artist != null && !artist.equals("")) {
-        	info.setArtist(artist);
-        }
+	    // Write data to variable cd
+	    if (!cddbError) {
+		artist = artist != null ? artist.replace("\\", "\'") : null;
+		album = album != null ? album.replace("\\", "\'") : null;
+	    }
 
-        info.setTitles(titles);
-        info.setArtists(artists);
-        info.setComposers(composers);
+	    artist = artist != null ? artist.trim() : null;
+	    album = album != null ? album.trim() : null;
+
+	    fillCdInfo();
+	} catch (IOException e) {
+	    Logger.error(e);
+	} finally {
+	    ClosingUtils.close(stdInput);
 	}
-	
-	/**
-	 * Analyzes each line of process output
-	 * @param outputLine
-	 */
-	private void analyzeOutputLine(String outputLine) {
-        checkCdLoaded(outputLine);
-        checkNoAudioTracks(outputLine);
-        analyzeTracks(outputLine); 
-        analyzeCDDBId(outputLine);
-        checkCDDBConnection(outputLine);
-        analyzeAlbumAndTrackInformation(outputLine);
-        analyzeDataTrack(outputLine);
+    }
+
+    /**
+     * Fills cd info object
+     */
+    private void fillCdInfo() {
+	CDInfo info = cdda2wav.getCDInfo();
+	info.setTracks(tracks);
+	info.setDurations(durations);
+	info.setDuration(totalDuration);
+	info.setID(id);
+	if (album != null && !album.equals("")) {
+	    info.setAlbum(album);
 	}
 
-	/**
-	 * @param outputLine
-	 */
-	private void analyzeDataTrack(String outputLine) {
-		// If there is a data track do remove one track.
-        if (outputLine.matches("......................data.*")) {
-            tracks = tracks - 1;
-        }
+	if (artist != null && !artist.equals("")) {
+	    info.setArtist(artist);
 	}
 
-	/**
-	 * @param outputLine
-	 */
-	private void analyzeAlbumAndTrackInformation(String outputLine) {
-		// Get album info (only if connection to cddb could be established)
-        if (outputLine.matches("Album title:.*") && !cddbError) {
-        	cdda2wav.setCdLoaded(true);
-        	readAlbumAndArtist(outputLine);
-        }
+	info.setTitles(titles);
+	info.setArtists(artists);
+	info.setComposers(composers);
+    }
 
-        // Get track info (track number, title name) - Data tracks get ignored.
-        else if (outputLine.matches("T..:.*") && !outputLine.matches("......................data.*") && !cddbError) {
-        	cdda2wav.setCdLoaded(true);
-        	readTrackInfo(outputLine);
-        }
+    /**
+     * Analyzes each line of process output
+     * 
+     * @param outputLine
+     */
+    private void analyzeOutputLine(final String outputLine) {
+	checkCdLoaded(outputLine);
+	checkNoAudioTracks(outputLine);
+	analyzeTracks(outputLine);
+	analyzeCDDBId(outputLine);
+	checkCDDBConnection(outputLine);
+	analyzeAlbumAndTrackInformation(outputLine);
+	analyzeDataTrack(outputLine);
+    }
+
+    /**
+     * @param outputLine
+     */
+    private void analyzeDataTrack(final String outputLine) {
+	// If there is a data track do remove one track.
+	if (outputLine.matches("......................data.*")) {
+	    tracks = tracks - 1;
+	}
+    }
+
+    /**
+     * @param outputLine
+     */
+    private void analyzeAlbumAndTrackInformation(final String outputLine) {
+	// Get album info (only if connection to cddb could be established)
+	if (outputLine.matches("Album title:.*") && !cddbError) {
+	    cdda2wav.setCdLoaded(true);
+	    readAlbumAndArtist(outputLine);
 	}
 
-	/**
-	 * @param outputLine
-	 */
-	private void checkCDDBConnection(String outputLine) {
-		// We need to check if there was an connection error to avoid an exception
-        // In this case aTunes will behave as previously (no Artist/Album info).
-        if (outputLine.matches(".cddb connect failed.*")) {
-            cddbError = true;
-        }
+	// Get track info (track number, title name) - Data tracks get ignored.
+	else if (outputLine.matches("T..:.*")
+		&& !outputLine.matches("......................data.*")
+		&& !cddbError) {
+	    cdda2wav.setCdLoaded(true);
+	    readTrackInfo(outputLine);
 	}
+    }
 
-	/**
-	 * @param outputLine
-	 */
-	private void analyzeCDDBId(String outputLine) {
-		if (outputLine.matches("CDDB discid.*")) {
-        	cdda2wav.setCdLoaded(true);
-            id = outputLine.substring(outputLine.indexOf('0'));
-        }
+    /**
+     * @param outputLine
+     */
+    private void checkCDDBConnection(final String outputLine) {
+	// We need to check if there was an connection error to avoid an
+	// exception
+	// In this case aTunes will behave as previously (no Artist/Album info).
+	if (outputLine.matches(".cddb connect failed.*")) {
+	    cddbError = true;
 	}
+    }
 
-	/**
-	 * @param outputLine
-	 */
-	private void analyzeTracks(String outputLine) {
-		if (outputLine.matches("Tracks:.*")) {
-        	cdda2wav.setCdLoaded(true);
-            tracks = Integer.parseInt(outputLine.substring(outputLine.indexOf(':') + 1, outputLine.indexOf(' ')));
-            totalDuration = outputLine.substring(outputLine.indexOf(' ') + 1);
-        }
+    /**
+     * @param outputLine
+     */
+    private void analyzeCDDBId(final String outputLine) {
+	if (outputLine.matches("CDDB discid.*")) {
+	    cdda2wav.setCdLoaded(true);
+	    id = outputLine.substring(outputLine.indexOf('0'));
 	}
+    }
 
-	/**
-	 * @param outputLine
-	 */
-	private void checkCdLoaded(String outputLine) {
-		// Used to detect if a CD is present. Don't know if this gets returned on
-        // all drive, so may not work as expected. But if it does, this means a CD
-        // is present and we don't have to wait until the disk info is read out. This 
-        // means we can give the "no CD" error much faster!
-        if (outputLine.contains("bytes buffer memory requested")) {
-            cdda2wav.setCdLoaded(true);
-        }
+    /**
+     * @param outputLine
+     */
+    private void analyzeTracks(final String outputLine) {
+	if (outputLine.matches("Tracks:.*")) {
+	    cdda2wav.setCdLoaded(true);
+	    tracks = Integer.parseInt(outputLine.substring(
+		    outputLine.indexOf(':') + 1, outputLine.indexOf(' ')));
+	    totalDuration = outputLine.substring(outputLine.indexOf(' ') + 1);
 	}
+    }
 
-	/**
-	 * @param outputLine
-	 */
-	private void checkNoAudioTracks(String outputLine) {
-		// Sometimes cdda2wav gives an error message 
-        // when a data CD is inserted
-        if (outputLine.contains("This disk has no audio tracks")) {
-        	cdda2wav.setCdLoaded(false);
-        }
+    /**
+     * @param outputLine
+     */
+    private void checkCdLoaded(final String outputLine) {
+	// Used to detect if a CD is present. Don't know if this gets returned
+	// on
+	// all drive, so may not work as expected. But if it does, this means a
+	// CD
+	// is present and we don't have to wait until the disk info is read out.
+	// This
+	// means we can give the "no CD" error much faster!
+	if (outputLine.contains("bytes buffer memory requested")) {
+	    cdda2wav.setCdLoaded(true);
 	}
-	
-	/**
-	 * Gets album and artist from output line of process
-	 * @param lineOutput
-	 */
-	private void readAlbumAndArtist(String lineOutput) {
-        String line = lineOutput.trim();
+    }
 
-        // Avoid '' sequences
-        line = line.replaceAll("''", "' '");
-
-        StringTokenizer albumInfoTokenizer = new java.util.StringTokenizer(line, "'");
-        // The first part is not interesting, we look for the second token, thus the next line
-        if (albumInfoTokenizer.hasMoreTokens()) {
-            albumInfoTokenizer.nextToken();
-        }
-        if (albumInfoTokenizer.hasMoreTokens()) {
-            album = albumInfoTokenizer.nextToken();
-        }
-        String token = null;
-        if (albumInfoTokenizer.hasMoreElements()) {
-            token = albumInfoTokenizer.nextToken();
-        }
-        // Album names can contain "'" so check if there is something left
-        StringBuilder sb = new StringBuilder(album);
-        while (albumInfoTokenizer.hasMoreElements() && token != null && !token.matches(" from ")) {
-            sb.append(token);
-            token = albumInfoTokenizer.nextToken();
-        }
-        album = sb.toString();
-        if (albumInfoTokenizer.hasMoreTokens()) {
-            artist = albumInfoTokenizer.nextToken();
-        }
-        // Artist names can contain "'" so check if there is something left
-        sb = new StringBuilder(artist);
-        while (albumInfoTokenizer.hasMoreTokens()) {
-            token = albumInfoTokenizer.nextToken();
-            sb.append(token);
-        }
-        artist = sb.toString();
+    /**
+     * @param outputLine
+     */
+    private void checkNoAudioTracks(final String outputLine) {
+	// Sometimes cdda2wav gives an error message
+	// when a data CD is inserted
+	if (outputLine.contains("This disk has no audio tracks")) {
+	    cdda2wav.setCdLoaded(false);
 	}
-	
-	/**
-	 * Reads tracks information
-	 * @param s
-	 */
-	private void readTrackInfo(String s) {
-        String duration = s.substring(12, 18).trim();
-        durations.add(duration);
-        // If connection to cddb could be established do
-        if (!cddbError) {
-            String line = s.trim();
+    }
 
-            // Avoid '' sequences
-            line = line.replaceAll("''", "' '");
+    /**
+     * Gets album and artist from output line of process
+     * 
+     * @param lineOutput
+     */
+    private void readAlbumAndArtist(final String lineOutput) {
+	String line = lineOutput.trim();
 
-            StringTokenizer titleInfoTokenizer = new StringTokenizer(line, "'");
-            // The first part is not interesting, we look for the second token, thus the next line
-            if (titleInfoTokenizer.hasMoreElements()) {
-                titleInfoTokenizer.nextToken();
-            }
-            if (titleInfoTokenizer.hasMoreElements()) {
-                title = titleInfoTokenizer.nextToken();
-            }
-            String token = null;
-            if (titleInfoTokenizer.hasMoreTokens()) {
-                token = titleInfoTokenizer.nextToken();
-            }
-            // Album names can contain "'" so check if there is something left. Also, add "\" for Windows
-            StringBuilder sb = new StringBuilder(title);
-            while (titleInfoTokenizer.hasMoreTokens() && token != null && !token.matches(" from ")) {
-                sb.append(token);
-                token = titleInfoTokenizer.nextToken();
-            }
-            title = sb.toString();
+	// Avoid '' sequences
+	line = line.replaceAll("''", "' '");
 
-            title = title.trim();
-
-            title = !title.equals("") ? title.replace("\\", "\'") : null;
-
-            if (title != null) {
-                titles.add(title);
-            }
-            //TODO add Song artist
-            artists.add("");
-            composers.add("");
-        }
+	StringTokenizer albumInfoTokenizer = new java.util.StringTokenizer(
+		line, "'");
+	// The first part is not interesting, we look for the second token, thus
+	// the next line
+	if (albumInfoTokenizer.hasMoreTokens()) {
+	    albumInfoTokenizer.nextToken();
 	}
+	if (albumInfoTokenizer.hasMoreTokens()) {
+	    album = albumInfoTokenizer.nextToken();
+	}
+	String token = null;
+	if (albumInfoTokenizer.hasMoreElements()) {
+	    token = albumInfoTokenizer.nextToken();
+	}
+	// Album names can contain "'" so check if there is something left
+	StringBuilder sb = new StringBuilder(album);
+	while (albumInfoTokenizer.hasMoreElements() && token != null
+		&& !token.matches(" from ")) {
+	    sb.append(token);
+	    token = albumInfoTokenizer.nextToken();
+	}
+	album = sb.toString();
+	if (albumInfoTokenizer.hasMoreTokens()) {
+	    artist = albumInfoTokenizer.nextToken();
+	}
+	// Artist names can contain "'" so check if there is something left
+	sb = new StringBuilder(artist);
+	while (albumInfoTokenizer.hasMoreTokens()) {
+	    token = albumInfoTokenizer.nextToken();
+	    sb.append(token);
+	}
+	artist = sb.toString();
+    }
+
+    /**
+     * Reads tracks information
+     * 
+     * @param s
+     */
+    private void readTrackInfo(final String s) {
+	String duration = s.substring(12, 18).trim();
+	durations.add(duration);
+	// If connection to cddb could be established do
+	if (!cddbError) {
+	    String line = s.trim();
+
+	    // Avoid '' sequences
+	    line = line.replaceAll("''", "' '");
+
+	    StringTokenizer titleInfoTokenizer = new StringTokenizer(line, "'");
+	    // The first part is not interesting, we look for the second token,
+	    // thus the next line
+	    if (titleInfoTokenizer.hasMoreElements()) {
+		titleInfoTokenizer.nextToken();
+	    }
+	    if (titleInfoTokenizer.hasMoreElements()) {
+		title = titleInfoTokenizer.nextToken();
+	    }
+	    String token = null;
+	    if (titleInfoTokenizer.hasMoreTokens()) {
+		token = titleInfoTokenizer.nextToken();
+	    }
+	    // Album names can contain "'" so check if there is something left.
+	    // Also, add "\" for Windows
+	    StringBuilder sb = new StringBuilder(title);
+	    while (titleInfoTokenizer.hasMoreTokens() && token != null
+		    && !token.matches(" from ")) {
+		sb.append(token);
+		token = titleInfoTokenizer.nextToken();
+	    }
+	    title = sb.toString();
+
+	    title = title.trim();
+
+	    title = !title.equals("") ? title.replace("\\", "\'") : null;
+
+	    if (title != null) {
+		titles.add(title);
+	    }
+	    // TODO add Song artist
+	    artists.add("");
+	    composers.add("");
+	}
+    }
 }

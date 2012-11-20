@@ -25,7 +25,6 @@ import java.util.List;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -37,52 +36,46 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ShowNavigatorTableItemInfoAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = -2006569851431046347L;
+    private static final long serialVersionUID = -2006569851431046347L;
 
-	private IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory;
+    private IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory;
 
-	private INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
 
-	private IPlayerHandler playerHandler;
+    /**
+     * @param audioObjectPropertiesDialogFactory
+     */
+    public void setAudioObjectPropertiesDialogFactory(
+	    final IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory) {
+	this.audioObjectPropertiesDialogFactory = audioObjectPropertiesDialogFactory;
+    }
 
-	/**
-	 * @param audioObjectPropertiesDialogFactory
-	 */
-	public void setAudioObjectPropertiesDialogFactory(final IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory) {
-		this.audioObjectPropertiesDialogFactory = audioObjectPropertiesDialogFactory;
-	}
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(final INavigationHandler navigationHandler) {
+	this.navigationHandler = navigationHandler;
+    }
 
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
+    /**
+     * Default constructor
+     */
+    public ShowNavigatorTableItemInfoAction() {
+	super(I18nUtils.getString("INFO"));
+	putValue(SHORT_DESCRIPTION, I18nUtils.getString("INFO_BUTTON_TOOLTIP"));
+	setEnabled(false);
+    }
 
-	/**
-	 * @param playerHandler
-	 */
-	public void setPlayerHandler(final IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
+    @Override
+    protected void executeAction() {
+	audioObjectPropertiesDialogFactory.newInstance(
+		navigationHandler.getSelectedAudioObjectInNavigationTable())
+		.showDialog();
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public ShowNavigatorTableItemInfoAction() {
-		super(I18nUtils.getString("INFO"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("INFO_BUTTON_TOOLTIP"));
-		setEnabled(false);
-	}
-
-	@Override
-	protected void executeAction() {
-		audioObjectPropertiesDialogFactory.newInstance(
-				navigationHandler.getSelectedAudioObjectInNavigationTable(), playerHandler).showDialog();
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTableSelection(final List<IAudioObject> selection) {
-		return selection != null && selection.size() == 1;
-	}
+    @Override
+    public boolean isEnabledForNavigationTableSelection(
+	    final List<IAudioObject> selection) {
+	return selection != null && selection.size() == 1;
+    }
 }

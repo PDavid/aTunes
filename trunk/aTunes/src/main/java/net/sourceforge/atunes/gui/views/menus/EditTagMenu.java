@@ -23,7 +23,6 @@ package net.sourceforge.atunes.gui.views.menus;
 import javax.swing.JMenu;
 import javax.swing.JSeparator;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AutoSetCoversAction;
 import net.sourceforge.atunes.kernel.actions.AutoSetGenresAction;
@@ -37,45 +36,60 @@ import net.sourceforge.atunes.kernel.actions.ClearTagPlaylistAction;
 import net.sourceforge.atunes.kernel.actions.EditTagNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.EditTagPlaylistAction;
 import net.sourceforge.atunes.model.IAudioObjectsSource;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Edit tag submenu
+ * 
  * @author alex
- *
+ * 
  */
 public final class EditTagMenu extends JMenu {
 
-	private static final long serialVersionUID = -8235925186759302907L;
+    private static final long serialVersionUID = -8235925186759302907L;
 
-	/**
-	 * @param playlistMenu
-	 * @param audioObjectsSource
-	 */
-	public EditTagMenu(final boolean playlistMenu, final IAudioObjectsSource audioObjectsSource) {
-		super(I18nUtils.getString("TAGS"));
-		addAction(playlistMenu ? EditTagPlaylistAction.class : EditTagNavigatorAction.class, audioObjectsSource);
-		add(new JSeparator());
-		addAction(AutoSetTagFromFolderNamePatternAction.class, audioObjectsSource);
-		addAction(AutoSetTagFromFileNamePatternAction.class, audioObjectsSource);
-		add(new JSeparator());
-		addAction(AutoSetLyricsAction.class, audioObjectsSource);
-		addAction(AutoSetTitlesAction.class, audioObjectsSource);
-		addAction(AutoSetTracksAction.class, audioObjectsSource);
-		addAction(AutoSetGenresAction.class, audioObjectsSource);
-		addAction(AutoSetCoversAction.class, audioObjectsSource);
-		add(new JSeparator());
-		addAction(playlistMenu ? ClearTagPlaylistAction.class : ClearTagNavigatorAction.class, audioObjectsSource);
-	}
+    /**
+     * @param playlistMenu
+     * @param audioObjectsSource
+     * @param beanFactory
+     */
+    public EditTagMenu(final boolean playlistMenu,
+	    final IAudioObjectsSource audioObjectsSource,
+	    final IBeanFactory beanFactory) {
+	super(I18nUtils.getString("TAGS"));
+	addAction(playlistMenu ? EditTagPlaylistAction.class
+		: EditTagNavigatorAction.class, audioObjectsSource, beanFactory);
+	add(new JSeparator());
+	addAction(AutoSetTagFromFolderNamePatternAction.class,
+		audioObjectsSource, beanFactory);
+	addAction(AutoSetTagFromFileNamePatternAction.class,
+		audioObjectsSource, beanFactory);
+	add(new JSeparator());
+	addAction(AutoSetLyricsAction.class, audioObjectsSource, beanFactory);
+	addAction(AutoSetTitlesAction.class, audioObjectsSource, beanFactory);
+	addAction(AutoSetTracksAction.class, audioObjectsSource, beanFactory);
+	addAction(AutoSetGenresAction.class, audioObjectsSource, beanFactory);
+	addAction(AutoSetCoversAction.class, audioObjectsSource, beanFactory);
+	add(new JSeparator());
+	addAction(playlistMenu ? ClearTagPlaylistAction.class
+		: ClearTagNavigatorAction.class, audioObjectsSource,
+		beanFactory);
+    }
 
-	/**
-	 * Get and action binded to audio objects source and add to menu
-	 * @param actionClass
-	 * @param audioObjectsSource
-	 */
-	private void addAction(final Class<? extends AbstractActionOverSelectedObjects<?>> actionClass, final IAudioObjectsSource audioObjectsSource) {
-		AbstractActionOverSelectedObjects<?> action = Context.getBean(actionClass);
-		action.setAudioObjectsSource(audioObjectsSource);
-		add(action);
-	}
+    /**
+     * Get and action binded to audio objects source and add to menu
+     * 
+     * @param actionClass
+     * @param audioObjectsSource
+     */
+    private void addAction(
+	    final Class<? extends AbstractActionOverSelectedObjects<?>> actionClass,
+	    final IAudioObjectsSource audioObjectsSource,
+	    final IBeanFactory beanFactory) {
+	AbstractActionOverSelectedObjects<?> action = beanFactory
+		.getBean(actionClass);
+	action.setAudioObjectsSource(audioObjectsSource);
+	add(action);
+    }
 }

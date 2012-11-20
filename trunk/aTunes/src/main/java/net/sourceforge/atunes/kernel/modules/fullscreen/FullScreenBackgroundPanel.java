@@ -32,37 +32,47 @@ import javax.swing.OverlayLayout;
 
 import net.sourceforge.atunes.utils.ImageUtils;
 
+/**
+ * A panel for full screen background Paints a background image of black color
+ * 
+ * @author alex
+ * 
+ */
 final class FullScreenBackgroundPanel extends JPanel {
-	
-	private static final long serialVersionUID = 109708757849271173L;
+
+    private static final long serialVersionUID = 109708757849271173L;
 
     /** The background. */
     private transient Image backgroundImage;
 
-	public FullScreenBackgroundPanel() {
-		super();
-        OverlayLayout overlay = new OverlayLayout(this);
-        setLayout(overlay);
-        setBackground(Color.black);
+    /**
+     * Default constructor
+     */
+    public FullScreenBackgroundPanel() {
+	super();
+	OverlayLayout overlay = new OverlayLayout(this);
+	setLayout(overlay);
+	setBackground(Color.black);
+    }
+
+    /**
+     * @param backgroundImage
+     */
+    public void setBackgroundImage(final Image backgroundImage) {
+	this.backgroundImage = backgroundImage;
+    }
+
+    @Override
+    public void paintComponent(final Graphics g) {
+	super.paintComponent(g);
+	if (backgroundImage == null && g instanceof Graphics2D) {
+	    Graphics2D g2d = (Graphics2D) g;
+	    g2d.setPaint(Color.BLACK);
+	    g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+	} else {
+	    Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
+	    g.drawImage(ImageUtils.scaleBufferedImageBicubic(backgroundImage,
+		    scrSize.width, scrSize.height), 0, 0, this);
 	}
-	
-	/**
-	 * @param backgroundImage
-	 */
-	public void setBackgroundImage(Image backgroundImage) {
-		this.backgroundImage = backgroundImage;
-	}
-	
-	@Override
-	public void paintComponent(Graphics g) {
-	    super.paintComponent(g);
-	    if (backgroundImage == null && g instanceof Graphics2D) {
-	        Graphics2D g2d = (Graphics2D) g;
-	        g2d.setPaint(Color.BLACK);
-	        g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-	    } else {
-	        Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-	        g.drawImage(ImageUtils.scaleBufferedImageBicubic(backgroundImage, scrSize.width, scrSize.height), 0, 0, this);
-	    }
-	}
+    }
 }

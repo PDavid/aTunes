@@ -27,8 +27,9 @@ import org.joda.time.DateTime;
 
 /**
  * Information about an album, usually retrieved from a web service
+ * 
  * @author alex
- *
+ * 
  */
 public interface IAlbumInfo extends Serializable {
 
@@ -52,9 +53,10 @@ public interface IAlbumInfo extends Serializable {
      * @return the bigCoverURL
      */
     public String getBigCoverURL();
-    
+
     /**
      * Gets the URL to get a thumb of cover
+     * 
      * @return
      */
     public String getThumbCoverURL();
@@ -103,15 +105,15 @@ public interface IAlbumInfo extends Serializable {
 
     /**
      * Returns Music Brainz ID
+     * 
      * @return
      */
     public String getMbid();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
+    /**
+     * @return string representation
      */
+    @Override
     public String toString();
 
 }

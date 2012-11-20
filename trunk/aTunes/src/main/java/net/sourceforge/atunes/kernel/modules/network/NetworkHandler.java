@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.Authenticator;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -100,7 +101,7 @@ public class NetworkHandler extends AbstractHandler implements INetworkHandler {
     public void updateProxy(final IProxyBean proxy) {
 	try {
 	    ExtendedProxy extendedProxy = ExtendedProxy.getProxy(proxy);
-	    ExtendedProxy.initProxy(extendedProxy);
+	    initProxy(extendedProxy);
 
 	    // Necessary for last.fm
 	    Caller.getInstance().setProxy(extendedProxy);
@@ -108,6 +109,19 @@ public class NetworkHandler extends AbstractHandler implements INetworkHandler {
 	    Logger.error(e);
 	} catch (IOException e) {
 	    Logger.error(e);
+	}
+    }
+
+    /**
+     * Initializes proxy authenticator
+     * 
+     * @param proxy
+     */
+    private void initProxy(final ExtendedProxy proxy) {
+	if (proxy != null) {
+	    Authenticator.setDefault(new ProxyAuthenticator(proxy));
+	} else {
+	    Authenticator.setDefault(null);
 	}
     }
 

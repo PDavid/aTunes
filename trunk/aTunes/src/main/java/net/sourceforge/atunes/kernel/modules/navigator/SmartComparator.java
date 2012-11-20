@@ -25,32 +25,37 @@ import java.text.Collator;
 import java.util.Comparator;
 
 /**
- * Compares strings ignoring leading "the " 
+ * Compares strings ignoring leading "the "
+ * 
  * @author alex
- *
+ * 
  */
 final class SmartComparator implements Comparator<String>, Serializable {
-	
-	/**
+
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 7941088987515467343L;
-	
-	private Collator collator;
+    private static final long serialVersionUID = 7941088987515467343L;
 
-	public SmartComparator(Collator collator) {
-		this.collator = collator;
-	}
-	
-	private String removeThe(String str) {
-	    if (str.toLowerCase().startsWith("the ") && str.length() > 4) {
-	        return str.substring(4);
-	    }
-	    return str;
-	}
+    private final Collator collator;
 
-	@Override
-	public int compare(String s1, String s2) {
-	    return this.collator.compare(removeThe(s1).toLowerCase(), removeThe(s2).toLowerCase());
+    /**
+     * @param collator
+     */
+    public SmartComparator(final Collator collator) {
+	this.collator = collator;
+    }
+
+    private String removeThe(final String str) {
+	if (str.toLowerCase().startsWith("the ") && str.length() > 4) {
+	    return str.substring(4);
 	}
+	return str;
+    }
+
+    @Override
+    public int compare(final String s1, final String s2) {
+	return this.collator.compare(removeThe(s1).toLowerCase(), removeThe(s2)
+		.toLowerCase());
+    }
 }

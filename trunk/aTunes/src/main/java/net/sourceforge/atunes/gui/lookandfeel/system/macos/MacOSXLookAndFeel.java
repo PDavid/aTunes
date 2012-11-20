@@ -39,6 +39,12 @@ import javax.swing.table.TableCellRenderer;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.model.IBeanFactory;
 
+/**
+ * Specific look and feel for Mac OS X
+ * 
+ * @author alex
+ * 
+ */
 public class MacOSXLookAndFeel extends SystemLookAndFeel {
 
     private static final CellRendererPane CELL_RENDER_PANE = new CellRendererPane();

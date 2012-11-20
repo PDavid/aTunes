@@ -33,93 +33,97 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
- * Based in work: 
- *
+ * Based in work:
+ * 
  * http://explodingpixels.wordpress.com/2009/05/18/creating-a-better-jtable/
  * 
  * @author alex
- *
+ * 
  */
 class StripedTableViewport extends JViewport {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 7217178968532613985L;
-	
-	private final JTable fTable;
+    private static final long serialVersionUID = 7217178968532613985L;
 
-    public StripedTableViewport(JTable table) {
-        fTable = table;
-        setOpaque(false);
-        initListeners();
+    private final JTable fTable;
+
+    /**
+     * @param table
+     */
+    public StripedTableViewport(final JTable table) {
+	fTable = table;
+	setOpaque(false);
+	initListeners();
     }
 
     private void initListeners() {
-        // install a listener to cause the whole table to repaint when
-        // a column is resized. we do this because the extended grid
-        // lines may need to be repainted. this could be cleaned up,
-        // but for now, it works fine.
-        PropertyChangeListener listener = createTableColumnWidthListener();
-        for (int i=0; i<fTable.getColumnModel().getColumnCount(); i++) {
-            fTable.getColumnModel().getColumn(i).addPropertyChangeListener(listener);
-        }
-        
-        addChangeListener(new ChangeListener() {
+	// install a listener to cause the whole table to repaint when
+	// a column is resized. we do this because the extended grid
+	// lines may need to be repainted. this could be cleaned up,
+	// but for now, it works fine.
+	PropertyChangeListener listener = createTableColumnWidthListener();
+	for (int i = 0; i < fTable.getColumnModel().getColumnCount(); i++) {
+	    fTable.getColumnModel().getColumn(i)
+		    .addPropertyChangeListener(listener);
+	}
 
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				repaint();
-			}
-		});        
-        
-        fTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				invalidate();
-				repaint();
-			}
+	addChangeListener(new ChangeListener() {
+
+	    @Override
+	    public void stateChanged(final ChangeEvent e) {
+		repaint();
+	    }
+	});
+
+	fTable.getSelectionModel().addListSelectionListener(
+		new ListSelectionListener() {
+
+		    @Override
+		    public void valueChanged(final ListSelectionEvent e) {
+			invalidate();
+			repaint();
+		    }
 		});
     }
 
     private PropertyChangeListener createTableColumnWidthListener() {
-        return new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                repaint();
-            }
-        };
+	return new PropertyChangeListener() {
+	    @Override
+	    public void propertyChange(final PropertyChangeEvent evt) {
+		repaint();
+	    }
+	};
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        paintStripedBackground(g);
-        super.paintComponent(g);
+    protected void paintComponent(final Graphics g) {
+	paintStripedBackground(g);
+	super.paintComponent(g);
     }
 
-    private void paintStripedBackground(Graphics g) {
-        // get the row index at the top of the clip bounds (the first row
-        // to paint).
-        int rowAtPoint = fTable.rowAtPoint(g.getClipBounds().getLocation());
-        // get the y coordinate of the first row to paint. if there are no
-        // rows in the table, start painting at the top of the supplied
-        // clipping bounds.
-        int topY = rowAtPoint < 0
-                ? g.getClipBounds().y : fTable.getCellRect(rowAtPoint,0,true).y;
+    private void paintStripedBackground(final Graphics g) {
+	// get the row index at the top of the clip bounds (the first row
+	// to paint).
+	int rowAtPoint = fTable.rowAtPoint(g.getClipBounds().getLocation());
+	// get the y coordinate of the first row to paint. if there are no
+	// rows in the table, start painting at the top of the supplied
+	// clipping bounds.
+	int topY = rowAtPoint < 0 ? g.getClipBounds().y : fTable.getCellRect(
+		rowAtPoint, 0, true).y;
 
-        // create a counter variable to hold the current row. if there are no
-        // rows in the table, start the counter at 0.
-        int currentRow = rowAtPoint < 0 ? 0 : rowAtPoint;
-        while (topY < g.getClipBounds().y + g.getClipBounds().height) {
-            int bottomY = topY + fTable.getRowHeight();
-            g.setColor(getRowColor(currentRow));
-            g.fillRect(g.getClipBounds().x, topY, g.getClipBounds().width, bottomY);
-            topY = bottomY;
-            currentRow ++;
-        }
+	// create a counter variable to hold the current row. if there are no
+	// rows in the table, start the counter at 0.
+	int currentRow = rowAtPoint < 0 ? 0 : rowAtPoint;
+	while (topY < g.getClipBounds().y + g.getClipBounds().height) {
+	    int bottomY = topY + fTable.getRowHeight();
+	    g.setColor(getRowColor(currentRow));
+	    g.fillRect(g.getClipBounds().x, topY, g.getClipBounds().width,
+		    bottomY);
+	    topY = bottomY;
+	    currentRow++;
+	}
     }
 
-    private Color getRowColor(int row) {
-        return row % 2 == 0 ? MacOSColors.EVEN_ROW_COLOR : getBackground();
+    private Color getRowColor(final int row) {
+	return row % 2 == 0 ? MacOSColors.EVEN_ROW_COLOR : getBackground();
     }
 }

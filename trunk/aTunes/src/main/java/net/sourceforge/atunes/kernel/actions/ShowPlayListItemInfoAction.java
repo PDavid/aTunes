@@ -28,7 +28,6 @@ import javax.swing.KeyStroke;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -43,51 +42,44 @@ public class ShowPlayListItemInfoAction extends CustomAbstractAction {
     private static final long serialVersionUID = -2006569851431046347L;
 
     private IPlayListHandler playListHandler;
-    
+
     private IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory;
-    
-    private IPlayerHandler playerHandler;
-    
+
     /**
      * Default constructor
      */
     public ShowPlayListItemInfoAction() {
-        super(I18nUtils.getString("INFO"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("INFO_BUTTON_TOOLTIP"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
-        setEnabled(false);
+	super(I18nUtils.getString("INFO"));
+	putValue(SHORT_DESCRIPTION, I18nUtils.getString("INFO_BUTTON_TOOLTIP"));
+	putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+	setEnabled(false);
     }
 
     @Override
     protected void executeAction() {
-        audioObjectPropertiesDialogFactory.newInstance(
-        		playListHandler.getSelectedAudioObjects().get(0), playerHandler)
-        			.showDialog();
+	audioObjectPropertiesDialogFactory.newInstance(
+		playListHandler.getSelectedAudioObjects().get(0)).showDialog();
     }
 
     @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return selection.size() == 1;
+    public boolean isEnabledForPlayListSelection(
+	    final List<IAudioObject> selection) {
+	return selection.size() == 1;
     }
 
     /**
      * @param playListHandler
      */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-    
+    public void setPlayListHandler(final IPlayListHandler playListHandler) {
+	this.playListHandler = playListHandler;
+    }
+
     /**
      * @param audioObjectPropertiesDialogFactory
      */
-    public void setAudioObjectPropertiesDialogFactory(IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory) {
-		this.audioObjectPropertiesDialogFactory = audioObjectPropertiesDialogFactory;
-	}
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
+    public void setAudioObjectPropertiesDialogFactory(
+	    final IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory) {
+	this.audioObjectPropertiesDialogFactory = audioObjectPropertiesDialogFactory;
+    }
+
 }

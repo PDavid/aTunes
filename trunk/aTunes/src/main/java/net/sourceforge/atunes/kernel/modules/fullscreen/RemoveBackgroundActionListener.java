@@ -27,21 +27,26 @@ import java.io.File;
 import net.sourceforge.atunes.model.IStateUI;
 
 final class RemoveBackgroundActionListener implements ActionListener {
-	
-	private final FullScreenWindow window;
-	
-	private final IStateUI stateUI;
 
-	public RemoveBackgroundActionListener(FullScreenWindow window, IStateUI stateUI) {
-		this.window = window;
-		this.stateUI = stateUI;
-	}
+    private final FullScreenWindow window;
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		window.setBackground((File)null);
-	    stateUI.setFullScreenBackground(null);
-	    window.invalidate();
-	    window.repaint();
-	}
+    private final IStateUI stateUI;
+
+    /**
+     * @param window
+     * @param stateUI
+     */
+    public RemoveBackgroundActionListener(final FullScreenWindow window,
+	    final IStateUI stateUI) {
+	this.window = window;
+	this.stateUI = stateUI;
+    }
+
+    @Override
+    public void actionPerformed(final ActionEvent e) {
+	window.setBackground((File) null);
+	stateUI.setFullScreenBackground(null);
+	window.invalidate();
+	window.repaint();
+    }
 }
