@@ -40,7 +40,6 @@ import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchResult;
 import net.sourceforge.atunes.model.ISearchableObject;
@@ -175,8 +174,7 @@ public final class SearchHandler extends AbstractHandler implements
 		    getBeanFactory(),
 		    dialogFactory.newDialog(SearchResultsDialog.class),
 		    getBean(IPlayListHandler.class),
-		    getBean(ILookAndFeelManager.class),
-		    getBean(IPlayerHandler.class), audioObjectComparator);
+		    getBean(ILookAndFeelManager.class), audioObjectComparator);
 	}
 	return searchResultsController;
     }

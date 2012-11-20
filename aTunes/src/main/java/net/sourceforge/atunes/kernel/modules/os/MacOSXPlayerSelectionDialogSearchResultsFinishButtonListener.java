@@ -29,27 +29,37 @@ import net.sourceforge.atunes.model.IOSManager;
 
 /**
  * Saves player engine path after selecting one from automatic search
+ * 
  * @author alex
- *
+ * 
  */
-final class MacOSXPlayerSelectionDialogSearchResultsFinishButtonListener implements ActionListener {
-	
-	private MacOSXPlayerSelectionDialog dialog;
-	
-	private IOSManager osManager;
-	
-	private JList list;
-	
-	public MacOSXPlayerSelectionDialogSearchResultsFinishButtonListener(MacOSXPlayerSelectionDialog dialog, IOSManager osManager, JList list) {
-		this.dialog = dialog;
-		this.osManager = osManager;
-		this.list = list;
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		osManager.setOSProperty(MacOSXOperatingSystem.MPLAYER_COMMAND, (String)list.getSelectedValue());
-		dialog.dispose();
-		osManager.playerEngineFound();
-	}
+final class MacOSXPlayerSelectionDialogSearchResultsFinishButtonListener
+	implements ActionListener {
+
+    private final MacOSXPlayerSelectionDialog dialog;
+
+    private final IOSManager osManager;
+
+    private final JList list;
+
+    /**
+     * @param dialog
+     * @param osManager
+     * @param list
+     */
+    public MacOSXPlayerSelectionDialogSearchResultsFinishButtonListener(
+	    final MacOSXPlayerSelectionDialog dialog,
+	    final IOSManager osManager, final JList list) {
+	this.dialog = dialog;
+	this.osManager = osManager;
+	this.list = list;
+    }
+
+    @Override
+    public void actionPerformed(final ActionEvent arg0) {
+	osManager.setOSProperty(MacOSXOperatingSystem.MPLAYER_COMMAND,
+		(String) list.getSelectedValue());
+	dialog.dispose();
+	osManager.playerEngineFound();
+    }
 }

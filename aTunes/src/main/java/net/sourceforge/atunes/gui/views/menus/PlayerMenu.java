@@ -20,83 +20,69 @@
 
 package net.sourceforge.atunes.gui.views.menus;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenu;
-import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * "Player" menu
+ * 
+ * @author alex
+ * 
+ */
 public class PlayerMenu extends JMenu {
 
-	private final class PlayActionFromMenuBar extends AbstractAction {
-		private static final long serialVersionUID = -2392752580476710618L;
+    private static final long serialVersionUID = -3624790857729577320L;
 
-		private PlayActionFromMenuBar() {
-			super(I18nUtils.getString("PLAY"));
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, GuiUtils.getCtrlOrMetaActionEventMask()));
-		}
+    private Action playAction;
+    private Action nextAction;
+    private Action previousAction;
+    private Action stopAction;
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// Need this action to pass null event
-			playAction.actionPerformed(null);
-		}
-	}
+    /**
+     * @param i18nKey
+     */
+    public PlayerMenu(final String i18nKey) {
+	super(I18nUtils.getString(i18nKey));
+    }
 
-	private static final long serialVersionUID = -3624790857729577320L;
+    /**
+     * @param stopAction
+     */
+    public void setStopAction(final Action stopAction) {
+	this.stopAction = stopAction;
+    }
 
-	private Action playAction;
-	private Action nextAction;
-	private Action previousAction;
-	private Action stopAction;
-	
-	/**
-	 * @param i18nKey
-	 */
-	public PlayerMenu(String i18nKey) {
-		super(I18nUtils.getString(i18nKey));
-	}
-	
-	/**
-	 * @param stopAction
-	 */
-	public void setStopAction(Action stopAction) {
-		this.stopAction = stopAction;
-	}
+    /**
+     * @param playAction
+     */
+    public void setPlayAction(final Action playAction) {
+	this.playAction = playAction;
+    }
 
-	/**
-	 * @param playAction
-	 */
-	public void setPlayAction(Action playAction) {
-		this.playAction = playAction;
-	}
-	
-	/**
-	 * @param nextAction
-	 */
-	public void setNextAction(Action nextAction) {
-		this.nextAction = nextAction;
-	}
-	
-	/**
-	 * @param previousAction
-	 */
-	public void setPreviousAction(Action previousAction) {
-		this.previousAction = previousAction;
-	}
-	
-	/**
-	 * Initializes menu
-	 */
-	public void initialize() {
-		add(new PlayActionFromMenuBar());
-		add(nextAction);
-		add(previousAction);
-		add(stopAction);
-	}
+    /**
+     * @param nextAction
+     */
+    public void setNextAction(final Action nextAction) {
+	this.nextAction = nextAction;
+    }
+
+    /**
+     * @param previousAction
+     */
+    public void setPreviousAction(final Action previousAction) {
+	this.previousAction = previousAction;
+    }
+
+    /**
+     * Initializes menu
+     */
+    public void initialize() {
+	add(new PlayActionFromMenuBar(playAction));
+	add(nextAction);
+	add(previousAction);
+	add(stopAction);
+    }
 }

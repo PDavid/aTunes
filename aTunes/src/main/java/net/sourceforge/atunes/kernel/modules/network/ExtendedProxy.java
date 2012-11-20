@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.network;
 
 import java.io.IOException;
-import java.net.Authenticator;
 import java.net.Socket;
 
 import net.sourceforge.atunes.model.IProxyBean;
@@ -32,16 +31,16 @@ import net.sourceforge.atunes.model.IProxyBean;
 final class ExtendedProxy extends java.net.Proxy {
 
     /** The url. */
-    private String url;
+    private final String url;
 
     /** The port. */
-    private int port;
+    private final int port;
 
     /** The user. */
-    private String user;
+    private final String user;
 
     /** The password. */
-    private String password;
+    private final String password;
 
     /**
      * Instantiates a new proxy.
@@ -60,20 +59,13 @@ final class ExtendedProxy extends java.net.Proxy {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    private ExtendedProxy(Type type, String url, int port, String user, String password) throws IOException {
-        super(type, new Socket(url, port).getRemoteSocketAddress());
-        this.url = url;
-        this.port = port;
-        this.user = user;
-        this.password = password;
-    }
-
-    public static void initProxy(final ExtendedProxy proxy) {
-        if (proxy != null) {
-            Authenticator.setDefault(new ProxyAuthenticator(proxy));
-        } else {
-            Authenticator.setDefault(null);
-        }
+    private ExtendedProxy(final Type type, final String url, final int port,
+	    final String user, final String password) throws IOException {
+	super(type, new Socket(url, port).getRemoteSocketAddress());
+	this.url = url;
+	this.port = port;
+	this.user = user;
+	this.password = password;
     }
 
     /**
@@ -88,11 +80,14 @@ final class ExtendedProxy extends java.net.Proxy {
      * @throws IOException
      *             If an IO exception occurs
      */
-    public static ExtendedProxy getProxy(IProxyBean proxy) throws IOException {
-        if (proxy == null) {
-            return null;
-        }
-        return new ExtendedProxy(proxy.getType().equals(IProxyBean.HTTP_PROXY) ? Type.HTTP : Type.SOCKS, proxy.getUrl(), proxy.getPort(), proxy.getUser(), proxy.getPassword());
+    static ExtendedProxy getProxy(final IProxyBean proxy) throws IOException {
+	if (proxy == null) {
+	    return null;
+	}
+	return new ExtendedProxy(
+		proxy.getType().equals(IProxyBean.HTTP_PROXY) ? Type.HTTP
+			: Type.SOCKS, proxy.getUrl(), proxy.getPort(),
+		proxy.getUser(), proxy.getPassword());
     }
 
     /**
@@ -101,7 +96,7 @@ final class ExtendedProxy extends java.net.Proxy {
      * @return the password
      */
     public String getPassword() {
-        return password;
+	return password;
     }
 
     /**
@@ -110,7 +105,7 @@ final class ExtendedProxy extends java.net.Proxy {
      * @return the port
      */
     public int getPort() {
-        return port;
+	return port;
     }
 
     /**
@@ -119,7 +114,7 @@ final class ExtendedProxy extends java.net.Proxy {
      * @return the url
      */
     public String getUrl() {
-        return url;
+	return url;
     }
 
     /**
@@ -128,7 +123,7 @@ final class ExtendedProxy extends java.net.Proxy {
      * @return the user
      */
     public String getUser() {
-        return user;
+	return user;
     }
 
 }

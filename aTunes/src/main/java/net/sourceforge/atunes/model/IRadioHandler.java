@@ -113,10 +113,7 @@ public interface IRadioHandler extends IHandler {
     public List<IRadio> retrieveRadiosForBrowser() throws IOException;
 
     /**
-     * Retrieve radios.
-     */
-    /*
-     * Get radios from the internet (update preset list)
+     * Retrieve radios. Get radios from the internet (update preset list)
      */
     public void retrieveRadios();
 

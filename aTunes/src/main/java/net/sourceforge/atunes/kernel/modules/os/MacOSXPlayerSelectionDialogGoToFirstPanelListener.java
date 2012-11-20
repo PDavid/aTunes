@@ -28,22 +28,30 @@ import javax.swing.JPanel;
 
 /**
  * Moves dialog to first panel
+ * 
  * @author alex
- *
+ * 
  */
-final class MacOSXPlayerSelectionDialogGoToFirstPanelListener implements ActionListener {
-	
-	private JPanel panelContainer;
-	
-	private String firstPanelName;
-	
-	public MacOSXPlayerSelectionDialogGoToFirstPanelListener(JPanel panelContainer, String firstPanelName) {
-		this.panelContainer = panelContainer;
-		this.firstPanelName = firstPanelName;
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		((CardLayout)panelContainer.getLayout()).show(panelContainer, firstPanelName);
-	}
+final class MacOSXPlayerSelectionDialogGoToFirstPanelListener implements
+	ActionListener {
+
+    private final JPanel panelContainer;
+
+    private final String firstPanelName;
+
+    /**
+     * @param panelContainer
+     * @param firstPanelName
+     */
+    public MacOSXPlayerSelectionDialogGoToFirstPanelListener(
+	    final JPanel panelContainer, final String firstPanelName) {
+	this.panelContainer = panelContainer;
+	this.firstPanelName = firstPanelName;
+    }
+
+    @Override
+    public void actionPerformed(final ActionEvent arg0) {
+	((CardLayout) panelContainer.getLayout()).show(panelContainer,
+		firstPanelName);
+    }
 }

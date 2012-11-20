@@ -26,25 +26,29 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 abstract class AbstractFieldProvider implements IValueProvider {
 
-	public abstract String getI18Name();
+    /**
+     * @return translated name of field
+     */
+    public abstract String getI18Name();
 
-	@Override
-	public final String getValue(ILocalAudioObject audioObject) {
-		String v = getClearValue(audioObject);
-		return StringUtils.isEmpty(v) ? "-" : v;
-	}
+    @Override
+    public final String getValue(final ILocalAudioObject audioObject) {
+	String v = getClearValue(audioObject);
+	return StringUtils.isEmpty(v) ? "-" : v;
+    }
 
-	@Override
-	public final String getLabel() {
-		return getHtmlFormatted(I18nUtils.getString(getI18Name()));
-	}
-	
+    @Override
+    public final String getLabel() {
+	return getHtmlFormatted(I18nUtils.getString(getI18Name()));
+    }
+
     /**
      * Gets the html formatted (only a description)
+     * 
      * @param desc
      * @return
      */
-    private String getHtmlFormatted(String desc) {
-        return StringUtils.getString("<html><b>", desc, ": </b></html>");
+    private String getHtmlFormatted(final String desc) {
+	return StringUtils.getString("<html><b>", desc, ": </b></html>");
     }
 }

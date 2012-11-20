@@ -32,66 +32,68 @@ import javax.swing.event.ListSelectionListener;
 
 class StripedListViewport extends JViewport {
 
+    private static final long serialVersionUID = 7217178968532613985L;
+
+    private final JList list;
+
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 7217178968532613985L;
-	
-	private final JList list;
-
-    public StripedListViewport(JList list) {
-        this.list = list;
-        setOpaque(false);
-        initListeners();
+     * @param list
+     */
+    public StripedListViewport(final JList list) {
+	this.list = list;
+	setOpaque(false);
+	initListeners();
     }
-    
-    private void initListeners() {
-    	list.addListSelectionListener(new ListSelectionListener() {
-			
-			@Override
-			public void valueChanged(ListSelectionEvent arg0) {
-				repaint();
-			}
-		});
-    	
-    	addChangeListener(new ChangeListener() {
 
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				repaint();
-			}
-		});
+    private void initListeners() {
+	list.addListSelectionListener(new ListSelectionListener() {
+
+	    @Override
+	    public void valueChanged(final ListSelectionEvent arg0) {
+		repaint();
+	    }
+	});
+
+	addChangeListener(new ChangeListener() {
+
+	    @Override
+	    public void stateChanged(final ChangeEvent e) {
+		repaint();
+	    }
+	});
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        paintStripedBackground(g);
-        super.paintComponent(g);
+    protected void paintComponent(final Graphics g) {
+	paintStripedBackground(g);
+	super.paintComponent(g);
     }
 
-    private void paintStripedBackground(Graphics g) {
-        // get the row index at the top of the clip bounds (the first row
-        // to paint).
-        int rowAtPoint = list.locationToIndex(g.getClipBounds().getLocation());
-        // get the y coordinate of the first row to paint. if there are no
-        // rows in the tree, start painting at the top of the supplied
-        // clipping bounds.
-        int topY = rowAtPoint < 0
-                ? g.getClipBounds().y : list.getCellBounds(rowAtPoint, rowAtPoint).y;
+    private void paintStripedBackground(final Graphics g) {
+	// get the row index at the top of the clip bounds (the first row
+	// to paint).
+	int rowAtPoint = list.locationToIndex(g.getClipBounds().getLocation());
+	// get the y coordinate of the first row to paint. if there are no
+	// rows in the tree, start painting at the top of the supplied
+	// clipping bounds.
+	int topY = rowAtPoint < 0 ? g.getClipBounds().y : list.getCellBounds(
+		rowAtPoint, rowAtPoint).y;
 
-        // create a counter variable to hold the current row. if there are no
-        // rows in the tree, start the counter at 0.
-        int currentRow = rowAtPoint < 0 ? 0 : rowAtPoint;
-        while (topY < g.getClipBounds().y + g.getClipBounds().height) {
-            int bottomY = topY + list.getCellBounds(rowAtPoint, rowAtPoint).height;
-            g.setColor(getRowColor(currentRow));
-            g.fillRect(g.getClipBounds().x, topY, g.getClipBounds().width, bottomY);
-            topY = bottomY;
-            currentRow ++;
-        }
+	// create a counter variable to hold the current row. if there are no
+	// rows in the tree, start the counter at 0.
+	int currentRow = rowAtPoint < 0 ? 0 : rowAtPoint;
+	while (topY < g.getClipBounds().y + g.getClipBounds().height) {
+	    int bottomY = topY
+		    + list.getCellBounds(rowAtPoint, rowAtPoint).height;
+	    g.setColor(getRowColor(currentRow));
+	    g.fillRect(g.getClipBounds().x, topY, g.getClipBounds().width,
+		    bottomY);
+	    topY = bottomY;
+	    currentRow++;
+	}
     }
 
-    private Color getRowColor(int row) {
-        return row % 2 == 0 ? MacOSColors.EVEN_ROW_COLOR : getBackground();
+    private Color getRowColor(final int row) {
+	return row % 2 == 0 ? MacOSColors.EVEN_ROW_COLOR : getBackground();
     }
 }

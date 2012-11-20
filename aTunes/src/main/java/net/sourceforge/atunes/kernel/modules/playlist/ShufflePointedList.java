@@ -31,24 +31,27 @@ class ShufflePointedList extends PointedList<Integer> {
     private static final long serialVersionUID = -3538333832968145075L;
 
     private transient IStatePlayer statePlayer;
-    
-    public ShufflePointedList(IStatePlayer statePlayer) {
-    	super();
-    	this.statePlayer = statePlayer;
-	}
-    
-    void add(List<IPlayListAudioObject> playListAudioObjects) {
-        // Add positions
-        for (IPlayListAudioObject plao : playListAudioObjects) {
-            add(plao.getPosition());
-        }
 
-        // Shuffle
-        shuffle();
+    /**
+     * @param statePlayer
+     */
+    public ShufflePointedList(final IStatePlayer statePlayer) {
+	super();
+	this.statePlayer = statePlayer;
+    }
+
+    void add(final List<IPlayListAudioObject> playListAudioObjects) {
+	// Add positions
+	for (IPlayListAudioObject plao : playListAudioObjects) {
+	    add(plao.getPosition());
+	}
+
+	// Shuffle
+	shuffle();
     }
 
     @Override
     public boolean isCyclic() {
-        return statePlayer.isRepeat();
+	return statePlayer.isRepeat();
     }
 }

@@ -31,38 +31,38 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 public class ShowNavigatorTableItemInfoActionTest {
 
-	@Test
-	public void test() {
-		ShowNavigatorTableItemInfoAction sut = new ShowNavigatorTableItemInfoAction();
-	    IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory = mock(IAudioObjectPropertiesDialogFactory.class);
-	    IAudioObjectPropertiesDialog dialog = mock(IAudioObjectPropertiesDialog.class);
-	    INavigationHandler navigationHandler = mock(INavigationHandler.class);
-	    IPlayerHandler playerHandler = mock(IPlayerHandler.class);
-	    IAudioObject ao = mock(IAudioObject.class);
-	    when(navigationHandler.getSelectedAudioObjectInNavigationTable()).thenReturn(ao);
-	    when(audioObjectPropertiesDialogFactory.newInstance(ao, playerHandler)).thenReturn(dialog);
-	    sut.setPlayerHandler(playerHandler);
-	    sut.setNavigationHandler(navigationHandler);
-	    sut.setAudioObjectPropertiesDialogFactory(audioObjectPropertiesDialogFactory);
+    @Test
+    public void test() {
+	ShowNavigatorTableItemInfoAction sut = new ShowNavigatorTableItemInfoAction();
+	IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory = mock(IAudioObjectPropertiesDialogFactory.class);
+	IAudioObjectPropertiesDialog dialog = mock(IAudioObjectPropertiesDialog.class);
+	INavigationHandler navigationHandler = mock(INavigationHandler.class);
+	IAudioObject ao = mock(IAudioObject.class);
+	when(navigationHandler.getSelectedAudioObjectInNavigationTable())
+		.thenReturn(ao);
+	when(audioObjectPropertiesDialogFactory.newInstance(ao)).thenReturn(
+		dialog);
+	sut.setNavigationHandler(navigationHandler);
+	sut.setAudioObjectPropertiesDialogFactory(audioObjectPropertiesDialogFactory);
 
-	    sut.executeAction();
-		
-	    verify(dialog).showDialog();
-	}
-	
-	@Test
-	
-	public void testEnabled() {
-		ShowNavigatorTableItemInfoAction sut = new ShowNavigatorTableItemInfoAction();
-		Assert.assertFalse(sut.isEnabledForNavigationTableSelection(null));
-		Assert.assertFalse(sut.isEnabledForNavigationTableSelection(new ArrayList<IAudioObject>()));
-		Assert.assertTrue(sut.isEnabledForNavigationTableSelection(Arrays.asList(mock(IAudioObject.class))));
-	}
+	sut.executeAction();
+
+	verify(dialog).showDialog();
+    }
+
+    @Test
+    public void testEnabled() {
+	ShowNavigatorTableItemInfoAction sut = new ShowNavigatorTableItemInfoAction();
+	Assert.assertFalse(sut.isEnabledForNavigationTableSelection(null));
+	Assert.assertFalse(sut
+		.isEnabledForNavigationTableSelection(new ArrayList<IAudioObject>()));
+	Assert.assertTrue(sut.isEnabledForNavigationTableSelection(Arrays
+		.asList(mock(IAudioObject.class))));
+    }
 }

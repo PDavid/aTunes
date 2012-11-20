@@ -26,51 +26,66 @@ import javax.swing.plaf.FontUIResource;
 
 import org.pushingpixels.substance.api.fonts.FontSet;
 
+/**
+ * Several types of fonts for different UI components
+ * 
+ * @author alex
+ * 
+ */
 final class CustomFontSet implements FontSet {
-	
-	private FontUIResource windowTitleFont;
-	private FontUIResource titleFont;
-	private FontUIResource smallFont;
-	private FontUIResource messageFont;
-	private FontUIResource menuFont;
-	private FontUIResource controlFont;
 
-	public CustomFontSet(Font baseFont) {
-		this.windowTitleFont = new FontUIResource(baseFont.deriveFont(Font.BOLD, baseFont.getSize() + 1f));
-		this.titleFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
-		this.smallFont = new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
-		this.messageFont = new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
-		this.menuFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
-		this.controlFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
-	}
-	
-	@Override
-	public FontUIResource getWindowTitleFont() {
-	    return windowTitleFont;
-	}
+    private final FontUIResource windowTitleFont;
+    private final FontUIResource titleFont;
+    private final FontUIResource smallFont;
+    private final FontUIResource messageFont;
+    private final FontUIResource menuFont;
+    private final FontUIResource controlFont;
 
-	@Override
-	public FontUIResource getTitleFont() {
-	    return titleFont;
-	}
+    /**
+     * @param baseFont
+     */
+    public CustomFontSet(final Font baseFont) {
+	this.windowTitleFont = new FontUIResource(baseFont.deriveFont(
+		Font.BOLD, baseFont.getSize() + 1f));
+	this.titleFont = new FontUIResource(
+		baseFont.deriveFont((float) baseFont.getSize()));
+	this.smallFont = new FontUIResource(baseFont.deriveFont(baseFont
+		.getSize() - 1f));
+	this.messageFont = new FontUIResource(baseFont.deriveFont(baseFont
+		.getSize() - 1f));
+	this.menuFont = new FontUIResource(baseFont.deriveFont((float) baseFont
+		.getSize()));
+	this.controlFont = new FontUIResource(
+		baseFont.deriveFont((float) baseFont.getSize()));
+    }
 
-	@Override
-	public FontUIResource getSmallFont() {
-	    return smallFont;
-	}
+    @Override
+    public FontUIResource getWindowTitleFont() {
+	return windowTitleFont;
+    }
 
-	@Override
-	public FontUIResource getMessageFont() {
-	    return messageFont;
-	}
+    @Override
+    public FontUIResource getTitleFont() {
+	return titleFont;
+    }
 
-	@Override
-	public FontUIResource getMenuFont() {
-	    return menuFont;
-	}
+    @Override
+    public FontUIResource getSmallFont() {
+	return smallFont;
+    }
 
-	@Override
-	public FontUIResource getControlFont() {
-	    return controlFont;
-	}
+    @Override
+    public FontUIResource getMessageFont() {
+	return messageFont;
+    }
+
+    @Override
+    public FontUIResource getMenuFont() {
+	return menuFont;
+    }
+
+    @Override
+    public FontUIResource getControlFont() {
+	return controlFont;
+    }
 }

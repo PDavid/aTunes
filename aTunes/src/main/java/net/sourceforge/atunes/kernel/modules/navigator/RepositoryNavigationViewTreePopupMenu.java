@@ -40,156 +40,172 @@ import net.sourceforge.atunes.model.INavigationView;
 
 /**
  * Popup menu for repository tree
+ * 
  * @author alex
- *
+ * 
  */
 public class RepositoryNavigationViewTreePopupMenu extends JPopupMenu {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = -5391228599224832484L;
+    private static final long serialVersionUID = -5391228599224832484L;
 
-	private AbstractActionOverSelectedObjects<IAudioObject> addToPlayListFromRepositoryNavigationView;
+    private AbstractActionOverSelectedObjects<IAudioObject> addToPlayListFromRepositoryNavigationView;
 
-	private AbstractActionOverSelectedObjects<IAudioObject> setAsPlaylistFromRepositoryNavigationView;
+    private AbstractActionOverSelectedObjects<IAudioObject> setAsPlaylistFromRepositoryNavigationView;
 
-	private AbstractActionOverSelectedTreeObjects<IArtist> addArtistTopTracksToPlayListFromRepositoryNavigationView;
+    private AbstractActionOverSelectedTreeObjects<IArtist> addArtistTopTracksToPlayListFromRepositoryNavigationView;
 
-	private AbstractActionOverSelectedTreeObjects<IFolder> openFolderFromRepositoryNavigationTree;
+    private AbstractActionOverSelectedTreeObjects<IFolder> openFolderFromRepositoryNavigationTree;
 
-	private AbstractActionOverSelectedTreeObjects<IFolder> refreshFolderFromNavigatorAction;
+    private AbstractActionOverSelectedTreeObjects<IFolder> refreshFolderFromNavigatorAction;
 
-	private AbstractActionOverSelectedTreeObjects<IFolder> moveFolderFromNavigatorAction;
+    private AbstractActionOverSelectedTreeObjects<IFolder> moveFolderFromNavigatorAction;
 
-	private AbstractActionOverSelectedObjects<IAudioObject> exportNavigatorSelectionFromRepositoryViewAction;
+    private AbstractActionOverSelectedObjects<IAudioObject> exportNavigatorSelectionFromRepositoryViewAction;
 
-	private AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceFromRepositoryNavigationView;
+    private AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceFromRepositoryNavigationView;
 
-	private IBeanFactory beanFactory;
+    private IBeanFactory beanFactory;
 
-	private INavigationView repositoryNavigationView;
+    private INavigationView repositoryNavigationView;
 
-	/**
-	 * sets audio objects source and adds to popup
-	 * @param action
-	 */
-	private void addAudioObjectsSourceAndAdd(final AbstractActionOverSelectedObjects<?> action) {
-		action.setAudioObjectsSource(repositoryNavigationView);
-		add(action);
-	}
+    /**
+     * sets audio objects source and adds to popup
+     * 
+     * @param action
+     */
+    private void addAudioObjectsSourceAndAdd(
+	    final AbstractActionOverSelectedObjects<?> action) {
+	action.setAudioObjectsSource(repositoryNavigationView);
+	add(action);
+    }
 
-	/**
-	 * sets tree objects source and adds to popup
-	 * @param action
-	 */
-	private void addTreeObjectsSourceAndAdd(final AbstractActionOverSelectedTreeObjects<?> action) {
-		action.setTreeObjectsSource(repositoryNavigationView);
-		add(action);
-	}
+    /**
+     * sets tree objects source and adds to popup
+     * 
+     * @param action
+     */
+    private void addTreeObjectsSourceAndAdd(
+	    final AbstractActionOverSelectedTreeObjects<?> action) {
+	action.setTreeObjectsSource(repositoryNavigationView);
+	add(action);
+    }
 
-	/**
-	 * Initializes menu
-	 */
-	public void initialize() {
-		addAudioObjectsSourceAndAdd(addToPlayListFromRepositoryNavigationView);
-		addAudioObjectsSourceAndAdd(setAsPlaylistFromRepositoryNavigationView);
-		addTreeObjectsSourceAndAdd(addArtistTopTracksToPlayListFromRepositoryNavigationView);
-		add(new JSeparator());
-		addTreeObjectsSourceAndAdd(openFolderFromRepositoryNavigationTree);
-		addTreeObjectsSourceAndAdd(moveFolderFromNavigatorAction);
-		addTreeObjectsSourceAndAdd(refreshFolderFromNavigatorAction);
-		add(new JSeparator());
-		add(new EditTagMenu(false, repositoryNavigationView));
-		addTreeObjectsSourceAndAdd(beanFactory.getBean("editTitlesFromRepositoryViewAction", EditTitlesAction.class));
-		add(new JSeparator());
-		add(beanFactory.getBean(RemoveFromDiskAction.class));
-		add(new JSeparator());
-		addAudioObjectsSourceAndAdd(exportNavigatorSelectionFromRepositoryViewAction);
-		addAudioObjectsSourceAndAdd(copyToDeviceFromRepositoryNavigationView);
-		add(new JSeparator());
-		addAudioObjectsSourceAndAdd(beanFactory.getBean(SetFavoriteAlbumFromNavigatorAction.class));
-		addAudioObjectsSourceAndAdd(beanFactory.getBean(SetFavoriteArtistFromNavigatorAction.class));
-		add(new JSeparator());
-		add(beanFactory.getBean(SearchArtistAction.class));
-		add(beanFactory.getBean(SearchArtistAtAction.class));
-	}
+    /**
+     * Initializes menu
+     */
+    public void initialize() {
+	addAudioObjectsSourceAndAdd(addToPlayListFromRepositoryNavigationView);
+	addAudioObjectsSourceAndAdd(setAsPlaylistFromRepositoryNavigationView);
+	addTreeObjectsSourceAndAdd(addArtistTopTracksToPlayListFromRepositoryNavigationView);
+	add(new JSeparator());
+	addTreeObjectsSourceAndAdd(openFolderFromRepositoryNavigationTree);
+	addTreeObjectsSourceAndAdd(moveFolderFromNavigatorAction);
+	addTreeObjectsSourceAndAdd(refreshFolderFromNavigatorAction);
+	add(new JSeparator());
+	add(new EditTagMenu(false, repositoryNavigationView, beanFactory));
+	addTreeObjectsSourceAndAdd(beanFactory.getBean(
+		"editTitlesFromRepositoryViewAction", EditTitlesAction.class));
+	add(new JSeparator());
+	add(beanFactory.getBean(RemoveFromDiskAction.class));
+	add(new JSeparator());
+	addAudioObjectsSourceAndAdd(exportNavigatorSelectionFromRepositoryViewAction);
+	addAudioObjectsSourceAndAdd(copyToDeviceFromRepositoryNavigationView);
+	add(new JSeparator());
+	addAudioObjectsSourceAndAdd(beanFactory
+		.getBean(SetFavoriteAlbumFromNavigatorAction.class));
+	addAudioObjectsSourceAndAdd(beanFactory
+		.getBean(SetFavoriteArtistFromNavigatorAction.class));
+	add(new JSeparator());
+	add(beanFactory.getBean(SearchArtistAction.class));
+	add(beanFactory.getBean(SearchArtistAtAction.class));
+    }
 
-	/**
-	 * @param copyToDeviceFromRepositoryNavigationView
-	 */
-	public void setCopyToDeviceFromRepositoryNavigationView(
-			final AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceFromRepositoryNavigationView) {
-		this.copyToDeviceFromRepositoryNavigationView = copyToDeviceFromRepositoryNavigationView;
-	}
+    /**
+     * @param copyToDeviceFromRepositoryNavigationView
+     */
+    public void setCopyToDeviceFromRepositoryNavigationView(
+	    final AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceFromRepositoryNavigationView) {
+	this.copyToDeviceFromRepositoryNavigationView = copyToDeviceFromRepositoryNavigationView;
+    }
 
-	/**
-	 * @param exportNavigatorSelectionFromRepositoryViewAction
-	 */
-	public void setExportNavigatorSelectionFromRepositoryViewAction(
-			final AbstractActionOverSelectedObjects<IAudioObject> exportNavigatorSelectionFromRepositoryViewAction) {
-		this.exportNavigatorSelectionFromRepositoryViewAction = exportNavigatorSelectionFromRepositoryViewAction;
-	}
+    /**
+     * @param exportNavigatorSelectionFromRepositoryViewAction
+     */
+    public void setExportNavigatorSelectionFromRepositoryViewAction(
+	    final AbstractActionOverSelectedObjects<IAudioObject> exportNavigatorSelectionFromRepositoryViewAction) {
+	this.exportNavigatorSelectionFromRepositoryViewAction = exportNavigatorSelectionFromRepositoryViewAction;
+    }
 
-	/**
-	 * @param addToPlayListFromRepositoryNavigationView the addToPlayListFromRepositoryNavigationView to set
-	 */
-	public void setAddToPlayListFromRepositoryNavigationView(
-			final AbstractActionOverSelectedObjects<IAudioObject> addToPlayListFromRepositoryNavigationView) {
-		this.addToPlayListFromRepositoryNavigationView = addToPlayListFromRepositoryNavigationView;
-	}
+    /**
+     * @param addToPlayListFromRepositoryNavigationView
+     *            the addToPlayListFromRepositoryNavigationView to set
+     */
+    public void setAddToPlayListFromRepositoryNavigationView(
+	    final AbstractActionOverSelectedObjects<IAudioObject> addToPlayListFromRepositoryNavigationView) {
+	this.addToPlayListFromRepositoryNavigationView = addToPlayListFromRepositoryNavigationView;
+    }
 
-	/**
-	 * @param setAsPlaylistFromRepositoryNavigationView the setAsPlaylistFromRepositoryNavigationView to set
-	 */
-	public void setSetAsPlaylistFromRepositoryNavigationView(
-			final AbstractActionOverSelectedObjects<IAudioObject> setAsPlaylistFromRepositoryNavigationView) {
-		this.setAsPlaylistFromRepositoryNavigationView = setAsPlaylistFromRepositoryNavigationView;
-	}
+    /**
+     * @param setAsPlaylistFromRepositoryNavigationView
+     *            the setAsPlaylistFromRepositoryNavigationView to set
+     */
+    public void setSetAsPlaylistFromRepositoryNavigationView(
+	    final AbstractActionOverSelectedObjects<IAudioObject> setAsPlaylistFromRepositoryNavigationView) {
+	this.setAsPlaylistFromRepositoryNavigationView = setAsPlaylistFromRepositoryNavigationView;
+    }
 
-	/**
-	 * @param addArtistTopTracksToPlayListFromRepositoryNavigationView the addArtistTopTracksToPlayListFromRepositoryNavigationView to set
-	 */
-	public void setAddArtistTopTracksToPlayListFromRepositoryNavigationView(
-			final AbstractActionOverSelectedTreeObjects<IArtist> addArtistTopTracksToPlayListFromRepositoryNavigationView) {
-		this.addArtistTopTracksToPlayListFromRepositoryNavigationView = addArtistTopTracksToPlayListFromRepositoryNavigationView;
-	}
+    /**
+     * @param addArtistTopTracksToPlayListFromRepositoryNavigationView
+     *            the addArtistTopTracksToPlayListFromRepositoryNavigationView
+     *            to set
+     */
+    public void setAddArtistTopTracksToPlayListFromRepositoryNavigationView(
+	    final AbstractActionOverSelectedTreeObjects<IArtist> addArtistTopTracksToPlayListFromRepositoryNavigationView) {
+	this.addArtistTopTracksToPlayListFromRepositoryNavigationView = addArtistTopTracksToPlayListFromRepositoryNavigationView;
+    }
 
-	/**
-	 * @param openFolderFromRepositoryNavigationTree
-	 */
-	public void setOpenFolderFromRepositoryNavigationTree(
-			final AbstractActionOverSelectedTreeObjects<IFolder> openFolderFromRepositoryNavigationTree) {
-		this.openFolderFromRepositoryNavigationTree = openFolderFromRepositoryNavigationTree;
-	}
+    /**
+     * @param openFolderFromRepositoryNavigationTree
+     */
+    public void setOpenFolderFromRepositoryNavigationTree(
+	    final AbstractActionOverSelectedTreeObjects<IFolder> openFolderFromRepositoryNavigationTree) {
+	this.openFolderFromRepositoryNavigationTree = openFolderFromRepositoryNavigationTree;
+    }
 
-	/**
-	 * @param refreshFolderFromNavigatorAction the refreshFolderFromNavigatorAction to set
-	 */
-	public void setRefreshFolderFromNavigatorAction(
-			final AbstractActionOverSelectedTreeObjects<IFolder> refreshFolderFromNavigatorAction) {
-		this.refreshFolderFromNavigatorAction = refreshFolderFromNavigatorAction;
-	}
+    /**
+     * @param refreshFolderFromNavigatorAction
+     *            the refreshFolderFromNavigatorAction to set
+     */
+    public void setRefreshFolderFromNavigatorAction(
+	    final AbstractActionOverSelectedTreeObjects<IFolder> refreshFolderFromNavigatorAction) {
+	this.refreshFolderFromNavigatorAction = refreshFolderFromNavigatorAction;
+    }
 
-	/**
-	 * @param beanFactory the beanFactory to set
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
+    /**
+     * @param beanFactory
+     *            the beanFactory to set
+     */
+    public void setBeanFactory(final IBeanFactory beanFactory) {
+	this.beanFactory = beanFactory;
+    }
 
-	/**
-	 * @param repositoryNavigationView the repositoryNavigationView to set
-	 */
-	public void setRepositoryNavigationView(final INavigationView repositoryNavigationView) {
-		this.repositoryNavigationView = repositoryNavigationView;
-	}
+    /**
+     * @param repositoryNavigationView
+     *            the repositoryNavigationView to set
+     */
+    public void setRepositoryNavigationView(
+	    final INavigationView repositoryNavigationView) {
+	this.repositoryNavigationView = repositoryNavigationView;
+    }
 
-	/**
-	 * @param moveFolderFromNavigatorAction
-	 */
-	public void setMoveFolderFromNavigatorAction(
-			final AbstractActionOverSelectedTreeObjects<IFolder> moveFolderFromNavigatorAction) {
-		this.moveFolderFromNavigatorAction = moveFolderFromNavigatorAction;
-	}
+    /**
+     * @param moveFolderFromNavigatorAction
+     */
+    public void setMoveFolderFromNavigatorAction(
+	    final AbstractActionOverSelectedTreeObjects<IFolder> moveFolderFromNavigatorAction) {
+	this.moveFolderFromNavigatorAction = moveFolderFromNavigatorAction;
+    }
 }

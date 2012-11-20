@@ -18,35 +18,35 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.fullscreen;
+package net.sourceforge.atunes.gui.views.menus;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
+import java.awt.event.KeyEvent;
 
-import net.sourceforge.atunes.model.IStateUI;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.KeyStroke;
 
-final class RemoveBackgroundActionListener implements ActionListener {
+import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.utils.I18nUtils;
 
-    private final FullScreenWindow window;
+final class PlayActionFromMenuBar extends AbstractAction {
+    private static final long serialVersionUID = -2392752580476710618L;
 
-    private final IStateUI stateUI;
+    private final Action playAction;
 
-    /**
-     * @param window
-     * @param stateUI
-     */
-    public RemoveBackgroundActionListener(final FullScreenWindow window,
-	    final IStateUI stateUI) {
-	this.window = window;
-	this.stateUI = stateUI;
+    PlayActionFromMenuBar(final Action playAction) {
+        super(I18nUtils.getString("PLAY"));
+        this.playAction = playAction;
+        putValue(
+    	    ACCELERATOR_KEY,
+    	    KeyStroke.getKeyStroke(KeyEvent.VK_P,
+    		    GuiUtils.getCtrlOrMetaActionEventMask()));
     }
 
     @Override
     public void actionPerformed(final ActionEvent e) {
-	window.setBackground((File) null);
-	stateUI.setFullScreenBackground(null);
-	window.invalidate();
-	window.repaint();
+        // Need this action to pass null event
+        playAction.actionPerformed(null);
     }
 }

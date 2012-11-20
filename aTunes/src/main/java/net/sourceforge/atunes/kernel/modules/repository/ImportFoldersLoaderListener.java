@@ -26,62 +26,72 @@ import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 
+/**
+ * Loader listener used when importing folders to repository
+ * 
+ * @author alex
+ * 
+ */
 final class ImportFoldersLoaderListener implements IRepositoryLoaderListener {
-	
-	private final IProgressDialog progressDialog;
 
-	private int filesLoaded = 0;
-	private int totalFiles;
-	
-	public ImportFoldersLoaderListener(IProgressDialog progressDialog) {
-		this.progressDialog = progressDialog;
-	}
+    private final IProgressDialog progressDialog;
 
-	@Override
-	public void notifyRemainingTime(long time) {
-	}
+    private int filesLoaded = 0;
+    private int totalFiles;
 
-	@Override
-	public void notifyReadProgress() {
-	}
+    /**
+     * @param progressDialog
+     */
+    public ImportFoldersLoaderListener(final IProgressDialog progressDialog) {
+	this.progressDialog = progressDialog;
+    }
 
-	@Override
-	public void notifyFinishRefresh(IRepositoryLoader loader) {
-	}
-	
-	@Override
-	public void notifyCurrentAlbum(String artist, String album) {
-	}
+    @Override
+    public void notifyRemainingTime(final long time) {
+    }
 
-	@Override
-	public void notifyFinishRead(IRepositoryLoader loader) {
-	    progressDialog.hideDialog();
-	}
+    @Override
+    public void notifyReadProgress() {
+    }
 
-	@Override
-	public void notifyFilesInRepository(final int files) {
-	    this.totalFiles = files;
-	    SwingUtilities.invokeLater(new Runnable() {
-	        @Override
-	        public void run() {
-	            progressDialog.setTotalProgress(files);
-	        }
-	    });
-	}
+    @Override
+    public void notifyFinishRefresh(final IRepositoryLoader loader) {
+    }
 
-	@Override
-	public void notifyFileLoaded() {
-	    this.filesLoaded++;
-	    SwingUtilities.invokeLater(new Runnable() {
-	        @Override
-	        public void run() {
-	            progressDialog.setCurrentProgress(filesLoaded);
-	            progressDialog.setProgressBarValue((int) (filesLoaded * 100.0 / totalFiles));
-	        }
-	    });
-	}
+    @Override
+    public void notifyCurrentAlbum(final String artist, final String album) {
+    }
 
-	@Override
-	public void notifyCurrentPath(String path) {
-	}
+    @Override
+    public void notifyFinishRead(final IRepositoryLoader loader) {
+	progressDialog.hideDialog();
+    }
+
+    @Override
+    public void notifyFilesInRepository(final int files) {
+	this.totalFiles = files;
+	SwingUtilities.invokeLater(new Runnable() {
+	    @Override
+	    public void run() {
+		progressDialog.setTotalProgress(files);
+	    }
+	});
+    }
+
+    @Override
+    public void notifyFileLoaded() {
+	this.filesLoaded++;
+	SwingUtilities.invokeLater(new Runnable() {
+	    @Override
+	    public void run() {
+		progressDialog.setCurrentProgress(filesLoaded);
+		progressDialog
+			.setProgressBarValue((int) (filesLoaded * 100.0 / totalFiles));
+	    }
+	});
+    }
+
+    @Override
+    public void notifyCurrentPath(final String path) {
+    }
 }

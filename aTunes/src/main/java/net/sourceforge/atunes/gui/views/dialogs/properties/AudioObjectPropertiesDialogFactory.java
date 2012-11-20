@@ -25,34 +25,45 @@ import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 
-public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertiesDialogFactory {
+/**
+ * Creates dialog for given type of audio object
+ * 
+ * @author alex
+ * 
+ */
+public class AudioObjectPropertiesDialogFactory implements
+	IAudioObjectPropertiesDialogFactory {
 
-	private IDialogFactory dialogFactory;
-	
+    private IDialogFactory dialogFactory;
+
     @Override
-	public IAudioObjectPropertiesDialog newInstance(IAudioObject a, IPlayerHandler playerHandler) {
-    	AudioObjectPropertiesDialog dialog = null;
-    	if (a instanceof IPodcastFeedEntry) {
-    		dialog = dialogFactory.newDialog("podcastFeedEntryPropertiesDialog", AudioObjectPropertiesDialog.class);
-    	} else if (a instanceof IRadio) {
-    		dialog = dialogFactory.newDialog("radioPropertiesDialog", AudioObjectPropertiesDialog.class);
-    	} else if (a instanceof ILocalAudioObject) {
-    		dialog = dialogFactory.newDialog("localAudioObjectPropertiesDialog", AudioObjectPropertiesDialog.class);
-    	}
-    	if (dialog != null) {
-    		dialog.setAudioObject(a);
-    	}
-		return dialog;
+    public IAudioObjectPropertiesDialog newInstance(final IAudioObject a) {
+	AudioObjectPropertiesDialog dialog = null;
+	if (a instanceof IPodcastFeedEntry) {
+	    dialog = dialogFactory.newDialog(
+		    "podcastFeedEntryPropertiesDialog",
+		    AudioObjectPropertiesDialog.class);
+	} else if (a instanceof IRadio) {
+	    dialog = dialogFactory.newDialog("radioPropertiesDialog",
+		    AudioObjectPropertiesDialog.class);
+	} else if (a instanceof ILocalAudioObject) {
+	    dialog = dialogFactory.newDialog(
+		    "localAudioObjectPropertiesDialog",
+		    AudioObjectPropertiesDialog.class);
+	}
+	if (dialog != null) {
+	    dialog.setAudioObject(a);
+	}
+	return dialog;
     }
-    
+
     /**
      * @param dialogFactory
      */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
+    public void setDialogFactory(final IDialogFactory dialogFactory) {
+	this.dialogFactory = dialogFactory;
+    }
 }

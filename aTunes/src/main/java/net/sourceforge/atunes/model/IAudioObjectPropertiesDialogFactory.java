@@ -20,20 +20,19 @@
 
 package net.sourceforge.atunes.model;
 
-
 /**
  * A factory to create dialogs of properties
+ * 
  * @author alex
- *
+ * 
  */
 public interface IAudioObjectPropertiesDialogFactory {
 
-	/**
-	 * New instance.
-	 * 
-	 * @param a
-	 * @param playerHandler
-	 * @return
-	 */
-	IAudioObjectPropertiesDialog newInstance(IAudioObject a, IPlayerHandler playerHandler);
+    /**
+     * New instance.
+     * 
+     * @param a
+     * @return
+     */
+    IAudioObjectPropertiesDialog newInstance(IAudioObject a);
 }

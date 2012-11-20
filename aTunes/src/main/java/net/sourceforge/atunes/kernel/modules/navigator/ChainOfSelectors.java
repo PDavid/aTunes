@@ -36,6 +36,9 @@ class ChainOfSelectors {
 
     private final AudioObjectSelector<ITreeObject<?>, IAudioObject>[] selectors;
 
+    /**
+     * @param audioObjectSelectors
+     */
     public ChainOfSelectors(
 	    final AudioObjectSelector<ITreeObject<?>, IAudioObject>... audioObjectSelectors) {
 	this.selectors = audioObjectSelectors;

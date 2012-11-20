@@ -150,7 +150,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 	    deviceTreeMenu.add(openFolder);
 
 	    deviceTreeMenu.add(new JSeparator());
-	    deviceTreeMenu.add(new EditTagMenu(false, this));
+	    deviceTreeMenu.add(new EditTagMenu(false, this, beanFactory));
 
 	    AbstractActionOverSelectedTreeObjects<IAlbum> editTitles = beanFactory
 		    .getBean("editTitlesFromDeviceViewAction",
@@ -208,7 +208,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 	    deviceTableMenu.add(openFolderFromNavigatorAction);
 
 	    deviceTableMenu.add(new JSeparator());
-	    deviceTableMenu.add(new EditTagMenu(false, this));
+	    deviceTableMenu.add(new EditTagMenu(false, this, beanFactory));
 
 	    ExtractPictureAction extractPictureAction = beanFactory.getBean(
 		    "extractPictureFromDeviceNavigationView",

@@ -42,153 +42,167 @@ import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.ITaskService;
 
 /**
  * Controller for the search result dialog.
  */
-final class SearchResultsController extends AbstractSimpleController<SearchResultsDialog> {
+final class SearchResultsController extends
+	AbstractSimpleController<SearchResultsDialog> {
 
-	private List<IAudioObject> results;
+    private List<IAudioObject> results;
 
-	private final IColumnSet columnSet;
+    private final IColumnSet columnSet;
 
-	private final IPlayListHandler playListHandler;
+    private final IPlayListHandler playListHandler;
 
-	private final ILookAndFeelManager lookAndFeelManager;
+    private final ILookAndFeelManager lookAndFeelManager;
 
-	private final IPlayerHandler playerHandler;
+    private final IAudioObjectComparator audioObjectComparator;
 
-	private final IAudioObjectComparator audioObjectComparator;
+    private final IBeanFactory beanFactory;
 
-	private final IBeanFactory beanFactory;
+    /**
+     * @param beanFactory
+     * @param dialog
+     * @param playListHandler
+     * @param lookAndFeelManager
+     * @param audioObjectComparator
+     */
+    SearchResultsController(final IBeanFactory beanFactory,
+	    final SearchResultsDialog dialog,
+	    final IPlayListHandler playListHandler,
+	    final ILookAndFeelManager lookAndFeelManager,
+	    final IAudioObjectComparator audioObjectComparator) {
+	super(dialog);
+	this.beanFactory = beanFactory;
+	this.columnSet = beanFactory.getBean("searchResultsColumnSet",
+		IColumnSet.class);
+	this.playListHandler = playListHandler;
+	this.lookAndFeelManager = lookAndFeelManager;
+	this.audioObjectComparator = audioObjectComparator;
+	addBindings();
+    }
 
-	/**
-	 * @param beanFactory
-	 * @param dialog
-	 * @param playListHandler
-	 * @param lookAndFeelManager
-	 * @param playerHandler
-	 * @param audioObjectComparator
-	 */
-	SearchResultsController(final IBeanFactory beanFactory, final SearchResultsDialog dialog, final IPlayListHandler playListHandler, final ILookAndFeelManager lookAndFeelManager, final IPlayerHandler playerHandler, final IAudioObjectComparator audioObjectComparator) {
-		super(dialog);
-		this.beanFactory = beanFactory;
-		this.columnSet = beanFactory.getBean("searchResultsColumnSet", IColumnSet.class);
-		this.playListHandler = playListHandler;
-		this.lookAndFeelManager = lookAndFeelManager;
-		this.playerHandler = playerHandler;
-		this.audioObjectComparator = audioObjectComparator;
-		addBindings();
+    /**
+     * Shows dialog with search results.
+     * 
+     * @param searchableObject
+     *            the searchable object
+     * @param resultsList
+     *            the results
+     */
+    public void showSearchResults(final ISearchableObject searchableObject,
+	    final List<IAudioObject> resultsList) {
+	this.results = resultsList;
+
+	SearchResultTableModel tableModel = (SearchResultTableModel) getComponentControlled()
+		.getSearchResultsTable().getModel();
+
+	IColumn<?> sortedColumn = columnSet.getSortedColumn();
+	if (sortedColumn != null) {
+	    Collections.sort(resultsList, sortedColumn.getComparator(false));
+	} else {
+	    audioObjectComparator.sort(resultsList);
 	}
 
-	/**
-	 * Shows dialog with search results.
-	 * 
-	 * @param searchableObject
-	 *            the searchable object
-	 * @param resultsList
-	 *            the results
-	 */
-	public void showSearchResults(final ISearchableObject searchableObject, final List<IAudioObject> resultsList) {
-		this.results = resultsList;
+	tableModel.setResults(resultsList);
+	tableModel.refresh(TableModelEvent.UPDATE);
+	getComponentControlled().setVisible(true);
+    }
 
-		SearchResultTableModel tableModel = (SearchResultTableModel) getComponentControlled().getSearchResultsTable().getModel();
+    @Override
+    public void addBindings() {
+	JTable table = getComponentControlled().getSearchResultsTable();
+	SearchResultTableModel tableModel = new SearchResultTableModel();
+	tableModel.setColumnSet(columnSet);
+	table.setModel(tableModel);
 
-		IColumn<?> sortedColumn = columnSet.getSortedColumn();
-		if (sortedColumn != null) {
-			Collections.sort(resultsList, sortedColumn.getComparator(false));
-		} else {
-			audioObjectComparator.sort(resultsList);
-		}
+	// TODO: Created manually
+	SearchResultColumnModel columnModel = new SearchResultColumnModel();
+	columnModel.setTable(table);
+	columnModel.setBeanFactory(beanFactory);
+	columnModel.setTaskService(beanFactory.getBean("taskService",
+		ITaskService.class));
+	columnModel.setColumnSet(beanFactory
+		.getBean(SearchResultsColumnSet.class));
+	columnModel.initialize();
+	table.setColumnModel(columnModel);
 
-		tableModel.setResults(resultsList);
-		tableModel.refresh(TableModelEvent.UPDATE);
-		getComponentControlled().setVisible(true);
+	// Set sorter
+	new ColumnSetRowSorter(table, tableModel, columnModel);
+
+	// Bind column set popup menu
+	new ColumnSetPopupMenu(
+		getComponentControlled().getSearchResultsTable(), columnModel);
+
+	// Set renderers
+	ColumnRenderers.addRenderers(getComponentControlled()
+		.getSearchResultsTable(), columnModel, lookAndFeelManager
+		.getCurrentLookAndFeel());
+
+	SearchResultsListener listener = new SearchResultsListener(this,
+		getComponentControlled());
+	getComponentControlled().getShowElementInfo().addActionListener(
+		listener);
+	getComponentControlled().getAddToCurrentPlayList().addActionListener(
+		listener);
+	getComponentControlled().getAddToNewPlayList().addActionListener(
+		listener);
+
+    }
+
+    /**
+     * Displays info of first selected item.
+     */
+    protected void showInfo() {
+	List<IAudioObject> selectedResults = getSelectedResults();
+	if (selectedResults == null) {
+	    return;
 	}
+	beanFactory.getBean(IAudioObjectPropertiesDialogFactory.class)
+		.newInstance(selectedResults.get(0)).showDialog();
+    }
 
-	@Override
-	public void addBindings() {
-		JTable table = getComponentControlled().getSearchResultsTable();
-		SearchResultTableModel tableModel = new SearchResultTableModel();
-		tableModel.setColumnSet(columnSet);
-		table.setModel(tableModel);
-
-		//TODO: Created manually
-		SearchResultColumnModel columnModel = new SearchResultColumnModel();
-		columnModel.setTable(table);
-		columnModel.setBeanFactory(beanFactory);
-		columnModel.setTaskService(beanFactory.getBean("taskService", ITaskService.class));
-		columnModel.setColumnSet(beanFactory.getBean(SearchResultsColumnSet.class));
-		columnModel.initialize();
-		table.setColumnModel(columnModel);
-
-		// Set sorter
-		new ColumnSetRowSorter(table, tableModel, columnModel);
-
-		// Bind column set popup menu
-		new ColumnSetPopupMenu(getComponentControlled().getSearchResultsTable(), columnModel);
-
-		// Set renderers
-		ColumnRenderers.addRenderers(getComponentControlled().getSearchResultsTable(), columnModel, lookAndFeelManager.getCurrentLookAndFeel());
-
-		SearchResultsListener listener = new SearchResultsListener(this, getComponentControlled());
-		getComponentControlled().getShowElementInfo().addActionListener(listener);
-		getComponentControlled().getAddToCurrentPlayList().addActionListener(listener);
-		getComponentControlled().getAddToNewPlayList().addActionListener(listener);
-
+    /**
+     * Adds selected results to current play list.
+     */
+    protected void addToPlayList() {
+	List<IAudioObject> selectedResults = getSelectedResults();
+	if (selectedResults == null) {
+	    return;
 	}
+	playListHandler.addToVisiblePlayList(selectedResults);
+    }
 
-	/**
-	 * Displays info of first selected item.
-	 */
-	protected void showInfo() {
-		List<IAudioObject> selectedResults = getSelectedResults();
-		if (selectedResults == null) {
-			return;
-		}
-		beanFactory.getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(selectedResults.get(0), playerHandler).showDialog();
+    /**
+     * Adds selected results to a new play list.
+     */
+    protected void addToNewPlayList() {
+	List<IAudioObject> selectedResults = getSelectedResults();
+	if (selectedResults == null) {
+	    return;
 	}
+	playListHandler.newPlayList(selectedResults);
+    }
 
-	/**
-	 * Adds selected results to current play list.
-	 */
-	protected void addToPlayList() {
-		List<IAudioObject> selectedResults = getSelectedResults();
-		if (selectedResults == null) {
-			return;
-		}
-		playListHandler.addToVisiblePlayList(selectedResults);
+    /**
+     * Returns selected results as audio objects.
+     * 
+     * @return the selected results
+     */
+    private List<IAudioObject> getSelectedResults() {
+	int[] selectedRows = getComponentControlled().getSearchResultsTable()
+		.getSelectedRows();
+	if (selectedRows.length == 0) {
+	    return null;
 	}
-
-	/**
-	 * Adds selected results to a new play list.
-	 */
-	protected void addToNewPlayList() {
-		List<IAudioObject> selectedResults = getSelectedResults();
-		if (selectedResults == null) {
-			return;
-		}
-		playListHandler.newPlayList(selectedResults);
+	List<IAudioObject> selectedResults = new ArrayList<IAudioObject>();
+	JTable table = getComponentControlled().getSearchResultsTable();
+	for (int row : selectedRows) {
+	    selectedResults.add(results.get(table.convertRowIndexToModel(row)));
 	}
-
-	/**
-	 * Returns selected results as audio objects.
-	 * 
-	 * @return the selected results
-	 */
-	private List<IAudioObject> getSelectedResults() {
-		int[] selectedRows = getComponentControlled().getSearchResultsTable().getSelectedRows();
-		if (selectedRows.length == 0) {
-			return null;
-		}
-		List<IAudioObject> selectedResults = new ArrayList<IAudioObject>();
-		JTable table = getComponentControlled().getSearchResultsTable();
-		for (int row : selectedRows) {
-			selectedResults.add(results.get(table.convertRowIndexToModel(row)));
-		}
-		return selectedResults;
-	}
+	return selectedResults;
+    }
 }

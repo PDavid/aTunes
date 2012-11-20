@@ -23,10 +23,21 @@ package net.sourceforge.atunes.gui.views.dialogs.properties;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 interface IValueProvider {
-	
-	String getLabel();
-	
-	String getValue(ILocalAudioObject audioObject);
-	
-	String getClearValue(ILocalAudioObject audioObject);
+
+    /**
+     * @return label of value
+     */
+    String getLabel();
+
+    /**
+     * @param audioObject
+     * @return value for given audio object
+     */
+    String getValue(ILocalAudioObject audioObject);
+
+    /**
+     * @param audioObject
+     * @return
+     */
+    String getClearValue(ILocalAudioObject audioObject);
 }

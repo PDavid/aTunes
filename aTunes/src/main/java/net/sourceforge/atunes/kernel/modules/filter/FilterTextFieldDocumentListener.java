@@ -24,46 +24,59 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+/**
+ * Document listener for filter input text
+ * 
+ * @author alex
+ * 
+ */
 final class FilterTextFieldDocumentListener implements DocumentListener {
-	
-	/**
+
+    /**
 	 * 
 	 */
-	private final FilterController filterController;
+    private final FilterController filterController;
 
-	public FilterTextFieldDocumentListener(FilterController filterController) {
-        this.filterController = filterController;
+    /**
+     * @param filterController
+     */
+    public FilterTextFieldDocumentListener(
+	    final FilterController filterController) {
+	this.filterController = filterController;
+	updateFilterPanel();
+    }
+
+    @Override
+    public void removeUpdate(final DocumentEvent e) {
+	update();
+    }
+
+    @Override
+    public void insertUpdate(final DocumentEvent e) {
+	update();
+    }
+
+    @Override
+    public void changedUpdate(final DocumentEvent e) {
+	update();
+    }
+
+    private void update() {
+	// Search as user type
+	SwingUtilities.invokeLater(new Runnable() {
+	    @Override
+	    public void run() {
+		FilterTextFieldDocumentListener.this.filterController
+			.applyFilter(FilterTextFieldDocumentListener.this.filterController
+				.getFilterText());
 		updateFilterPanel();
-	}
-	
-	@Override
-	public void removeUpdate(DocumentEvent e) {
-	    update();
-	}
+	    }
+	});
+    }
 
-	@Override
-	public void insertUpdate(DocumentEvent e) {
-	    update();
-	}
+    private void updateFilterPanel() {
+	this.filterController.getComponentControlled().setFilterApplied(
+		this.filterController.isFilterApplied());
+    }
 
-	@Override
-	public void changedUpdate(DocumentEvent e) {
-	    update();
-	}
-
-	private void update() {
-	    // Search as user type
-	    SwingUtilities.invokeLater(new Runnable() {
-	        @Override
-	        public void run() {
-	            FilterTextFieldDocumentListener.this.filterController.applyFilter(FilterTextFieldDocumentListener.this.filterController.getFilterText());
-	            updateFilterPanel();
-	        }
-	    });
-	}
-	
-	private void updateFilterPanel() {
-        this.filterController.getComponentControlled().setFilterApplied(this.filterController.isFilterApplied());
-	}
-	
 }
