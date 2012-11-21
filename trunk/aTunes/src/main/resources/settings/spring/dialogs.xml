@@ -2,9 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
-	default-autowire="byName" default-lazy-init="true" default-init-method="initialize">
+	default-autowire="byName" default-lazy-init="true" default-init-method="initializeDialog">
 	
 	<bean id="dialogFactory" class="net.sourceforge.atunes.gui.DialogFactory"/>
+	
 	<bean id="equalizerDialog" class="net.sourceforge.atunes.kernel.modules.player.EqualizerDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean> 
