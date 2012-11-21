@@ -20,60 +20,16 @@
 
 package net.sourceforge.atunes.gui.views.controls;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
-import net.sourceforge.atunes.gui.GuiUtils;
-import net.sourceforge.atunes.model.IColumnSelectorDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ColumnSetPopupMenu {
-
-    private static final class ColumnSetTableHeaderMouseAdapter extends MouseAdapter {
-        private final JPopupMenu rightMenu;
-        private final JTable table;
-
-        private ColumnSetTableHeaderMouseAdapter(JPopupMenu rightMenu, JTable table) {
-            this.rightMenu = rightMenu;
-            this.table = table;
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            // Use right button to arrange columns
-            if (GuiUtils.isSecondaryMouseButton(e)) {
-                rightMenu.show(table.getTableHeader(), e.getX(), e.getY());
-            }
-        }
-    }
-
-    private static final class SelectColumnsActionListener implements ActionListener {
-        private final AbstractCommonColumnModel model;
-
-        private SelectColumnsActionListener(AbstractCommonColumnModel model) {
-            this.model = model;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // Show column selector
-        	IColumnSelectorDialog selector = Context.getBean(IDialogFactory.class).newDialog(IColumnSelectorDialog.class);
-            selector.setColumnSetToSelect(model.getColumnSet());
-            selector.showDialog();
-
-            // Apply changes
-            model.arrangeColumns(true);
-        }
-    }
 
     private JMenuItem arrangeColumns;
 
@@ -82,13 +38,13 @@ public class ColumnSetPopupMenu {
      * 
      * @param table
      * @param model
+     * @param dialogFactory
      */
-    public ColumnSetPopupMenu(final JTable table, final AbstractCommonColumnModel model) {
+    public ColumnSetPopupMenu(final JTable table, final AbstractCommonColumnModel model, final IDialogFactory dialogFactory) {
         final JPopupMenu rightMenu = new JPopupMenu();
         arrangeColumns = new JMenuItem(I18nUtils.getString("ARRANGE_COLUMNS"));
         rightMenu.add(arrangeColumns);
-        arrangeColumns.addActionListener(new SelectColumnsActionListener(model));
-
+        arrangeColumns.addActionListener(new SelectColumnsActionListener(model, dialogFactory));
         table.getTableHeader().addMouseListener(new ColumnSetTableHeaderMouseAdapter(rightMenu, table));
     }
 

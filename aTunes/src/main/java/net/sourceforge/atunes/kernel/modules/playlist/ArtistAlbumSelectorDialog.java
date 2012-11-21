@@ -40,6 +40,7 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -62,6 +63,15 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog
     private IColumnSet albumColumnSet;
 
     private IBeanFactory beanFactory;
+    
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
     /**
      * @param beanFactory
@@ -129,7 +139,7 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog
 	ColumnRenderers.addRenderers(albumTable, columnModel, getLookAndFeel());
 
 	// Bind column set popup menu to select columns to display
-	new ColumnSetPopupMenu(albumTable, columnModel);
+	new ColumnSetPopupMenu(albumTable, columnModel, dialogFactory);
 
 	model.setAlbums(albumList);
 

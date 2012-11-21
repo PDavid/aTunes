@@ -40,7 +40,6 @@ import javax.swing.SwingWorker;
 import javax.swing.text.JTextComponent;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
@@ -68,484 +67,521 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
  * 
  */
 public final class EditTagDialogController extends
-	AbstractSimpleController<EditTagDialog> {
+		AbstractSimpleController<EditTagDialog> {
 
-    private final class GetInsidePictureSwingWorker extends
-	    SwingWorker<ImageIcon, Void> {
-	private final List<ILocalAudioObject> audioFiles;
+	private final class GetInsidePictureSwingWorker extends
+			SwingWorker<ImageIcon, Void> {
+		private final List<ILocalAudioObject> audioFiles;
 
-	private GetInsidePictureSwingWorker(
-		final List<ILocalAudioObject> audioFiles) {
-	    this.audioFiles = audioFiles;
+		private GetInsidePictureSwingWorker(
+				final List<ILocalAudioObject> audioFiles) {
+			this.audioFiles = audioFiles;
+		}
+
+		@Override
+		protected ImageIcon doInBackground() {
+			return AudioFilePictureUtils.getInsidePicture(audioFiles.get(0),
+					Constants.DIALOG_LARGE_IMAGE_WIDTH,
+					Constants.DIALOG_LARGE_IMAGE_HEIGHT);
+		}
+
+		@Override
+		protected void done() {
+			try {
+				// Check if it's the right dialog
+				if (audioFilesEditing.equals(audioFiles)) {
+					ImageIcon cover = get();
+					getEditTagDialog().getCover().setIcon(cover);
+					getEditTagDialog().getCoverButton().setEnabled(true);
+					getEditTagDialog().getRemoveCoverButton().setEnabled(true);
+					getEditTagDialog().getOkButton().setEnabled(true);
+				}
+			} catch (InterruptedException e) {
+				Logger.error(e);
+			} catch (ExecutionException e) {
+				Logger.error(e);
+			}
+		}
+	}
+
+	/** The audio files editing. */
+	private List<ILocalAudioObject> audioFilesEditing;
+	private byte[] newCover;
+	private boolean coverEdited;
+
+	private IOSManager osManager;
+
+	private IPlayListHandler playListHandler;
+
+	private IRepositoryHandler repositoryHandler;
+
+	private ILocalAudioObjectValidator localAudioObjectValidator;
+
+	private IProcessFactory processFactory;
+
+	private Genres genresHelper;
+
+	/**
+	 * Instantiates a new edits the tag dialog controller.
+	 * 
+	 * @param dialog
+	 */
+	public EditTagDialogController(final EditTagDialog dialog) {
+		super(dialog);
+	}
+
+	/**
+	 * Initializes controller
+	 */
+	public void initialize() {
+		addBindings();
+		addStateBindings();
+	}
+
+	/**
+	 * @param genresHelper
+	 */
+	public void setGenresHelper(Genres genresHelper) {
+		this.genresHelper = genresHelper;
+	}
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+
+	/**
+	 * @param localAudioObjectValidator
+	 */
+	public void setLocalAudioObjectValidator(
+			ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
+
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
 	}
 
 	@Override
-	protected ImageIcon doInBackground() {
-	    return AudioFilePictureUtils.getInsidePicture(audioFiles.get(0),
-		    Constants.DIALOG_LARGE_IMAGE_WIDTH,
-		    Constants.DIALOG_LARGE_IMAGE_HEIGHT);
+	public void addBindings() {
+		// Add genres combo box items
+		List<String> genresSorted = genresHelper.getGenres();
+		Collections.sort(genresSorted);
+		getComponentControlled().getComboBoxEditor(TextTagAttribute.GENRE)
+				.setModel(new ListComboBoxModel<String>(genresSorted));
+		// Add autocompletion
+		AutoCompleteDecorator.decorate(getComponentControlled()
+				.getComboBoxEditor(TextTagAttribute.GENRE));
+
+		EditTagDialogActionListener actionListener = new EditTagDialogActionListener(
+				this, getComponentControlled(), playListHandler,
+				localAudioObjectValidator);
+		getComponentControlled().getOkButton()
+				.addActionListener(actionListener);
+		getComponentControlled().getCancelButton().addActionListener(
+				actionListener);
+
+		getComponentControlled().getNextButton().addActionListener(
+				actionListener);
+		getComponentControlled().getPrevButton().addActionListener(
+				actionListener);
+
+		getComponentControlled().getCoverButton().addActionListener(
+				actionListener);
+		getComponentControlled().getRemoveCoverButton().addActionListener(
+				actionListener);
 	}
 
-	@Override
-	protected void done() {
-	    try {
-		// Check if it's the right dialog
-		if (audioFilesEditing.equals(audioFiles)) {
-		    ImageIcon cover = get();
-		    getEditTagDialog().getCover().setIcon(cover);
-		    getEditTagDialog().getCoverButton().setEnabled(true);
-		    getEditTagDialog().getRemoveCoverButton().setEnabled(true);
-		    getEditTagDialog().getOkButton().setEnabled(true);
+	/**
+	 * Checks if the tag of this audio file does support internal images
+	 * 
+	 * @param audioObject
+	 * @return
+	 */
+	private final boolean supportsInternalPicture(
+			final ILocalAudioObject audioObject) {
+		return localAudioObjectValidator.isOneOfTheseFormats(
+				audioObject.getUrl(), LocalAudioObjectFormat.FLAC,
+				LocalAudioObjectFormat.MP3, LocalAudioObjectFormat.MP4_1,
+				LocalAudioObjectFormat.MP4_2, LocalAudioObjectFormat.OGG,
+				LocalAudioObjectFormat.WMA);
+	}
+
+	/**
+	 * Edits the files.
+	 * 
+	 * @param audioFiles
+	 *            the files
+	 */
+	public void editFiles(final List<ILocalAudioObject> audioFiles) {
+		if (audioFiles == null || audioFiles.isEmpty()) {
+			return;
 		}
-	    } catch (InterruptedException e) {
-		Logger.error(e);
-	    } catch (ExecutionException e) {
-		Logger.error(e);
-	    }
-	}
-    }
 
-    /** The audio files editing. */
-    private List<ILocalAudioObject> audioFilesEditing;
-    private byte[] newCover;
-    private boolean coverEdited;
+		audioFilesEditing = audioFiles;
 
-    private final IOSManager osManager;
+		getComponentControlled().getCover().setIcon(null);
+		getComponentControlled().getCoverButton().setEnabled(false);
+		getComponentControlled().getRemoveCoverButton().setEnabled(false);
+		newCover = null;
+		coverEdited = false;
 
-    private final IPlayListHandler playListHandler;
+		// Load artists into combo box
+		getComponentControlled().getComboBoxEditor(TextTagAttribute.ARTIST)
+				.setModel(new ListComboBoxModel<String>(getArtistsNames()));
 
-    private final IRepositoryHandler repositoryHandler;
+		// Activate autocompletion of artists
+		AutoCompleteDecorator.decorate(getComponentControlled()
+				.getComboBoxEditor(TextTagAttribute.ARTIST));
 
-    private final ILocalAudioObjectValidator localAudioObjectValidator;
+		// Load albums into combo box
+		getComponentControlled().getComboBoxEditor(TextTagAttribute.ALBUM)
+				.setModel(new ListComboBoxModel<String>(getAlbumNames()));
 
-    private final IProcessFactory processFactory;
+		// Active autocompletion of albums
+		AutoCompleteDecorator.decorate(getComponentControlled()
+				.getComboBoxEditor(TextTagAttribute.ALBUM));
 
-    /**
-     * Instantiates a new edits the tag dialog controller.
-     * 
-     * @param dialog
-     * @param osManager
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param localAudioObjectValidator
-     * @param processFactory
-     */
-    public EditTagDialogController(final EditTagDialog dialog,
-	    final IOSManager osManager, final IPlayListHandler playListHandler,
-	    final IRepositoryHandler repositoryHandler,
-	    final ILocalAudioObjectValidator localAudioObjectValidator,
-	    final IProcessFactory processFactory) {
-	super(dialog);
-	this.osManager = osManager;
-	this.playListHandler = playListHandler;
-	this.repositoryHandler = repositoryHandler;
-	this.localAudioObjectValidator = localAudioObjectValidator;
-	this.processFactory = processFactory;
-	addBindings();
-	addStateBindings();
-    }
+		setFieldsUnselected();
 
-    @Override
-    public void addBindings() {
-	// Add genres combo box items
-	List<String> genresSorted = Context.getBean(Genres.class).getGenres();
-	Collections.sort(genresSorted);
-	getComponentControlled().getComboBoxEditor(TextTagAttribute.GENRE)
-		.setModel(new ListComboBoxModel<String>(genresSorted));
-	// Add autocompletion
-	AutoCompleteDecorator.decorate(getComponentControlled()
-		.getComboBoxEditor(TextTagAttribute.GENRE));
+		// Check if at least one audio file supports internal pictures
+		enableOrDisableCheckBoxes(audioFiles);
 
-	EditTagDialogActionListener actionListener = new EditTagDialogActionListener(
-		this, getComponentControlled(), playListHandler,
-		localAudioObjectValidator);
-	getComponentControlled().getOkButton()
-		.addActionListener(actionListener);
-	getComponentControlled().getCancelButton().addActionListener(
-		actionListener);
+		prepareFields(audioFiles);
 
-	getComponentControlled().getNextButton().addActionListener(
-		actionListener);
-	getComponentControlled().getPrevButton().addActionListener(
-		actionListener);
-
-	getComponentControlled().getCoverButton().addActionListener(
-		actionListener);
-	getComponentControlled().getRemoveCoverButton().addActionListener(
-		actionListener);
-    }
-
-    /**
-     * Checks if the tag of this audio file does support internal images
-     * 
-     * @param audioObject
-     * @return
-     */
-    private final boolean supportsInternalPicture(
-	    final ILocalAudioObject audioObject) {
-	return localAudioObjectValidator.isOneOfTheseFormats(
-		audioObject.getUrl(), LocalAudioObjectFormat.FLAC,
-		LocalAudioObjectFormat.MP3, LocalAudioObjectFormat.MP4_1,
-		LocalAudioObjectFormat.MP4_2, LocalAudioObjectFormat.OGG,
-		LocalAudioObjectFormat.WMA);
-    }
-
-    /**
-     * Edits the files.
-     * 
-     * @param audioFiles
-     *            the files
-     */
-    public void editFiles(final List<ILocalAudioObject> audioFiles) {
-	if (audioFiles == null || audioFiles.isEmpty()) {
-	    return;
-	}
-
-	audioFilesEditing = audioFiles;
-
-	getComponentControlled().getCover().setIcon(null);
-	getComponentControlled().getCoverButton().setEnabled(false);
-	getComponentControlled().getRemoveCoverButton().setEnabled(false);
-	newCover = null;
-	coverEdited = false;
-
-	// Load artists into combo box
-	getComponentControlled().getComboBoxEditor(TextTagAttribute.ARTIST)
-		.setModel(new ListComboBoxModel<String>(getArtistsNames()));
-
-	// Activate autocompletion of artists
-	AutoCompleteDecorator.decorate(getComponentControlled()
-		.getComboBoxEditor(TextTagAttribute.ARTIST));
-
-	// Load albums into combo box
-	getComponentControlled().getComboBoxEditor(TextTagAttribute.ALBUM)
-		.setModel(new ListComboBoxModel<String>(getAlbumNames()));
-
-	// Active autocompletion of albums
-	AutoCompleteDecorator.decorate(getComponentControlled()
-		.getComboBoxEditor(TextTagAttribute.ALBUM));
-
-	setFieldsUnselected();
-
-	// Check if at least one audio file supports internal pictures
-	enableOrDisableCheckBoxes(audioFiles);
-
-	prepareFields(audioFiles);
-
-	// If there is only one file add a help to complete title from file name
-	if (audioFiles.size() == 1) {
-	    final String fileName = audioFiles.get(0).getNameWithoutExtension();
-	    final JTextField textField = getDialog().getTextFieldEditor(
-		    TextTagAttribute.TITLE);
-	    textField.addKeyListener(new TitleTextFieldKeyAdapter(textField,
-		    fileName));
-	}
-
-	SwingUtilities.invokeLater(new Runnable() {
-	    @Override
-	    public void run() {
-		// If title is enabled set focus
-		if (getDialog().getTextFieldEditor(TextTagAttribute.TITLE)
-			.isEnabled()) {
-		    getDialog().getTextFieldEditor(TextTagAttribute.TITLE)
-			    .setCaretPosition(0);
-		    getDialog().getTextFieldEditor(TextTagAttribute.TITLE)
-			    .requestFocus();
+		// If there is only one file add a help to complete title from file name
+		if (audioFiles.size() == 1) {
+			final String fileName = audioFiles.get(0).getNameWithoutExtension();
+			final JTextField textField = getDialog().getTextFieldEditor(
+					TextTagAttribute.TITLE);
+			textField.addKeyListener(new TitleTextFieldKeyAdapter(textField,
+					fileName));
 		}
-	    }
-	});
 
-	getComponentControlled().setVisible(true);
-    }
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// If title is enabled set focus
+				if (getDialog().getTextFieldEditor(TextTagAttribute.TITLE)
+						.isEnabled()) {
+					getDialog().getTextFieldEditor(TextTagAttribute.TITLE)
+							.setCaretPosition(0);
+					getDialog().getTextFieldEditor(TextTagAttribute.TITLE)
+							.requestFocus();
+				}
+			}
+		});
 
-    /**
-     * @return
-     */
-    private List<String> getAlbumNames() {
-	List<IAlbum> albumList = repositoryHandler.getAlbums();
-	List<String> albumNames = new ArrayList<String>();
-	for (IAlbum alb : albumList) {
-	    // Because of artists and album artists there can be more than one
-	    // album with the same name
-	    if (!albumNames.contains(alb.getName())) {
-		albumNames.add(alb.getName());
-	    }
-	}
-	return albumNames;
-    }
-
-    /**
-     * @return
-     */
-    private List<String> getArtistsNames() {
-	List<IArtist> artistList = repositoryHandler.getArtists();
-	List<String> artistNames = new ArrayList<String>();
-	for (IArtist a : artistList) {
-	    artistNames.add(a.getName());
-	}
-	return artistNames;
-    }
-
-    /**
-     * @param audioFiles
-     */
-    private void prepareFields(final List<ILocalAudioObject> audioFiles) {
-	Set<String> titles = new HashSet<String>();
-	Set<Integer> trackNumbers = new HashSet<Integer>();
-	Set<Integer> discNumbers = new HashSet<Integer>();
-	Set<String> artists = new HashSet<String>();
-	Set<String> albums = new HashSet<String>();
-	Set<Integer> years = new HashSet<Integer>();
-	Set<String> comments = new HashSet<String>();
-	Set<String> genres = new HashSet<String>();
-	Set<String> composers = new HashSet<String>();
-	Set<String> lyrics = new HashSet<String>();
-	Set<String> albumArtists = new HashSet<String>();
-	for (ILocalAudioObject audioFile : audioFiles) {
-	    ITag tag = audioFile.getTag();
-	    if (tag != null) {
-		titles.add(tag.getTitle());
-		trackNumbers.add(tag.getTrackNumber());
-		discNumbers.add(tag.getDiscNumber());
-		artists.add(tag.getArtist());
-		albums.add(tag.getAlbum());
-		years.add(tag.getYear());
-		comments.add(tag.getComment());
-		genres.add(tag.getGenre());
-		composers.add(tag.getComposer());
-		lyrics.add(tag.getLyrics());
-		albumArtists.add(tag.getAlbumArtist());
-	    }
+		getComponentControlled().setVisible(true);
 	}
 
-	prepareStringControl(TextTagAttribute.TITLE, audioFiles, titles);
-	prepareIntegerControl(TextTagAttribute.TRACK, audioFiles, trackNumbers);
-	prepareIntegerControl(TextTagAttribute.DISC_NUMBER, audioFiles,
-		discNumbers);
-	prepareStringComboControl(TextTagAttribute.ARTIST, audioFiles, artists);
-	prepareStringComboControl(TextTagAttribute.ALBUM, audioFiles, albums);
-	prepareIntegerControl(TextTagAttribute.YEAR, audioFiles, years);
-	prepareStringTextAreaControl(TextTagAttribute.COMMENT, audioFiles,
-		comments);
-	prepareStringComboControl(TextTagAttribute.GENRE, audioFiles, genres);
-	prepareStringTextAreaControl(TextTagAttribute.LYRICS, audioFiles,
-		lyrics);
-	prepareStringControl(TextTagAttribute.COMPOSER, audioFiles, composers);
-	prepareStringControl(TextTagAttribute.ALBUM_ARTIST, audioFiles,
-		albumArtists);
-    }
-
-    /**
-     * @param audioFiles
-     */
-    private void enableOrDisableCheckBoxes(
-	    final List<ILocalAudioObject> audioFiles) {
-	boolean supportsInternalPicture = false;
-	for (ILocalAudioObject af : audioFilesEditing) {
-	    if (supportsInternalPicture(af)) {
-		supportsInternalPicture = true;
-		break;
-	    }
+	/**
+	 * @return
+	 */
+	private List<String> getAlbumNames() {
+		List<IAlbum> albumList = repositoryHandler.getAlbums();
+		List<String> albumNames = new ArrayList<String>();
+		for (IAlbum alb : albumList) {
+			// Because of artists and album artists there can be more than one
+			// album with the same name
+			if (!albumNames.contains(alb.getName())) {
+				albumNames.add(alb.getName());
+			}
+		}
+		return albumNames;
 	}
 
-	boolean enable = audioFiles.size() > 1;
-
-	for (TextTagAttribute attribute : TextTagAttribute.values()) {
-	    getComponentControlled().getCheckBox(attribute).setEnabled(enable);
+	/**
+	 * @return
+	 */
+	private List<String> getArtistsNames() {
+		List<IArtist> artistList = repositoryHandler.getArtists();
+		List<String> artistNames = new ArrayList<String>();
+		for (IArtist a : artistList) {
+			artistNames.add(a.getName());
+		}
+		return artistNames;
 	}
 
-	getComponentControlled().getCoverCheckBox().setEnabled(
-		enable && supportsInternalPicture);
+	/**
+	 * @param audioFiles
+	 */
+	private void prepareFields(final List<ILocalAudioObject> audioFiles) {
+		Set<String> titles = new HashSet<String>();
+		Set<Integer> trackNumbers = new HashSet<Integer>();
+		Set<Integer> discNumbers = new HashSet<Integer>();
+		Set<String> artists = new HashSet<String>();
+		Set<String> albums = new HashSet<String>();
+		Set<Integer> years = new HashSet<Integer>();
+		Set<String> comments = new HashSet<String>();
+		Set<String> genres = new HashSet<String>();
+		Set<String> composers = new HashSet<String>();
+		Set<String> lyrics = new HashSet<String>();
+		Set<String> albumArtists = new HashSet<String>();
+		for (ILocalAudioObject audioFile : audioFiles) {
+			ITag tag = audioFile.getTag();
+			if (tag != null) {
+				titles.add(tag.getTitle());
+				trackNumbers.add(tag.getTrackNumber());
+				discNumbers.add(tag.getDiscNumber());
+				artists.add(tag.getArtist());
+				albums.add(tag.getAlbum());
+				years.add(tag.getYear());
+				comments.add(tag.getComment());
+				genres.add(tag.getGenre());
+				composers.add(tag.getComposer());
+				lyrics.add(tag.getLyrics());
+				albumArtists.add(tag.getAlbumArtist());
+			}
+		}
 
-	if (audioFiles.size() == 1 && supportsInternalPicture) {
-	    getEditTagDialog().getOkButton().setEnabled(false);
-	    getComponentControlled().getCoverCheckBox().setSelected(true);
-	    new GetInsidePictureSwingWorker(audioFiles).execute();
+		prepareStringControl(TextTagAttribute.TITLE, audioFiles, titles);
+		prepareIntegerControl(TextTagAttribute.TRACK, audioFiles, trackNumbers);
+		prepareIntegerControl(TextTagAttribute.DISC_NUMBER, audioFiles,
+				discNumbers);
+		prepareStringComboControl(TextTagAttribute.ARTIST, audioFiles, artists);
+		prepareStringComboControl(TextTagAttribute.ALBUM, audioFiles, albums);
+		prepareIntegerControl(TextTagAttribute.YEAR, audioFiles, years);
+		prepareStringTextAreaControl(TextTagAttribute.COMMENT, audioFiles,
+				comments);
+		prepareStringComboControl(TextTagAttribute.GENRE, audioFiles, genres);
+		prepareStringTextAreaControl(TextTagAttribute.LYRICS, audioFiles,
+				lyrics);
+		prepareStringControl(TextTagAttribute.COMPOSER, audioFiles, composers);
+		prepareStringControl(TextTagAttribute.ALBUM_ARTIST, audioFiles,
+				albumArtists);
 	}
-    }
 
-    /**
-     * @param audioFiles
-     * @param set
-     */
-    private void prepareStringControl(final TextTagAttribute attribute,
-	    final List<ILocalAudioObject> audioFiles, final Set<String> set) {
-	if (set.size() == 1 && !set.contains("")) {
-	    getComponentControlled().getTextFieldEditor(attribute).setText(
-		    set.iterator().next());
-	    getComponentControlled().setTagAttributeSelected(attribute, true);
-	} else {
-	    getComponentControlled().getTextFieldEditor(attribute).setText("");
-	    getComponentControlled().setTagAttributeSelected(attribute,
-		    audioFiles.size() == 1);
+	/**
+	 * @param audioFiles
+	 */
+	private void enableOrDisableCheckBoxes(
+			final List<ILocalAudioObject> audioFiles) {
+		boolean supportsInternalPicture = false;
+		for (ILocalAudioObject af : audioFilesEditing) {
+			if (supportsInternalPicture(af)) {
+				supportsInternalPicture = true;
+				break;
+			}
+		}
+
+		boolean enable = audioFiles.size() > 1;
+
+		for (TextTagAttribute attribute : TextTagAttribute.values()) {
+			getComponentControlled().getCheckBox(attribute).setEnabled(enable);
+		}
+
+		getComponentControlled().getCoverCheckBox().setEnabled(
+				enable && supportsInternalPicture);
+
+		if (audioFiles.size() == 1 && supportsInternalPicture) {
+			getEditTagDialog().getOkButton().setEnabled(false);
+			getComponentControlled().getCoverCheckBox().setSelected(true);
+			new GetInsidePictureSwingWorker(audioFiles).execute();
+		}
 	}
-    }
 
-    /**
-     * @param audioFiles
-     * @param set
-     */
-    private void prepareStringComboControl(final TextTagAttribute attribute,
-	    final List<ILocalAudioObject> audioFiles, final Set<String> set) {
-	if (set.size() == 1 && !set.contains("")) {
-	    getComponentControlled().getComboBoxEditor(attribute)
-		    .setSelectedItem(set.iterator().next());
-	    getComponentControlled().setTagAttributeSelected(attribute, true);
-	} else {
-	    getComponentControlled().getComboBoxEditor(attribute)
-		    .setSelectedItem("");
-	    getComponentControlled().setTagAttributeSelected(attribute,
-		    audioFiles.size() == 1);
+	/**
+	 * @param audioFiles
+	 * @param set
+	 */
+	private void prepareStringControl(final TextTagAttribute attribute,
+			final List<ILocalAudioObject> audioFiles, final Set<String> set) {
+		if (set.size() == 1 && !set.contains("")) {
+			getComponentControlled().getTextFieldEditor(attribute).setText(
+					set.iterator().next());
+			getComponentControlled().setTagAttributeSelected(attribute, true);
+		} else {
+			getComponentControlled().getTextFieldEditor(attribute).setText("");
+			getComponentControlled().setTagAttributeSelected(attribute,
+					audioFiles.size() == 1);
+		}
 	}
-    }
 
-    /**
-     * @param audioFiles
-     * @param set
-     */
-    private void prepareStringTextAreaControl(final TextTagAttribute attribute,
-	    final List<ILocalAudioObject> audioFiles, final Set<String> set) {
-	if (set.size() == 1 && !set.contains("")) {
-	    getComponentControlled().getTextAreaEditor(attribute).setText(
-		    set.iterator().next());
-	    getComponentControlled().getTextAreaEditor(attribute)
-		    .setCaretPosition(0);
-	    getComponentControlled().setTagAttributeSelected(attribute, true);
-	} else {
-	    getComponentControlled().getTextAreaEditor(attribute).setText("");
-	    getComponentControlled().setTagAttributeSelected(attribute,
-		    audioFiles.size() == 1);
+	/**
+	 * @param audioFiles
+	 * @param set
+	 */
+	private void prepareStringComboControl(final TextTagAttribute attribute,
+			final List<ILocalAudioObject> audioFiles, final Set<String> set) {
+		if (set.size() == 1 && !set.contains("")) {
+			getComponentControlled().getComboBoxEditor(attribute)
+					.setSelectedItem(set.iterator().next());
+			getComponentControlled().setTagAttributeSelected(attribute, true);
+		} else {
+			getComponentControlled().getComboBoxEditor(attribute)
+					.setSelectedItem("");
+			getComponentControlled().setTagAttributeSelected(attribute,
+					audioFiles.size() == 1);
+		}
 	}
-    }
 
-    /**
-     * @param audioFiles
-     * @param set
-     */
-    private void prepareIntegerControl(final TextTagAttribute attribute,
-	    final List<ILocalAudioObject> audioFiles, final Set<Integer> set) {
-	if (set.size() == 1 && !set.contains(0)) {
-	    getComponentControlled().getTextFieldEditor(attribute).setText(
-		    set.iterator().next().toString());
-	    getComponentControlled().setTagAttributeSelected(attribute, true);
-	} else {
-	    getComponentControlled().getTextFieldEditor(attribute).setText("");
-	    getComponentControlled().setTagAttributeSelected(attribute,
-		    audioFiles.size() == 1);
+	/**
+	 * @param audioFiles
+	 * @param set
+	 */
+	private void prepareStringTextAreaControl(final TextTagAttribute attribute,
+			final List<ILocalAudioObject> audioFiles, final Set<String> set) {
+		if (set.size() == 1 && !set.contains("")) {
+			getComponentControlled().getTextAreaEditor(attribute).setText(
+					set.iterator().next());
+			getComponentControlled().getTextAreaEditor(attribute)
+					.setCaretPosition(0);
+			getComponentControlled().setTagAttributeSelected(attribute, true);
+		} else {
+			getComponentControlled().getTextAreaEditor(attribute).setText("");
+			getComponentControlled().setTagAttributeSelected(attribute,
+					audioFiles.size() == 1);
+		}
 	}
-    }
 
-    /**
+	/**
+	 * @param audioFiles
+	 * @param set
+	 */
+	private void prepareIntegerControl(final TextTagAttribute attribute,
+			final List<ILocalAudioObject> audioFiles, final Set<Integer> set) {
+		if (set.size() == 1 && !set.contains(0)) {
+			getComponentControlled().getTextFieldEditor(attribute).setText(
+					set.iterator().next().toString());
+			getComponentControlled().setTagAttributeSelected(attribute, true);
+		} else {
+			getComponentControlled().getTextFieldEditor(attribute).setText("");
+			getComponentControlled().setTagAttributeSelected(attribute,
+					audioFiles.size() == 1);
+		}
+	}
+
+	/**
 	 * 
 	 */
-    private void setFieldsUnselected() {
-	getComponentControlled().setCoverSelected(false);
-	for (TextTagAttribute attribute : TextTagAttribute.values()) {
-	    getComponentControlled().getCheckBox(attribute).setEnabled(false);
-	}
-    }
-
-    EditTagDialog getDialog() {
-	return getComponentControlled();
-    }
-
-    /**
-     * Returns edit tag dialog. Used for inner classes without increasing
-     * visibility of getDialogControlled
-     * 
-     * @return
-     */
-    EditTagDialog getEditTagDialog() {
-	return getComponentControlled();
-    }
-
-    /**
-     * Inserts value of text field in map if checkbox is not enabled (only one
-     * file being edited) or selected
-     * 
-     * @param editTagInfo
-     * @param key
-     * @param checkBox
-     * @param textField
-     */
-    private void setEditTagInfo(final Map<String, Object> editTagInfo,
-	    final TextTagAttribute attribute) {
-	JCheckBox checkBox = getComponentControlled().getCheckBox(attribute);
-	JComponent editor = getComponentControlled().getEditor(attribute);
-	if (!checkBox.isEnabled() || checkBox.isSelected()) {
-	    if (editor instanceof JComboBox) {
-		editTagInfo.put(attribute.toString(),
-			((JComboBox) editor).getSelectedItem());
-	    } else if (editor instanceof JTextComponent) {
-		String text = ((JTextComponent) editor).getText();
-		// Text area line breaks are \n so in some OS (Windows) is not a
-		// correct line break -> Replace with OS line terminator
-		if (attribute.equals(TextTagAttribute.LYRICS)
-			&& osManager.isWindows()) {
-		    text = text.replaceAll("^[\r]\n", "\r\n");
+	private void setFieldsUnselected() {
+		getComponentControlled().setCoverSelected(false);
+		for (TextTagAttribute attribute : TextTagAttribute.values()) {
+			getComponentControlled().getCheckBox(attribute).setEnabled(false);
 		}
-		editTagInfo.put(attribute.toString(), text);
-	    }
-	}
-    }
-
-    /**
-     * Edits the tag.
-     */
-    protected void editTag() {
-	getComponentControlled().setVisible(true);
-
-	// Build editor props
-	Map<String, Object> editTagInfo = new HashMap<String, Object>();
-
-	for (TextTagAttribute attribute : TextTagAttribute.values()) {
-	    setEditTagInfo(editTagInfo, attribute);
 	}
 
-	if ((!getComponentControlled().getCoverCheckBox().isEnabled() || getComponentControlled()
-		.getCoverCheckBox().isSelected()) && coverEdited) {
-	    editTagInfo.put("COVER", newCover);
+	EditTagDialog getDialog() {
+		return getComponentControlled();
 	}
 
-	EditTagsProcess process = (EditTagsProcess) processFactory
-		.getProcessByName("editTagsProcess");
-	process.setFilesToChange(new ArrayList<ILocalAudioObject>(
-		audioFilesEditing));
-	process.setEditTagInfo(editTagInfo);
-	process.execute();
-    }
-
-    /**
-     * @param newCover
-     */
-    public void setNewCover(final byte[] newCover) {
-	if (newCover != null) {
-	    this.newCover = Arrays.copyOf(newCover, newCover.length);
-	} else {
-	    this.newCover = null;
+	/**
+	 * Returns edit tag dialog. Used for inner classes without increasing
+	 * visibility of getDialogControlled
+	 * 
+	 * @return
+	 */
+	EditTagDialog getEditTagDialog() {
+		return getComponentControlled();
 	}
-    }
 
-    /**
-     * @param coverEdited
-     */
-    public void setCoverEdited(final boolean coverEdited) {
-	this.coverEdited = coverEdited;
-    }
+	/**
+	 * Inserts value of text field in map if checkbox is not enabled (only one
+	 * file being edited) or selected
+	 * 
+	 * @param editTagInfo
+	 * @param key
+	 * @param checkBox
+	 * @param textField
+	 */
+	private void setEditTagInfo(final Map<String, Object> editTagInfo,
+			final TextTagAttribute attribute) {
+		JCheckBox checkBox = getComponentControlled().getCheckBox(attribute);
+		JComponent editor = getComponentControlled().getEditor(attribute);
+		if (!checkBox.isEnabled() || checkBox.isSelected()) {
+			if (editor instanceof JComboBox) {
+				editTagInfo.put(attribute.toString(),
+						((JComboBox) editor).getSelectedItem());
+			} else if (editor instanceof JTextComponent) {
+				String text = ((JTextComponent) editor).getText();
+				// Text area line breaks are \n so in some OS (Windows) is not a
+				// correct line break -> Replace with OS line terminator
+				if (attribute.equals(TextTagAttribute.LYRICS)
+						&& osManager.isWindows()) {
+					text = text.replaceAll("^[\r]\n", "\r\n");
+				}
+				editTagInfo.put(attribute.toString(), text);
+			}
+		}
+	}
 
-    /**
-     * @return
-     */
-    public List<ILocalAudioObject> getAudioFilesEditing() {
-	return new ArrayList<ILocalAudioObject>(audioFilesEditing);
-    }
+	/**
+	 * Edits the tag.
+	 */
+	protected void editTag() {
+		getComponentControlled().setVisible(true);
 
-    /**
-     * Clear dialog
-     */
-    public void clear() {
-	audioFilesEditing = Collections.emptyList();
-	newCover = null;
-	coverEdited = false;
-    }
+		// Build editor props
+		Map<String, Object> editTagInfo = new HashMap<String, Object>();
+
+		for (TextTagAttribute attribute : TextTagAttribute.values()) {
+			setEditTagInfo(editTagInfo, attribute);
+		}
+
+		if ((!getComponentControlled().getCoverCheckBox().isEnabled() || getComponentControlled()
+				.getCoverCheckBox().isSelected()) && coverEdited) {
+			editTagInfo.put("COVER", newCover);
+		}
+
+		EditTagsProcess process = (EditTagsProcess) processFactory
+				.getProcessByName("editTagsProcess");
+		process.setFilesToChange(new ArrayList<ILocalAudioObject>(
+				audioFilesEditing));
+		process.setEditTagInfo(editTagInfo);
+		process.execute();
+	}
+
+	/**
+	 * @param newCover
+	 */
+	public void setNewCover(final byte[] newCover) {
+		if (newCover != null) {
+			this.newCover = Arrays.copyOf(newCover, newCover.length);
+		} else {
+			this.newCover = null;
+		}
+	}
+
+	/**
+	 * @param coverEdited
+	 */
+	public void setCoverEdited(final boolean coverEdited) {
+		this.coverEdited = coverEdited;
+	}
+
+	/**
+	 * @return
+	 */
+	public List<ILocalAudioObject> getAudioFilesEditing() {
+		return new ArrayList<ILocalAudioObject>(audioFilesEditing);
+	}
+
+	/**
+	 * Clear dialog
+	 */
+	public void clear() {
+		audioFilesEditing = Collections.emptyList();
+		newCover = null;
+		coverEdited = false;
+	}
 }

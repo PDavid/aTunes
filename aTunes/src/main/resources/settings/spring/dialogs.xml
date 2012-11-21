@@ -102,7 +102,7 @@
 		<constructor-arg ref="frame"/>
 	</bean>
 
-	<bean class="net.sourceforge.atunes.gui.views.dialogs.EditTagDialog" scope="prototype">
+	<bean id="editTagDialog" class="net.sourceforge.atunes.gui.views.dialogs.EditTagDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
 	

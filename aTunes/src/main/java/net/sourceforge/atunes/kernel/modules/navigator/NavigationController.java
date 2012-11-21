@@ -51,6 +51,7 @@ import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IController;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -124,6 +125,15 @@ public final class NavigationController implements IAudioFilesRemovedListener,
     private IUnknownObjectChecker unknownObjectChecker;
 
     private IPlayListHandler playListHandler;
+    
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
     /**
      * @param navigationTableColumnModel
@@ -261,7 +271,7 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 
 	// Bind column set popup menu
 	columnSetPopupMenu = new ColumnSetPopupMenu(
-		navigationTable.getSwingComponent(), navigationTableColumnModel);
+		navigationTable.getSwingComponent(), navigationTableColumnModel, dialogFactory);
 
 	// Add tree selection listeners to all views
 	for (INavigationView view : navigationHandler.getNavigationViews()) {
