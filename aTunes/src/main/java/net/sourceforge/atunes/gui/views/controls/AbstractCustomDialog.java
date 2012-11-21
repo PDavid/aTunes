@@ -25,7 +25,6 @@ import java.awt.Component;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
@@ -42,6 +41,10 @@ public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 	private static final long serialVersionUID = -4593025984520110706L;
 
 	private ILookAndFeelManager lookAndFeelManager;
+	
+	private boolean modal;
+	
+	private CloseAction closeAction;
 
 	/**
 	 * Instantiates a new custom modal dialog.
@@ -67,15 +70,21 @@ public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 		super(frame.getFrame());
 		setSize(width, height);
 		setLocationRelativeTo(frame.getFrame().getWidth() == 0 ? null : frame.getFrame());
-		initializeDialog(modal, closeAction);
+		this.modal = modal;
+		this.closeAction = closeAction;
 	}
 
 	/**
-	 * @param modal
-	 * @param closeAction
+	 * @param lookAndFeelManager
 	 */
-	private void initializeDialog(final boolean modal, final CloseAction closeAction) {
-		this.lookAndFeelManager = Context.getBean(ILookAndFeelManager.class);
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+	
+	/**
+	 * Initializes dialog
+	 */
+	public void initializeDialog() {
 		setUndecorated(getLookAndFeel().isDialogUndecorated());
 		setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
 		setDefaultCloseOperation(closeAction.getConstant());
@@ -84,6 +93,7 @@ public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 		} else if (closeAction == CloseAction.HIDE) {
 			GuiUtils.addCloseActionWithEscapeKey(this, getRootPane());
 		}
+		initialize();
 	}
 
 	/**
