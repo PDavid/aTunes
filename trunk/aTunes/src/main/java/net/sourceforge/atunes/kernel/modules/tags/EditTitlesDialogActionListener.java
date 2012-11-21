@@ -25,7 +25,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.ITrackInfo;
@@ -36,47 +35,47 @@ import net.sourceforge.atunes.model.IWebServicesHandler;
  */
 public final class EditTitlesDialogActionListener implements ActionListener {
 
-    /** The dialog. */
-    private EditTitlesDialog dialog;
+	/** The dialog. */
+	private final EditTitlesDialog dialog;
 
-    /** The controller. */
-    private EditTitlesDialogController controller;
+	/** The controller. */
+	private final EditTitlesDialogController controller;
 
-    /**
-     * Instantiates a new edits the titles dialog action listener.
-     * 
-     * @param dialog
-     *            the dialog
-     * @param controller
-     *            the controller
-     */
-    public EditTitlesDialogActionListener(EditTitlesDialog dialog, EditTitlesDialogController controller) {
-        this.dialog = dialog;
-        this.controller = controller;
-    }
+	private final IWebServicesHandler webServicesHandler;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == dialog.getRetrieveTitles()) {
-            IAlbumInfo albumInfo = Context.getBean(IWebServicesHandler.class).getAlbum(controller.getAlbum().getArtist().toString(), controller.getAlbum().getName());
-            if (albumInfo != null) {
-                List<String> tracks = new ArrayList<String>();
-                for (ITrackInfo trackInfo : albumInfo.getTracks()) {
-                    tracks.add(trackInfo.getTitle());
-                }
-                controller.setTitles(tracks);
-            }
-        } else if (e.getSource() == dialog.getOkButton()) {
-            controller.editFiles();
-            dialog.setVisible(false);
-        } else {
-            dialog.setVisible(false);
-        }
-    }
+	/**
+	 * Instantiates a new edits the titles dialog action listener.
+	 * 
+	 * @param dialog
+	 * @param controller
+	 * @param webServicesHandler
+	 */
+	public EditTitlesDialogActionListener(EditTitlesDialog dialog,
+			EditTitlesDialogController controller,
+			IWebServicesHandler webServicesHandler) {
+		this.dialog = dialog;
+		this.controller = controller;
+		this.webServicesHandler = webServicesHandler;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == dialog.getRetrieveTitles()) {
+			IAlbumInfo albumInfo = webServicesHandler.getAlbum(controller
+					.getAlbum().getArtist().toString(), controller.getAlbum()
+					.getName());
+			if (albumInfo != null) {
+				List<String> tracks = new ArrayList<String>();
+				for (ITrackInfo trackInfo : albumInfo.getTracks()) {
+					tracks.add(trackInfo.getTitle());
+				}
+				controller.setTitles(tracks);
+			}
+		} else if (e.getSource() == dialog.getOkButton()) {
+			controller.editFiles();
+			dialog.setVisible(false);
+		} else {
+			dialog.setVisible(false);
+		}
+	}
 }

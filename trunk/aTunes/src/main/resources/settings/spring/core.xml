@@ -108,5 +108,8 @@
 	<bean id="growlNotificationEngine" class="net.sourceforge.atunes.kernel.modules.notify.GrowlNotificationEngine" parent="notificationEngine"/>
 	<bean id="libnotifyNotificationEngine" class="net.sourceforge.atunes.kernel.modules.notify.LibnotifyNotificationEngine" parent="notificationEngine"/>
 	
+	<bean class="net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController" scope="prototype" init-method="initialize">
+		<constructor-arg ref="editTagDialog"></constructor-arg>
+	</bean>
 	
 </beans>

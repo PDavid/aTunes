@@ -31,85 +31,105 @@ import net.sourceforge.atunes.kernel.modules.process.EditTitlesProcess;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 
-final class EditTitlesDialogController extends AbstractSimpleController<EditTitlesDialog> {
+final class EditTitlesDialogController extends
+		AbstractSimpleController<EditTitlesDialog> {
 
-    private IAlbum album;
-    private EditTitlesTableModel model;
-    private IProcessFactory processFactory;
-    
-    /**
-     * @param processFactory
-     */
-    public void setProcessFactory(IProcessFactory processFactory) {
+	private IAlbum album;
+	private EditTitlesTableModel model;
+	private IProcessFactory processFactory;
+
+	private IWebServicesHandler webServicesHandler;
+
+	/**
+	 * @param webServicesHandler
+	 */
+	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
+
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(IProcessFactory processFactory) {
 		this.processFactory = processFactory;
 	}
 
-    /**
-     * Instantiates a new edits the titles dialog controller.
-     * @param dialog
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param playerHandler
-     * @param processFactory
-     */
-    EditTitlesDialogController(EditTitlesDialog dialog, IProcessFactory processFactory) {
-        super(dialog);
-        this.processFactory = processFactory;
-        addBindings();
-    }
+	/**
+	 * Instantiates a new edits the titles dialog controller.
+	 * 
+	 * @param dialog
+	 * @param processFactory
+	 * @param webServicesHandler
+	 */
+	EditTitlesDialogController(EditTitlesDialog dialog,
+			IProcessFactory processFactory,
+			IWebServicesHandler webServicesHandler) {
+		super(dialog);
+		this.processFactory = processFactory;
+		this.webServicesHandler = webServicesHandler;
+		addBindings();
+	}
 
-    @Override
+	@Override
 	public void addBindings() {
-        EditTitlesDialogActionListener actionListener = new EditTitlesDialogActionListener(getComponentControlled(), this);
-        getComponentControlled().getRetrieveTitles().addActionListener(actionListener);
-        getComponentControlled().getOkButton().addActionListener(actionListener);
-        getComponentControlled().getCancelButton().addActionListener(actionListener);
-    }
+		EditTitlesDialogActionListener actionListener = new EditTitlesDialogActionListener(
+				getComponentControlled(), this, webServicesHandler);
+		getComponentControlled().getRetrieveTitles().addActionListener(
+				actionListener);
+		getComponentControlled().getOkButton()
+				.addActionListener(actionListener);
+		getComponentControlled().getCancelButton().addActionListener(
+				actionListener);
+	}
 
-    /**
-     * Edits the files.
-     */
-    protected void editFiles() {
-        Map<ILocalAudioObject, String> filesAndTitles = ((EditTitlesTableModel) getComponentControlled().getTable().getModel()).getNewValues();
-        EditTitlesProcess process = (EditTitlesProcess) processFactory.getProcessByName("editTitlesProcess");
-        process.setFilesToChange(new ArrayList<ILocalAudioObject>(filesAndTitles.keySet()));
-        process.setFilesAndTitles(filesAndTitles);
-        process.execute();
-    }
+	/**
+	 * Edits the files.
+	 */
+	protected void editFiles() {
+		Map<ILocalAudioObject, String> filesAndTitles = ((EditTitlesTableModel) getComponentControlled()
+				.getTable().getModel()).getNewValues();
+		EditTitlesProcess process = (EditTitlesProcess) processFactory
+				.getProcessByName("editTitlesProcess");
+		process.setFilesToChange(new ArrayList<ILocalAudioObject>(
+				filesAndTitles.keySet()));
+		process.setFilesAndTitles(filesAndTitles);
+		process.execute();
+	}
 
-    /**
-     * Edits the files.
-     * 
-     * @param alb
-     *            the alb
-     */
-    public void editFiles(IAlbum alb) {
-        this.album = alb;
-        List<ILocalAudioObject> filesToEdit = alb.getAudioObjects();
-        Collections.sort(filesToEdit);
-        model = new EditTitlesTableModel(filesToEdit);
-        getComponentControlled().getTable().setModel(model);
-        getComponentControlled().setVisible(true);
-    }
+	/**
+	 * Edits the files.
+	 * 
+	 * @param alb
+	 *            the alb
+	 */
+	public void editFiles(IAlbum alb) {
+		this.album = alb;
+		List<ILocalAudioObject> filesToEdit = alb.getAudioObjects();
+		Collections.sort(filesToEdit);
+		model = new EditTitlesTableModel(filesToEdit);
+		getComponentControlled().getTable().setModel(model);
+		getComponentControlled().setVisible(true);
+	}
 
-    /**
-     * Gets the album.
-     * 
-     * @return the album
-     */
-    protected IAlbum getAlbum() {
-        return album;
-    }
+	/**
+	 * Gets the album.
+	 * 
+	 * @return the album
+	 */
+	protected IAlbum getAlbum() {
+		return album;
+	}
 
-    /**
-     * Sets the titles.
-     * 
-     * @param tracks
-     *            the new titles
-     */
-    protected void setTitles(List<String> tracks) {
-        model.setTitles(tracks);
-        getComponentControlled().getTable().repaint();
-    }
+	/**
+	 * Sets the titles.
+	 * 
+	 * @param tracks
+	 *            the new titles
+	 */
+	protected void setTitles(List<String> tracks) {
+		model.setTitles(tracks);
+		getComponentControlled().getTable().repaint();
+	}
 }

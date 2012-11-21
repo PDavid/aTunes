@@ -48,6 +48,7 @@ import net.sourceforge.atunes.gui.TransferableList;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -74,6 +75,15 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 	private AbstractColumnSetTableModel playListTableModel;
 
 	private IBeanFactory beanFactory;
+	
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
 	/**
 	 * @param beanFactory
@@ -130,7 +140,7 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 		new ColumnSetRowSorter(this, playListTableModel, columnModel);
 
 		// Bind column set popup menu
-		new ColumnSetPopupMenu(this, columnModel);
+		new ColumnSetPopupMenu(this, columnModel, dialogFactory);
 
 		// Disable autoresize, as we will control it
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);

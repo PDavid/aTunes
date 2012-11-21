@@ -27,39 +27,44 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.table.TableCellEditor;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
 final class GenreTagAttributeReviewed extends AbstractTagAttributeReviewed {
-    GenreTagAttributeReviewed(String name) {
-        super(name);
-    }
 
-    @Override
-    String getValue(ILocalAudioObject audioFile) {
-        // we use getTag().getGenre() to avoid returning unknown genre
-        return audioFile.getTag() != null ? audioFile.getTag().getGenre() : null;
-    }
+	private final List<String> genresSorted;
 
-    @Override
-    ITag changeTag(ITag tag, String value) {
-        tag.setGenre(value);
-        return tag;
-    }
+	GenreTagAttributeReviewed(String name, List<String> genresSorted) {
+		super(name);
+		this.genresSorted = genresSorted;
+	}
 
-    @Override
-    TableCellEditor getCellEditor() {
-        // Add genres combo box items
-        List<String> genresSorted = Context.getBean(Genres.class).getGenres();
-        Collections.sort(genresSorted);
-        JComboBox genreComboBox = new JComboBox(new ListComboBoxModel<String>(genresSorted));
-        genreComboBox.setEditable(true);
-        // Activate auto completion of genres
-        // Automcomplete seems to work incorrectly when using it in a cell editor
-        //AutoCompleteDecorator.decorate(genreComboBox);
-        return new DefaultCellEditor(genreComboBox);
-    }
+	@Override
+	String getValue(ILocalAudioObject audioFile) {
+		// we use getTag().getGenre() to avoid returning unknown genre
+		return audioFile.getTag() != null ? audioFile.getTag().getGenre()
+				: null;
+	}
+
+	@Override
+	ITag changeTag(ITag tag, String value) {
+		tag.setGenre(value);
+		return tag;
+	}
+
+	@Override
+	TableCellEditor getCellEditor() {
+		// Add genres combo box items
+		Collections.sort(genresSorted);
+		JComboBox genreComboBox = new JComboBox(new ListComboBoxModel<String>(
+				genresSorted));
+		genreComboBox.setEditable(true);
+		// Activate auto completion of genres
+		// Automcomplete seems to work incorrectly when using it in a cell
+		// editor
+		// AutoCompleteDecorator.decorate(genreComboBox);
+		return new DefaultCellEditor(genreComboBox);
+	}
 }

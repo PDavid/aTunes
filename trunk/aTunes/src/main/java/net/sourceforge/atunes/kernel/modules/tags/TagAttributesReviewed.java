@@ -41,122 +41,127 @@ import net.sourceforge.atunes.model.ITagHandler;
  */
 public class TagAttributesReviewed implements ITagAttributesReviewed {
 
-    /**
-     * List of tag attributes to be reviewed
-     */
-    private List<AbstractTagAttributeReviewed> tagAttributes;
+	/**
+	 * List of tag attributes to be reviewed
+	 */
+	private List<AbstractTagAttributeReviewed> tagAttributes;
 
-    private final ITagHandler tagHandler;
+	private final ITagHandler tagHandler;
 
-    private final IRepositoryHandler repositoryHandler;
+	private final IRepositoryHandler repositoryHandler;
 
-    /**
-     * @param tagHandler
-     * @param repositoryHandler
-     */
-    TagAttributesReviewed(final ITagHandler tagHandler,
-	    final IRepositoryHandler repositoryHandler) {
-	this.tagHandler = tagHandler;
-	this.repositoryHandler = repositoryHandler;
-    }
+	private final Genres genresHelper;
 
-    /**
-     * Returns all TagAttributeReviewed objects to be used
-     * 
-     * @return
-     */
-    private List<AbstractTagAttributeReviewed> getTagAttributes() {
-	if (tagAttributes == null) {
-	    tagAttributes = new ArrayList<AbstractTagAttributeReviewed>();
-	    tagAttributes.add(new ArtistTagAttributeReviewed("ARTIST",
-		    repositoryHandler));
-	    tagAttributes.add(new AlbumArtistTagAttributeReviewed(
-		    "ALBUM_ARTIST"));
-	    tagAttributes.add(new ComposerTagAttributeReviewed("COMPOSER"));
-	    tagAttributes.add(new AlbumTagAttributeReviewed("ALBUM"));
-	    tagAttributes.add(new GenreTagAttributeReviewed("GENRE"));
-	    tagAttributes.add(new YearTagAttributeReviewed("YEAR"));
-	    tagAttributes
-		    .add(new DiscNumberTagAttributeReviewed("DISC_NUMBER"));
+	/**
+	 * @param tagHandler
+	 * @param repositoryHandler
+	 * @param genresHelper
+	 */
+	TagAttributesReviewed(final ITagHandler tagHandler,
+			final IRepositoryHandler repositoryHandler, Genres genresHelper) {
+		this.tagHandler = tagHandler;
+		this.repositoryHandler = repositoryHandler;
+		this.genresHelper = genresHelper;
 	}
-	return tagAttributes;
-    }
 
-    @Override
-    public int getTagAttributesCount() {
-	return getTagAttributes().size();
-    }
-
-    @Override
-    public String getTagAttributeName(final int index) {
-	if (getTagAttributes().size() <= index) {
-	    return null;
-	}
-	return getTagAttributes().get(index).getName();
-    }
-
-    @Override
-    public String getValueForTagAttribute(final int index,
-	    final ILocalAudioObject audioFile) {
-	if (getTagAttributes().size() <= index) {
-	    return null;
-	}
-	return getTagAttributes().get(index).getValue(audioFile);
-    }
-
-    @Override
-    public String getChangeForAttributeAndFolder(final int index,
-	    final File folder) {
-	if (getTagAttributes().size() <= index) {
-	    return null;
-	}
-	if (getTagAttributes().get(index).getChangesMade().containsKey(folder)) {
-	    return getTagAttributes().get(index).getChangesMade().get(folder);
-	}
-	return null;
-    }
-
-    @Override
-    public void setTagAttributeForFolder(final int index, final File folder,
-	    final String value) {
-	if (getTagAttributes().size() <= index) {
-	    return;
-	}
-	getTagAttributes().get(index).getChangesMade().put(folder, value);
-    }
-
-    @Override
-    public ITag getTagForAudioFile(final ILocalAudioObject file) {
-	File parentFolder = file.getFile().getParentFile();
-	ITag tag = null;
-	for (AbstractTagAttributeReviewed tagAttribute : getTagAttributes()) {
-	    if (tagAttribute.getChangesMade().containsKey(parentFolder)) {
-		if (tag == null) {
-		    tag = file.getTag() != null ? file.getTag() : tagHandler
-			    .getNewTag();
+	/**
+	 * Returns all TagAttributeReviewed objects to be used
+	 * 
+	 * @return
+	 */
+	private List<AbstractTagAttributeReviewed> getTagAttributes() {
+		if (tagAttributes == null) {
+			tagAttributes = new ArrayList<AbstractTagAttributeReviewed>();
+			tagAttributes.add(new ArtistTagAttributeReviewed("ARTIST",
+					repositoryHandler));
+			tagAttributes.add(new AlbumArtistTagAttributeReviewed(
+					"ALBUM_ARTIST"));
+			tagAttributes.add(new ComposerTagAttributeReviewed("COMPOSER"));
+			tagAttributes.add(new AlbumTagAttributeReviewed("ALBUM"));
+			tagAttributes.add(new GenreTagAttributeReviewed("GENRE",
+					genresHelper.getGenres()));
+			tagAttributes.add(new YearTagAttributeReviewed("YEAR"));
+			tagAttributes
+					.add(new DiscNumberTagAttributeReviewed("DISC_NUMBER"));
 		}
-		tag = tagAttribute.changeTag(tag, tagAttribute.getChangesMade()
-			.get(parentFolder));
-	    }
+		return tagAttributes;
 	}
-	return tag;
-    }
 
-    @Override
-    public TableCellEditor getCellEditorForTagAttribute(final int index) {
-	if (getTagAttributes().size() <= index) {
-	    return null;
+	@Override
+	public int getTagAttributesCount() {
+		return getTagAttributes().size();
 	}
-	return getTagAttributes().get(index).getCellEditor();
-    }
 
-    @Override
-    public int getTagAttributeIndex(final String tagAttributeName) {
-	for (int i = 0; i < tagAttributes.size(); i++) {
-	    if (tagAttributes.get(i).getName().equals(tagAttributeName)) {
-		return i;
-	    }
+	@Override
+	public String getTagAttributeName(final int index) {
+		if (getTagAttributes().size() <= index) {
+			return null;
+		}
+		return getTagAttributes().get(index).getName();
 	}
-	return -1;
-    }
+
+	@Override
+	public String getValueForTagAttribute(final int index,
+			final ILocalAudioObject audioFile) {
+		if (getTagAttributes().size() <= index) {
+			return null;
+		}
+		return getTagAttributes().get(index).getValue(audioFile);
+	}
+
+	@Override
+	public String getChangeForAttributeAndFolder(final int index,
+			final File folder) {
+		if (getTagAttributes().size() <= index) {
+			return null;
+		}
+		if (getTagAttributes().get(index).getChangesMade().containsKey(folder)) {
+			return getTagAttributes().get(index).getChangesMade().get(folder);
+		}
+		return null;
+	}
+
+	@Override
+	public void setTagAttributeForFolder(final int index, final File folder,
+			final String value) {
+		if (getTagAttributes().size() <= index) {
+			return;
+		}
+		getTagAttributes().get(index).getChangesMade().put(folder, value);
+	}
+
+	@Override
+	public ITag getTagForAudioFile(final ILocalAudioObject file) {
+		File parentFolder = file.getFile().getParentFile();
+		ITag tag = null;
+		for (AbstractTagAttributeReviewed tagAttribute : getTagAttributes()) {
+			if (tagAttribute.getChangesMade().containsKey(parentFolder)) {
+				if (tag == null) {
+					tag = file.getTag() != null ? file.getTag() : tagHandler
+							.getNewTag();
+				}
+				tag = tagAttribute.changeTag(tag, tagAttribute.getChangesMade()
+						.get(parentFolder));
+			}
+		}
+		return tag;
+	}
+
+	@Override
+	public TableCellEditor getCellEditorForTagAttribute(final int index) {
+		if (getTagAttributes().size() <= index) {
+			return null;
+		}
+		return getTagAttributes().get(index).getCellEditor();
+	}
+
+	@Override
+	public int getTagAttributeIndex(final String tagAttributeName) {
+		for (int i = 0; i < tagAttributes.size(); i++) {
+			if (tagAttributes.get(i).getName().equals(tagAttributeName)) {
+				return i;
+			}
+		}
+		return -1;
+	}
 }
