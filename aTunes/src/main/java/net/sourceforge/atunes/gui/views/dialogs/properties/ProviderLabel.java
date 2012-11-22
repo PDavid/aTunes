@@ -26,7 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 class ProviderLabel extends JPanel {
@@ -41,15 +41,18 @@ class ProviderLabel extends JPanel {
 
 	/**
 	 * @param provider
+	 * @param controlsBuilder
 	 */
-	public ProviderLabel(IValueProvider provider) {
-		super(new BorderLayout(10, 0)); 
+	public ProviderLabel(IValueProvider provider,
+			IControlsBuilder controlsBuilder) {
+		super(new BorderLayout(10, 0));
 		if (provider == null) {
-			throw new IllegalArgumentException("provider pointer should not be null");
+			throw new IllegalArgumentException(
+					"provider pointer should not be null");
 		}
 		this.provider = provider;
 		label = new JLabel();
-		value = new CustomTextField();
+		value = controlsBuilder.createTextField();
 		value.setEditable(false);
 		add(label, BorderLayout.WEST);
 		add(value, BorderLayout.CENTER);

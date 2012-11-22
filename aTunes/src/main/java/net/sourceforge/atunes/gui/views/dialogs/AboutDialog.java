@@ -41,11 +41,11 @@ import net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.JavaVirtualMachineStatisticsTableModel;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.model.IAboutDialog;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -56,10 +56,12 @@ import org.joda.time.DateMidnight;
 
 /**
  * A dialog to show information about application
+ * 
  * @author alex
- *
+ * 
  */
-public final class AboutDialog extends AbstractCustomDialog implements IAboutDialog {
+public final class AboutDialog extends AbstractCustomDialog implements
+		IAboutDialog {
 
 	private static final long serialVersionUID = 8666235475424750562L;
 
@@ -81,6 +83,15 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
 	private IDesktop desktop;
 
 	private IBeanFactory beanFactory;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	/**
 	 * @param beanFactory
@@ -121,26 +132,35 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
 	 * @return
 	 */
 	private JPanel getContent(final ILookAndFeel lookAndFeel) {
-		UrlLabel title = new UrlLabel(desktop, StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toString()), Constants.APP_WEB);
+		UrlLabel title = new UrlLabel(desktop, StringUtils.getString(
+				Constants.APP_NAME, " ", Constants.VERSION.toString()),
+				Constants.APP_WEB);
 		title.setFont(lookAndFeel.getAboutBigFont());
 		title.setFocusPainted(false);
 		JLabel description = new JLabel(Constants.APP_DESCRIPTION);
 
 		JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
 
-		JTextArea license = new CustomTextArea(licenseText);
+		JTextArea license = controlsBuilder.createTextArea();
+		license.setText(licenseText);
 		license.setEditable(false);
 		license.setLineWrap(true);
 		license.setWrapStyleWord(true);
 		license.setOpaque(false);
 		license.setBorder(BorderFactory.createEmptyBorder());
 
-		UrlLabel contributors = new UrlLabel(desktop, I18nUtils.getString("CONTRIBUTORS"), Constants.CONTRIBUTORS_WEB);
+		UrlLabel contributors = new UrlLabel(desktop,
+				I18nUtils.getString("CONTRIBUTORS"), Constants.CONTRIBUTORS_WEB);
 
 		JTable propertiesTable = lookAndFeel.getTable();
 		propertiesTable.setModel(tableModel);
-		propertiesTable.setDefaultRenderer(Object.class, lookAndFeel.getTableCellRenderer(beanFactory.getBean(ComponentOrientationTableCellRendererCode.class)));
-		JScrollPane propertiesScrollPane = lookAndFeel.getTableScrollPane(propertiesTable);
+		propertiesTable
+				.setDefaultRenderer(
+						Object.class,
+						lookAndFeel.getTableCellRenderer(beanFactory
+								.getBean(ComponentOrientationTableCellRendererCode.class)));
+		JScrollPane propertiesScrollPane = lookAndFeel
+				.getTableScrollPane(propertiesTable);
 
 		JButton close = new JButton(I18nUtils.getString("CLOSE"));
 		close.addActionListener(new ActionListener() {
@@ -152,9 +172,11 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
 
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab(I18nUtils.getString("LICENSE"), license);
-		tabbedPane.addTab(I18nUtils.getString("PROPERTIES"), propertiesScrollPane);
+		tabbedPane.addTab(I18nUtils.getString("PROPERTIES"),
+				propertiesScrollPane);
 
-		return createPanel(title, description, icon, contributors, close, tabbedPane);
+		return createPanel(title, description, icon, contributors, close,
+				tabbedPane);
 	}
 
 	/**
@@ -166,8 +188,9 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
 	 * @param tabbedPane
 	 * @return
 	 */
-	private JPanel createPanel(final UrlLabel title, final JLabel description, final JLabel icon,
-			final UrlLabel contributors, final JButton close, final JTabbedPane tabbedPane) {
+	private JPanel createPanel(final UrlLabel title, final JLabel description,
+			final JLabel icon, final UrlLabel contributors,
+			final JButton close, final JTabbedPane tabbedPane) {
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 1;
@@ -175,7 +198,8 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
 		c.weighty = 0.1;
 		c.weightx = 1;
 		c.insets = new Insets(0, 40, 0, 0);
-		c.anchor = GuiUtils.getComponentOrientation().isLeftToRight() ? GridBagConstraints.WEST : GridBagConstraints.EAST;
+		c.anchor = GuiUtils.getComponentOrientation().isLeftToRight() ? GridBagConstraints.WEST
+				: GridBagConstraints.EAST;
 		panel.add(title, c);
 		c.gridy = 1;
 		panel.add(description, c);
@@ -186,7 +210,8 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
 		c.gridheight = 3;
 		c.insets = new Insets(0, 0, 0, 0);
 		c.weightx = 0.1;
-		c.anchor = GuiUtils.getComponentOrientation().isLeftToRight() ? GridBagConstraints.EAST : GridBagConstraints.WEST;
+		c.anchor = GuiUtils.getComponentOrientation().isLeftToRight() ? GridBagConstraints.EAST
+				: GridBagConstraints.WEST;
 		panel.add(icon, c);
 
 		c.gridwidth = 2;
@@ -213,12 +238,22 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
 	 * @return the license text
 	 */
 	private String getLicenseText() {
-		return StringUtils.getString("Copyright (C) 2006-", DateMidnight.now().year().get(), "  The aTunes Team\n\n", "This program is free software; you can redistribute it and/or ",
-				"modify it under the terms of the GNU General Public License ", "as published by the Free Software Foundation; either version 2 ",
-				"of the License, or (at your option) any later version.\n\n", "This program is distributed in the hope that it will be useful, ",
-				"but WITHOUT ANY WARRANTY; without even the implied warranty of ", "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the ",
-				"GNU General Public License for more details.\n\n", "You should have received a copy of the GNU General Public License ",
-				"along with this program; if not, write to the\n\nFree Software ", "Foundation, Inc.\n51 Franklin Street, Fifth Floor\nBoston, MA\n02110-1301, USA");
+		return StringUtils
+				.getString(
+						"Copyright (C) 2006-",
+						DateMidnight.now().year().get(),
+						"  The aTunes Team\n\n",
+						"This program is free software; you can redistribute it and/or ",
+						"modify it under the terms of the GNU General Public License ",
+						"as published by the Free Software Foundation; either version 2 ",
+						"of the License, or (at your option) any later version.\n\n",
+						"This program is distributed in the hope that it will be useful, ",
+						"but WITHOUT ANY WARRANTY; without even the implied warranty of ",
+						"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the ",
+						"GNU General Public License for more details.\n\n",
+						"You should have received a copy of the GNU General Public License ",
+						"along with this program; if not, write to the\n\nFree Software ",
+						"Foundation, Inc.\n51 Franklin Street, Fifth Floor\nBoston, MA\n02110-1301, USA");
 	}
 
 	@Override

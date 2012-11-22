@@ -34,6 +34,7 @@ import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -72,6 +73,15 @@ public final class LocalAudioObjectPropertiesDialog extends
 	private IUnknownObjectChecker unknownObjectChecker;
 
 	private IBeanFactory beanFactory;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	/**
 	 * @param beanFactory
@@ -147,18 +157,20 @@ public final class LocalAudioObjectPropertiesDialog extends
 		JPanel panel = new JPanel(new GridBagLayout());
 
 		pictureLabel = new JLabel();
-		songLabel = new ProviderLabel(new SongProvider());
+		songLabel = new ProviderLabel(new SongProvider(), controlsBuilder);
 		songLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
 		artistLabel = new ProviderLabel(
-				new ArtistProvider(unknownObjectChecker));
+				new ArtistProvider(unknownObjectChecker), controlsBuilder);
 		artistLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
 		albumArtistLabel = new ProviderLabel(new AlbumArtistProvider(
-				unknownObjectChecker));
+				unknownObjectChecker), controlsBuilder);
 		albumArtistLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
-		albumLabel = new ProviderLabel(new AlbumProvider(unknownObjectChecker));
+		albumLabel = new ProviderLabel(new AlbumProvider(unknownObjectChecker),
+				controlsBuilder);
 		albumLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
-		fileNameLabel = new ProviderLabel(new FileNameProvider());
-		pathLabel = new ProviderLabel(new FilePathProvider());
+		fileNameLabel = new ProviderLabel(new FileNameProvider(),
+				controlsBuilder);
+		pathLabel = new ProviderLabel(new FilePathProvider(), controlsBuilder);
 		durationLabel = new JLabel();
 		trackLabel = new JLabel();
 		discNumberLabel = new JLabel();

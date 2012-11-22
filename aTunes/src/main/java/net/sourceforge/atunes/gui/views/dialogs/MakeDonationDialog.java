@@ -33,7 +33,7 @@ import javax.swing.JTextArea;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -43,78 +43,90 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class MakeDonationDialog extends AbstractCustomDialog {
 
-    private static final long serialVersionUID = 4369595555397951445L;
+	private static final long serialVersionUID = 4369595555397951445L;
 
-    private IDesktop desktop;
-    
-    private String donationUrl;
-    
-    /**
-     * Instantiates a new repository selection info dialog.
-     * @param frame
-     */
-    public MakeDonationDialog(IFrame frame) {
-        super(frame, 500, 300);
-    }
-    
-    /**
-     * @param donationUrl
-     */
-    public void setDonationUrl(String donationUrl) {
+	private IDesktop desktop;
+
+	private String donationUrl;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
+	/**
+	 * Instantiates a new repository selection info dialog.
+	 * 
+	 * @param frame
+	 */
+	public MakeDonationDialog(IFrame frame) {
+		super(frame, 500, 300);
+	}
+
+	/**
+	 * @param donationUrl
+	 */
+	public void setDonationUrl(String donationUrl) {
 		this.donationUrl = donationUrl;
 	}
-    
-    /**
-     * @param desktop
-     */
-    public void setDesktop(IDesktop desktop) {
+
+	/**
+	 * @param desktop
+	 */
+	public void setDesktop(IDesktop desktop) {
 		this.desktop = desktop;
 	}
-    
-    @Override 
-    public void initialize() {
-        setResizable(false);
-        setTitle(I18nUtils.getString("MAKE_DONATION"));
-        setContent();
-    }
 
-    /**
-     * Sets the content.
-     */
-    private void setContent() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
-        JTextArea text = new CustomTextArea(I18nUtils.getString("MAKE_DONATION_INFO"));
-        text.setOpaque(false);
-        text.setEditable(false);
-        text.setWrapStyleWord(true);
-        text.setLineWrap(true);
-        text.setBorder(BorderFactory.createEmptyBorder());
-        JLabel donateButton = new JLabel(Images.getImage(Images.PROJECT_SUPPORT));
-        donateButton.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		desktop.openURL(donationUrl);
-        	}
+	@Override
+	public void initialize() {
+		setResizable(false);
+		setTitle(I18nUtils.getString("MAKE_DONATION"));
+		setContent();
+	}
+
+	/**
+	 * Sets the content.
+	 */
+	private void setContent() {
+		JPanel panel = new JPanel(new GridBagLayout());
+		JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
+		JTextArea text = controlsBuilder.createTextArea();
+		text.setText(I18nUtils.getString("MAKE_DONATION_INFO"));
+		text.setOpaque(false);
+		text.setEditable(false);
+		text.setWrapStyleWord(true);
+		text.setLineWrap(true);
+		text.setBorder(BorderFactory.createEmptyBorder());
+		JLabel donateButton = new JLabel(
+				Images.getImage(Images.PROJECT_SUPPORT));
+		donateButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				desktop.openURL(donationUrl);
+			}
 		});
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.anchor = GridBagConstraints.NORTH;
-        c.insets = new Insets(20, 20, 20, 20);
-        panel.add(icon, c);
-        c.gridx = 1;
-        c.weightx = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(20, 0, 20, 20);
-        panel.add(text, c);
-        c.gridx = 0;
-        c.gridy = 2;
-        c.gridwidth = 2;
-        c.weighty = 1;
-        c.anchor = GridBagConstraints.CENTER;
-        c.insets = new Insets(0, 0, 0, 0);
-        panel.add(donateButton, c);
-        add(panel);
-    }
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.NORTH;
+		c.insets = new Insets(20, 20, 20, 20);
+		panel.add(icon, c);
+		c.gridx = 1;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(20, 0, 20, 20);
+		panel.add(text, c);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 2;
+		c.weighty = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(0, 0, 0, 0);
+		panel.add(donateButton, c);
+		add(panel);
+	}
 }

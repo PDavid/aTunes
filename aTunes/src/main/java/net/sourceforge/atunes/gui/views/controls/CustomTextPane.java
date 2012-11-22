@@ -28,7 +28,6 @@ import javax.swing.text.StyleConstants;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
  * A CustomTextPane is a JTextPane using the fonts and colors configured for all
@@ -37,52 +36,47 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
  * @author fleax
  * 
  */
-public class CustomTextPane extends JTextPane implements ILookAndFeelChangeListener {
+public class CustomTextPane extends JTextPane implements
+		ILookAndFeelChangeListener {
 
-    private static final long serialVersionUID = -3601855261867415475L;
+	private static final long serialVersionUID = -3601855261867415475L;
 
-    private Integer alignment;
+	private final Integer alignment;
 
-    /**
-     * @param lookAndFeelManager
-     */
-    public CustomTextPane(ILookAndFeelManager lookAndFeelManager) {
-    	this(null, lookAndFeelManager);
-    }
-    
-    /**
-     * @param alignment
-     * @param lookAndFeelManager
-     */
-    public CustomTextPane(Integer alignment, ILookAndFeelManager lookAndFeelManager) {
-        super();
-        this.alignment = alignment;
-        updateStyle(false);
-        new EditionPopUpMenu(this);
-        // Register look and feel change listener
-        lookAndFeelManager.addLookAndFeelChangeListener(this);
-    }
-    
-    @Override
-    public void lookAndFeelChanged() {
-    	updateStyle(true);
-    }
-    
-    /**
-     * Updates style of text pane
-     * @param forceUpdate
-     *            if <code>true</code> will update component to use new style
-     */
-    private void updateStyle(boolean forceUpdate) {
-        MutableAttributeSet mainStyle = new SimpleAttributeSet();
-       	StyleConstants.setAlignment(mainStyle, alignment != null ? alignment : GuiUtils.getComponentOrientationAsTextStyleConstant());
-        StyleConstants.setFontFamily(mainStyle, UIManager.getFont("Label.font").getFamily());
-        StyleConstants.setFontSize(mainStyle, UIManager.getFont("Label.font").getSize());
-        StyleConstants.setForeground(mainStyle, UIManager.getColor("Label.foreground"));
-        getStyledDocument().setParagraphAttributes(0, 0, mainStyle, true);
-        if (forceUpdate) {
-        	// Setting text again to use new style
-        	setText(getText());
-        }
-    }
+	/**
+	 * @param alignment
+	 */
+	CustomTextPane(Integer alignment) {
+		super();
+		this.alignment = alignment;
+		updateStyle(false);
+	}
+
+	@Override
+	public void lookAndFeelChanged() {
+		updateStyle(true);
+	}
+
+	/**
+	 * Updates style of text pane
+	 * 
+	 * @param forceUpdate
+	 *            if <code>true</code> will update component to use new style
+	 */
+	private void updateStyle(boolean forceUpdate) {
+		MutableAttributeSet mainStyle = new SimpleAttributeSet();
+		StyleConstants.setAlignment(mainStyle, alignment != null ? alignment
+				: GuiUtils.getComponentOrientationAsTextStyleConstant());
+		StyleConstants.setFontFamily(mainStyle, UIManager.getFont("Label.font")
+				.getFamily());
+		StyleConstants.setFontSize(mainStyle, UIManager.getFont("Label.font")
+				.getSize());
+		StyleConstants.setForeground(mainStyle,
+				UIManager.getColor("Label.foreground"));
+		getStyledDocument().setParagraphAttributes(0, 0, mainStyle, true);
+		if (forceUpdate) {
+			// Setting text again to use new style
+			setText(getText());
+		}
+	}
 }

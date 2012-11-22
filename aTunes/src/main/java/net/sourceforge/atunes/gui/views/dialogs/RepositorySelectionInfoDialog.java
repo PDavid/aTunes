@@ -34,7 +34,7 @@ import javax.swing.JTextArea;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -43,68 +43,80 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class RepositorySelectionInfoDialog extends AbstractCustomDialog {
 
-    private static final long serialVersionUID = 4369595555397951445L;
+	private static final long serialVersionUID = 4369595555397951445L;
 
-    private boolean accepted;
-    
-    /**
-     * Instantiates a new repository selection info dialog.
-     * @param frame
-     */
-    public RepositorySelectionInfoDialog(IFrame frame) {
-        super(frame, 400, 250);
-    }
-    
-    @Override 
-    public void initialize() {
-        setResizable(false);
-        setTitle(I18nUtils.getString("REPOSITORY_SELECTION_INFO"));
-        setContent();
-    }
+	private boolean accepted;
 
-    /**
-     * Sets the content.
-     */
-    private void setContent() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
-        JTextArea text = new CustomTextArea(I18nUtils.getString("REPOSITORY_SELECTION_INFO_TEXT"));
-        text.setOpaque(false);
-        text.setEditable(false);
-        text.setWrapStyleWord(true);
-        text.setLineWrap(true);
-        text.setBorder(BorderFactory.createEmptyBorder());
-        JButton button = new JButton(I18nUtils.getString("OK"));
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	accepted = true;
-                setVisible(false);
-            }
-        });
+	private IControlsBuilder controlsBuilder;
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.anchor = GridBagConstraints.NORTH;
-        c.insets = new Insets(10, 10, 10, 10);
-        panel.add(icon, c);
-        c.gridx = 1;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        panel.add(text, c);
-        c.gridx = 0;
-        c.gridy = 2;
-        c.gridwidth = 2;
-        c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.CENTER;
-        panel.add(button, c);
-        add(panel);
-    }
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
+	/**
+	 * Instantiates a new repository selection info dialog.
+	 * 
+	 * @param frame
+	 */
+	public RepositorySelectionInfoDialog(IFrame frame) {
+		super(frame, 400, 250);
+	}
+
+	@Override
+	public void initialize() {
+		setResizable(false);
+		setTitle(I18nUtils.getString("REPOSITORY_SELECTION_INFO"));
+		setContent();
+	}
+
+	/**
+	 * Sets the content.
+	 */
+	private void setContent() {
+		JPanel panel = new JPanel(new GridBagLayout());
+		JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
+		JTextArea text = controlsBuilder.createTextArea();
+		text.setText(I18nUtils.getString("REPOSITORY_SELECTION_INFO_TEXT"));
+		text.setOpaque(false);
+		text.setEditable(false);
+		text.setWrapStyleWord(true);
+		text.setLineWrap(true);
+		text.setBorder(BorderFactory.createEmptyBorder());
+		JButton button = new JButton(I18nUtils.getString("OK"));
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				accepted = true;
+				setVisible(false);
+			}
+		});
+
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.NORTH;
+		c.insets = new Insets(10, 10, 10, 10);
+		panel.add(icon, c);
+		c.gridx = 1;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		panel.add(text, c);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 2;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.CENTER;
+		panel.add(button, c);
+		add(panel);
+	}
 
 	/**
 	 * Returns true if user presses accept button
+	 * 
 	 * @return
 	 */
 	public boolean userAccepted() {

@@ -41,9 +41,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.PatternMatcher;
 import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -92,6 +92,15 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 	private IRepositoryHandler repositoryHandler;
 
 	private Genres genresHelper;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	/**
 	 * @param genresHelper
@@ -185,8 +194,9 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 		treeTable.getTableHeader().setReorderingAllowed(false);
 		treeTable.setSurrendersFocusOnKeystroke(true);
 		JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-		JTextArea reviewInstructions = new CustomTextArea(
-				I18nUtils.getString("REVIEW_TAGS_INSTRUCTIONS"));
+		JTextArea reviewInstructions = controlsBuilder.createTextArea();
+		reviewInstructions.setText(I18nUtils
+				.getString("REVIEW_TAGS_INSTRUCTIONS"));
 		reviewInstructions.setEditable(false);
 		reviewInstructions.setLineWrap(true);
 		reviewInstructions.setWrapStyleWord(true);

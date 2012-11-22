@@ -34,7 +34,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IProxyBeanFactory;
@@ -47,260 +47,280 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class InternetPanel extends AbstractPreferencesPanel {
 
-    private static final long serialVersionUID = -1872565673079044088L;
+	private static final long serialVersionUID = -1872565673079044088L;
 
-    private JRadioButton noProxyRadioButton;
-    private JRadioButton httpProxyRadioButton;
-    private JRadioButton socksProxyRadioButton;
-    private JLabel proxyURLLabel;
-    private JTextField proxyURL;
-    private JLabel proxyPortLabel;
-    private JTextField proxyPort;
-    private JLabel proxyUserLabel;
-    private JTextField proxyUser;
-    private JLabel proxyPasswordLabel;
-    private JPasswordField proxyPassword;
-    
-    private INetworkHandler networkHandler;
-    
-    private transient IProxyBeanFactory proxyBeanFactory;
-    
-    private IStateCore stateCore;
-    
-    /**
-     * @param stateCore
-     */
-    public void setStateCore(IStateCore stateCore) {
+	private JRadioButton noProxyRadioButton;
+	private JRadioButton httpProxyRadioButton;
+	private JRadioButton socksProxyRadioButton;
+	private JLabel proxyURLLabel;
+	private JTextField proxyURL;
+	private JLabel proxyPortLabel;
+	private JTextField proxyPort;
+	private JLabel proxyUserLabel;
+	private JTextField proxyUser;
+	private JLabel proxyPasswordLabel;
+	private JPasswordField proxyPassword;
+
+	private INetworkHandler networkHandler;
+
+	private transient IProxyBeanFactory proxyBeanFactory;
+
+	private IStateCore stateCore;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(IStateCore stateCore) {
 		this.stateCore = stateCore;
 	}
-    
-    /**
-     * @param networkHandler
-     */
-    public void setNetworkHandler(INetworkHandler networkHandler) {
+
+	/**
+	 * @param networkHandler
+	 */
+	public void setNetworkHandler(INetworkHandler networkHandler) {
 		this.networkHandler = networkHandler;
 	}
-    
-    /**
-     * @param proxyBeanFactory
-     */
-    public void setProxyBeanFactory(IProxyBeanFactory proxyBeanFactory) {
+
+	/**
+	 * @param proxyBeanFactory
+	 */
+	public void setProxyBeanFactory(IProxyBeanFactory proxyBeanFactory) {
 		this.proxyBeanFactory = proxyBeanFactory;
 	}
 
-    /**
-     * Instantiates a new internet panel.
-     */
-    public InternetPanel() {
-        super(I18nUtils.getString("INTERNET"));
-    }
-    
-    /**
-     * Initializes panel 
-     */
-    public void initialize() {
-        noProxyRadioButton = new JRadioButton(I18nUtils.getString("NO_PROXY"));
-        noProxyRadioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                enableProxySettings(false);
-            }
-        });
-        httpProxyRadioButton = new JRadioButton(I18nUtils.getString("HTTP_PROXY"));
-        httpProxyRadioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                enableProxySettings(true);
-            }
-        });
-        socksProxyRadioButton = new JRadioButton(I18nUtils.getString("SOCKS_PROXY"));
-        socksProxyRadioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                enableProxySettings(true);
-            }
-        });
+	/**
+	 * Instantiates a new internet panel.
+	 */
+	public InternetPanel() {
+		super(I18nUtils.getString("INTERNET"));
+	}
 
-        ButtonGroup group = new ButtonGroup();
-        group.add(noProxyRadioButton);
-        group.add(httpProxyRadioButton);
-        group.add(socksProxyRadioButton);
+	/**
+	 * Initializes panel
+	 */
+	public void initialize() {
+		noProxyRadioButton = new JRadioButton(I18nUtils.getString("NO_PROXY"));
+		noProxyRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				enableProxySettings(false);
+			}
+		});
+		httpProxyRadioButton = new JRadioButton(
+				I18nUtils.getString("HTTP_PROXY"));
+		httpProxyRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				enableProxySettings(true);
+			}
+		});
+		socksProxyRadioButton = new JRadioButton(
+				I18nUtils.getString("SOCKS_PROXY"));
+		socksProxyRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				enableProxySettings(true);
+			}
+		});
 
-        proxyURLLabel = new JLabel(I18nUtils.getString("HOST"));
-        proxyURLLabel.setEnabled(false);
-        proxyURL = new CustomTextField(15);
+		ButtonGroup group = new ButtonGroup();
+		group.add(noProxyRadioButton);
+		group.add(httpProxyRadioButton);
+		group.add(socksProxyRadioButton);
 
-        proxyPortLabel = new JLabel(I18nUtils.getString("PORT"));
-        proxyPortLabel.setEnabled(false);
-        proxyPort = new CustomTextField(15);
-        proxyPort.setEnabled(false);
+		proxyURLLabel = new JLabel(I18nUtils.getString("HOST"));
+		proxyURLLabel.setEnabled(false);
+		proxyURL = controlsBuilder.createTextField();
+		proxyURL.setColumns(15);
 
-        proxyUserLabel = new JLabel(I18nUtils.getString("USER"));
-        proxyUserLabel.setEnabled(false);
-        proxyUser = new CustomTextField(15);
-        proxyUser.setEnabled(false);
+		proxyPortLabel = new JLabel(I18nUtils.getString("PORT"));
+		proxyPortLabel.setEnabled(false);
+		proxyPort = controlsBuilder.createTextField();
+		proxyPort.setColumns(15);
+		proxyPort.setEnabled(false);
 
-        proxyPasswordLabel = new JLabel(I18nUtils.getString("PASSWORD"));
-        proxyPasswordLabel.setEnabled(false);
-        proxyPassword = new JPasswordField(15);
-        proxyPassword.setEnabled(false);
+		proxyUserLabel = new JLabel(I18nUtils.getString("USER"));
+		proxyUserLabel.setEnabled(false);
+		proxyUser = controlsBuilder.createTextField();
+		proxyUser.setColumns(15);
+		proxyUser.setEnabled(false);
 
-        arrangePanel();
-    }
+		proxyPasswordLabel = new JLabel(I18nUtils.getString("PASSWORD"));
+		proxyPasswordLabel.setEnabled(false);
+		proxyPassword = new JPasswordField(15);
+		proxyPassword.setEnabled(false);
+
+		arrangePanel();
+	}
 
 	/**
 	 * 
 	 */
 	private void arrangePanel() {
 		GridBagConstraints c = new GridBagConstraints();
-        c.weightx = 1;
-        c.insets = new Insets(10, 0, 10, 10);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0;
-        c.weighty = 0;
-        c.gridwidth = 2;
-        c.fill = GridBagConstraints.NONE;
-        c.insets = new Insets(2, 5, 2, 5);
-        c.anchor = GridBagConstraints.LINE_START;
-        add(noProxyRadioButton, c);
-        c.gridy = 1;
-        add(httpProxyRadioButton, c);
-        c.gridy = 2;
-        add(socksProxyRadioButton, c);
-        c.gridy = 3;
-        c.weightx = 0;
-        c.gridwidth = 1;
-        add(proxyURLLabel, c);
-        c.gridx = 1;
-        c.weightx = 1;
-        add(proxyURL, c);
-        c.gridx = 0;
-        c.gridy = 4;
-        c.weightx = 0;
-        add(proxyPortLabel, c);
-        c.gridx = 1;
-        c.weightx = 1;
-        add(proxyPort, c);
-        c.gridx = 0;
-        c.gridy = 5;
-        c.weightx = 0;
-        add(proxyUserLabel, c);
-        c.gridx = 1;
-        c.weightx = 1;
-        add(proxyUser, c);
-        c.gridx = 0;
-        c.gridy = 6;
-        c.weightx = 0;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
-        add(proxyPasswordLabel, c);
-        c.gridx = 1;
-        c.weightx = 1;
-        c.weighty = 1;
-        add(proxyPassword, c);
+		c.weightx = 1;
+		c.insets = new Insets(10, 0, 10, 10);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 0;
+		c.weighty = 0;
+		c.gridwidth = 2;
+		c.fill = GridBagConstraints.NONE;
+		c.insets = new Insets(2, 5, 2, 5);
+		c.anchor = GridBagConstraints.LINE_START;
+		add(noProxyRadioButton, c);
+		c.gridy = 1;
+		add(httpProxyRadioButton, c);
+		c.gridy = 2;
+		add(socksProxyRadioButton, c);
+		c.gridy = 3;
+		c.weightx = 0;
+		c.gridwidth = 1;
+		add(proxyURLLabel, c);
+		c.gridx = 1;
+		c.weightx = 1;
+		add(proxyURL, c);
+		c.gridx = 0;
+		c.gridy = 4;
+		c.weightx = 0;
+		add(proxyPortLabel, c);
+		c.gridx = 1;
+		c.weightx = 1;
+		add(proxyPort, c);
+		c.gridx = 0;
+		c.gridy = 5;
+		c.weightx = 0;
+		add(proxyUserLabel, c);
+		c.gridx = 1;
+		c.weightx = 1;
+		add(proxyUser, c);
+		c.gridx = 0;
+		c.gridy = 6;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		add(proxyPasswordLabel, c);
+		c.gridx = 1;
+		c.weightx = 1;
+		c.weighty = 1;
+		add(proxyPassword, c);
 	}
 
-    /**
-     * Enable proxy settings.
-     * 
-     * @param v
-     *            the v
-     */
-    void enableProxySettings(boolean v) {
-        proxyURLLabel.setEnabled(v);
-        proxyURL.setEnabled(v);
-        proxyPortLabel.setEnabled(v);
-        proxyPort.setEnabled(v);
-        proxyUserLabel.setEnabled(v);
-        proxyUser.setEnabled(v);
-        proxyPasswordLabel.setEnabled(v);
-        proxyPassword.setEnabled(v);
-    }
+	/**
+	 * Enable proxy settings.
+	 * 
+	 * @param v
+	 *            the v
+	 */
+	void enableProxySettings(boolean v) {
+		proxyURLLabel.setEnabled(v);
+		proxyURL.setEnabled(v);
+		proxyPortLabel.setEnabled(v);
+		proxyPort.setEnabled(v);
+		proxyUserLabel.setEnabled(v);
+		proxyUser.setEnabled(v);
+		proxyPasswordLabel.setEnabled(v);
+		proxyPassword.setEnabled(v);
+	}
 
-    /**
-     * Gets the proxy.
-     * 
-     * @return the proxy
-     */
-    private IProxyBean getProxy() {
-        if (noProxyRadioButton.isSelected()) {
-            return null;
-        }
+	/**
+	 * Gets the proxy.
+	 * 
+	 * @return the proxy
+	 */
+	private IProxyBean getProxy() {
+		if (noProxyRadioButton.isSelected()) {
+			return null;
+		}
 
-        int port = Integer.parseInt(proxyPort.getText());
-        String type;
-        if (httpProxyRadioButton.isSelected()) {
-            type = IProxyBean.HTTP_PROXY;
-        } else {
-            type = IProxyBean.SOCKS_PROXY;
-        }
-        return proxyBeanFactory.getProxy(type, proxyURL.getText(), port, proxyUser.getText(), new String(proxyPassword.getPassword()));
-    }
+		int port = Integer.parseInt(proxyPort.getText());
+		String type;
+		if (httpProxyRadioButton.isSelected()) {
+			type = IProxyBean.HTTP_PROXY;
+		} else {
+			type = IProxyBean.SOCKS_PROXY;
+		}
+		return proxyBeanFactory.getProxy(type, proxyURL.getText(), port,
+				proxyUser.getText(), new String(proxyPassword.getPassword()));
+	}
 
-    @Override
-    public boolean applyPreferences() {
-        IProxyBean proxy = getProxy();
-        stateCore.setProxy(proxy);
-        networkHandler.updateProxy(proxy);
-        return false;
-    }
+	@Override
+	public boolean applyPreferences() {
+		IProxyBean proxy = getProxy();
+		stateCore.setProxy(proxy);
+		networkHandler.updateProxy(proxy);
+		return false;
+	}
 
-    @Override
-    public void validatePanel() throws PreferencesValidationException {
-        try {
-            if (!noProxyRadioButton.isSelected()) {
-           		Integer.parseInt(proxyPort.getText());
-            }
-        } catch (NumberFormatException e) {
-        	throw new PreferencesValidationException(I18nUtils.getString("INCORRECT_PORT"), e);
-        }
-        
-        Socket s = null;
-        try {
-            // Test proxy
-			s = new Socket(proxyURL.getText(), Integer.parseInt(proxyPort.getText()));
+	@Override
+	public void validatePanel() throws PreferencesValidationException {
+		try {
+			if (!noProxyRadioButton.isSelected()) {
+				Integer.parseInt(proxyPort.getText());
+			}
+		} catch (NumberFormatException e) {
+			throw new PreferencesValidationException(
+					I18nUtils.getString("INCORRECT_PORT"), e);
+		}
+
+		Socket s = null;
+		try {
+			// Test proxy
+			s = new Socket(proxyURL.getText(), Integer.parseInt(proxyPort
+					.getText()));
 		} catch (UnknownHostException e) {
-			throw new PreferencesValidationException(I18nUtils.getString("INCORRECT_PROXY"), e);
+			throw new PreferencesValidationException(
+					I18nUtils.getString("INCORRECT_PROXY"), e);
 		} catch (IOException e) {
-			throw new PreferencesValidationException(I18nUtils.getString("INCORRECT_PROXY"), e);
+			throw new PreferencesValidationException(
+					I18nUtils.getString("INCORRECT_PROXY"), e);
 		} finally {
 			ClosingUtils.close(s);
 		}
-    }
+	}
 
-    /**
-     * Sets the configuration.
-     * 
-     * @param proxy
-     *            the new configuration
-     */
-    private void setConfiguration(IProxyBean proxy) {
-        enableProxySettings(proxy != null);
-        if (proxy == null) {
-            noProxyRadioButton.setSelected(true);
-        } else if (proxy.getType().equals(IProxyBean.HTTP_PROXY)) {
-            httpProxyRadioButton.setSelected(true);
-        } else {
-            socksProxyRadioButton.setSelected(true);
-        }
-        proxyURL.setText(proxy != null ? proxy.getUrl() : "");
-        proxyPort.setText(proxy != null ? Integer.toString(proxy.getPort()) : "");
-        proxyUser.setText(proxy != null ? proxy.getUser() : "");
-        proxyPassword.setText(proxy != null ? proxy.getPassword() : "");
-    }
+	/**
+	 * Sets the configuration.
+	 * 
+	 * @param proxy
+	 *            the new configuration
+	 */
+	private void setConfiguration(IProxyBean proxy) {
+		enableProxySettings(proxy != null);
+		if (proxy == null) {
+			noProxyRadioButton.setSelected(true);
+		} else if (proxy.getType().equals(IProxyBean.HTTP_PROXY)) {
+			httpProxyRadioButton.setSelected(true);
+		} else {
+			socksProxyRadioButton.setSelected(true);
+		}
+		proxyURL.setText(proxy != null ? proxy.getUrl() : "");
+		proxyPort.setText(proxy != null ? Integer.toString(proxy.getPort())
+				: "");
+		proxyUser.setText(proxy != null ? proxy.getUser() : "");
+		proxyPassword.setText(proxy != null ? proxy.getPassword() : "");
+	}
 
-    @Override
-    public void updatePanel() {
-        setConfiguration(stateCore.getProxy());
-    }
+	@Override
+	public void updatePanel() {
+		setConfiguration(stateCore.getProxy());
+	}
 
-    @Override
-    public void resetImmediateChanges() {
-        // Do nothing
-    }
+	@Override
+	public void resetImmediateChanges() {
+		// Do nothing
+	}
 
-    @Override
-    public void dialogVisibilityChanged(boolean visible) {
-        // Do nothing
-    }
+	@Override
+	public void dialogVisibilityChanged(boolean visible) {
+		// Do nothing
+	}
 }

@@ -33,7 +33,7 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IRadio;
@@ -43,89 +43,102 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Dialog to add or edit a radio
+ * 
  * @author fleax
- *
+ * 
  */
-public final class RadioDialog extends AbstractCustomDialog implements IRadioDialog {
+public final class RadioDialog extends AbstractCustomDialog implements
+		IRadioDialog {
 
-    private static final long serialVersionUID = 7295438534550341824L;
+	private static final long serialVersionUID = 7295438534550341824L;
 
-    private JTextField nameTextField;
-    private JTextField urlTextField;
-    private JTextField labelTextField;
-    
-    private IRadioHandler radioHandler;
+	private JTextField nameTextField;
+	private JTextField urlTextField;
+	private JTextField labelTextField;
 
-    /** The radio. */
-    private IRadio result;
-    
-    /**
-     * Instantiates a new radio dialog for adding a new radio
-     * 
-     * @param frame
-     */
-    public RadioDialog(IFrame frame) {
-        super(frame, 500, 200);
-    }
-    
-    @Override
-    public void initialize() {
-        setTitle(I18nUtils.getString("ADD_RADIO"));
-        setResizable(false);
-        add(getContent());
-    }
-    
-    /**
-     * @param radioHandler
-     */
-    public void setRadioHandler(IRadioHandler radioHandler) {
+	private IRadioHandler radioHandler;
+
+	private IControlsBuilder controlsBuilder;
+
+	/** The radio. */
+	private IRadio result;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
+	/**
+	 * Instantiates a new radio dialog for adding a new radio
+	 * 
+	 * @param frame
+	 */
+	public RadioDialog(IFrame frame) {
+		super(frame, 500, 200);
+	}
+
+	@Override
+	public void initialize() {
+		setTitle(I18nUtils.getString("ADD_RADIO"));
+		setResizable(false);
+		add(getContent());
+	}
+
+	/**
+	 * @param radioHandler
+	 */
+	public void setRadioHandler(IRadioHandler radioHandler) {
 		this.radioHandler = radioHandler;
 	}
 
-    @Override
+	@Override
 	public void setRadio(IRadio radio) {
-        setTitle(radio != null ? I18nUtils.getString("EDIT_RADIO") : I18nUtils.getString("ADD_RADIO"));
-        nameTextField.setText(radio != null ? radio.getName() : null);
-        urlTextField.setText(radio != null ? radio.getUrl() : null);
-        labelTextField.setText(radio != null ? radio.getLabel() : null);
+		setTitle(radio != null ? I18nUtils.getString("EDIT_RADIO") : I18nUtils
+				.getString("ADD_RADIO"));
+		nameTextField.setText(radio != null ? radio.getName() : null);
+		urlTextField.setText(radio != null ? radio.getUrl() : null);
+		labelTextField.setText(radio != null ? radio.getLabel() : null);
 	}
-    
-    /**
-     * Gets the content.
-     * 
-     * @return the content
-     */
-    private JPanel getContent() {
-        JPanel panel = new JPanel(new GridBagLayout());
 
-        JLabel nameLabel = new JLabel(I18nUtils.getString("NAME"));
-        nameTextField = new CustomTextField();
-        JLabel urlLabel = new JLabel(I18nUtils.getString("URL"));
-        urlTextField = new CustomTextField();
-        JLabel labelLabel = new JLabel(I18nUtils.getString("LABEL"));
-        labelTextField = new CustomTextField();
+	/**
+	 * Gets the content.
+	 * 
+	 * @return the content
+	 */
+	private JPanel getContent() {
+		JPanel panel = new JPanel(new GridBagLayout());
 
-        JButton okButton = new JButton(I18nUtils.getString("OK"));
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	result = radioHandler.createRadio(nameTextField.getText(), urlTextField.getText(), labelTextField.getText());
-                RadioDialog.this.dispose();
-            }
-        });
-        JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                RadioDialog.this.dispose();
-            }
-        });
+		JLabel nameLabel = new JLabel(I18nUtils.getString("NAME"));
+		nameTextField = controlsBuilder.createTextField();
+		JLabel urlLabel = new JLabel(I18nUtils.getString("URL"));
+		urlTextField = controlsBuilder.createTextField();
+		JLabel labelLabel = new JLabel(I18nUtils.getString("LABEL"));
+		labelTextField = controlsBuilder.createTextField();
 
-        arrangePanel(panel, nameLabel, urlLabel, labelLabel, okButton,
+		JButton okButton = new JButton(I18nUtils.getString("OK"));
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				result = radioHandler.createRadio(nameTextField.getText(),
+						urlTextField.getText(), labelTextField.getText());
+				RadioDialog.this.dispose();
+			}
+		});
+		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
+		cancelButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				RadioDialog.this.dispose();
+			}
+		});
+
+		arrangePanel(panel, nameLabel, urlLabel, labelLabel, okButton,
 				cancelButton);
 
-        return panel;
-    }
+		return panel;
+	}
 
 	/**
 	 * @param panel
@@ -138,59 +151,62 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
 	private void arrangePanel(JPanel panel, JLabel nameLabel, JLabel urlLabel,
 			JLabel labelLabel, JButton okButton, JButton cancelButton) {
 		GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 1;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(5, 10, 5, 10);
-        panel.add(nameLabel, c);
-        c.gridx = 2;
-        c.weightx = 1;
-        panel.add(nameTextField, c);
-        c.gridx = 1;
-        c.gridy = 1;
-        c.weightx = 0;
-        panel.add(urlLabel, c);
-        c.gridx = 2;
-        c.weightx = 1;
-        panel.add(urlTextField, c);
-        c.gridx = 1;
-        c.gridy = 2;
-        c.weightx = 0;
-        panel.add(labelLabel, c);
-        c.gridx = 2;
-        c.weightx = 1;
-        panel.add(labelTextField, c);
+		c.gridx = 1;
+		c.gridy = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(5, 10, 5, 10);
+		panel.add(nameLabel, c);
+		c.gridx = 2;
+		c.weightx = 1;
+		panel.add(nameTextField, c);
+		c.gridx = 1;
+		c.gridy = 1;
+		c.weightx = 0;
+		panel.add(urlLabel, c);
+		c.gridx = 2;
+		c.weightx = 1;
+		panel.add(urlTextField, c);
+		c.gridx = 1;
+		c.gridy = 2;
+		c.weightx = 0;
+		panel.add(labelLabel, c);
+		c.gridx = 2;
+		c.weightx = 1;
+		panel.add(labelTextField, c);
 
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridheight = 2;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = -1;
-        panel.add(new JLabel(Context.getBean("radioMediumIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForSpecialControls())), c);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridheight = 2;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = -1;
+		panel.add(
+				new JLabel(Context.getBean("radioMediumIcon",
+						IIconFactory.class).getIcon(
+						getLookAndFeel().getPaintForSpecialControls())), c);
 
-        JPanel auxPanel = new JPanel();
-        auxPanel.add(okButton);
-        auxPanel.add(cancelButton);
+		JPanel auxPanel = new JPanel();
+		auxPanel.add(okButton);
+		auxPanel.add(cancelButton);
 
-        c.gridx = 0;
-        c.gridy = 3;
-        c.gridwidth = 3;
-        c.insets = new Insets(0, 0, 0, 0);
-        panel.add(auxPanel, c);
+		c.gridx = 0;
+		c.gridy = 3;
+		c.gridwidth = 3;
+		c.insets = new Insets(0, 0, 0, 0);
+		panel.add(auxPanel, c);
 	}
 
-    @Override
+	@Override
 	public IRadio getRadio() {
-        return result;
-    }
-    
-    @Override
-    public void showDialog() {
-    	setVisible(true);
-    }
-    
-    @Override
-    public void hideDialog() {
-    	setVisible(false);
-    }
+		return result;
+	}
+
+	@Override
+	public void showDialog() {
+		setVisible(true);
+	}
+
+	@Override
+	public void hideDialog() {
+		setVisible(false);
+	}
 }

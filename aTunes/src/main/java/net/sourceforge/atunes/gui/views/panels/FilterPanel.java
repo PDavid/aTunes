@@ -32,9 +32,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.controls.LookAndFeelAwareButton;
 import net.sourceforge.atunes.gui.views.controls.LookAndFeelAwareLabel;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -48,146 +48,156 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class FilterPanel extends JPanel implements IFilterPanel {
 
-    private final class ClearButton extends LookAndFeelAwareButton {
-	/**
+	private final class ClearButton extends LookAndFeelAwareButton {
+		/**
 		 * 
 		 */
-	private static final long serialVersionUID = -8082456165867297443L;
-	private final Dimension size = new Dimension(16, 16);
+		private static final long serialVersionUID = -8082456165867297443L;
+		private final Dimension size = new Dimension(16, 16);
 
-	private ClearButton(final ILookAndFeelManager lookAndFeelManager) {
-	    super(lookAndFeelManager);
+		private ClearButton(final ILookAndFeelManager lookAndFeelManager) {
+			super(lookAndFeelManager);
+		}
+
+		@Override
+		public Dimension getPreferredSize() {
+			return size;
+		}
+
+		@Override
+		public Dimension getMinimumSize() {
+			return size;
+		}
+
+		@Override
+		public Dimension getMaximumSize() {
+			return size;
+		}
+
+		@Override
+		protected void paintComponent(final java.awt.Graphics g) {
+			if (!filterApplied) {
+				return;
+			}
+			Ellipse2D.Float e = new Ellipse2D.Float(-7, -7, 14, 14);
+			Polygon p = new Polygon();
+			p.addPoint(-4, -2);
+			p.addPoint(-2, -4);
+			p.addPoint(0, -2);
+			p.addPoint(2, -4);
+			p.addPoint(4, -2);
+			p.addPoint(2, 0);
+			p.addPoint(4, 2);
+			p.addPoint(2, 4);
+			p.addPoint(0, 2);
+			p.addPoint(-2, 4);
+			p.addPoint(-4, 2);
+			p.addPoint(-2, 0);
+
+			Graphics2D g2 = (Graphics2D) g;
+			g2.translate(getBounds().width / 2, getBounds().height / 2);
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+					RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setPaint(lookAndFeelManager.getCurrentLookAndFeel()
+					.getPaintForSpecialControls());
+			Area a = new Area(e);
+			a.subtract(new Area(p));
+			g2.fill(a);
+			g2.dispose();
+		}
+	}
+
+	private static final long serialVersionUID = 1801321624657098000L;
+
+	private JTextField filterTextField;
+	private JButton clearButton;
+
+	private boolean filterApplied;
+
+	private ILookAndFeelManager lookAndFeelManager;
+
+	private IIconFactory filterIcon;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
+	/**
+	 * @param filterIcon
+	 */
+	public void setFilterIcon(final IIconFactory filterIcon) {
+		this.filterIcon = filterIcon;
+	}
+
+	/**
+	 * @param state
+	 * @param lookAndFeelManager
+	 */
+	public FilterPanel() {
+		super(new BorderLayout(3, 0));
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
+	 * Initializes panel
+	 */
+	public void initialize() {
+		setMinimumSize(new Dimension(120, 0));
+		filterTextField = controlsBuilder.createTextField();
+		filterTextField.setColumns(8);
+		filterTextField.setToolTipText(I18nUtils
+				.getString("FILTER_TEXTFIELD_TOOLTIP"));
+		clearButton = new ClearButton(lookAndFeelManager);
+
+		LookAndFeelAwareLabel icon = new LookAndFeelAwareLabel(
+				lookAndFeelManager, filterIcon.getColorMutableIcon());
+
+		add(icon, BorderLayout.WEST);
+		add(filterTextField, BorderLayout.CENTER);
+		add(clearButton, BorderLayout.EAST);
+	}
+
+	/**
+	 * @return the filterTextField
+	 */
+	@Override
+	public JTextField getFilterTextField() {
+		return filterTextField;
+	}
+
+	/**
+	 * @return the clearButton
+	 */
+	@Override
+	public JButton getClearButton() {
+		return clearButton;
+	}
+
+	/**
+	 * Called to update filter panel
+	 * 
+	 * @param filterApplied
+	 */
+	@Override
+	public void setFilterApplied(final boolean filterApplied) {
+		this.filterApplied = filterApplied;
+		this.clearButton.repaint();
 	}
 
 	@Override
-	public Dimension getPreferredSize() {
-	    return size;
+	public JPanel getSwingComponent() {
+		return this;
 	}
-
-	@Override
-	public Dimension getMinimumSize() {
-	    return size;
-	}
-
-	@Override
-	public Dimension getMaximumSize() {
-	    return size;
-	}
-
-	@Override
-	protected void paintComponent(final java.awt.Graphics g) {
-	    if (!filterApplied) {
-		return;
-	    }
-	    Ellipse2D.Float e = new Ellipse2D.Float(-7, -7, 14, 14);
-	    Polygon p = new Polygon();
-	    p.addPoint(-4, -2);
-	    p.addPoint(-2, -4);
-	    p.addPoint(0, -2);
-	    p.addPoint(2, -4);
-	    p.addPoint(4, -2);
-	    p.addPoint(2, 0);
-	    p.addPoint(4, 2);
-	    p.addPoint(2, 4);
-	    p.addPoint(0, 2);
-	    p.addPoint(-2, 4);
-	    p.addPoint(-4, 2);
-	    p.addPoint(-2, 0);
-
-	    Graphics2D g2 = (Graphics2D) g;
-	    g2.translate(getBounds().width / 2, getBounds().height / 2);
-	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-		    RenderingHints.VALUE_ANTIALIAS_ON);
-	    g2.setPaint(lookAndFeelManager.getCurrentLookAndFeel()
-		    .getPaintForSpecialControls());
-	    Area a = new Area(e);
-	    a.subtract(new Area(p));
-	    g2.fill(a);
-	    g2.dispose();
-	}
-    }
-
-    private static final long serialVersionUID = 1801321624657098000L;
-
-    private JTextField filterTextField;
-    private JButton clearButton;
-
-    private boolean filterApplied;
-
-    private ILookAndFeelManager lookAndFeelManager;
-
-    private IIconFactory filterIcon;
-
-    /**
-     * @param filterIcon
-     */
-    public void setFilterIcon(final IIconFactory filterIcon) {
-	this.filterIcon = filterIcon;
-    }
-
-    /**
-     * @param state
-     * @param lookAndFeelManager
-     */
-    public FilterPanel() {
-	super(new BorderLayout(3, 0));
-    }
-
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(
-	    final ILookAndFeelManager lookAndFeelManager) {
-	this.lookAndFeelManager = lookAndFeelManager;
-    }
-
-    /**
-     * Initializes panel
-     */
-    public void initialize() {
-	setMinimumSize(new Dimension(120, 0));
-	filterTextField = new CustomTextField(8);
-	filterTextField.setToolTipText(I18nUtils
-		.getString("FILTER_TEXTFIELD_TOOLTIP"));
-	clearButton = new ClearButton(lookAndFeelManager);
-
-	LookAndFeelAwareLabel icon = new LookAndFeelAwareLabel(
-		lookAndFeelManager, filterIcon.getColorMutableIcon());
-
-	add(icon, BorderLayout.WEST);
-	add(filterTextField, BorderLayout.CENTER);
-	add(clearButton, BorderLayout.EAST);
-    }
-
-    /**
-     * @return the filterTextField
-     */
-    @Override
-    public JTextField getFilterTextField() {
-	return filterTextField;
-    }
-
-    /**
-     * @return the clearButton
-     */
-    @Override
-    public JButton getClearButton() {
-	return clearButton;
-    }
-
-    /**
-     * Called to update filter panel
-     * 
-     * @param filterApplied
-     */
-    @Override
-    public void setFilterApplied(final boolean filterApplied) {
-	this.filterApplied = filterApplied;
-	this.clearButton.repaint();
-    }
-
-    @Override
-    public JPanel getSwingComponent() {
-	return this;
-    }
 }
