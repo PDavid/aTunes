@@ -25,91 +25,121 @@ import java.awt.Dimension;
 import javax.swing.Action;
 import javax.swing.JButton;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.images.PauseImageIcon;
 import net.sourceforge.atunes.gui.images.PlayImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
-public final class PlayPauseButton extends JButton implements ILookAndFeelChangeListener {
+/**
+ * @author xe01965
+ * 
+ */
+public final class PlayPauseButton extends JButton implements
+		ILookAndFeelChangeListener {
 
-    private static final long serialVersionUID = 4348041346542204394L;
+	private static final long serialVersionUID = 4348041346542204394L;
 
-    private boolean playing;
-    
-    private Dimension size;
+	private boolean playing;
 
-	private ILookAndFeel lookAndFeel;
-	
-    /**
-     * Instantiates a new play pause button.
-     * 
-     * @param size
-     * @param lookAndFeelManager
-     */
-    public PlayPauseButton(Dimension size, ILookAndFeelManager lookAndFeelManager) {
-        super(Context.getBean("playAction", Action.class));
-        // Force size of button
-        this.size = size;
-        this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
-        setPreferredSize(size);
-        setMinimumSize(size);
-        setMaximumSize(size);
-        setFocusable(false);
-        setText(null);
+	private ILookAndFeelManager lookAndFeelManager;
 
-        setIcon();
-        
-        lookAndFeel.putClientProperties(this);
-        lookAndFeelManager.addLookAndFeelChangeListener(this);
-    }
-    
-    /**
-     * Sets the playing.
-     * 
-     * @param playing
-     *            the new playing
-     */
-    public void setPlaying(final boolean playing) {
-    	GuiUtils.callInEventDispatchThread(new Runnable() {
+	private Dimension playButtonSize;
+
+	private PauseImageIcon pauseIcon;
+
+	private PlayImageIcon playIcon;
+
+	/**
+	 * @param pauseIcon
+	 */
+	public void setPauseIcon(PauseImageIcon pauseIcon) {
+		this.pauseIcon = pauseIcon;
+	}
+
+	/**
+	 * @param playIcon
+	 */
+	public void setPlayIcon(PlayImageIcon playIcon) {
+		this.playIcon = playIcon;
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
+	 * Instantiates a new play pause button.
+	 * 
+	 * @param playAction
+	 */
+	public PlayPauseButton(Action playAction) {
+		super(playAction);
+	}
+
+	/**
+	 * Initialize button
+	 */
+	public void initialize() {
+		// Force size of button
+		setPreferredSize(playButtonSize);
+		setMinimumSize(playButtonSize);
+		setMaximumSize(playButtonSize);
+		setFocusable(false);
+		setText(null);
+
+		setIcon();
+
+		lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
+		lookAndFeelManager.addLookAndFeelChangeListener(this);
+	}
+
+	/**
+	 * Sets the playing.
+	 * 
+	 * @param playing
+	 *            the new playing
+	 */
+	public void setPlaying(final boolean playing) {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
 			public void run() {
 				setPlayingState(playing);
 			}
 		});
-    }
+	}
 
-    private void setPlayingState(boolean playing) {
-        this.playing = playing;
-    	setIcon();
-    }
+	private void setPlayingState(boolean playing) {
+		this.playing = playing;
+		setIcon();
+	}
 
-    /**
-     * Checks if is playing.
-     * 
-     * @return true, if is playing
-     */
-    public boolean isPlaying() {
-        return playing;
-    }
-    
-    @Override
-    public void lookAndFeelChanged() {
-    	setIcon();
-    }
-    
-    private void setIcon() {
-    	if (playing) {
-    		PauseImageIcon icon = Context.getBean("pauseIcon", PauseImageIcon.class);
-    		icon.setSize(size);
-    		setIcon(icon.getIcon(lookAndFeel.getPaintForSpecialControls()));
-    	} else {
-    		PlayImageIcon icon = Context.getBean("playIcon", PlayImageIcon.class);
-    		icon.setSize(size);
-    		setIcon(icon.getIcon(lookAndFeel.getPaintForSpecialControls()));
-    	}
-    }
+	/**
+	 * Checks if is playing.
+	 * 
+	 * @return true, if is playing
+	 */
+	public boolean isPlaying() {
+		return playing;
+	}
 
+	@Override
+	public void lookAndFeelChanged() {
+		setIcon();
+	}
+
+	private void setIcon() {
+		if (playing) {
+			pauseIcon.setSize(playButtonSize);
+			setIcon(pauseIcon.getIcon(lookAndFeelManager
+					.getCurrentLookAndFeel().getPaintForSpecialControls()));
+		} else {
+			playIcon.setSize(playButtonSize);
+			setIcon(playIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel()
+					.getPaintForSpecialControls()));
+		}
+	}
 }

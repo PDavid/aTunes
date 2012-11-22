@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
-	default-autowire="byName" default-lazy-init="true">
+	default-autowire="byName" default-lazy-init="true" default-init-method="initialize">
 
 	<bean id="playerControlsProgressSlider" class="net.sourceforge.atunes.gui.views.controls.ProgressSlider" scope="prototype" init-method="initialize">
 		<property name="paintIconAllowed" value="true"/>
@@ -64,5 +64,17 @@
 	<bean id="volumeIconCalculator" class="net.sourceforge.atunes.gui.views.controls.VolumeIconCalculator"/>
 	
 	<bean id="volumeSlider" class="net.sourceforge.atunes.gui.views.controls.VolumeSlider"/>
+	
+	<bean id="playPauseButton" class="net.sourceforge.atunes.gui.views.controls.PlayPauseButton" scope="prototype">
+		<constructor-arg ref="playAction"/>
+	</bean>
+	
+	<bean id="previousButton" class="net.sourceforge.atunes.gui.views.controls.PreviousButton" scope="prototype">
+		<constructor-arg ref="previousAction"/>
+	</bean>
+
+	<bean id="nextButton" class="net.sourceforge.atunes.gui.views.controls.NextButton" scope="prototype">
+		<constructor-arg ref="nextAction"/>
+	</bean>
 
 </beans>

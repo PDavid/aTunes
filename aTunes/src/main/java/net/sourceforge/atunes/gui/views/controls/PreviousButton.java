@@ -25,39 +25,72 @@ import java.awt.Dimension;
 import javax.swing.Action;
 import javax.swing.JButton;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IIconFactory;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
-public final class PreviousButton extends JButton implements ILookAndFeelChangeListener {
+public final class PreviousButton extends JButton implements
+		ILookAndFeelChangeListener {
 
-    private static final long serialVersionUID = -5415683019365261871L;
+	private static final long serialVersionUID = -5415683019365261871L;
 
-    private ILookAndFeel lookAndFeel;
+	private ILookAndFeelManager lookAndFeelManager;
 
-    /**
-     * Instantiates a new previous button.
-     * 
-     * @param size
-     * @param lookAndFeelManager
-     */
-    public PreviousButton(Dimension size, ILookAndFeelManager lookAndFeelManager) {
-        super(Context.getBean("previousAction", Action.class));
-        this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
-        setPreferredSize(size);
-        setMinimumSize(size);
-        setMaximumSize(size);
-        setFocusable(false);
-        setText(null);
-        setIcon(Context.getBean("previousIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
-        lookAndFeel.putClientProperties(this);
-        lookAndFeelManager.addLookAndFeelChangeListener(this);
-    }
+	private Dimension previousNextButtonSize;
 
-    @Override
-    public void lookAndFeelChanged() {
-        setIcon(Context.getBean("previousIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
-    }
+	private IIconFactory previousIcon;
+
+	/**
+	 * @param previousIcon
+	 */
+	public void setPreviousIcon(IIconFactory previousIcon) {
+		this.previousIcon = previousIcon;
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
+	 * @param previousNextButtonSize
+	 */
+	public void setPreviousNextButtonSize(final Dimension previousNextButtonSize) {
+		this.previousNextButtonSize = previousNextButtonSize;
+	}
+
+	/**
+	 * Instantiates a new previous button.
+	 * 
+	 * @param previousAction
+	 */
+	public PreviousButton(Action previousAction) {
+		super(previousAction);
+	}
+
+	/**
+	 * Initialize button
+	 */
+	public void initialize() {
+		setPreferredSize(previousNextButtonSize);
+		setMinimumSize(previousNextButtonSize);
+		setMaximumSize(previousNextButtonSize);
+		setFocusable(false);
+		setText(null);
+		updateIcon();
+		lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
+		lookAndFeelManager.addLookAndFeelChangeListener(this);
+	}
+
+	@Override
+	public void lookAndFeelChanged() {
+		updateIcon();
+	}
+
+	private void updateIcon() {
+		setIcon(previousIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel()
+				.getPaintForSpecialControls()));
+	}
 }
