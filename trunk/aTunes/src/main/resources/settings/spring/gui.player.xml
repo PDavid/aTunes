@@ -77,4 +77,8 @@
 		<constructor-arg ref="nextAction"/>
 	</bean>
 
+	<bean id="stopButton" class="net.sourceforge.atunes.gui.views.controls.StopButton" scope="prototype">	
+		<constructor-arg ref="stopAction"/>
+	</bean>
+
 </beans>

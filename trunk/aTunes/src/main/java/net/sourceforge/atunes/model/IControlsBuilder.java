@@ -27,6 +27,7 @@ import javax.swing.JTextPane;
 import net.sourceforge.atunes.gui.views.controls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.PreviousButton;
+import net.sourceforge.atunes.gui.views.controls.StopButton;
 
 /**
  * Interface to build UI components
@@ -69,8 +70,13 @@ public interface IControlsBuilder {
 	PreviousButton createPreviousButton();
 
 	/**
-	 * @return stop button
+	 * @return next button
 	 */
 	NextButton createNextButton();
+
+	/**
+	 * @return stop button
+	 */
+	StopButton createStopButton();
 
 }

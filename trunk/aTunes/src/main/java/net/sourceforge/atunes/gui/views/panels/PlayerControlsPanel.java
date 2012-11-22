@@ -76,22 +76,13 @@ public final class PlayerControlsPanel extends JPanel implements
 
 	private Dimension secondaryControlSize;
 
-	private Dimension stopMuteButtonSize;
-
 	private IControlsBuilder controlsBuilder;
 
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
-	}
-
-	/**
-	 * @param stopMuteButtonSize
-	 */
-	public void setStopMuteButtonSize(final Dimension stopMuteButtonSize) {
-		this.stopMuteButtonSize = stopMuteButtonSize;
 	}
 
 	/**
@@ -174,7 +165,7 @@ public final class PlayerControlsPanel extends JPanel implements
 	public void initialize() {
 		JPanel progressSliderContainer = new JPanel(new BorderLayout());
 		progressSliderContainer.add(
-				playerControlsProgressSlider.getSwingComponent(),
+				this.playerControlsProgressSlider.getSwingComponent(),
 				BorderLayout.CENTER);
 
 		JPanel mainControls = getMainControlsPanel();
@@ -223,12 +214,12 @@ public final class PlayerControlsPanel extends JPanel implements
 
 	@Override
 	public IProgressSlider getProgressSlider() {
-		return playerControlsProgressSlider;
+		return this.playerControlsProgressSlider;
 	}
 
 	@Override
 	public void setProgress(final long time, final long remainingTime) {
-		playerControlsProgressSlider.setProgress(time, remainingTime);
+		this.playerControlsProgressSlider.setProgress(time, remainingTime);
 	}
 
 	/**
@@ -238,25 +229,25 @@ public final class PlayerControlsPanel extends JPanel implements
 	 */
 	@Override
 	public void setVolume(final int volume) {
-		volumeSlider.setValue(volume);
-		volumeButton.updateIcon();
+		this.volumeSlider.setValue(volume);
+		this.volumeButton.updateIcon();
 	}
 
 	@Override
 	public void setPlaying(final boolean playing) {
-		playButton.setPlaying(playing);
+		this.playButton.setPlaying(playing);
 	}
 
 	private JPanel getMainControlsPanel() {
-		PreviousButton previousButton = controlsBuilder.createPreviousButton();
-		playButton = controlsBuilder.createPlayPauseButton();
-		StopButton stopButton = new StopButton(stopMuteButtonSize,
-				lookAndFeelManager);
-		NextButton nextButton = controlsBuilder.createNextButton();
-		volumeButton.setText("");
+		PreviousButton previousButton = this.controlsBuilder
+				.createPreviousButton();
+		this.playButton = this.controlsBuilder.createPlayPauseButton();
+		StopButton stopButton = this.controlsBuilder.createStopButton();
+		NextButton nextButton = this.controlsBuilder.createNextButton();
+		this.volumeButton.setText("");
 		JPanel panel = getPanelWithPlayerControls(stopButton, previousButton,
-				playButton, nextButton, volumeButton, volumeSlider,
-				lookAndFeelManager);
+				this.playButton, nextButton, this.volumeButton,
+				this.volumeSlider, this.lookAndFeelManager);
 		// add a small border to separate from other components
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
 		return panel;
@@ -293,11 +284,11 @@ public final class PlayerControlsPanel extends JPanel implements
 	}
 
 	private JPanel getSecondaryControls() {
-		if (secondaryControls == null) {
-			secondaryControls = secondaryPlayerControlsBuilder
+		if (this.secondaryControls == null) {
+			this.secondaryControls = this.secondaryPlayerControlsBuilder
 					.getSecondaryControls();
 		}
-		return secondaryControls;
+		return this.secondaryControls;
 	}
 
 	/**
@@ -312,7 +303,7 @@ public final class PlayerControlsPanel extends JPanel implements
 		c.gridy = 0;
 		c.insets = new Insets(0, 1, 0, 0);
 		JButton button = new SecondaryControl(action);
-		button.setPreferredSize(secondaryControlSize);
+		button.setPreferredSize(this.secondaryControlSize);
 		getSecondaryControls().add(button, c);
 		getSecondaryControls().repaint();
 	}
@@ -329,7 +320,7 @@ public final class PlayerControlsPanel extends JPanel implements
 		c.gridy = 0;
 		c.insets = new Insets(0, 1, 0, 0);
 		JToggleButton button = new SecondaryToggleControl(action);
-		button.setPreferredSize(secondaryControlSize);
+		button.setPreferredSize(this.secondaryControlSize);
 		getSecondaryControls().add(button, c);
 		getSecondaryControls().repaint();
 	}
@@ -341,9 +332,9 @@ public final class PlayerControlsPanel extends JPanel implements
 	 */
 	@Override
 	public void showAdvancedPlayerControls(final boolean show) {
-		equalizerButton.setVisible(show);
-		normalizeButton.setVisible(show);
-		similarModeButton.setVisible(show);
+		this.equalizerButton.setVisible(show);
+		this.normalizeButton.setVisible(show);
+		this.similarModeButton.setVisible(show);
 	}
 
 	@Override
