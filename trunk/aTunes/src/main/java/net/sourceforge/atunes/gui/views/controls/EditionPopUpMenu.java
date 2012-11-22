@@ -20,13 +20,12 @@
 
 package net.sourceforge.atunes.gui.views.controls;
 
-
-
 import javax.swing.Action;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.text.JTextComponent;
 
+import net.sourceforge.atunes.utils.ClipboardFacade;
 
 /**
  * Common popup menu for text components with cut, copy, paste... options
@@ -35,36 +34,45 @@ import javax.swing.text.JTextComponent;
  */
 public class EditionPopUpMenu extends JPopupMenu {
 
-    private static final long serialVersionUID = -3103254879422133063L;
+	private static final long serialVersionUID = -3103254879422133063L;
 
-    /**
-     * @param textComponent
-     */
-    public EditionPopUpMenu(JTextComponent textComponent) {
-        super();
-        Action cutAction = new TextComponentCutAction(textComponent);
-        Action copyAction = new TextComponentCopyAction(textComponent);
-        Action pasteAction = new TextComponentPasteAction(textComponent);
-        Action deleteAction = new TextComponentDeleteAction(textComponent);
-        Action selectAllAction = new TextComponentSelectAllAction(textComponent);
-        addPopUpMenu(textComponent, cutAction, copyAction, pasteAction, deleteAction, selectAllAction);
-    }
+	/**
+	 * @param textComponent
+	 * @param clipboard
+	 */
+	EditionPopUpMenu(JTextComponent textComponent, ClipboardFacade clipboard) {
+		super();
+		Action cutAction = new TextComponentCutAction(textComponent, clipboard);
+		Action copyAction = new TextComponentCopyAction(textComponent,
+				clipboard);
+		Action pasteAction = new TextComponentPasteAction(textComponent,
+				clipboard);
+		Action deleteAction = new TextComponentDeleteAction(textComponent);
+		Action selectAllAction = new TextComponentSelectAllAction(textComponent);
+		addPopUpMenu(textComponent, cutAction, copyAction, pasteAction,
+				deleteAction, selectAllAction);
+	}
 
-    /**
-     * Adds popup menu with edition options
-     * @param cutAction 
-     * @param copyAction 
-     * @param pasteAction 
-     * @param deleteAction 
-     * @param selectAllAction 
-     */
-    private void addPopUpMenu(JTextComponent textComponent, Action cutAction, Action copyAction, Action pasteAction, Action deleteAction, Action selectAllAction) {
-        add(cutAction);
-        add(copyAction);
-        add(pasteAction);
-        add(deleteAction);
-        add(new JSeparator());
-        add(selectAllAction);
-        textComponent.addMouseListener(new TextComponentPopupMenuMouseAdapter(this, textComponent, copyAction, deleteAction, selectAllAction, pasteAction, cutAction));
-    }
+	/**
+	 * Adds popup menu with edition options
+	 * 
+	 * @param cutAction
+	 * @param copyAction
+	 * @param pasteAction
+	 * @param deleteAction
+	 * @param selectAllAction
+	 */
+	private void addPopUpMenu(JTextComponent textComponent, Action cutAction,
+			Action copyAction, Action pasteAction, Action deleteAction,
+			Action selectAllAction) {
+		add(cutAction);
+		add(copyAction);
+		add(pasteAction);
+		add(deleteAction);
+		add(new JSeparator());
+		add(selectAllAction);
+		textComponent.addMouseListener(new TextComponentPopupMenuMouseAdapter(
+				this, textComponent, copyAction, deleteAction, selectAllAction,
+				pasteAction, cutAction));
+	}
 }

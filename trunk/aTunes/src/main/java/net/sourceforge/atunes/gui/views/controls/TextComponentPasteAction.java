@@ -27,7 +27,6 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.utils.ClipboardFacade;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -38,24 +37,34 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 class TextComponentPasteAction extends AbstractAction {
 
-    private static final long serialVersionUID = -7600198128040448381L;
+	private static final long serialVersionUID = -7600198128040448381L;
 
-    /**
-     * Text component associated
-     */
-    private JTextComponent textComponent;
+	/**
+	 * Text component associated
+	 */
+	private final JTextComponent textComponent;
 
-    public TextComponentPasteAction(JTextComponent textComponent) {
-        super(I18nUtils.getString("PASTE"));
-        this.textComponent = textComponent;
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, GuiUtils.getCtrlOrMetaActionEventMask()));
-    }
+	private final ClipboardFacade clipboard;
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String text = this.textComponent.getText();
-        String copiedText = Context.getBean(ClipboardFacade.class).getClipboardContent();
-        String newText = StringUtils.getString(text.substring(0, this.textComponent.getSelectionStart()), copiedText, text.substring(this.textComponent.getSelectionEnd()));
-        this.textComponent.setText(newText);
-    }
+	public TextComponentPasteAction(JTextComponent textComponent,
+			ClipboardFacade clipboard) {
+		super(I18nUtils.getString("PASTE"));
+		this.textComponent = textComponent;
+		this.clipboard = clipboard;
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_V,
+						GuiUtils.getCtrlOrMetaActionEventMask()));
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String text = this.textComponent.getText();
+		String copiedText = clipboard.getClipboardContent();
+		String newText = StringUtils.getString(
+				text.substring(0, this.textComponent.getSelectionStart()),
+				copiedText,
+				text.substring(this.textComponent.getSelectionEnd()));
+		this.textComponent.setText(newText);
+	}
 }

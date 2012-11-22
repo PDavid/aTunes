@@ -180,4 +180,6 @@
 		<constructor-arg value="0"/>
 	</bean>
 	
+	<bean id="controlsBuilder" class="net.sourceforge.atunes.gui.views.controls.ControlsBuilder"/>
+	
 </beans>

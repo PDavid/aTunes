@@ -29,11 +29,12 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextPane;
 import javax.swing.text.StyleConstants;
 
-import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -42,87 +43,100 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ArtistBasicInfoContent extends AbstractContextPanelContent<ArtistInfoDataSource> {
+public class ArtistBasicInfoContent extends
+		AbstractContextPanelContent<ArtistInfoDataSource> {
 
-    private static final long serialVersionUID = -5538266144953409867L;
+	private static final long serialVersionUID = -5538266144953409867L;
 
-    private JLabel artistImageLabel;
-    private UrlLabel artistNameLabel;
-    private CustomTextPane artistWikiAbstract;
-    private UrlLabel artistWikiReadMore;
+	private JLabel artistImageLabel;
+	private UrlLabel artistNameLabel;
+	private JTextPane artistWikiAbstract;
+	private UrlLabel artistWikiReadMore;
 
-    @Override
-    public String getContentName() {
-        return I18nUtils.getString("INFO");
-    }
+	private IControlsBuilder controlsBuilder;
 
-    @Override
-    public void updateContentFromDataSource(ArtistInfoDataSource source) {
-        ImageIcon artistImage = source.getArtistImage();
-        if (artistImage != null) {
-            artistImageLabel.setIcon(artistImage);
-        }
-        String artistName = source.getArtistName();
-        String artistUrl = source.getArtistUrl();
-        if (artistName != null && artistUrl != null) {
-            artistNameLabel.setText(artistName, artistUrl);
-        }
-        String wikiText = source.getWikiText();
-        if (wikiText != null) {
-            artistWikiAbstract.setText(wikiText);
-            artistWikiAbstract.setCaretPosition(0);
-        }
-        String wikiUrl = source.getWikiUrl();
-        if (wikiUrl != null) {
-            artistWikiReadMore.setText(I18nUtils.getString("READ_MORE"), wikiUrl);
-        }
-    }
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
-    @Override
-    public void clearContextPanelContent() {
-        super.clearContextPanelContent();
-        artistImageLabel.setIcon(null);
-        artistImageLabel.setBorder(null);
-        artistNameLabel.setText(null, null);
-        artistWikiAbstract.setText(null);
-        artistWikiReadMore.setText(null, null);
-    }
+	@Override
+	public String getContentName() {
+		return I18nUtils.getString("INFO");
+	}
 
-    @Override
-    public Component getComponent() {
-        // Create components
-        artistImageLabel = new JLabel();
-        artistNameLabel = new UrlLabel(getDesktop());
-        artistNameLabel.setFont(getLookAndFeelManager().getCurrentLookAndFeel().getContextInformationBigFont());
-        artistWikiAbstract = new CustomTextPane(StyleConstants.ALIGN_JUSTIFIED, getLookAndFeelManager());
-        artistWikiAbstract.setEditable(false);
-        artistWikiAbstract.setBorder(BorderFactory.createEmptyBorder());
-        artistWikiAbstract.setOpaque(false);
-        artistWikiReadMore = new UrlLabel(getDesktop());
+	@Override
+	public void updateContentFromDataSource(ArtistInfoDataSource source) {
+		ImageIcon artistImage = source.getArtistImage();
+		if (artistImage != null) {
+			artistImageLabel.setIcon(artistImage);
+		}
+		String artistName = source.getArtistName();
+		String artistUrl = source.getArtistUrl();
+		if (artistName != null && artistUrl != null) {
+			artistNameLabel.setText(artistName, artistUrl);
+		}
+		String wikiText = source.getWikiText();
+		if (wikiText != null) {
+			artistWikiAbstract.setText(wikiText);
+			artistWikiAbstract.setCaretPosition(0);
+		}
+		String wikiUrl = source.getWikiUrl();
+		if (wikiUrl != null) {
+			artistWikiReadMore.setText(I18nUtils.getString("READ_MORE"),
+					wikiUrl);
+		}
+	}
 
-        // Add components
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.insets = new Insets(15, 5, 0, 5);
-        panel.add(artistImageLabel, c);
-        c.gridy = 1;
-        c.insets = new Insets(5, 5, 5, 5);
-        panel.add(artistNameLabel, c);
-        c.gridy = 2;
-        c.weightx = 1;
-        c.weighty = 1;        
-        c.fill = GridBagConstraints.BOTH;
-        panel.add(artistWikiAbstract, c);
-        c.gridy = 3;
-        c.weighty = 0;
-        c.weightx = 0;
-        c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.EAST;
-        panel.add(artistWikiReadMore, c);
+	@Override
+	public void clearContextPanelContent() {
+		super.clearContextPanelContent();
+		artistImageLabel.setIcon(null);
+		artistImageLabel.setBorder(null);
+		artistNameLabel.setText(null, null);
+		artistWikiAbstract.setText(null);
+		artistWikiReadMore.setText(null, null);
+	}
 
-        return panel;
-    }
+	@Override
+	public Component getComponent() {
+		// Create components
+		artistImageLabel = new JLabel();
+		artistNameLabel = new UrlLabel(getDesktop());
+		artistNameLabel.setFont(getLookAndFeelManager().getCurrentLookAndFeel()
+				.getContextInformationBigFont());
+		artistWikiAbstract = controlsBuilder
+				.createTextPane(StyleConstants.ALIGN_JUSTIFIED);
+		artistWikiAbstract.setEditable(false);
+		artistWikiAbstract.setBorder(BorderFactory.createEmptyBorder());
+		artistWikiAbstract.setOpaque(false);
+		artistWikiReadMore = new UrlLabel(getDesktop());
+
+		// Add components
+		JPanel panel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.insets = new Insets(15, 5, 0, 5);
+		panel.add(artistImageLabel, c);
+		c.gridy = 1;
+		c.insets = new Insets(5, 5, 5, 5);
+		panel.add(artistNameLabel, c);
+		c.gridy = 2;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		panel.add(artistWikiAbstract, c);
+		c.gridy = 3;
+		c.weighty = 0;
+		c.weightx = 0;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.EAST;
+		panel.add(artistWikiReadMore, c);
+
+		return panel;
+	}
 
 }

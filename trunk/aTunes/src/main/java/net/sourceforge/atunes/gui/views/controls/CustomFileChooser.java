@@ -35,6 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
 
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFileSelectorDialog;
 import net.sourceforge.atunes.model.IFolderSelectorDialog;
@@ -52,18 +53,25 @@ public final class CustomFileChooser extends JPanel {
 
 	/**
 	 * Instantiates a new custom file chooser.
+	 * 
 	 * @param title
 	 * @param parent
 	 * @param length
 	 * @param type
 	 * @param osManager
 	 * @param beanFactory
+	 * @param controlsBuilder
 	 */
-	public CustomFileChooser(final String title, final Component parent, final int length, final int type, final IOSManager osManager, final IBeanFactory beanFactory) {
+	public CustomFileChooser(final String title, final Component parent,
+			final int length, final int type, final IOSManager osManager,
+			final IBeanFactory beanFactory, IControlsBuilder controlsBuilder) {
 		super(new GridBagLayout());
 		// Use user home by default
 		final File defaultFolder = new File(osManager.getUserHome());
-		textField = new CustomTextField(net.sourceforge.atunes.utils.FileUtils.getPath(defaultFolder), length);
+		textField = controlsBuilder.createTextField();
+		textField.setColumns(length);
+		textField.setText(net.sourceforge.atunes.utils.FileUtils
+				.getPath(defaultFolder));
 		JButton button = new JButton("...");
 
 		button.addActionListener(new ActionListener() {
@@ -71,16 +79,21 @@ public final class CustomFileChooser extends JPanel {
 			public void actionPerformed(final ActionEvent arg0) {
 				File selected = null;
 				if (type == JFileChooser.DIRECTORIES_ONLY) {
-					IFolderSelectorDialog dialog = beanFactory.getBean(IDialogFactory.class).newDialog(IFolderSelectorDialog.class);
+					IFolderSelectorDialog dialog = beanFactory.getBean(
+							IDialogFactory.class).newDialog(
+							IFolderSelectorDialog.class);
 					dialog.setTitle(title);
 					selected = dialog.selectFolder(defaultFolder);
 				} else {
-					IFileSelectorDialog dialog = beanFactory.getBean(IDialogFactory.class).newDialog(IFileSelectorDialog.class);
+					IFileSelectorDialog dialog = beanFactory.getBean(
+							IDialogFactory.class).newDialog(
+							IFileSelectorDialog.class);
 					dialog.setTitle(title);
 					selected = dialog.loadFile(defaultFolder);
 				}
 				if (selected != null) {
-					result = net.sourceforge.atunes.utils.FileUtils.getPath(selected);
+					result = net.sourceforge.atunes.utils.FileUtils
+							.getPath(selected);
 				} else {
 					result = null;
 				}
@@ -124,6 +137,7 @@ public final class CustomFileChooser extends JPanel {
 
 	/**
 	 * Adds a document listener to text field
+	 * 
 	 * @param listener
 	 */
 	public void addDocumentListener(final DocumentListener listener) {

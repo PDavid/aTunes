@@ -37,7 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -49,147 +49,174 @@ import org.commonjukebox.plugins.model.PluginProperty;
 
 /**
  * Dialog to edit plugin properties
+ * 
  * @author alex
- *
+ * 
  */
 public class PluginEditorDialog extends AbstractCustomDialog {
 
-    private static final long serialVersionUID = -2629422819919724654L;
+	private static final long serialVersionUID = -2629422819919724654L;
 
-    private PluginConfiguration configuration;
+	private PluginConfiguration configuration;
 
-    /**
-     * @param frame
-     */
-    public PluginEditorDialog(IFrame frame) {
-        super(frame, 800, 600);
-    }
-    
-    /**
-     * Initializes dialog
-     * @param plugin
-     * @param configuration
-     */
-    public void initializeDialog(PluginInfo plugin, PluginConfiguration configuration) {
-        this.configuration = configuration;
-        setResizable(true);
-        setTitle(StringUtils.getString(I18nUtils.getString("PLUGIN_PROPERTIES_EDITOR"), ": ", plugin.getName()));
-        add(getContent(getLookAndFeel()));
-    }
+	private IControlsBuilder controlsBuilder;
 
-    private JPanel getContent(ILookAndFeel iLookAndFeel) {
-        JPanel panel = new JPanel(new BorderLayout());
-        PluginConfigurationPanel configPanel = new PluginConfigurationPanel(configuration);
-        panel.add(iLookAndFeel.getScrollPane(configPanel), BorderLayout.CENTER);
-        JButton okButton = new JButton(I18nUtils.getString("OK"));
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PluginEditorDialog.this.setVisible(false);
-            }
-        });
-        JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // User canceled edition so set configuration to null
-                PluginEditorDialog.this.configuration = null;
-                PluginEditorDialog.this.setVisible(false);
-            }
-        });
-        JPanel buttonsPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.anchor = GridBagConstraints.EAST;
-        c.insets = new Insets(10, 5, 10, 5);
-        buttonsPanel.add(okButton, c);
-        c.gridx = 1;
-        c.weightx = 0;
-        c.anchor = GridBagConstraints.CENTER;
-        buttonsPanel.add(cancelButton, c);
-        panel.add(buttonsPanel, BorderLayout.SOUTH);
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
-        return panel;
-    }
+	/**
+	 * @param frame
+	 */
+	public PluginEditorDialog(IFrame frame) {
+		super(frame, 800, 600);
+	}
 
-    /**
-     * @return the configuration
-     */
-    public PluginConfiguration getConfiguration() {
-        return configuration;
-    }
+	/**
+	 * Initializes dialog
+	 * 
+	 * @param plugin
+	 * @param configuration
+	 */
+	public void initializeDialog(PluginInfo plugin,
+			PluginConfiguration configuration) {
+		this.configuration = configuration;
+		setResizable(true);
+		setTitle(StringUtils.getString(
+				I18nUtils.getString("PLUGIN_PROPERTIES_EDITOR"), ": ",
+				plugin.getName()));
+		add(getContent(getLookAndFeel()));
+	}
 
-    private static class PluginConfigurationPanel extends JPanel {
+	private JPanel getContent(ILookAndFeel iLookAndFeel) {
+		JPanel panel = new JPanel(new BorderLayout());
+		PluginConfigurationPanel configPanel = new PluginConfigurationPanel(
+				configuration, controlsBuilder);
+		panel.add(iLookAndFeel.getScrollPane(configPanel), BorderLayout.CENTER);
+		JButton okButton = new JButton(I18nUtils.getString("OK"));
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PluginEditorDialog.this.setVisible(false);
+			}
+		});
+		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
+		cancelButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// User canceled edition so set configuration to null
+				PluginEditorDialog.this.configuration = null;
+				PluginEditorDialog.this.setVisible(false);
+			}
+		});
+		JPanel buttonsPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.anchor = GridBagConstraints.EAST;
+		c.insets = new Insets(10, 5, 10, 5);
+		buttonsPanel.add(okButton, c);
+		c.gridx = 1;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.CENTER;
+		buttonsPanel.add(cancelButton, c);
+		panel.add(buttonsPanel, BorderLayout.SOUTH);
 
-        private static final class TextFieldKeyAdapter extends KeyAdapter {
-            private final JTextField textField;
-            private final PluginProperty<?> property;
+		return panel;
+	}
 
-            private TextFieldKeyAdapter(JTextField textField, PluginProperty<?> property) {
-                this.textField = textField;
-                this.property = property;
-            }
+	/**
+	 * @return the configuration
+	 */
+	public PluginConfiguration getConfiguration() {
+		return configuration;
+	}
 
-            @Override
-            public void keyTyped(KeyEvent e) {
-                super.keyTyped(e);
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        property.setValue(textField.getText());
-                    }
-                });
-            }
-        }
+	private static class PluginConfigurationPanel extends JPanel {
 
-        private static final long serialVersionUID = 8063088904049173181L;
+		private static final class TextFieldKeyAdapter extends KeyAdapter {
+			private final JTextField textField;
+			private final PluginProperty<?> property;
 
-        private PluginConfiguration configuration;
+			private TextFieldKeyAdapter(JTextField textField,
+					PluginProperty<?> property) {
+				this.textField = textField;
+				this.property = property;
+			}
 
-        public PluginConfigurationPanel(PluginConfiguration configuration) {
-            super(new GridBagLayout());
-            this.configuration = configuration;
-            addContent();
-        }
+			@Override
+			public void keyTyped(KeyEvent e) {
+				super.keyTyped(e);
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						property.setValue(textField.getText());
+					}
+				});
+			}
+		}
 
-        private void addContent() {
-            GridBagConstraints c = new GridBagConstraints();
-            c.gridx = 0;
-            c.gridy = 0;
-            c.weightx = 0.5;
-            c.fill = GridBagConstraints.HORIZONTAL;
-            c.anchor = GridBagConstraints.WEST;
-            c.insets = new Insets(10, 10, 0, 10);
-            for (String property : this.configuration.getPropertiesNames()) {
-                PluginProperty<?> pluginProperty = this.configuration.getProperty(property);
-                JLabel propertyLabel = getPropertyLabel(pluginProperty);
-                JComponent propertyValue = getPropertyEditor(pluginProperty);
+		private static final long serialVersionUID = 8063088904049173181L;
 
-                // When last component is added set weighty = 1
-                if (c.gridy == this.configuration.getPropertiesCount() - 1) {
-                    c.weighty = 1;
-                    c.anchor = GridBagConstraints.NORTHWEST;
-                }
+		private final PluginConfiguration configuration;
 
-                c.gridx = 0;
-                this.add(propertyLabel, c);
-                c.gridx = 1;
-                this.add(propertyValue, c);
+		private final IControlsBuilder controlsBuilder;
 
-                c.gridy++;
-            }
-        }
+		/**
+		 * @param configuration
+		 * @param controlsBuilder
+		 */
+		public PluginConfigurationPanel(PluginConfiguration configuration,
+				IControlsBuilder controlsBuilder) {
+			super(new GridBagLayout());
+			this.configuration = configuration;
+			this.controlsBuilder = controlsBuilder;
+			addContent();
+		}
 
-        private JLabel getPropertyLabel(PluginProperty<?> property) {
-            return new JLabel(property.getDescription());
-        }
+		private void addContent() {
+			GridBagConstraints c = new GridBagConstraints();
+			c.gridx = 0;
+			c.gridy = 0;
+			c.weightx = 0.5;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.anchor = GridBagConstraints.WEST;
+			c.insets = new Insets(10, 10, 0, 10);
+			for (String property : this.configuration.getPropertiesNames()) {
+				PluginProperty<?> pluginProperty = this.configuration
+						.getProperty(property);
+				JLabel propertyLabel = getPropertyLabel(pluginProperty);
+				JComponent propertyValue = getPropertyEditor(pluginProperty);
 
-        private JComponent getPropertyEditor(final PluginProperty<?> property) {
-            final JTextField textField = new CustomTextField(property.getValue().toString());
-            textField.addKeyListener(new TextFieldKeyAdapter(textField, property));
-            return textField;
-        }
-    }
+				// When last component is added set weighty = 1
+				if (c.gridy == this.configuration.getPropertiesCount() - 1) {
+					c.weighty = 1;
+					c.anchor = GridBagConstraints.NORTHWEST;
+				}
+
+				c.gridx = 0;
+				this.add(propertyLabel, c);
+				c.gridx = 1;
+				this.add(propertyValue, c);
+
+				c.gridy++;
+			}
+		}
+
+		private JLabel getPropertyLabel(PluginProperty<?> property) {
+			return new JLabel(property.getDescription());
+		}
+
+		private JComponent getPropertyEditor(final PluginProperty<?> property) {
+			final JTextField textField = controlsBuilder.createTextField();
+			textField.setText(property.getValue().toString());
+			textField.addKeyListener(new TextFieldKeyAdapter(textField,
+					property));
+			return textField;
+		}
+	}
 }

@@ -46,13 +46,10 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.text.DefaultEditorKit;
-import javax.swing.text.JTextComponent;
 import javax.swing.text.StyleConstants;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.Logger;
@@ -70,22 +67,6 @@ public final class GuiUtils {
 	private static final String SHAPED_WINDOWS_NOT_SUPPORTED = "shaped windows not supported: ";
 
 	private static final String ESCAPE2 = "ESCAPE";
-
-	private static final JTextComponent.KeyBinding[] MAC_OS_BINDINGS = {
-		new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK), DefaultEditorKit.defaultKeyTypedAction),
-		new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK), DefaultEditorKit.defaultKeyTypedAction),
-		new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK), DefaultEditorKit.defaultKeyTypedAction),
-		new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK), DefaultEditorKit.defaultKeyTypedAction),
-		new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.CTRL_MASK), DefaultEditorKit.defaultKeyTypedAction),
-		new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.CTRL_MASK), DefaultEditorKit.defaultKeyTypedAction),
-
-		new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_MASK), DefaultEditorKit.copyAction),
-		new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.META_MASK), DefaultEditorKit.pasteAction),
-		new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.META_MASK), DefaultEditorKit.cutAction),
-		new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.META_MASK), DefaultEditorKit.selectAllAction),
-		new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.META_MASK), DefaultEditorKit.beginLineAction),
-		new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.META_MASK), DefaultEditorKit.endLineAction),
-	};
 
 	/** The border color. */
 	private static Color borderColor = Color.BLACK;
@@ -105,9 +86,12 @@ public final class GuiUtils {
 	static {
 		try {
 			Class<?> awtUtilities = Class.forName("com.sun.awt.AWTUtilities");
-			setWindowShapeMethod = awtUtilities.getDeclaredMethod("setWindowShape", Window.class, Shape.class);
-			setWindowOpacityMethod = awtUtilities.getDeclaredMethod("setWindowOpacity", Window.class, float.class);
-			setWindowOpaqueMethod = awtUtilities.getDeclaredMethod("setWindowOpaque", Window.class, boolean.class);
+			setWindowShapeMethod = awtUtilities.getDeclaredMethod(
+					"setWindowShape", Window.class, Shape.class);
+			setWindowOpacityMethod = awtUtilities.getDeclaredMethod(
+					"setWindowOpacity", Window.class, float.class);
+			setWindowOpaqueMethod = awtUtilities.getDeclaredMethod(
+					"setWindowOpaque", Window.class, boolean.class);
 		} catch (ClassNotFoundException e) {
 			Logger.info("class com.sun.awt.AWTUtilities not found");
 		} catch (SecurityException e) {
@@ -129,7 +113,8 @@ public final class GuiUtils {
 	 *            the root pane
 	 * 
 	 */
-	public static void addCloseActionWithEscapeKey(final Window window, final JRootPane rootPane) {
+	public static void addCloseActionWithEscapeKey(final Window window,
+			final JRootPane rootPane) {
 		// Handle escape key to close the window
 
 		KeyStroke escape = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
@@ -141,7 +126,8 @@ public final class GuiUtils {
 				window.setVisible(false);
 			}
 		};
-		rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escape, ESCAPE2);
+		rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escape,
+				ESCAPE2);
 		rootPane.getActionMap().put(ESCAPE2, escapeAction);
 	}
 
@@ -153,7 +139,8 @@ public final class GuiUtils {
 	 * @param rootPane
 	 *            the root pane
 	 */
-	public static void addDisposeActionWithEscapeKey(final Window window, final JRootPane rootPane) {
+	public static void addDisposeActionWithEscapeKey(final Window window,
+			final JRootPane rootPane) {
 		// Handle escape key to close the window
 
 		KeyStroke escape = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
@@ -165,13 +152,15 @@ public final class GuiUtils {
 				window.dispose();
 			}
 		};
-		rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escape, ESCAPE2);
+		rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escape,
+				ESCAPE2);
 		rootPane.getActionMap().put(ESCAPE2, disposeAction);
 	}
 
 	public static void addAppIcons(final Window w) {
-		w.setIconImages(Arrays.asList(Images.getImage(Images.APP_LOGO_16).getImage(), Images.getImage(Images.APP_LOGO_32).getImage(), Images.getImage(Images.APP_LOGO_90)
-				.getImage()));
+		w.setIconImages(Arrays.asList(Images.getImage(Images.APP_LOGO_16)
+				.getImage(), Images.getImage(Images.APP_LOGO_32).getImage(),
+				Images.getImage(Images.APP_LOGO_90).getImage()));
 	}
 
 	/**
@@ -263,7 +252,8 @@ public final class GuiUtils {
 		if (componentOrientation == null) {
 			setComponentOrientation();
 		}
-		return componentOrientation.isLeftToRight() ? SwingConstants.LEFT : SwingConstants.RIGHT;
+		return componentOrientation.isLeftToRight() ? SwingConstants.LEFT
+				: SwingConstants.RIGHT;
 	}
 
 	/**
@@ -275,7 +265,8 @@ public final class GuiUtils {
 		if (componentOrientation == null) {
 			setComponentOrientation();
 		}
-		return componentOrientation.isLeftToRight() ? StyleConstants.ALIGN_LEFT : StyleConstants.ALIGN_RIGHT;
+		return componentOrientation.isLeftToRight() ? StyleConstants.ALIGN_LEFT
+				: StyleConstants.ALIGN_RIGHT;
 	}
 
 	/**
@@ -295,10 +286,12 @@ public final class GuiUtils {
 		IStateCore state = Context.getBean(IStateCore.class);
 		componentOrientation = ComponentOrientation.LEFT_TO_RIGHT;
 		if (state.getLocale() != null) {
-			if ("ug".equalsIgnoreCase(state.getLocale().getLocale().getLanguage())) {
+			if ("ug".equalsIgnoreCase(state.getLocale().getLocale()
+					.getLanguage())) {
 				componentOrientation = ComponentOrientation.RIGHT_TO_LEFT;
 			} else {
-				componentOrientation = ComponentOrientation.getOrientation(state.getLocale().getLocale());
+				componentOrientation = ComponentOrientation
+						.getOrientation(state.getLocale().getLocale());
 			}
 		}
 	}
@@ -405,7 +398,8 @@ public final class GuiUtils {
 	 * @return
 	 */
 	public static int getNumberOfScreenDevices() {
-		return GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length;
+		return GraphicsEnvironment.getLocalGraphicsEnvironment()
+				.getScreenDevices().length;
 	}
 
 	/**
@@ -416,11 +410,15 @@ public final class GuiUtils {
 	 * @param y
 	 * @return
 	 */
-	public static GraphicsDevice getGraphicsDeviceForLocation(final int x, final int y) {
-		GraphicsEnvironment localGraphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	public static GraphicsDevice getGraphicsDeviceForLocation(final int x,
+			final int y) {
+		GraphicsEnvironment localGraphicsEnvironment = GraphicsEnvironment
+				.getLocalGraphicsEnvironment();
 		for (int i = 0; i < getNumberOfScreenDevices(); i++) {
-			GraphicsDevice graphicsDevice = localGraphicsEnvironment.getScreenDevices()[i];
-			if (graphicsDevice.getDefaultConfiguration().getBounds().contains(x, y)) {
+			GraphicsDevice graphicsDevice = localGraphicsEnvironment
+					.getScreenDevices()[i];
+			if (graphicsDevice.getDefaultConfiguration().getBounds()
+					.contains(x, y)) {
 				return graphicsDevice;
 			}
 		}
@@ -438,7 +436,9 @@ public final class GuiUtils {
 	}
 
 	/**
-	 * Returns true if mouse event is from primary mouse button (left-click or not Ctrl-click in Mac)
+	 * Returns true if mouse event is from primary mouse button (left-click or
+	 * not Ctrl-click in Mac)
+	 * 
 	 * @param e
 	 * @return
 	 */
@@ -447,7 +447,9 @@ public final class GuiUtils {
 	}
 
 	/**
-	 * Returns true if mouse event is from secondary mouse button (right-click or Ctrl-click in Mac)
+	 * Returns true if mouse event is from secondary mouse button (right-click
+	 * or Ctrl-click in Mac)
+	 * 
 	 * @param e
 	 * @return
 	 */
@@ -457,16 +459,18 @@ public final class GuiUtils {
 		} else {
 			// When Cmd key is pressed, left and right buttons seems pressed
 			// In this case return false
-			if (e.isMetaDown() && SwingUtilities.isRightMouseButton(e) && SwingUtilities.isLeftMouseButton(e)) {
+			if (e.isMetaDown() && SwingUtilities.isRightMouseButton(e)
+					&& SwingUtilities.isLeftMouseButton(e)) {
 				return false;
 			}
-			return SwingUtilities.isRightMouseButton(e) ||
-			SwingUtilities.isLeftMouseButton(e) && e.isControlDown();
+			return SwingUtilities.isRightMouseButton(e)
+					|| SwingUtilities.isLeftMouseButton(e) && e.isControlDown();
 		}
 	}
 
 	/**
-	 * @return mask to use Ctrl or Command keys, given the current operating system
+	 * @return mask to use Ctrl or Command keys, given the current operating
+	 *         system
 	 */
 	public static int getCtrlOrMetaActionEventMask() {
 		if (!Context.getBean(IOSManager.class).isMacOsX()) {
@@ -478,6 +482,7 @@ public final class GuiUtils {
 
 	/**
 	 * Executes a code in Event Dispatch Thread
+	 * 
 	 * @param runnable
 	 */
 	public static void callInEventDispatchThread(final Runnable runnable) {
@@ -490,6 +495,7 @@ public final class GuiUtils {
 
 	/**
 	 * Executes a code in Event Dispatch Thread, waiting for finalization
+	 * 
 	 * @param runnable
 	 */
 	public static void callInEventDispatchThreadAndWait(final Runnable runnable) {
@@ -503,16 +509,6 @@ public final class GuiUtils {
 			}
 		} else {
 			runnable.run();
-		}
-	}
-
-	/**
-	 * Sets custom properties to text fields
-	 * @param customTextField
-	 */
-	public static void initializeTextField(final CustomTextField customTextField) {
-		if (Context.getBean(IOSManager.class).isMacOsX()) {
-			JTextComponent.loadKeymap(customTextField.getKeymap(), MAC_OS_BINDINGS, customTextField.getActions());
 		}
 	}
 }

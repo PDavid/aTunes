@@ -40,8 +40,8 @@ import javax.swing.JTextField;
 import net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -66,9 +66,18 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	private JButton cancel;
 	private CdInfoTableModel tableModel;
 
-	private CustomTextField discNumberField;
+	private JTextField discNumberField;
 
 	private IBeanFactory beanFactory;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	/**
 	 * @param beanFactory
@@ -79,6 +88,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
 	/**
 	 * Instantiates a new rip cd dialog.
+	 * 
 	 * @param frame
 	 */
 	public RipCdDialog(final IFrame frame) {
@@ -95,7 +105,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	/**
 	 * @return
 	 */
-	public CustomTextField getDiscNumberField() {
+	public JTextField getDiscNumberField() {
 		return discNumberField;
 	}
 
@@ -155,22 +165,24 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
 	/**
 	 * Panel with basic fields: artist, album, ...
+	 * 
 	 * @return
 	 */
 	private JPanel getBasicPanel() {
 		JPanel basicPanel = new JPanel(new GridBagLayout());
 
-		JLabel albumArtistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
-		albumArtistTextField = new CustomTextField();
+		JLabel albumArtistLabel = new JLabel(
+				I18nUtils.getString("ALBUM_ARTIST"));
+		albumArtistTextField = controlsBuilder.createTextField();
 
 		JLabel albumLabel = new JLabel(I18nUtils.getString("ALBUM"));
-		albumTextField = new CustomTextField();
+		albumTextField = controlsBuilder.createTextField();
 
 		JLabel cdLabel = new JLabel(I18nUtils.getString("DISC_NUMBER"));
-		discNumberField = new CustomTextField();
+		discNumberField = controlsBuilder.createTextField();
 
 		JLabel yearLabel = new JLabel(I18nUtils.getString("YEAR"));
-		yearTextField = new CustomTextField();
+		yearTextField = controlsBuilder.createTextField();
 
 		JLabel genreLabel = new JLabel(I18nUtils.getString("GENRE"));
 		genreComboBox = new JComboBox();
@@ -178,7 +190,8 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
 		titlesButton = new JButton(I18nUtils.getString("GET_TITLES"));
 
-		arrangeBasicPanel(basicPanel, albumArtistLabel, albumLabel, yearLabel, genreLabel, cdLabel);
+		arrangeBasicPanel(basicPanel, albumArtistLabel, albumLabel, yearLabel,
+				genreLabel, cdLabel);
 
 		return basicPanel;
 	}
@@ -191,7 +204,10 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @param genreLabel
 	 * @param cdLabel
 	 */
-	private void arrangeBasicPanel(final JPanel basicPanel, final JLabel albumArtistLabel, final JLabel albumLabel, final JLabel yearLabel, final JLabel genreLabel, final JLabel cdLabel) {
+	private void arrangeBasicPanel(final JPanel basicPanel,
+			final JLabel albumArtistLabel, final JLabel albumLabel,
+			final JLabel yearLabel, final JLabel genreLabel,
+			final JLabel cdLabel) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.insets = new Insets(5, 10, 5, 10);
@@ -247,7 +263,8 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
 		quality = new JComboBox(new String[] {});
 
-		useCdErrorCorrection = new JCheckBox(I18nUtils.getString("USE_CD_ERROR_CORRECTION"));
+		useCdErrorCorrection = new JCheckBox(
+				I18nUtils.getString("USE_CD_ERROR_CORRECTION"));
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(5, 10, 5, 10);
@@ -277,6 +294,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
 	/**
 	 * Defines the content of the dialog box.
+	 * 
 	 * @param iLookAndFeel
 	 * 
 	 * @return the content
@@ -340,14 +358,16 @@ public final class RipCdDialog extends AbstractCustomDialog {
 		table.setModel(tableModel);
 
 		table.getColumnModel().getColumn(0).setMaxWidth(20); // Width of check
-		table.getColumnModel().getColumn(4).setMaxWidth(50); // Width of duration
+		table.getColumnModel().getColumn(4).setMaxWidth(50); // Width of
+																// duration
 
 		JCheckBox checkBox = new JCheckBox();
-		table.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(checkBox));
+		table.getColumnModel().getColumn(0)
+				.setCellEditor(new DefaultCellEditor(checkBox));
 
-		JTextField textfield1 = new CustomTextField();
-		JTextField textfield2 = new CustomTextField();
-		JTextField textfield3 = new CustomTextField();
+		JTextField textfield1 = controlsBuilder.createTextField();
+		JTextField textfield2 = controlsBuilder.createTextField();
+		JTextField textfield3 = controlsBuilder.createTextField();
 		textfield1.setBorder(BorderFactory.createEmptyBorder());
 		textfield2.setBorder(BorderFactory.createEmptyBorder());
 		textfield3.setBorder(BorderFactory.createEmptyBorder());
@@ -355,11 +375,17 @@ public final class RipCdDialog extends AbstractCustomDialog {
 		GuiUtils.applyComponentOrientation(textfield2);
 		GuiUtils.applyComponentOrientation(textfield3);
 
-		table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(textfield1));
-		table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(textfield2));
-		table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(textfield3));
+		table.getColumnModel().getColumn(1)
+				.setCellEditor(new DefaultCellEditor(textfield1));
+		table.getColumnModel().getColumn(2)
+				.setCellEditor(new DefaultCellEditor(textfield2));
+		table.getColumnModel().getColumn(3)
+				.setCellEditor(new DefaultCellEditor(textfield3));
 
-		table.setDefaultRenderer(String.class, iLookAndFeel.getTableCellRenderer(beanFactory.getBean(ComponentOrientationTableCellRendererCode.class)));
+		table.setDefaultRenderer(
+				String.class,
+				iLookAndFeel.getTableCellRenderer(beanFactory
+						.getBean(ComponentOrientationTableCellRendererCode.class)));
 		return table;
 	}
 
@@ -472,18 +498,22 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
 	/**
 	 * Update artist names.
+	 * 
 	 * @param cdInfo
 	 */
 	public void updateArtistNames(final CDInfo cdInfo) {
 		// Fill names of artists
-		// Each track has an artist which can be "" if it's the same artist of all CD tracks
+		// Each track has an artist which can be "" if it's the same artist of
+		// all CD tracks
 		List<String> names = new ArrayList<String>();
 		for (String artist : cdInfo.getArtists()) {
 			if (!artist.trim().equals("")) {
 				names.add(artist);
 			} else {
-				// TODO if cdda2wav is modified for detecting song artist modify here
-				if (cdInfo.getArtist() != null && !cdInfo.getArtist().trim().equals("")) {
+				// TODO if cdda2wav is modified for detecting song artist modify
+				// here
+				if (cdInfo.getArtist() != null
+						&& !cdInfo.getArtist().trim().equals("")) {
 					names.add(cdInfo.getArtist());
 				} else {
 					names.add("");

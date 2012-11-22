@@ -32,8 +32,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IPodcastFeed;
@@ -42,115 +42,127 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class AddPodcastFeedDialog.
  */
-public final class AddPodcastFeedDialog extends AbstractCustomDialog implements IAddPodcastFeedDialog {
+public final class AddPodcastFeedDialog extends AbstractCustomDialog implements
+		IAddPodcastFeedDialog {
 
-    private static final long serialVersionUID = 7295438534550341824L;
+	private static final long serialVersionUID = 7295438534550341824L;
 
-    /** The podcast feed. */
-    private IPodcastFeed podcastFeed;
+	/** The podcast feed. */
+	private IPodcastFeed podcastFeed;
 
-    /** The name text field. */
-    private JTextField nameTextField;
+	/** The name text field. */
+	private JTextField nameTextField;
 
-    /** The url text field. */
-    private JTextField urlTextField;
-    
-    private IIconFactory rssMediumIcon;
-    
-    /**
-     * Instantiates a new adds the podcast feed dialog.
-     * 
-     * @param frame
-     */
-    public AddPodcastFeedDialog(IFrame frame) {
-        super(frame, 500, 170);
-    }
-    
-    /**
-     * Initializes dialog
-     */
-    @Override
-    public void initialize() {
-        setTitle(I18nUtils.getString("ADD_PODCAST_FEED"));
-        setResizable(false);
-        add(getContent());
-    }
-    
-    @Override
-    public void hideDialog() {
-    	setVisible(false);
-    }
-    
-    /**
-     * @param rssMediumIcon
-     */
-    public void setRssMediumIcon(IIconFactory rssMediumIcon) {
+	/** The url text field. */
+	private JTextField urlTextField;
+
+	private IIconFactory rssMediumIcon;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
+	/**
+	 * Instantiates a new adds the podcast feed dialog.
+	 * 
+	 * @param frame
+	 */
+	public AddPodcastFeedDialog(IFrame frame) {
+		super(frame, 500, 170);
+	}
+
+	/**
+	 * Initializes dialog
+	 */
+	@Override
+	public void initialize() {
+		setTitle(I18nUtils.getString("ADD_PODCAST_FEED"));
+		setResizable(false);
+		add(getContent());
+	}
+
+	@Override
+	public void hideDialog() {
+		setVisible(false);
+	}
+
+	/**
+	 * @param rssMediumIcon
+	 */
+	public void setRssMediumIcon(IIconFactory rssMediumIcon) {
 		this.rssMediumIcon = rssMediumIcon;
 	}
 
-    /**
-     * Gets the content.
-     * 
-     * @return the content
-     */
-    private JPanel getContent() {
-        JPanel panel = new JPanel(new GridBagLayout());
+	/**
+	 * Gets the content.
+	 * 
+	 * @return the content
+	 */
+	private JPanel getContent() {
+		JPanel panel = new JPanel(new GridBagLayout());
 
-        JLabel nameLabel = new JLabel(I18nUtils.getString("NAME"));
-        nameTextField = new CustomTextField();
-        JLabel urlLabel = new JLabel(I18nUtils.getString("URL"));
-        urlTextField = new CustomTextField();
+		JLabel nameLabel = new JLabel(I18nUtils.getString("NAME"));
+		nameTextField = controlsBuilder.createTextField();
+		JLabel urlLabel = new JLabel(I18nUtils.getString("URL"));
+		urlTextField = controlsBuilder.createTextField();
 
-        JButton okButton = getOkButton();
-        JButton cancelButton = getCancelButton();
+		JButton okButton = getOkButton();
+		JButton cancelButton = getCancelButton();
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 1;
-        c.gridy = 0;
-        c.insets = new Insets(5, 10, 5, 10);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(nameLabel, c);
-        c.gridx = 2;
-        c.weightx = 1;
-        panel.add(nameTextField, c);
-        c.gridx = 1;
-        c.gridy = 1;
-        c.weightx = 0;
-        panel.add(urlLabel, c);
-        c.gridx = 2;
-        c.weightx = 1;
-        panel.add(urlTextField, c);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridheight = 2;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = -1;
-        panel.add(new JLabel(rssMediumIcon.getIcon(getLookAndFeel().getPaintForSpecialControls())), c);
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 0;
+		c.insets = new Insets(5, 10, 5, 10);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		panel.add(nameLabel, c);
+		c.gridx = 2;
+		c.weightx = 1;
+		panel.add(nameTextField, c);
+		c.gridx = 1;
+		c.gridy = 1;
+		c.weightx = 0;
+		panel.add(urlLabel, c);
+		c.gridx = 2;
+		c.weightx = 1;
+		panel.add(urlTextField, c);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridheight = 2;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = -1;
+		panel.add(
+				new JLabel(rssMediumIcon.getIcon(getLookAndFeel()
+						.getPaintForSpecialControls())), c);
 
-        JPanel auxPanel = new JPanel();
-        auxPanel.add(okButton);
-        auxPanel.add(cancelButton);
+		JPanel auxPanel = new JPanel();
+		auxPanel.add(okButton);
+		auxPanel.add(cancelButton);
 
-        c.gridx = 0;
-        c.gridy = 2;
-        c.gridwidth = 3;
-        c.insets = new Insets(0, 0, 0, 0);
-        panel.add(auxPanel, c);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 3;
+		c.insets = new Insets(0, 0, 0, 0);
+		panel.add(auxPanel, c);
 
-        return panel;
-    }
+		return panel;
+	}
 
 	/**
 	 * @return
 	 */
 	private JButton getCancelButton() {
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddPodcastFeedDialog.this.dispose();
-            }
-        });
+		cancelButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AddPodcastFeedDialog.this.dispose();
+			}
+		});
 		return cancelButton;
 	}
 
@@ -159,28 +171,30 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements 
 	 */
 	private JButton getOkButton() {
 		JButton okButton = new JButton(I18nUtils.getString("OK"));
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (nameTextField.getText() == null || nameTextField.getText().trim().isEmpty()) {
-                    podcastFeed = new PodcastFeed("", urlTextField.getText());
-                    podcastFeed.setRetrieveNameFromFeed(true);
-                } else {
-                    podcastFeed = new PodcastFeed(nameTextField.getText(), urlTextField.getText());
-                }
-                AddPodcastFeedDialog.this.dispose();
-            }
-        });
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (nameTextField.getText() == null
+						|| nameTextField.getText().trim().isEmpty()) {
+					podcastFeed = new PodcastFeed("", urlTextField.getText());
+					podcastFeed.setRetrieveNameFromFeed(true);
+				} else {
+					podcastFeed = new PodcastFeed(nameTextField.getText(),
+							urlTextField.getText());
+				}
+				AddPodcastFeedDialog.this.dispose();
+			}
+		});
 		return okButton;
 	}
 
-    @Override
+	@Override
 	public IPodcastFeed getPodcastFeed() {
-        return podcastFeed;
-    }
-    
-    @Override
+		return podcastFeed;
+	}
+
+	@Override
 	public void showDialog() {
-    	setVisible(true);
-    }
+		setVisible(true);
+	}
 }

@@ -27,7 +27,6 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.utils.ClipboardFacade;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -37,21 +36,28 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 class TextComponentCopyAction extends AbstractAction {
 
-    private static final long serialVersionUID = -2366530850960686780L;
+	private static final long serialVersionUID = -2366530850960686780L;
 
-    /**
-     * Text component associated
-     */
-    private JTextComponent textComponent;
+	/**
+	 * Text component associated
+	 */
+	private final JTextComponent textComponent;
 
-    public TextComponentCopyAction(JTextComponent textComponent) {
-        super(I18nUtils.getString("COPY"));
-        this.textComponent = textComponent;
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C, GuiUtils.getCtrlOrMetaActionEventMask()));
-    }
+	private final ClipboardFacade clipboard;
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    	Context.getBean(ClipboardFacade.class).copyToClipboard(this.textComponent.getSelectedText());
-    }
+	public TextComponentCopyAction(JTextComponent textComponent,
+			ClipboardFacade clipboard) {
+		super(I18nUtils.getString("COPY"));
+		this.textComponent = textComponent;
+		this.clipboard = clipboard;
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_C,
+						GuiUtils.getCtrlOrMetaActionEventMask()));
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		clipboard.copyToClipboard(this.textComponent.getSelectedText());
+	}
 }
