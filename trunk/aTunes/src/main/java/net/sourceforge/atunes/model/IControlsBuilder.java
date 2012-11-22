@@ -24,6 +24,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
+import net.sourceforge.atunes.gui.views.controls.NextButton;
+import net.sourceforge.atunes.gui.views.controls.PlayPauseButton;
+import net.sourceforge.atunes.gui.views.controls.PreviousButton;
+
 /**
  * Interface to build UI components
  * 
@@ -53,5 +57,20 @@ public interface IControlsBuilder {
 	 * @return text pane with no edition capabilities
 	 */
 	JTextPane createReadOnlyTextPane(String text);
+
+	/**
+	 * @return play button
+	 */
+	PlayPauseButton createPlayPauseButton();
+
+	/**
+	 * @return previous button
+	 */
+	PreviousButton createPreviousButton();
+
+	/**
+	 * @return stop button
+	 */
+	NextButton createNextButton();
 
 }

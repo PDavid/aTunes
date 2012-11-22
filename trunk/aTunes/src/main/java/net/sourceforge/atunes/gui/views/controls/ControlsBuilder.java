@@ -31,6 +31,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
@@ -84,6 +85,15 @@ public class ControlsBuilder implements IControlsBuilder {
 	private ILookAndFeelManager lookAndFeelManager;
 
 	private ClipboardFacade clipboard;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param clipboard
@@ -150,5 +160,20 @@ public class ControlsBuilder implements IControlsBuilder {
 			JTextComponent.loadKeymap(customTextField.getKeymap(),
 					MAC_OS_BINDINGS, customTextField.getActions());
 		}
+	}
+
+	@Override
+	public PlayPauseButton createPlayPauseButton() {
+		return beanFactory.getBean(PlayPauseButton.class);
+	}
+
+	@Override
+	public NextButton createNextButton() {
+		return beanFactory.getBean(NextButton.class);
+	}
+
+	@Override
+	public PreviousButton createPreviousButton() {
+		return beanFactory.getBean(PreviousButton.class);
 	}
 }
