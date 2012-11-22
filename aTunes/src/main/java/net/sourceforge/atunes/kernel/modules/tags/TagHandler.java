@@ -32,9 +32,6 @@ import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITag;
@@ -52,13 +49,7 @@ import net.sourceforge.atunes.model.TextTagAttribute;
  */
 public class TagHandler extends AbstractHandler implements ITagHandler {
 
-	private IPlayListHandler playListHandler;
-
-	private ILocalAudioObjectValidator localAudioObjectValidator;
-
 	private IProcessFactory processFactory;
-
-	private IPlayerHandler playerHandler;
 
 	private IStateNavigation stateNavigation;
 
@@ -70,10 +61,20 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 
 	private IWebServicesHandler webServicesHandler;
 
+	private TagModifier tagModifier;
+
+	/**
+	 * @param tagModifier
+	 */
+	public void setTagModifier(final TagModifier tagModifier) {
+		this.tagModifier = tagModifier;
+	}
+
 	/**
 	 * @param webServicesHandler
 	 */
-	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+	public void setWebServicesHandler(
+			final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
 
@@ -100,32 +101,10 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	}
 
 	/**
-	 * @param playerHandler
-	 */
-	public void setPlayerHandler(final IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-
-	/**
 	 * @param processFactory
 	 */
 	public void setProcessFactory(final IProcessFactory processFactory) {
 		this.processFactory = processFactory;
-	}
-
-	/**
-	 * @param localAudioObjectValidator
-	 */
-	public void setLocalAudioObjectValidator(
-			final ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
-
-	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(final IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
 	}
 
 	/** The edit tag dialog controller. */
@@ -138,17 +117,18 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	 */
 	private EditTagDialogController getEditTagDialogController(
 			final EditTagSources sourceOfEditTagDialog) {
-		if (editTagDialogControllerMap == null) {
-			editTagDialogControllerMap = new HashMap<EditTagSources, EditTagDialogController>();
+		if (this.editTagDialogControllerMap == null) {
+			this.editTagDialogControllerMap = new HashMap<EditTagSources, EditTagDialogController>();
 		}
 
-		if (!editTagDialogControllerMap.containsKey(sourceOfEditTagDialog)) {
+		if (!this.editTagDialogControllerMap.containsKey(sourceOfEditTagDialog)) {
 			EditTagDialogController controller = getBean(EditTagDialogController.class);
 			controller.getComponentControlled().setPrevNextButtonsShown(
 					sourceOfEditTagDialog != EditTagSources.NAVIGATOR);
-			editTagDialogControllerMap.put(sourceOfEditTagDialog, controller);
+			this.editTagDialogControllerMap.put(sourceOfEditTagDialog,
+					controller);
 		}
-		return editTagDialogControllerMap.get(sourceOfEditTagDialog);
+		return this.editTagDialogControllerMap.get(sourceOfEditTagDialog);
 	}
 
 	@Override
@@ -160,61 +140,59 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	@Override
 	public void editFiles(final IAlbum a) {
 		new EditTitlesDialogController(
-				dialogFactory.newDialog(EditTitlesDialog.class),
-				processFactory, webServicesHandler).editFiles(a);
+				this.dialogFactory.newDialog(EditTitlesDialog.class),
+				this.processFactory, this.webServicesHandler).editFiles(a);
 	}
 
 	@Override
 	public void setTag(final ILocalAudioObject audioObject, final ITag tag) {
-		new TagModifier().setInfo(audioObject, tag, localAudioObjectValidator);
+		this.tagModifier.setInfo(audioObject, tag);
 	}
 
 	@Override
 	public void refreshAfterTagModify(
 			final Collection<ILocalAudioObject> audioObjectsChanged) {
-		new TagModifier().refreshAfterTagModify(audioObjectsChanged,
-				playListHandler, playerHandler);
+		this.tagModifier.refreshAfterTagModify(audioObjectsChanged);
 	}
 
 	@Override
 	public void deleteTags(final ILocalAudioObject audioObject) {
-		new TagModifier().deleteTags(audioObject);
+		this.tagModifier.deleteTags(audioObject);
 	}
 
 	@Override
 	public void setTag(final ILocalAudioObject audioObject, final ITag tag,
 			final boolean editCover, final byte[] cover) {
-		new TagModifier().setInfo(audioObject, tag, editCover, cover,
-				localAudioObjectValidator);
+		this.tagModifier.setInfo(audioObject, tag, editCover, cover);
 	}
 
 	@Override
 	public void setTitle(final ILocalAudioObject audioObject,
 			final String newTitle) {
-		new TagModifier().setTitles(audioObject, newTitle);
+		this.tagModifier.setTitles(audioObject, newTitle);
 	}
 
 	@Override
 	public void setAlbum(final ILocalAudioObject audioObject,
 			final String albumName) {
-		new TagModifier().setAlbum(audioObject, albumName);
+		this.tagModifier.setAlbum(audioObject, albumName);
 	}
 
 	@Override
 	public void setGenre(final ILocalAudioObject audioObject, final String genre) {
-		new TagModifier().setGenre(audioObject, genre);
+		this.tagModifier.setGenre(audioObject, genre);
 	}
 
 	@Override
 	public void setLyrics(final ILocalAudioObject audioObject,
 			final String lyricsString) {
-		new TagModifier().setLyrics(audioObject, lyricsString);
+		this.tagModifier.setLyrics(audioObject, lyricsString);
 	}
 
 	@Override
 	public void setTrackNumber(final ILocalAudioObject audioObject,
 			final Integer integer) {
-		new TagModifier().setTrackNumber(audioObject, integer);
+		this.tagModifier.setTrackNumber(audioObject, integer);
 	}
 
 	@Override
@@ -231,14 +209,16 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	@Override
 	public boolean hasIncompleteTags(final IAudioObject audioObject) {
 		return hasIncompleteTags(audioObject,
-				stateNavigation.getHighlightIncompleteTagFoldersAttributes());
+				this.stateNavigation
+						.getHighlightIncompleteTagFoldersAttributes());
 	}
 
 	@Override
 	public boolean hasIncompleteTags(
 			final ITreeObject<? extends IAudioObject> treeObject) {
 		return hasIncompleteTags(treeObject,
-				stateNavigation.getHighlightIncompleteTagFoldersAttributes());
+				this.stateNavigation
+						.getHighlightIncompleteTagFoldersAttributes());
 	}
 
 	/**
@@ -319,26 +299,28 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	 */
 	private ITagChecker getTagCheckerForAttribute(
 			final TextTagAttribute attribute) {
-		if (checkers == null) {
-			checkers = new HashMap<TextTagAttribute, ITagChecker>();
-			checkers.put(TextTagAttribute.ALBUM, new AlbumTagChecker(
-					unknownObjectChecker));
-			checkers.put(TextTagAttribute.ALBUM_ARTIST,
-					new AlbumArtistTagChecker(unknownObjectChecker));
-			checkers.put(TextTagAttribute.ARTIST, new ArtistTagChecker(
-					unknownObjectChecker));
-			checkers.put(TextTagAttribute.COMMENT, new CommentTagChecker());
-			checkers.put(TextTagAttribute.COMPOSER, new ComposerTagChecker());
-			checkers.put(TextTagAttribute.DISC_NUMBER,
+		if (this.checkers == null) {
+			this.checkers = new HashMap<TextTagAttribute, ITagChecker>();
+			this.checkers.put(TextTagAttribute.ALBUM, new AlbumTagChecker(
+					this.unknownObjectChecker));
+			this.checkers.put(TextTagAttribute.ALBUM_ARTIST,
+					new AlbumArtistTagChecker(this.unknownObjectChecker));
+			this.checkers.put(TextTagAttribute.ARTIST, new ArtistTagChecker(
+					this.unknownObjectChecker));
+			this.checkers
+					.put(TextTagAttribute.COMMENT, new CommentTagChecker());
+			this.checkers.put(TextTagAttribute.COMPOSER,
+					new ComposerTagChecker());
+			this.checkers.put(TextTagAttribute.DISC_NUMBER,
 					new DiscNumberTagChecker());
-			checkers.put(TextTagAttribute.GENRE, new GenreTagChecker(
-					unknownObjectChecker));
-			checkers.put(TextTagAttribute.LYRICS, new LyricsTagChecker());
-			checkers.put(TextTagAttribute.TITLE, new TitleTagChecker());
-			checkers.put(TextTagAttribute.TRACK, new TrackTagChecker());
-			checkers.put(TextTagAttribute.YEAR, new YearTagChecker());
+			this.checkers.put(TextTagAttribute.GENRE, new GenreTagChecker(
+					this.unknownObjectChecker));
+			this.checkers.put(TextTagAttribute.LYRICS, new LyricsTagChecker());
+			this.checkers.put(TextTagAttribute.TITLE, new TitleTagChecker());
+			this.checkers.put(TextTagAttribute.TRACK, new TrackTagChecker());
+			this.checkers.put(TextTagAttribute.YEAR, new YearTagChecker());
 		}
-		return checkers.get(attribute);
+		return this.checkers.get(attribute);
 	}
 
 }

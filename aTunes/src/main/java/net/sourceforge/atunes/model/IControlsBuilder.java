@@ -53,7 +53,7 @@ public interface IControlsBuilder {
 	JTextPane createTextPane(Integer alignJustified);
 
 	/**
-	 * @param alignJustified
+	 * @param text
 	 * @return text pane with no edition capabilities
 	 */
 	JTextPane createReadOnlyTextPane(String text);

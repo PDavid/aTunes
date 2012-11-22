@@ -45,4 +45,8 @@
 	<bean id="favoritesSearchableObject" class="net.sourceforge.atunes.kernel.modules.search.FavoritesSearchableObject" parent="searchableObject"/>
 
 	<bean id="localAudioObjectFilter" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFilter"/>	
+	
+	<bean id="tagModifier" class="net.sourceforge.atunes.kernel.modules.tags.TagModifier"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.tags.RefreshTagAfterModifyRunnable" scope="prototype"/>
+	
 </beans>
