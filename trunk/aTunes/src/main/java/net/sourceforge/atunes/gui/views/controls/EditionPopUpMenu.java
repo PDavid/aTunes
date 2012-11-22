@@ -40,7 +40,8 @@ public class EditionPopUpMenu extends JPopupMenu {
 	 * @param textComponent
 	 * @param clipboard
 	 */
-	EditionPopUpMenu(JTextComponent textComponent, ClipboardFacade clipboard) {
+	EditionPopUpMenu(final JTextComponent textComponent,
+			final ClipboardFacade clipboard) {
 		super();
 		Action cutAction = new TextComponentCutAction(textComponent, clipboard);
 		Action copyAction = new TextComponentCopyAction(textComponent,
@@ -50,21 +51,24 @@ public class EditionPopUpMenu extends JPopupMenu {
 		Action deleteAction = new TextComponentDeleteAction(textComponent);
 		Action selectAllAction = new TextComponentSelectAllAction(textComponent);
 		addPopUpMenu(textComponent, cutAction, copyAction, pasteAction,
-				deleteAction, selectAllAction);
+				deleteAction, selectAllAction, clipboard);
 	}
 
 	/**
 	 * Adds popup menu with edition options
 	 * 
+	 * @param textComponent
 	 * @param cutAction
 	 * @param copyAction
 	 * @param pasteAction
 	 * @param deleteAction
 	 * @param selectAllAction
+	 * @param clipboard
 	 */
-	private void addPopUpMenu(JTextComponent textComponent, Action cutAction,
-			Action copyAction, Action pasteAction, Action deleteAction,
-			Action selectAllAction) {
+	private void addPopUpMenu(final JTextComponent textComponent,
+			final Action cutAction, final Action copyAction,
+			final Action pasteAction, final Action deleteAction,
+			final Action selectAllAction, final ClipboardFacade clipboard) {
 		add(cutAction);
 		add(copyAction);
 		add(pasteAction);
@@ -73,6 +77,6 @@ public class EditionPopUpMenu extends JPopupMenu {
 		add(selectAllAction);
 		textComponent.addMouseListener(new TextComponentPopupMenuMouseAdapter(
 				this, textComponent, copyAction, deleteAction, selectAllAction,
-				pasteAction, cutAction));
+				pasteAction, cutAction, clipboard));
 	}
 }

@@ -27,64 +27,76 @@ import javax.swing.Action;
 import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.utils.ClipboardFacade;
 
 /**
  * Binds a text component with a popup with text actions
+ * 
  * @author alex
- *
+ * 
  */
 final class TextComponentPopupMenuMouseAdapter extends MouseAdapter {
-	
+
 	private final JPopupMenu menu;
 	private final JTextComponent textComponent;
-    private final Action copyAction;
-    private final Action deleteAction;
-    private final Action selectAllAction;
-    private final Action pasteAction;
-    private final Action cutAction;
+	private final Action copyAction;
+	private final Action deleteAction;
+	private final Action selectAllAction;
+	private final Action pasteAction;
+	private final Action cutAction;
+	private final ClipboardFacade clipboard;
 
-    /**
-     * @param menu
-     * @param textComponent
-     * @param copyAction
-     * @param deleteAction
-     * @param selectAllAction
-     * @param pasteAction
-     * @param cutAction
-     */
-    TextComponentPopupMenuMouseAdapter(JPopupMenu menu, JTextComponent textComponent, Action copyAction, Action deleteAction, Action selectAllAction, Action pasteAction, Action cutAction) {
-    	this.menu = menu;
-    	this.textComponent = textComponent;
-        this.copyAction = copyAction;
-        this.deleteAction = deleteAction;
-        this.selectAllAction = selectAllAction;
-        this.pasteAction = pasteAction;
-        this.cutAction = cutAction;
-    }
+	/**
+	 * @param menu
+	 * @param textComponent
+	 * @param copyAction
+	 * @param deleteAction
+	 * @param selectAllAction
+	 * @param pasteAction
+	 * @param cutAction
+	 * @param clipboard
+	 */
+	TextComponentPopupMenuMouseAdapter(final JPopupMenu menu,
+			final JTextComponent textComponent, final Action copyAction,
+			final Action deleteAction, final Action selectAllAction,
+			final Action pasteAction, final Action cutAction,
+			final ClipboardFacade clipboard) {
+		this.menu = menu;
+		this.textComponent = textComponent;
+		this.copyAction = copyAction;
+		this.deleteAction = deleteAction;
+		this.selectAllAction = selectAllAction;
+		this.pasteAction = pasteAction;
+		this.cutAction = cutAction;
+		this.clipboard = clipboard;
+	}
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        super.mouseClicked(e);
-        if (GuiUtils.isSecondaryMouseButton(e) && e.getComponent().isEnabled()) {
-            // Cut and delete if text selected and component editable
-            boolean textSelected = textComponent.getSelectionStart() < textComponent.getSelectionEnd();
-            cutAction.setEnabled(textSelected && textComponent.isEditable());
-            deleteAction.setEnabled(textSelected && textComponent.isEditable());
+	@Override
+	public void mouseClicked(final MouseEvent e) {
+		super.mouseClicked(e);
+		if (GuiUtils.isSecondaryMouseButton(e) && e.getComponent().isEnabled()) {
+			// Cut and delete if text selected and component editable
+			boolean textSelected = this.textComponent.getSelectionStart() < this.textComponent
+					.getSelectionEnd();
+			this.cutAction.setEnabled(textSelected
+					&& this.textComponent.isEditable());
+			this.deleteAction.setEnabled(textSelected
+					&& this.textComponent.isEditable());
 
-            // Copy if text selected
-            copyAction.setEnabled(textSelected);
+			// Copy if text selected
+			this.copyAction.setEnabled(textSelected);
 
-            // Paste if clipboard contains text and component editable
-            pasteAction.setEnabled(Context.getBean(ClipboardFacade.class).clipboardContainsText() && textComponent.isEditable());
+			// Paste if clipboard contains text and component editable
+			this.pasteAction.setEnabled(this.clipboard.clipboardContainsText()
+					&& this.textComponent.isEditable());
 
-            // Select all if text field contains text
-            selectAllAction.setEnabled(textComponent.getText().length() > 0);
+			// Select all if text field contains text
+			this.selectAllAction.setEnabled(this.textComponent.getText()
+					.length() > 0);
 
-            // Show menu
-            menu.show(textComponent, e.getX(), e.getY());
-        }
-    }
+			// Show menu
+			this.menu.show(this.textComponent, e.getX(), e.getY());
+		}
+	}
 }
