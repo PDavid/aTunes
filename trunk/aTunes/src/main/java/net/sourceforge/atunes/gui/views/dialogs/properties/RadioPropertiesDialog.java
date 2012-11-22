@@ -29,7 +29,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
@@ -53,21 +52,30 @@ public final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
 	private JLabel frequencyLabel;
 	private IRadio radio;
 
+	private IIconFactory radioMediumIcon;
+
+	/**
+	 * @param radioMediumIcon
+	 */
+	public void setRadioMediumIcon(final IIconFactory radioMediumIcon) {
+		this.radioMediumIcon = radioMediumIcon;
+	}
+
 	/**
 	 * Instantiates a new radio properties dialog.
 	 * 
 	 * @param radio
 	 * @param frame
 	 */
-	RadioPropertiesDialog(IFrame frame) {
+	RadioPropertiesDialog(final IFrame frame) {
 		super(frame);
 	}
 
 	@Override
-	public void setAudioObject(IAudioObject audioObject) {
+	public void setAudioObject(final IAudioObject audioObject) {
 		if (audioObject instanceof IRadio) {
 			this.radio = (IRadio) audioObject;
-			setTitle(getTitleText(radio)); 
+			setTitle(getTitleText(this.radio));
 			addContent(getLookAndFeel());
 			setContent();
 			GuiUtils.applyComponentOrientation(this);
@@ -88,18 +96,20 @@ public final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
 	 * 
 	 * @return title for dialog
 	 */
-	private String getTitleText(IRadio radio) {
-		return StringUtils.getString(I18nUtils.getString("INFO_OF_RADIO"), " ", radio.getName());
+	private String getTitleText(final IRadio radio) {
+		return StringUtils.getString(I18nUtils.getString("INFO_OF_RADIO"), " ",
+				radio.getName());
 	}
 
 	/**
 	 * Adds the content.
-	 * @param iLookAndFeel 
+	 * 
+	 * @param iLookAndFeel
 	 */
-	private void addContent(ILookAndFeel iLookAndFeel) {
+	private void addContent(final ILookAndFeel iLookAndFeel) {
 		JPanel panel = new JPanel(new GridBagLayout());
 
-		pictureLabel = new JLabel();
+		this.pictureLabel = new JLabel();
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -107,40 +117,40 @@ public final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
 		c.insets = new Insets(40, 10, 5, 10);
 		c.anchor = GridBagConstraints.NORTH;
 		c.fill = GridBagConstraints.VERTICAL;
-		panel.add(pictureLabel, c);
+		panel.add(this.pictureLabel, c);
 
-		titleLabel = new JLabel();
-		titleLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
+		this.titleLabel = new JLabel();
+		this.titleLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
 		c.gridx = 1;
 		c.gridy = 0;
 		c.gridheight = 1;
 		c.weightx = 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		panel.add(titleLabel, c);
+		panel.add(this.titleLabel, c);
 
-		urlLabel = new JLabel();
-		urlLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
+		this.urlLabel = new JLabel();
+		this.urlLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
 		c.gridx = 1;
 		c.gridy = 1;
 		c.insets = new Insets(5, 10, 5, 10);
-		panel.add(urlLabel, c);
+		panel.add(this.urlLabel, c);
 
-		labelLabel = new JLabel();
+		this.labelLabel = new JLabel();
 		c.gridx = 1;
 		c.gridy = 2;
-		panel.add(labelLabel, c);
+		panel.add(this.labelLabel, c);
 
-		bitrateLabel = new JLabel();
+		this.bitrateLabel = new JLabel();
 		c.gridx = 1;
 		c.gridy = 3;
-		panel.add(bitrateLabel, c);
+		panel.add(this.bitrateLabel, c);
 
-		frequencyLabel = new JLabel();
+		this.frequencyLabel = new JLabel();
 		c.gridx = 1;
 		c.gridy = 4;
 		c.weighty = 1;
 		c.anchor = GridBagConstraints.NORTH;
-		panel.add(frequencyLabel, c);
+		panel.add(this.frequencyLabel, c);
 
 		add(panel);
 	}
@@ -149,10 +159,12 @@ public final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
 	 * Fill picture.
 	 */
 	private void fillPicture() {
-		ImageIcon picture = Context.getBean("radioMediumIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForSpecialControls());
-		pictureLabel.setPreferredSize(new Dimension(picture.getIconWidth(), picture.getIconHeight()));
-		pictureLabel.setIcon(picture);
-		pictureLabel.setVisible(true);
+		ImageIcon picture = this.radioMediumIcon.getIcon(getLookAndFeel()
+				.getPaintForSpecialControls());
+		this.pictureLabel.setPreferredSize(new Dimension(
+				picture.getIconWidth(), picture.getIconHeight()));
+		this.pictureLabel.setIcon(picture);
+		this.pictureLabel.setVisible(true);
 	}
 
 	/**
@@ -160,11 +172,27 @@ public final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
 	 */
 	private void setContent() {
 		fillPicture();
-		titleLabel.setText(getHtmlFormatted(I18nUtils.getString("NAME"), StringUtils.isEmpty(radio.getName()) ? "-" : radio.getName()));
-		urlLabel.setText(getHtmlFormatted(I18nUtils.getString("URL"), radio.getUrl()));
-		labelLabel.setText(getHtmlFormatted(I18nUtils.getString("LABEL"), StringUtils.isEmpty(radio.getLabel()) ? "-" : radio.getLabel()));
-		bitrateLabel.setText(getHtmlFormatted(I18nUtils.getString("BITRATE"), radio.getBitrate() > 0 ? StringUtils.getString(String.valueOf(radio.getBitrate()), " kbps") : "-"));
-		frequencyLabel.setText(getHtmlFormatted(I18nUtils.getString("FREQUENCY"), radio.getFrequency() > 0 ? StringUtils.getString(String.valueOf(radio.getFrequency()), " Hz")
-				: "-"));
+		this.titleLabel.setText(getHtmlFormatted(
+				I18nUtils.getString("NAME"),
+				StringUtils.isEmpty(this.radio.getName()) ? "-" : this.radio
+						.getName()));
+		this.urlLabel.setText(getHtmlFormatted(I18nUtils.getString("URL"),
+				this.radio.getUrl()));
+		this.labelLabel.setText(getHtmlFormatted(
+				I18nUtils.getString("LABEL"),
+				StringUtils.isEmpty(this.radio.getLabel()) ? "-" : this.radio
+						.getLabel()));
+		this.bitrateLabel
+				.setText(getHtmlFormatted(
+						I18nUtils.getString("BITRATE"),
+						this.radio.getBitrate() > 0 ? StringUtils.getString(
+								String.valueOf(this.radio.getBitrate()),
+								" kbps") : "-"));
+		this.frequencyLabel
+				.setText(getHtmlFormatted(
+						I18nUtils.getString("FREQUENCY"),
+						this.radio.getFrequency() > 0 ? StringUtils.getString(
+								String.valueOf(this.radio.getFrequency()),
+								" Hz") : "-"));
 	}
 }

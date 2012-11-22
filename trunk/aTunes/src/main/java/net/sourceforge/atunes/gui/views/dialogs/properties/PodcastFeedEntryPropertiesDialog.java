@@ -34,7 +34,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IControlsBuilder;
@@ -74,10 +73,19 @@ public final class PodcastFeedEntryPropertiesDialog extends
 
 	private IControlsBuilder controlsBuilder;
 
+	private IIconFactory rssMediumIcon;
+
+	/**
+	 * @param rssMediumIcon
+	 */
+	public void setRssMediumIcon(final IIconFactory rssMediumIcon) {
+		this.rssMediumIcon = rssMediumIcon;
+	}
+
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
@@ -153,27 +161,27 @@ public final class PodcastFeedEntryPropertiesDialog extends
 	private void addContent(final ILookAndFeel iLookAndFeel) {
 		JPanel panel = new JPanel(new GridBagLayout());
 
-		pictureLabel = new JLabel();
-		titleLabel = new JLabel();
-		titleLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
-		artistLabel = new JLabel();
-		artistLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
-		urlLabel = new JLabel();
-		urlLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
-		durationLabel = new JLabel();
-		dateLabel = new JLabel();
-		podcastFeedLabel = new JLabel();
-		downloadedLabel = new JLabel();
-		descriptionLabel = new JLabel();
+		this.pictureLabel = new JLabel();
+		this.titleLabel = new JLabel();
+		this.titleLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
+		this.artistLabel = new JLabel();
+		this.artistLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
+		this.urlLabel = new JLabel();
+		this.urlLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
+		this.durationLabel = new JLabel();
+		this.dateLabel = new JLabel();
+		this.podcastFeedLabel = new JLabel();
+		this.downloadedLabel = new JLabel();
+		this.descriptionLabel = new JLabel();
 		JScrollPane descriptionScrollPane = iLookAndFeel.getScrollPane(null);
 		descriptionScrollPane.setMinimumSize(new Dimension(400, 100));
-		descriptionTextArea = controlsBuilder.createTextArea();
-		descriptionTextArea.setEditable(false);
-		descriptionTextArea.setLineWrap(true);
-		descriptionTextArea.setWrapStyleWord(true);
-		descriptionTextArea.setOpaque(false);
-		descriptionTextArea.setBorder(BorderFactory.createEmptyBorder());
-		descriptionScrollPane.setViewportView(descriptionTextArea);
+		this.descriptionTextArea = this.controlsBuilder.createTextArea();
+		this.descriptionTextArea.setEditable(false);
+		this.descriptionTextArea.setLineWrap(true);
+		this.descriptionTextArea.setWrapStyleWord(true);
+		this.descriptionTextArea.setOpaque(false);
+		this.descriptionTextArea.setBorder(BorderFactory.createEmptyBorder());
+		descriptionScrollPane.setViewportView(this.descriptionTextArea);
 
 		arrangePanel(panel, descriptionScrollPane);
 
@@ -193,43 +201,43 @@ public final class PodcastFeedEntryPropertiesDialog extends
 		c.insets = new Insets(5, 10, 5, 10);
 		c.anchor = GridBagConstraints.NORTH;
 		c.fill = GridBagConstraints.VERTICAL;
-		panel.add(pictureLabel, c);
+		panel.add(this.pictureLabel, c);
 
 		c.gridx = 1;
 		c.gridy = 0;
 		c.gridheight = 1;
 		c.weightx = 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		panel.add(titleLabel, c);
+		panel.add(this.titleLabel, c);
 
 		c.gridx = 1;
 		c.gridy = 1;
-		panel.add(artistLabel, c);
+		panel.add(this.artistLabel, c);
 
 		c.gridx = 1;
 		c.gridy = 2;
-		panel.add(urlLabel, c);
+		panel.add(this.urlLabel, c);
 
 		c.gridx = 1;
 		c.gridy = 3;
-		panel.add(durationLabel, c);
+		panel.add(this.durationLabel, c);
 
 		c.gridx = 1;
 		c.gridy = 4;
-		panel.add(dateLabel, c);
+		panel.add(this.dateLabel, c);
 
 		c.gridx = 1;
 		c.gridy = 5;
-		panel.add(podcastFeedLabel, c);
+		panel.add(this.podcastFeedLabel, c);
 
 		c.gridx = 1;
 		c.gridy = 6;
-		panel.add(downloadedLabel, c);
+		panel.add(this.downloadedLabel, c);
 
 		c.gridx = 1;
 		c.gridy = 7;
 		c.insets = new Insets(5, 10, 0, 10);
-		panel.add(descriptionLabel, c);
+		panel.add(this.descriptionLabel, c);
 
 		c.gridx = 1;
 		c.gridy = 8;
@@ -241,13 +249,12 @@ public final class PodcastFeedEntryPropertiesDialog extends
 	 * Fill picture.
 	 */
 	private void fillPicture() {
-		ImageIcon picture = Context
-				.getBean("rssMediumIcon", IIconFactory.class).getIcon(
-						getLookAndFeel().getPaintForSpecialControls());
-		pictureLabel.setPreferredSize(new Dimension(picture.getIconWidth(),
-				picture.getIconHeight()));
-		pictureLabel.setIcon(picture);
-		pictureLabel.setVisible(true);
+		ImageIcon picture = this.rssMediumIcon.getIcon(getLookAndFeel()
+				.getPaintForSpecialControls());
+		this.pictureLabel.setPreferredSize(new Dimension(
+				picture.getIconWidth(), picture.getIconHeight()));
+		this.pictureLabel.setIcon(picture);
+		this.pictureLabel.setVisible(true);
 	}
 
 	/**
@@ -255,56 +262,53 @@ public final class PodcastFeedEntryPropertiesDialog extends
 	 */
 	private void setContent() {
 		fillPicture();
-		titleLabel
-				.setText(getHtmlFormatted(
-						I18nUtils.getString("NAME"),
-						StringUtils.isEmpty(entry.getTitle()) ? "-" : entry
-								.getTitle()));
-		artistLabel
-				.setText(getHtmlFormatted(
-						I18nUtils.getString("ARTIST"),
-						StringUtils.isEmpty(entry
-								.getArtist(unknownObjectChecker)) ? "-" : entry
-								.getArtist(unknownObjectChecker)));
-		urlLabel.setText(getHtmlFormatted(I18nUtils.getString("URL"),
-				entry.getUrl()));
-		if (entry.getDuration() > 0) {
-			durationLabel
-					.setText(getHtmlFormatted(I18nUtils.getString("DURATION"),
-							TimeUtils.secondsToHoursMinutesSeconds(entry
-									.getDuration())));
+		this.titleLabel.setText(getHtmlFormatted(
+				I18nUtils.getString("NAME"),
+				StringUtils.isEmpty(this.entry.getTitle()) ? "-" : this.entry
+						.getTitle()));
+		this.artistLabel.setText(getHtmlFormatted(
+				I18nUtils.getString("ARTIST"), StringUtils.isEmpty(this.entry
+						.getArtist(this.unknownObjectChecker)) ? "-"
+						: this.entry.getArtist(this.unknownObjectChecker)));
+		this.urlLabel.setText(getHtmlFormatted(I18nUtils.getString("URL"),
+				this.entry.getUrl()));
+		if (this.entry.getDuration() > 0) {
+			this.durationLabel.setText(getHtmlFormatted(I18nUtils
+					.getString("DURATION"), TimeUtils
+					.secondsToHoursMinutesSeconds(this.entry.getDuration())));
 		} else {
-			durationLabel.setText(getHtmlFormatted(
+			this.durationLabel.setText(getHtmlFormatted(
 					I18nUtils.getString("DURATION"), "-"));
 		}
-		if (entry.getDate() != null) {
-			dateLabel
-					.setText(getHtmlFormatted(I18nUtils.getString("DATE"),
-							StringUtils.getString(
-									DateFormat.getDateInstance(DateFormat.LONG,
-											stateCore.getLocale().getLocale())
-											.format(entry.getDate()),
-									", ",
-									DateFormat.getTimeInstance().format(
-											entry.getDate()))));
+		if (this.entry.getDate() != null) {
+			this.dateLabel.setText(getHtmlFormatted(
+					I18nUtils.getString("DATE"), StringUtils.getString(
+							DateFormat.getDateInstance(DateFormat.LONG,
+									this.stateCore.getLocale().getLocale())
+									.format(this.entry.getDate()),
+							", ",
+							DateFormat.getTimeInstance().format(
+									this.entry.getDate()))));
 		} else {
-			dateLabel
-					.setText(getHtmlFormatted(I18nUtils.getString("DATE"), "-"));
+			this.dateLabel.setText(getHtmlFormatted(
+					I18nUtils.getString("DATE"), "-"));
 		}
-		podcastFeedLabel.setText(getHtmlFormatted(I18nUtils
-				.getString("PODCAST_FEED"), entry.getPodcastFeed().getName()));
-		downloadedLabel.setText(getHtmlFormatted(
-				I18nUtils.getString("DOWNLOADED"),
-				entry.isDownloaded() ? I18nUtils.getString("YES") : I18nUtils
-						.getString("NO")));
-		descriptionLabel.setText(getHtmlFormatted(
+		this.podcastFeedLabel.setText(getHtmlFormatted(I18nUtils
+				.getString("PODCAST_FEED"), this.entry.getPodcastFeed()
+				.getName()));
+		this.downloadedLabel.setText(getHtmlFormatted(I18nUtils
+				.getString("DOWNLOADED"),
+				this.entry.isDownloaded() ? I18nUtils.getString("YES")
+						: I18nUtils.getString("NO")));
+		this.descriptionLabel.setText(getHtmlFormatted(
 				I18nUtils.getString("DESCRIPTION"), ""));
-		descriptionTextArea.setText(entry.getDescription());
+		this.descriptionTextArea.setText(this.entry.getDescription());
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
-				descriptionTextArea.setCaretPosition(0);
+				PodcastFeedEntryPropertiesDialog.this.descriptionTextArea
+						.setCaretPosition(0);
 			}
 		});
 
