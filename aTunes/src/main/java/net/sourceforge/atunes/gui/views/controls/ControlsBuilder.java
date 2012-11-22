@@ -91,35 +91,36 @@ public class ControlsBuilder implements IControlsBuilder {
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
 	/**
 	 * @param clipboard
 	 */
-	public void setClipboard(ClipboardFacade clipboard) {
+	public void setClipboard(final ClipboardFacade clipboard) {
 		this.clipboard = clipboard;
 	}
 
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
 	@Override
 	public JTextArea createTextArea() {
 		JTextArea textArea = new JTextArea();
-		new EditionPopUpMenu(textArea, clipboard);
+		new EditionPopUpMenu(textArea, this.clipboard);
 		return textArea;
 	}
 
@@ -127,21 +128,21 @@ public class ControlsBuilder implements IControlsBuilder {
 	public JTextField createTextField() {
 		JTextField textField = new JTextField();
 		initializeTextField(textField);
-		new EditionPopUpMenu(textField, clipboard);
+		new EditionPopUpMenu(textField, this.clipboard);
 		return textField;
 	}
 
 	@Override
-	public JTextPane createTextPane(Integer alignJustified) {
+	public JTextPane createTextPane(final Integer alignJustified) {
 		CustomTextPane textPane = new CustomTextPane(alignJustified);
 		// Register look and feel change listener
-		lookAndFeelManager.addLookAndFeelChangeListener(textPane);
-		new EditionPopUpMenu(textPane, clipboard);
+		this.lookAndFeelManager.addLookAndFeelChangeListener(textPane);
+		new EditionPopUpMenu(textPane, this.clipboard);
 		return textPane;
 	}
 
 	@Override
-	public JTextPane createReadOnlyTextPane(String text) {
+	public JTextPane createReadOnlyTextPane(final String text) {
 		JTextPane textPane = createTextPane(null);
 		textPane.setEditable(false);
 		textPane.setBorder(BorderFactory.createEmptyBorder());
@@ -156,7 +157,7 @@ public class ControlsBuilder implements IControlsBuilder {
 	 * @param customTextField
 	 */
 	private void initializeTextField(final JTextField customTextField) {
-		if (osManager.isMacOsX()) {
+		if (this.osManager.isMacOsX()) {
 			JTextComponent.loadKeymap(customTextField.getKeymap(),
 					MAC_OS_BINDINGS, customTextField.getActions());
 		}
@@ -164,16 +165,21 @@ public class ControlsBuilder implements IControlsBuilder {
 
 	@Override
 	public PlayPauseButton createPlayPauseButton() {
-		return beanFactory.getBean(PlayPauseButton.class);
+		return this.beanFactory.getBean(PlayPauseButton.class);
 	}
 
 	@Override
 	public NextButton createNextButton() {
-		return beanFactory.getBean(NextButton.class);
+		return this.beanFactory.getBean(NextButton.class);
 	}
 
 	@Override
 	public PreviousButton createPreviousButton() {
-		return beanFactory.getBean(PreviousButton.class);
+		return this.beanFactory.getBean(PreviousButton.class);
+	}
+
+	@Override
+	public StopButton createStopButton() {
+		return this.beanFactory.getBean(StopButton.class);
 	}
 }

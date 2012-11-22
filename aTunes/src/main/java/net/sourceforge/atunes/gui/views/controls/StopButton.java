@@ -25,42 +25,80 @@ import java.awt.Dimension;
 import javax.swing.Action;
 import javax.swing.JButton;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IIconFactory;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
  * The Class StopButton.
  */
-public final class StopButton extends JButton implements ILookAndFeelChangeListener{
+public final class StopButton extends JButton implements
+		ILookAndFeelChangeListener {
 
-    private static final long serialVersionUID = 6007885049773560874L;
+	private static final long serialVersionUID = 6007885049773560874L;
 
-    private ILookAndFeel lookAndFeel;
-    
-    /**
-     * Instantiates a new stop button.
-     * 
-     * @param size
-     * @param lookAndFeelManager
-     */
-    public StopButton(Dimension size, ILookAndFeelManager lookAndFeelManager) {
-        super(Context.getBean("stopAction", Action.class));
-        this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
-        setPreferredSize(size);
-        setMinimumSize(size);
-        setMaximumSize(size);
-        setFocusable(false);
-        setText(null);
-        setIcon(Context.getBean("stopIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
-        lookAndFeel.putClientProperties(this);
-        lookAndFeelManager.addLookAndFeelChangeListener(this);
-    }
-    
-    @Override
-    public void lookAndFeelChanged() {
-        setIcon(Context.getBean("stopIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
-    }
+	private ILookAndFeelManager lookAndFeelManager;
+
+	private Dimension stopMuteButtonSize;
+
+	private IIconFactory stopIcon;
+
+	/**
+	 * @param stopIcon
+	 */
+	public void setStopIcon(final IIconFactory stopIcon) {
+		this.stopIcon = stopIcon;
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
+	 * @param stopMuteButtonSize
+	 */
+	public void setStopMuteButtonSize(final Dimension stopMuteButtonSize) {
+		this.stopMuteButtonSize = stopMuteButtonSize;
+	}
+
+	/**
+	 * Instantiates a new stop button.
+	 * 
+	 * @param stopAction
+	 */
+	public StopButton(final Action stopAction) {
+		super(stopAction);
+	}
+
+	/**
+	 * Initializes button
+	 */
+	public void initialize() {
+		setPreferredSize(this.stopMuteButtonSize);
+		setMinimumSize(this.stopMuteButtonSize);
+		setMaximumSize(this.stopMuteButtonSize);
+		setFocusable(false);
+		setText(null);
+		updateIcon();
+		this.lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(
+				this);
+		this.lookAndFeelManager.addLookAndFeelChangeListener(this);
+	}
+
+	@Override
+	public void lookAndFeelChanged() {
+		updateIcon();
+	}
+
+	/**
+	 * 
+	 */
+	private void updateIcon() {
+		setIcon(this.stopIcon.getIcon(this.lookAndFeelManager
+				.getCurrentLookAndFeel().getPaintForSpecialControls()));
+	}
 }
