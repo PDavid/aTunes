@@ -60,7 +60,6 @@ public class PlayAction extends CustomAbstractAction {
 		} else {
 			this.playerHandler.startPlayingAudioObjectInActivePlayList();
 		}
-		throw new NullPointerException();
 	}
 
 	@Override
