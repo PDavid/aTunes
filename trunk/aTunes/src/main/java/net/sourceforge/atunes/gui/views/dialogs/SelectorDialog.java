@@ -39,7 +39,6 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ISelectorDialog;
 
 /**
@@ -52,8 +51,6 @@ public final class SelectorDialog extends AbstractCustomDialog implements
 
 	/** The selection. */
 	private String selection;
-
-	private ILookAndFeelManager lookAndFeelManager;
 
 	private ListCellRenderer cellRenderer;
 
@@ -79,15 +76,6 @@ public final class SelectorDialog extends AbstractCustomDialog implements
 	}
 
 	/**
-	 * @param lookAndFeelManager
-	 */
-	@Override
-	public void setLookAndFeelManager(
-			final ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-
-	/**
 	 * @param options
 	 */
 	@Override
@@ -99,12 +87,12 @@ public final class SelectorDialog extends AbstractCustomDialog implements
 	@Override
 	public void initialize() {
 		JPanel panel = new JPanel(new GridBagLayout());
-		this.list = this.lookAndFeelManager.getCurrentLookAndFeel().getList();
+		this.list = getLookAndFeelManager().getCurrentLookAndFeel().getList();
 		this.list.setFont(this.list.getFont().deriveFont(Font.PLAIN));
 		this.list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.list.setBorder(BorderFactory.createLineBorder(GuiUtils
 				.getBorderColor()));
-		JScrollPane scrollPane = this.lookAndFeelManager
+		JScrollPane scrollPane = getLookAndFeelManager()
 				.getCurrentLookAndFeel().getListScrollPane(this.list);
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;

@@ -114,15 +114,6 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	/** The cancel button. */
 	private JButton cancelButton;
 
-	private IControlsBuilder controlsBuilder;
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
 	/**
 	 * Instantiates a new custom search dialog.
 	 * 
@@ -229,7 +220,7 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 			this.simpleRulesScrollPane = getLookAndFeel().getListScrollPane(
 					this.simpleRulesList);
 			this.simpleRulesComboBox = new JComboBox();
-			this.simpleRulesTextField = this.controlsBuilder.createTextField();
+			this.simpleRulesTextField = getControlsBuilder().createTextField();
 			this.simpleRulesAddButton = new JButton(I18nUtils.getString("ADD"));
 
 			GridBagConstraints c = new GridBagConstraints();
@@ -329,7 +320,7 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 					.createEtchedBorder());
 			this.advancedSearchCheckBox = new JCheckBox(
 					I18nUtils.getString("ENABLE_ADVANCED_SEARCH"));
-			this.advancedSearchTextField = this.controlsBuilder
+			this.advancedSearchTextField = getControlsBuilder()
 					.createTextField();
 			GridBagConstraints c = new GridBagConstraints();
 			c.gridx = 0;

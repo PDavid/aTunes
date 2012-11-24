@@ -47,15 +47,6 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomDialog {
 
 	private boolean accepted;
 
-	private IControlsBuilder controlsBuilder;
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
 	/**
 	 * Instantiates a new repository selection info dialog.
 	 * 
@@ -80,7 +71,7 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomDialog {
 	private void setContent() {
 		JPanel panel = new JPanel(new GridBagLayout());
 		JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
-		JTextArea text = this.controlsBuilder.createTextArea();
+		JTextArea text = getControlsBuilder().createTextArea();
 		text.setText(I18nUtils.getString("REPOSITORY_SELECTION_INFO_TEXT"));
 		text.setOpaque(false);
 		text.setEditable(false);

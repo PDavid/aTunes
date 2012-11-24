@@ -43,7 +43,6 @@ import net.sourceforge.atunes.model.IErrorReportCreator;
 import net.sourceforge.atunes.model.IErrorReporter;
 import net.sourceforge.atunes.model.IExceptionDialog;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -66,17 +65,6 @@ public class ExceptionDialog extends AbstractCustomDialog implements
 	private IErrorReportCreator errorReportCreator;
 
 	private IErrorReporter errorReporter;
-
-	private ILookAndFeelManager lookAndFeelManager;
-
-	/**
-	 * @param lookAndFeelManager
-	 */
-	@Override
-	public void setLookAndFeelManager(
-			final ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
 
 	/**
 	 * @param errorReportCreator
@@ -137,7 +125,7 @@ public class ExceptionDialog extends AbstractCustomDialog implements
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
 		final JTextArea textArea = getControlsBuilder().createTextArea();
 		textArea.setEditable(false);
-		JScrollPane scrollPane = this.lookAndFeelManager
+		JScrollPane scrollPane = getLookAndFeelManager()
 				.getCurrentLookAndFeel().getScrollPane(textArea);
 
 		JPanel buttonsPanel = new JPanel(new GridLayout(1, 2, BORDER, BORDER));
