@@ -21,8 +21,6 @@
 package net.sourceforge.atunes.gui;
 
 import java.awt.Color;
-import java.awt.ComponentOrientation;
-import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -43,15 +41,11 @@ import javax.swing.JComponent;
 import javax.swing.JRootPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.text.StyleConstants;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -70,9 +64,6 @@ public final class GuiUtils {
 
 	/** The border color. */
 	private static Color borderColor = Color.BLACK;
-
-	/** The component orientation. */
-	private static ComponentOrientation componentOrientation;
 
 	/** The set window shape method. */
 	private static Method setWindowShapeMethod;
@@ -157,25 +148,15 @@ public final class GuiUtils {
 		rootPane.getActionMap().put(ESCAPE2, disposeAction);
 	}
 
+	/**
+	 * Adds icons to a window
+	 * 
+	 * @param w
+	 */
 	public static void addAppIcons(final Window w) {
 		w.setIconImages(Arrays.asList(Images.getImage(Images.APP_LOGO_16)
 				.getImage(), Images.getImage(Images.APP_LOGO_32).getImage(),
 				Images.getImage(Images.APP_LOGO_90).getImage()));
-	}
-
-	/**
-	 * Applies Locale specific component orientation to containers.
-	 * 
-	 * @param containers
-	 *            One or more containers
-	 */
-	public static void applyComponentOrientation(final Container... containers) {
-		if (componentOrientation == null) {
-			setComponentOrientation();
-		}
-		for (Container container : containers) {
-			container.applyComponentOrientation(componentOrientation);
-		}
 	}
 
 	/**
@@ -232,44 +213,6 @@ public final class GuiUtils {
 	}
 
 	/**
-	 * Returns the component orientation.
-	 * 
-	 * @return The component orientation
-	 */
-	public static ComponentOrientation getComponentOrientation() {
-		if (componentOrientation == null) {
-			setComponentOrientation();
-		}
-		return componentOrientation;
-	}
-
-	/**
-	 * Returns the component orientation as a SwingConstant.
-	 * 
-	 * @return The component orientation as a SwingConstant
-	 */
-	public static int getComponentOrientationAsSwingConstant() {
-		if (componentOrientation == null) {
-			setComponentOrientation();
-		}
-		return componentOrientation.isLeftToRight() ? SwingConstants.LEFT
-				: SwingConstants.RIGHT;
-	}
-
-	/**
-	 * Returns the component orientation as a text style constant.
-	 * 
-	 * @return The component orientation as a SwingConstant
-	 */
-	public static int getComponentOrientationAsTextStyleConstant() {
-		if (componentOrientation == null) {
-			setComponentOrientation();
-		}
-		return componentOrientation.isLeftToRight() ? StyleConstants.ALIGN_LEFT
-				: StyleConstants.ALIGN_RIGHT;
-	}
-
-	/**
 	 * Sets the border color.
 	 * 
 	 * @param borderColor
@@ -277,23 +220,6 @@ public final class GuiUtils {
 	 */
 	public static void setBorderColor(final Color borderColor) {
 		GuiUtils.borderColor = borderColor;
-	}
-
-	/**
-	 * Sets the component orientation.
-	 */
-	private static void setComponentOrientation() {
-		IStateCore state = Context.getBean(IStateCore.class);
-		componentOrientation = ComponentOrientation.LEFT_TO_RIGHT;
-		if (state.getLocale() != null) {
-			if ("ug".equalsIgnoreCase(state.getLocale().getLocale()
-					.getLanguage())) {
-				componentOrientation = ComponentOrientation.RIGHT_TO_LEFT;
-			} else {
-				componentOrientation = ComponentOrientation
-						.getOrientation(state.getLocale().getLocale());
-			}
-		}
 	}
 
 	/**
@@ -450,11 +376,13 @@ public final class GuiUtils {
 	 * Returns true if mouse event is from secondary mouse button (right-click
 	 * or Ctrl-click in Mac)
 	 * 
+	 * @param osManager
 	 * @param e
 	 * @return
 	 */
-	public static boolean isSecondaryMouseButton(final MouseEvent e) {
-		if (!Context.getBean(IOSManager.class).isMacOsX()) {
+	public static boolean isSecondaryMouseButton(final IOSManager osManager,
+			final MouseEvent e) {
+		if (!osManager.isMacOsX()) {
 			return SwingUtilities.isRightMouseButton(e);
 		} else {
 			// When Cmd key is pressed, left and right buttons seems pressed
@@ -469,11 +397,12 @@ public final class GuiUtils {
 	}
 
 	/**
+	 * @param osManager
 	 * @return mask to use Ctrl or Command keys, given the current operating
 	 *         system
 	 */
-	public static int getCtrlOrMetaActionEventMask() {
-		if (!Context.getBean(IOSManager.class).isMacOsX()) {
+	public static int getCtrlOrMetaActionEventMask(final IOSManager osManager) {
+		if (!osManager.isMacOsX()) {
 			return InputEvent.CTRL_MASK;
 		} else {
 			return InputEvent.META_MASK;

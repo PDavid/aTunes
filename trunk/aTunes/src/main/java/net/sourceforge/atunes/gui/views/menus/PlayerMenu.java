@@ -20,10 +20,10 @@
 
 package net.sourceforge.atunes.gui.views.menus;
 
-
 import javax.swing.Action;
 import javax.swing.JMenu;
 
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -34,55 +34,64 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class PlayerMenu extends JMenu {
 
-    private static final long serialVersionUID = -3624790857729577320L;
+	private static final long serialVersionUID = -3624790857729577320L;
 
-    private Action playAction;
-    private Action nextAction;
-    private Action previousAction;
-    private Action stopAction;
+	private Action playAction;
+	private Action nextAction;
+	private Action previousAction;
+	private Action stopAction;
 
-    /**
-     * @param i18nKey
-     */
-    public PlayerMenu(final String i18nKey) {
-	super(I18nUtils.getString(i18nKey));
-    }
+	private IOSManager osManager;
 
-    /**
-     * @param stopAction
-     */
-    public void setStopAction(final Action stopAction) {
-	this.stopAction = stopAction;
-    }
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
-    /**
-     * @param playAction
-     */
-    public void setPlayAction(final Action playAction) {
-	this.playAction = playAction;
-    }
+	/**
+	 * @param i18nKey
+	 */
+	public PlayerMenu(final String i18nKey) {
+		super(I18nUtils.getString(i18nKey));
+	}
 
-    /**
-     * @param nextAction
-     */
-    public void setNextAction(final Action nextAction) {
-	this.nextAction = nextAction;
-    }
+	/**
+	 * @param stopAction
+	 */
+	public void setStopAction(final Action stopAction) {
+		this.stopAction = stopAction;
+	}
 
-    /**
-     * @param previousAction
-     */
-    public void setPreviousAction(final Action previousAction) {
-	this.previousAction = previousAction;
-    }
+	/**
+	 * @param playAction
+	 */
+	public void setPlayAction(final Action playAction) {
+		this.playAction = playAction;
+	}
 
-    /**
-     * Initializes menu
-     */
-    public void initialize() {
-	add(new PlayActionFromMenuBar(playAction));
-	add(nextAction);
-	add(previousAction);
-	add(stopAction);
-    }
+	/**
+	 * @param nextAction
+	 */
+	public void setNextAction(final Action nextAction) {
+		this.nextAction = nextAction;
+	}
+
+	/**
+	 * @param previousAction
+	 */
+	public void setPreviousAction(final Action previousAction) {
+		this.previousAction = previousAction;
+	}
+
+	/**
+	 * Initializes menu
+	 */
+	public void initialize() {
+		add(new PlayActionFromMenuBar(this.playAction, this.osManager));
+		add(this.nextAction);
+		add(this.previousAction);
+		add(this.stopAction);
+	}
 }

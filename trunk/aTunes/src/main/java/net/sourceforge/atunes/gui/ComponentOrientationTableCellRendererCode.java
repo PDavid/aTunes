@@ -23,16 +23,31 @@ package net.sourceforge.atunes.gui;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
+import net.sourceforge.atunes.model.IControlsBuilder;
+
 /**
  * Cell renderer to apply component orientation
+ * 
  * @author alex
- *
+ * 
  */
-public class ComponentOrientationTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
+public class ComponentOrientationTableCellRendererCode extends
+		AbstractTableCellRendererCode<JLabel, Object> {
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	@Override
-	public JLabel getComponent(final JLabel superComponent, final JTable t, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
-		GuiUtils.applyComponentOrientation(superComponent);
+	public JLabel getComponent(final JLabel superComponent, final JTable t,
+			final Object value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
+		this.controlsBuilder.applyComponentOrientation(superComponent);
 		return superComponent;
 	}
 }

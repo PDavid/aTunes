@@ -29,7 +29,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
@@ -78,7 +77,7 @@ public final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
 			setTitle(getTitleText(this.radio));
 			addContent(getLookAndFeel());
 			setContent();
-			GuiUtils.applyComponentOrientation(this);
+			getControlsBuilder().applyComponentOrientation(this);
 		} else {
 			throw new IllegalArgumentException("Not a IRadio");
 		}

@@ -28,6 +28,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClipboardFacade;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -46,21 +47,26 @@ class TextComponentPasteAction extends AbstractAction {
 
 	private final ClipboardFacade clipboard;
 
-	public TextComponentPasteAction(JTextComponent textComponent,
-			ClipboardFacade clipboard) {
+	/**
+	 * @param textComponent
+	 * @param clipboard
+	 * @param osManager
+	 */
+	public TextComponentPasteAction(final JTextComponent textComponent,
+			final ClipboardFacade clipboard, final IOSManager osManager) {
 		super(I18nUtils.getString("PASTE"));
 		this.textComponent = textComponent;
 		this.clipboard = clipboard;
 		putValue(
 				ACCELERATOR_KEY,
 				KeyStroke.getKeyStroke(KeyEvent.VK_V,
-						GuiUtils.getCtrlOrMetaActionEventMask()));
+						GuiUtils.getCtrlOrMetaActionEventMask(osManager)));
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		String text = this.textComponent.getText();
-		String copiedText = clipboard.getClipboardContent();
+		String copiedText = this.clipboard.getClipboardContent();
 		String newText = StringUtils.getString(
 				text.substring(0, this.textComponent.getSelectionStart()),
 				copiedText,

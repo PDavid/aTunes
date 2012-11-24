@@ -32,8 +32,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -45,121 +45,125 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ContextTableRowPanel<T> extends JPanel {
 
-    /**
+	/**
      * 
      */
-    private static final long serialVersionUID = 3227801852177772588L;
+	private static final long serialVersionUID = 3227801852177772588L;
 
-    private JLabel imageLabel;
+	private JLabel imageLabel;
 
-    private JLabel textLabel;
+	private JLabel textLabel;
 
-    private PopUpButton button;
+	private PopUpButton button;
 
-    /**
-     * Default constructor
-     */
-    public ContextTableRowPanel() {
-	setLayout(new GridBagLayout());
-	setOpaque(false);
-    }
-
-    /**
-     * Updates colors
-     * 
-     * @param backgroundColor
-     * @param foregroundColor
-     */
-    public void setColors(final Color backgroundColor,
-	    final Color foregroundColor) {
-	if (backgroundColor != null) {
-	    textLabel.setBackground(backgroundColor);
-	    setBackground(backgroundColor);
-	    imageLabel.setBackground(backgroundColor);
+	/**
+	 * Default constructor
+	 */
+	public ContextTableRowPanel() {
+		setLayout(new GridBagLayout());
+		setOpaque(false);
 	}
-	if (foregroundColor != null) {
-	    textLabel.setForeground(foregroundColor);
+
+	/**
+	 * Updates colors
+	 * 
+	 * @param backgroundColor
+	 * @param foregroundColor
+	 */
+	public void setColors(final Color backgroundColor,
+			final Color foregroundColor) {
+		if (backgroundColor != null) {
+			this.textLabel.setBackground(backgroundColor);
+			setBackground(backgroundColor);
+			this.imageLabel.setBackground(backgroundColor);
+		}
+		if (foregroundColor != null) {
+			this.textLabel.setForeground(foregroundColor);
+		}
 	}
-    }
 
-    /**
-     * Sets image
-     * 
-     * @param image
-     */
-    public void setImage(final ImageIcon image) {
-	imageLabel = new JLabel(image);
-	imageLabel.setOpaque(false);
-    }
-
-    /**
-     * Sets text
-     * 
-     * @param text
-     */
-    public void setText(final String text) {
-	textLabel = new JLabel(text);
-	textLabel.setOpaque(false);
-	textLabel.setVerticalAlignment(SwingConstants.TOP);
-    }
-
-    /**
-     * @param imageMaxWidth
-     * @param actions
-     * @param table
-     */
-    public void build(final int imageMaxWidth,
-	    final List<ContextTableAction<T>> actions, final ContextTable table) {
-	GridBagConstraints c = new GridBagConstraints();
-	c.gridx = 0;
-	c.gridy = 0;
-	c.anchor = GridBagConstraints.WEST;
-	c.insets = new Insets(2, (imageMaxWidth + 20)
-		/ 2
-		- (imageLabel.getIcon() != null ? imageLabel.getIcon()
-			.getIconWidth() : 0) / 2, 0, 0);
-	add(imageLabel, c);
-	c.gridx = 1;
-	c.weightx = 1;
-	c.weighty = 1;
-	c.fill = GridBagConstraints.BOTH;
-	c.insets = new Insets(0, (imageMaxWidth + 20)
-		/ 2
-		- (imageLabel.getIcon() != null ? imageLabel.getIcon()
-			.getIconWidth() : 0) / 2, 0, 0);
-	add(textLabel, c);
-
-	GuiUtils.applyComponentOrientation(this);
-
-	if (!net.sourceforge.atunes.utils.CollectionUtils.isEmpty(actions)) {
-	    button = new PopUpButton(
-		    GuiUtils.getComponentOrientationAsSwingConstant() == SwingConstants.LEFT ? PopUpButton.TOP_LEFT
-			    : PopUpButton.TOP_RIGHT, I18nUtils
-			    .getString("OPTIONS"));
-	    for (AbstractAction action : actions) {
-		button.add(action);
-	    }
-	    c.gridx = 2;
-	    c.fill = GridBagConstraints.NONE;
-	    c.anchor = GridBagConstraints.EAST;
-	    c.insets = new Insets(0, 0, 0, 10);
-	    add(button, c);
-
-	    addMouseListener(new ContextTableRowPanelMouseAdapter(this, table,
-		    button));
-	    button.addPopupMenuListener(new ContextTableRowPopupMenuListener<T>(
-		    actions, table));
+	/**
+	 * Sets image
+	 * 
+	 * @param image
+	 */
+	public void setImage(final ImageIcon image) {
+		this.imageLabel = new JLabel(image);
+		this.imageLabel.setOpaque(false);
 	}
-    }
 
-    /**
-     * Shows or hides options if panel has focus
-     * 
-     * @param hasFocus
-     */
-    public void setFocus(final boolean hasFocus) {
-	if (button != null) {
-	    button.setVisible(hasFocus);
+	/**
+	 * Sets text
+	 * 
+	 * @param text
+	 */
+	public void setText(final String text) {
+		this.textLabel = new JLabel(text);
+		this.textLabel.setOpaque(false);
+		this.textLabel.setVerticalAlignment(SwingConstants.TOP);
 	}
-    }
+
+	/**
+	 * @param imageMaxWidth
+	 * @param actions
+	 * @param table
+	 * @param controlsBuilder
+	 */
+	public void build(final int imageMaxWidth,
+			final List<ContextTableAction<T>> actions,
+			final ContextTable table, final IControlsBuilder controlsBuilder) {
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.WEST;
+		c.insets = new Insets(2, (imageMaxWidth + 20)
+				/ 2
+				- (this.imageLabel.getIcon() != null ? this.imageLabel
+						.getIcon().getIconWidth() : 0) / 2, 0, 0);
+		add(this.imageLabel, c);
+		c.gridx = 1;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(0, (imageMaxWidth + 20)
+				/ 2
+				- (this.imageLabel.getIcon() != null ? this.imageLabel
+						.getIcon().getIconWidth() : 0) / 2, 0, 0);
+		add(this.textLabel, c);
+
+		controlsBuilder.applyComponentOrientation(this);
+
+		if (!net.sourceforge.atunes.utils.CollectionUtils.isEmpty(actions)) {
+			this.button = controlsBuilder
+					.createPopUpButton(controlsBuilder
+							.getComponentOrientationAsSwingConstant() == SwingConstants.LEFT ? PopUpButton.TOP_LEFT
+							: PopUpButton.TOP_RIGHT);
+			this.button.setText(I18nUtils.getString("OPTIONS"));
+			for (AbstractAction action : actions) {
+				this.button.add(action);
+			}
+			c.gridx = 2;
+			c.fill = GridBagConstraints.NONE;
+			c.anchor = GridBagConstraints.EAST;
+			c.insets = new Insets(0, 0, 0, 10);
+			add(this.button, c);
+
+			addMouseListener(new ContextTableRowPanelMouseAdapter(this, table,
+					this.button));
+			this.button
+					.addPopupMenuListener(new ContextTableRowPopupMenuListener<T>(
+							actions, table));
+		}
+	}
+
+	/**
+	 * Shows or hides options if panel has focus
+	 * 
+	 * @param hasFocus
+	 */
+	public void setFocus(final boolean hasFocus) {
+		if (this.button != null) {
+			this.button.setVisible(hasFocus);
+		}
+	}
 }

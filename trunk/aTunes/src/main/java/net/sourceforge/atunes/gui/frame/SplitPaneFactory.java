@@ -26,35 +26,39 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 
-import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
+import net.sourceforge.atunes.model.IControlsBuilder;
 
 /**
  * Creates split pane
+ * 
  * @author alex
- *
+ * 
  */
 class SplitPaneFactory {
-	
+
 	private static final class StoreFrameStateWhenDividerLocationChangeListener
 			implements PropertyChangeListener {
 		private final AbstractSingleFrame frame;
 		private final String splitPaneId;
 
 		private StoreFrameStateWhenDividerLocationChangeListener(
-				AbstractSingleFrame frame, String splitPaneId) {
+				final AbstractSingleFrame frame, final String splitPaneId) {
 			this.frame = frame;
 			this.splitPaneId = splitPaneId;
 		}
 
 		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-		    frame.getFrameState().putSplitPaneDividerPos(splitPaneId, (Integer) evt.getNewValue());
-		    frame.storeFrameState();
+		public void propertyChange(final PropertyChangeEvent evt) {
+			this.frame.getFrameState().putSplitPaneDividerPos(this.splitPaneId,
+					(Integer) evt.getNewValue());
+			this.frame.storeFrameState();
 		}
 	}
 
 	/**
 	 * Creates a new navigator split pane for a frame with a split pane id
+	 * 
+	 * @param controlsBuilder
 	 * @param frame
 	 * @param splitPaneId
 	 * @param orientation
@@ -62,18 +66,25 @@ class SplitPaneFactory {
 	 * @param right
 	 * @return
 	 */
-	public CustomSplitPane getSplitPane(final AbstractSingleFrame frame, final String splitPaneId, int orientation, JComponent left, JComponent right) {
+	public JSplitPane getSplitPane(final IControlsBuilder controlsBuilder,
+			final AbstractSingleFrame frame, final String splitPaneId,
+			final int orientation, final JComponent left, final JComponent right) {
 		if (frame == null || splitPaneId == null) {
 			throw new IllegalStateException("Not initialized");
 		}
-		if (orientation != JSplitPane.HORIZONTAL_SPLIT && orientation != JSplitPane.VERTICAL_SPLIT) {
+		if (orientation != JSplitPane.HORIZONTAL_SPLIT
+				&& orientation != JSplitPane.VERTICAL_SPLIT) {
 			throw new IllegalStateException("Wrong orientation");
 		}
-			
-    	CustomSplitPane navigatorSplitPane = new CustomSplitPane(orientation);
-    	navigatorSplitPane.setLeftComponent(left);
-    	navigatorSplitPane.setRightComponent(right);
-    	navigatorSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new StoreFrameStateWhenDividerLocationChangeListener(frame, splitPaneId));
-        return navigatorSplitPane;
+
+		JSplitPane navigatorSplitPane = controlsBuilder
+				.createSplitPane(orientation);
+		navigatorSplitPane.setLeftComponent(left);
+		navigatorSplitPane.setRightComponent(right);
+		navigatorSplitPane.addPropertyChangeListener(
+				JSplitPane.DIVIDER_LOCATION_PROPERTY,
+				new StoreFrameStateWhenDividerLocationChangeListener(frame,
+						splitPaneId));
+		return navigatorSplitPane;
 	}
 }

@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IEqualizerDialog;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -40,41 +41,57 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ShowEqualizerAction extends ActionWithColorMutableIcon {
 
-    private static final long serialVersionUID = 2511199136727155747L;
+	private static final long serialVersionUID = 2511199136727155747L;
 
-    private IDialogFactory dialogFactory;
-    
-    private IIconFactory equalizerIcon;
-    
-    /**
-     * @param equalizerIcon
-     */
-    public void setEqualizerIcon(IIconFactory equalizerIcon) {
+	private IDialogFactory dialogFactory;
+
+	private IIconFactory equalizerIcon;
+
+	private IOSManager osManager;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
+
+	/**
+	 * @param equalizerIcon
+	 */
+	public void setEqualizerIcon(final IIconFactory equalizerIcon) {
 		this.equalizerIcon = equalizerIcon;
 	}
 
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-    
-    /**
-     * Default constructor
-     */
-    public ShowEqualizerAction() {
-        super(I18nUtils.getString("EQUALIZER"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, GuiUtils.getCtrlOrMetaActionEventMask()));
-    }
 
-    @Override
-    protected void executeAction() {
-    	dialogFactory.newDialog(IEqualizerDialog.class).showDialog();
-    }
-    
-    @Override
-    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-    	return equalizerIcon.getColorMutableIcon();
-    }
+	/**
+	 * Default constructor
+	 */
+	public ShowEqualizerAction() {
+		super(I18nUtils.getString("EQUALIZER"));
+	}
+
+	@Override
+	protected void initialize() {
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_E,
+						GuiUtils.getCtrlOrMetaActionEventMask(this.osManager)));
+	}
+
+	@Override
+	protected void executeAction() {
+		this.dialogFactory.newDialog(IEqualizerDialog.class).showDialog();
+	}
+
+	@Override
+	public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
+		return this.equalizerIcon.getColorMutableIcon();
+	}
 }

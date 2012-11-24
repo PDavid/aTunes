@@ -28,25 +28,26 @@ import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 final class PlayActionFromMenuBar extends AbstractAction {
-    private static final long serialVersionUID = -2392752580476710618L;
+	private static final long serialVersionUID = -2392752580476710618L;
 
-    private final Action playAction;
+	private final Action playAction;
 
-    PlayActionFromMenuBar(final Action playAction) {
-        super(I18nUtils.getString("PLAY"));
-        this.playAction = playAction;
-        putValue(
-    	    ACCELERATOR_KEY,
-    	    KeyStroke.getKeyStroke(KeyEvent.VK_P,
-    		    GuiUtils.getCtrlOrMetaActionEventMask()));
-    }
+	PlayActionFromMenuBar(final Action playAction, final IOSManager osManager) {
+		super(I18nUtils.getString("PLAY"));
+		this.playAction = playAction;
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_P,
+						GuiUtils.getCtrlOrMetaActionEventMask(osManager)));
+	}
 
-    @Override
-    public void actionPerformed(final ActionEvent e) {
-        // Need this action to pass null event
-        playAction.actionPerformed(null);
-    }
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+		// Need this action to pass null event
+		this.playAction.actionPerformed(null);
+	}
 }

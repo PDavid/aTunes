@@ -48,7 +48,7 @@ import net.sourceforge.atunes.gui.TransferableList;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
-import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -75,14 +75,14 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 	private AbstractColumnSetTableModel playListTableModel;
 
 	private IBeanFactory beanFactory;
-	
-    private IDialogFactory dialogFactory;
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
 	}
 
 	/**
@@ -95,14 +95,16 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 	/**
 	 * @param playListTableModel
 	 */
-	public void setPlayListTableModel(final AbstractColumnSetTableModel playListTableModel) {
+	public void setPlayListTableModel(
+			final AbstractColumnSetTableModel playListTableModel) {
 		this.playListTableModel = playListTableModel;
 	}
 
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
@@ -124,32 +126,35 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 	 * Initializes play list
 	 */
 	public void initialize() {
-		lookAndFeelManager.getCurrentLookAndFeel().decorateTable(this);
+		this.lookAndFeelManager.getCurrentLookAndFeel().decorateTable(this);
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		setDropMode(DropMode.ON);
 
 		// Set table model
-		setModel(playListTableModel);
+		setModel(this.playListTableModel);
 
 		// Set column model
-		PlayListColumnModel columnModel = beanFactory.getBean(PlayListColumnModel.class);
-		columnModel.setModel(playListTableModel);
+		PlayListColumnModel columnModel = this.beanFactory
+				.getBean(PlayListColumnModel.class);
+		columnModel.setModel(this.playListTableModel);
 		setColumnModel(columnModel);
 
 		// Set sorter
-		new ColumnSetRowSorter(this, playListTableModel, columnModel);
+		new ColumnSetRowSorter(this, this.playListTableModel, columnModel);
 
 		// Bind column set popup menu
-		new ColumnSetPopupMenu(this, columnModel, dialogFactory);
+		this.controlsBuilder.createColumnSetPopupMenu(this, columnModel);
 
 		// Disable autoresize, as we will control it
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		// Set renderers
-		ColumnRenderers.addRenderers(this, columnModel, lookAndFeelManager.getCurrentLookAndFeel());
+		ColumnRenderers.addRenderers(this, columnModel,
+				this.lookAndFeelManager.getCurrentLookAndFeel());
 
 		// Remove enter key event, which moves selection down
-		getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "none");
+		getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "none");
 
 		// Remove F2 key event
 		InputMap im = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -157,10 +162,12 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 		im.put(f2, "none");
 
 		// Create drag source and set listener
-		dragSource = new DragSource();
-		dragSource.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY, this);
+		this.dragSource = new DragSource();
+		this.dragSource.createDefaultDragGestureRecognizer(this,
+				DnDConstants.ACTION_COPY, this);
 
-		// Force minimum row height to 16 pixels to avoid icons height greater than row height
+		// Force minimum row height to 16 pixels to avoid icons height greater
+		// than row height
 		if (getRowHeight() < 16) {
 			setRowHeight(16);
 		}
@@ -170,11 +177,12 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 
 	@Override
 	public JPopupMenu getMenu() {
-		return playListPopupMenu;
+		return this.playListPopupMenu;
 	}
 
 	@Override
-	public void playbackStateChanged(final PlaybackState newState, final IAudioObject currentAudioObject) {
+	public void playbackStateChanged(final PlaybackState newState,
+			final IAudioObject currentAudioObject) {
 		revalidate();
 		repaint();
 	}
@@ -195,19 +203,24 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 	public void dragGestureRecognized(final DragGestureEvent dge) {
 		// Only allow drag events initiated with left mouse button
 		InputEvent event = dge.getTriggerEvent();
-		if (!(event instanceof MouseEvent) || !GuiUtils.isPrimaryMouseButton((MouseEvent)event)) {
+		if (!(event instanceof MouseEvent)
+				|| !GuiUtils.isPrimaryMouseButton((MouseEvent) event)) {
 			return;
 		}
 
-		// Get selected rows, add PlayListDragableRow objects to a list and start a drag event
+		// Get selected rows, add PlayListDragableRow objects to a list and
+		// start a drag event
 		List<Object> itemsToDrag = new ArrayList<Object>();
 		int[] selectedRows = getSelectedRows();
-		List<IAudioObject> selectedAudioObjects = playListHandler.getSelectedAudioObjects();
+		List<IAudioObject> selectedAudioObjects = this.playListHandler
+				.getSelectedAudioObjects();
 		for (int i = 0; i < selectedAudioObjects.size(); i++) {
-			itemsToDrag.add(new PlayListDragableRow(selectedAudioObjects.get(i), selectedRows[i]));
+			itemsToDrag.add(new PlayListDragableRow(
+					selectedAudioObjects.get(i), selectedRows[i]));
 		}
-		TransferableList<Object> items = new TransferableList<Object>(itemsToDrag);
-		dragSource.startDrag(dge, DragSource.DefaultCopyDrop, items, this);
+		TransferableList<Object> items = new TransferableList<Object>(
+				itemsToDrag);
+		this.dragSource.startDrag(dge, DragSource.DefaultCopyDrop, items, this);
 	}
 
 	@Override
@@ -220,7 +233,7 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 
 	@Override
 	public List<IAudioObject> getSelectedAudioObjects() {
-		return playListHandler.getSelectedAudioObjects();
+		return this.playListHandler.getSelectedAudioObjects();
 	}
 
 	@Override

@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
 import net.sourceforge.atunes.kernel.modules.covernavigator.CoverNavigatorController;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -36,59 +37,69 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ShowCoverNavigatorAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 4927892497869144235L;
+	private static final long serialVersionUID = 4927892497869144235L;
 
-    private IRepositoryHandler repositoryHandler;
+	private IRepositoryHandler repositoryHandler;
 
-    private IAudioObjectImageLocator audioObjectImageLocator;
+	private IAudioObjectImageLocator audioObjectImageLocator;
 
-    private IProcessFactory processFactory;
+	private IProcessFactory processFactory;
 
-    private IDialogFactory dialogFactory;
+	private IDialogFactory dialogFactory;
 
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(final IDialogFactory dialogFactory) {
-	this.dialogFactory = dialogFactory;
-    }
+	private IControlsBuilder controlsBuilder;
 
-    /**
-     * @param processFactory
-     */
-    public void setProcessFactory(final IProcessFactory processFactory) {
-	this.processFactory = processFactory;
-    }
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
-    /**
-     * @param audioObjectImageLocator
-     */
-    public void setAudioObjectImageLocator(
-	    final IAudioObjectImageLocator audioObjectImageLocator) {
-	this.audioObjectImageLocator = audioObjectImageLocator;
-    }
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-	this.repositoryHandler = repositoryHandler;
-    }
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(final IProcessFactory processFactory) {
+		this.processFactory = processFactory;
+	}
 
-    /**
-     * Default constructor
-     */
-    public ShowCoverNavigatorAction() {
-	super(I18nUtils.getString("COVER_NAVIGATOR"));
-    }
+	/**
+	 * @param audioObjectImageLocator
+	 */
+	public void setAudioObjectImageLocator(
+			final IAudioObjectImageLocator audioObjectImageLocator) {
+		this.audioObjectImageLocator = audioObjectImageLocator;
+	}
 
-    @Override
-    protected void executeAction() {
-	CoverNavigatorDialog coverNavigator = dialogFactory
-		.newDialog(CoverNavigatorDialog.class);
-	coverNavigator.setArtists(repositoryHandler.getArtists());
-	new CoverNavigatorController(coverNavigator, audioObjectImageLocator,
-		processFactory);
-	coverNavigator.setVisible(true);
-    }
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+
+	/**
+	 * Default constructor
+	 */
+	public ShowCoverNavigatorAction() {
+		super(I18nUtils.getString("COVER_NAVIGATOR"));
+	}
+
+	@Override
+	protected void executeAction() {
+		CoverNavigatorDialog coverNavigator = this.dialogFactory
+				.newDialog(CoverNavigatorDialog.class);
+		coverNavigator.setArtists(this.repositoryHandler.getArtists());
+		new CoverNavigatorController(coverNavigator,
+				this.audioObjectImageLocator, this.processFactory,
+				this.controlsBuilder);
+		coverNavigator.setVisible(true);
+	}
 }

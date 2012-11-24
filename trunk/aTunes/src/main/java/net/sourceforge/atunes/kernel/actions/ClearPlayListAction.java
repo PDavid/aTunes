@@ -29,6 +29,7 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -39,51 +40,65 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ClearPlayListAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 7784228526804232608L;
+	private static final long serialVersionUID = 7784228526804232608L;
 
-    private IDialogFactory dialogFactory;
-    
-    private IPlayListHandler playListHandler;
+	private IDialogFactory dialogFactory;
 
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
+	private IPlayListHandler playListHandler;
+
+	private IOSManager osManager;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    /**
-     * Default constructor
-     */
-    public ClearPlayListAction() {
-        super(I18nUtils.getString("CLEAR"));
-    }
-    
-    @Override
-    protected void initialize() {
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TOOLTIP"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, GuiUtils.getCtrlOrMetaActionEventMask()));
-    }
 
-    @Override
-    protected void executeAction() {
-    	IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
-    	dialog.setMessage(I18nUtils.getString("CLEAR_PLAYLIST_WARNING"));
-    	dialog.showDialog();
-        if (dialog.userAccepted()) {
-        	playListHandler.clearPlayList();
-        }
-    }
+	/**
+	 * Default constructor
+	 */
+	public ClearPlayListAction() {
+		super(I18nUtils.getString("CLEAR"));
+	}
 
-    @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return true;
-    }
+	@Override
+	protected void initialize() {
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TOOLTIP"));
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,
+						GuiUtils.getCtrlOrMetaActionEventMask(this.osManager)));
+	}
+
+	@Override
+	protected void executeAction() {
+		IConfirmationDialog dialog = this.dialogFactory
+				.newDialog(IConfirmationDialog.class);
+		dialog.setMessage(I18nUtils.getString("CLEAR_PLAYLIST_WARNING"));
+		dialog.showDialog();
+		if (dialog.userAccepted()) {
+			this.playListHandler.clearPlayList();
+		}
+	}
+
+	@Override
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
+		return true;
+	}
 }

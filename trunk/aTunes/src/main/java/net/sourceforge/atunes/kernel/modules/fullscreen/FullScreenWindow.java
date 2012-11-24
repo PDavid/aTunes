@@ -49,6 +49,7 @@ import net.sourceforge.atunes.gui.views.controls.FullScreenPlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.FullScreenPreviousButton;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
@@ -61,8 +62,9 @@ import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Window to show a flow of covers
+ * 
  * @author alex
- *
+ * 
  */
 public final class FullScreenWindow extends AbstractCustomWindow {
 
@@ -150,16 +152,20 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
 	/**
 	 * Instantiates a new full screen dialog.
+	 * 
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public FullScreenWindow(final IFrame frame) {
-		super(frame.getFrame(), 0, 0);
+	public FullScreenWindow(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame.getFrame(), 0, 0, controlsBuilder);
 		this.frame = frame;
 	}
 
@@ -177,11 +183,12 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 */
 	void activateTimer() {
 		setCursor(Cursor.getDefaultCursor());
-		controlsPanel.setVisible(true);
-		if (hideMouseTimer != null) {
-			hideMouseTimer.restart();
+		this.controlsPanel.setVisible(true);
+		if (this.hideMouseTimer != null) {
+			this.hideMouseTimer.restart();
 		} else {
-			hideMouseTimer = new Timer(5000, new HideMouseActionListener(this, controlsPanel, options));
+			this.hideMouseTimer = new Timer(5000, new HideMouseActionListener(
+					this, this.controlsPanel, this.options));
 		}
 	}
 
@@ -191,17 +198,18 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 * @return true, if is playing
 	 */
 	public boolean isPlaying() {
-		return playing;
+		return this.playing;
 	}
 
 	/**
 	 * Sets the audio objects
+	 * 
 	 * @param objects
 	 */
 	public void setAudioObjects(final List<IAudioObject> objects) {
 		if (objects == null || objects.isEmpty()) {
-			textLabel.setText("");
-			textLabel2.setText("");
+			this.textLabel.setText("");
+			this.textLabel2.setText("");
 			return;
 		}
 
@@ -215,17 +223,20 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	private void setText(final IAudioObject audioObject) {
 		// No object
 		if (audioObject == null) {
-			textLabel.setText("");
-			textLabel2.setText("");
+			this.textLabel.setText("");
+			this.textLabel2.setText("");
 		} else if (audioObject instanceof IRadio) {
-			textLabel.setText(((IRadio) audioObject).getName());
-			textLabel2.setText(((IRadio) audioObject).getUrl());
+			this.textLabel.setText(((IRadio) audioObject).getName());
+			this.textLabel2.setText(((IRadio) audioObject).getUrl());
 		} else if (audioObject instanceof IPodcastFeedEntry) {
-			textLabel.setText(((IPodcastFeedEntry) audioObject).getTitle());
-			textLabel2.setText(((IPodcastFeedEntry) audioObject).getPodcastFeed().getName());
+			this.textLabel
+					.setText(((IPodcastFeedEntry) audioObject).getTitle());
+			this.textLabel2.setText(((IPodcastFeedEntry) audioObject)
+					.getPodcastFeed().getName());
 		} else {
-			textLabel.setText(audioObject.getTitleOrFileName());
-			textLabel2.setText(audioObject.getArtist(unknownObjectChecker));
+			this.textLabel.setText(audioObject.getTitleOrFileName());
+			this.textLabel2.setText(audioObject
+					.getArtist(this.unknownObjectChecker));
 		}
 	}
 
@@ -237,10 +248,10 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 */
 	void setBackground(final File file) {
 		if (file == null) {
-			backgroundPanel.setBackgroundImage(null);
+			this.backgroundPanel.setBackgroundImage(null);
 		} else {
 			try {
-				backgroundPanel.setBackgroundImage(ImageIO.read(file));
+				this.backgroundPanel.setBackgroundImage(ImageIO.read(file));
 			} catch (IOException e) {
 				Logger.error(e);
 			}
@@ -251,24 +262,24 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 * Sets the content.
 	 */
 	private void setContent() {
-		backgroundPanel = new FullScreenBackgroundPanel();
-		add(backgroundPanel);
+		this.backgroundPanel = new FullScreenBackgroundPanel();
+		add(this.backgroundPanel);
 
 		setOptions();
 
-		textLabel = getTextLabel();
-		textLabel2 = getTextLabel2();
+		this.textLabel = getTextLabel();
+		this.textLabel2 = getTextLabel2();
 
 		JPanel textAndControlsPanel = getTextAndControlsPanel();
 
 		textAndControlsPanel.setAlignmentX(0.0f);
 		textAndControlsPanel.setAlignmentY(1f);
 
-		covers.setAlignmentX(0.0f);
-		covers.setAlignmentY(0.8f);
+		this.covers.setAlignmentX(0.0f);
+		this.covers.setAlignmentY(0.8f);
 
-		backgroundPanel.add(textAndControlsPanel);
-		backgroundPanel.add(covers);
+		this.backgroundPanel.add(textAndControlsPanel);
+		this.backgroundPanel.add(this.covers);
 	}
 
 	/**
@@ -282,13 +293,15 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 * 
 	 */
 	private void setOptions() {
-		options = new JPopupMenu(I18nUtils.getString("OPTIONS"));
-		selectBackground = new JMenuItem(I18nUtils.getString("SELECT_BACKGROUND"));
-		removeBackground = new JMenuItem(I18nUtils.getString("REMOVE_BACKGROUND"));
-		exitFullScreen = new JMenuItem(I18nUtils.getString("CLOSE"));
-		options.add(selectBackground);
-		options.add(removeBackground);
-		options.add(exitFullScreen);
+		this.options = new JPopupMenu(I18nUtils.getString("OPTIONS"));
+		this.selectBackground = new JMenuItem(
+				I18nUtils.getString("SELECT_BACKGROUND"));
+		this.removeBackground = new JMenuItem(
+				I18nUtils.getString("REMOVE_BACKGROUND"));
+		this.exitFullScreen = new JMenuItem(I18nUtils.getString("CLOSE"));
+		this.options.add(this.selectBackground);
+		this.options.add(this.removeBackground);
+		this.options.add(this.exitFullScreen);
 	}
 
 	/**
@@ -305,64 +318,80 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 		JPanel buttonsPanel = new JPanel(new FlowLayout());
 		buttonsPanel.setOpaque(false);
 
-		previousButton = new FullScreenPreviousButton(getPlayerIconSize(), getPlayerIconResized(Images.getImage(Images.PREVIOUS_FULL_SCREEN)), beanFactory.getBean("previousAction", Action.class));
-		playButton = new FullScreenPlayPauseButton(getMainPlayerIconSize(), getMainPlayerIconResized(Images.getImage(Images.PLAY_FULL_SCREEN)), getMainPlayerIconResized(Images.getImage(Images.PAUSE_FULL_SCREEN)), beanFactory.getBean("playAction", Action.class));
-		nextButton = new FullScreenNextButton(getPlayerIconSize(), getPlayerIconResized(Images.getImage(Images.NEXT_FULL_SCREEN)), beanFactory.getBean("nextAction", Action.class));
+		this.previousButton = new FullScreenPreviousButton(getPlayerIconSize(),
+				getPlayerIconResized(Images
+						.getImage(Images.PREVIOUS_FULL_SCREEN)),
+				this.beanFactory.getBean("previousAction", Action.class));
+		this.playButton = new FullScreenPlayPauseButton(
+				getMainPlayerIconSize(),
+				getMainPlayerIconResized(Images
+						.getImage(Images.PLAY_FULL_SCREEN)),
+				getMainPlayerIconResized(Images
+						.getImage(Images.PAUSE_FULL_SCREEN)),
+				this.beanFactory.getBean("playAction", Action.class));
+		this.nextButton = new FullScreenNextButton(getPlayerIconSize(),
+				getPlayerIconResized(Images.getImage(Images.NEXT_FULL_SCREEN)),
+				this.beanFactory.getBean("nextAction", Action.class));
 
-		buttonsPanel.add(previousButton);
-		buttonsPanel.add(playButton);
-		buttonsPanel.add(nextButton);
+		buttonsPanel.add(this.previousButton);
+		buttonsPanel.add(this.playButton);
+		buttonsPanel.add(this.nextButton);
 
 		setPanels(textAndControlsPanel, textPanel, buttonsPanel);
-		textAndControlsPanel.add(controlsPanel);
-		textAndControlsPanel.setMaximumSize(new Dimension(screenSize.width, screenSize.height / 3));
+		textAndControlsPanel.add(this.controlsPanel);
+		textAndControlsPanel.setMaximumSize(new Dimension(
+				this.screenSize.width, this.screenSize.height / 3));
 		return textAndControlsPanel;
 	}
 
 	private ImageIcon getMainPlayerIconResized(final ImageIcon icon) {
-		int iconSize = screenSize.height / 12;
-		return ImageUtils.scaleImageBicubic(icon.getImage(), iconSize, iconSize);
+		int iconSize = this.screenSize.height / 12;
+		return ImageUtils
+				.scaleImageBicubic(icon.getImage(), iconSize, iconSize);
 	}
 
 	private ImageIcon getPlayerIconResized(final ImageIcon icon) {
-		int iconSize = screenSize.height / 16;
-		return ImageUtils.scaleImageBicubic(icon.getImage(), iconSize, iconSize);
+		int iconSize = this.screenSize.height / 16;
+		return ImageUtils
+				.scaleImageBicubic(icon.getImage(), iconSize, iconSize);
 	}
 
 	private Dimension getMainPlayerIconSize() {
-		return new Dimension(screenSize.height / 12, screenSize.height / 12);
+		return new Dimension(this.screenSize.height / 12,
+				this.screenSize.height / 12);
 	}
 
 	private Dimension getPlayerIconSize() {
-		return new Dimension(screenSize.height / 16, screenSize.height / 16);
+		return new Dimension(this.screenSize.height / 16,
+				this.screenSize.height / 16);
 	}
 
 	/**
 	 * @return
 	 */
 	public FullScreenBackgroundPanel getBackgroundPanel() {
-		return backgroundPanel;
+		return this.backgroundPanel;
 	}
 
 	/**
 	 * @return
 	 */
 	public FullScreenPreviousButton getPreviousButton() {
-		return previousButton;
+		return this.previousButton;
 	}
 
 	/**
 	 * @return
 	 */
 	public FullScreenPlayPauseButton getPlayButton() {
-		return playButton;
+		return this.playButton;
 	}
 
 	/**
 	 * @return
 	 */
 	public FullScreenNextButton getNextButton() {
-		return nextButton;
+		return this.nextButton;
 	}
 
 	/**
@@ -370,7 +399,8 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 * @param textPanel
 	 * @param buttonsPanel
 	 */
-	private void setPanels(final JPanel textAndControlsPanel, final JPanel textPanel, final JPanel buttonsPanel) {
+	private void setPanels(final JPanel textAndControlsPanel,
+			final JPanel textPanel, final JPanel buttonsPanel) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -379,26 +409,27 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.insets = new Insets(0, 0, 20, 0);
 		c.anchor = GridBagConstraints.NORTH;
-		textPanel.add(textLabel, c);
+		textPanel.add(this.textLabel, c);
 		c.gridy = 1;
-		textPanel.add(textLabel2, c);
+		textPanel.add(this.textLabel2, c);
 
 		textAndControlsPanel.add(textPanel);
 
-		controlsPanel = new JPanel(new GridBagLayout());
-		controlsPanel.setOpaque(false);
+		this.controlsPanel = new JPanel(new GridBagLayout());
+		this.controlsPanel.setOpaque(false);
 
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridwidth = 3;
 		c.insets = new Insets(20, 0, 5, 0);
-		controlsPanel.add(buttonsPanel, c);
+		this.controlsPanel.add(buttonsPanel, c);
 	}
 
 	private JLabel getTextLabel2() {
 		JLabel label = new JLabel();
-		label.setFont(lookAndFeelManager.getCurrentLookAndFeel().getFullScreenLine2Font());
+		label.setFont(this.lookAndFeelManager.getCurrentLookAndFeel()
+				.getFullScreenLine2Font());
 		label.setForeground(Color.WHITE);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		return label;
@@ -406,7 +437,8 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
 	private JLabel getTextLabel() {
 		JLabel label = new JLabel();
-		label.setFont(lookAndFeelManager.getCurrentLookAndFeel().getFullScreenLine1Font());
+		label.setFont(this.lookAndFeelManager.getCurrentLookAndFeel()
+				.getFullScreenLine1Font());
 		label.setForeground(Color.WHITE);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		return label;
@@ -416,16 +448,17 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 * @return
 	 */
 	public JMenuItem getExitFullScreen() {
-		return exitFullScreen;
+		return this.exitFullScreen;
 	}
 
 	/**
 	 * Sets the full screen.
+	 * 
 	 * @param fullscreen
 	 * @param frame
 	 */
 	private void setFullScreen(final boolean fullscreen, final IFrame frame) {
-		osManager.setFullScreen(this, fullscreen, frame);
+		this.osManager.setFullScreen(this, fullscreen, frame);
 	}
 
 	/**
@@ -436,7 +469,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 */
 	public void setPlaying(final boolean playing) {
 		this.playing = playing;
-		playButton.setPlaying(playing);
+		this.playButton.setPlaying(playing);
 	}
 
 	@Override
@@ -446,43 +479,43 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 			updateWindow();
 			activateTimer();
 		}
-		setFullScreen(visible, frame);
+		setFullScreen(visible, this.frame);
 	}
 
 	/**
 	 * Updates the window with the current objects
 	 */
 	private void updateWindow() {
-		setText(objects.get(2));
-		covers.paint(objects);
+		setText(this.objects.get(2));
+		this.covers.paint(this.objects);
 	}
 
 	/**
 	 * @return the options
 	 */
 	public JPopupMenu getOptions() {
-		return options;
+		return this.options;
 	}
 
 	/**
 	 * @return the covers
 	 */
 	public CoverFlow getCovers() {
-		return covers;
+		return this.covers;
 	}
 
 	/**
 	 * @return the selectBackground
 	 */
 	public JMenuItem getSelectBackground() {
-		return selectBackground;
+		return this.selectBackground;
 	}
 
 	/**
 	 * @return the removeBackground
 	 */
 	public JMenuItem getRemoveBackground() {
-		return removeBackground;
+		return this.removeBackground;
 	}
 
 }

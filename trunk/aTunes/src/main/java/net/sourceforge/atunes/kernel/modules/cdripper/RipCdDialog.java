@@ -38,7 +38,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode;
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
@@ -75,7 +74,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
@@ -106,7 +105,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return
 	 */
 	public JTextField getDiscNumberField() {
-		return discNumberField;
+		return this.discNumberField;
 	}
 
 	/**
@@ -115,7 +114,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return the album text field
 	 */
 	public JTextField getAlbumTextField() {
-		return albumTextField;
+		return this.albumTextField;
 	}
 
 	/**
@@ -124,7 +123,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return the amazon button
 	 */
 	public JButton getTitlesButton() {
-		return titlesButton;
+		return this.titlesButton;
 	}
 
 	/**
@@ -133,7 +132,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return the artist names
 	 */
 	public List<String> getArtistNames() {
-		return tableModel.getArtistNames();
+		return this.tableModel.getArtistNames();
 	}
 
 	/**
@@ -142,7 +141,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return the artist text field
 	 */
 	public JTextField getArtistTextField() {
-		return albumArtistTextField;
+		return this.albumArtistTextField;
 	}
 
 	/**
@@ -151,7 +150,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return the cancel
 	 */
 	public JButton getCancel() {
-		return cancel;
+		return this.cancel;
 	}
 
 	/**
@@ -160,7 +159,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return the composer names
 	 */
 	public List<String> getComposerNames() {
-		return tableModel.getComposerNames();
+		return this.tableModel.getComposerNames();
 	}
 
 	/**
@@ -173,22 +172,22 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
 		JLabel albumArtistLabel = new JLabel(
 				I18nUtils.getString("ALBUM_ARTIST"));
-		albumArtistTextField = controlsBuilder.createTextField();
+		this.albumArtistTextField = this.controlsBuilder.createTextField();
 
 		JLabel albumLabel = new JLabel(I18nUtils.getString("ALBUM"));
-		albumTextField = controlsBuilder.createTextField();
+		this.albumTextField = this.controlsBuilder.createTextField();
 
 		JLabel cdLabel = new JLabel(I18nUtils.getString("DISC_NUMBER"));
-		discNumberField = controlsBuilder.createTextField();
+		this.discNumberField = this.controlsBuilder.createTextField();
 
 		JLabel yearLabel = new JLabel(I18nUtils.getString("YEAR"));
-		yearTextField = controlsBuilder.createTextField();
+		this.yearTextField = this.controlsBuilder.createTextField();
 
 		JLabel genreLabel = new JLabel(I18nUtils.getString("GENRE"));
-		genreComboBox = new JComboBox();
-		genreComboBox.setEditable(true);
+		this.genreComboBox = new JComboBox();
+		this.genreComboBox.setEditable(true);
 
-		titlesButton = new JButton(I18nUtils.getString("GET_TITLES"));
+		this.titlesButton = new JButton(I18nUtils.getString("GET_TITLES"));
 
 		arrangeBasicPanel(basicPanel, albumArtistLabel, albumLabel, yearLabel,
 				genreLabel, cdLabel);
@@ -218,39 +217,39 @@ public final class RipCdDialog extends AbstractCustomDialog {
 		basicPanel.add(albumArtistLabel, c);
 
 		c.gridx = 1;
-		basicPanel.add(albumArtistTextField, c);
+		basicPanel.add(this.albumArtistTextField, c);
 
 		c.gridx = 0;
 		c.gridy = 1;
 		basicPanel.add(albumLabel, c);
 
 		c.gridx = 1;
-		basicPanel.add(albumTextField, c);
+		basicPanel.add(this.albumTextField, c);
 
 		c.gridx = 0;
 		c.gridy = 2;
 		basicPanel.add(genreLabel, c);
 
 		c.gridx = 1;
-		basicPanel.add(genreComboBox, c);
+		basicPanel.add(this.genreComboBox, c);
 
 		c.gridx = 2;
 		c.gridy = 0;
 		basicPanel.add(cdLabel, c);
 
 		c.gridx = 3;
-		basicPanel.add(discNumberField, c);
+		basicPanel.add(this.discNumberField, c);
 
 		c.gridx = 2;
 		c.gridy = 1;
 		basicPanel.add(yearLabel, c);
 
 		c.gridx = 3;
-		basicPanel.add(yearTextField, c);
+		basicPanel.add(this.yearTextField, c);
 
 		c.gridx = 2;
 		c.gridy = 2;
-		basicPanel.add(titlesButton, c);
+		basicPanel.add(this.titlesButton, c);
 	}
 
 	private JPanel getAdvancedPanel() {
@@ -258,12 +257,12 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
 		JLabel formatLabel = new JLabel(I18nUtils.getString("ENCODE_TO"));
 
-		format = new JComboBox();
-		qualityLabel = new JLabel(I18nUtils.getString("QUALITY"));
+		this.format = new JComboBox();
+		this.qualityLabel = new JLabel(I18nUtils.getString("QUALITY"));
 
-		quality = new JComboBox(new String[] {});
+		this.quality = new JComboBox(new String[] {});
 
-		useCdErrorCorrection = new JCheckBox(
+		this.useCdErrorCorrection = new JCheckBox(
 				I18nUtils.getString("USE_CD_ERROR_CORRECTION"));
 
 		GridBagConstraints c = new GridBagConstraints();
@@ -275,19 +274,19 @@ public final class RipCdDialog extends AbstractCustomDialog {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		advancedPanel.add(formatLabel, c);
 		c.gridx = 1;
-		advancedPanel.add(format, c);
+		advancedPanel.add(this.format, c);
 
 		c.gridx = 2;
 		c.gridwidth = 3;
-		advancedPanel.add(useCdErrorCorrection, c);
+		advancedPanel.add(this.useCdErrorCorrection, c);
 
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weightx = 0;
 		c.gridwidth = 1;
-		advancedPanel.add(qualityLabel, c);
+		advancedPanel.add(this.qualityLabel, c);
 		c.gridx = 1;
-		advancedPanel.add(quality, c);
+		advancedPanel.add(this.quality, c);
 
 		return advancedPanel;
 	}
@@ -302,7 +301,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	private JPanel getContent(final ILookAndFeel iLookAndFeel) {
 		JPanel panel = new JPanel(new GridBagLayout());
 
-		tableModel = new CdInfoTableModel();
+		this.tableModel = new CdInfoTableModel();
 
 		JTable table = getTable(iLookAndFeel);
 		JScrollPane scrollPane = iLookAndFeel.getTableScrollPane(table);
@@ -339,13 +338,13 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return
 	 */
 	private JPanel getOkCancelPanel() {
-		ok = new JButton(I18nUtils.getString("OK"));
-		cancel = new JButton(I18nUtils.getString("CANCEL"));
+		this.ok = new JButton(I18nUtils.getString("OK"));
+		this.cancel = new JButton(I18nUtils.getString("CANCEL"));
 
 		JPanel okCancelPanel = new JPanel();
 		okCancelPanel.setOpaque(false);
-		okCancelPanel.add(ok);
-		okCancelPanel.add(cancel);
+		okCancelPanel.add(this.ok);
+		okCancelPanel.add(this.cancel);
 		return okCancelPanel;
 	}
 
@@ -355,7 +354,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 */
 	private JTable getTable(final ILookAndFeel iLookAndFeel) {
 		JTable table = iLookAndFeel.getTable();
-		table.setModel(tableModel);
+		table.setModel(this.tableModel);
 
 		table.getColumnModel().getColumn(0).setMaxWidth(20); // Width of check
 		table.getColumnModel().getColumn(4).setMaxWidth(50); // Width of
@@ -365,15 +364,15 @@ public final class RipCdDialog extends AbstractCustomDialog {
 		table.getColumnModel().getColumn(0)
 				.setCellEditor(new DefaultCellEditor(checkBox));
 
-		JTextField textfield1 = controlsBuilder.createTextField();
-		JTextField textfield2 = controlsBuilder.createTextField();
-		JTextField textfield3 = controlsBuilder.createTextField();
+		JTextField textfield1 = this.controlsBuilder.createTextField();
+		JTextField textfield2 = this.controlsBuilder.createTextField();
+		JTextField textfield3 = this.controlsBuilder.createTextField();
 		textfield1.setBorder(BorderFactory.createEmptyBorder());
 		textfield2.setBorder(BorderFactory.createEmptyBorder());
 		textfield3.setBorder(BorderFactory.createEmptyBorder());
-		GuiUtils.applyComponentOrientation(textfield1);
-		GuiUtils.applyComponentOrientation(textfield2);
-		GuiUtils.applyComponentOrientation(textfield3);
+		this.controlsBuilder.applyComponentOrientation(textfield1);
+		this.controlsBuilder.applyComponentOrientation(textfield2);
+		this.controlsBuilder.applyComponentOrientation(textfield3);
 
 		table.getColumnModel().getColumn(1)
 				.setCellEditor(new DefaultCellEditor(textfield1));
@@ -384,7 +383,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
 		table.setDefaultRenderer(
 				String.class,
-				iLookAndFeel.getTableCellRenderer(beanFactory
+				iLookAndFeel.getTableCellRenderer(this.beanFactory
 						.getBean(ComponentOrientationTableCellRendererCode.class)));
 		return table;
 	}
@@ -395,7 +394,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return the format
 	 */
 	public JComboBox getFormat() {
-		return format;
+		return this.format;
 	}
 
 	/**
@@ -404,7 +403,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return the genre combo box
 	 */
 	public JComboBox getGenreComboBox() {
-		return genreComboBox;
+		return this.genreComboBox;
 	}
 
 	/**
@@ -413,7 +412,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return the ok
 	 */
 	public JButton getOk() {
-		return ok;
+		return this.ok;
 	}
 
 	/**
@@ -422,7 +421,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return the quality
 	 */
 	public String getQuality() {
-		return (String) quality.getSelectedItem();
+		return (String) this.quality.getSelectedItem();
 	}
 
 	/**
@@ -431,14 +430,14 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return the quality combo box
 	 */
 	public JComboBox getQualityComboBox() {
-		return quality;
+		return this.quality;
 	}
 
 	/**
 	 * @return
 	 */
 	public JLabel getQualityLabel() {
-		return qualityLabel;
+		return this.qualityLabel;
 	}
 
 	/**
@@ -447,7 +446,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return the track names
 	 */
 	public List<String> getTrackNames() {
-		return tableModel.getTrackNames();
+		return this.tableModel.getTrackNames();
 	}
 
 	/**
@@ -457,7 +456,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 */
 
 	public List<Integer> getTracksSelected() {
-		List<Boolean> tracks = tableModel.getTracksSelected();
+		List<Boolean> tracks = this.tableModel.getTracksSelected();
 		List<Integer> result = new ArrayList<Integer>();
 		for (int i = 0; i < tracks.size(); i++) {
 			if (tracks.get(i)) {
@@ -473,7 +472,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return The cd error correction checkbox
 	 */
 	public JCheckBox getUseCdErrorCorrection() {
-		return useCdErrorCorrection;
+		return this.useCdErrorCorrection;
 	}
 
 	/**
@@ -482,7 +481,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * @return the year text field
 	 */
 	public JTextField getYearTextField() {
-		return yearTextField;
+		return this.yearTextField;
 	}
 
 	/**
@@ -492,8 +491,8 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 *            the new table data
 	 */
 	public void setTableData(final CDInfo cdInfo) {
-		tableModel.setCDInfo(cdInfo);
-		tableModel.fireTableDataChanged();
+		this.tableModel.setCDInfo(cdInfo);
+		this.tableModel.fireTableDataChanged();
 	}
 
 	/**
@@ -521,8 +520,8 @@ public final class RipCdDialog extends AbstractCustomDialog {
 			}
 		}
 
-		tableModel.setArtistNames(names);
-		tableModel.fireTableDataChanged();
+		this.tableModel.setArtistNames(names);
+		this.tableModel.fireTableDataChanged();
 	}
 
 	/**
@@ -532,8 +531,8 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 *            the names
 	 */
 	public void updateComposerNames(final List<String> names) {
-		tableModel.setComposerNames(names);
-		tableModel.fireTableDataChanged();
+		this.tableModel.setComposerNames(names);
+		this.tableModel.fireTableDataChanged();
 	}
 
 	/**
@@ -543,8 +542,8 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 *            the names
 	 */
 	public void updateTrackNames(final List<String> names) {
-		tableModel.setTrackNames(names);
-		tableModel.fireTableDataChanged();
+		this.tableModel.setTrackNames(names);
+		this.tableModel.fireTableDataChanged();
 	}
 
 	@Override

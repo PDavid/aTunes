@@ -24,38 +24,40 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.utils.Logger;
 
 class ContextTableRowPanelFactory<T> {
 
-    /**
-     * Creates a panel to be shown in each row of a panel table
-     * 
-     * @param actions
-     * @param table
-     * @param image
-     * @param text
-     * @param imageMaxWidth
-     * @return
-     */
-    public ContextTableRowPanel<T> getPanelForTableRenderer(
-	    final List<ContextTableAction<T>> actions,
-	    final ContextTable table, final ImageIcon image, final String text,
-	    final int imageMaxWidth) {
+	/**
+	 * Creates a panel to be shown in each row of a panel table
+	 * 
+	 * @param actions
+	 * @param table
+	 * @param image
+	 * @param text
+	 * @param imageMaxWidth
+	 * @param controlsBuilder
+	 * @return
+	 */
+	public ContextTableRowPanel<T> getPanelForTableRenderer(
+			final List<ContextTableAction<T>> actions,
+			final ContextTable table, final ImageIcon image, final String text,
+			final int imageMaxWidth, final IControlsBuilder controlsBuilder) {
 
-	Logger.debug("Building ContextTableRowPanel for ", text);
+		Logger.debug("Building ContextTableRowPanel for ", text);
 
-	// This renderer is a little tricky because images have no the same size
-	// so we must add two labels with custom insets to
-	// get desired alignment of images and text. Other ways to achieve this
-	// like setPreferredSize doesn't work because when width of panel is low
-	// preferred size is ignored, but insets don't
+		// This renderer is a little tricky because images have no the same size
+		// so we must add two labels with custom insets to
+		// get desired alignment of images and text. Other ways to achieve this
+		// like setPreferredSize doesn't work because when width of panel is low
+		// preferred size is ignored, but insets don't
 
-	final ContextTableRowPanel<T> panel = new ContextTableRowPanel<T>();
-	panel.setImage(image);
-	panel.setText(text);
-	panel.build(imageMaxWidth, actions, table);
-	return panel;
-    }
+		final ContextTableRowPanel<T> panel = new ContextTableRowPanel<T>();
+		panel.setImage(image);
+		panel.setText(text);
+		panel.build(imageMaxWidth, actions, table, controlsBuilder);
+		return panel;
+	}
 
 }

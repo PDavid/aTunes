@@ -27,6 +27,7 @@ import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -38,41 +39,50 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ShufflePlayListAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -6608120075596882123L;
+	private static final long serialVersionUID = -6608120075596882123L;
 
-    private IPlayListHandler playListHandler;
+	private IPlayListHandler playListHandler;
 
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(final IPlayListHandler playListHandler) {
-	this.playListHandler = playListHandler;
-    }
+	private IOSManager osManager;
 
-    /**
-     * Default constructor
-     */
-    public ShufflePlayListAction() {
-	super(I18nUtils.getString("SHUFFLE_PLAYLIST"));
-    }
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
-    @Override
-    protected void initialize() {
-	putValue(
-		ACCELERATOR_KEY,
-		KeyStroke.getKeyStroke(KeyEvent.VK_M,
-			GuiUtils.getCtrlOrMetaActionEventMask()));
-	setEnabled(false);
-    }
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
 
-    @Override
-    protected void executeAction() {
-	playListHandler.shuffle();
-    }
+	/**
+	 * Default constructor
+	 */
+	public ShufflePlayListAction() {
+		super(I18nUtils.getString("SHUFFLE_PLAYLIST"));
+	}
 
-    @Override
-    public boolean isEnabledForPlayListSelection(
-	    final List<IAudioObject> selection) {
-	return true;
-    }
+	@Override
+	protected void initialize() {
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_M,
+						GuiUtils.getCtrlOrMetaActionEventMask(this.osManager)));
+		setEnabled(false);
+	}
+
+	@Override
+	protected void executeAction() {
+		this.playListHandler.shuffle();
+	}
+
+	@Override
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
+		return true;
+	}
 }

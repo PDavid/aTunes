@@ -85,6 +85,7 @@
 	<bean id="fullScreenWindowFactory" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenWindowFactory" scope="prototype"/>
 	<bean id="fullScreenWindow" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenWindow" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	
 	<bean id="customSearchDialog" class="net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog" scope="prototype">

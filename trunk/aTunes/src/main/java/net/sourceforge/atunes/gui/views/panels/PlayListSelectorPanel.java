@@ -27,8 +27,8 @@ import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFilterPanel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
 import net.sourceforge.atunes.model.IPopUpButton;
 
@@ -39,144 +39,144 @@ import net.sourceforge.atunes.model.IPopUpButton;
  * 
  */
 public final class PlayListSelectorPanel extends JPanel implements
-	IPlayListSelectorPanel {
+		IPlayListSelectorPanel {
 
-    private static final long serialVersionUID = 7382098268271937439L;
+	private static final long serialVersionUID = 7382098268271937439L;
 
-    private PopUpButton options;
+	private PopUpButton options;
 
-    private ILookAndFeelManager lookAndFeelManager;
+	private IFilterPanel playListFilterPanel;
 
-    private IFilterPanel playListFilterPanel;
+	private AbstractAction newPlayListAction;
 
-    private AbstractAction newPlayListAction;
+	private AbstractAction renamePlayListAction;
 
-    private AbstractAction renamePlayListAction;
+	private AbstractAction closePlayListAction;
 
-    private AbstractAction closePlayListAction;
+	private AbstractAction closeOtherPlayListsAction;
 
-    private AbstractAction closeOtherPlayListsAction;
+	private AbstractAction arrangePlayListColumnsAction;
 
-    private AbstractAction arrangePlayListColumnsAction;
+	private AbstractAction copyPlayListToDeviceAction;
 
-    private AbstractAction copyPlayListToDeviceAction;
+	private AbstractAction syncDeviceWithPlayListAction;
 
-    private AbstractAction syncDeviceWithPlayListAction;
+	private IControlsBuilder controlsBuilder;
 
-    /**
-     * Instantiates a new play list tab panel.
-     */
-    public PlayListSelectorPanel() {
-	super(new GridBagLayout());
-    }
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
-    /**
-     * @param syncDeviceWithPlayListAction
-     */
-    public void setSyncDeviceWithPlayListAction(
-	    final AbstractAction syncDeviceWithPlayListAction) {
-	this.syncDeviceWithPlayListAction = syncDeviceWithPlayListAction;
-    }
+	/**
+	 * Instantiates a new play list tab panel.
+	 */
+	public PlayListSelectorPanel() {
+		super(new GridBagLayout());
+	}
 
-    /**
-     * @param copyPlayListToDeviceAction
-     */
-    public void setCopyPlayListToDeviceAction(
-	    final AbstractAction copyPlayListToDeviceAction) {
-	this.copyPlayListToDeviceAction = copyPlayListToDeviceAction;
-    }
+	/**
+	 * @param syncDeviceWithPlayListAction
+	 */
+	public void setSyncDeviceWithPlayListAction(
+			final AbstractAction syncDeviceWithPlayListAction) {
+		this.syncDeviceWithPlayListAction = syncDeviceWithPlayListAction;
+	}
 
-    /**
-     * @param arrangePlayListColumnsAction
-     */
-    public void setArrangePlayListColumnsAction(
-	    final AbstractAction arrangePlayListColumnsAction) {
-	this.arrangePlayListColumnsAction = arrangePlayListColumnsAction;
-    }
+	/**
+	 * @param copyPlayListToDeviceAction
+	 */
+	public void setCopyPlayListToDeviceAction(
+			final AbstractAction copyPlayListToDeviceAction) {
+		this.copyPlayListToDeviceAction = copyPlayListToDeviceAction;
+	}
 
-    /**
-     * @param closeOtherPlayListsAction
-     */
-    public void setCloseOtherPlayListsAction(
-	    final AbstractAction closeOtherPlayListsAction) {
-	this.closeOtherPlayListsAction = closeOtherPlayListsAction;
-    }
+	/**
+	 * @param arrangePlayListColumnsAction
+	 */
+	public void setArrangePlayListColumnsAction(
+			final AbstractAction arrangePlayListColumnsAction) {
+		this.arrangePlayListColumnsAction = arrangePlayListColumnsAction;
+	}
 
-    /**
-     * @param closePlayListAction
-     */
-    public void setClosePlayListAction(final AbstractAction closePlayListAction) {
-	this.closePlayListAction = closePlayListAction;
-    }
+	/**
+	 * @param closeOtherPlayListsAction
+	 */
+	public void setCloseOtherPlayListsAction(
+			final AbstractAction closeOtherPlayListsAction) {
+		this.closeOtherPlayListsAction = closeOtherPlayListsAction;
+	}
 
-    /**
-     * @param renamePlayListAction
-     */
-    public void setRenamePlayListAction(
-	    final AbstractAction renamePlayListAction) {
-	this.renamePlayListAction = renamePlayListAction;
-    }
+	/**
+	 * @param closePlayListAction
+	 */
+	public void setClosePlayListAction(final AbstractAction closePlayListAction) {
+		this.closePlayListAction = closePlayListAction;
+	}
 
-    /**
-     * @param newPlayListAction
-     */
-    public void setNewPlayListAction(final AbstractAction newPlayListAction) {
-	this.newPlayListAction = newPlayListAction;
-    }
+	/**
+	 * @param renamePlayListAction
+	 */
+	public void setRenamePlayListAction(
+			final AbstractAction renamePlayListAction) {
+		this.renamePlayListAction = renamePlayListAction;
+	}
 
-    /**
-     * @param playListFilterPanel
-     */
-    public void setPlayListFilterPanel(final IFilterPanel playListFilterPanel) {
-	this.playListFilterPanel = playListFilterPanel;
-    }
+	/**
+	 * @param newPlayListAction
+	 */
+	public void setNewPlayListAction(final AbstractAction newPlayListAction) {
+		this.newPlayListAction = newPlayListAction;
+	}
 
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(
-	    final ILookAndFeelManager lookAndFeelManager) {
-	this.lookAndFeelManager = lookAndFeelManager;
-    }
+	/**
+	 * @param playListFilterPanel
+	 */
+	public void setPlayListFilterPanel(final IFilterPanel playListFilterPanel) {
+		this.playListFilterPanel = playListFilterPanel;
+	}
 
-    /**
-     * Adds the content.
-     */
-    public void initialize() {
-	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
+	/**
+	 * Adds the content.
+	 */
+	public void initialize() {
+		this.options = this.controlsBuilder
+				.createPopUpButton(PopUpButton.BOTTOM_RIGHT);
 
-	addActions();
-    }
+		addActions();
+	}
 
-    /**
-     * Add actions to popup
-     */
-    private void addActions() {
-	options.add(newPlayListAction);
-	options.add(renamePlayListAction);
-	options.add(closePlayListAction);
-	options.add(closeOtherPlayListsAction);
-	options.addSeparator();
-	options.add(arrangePlayListColumnsAction);
-	options.addSeparator();
-	options.add(copyPlayListToDeviceAction);
-	options.add(syncDeviceWithPlayListAction);
-    }
+	/**
+	 * Add actions to popup
+	 */
+	private void addActions() {
+		this.options.add(this.newPlayListAction);
+		this.options.add(this.renamePlayListAction);
+		this.options.add(this.closePlayListAction);
+		this.options.add(this.closeOtherPlayListsAction);
+		this.options.addSeparator();
+		this.options.add(this.arrangePlayListColumnsAction);
+		this.options.addSeparator();
+		this.options.add(this.copyPlayListToDeviceAction);
+		this.options.add(this.syncDeviceWithPlayListAction);
+	}
 
-    @Override
-    public IPopUpButton getOptions() {
-	return options;
-    }
+	@Override
+	public IPopUpButton getOptions() {
+		return this.options;
+	}
 
-    /**
-     * @return
-     */
-    public IFilterPanel getPlayListFilterPanel() {
-	return playListFilterPanel;
-    }
+	/**
+	 * @return
+	 */
+	public IFilterPanel getPlayListFilterPanel() {
+		return this.playListFilterPanel;
+	}
 
-    @Override
-    public Component getSwingComponent() {
-	return this;
-    }
+	@Override
+	public Component getSwingComponent() {
+		return this;
+	}
 }

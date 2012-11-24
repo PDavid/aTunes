@@ -33,6 +33,7 @@ import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAboutDialog;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IFullScreenHandler;
@@ -53,6 +54,7 @@ import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Responsible of UI
+ * 
  * @author alex
  */
 public final class UIHandler extends AbstractHandler implements IUIHandler {
@@ -66,6 +68,15 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 	private IDialogFactory dialogFactory;
 
 	private IUnknownObjectChecker unknownObjectChecker;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	/**
 	 * @param unknownObjectChecker
@@ -105,13 +116,16 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 
 	@Override
 	public void applicationStarted() {
-		IFrameState frameState = stateUI.getFrameState(getFrame().getClass());
+		IFrameState frameState = this.stateUI.getFrameState(getFrame()
+				.getClass());
 		getFrame().applicationStarted(frameState);
 
-		showStatusBar(stateUI.isShowStatusBar(), false);
+		showStatusBar(this.stateUI.isShowStatusBar(), false);
 
-		if (!stateUI.isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
-			getFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		if (!this.stateUI.isShowSystemTray()
+				&& getOsManager().isClosingMainWindowClosesApplication()) {
+			getFrame().setDefaultCloseOperation(
+					WindowConstants.DISPOSE_ON_CLOSE);
 		}
 	}
 
@@ -122,7 +136,8 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 
 	@Override
 	public void finish() {
-		if (!stateUI.isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
+		if (!this.stateUI.isShowSystemTray()
+				&& getOsManager().isClosingMainWindowClosesApplication()) {
 			getBean(IKernel.class).finish();
 		}
 	}
@@ -184,13 +199,13 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 
 	@Override
 	public void showAboutDialog() {
-		dialogFactory.newDialog(IAboutDialog.class).showDialog();
+		this.dialogFactory.newDialog(IAboutDialog.class).showDialog();
 	}
 
 	@Override
 	public void showStatusBar(final boolean show, final boolean save) {
 		if (save) {
-			stateUI.setShowStatusBar(show);
+			this.stateUI.setShowStatusBar(show);
 		}
 		getFrame().showStatusBar(show);
 		repaint();
@@ -201,20 +216,28 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 		Logger.debug("Starting visualization");
 
 		if (new JVMProperties().isJava6Update10OrLater()) {
-			FadingPopupFactory.install(getOsManager(), getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
+			FadingPopupFactory.install(getOsManager(),
+					getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
 		}
 
-		getFrame().setStateContext(stateContext);
-		getFrame().setStateUI(stateUI);
+		getFrame().setControlsBuilder(this.controlsBuilder);
+		getFrame().setStateContext(this.stateContext);
+		getFrame().setStateUI(this.stateUI);
 
-		IFrameState frameState = stateUI.getFrameState(getFrame().getClass());
-		ILocaleBean locale = stateCore.getLocale();
-		ILocaleBean oldLocale = stateCore.getOldLocale();
-		// Reset fame state if no frame state in state or if component orientation of locale has changed
-		if (frameState == null || locale == null || oldLocale != null
-				&& !(ComponentOrientation.getOrientation(locale.getLocale()).equals(ComponentOrientation.getOrientation(oldLocale.getLocale())))) {
+		IFrameState frameState = this.stateUI.getFrameState(getFrame()
+				.getClass());
+		ILocaleBean locale = this.stateCore.getLocale();
+		ILocaleBean oldLocale = this.stateCore.getOldLocale();
+		// Reset fame state if no frame state in state or if component
+		// orientation of locale has changed
+		if (frameState == null
+				|| locale == null
+				|| oldLocale != null
+				&& !(ComponentOrientation.getOrientation(locale.getLocale())
+						.equals(ComponentOrientation.getOrientation(oldLocale
+								.getLocale())))) {
 			frameState = new FrameState();
-			stateUI.setFrameState(getFrame().getClass(), frameState);
+			this.stateUI.setFrameState(getFrame().getClass(), frameState);
 		}
 		getFrame().create(frameState);
 
@@ -238,11 +261,13 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 
 	@Override
 	public void updateTitleBar(final IAudioObject song) {
-		setTitleBar(song != null ? song.getAudioObjectDescription(unknownObjectChecker) : "");
+		setTitleBar(song != null ? song
+				.getAudioObjectDescription(this.unknownObjectChecker) : "");
 	}
 
 	@Override
-	public void playbackStateChanged(final PlaybackState newState, final IAudioObject currentAudioObject) {
+	public void playbackStateChanged(final PlaybackState newState,
+			final IAudioObject currentAudioObject) {
 		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
 			public void run() {
@@ -251,7 +276,8 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 		});
 	}
 
-	private void playbackStateChangedEDT(final PlaybackState newState, final IAudioObject currentAudioObject) {
+	private void playbackStateChangedEDT(final PlaybackState newState,
+			final IAudioObject currentAudioObject) {
 		if (newState == PlaybackState.PAUSED) {
 			// Pause
 			setPlaying(false);
@@ -260,7 +286,8 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 		} else if (newState == PlaybackState.RESUMING) {
 			// Resume
 			setPlaying(true);
-			updateTitleBar(getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
+			updateTitleBar(getBean(IPlayListHandler.class)
+					.getCurrentAudioObjectFromCurrentPlayList());
 
 		} else if (newState == PlaybackState.PLAYING) {
 			// Playing
@@ -282,7 +309,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 
 	@Override
 	public void windowIconified() {
-		if (stateUI.isShowSystemTray()) {
+		if (this.stateUI.isShowSystemTray()) {
 			getFrame().setVisible(false);
 		}
 	}

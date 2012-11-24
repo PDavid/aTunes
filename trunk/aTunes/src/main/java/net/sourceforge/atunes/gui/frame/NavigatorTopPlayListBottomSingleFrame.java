@@ -27,7 +27,6 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 
-import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
 import net.sourceforge.atunes.model.IFrameState;
 
 /**
@@ -38,107 +37,108 @@ import net.sourceforge.atunes.model.IFrameState;
  * 
  */
 public final class NavigatorTopPlayListBottomSingleFrame extends
-	MainSplitPaneRightSingleFrame {
+		MainSplitPaneRightSingleFrame {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private static final String NAVIGATOR_SPLIT_PANE = "3";
+	private static final String NAVIGATOR_SPLIT_PANE = "3";
 
-    private CustomSplitPane navigatorSplitPane;
+	private JSplitPane navigatorSplitPane;
 
-    @Override
-    protected void setupSplitPaneDividerPosition(final IFrameState frameState) {
-	super.setupSplitPaneDividerPosition(frameState);
-	applySplitPaneDividerPosition(navigatorSplitPane,
-		frameState.getSplitPaneDividerPos(NAVIGATOR_SPLIT_PANE), 0.5);
-    }
+	@Override
+	protected void setupSplitPaneDividerPosition(final IFrameState frameState) {
+		super.setupSplitPaneDividerPosition(frameState);
+		applySplitPaneDividerPosition(this.navigatorSplitPane,
+				frameState.getSplitPaneDividerPos(NAVIGATOR_SPLIT_PANE), 0.5);
+	}
 
-    @Override
-    public void showContextPanel(final boolean show) {
-	applyVisibility(show, RIGHT_SPLIT_PANE, getContextPanel()
-		.getSwingComponent(), getRightSplitPane());
-    }
+	@Override
+	public void showContextPanel(final boolean show) {
+		applyVisibility(show, RIGHT_SPLIT_PANE, getContextPanel()
+				.getSwingComponent(), getRightSplitPane());
+	}
 
-    @Override
-    public void showNavigationTree(final boolean show) {
-	applyVisibility(show, LEFT_SPLIT_PANE, navigatorSplitPane,
-		getLeftSplitPane());
-    }
+	@Override
+	public void showNavigationTree(final boolean show) {
+		applyVisibility(show, LEFT_SPLIT_PANE, this.navigatorSplitPane,
+				getLeftSplitPane());
+	}
 
-    @Override
-    public void showNavigationTable(final boolean show) {
-	applyVisibility(show, NAVIGATOR_SPLIT_PANE, getNavigationTablePanel()
-		.getSwingComponent(), navigatorSplitPane);
-    }
+	@Override
+	public void showNavigationTable(final boolean show) {
+		applyVisibility(show, NAVIGATOR_SPLIT_PANE, getNavigationTablePanel()
+				.getSwingComponent(), this.navigatorSplitPane);
+	}
 
-    @Override
-    protected JComponent getComponentA() {
-	navigatorSplitPane = new SplitPaneFactory().getSplitPane(this,
-		NAVIGATOR_SPLIT_PANE, JSplitPane.HORIZONTAL_SPLIT,
-		getNavigationTreePanel().getSwingComponent(),
-		getNavigationTablePanel().getSwingComponent());
-	return navigatorSplitPane;
-    }
+	@Override
+	protected JComponent getComponentA() {
+		this.navigatorSplitPane = new SplitPaneFactory().getSplitPane(
+				getControlsBuilder(), this, NAVIGATOR_SPLIT_PANE,
+				JSplitPane.HORIZONTAL_SPLIT, getNavigationTreePanel()
+						.getSwingComponent(), getNavigationTablePanel()
+						.getSwingComponent());
+		return this.navigatorSplitPane;
+	}
 
-    @Override
-    protected JComponent getComponentB() {
-	return getPlayListPanel().getSwingComponent();
-    }
+	@Override
+	protected JComponent getComponentB() {
+		return getPlayListPanel().getSwingComponent();
+	}
 
-    @Override
-    protected JComponent getComponentC() {
-	return getContextPanel().getSwingComponent();
-    }
+	@Override
+	protected JComponent getComponentC() {
+		return getContextPanel().getSwingComponent();
+	}
 
-    @Override
-    protected Dimension getNavigationTablePanelMinimumSize() {
-	return getContext().getBean("navigationTableMinimumSize",
-		Dimension.class);
-    }
+	@Override
+	protected Dimension getNavigationTablePanelMinimumSize() {
+		return getContext().getBean("navigationTableMinimumSize",
+				Dimension.class);
+	}
 
-    @Override
-    protected Dimension getNavigationTablePanelPreferredSize() {
-	return getContext().getBean("navigationTablePreferredSize",
-		Dimension.class);
-    }
+	@Override
+	protected Dimension getNavigationTablePanelPreferredSize() {
+		return getContext().getBean("navigationTablePreferredSize",
+				Dimension.class);
+	}
 
-    @Override
-    protected Dimension getNavigationTablePanelMaximumSize() {
-	return getContext().getBean("navigationTableMaximumSize",
-		Dimension.class);
-    }
+	@Override
+	protected Dimension getNavigationTablePanelMaximumSize() {
+		return getContext().getBean("navigationTableMaximumSize",
+				Dimension.class);
+	}
 
-    @Override
-    protected Dimension getNavigationTreePanelMinimumSize() {
-	return getContext().getBean("navigationMinimumSize", Dimension.class);
-    }
+	@Override
+	protected Dimension getNavigationTreePanelMinimumSize() {
+		return getContext().getBean("navigationMinimumSize", Dimension.class);
+	}
 
-    @Override
-    protected Dimension getNavigationTreePanelPreferredSize() {
-	return getContext().getBean("navigationPreferredSize", Dimension.class);
-    }
+	@Override
+	protected Dimension getNavigationTreePanelPreferredSize() {
+		return getContext().getBean("navigationPreferredSize", Dimension.class);
+	}
 
-    @Override
-    protected Dimension getNavigationTreePanelMaximumSize() {
-	return getContext().getBean("navigationMaximumSize", Dimension.class);
-    }
+	@Override
+	protected Dimension getNavigationTreePanelMaximumSize() {
+		return getContext().getBean("navigationMaximumSize", Dimension.class);
+	}
 
-    @Override
-    public Map<String, Double> getDefaultSplitPaneRelativePositions() {
-	Map<String, Double> values = new HashMap<String, Double>();
-	values.put(LEFT_SPLIT_PANE, 0.5);
-	values.put(RIGHT_SPLIT_PANE, 0.7);
-	values.put(NAVIGATOR_SPLIT_PANE, 0.5);
-	return values;
-    }
+	@Override
+	public Map<String, Double> getDefaultSplitPaneRelativePositions() {
+		Map<String, Double> values = new HashMap<String, Double>();
+		values.put(LEFT_SPLIT_PANE, 0.5);
+		values.put(RIGHT_SPLIT_PANE, 0.7);
+		values.put(NAVIGATOR_SPLIT_PANE, 0.5);
+		return values;
+	}
 
-    @Override
-    protected int getLeftSplitType() {
-	return JSplitPane.VERTICAL_SPLIT;
-    }
+	@Override
+	protected int getLeftSplitType() {
+		return JSplitPane.VERTICAL_SPLIT;
+	}
 
-    @Override
-    protected int getRightSplitType() {
-	return JSplitPane.HORIZONTAL_SPLIT;
-    }
+	@Override
+	protected int getRightSplitType() {
+		return JSplitPane.HORIZONTAL_SPLIT;
+	}
 }

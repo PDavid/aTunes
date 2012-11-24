@@ -26,22 +26,28 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPopupMenu;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IOSManager;
 
 final class FullScreenShowMenuMouseAdapter extends MouseAdapter {
-	
-	private JPopupMenu options;
-	
+
+	private final JPopupMenu options;
+
+	private final IOSManager osManager;
+
 	/**
 	 * @param options
+	 * @param osManager
 	 */
-	public FullScreenShowMenuMouseAdapter(JPopupMenu options) {
+	public FullScreenShowMenuMouseAdapter(final JPopupMenu options,
+			final IOSManager osManager) {
 		this.options = options;
+		this.osManager = osManager;
 	}
-	
+
 	@Override
-    public void mouseClicked(MouseEvent e) {
-        if (GuiUtils.isSecondaryMouseButton(e)) {
-            options.show(e.getComponent(), e.getX(), e.getY());
-        }
-    }
+	public void mouseClicked(final MouseEvent e) {
+		if (GuiUtils.isSecondaryMouseButton(this.osManager, e)) {
+			this.options.show(e.getComponent(), e.getX(), e.getY());
+		}
+	}
 }

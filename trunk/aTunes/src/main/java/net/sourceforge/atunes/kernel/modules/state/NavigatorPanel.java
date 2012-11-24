@@ -44,9 +44,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode;
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialog;
@@ -64,418 +64,439 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class NavigatorPanel extends AbstractPreferencesPanel {
 
-    private static final long serialVersionUID = -4315748284461119970L;
+	private static final long serialVersionUID = -4315748284461119970L;
 
-    private JCheckBox showFavorites;
-    private JCheckBox showExtendedToolTip;
-    private JComboBox extendedToolTipDelay;
-    private JCheckBox useSmartTagViewSorting;
-    private JCheckBox useArtistNamesSorting;
-    private JCheckBox useCaseSensitiveInTree;
-    private JRadioButton useOnlyArtist;
-    private JRadioButton useOnlyArtistOfAlbum;
-    private JRadioButton useBothArtist;
+	private JCheckBox showFavorites;
+	private JCheckBox showExtendedToolTip;
+	private JComboBox extendedToolTipDelay;
+	private JCheckBox useSmartTagViewSorting;
+	private JCheckBox useArtistNamesSorting;
+	private JCheckBox useCaseSensitiveInTree;
+	private JRadioButton useOnlyArtist;
+	private JRadioButton useOnlyArtistOfAlbum;
+	private JRadioButton useBothArtist;
 
-    /**
-     * Check box to highlight elements with incomplete tags (selected) or not
-     * (unselected)
-     */
-    private JCheckBox highlightElementsWithIncompleteBasicTags;
+	/**
+	 * Check box to highlight elements with incomplete tags (selected) or not
+	 * (unselected)
+	 */
+	private JCheckBox highlightElementsWithIncompleteBasicTags;
 
-    /**
-     * Table to select which tag attributes are used to highlight incomplete tag
-     * folders
-     */
-    private JTable highlighTagAttributesTable;
+	/**
+	 * Table to select which tag attributes are used to highlight incomplete tag
+	 * folders
+	 */
+	private JTable highlighTagAttributesTable;
 
-    /**
-     * Scroll pane fot tag attributes
-     */
-    private JScrollPane highlightTagAttributesScrollPane;
+	/**
+	 * Scroll pane fot tag attributes
+	 */
+	private JScrollPane highlightTagAttributesScrollPane;
 
-    /**
-     * Table model to select tag attributes
-     */
-    private TagAttributesTableModel tagAttributesTableModel;
+	/**
+	 * Table model to select tag attributes
+	 */
+	private TagAttributesTableModel tagAttributesTableModel;
 
-    private ILookAndFeelManager lookAndFeelManager;
+	private ILookAndFeelManager lookAndFeelManager;
 
-    private IStateRepository stateRepository;
+	private IStateRepository stateRepository;
 
-    private IStateNavigation stateNavigation;
+	private IStateNavigation stateNavigation;
 
-    private IBeanFactory beanFactory;
+	private IBeanFactory beanFactory;
 
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
+	private IControlsBuilder controlsBuilder;
 
-    /**
-     * @param stateNavigation
-     */
-    public void setStateNavigation(final IStateNavigation stateNavigation) {
-	this.stateNavigation = stateNavigation;
-    }
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
-    /**
-     * @param stateRepository
-     */
-    public void setStateRepository(final IStateRepository stateRepository) {
-	this.stateRepository = stateRepository;
-    }
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(
-	    final ILookAndFeelManager lookAndFeelManager) {
-	this.lookAndFeelManager = lookAndFeelManager;
-    }
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
 
-    /**
-     * Instantiates a new navigator panel.
-     */
-    public NavigatorPanel() {
-	super(I18nUtils.getString("NAVIGATOR"));
-    }
+	/**
+	 * @param stateRepository
+	 */
+	public void setStateRepository(final IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
+	}
 
-    /**
-     * Initializes panel
-     */
-    public void initialize() {
-	showFavorites = new JCheckBox(I18nUtils.getString("SHOW_FAVORITES"));
-	showExtendedToolTip = new JCheckBox(
-		I18nUtils.getString("SHOW_EXTENDED_TOOLTIP"));
-	final JLabel label = new JLabel(
-		I18nUtils.getString("EXTENDED_TOOLTIP_DELAY"));
-	extendedToolTipDelay = new JComboBox(new Integer[] { 1, 2, 3, 4, 5 });
-	showExtendedToolTip.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(final ActionEvent arg0) {
-		label.setEnabled(showExtendedToolTip.isSelected());
-		extendedToolTipDelay.setEnabled(showExtendedToolTip
-			.isSelected());
-	    }
-	});
-	useSmartTagViewSorting = new JCheckBox(
-		I18nUtils.getString("USE_SMART_TAG_VIEW_SORTING"));
-	useArtistNamesSorting = new JCheckBox(
-		I18nUtils.getString("USE_PERSON_NAMES_ARTIST_TAG_VIEW_SORTING"));
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
 
-	useOnlyArtist = new JRadioButton(
-		I18nUtils.getString("ARTIST_VIEW_USE_ONLY_ARTIST"), true);
-	useOnlyArtistOfAlbum = new JRadioButton(
-		I18nUtils.getString("ARTIST_VIEW_USE_ONLY_ARTIST_OF_ALBUM"));
-	useBothArtist = new JRadioButton(
-		I18nUtils.getString("ARTIST_VIEW_USE_BOTH"));
+	/**
+	 * Instantiates a new navigator panel.
+	 */
+	public NavigatorPanel() {
+		super(I18nUtils.getString("NAVIGATOR"));
+	}
 
-	ButtonGroup artistViewOptionGroup = new ButtonGroup();
-	artistViewOptionGroup.add(useOnlyArtist);
-	artistViewOptionGroup.add(useOnlyArtistOfAlbum);
-	artistViewOptionGroup.add(useBothArtist);
-	JPanel artistViewPanel = getArtistViewPanel();
-
-	useCaseSensitiveInTree = new JCheckBox(
-		I18nUtils.getString("CASE_SENSITIVE_TREE"));
-	highlightElementsWithIncompleteBasicTags = new JCheckBox(
-		I18nUtils.getString("HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS"));
-	highlightElementsWithIncompleteBasicTags
-		.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(final ActionEvent e) {
-			SwingUtilities.invokeLater(new Runnable() {
-			    @Override
-			    public void run() {
-				highlightTagAttributesScrollPane
-					.setEnabled(highlightElementsWithIncompleteBasicTags
+	/**
+	 * Initializes panel
+	 */
+	public void initialize() {
+		this.showFavorites = new JCheckBox(
+				I18nUtils.getString("SHOW_FAVORITES"));
+		this.showExtendedToolTip = new JCheckBox(
+				I18nUtils.getString("SHOW_EXTENDED_TOOLTIP"));
+		final JLabel label = new JLabel(
+				I18nUtils.getString("EXTENDED_TOOLTIP_DELAY"));
+		this.extendedToolTipDelay = new JComboBox(
+				new Integer[] { 1, 2, 3, 4, 5 });
+		this.showExtendedToolTip.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent arg0) {
+				label.setEnabled(NavigatorPanel.this.showExtendedToolTip
 						.isSelected());
-				highlighTagAttributesTable
-					.setEnabled(highlightElementsWithIncompleteBasicTags
-						.isSelected());
-			    }
-			});
-		    }
+				NavigatorPanel.this.extendedToolTipDelay
+						.setEnabled(NavigatorPanel.this.showExtendedToolTip
+								.isSelected());
+			}
 		});
+		this.useSmartTagViewSorting = new JCheckBox(
+				I18nUtils.getString("USE_SMART_TAG_VIEW_SORTING"));
+		this.useArtistNamesSorting = new JCheckBox(
+				I18nUtils.getString("USE_PERSON_NAMES_ARTIST_TAG_VIEW_SORTING"));
 
-	tagAttributesTableModel = new TagAttributesTableModel();
-	highlighTagAttributesTable = getHighlighTagAttributesTable();
+		this.useOnlyArtist = new JRadioButton(
+				I18nUtils.getString("ARTIST_VIEW_USE_ONLY_ARTIST"), true);
+		this.useOnlyArtistOfAlbum = new JRadioButton(
+				I18nUtils.getString("ARTIST_VIEW_USE_ONLY_ARTIST_OF_ALBUM"));
+		this.useBothArtist = new JRadioButton(
+				I18nUtils.getString("ARTIST_VIEW_USE_BOTH"));
 
-	highlightTagAttributesScrollPane = lookAndFeelManager
-		.getCurrentLookAndFeel().getTableScrollPane(
-			highlighTagAttributesTable);
-	highlightTagAttributesScrollPane
-		.setMinimumSize(new Dimension(300, 150));
+		ButtonGroup artistViewOptionGroup = new ButtonGroup();
+		artistViewOptionGroup.add(this.useOnlyArtist);
+		artistViewOptionGroup.add(this.useOnlyArtistOfAlbum);
+		artistViewOptionGroup.add(this.useBothArtist);
+		JPanel artistViewPanel = getArtistViewPanel();
 
-	arrangePanel(label, artistViewPanel);
-    }
+		this.useCaseSensitiveInTree = new JCheckBox(
+				I18nUtils.getString("CASE_SENSITIVE_TREE"));
+		this.highlightElementsWithIncompleteBasicTags = new JCheckBox(
+				I18nUtils.getString("HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS"));
+		this.highlightElementsWithIncompleteBasicTags
+				.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								NavigatorPanel.this.highlightTagAttributesScrollPane
+										.setEnabled(NavigatorPanel.this.highlightElementsWithIncompleteBasicTags
+												.isSelected());
+								NavigatorPanel.this.highlighTagAttributesTable
+										.setEnabled(NavigatorPanel.this.highlightElementsWithIncompleteBasicTags
+												.isSelected());
+							}
+						});
+					}
+				});
 
-    /**
-     * @return
-     */
-    private JPanel getArtistViewPanel() {
-	JPanel artistViewPanel = new JPanel(new GridLayout(3, 1));
-	artistViewPanel.setBorder(new TitledBorder(I18nUtils
-		.getString("ARTIST")));
-	artistViewPanel.add(useBothArtist);
-	artistViewPanel.add(useOnlyArtist);
-	artistViewPanel.add(useOnlyArtistOfAlbum);
-	return artistViewPanel;
-    }
+		this.tagAttributesTableModel = new TagAttributesTableModel();
+		this.highlighTagAttributesTable = getHighlighTagAttributesTable();
 
-    /**
+		this.highlightTagAttributesScrollPane = this.lookAndFeelManager
+				.getCurrentLookAndFeel().getTableScrollPane(
+						this.highlighTagAttributesTable);
+		this.highlightTagAttributesScrollPane.setMinimumSize(new Dimension(300,
+				150));
+
+		arrangePanel(label, artistViewPanel);
+	}
+
+	/**
+	 * @return
+	 */
+	private JPanel getArtistViewPanel() {
+		JPanel artistViewPanel = new JPanel(new GridLayout(3, 1));
+		artistViewPanel.setBorder(new TitledBorder(I18nUtils
+				.getString("ARTIST")));
+		artistViewPanel.add(this.useBothArtist);
+		artistViewPanel.add(this.useOnlyArtist);
+		artistViewPanel.add(this.useOnlyArtistOfAlbum);
+		return artistViewPanel;
+	}
+
+	/**
 	 * 
 	 */
-    private JTable getHighlighTagAttributesTable() {
-	JTable table = lookAndFeelManager.getCurrentLookAndFeel().getTable();
-	table.setModel(tagAttributesTableModel);
-	table.setTableHeader(null);
-	table.getColumnModel().getColumn(0).setMaxWidth(20);
-	table.getColumnModel().getColumn(0)
-		.setCellEditor(new DefaultCellEditor(new JCheckBox()));
-	table.getSelectionModel().setSelectionMode(
-		ListSelectionModel.SINGLE_SELECTION);
-	table.setDefaultRenderer(
-		String.class,
-		lookAndFeelManager
-			.getCurrentLookAndFeel()
-			.getTableCellRenderer(
-				beanFactory
-					.getBean(ComponentOrientationTableCellRendererCode.class)));
-	return table;
-    }
-
-    /**
-     * @param label
-     * @param artistViewPanel
-     */
-    private void arrangePanel(final JLabel label, final JPanel artistViewPanel) {
-	GridBagConstraints c = new GridBagConstraints();
-	c.gridx = 0;
-	c.gridy = 0;
-	c.weightx = 0;
-	c.gridwidth = 1;
-	c.anchor = GridBagConstraints.FIRST_LINE_START;
-	add(showFavorites, c);
-	c.gridy = 1;
-	add(showExtendedToolTip, c);
-	c.gridy = 2;
-	c.insets = new Insets(0, 10, 0, 0);
-	add(label, c);
-	c.gridx = 1;
-	c.weightx = 1;
-	add(extendedToolTipDelay, c);
-	c.weightx = 0;
-	c.gridx = 0;
-	c.gridy = 3;
-	c.insets = new Insets(0, 0, 0, 0);
-	c.gridwidth = 2;
-	add(useSmartTagViewSorting, c);
-	c.gridy = 4;
-	add(useArtistNamesSorting, c);
-	c.gridy = 5;
-	add(artistViewPanel, c);
-	c.gridy = 6;
-	add(useCaseSensitiveInTree, c);
-	c.gridy = 7;
-	add(highlightElementsWithIncompleteBasicTags, c);
-	c.gridy = 8;
-	c.weighty = 1;
-	c.weightx = 0;
-	c.anchor = GuiUtils.getComponentOrientation().isLeftToRight() ? GridBagConstraints.NORTHWEST
-		: GridBagConstraints.NORTHEAST;
-	c.insets = new Insets(10, 20, 10, 10);
-	add(highlightTagAttributesScrollPane, c);
-    }
-
-    @Override
-    public boolean applyPreferences() {
-
-	boolean refresh = false;
-
-	stateNavigation.setShowFavoritesInNavigator(showFavorites.isSelected());
-	stateNavigation
-		.setShowExtendedTooltip(showExtendedToolTip.isSelected());
-	stateNavigation.setExtendedTooltipDelay((Integer) extendedToolTipDelay
-		.getSelectedItem());
-	stateNavigation.setUseSmartTagViewSorting(useSmartTagViewSorting
-		.isSelected());
-	stateNavigation
-		.setHighlightIncompleteTagElements(highlightElementsWithIncompleteBasicTags
-			.isSelected());
-	stateNavigation
-		.setHighlightIncompleteTagFoldersAttributes(tagAttributesTableModel
-			.getSelectedTagAttributes());
-	stateNavigation
-		.setUsePersonNamesArtistTagViewSorting(useArtistNamesSorting
-			.isSelected());
-	stateRepository
-		.setKeyAlwaysCaseSensitiveInRepositoryStructure(useCaseSensitiveInTree
-			.isSelected());
-
-	ArtistViewMode newArtistViewState = ArtistViewMode.BOTH;
-	if (useOnlyArtist.isSelected()) {
-	    newArtistViewState = ArtistViewMode.ARTIST;
-	} else if (useOnlyArtistOfAlbum.isSelected()) {
-	    newArtistViewState = ArtistViewMode.ARTIST_OF_ALBUM;
-	} else {
-	    newArtistViewState = ArtistViewMode.BOTH;
+	private JTable getHighlighTagAttributesTable() {
+		JTable table = this.lookAndFeelManager.getCurrentLookAndFeel()
+				.getTable();
+		table.setModel(this.tagAttributesTableModel);
+		table.setTableHeader(null);
+		table.getColumnModel().getColumn(0).setMaxWidth(20);
+		table.getColumnModel().getColumn(0)
+				.setCellEditor(new DefaultCellEditor(new JCheckBox()));
+		table.getSelectionModel().setSelectionMode(
+				ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultRenderer(
+				String.class,
+				this.lookAndFeelManager
+						.getCurrentLookAndFeel()
+						.getTableCellRenderer(
+								this.beanFactory
+										.getBean(ComponentOrientationTableCellRendererCode.class)));
+		return table;
 	}
 
-	if (!newArtistViewState.equals(stateNavigation.getArtistViewMode())) {
-	    stateNavigation.setArtistViewMode(newArtistViewState);
-	    beanFactory
-		    .getBean(IDialogFactory.class)
-		    .newDialog(IMessageDialog.class)
-		    .showMessage(
-			    I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"),
-			    this);
-	    beanFactory.getBean(IRepositoryHandler.class).refreshRepository();
+	/**
+	 * @param label
+	 * @param artistViewPanel
+	 */
+	private void arrangePanel(final JLabel label, final JPanel artistViewPanel) {
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 0;
+		c.gridwidth = 1;
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		add(this.showFavorites, c);
+		c.gridy = 1;
+		add(this.showExtendedToolTip, c);
+		c.gridy = 2;
+		c.insets = new Insets(0, 10, 0, 0);
+		add(label, c);
+		c.gridx = 1;
+		c.weightx = 1;
+		add(this.extendedToolTipDelay, c);
+		c.weightx = 0;
+		c.gridx = 0;
+		c.gridy = 3;
+		c.insets = new Insets(0, 0, 0, 0);
+		c.gridwidth = 2;
+		add(this.useSmartTagViewSorting, c);
+		c.gridy = 4;
+		add(this.useArtistNamesSorting, c);
+		c.gridy = 5;
+		add(artistViewPanel, c);
+		c.gridy = 6;
+		add(this.useCaseSensitiveInTree, c);
+		c.gridy = 7;
+		add(this.highlightElementsWithIncompleteBasicTags, c);
+		c.gridy = 8;
+		c.weighty = 1;
+		c.weightx = 0;
+		c.anchor = this.controlsBuilder.getComponentOrientation()
+				.isLeftToRight() ? GridBagConstraints.NORTHWEST
+				: GridBagConstraints.NORTHEAST;
+		c.insets = new Insets(10, 20, 10, 10);
+		add(this.highlightTagAttributesScrollPane, c);
 	}
 
-	return refresh;
-    }
+	@Override
+	public boolean applyPreferences() {
 
-    /**
-     * Sets the album tool tip delay.
-     * 
-     * @param time
-     *            the new album tool tip delay
-     */
+		boolean refresh = false;
 
-    public void setAlbumToolTipDelay(final int time) {
-	extendedToolTipDelay.setSelectedItem(time);
-    }
+		this.stateNavigation.setShowFavoritesInNavigator(this.showFavorites
+				.isSelected());
+		this.stateNavigation.setShowExtendedTooltip(this.showExtendedToolTip
+				.isSelected());
+		this.stateNavigation
+				.setExtendedTooltipDelay((Integer) this.extendedToolTipDelay
+						.getSelectedItem());
+		this.stateNavigation
+				.setUseSmartTagViewSorting(this.useSmartTagViewSorting
+						.isSelected());
+		this.stateNavigation
+				.setHighlightIncompleteTagElements(this.highlightElementsWithIncompleteBasicTags
+						.isSelected());
+		this.stateNavigation
+				.setHighlightIncompleteTagFoldersAttributes(this.tagAttributesTableModel
+						.getSelectedTagAttributes());
+		this.stateNavigation
+				.setUsePersonNamesArtistTagViewSorting(this.useArtistNamesSorting
+						.isSelected());
+		this.stateRepository
+				.setKeyAlwaysCaseSensitiveInRepositoryStructure(this.useCaseSensitiveInTree
+						.isSelected());
 
-    /**
-     * Sets the show album tool tip.
-     * 
-     * @param show
-     *            the new show album tool tip
-     */
-    public void setShowAlbumToolTip(final boolean show) {
-	showExtendedToolTip.setSelected(show);
-    }
+		ArtistViewMode newArtistViewState = ArtistViewMode.BOTH;
+		if (this.useOnlyArtist.isSelected()) {
+			newArtistViewState = ArtistViewMode.ARTIST;
+		} else if (this.useOnlyArtistOfAlbum.isSelected()) {
+			newArtistViewState = ArtistViewMode.ARTIST_OF_ALBUM;
+		} else {
+			newArtistViewState = ArtistViewMode.BOTH;
+		}
 
-    /**
-     * Sets the show favorites.
-     * 
-     * @param show
-     *            the new show favorites
-     */
-    private void setShowFavorites(final boolean show) {
-	showFavorites.setSelected(show);
-    }
+		if (!newArtistViewState
+				.equals(this.stateNavigation.getArtistViewMode())) {
+			this.stateNavigation.setArtistViewMode(newArtistViewState);
+			this.beanFactory
+					.getBean(IDialogFactory.class)
+					.newDialog(IMessageDialog.class)
+					.showMessage(
+							I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"),
+							this);
+			this.beanFactory.getBean(IRepositoryHandler.class)
+					.refreshRepository();
+		}
 
-    /**
-     * Sets the use smart tag view sorting.
-     * 
-     * @param use
-     *            the new use smart tag view sorting
-     */
-    private void setUseSmartTagViewSorting(final boolean use) {
-	useSmartTagViewSorting.setSelected(use);
-    }
-
-    /**
-     * Sets the use person names artist tag view sorting.
-     * 
-     * @param use
-     *            the new se person names artist tag view sorting
-     */
-    private void setUsePersonNamesArtistTagViewSorting(final boolean use) {
-	useArtistNamesSorting.setSelected(use);
-    }
-
-    /**
-     * Set the keys of repository structures artist and genre to case sensitive
-     * or not.
-     * 
-     * @param value
-     */
-    private void setKeyAlwaysCaseSensitiveInRepositoryStructure(
-	    final boolean value) {
-	useCaseSensitiveInTree.setSelected(value);
-    }
-
-    /**
-     * Sets property to highlight folder with incomplete tags
-     * 
-     * @param highlightFoldersWithIncompleteBasicTags
-     *            the highlightFoldersWithIncompleteBasicTags to set
-     */
-    private void setHighlightFoldersWithIncompleteBasicTags(
-	    final boolean highlightFoldersWithIncompleteBasicTags) {
-	this.highlightElementsWithIncompleteBasicTags
-		.setSelected(highlightFoldersWithIncompleteBasicTags);
-	highlightTagAttributesScrollPane
-		.setEnabled(highlightFoldersWithIncompleteBasicTags);
-	highlighTagAttributesTable
-		.setEnabled(highlightFoldersWithIncompleteBasicTags);
-    }
-
-    @Override
-    public void updatePanel() {
-	tagAttributesTableModel
-		.setTagAttributes(getAllTagAttributes(stateNavigation
-			.getHighlightIncompleteTagFoldersAttributes()));
-	setShowFavorites(stateNavigation.isShowFavoritesInNavigator());
-	setShowAlbumToolTip(stateNavigation.isShowExtendedTooltip());
-	setAlbumToolTipDelay(stateNavigation.getExtendedTooltipDelay());
-	setUseSmartTagViewSorting(stateNavigation.isUseSmartTagViewSorting());
-	setHighlightFoldersWithIncompleteBasicTags(stateNavigation
-		.isHighlightIncompleteTagElements());
-	setUsePersonNamesArtistTagViewSorting(stateNavigation
-		.isUsePersonNamesArtistTagViewSorting());
-	setKeyAlwaysCaseSensitiveInRepositoryStructure(stateRepository
-		.isKeyAlwaysCaseSensitiveInRepositoryStructure());
-	setArtistViewMode(stateNavigation.getArtistViewMode());
-    }
-
-    /**
-     * Returns a hash map with all tag attributes as key, and state (used or
-     * not) as value
-     * 
-     * @param attributes
-     * @return
-     */
-    private Map<TextTagAttribute, Boolean> getAllTagAttributes(
-	    final List<TextTagAttribute> attributes) {
-	Map<TextTagAttribute, Boolean> result = new HashMap<TextTagAttribute, Boolean>();
-	for (TextTagAttribute att : TextTagAttribute.values()) {
-	    result.put(att, false);
-	}
-	for (TextTagAttribute attr : attributes) {
-	    result.put(attr, true);
-	}
-	return result;
-    }
-
-    private void setArtistViewMode(final ArtistViewMode artistViewMode) {
-	if (ArtistViewMode.ARTIST.equals(artistViewMode)) {
-	    useOnlyArtist.setSelected(true);
-	} else if (ArtistViewMode.ARTIST_OF_ALBUM.equals(artistViewMode)) {
-	    useOnlyArtistOfAlbum.setSelected(true);
-	} else {
-	    useBothArtist.setSelected(true);
+		return refresh;
 	}
 
-    }
+	/**
+	 * Sets the album tool tip delay.
+	 * 
+	 * @param time
+	 *            the new album tool tip delay
+	 */
 
-    @Override
-    public void validatePanel() throws PreferencesValidationException {
-    }
+	public void setAlbumToolTipDelay(final int time) {
+		this.extendedToolTipDelay.setSelectedItem(time);
+	}
 
-    @Override
-    public void dialogVisibilityChanged(final boolean visible) {
-	// Do nothing
-    }
+	/**
+	 * Sets the show album tool tip.
+	 * 
+	 * @param show
+	 *            the new show album tool tip
+	 */
+	public void setShowAlbumToolTip(final boolean show) {
+		this.showExtendedToolTip.setSelected(show);
+	}
 
-    @Override
-    public void resetImmediateChanges() {
-	// Do nothing
-    }
+	/**
+	 * Sets the show favorites.
+	 * 
+	 * @param show
+	 *            the new show favorites
+	 */
+	private void setShowFavorites(final boolean show) {
+		this.showFavorites.setSelected(show);
+	}
+
+	/**
+	 * Sets the use smart tag view sorting.
+	 * 
+	 * @param use
+	 *            the new use smart tag view sorting
+	 */
+	private void setUseSmartTagViewSorting(final boolean use) {
+		this.useSmartTagViewSorting.setSelected(use);
+	}
+
+	/**
+	 * Sets the use person names artist tag view sorting.
+	 * 
+	 * @param use
+	 *            the new se person names artist tag view sorting
+	 */
+	private void setUsePersonNamesArtistTagViewSorting(final boolean use) {
+		this.useArtistNamesSorting.setSelected(use);
+	}
+
+	/**
+	 * Set the keys of repository structures artist and genre to case sensitive
+	 * or not.
+	 * 
+	 * @param value
+	 */
+	private void setKeyAlwaysCaseSensitiveInRepositoryStructure(
+			final boolean value) {
+		this.useCaseSensitiveInTree.setSelected(value);
+	}
+
+	/**
+	 * Sets property to highlight folder with incomplete tags
+	 * 
+	 * @param highlightFoldersWithIncompleteBasicTags
+	 *            the highlightFoldersWithIncompleteBasicTags to set
+	 */
+	private void setHighlightFoldersWithIncompleteBasicTags(
+			final boolean highlightFoldersWithIncompleteBasicTags) {
+		this.highlightElementsWithIncompleteBasicTags
+				.setSelected(highlightFoldersWithIncompleteBasicTags);
+		this.highlightTagAttributesScrollPane
+				.setEnabled(highlightFoldersWithIncompleteBasicTags);
+		this.highlighTagAttributesTable
+				.setEnabled(highlightFoldersWithIncompleteBasicTags);
+	}
+
+	@Override
+	public void updatePanel() {
+		this.tagAttributesTableModel
+				.setTagAttributes(getAllTagAttributes(this.stateNavigation
+						.getHighlightIncompleteTagFoldersAttributes()));
+		setShowFavorites(this.stateNavigation.isShowFavoritesInNavigator());
+		setShowAlbumToolTip(this.stateNavigation.isShowExtendedTooltip());
+		setAlbumToolTipDelay(this.stateNavigation.getExtendedTooltipDelay());
+		setUseSmartTagViewSorting(this.stateNavigation
+				.isUseSmartTagViewSorting());
+		setHighlightFoldersWithIncompleteBasicTags(this.stateNavigation
+				.isHighlightIncompleteTagElements());
+		setUsePersonNamesArtistTagViewSorting(this.stateNavigation
+				.isUsePersonNamesArtistTagViewSorting());
+		setKeyAlwaysCaseSensitiveInRepositoryStructure(this.stateRepository
+				.isKeyAlwaysCaseSensitiveInRepositoryStructure());
+		setArtistViewMode(this.stateNavigation.getArtistViewMode());
+	}
+
+	/**
+	 * Returns a hash map with all tag attributes as key, and state (used or
+	 * not) as value
+	 * 
+	 * @param attributes
+	 * @return
+	 */
+	private Map<TextTagAttribute, Boolean> getAllTagAttributes(
+			final List<TextTagAttribute> attributes) {
+		Map<TextTagAttribute, Boolean> result = new HashMap<TextTagAttribute, Boolean>();
+		for (TextTagAttribute att : TextTagAttribute.values()) {
+			result.put(att, false);
+		}
+		for (TextTagAttribute attr : attributes) {
+			result.put(attr, true);
+		}
+		return result;
+	}
+
+	private void setArtistViewMode(final ArtistViewMode artistViewMode) {
+		if (ArtistViewMode.ARTIST.equals(artistViewMode)) {
+			this.useOnlyArtist.setSelected(true);
+		} else if (ArtistViewMode.ARTIST_OF_ALBUM.equals(artistViewMode)) {
+			this.useOnlyArtistOfAlbum.setSelected(true);
+		} else {
+			this.useBothArtist.setSelected(true);
+		}
+
+	}
+
+	@Override
+	public void validatePanel() throws PreferencesValidationException {
+	}
+
+	@Override
+	public void dialogVisibilityChanged(final boolean visible) {
+		// Do nothing
+	}
+
+	@Override
+	public void resetImmediateChanges() {
+		// Do nothing
+	}
 
 }

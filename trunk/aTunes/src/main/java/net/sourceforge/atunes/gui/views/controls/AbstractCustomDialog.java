@@ -26,6 +26,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -33,18 +34,21 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
  * Abstract dialog
+ * 
  * @author alex
- *
+ * 
  */
 public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 
 	private static final long serialVersionUID = -4593025984520110706L;
 
 	private ILookAndFeelManager lookAndFeelManager;
-	
-	private boolean modal;
-	
-	private CloseAction closeAction;
+
+	private IControlsBuilder controlsBuilder;
+
+	private final boolean modal;
+
+	private final CloseAction closeAction;
 
 	/**
 	 * Instantiates a new custom modal dialog.
@@ -53,7 +57,8 @@ public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 	 * @param width
 	 * @param height
 	 */
-	public AbstractCustomDialog(final IFrame frame, final int width, final int height) {
+	public AbstractCustomDialog(final IFrame frame, final int width,
+			final int height) {
 		this(frame, width, height, true, CloseAction.DISPOSE);
 	}
 
@@ -66,31 +71,42 @@ public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 	 * @param modal
 	 * @param closeAction
 	 */
-	public AbstractCustomDialog(final IFrame frame, final int width, final int height, final boolean modal, final CloseAction closeAction) {
+	public AbstractCustomDialog(final IFrame frame, final int width,
+			final int height, final boolean modal, final CloseAction closeAction) {
 		super(frame.getFrame());
 		setSize(width, height);
-		setLocationRelativeTo(frame.getFrame().getWidth() == 0 ? null : frame.getFrame());
+		setLocationRelativeTo(frame.getFrame().getWidth() == 0 ? null : frame
+				.getFrame());
 		this.modal = modal;
 		this.closeAction = closeAction;
 	}
 
 	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
+	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
-	
+
 	/**
 	 * Initializes dialog
 	 */
 	public void initializeDialog() {
 		setUndecorated(getLookAndFeel().isDialogUndecorated());
-		setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
-		setDefaultCloseOperation(closeAction.getConstant());
-		if (closeAction == CloseAction.DISPOSE) {
+		setModalityType(this.modal ? ModalityType.APPLICATION_MODAL
+				: ModalityType.MODELESS);
+		setDefaultCloseOperation(this.closeAction.getConstant());
+		if (this.closeAction == CloseAction.DISPOSE) {
 			GuiUtils.addDisposeActionWithEscapeKey(this, getRootPane());
-		} else if (closeAction == CloseAction.HIDE) {
+		} else if (this.closeAction == CloseAction.HIDE) {
 			GuiUtils.addCloseActionWithEscapeKey(this, getRootPane());
 		}
 		initialize();
@@ -100,23 +116,23 @@ public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 	 * @return look and feel
 	 */
 	protected ILookAndFeel getLookAndFeel() {
-		return lookAndFeelManager.getCurrentLookAndFeel();
+		return this.lookAndFeelManager.getCurrentLookAndFeel();
 	}
 
 	/**
 	 * @return look and feel manager
 	 */
 	protected ILookAndFeelManager getLookAndFeelManager() {
-		return lookAndFeelManager;
+		return this.lookAndFeelManager;
 	}
 
 	@Override
 	public Component add(final Component comp) {
 		if (comp instanceof JComponent) {
-			((JComponent)comp).setOpaque(false);
+			((JComponent) comp).setOpaque(false);
 		}
 		Component c = super.add(comp);
-		GuiUtils.applyComponentOrientation(this);
+		this.controlsBuilder.applyComponentOrientation(this);
 		return c;
 	}
 
@@ -133,5 +149,12 @@ public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 	@Override
 	public void initialize() {
 		// Empty method to override
+	}
+
+	/**
+	 * @return controls builder
+	 */
+	protected final IControlsBuilder getControlsBuilder() {
+		return this.controlsBuilder;
 	}
 }

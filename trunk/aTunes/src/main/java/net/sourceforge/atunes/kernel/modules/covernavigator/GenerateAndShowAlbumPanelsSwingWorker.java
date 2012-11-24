@@ -40,86 +40,104 @@ import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
+import net.sourceforge.atunes.model.IControlsBuilder;
 
-final class GenerateAndShowAlbumPanelsSwingWorker extends SwingWorker<Void, IntermediateResult> {
+final class GenerateAndShowAlbumPanelsSwingWorker extends
+		SwingWorker<Void, IntermediateResult> {
 
 	private final CoverNavigatorDialog dialog;
-	
-    private final IAudioObjectImageLocator audioObjectImageLocator;
-    
+
+	private final IAudioObjectImageLocator audioObjectImageLocator;
+
 	private final IArtist artistSelected;
-	
+
+	private final IControlsBuilder controlsBuilder;
+
 	/**
 	 * @param dialog
 	 * @param audioObjectImageLocator
 	 * @param artistSelected
+	 * @param controlsBuilder
 	 */
-	GenerateAndShowAlbumPanelsSwingWorker(CoverNavigatorDialog dialog, IAudioObjectImageLocator audioObjectImageLocator, IArtist artistSelected) {
+	GenerateAndShowAlbumPanelsSwingWorker(final CoverNavigatorDialog dialog,
+			final IAudioObjectImageLocator audioObjectImageLocator,
+			final IArtist artistSelected, final IControlsBuilder controlsBuilder) {
 		this.dialog = dialog;
 		this.audioObjectImageLocator = audioObjectImageLocator;
 		this.artistSelected = artistSelected;
+		this.controlsBuilder = controlsBuilder;
 	}
 
 	@Override
 	protected Void doInBackground() {
-	    final List<IAlbum> albums = new ArrayList<IAlbum>(artistSelected.getAlbums().values());
-	    Collections.sort(albums);
+		final List<IAlbum> albums = new ArrayList<IAlbum>(this.artistSelected
+				.getAlbums().values());
+		Collections.sort(albums);
 
-	    for (IAlbum album : albums) {
-	        ImageIcon cover = audioObjectImageLocator.getImage(album, Constants.COVER_NAVIGATOR_IMAGE_SIZE);
-	        publish(new IntermediateResult(album, cover));
-	    }
-	    return null;
+		for (IAlbum album : albums) {
+			ImageIcon cover = this.audioObjectImageLocator.getImage(album,
+					Constants.COVER_NAVIGATOR_IMAGE_SIZE);
+			publish(new IntermediateResult(album, cover));
+		}
+		return null;
 	}
 
 	@Override
 	protected void done() {
-	    dialog.setCursor(Cursor.getDefaultCursor());
-	    dialog.getList().setEnabled(true);
-	    dialog.getCoversButton().setEnabled(true);
+		this.dialog.setCursor(Cursor.getDefaultCursor());
+		this.dialog.getList().setEnabled(true);
+		this.dialog.getCoversButton().setEnabled(true);
 	}
 
 	@Override
-	protected void process(List<IntermediateResult> intermediateResults) {
-	    for (IntermediateResult intermediateResult : intermediateResults) {
-	    	dialog.getCoversPanel().add(getPanelForAlbum(intermediateResult.getAlbum(), intermediateResult.getCover()));
-	    	dialog.getCoversPanel().revalidate();
-	    	dialog.getCoversPanel().repaint();
-	    	dialog.getCoversPanel().validate();
-	    }
+	protected void process(final List<IntermediateResult> intermediateResults) {
+		for (IntermediateResult intermediateResult : intermediateResults) {
+			this.dialog.getCoversPanel().add(
+					getPanelForAlbum(intermediateResult.getAlbum(),
+							intermediateResult.getCover()));
+			this.dialog.getCoversPanel().revalidate();
+			this.dialog.getCoversPanel().repaint();
+			this.dialog.getCoversPanel().validate();
+		}
 	}
-	
-    /**
-     * Gets the panel for album.
-     * 
-     * @param album
-     *            the album
-     * @param cover
-     *            the cover
-     * @param coversSize
-     *            the covers size
-     * 
-     * @return the panel for album
-     */
-    private JPanel getPanelForAlbum(IAlbum album, ImageIcon cover) {
-        JPanel panel = new JPanel(new FlowLayout());
 
-        JLabel coverLabel = new JLabel(cover);
-        coverLabel.setToolTipText(album.getName());
-        if (cover == null) {
-            coverLabel.setPreferredSize(new Dimension(Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize(), Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize()));
-            coverLabel.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
-        }
+	/**
+	 * Gets the panel for album.
+	 * 
+	 * @param album
+	 *            the album
+	 * @param cover
+	 *            the cover
+	 * @param coversSize
+	 *            the covers size
+	 * 
+	 * @return the panel for album
+	 */
+	private JPanel getPanelForAlbum(final IAlbum album, final ImageIcon cover) {
+		JPanel panel = new JPanel(new FlowLayout());
 
-        JLabel label = new JLabel(album.getName(), SwingConstants.CENTER);
-        label.setPreferredSize(new Dimension(Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize(), 20));
+		JLabel coverLabel = new JLabel(cover);
+		coverLabel.setToolTipText(album.getName());
+		if (cover == null) {
+			coverLabel.setPreferredSize(new Dimension(
+					Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize(),
+					Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize()));
+			coverLabel.setBorder(BorderFactory.createLineBorder(GuiUtils
+					.getBorderColor()));
+		}
 
-        panel.add(coverLabel);
-        panel.add(label);
-        panel.setPreferredSize(new Dimension(CoverNavigatorController.COVER_PANEL_WIDTH, CoverNavigatorController.COVER_PANEL_HEIGHT));
-        panel.setOpaque(false);
+		JLabel label = new JLabel(album.getName(), SwingConstants.CENTER);
+		label.setPreferredSize(new Dimension(
+				Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize(), 20));
 
-        GuiUtils.applyComponentOrientation(panel);
-        return panel;
-    }
+		panel.add(coverLabel);
+		panel.add(label);
+		panel.setPreferredSize(new Dimension(
+				CoverNavigatorController.COVER_PANEL_WIDTH,
+				CoverNavigatorController.COVER_PANEL_HEIGHT));
+		panel.setOpaque(false);
+
+		this.controlsBuilder.applyComponentOrientation(panel);
+		return panel;
+	}
 }

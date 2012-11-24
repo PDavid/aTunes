@@ -20,35 +20,53 @@
 
 package net.sourceforge.atunes.gui.views.controls;
 
-
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Popup menu for column sets
+ * 
+ * @author alex
+ * 
+ */
 public class ColumnSetPopupMenu {
 
-    private JMenuItem arrangeColumns;
+	private final JMenuItem arrangeColumns;
 
-    /**
-     * Adds a right-button popup menu to column set tables
-     * 
-     * @param table
-     * @param model
-     * @param dialogFactory
-     */
-    public ColumnSetPopupMenu(final JTable table, final AbstractCommonColumnModel model, final IDialogFactory dialogFactory) {
-        final JPopupMenu rightMenu = new JPopupMenu();
-        arrangeColumns = new JMenuItem(I18nUtils.getString("ARRANGE_COLUMNS"));
-        rightMenu.add(arrangeColumns);
-        arrangeColumns.addActionListener(new SelectColumnsActionListener(model, dialogFactory));
-        table.getTableHeader().addMouseListener(new ColumnSetTableHeaderMouseAdapter(rightMenu, table));
-    }
+	/**
+	 * Adds a right-button popup menu to column set tables
+	 * 
+	 * @param table
+	 * @param model
+	 * @param dialogFactory
+	 * @param osManager
+	 */
+	ColumnSetPopupMenu(final JTable table,
+			final AbstractCommonColumnModel model,
+			final IDialogFactory dialogFactory, final IOSManager osManager) {
+		final JPopupMenu rightMenu = new JPopupMenu();
+		this.arrangeColumns = new JMenuItem(
+				I18nUtils.getString("ARRANGE_COLUMNS"));
+		rightMenu.add(this.arrangeColumns);
+		this.arrangeColumns.addActionListener(new SelectColumnsActionListener(
+				model, dialogFactory));
+		table.getTableHeader().addMouseListener(
+				new ColumnSetTableHeaderMouseAdapter(rightMenu, table,
+						osManager));
+	}
 
-    public void enableArrangeColumns(boolean enable) {
-        arrangeColumns.setEnabled(enable);
-    }
+	/**
+	 * Allows columns to be arranged
+	 * 
+	 * @param enable
+	 */
+	public void enableArrangeColumns(final boolean enable) {
+		this.arrangeColumns.setEnabled(enable);
+	}
 }

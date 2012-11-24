@@ -25,6 +25,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.text.JTextComponent;
 
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClipboardFacade;
 
 /**
@@ -39,19 +40,21 @@ public class EditionPopUpMenu extends JPopupMenu {
 	/**
 	 * @param textComponent
 	 * @param clipboard
+	 * @param osManager
 	 */
 	EditionPopUpMenu(final JTextComponent textComponent,
-			final ClipboardFacade clipboard) {
+			final ClipboardFacade clipboard, final IOSManager osManager) {
 		super();
-		Action cutAction = new TextComponentCutAction(textComponent, clipboard);
+		Action cutAction = new TextComponentCutAction(textComponent, clipboard,
+				osManager);
 		Action copyAction = new TextComponentCopyAction(textComponent,
-				clipboard);
+				clipboard, osManager);
 		Action pasteAction = new TextComponentPasteAction(textComponent,
-				clipboard);
+				clipboard, osManager);
 		Action deleteAction = new TextComponentDeleteAction(textComponent);
 		Action selectAllAction = new TextComponentSelectAllAction(textComponent);
 		addPopUpMenu(textComponent, cutAction, copyAction, pasteAction,
-				deleteAction, selectAllAction, clipboard);
+				deleteAction, selectAllAction, clipboard, osManager);
 	}
 
 	/**
@@ -64,11 +67,13 @@ public class EditionPopUpMenu extends JPopupMenu {
 	 * @param deleteAction
 	 * @param selectAllAction
 	 * @param clipboard
+	 * @param osManager
 	 */
 	private void addPopUpMenu(final JTextComponent textComponent,
 			final Action cutAction, final Action copyAction,
 			final Action pasteAction, final Action deleteAction,
-			final Action selectAllAction, final ClipboardFacade clipboard) {
+			final Action selectAllAction, final ClipboardFacade clipboard,
+			final IOSManager osManager) {
 		add(cutAction);
 		add(copyAction);
 		add(pasteAction);
@@ -76,7 +81,7 @@ public class EditionPopUpMenu extends JPopupMenu {
 		add(new JSeparator());
 		add(selectAllAction);
 		textComponent.addMouseListener(new TextComponentPopupMenuMouseAdapter(
-				this, textComponent, copyAction, deleteAction, selectAllAction,
-				pasteAction, cutAction, clipboard));
+				osManager, this, textComponent, copyAction, deleteAction,
+				selectAllAction, pasteAction, cutAction, clipboard));
 	}
 }

@@ -24,13 +24,26 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IControlsBuilder;
 
-class SwingOrientationTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
+class SwingOrientationTableCellRendererCode extends
+		AbstractTableCellRendererCode<JLabel, Object> {
+
+	private final IControlsBuilder controlsBuilder;
 
 	@Override
-	public JLabel getComponent(final JLabel superComponent, final JTable t, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
-		superComponent.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
+	public JLabel getComponent(final JLabel superComponent, final JTable t,
+			final Object value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
+		superComponent.setHorizontalAlignment(this.controlsBuilder
+				.getComponentOrientationAsSwingConstant());
 		return superComponent;
+	}
+
+	/**
+	 * @param controlsBuilder
+	 */
+	SwingOrientationTableCellRendererCode(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
 	}
 }

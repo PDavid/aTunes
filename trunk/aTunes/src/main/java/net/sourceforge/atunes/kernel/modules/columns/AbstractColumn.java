@@ -26,18 +26,20 @@ import java.util.Comparator;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
  * This class represents a column
+ * 
  * @author alex
- *
+ * 
  * @param <T>
  */
 public abstract class AbstractColumn<T> implements IColumn<T> {
@@ -63,7 +65,7 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 	private int order;
 
 	/** Text alignment. */
-	private int alignment = GuiUtils.getComponentOrientationAsSwingConstant();
+	private int alignment;
 
 	/** Editable flag. */
 	private boolean editable = false;
@@ -75,9 +77,9 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 	 * Last sort order used for this column
 	 */
 	private transient ColumnSort columnSort;
-	
+
 	private transient Collator collator;
-	
+
 	/**
 	 * Constructor with columnId, headerText and columnClass.
 	 * 
@@ -90,42 +92,46 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 	 */
 	public AbstractColumn(final String name) {
 		this.columnName = name;
-		this.columnClass = (Class<?>) ReflectionUtils.getTypeArgumentsOfParameterizedType(this.getClass())[0];
+		this.columnClass = (Class<?>) ReflectionUtils
+				.getTypeArgumentsOfParameterizedType(this.getClass())[0];
+		this.alignment = Context.getBean(IControlsBuilder.class)
+				.getComponentOrientationAsSwingConstant();
 	}
 
 	/**
 	 * @param collator
 	 */
-	public void setCollator(Collator collator) {
+	public void setCollator(final Collator collator) {
 		this.collator = collator;
 	}
-	
+
 	/**
 	 * Helper method to compare strings
+	 * 
 	 * @param s1
 	 * @param s2
 	 * @return
 	 */
-	protected int compare(String s1, String s2) {
-		return collator.compare(s1, s2);
+	protected int compare(final String s1, final String s2) {
+		return this.collator.compare(s1, s2);
 	}
-	
+
 	@Override
 	public void applyColumnBean(final ColumnBean bean) {
-		order = bean.getOrder();
-		width = bean.getWidth();
-		visible = bean.isVisible();
-		columnSort = bean.getSort();
+		this.order = bean.getOrder();
+		this.width = bean.getWidth();
+		this.visible = bean.isVisible();
+		this.columnSort = bean.getSort();
 	}
 
 	@Override
 	public int compareTo(final IColumn<?> o) {
-		return Integer.valueOf(order).compareTo(o.getOrder());
+		return Integer.valueOf(this.order).compareTo(o.getOrder());
 	}
 
 	@Override
 	public int getAlignment() {
-		return alignment;
+		return this.alignment;
 	}
 
 	@Override
@@ -141,41 +147,41 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 	@Override
 	public ColumnBean getColumnBean() {
 		ColumnBean bean = new ColumnBean();
-		bean.setOrder(order);
-		bean.setWidth(width);
-		bean.setVisible(visible);
-		bean.setSort(columnSort);
+		bean.setOrder(this.order);
+		bean.setWidth(this.width);
+		bean.setVisible(this.visible);
+		bean.setSort(this.columnSort);
 		return bean;
 	}
 
 	@Override
 	public Class<?> getColumnClass() {
-		return columnClass;
+		return this.columnClass;
 	}
 
 	@Override
 	public String getColumnName() {
-		return columnName;
+		return this.columnName;
 	}
 
 	@Override
 	public String getHeaderText() {
-		return columnName;
+		return this.columnName;
 	}
 
 	@Override
 	public int getOrder() {
-		return order;
+		return this.order;
 	}
 
 	@Override
 	public int getWidth() {
-		return width;
+		return this.width;
 	}
 
 	@Override
 	public boolean isEditable() {
-		return editable;
+		return this.editable;
 	}
 
 	@Override
@@ -185,12 +191,12 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 
 	@Override
 	public boolean isResizable() {
-		return resizable;
+		return this.resizable;
 	}
 
 	@Override
 	public boolean isVisible() {
-		return visible;
+		return this.visible;
 	}
 
 	@Override
@@ -240,21 +246,22 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 
 	@Override
 	public String toString() {
-		return columnName;
+		return this.columnName;
 	}
 
 	@Override
 	public final Comparator<IAudioObject> getComparator(final boolean changeSort) {
-		Logger.debug("Returning comparator for column: ", this.getClass().getName());
-		if (columnSort == null) {
-			columnSort = ColumnSort.ASCENDING;
-		} else if (columnSort == ColumnSort.ASCENDING && changeSort) {
-			columnSort = ColumnSort.DESCENDING;
-		} else if (columnSort == ColumnSort.DESCENDING && changeSort) {
-			columnSort = ColumnSort.ASCENDING;
+		Logger.debug("Returning comparator for column: ", this.getClass()
+				.getName());
+		if (this.columnSort == null) {
+			this.columnSort = ColumnSort.ASCENDING;
+		} else if (this.columnSort == ColumnSort.ASCENDING && changeSort) {
+			this.columnSort = ColumnSort.DESCENDING;
+		} else if (this.columnSort == ColumnSort.DESCENDING && changeSort) {
+			this.columnSort = ColumnSort.ASCENDING;
 		}
 
-		if (columnSort.equals(ColumnSort.ASCENDING)) {
+		if (this.columnSort.equals(ColumnSort.ASCENDING)) {
 			return new AscendingColumnSortComparator(this);
 		} else {
 			return new DescendingColumnSortComparator(this);
@@ -263,7 +270,7 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 
 	@Override
 	public boolean isUsedForFilter() {
-		return usedForFilter;
+		return this.usedForFilter;
 	}
 
 	@Override
@@ -272,7 +279,8 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 	}
 
 	@Override
-	public String getValueForFilter(final IAudioObject audioObject, final int row) {
+	public String getValueForFilter(final IAudioObject audioObject,
+			final int row) {
 		return getValueFor(audioObject, row).toString();
 	}
 
@@ -283,14 +291,14 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 
 	@Override
 	public ColumnSort getColumnSort() {
-		return columnSort;
+		return this.columnSort;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + order;
+		result = prime * result + this.order;
 		return result;
 	}
 
@@ -308,7 +316,7 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 		if (obj instanceof AbstractColumn<?>) {
 			@SuppressWarnings("rawtypes")
 			AbstractColumn other = (AbstractColumn) obj;
-			if (order != other.order) {
+			if (this.order != other.order) {
 				return false;
 			}
 		}
@@ -317,6 +325,7 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 
 	/**
 	 * Compares two objects in ascending order
+	 * 
 	 * @param ao1
 	 * @param ao2
 	 * @return
@@ -325,6 +334,7 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 
 	/**
 	 * Compares two objects in descending order
+	 * 
 	 * @param ao1
 	 * @param ao2
 	 * @return

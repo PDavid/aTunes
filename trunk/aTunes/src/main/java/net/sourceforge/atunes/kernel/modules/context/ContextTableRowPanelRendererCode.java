@@ -34,6 +34,7 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.table.TableCellEditor;
 
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.model.IControlsBuilder;
 
 /**
  * Renderer for context table rows
@@ -43,140 +44,151 @@ import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
  * @param <T>
  */
 public abstract class ContextTableRowPanelRendererCode<T> extends
-	AbstractTableCellRendererCode<JComponent, T> implements TableCellEditor {
+		AbstractTableCellRendererCode<JComponent, T> implements TableCellEditor {
 
-    private final Class<?> clazz;
+	private final Class<?> clazz;
 
-    private ContextTable table;
+	private ContextTable table;
 
-    private final ContextTableRowPanelFactory<T> factory;
+	private final ContextTableRowPanelFactory<T> factory;
 
-    private String cacheKeyControl;
+	private String cacheKeyControl;
 
-    private final Map<T, ContextTableRowPanel<T>> cachedPanels = new HashMap<T, ContextTableRowPanel<T>>();
+	private final Map<T, ContextTableRowPanel<T>> cachedPanels = new HashMap<T, ContextTableRowPanel<T>>();
 
-    /**
-     * @param lookAndFeel
-     */
-    @SuppressWarnings("unchecked")
-    public ContextTableRowPanelRendererCode() {
-	this.clazz = (Class<T>) ((ParameterizedType) getClass()
-		.getGenericSuperclass()).getActualTypeArguments()[0];
-	this.factory = new ContextTableRowPanelFactory<T>();
-    }
+	private IControlsBuilder controlsBuilder;
 
-    @Override
-    public JComponent getComponent(final JComponent superComponent,
-	    final JTable t, final T value, final boolean isSelected,
-	    final boolean hasFocus, final int row, final int column) {
-	if (value != null) {
-	    if (cacheKeyControl != null
-		    && !cacheKeyControl.equals(getCacheKeyControl(value))) {
-		// Clean cached panels when similar artist changes
-		cachedPanels.clear();
-	    }
-
-	    // Create if necessary
-	    if (!cachedPanels.containsKey(value)) {
-		cachedPanels.put(value, createPanel(superComponent, value));
-	    }
-
-	    // Get panel
-	    ContextTableRowPanel<T> panel = cachedPanels.get(value);
-
-	    // Update panel
-	    panel.setColors(superComponent.getBackground(),
-		    superComponent.getForeground());
-	    panel.setFocus(hasFocus);
-
-	    return panel;
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
 	}
-	return superComponent;
-    }
 
-    /**
-     * Binds as renderer and editor to table
-     * 
-     * @param table
-     */
-    public void bind(final ContextTable table) {
-	this.table = table;
-	this.table.setDefaultRenderer(clazz, getLookAndFeel()
-		.getTableCellRenderer(this));
-	this.table.setDefaultEditor(clazz, this);
-    }
+	/**
+	 * @param lookAndFeel
+	 */
+	@SuppressWarnings("unchecked")
+	public ContextTableRowPanelRendererCode() {
+		this.clazz = (Class<T>) ((ParameterizedType) getClass()
+				.getGenericSuperclass()).getActualTypeArguments()[0];
+		this.factory = new ContextTableRowPanelFactory<T>();
+	}
 
-    /**
-     * @return
-     */
-    protected ContextTable getTable() {
-	return table;
-    }
+	@Override
+	public JComponent getComponent(final JComponent superComponent,
+			final JTable t, final T value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
+		if (value != null) {
+			if (this.cacheKeyControl != null
+					&& !this.cacheKeyControl.equals(getCacheKeyControl(value))) {
+				// Clean cached panels when similar artist changes
+				this.cachedPanels.clear();
+			}
 
-    @Override
-    public Component getTableCellEditorComponent(final JTable table,
-	    final Object value, final boolean isSelected, final int row,
-	    final int column) {
-	return table.getDefaultRenderer(clazz).getTableCellRendererComponent(
-		table, value, isSelected, true, row, column);
-    }
+			// Create if necessary
+			if (!this.cachedPanels.containsKey(value)) {
+				this.cachedPanels
+						.put(value, createPanel(superComponent, value));
+			}
 
-    @Override
-    public void cancelCellEditing() {
-    }
+			// Get panel
+			ContextTableRowPanel<T> panel = this.cachedPanels.get(value);
 
-    @Override
-    public boolean stopCellEditing() {
-	return true;
-    }
+			// Update panel
+			panel.setColors(superComponent.getBackground(),
+					superComponent.getForeground());
+			panel.setFocus(hasFocus);
 
-    @Override
-    public Object getCellEditorValue() {
-	return null;
-    }
+			return panel;
+		}
+		return superComponent;
+	}
 
-    @Override
-    public boolean isCellEditable(final EventObject anEvent) {
-	return true;
-    }
+	/**
+	 * Binds as renderer and editor to table
+	 * 
+	 * @param table
+	 */
+	public void bind(final ContextTable table) {
+		this.table = table;
+		this.table.setDefaultRenderer(this.clazz, getLookAndFeel()
+				.getTableCellRenderer(this));
+		this.table.setDefaultEditor(this.clazz, this);
+	}
 
-    @Override
-    public boolean shouldSelectCell(final EventObject anEvent) {
-	return true;
-    }
+	/**
+	 * @return
+	 */
+	protected ContextTable getTable() {
+		return this.table;
+	}
 
-    @Override
-    public void addCellEditorListener(final CellEditorListener l) {
-    }
+	@Override
+	public Component getTableCellEditorComponent(final JTable table,
+			final Object value, final boolean isSelected, final int row,
+			final int column) {
+		return table.getDefaultRenderer(this.clazz)
+				.getTableCellRendererComponent(table, value, isSelected, true,
+						row, column);
+	}
 
-    @Override
-    public void removeCellEditorListener(final CellEditorListener l) {
-    }
+	@Override
+	public void cancelCellEditing() {
+	}
 
-    protected final ContextTableRowPanel<T> getPanelForTableRenderer(
-	    final ImageIcon image, final String text, final int imageMaxWidth) {
+	@Override
+	public boolean stopCellEditing() {
+		return true;
+	}
 
-	return factory.getPanelForTableRenderer(this.getActions(), table,
-		image, text, imageMaxWidth);
-    }
+	@Override
+	public Object getCellEditorValue() {
+		return null;
+	}
 
-    /**
-     * @return list of actions available in this row
-     */
-    public abstract List<ContextTableAction<T>> getActions();
+	@Override
+	public boolean isCellEditable(final EventObject anEvent) {
+		return true;
+	}
 
-    /**
-     * @param object
-     * @return cache key control value of this object
-     */
-    public abstract String getCacheKeyControl(T object);
+	@Override
+	public boolean shouldSelectCell(final EventObject anEvent) {
+		return true;
+	}
 
-    /**
-     * @param superComponent
-     * @param value
-     * @return
-     */
-    public abstract ContextTableRowPanel<T> createPanel(
-	    final JComponent superComponent, final T value);
+	@Override
+	public void addCellEditorListener(final CellEditorListener l) {
+	}
+
+	@Override
+	public void removeCellEditorListener(final CellEditorListener l) {
+	}
+
+	protected final ContextTableRowPanel<T> getPanelForTableRenderer(
+			final ImageIcon image, final String text, final int imageMaxWidth) {
+
+		return this.factory.getPanelForTableRenderer(this.getActions(),
+				this.table, image, text, imageMaxWidth, this.controlsBuilder);
+	}
+
+	/**
+	 * @return list of actions available in this row
+	 */
+	public abstract List<ContextTableAction<T>> getActions();
+
+	/**
+	 * @param object
+	 * @return cache key control value of this object
+	 */
+	public abstract String getCacheKeyControl(T object);
+
+	/**
+	 * @param superComponent
+	 * @param value
+	 * @return
+	 */
+	public abstract ContextTableRowPanel<T> createPanel(
+			final JComponent superComponent, final T value);
 
 }
