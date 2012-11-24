@@ -255,6 +255,8 @@
 	<bean id="volumeUpAction" class="net.sourceforge.atunes.kernel.actions.VolumeUpAction"/>
 	<bean id="similarModeAction" class="net.sourceforge.atunes.kernel.actions.SimilarArtistsModeAction"/>
 	
+	<bean id="removeCommonPrefixAction" class="net.sourceforge.atunes.kernel.actions.RemoveCommonPrefixFromTitlesAction" scope="prototype"/>
+	<bean id="removeCommonSuffixAction" class="net.sourceforge.atunes.kernel.actions.RemoveCommonSuffixFromTitlesAction" scope="prototype"/>
 	
 	
 	<!-- Remote Actions -->
