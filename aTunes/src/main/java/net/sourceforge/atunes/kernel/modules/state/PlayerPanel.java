@@ -50,7 +50,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IHotkey;
 import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IHotkeysConfig;
@@ -68,548 +68,569 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class PlayerPanel extends AbstractPreferencesPanel {
 
-    private static final Color WARNING_COLOR = Color.RED;
+	private static final Color WARNING_COLOR = Color.RED;
 
-    private final class HotkeyKeyAdapter extends KeyAdapter {
+	private final class HotkeyKeyAdapter extends KeyAdapter {
 
-	private final HotkeyTableModel tableModel;
+		private final HotkeyTableModel tableModel;
 
-	private final JTable table;
+		private final JTable table;
 
-	private HotkeyKeyAdapter(final JTable table,
-		final HotkeyTableModel tableModel) {
-	    this.table = table;
-	    this.tableModel = tableModel;
+		private HotkeyKeyAdapter(final JTable table,
+				final HotkeyTableModel tableModel) {
+			this.table = table;
+			this.tableModel = tableModel;
+		}
+
+		@Override
+		public void keyPressed(final KeyEvent e) {
+			int selectedRow = this.table.getSelectedRow();
+			if (selectedRow != -1) {
+				int modifiersEx = e.getModifiersEx();
+				int keyCode = e.getKeyCode();
+				if (validKeyPressed(modifiersEx, keyCode)) {
+					IHotkey hotkey = this.tableModel.getHotkeysConfig()
+							.getHotkeyByOrder(selectedRow);
+					hotkey.setMod(modifiersEx);
+					hotkey.setKey(keyCode);
+
+					PlayerPanel.this.conflicts = this.tableModel
+							.getHotkeysConfig().conflicts();
+					PlayerPanel.this.notRecommendedKeys = this.tableModel
+							.getHotkeysConfig().notRecommendedKeys();
+
+					this.tableModel.fireTableRowsUpdated(0,
+							this.tableModel.getRowCount());
+				}
+			}
+		}
+
+		/**
+		 * @param modifiersEx
+		 * @param keyCode
+		 * @return
+		 */
+		private boolean validKeyPressed(final int modifiersEx, final int keyCode) {
+			return keyCode != KeyEvent.VK_UNDEFINED
+					&& isButton(modifiersEx, InputEvent.BUTTON1_DOWN_MASK)
+					&& isButton(modifiersEx, InputEvent.BUTTON2_DOWN_MASK)
+					&& isButton(modifiersEx, InputEvent.BUTTON3_DOWN_MASK);
+		}
+
+		private boolean isButton(final int modifiersEx, final int button) {
+			return (modifiersEx & button) == 0;
+		}
 	}
 
-	@Override
-	public void keyPressed(final KeyEvent e) {
-	    int selectedRow = table.getSelectedRow();
-	    if (selectedRow != -1) {
-		int modifiersEx = e.getModifiersEx();
-		int keyCode = e.getKeyCode();
-		if (validKeyPressed(modifiersEx, keyCode)) {
-		    IHotkey hotkey = tableModel.getHotkeysConfig()
-			    .getHotkeyByOrder(selectedRow);
-		    hotkey.setMod(modifiersEx);
-		    hotkey.setKey(keyCode);
+	private final class HotkeyTableTableCellRendererCode extends
+			AbstractTableCellRendererCode<JLabel, Object> {
 
-		    conflicts = tableModel.getHotkeysConfig().conflicts();
-		    notRecommendedKeys = tableModel.getHotkeysConfig()
-			    .notRecommendedKeys();
-
-		    tableModel
-			    .fireTableRowsUpdated(0, tableModel.getRowCount());
+		@Override
+		public JLabel getComponent(final JLabel c, final JTable t,
+				final Object value, final boolean isSelected,
+				final boolean hasFocus, final int row, final int column) {
+			PlayerPanel.this.controlsBuilder.applyComponentOrientation(c);
+			if (PlayerPanel.this.conflicts.contains(row)
+					|| PlayerPanel.this.notRecommendedKeys.contains(row)) {
+				c.setForeground(WARNING_COLOR);
+			}
+			String keyWarnings = "";
+			if (PlayerPanel.this.conflicts.contains(row)) {
+				keyWarnings += I18nUtils.getString("DUPLICATE_HOTKEYS");
+			}
+			if (PlayerPanel.this.notRecommendedKeys.contains(row)) {
+				if (PlayerPanel.this.conflicts.contains(row)) {
+					keyWarnings += " ";
+				}
+				keyWarnings += I18nUtils.getString("NOT_RECOMMENDED_HOTKEYS");
+			}
+			c.setToolTipText(keyWarnings.isEmpty() ? null : keyWarnings);
+			return c;
 		}
-	    }
+	}
+
+	class HotkeyTableModel extends AbstractTableModel {
+
+		private static final long serialVersionUID = -5726677745418003289L;
+
+		/** The data. */
+		private IHotkeysConfig hotkeysConfig;
+
+		@Override
+		public int getColumnCount() {
+			return 2;
+		}
+
+		@Override
+		public String getColumnName(final int column) {
+			return column == 0 ? I18nUtils.getString("ACTION") : I18nUtils
+					.getString("HOTKEY");
+		}
+
+		@Override
+		public int getRowCount() {
+			return this.hotkeysConfig != null ? this.hotkeysConfig.size() : 0;
+		}
+
+		@Override
+		public Object getValueAt(final int rowIndex, final int columnIndex) {
+			if (this.hotkeysConfig != null) {
+				if (columnIndex == 0) {
+					return this.hotkeysConfig.getHotkeyByOrder(rowIndex)
+							.getDescription();
+				} else if (columnIndex == 1) {
+					return this.hotkeysConfig.getHotkeyByOrder(rowIndex)
+							.getKeyDescription();
+				}
+			}
+			return "";
+		}
+
+		public void setHotkeysConfig(final IHotkeysConfig hotkeysConfig) {
+			this.hotkeysConfig = hotkeysConfig;
+			PlayerPanel.this.conflicts = hotkeysConfig.conflicts();
+			PlayerPanel.this.notRecommendedKeys = hotkeysConfig
+					.notRecommendedKeys();
+			fireTableDataChanged();
+		}
+
+		public IHotkeysConfig getHotkeysConfig() {
+			return this.hotkeysConfig;
+		}
+
+	}
+
+	private static final long serialVersionUID = 4489293347321979288L;
+
+	private List<IPlayerEngine> engines;
+
+	/** The play at startup. */
+	private JCheckBox playAtStartup;
+
+	/** Show advanced player controls */
+	private JCheckBox showAdvancedPlayerControls;
+
+	/**
+	 * Show player controls on top
+	 */
+	private JCheckBox showPlayerControlsOnTop;
+
+	/** The use fade away. */
+	private JCheckBox useFadeAway;
+
+	/** The use short path names. */
+	private JCheckBox useShortPathNames;
+
+	/** The enable global hotkeys. */
+	private JCheckBox enableGlobalHotkeys;
+
+	/**
+	 * Scroll pane containing hotkeys
+	 */
+	private JScrollPane hotkeyScrollPane;
+
+	/** The table model. */
+	private final HotkeyTableModel tableModel = new HotkeyTableModel();
+
+	private Set<Integer> conflicts = new HashSet<Integer>();
+	private Set<Integer> notRecommendedKeys = new HashSet<Integer>();
+
+	private JButton resetHotkeys;
+
+	/** The cache files before playing. */
+	private JCheckBox cacheFilesBeforePlaying;
+
+	private JComboBox engineCombo;
+
+	private IOSManager osManager;
+
+	private IHotkeyHandler hotkeyHandler;
+
+	private ILookAndFeelManager lookAndFeelManager;
+
+	private IStateUI stateUI;
+
+	private IStatePlayer statePlayer;
+
+	private IStateCore stateCore;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
 	}
 
 	/**
-	 * @param modifiersEx
-	 * @param keyCode
-	 * @return
+	 * @param stateCore
 	 */
-	private boolean validKeyPressed(final int modifiersEx, final int keyCode) {
-	    return keyCode != KeyEvent.VK_UNDEFINED
-		    && isButton(modifiersEx, InputEvent.BUTTON1_DOWN_MASK)
-		    && isButton(modifiersEx, InputEvent.BUTTON2_DOWN_MASK)
-		    && isButton(modifiersEx, InputEvent.BUTTON3_DOWN_MASK);
+	public void setStateCore(final IStateCore stateCore) {
+		this.stateCore = stateCore;
 	}
 
-	private boolean isButton(final int modifiersEx, final int button) {
-	    return (modifiersEx & button) == 0;
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(final IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
 	}
-    }
 
-    private final class HotkeyTableTableCellRendererCode extends
-	    AbstractTableCellRendererCode<JLabel, Object> {
+	/**
+	 * @param stateUI
+	 */
+	public void setStateUI(final IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
 
-	@Override
-	public JLabel getComponent(final JLabel c, final JTable t,
-		final Object value, final boolean isSelected,
-		final boolean hasFocus, final int row, final int column) {
-	    GuiUtils.applyComponentOrientation(c);
-	    if (conflicts.contains(row) || notRecommendedKeys.contains(row)) {
-		c.setForeground(WARNING_COLOR);
-	    }
-	    String keyWarnings = "";
-	    if (conflicts.contains(row)) {
-		keyWarnings += I18nUtils.getString("DUPLICATE_HOTKEYS");
-	    }
-	    if (notRecommendedKeys.contains(row)) {
-		if (conflicts.contains(row)) {
-		    keyWarnings += " ";
+	/**
+	 * @param engines
+	 */
+	public void setEngines(final List<IPlayerEngine> engines) {
+		this.engines = engines;
+	}
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
+	 * @param hotkeyHandler
+	 */
+	public void setHotkeyHandler(final IHotkeyHandler hotkeyHandler) {
+		this.hotkeyHandler = hotkeyHandler;
+	}
+
+	/**
+	 * Instantiates a new player panel.
+	 */
+	public PlayerPanel() {
+		super(I18nUtils.getString("PLAYER"));
+	}
+
+	/**
+	 * Initializes panel
+	 */
+	public void initialize() {
+		Box engineBox = Box.createHorizontalBox();
+		engineBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+		engineBox.add(new JLabel(I18nUtils.getString("PLAYER_ENGINE")));
+		engineBox.add(Box.createHorizontalStrut(6));
+		List<String> enginesNamesList = new ArrayList<String>();
+		for (IPlayerEngine engine : this.engines) {
+			enginesNamesList.add(engine.getEngineName());
 		}
-		keyWarnings += I18nUtils.getString("NOT_RECOMMENDED_HOTKEYS");
-	    }
-	    c.setToolTipText(keyWarnings.isEmpty() ? null : keyWarnings);
-	    return c;
-	}
-    }
+		String[] engineNames = enginesNamesList
+				.toArray(new String[enginesNamesList.size()]);
+		this.engineCombo = new JComboBox(engineNames);
+		// Disable combo if no player engine available
+		this.engineCombo.setEnabled(engineNames.length > 0);
+		engineBox.add(this.engineCombo);
+		engineBox.add(Box.createHorizontalGlue());
+		this.playAtStartup = new JCheckBox(
+				I18nUtils.getString("PLAY_AT_STARTUP"));
+		this.useFadeAway = new JCheckBox(I18nUtils.getString("USE_FADE_AWAY"));
+		this.showAdvancedPlayerControls = new JCheckBox(
+				I18nUtils.getString("SHOW_ADVANCED_PLAYER_CONTROLS"));
+		this.useShortPathNames = new JCheckBox(
+				I18nUtils.getString("USE_SHORT_PATH_NAMES_FOR_MPLAYER"));
+		this.enableGlobalHotkeys = new JCheckBox(
+				I18nUtils.getString("ENABLE_GLOBAL_HOTKEYS"));
+		this.showPlayerControlsOnTop = new JCheckBox(
+				I18nUtils.getString("SHOW_PLAYER_CONTROLS_ON_TOP"));
 
-    class HotkeyTableModel extends AbstractTableModel {
+		JTable hotkeyTable = getHotkeyTable();
 
-	private static final long serialVersionUID = -5726677745418003289L;
+		this.resetHotkeys = new JButton(I18nUtils.getString("RESET"));
+		this.resetHotkeys.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				PlayerPanel.this.tableModel
+						.setHotkeysConfig(PlayerPanel.this.hotkeyHandler
+								.getDefaultHotkeysConfiguration());
+				PlayerPanel.this.tableModel.fireTableDataChanged();
+			}
+		});
 
-	/** The data. */
-	private IHotkeysConfig hotkeysConfig;
+		this.hotkeyScrollPane = this.lookAndFeelManager.getCurrentLookAndFeel()
+				.getTableScrollPane(hotkeyTable);
+		this.hotkeyScrollPane.setMinimumSize(new Dimension(400, 200));
+		this.cacheFilesBeforePlaying = new JCheckBox(
+				I18nUtils.getString("CACHE_FILES_BEFORE_PLAYING"));
 
-	@Override
-	public int getColumnCount() {
-	    return 2;
-	}
-
-	@Override
-	public String getColumnName(final int column) {
-	    return column == 0 ? I18nUtils.getString("ACTION") : I18nUtils
-		    .getString("HOTKEY");
-	}
-
-	@Override
-	public int getRowCount() {
-	    return hotkeysConfig != null ? hotkeysConfig.size() : 0;
-	}
-
-	@Override
-	public Object getValueAt(final int rowIndex, final int columnIndex) {
-	    if (hotkeysConfig != null) {
-		if (columnIndex == 0) {
-		    return hotkeysConfig.getHotkeyByOrder(rowIndex)
-			    .getDescription();
-		} else if (columnIndex == 1) {
-		    return hotkeysConfig.getHotkeyByOrder(rowIndex)
-			    .getKeyDescription();
-		}
-	    }
-	    return "";
+		arrangePanel(engineBox);
 	}
 
-	public void setHotkeysConfig(final IHotkeysConfig hotkeysConfig) {
-	    this.hotkeysConfig = hotkeysConfig;
-	    conflicts = hotkeysConfig.conflicts();
-	    notRecommendedKeys = hotkeysConfig.notRecommendedKeys();
-	    fireTableDataChanged();
-	}
-
-	public IHotkeysConfig getHotkeysConfig() {
-	    return hotkeysConfig;
-	}
-
-    }
-
-    private static final long serialVersionUID = 4489293347321979288L;
-
-    private List<IPlayerEngine> engines;
-
-    /** The play at startup. */
-    private JCheckBox playAtStartup;
-
-    /** Show advanced player controls */
-    private JCheckBox showAdvancedPlayerControls;
-
-    /**
-     * Show player controls on top
-     */
-    private JCheckBox showPlayerControlsOnTop;
-
-    /** The use fade away. */
-    private JCheckBox useFadeAway;
-
-    /** The use short path names. */
-    private JCheckBox useShortPathNames;
-
-    /** The enable global hotkeys. */
-    private JCheckBox enableGlobalHotkeys;
-
-    /**
-     * Scroll pane containing hotkeys
-     */
-    private JScrollPane hotkeyScrollPane;
-
-    /** The table model. */
-    private final HotkeyTableModel tableModel = new HotkeyTableModel();
-
-    private Set<Integer> conflicts = new HashSet<Integer>();
-    private Set<Integer> notRecommendedKeys = new HashSet<Integer>();
-
-    private JButton resetHotkeys;
-
-    /** The cache files before playing. */
-    private JCheckBox cacheFilesBeforePlaying;
-
-    private JComboBox engineCombo;
-
-    private IOSManager osManager;
-
-    private IHotkeyHandler hotkeyHandler;
-
-    private ILookAndFeelManager lookAndFeelManager;
-
-    private IStateUI stateUI;
-
-    private IStatePlayer statePlayer;
-
-    private IStateCore stateCore;
-
-    /**
-     * @param stateCore
-     */
-    public void setStateCore(final IStateCore stateCore) {
-	this.stateCore = stateCore;
-    }
-
-    /**
-     * @param statePlayer
-     */
-    public void setStatePlayer(final IStatePlayer statePlayer) {
-	this.statePlayer = statePlayer;
-    }
-
-    /**
-     * @param stateUI
-     */
-    public void setStateUI(final IStateUI stateUI) {
-	this.stateUI = stateUI;
-    }
-
-    /**
-     * @param engines
-     */
-    public void setEngines(final List<IPlayerEngine> engines) {
-	this.engines = engines;
-    }
-
-    /**
-     * @param osManager
-     */
-    public void setOsManager(final IOSManager osManager) {
-	this.osManager = osManager;
-    }
-
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(
-	    final ILookAndFeelManager lookAndFeelManager) {
-	this.lookAndFeelManager = lookAndFeelManager;
-    }
-
-    /**
-     * @param hotkeyHandler
-     */
-    public void setHotkeyHandler(final IHotkeyHandler hotkeyHandler) {
-	this.hotkeyHandler = hotkeyHandler;
-    }
-
-    /**
-     * Instantiates a new player panel.
-     */
-    public PlayerPanel() {
-	super(I18nUtils.getString("PLAYER"));
-    }
-
-    /**
-     * Initializes panel
-     */
-    public void initialize() {
-	Box engineBox = Box.createHorizontalBox();
-	engineBox.setAlignmentX(Component.LEFT_ALIGNMENT);
-	engineBox.add(new JLabel(I18nUtils.getString("PLAYER_ENGINE")));
-	engineBox.add(Box.createHorizontalStrut(6));
-	List<String> enginesNamesList = new ArrayList<String>();
-	for (IPlayerEngine engine : engines) {
-	    enginesNamesList.add(engine.getEngineName());
-	}
-	String[] engineNames = enginesNamesList
-		.toArray(new String[enginesNamesList.size()]);
-	engineCombo = new JComboBox(engineNames);
-	// Disable combo if no player engine available
-	engineCombo.setEnabled(engineNames.length > 0);
-	engineBox.add(engineCombo);
-	engineBox.add(Box.createHorizontalGlue());
-	playAtStartup = new JCheckBox(I18nUtils.getString("PLAY_AT_STARTUP"));
-	useFadeAway = new JCheckBox(I18nUtils.getString("USE_FADE_AWAY"));
-	showAdvancedPlayerControls = new JCheckBox(
-		I18nUtils.getString("SHOW_ADVANCED_PLAYER_CONTROLS"));
-	useShortPathNames = new JCheckBox(
-		I18nUtils.getString("USE_SHORT_PATH_NAMES_FOR_MPLAYER"));
-	enableGlobalHotkeys = new JCheckBox(
-		I18nUtils.getString("ENABLE_GLOBAL_HOTKEYS"));
-	showPlayerControlsOnTop = new JCheckBox(
-		I18nUtils.getString("SHOW_PLAYER_CONTROLS_ON_TOP"));
-
-	JTable hotkeyTable = getHotkeyTable();
-
-	resetHotkeys = new JButton(I18nUtils.getString("RESET"));
-	resetHotkeys.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(final ActionEvent e) {
-		tableModel.setHotkeysConfig(PlayerPanel.this.hotkeyHandler
-			.getDefaultHotkeysConfiguration());
-		tableModel.fireTableDataChanged();
-	    }
-	});
-
-	hotkeyScrollPane = lookAndFeelManager.getCurrentLookAndFeel()
-		.getTableScrollPane(hotkeyTable);
-	hotkeyScrollPane.setMinimumSize(new Dimension(400, 200));
-	cacheFilesBeforePlaying = new JCheckBox(
-		I18nUtils.getString("CACHE_FILES_BEFORE_PLAYING"));
-
-	arrangePanel(engineBox);
-    }
-
-    /**
+	/**
 	 * 
 	 */
-    private JTable getHotkeyTable() {
-	final JTable table = lookAndFeelManager.getCurrentLookAndFeel()
-		.getTable();
-	table.setModel(tableModel);
-	table.getTableHeader().setReorderingAllowed(false);
-	table.getTableHeader().setResizingAllowed(false);
-	table.getSelectionModel().setSelectionMode(
-		ListSelectionModel.SINGLE_SELECTION);
-	table.setEnabled(hotkeyHandler.areHotkeysSupported());
-	table.setDefaultRenderer(
-		Object.class,
-		lookAndFeelManager.getCurrentLookAndFeel()
-			.getTableCellRenderer(
-				new HotkeyTableTableCellRendererCode()));
+	private JTable getHotkeyTable() {
+		final JTable table = this.lookAndFeelManager.getCurrentLookAndFeel()
+				.getTable();
+		table.setModel(this.tableModel);
+		table.getTableHeader().setReorderingAllowed(false);
+		table.getTableHeader().setResizingAllowed(false);
+		table.getSelectionModel().setSelectionMode(
+				ListSelectionModel.SINGLE_SELECTION);
+		table.setEnabled(this.hotkeyHandler.areHotkeysSupported());
+		table.setDefaultRenderer(
+				Object.class,
+				this.lookAndFeelManager.getCurrentLookAndFeel()
+						.getTableCellRenderer(
+								new HotkeyTableTableCellRendererCode()));
 
-	table.addKeyListener(new HotkeyKeyAdapter(table, tableModel));
+		table.addKeyListener(new HotkeyKeyAdapter(table, this.tableModel));
 
-	InputMap inputMap = table
-		.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-	for (KeyStroke keyStroke : inputMap.allKeys()) {
-	    inputMap.put(keyStroke, "none");
+		InputMap inputMap = table
+				.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		for (KeyStroke keyStroke : inputMap.allKeys()) {
+			inputMap.put(keyStroke, "none");
+		}
+
+		return table;
 	}
 
-	return table;
-    }
-
-    /**
-     * @param engineBox
-     */
-    private void arrangePanel(final Box engineBox) {
-	GridBagConstraints c = new GridBagConstraints();
-	c.gridx = 0;
-	c.gridy = 0;
-	c.weightx = 1;
-	c.weighty = 0;
-	c.anchor = GridBagConstraints.FIRST_LINE_START;
-	Insets prevInsets = c.insets;
-	c.insets = new Insets(0, 8, 0, 0);
-	add(engineBox, c);
-	c.insets = prevInsets;
-	c.gridy = 1;
-	add(playAtStartup, c);
-	c.gridy = 2;
-	add(useFadeAway, c);
-	c.gridy = 3;
-	add(showAdvancedPlayerControls, c);
-	c.gridy = 4;
-	add(showPlayerControlsOnTop, c);
-	c.gridy = 5;
-	add(useShortPathNames, c);
-	c.gridy = 6;
-	add(cacheFilesBeforePlaying, c);
-	c.gridy = 7;
-	add(enableGlobalHotkeys, c);
-	c.gridy = 8;
-	c.weightx = 0;
-	c.insets = new Insets(10, 20, 5, 10);
-	add(hotkeyScrollPane, c);
-	c.gridy = 9;
-	c.weighty = 1;
-	c.fill = GridBagConstraints.NONE;
-	c.insets = new Insets(0, 20, 0, 0);
-	JPanel resetHotkeysPanel = new JPanel();
-	resetHotkeysPanel.add(resetHotkeys);
-	add(resetHotkeysPanel, c);
-    }
-
-    /**
-     * Gets the enable global hotkeys.
-     * 
-     * @return the enable global hotkeys
-     */
-    private JCheckBox getEnableGlobalHotkeys() {
-	return enableGlobalHotkeys;
-    }
-
-    @Override
-    public boolean applyPreferences() {
-	boolean needRestart = false;
-	statePlayer.setPlayAtStartup(playAtStartup.isSelected());
-	statePlayer.setUseFadeAway(useFadeAway.isSelected());
-	stateUI.setShowAdvancedPlayerControls(showAdvancedPlayerControls
-		.isSelected());
-	statePlayer.setUseShortPathNames(useShortPathNames.isSelected());
-	stateCore.setEnableHotkeys(enableGlobalHotkeys.isSelected());
-	stateCore.setHotkeysConfig(tableModel.getHotkeysConfig());
-	statePlayer.setCacheFilesBeforePlaying(cacheFilesBeforePlaying
-		.isSelected());
-	String engine = engineCombo.getSelectedItem() != null ? engineCombo
-		.getSelectedItem().toString() : null;
-	if (engine != null && !statePlayer.getPlayerEngine().equals(engine)) {
-	    statePlayer.setPlayerEngine(engine);
-	    needRestart = true;
+	/**
+	 * @param engineBox
+	 */
+	private void arrangePanel(final Box engineBox) {
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.weighty = 0;
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		Insets prevInsets = c.insets;
+		c.insets = new Insets(0, 8, 0, 0);
+		add(engineBox, c);
+		c.insets = prevInsets;
+		c.gridy = 1;
+		add(this.playAtStartup, c);
+		c.gridy = 2;
+		add(this.useFadeAway, c);
+		c.gridy = 3;
+		add(this.showAdvancedPlayerControls, c);
+		c.gridy = 4;
+		add(this.showPlayerControlsOnTop, c);
+		c.gridy = 5;
+		add(this.useShortPathNames, c);
+		c.gridy = 6;
+		add(this.cacheFilesBeforePlaying, c);
+		c.gridy = 7;
+		add(this.enableGlobalHotkeys, c);
+		c.gridy = 8;
+		c.weightx = 0;
+		c.insets = new Insets(10, 20, 5, 10);
+		add(this.hotkeyScrollPane, c);
+		c.gridy = 9;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.NONE;
+		c.insets = new Insets(0, 20, 0, 0);
+		JPanel resetHotkeysPanel = new JPanel();
+		resetHotkeysPanel.add(this.resetHotkeys);
+		add(resetHotkeysPanel, c);
 	}
 
-	boolean onTop = stateUI.isShowPlayerControlsOnTop();
-	stateUI.setShowPlayerControlsOnTop(showPlayerControlsOnTop.isSelected());
-	if (onTop != showPlayerControlsOnTop.isSelected()) {
-	    needRestart = true;
+	/**
+	 * Gets the enable global hotkeys.
+	 * 
+	 * @return the enable global hotkeys
+	 */
+	private JCheckBox getEnableGlobalHotkeys() {
+		return this.enableGlobalHotkeys;
 	}
 
-	return needRestart;
-    }
+	@Override
+	public boolean applyPreferences() {
+		boolean needRestart = false;
+		this.statePlayer.setPlayAtStartup(this.playAtStartup.isSelected());
+		this.statePlayer.setUseFadeAway(this.useFadeAway.isSelected());
+		this.stateUI
+				.setShowAdvancedPlayerControls(this.showAdvancedPlayerControls
+						.isSelected());
+		this.statePlayer.setUseShortPathNames(this.useShortPathNames
+				.isSelected());
+		this.stateCore.setEnableHotkeys(this.enableGlobalHotkeys.isSelected());
+		this.stateCore.setHotkeysConfig(this.tableModel.getHotkeysConfig());
+		this.statePlayer
+				.setCacheFilesBeforePlaying(this.cacheFilesBeforePlaying
+						.isSelected());
+		String engine = this.engineCombo.getSelectedItem() != null ? this.engineCombo
+				.getSelectedItem().toString() : null;
+		if (engine != null
+				&& !this.statePlayer.getPlayerEngine().equals(engine)) {
+			this.statePlayer.setPlayerEngine(engine);
+			needRestart = true;
+		}
 
-    /**
-     * Gets the use short path names.
-     * 
-     * @return the use short path names
-     */
-    private JCheckBox getUseShortPathNames() {
-	return useShortPathNames;
-    }
+		boolean onTop = this.stateUI.isShowPlayerControlsOnTop();
+		this.stateUI.setShowPlayerControlsOnTop(this.showPlayerControlsOnTop
+				.isSelected());
+		if (onTop != this.showPlayerControlsOnTop.isSelected()) {
+			needRestart = true;
+		}
 
-    /**
-     * Sets the enable hotkeys.
-     * 
-     * @param enable
-     *            the new enable hotkeys
-     */
-    private void setEnableHotkeys(final boolean enable) {
-	enableGlobalHotkeys.setSelected(enable);
-    }
-
-    /**
-     * Sets the play at startup.
-     * 
-     * @param play
-     *            the new play at startup
-     */
-    private void setPlayAtStartup(final boolean play) {
-	playAtStartup.setSelected(play);
-    }
-
-    /**
-     * Sets the use short path names.
-     * 
-     * @param use
-     *            the new use short path names
-     */
-    private void setUseShortPathNames(final boolean use) {
-	useShortPathNames.setSelected(use);
-    }
-
-    /**
-     * Sets the use fade away.
-     * 
-     * @param useFadeAway
-     *            the new use fade away
-     */
-    private void setUseFadeAway(final boolean useFadeAway) {
-	this.useFadeAway.setSelected(useFadeAway);
-    }
-
-    /**
-     * Sets the show advanced player controls
-     * 
-     * @param showAdvancedPlayerControls
-     */
-    private void setShowAdvancedPlayerControls(
-	    final boolean showAdvancedPlayerControls) {
-	this.showAdvancedPlayerControls.setSelected(showAdvancedPlayerControls);
-    }
-
-    /**
-     * Sets the property to show player controls on top
-     * 
-     * @param onTop
-     */
-    private void setShowPlayerControlsOnTop(final boolean onTop) {
-	this.showPlayerControlsOnTop.setSelected(onTop);
-    }
-
-    /**
-     * Sets the cache files before playing.
-     * 
-     * @param cacheFiles
-     *            the new cache files before playing
-     */
-    private void setCacheFilesBeforePlaying(final boolean cacheFiles) {
-	this.cacheFilesBeforePlaying.setSelected(cacheFiles);
-    }
-
-    private void setHotkeysConfig(final IHotkeysConfig hotkeysConfig) {
-	this.tableModel.setHotkeysConfig(hotkeysConfig);
-    }
-
-    private void setPlayerEngine(final String playerEngine) {
-	engineCombo.setSelectedItem(playerEngine);
-    }
-
-    @Override
-    public void updatePanel() {
-	setPlayerEngine(statePlayer.getPlayerEngine());
-	setPlayAtStartup(statePlayer.isPlayAtStartup());
-	setUseFadeAway(statePlayer.isUseFadeAway());
-	setShowAdvancedPlayerControls(stateUI.isShowAdvancedPlayerControls());
-	setShowPlayerControlsOnTop(stateUI.isShowPlayerControlsOnTop());
-	setCacheFilesBeforePlaying(statePlayer.isCacheFilesBeforePlaying());
-	setEnableHotkeys(stateCore.isEnableHotkeys());
-	IHotkeysConfig hotkeysConfig = stateCore.getHotkeysConfig();
-	setHotkeysConfig(hotkeysConfig != null ? hotkeysConfig : hotkeyHandler
-		.getHotkeysConfig());
-	setUseShortPathNames(statePlayer.isUseShortPathNames());
-	getUseShortPathNames().setEnabled(osManager.usesShortPathNames());
-
-	boolean hotKeysSupported = hotkeyHandler.areHotkeysSupported();
-	getEnableGlobalHotkeys().setVisible(hotKeysSupported);
-	getHotkeyScrollPane().setVisible(hotKeysSupported);
-	getResetHotkeys().setVisible(hotKeysSupported);
-    }
-
-    @Override
-    public void resetImmediateChanges() {
-	// Do nothing
-    }
-
-    @Override
-    public void validatePanel() throws PreferencesValidationException {
-    }
-
-    @Override
-    public void dialogVisibilityChanged(final boolean visible) {
-	// Use this method from PreferencesPanel instead of override setVisible
-	// As Dialog uses CardLayout to show panels, that layout invokes
-	// setVisible(false) when creating dialog just before showing it
-	// so it can execute both code blocks before showing dialog
-	if (visible) {
-	    hotkeyHandler.disableHotkeys();
-	} else {
-	    // Enable hotkeys again only if user didn't disable them
-	    if (stateCore.isEnableHotkeys()) {
-		hotkeyHandler.enableHotkeys(stateCore.getHotkeysConfig());
-	    }
+		return needRestart;
 	}
-    }
 
-    /**
-     * @return hotkey scroll pane
-     */
-    private JScrollPane getHotkeyScrollPane() {
-	return hotkeyScrollPane;
-    }
+	/**
+	 * Gets the use short path names.
+	 * 
+	 * @return the use short path names
+	 */
+	private JCheckBox getUseShortPathNames() {
+		return this.useShortPathNames;
+	}
 
-    /**
-     * @return the resetHotkeys
-     */
-    private JButton getResetHotkeys() {
-	return resetHotkeys;
-    }
+	/**
+	 * Sets the enable hotkeys.
+	 * 
+	 * @param enable
+	 *            the new enable hotkeys
+	 */
+	private void setEnableHotkeys(final boolean enable) {
+		this.enableGlobalHotkeys.setSelected(enable);
+	}
+
+	/**
+	 * Sets the play at startup.
+	 * 
+	 * @param play
+	 *            the new play at startup
+	 */
+	private void setPlayAtStartup(final boolean play) {
+		this.playAtStartup.setSelected(play);
+	}
+
+	/**
+	 * Sets the use short path names.
+	 * 
+	 * @param use
+	 *            the new use short path names
+	 */
+	private void setUseShortPathNames(final boolean use) {
+		this.useShortPathNames.setSelected(use);
+	}
+
+	/**
+	 * Sets the use fade away.
+	 * 
+	 * @param useFadeAway
+	 *            the new use fade away
+	 */
+	private void setUseFadeAway(final boolean useFadeAway) {
+		this.useFadeAway.setSelected(useFadeAway);
+	}
+
+	/**
+	 * Sets the show advanced player controls
+	 * 
+	 * @param showAdvancedPlayerControls
+	 */
+	private void setShowAdvancedPlayerControls(
+			final boolean showAdvancedPlayerControls) {
+		this.showAdvancedPlayerControls.setSelected(showAdvancedPlayerControls);
+	}
+
+	/**
+	 * Sets the property to show player controls on top
+	 * 
+	 * @param onTop
+	 */
+	private void setShowPlayerControlsOnTop(final boolean onTop) {
+		this.showPlayerControlsOnTop.setSelected(onTop);
+	}
+
+	/**
+	 * Sets the cache files before playing.
+	 * 
+	 * @param cacheFiles
+	 *            the new cache files before playing
+	 */
+	private void setCacheFilesBeforePlaying(final boolean cacheFiles) {
+		this.cacheFilesBeforePlaying.setSelected(cacheFiles);
+	}
+
+	private void setHotkeysConfig(final IHotkeysConfig hotkeysConfig) {
+		this.tableModel.setHotkeysConfig(hotkeysConfig);
+	}
+
+	private void setPlayerEngine(final String playerEngine) {
+		this.engineCombo.setSelectedItem(playerEngine);
+	}
+
+	@Override
+	public void updatePanel() {
+		setPlayerEngine(this.statePlayer.getPlayerEngine());
+		setPlayAtStartup(this.statePlayer.isPlayAtStartup());
+		setUseFadeAway(this.statePlayer.isUseFadeAway());
+		setShowAdvancedPlayerControls(this.stateUI
+				.isShowAdvancedPlayerControls());
+		setShowPlayerControlsOnTop(this.stateUI.isShowPlayerControlsOnTop());
+		setCacheFilesBeforePlaying(this.statePlayer.isCacheFilesBeforePlaying());
+		setEnableHotkeys(this.stateCore.isEnableHotkeys());
+		IHotkeysConfig hotkeysConfig = this.stateCore.getHotkeysConfig();
+		setHotkeysConfig(hotkeysConfig != null ? hotkeysConfig
+				: this.hotkeyHandler.getHotkeysConfig());
+		setUseShortPathNames(this.statePlayer.isUseShortPathNames());
+		getUseShortPathNames().setEnabled(this.osManager.usesShortPathNames());
+
+		boolean hotKeysSupported = this.hotkeyHandler.areHotkeysSupported();
+		getEnableGlobalHotkeys().setVisible(hotKeysSupported);
+		getHotkeyScrollPane().setVisible(hotKeysSupported);
+		getResetHotkeys().setVisible(hotKeysSupported);
+	}
+
+	@Override
+	public void resetImmediateChanges() {
+		// Do nothing
+	}
+
+	@Override
+	public void validatePanel() throws PreferencesValidationException {
+	}
+
+	@Override
+	public void dialogVisibilityChanged(final boolean visible) {
+		// Use this method from PreferencesPanel instead of override setVisible
+		// As Dialog uses CardLayout to show panels, that layout invokes
+		// setVisible(false) when creating dialog just before showing it
+		// so it can execute both code blocks before showing dialog
+		if (visible) {
+			this.hotkeyHandler.disableHotkeys();
+		} else {
+			// Enable hotkeys again only if user didn't disable them
+			if (this.stateCore.isEnableHotkeys()) {
+				this.hotkeyHandler.enableHotkeys(this.stateCore
+						.getHotkeysConfig());
+			}
+		}
+	}
+
+	/**
+	 * @return hotkey scroll pane
+	 */
+	private JScrollPane getHotkeyScrollPane() {
+		return this.hotkeyScrollPane;
+	}
+
+	/**
+	 * @return the resetHotkeys
+	 */
+	private JButton getResetHotkeys() {
+		return this.resetHotkeys;
+	}
 
 }

@@ -20,12 +20,20 @@
 
 package net.sourceforge.atunes.model;
 
+import java.awt.ComponentOrientation;
+import java.awt.Container;
+
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
+import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
+import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.controls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.PlayPauseButton;
+import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.gui.views.controls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.StopButton;
 
@@ -78,5 +86,57 @@ public interface IControlsBuilder {
 	 * @return stop button
 	 */
 	StopButton createStopButton();
+
+	/**
+	 * Applies locale specific component orientation to containers.
+	 * 
+	 * @param containers
+	 *            One or more containers
+	 */
+	void applyComponentOrientation(final Container... containers);
+
+	/**
+	 * Returns the component orientation.
+	 * 
+	 * @return The component orientation
+	 */
+	ComponentOrientation getComponentOrientation();
+
+	/**
+	 * @param menuPosition
+	 * @return pop up button
+	 */
+	PopUpButton createPopUpButton(int menuPosition);
+
+	/**
+	 * @param type
+	 * @return split pane
+	 */
+	JSplitPane createSplitPane(int type);
+
+	/**
+	 * @return divider size of a split pane
+	 */
+	int getSplitPaneDividerSize();
+
+	/**
+	 * @return component orientation
+	 */
+	int getComponentOrientationAsTextStyleConstant();
+
+	/**
+	 * Creates a popup menu for column set of table
+	 * 
+	 * @param table
+	 * @param columnModel
+	 * @return
+	 */
+	ColumnSetPopupMenu createColumnSetPopupMenu(JTable table,
+			AbstractCommonColumnModel columnModel);
+
+	/**
+	 * @return component orientation as swing constant
+	 */
+	int getComponentOrientationAsSwingConstant();
 
 }

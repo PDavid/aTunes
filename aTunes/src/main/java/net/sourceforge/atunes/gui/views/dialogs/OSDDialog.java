@@ -31,6 +31,7 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -39,152 +40,163 @@ import net.sourceforge.atunes.utils.ImageUtils;
  */
 public final class OSDDialog extends AbstractCustomWindow {
 
-    private static final long serialVersionUID = 8991547440913162267L;
-    private static final int IMAGE_SIZE = 80;
+	private static final long serialVersionUID = 8991547440913162267L;
+	private static final int IMAGE_SIZE = 80;
 
-    private int width;
-    private int height = 100;
-    private JLabel line1;
-    private JLabel line2;
-    private JLabel line3;
-    private JLabel image;
+	private int width;
+	private final int height = 100;
+	private JLabel line1;
+	private JLabel line2;
+	private JLabel line3;
+	private JLabel image;
 
-    /**
-     * Vertical position of line 1
-     */
-    private static final int LINE1_Y_POSITION = 15;
+	/**
+	 * Vertical position of line 1
+	 */
+	private static final int LINE1_Y_POSITION = 15;
 
-    /**
-     * Vertical position of line 2
-     */
-    private static final int LINE2_Y_POSITION = 37;
+	/**
+	 * Vertical position of line 2
+	 */
+	private static final int LINE2_Y_POSITION = 37;
 
-    /**
-     * Vertical position of line 3
-     */
-    private static final int LINE3_Y_POSITION = 60;
+	/**
+	 * Vertical position of line 3
+	 */
+	private static final int LINE3_Y_POSITION = 60;
 
-    private ILookAndFeel lookAndFeel;
-    
-    /**
-     * Instantiates a new osd dialog.
-     * @param width
-     * @param lookAndFeel
-     */
-    public OSDDialog(int width, ILookAndFeel lookAndFeel) {
-        super(null, 0, 0);
-        this.width = width;
-        this.lookAndFeel = lookAndFeel;
-        setSize(width, height);
-        setFocusableWindowState(false);
-        setAlwaysOnTop(true);
-        add(getContent());
-    }
+	private final ILookAndFeel lookAndFeel;
 
-    public void setWidth(int width) {
-        this.width = width;
-        setSize(width, height);
-    }
+	/**
+	 * Instantiates a new osd dialog.
+	 * 
+	 * @param width
+	 * @param lookAndFeel
+	 * @param controlsBuilder
+	 */
+	public OSDDialog(final int width, final ILookAndFeel lookAndFeel,
+			final IControlsBuilder controlsBuilder) {
+		super(null, 0, 0, controlsBuilder);
+		this.width = width;
+		this.lookAndFeel = lookAndFeel;
+		setSize(width, this.height);
+		setFocusableWindowState(false);
+		setAlwaysOnTop(true);
+		add(getContent());
+	}
 
-    /**
-     * Gets the content.
-     * 
-     * @return the content
-     */
-    private JPanel getContent() {
-        JPanel panel = new JPanel(null);
-        panel.setSize(width, height);
-        image = new JLabel();
-        image.setOpaque(true);
-        line1 = new JLabel();
-        line2 = new JLabel();
-        line3 = new JLabel();
+	/**
+	 * Set width of OSD
+	 * 
+	 * @param width
+	 */
+	public void setWidth(final int width) {
+		this.width = width;
+		setSize(width, this.height);
+	}
 
-        line1.setFont(lookAndFeel.getOsdLine1Font());
-        line2.setFont(lookAndFeel.getOsdLine2Font());
-        line3.setFont(lookAndFeel.getOsdLine3Font());
+	/**
+	 * Gets the content.
+	 * 
+	 * @return the content
+	 */
+	private JPanel getContent() {
+		JPanel panel = new JPanel(null);
+		panel.setSize(this.width, this.height);
+		this.image = new JLabel();
+		this.image.setOpaque(true);
+		this.line1 = new JLabel();
+		this.line2 = new JLabel();
+		this.line3 = new JLabel();
 
-        line1.setHorizontalAlignment(SwingConstants.CENTER);
-        line2.setHorizontalAlignment(SwingConstants.CENTER);
-        line3.setHorizontalAlignment(SwingConstants.CENTER);
+		this.line1.setFont(this.lookAndFeel.getOsdLine1Font());
+		this.line2.setFont(this.lookAndFeel.getOsdLine2Font());
+		this.line3.setFont(this.lookAndFeel.getOsdLine3Font());
 
-        panel.add(image);
-        panel.add(line1);
-        panel.add(line2);
-        panel.add(line3);
-        return panel;
-    }
+		this.line1.setHorizontalAlignment(SwingConstants.CENTER);
+		this.line2.setHorizontalAlignment(SwingConstants.CENTER);
+		this.line3.setHorizontalAlignment(SwingConstants.CENTER);
 
-    /**
-     * Sets the image.
-     * 
-     * @param img
-     *            the new image
-     */
-    public void setImage(ImageIcon img) {
-        ImageIcon imgResized = img != null ? ImageUtils.resize(img, IMAGE_SIZE, IMAGE_SIZE) : null;
-        if (imgResized != null) {
-            image.setIcon(imgResized);
-            image.setSize(imgResized.getIconWidth() + 5, imgResized.getIconHeight() + 5);
-            image.setLocation(10, (height - IMAGE_SIZE) / 2);
-            line1.setSize(width - 100, 20);
-            line1.setLocation(90, LINE1_Y_POSITION);
-            line2.setSize(width - 100, 20);
-            line2.setLocation(90, LINE2_Y_POSITION);
-            line3.setSize(width - 100, 20);
-            line3.setLocation(90, LINE3_Y_POSITION);
-        } else {
-            image.setSize(0, 0);
-            line1.setSize(width - 20, 20);
-            line1.setLocation(10, LINE1_Y_POSITION);
-            line2.setSize(width - 20, 20);
-            line2.setLocation(10, LINE2_Y_POSITION);
-            line3.setSize(width - 20, 20);
-            line3.setLocation(10, LINE3_Y_POSITION);
-        }
-    }
+		panel.add(this.image);
+		panel.add(this.line1);
+		panel.add(this.line2);
+		panel.add(this.line3);
+		return panel;
+	}
 
-    /**
-     * Sets the line1.
-     * 
-     * @param text
-     *            the new line1
-     */
-    public void setLine1(String text) {
-        line1.setText(text);
-    }
+	/**
+	 * Sets the image.
+	 * 
+	 * @param img
+	 *            the new image
+	 */
+	public void setImage(final ImageIcon img) {
+		ImageIcon imgResized = img != null ? ImageUtils.resize(img, IMAGE_SIZE,
+				IMAGE_SIZE) : null;
+		if (imgResized != null) {
+			this.image.setIcon(imgResized);
+			this.image.setSize(imgResized.getIconWidth() + 5,
+					imgResized.getIconHeight() + 5);
+			this.image.setLocation(10, (this.height - IMAGE_SIZE) / 2);
+			this.line1.setSize(this.width - 100, 20);
+			this.line1.setLocation(90, LINE1_Y_POSITION);
+			this.line2.setSize(this.width - 100, 20);
+			this.line2.setLocation(90, LINE2_Y_POSITION);
+			this.line3.setSize(this.width - 100, 20);
+			this.line3.setLocation(90, LINE3_Y_POSITION);
+		} else {
+			this.image.setSize(0, 0);
+			this.line1.setSize(this.width - 20, 20);
+			this.line1.setLocation(10, LINE1_Y_POSITION);
+			this.line2.setSize(this.width - 20, 20);
+			this.line2.setLocation(10, LINE2_Y_POSITION);
+			this.line3.setSize(this.width - 20, 20);
+			this.line3.setLocation(10, LINE3_Y_POSITION);
+		}
+	}
 
-    /**
-     * Sets the line2.
-     * 
-     * @param text
-     *            the new line2
-     */
-    public void setLine2(String text) {
-        line2.setText(text);
-    }
+	/**
+	 * Sets the line1.
+	 * 
+	 * @param text
+	 *            the new line1
+	 */
+	public void setLine1(final String text) {
+		this.line1.setText(text);
+	}
 
-    /**
-     * Sets the line3.
-     * 
-     * @param text
-     *            the new line3
-     */
-    public void setLine3(String text) {
-        line3.setText(text);
-    }
+	/**
+	 * Sets the line2.
+	 * 
+	 * @param text
+	 *            the new line2
+	 */
+	public void setLine2(final String text) {
+		this.line2.setText(text);
+	}
 
-    /**
-     * Sets rounded borders.
-     * 
-     * @param set
-     *            the set
-     */
-    public void setRoundedBorders(boolean set) {
-        Shape mask = null;
-        if (set) {
-            mask = new Area(new RoundRectangle2D.Float(2, 2, width - 3, height - 3, 20, 25));
-        }
-        GuiUtils.setWindowShape(this, mask);
-    }
+	/**
+	 * Sets the line3.
+	 * 
+	 * @param text
+	 *            the new line3
+	 */
+	public void setLine3(final String text) {
+		this.line3.setText(text);
+	}
+
+	/**
+	 * Sets rounded borders.
+	 * 
+	 * @param set
+	 *            the set
+	 */
+	public void setRoundedBorders(final boolean set) {
+		Shape mask = null;
+		if (set) {
+			mask = new Area(new RoundRectangle2D.Float(2, 2, this.width - 3,
+					this.height - 3, 20, 25));
+		}
+		GuiUtils.setWindowShape(this, mask);
+	}
 }

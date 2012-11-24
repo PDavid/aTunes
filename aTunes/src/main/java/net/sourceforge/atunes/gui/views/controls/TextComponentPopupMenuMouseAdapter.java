@@ -28,6 +28,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClipboardFacade;
 
 /**
@@ -46,8 +47,10 @@ final class TextComponentPopupMenuMouseAdapter extends MouseAdapter {
 	private final Action pasteAction;
 	private final Action cutAction;
 	private final ClipboardFacade clipboard;
+	private final IOSManager osManager;
 
 	/**
+	 * @param osManager
 	 * @param menu
 	 * @param textComponent
 	 * @param copyAction
@@ -57,11 +60,12 @@ final class TextComponentPopupMenuMouseAdapter extends MouseAdapter {
 	 * @param cutAction
 	 * @param clipboard
 	 */
-	TextComponentPopupMenuMouseAdapter(final JPopupMenu menu,
-			final JTextComponent textComponent, final Action copyAction,
-			final Action deleteAction, final Action selectAllAction,
-			final Action pasteAction, final Action cutAction,
-			final ClipboardFacade clipboard) {
+	TextComponentPopupMenuMouseAdapter(final IOSManager osManager,
+			final JPopupMenu menu, final JTextComponent textComponent,
+			final Action copyAction, final Action deleteAction,
+			final Action selectAllAction, final Action pasteAction,
+			final Action cutAction, final ClipboardFacade clipboard) {
+		this.osManager = osManager;
 		this.menu = menu;
 		this.textComponent = textComponent;
 		this.copyAction = copyAction;
@@ -75,7 +79,8 @@ final class TextComponentPopupMenuMouseAdapter extends MouseAdapter {
 	@Override
 	public void mouseClicked(final MouseEvent e) {
 		super.mouseClicked(e);
-		if (GuiUtils.isSecondaryMouseButton(e) && e.getComponent().isEnabled()) {
+		if (GuiUtils.isSecondaryMouseButton(this.osManager, e)
+				&& e.getComponent().isEnabled()) {
 			// Cut and delete if text selected and component editable
 			boolean textSelected = this.textComponent.getSelectionStart() < this.textComponent
 					.getSelectionEnd();

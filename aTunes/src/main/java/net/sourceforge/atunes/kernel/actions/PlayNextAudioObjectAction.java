@@ -25,19 +25,30 @@ import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Changes playback to next audio object
+ * 
  * @author alex
- *
+ * 
  */
 public class PlayNextAudioObjectAction extends CustomAbstractAction {
 
 	private static final long serialVersionUID = 2012440550238196002L;
 
 	private IPlayerHandler playerHandler;
+
+	private IOSManager osManager;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
 	/**
 	 * @param playerHandler
@@ -55,11 +66,14 @@ public class PlayNextAudioObjectAction extends CustomAbstractAction {
 
 	@Override
 	protected void initialize() {
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_T, GuiUtils.getCtrlOrMetaActionEventMask()));
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_T,
+						GuiUtils.getCtrlOrMetaActionEventMask(this.osManager)));
 	}
 
 	@Override
 	protected void executeAction() {
-		playerHandler.playNextAudioObject();
+		this.playerHandler.playNextAudioObject();
 	}
 }

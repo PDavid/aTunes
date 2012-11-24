@@ -27,21 +27,31 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IOSManager;
 
 final class ColumnSetTableHeaderMouseAdapter extends MouseAdapter {
-    private final JPopupMenu rightMenu;
-    private final JTable table;
+	private final JPopupMenu rightMenu;
+	private final JTable table;
+	private final IOSManager osManager;
 
-    ColumnSetTableHeaderMouseAdapter(JPopupMenu rightMenu, JTable table) {
-        this.rightMenu = rightMenu;
-        this.table = table;
-    }
+	/**
+	 * @param rightMenu
+	 * @param table
+	 * @param osManager
+	 */
+	ColumnSetTableHeaderMouseAdapter(final JPopupMenu rightMenu,
+			final JTable table, final IOSManager osManager) {
+		this.rightMenu = rightMenu;
+		this.table = table;
+		this.osManager = osManager;
+	}
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        // Use right button to arrange columns
-        if (GuiUtils.isSecondaryMouseButton(e)) {
-            rightMenu.show(table.getTableHeader(), e.getX(), e.getY());
-        }
-    }
+	@Override
+	public void mouseClicked(final MouseEvent e) {
+		// Use right button to arrange columns
+		if (GuiUtils.isSecondaryMouseButton(this.osManager, e)) {
+			this.rightMenu
+					.show(this.table.getTableHeader(), e.getX(), e.getY());
+		}
+	}
 }

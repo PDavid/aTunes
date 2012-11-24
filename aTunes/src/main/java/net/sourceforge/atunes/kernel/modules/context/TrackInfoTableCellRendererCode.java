@@ -26,7 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ITrackInfo;
 
 /**
@@ -36,27 +36,36 @@ import net.sourceforge.atunes.model.ITrackInfo;
  * 
  */
 public class TrackInfoTableCellRendererCode extends
-	AbstractTableCellRendererCode<JLabel, ITrackInfo> {
+		AbstractTableCellRendererCode<JLabel, ITrackInfo> {
 
-    private Color unknownElementForegroundColor;
+	private Color unknownElementForegroundColor;
 
-    /**
-     * @param unknownElementForegroundColor
-     */
-    public void setUnknownElementForegroundColor(
-	    final Color unknownElementForegroundColor) {
-	this.unknownElementForegroundColor = unknownElementForegroundColor;
-    }
+	private IControlsBuilder controlsBuilder;
 
-    @Override
-    public JLabel getComponent(final JLabel superComponent, final JTable t,
-	    final ITrackInfo value, final boolean isSelected,
-	    final boolean hasFocus, final int row, final int column) {
-	superComponent.setText(value.getTitle());
-	GuiUtils.applyComponentOrientation(superComponent);
-	if (!value.isAvailable()) {
-	    superComponent.setForeground(unknownElementForegroundColor);
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
 	}
-	return superComponent;
-    }
+
+	/**
+	 * @param unknownElementForegroundColor
+	 */
+	public void setUnknownElementForegroundColor(
+			final Color unknownElementForegroundColor) {
+		this.unknownElementForegroundColor = unknownElementForegroundColor;
+	}
+
+	@Override
+	public JLabel getComponent(final JLabel superComponent, final JTable t,
+			final ITrackInfo value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
+		superComponent.setText(value.getTitle());
+		this.controlsBuilder.applyComponentOrientation(superComponent);
+		if (!value.isAvailable()) {
+			superComponent.setForeground(this.unknownElementForegroundColor);
+		}
+		return superComponent;
+	}
 }

@@ -26,7 +26,7 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 
 /**
@@ -43,12 +43,17 @@ public class CustomTextPane extends JTextPane implements
 
 	private final Integer alignment;
 
+	private final IControlsBuilder controlsBuilder;
+
 	/**
 	 * @param alignment
+	 * @param controlsBuilder
 	 */
-	CustomTextPane(Integer alignment) {
+	CustomTextPane(final Integer alignment,
+			final IControlsBuilder controlsBuilder) {
 		super();
 		this.alignment = alignment;
+		this.controlsBuilder = controlsBuilder;
 		updateStyle(false);
 	}
 
@@ -63,10 +68,12 @@ public class CustomTextPane extends JTextPane implements
 	 * @param forceUpdate
 	 *            if <code>true</code> will update component to use new style
 	 */
-	private void updateStyle(boolean forceUpdate) {
+	private void updateStyle(final boolean forceUpdate) {
 		MutableAttributeSet mainStyle = new SimpleAttributeSet();
-		StyleConstants.setAlignment(mainStyle, alignment != null ? alignment
-				: GuiUtils.getComponentOrientationAsTextStyleConstant());
+		StyleConstants.setAlignment(
+				mainStyle,
+				this.alignment != null ? this.alignment : this.controlsBuilder
+						.getComponentOrientationAsTextStyleConstant());
 		StyleConstants.setFontFamily(mainStyle, UIManager.getFont("Label.font")
 				.getFamily());
 		StyleConstants.setFontSize(mainStyle, UIManager.getFont("Label.font")

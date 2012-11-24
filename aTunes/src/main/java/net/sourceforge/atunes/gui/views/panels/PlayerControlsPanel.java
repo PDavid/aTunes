@@ -33,7 +33,6 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.PlayPauseButton;
@@ -196,7 +195,7 @@ public final class PlayerControlsPanel extends JPanel implements
 		c.insets = new Insets(5, 0, 5, 10);
 		add(secondaryControlsPanel, c);
 
-		GuiUtils.applyComponentOrientation(this);
+		this.controlsBuilder.applyComponentOrientation(this);
 	}
 
 	/**

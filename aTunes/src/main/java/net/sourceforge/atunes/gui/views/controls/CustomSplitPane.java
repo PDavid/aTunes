@@ -25,36 +25,47 @@ import java.awt.Component;
 import javax.swing.BorderFactory;
 import javax.swing.JSplitPane;
 
-import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IControlsBuilder;
 
-//JSplitPane does not support component orientation, so we must do this manually
-// -> http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4265389
+/**
+ * @author alex
+ * 
+ *         JSplitPane does not support component orientation, so we must do this
+ *         manually http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4265389
+ * 
+ */
 public class CustomSplitPane extends JSplitPane {
 
-    private static final long serialVersionUID = 7760369696865269164L;
+	private static final long serialVersionUID = 7760369696865269164L;
 
-    public CustomSplitPane(int newOrientation) {
-        super(newOrientation);
-        setDividerSize(7);
-        setBorder(BorderFactory.createEmptyBorder());
-    }
+	private final IControlsBuilder controlsBuilder;
 
-    @Override
-    public void setLeftComponent(Component comp) {
-        if (!GuiUtils.getComponentOrientation().isLeftToRight() && getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
-            super.setRightComponent(comp);
-        } else {
-            super.setLeftComponent(comp);
-        }
-    }
+	CustomSplitPane(final int newOrientation,
+			final IControlsBuilder controlsBuilder) {
+		super(newOrientation);
+		this.controlsBuilder = controlsBuilder;
+		setDividerSize(7);
+		setBorder(BorderFactory.createEmptyBorder());
+	}
 
-    @Override
-    public void setRightComponent(Component comp) {
-        if (!GuiUtils.getComponentOrientation().isLeftToRight() && getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
-            super.setLeftComponent(comp);
-        } else {
-            super.setRightComponent(comp);
-        }
-    }
+	@Override
+	public void setLeftComponent(final Component comp) {
+		if (!this.controlsBuilder.getComponentOrientation().isLeftToRight()
+				&& getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
+			super.setRightComponent(comp);
+		} else {
+			super.setLeftComponent(comp);
+		}
+	}
+
+	@Override
+	public void setRightComponent(final Component comp) {
+		if (!this.controlsBuilder.getComponentOrientation().isLeftToRight()
+				&& getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
+			super.setLeftComponent(comp);
+		} else {
+			super.setRightComponent(comp);
+		}
+	}
 
 }

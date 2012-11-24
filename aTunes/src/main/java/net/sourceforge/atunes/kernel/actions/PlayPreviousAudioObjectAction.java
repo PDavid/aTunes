@@ -25,40 +25,53 @@ import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * @author alex
- *
+ * 
  */
 public class PlayPreviousAudioObjectAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -1177020643937370678L;
+	private static final long serialVersionUID = -1177020643937370678L;
 
-    private IPlayerHandler playerHandler;
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
+	private IPlayerHandler playerHandler;
+
+	private IOSManager osManager;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
+
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
-    
-    /**
-     * Default constructor
-     */
-    public PlayPreviousAudioObjectAction() {
-    	super(I18nUtils.getString("PREVIOUS"));
-    }
-    
-    @Override
-    public void initialize() {
-    	putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, GuiUtils.getCtrlOrMetaActionEventMask()));
-    }
 
-    @Override
-    protected void executeAction() {
-    	playerHandler.playPreviousAudioObject();
-    }
+	/**
+	 * Default constructor
+	 */
+	public PlayPreviousAudioObjectAction() {
+		super(I18nUtils.getString("PREVIOUS"));
+	}
+
+	@Override
+	public void initialize() {
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_R,
+						GuiUtils.getCtrlOrMetaActionEventMask(this.osManager)));
+	}
+
+	@Override
+	protected void executeAction() {
+		this.playerHandler.playPreviousAudioObject();
+	}
 }

@@ -44,98 +44,105 @@ import net.sourceforge.atunes.model.ISelectorDialog;
 /**
  * This is the dialog shown to select values.
  */
-public final class SelectorDialog extends AbstractCustomDialog implements ISelectorDialog {
+public final class SelectorDialog extends AbstractCustomDialog implements
+		ISelectorDialog {
 
-    private static final long serialVersionUID = 8846024391499257859L;
+	private static final long serialVersionUID = 8846024391499257859L;
 
-    /** The selection. */
-    private String selection;
+	/** The selection. */
+	private String selection;
 
-    private ILookAndFeelManager lookAndFeelManager;
-    
-    private ListCellRenderer cellRenderer;
-    
-    private JList list;
-    
-    /**
-     * Instantiates a new selector dialog.
-     * @param frame
-     */
-    public SelectorDialog(IFrame frame) {
-        super(frame, 250, 350);
-    }
-    
-    /**
-     * @param cellRenderer
-     */
-    @Override
-	public void setCellRenderer(ListCellRenderer cellRenderer) {
+	private ILookAndFeelManager lookAndFeelManager;
+
+	private ListCellRenderer cellRenderer;
+
+	private JList list;
+
+	/**
+	 * Instantiates a new selector dialog.
+	 * 
+	 * @param frame
+	 */
+	public SelectorDialog(final IFrame frame) {
+		super(frame, 250, 350);
+	}
+
+	/**
+	 * @param cellRenderer
+	 */
+	@Override
+	public void setCellRenderer(final ListCellRenderer cellRenderer) {
 		this.cellRenderer = cellRenderer;
 	}
 
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	/**
+	 * @param lookAndFeelManager
+	 */
+	@Override
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
-    
-    /**
-     * @param options
-     */
-    @Override
-	public void setOptions(String[] options) {
-        list.setListData(options);
-        list.setSelectedIndex(0);
+
+	/**
+	 * @param options
+	 */
+	@Override
+	public void setOptions(final String[] options) {
+		this.list.setListData(options);
+		this.list.setSelectedIndex(0);
 	}
-    
-    @Override
-    public void initialize() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        list = lookAndFeelManager.getCurrentLookAndFeel().getList();
-        list.setFont(list.getFont().deriveFont(Font.PLAIN));
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
-        JScrollPane scrollPane = lookAndFeelManager.getCurrentLookAndFeel().getListScrollPane(list);
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.insets = new Insets(10, 10, 10, 10);
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        panel.add(scrollPane, c);
 
-        if (cellRenderer != null) {
-            list.setCellRenderer(cellRenderer);
-        }
+	@Override
+	public void initialize() {
+		JPanel panel = new JPanel(new GridBagLayout());
+		this.list = this.lookAndFeelManager.getCurrentLookAndFeel().getList();
+		this.list.setFont(this.list.getFont().deriveFont(Font.PLAIN));
+		this.list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.list.setBorder(BorderFactory.createLineBorder(GuiUtils
+				.getBorderColor()));
+		JScrollPane scrollPane = this.lookAndFeelManager
+				.getCurrentLookAndFeel().getListScrollPane(this.list);
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.insets = new Insets(10, 10, 10, 10);
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		panel.add(scrollPane, c);
 
-        JButton okButton = new JButton("OK");
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                selection = (String) list.getSelectedValue();
-                setVisible(false);
-            }
-        });
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 0;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.NONE;
-        panel.add(okButton, c);
+		if (this.cellRenderer != null) {
+			this.list.setCellRenderer(this.cellRenderer);
+		}
 
-        add(panel);
-        GuiUtils.applyComponentOrientation(this);
-    }
+		JButton okButton = new JButton("OK");
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				SelectorDialog.this.selection = (String) SelectorDialog.this.list
+						.getSelectedValue();
+				setVisible(false);
+			}
+		});
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weightx = 0;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.NONE;
+		panel.add(okButton, c);
 
-    /**
-     * Gets the selection.
-     * 
-     * @return the selection
-     */
-    @Override
+		add(panel);
+		getControlsBuilder().applyComponentOrientation(this);
+	}
+
+	/**
+	 * Gets the selection.
+	 * 
+	 * @return the selection
+	 */
+	@Override
 	public String getSelection() {
-        return selection;
-    }
+		return this.selection;
+	}
 }

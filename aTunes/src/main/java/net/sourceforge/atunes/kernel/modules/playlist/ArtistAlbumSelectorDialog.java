@@ -34,13 +34,11 @@ import net.sourceforge.atunes.gui.AlbumTableColumnModel;
 import net.sourceforge.atunes.gui.AlbumTableModel;
 import net.sourceforge.atunes.gui.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColumnSet;
-import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -52,131 +50,122 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog
-	implements IArtistAlbumSelectorDialog {
+		implements IArtistAlbumSelectorDialog {
 
-    private static final long serialVersionUID = 8991547440913162267L;
+	private static final long serialVersionUID = 8991547440913162267L;
 
-    private IArtist artist;
+	private IArtist artist;
 
-    private IAlbum album;
+	private IAlbum album;
 
-    private IColumnSet albumColumnSet;
+	private IColumnSet albumColumnSet;
 
-    private IBeanFactory beanFactory;
-    
-    private IDialogFactory dialogFactory;
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
+	/**
+	 * Instantiates a new dialog.
+	 * 
+	 * @param frame
+	 */
+	public ArtistAlbumSelectorDialog(final IFrame frame) {
+		super(frame, 600, 500);
+	}
 
-    /**
-     * Instantiates a new dialog.
-     * 
-     * @param frame
-     */
-    public ArtistAlbumSelectorDialog(final IFrame frame) {
-	super(frame, 600, 500);
-    }
+	@Override
+	public void initialize() {
+		setResizable(false);
+	}
 
-    @Override
-    public void initialize() {
-	setResizable(false);
-    }
+	/**
+	 * @param albumColumnSet
+	 */
+	public void setAlbumColumnSet(final IColumnSet albumColumnSet) {
+		this.albumColumnSet = albumColumnSet;
+	}
 
-    /**
-     * @param albumColumnSet
-     */
-    public void setAlbumColumnSet(final IColumnSet albumColumnSet) {
-	this.albumColumnSet = albumColumnSet;
-    }
+	/**
+	 * Gets the content.
+	 * 
+	 * @return the content
+	 */
+	private JPanel getContent() {
+		JPanel panel = new JPanel(new BorderLayout());
 
-    /**
-     * Gets the content.
-     * 
-     * @return the content
-     */
-    private JPanel getContent() {
-	JPanel panel = new JPanel(new BorderLayout());
+		final JTable albumTable = getLookAndFeel().getTable();
+		albumTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		// Disable autoresize, as we will control it
+		albumTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-	final JTable albumTable = getLookAndFeel().getTable();
-	albumTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	// Disable autoresize, as we will control it
-	albumTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		panel.add(getLookAndFeel().getTableScrollPane(albumTable),
+				BorderLayout.CENTER);
 
-	panel.add(getLookAndFeel().getTableScrollPane(albumTable),
-		BorderLayout.CENTER);
+		List<IAlbum> albumList = new ArrayList<IAlbum>(this.artist.getAlbums()
+				.values());
 
-	List<IAlbum> albumList = new ArrayList<IAlbum>(artist.getAlbums()
-		.values());
+		final AlbumTableModel model = new AlbumTableModel();
+		albumTable.setModel(model);
 
-	final AlbumTableModel model = new AlbumTableModel();
-	albumTable.setModel(model);
+		// Set column model
+		AlbumTableColumnModel columnModel = this.beanFactory
+				.getBean(AlbumTableColumnModel.class);
+		columnModel.setTable(albumTable);
+		columnModel.enableColumnChange(true);
+		albumTable.setColumnModel(columnModel);
 
-	// Set column model
-	AlbumTableColumnModel columnModel = beanFactory
-		.getBean(AlbumTableColumnModel.class);
-	columnModel.setTable(albumTable);
-	columnModel.enableColumnChange(true);
-	albumTable.setColumnModel(columnModel);
+		// why ??? don't work without
+		model.setColumnSet(this.albumColumnSet);
+		columnModel.setColumnSet(this.albumColumnSet);
+		// ???
 
-	// why ??? don't work without
-	model.setColumnSet(albumColumnSet);
-	columnModel.setColumnSet(albumColumnSet);
-	// ???
+		// Set renderers
+		ColumnRenderers.addRenderers(albumTable, columnModel, getLookAndFeel());
 
-	// Set renderers
-	ColumnRenderers.addRenderers(albumTable, columnModel, getLookAndFeel());
+		// Bind column set popup menu to select columns to display
+		getControlsBuilder().createColumnSetPopupMenu(albumTable, columnModel);
 
-	// Bind column set popup menu to select columns to display
-	new ColumnSetPopupMenu(albumTable, columnModel, dialogFactory);
+		model.setAlbums(albumList);
 
-	model.setAlbums(albumList);
+		albumTable.addMouseListener(new MouseAdapter() {
 
-	albumTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(final MouseEvent e) {
+				int row = albumTable.getSelectedRow();
+				ArtistAlbumSelectorDialog.this.album = model.getAlbumAt(row);
+				setVisible(false);
+			}
+		});
 
-	    @Override
-	    public void mouseClicked(final MouseEvent e) {
-		int row = albumTable.getSelectedRow();
-		album = model.getAlbumAt(row);
+		return panel;
+	}
+
+	@Override
+	public void setArtist(final IArtist artist) {
+		this.artist = artist;
+	}
+
+	@Override
+	public void showDialog() {
+		String text = I18nUtils.getString("ADD_ARTIST_DIALOG_TITLE");
+		text = text.replace("(%ARTIST%)", this.artist.getName());
+		setTitle(text);
+		add(getContent());
+		setVisible(true);
+	}
+
+	@Override
+	public IAlbum getAlbum() {
+		return this.album;
+	}
+
+	@Override
+	public void hideDialog() {
 		setVisible(false);
-	    }
-	});
-
-	return panel;
-    }
-
-    @Override
-    public void setArtist(final IArtist artist) {
-	this.artist = artist;
-    }
-
-    @Override
-    public void showDialog() {
-	String text = I18nUtils.getString("ADD_ARTIST_DIALOG_TITLE");
-	text = text.replace("(%ARTIST%)", artist.getName());
-	setTitle(text);
-	add(getContent());
-	setVisible(true);
-    }
-
-    @Override
-    public IAlbum getAlbum() {
-	return album;
-    }
-
-    @Override
-    public void hideDialog() {
-	setVisible(false);
-    }
+	}
 }

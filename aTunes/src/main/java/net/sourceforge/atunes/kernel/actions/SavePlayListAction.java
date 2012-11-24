@@ -30,6 +30,7 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFileSelectorDialog;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IStatePlaylist;
@@ -54,6 +55,15 @@ public class SavePlayListAction extends CustomAbstractAction {
 	private IStatePlaylist statePlaylist;
 
 	private IDialogFactory dialogFactory;
+
+	private IOSManager osManager;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
 	/**
 	 * @param dialogFactory
@@ -88,28 +98,40 @@ public class SavePlayListAction extends CustomAbstractAction {
 	 */
 	public SavePlayListAction() {
 		super(StringUtils.getString(I18nUtils.getString("SAVE"), "..."));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SAVE_PLAYLIST_TOOLTIP"));
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, GuiUtils.getCtrlOrMetaActionEventMask()));
+	}
+
+	@Override
+	protected void initialize() {
+		putValue(SHORT_DESCRIPTION,
+				I18nUtils.getString("SAVE_PLAYLIST_TOOLTIP"));
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_S,
+						GuiUtils.getCtrlOrMetaActionEventMask(this.osManager)));
 	}
 
 	@Override
 	protected void executeAction() {
-		IFileSelectorDialog dialog = dialogFactory.newDialog(IFileSelectorDialog.class);
-		dialog.setFileFilter(playListIOService.getPlaylistFileFilter());
-		File file = dialog.saveFile(statePlaylist.getSavePlaylistPath());
+		IFileSelectorDialog dialog = this.dialogFactory
+				.newDialog(IFileSelectorDialog.class);
+		dialog.setFileFilter(this.playListIOService.getPlaylistFileFilter());
+		File file = dialog.saveFile(this.statePlaylist.getSavePlaylistPath());
 		if (file != null) {
 
-			statePlaylist.setSavePlaylistPath(FileUtils.getPath(file.getParentFile()));
+			this.statePlaylist.setSavePlaylistPath(FileUtils.getPath(file
+					.getParentFile()));
 
 			// If filename have incorrect extension, add it
-			file = playListIOService.checkPlayListFileName(file);
+			file = this.playListIOService.checkPlayListFileName(file);
 
-			playListIOService.write(playListHandler.getVisiblePlayList(), file);
+			this.playListIOService.write(
+					this.playListHandler.getVisiblePlayList(), file);
 		}
 	}
 
 	@Override
-	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
-		return !playListHandler.getVisiblePlayList().isEmpty();
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
+		return !this.playListHandler.getVisiblePlayList().isEmpty();
 	}
 }

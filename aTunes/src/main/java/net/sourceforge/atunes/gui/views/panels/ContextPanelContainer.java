@@ -37,6 +37,7 @@ import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -47,187 +48,201 @@ import net.sourceforge.atunes.utils.Logger;
  * 
  */
 public final class ContextPanelContainer extends JPanel implements
-	IContextPanelsContainer {
+		IContextPanelsContainer {
 
-    private static final long serialVersionUID = 707242790413122482L;
+	private static final long serialVersionUID = 707242790413122482L;
 
-    private ToggleButtonFlowPanel contextSelector;
+	private ToggleButtonFlowPanel contextSelector;
 
-    private PopUpButton options;
+	private PopUpButton options;
 
-    private JPanel container;
+	private JPanel container;
 
-    private final List<IContextPanel> panels = new ArrayList<IContextPanel>();
+	private final List<IContextPanel> panels = new ArrayList<IContextPanel>();
 
-    private final List<IContextPanel> visiblePanels = new ArrayList<IContextPanel>();
+	private final List<IContextPanel> visiblePanels = new ArrayList<IContextPanel>();
 
-    private ILookAndFeelManager lookAndFeelManager;
+	private ILookAndFeelManager lookAndFeelManager;
 
-    private IContextHandler contextHandler;
+	private IContextHandler contextHandler;
 
-    private IBeanFactory beanFactory;
+	private IBeanFactory beanFactory;
 
-    /**
-     * Instantiates a new context panel
-     */
-    public ContextPanelContainer() {
-	super(new GridBagLayout());
-    }
+	private IControlsBuilder controlsBuilder;
 
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
-
-    /**
-     * @param contextHandler
-     */
-    public void setContextHandler(final IContextHandler contextHandler) {
-	this.contextHandler = contextHandler;
-    }
-
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(
-	    final ILookAndFeelManager lookAndFeelManager) {
-	this.lookAndFeelManager = lookAndFeelManager;
-    }
-
-    /**
-     * Sets the content.
-     * 
-     * @param lookAndFeelManager
-     */
-    public void initialize() {
-	contextSelector = new ToggleButtonFlowPanel(true, beanFactory);
-	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
-	container = new JPanel(new CardLayout());
-	GridBagConstraints c = new GridBagConstraints();
-	c.gridx = 0;
-	c.gridy = 0;
-	c.weightx = 0;
-	c.fill = GridBagConstraints.BOTH;
-	c.insets = new Insets(0, 1, 1, 0);
-	add(options, c);
-	c.gridx = 1;
-	c.weightx = 1;
-	c.fill = GridBagConstraints.HORIZONTAL;
-	c.anchor = GridBagConstraints.NORTH;
-	c.insets = new Insets(0, 0, 1, 0);
-	add(contextSelector, c);
-	c.gridx = 0;
-	c.gridy = 1;
-	c.weightx = 1;
-	c.weighty = 1;
-	c.gridwidth = 2;
-	c.insets = new Insets(0, 0, 0, 0);
-	c.fill = GridBagConstraints.BOTH;
-	add(container, c);
-    }
-
-    @Override
-    public JPanel getSwingComponent() {
-	return this;
-    }
-
-    @Override
-    public void updateContextPanels() {
-	Logger.debug("Updating context panels");
-	IContextPanel selectedPanel = contextSelector.getSelectedItem() != null ? (IContextPanel) contextSelector
-		.getSelectedItem() : null;
-	container.removeAll();
-	visiblePanels.clear();
-	contextSelector.clear();
-	for (final IContextPanel panel : panels) {
-	    if (panel.isVisible()) {
-		Logger.debug("Context panel ", panel.getContextPanelName(),
-			" is visible");
-		visiblePanels.add(panel);
-		container.add(panel.getContextPanelName(), panel
-			.getUIComponent(lookAndFeelManager
-				.getCurrentLookAndFeel()));
-		panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel())
-			.setEnabled(panel.isEnabled());
-
-		contextSelector.addButton(panel.getContextPanelName(),
-			panel.getTitle(), panel.getIcon(), panel.getAction(),
-			panel);
-	    }
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
 	}
-	IContextPanel newSelectedPanel = selectedPanel != null
-		&& selectedPanel.isVisible() ? selectedPanel : visiblePanels
-		.get(0);
-	Logger.debug("Selected context panel: ",
-		newSelectedPanel.getContextPanelName());
-	contextSelector.setSelectedButton(newSelectedPanel
-		.getContextPanelName());
-	((CardLayout) container.getLayout()).show(container,
-		newSelectedPanel.getContextPanelName());
-	if (selectedPanel != null && !newSelectedPanel.equals(selectedPanel)) {
-	    contextHandler
-		    .setContextTab(newSelectedPanel.getContextPanelName());
+
+	/**
+	 * Instantiates a new context panel
+	 */
+	public ContextPanelContainer() {
+		super(new GridBagLayout());
 	}
-	this.invalidate();
-	this.revalidate();
-	this.repaint();
-    }
 
-    @Override
-    public void addContextPanel(final IContextPanel panel) {
-	Logger.debug("Adding context panel: ", panel.getContextPanelName());
-	panels.add(panel);
-    }
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
-    @Override
-    public void removeContextPanel(final IContextPanel panel) {
-	panels.remove(panel);
-    }
+	/**
+	 * @param contextHandler
+	 */
+	public void setContextHandler(final IContextHandler contextHandler) {
+		this.contextHandler = contextHandler;
+	}
 
-    private void showContextPanel(final IContextPanel panel) {
-	final IContextPanel source = panel != null ? panel : visiblePanels
-		.get(0);
-	options.removeAllItems();
-	options.setEnabled(source != null && !source.getOptions().isEmpty());
-	if (source != null) {
-	    List<Component> components = source.getOptions();
-	    if (components != null) {
-		for (Component c : components) {
-		    options.add(c);
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
+	 * Sets the content.
+	 * 
+	 * @param lookAndFeelManager
+	 */
+	public void initialize() {
+		this.contextSelector = new ToggleButtonFlowPanel(true, this.beanFactory);
+		this.options = this.controlsBuilder
+				.createPopUpButton(PopUpButton.BOTTOM_RIGHT);
+		this.container = new JPanel(new CardLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 0;
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(0, 1, 1, 0);
+		add(this.options, c);
+		c.gridx = 1;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.NORTH;
+		c.insets = new Insets(0, 0, 1, 0);
+		add(this.contextSelector, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.gridwidth = 2;
+		c.insets = new Insets(0, 0, 0, 0);
+		c.fill = GridBagConstraints.BOTH;
+		add(this.container, c);
+	}
+
+	@Override
+	public JPanel getSwingComponent() {
+		return this;
+	}
+
+	@Override
+	public void updateContextPanels() {
+		Logger.debug("Updating context panels");
+		IContextPanel selectedPanel = this.contextSelector.getSelectedItem() != null ? (IContextPanel) this.contextSelector
+				.getSelectedItem() : null;
+		this.container.removeAll();
+		this.visiblePanels.clear();
+		this.contextSelector.clear();
+		for (final IContextPanel panel : this.panels) {
+			if (panel.isVisible()) {
+				Logger.debug("Context panel ", panel.getContextPanelName(),
+						" is visible");
+				this.visiblePanels.add(panel);
+				this.container.add(panel.getContextPanelName(), panel
+						.getUIComponent(this.lookAndFeelManager
+								.getCurrentLookAndFeel()));
+				panel.getUIComponent(
+						this.lookAndFeelManager.getCurrentLookAndFeel())
+						.setEnabled(panel.isEnabled());
+
+				this.contextSelector.addButton(panel.getContextPanelName(),
+						panel.getTitle(), panel.getIcon(), panel.getAction(),
+						panel);
+			}
 		}
-	    }
-	    SwingUtilities.invokeLater(new Runnable() {
-		@Override
-		public void run() {
-		    ((CardLayout) container.getLayout()).show(container,
-			    source.getContextPanelName());
+		IContextPanel newSelectedPanel = selectedPanel != null
+				&& selectedPanel.isVisible() ? selectedPanel
+				: this.visiblePanels.get(0);
+		Logger.debug("Selected context panel: ",
+				newSelectedPanel.getContextPanelName());
+		this.contextSelector.setSelectedButton(newSelectedPanel
+				.getContextPanelName());
+		((CardLayout) this.container.getLayout()).show(this.container,
+				newSelectedPanel.getContextPanelName());
+		if (selectedPanel != null && !newSelectedPanel.equals(selectedPanel)) {
+			this.contextHandler.setContextTab(newSelectedPanel
+					.getContextPanelName());
 		}
-	    });
+		this.invalidate();
+		this.revalidate();
+		this.repaint();
 	}
-    }
 
-    @Override
-    public IContextPanel getSelectedContextPanel() {
-	return (IContextPanel) contextSelector.getSelectedItem();
-    }
+	@Override
+	public void addContextPanel(final IContextPanel panel) {
+		Logger.debug("Adding context panel: ", panel.getContextPanelName());
+		this.panels.add(panel);
+	}
 
-    @Override
-    public void setSelectedContextPanel(final String selectedContextTab) {
-	Logger.debug("Setting context view: ", selectedContextTab);
-	IContextPanel panel = null;
-	if (selectedContextTab != null) {
-	    for (IContextPanel p : panels) {
-		if (p.getContextPanelName().equals(selectedContextTab)) {
-		    panel = p;
-		    break;
+	@Override
+	public void removeContextPanel(final IContextPanel panel) {
+		this.panels.remove(panel);
+	}
+
+	private void showContextPanel(final IContextPanel panel) {
+		final IContextPanel source = panel != null ? panel : this.visiblePanels
+				.get(0);
+		this.options.removeAllItems();
+		this.options.setEnabled(source != null
+				&& !source.getOptions().isEmpty());
+		if (source != null) {
+			List<Component> components = source.getOptions();
+			if (components != null) {
+				for (Component c : components) {
+					this.options.add(c);
+				}
+			}
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					((CardLayout) ContextPanelContainer.this.container
+							.getLayout()).show(
+							ContextPanelContainer.this.container,
+							source.getContextPanelName());
+				}
+			});
 		}
-	    }
 	}
-	contextSelector.setSelectedButton(panel != null ? panel
-		.getContextPanelName() : visiblePanels.get(0)
-		.getContextPanelName()); // Show panel or first one
-	showContextPanel(panel);
-    }
+
+	@Override
+	public IContextPanel getSelectedContextPanel() {
+		return (IContextPanel) this.contextSelector.getSelectedItem();
+	}
+
+	@Override
+	public void setSelectedContextPanel(final String selectedContextTab) {
+		Logger.debug("Setting context view: ", selectedContextTab);
+		IContextPanel panel = null;
+		if (selectedContextTab != null) {
+			for (IContextPanel p : this.panels) {
+				if (p.getContextPanelName().equals(selectedContextTab)) {
+					panel = p;
+					break;
+				}
+			}
+		}
+		this.contextSelector.setSelectedButton(panel != null ? panel
+				.getContextPanelName() : this.visiblePanels.get(0)
+				.getContextPanelName()); // Show panel or first one
+		showContextPanel(panel);
+	}
 }

@@ -25,19 +25,30 @@ import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Stops playback
+ * 
  * @author alex
- *
+ * 
  */
 public class StopCurrentAudioObjectAction extends CustomAbstractAction {
 
 	private static final long serialVersionUID = -1177020643937370678L;
 
 	private IPlayerHandler playerHandler;
+
+	private IOSManager osManager;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
 	/**
 	 * @param playerHandler
@@ -55,11 +66,14 @@ public class StopCurrentAudioObjectAction extends CustomAbstractAction {
 
 	@Override
 	protected void initialize() {
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, GuiUtils.getCtrlOrMetaActionEventMask()));
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_O,
+						GuiUtils.getCtrlOrMetaActionEventMask(this.osManager)));
 	}
 
 	@Override
 	protected void executeAction() {
-		playerHandler.stopCurrentAudioObject(true);
+		this.playerHandler.stopCurrentAudioObject(true);
 	}
 }

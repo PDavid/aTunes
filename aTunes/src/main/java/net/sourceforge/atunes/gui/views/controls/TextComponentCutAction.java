@@ -28,6 +28,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClipboardFacade;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -49,20 +50,21 @@ class TextComponentCutAction extends AbstractAction {
 	/**
 	 * @param textComponent
 	 * @param clipboard
+	 * @param osManager
 	 */
-	public TextComponentCutAction(JTextComponent textComponent,
-			ClipboardFacade clipboard) {
+	public TextComponentCutAction(final JTextComponent textComponent,
+			final ClipboardFacade clipboard, final IOSManager osManager) {
 		super(I18nUtils.getString("CUT"));
 		this.textComponent = textComponent;
 		this.clipboard = clipboard;
 		putValue(
 				ACCELERATOR_KEY,
 				KeyStroke.getKeyStroke(KeyEvent.VK_X,
-						GuiUtils.getCtrlOrMetaActionEventMask()));
+						GuiUtils.getCtrlOrMetaActionEventMask(osManager)));
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		String text = this.textComponent.getText();
 		String selectedText = text.substring(
 				this.textComponent.getSelectionStart(),
@@ -70,7 +72,7 @@ class TextComponentCutAction extends AbstractAction {
 		String nonSelectedText = StringUtils.getString(
 				text.substring(0, this.textComponent.getSelectionStart()),
 				text.substring(this.textComponent.getSelectionEnd()));
-		clipboard.copyToClipboard(selectedText);
+		this.clipboard.copyToClipboard(selectedText);
 		this.textComponent.setText(nonSelectedText);
 	}
 }

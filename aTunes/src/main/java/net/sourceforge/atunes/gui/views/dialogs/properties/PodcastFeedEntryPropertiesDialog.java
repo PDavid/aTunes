@@ -34,7 +34,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
@@ -85,6 +84,7 @@ public final class PodcastFeedEntryPropertiesDialog extends
 	/**
 	 * @param controlsBuilder
 	 */
+	@Override
 	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
@@ -133,7 +133,7 @@ public final class PodcastFeedEntryPropertiesDialog extends
 			this.entry = (IPodcastFeedEntry) audioObject;
 			addContent(getLookAndFeel());
 			setContent();
-			GuiUtils.applyComponentOrientation(this);
+			getControlsBuilder().applyComponentOrientation(this);
 		} else {
 			throw new IllegalArgumentException("Not a IPodcastFeedEntry");
 		}

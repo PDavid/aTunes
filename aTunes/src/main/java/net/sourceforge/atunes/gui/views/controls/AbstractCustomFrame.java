@@ -26,15 +26,26 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IControlsBuilder;
 
 /**
  * A custom frame
+ * 
  * @author alex
- *
+ * 
  */
 public abstract class AbstractCustomFrame extends JFrame {
 
 	private static final long serialVersionUID = -7162399690169458143L;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public final void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	/**
 	 * Default constructor
@@ -44,13 +55,20 @@ public abstract class AbstractCustomFrame extends JFrame {
 		GuiUtils.addAppIcons(this);
 	}
 
+	/**
+	 * @return controls builder
+	 */
+	protected final IControlsBuilder getControlsBuilder() {
+		return this.controlsBuilder;
+	}
+
 	@Override
 	public Component add(final Component comp) {
 		if (comp instanceof JComponent) {
-			((JComponent)comp).setOpaque(false);
+			((JComponent) comp).setOpaque(false);
 		}
 		Component c = super.add(comp);
-		GuiUtils.applyComponentOrientation(this);
+		this.controlsBuilder.applyComponentOrientation(this);
 		return c;
 	}
 

@@ -44,305 +44,297 @@ import javax.swing.tree.TreeCellRenderer;
  */
 public interface ILookAndFeel {
 
-    /**
-     * Returns name of the look and feel
-     * 
-     * @return
-     */
-    public String getName();
+	/**
+	 * Returns name of the look and feel
+	 * 
+	 * @return
+	 */
+	public String getName();
 
-    /**
-     * Returns description to show to user
-     * 
-     * @return
-     */
-    public String getDescription();
+	/**
+	 * Returns description to show to user
+	 * 
+	 * @return
+	 */
+	public String getDescription();
 
-    /**
-     * Steps needed to initialize look and feel
-     * 
-     * @param beanFactory
-     */
-    public void initializeLookAndFeel(IBeanFactory beanFactory);
+	/**
+	 * Steps needed to initialize look and feel
+	 * 
+	 * @param beanFactory
+	 */
+	public void initializeLookAndFeel(IBeanFactory beanFactory);
 
-    /**
-     * Steps needed to set up look and feel
-     * 
-     * @param skin
-     */
-    public void setLookAndFeel(String skin);
+	/**
+	 * Steps needed to set up look and feel
+	 * 
+	 * @param skin
+	 */
+	public void setLookAndFeel(String skin);
 
-    /**
-     * Returns default skin (if supported)
-     * 
-     * @return
-     */
-    public String getDefaultSkin();
+	/**
+	 * Returns default skin (if supported)
+	 * 
+	 * @return
+	 */
+	public String getDefaultSkin();
 
-    /**
-     * Returns list of available skins for this look and feel (if supported)
-     * 
-     * @return
-     */
-    public List<String> getSkins();
+	/**
+	 * Returns list of available skins for this look and feel (if supported)
+	 * 
+	 * @return
+	 */
+	public List<String> getSkins();
 
-    /**
-     * Returns if dialogs must be undecorated
-     * 
-     * @return
-     */
-    public boolean isDialogUndecorated();
+	/**
+	 * Returns if dialogs must be undecorated
+	 * 
+	 * @return
+	 */
+	public boolean isDialogUndecorated();
 
-    /**
-     * Returns a new TreeCellRenderer executing given code (default
-     * implementation)
-     * 
-     * @param code
-     * @return
-     */
-    public TreeCellRenderer getTreeCellRenderer(
-	    final ITreeCellRendererCode<?, ?> code);
+	/**
+	 * Returns a new TreeCellRenderer executing given code (default
+	 * implementation)
+	 * 
+	 * @param code
+	 * @return
+	 */
+	public TreeCellRenderer getTreeCellRenderer(
+			final ITreeCellRendererCode<?, ?> code);
 
-    /**
-     * Returns a new TableCellRenderer executing given code (default
-     * implementation)
-     * 
-     * @param code
-     * @return
-     */
-    public TableCellRenderer getTableCellRenderer(
-	    ITableCellRendererCode<?, ?> code);
+	/**
+	 * Returns a new TableCellRenderer executing given code (default
+	 * implementation)
+	 * 
+	 * @param code
+	 * @return
+	 */
+	public TableCellRenderer getTableCellRenderer(
+			ITableCellRendererCode<?, ?> code);
 
-    /**
-     * Returns a new TableCellRenderer executing given code (default
-     * implementation)
-     * 
-     * @param code
-     * @return
-     */
-    public TableCellRenderer getTableHeaderCellRenderer(
-	    ITableCellRendererCode<?, ?> code);
+	/**
+	 * Returns a new TableCellRenderer executing given code (default
+	 * implementation)
+	 * 
+	 * @param code
+	 * @return
+	 */
+	public TableCellRenderer getTableHeaderCellRenderer(
+			ITableCellRendererCode<?, ?> code);
 
-    /**
-     * Returns a new ListCellRendeder executing given code (default
-     * implementation)
-     * 
-     * @param code
-     * @return
-     */
-    public ListCellRenderer getListCellRenderer(
-	    final IListCellRendererCode<?, ?> code);
+	/**
+	 * Returns a new ListCellRendeder executing given code (default
+	 * implementation)
+	 * 
+	 * @param code
+	 * @return
+	 */
+	public ListCellRenderer getListCellRenderer(
+			final IListCellRendererCode<?, ?> code);
 
-    /**
-     * Returns if custom combo box renderers are supported
-     * 
-     * @return
-     */
-    public boolean customComboBoxRenderersSupported();
+	/**
+	 * Returns if custom combo box renderers are supported
+	 * 
+	 * @return
+	 */
+	public boolean customComboBoxRenderersSupported();
 
-    /**
-     * Puts client properties in components
-     * 
-     * @param c
-     */
-    public void putClientProperties(JComponent c);
+	/**
+	 * Puts client properties in components
+	 * 
+	 * @param c
+	 */
+	public void putClientProperties(JComponent c);
 
-    /**
-     * Returns if look and feel supports custom player controls (not by default)
-     * 
-     * @return
-     */
-    public boolean isCustomPlayerControlsSupported();
+	/**
+	 * Returns if look and feel supports custom player controls (not by default)
+	 * 
+	 * @return
+	 */
+	public boolean isCustomPlayerControlsSupported();
 
-    /**
-     * Returns shadow border used by look and feel (none by default)
-     * 
-     * @return
-     */
-    public Border getShadowBorder();
+	/**
+	 * Returns shadow border used by look and feel (none by default)
+	 * 
+	 * @return
+	 */
+	public Border getShadowBorder();
 
-    /**
-     * Initializes needed properties for fonts depending on given base font and
-     * look and feel (none by default)
-     * 
-     * @param baseFont
-     */
-    public void initializeFonts(Font baseFont);
+	/**
+	 * Initializes needed properties for fonts depending on given base font and
+	 * look and feel (none by default)
+	 * 
+	 * @param baseFont
+	 */
+	public void initializeFonts(Font baseFont);
 
-    /**
-     * @return <code>true</code> if this look and feel implements skins or
-     *         themes
-     */
-    public boolean allowsSkins();
+	/**
+	 * @return <code>true</code> if this look and feel implements skins or
+	 *         themes
+	 */
+	public boolean allowsSkins();
 
-    /**
-     * Returns paint to be used with certain controls (player controls)
-     * 
-     * @return
-     */
-    public Color getPaintForSpecialControls();
+	/**
+	 * Returns paint to be used with certain controls (player controls)
+	 * 
+	 * @return
+	 */
+	public Color getPaintForSpecialControls();
 
-    /**
-     * Returns paint to be used with certain controls (player controls) when
-     * disabled
-     * 
-     * @return
-     */
-    public Color getPaintForDisabledSpecialControls();
+	/**
+	 * Returns paint to be used with certain controls (player controls) when
+	 * disabled
+	 * 
+	 * @return
+	 */
+	public Color getPaintForDisabledSpecialControls();
 
-    /**
-     * Returns paint to be used to draw a color mutable icon in given component
-     * 
-     * @param c
-     * @param isSelected
-     * @return
-     */
-    public Color getPaintForColorMutableIcon(Component c, boolean isSelected);
+	/**
+	 * Returns paint to be used to draw a color mutable icon in given component
+	 * 
+	 * @param c
+	 * @param isSelected
+	 * @return
+	 */
+	public Color getPaintForColorMutableIcon(Component c, boolean isSelected);
 
-    /**
-     * Returns size to be used with PopUpButton
-     * 
-     * @return
-     */
-    public Dimension getPopUpButtonSize();
+	/**
+	 * Returns size to be used with PopUpButton
+	 * 
+	 * @return
+	 */
+	public Dimension getPopUpButtonSize();
 
-    /**
-     * Returns default font
-     * 
-     * @return
-     */
-    public Font getDefaultFont();
+	/**
+	 * Returns default font
+	 * 
+	 * @return
+	 */
+	public Font getDefaultFont();
 
-    /**
-     * Returns true if look and feel support custom font selection
-     * 
-     * @return
-     */
-    public boolean supportsCustomFontSettings();
+	/**
+	 * Returns true if look and feel support custom font selection
+	 * 
+	 * @return
+	 */
+	public boolean supportsCustomFontSettings();
 
-    /**
-     * @return the aboutBigFont
-     */
-    public Font getAboutBigFont();
+	/**
+	 * @return the aboutBigFont
+	 */
+	public Font getAboutBigFont();
 
-    /**
-     * @return the playListFont
-     */
-    public Font getPlayListFont();
+	/**
+	 * @return the playListFont
+	 */
+	public Font getPlayListFont();
 
-    /**
-     * @return the playListSelectedItemFont
-     */
-    public Font getPlayListSelectedItemFont();
+	/**
+	 * @return the playListSelectedItemFont
+	 */
+	public Font getPlayListSelectedItemFont();
 
-    /**
-     * @return the contextInformationBigFont
-     */
-    public Font getContextInformationBigFont();
+	/**
+	 * @return the contextInformationBigFont
+	 */
+	public Font getContextInformationBigFont();
 
-    /**
-     * @return the propertiesDialogBigFont
-     */
-    public Font getPropertiesDialogBigFont();
+	/**
+	 * @return the propertiesDialogBigFont
+	 */
+	public Font getPropertiesDialogBigFont();
 
-    /**
-     * @return the osdLine1Font
-     */
-    public Font getOsdLine1Font();
+	/**
+	 * @return the osdLine1Font
+	 */
+	public Font getOsdLine1Font();
 
-    /**
-     * @return the osdLine2Font
-     */
-    public Font getOsdLine2Font();
+	/**
+	 * @return the osdLine2Font
+	 */
+	public Font getOsdLine2Font();
 
-    /**
-     * @return the osdLine3Font
-     */
-    public Font getOsdLine3Font();
+	/**
+	 * @return the osdLine3Font
+	 */
+	public Font getOsdLine3Font();
 
-    /**
-     * @return the fullScreenLine1Font
-     */
-    public Font getFullScreenLine1Font();
+	/**
+	 * @return the fullScreenLine1Font
+	 */
+	public Font getFullScreenLine1Font();
 
-    /**
-     * @return font for second line of full scren
-     */
-    public Font getFullScreenLine2Font();
+	/**
+	 * @return font for second line of full scren
+	 */
+	public Font getFullScreenLine2Font();
 
-    /**
-     * Returns split pane divider size for this look and feel. Default
-     * implementation returns current look and feel's default value
-     * 
-     * @return
-     */
-    public int getSplitPaneDividerSize();
+	/**
+	 * Returns instance of table with special look and feel settings
+	 * 
+	 * @return
+	 */
+	public JTable getTable();
 
-    /**
-     * Returns instance of table with special look and feel settings
-     * 
-     * @return
-     */
-    public JTable getTable();
+	/**
+	 * Adds special look and feel settings to an already created JTable
+	 * 
+	 * @param table
+	 */
+	public void decorateTable(JTable table);
 
-    /**
-     * Adds special look and feel settings to an already created JTable
-     * 
-     * @param table
-     */
-    public void decorateTable(JTable table);
+	/**
+	 * Returns scroll pane to show a table with special look and feel settings
+	 * 
+	 * @param table
+	 * @return
+	 */
+	public JScrollPane getTableScrollPane(JTable table);
 
-    /**
-     * Returns scroll pane to show a table with special look and feel settings
-     * 
-     * @param table
-     * @return
-     */
-    public JScrollPane getTableScrollPane(JTable table);
+	/**
+	 * Returns scroll pane to show a tree with special look and feel settings
+	 * 
+	 * @param tree
+	 * @return
+	 */
+	public JScrollPane getTreeScrollPane(JTree tree);
 
-    /**
-     * Returns scroll pane to show a tree with special look and feel settings
-     * 
-     * @param tree
-     * @return
-     */
-    public JScrollPane getTreeScrollPane(JTree tree);
+	/**
+	 * Returns instance of list with special look and feel settings
+	 * 
+	 * @return
+	 */
+	public JList getList();
 
-    /**
-     * Returns instance of list with special look and feel settings
-     * 
-     * @return
-     */
-    public JList getList();
+	/**
+	 * Returns scroll pane to show a list with special look and feel settings
+	 * 
+	 * @param list
+	 * @return
+	 */
+	public JScrollPane getListScrollPane(JList list);
 
-    /**
-     * Returns scroll pane to show a list with special look and feel settings
-     * 
-     * @param list
-     * @return
-     */
-    public JScrollPane getListScrollPane(JList list);
+	/**
+	 * Returns scroll pane with special look and feel settings
+	 * 
+	 * @param component
+	 * @return
+	 */
+	public JScrollPane getScrollPane(Component component);
 
-    /**
-     * Returns scroll pane with special look and feel settings
-     * 
-     * @param component
-     * @return
-     */
-    public JScrollPane getScrollPane(Component component);
+	/**
+	 * Sets base font
+	 * 
+	 * @param f
+	 */
+	public void setBaseFont(Font f);
 
-    /**
-     * Sets base font
-     * 
-     * @param f
-     */
-    public void setBaseFont(Font f);
-
-    /**
-     * Sets os manager
-     * 
-     * @param osManager
-     */
-    public void setOsManager(IOSManager osManager);
+	/**
+	 * Sets os manager
+	 * 
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager);
 
 }

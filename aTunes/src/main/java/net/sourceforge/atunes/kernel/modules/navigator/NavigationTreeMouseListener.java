@@ -30,6 +30,7 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITable;
@@ -40,110 +41,114 @@ import net.sourceforge.atunes.model.ITreeNode;
  */
 public final class NavigationTreeMouseListener extends MouseAdapter {
 
-    private final NavigationController controller;
+	private final NavigationController controller;
 
-    private final INavigationHandler navigationHandler;
+	private final INavigationHandler navigationHandler;
 
-    private final ITable navigationTable;
+	private final ITable navigationTable;
 
-    private final IStateNavigation stateNavigation;
+	private final IStateNavigation stateNavigation;
 
-    private final IPlayListHandler playListHandler;
+	private final IPlayListHandler playListHandler;
 
-    /**
-     * Instantiates a new navigation tree mouse listener.
-     * 
-     * @param controller
-     * @param navigationTable
-     * @param stateNavigation
-     * @param navigationHandler
-     * @param playListHandler
-     */
-    public NavigationTreeMouseListener(final NavigationController controller,
-	    final ITable navigationTable,
-	    final IStateNavigation stateNavigation,
-	    final INavigationHandler navigationHandler,
-	    final IPlayListHandler playListHandler) {
-	this.controller = controller;
-	this.navigationTable = navigationTable;
-	this.stateNavigation = stateNavigation;
-	this.navigationHandler = navigationHandler;
-	this.playListHandler = playListHandler;
-    }
+	private final IOSManager osManager;
 
-    /**
-     * Checks if is new row selection.
-     * 
-     * @param tree
-     *            the tree
-     * @param e
-     *            the e
-     * 
-     * @return true, if is new row selection
-     */
-    private boolean isNewRowSelection(final JTree tree, final MouseEvent e) {
-	int[] rowsSelected = tree.getSelectionRows();
-	if (rowsSelected == null) {
-	    return false;
-	}
-	int selected = tree.getRowForLocation(e.getX(), e.getY());
-	boolean found = false;
-	int i = 0;
-	while (!found && i < rowsSelected.length) {
-	    if (rowsSelected[i] == selected) {
-		found = true;
-	    }
-	    i++;
-	}
-	return !found;
-    }
-
-    @Override
-    public void mouseClicked(final MouseEvent e) {
-	INavigationView currentView = navigationHandler.getCurrentView();
-	controller
-		.setPopupMenuCaller(currentView.getTree().getSwingComponent());
-
-	if (GuiUtils.isSecondaryMouseButton(e)) {
-	    // BUG 1626896
-	    int row = currentView.getTree().getSwingComponent()
-		    .getRowForLocation(e.getX(), e.getY());
-	    if (isNewRowSelection(currentView.getTree().getSwingComponent(), e)
-		    && row != -1) {
-		currentView.getTree().getSwingComponent().setSelectionRow(row);
-	    }
-	    // BUG 1626896
-
-	    currentView.updateTreePopupMenuWithTreeSelection(e);
-
-	    currentView.getTreePopupMenu().show(
-		    currentView.getTree().getSwingComponent(), e.getX(),
-		    e.getY());
-	} else {
-	    int selRow = currentView.getTree().getSwingComponent()
-		    .getRowForLocation(e.getX(), e.getY());
-	    if (selRow != -1 && e.getClickCount() == 2) {
-		ITreeNode node = currentView.getTree().getSelectedNode(e);
-		List<? extends IAudioObject> songs = controller
-			.getAudioObjectsForTreeNode(currentView.getClass(),
-				node);
-		playListHandler.addToVisiblePlayList(songs);
-	    }
+	/**
+	 * Instantiates a new navigation tree mouse listener.
+	 * 
+	 * @param controller
+	 * @param navigationTable
+	 * @param stateNavigation
+	 * @param navigationHandler
+	 * @param playListHandler
+	 * @param osManager
+	 */
+	public NavigationTreeMouseListener(final NavigationController controller,
+			final ITable navigationTable,
+			final IStateNavigation stateNavigation,
+			final INavigationHandler navigationHandler,
+			final IPlayListHandler playListHandler, final IOSManager osManager) {
+		this.controller = controller;
+		this.navigationTable = navigationTable;
+		this.stateNavigation = stateNavigation;
+		this.navigationHandler = navigationHandler;
+		this.playListHandler = playListHandler;
+		this.osManager = osManager;
 	}
 
-	// When clicking in tree, table selection must be cleared
-	navigationTable.getSelectionModel().clearSelection();
-    }
-
-    @Override
-    public void mouseExited(final MouseEvent arg0) {
-	if (!stateNavigation.isShowExtendedTooltip()) {
-	    return;
+	/**
+	 * Checks if is new row selection.
+	 * 
+	 * @param tree
+	 *            the tree
+	 * @param e
+	 *            the e
+	 * 
+	 * @return true, if is new row selection
+	 */
+	private boolean isNewRowSelection(final JTree tree, final MouseEvent e) {
+		int[] rowsSelected = tree.getSelectionRows();
+		if (rowsSelected == null) {
+			return false;
+		}
+		int selected = tree.getRowForLocation(e.getX(), e.getY());
+		boolean found = false;
+		int i = 0;
+		while (!found && i < rowsSelected.length) {
+			if (rowsSelected[i] == selected) {
+				found = true;
+			}
+			i++;
+		}
+		return !found;
 	}
 
-	controller.setCurrentExtendedToolTipContent(null);
-	controller.getExtendedToolTip().setVisible(false);
-	controller.getToolTipTimer().stop();
-    }
+	@Override
+	public void mouseClicked(final MouseEvent e) {
+		INavigationView currentView = this.navigationHandler.getCurrentView();
+		this.controller.setPopupMenuCaller(currentView.getTree()
+				.getSwingComponent());
+
+		if (GuiUtils.isSecondaryMouseButton(this.osManager, e)) {
+			// BUG 1626896
+			int row = currentView.getTree().getSwingComponent()
+					.getRowForLocation(e.getX(), e.getY());
+			if (isNewRowSelection(currentView.getTree().getSwingComponent(), e)
+					&& row != -1) {
+				currentView.getTree().getSwingComponent().setSelectionRow(row);
+			}
+			// BUG 1626896
+
+			currentView.updateTreePopupMenuWithTreeSelection(e);
+
+			currentView.getTreePopupMenu().show(
+					currentView.getTree().getSwingComponent(), e.getX(),
+					e.getY());
+		} else {
+			int selRow = currentView.getTree().getSwingComponent()
+					.getRowForLocation(e.getX(), e.getY());
+			if (selRow != -1 && e.getClickCount() == 2) {
+				ITreeNode node = currentView.getTree().getSelectedNode(e);
+				List<? extends IAudioObject> songs = this.controller
+						.getAudioObjectsForTreeNode(currentView.getClass(),
+								node);
+				this.playListHandler.addToVisiblePlayList(songs);
+			}
+		}
+
+		// When clicking in tree, table selection must be cleared
+		this.navigationTable.getSelectionModel().clearSelection();
+	}
+
+	@Override
+	public void mouseExited(final MouseEvent arg0) {
+		if (!this.stateNavigation.isShowExtendedTooltip()) {
+			return;
+		}
+
+		this.controller.setCurrentExtendedToolTipContent(null);
+		this.controller.getExtendedToolTip().setVisible(false);
+		this.controller.getToolTipTimer().stop();
+	}
 
 }

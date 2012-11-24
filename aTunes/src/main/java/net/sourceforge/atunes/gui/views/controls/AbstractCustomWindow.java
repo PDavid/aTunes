@@ -27,24 +27,32 @@ import javax.swing.JFrame;
 import javax.swing.JWindow;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IControlsBuilder;
 
 /**
  * A custom window
+ * 
  * @author alex
- *
+ * 
  */
 public abstract class AbstractCustomWindow extends JWindow {
 
 	private static final long serialVersionUID = -8846047318549650938L;
 
+	private final IControlsBuilder controlsBuilder;
+
 	/**
 	 * Creates a window with given parent (owner) and size
+	 * 
 	 * @param owner
 	 * @param width
 	 * @param height
+	 * @param controlsBuilder
 	 */
-	public AbstractCustomWindow(final JFrame owner, final int width, final int height) {
+	public AbstractCustomWindow(final JFrame owner, final int width,
+			final int height, final IControlsBuilder controlsBuilder) {
 		super(owner);
+		this.controlsBuilder = controlsBuilder;
 		setSize(width, height);
 		setLocationRelativeTo(owner);
 		GuiUtils.addAppIcons(this);
@@ -53,10 +61,10 @@ public abstract class AbstractCustomWindow extends JWindow {
 	@Override
 	public Component add(final Component comp) {
 		if (comp instanceof JComponent) {
-			((JComponent)comp).setOpaque(false);
+			((JComponent) comp).setOpaque(false);
 		}
 		Component c = super.add(comp);
-		GuiUtils.applyComponentOrientation(this);
+		this.controlsBuilder.applyComponentOrientation(this);
 		return c;
 	}
 }

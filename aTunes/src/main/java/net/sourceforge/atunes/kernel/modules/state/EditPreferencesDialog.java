@@ -33,7 +33,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -44,156 +43,159 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class EditPreferencesDialog extends AbstractCustomDialog {
 
-    private static final long serialVersionUID = -4759149194433605946L;
+	private static final long serialVersionUID = -4759149194433605946L;
 
-    private JButton ok;
-    private JButton cancel;
-    private JPanel options;
-    private JList list;
-    private List<AbstractPreferencesPanel> panels;
-    
-    /**
-     * Instantiates a new edits the preferences dialog.
-     * @param frame
-     */
-    public EditPreferencesDialog(IFrame frame) {
-        super(frame, 900, 700);
-    }
+	private JButton ok;
+	private JButton cancel;
+	private JPanel options;
+	private JList list;
+	private List<AbstractPreferencesPanel> panels;
 
-    @Override
-    public void initialize() {
-        setResizable(true);
-        setTitle(I18nUtils.getString("PREFERENCES"));
-        setMinimumSize(new Dimension(900, 700));
-        add(getContent(getLookAndFeel()));
-    }
-    
-    @Override
-    public void showDialog() {
-    	setVisible(true);
-    }
-    
-    @Override
-    public void hideDialog() {
-    	setVisible(false);
-    }
+	/**
+	 * Instantiates a new edits the preferences dialog.
+	 * 
+	 * @param frame
+	 */
+	public EditPreferencesDialog(final IFrame frame) {
+		super(frame, 900, 700);
+	}
 
-    /**
-     * Gets the cancel.
-     * 
-     * @return the cancel
-     */
-    public JButton getCancel() {
-        return cancel;
-    }
+	@Override
+	public void initialize() {
+		setResizable(true);
+		setTitle(I18nUtils.getString("PREFERENCES"));
+		setMinimumSize(new Dimension(900, 700));
+		add(getContent(getLookAndFeel()));
+	}
 
-    /**
-     * Gets the content.
-     * 
-     * @return the content
-     */
-    private JPanel getContent(ILookAndFeel lookAndFeel) {
-        JPanel container = new JPanel(new GridBagLayout());
-        container.setOpaque(false);
-        list = new JList();
-        list.setCellRenderer(lookAndFeel.getListCellRenderer(new PreferencesListCellRendererCode()));
-        JScrollPane scrollPane = lookAndFeel.getListScrollPane(list);
-        scrollPane.setMinimumSize(new Dimension(200, 0));
-        options = new JPanel();
-        ok = new JButton(I18nUtils.getString("OK"));
-        cancel = new JButton(I18nUtils.getString("CANCEL"));
-        JPanel auxPanel = new JPanel();
-        auxPanel.add(ok);
-        auxPanel.add(cancel);
+	@Override
+	public void showDialog() {
+		setVisible(true);
+	}
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 1;
-        c.weightx = 0.3;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(5, 5, 0, 5);
-        container.add(scrollPane, c);
-        c.gridx = 1;
-        c.gridy = 0;
-        c.weightx = 0.7;
-        c.insets = new Insets(5, 5, 0, 5);
-        container.add(options, c);
-        c.gridx = 1;
-        c.gridy = 1;
-        c.weightx = 0;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.LINE_END;
-        c.insets = new Insets(10, 0, 10, 10);
-        container.add(auxPanel, c);
+	@Override
+	public void hideDialog() {
+		setVisible(false);
+	}
 
-        return container;
-    }
+	/**
+	 * Gets the cancel.
+	 * 
+	 * @return the cancel
+	 */
+	public JButton getCancel() {
+		return this.cancel;
+	}
 
-    /**
-     * Gets the list.
-     * 
-     * @return the list
-     */
-    public JList getList() {
-        return list;
-    }
+	/**
+	 * Gets the content.
+	 * 
+	 * @return the content
+	 */
+	private JPanel getContent(final ILookAndFeel lookAndFeel) {
+		JPanel container = new JPanel(new GridBagLayout());
+		container.setOpaque(false);
+		this.list = new JList();
+		this.list.setCellRenderer(lookAndFeel
+				.getListCellRenderer(new PreferencesListCellRendererCode()));
+		JScrollPane scrollPane = lookAndFeel.getListScrollPane(this.list);
+		scrollPane.setMinimumSize(new Dimension(200, 0));
+		this.options = new JPanel();
+		this.ok = new JButton(I18nUtils.getString("OK"));
+		this.cancel = new JButton(I18nUtils.getString("CANCEL"));
+		JPanel auxPanel = new JPanel();
+		auxPanel.add(this.ok);
+		auxPanel.add(this.cancel);
 
-    /**
-     * Gets the ok.
-     * 
-     * @return the ok
-     */
-    public JButton getOk() {
-        return ok;
-    }
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 1;
+		c.weightx = 0.3;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(5, 5, 0, 5);
+		container.add(scrollPane, c);
+		c.gridx = 1;
+		c.gridy = 0;
+		c.weightx = 0.7;
+		c.insets = new Insets(5, 5, 0, 5);
+		container.add(this.options, c);
+		c.gridx = 1;
+		c.gridy = 1;
+		c.weightx = 0;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.LINE_END;
+		c.insets = new Insets(10, 0, 10, 10);
+		container.add(auxPanel, c);
 
-    /**
-     * Sets the list model.
-     * 
-     * @param listModel
-     *            the new list model
-     */
-    public void setListModel(ListModel listModel) {
-        list.setModel(listModel);
-    }
+		return container;
+	}
 
-    /**
-     * Sets the panels.
-     * 
-     * @param panels
-     *            the new panels
-     */
-    public void setPanels(List<AbstractPreferencesPanel> panels) {
-        this.panels = panels;
-        options.setLayout(new CardLayout());
-        for (int i = 0; i < panels.size(); i++) {
-            options.add(Integer.toString(i), panels.get(i));
-            panels.get(i).setDialog(this);
-        }
-        GuiUtils.applyComponentOrientation(this);
-    }
+	/**
+	 * Gets the list.
+	 * 
+	 * @return the list
+	 */
+	public JList getList() {
+		return this.list;
+	}
 
-    /**
-     * Show panel.
-     * 
-     * @param index
-     *            the index
-     */
-    public void showPanel(int index) {
-        ((CardLayout) options.getLayout()).show(options, Integer.toString(index));
-        // Mark panel as dirty
-        this.panels.get(index).setDirty(true);
-    }
-    
-    /**
-     * Marks panels as not dirty
-     */
-    public void resetPanels() {
-    	for (AbstractPreferencesPanel panel : this.panels) {
-    		panel.setDirty(false);
-    	}
-    }    
+	/**
+	 * Gets the ok.
+	 * 
+	 * @return the ok
+	 */
+	public JButton getOk() {
+		return this.ok;
+	}
+
+	/**
+	 * Sets the list model.
+	 * 
+	 * @param listModel
+	 *            the new list model
+	 */
+	public void setListModel(final ListModel listModel) {
+		this.list.setModel(listModel);
+	}
+
+	/**
+	 * Sets the panels.
+	 * 
+	 * @param panels
+	 *            the new panels
+	 */
+	public void setPanels(final List<AbstractPreferencesPanel> panels) {
+		this.panels = panels;
+		this.options.setLayout(new CardLayout());
+		for (int i = 0; i < panels.size(); i++) {
+			this.options.add(Integer.toString(i), panels.get(i));
+			panels.get(i).setDialog(this);
+		}
+		getControlsBuilder().applyComponentOrientation(this);
+	}
+
+	/**
+	 * Show panel.
+	 * 
+	 * @param index
+	 *            the index
+	 */
+	public void showPanel(final int index) {
+		((CardLayout) this.options.getLayout()).show(this.options,
+				Integer.toString(index));
+		// Mark panel as dirty
+		this.panels.get(index).setDirty(true);
+	}
+
+	/**
+	 * Marks panels as not dirty
+	 */
+	public void resetPanels() {
+		for (AbstractPreferencesPanel panel : this.panels) {
+			panel.setDirty(false);
+		}
+	}
 }

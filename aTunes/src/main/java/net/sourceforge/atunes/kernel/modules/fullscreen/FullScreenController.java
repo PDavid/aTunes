@@ -28,19 +28,31 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.utils.FileUtils;
 
 /**
  * Controller for full screen window
+ * 
  * @author alex
- *
+ * 
  */
-public class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
+public class FullScreenController extends
+		AbstractSimpleController<FullScreenWindow> {
 
 	private FullScreenWindowFactory fullScreenWindowFactory;
 
 	private IStateUI stateUI;
+
+	private IOSManager osManager;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
 	/**
 	 * @param stateUI
@@ -52,7 +64,8 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 	/**
 	 * @param fullScreenWindowFactory
 	 */
-	public void setFullScreenWindowFactory(final FullScreenWindowFactory fullScreenWindowFactory) {
+	public void setFullScreenWindowFactory(
+			final FullScreenWindowFactory fullScreenWindowFactory) {
 		this.fullScreenWindowFactory = fullScreenWindowFactory;
 	}
 
@@ -60,7 +73,8 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 	 * Initializes controller
 	 */
 	public void initialize() {
-		final FullScreenWindow window = fullScreenWindowFactory.getFullScreenWindow();
+		final FullScreenWindow window = this.fullScreenWindowFactory
+				.getFullScreenWindow();
 		setComponentControlled(window);
 
 		KeyListener keyAdapter = new FullScreenKeyAdapter(window);
@@ -72,19 +86,24 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 		window.addMouseListener(clickListener);
 		setClickListener(clickListener);
 
-		MouseMotionListener moveListener = new FullScreenMouseMotionAdapter(window);
+		MouseMotionListener moveListener = new FullScreenMouseMotionAdapter(
+				window);
 		window.addMouseMotionListener(moveListener);
 		window.getCovers().addMouseMotionListener(moveListener);
 
-		window.getSelectBackground().addActionListener(new SelectBackgroundActionListener(this));
+		window.getSelectBackground().addActionListener(
+				new SelectBackgroundActionListener(this));
 
-		window.getRemoveBackground().addActionListener(new RemoveBackgroundActionListener(window, stateUI));
+		window.getRemoveBackground().addActionListener(
+				new RemoveBackgroundActionListener(window, this.stateUI));
 
-		FullScreenShowMenuMouseAdapter optionsAdapter = new FullScreenShowMenuMouseAdapter(window.getOptions());
+		FullScreenShowMenuMouseAdapter optionsAdapter = new FullScreenShowMenuMouseAdapter(
+				window.getOptions(), this.osManager);
 		window.getBackgroundPanel().addMouseListener(optionsAdapter);
 		window.getCovers().addMouseListener(optionsAdapter);
 
-		window.getExitFullScreen().addActionListener(new ExitFullScreenActionListener(window));
+		window.getExitFullScreen().addActionListener(
+				new ExitFullScreenActionListener(window));
 
 		setBackground();
 
@@ -92,8 +111,8 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 
 	private void setBackground() {
 		File backgroundFile = null;
-		if (stateUI.getFullScreenBackground() != null) {
-			backgroundFile = new File(stateUI.getFullScreenBackground());
+		if (this.stateUI.getFullScreenBackground() != null) {
+			backgroundFile = new File(this.stateUI.getFullScreenBackground());
 			if (!backgroundFile.exists()) {
 				backgroundFile = null;
 			}
@@ -103,7 +122,7 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 
 	void setBackground(final File file) {
 		getComponentControlled().setBackground(file);
-		stateUI.setFullScreenBackground(FileUtils.getPath(file));
+		this.stateUI.setFullScreenBackground(FileUtils.getPath(file));
 	}
 
 	/**
@@ -112,20 +131,25 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 	private void setClickListener(final MouseListener clickListener) {
 		getComponentControlled().getCovers().addMouseListener(clickListener);
 		getComponentControlled().getOptions().addMouseListener(clickListener);
-		getComponentControlled().getPreviousButton().addMouseListener(clickListener);
-		getComponentControlled().getPlayButton().addMouseListener(clickListener);
-		getComponentControlled().getNextButton().addMouseListener(clickListener);
+		getComponentControlled().getPreviousButton().addMouseListener(
+				clickListener);
+		getComponentControlled().getPlayButton()
+				.addMouseListener(clickListener);
+		getComponentControlled().getNextButton()
+				.addMouseListener(clickListener);
 	}
 
 	/**
 	 * Shows or hides full screen
 	 */
 	void toggleVisibility() {
-		getComponentControlled().setVisible(!getComponentControlled().isVisible());
+		getComponentControlled().setVisible(
+				!getComponentControlled().isVisible());
 	}
 
 	/**
 	 * Sets the audio object.
+	 * 
 	 * @param objects
 	 */
 	void setAudioObjects(final List<IAudioObject> objects) {
@@ -134,6 +158,7 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 
 	/**
 	 * Sets the playing
+	 * 
 	 * @param playing
 	 */
 	void setPlaying(final boolean playing) {
@@ -142,6 +167,7 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 
 	/**
 	 * Returns true if full screen is visible
+	 * 
 	 * @return
 	 */
 	boolean isVisible() {

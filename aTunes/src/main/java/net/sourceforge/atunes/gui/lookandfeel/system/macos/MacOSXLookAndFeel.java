@@ -47,152 +47,147 @@ import net.sourceforge.atunes.model.IBeanFactory;
  */
 public class MacOSXLookAndFeel extends SystemLookAndFeel {
 
-    private static final CellRendererPane CELL_RENDER_PANE = new CellRendererPane();
+	private static final CellRendererPane CELL_RENDER_PANE = new CellRendererPane();
 
-    @Override
-    public Dimension getPopUpButtonSize() {
-	return new Dimension(40, 10);
-    }
+	@Override
+	public Dimension getPopUpButtonSize() {
+		return new Dimension(40, 10);
+	}
 
-    @Override
-    public void initializeLookAndFeel(final IBeanFactory beanFactory) {
-	super.initializeLookAndFeel(beanFactory);
-	UIManager.put("TableHeader.cellBorder",
-		BorderFactory.createLineBorder(MacOSColors.TABLE_HEADER_COLOR));
-	UIManager.put("TableHeader.background",
-		UIManager.get("Panel.background"));
-    }
+	@Override
+	public void initializeLookAndFeel(final IBeanFactory beanFactory) {
+		super.initializeLookAndFeel(beanFactory);
+		UIManager.put("TableHeader.cellBorder",
+				BorderFactory.createLineBorder(MacOSColors.TABLE_HEADER_COLOR));
+		UIManager.put("TableHeader.background",
+				UIManager.get("Panel.background"));
+	}
 
-    @Override
-    public void initializeFonts(final Font baseFont) {
-	// Don't do any font initialization, keep original fonts
-    }
+	@Override
+	public void initializeFonts(final Font baseFont) {
+		// Don't do any font initialization, keep original fonts
+	}
 
-    /**
-     * Returns paint to be used with certain controls (player controls)
-     * 
-     * @return
-     */
-    @Override
-    public Color getPaintForSpecialControls() {
-	return new Color(20, 20, 20, 180);
-    }
+	/**
+	 * Returns paint to be used with certain controls (player controls)
+	 * 
+	 * @return
+	 */
+	@Override
+	public Color getPaintForSpecialControls() {
+		return new Color(20, 20, 20, 180);
+	}
 
-    @Override
-    public int getSplitPaneDividerSize() {
-	return 1; // Must be enough size to move easily with mouse
-    }
+	@Override
+	public JScrollPane getTableScrollPane(final JTable table) {
+		table.setOpaque(false);
+		table.setBorder(BorderFactory.createEmptyBorder());
+		JScrollPane scrollPane = getScrollPane(table);
+		scrollPane.setViewport(new StripedTableViewport(table));
+		scrollPane.getViewport().setView(table);
+		scrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER,
+				createCornerComponent(table));
+		return scrollPane;
+	}
 
-    @Override
-    public JScrollPane getTableScrollPane(final JTable table) {
-	table.setOpaque(false);
-	table.setBorder(BorderFactory.createEmptyBorder());
-	JScrollPane scrollPane = getScrollPane(table);
-	scrollPane.setViewport(new StripedTableViewport(table));
-	scrollPane.getViewport().setView(table);
-	scrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER,
-		createCornerComponent(table));
-	return scrollPane;
-    }
+	@Override
+	public JScrollPane getTreeScrollPane(final JTree tree) {
+		tree.setOpaque(false);
+		tree.setBorder(BorderFactory.createEmptyBorder());
+		JScrollPane scrollPane = getScrollPane(tree);
+		scrollPane.setViewport(new StripedTreeViewport(tree));
+		scrollPane.getViewport().setView(tree);
+		return scrollPane;
+	}
 
-    @Override
-    public JScrollPane getTreeScrollPane(final JTree tree) {
-	tree.setOpaque(false);
-	tree.setBorder(BorderFactory.createEmptyBorder());
-	JScrollPane scrollPane = getScrollPane(tree);
-	scrollPane.setViewport(new StripedTreeViewport(tree));
-	scrollPane.getViewport().setView(tree);
-	return scrollPane;
-    }
+	@Override
+	public JScrollPane getListScrollPane(final JList list) {
+		list.setOpaque(false);
+		list.setBorder(BorderFactory.createEmptyBorder());
+		JScrollPane scrollPane = getScrollPane(list);
+		scrollPane.setViewport(new StripedListViewport(list));
+		scrollPane.getViewport().setView(list);
+		return scrollPane;
+	}
 
-    @Override
-    public JScrollPane getListScrollPane(final JList list) {
-	list.setOpaque(false);
-	list.setBorder(BorderFactory.createEmptyBorder());
-	JScrollPane scrollPane = getScrollPane(list);
-	scrollPane.setViewport(new StripedListViewport(list));
-	scrollPane.getViewport().setView(list);
-	return scrollPane;
-    }
+	@Override
+	public JScrollPane getScrollPane(final Component component) {
+		JScrollPane scrollPane = new JScrollPane(component);
+		scrollPane.setBorder(BorderFactory
+				.createLineBorder(MacOSColors.SEPARATOR_COLOR));
+		return scrollPane;
+	}
 
-    @Override
-    public JScrollPane getScrollPane(final Component component) {
-	JScrollPane scrollPane = new JScrollPane(component);
-	scrollPane.setBorder(BorderFactory
-		.createLineBorder(MacOSColors.SEPARATOR_COLOR));
-	return scrollPane;
-    }
-
-    /**
-     * Creates a component that paints the header background for use in a
-     * JScrollPane corner.
-     */
-    private static JComponent createCornerComponent(final JTable table) {
-	return new JComponent() {
-	    /**
+	/**
+	 * Creates a component that paints the header background for use in a
+	 * JScrollPane corner.
+	 */
+	private static JComponent createCornerComponent(final JTable table) {
+		return new JComponent() {
+			/**
 			 * 
 			 */
-	    private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = 1L;
 
-	    @Override
-	    protected void paintComponent(final Graphics g) {
-		paintHeader(g, table, 0, getWidth());
-	    }
-	};
-    }
+			@Override
+			protected void paintComponent(final Graphics g) {
+				paintHeader(g, table, 0, getWidth());
+			}
+		};
+	}
 
-    /**
-     * Paints the given JTable's table default header background at given x for
-     * the given width.
-     */
-    private static void paintHeader(final Graphics g, final JTable table,
-	    final int x, final int width) {
-	TableCellRenderer renderer = table.getTableHeader()
-		.getDefaultRenderer();
-	Component component = renderer.getTableCellRendererComponent(table, "",
-		false, false, -1, 2);
+	/**
+	 * Paints the given JTable's table default header background at given x for
+	 * the given width.
+	 */
+	private static void paintHeader(final Graphics g, final JTable table,
+			final int x, final int width) {
+		TableCellRenderer renderer = table.getTableHeader()
+				.getDefaultRenderer();
+		Component component = renderer.getTableCellRendererComponent(table, "",
+				false, false, -1, 2);
 
-	component.setBounds(0, 0, width, table.getTableHeader().getHeight());
+		component.setBounds(0, 0, width, table.getTableHeader().getHeight());
 
-	((JComponent) component).setOpaque(false);
-	CELL_RENDER_PANE.paintComponent(g, component, null, x, 0, width, table
-		.getTableHeader().getHeight(), true);
-    }
+		((JComponent) component).setOpaque(false);
+		CELL_RENDER_PANE.paintComponent(g, component, null, x, 0, width, table
+				.getTableHeader().getHeight(), true);
+	}
 
-    @Override
-    public JTable getTable() {
-	JTable table = new JTable();
-	table.setDefaultRenderer(Object.class, getTableCellRenderer(null));
-	table.setShowGrid(false);
-	return table;
-    }
+	@Override
+	public JTable getTable() {
+		JTable table = new JTable();
+		table.setDefaultRenderer(Object.class, getTableCellRenderer(null));
+		table.setShowGrid(false);
+		return table;
+	}
 
-    @Override
-    public void decorateTable(final JTable table) {
-	table.setDefaultRenderer(Object.class, getTableCellRenderer(null));
-	table.setShowGrid(false);
-    }
+	@Override
+	public void decorateTable(final JTable table) {
+		table.setDefaultRenderer(Object.class, getTableCellRenderer(null));
+		table.setShowGrid(false);
+	}
 
-    @Override
-    public JList getList() {
-	JList list = new JList();
-	list.setCellRenderer(getListCellRenderer(null));
-	return list;
-    }
+	@Override
+	public JList getList() {
+		JList list = new JList();
+		list.setCellRenderer(getListCellRenderer(null));
+		return list;
+	}
 
-    @Override
-    public Font getPlayListFont() {
-	return null;
-    }
+	@Override
+	public Font getPlayListFont() {
+		return null;
+	}
 
-    @Override
-    public Font getPlayListSelectedItemFont() {
-	return null;
-    }
+	@Override
+	public Font getPlayListSelectedItemFont() {
+		return null;
+	}
 
-    @Override
-    public boolean isDialogUndecorated() {
-	return false;
-    }
+	@Override
+	public boolean isDialogUndecorated() {
+		return false;
+	}
 
 }

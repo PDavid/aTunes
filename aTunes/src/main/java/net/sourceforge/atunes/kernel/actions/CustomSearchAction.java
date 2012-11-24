@@ -25,6 +25,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -36,34 +37,43 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class CustomSearchAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 7036619806075628842L;
+	private static final long serialVersionUID = 7036619806075628842L;
 
-    private ISearchHandler searchHandler;
+	private ISearchHandler searchHandler;
 
-    /**
-     * @param searchHandler
-     */
-    public void setSearchHandler(final ISearchHandler searchHandler) {
-	this.searchHandler = searchHandler;
-    }
+	private IOSManager osManager;
 
-    /**
-     * Default constructor
-     */
-    public CustomSearchAction() {
-	super(I18nUtils.getString("SEARCH"));
-    }
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
-    @Override
-    protected void initialize() {
-	putValue(
-		ACCELERATOR_KEY,
-		KeyStroke.getKeyStroke(KeyEvent.VK_D,
-			GuiUtils.getCtrlOrMetaActionEventMask()));
-    }
+	/**
+	 * @param searchHandler
+	 */
+	public void setSearchHandler(final ISearchHandler searchHandler) {
+		this.searchHandler = searchHandler;
+	}
 
-    @Override
-    protected void executeAction() {
-	searchHandler.startSearch();
-    }
+	/**
+	 * Default constructor
+	 */
+	public CustomSearchAction() {
+		super(I18nUtils.getString("SEARCH"));
+	}
+
+	@Override
+	protected void initialize() {
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_D,
+						GuiUtils.getCtrlOrMetaActionEventMask(this.osManager)));
+	}
+
+	@Override
+	protected void executeAction() {
+		this.searchHandler.startSearch();
+	}
 }

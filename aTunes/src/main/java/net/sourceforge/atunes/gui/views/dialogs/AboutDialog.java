@@ -38,7 +38,6 @@ import javax.swing.Timer;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode;
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.JavaVirtualMachineStatisticsTableModel;
@@ -75,7 +74,7 @@ public final class AboutDialog extends AbstractCustomDialog implements
 
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-			tableModel.fireTableDataChanged();
+			AboutDialog.this.tableModel.fireTableDataChanged();
 		}
 
 	});
@@ -89,7 +88,8 @@ public final class AboutDialog extends AbstractCustomDialog implements
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	@Override
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
@@ -132,7 +132,7 @@ public final class AboutDialog extends AbstractCustomDialog implements
 	 * @return
 	 */
 	private JPanel getContent(final ILookAndFeel lookAndFeel) {
-		UrlLabel title = new UrlLabel(desktop, StringUtils.getString(
+		UrlLabel title = new UrlLabel(this.desktop, StringUtils.getString(
 				Constants.APP_NAME, " ", Constants.VERSION.toString()),
 				Constants.APP_WEB);
 		title.setFont(lookAndFeel.getAboutBigFont());
@@ -141,23 +141,23 @@ public final class AboutDialog extends AbstractCustomDialog implements
 
 		JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
 
-		JTextArea license = controlsBuilder.createTextArea();
-		license.setText(licenseText);
+		JTextArea license = this.controlsBuilder.createTextArea();
+		license.setText(this.licenseText);
 		license.setEditable(false);
 		license.setLineWrap(true);
 		license.setWrapStyleWord(true);
 		license.setOpaque(false);
 		license.setBorder(BorderFactory.createEmptyBorder());
 
-		UrlLabel contributors = new UrlLabel(desktop,
+		UrlLabel contributors = new UrlLabel(this.desktop,
 				I18nUtils.getString("CONTRIBUTORS"), Constants.CONTRIBUTORS_WEB);
 
 		JTable propertiesTable = lookAndFeel.getTable();
-		propertiesTable.setModel(tableModel);
+		propertiesTable.setModel(this.tableModel);
 		propertiesTable
 				.setDefaultRenderer(
 						Object.class,
-						lookAndFeel.getTableCellRenderer(beanFactory
+						lookAndFeel.getTableCellRenderer(this.beanFactory
 								.getBean(ComponentOrientationTableCellRendererCode.class)));
 		JScrollPane propertiesScrollPane = lookAndFeel
 				.getTableScrollPane(propertiesTable);
@@ -198,7 +198,8 @@ public final class AboutDialog extends AbstractCustomDialog implements
 		c.weighty = 0.1;
 		c.weightx = 1;
 		c.insets = new Insets(0, 40, 0, 0);
-		c.anchor = GuiUtils.getComponentOrientation().isLeftToRight() ? GridBagConstraints.WEST
+		c.anchor = getControlsBuilder().getComponentOrientation()
+				.isLeftToRight() ? GridBagConstraints.WEST
 				: GridBagConstraints.EAST;
 		panel.add(title, c);
 		c.gridy = 1;
@@ -210,7 +211,8 @@ public final class AboutDialog extends AbstractCustomDialog implements
 		c.gridheight = 3;
 		c.insets = new Insets(0, 0, 0, 0);
 		c.weightx = 0.1;
-		c.anchor = GuiUtils.getComponentOrientation().isLeftToRight() ? GridBagConstraints.EAST
+		c.anchor = getControlsBuilder().getComponentOrientation()
+				.isLeftToRight() ? GridBagConstraints.EAST
 				: GridBagConstraints.WEST;
 		panel.add(icon, c);
 
@@ -259,9 +261,9 @@ public final class AboutDialog extends AbstractCustomDialog implements
 	@Override
 	public void setVisible(final boolean visible) {
 		if (visible) {
-			timer.start();
+			this.timer.start();
 		} else {
-			timer.stop();
+			this.timer.stop();
 		}
 		super.setVisible(visible);
 	}
