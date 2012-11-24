@@ -69,15 +69,6 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
 	private IBeanFactory beanFactory;
 
-	private IControlsBuilder controlsBuilder;
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
 	/**
 	 * @param beanFactory
 	 */
@@ -89,9 +80,11 @@ public final class RipCdDialog extends AbstractCustomDialog {
 	 * Instantiates a new rip cd dialog.
 	 * 
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public RipCdDialog(final IFrame frame) {
-		super(frame, 750, 650);
+	public RipCdDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 750, 650, controlsBuilder);
 	}
 
 	@Override
@@ -172,16 +165,16 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
 		JLabel albumArtistLabel = new JLabel(
 				I18nUtils.getString("ALBUM_ARTIST"));
-		this.albumArtistTextField = this.controlsBuilder.createTextField();
+		this.albumArtistTextField = getControlsBuilder().createTextField();
 
 		JLabel albumLabel = new JLabel(I18nUtils.getString("ALBUM"));
-		this.albumTextField = this.controlsBuilder.createTextField();
+		this.albumTextField = getControlsBuilder().createTextField();
 
 		JLabel cdLabel = new JLabel(I18nUtils.getString("DISC_NUMBER"));
-		this.discNumberField = this.controlsBuilder.createTextField();
+		this.discNumberField = getControlsBuilder().createTextField();
 
 		JLabel yearLabel = new JLabel(I18nUtils.getString("YEAR"));
-		this.yearTextField = this.controlsBuilder.createTextField();
+		this.yearTextField = getControlsBuilder().createTextField();
 
 		JLabel genreLabel = new JLabel(I18nUtils.getString("GENRE"));
 		this.genreComboBox = new JComboBox();
@@ -364,15 +357,15 @@ public final class RipCdDialog extends AbstractCustomDialog {
 		table.getColumnModel().getColumn(0)
 				.setCellEditor(new DefaultCellEditor(checkBox));
 
-		JTextField textfield1 = this.controlsBuilder.createTextField();
-		JTextField textfield2 = this.controlsBuilder.createTextField();
-		JTextField textfield3 = this.controlsBuilder.createTextField();
+		JTextField textfield1 = getControlsBuilder().createTextField();
+		JTextField textfield2 = getControlsBuilder().createTextField();
+		JTextField textfield3 = getControlsBuilder().createTextField();
 		textfield1.setBorder(BorderFactory.createEmptyBorder());
 		textfield2.setBorder(BorderFactory.createEmptyBorder());
 		textfield3.setBorder(BorderFactory.createEmptyBorder());
-		this.controlsBuilder.applyComponentOrientation(textfield1);
-		this.controlsBuilder.applyComponentOrientation(textfield2);
-		this.controlsBuilder.applyComponentOrientation(textfield3);
+		getControlsBuilder().applyComponentOrientation(textfield1);
+		getControlsBuilder().applyComponentOrientation(textfield2);
+		getControlsBuilder().applyComponentOrientation(textfield3);
 
 		table.getColumnModel().getColumn(1)
 				.setCellEditor(new DefaultCellEditor(textfield1));

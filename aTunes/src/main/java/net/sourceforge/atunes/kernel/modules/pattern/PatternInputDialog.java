@@ -67,46 +67,51 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 	private final class OkActionListener implements ActionListener {
 		private final boolean massiveRecognition;
 
-		private OkActionListener(boolean massiveRecognition) {
+		private OkActionListener(final boolean massiveRecognition) {
 			this.massiveRecognition = massiveRecognition;
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			result = (String) patternComboBox.getSelectedItem();
+		public void actionPerformed(final ActionEvent e) {
+			PatternInputDialog.this.result = (String) PatternInputDialog.this.patternComboBox
+					.getSelectedItem();
 
-			if (result != null && !result.trim().equals("")) {
+			if (PatternInputDialog.this.result != null
+					&& !PatternInputDialog.this.result.trim().equals("")) {
 				// Upper case all patterns found in result
-				for (AbstractPattern pattern : patterns.getPatternsList()) {
-					result = result.replace(pattern.getPattern().toLowerCase(),
-							pattern.getPattern());
+				for (AbstractPattern pattern : PatternInputDialog.this.patterns
+						.getPatternsList()) {
+					PatternInputDialog.this.result = PatternInputDialog.this.result
+							.replace(pattern.getPattern().toLowerCase(),
+									pattern.getPattern());
 				}
 
 				// If pattern was not already used add to list of previously
 				// used patterns
 				List<String> previousPatterns = null;
-				if (massiveRecognition) {
-					previousPatterns = stateRepository
+				if (this.massiveRecognition) {
+					previousPatterns = PatternInputDialog.this.stateRepository
 							.getMassiveRecognitionPatterns();
 				} else {
-					previousPatterns = stateRepository.getRecognitionPatterns();
+					previousPatterns = PatternInputDialog.this.stateRepository
+							.getRecognitionPatterns();
 				}
 
 				// Create previous list if necessary
 				if (previousPatterns == null) {
 					previousPatterns = new ArrayList<String>();
-					if (massiveRecognition) {
-						stateRepository
+					if (this.massiveRecognition) {
+						PatternInputDialog.this.stateRepository
 								.setMassiveRecognitionPatterns(previousPatterns);
 					} else {
-						stateRepository
+						PatternInputDialog.this.stateRepository
 								.setRecognitionPatterns(previousPatterns);
 					}
 				}
 
 				// Test
-				if (!previousPatterns.contains(result)) {
-					previousPatterns.add(result);
+				if (!previousPatterns.contains(PatternInputDialog.this.result)) {
+					previousPatterns.add(PatternInputDialog.this.result);
 				}
 			}
 			dispose();
@@ -146,28 +151,28 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
 	/**
 	 * @param patternMatcher
 	 */
-	public void setPatternMatcher(PatternMatcher patternMatcher) {
+	public void setPatternMatcher(final PatternMatcher patternMatcher) {
 		this.patternMatcher = patternMatcher;
 	}
 
 	/**
 	 * @param patterns
 	 */
-	public void setPatterns(Patterns patterns) {
+	public void setPatterns(final Patterns patterns) {
 		this.patterns = patterns;
 	}
 
 	/**
 	 * @param stateRepository
 	 */
-	public void setStateRepository(IStateRepository stateRepository) {
+	public void setStateRepository(final IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
 	}
 
@@ -179,9 +184,12 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 	 *            <code>true</code> if the dialog will be used to enter a
 	 *            pattern for massive recognition or <code>false</code> for
 	 *            non-massive recognition (single file level)
+	 * @param controlsBuilder
 	 */
-	public PatternInputDialog(IFrame frame, final boolean massiveRecognition) {
-		super(frame, 550, 350);
+	public PatternInputDialog(final IFrame frame,
+			final boolean massiveRecognition,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 550, 350, controlsBuilder);
 		this.massiveRecognition = massiveRecognition;
 	}
 
@@ -192,7 +200,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 		setTitle(I18nUtils.getString("PATTERN_INPUT"));
 
 		// Label with instructions
-		JTextArea textArea = controlsBuilder.createTextArea();
+		JTextArea textArea = this.controlsBuilder.createTextArea();
 		textArea.setText(I18nUtils.getString("PATTERN_INPUT_INSTRUCTIONS"));
 		textArea.setBorder(BorderFactory.createEmptyBorder());
 		textArea.setWrapStyleWord(true);
@@ -202,25 +210,26 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 
 		// Combo box used to enter pattern
 		List<String> previousPatterns = null;
-		if (massiveRecognition) {
-			previousPatterns = stateRepository.getMassiveRecognitionPatterns();
+		if (this.massiveRecognition) {
+			previousPatterns = this.stateRepository
+					.getMassiveRecognitionPatterns();
 		} else {
-			previousPatterns = stateRepository.getRecognitionPatterns();
+			previousPatterns = this.stateRepository.getRecognitionPatterns();
 		}
 		// Sort list
 		if (previousPatterns != null) {
 			Collections.sort(previousPatterns);
 		}
-		patternComboBox = new JComboBox(
+		this.patternComboBox = new JComboBox(
 				previousPatterns != null ? previousPatterns
 						.toArray(new String[previousPatterns.size()])
 						: new String[0]);
-		patternComboBox.setEditable(true);
+		this.patternComboBox.setEditable(true);
 
 		JPanel patternPreviewPanel = new JPanel(new BorderLayout());
-		patternPreviewTable = getLookAndFeel().getTable();
+		this.patternPreviewTable = getLookAndFeel().getTable();
 		JScrollPane patternPreviewTableScrollPane = getLookAndFeel()
-				.getTableScrollPane(patternPreviewTable);
+				.getTableScrollPane(this.patternPreviewTable);
 		patternPreviewPanel.add(patternPreviewTableScrollPane,
 				BorderLayout.CENTER);
 		patternPreviewPanel.setBorder(BorderFactory.createTitledBorder(
@@ -228,28 +237,32 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 				I18nUtils.getString("PREVIEW")));
 
 		JPanel availablePatternsPanel = new JPanel(new BorderLayout());
-		availablePatternsTable = getLookAndFeel().getTable();
-		availablePatternsTable.addMouseListener(new MouseAdapter() {
+		this.availablePatternsTable = getLookAndFeel().getTable();
+		this.availablePatternsTable.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					// Get pattern being clicked
-					int row = availablePatternsTable.rowAtPoint(e.getPoint());
+					int row = PatternInputDialog.this.availablePatternsTable
+							.rowAtPoint(e.getPoint());
 					// Access model to get pattern selected
-					String pattern = ((AvailablePatternsDefaultTableModel) availablePatternsTable
+					String pattern = ((AvailablePatternsDefaultTableModel) PatternInputDialog.this.availablePatternsTable
 							.getModel()).getPatternAtRow(row);
 					// Add pattern to current one
-					String newPattern = StringUtils.getString(patternComboBox
-							.getEditor().getItem(), pattern);
-					patternComboBox.getEditor().setItem(newPattern);
-					patternComboBox.setSelectedItem(newPattern);
+					String newPattern = StringUtils.getString(
+							PatternInputDialog.this.patternComboBox.getEditor()
+									.getItem(), pattern);
+					PatternInputDialog.this.patternComboBox.getEditor()
+							.setItem(newPattern);
+					PatternInputDialog.this.patternComboBox
+							.setSelectedItem(newPattern);
 					// Update pattern preview
-					previewPattern(massiveRecognition);
+					previewPattern(PatternInputDialog.this.massiveRecognition);
 				}
 			}
 		});
 		JScrollPane availablePatternsScrollPane = getLookAndFeel()
-				.getTableScrollPane(availablePatternsTable);
+				.getTableScrollPane(this.availablePatternsTable);
 		availablePatternsPanel.add(availablePatternsScrollPane,
 				BorderLayout.CENTER);
 		availablePatternsPanel.setBorder(BorderFactory.createTitledBorder(
@@ -257,34 +270,35 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 				I18nUtils.getString("AVAILABLE_PATTERNS")));
 
 		JButton okButton = new JButton(I18nUtils.getString("OK"));
-		ActionListener okListener = new OkActionListener(massiveRecognition);
+		ActionListener okListener = new OkActionListener(
+				this.massiveRecognition);
 		okButton.addActionListener(okListener);
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				result = null;
+			public void actionPerformed(final ActionEvent e) {
+				PatternInputDialog.this.result = null;
 				dispose();
 			}
 		});
 
-		patternComboBox.addActionListener(new ActionListener() {
+		this.patternComboBox.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				previewPattern(massiveRecognition);
+			public void actionPerformed(final ActionEvent e) {
+				previewPattern(PatternInputDialog.this.massiveRecognition);
 			}
 		});
 
-		patternComboBox.getEditor().getEditorComponent()
+		this.patternComboBox.getEditor().getEditorComponent()
 				.addKeyListener(new KeyAdapter() {
 					@Override
-					public void keyTyped(KeyEvent e) {
+					public void keyTyped(final KeyEvent e) {
 						super.keyTyped(e);
 
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
-								previewPattern(massiveRecognition);
+								previewPattern(PatternInputDialog.this.massiveRecognition);
 							}
 						});
 					}
@@ -299,8 +313,10 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 				okButton, auxPanel);
 	}
 
-	private void arrangeDialog(JTextArea textArea, JPanel patternPreviewPanel,
-			JPanel availablePatternsPanel, JButton okButton, JPanel auxPanel) {
+	private void arrangeDialog(final JTextArea textArea,
+			final JPanel patternPreviewPanel,
+			final JPanel availablePatternsPanel, final JButton okButton,
+			final JPanel auxPanel) {
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
@@ -312,7 +328,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 		panel.add(textArea, c);
 		c.gridy = 1;
 		c.insets = new Insets(5, 30, 5, 30);
-		panel.add(patternComboBox, c);
+		panel.add(this.patternComboBox, c);
 		c.gridx = 0;
 		c.gridy = 2;
 		c.weightx = 0.7;
@@ -341,10 +357,11 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 	 * 
 	 * @param massiveRecognition
 	 */
-	void previewPattern(boolean massiveRecognition) {
-		Map<String, String> matches = patternMatcher.getPatternMatches(
-				((JTextField) patternComboBox.getEditor().getEditorComponent())
-						.getText(), previewString, massiveRecognition);
+	void previewPattern(final boolean massiveRecognition) {
+		Map<String, String> matches = this.patternMatcher.getPatternMatches(
+				((JTextField) this.patternComboBox.getEditor()
+						.getEditorComponent()).getText(), this.previewString,
+				massiveRecognition);
 
 		String[][] data = new String[matches.size()][2];
 		int i = 0;
@@ -354,8 +371,8 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 			i++;
 		}
 
-		((DefaultTableModel) patternPreviewTable.getModel()).setDataVector(
-				data, PREVIEW_COLUMN_NAMES);
+		((DefaultTableModel) this.patternPreviewTable.getModel())
+				.setDataVector(data, PREVIEW_COLUMN_NAMES);
 	}
 
 	/**
@@ -364,7 +381,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 	 * @return the result
 	 */
 	public String getResult() {
-		return result;
+		return this.result;
 	}
 
 	/**
@@ -373,10 +390,10 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 	 * @param availablePatterns
 	 * @param previewString
 	 */
-	public void show(List<AbstractPattern> availablePatterns,
-			String previewString) {
+	public void show(final List<AbstractPattern> availablePatterns,
+			final String previewString) {
 		this.previewString = previewString;
-		patternComboBox.setSelectedIndex(-1);
+		this.patternComboBox.setSelectedIndex(-1);
 
 		String[][] patternsMatrix = new String[availablePatterns.size()][2];
 		int i = 0;
@@ -386,19 +403,19 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 			i++;
 		}
 		// Disable autoresize, as we will control it
-		patternPreviewTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		patternPreviewTable
+		this.patternPreviewTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		this.patternPreviewTable
 				.setColumnModel(new PatternPreviewDefaultTableColumnModel());
 		DefaultTableModel patternPreviewTableModel = new PatternPreviewDefaultTableModel(
 				new String[0][2], PREVIEW_COLUMN_NAMES);
-		patternPreviewTable.setModel(patternPreviewTableModel);
+		this.patternPreviewTable.setModel(patternPreviewTableModel);
 
 		DefaultTableModel availablePatternsTableModel = new AvailablePatternsDefaultTableModel(
 				patternsMatrix, new String[] { I18nUtils.getString("PATTERN"),
 						I18nUtils.getString("DESCRIPTION") });
-		availablePatternsTable.setModel(availablePatternsTableModel);
+		this.availablePatternsTable.setModel(availablePatternsTableModel);
 		setVisible(true);
-		patternComboBox.requestFocus();
+		this.patternComboBox.requestFocus();
 	}
 
 }

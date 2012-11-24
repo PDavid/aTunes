@@ -34,6 +34,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -55,9 +56,11 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
 	 * Instantiates a new edits the preferences dialog.
 	 * 
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public EditPreferencesDialog(final IFrame frame) {
-		super(frame, 900, 700);
+	public EditPreferencesDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 900, 700, controlsBuilder);
 	}
 
 	@Override

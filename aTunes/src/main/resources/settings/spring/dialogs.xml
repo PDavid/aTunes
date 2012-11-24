@@ -8,78 +8,101 @@
 	
 	<bean id="equalizerDialog" class="net.sourceforge.atunes.kernel.modules.player.EqualizerDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean> 
 	<bean id="progressDialog" class="net.sourceforge.atunes.gui.views.dialogs.ProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="transferDialog" class="net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="columnSelectorDialog" class="net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="ripCdDialog" class="net.sourceforge.atunes.kernel.modules.cdripper.RipCdDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="ripperProgressDialog" class="net.sourceforge.atunes.kernel.modules.cdripper.RipperProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="aboutDialog" class="net.sourceforge.atunes.gui.views.dialogs.AboutDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="repositoryProgressDialog" class="net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="searchDialog" class="net.sourceforge.atunes.gui.views.dialogs.SearchDialog" scope="prototype">
 		<constructor-arg ref="frame"/>	
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="reviewImportDialog" class="net.sourceforge.atunes.kernel.modules.tags.ReviewImportDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="addPodcastFeedDialog" class="net.sourceforge.atunes.kernel.modules.podcast.AddPodcastFeedDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="artistAlbumSelectorDialog" class="net.sourceforge.atunes.kernel.modules.playlist.ArtistAlbumSelectorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="inputDialog" class="net.sourceforge.atunes.gui.views.dialogs.InputDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="errorDialog" class="net.sourceforge.atunes.gui.views.dialogs.ErrorDialog" scope="prototype"/>
 	<bean id="exceptionDialog" class="net.sourceforge.atunes.gui.views.dialogs.ExceptionDialog" scope="prototype">
 			<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="confirmationDialog" class="net.sourceforge.atunes.gui.views.dialogs.ConfirmationDialog" scope="prototype"/>
 	<bean id="messageDialog" class="net.sourceforge.atunes.gui.views.dialogs.MessageDialog" scope="prototype"/>
 	<bean id="listMessageDialog" class="net.sourceforge.atunes.gui.views.dialogs.ListMessageDialog" scope="prototype">
 			<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>	
 	<bean id="fileSelectorDialog" class="net.sourceforge.atunes.gui.views.dialogs.FileSelectorDialog" scope="prototype"/>
 	<bean id="radioDialog" class="net.sourceforge.atunes.gui.views.dialogs.RadioDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	
 	<bean id="audioObjectPropertiesDialogFactory" class="net.sourceforge.atunes.gui.views.dialogs.properties.AudioObjectPropertiesDialogFactory" scope="prototype"/>
 	<bean id="podcastFeedEntryPropertiesDialog" class="net.sourceforge.atunes.gui.views.dialogs.properties.PodcastFeedEntryPropertiesDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="localAudioObjectPropertiesDialog" class="net.sourceforge.atunes.gui.views.dialogs.properties.LocalAudioObjectPropertiesDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="radioPropertiesDialog" class="net.sourceforge.atunes.gui.views.dialogs.properties.RadioPropertiesDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="statsDialog" class="net.sourceforge.atunes.kernel.modules.statistics.StatsDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="radioBrowserDialog" class="net.sourceforge.atunes.kernel.modules.radio.RadioBrowserDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="editPreferencesDialog" class="net.sourceforge.atunes.kernel.modules.state.EditPreferencesDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="coverNavigatorDialog" class="net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	
 	<bean id="fullScreenWindowFactory" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenWindowFactory" scope="prototype"/>
@@ -90,61 +113,75 @@
 	
 	<bean id="customSearchDialog" class="net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="editTitlesDialog" class="net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 
 	<bean class="net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>	
 	
 	<bean class="net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 
 	<bean id="editTagDialog" class="net.sourceforge.atunes.gui.views.dialogs.EditTagDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	
 	<bean class="net.sourceforge.atunes.kernel.modules.os.MacOSXPlayerSelectionDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 
 	<bean id="massivePatternInputDialog" class="net.sourceforge.atunes.kernel.modules.pattern.PatternInputDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg value="true"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 
 	<bean id="nonMassivePatternInputDialog" class="net.sourceforge.atunes.kernel.modules.pattern.PatternInputDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg value="false"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	
 	<bean class="net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 
 	<bean class="net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 
 	<bean class="net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 
 	<bean class="net.sourceforge.atunes.gui.views.dialogs.UpdateDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	
 	<bean class="net.sourceforge.atunes.gui.views.dialogs.SelectorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 
 	<bean class="net.sourceforge.atunes.gui.views.dialogs.FolderSelectorDialog" scope="prototype"/>
 	
 	<bean class="net.sourceforge.atunes.gui.views.dialogs.MakeDonationDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
 		<property name="donationUrl" value="http://sourceforge.net/donate/index.php?group_id=161929"/>
 	</bean>
 </beans>

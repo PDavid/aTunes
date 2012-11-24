@@ -54,7 +54,7 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
@@ -62,22 +62,24 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 	 * Instantiates a new repository selection info dialog.
 	 * 
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public MakeDonationDialog(IFrame frame) {
-		super(frame, 500, 300);
+	public MakeDonationDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 500, 300, controlsBuilder);
 	}
 
 	/**
 	 * @param donationUrl
 	 */
-	public void setDonationUrl(String donationUrl) {
+	public void setDonationUrl(final String donationUrl) {
 		this.donationUrl = donationUrl;
 	}
 
 	/**
 	 * @param desktop
 	 */
-	public void setDesktop(IDesktop desktop) {
+	public void setDesktop(final IDesktop desktop) {
 		this.desktop = desktop;
 	}
 
@@ -94,7 +96,7 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 	private void setContent() {
 		JPanel panel = new JPanel(new GridBagLayout());
 		JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
-		JTextArea text = controlsBuilder.createTextArea();
+		JTextArea text = this.controlsBuilder.createTextArea();
 		text.setText(I18nUtils.getString("MAKE_DONATION_INFO"));
 		text.setOpaque(false);
 		text.setEditable(false);
@@ -105,8 +107,9 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 				Images.getImage(Images.PROJECT_SUPPORT));
 		donateButton.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				desktop.openURL(donationUrl);
+			public void mouseClicked(final MouseEvent e) {
+				MakeDonationDialog.this.desktop
+						.openURL(MakeDonationDialog.this.donationUrl);
 			}
 		});
 		GridBagConstraints c = new GridBagConstraints();

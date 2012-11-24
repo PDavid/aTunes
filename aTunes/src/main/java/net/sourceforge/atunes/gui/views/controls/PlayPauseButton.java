@@ -53,21 +53,22 @@ public final class PlayPauseButton extends JButton implements
 	/**
 	 * @param pauseIcon
 	 */
-	public void setPauseIcon(PauseImageIcon pauseIcon) {
+	public void setPauseIcon(final PauseImageIcon pauseIcon) {
 		this.pauseIcon = pauseIcon;
 	}
 
 	/**
 	 * @param playIcon
 	 */
-	public void setPlayIcon(PlayImageIcon playIcon) {
+	public void setPlayIcon(final PlayImageIcon playIcon) {
 		this.playIcon = playIcon;
 	}
 
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
@@ -76,8 +77,15 @@ public final class PlayPauseButton extends JButton implements
 	 * 
 	 * @param playAction
 	 */
-	public PlayPauseButton(Action playAction) {
+	public PlayPauseButton(final Action playAction) {
 		super(playAction);
+	}
+
+	/**
+	 * @param playButtonSize
+	 */
+	public void setPlayButtonSize(final Dimension playButtonSize) {
+		this.playButtonSize = playButtonSize;
 	}
 
 	/**
@@ -85,16 +93,17 @@ public final class PlayPauseButton extends JButton implements
 	 */
 	public void initialize() {
 		// Force size of button
-		setPreferredSize(playButtonSize);
-		setMinimumSize(playButtonSize);
-		setMaximumSize(playButtonSize);
+		setPreferredSize(this.playButtonSize);
+		setMinimumSize(this.playButtonSize);
+		setMaximumSize(this.playButtonSize);
 		setFocusable(false);
 		setText(null);
 
 		setIcon();
 
-		lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
-		lookAndFeelManager.addLookAndFeelChangeListener(this);
+		this.lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(
+				this);
+		this.lookAndFeelManager.addLookAndFeelChangeListener(this);
 	}
 
 	/**
@@ -112,7 +121,7 @@ public final class PlayPauseButton extends JButton implements
 		});
 	}
 
-	private void setPlayingState(boolean playing) {
+	private void setPlayingState(final boolean playing) {
 		this.playing = playing;
 		setIcon();
 	}
@@ -123,7 +132,7 @@ public final class PlayPauseButton extends JButton implements
 	 * @return true, if is playing
 	 */
 	public boolean isPlaying() {
-		return playing;
+		return this.playing;
 	}
 
 	@Override
@@ -132,14 +141,14 @@ public final class PlayPauseButton extends JButton implements
 	}
 
 	private void setIcon() {
-		if (playing) {
-			pauseIcon.setSize(playButtonSize);
-			setIcon(pauseIcon.getIcon(lookAndFeelManager
+		if (this.playing) {
+			this.pauseIcon.setSize(this.playButtonSize);
+			setIcon(this.pauseIcon.getIcon(this.lookAndFeelManager
 					.getCurrentLookAndFeel().getPaintForSpecialControls()));
 		} else {
-			playIcon.setSize(playButtonSize);
-			setIcon(playIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel()
-					.getPaintForSpecialControls()));
+			this.playIcon.setSize(this.playButtonSize);
+			setIcon(this.playIcon.getIcon(this.lookAndFeelManager
+					.getCurrentLookAndFeel().getPaintForSpecialControls()));
 		}
 	}
 }

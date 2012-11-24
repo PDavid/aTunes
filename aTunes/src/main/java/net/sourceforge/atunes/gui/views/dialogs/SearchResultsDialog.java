@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -38,122 +39,128 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class SearchResultsDialog extends AbstractCustomDialog {
 
-    private static final long serialVersionUID = 7219089044964361102L;
+	private static final long serialVersionUID = 7219089044964361102L;
 
-    /** Table to show search results. */
-    private JTable searchResultsTable;
+	/** Table to show search results. */
+	private JTable searchResultsTable;
 
-    /** Button to show element info. */
-    private JButton showElementInfo;
+	/** Button to show element info. */
+	private JButton showElementInfo;
 
-    /** Button to add selected results to current play list. */
-    private JButton addToCurrentPlayList;
+	/** Button to add selected results to current play list. */
+	private JButton addToCurrentPlayList;
 
-    /** Button to add selected results to a new play list. */
-    private JButton addToNewPlayList;
+	/** Button to add selected results to a new play list. */
+	private JButton addToNewPlayList;
 
-    /**
-     * Instantiates a new search results dialog.
-     * @param frame
-     */
-    public SearchResultsDialog(IFrame frame) {
-        super(frame, 800, 600);
-    }
-    
-    @Override
-    public void initialize() {
-        setResizable(true);
-        setTitle(I18nUtils.getString("SEARCH_RESULTS"));
-        add(getContent(getLookAndFeel()));
-    }
+	/**
+	 * Instantiates a new search results dialog.
+	 * 
+	 * @param frame
+	 * @param controlsBuilder
+	 */
+	public SearchResultsDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 800, 600, controlsBuilder);
+	}
 
-    /**
-     * Gets the content.
-     * @param iLookAndFeel 
-     * 
-     * @return the content
-     */
-    private JPanel getContent(ILookAndFeel iLookAndFeel) {
-        JPanel panel = new JPanel(new GridBagLayout());
-        searchResultsTable = iLookAndFeel.getTable();
-        // Disable autoresize, as we will control it
-        searchResultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	@Override
+	public void initialize() {
+		setResizable(true);
+		setTitle(I18nUtils.getString("SEARCH_RESULTS"));
+		add(getContent(getLookAndFeel()));
+	}
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.insets = new Insets(5, 5, 5, 5);
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        panel.add(iLookAndFeel.getTableScrollPane(searchResultsTable), c);
+	/**
+	 * Gets the content.
+	 * 
+	 * @param iLookAndFeel
+	 * 
+	 * @return the content
+	 */
+	private JPanel getContent(final ILookAndFeel iLookAndFeel) {
+		JPanel panel = new JPanel(new GridBagLayout());
+		this.searchResultsTable = iLookAndFeel.getTable();
+		// Disable autoresize, as we will control it
+		this.searchResultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        c.weighty = 0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridy = 1;
-        panel.add(getButtonsPanel(), c);
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.insets = new Insets(5, 5, 5, 5);
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		panel.add(iLookAndFeel.getTableScrollPane(this.searchResultsTable), c);
 
-        return panel;
-    }
+		c.weighty = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridy = 1;
+		panel.add(getButtonsPanel(), c);
 
-    /**
-     * Gets the buttons panel.
-     * 
-     * @return the buttons panel
-     */
-    private JPanel getButtonsPanel() {
-        JPanel buttonsPanel = new JPanel(new GridBagLayout());
-        showElementInfo = new JButton(I18nUtils.getString("INFO"));
-        addToCurrentPlayList = new JButton(I18nUtils.getString("ADD_TO_PLAYLIST"));
-        addToNewPlayList = new JButton(I18nUtils.getString("ADD_TO_NEW_PLAYLIST"));
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0.2;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(5, 5, 5, 5);
-        buttonsPanel.add(showElementInfo, c);
-        c.gridx = 1;
-        buttonsPanel.add(addToCurrentPlayList, c);
-        c.gridx = 2;
-        buttonsPanel.add(addToNewPlayList, c);
-        return buttonsPanel;
-    }
+		return panel;
+	}
 
-    /**
-     * Gets the search results table.
-     * 
-     * @return the searchResultsTable
-     */
-    public JTable getSearchResultsTable() {
-        return searchResultsTable;
-    }
+	/**
+	 * Gets the buttons panel.
+	 * 
+	 * @return the buttons panel
+	 */
+	private JPanel getButtonsPanel() {
+		JPanel buttonsPanel = new JPanel(new GridBagLayout());
+		this.showElementInfo = new JButton(I18nUtils.getString("INFO"));
+		this.addToCurrentPlayList = new JButton(
+				I18nUtils.getString("ADD_TO_PLAYLIST"));
+		this.addToNewPlayList = new JButton(
+				I18nUtils.getString("ADD_TO_NEW_PLAYLIST"));
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 0.2;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(5, 5, 5, 5);
+		buttonsPanel.add(this.showElementInfo, c);
+		c.gridx = 1;
+		buttonsPanel.add(this.addToCurrentPlayList, c);
+		c.gridx = 2;
+		buttonsPanel.add(this.addToNewPlayList, c);
+		return buttonsPanel;
+	}
 
-    /**
-     * Gets the show element info.
-     * 
-     * @return the showElementInfo
-     */
-    public JButton getShowElementInfo() {
-        return showElementInfo;
-    }
+	/**
+	 * Gets the search results table.
+	 * 
+	 * @return the searchResultsTable
+	 */
+	public JTable getSearchResultsTable() {
+		return this.searchResultsTable;
+	}
 
-    /**
-     * Gets the add to current play list.
-     * 
-     * @return the addToCurrentPlayList
-     */
-    public JButton getAddToCurrentPlayList() {
-        return addToCurrentPlayList;
-    }
+	/**
+	 * Gets the show element info.
+	 * 
+	 * @return the showElementInfo
+	 */
+	public JButton getShowElementInfo() {
+		return this.showElementInfo;
+	}
 
-    /**
-     * Gets the add to new play list.
-     * 
-     * @return the addToNewPlayList
-     */
-    public JButton getAddToNewPlayList() {
-        return addToNewPlayList;
-    }
+	/**
+	 * Gets the add to current play list.
+	 * 
+	 * @return the addToCurrentPlayList
+	 */
+	public JButton getAddToCurrentPlayList() {
+		return this.addToCurrentPlayList;
+	}
+
+	/**
+	 * Gets the add to new play list.
+	 * 
+	 * @return the addToNewPlayList
+	 */
+	public JButton getAddToNewPlayList() {
+		return this.addToNewPlayList;
+	}
 
 }

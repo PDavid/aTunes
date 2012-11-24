@@ -57,27 +57,20 @@ public final class UpdateDialog extends AbstractCustomDialog implements
 
 	private IDesktop desktop;
 
-	private IControlsBuilder controlsBuilder;
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
 	/**
 	 * @param desktop
 	 */
-	public void setDesktop(IDesktop desktop) {
+	public void setDesktop(final IDesktop desktop) {
 		this.desktop = desktop;
 	}
 
 	/**
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public UpdateDialog(IFrame frame) {
-		super(frame, 400, 150);
+	public UpdateDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 400, 150, controlsBuilder);
 	}
 
 	/**
@@ -86,7 +79,7 @@ public final class UpdateDialog extends AbstractCustomDialog implements
 	 * @param version
 	 */
 	@Override
-	public void initialize(ApplicationVersion version) {
+	public void initialize(final ApplicationVersion version) {
 		setTitle(I18nUtils.getString("NEW_VERSION_AVAILABLE"));
 		setResizable(false);
 
@@ -97,7 +90,7 @@ public final class UpdateDialog extends AbstractCustomDialog implements
 
 		JLabel img = new JLabel(Images.getImage(Images.APP_LOGO_90));
 
-		JTextArea text1 = controlsBuilder.createTextArea();
+		JTextArea text1 = getControlsBuilder().createTextArea();
 		text1.setText(text);
 		text1.setBorder(BorderFactory.createEmptyBorder());
 		text1.setEditable(false);
@@ -105,7 +98,7 @@ public final class UpdateDialog extends AbstractCustomDialog implements
 		text1.setLineWrap(true);
 		text1.setWrapStyleWord(true);
 
-		UrlLabel url = new UrlLabel(desktop,
+		UrlLabel url = new UrlLabel(this.desktop,
 				I18nUtils.getString("GO_TO_DOWNLOAD_PAGE"),
 				version.getDownloadURL());
 		url.setHorizontalAlignment(SwingConstants.CENTER);
@@ -113,7 +106,7 @@ public final class UpdateDialog extends AbstractCustomDialog implements
 		JButton ok = new JButton(I18nUtils.getString("OK"));
 		ok.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				dispose();
 			}
 		});

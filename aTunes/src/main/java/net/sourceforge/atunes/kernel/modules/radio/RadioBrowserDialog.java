@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -45,91 +46,98 @@ import org.jdesktop.swingx.JXTreeTable;
  */
 public final class RadioBrowserDialog extends AbstractCustomDialog {
 
-    private static final long serialVersionUID = 8523236886848649698L;
+	private static final long serialVersionUID = 8523236886848649698L;
 
-    /** The table. */
-    private JXTreeTable treeTable;
+	/** The table. */
+	private JXTreeTable treeTable;
 
-    private IIconFactory radioMediumIcon;
+	private IIconFactory radioMediumIcon;
 
-    /**
-     * Instantiates a new radio browser dialog.
-     * @param frame
-     */
-    public RadioBrowserDialog(IFrame frame) {
-        super(frame, 800, 600);
-    }
-    
-    /**
-     * @param radioMediumIcon
-     */
-    public void setRadioMediumIcon(IIconFactory radioMediumIcon) {
+	/**
+	 * Instantiates a new radio browser dialog.
+	 * 
+	 * @param frame
+	 * @param controlsBuilder
+	 */
+	public RadioBrowserDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 800, 600, controlsBuilder);
+	}
+
+	/**
+	 * @param radioMediumIcon
+	 */
+	public void setRadioMediumIcon(final IIconFactory radioMediumIcon) {
 		this.radioMediumIcon = radioMediumIcon;
 	}
-    
-    @Override
-    public void initialize() {
-        setTitle(I18nUtils.getString("RADIO_BROWSER"));
-        setContent(getLookAndFeel());
-    }
 
-    @Override
-    public void hideDialog() {
-    	setVisible(false);
-    }
-    
-    @Override
-    public void showDialog() {
-    	setVisible(true);
-    }
-    
-    /**
-     * Sets the content.
-     * @param iLookAndFeel 
-     */
-    private void setContent(ILookAndFeel iLookAndFeel) {
-        JPanel panel = new JPanel(new GridBagLayout());
-        treeTable = new JXTreeTable();
-        treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-        JLabel radioIcon = new JLabel(radioMediumIcon.getIcon(getLookAndFeel().getPaintForSpecialControls()));
-        JLabel browserInstructions = new JLabel(I18nUtils.getString("RADIO_BROWSER_INSTRUCTIONS"));
-        JButton closeButton = new JButton(I18nUtils.getString("CLOSE"));
-        closeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
-        topPanel.add(radioIcon, BorderLayout.WEST);
-        topPanel.add(browserInstructions, BorderLayout.CENTER);
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.anchor = GridBagConstraints.WEST;
-        c.insets = new Insets(10, 20, 10, 20);
-        panel.add(topPanel, c);
-        c.gridy = 1;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        panel.add(iLookAndFeel.getScrollPane(treeTable), c);
-        c.gridy = 2;
-        c.weightx = 0;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.CENTER;
-        panel.add(closeButton, c);
-        add(panel);
-    }
+	@Override
+	public void initialize() {
+		setTitle(I18nUtils.getString("RADIO_BROWSER"));
+		setContent(getLookAndFeel());
+	}
 
-    /**
-     * Gets the table.
-     * 
-     * @return the table
-     */
-    public JXTreeTable getTreeTable() {
-        return treeTable;
-    }
+	@Override
+	public void hideDialog() {
+		setVisible(false);
+	}
+
+	@Override
+	public void showDialog() {
+		setVisible(true);
+	}
+
+	/**
+	 * Sets the content.
+	 * 
+	 * @param iLookAndFeel
+	 */
+	private void setContent(final ILookAndFeel iLookAndFeel) {
+		JPanel panel = new JPanel(new GridBagLayout());
+		this.treeTable = new JXTreeTable();
+		this.treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		JPanel topPanel = new JPanel(new BorderLayout(10, 0));
+		JLabel radioIcon = new JLabel(
+				this.radioMediumIcon.getIcon(getLookAndFeel()
+						.getPaintForSpecialControls()));
+		JLabel browserInstructions = new JLabel(
+				I18nUtils.getString("RADIO_BROWSER_INSTRUCTIONS"));
+		JButton closeButton = new JButton(I18nUtils.getString("CLOSE"));
+		closeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				setVisible(false);
+			}
+		});
+		topPanel.add(radioIcon, BorderLayout.WEST);
+		topPanel.add(browserInstructions, BorderLayout.CENTER);
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.WEST;
+		c.insets = new Insets(10, 20, 10, 20);
+		panel.add(topPanel, c);
+		c.gridy = 1;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		panel.add(iLookAndFeel.getScrollPane(this.treeTable), c);
+		c.gridy = 2;
+		c.weightx = 0;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.CENTER;
+		panel.add(closeButton, c);
+		add(panel);
+	}
+
+	/**
+	 * Gets the table.
+	 * 
+	 * @return the table
+	 */
+	public JXTreeTable getTreeTable() {
+		return this.treeTable;
+	}
 
 }

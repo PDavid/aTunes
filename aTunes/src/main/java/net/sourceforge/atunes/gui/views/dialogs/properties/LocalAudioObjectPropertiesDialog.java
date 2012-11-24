@@ -74,19 +74,10 @@ public final class LocalAudioObjectPropertiesDialog extends
 
 	private IBeanFactory beanFactory;
 
-	private IControlsBuilder controlsBuilder;
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
@@ -102,9 +93,11 @@ public final class LocalAudioObjectPropertiesDialog extends
 	 * Instantiates a new audio file properties dialog.
 	 * 
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	LocalAudioObjectPropertiesDialog(final IFrame frame) {
-		super(frame);
+	LocalAudioObjectPropertiesDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, controlsBuilder);
 	}
 
 	@Override
@@ -156,39 +149,42 @@ public final class LocalAudioObjectPropertiesDialog extends
 	private void addContent(final ILookAndFeel lookAndFeel) {
 		JPanel panel = new JPanel(new GridBagLayout());
 
-		pictureLabel = new JLabel();
-		songLabel = new ProviderLabel(new SongProvider(), controlsBuilder);
-		songLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
-		artistLabel = new ProviderLabel(
-				new ArtistProvider(unknownObjectChecker), controlsBuilder);
-		artistLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
-		albumArtistLabel = new ProviderLabel(new AlbumArtistProvider(
-				unknownObjectChecker), controlsBuilder);
-		albumArtistLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
-		albumLabel = new ProviderLabel(new AlbumProvider(unknownObjectChecker),
-				controlsBuilder);
-		albumLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
-		fileNameLabel = new ProviderLabel(new FileNameProvider(),
-				controlsBuilder);
-		pathLabel = new ProviderLabel(new FilePathProvider(), controlsBuilder);
-		durationLabel = new JLabel();
-		trackLabel = new JLabel();
-		discNumberLabel = new JLabel();
-		genreLabel = new JLabel();
-		yearLabel = new JLabel();
-		composerLabel = new JLabel();
-		bitrateLabel = new JLabel();
-		frequencyLabel = new JLabel();
+		this.pictureLabel = new JLabel();
+		this.songLabel = new ProviderLabel(new SongProvider(),
+				getControlsBuilder());
+		this.songLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
+		this.artistLabel = new ProviderLabel(new ArtistProvider(
+				this.unknownObjectChecker), getControlsBuilder());
+		this.artistLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
+		this.albumArtistLabel = new ProviderLabel(new AlbumArtistProvider(
+				this.unknownObjectChecker), getControlsBuilder());
+		this.albumArtistLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
+		this.albumLabel = new ProviderLabel(new AlbumProvider(
+				this.unknownObjectChecker), getControlsBuilder());
+		this.albumLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
+		this.fileNameLabel = new ProviderLabel(new FileNameProvider(),
+				getControlsBuilder());
+		this.pathLabel = new ProviderLabel(new FilePathProvider(),
+				getControlsBuilder());
+		this.durationLabel = new JLabel();
+		this.trackLabel = new JLabel();
+		this.discNumberLabel = new JLabel();
+		this.genreLabel = new JLabel();
+		this.yearLabel = new JLabel();
+		this.composerLabel = new JLabel();
+		this.bitrateLabel = new JLabel();
+		this.frequencyLabel = new JLabel();
 
 		JButton editTagsButton = new JButton();
 		editTagsButton.setText(I18nUtils.getString("EDIT_TAG"));
 		editTagsButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent evt) {
-				EditTagDialogController ctl = beanFactory
+				EditTagDialogController ctl = LocalAudioObjectPropertiesDialog.this.beanFactory
 						.getBean(EditTagDialogController.class);
 				ctl.getComponentControlled().setPrevNextButtonsShown(false);
-				ctl.editFiles(java.util.Collections.singletonList(file));
+				ctl.editFiles(java.util.Collections
+						.singletonList(LocalAudioObjectPropertiesDialog.this.file));
 			}
 		});
 
@@ -209,53 +205,53 @@ public final class LocalAudioObjectPropertiesDialog extends
 		c.insets = new Insets(10, 10, 5, 10);
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.NONE;
-		panel.add(pictureLabel, c);
+		panel.add(this.pictureLabel, c);
 
 		c.gridx = 1;
 		c.gridy = 0;
 		c.gridheight = 1;
 		c.weightx = 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		panel.add(songLabel, c);
+		panel.add(this.songLabel, c);
 
 		c.gridy = 1;
-		panel.add(artistLabel, c);
+		panel.add(this.artistLabel, c);
 
 		c.gridy = 2;
-		panel.add(albumArtistLabel, c);
+		panel.add(this.albumArtistLabel, c);
 
 		c.gridy = 3;
-		panel.add(albumLabel, c);
+		panel.add(this.albumLabel, c);
 
 		c.gridy = 4;
-		panel.add(fileNameLabel, c);
+		panel.add(this.fileNameLabel, c);
 
 		c.gridy = 5;
-		panel.add(pathLabel, c);
+		panel.add(this.pathLabel, c);
 
 		c.gridy = 6;
-		panel.add(durationLabel, c);
+		panel.add(this.durationLabel, c);
 
 		c.gridy = 7;
-		panel.add(trackLabel, c);
+		panel.add(this.trackLabel, c);
 
 		c.gridy = 8;
-		panel.add(discNumberLabel, c);
+		panel.add(this.discNumberLabel, c);
 
 		c.gridy = 9;
-		panel.add(genreLabel, c);
+		panel.add(this.genreLabel, c);
 
 		c.gridy = 10;
-		panel.add(yearLabel, c);
+		panel.add(this.yearLabel, c);
 
 		c.gridy = 11;
-		panel.add(composerLabel, c);
+		panel.add(this.composerLabel, c);
 
 		c.gridy = 12;
-		panel.add(bitrateLabel, c);
+		panel.add(this.bitrateLabel, c);
 
 		c.gridy = 13;
-		panel.add(frequencyLabel, c);
+		panel.add(this.frequencyLabel, c);
 
 		c.gridx = 0;
 		c.gridy = 14;
@@ -267,8 +263,8 @@ public final class LocalAudioObjectPropertiesDialog extends
 	 * Fill picture.
 	 */
 	private void fillPicture() {
-		new FillPictureSwingWorker(audioObjectImageLocator, pictureLabel, file)
-				.execute();
+		new FillPictureSwingWorker(this.audioObjectImageLocator,
+				this.pictureLabel, this.file).execute();
 	}
 
 	/**
@@ -276,39 +272,44 @@ public final class LocalAudioObjectPropertiesDialog extends
 	 */
 	private void setContent() {
 		fillPicture();
-		songLabel.fillText(file);
-		artistLabel.fillText(file);
-		albumArtistLabel.fillText(file);
-		albumLabel.fillText(file);
-		fileNameLabel.fillText(file);
-		pathLabel.fillText(file);
+		this.songLabel.fillText(this.file);
+		this.artistLabel.fillText(this.file);
+		this.albumArtistLabel.fillText(this.file);
+		this.albumLabel.fillText(this.file);
+		this.fileNameLabel.fillText(this.file);
+		this.pathLabel.fillText(this.file);
 
-		durationLabel.setText(getHtmlFormatted(I18nUtils.getString("DURATION"),
-				TimeUtils.secondsToHoursMinutesSeconds(file.getDuration())));
-		trackLabel.setText(getHtmlFormatted(I18nUtils.getString("TRACK"), file
-				.getTrackNumber() > 0 ? String.valueOf(file.getTrackNumber())
-				: "-"));
-		discNumberLabel.setText(getHtmlFormatted(I18nUtils
-				.getString("DISC_NUMBER"),
-				file.getDiscNumber() > 0 ? String.valueOf(file.getDiscNumber())
-						: "-"));
-		genreLabel.setText(getHtmlFormatted(I18nUtils.getString("GENRE"),
-				StringUtils.isEmpty(file.getGenre(unknownObjectChecker)) ? "-"
-						: file.getGenre(unknownObjectChecker)));
-		yearLabel.setText(getHtmlFormatted(
-				I18nUtils.getString("YEAR"),
-				StringUtils.getNumberOrZero(file.getYear()) > 0 ? file
-						.getYear() : "-"));
-		composerLabel.setText(getHtmlFormatted(
-				I18nUtils.getString("COMPOSER"),
-				StringUtils.isEmpty(file.getComposer()) ? "-" : file
-						.getComposer()));
-		bitrateLabel
-				.setText(getHtmlFormatted(I18nUtils.getString("BITRATE"),
-						StringUtils.getString(Long.toString(file.getBitrate()),
-								" Kbps")));
-		frequencyLabel.setText(getHtmlFormatted(I18nUtils
-				.getString("FREQUENCY"), StringUtils.getString(
-				Integer.toString(file.getFrequency()), " Hz")));
+		this.durationLabel
+				.setText(getHtmlFormatted(I18nUtils.getString("DURATION"),
+						TimeUtils.secondsToHoursMinutesSeconds(this.file
+								.getDuration())));
+		this.trackLabel.setText(getHtmlFormatted(
+				I18nUtils.getString("TRACK"),
+				this.file.getTrackNumber() > 0 ? String.valueOf(this.file
+						.getTrackNumber()) : "-"));
+		this.discNumberLabel.setText(getHtmlFormatted(
+				I18nUtils.getString("DISC_NUMBER"),
+				this.file.getDiscNumber() > 0 ? String.valueOf(this.file
+						.getDiscNumber()) : "-"));
+		this.genreLabel.setText(getHtmlFormatted(
+				I18nUtils.getString("GENRE"),
+				StringUtils.isEmpty(this.file
+						.getGenre(this.unknownObjectChecker)) ? "-" : this.file
+						.getGenre(this.unknownObjectChecker)));
+		this.yearLabel
+				.setText(getHtmlFormatted(
+						I18nUtils.getString("YEAR"),
+						StringUtils.getNumberOrZero(this.file.getYear()) > 0 ? this.file
+								.getYear() : "-"));
+		this.composerLabel.setText(getHtmlFormatted(I18nUtils
+				.getString("COMPOSER"), StringUtils.isEmpty(this.file
+				.getComposer()) ? "-" : this.file.getComposer()));
+		this.bitrateLabel.setText(getHtmlFormatted(I18nUtils
+				.getString("BITRATE"), StringUtils.getString(
+				Long.toString(this.file.getBitrate()), " Kbps")));
+		this.frequencyLabel.setText(getHtmlFormatted(
+				I18nUtils.getString("FREQUENCY"),
+				StringUtils.getString(
+						Integer.toString(this.file.getFrequency()), " Hz")));
 	}
 }

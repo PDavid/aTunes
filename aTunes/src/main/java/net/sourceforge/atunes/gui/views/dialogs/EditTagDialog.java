@@ -70,8 +70,6 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	private JButton prevButton;
 	private final JTabbedPane tabbedPane = new JTabbedPane();
 
-	private IControlsBuilder controlsBuilder;
-
 	private final Map<TextTagAttribute, TagAttributeControls> controls = new HashMap<TextTagAttribute, TagAttributeControls>();
 
 	/**
@@ -79,15 +77,13 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * 
 	 * @param frame
 	 */
-	public EditTagDialog(IFrame frame) {
-		super(frame, 500, 600);
-	}
-
 	/**
+	 * @param frame
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
+	public EditTagDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 500, 600, controlsBuilder);
 	}
 
 	@Override
@@ -97,21 +93,22 @@ public final class EditTagDialog extends AbstractCustomDialog {
 
 		setLayout(new BorderLayout());
 
-		add(tabbedPane, BorderLayout.CENTER);
-		tabbedPane.addTab(I18nUtils.getString("TAGS"),
+		add(this.tabbedPane, BorderLayout.CENTER);
+		this.tabbedPane.addTab(I18nUtils.getString("TAGS"),
 				getTagEditTab(getLookAndFeel()));
-		tabbedPane.addTab(I18nUtils.getString("COVER"), getCoverTab());
+		this.tabbedPane.addTab(I18nUtils.getString("COVER"), getCoverTab());
 	}
 
 	/**
 	 * @param arePrevNextButtonsShown
 	 */
-	public void setPrevNextButtonsShown(boolean arePrevNextButtonsShown) {
+	public void setPrevNextButtonsShown(final boolean arePrevNextButtonsShown) {
 		add(getOKAndCancelButtonPanel(arePrevNextButtonsShown),
 				BorderLayout.SOUTH);
 	}
 
-	private JPanel getOKAndCancelButtonPanel(boolean arePrevNextButtonsShown) {
+	private JPanel getOKAndCancelButtonPanel(
+			final boolean arePrevNextButtonsShown) {
 		JPanel panel = new JPanel();
 		panel.setOpaque(false);
 
@@ -123,13 +120,13 @@ public final class EditTagDialog extends AbstractCustomDialog {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 1;
 		c.weighty = 0;
-		panel.add(okButton, c);
+		panel.add(this.okButton, c);
 		c.gridx = 0;
 		c.gridy = 1;
-		panel.add(cancelButton, c);
+		panel.add(this.cancelButton, c);
 		if (arePrevNextButtonsShown) {
-			panel.add(prevButton, c);
-			panel.add(nextButton, c);
+			panel.add(this.prevButton, c);
+			panel.add(this.nextButton, c);
 		}
 		return panel;
 	}
@@ -140,8 +137,8 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @param attribute
 	 * @return
 	 */
-	public JComponent getEditor(TextTagAttribute attribute) {
-		return controls.get(attribute).getEditor();
+	public JComponent getEditor(final TextTagAttribute attribute) {
+		return this.controls.get(attribute).getEditor();
 	}
 
 	/**
@@ -150,8 +147,8 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @param attribute
 	 * @return
 	 */
-	public JTextField getTextFieldEditor(TextTagAttribute attribute) {
-		JComponent c = controls.get(attribute).getEditor();
+	public JTextField getTextFieldEditor(final TextTagAttribute attribute) {
+		JComponent c = this.controls.get(attribute).getEditor();
 		if (c instanceof JTextField) {
 			return (JTextField) c;
 		} else {
@@ -166,8 +163,8 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @param attribute
 	 * @return
 	 */
-	public JComboBox getComboBoxEditor(TextTagAttribute attribute) {
-		JComponent c = controls.get(attribute).getEditor();
+	public JComboBox getComboBoxEditor(final TextTagAttribute attribute) {
+		JComponent c = this.controls.get(attribute).getEditor();
 		if (c instanceof JComboBox) {
 			return (JComboBox) c;
 		} else {
@@ -182,8 +179,8 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @param attribute
 	 * @return
 	 */
-	public JTextArea getTextAreaEditor(TextTagAttribute attribute) {
-		JComponent c = controls.get(attribute).getEditor();
+	public JTextArea getTextAreaEditor(final TextTagAttribute attribute) {
+		JComponent c = this.controls.get(attribute).getEditor();
 		if (c instanceof JTextArea) {
 			return (JTextArea) c;
 		} else {
@@ -198,7 +195,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @return the cancel button
 	 */
 	public JButton getCancelButton() {
-		return cancelButton;
+		return this.cancelButton;
 	}
 
 	/**
@@ -218,29 +215,31 @@ public final class EditTagDialog extends AbstractCustomDialog {
 		JPanel infoPanel = new JPanel();
 		infoPanel.setLayout(fl);
 
-		coverCheckBox = new JCheckBox();
-		infoPanel.add(coverCheckBox);
-		cover = new JLabel();
-		cover.setPreferredSize(new Dimension(
+		this.coverCheckBox = new JCheckBox();
+		infoPanel.add(this.coverCheckBox);
+		this.cover = new JLabel();
+		this.cover.setPreferredSize(new Dimension(
 				Constants.DIALOG_LARGE_IMAGE_WIDTH,
 				Constants.DIALOG_LARGE_IMAGE_HEIGHT));
-		cover.setMinimumSize(new Dimension(Constants.DIALOG_LARGE_IMAGE_WIDTH,
+		this.cover.setMinimumSize(new Dimension(
+				Constants.DIALOG_LARGE_IMAGE_WIDTH,
 				Constants.DIALOG_LARGE_IMAGE_HEIGHT));
-		cover.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		coverButton = new JButton(I18nUtils.getString("EDIT_COVER"));
-		removeCoverButton = new JButton(I18nUtils.getString("REMOVE_COVER"));
+		this.cover.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		this.coverButton = new JButton(I18nUtils.getString("EDIT_COVER"));
+		this.removeCoverButton = new JButton(
+				I18nUtils.getString("REMOVE_COVER"));
 		JPanel coverButtonsPanel = new JPanel(new GridLayout(1, 2, 20, 0));
-		coverButtonsPanel.add(coverButton);
-		coverButtonsPanel.add(removeCoverButton);
-		coverCheckBox.addActionListener(new ActionListener() {
+		coverButtonsPanel.add(this.coverButton);
+		coverButtonsPanel.add(this.removeCoverButton);
+		this.coverCheckBox.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				setCoverSelected(coverCheckBox.isSelected());
+			public void actionPerformed(final ActionEvent e) {
+				setCoverSelected(EditTagDialog.this.coverCheckBox.isSelected());
 			}
 
 		});
 		panel.add(infoPanel, BorderLayout.NORTH);
-		coverPanel.add(cover);
+		coverPanel.add(this.cover);
 		panel.add(coverPanel, BorderLayout.CENTER);
 		panel.add(coverButtonsPanel, BorderLayout.SOUTH);
 
@@ -254,7 +253,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * 
 	 * @return the content
 	 */
-	private JPanel getTagEditTab(ILookAndFeel lookAndFeel) {
+	private JPanel getTagEditTab(final ILookAndFeel lookAndFeel) {
 		JPanel panel = new JPanel(new GridBagLayout());
 
 		createCustomTextFieldControl(TextTagAttribute.TITLE);
@@ -269,10 +268,10 @@ public final class EditTagDialog extends AbstractCustomDialog {
 		createCustomTextFieldControl(TextTagAttribute.COMPOSER);
 		createCustomTextFieldControl(TextTagAttribute.ALBUM_ARTIST);
 
-		okButton = new JButton(I18nUtils.getString("OK"));
-		cancelButton = new JButton(I18nUtils.getString("CANCEL"));
-		nextButton = new JButton(I18nUtils.getString("NEXT"));
-		prevButton = new JButton(I18nUtils.getString("PREVIOUS"));
+		this.okButton = new JButton(I18nUtils.getString("OK"));
+		this.cancelButton = new JButton(I18nUtils.getString("CANCEL"));
+		this.nextButton = new JButton(I18nUtils.getString("NEXT"));
+		this.prevButton = new JButton(I18nUtils.getString("PREVIOUS"));
 
 		arrangePanel(panel, lookAndFeel);
 
@@ -280,21 +279,22 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	}
 
 	private void createControl(final TextTagAttribute attribute,
-			JComponent editor) {
+			final JComponent editor) {
 		final JCheckBox checkBox = new JCheckBox();
 		checkBox.setFocusable(false);
 		checkBox.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				setTagAttributeSelected(attribute, checkBox.isSelected());
 			}
 		});
 		checkBox.setSelected(true);
-		controls.put(attribute, new TagAttributeControls(checkBox, editor));
+		this.controls
+				.put(attribute, new TagAttributeControls(checkBox, editor));
 	}
 
 	private void createCustomTextFieldControl(final TextTagAttribute attribute) {
-		createControl(attribute, controlsBuilder.createTextField());
+		createControl(attribute, getControlsBuilder().createTextField());
 	}
 
 	private void createComboBoxControl(final TextTagAttribute attribute) {
@@ -304,7 +304,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	}
 
 	private void createTextAreaControl(final TextTagAttribute attribute) {
-		JTextArea textArea = controlsBuilder.createTextArea();
+		JTextArea textArea = getControlsBuilder().createTextArea();
 		textArea.setBorder(BorderFactory.createEmptyBorder());
 		createControl(attribute, textArea);
 	}
@@ -313,7 +313,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @param panel
 	 * @param lookAndFeel
 	 */
-	private void arrangePanel(JPanel panel, ILookAndFeel lookAndFeel) {
+	private void arrangePanel(final JPanel panel, final ILookAndFeel lookAndFeel) {
 		GridBagConstraints c = new GridBagConstraints();
 		addControl(TextTagAttribute.TITLE, panel, c, 0, lookAndFeel);
 		addControl(TextTagAttribute.ALBUM_ARTIST, panel, c, 1, lookAndFeel);
@@ -335,8 +335,9 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @param c
 	 * @param row
 	 */
-	private void addControl(TextTagAttribute attribute, JPanel panel,
-			GridBagConstraints c, int row, ILookAndFeel lookAndFeel) {
+	private void addControl(final TextTagAttribute attribute,
+			final JPanel panel, final GridBagConstraints c, final int row,
+			final ILookAndFeel lookAndFeel) {
 		c.insets = new Insets(2, 10, 2, 2);
 		c.gridx = 0;
 		c.gridy = row;
@@ -345,7 +346,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 		c.gridheight = 1;
 		c.gridwidth = 1;
 		c.weighty = 0;
-		panel.add(controls.get(attribute).getCheckBox(), c);
+		panel.add(this.controls.get(attribute).getCheckBox(), c);
 
 		c.insets = new Insets(2, 2, 2, 10);
 		c.gridx = 1;
@@ -358,7 +359,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 		c.weightx = 1;
 		c.gridwidth = 2;
 
-		JComponent editor = controls.get(attribute).getEditor();
+		JComponent editor = this.controls.get(attribute).getEditor();
 		if (editor instanceof JTextArea) {
 			c.fill = GridBagConstraints.BOTH;
 			c.weighty = 1;
@@ -374,7 +375,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @return the ok button
 	 */
 	public JButton getOkButton() {
-		return okButton;
+		return this.okButton;
 	}
 
 	/**
@@ -383,7 +384,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @return the previous (song) button
 	 */
 	public JButton getPrevButton() {
-		return prevButton;
+		return this.prevButton;
 	}
 
 	/**
@@ -392,7 +393,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @return the next (song) button
 	 */
 	public JButton getNextButton() {
-		return nextButton;
+		return this.nextButton;
 	}
 
 	/**
@@ -401,7 +402,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @return
 	 */
 	public JLabel getCover() {
-		return cover;
+		return this.cover;
 	}
 
 	/**
@@ -410,7 +411,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @return
 	 */
 	public JButton getCoverButton() {
-		return coverButton;
+		return this.coverButton;
 	}
 
 	/**
@@ -419,7 +420,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @return
 	 */
 	public JButton getRemoveCoverButton() {
-		return removeCoverButton;
+		return this.removeCoverButton;
 	}
 
 	/**
@@ -428,15 +429,15 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @param attribute
 	 * @return
 	 */
-	public JCheckBox getCheckBox(TextTagAttribute attribute) {
-		return controls.get(attribute).getCheckBox();
+	public JCheckBox getCheckBox(final TextTagAttribute attribute) {
+		return this.controls.get(attribute).getCheckBox();
 	}
 
 	/**
 	 * @return the coverCheckBox
 	 */
 	public JCheckBox getCoverCheckBox() {
-		return coverCheckBox;
+		return this.coverCheckBox;
 	}
 
 	/**
@@ -445,10 +446,10 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @param attribute
 	 * @param selected
 	 */
-	public void setTagAttributeSelected(TextTagAttribute attribute,
-			boolean selected) {
-		controls.get(attribute).getCheckBox().setSelected(selected);
-		controls.get(attribute).getEditor().setEnabled(selected);
+	public void setTagAttributeSelected(final TextTagAttribute attribute,
+			final boolean selected) {
+		this.controls.get(attribute).getCheckBox().setSelected(selected);
+		this.controls.get(attribute).getEditor().setEnabled(selected);
 	}
 
 	/**
@@ -456,10 +457,10 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * 
 	 * @param b
 	 */
-	public void setCoverSelected(boolean b) {
-		coverCheckBox.setSelected(b);
-		coverButton.setEnabled(b);
-		removeCoverButton.setEnabled(b);
+	public void setCoverSelected(final boolean b) {
+		this.coverCheckBox.setSelected(b);
+		this.coverButton.setEnabled(b);
+		this.removeCoverButton.setEnabled(b);
 	}
 
 	private static class TagAttributeControls {
@@ -468,7 +469,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 
 		private final JComponent editor;
 
-		TagAttributeControls(JCheckBox checkBox, JComponent editor) {
+		TagAttributeControls(final JCheckBox checkBox, final JComponent editor) {
 			this.checkBox = checkBox;
 			this.editor = editor;
 		}
@@ -477,14 +478,14 @@ public final class EditTagDialog extends AbstractCustomDialog {
 		 * @return
 		 */
 		public JCheckBox getCheckBox() {
-			return checkBox;
+			return this.checkBox;
 		}
 
 		/**
 		 * @return
 		 */
 		public JComponent getEditor() {
-			return editor;
+			return this.editor;
 		}
 	}
 }

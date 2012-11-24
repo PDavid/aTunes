@@ -64,15 +64,17 @@ public class PluginEditorDialog extends AbstractCustomDialog {
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
 	/**
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public PluginEditorDialog(IFrame frame) {
-		super(frame, 800, 600);
+	public PluginEditorDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 800, 600, controlsBuilder);
 	}
 
 	/**
@@ -81,8 +83,8 @@ public class PluginEditorDialog extends AbstractCustomDialog {
 	 * @param plugin
 	 * @param configuration
 	 */
-	public void initializeDialog(PluginInfo plugin,
-			PluginConfiguration configuration) {
+	public void initializeDialog(final PluginInfo plugin,
+			final PluginConfiguration configuration) {
 		this.configuration = configuration;
 		setResizable(true);
 		setTitle(StringUtils.getString(
@@ -91,22 +93,22 @@ public class PluginEditorDialog extends AbstractCustomDialog {
 		add(getContent(getLookAndFeel()));
 	}
 
-	private JPanel getContent(ILookAndFeel iLookAndFeel) {
+	private JPanel getContent(final ILookAndFeel iLookAndFeel) {
 		JPanel panel = new JPanel(new BorderLayout());
 		PluginConfigurationPanel configPanel = new PluginConfigurationPanel(
-				configuration, controlsBuilder);
+				this.configuration, this.controlsBuilder);
 		panel.add(iLookAndFeel.getScrollPane(configPanel), BorderLayout.CENTER);
 		JButton okButton = new JButton(I18nUtils.getString("OK"));
 		okButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				PluginEditorDialog.this.setVisible(false);
 			}
 		});
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				// User canceled edition so set configuration to null
 				PluginEditorDialog.this.configuration = null;
 				PluginEditorDialog.this.setVisible(false);
@@ -133,7 +135,7 @@ public class PluginEditorDialog extends AbstractCustomDialog {
 	 * @return the configuration
 	 */
 	public PluginConfiguration getConfiguration() {
-		return configuration;
+		return this.configuration;
 	}
 
 	private static class PluginConfigurationPanel extends JPanel {
@@ -142,19 +144,21 @@ public class PluginEditorDialog extends AbstractCustomDialog {
 			private final JTextField textField;
 			private final PluginProperty<?> property;
 
-			private TextFieldKeyAdapter(JTextField textField,
-					PluginProperty<?> property) {
+			private TextFieldKeyAdapter(final JTextField textField,
+					final PluginProperty<?> property) {
 				this.textField = textField;
 				this.property = property;
 			}
 
 			@Override
-			public void keyTyped(KeyEvent e) {
+			public void keyTyped(final KeyEvent e) {
 				super.keyTyped(e);
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						property.setValue(textField.getText());
+						TextFieldKeyAdapter.this.property
+								.setValue(TextFieldKeyAdapter.this.textField
+										.getText());
 					}
 				});
 			}
@@ -170,8 +174,9 @@ public class PluginEditorDialog extends AbstractCustomDialog {
 		 * @param configuration
 		 * @param controlsBuilder
 		 */
-		public PluginConfigurationPanel(PluginConfiguration configuration,
-				IControlsBuilder controlsBuilder) {
+		public PluginConfigurationPanel(
+				final PluginConfiguration configuration,
+				final IControlsBuilder controlsBuilder) {
 			super(new GridBagLayout());
 			this.configuration = configuration;
 			this.controlsBuilder = controlsBuilder;
@@ -207,12 +212,12 @@ public class PluginEditorDialog extends AbstractCustomDialog {
 			}
 		}
 
-		private JLabel getPropertyLabel(PluginProperty<?> property) {
+		private JLabel getPropertyLabel(final PluginProperty<?> property) {
 			return new JLabel(property.getDescription());
 		}
 
 		private JComponent getPropertyEditor(final PluginProperty<?> property) {
-			final JTextField textField = controlsBuilder.createTextField();
+			final JTextField textField = this.controlsBuilder.createTextField();
 			textField.setText(property.getValue().toString());
 			textField.addKeyListener(new TextFieldKeyAdapter(textField,
 					property));

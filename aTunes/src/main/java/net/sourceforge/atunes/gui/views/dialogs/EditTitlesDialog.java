@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -39,129 +40,133 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class EditTitlesDialog extends AbstractCustomDialog {
 
-    private static final long serialVersionUID = -7937735545263913179L;
+	private static final long serialVersionUID = -7937735545263913179L;
 
-    /** The table. */
-    private JTable table;
+	/** The table. */
+	private JTable table;
 
-    /** The retrieve from amazon. */
-    private JButton retrieveTitles;
+	/** The retrieve from amazon. */
+	private JButton retrieveTitles;
 
-    /** The ok button. */
-    private JButton okButton;
+	/** The ok button. */
+	private JButton okButton;
 
-    /** The cancel button. */
-    private JButton cancelButton;
+	/** The cancel button. */
+	private JButton cancelButton;
 
-    /**
-     * Instantiates a new edits the titles dialog.
-     * @param frame
-     */
-    public EditTitlesDialog(IFrame frame) {
-        super(frame, 500, 400);
-    }
-    
-    @Override
-    public void initialize() {
-        add(getContent(getLookAndFeel()));
-    }
-    
-    @Override
-    public void hideDialog() {
-    	setVisible(false);
-    }
-    
-    @Override
-    public void showDialog() {
-    	setVisible(true);
-    }
+	/**
+	 * Instantiates a new edits the titles dialog.
+	 * 
+	 * @param frame
+	 * @param controlsBuilder
+	 */
+	public EditTitlesDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 500, 400, controlsBuilder);
+	}
 
-    /**
-     * Gets the cancel button.
-     * 
-     * @return the cancel button
-     */
-    public JButton getCancelButton() {
-        return cancelButton;
-    }
+	@Override
+	public void initialize() {
+		add(getContent(getLookAndFeel()));
+	}
 
-    /**
-     * Gets the content.
-     * @param iLookAndFeel 
-     * 
-     * @return the content
-     */
-    private JPanel getContent(ILookAndFeel iLookAndFeel) {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setOpaque(false);
+	@Override
+	public void hideDialog() {
+		setVisible(false);
+	}
 
-        table = iLookAndFeel.getTable();
-        table.setOpaque(false);
-        JScrollPane scrollPane = iLookAndFeel.getTableScrollPane(table);
-        retrieveTitles = new JButton(I18nUtils.getString("GET_TITLES"));
-        okButton = new JButton(I18nUtils.getString("OK"));
-        cancelButton = new JButton(I18nUtils.getString("CANCEL"));
+	@Override
+	public void showDialog() {
+		setVisible(true);
+	}
 
-        GridBagConstraints c = new GridBagConstraints();
+	/**
+	 * Gets the cancel button.
+	 * 
+	 * @return the cancel button
+	 */
+	public JButton getCancelButton() {
+		return this.cancelButton;
+	}
 
-        JPanel auxPanel = new JPanel(new GridBagLayout());
-        auxPanel.setOpaque(false);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.WEST;
-        auxPanel.add(retrieveTitles, c);
-        c.gridx = 1;
-        c.weightx = 0;
-        c.anchor = GridBagConstraints.CENTER;
-        c.insets = new Insets(0, 0, 0, 10);
-        auxPanel.add(okButton, c);
-        c.gridx = 2;
-        c.insets = new Insets(0, 0, 0, 0);
-        auxPanel.add(cancelButton, c);
+	/**
+	 * Gets the content.
+	 * 
+	 * @param iLookAndFeel
+	 * 
+	 * @return the content
+	 */
+	private JPanel getContent(final ILookAndFeel iLookAndFeel) {
+		JPanel panel = new JPanel(new GridBagLayout());
+		panel.setOpaque(false);
 
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(10, 10, 10, 10);
-        panel.add(scrollPane, c);
+		this.table = iLookAndFeel.getTable();
+		this.table.setOpaque(false);
+		JScrollPane scrollPane = iLookAndFeel.getTableScrollPane(this.table);
+		this.retrieveTitles = new JButton(I18nUtils.getString("GET_TITLES"));
+		this.okButton = new JButton(I18nUtils.getString("OK"));
+		this.cancelButton = new JButton(I18nUtils.getString("CANCEL"));
 
-        c.gridy = 1;
-        c.weighty = 0;
-        c.insets = new Insets(0, 20, 10, 20);
-        panel.add(auxPanel, c);
+		GridBagConstraints c = new GridBagConstraints();
 
-        return panel;
-    }
+		JPanel auxPanel = new JPanel(new GridBagLayout());
+		auxPanel.setOpaque(false);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.WEST;
+		auxPanel.add(this.retrieveTitles, c);
+		c.gridx = 1;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(0, 0, 0, 10);
+		auxPanel.add(this.okButton, c);
+		c.gridx = 2;
+		c.insets = new Insets(0, 0, 0, 0);
+		auxPanel.add(this.cancelButton, c);
 
-    /**
-     * Gets the ok button.
-     * 
-     * @return the ok button
-     */
-    public JButton getOkButton() {
-        return okButton;
-    }
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(10, 10, 10, 10);
+		panel.add(scrollPane, c);
 
-    /**
-     * Gets the retrieve from amazon.
-     * 
-     * @return the retrieve from amazon
-     */
-    public JButton getRetrieveTitles() {
-        return retrieveTitles;
-    }
+		c.gridy = 1;
+		c.weighty = 0;
+		c.insets = new Insets(0, 20, 10, 20);
+		panel.add(auxPanel, c);
 
-    /**
-     * Gets the table.
-     * 
-     * @return the table
-     */
-    public JTable getTable() {
-        return table;
-    }
+		return panel;
+	}
+
+	/**
+	 * Gets the ok button.
+	 * 
+	 * @return the ok button
+	 */
+	public JButton getOkButton() {
+		return this.okButton;
+	}
+
+	/**
+	 * Gets the retrieve from amazon.
+	 * 
+	 * @return the retrieve from amazon
+	 */
+	public JButton getRetrieveTitles() {
+		return this.retrieveTitles;
+	}
+
+	/**
+	 * Gets the table.
+	 * 
+	 * @return the table
+	 */
+	public JTable getTable() {
+		return this.table;
+	}
 
 }

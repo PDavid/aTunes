@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -63,11 +64,12 @@ public final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
 	/**
 	 * Instantiates a new radio properties dialog.
 	 * 
-	 * @param radio
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	RadioPropertiesDialog(final IFrame frame) {
-		super(frame);
+	RadioPropertiesDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, controlsBuilder);
 	}
 
 	@Override

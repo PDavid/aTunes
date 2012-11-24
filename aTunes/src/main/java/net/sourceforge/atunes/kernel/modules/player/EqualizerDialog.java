@@ -35,6 +35,7 @@ import javax.swing.JSlider;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IEqualizerDialog;
@@ -51,7 +52,8 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author sylvain
  */
-public final class EqualizerDialog extends AbstractCustomDialog implements IEqualizerDialog {
+public final class EqualizerDialog extends AbstractCustomDialog implements
+		IEqualizerDialog {
 
 	private final class CancelActionListener implements ActionListener {
 		@Override
@@ -65,7 +67,9 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 		// and restart the current playing media from its's last postion
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-			equalizer.setEqualizerFromGUI(equalizerEnabled.isSelected(), bands);
+			EqualizerDialog.this.equalizer.setEqualizerFromGUI(
+					EqualizerDialog.this.equalizerEnabled.isSelected(),
+					EqualizerDialog.this.bands);
 		}
 	}
 
@@ -73,7 +77,9 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 		// When OK is clicked, save settings and change application state
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-			equalizer.setEqualizerFromGUI(equalizerEnabled.isSelected(), bands);
+			EqualizerDialog.this.equalizer.setEqualizerFromGUI(
+					EqualizerDialog.this.equalizerEnabled.isSelected(),
+					EqualizerDialog.this.bands);
 			EqualizerDialog.this.setVisible(false);
 		}
 	}
@@ -81,19 +87,21 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 	private final class LoadPresetActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-			String[] names = equalizer.getPresetsNames();
+			String[] names = EqualizerDialog.this.equalizer.getPresetsNames();
 
 			// Show selector
-			ISelectorDialog selector = dialogFactory.newDialog(ISelectorDialog.class);
+			ISelectorDialog selector = EqualizerDialog.this.dialogFactory
+					.newDialog(ISelectorDialog.class);
 			selector.setTitle(I18nUtils.getString("LOAD_PRESET"));
 			selector.setOptions(names);
 			selector.showDialog();
 
 			// Get result
-			Integer[] presets = equalizer.getPresetByNameForShowInGUI(selector.getSelection());
+			Integer[] presets = EqualizerDialog.this.equalizer
+					.getPresetByNameForShowInGUI(selector.getSelection());
 
-			for (int i = 0; i < bands.length; i++) {
-				bands[i].setValue(presets[i]);
+			for (int i = 0; i < EqualizerDialog.this.bands.length; i++) {
+				EqualizerDialog.this.bands[i].setValue(presets[i]);
 			}
 		}
 	}
@@ -129,10 +137,12 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 	 * Draws the equalizer dialog.
 	 * 
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public EqualizerDialog(final IFrame frame) {
+	public EqualizerDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
 		// Width required by german translation
-		super(frame, 600, 400);
+		super(frame, 600, 400, controlsBuilder);
 	}
 
 	/**
@@ -154,7 +164,8 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 	 */
 	@Override
 	public void initialize() {
-		setTitle(StringUtils.getString(I18nUtils.getString("EQUALIZER"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
+		setTitle(StringUtils.getString(I18nUtils.getString("EQUALIZER"), " - ",
+				Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
 		add(getContent());
 		setResizable(false);
 		setEqualizerState();
@@ -186,14 +197,14 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 	 * Updates sliders with current equalizer settings.
 	 */
 	private void setEqualizerState() {
-		int[] eqSettings = equalizer.getEqualizerSettingsToShowInGUI();
+		int[] eqSettings = this.equalizer.getEqualizerSettingsToShowInGUI();
 		if (eqSettings != null) {
 			for (int i = 0; i < 10; i++) {
-				bands[i].setValue(eqSettings[i]);
+				this.bands[i].setValue(eqSettings[i]);
 			}
 		}
-		equalizerEnabled.setSelected(equalizer.isEnabled());
-		updateState(equalizer.isEnabled());
+		this.equalizerEnabled.setSelected(this.equalizer.isEnabled());
+		updateState(this.equalizer.isEnabled());
 	}
 
 	/**
@@ -204,39 +215,42 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 	private JPanel getContent() {
 		JPanel panel = new JPanel(new GridBagLayout());
 
-		equalizerEnabled = new JCheckBox(I18nUtils.getString("EQUALIZER"));
+		this.equalizerEnabled = new JCheckBox(I18nUtils.getString("EQUALIZER"));
 
-		String[] freqs = { "31Hz", "62Hz", "125Hz", "250Hz", "500Hz", "1kHz", "2kHz", "4kHz", "8kHz", "16kHz" };
-		bands = new JSlider[10];
-		labels = new JLabel[10];
+		String[] freqs = { "31Hz", "62Hz", "125Hz", "250Hz", "500Hz", "1kHz",
+				"2kHz", "4kHz", "8kHz", "16kHz" };
+		this.bands = new JSlider[10];
+		this.labels = new JLabel[10];
 
 		for (int i = 0; i < 10; i++) {
-			bands[i] = getNewJSlider();
-			labels[i] = new JLabel(freqs[i]);
+			this.bands[i] = getNewJSlider();
+			this.labels[i] = new JLabel(freqs[i]);
 		}
 
-		changeWhenStopped = new JLabel(I18nUtils.getString("CAN_ONLY_CHANGE_WHEN_STOPPED"));
+		this.changeWhenStopped = new JLabel(
+				I18nUtils.getString("CAN_ONLY_CHANGE_WHEN_STOPPED"));
 
-		loadPresetButton = new JButton(I18nUtils.getString("LOAD_PRESET"));
-		loadPresetButton.addActionListener(new LoadPresetActionListener());
+		this.loadPresetButton = new JButton(I18nUtils.getString("LOAD_PRESET"));
+		this.loadPresetButton.addActionListener(new LoadPresetActionListener());
 
 		JButton okButton = new JButton(I18nUtils.getString("OK"));
 		okButton.addActionListener(new OkActionListener());
 
-		applyButton = new JButton(I18nUtils.getString("APPLY"));
-		applyButton.addActionListener(new ApplyActionListener());
+		this.applyButton = new JButton(I18nUtils.getString("APPLY"));
+		this.applyButton.addActionListener(new ApplyActionListener());
 
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
 		cancelButton.addActionListener(new CancelActionListener());
 
-		arrangePanel(panel, equalizerEnabled, labels, changeWhenStopped, loadPresetButton,
-				okButton, applyButton, cancelButton);
+		arrangePanel(panel, this.equalizerEnabled, this.labels,
+				this.changeWhenStopped, this.loadPresetButton, okButton,
+				this.applyButton, cancelButton);
 
-		equalizerEnabled.addActionListener(new ActionListener() {
+		this.equalizerEnabled.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(final ActionEvent event) {
-				boolean active = ((JCheckBox)event.getSource()).isSelected();
+				boolean active = ((JCheckBox) event.getSource()).isSelected();
 				updateState(active);
 			}
 		});
@@ -248,19 +262,19 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 	 * @param active
 	 */
 	private void updateState(final boolean active) {
-		equalizer.setEnabled(active);
-		for (JSlider band : bands) {
+		this.equalizer.setEnabled(active);
+		for (JSlider band : this.bands) {
 			band.setEnabled(active);
 		}
-		for (JLabel label : labels) {
+		for (JLabel label : this.labels) {
 			label.setEnabled(active);
 		}
-		changeWhenStopped.setEnabled(active);
-		l0.setEnabled(active);
-		l12.setEnabled(active);
-		lm12.setEnabled(active);
-		loadPresetButton.setEnabled(active);
-		applyButton.setEnabled(active);
+		this.changeWhenStopped.setEnabled(active);
+		this.l0.setEnabled(active);
+		this.l12.setEnabled(active);
+		this.lm12.setEnabled(active);
+		this.loadPresetButton.setEnabled(active);
+		this.applyButton.setEnabled(active);
 	}
 
 	/**
@@ -273,9 +287,11 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 	 * @param applyButton
 	 * @param cancelButton
 	 */
-	private void arrangePanel(final JPanel panel, final JCheckBox equalizerActive, final JLabel[] labels,
+	private void arrangePanel(final JPanel panel,
+			final JCheckBox equalizerActive, final JLabel[] labels,
 			final JLabel changeWhenStopped, final JButton loadPresetButton,
-			final JButton okButton, final JButton applyButton, final JButton cancelButton) {
+			final JButton okButton, final JButton applyButton,
+			final JButton cancelButton) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridwidth = 11;
 		c.insets = new Insets(10, 0, 10, 0);
@@ -288,19 +304,19 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 		c.fill = GridBagConstraints.BOTH;
 		c.weighty = 1;
 
-		for (int i = 0; i < bands.length; i++) {
+		for (int i = 0; i < this.bands.length; i++) {
 			c.gridx = i;
-			panel.add(bands[i], c);
+			panel.add(this.bands[i], c);
 		}
 
-		l12 = new JLabel("+12db");
-		l0 = new JLabel("0");
-		lm12 = new JLabel("-12db");
+		this.l12 = new JLabel("+12db");
+		this.l0 = new JLabel("0");
+		this.lm12 = new JLabel("-12db");
 
 		JPanel labelPanel = new JPanel(new GridLayout(3, 1, 0, 50));
-		labelPanel.add(l12);
-		labelPanel.add(l0);
-		labelPanel.add(lm12);
+		labelPanel.add(this.l12);
+		labelPanel.add(this.l0);
+		labelPanel.add(this.lm12);
 
 		c.gridx = 10;
 		panel.add(labelPanel, c);
@@ -320,7 +336,8 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 		c.insets = new Insets(10, 0, 10, 0);
 		panel.add(loadPresetButton, c);
 
-		if (!playerHandler.supportsCapability(PlayerEngineCapability.EQUALIZER_CHANGE)) {
+		if (!this.playerHandler
+				.supportsCapability(PlayerEngineCapability.EQUALIZER_CHANGE)) {
 			c.gridy = 4;
 			panel.add(changeWhenStopped, c);
 		}

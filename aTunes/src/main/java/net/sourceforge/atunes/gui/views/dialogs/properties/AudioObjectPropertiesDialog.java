@@ -24,49 +24,56 @@ import java.awt.Dimension;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * A dialog to show information about audio objects
+ * 
  * @author alex
- *
+ * 
  */
-public abstract class AudioObjectPropertiesDialog extends AbstractCustomDialog implements IAudioObjectPropertiesDialog {
+public abstract class AudioObjectPropertiesDialog extends AbstractCustomDialog
+		implements IAudioObjectPropertiesDialog {
 
-    private static final long serialVersionUID = 6097305595858691246L;
+	private static final long serialVersionUID = 6097305595858691246L;
 
-    /**
-     * Instantiates a new properties dialog.
-     * @param frame
-     */
-    AudioObjectPropertiesDialog(IFrame frame) {
-        super(frame, 560, 480);
-        setMinimumSize(new Dimension(560, 480));
-        setResizable(true);
-    }
-    
-    /**
-     * Gets the html formatted.
-     * 
-     * @param desc
-     *            the desc
-     * @param text
-     *            the text
-     * 
-     * @return the html formatted
-     */
-    protected String getHtmlFormatted(String desc, String text) {
-        return StringUtils.getString("<html><b>", desc, ": </b>", text, "</html>");
-    }
+	/**
+	 * Instantiates a new properties dialog.
+	 * 
+	 * @param frame
+	 * @param controlsBuilder
+	 */
+	AudioObjectPropertiesDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 560, 480, controlsBuilder);
+		setMinimumSize(new Dimension(560, 480));
+		setResizable(true);
+	}
 
-    @Override
+	/**
+	 * Gets the html formatted.
+	 * 
+	 * @param desc
+	 *            the desc
+	 * @param text
+	 *            the text
+	 * 
+	 * @return the html formatted
+	 */
+	protected String getHtmlFormatted(final String desc, final String text) {
+		return StringUtils.getString("<html><b>", desc, ": </b>", text,
+				"</html>");
+	}
+
+	@Override
 	public void showDialog() {
-    	setVisible(true);
-    }
-    
-    @Override
-    public void hideDialog() {
-    	setVisible(false);
-    }
+		setVisible(true);
+	}
+
+	@Override
+	public void hideDialog() {
+		setVisible(false);
+	}
 }

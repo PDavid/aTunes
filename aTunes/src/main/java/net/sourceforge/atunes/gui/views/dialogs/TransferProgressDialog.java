@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -28,24 +29,26 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class TransferProgressDialog extends ProgressDialog {
 
-    private static final long serialVersionUID = 1264914965691724365L;
+	private static final long serialVersionUID = 1264914965691724365L;
 
-    /**
-     * Instantiates a new transfer progress dialog.
-     * 
-     * @param frame
-     */
-    public TransferProgressDialog(IFrame frame) {
-        super(frame);
-    }
+	/**
+	 * Instantiates a new transfer progress dialog.
+	 * 
+	 * @param frame
+	 * @param controlsBuilder
+	 */
+	public TransferProgressDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, controlsBuilder);
+	}
 
-    @Override
-    public void setCurrentProgress(long value) {
-        getCurrentLabel().setText(StringUtils.fromByteToMegaOrGiga(value));
-    }
+	@Override
+	public void setCurrentProgress(final long value) {
+		getCurrentLabel().setText(StringUtils.fromByteToMegaOrGiga(value));
+	}
 
-    @Override
-    public void setTotalProgress(long value) {
-        getTotalLabel().setText(StringUtils.fromByteToMegaOrGiga(value));
-    }
+	@Override
+	public void setTotalProgress(final long value) {
+		getTotalLabel().setText(StringUtils.fromByteToMegaOrGiga(value));
+	}
 }

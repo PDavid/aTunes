@@ -26,7 +26,6 @@ import java.util.Comparator;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -80,6 +79,15 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 
 	private transient Collator collator;
 
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
 	/**
 	 * Constructor with columnId, headerText and columnClass.
 	 * 
@@ -92,9 +100,15 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 	 */
 	public AbstractColumn(final String name) {
 		this.columnName = name;
+	}
+
+	/**
+	 * Initializes column
+	 */
+	public void initialize() {
 		this.columnClass = (Class<?>) ReflectionUtils
 				.getTypeArgumentsOfParameterizedType(this.getClass())[0];
-		this.alignment = Context.getBean(IControlsBuilder.class)
+		this.alignment = this.controlsBuilder
 				.getComponentOrientationAsSwingConstant();
 	}
 

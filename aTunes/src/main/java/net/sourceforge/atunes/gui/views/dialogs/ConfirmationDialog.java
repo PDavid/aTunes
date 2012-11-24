@@ -27,21 +27,27 @@ import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Dialog to ask user for confirmation
+ * 
+ * @author alex
+ * 
+ */
 public class ConfirmationDialog implements IConfirmationDialog {
 
 	private IFrame frame;
 
 	private boolean result;
-	
+
 	private String message;
-	
+
 	@Override
-	public void setMessage(String message) {
+	public void setMessage(final String message) {
 		this.message = message;
 	}
 
 	@Override
-	public void setFrame(IFrame frame) {
+	public void setFrame(final IFrame frame) {
 		this.frame = frame;
 	}
 
@@ -50,29 +56,33 @@ public class ConfirmationDialog implements IConfirmationDialog {
 		GuiUtils.callInEventDispatchThreadAndWait(new Runnable() {
 			@Override
 			public void run() {
-				result = JOptionPane.showConfirmDialog(frame.getFrame(), message, I18nUtils.getString("CONFIRMATION"), JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION;
+				ConfirmationDialog.this.result = JOptionPane.showConfirmDialog(
+						ConfirmationDialog.this.frame.getFrame(),
+						ConfirmationDialog.this.message,
+						I18nUtils.getString("CONFIRMATION"),
+						JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION;
 			}
 		});
 	}
-	
+
 	@Override
 	public boolean userAccepted() {
-		return result;
+		return this.result;
 	}
 
 	@Override
 	public void hideDialog() {
 		// Not used
 	}
-	
+
 	@Override
 	public void initialize() {
 		// Not used
 	}
-	
+
 	@Override
 	@Deprecated
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		// Not used
 	}
 }

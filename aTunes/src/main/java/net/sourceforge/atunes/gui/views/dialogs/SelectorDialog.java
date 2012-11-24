@@ -37,6 +37,7 @@ import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ISelectorDialog;
@@ -62,9 +63,11 @@ public final class SelectorDialog extends AbstractCustomDialog implements
 	 * Instantiates a new selector dialog.
 	 * 
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public SelectorDialog(final IFrame frame) {
-		super(frame, 250, 350);
+	public SelectorDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 250, 350, controlsBuilder);
 	}
 
 	/**

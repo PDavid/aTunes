@@ -34,6 +34,7 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -44,142 +45,151 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class StatsDialog extends AbstractCustomDialog {
 
-    private static final long serialVersionUID = -7822497871738495670L;
+	private static final long serialVersionUID = -7822497871738495670L;
 
-    /** The general table. */
-    private JTable generalTable;
+	/** The general table. */
+	private JTable generalTable;
 
-    /** The artists table. */
-    private JTable artistsTable;
+	/** The artists table. */
+	private JTable artistsTable;
 
-    /** The albums table. */
-    private JTable albumsTable;
+	/** The albums table. */
+	private JTable albumsTable;
 
-    /** The songs table. */
-    private JTable songsTable;
+	/** The songs table. */
+	private JTable songsTable;
 
-    /** The general chart. */
-    private JLabel generalChart;
+	/** The general chart. */
+	private JLabel generalChart;
 
-    /** The artists chart. */
-    private JLabel artistsChart;
+	/** The artists chart. */
+	private JLabel artistsChart;
 
-    /** The albums chart. */
-    private JLabel albumsChart;
+	/** The albums chart. */
+	private JLabel albumsChart;
 
-    /** The songs chart. */
-    private JLabel songsChart;
-    
-    /**
-     * Instantiates a new stats dialog.
-     * @param frame
-     */
-    public StatsDialog(IFrame frame) {
-        super(frame, 750, 750);
-    }
-    
-    @Override
-    public void initialize() {
-        setTitle(StringUtils.getString(I18nUtils.getString("STATS"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
-        setResizable(false);
-        add(getContent(getLookAndFeel()));
-    }
+	/** The songs chart. */
+	private JLabel songsChart;
 
-    @Override
-    public void hideDialog() {
-    	setVisible(false);
-    }
-    
-    @Override
-    public void showDialog() {
-    	setVisible(true);
-    }
-    
-    /**
-     * Gets the albums chart.
-     * 
-     * @return the albums chart
-     */
-    public JLabel getAlbumsChart() {
-        return albumsChart;
-    }
+	/**
+	 * Instantiates a new stats dialog.
+	 * 
+	 * @param frame
+	 * @param controlsBuilder
+	 */
+	public StatsDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 750, 750, controlsBuilder);
+	}
 
-    /**
-     * Gets the albums table.
-     * 
-     * @return the albums table
-     */
-    public JTable getAlbumsTable() {
-        return albumsTable;
-    }
+	@Override
+	public void initialize() {
+		setTitle(StringUtils.getString(I18nUtils.getString("STATS"), " - ",
+				Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
+		setResizable(false);
+		add(getContent(getLookAndFeel()));
+	}
 
-    /**
-     * Gets the artists chart.
-     * 
-     * @return the artists chart
-     */
-    public JLabel getArtistsChart() {
-        return artistsChart;
-    }
+	@Override
+	public void hideDialog() {
+		setVisible(false);
+	}
 
-    /**
-     * Gets the artists table.
-     * 
-     * @return the artists table
-     */
-    public JTable getArtistsTable() {
-        return artistsTable;
-    }
+	@Override
+	public void showDialog() {
+		setVisible(true);
+	}
 
-    /**
-     * Gets the content.
-     * @param iLookAndFeel 
-     * 
-     * @return the content
-     */
-    private JPanel getContent(ILookAndFeel iLookAndFeel) {
-        JPanel panel = new JPanel(new BorderLayout());
+	/**
+	 * Gets the albums chart.
+	 * 
+	 * @return the albums chart
+	 */
+	public JLabel getAlbumsChart() {
+		return this.albumsChart;
+	}
 
-        // General stats
-        JPanel generalPanel = new JPanel(new GridBagLayout());
-        generalTable = iLookAndFeel.getTable();
-        JScrollPane generalScrollPane = iLookAndFeel.getTableScrollPane(generalTable);
-        generalChart = new JLabel();
-        generalChart.setHorizontalAlignment(SwingConstants.CENTER);
-        
-        // Songs stats
-        JPanel songPanel = new JPanel(new GridBagLayout());
-        songsTable = iLookAndFeel.getTable();
-        JScrollPane songsScrollPane = iLookAndFeel.getTableScrollPane(songsTable);
-        songsChart = new JLabel();
-        songsChart.setHorizontalAlignment(SwingConstants.CENTER);
+	/**
+	 * Gets the albums table.
+	 * 
+	 * @return the albums table
+	 */
+	public JTable getAlbumsTable() {
+		return this.albumsTable;
+	}
 
-        // Albums stats
-        JPanel albumPanel = new JPanel(new GridBagLayout());
-        albumsTable = iLookAndFeel.getTable();
-        JScrollPane albumsScrollPane = iLookAndFeel.getTableScrollPane(albumsTable);
-        albumsChart = new JLabel();
-        albumsChart.setHorizontalAlignment(SwingConstants.CENTER);
+	/**
+	 * Gets the artists chart.
+	 * 
+	 * @return the artists chart
+	 */
+	public JLabel getArtistsChart() {
+		return this.artistsChart;
+	}
 
-        // Artists stats
-        JPanel artistPanel = new JPanel(new GridBagLayout());
-        artistsTable = iLookAndFeel.getTable();
-        JScrollPane artistsScrollPane = iLookAndFeel.getTableScrollPane(artistsTable);
-        artistsChart = new JLabel();
-        artistsChart.setHorizontalAlignment(SwingConstants.CENTER);
+	/**
+	 * Gets the artists table.
+	 * 
+	 * @return the artists table
+	 */
+	public JTable getArtistsTable() {
+		return this.artistsTable;
+	}
 
-        arrangePanel(generalPanel, generalScrollPane, songPanel,
+	/**
+	 * Gets the content.
+	 * 
+	 * @param iLookAndFeel
+	 * 
+	 * @return the content
+	 */
+	private JPanel getContent(final ILookAndFeel iLookAndFeel) {
+		JPanel panel = new JPanel(new BorderLayout());
+
+		// General stats
+		JPanel generalPanel = new JPanel(new GridBagLayout());
+		this.generalTable = iLookAndFeel.getTable();
+		JScrollPane generalScrollPane = iLookAndFeel
+				.getTableScrollPane(this.generalTable);
+		this.generalChart = new JLabel();
+		this.generalChart.setHorizontalAlignment(SwingConstants.CENTER);
+
+		// Songs stats
+		JPanel songPanel = new JPanel(new GridBagLayout());
+		this.songsTable = iLookAndFeel.getTable();
+		JScrollPane songsScrollPane = iLookAndFeel
+				.getTableScrollPane(this.songsTable);
+		this.songsChart = new JLabel();
+		this.songsChart.setHorizontalAlignment(SwingConstants.CENTER);
+
+		// Albums stats
+		JPanel albumPanel = new JPanel(new GridBagLayout());
+		this.albumsTable = iLookAndFeel.getTable();
+		JScrollPane albumsScrollPane = iLookAndFeel
+				.getTableScrollPane(this.albumsTable);
+		this.albumsChart = new JLabel();
+		this.albumsChart.setHorizontalAlignment(SwingConstants.CENTER);
+
+		// Artists stats
+		JPanel artistPanel = new JPanel(new GridBagLayout());
+		this.artistsTable = iLookAndFeel.getTable();
+		JScrollPane artistsScrollPane = iLookAndFeel
+				.getTableScrollPane(this.artistsTable);
+		this.artistsChart = new JLabel();
+		this.artistsChart.setHorizontalAlignment(SwingConstants.CENTER);
+
+		arrangePanel(generalPanel, generalScrollPane, songPanel,
 				songsScrollPane, albumPanel, albumsScrollPane, artistPanel,
 				artistsScrollPane);
 
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab(I18nUtils.getString("GENERAL"), generalPanel);
-        tabbedPane.addTab(I18nUtils.getString("SONG"), songPanel);
-        tabbedPane.addTab(I18nUtils.getString("ALBUM"), albumPanel);
-        tabbedPane.addTab(I18nUtils.getString("ARTIST"), artistPanel);
-        panel.add(tabbedPane, BorderLayout.CENTER);
-        return panel;
-    }
+		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane.addTab(I18nUtils.getString("GENERAL"), generalPanel);
+		tabbedPane.addTab(I18nUtils.getString("SONG"), songPanel);
+		tabbedPane.addTab(I18nUtils.getString("ALBUM"), albumPanel);
+		tabbedPane.addTab(I18nUtils.getString("ARTIST"), artistPanel);
+		panel.add(tabbedPane, BorderLayout.CENTER);
+		return panel;
+	}
 
 	/**
 	 * @param generalPanel
@@ -191,94 +201,94 @@ public final class StatsDialog extends AbstractCustomDialog {
 	 * @param artistPanel
 	 * @param artistsScrollPane
 	 */
-	private void arrangePanel(JPanel generalPanel,
-			JScrollPane generalScrollPane, JPanel songPanel,
-			JScrollPane songsScrollPane, JPanel albumPanel,
-			JScrollPane albumsScrollPane, JPanel artistPanel,
-			JScrollPane artistsScrollPane) {
+	private void arrangePanel(final JPanel generalPanel,
+			final JScrollPane generalScrollPane, final JPanel songPanel,
+			final JScrollPane songsScrollPane, final JPanel albumPanel,
+			final JScrollPane albumsScrollPane, final JPanel artistPanel,
+			final JScrollPane artistsScrollPane) {
 		GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(10, 10, 10, 10);
-        generalPanel.add(generalScrollPane, c);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 0;
-        c.weighty = 0;
-        generalPanel.add(generalChart, c);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(10, 10, 10, 10);
+		generalPanel.add(generalScrollPane, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weightx = 0;
+		c.weighty = 0;
+		generalPanel.add(this.generalChart, c);
 
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(10, 10, 10, 10);
-        songPanel.add(songsScrollPane, c);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 0;
-        c.weighty = 0;
-        songPanel.add(songsChart, c);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(10, 10, 10, 10);
+		songPanel.add(songsScrollPane, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weightx = 0;
+		c.weighty = 0;
+		songPanel.add(this.songsChart, c);
 
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.weighty = 1;
-        albumPanel.add(albumsScrollPane, c);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 0;
-        c.weighty = 0;
-        albumPanel.add(albumsChart, c);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.weighty = 1;
+		albumPanel.add(albumsScrollPane, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weightx = 0;
+		c.weighty = 0;
+		albumPanel.add(this.albumsChart, c);
 
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.weighty = 1;
-        artistPanel.add(artistsScrollPane, c);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 0;
-        c.weighty = 0;
-        artistPanel.add(artistsChart, c);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.weighty = 1;
+		artistPanel.add(artistsScrollPane, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weightx = 0;
+		c.weighty = 0;
+		artistPanel.add(this.artistsChart, c);
 	}
 
-    /**
-     * Gets the general chart.
-     * 
-     * @return the general chart
-     */
-    public JLabel getGeneralChart() {
-        return generalChart;
-    }
+	/**
+	 * Gets the general chart.
+	 * 
+	 * @return the general chart
+	 */
+	public JLabel getGeneralChart() {
+		return this.generalChart;
+	}
 
-    /**
-     * Gets the general table.
-     * 
-     * @return the general table
-     */
-    public JTable getGeneralTable() {
-        return generalTable;
-    }
+	/**
+	 * Gets the general table.
+	 * 
+	 * @return the general table
+	 */
+	public JTable getGeneralTable() {
+		return this.generalTable;
+	}
 
-    /**
-     * Gets the songs chart.
-     * 
-     * @return the songs chart
-     */
-    public JLabel getSongsChart() {
-        return songsChart;
-    }
+	/**
+	 * Gets the songs chart.
+	 * 
+	 * @return the songs chart
+	 */
+	public JLabel getSongsChart() {
+		return this.songsChart;
+	}
 
-    /**
-     * Gets the songs table.
-     * 
-     * @return the songs table
-     */
-    public JTable getSongsTable() {
-        return songsTable;
-    }
+	/**
+	 * Gets the songs table.
+	 * 
+	 * @return the songs table
+	 */
+	public JTable getSongsTable() {
+		return this.songsTable;
+	}
 }
