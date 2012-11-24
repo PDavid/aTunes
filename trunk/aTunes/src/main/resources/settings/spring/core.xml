@@ -80,7 +80,7 @@
 	<bean id="osdPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.OSDPanel" scope="prototype" init-method="initialize"/>
 	<bean id="contextPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.ContextPanel" scope="prototype" init-method="initialize"/>
 	<bean id="internetPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.InternetPanel" scope="prototype" init-method="initialize"/>
-	<bean id="lastfmPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.LastFmPanel" scope="prototype"/>	
+	<bean id="lastfmPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.LastFmPanel" scope="prototype" init-method="initialize"/>	
 	<bean id="devicePreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.DevicePanel" scope="prototype" init-method="initialize"/>
 	<bean id="radioPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.RadioPanel" scope="prototype"/>
 	<bean id="podcastFeedPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.PodcastFeedPanel" scope="prototype" init-method="initialize"/>

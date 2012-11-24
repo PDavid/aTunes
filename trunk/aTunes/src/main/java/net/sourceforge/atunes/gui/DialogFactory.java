@@ -20,11 +20,9 @@
 
 package net.sourceforge.atunes.gui;
 
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 /**
  * A factory of dialogs
@@ -32,24 +30,25 @@ import org.springframework.context.ApplicationContextAware;
  * @author alex
  * 
  */
-public class DialogFactory implements IDialogFactory, ApplicationContextAware {
+public class DialogFactory implements IDialogFactory {
 
-	private ApplicationContext context;
+	private IBeanFactory beanFactory;
 
-	@Override
-	public void setApplicationContext(
-			final ApplicationContext applicationContext) {
-		this.context = applicationContext;
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	@Override
 	public <T extends IDialog> T newDialog(final Class<T> dialogClass) {
-		return this.context.getBean(dialogClass);
+		return this.beanFactory.getBean(dialogClass);
 	}
 
 	@Override
 	public <T extends IDialog> T newDialog(final String dialogName,
 			final Class<T> dialogClass) {
-		return this.context.getBean(dialogName, dialogClass);
+		return this.beanFactory.getBean(dialogName, dialogClass);
 	}
 }
