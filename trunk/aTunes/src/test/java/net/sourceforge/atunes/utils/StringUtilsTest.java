@@ -24,19 +24,40 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class StringUtilsTest {
-	
+
 	@Test
 	public void testEqualsToStrings() {
 		Assert.assertFalse(StringUtils.equalsToStrings(null));
-		
+
 		Assert.assertFalse(StringUtils.equalsToStrings("a", ""));
-		
+
 		Assert.assertFalse(StringUtils.equalsToStrings("a", "b", "c"));
-		
+
 		Assert.assertFalse(StringUtils.equalsToStrings("a", "b", "A", "c"));
-		
+
 		Assert.assertTrue(StringUtils.equalsToStrings("a", "b", "a", "c"));
-		
+	}
+
+	@Test
+	public void testGetCommonSuffix() {
+		Assert.assertEquals(" (live)", StringUtils.getCommonSuffix(
+				"Song 1 (live)", "Song 2 (live)", "One more song (live)",
+				"One more song 2 (live)"));
+
+		Assert.assertEquals("(live)", StringUtils.getCommonSuffix(
+				"Song 1 (live)", "Song 2 (live)", "One more song (live)",
+				"One more song 2(live)"));
+	}
+
+	@Test
+	public void testGetCommonPrefix() {
+		Assert.assertEquals("(live) ", StringUtils.getCommonPrefix(
+				"(live) Song 1", "(live) Song 2", "(live) One more song",
+				"(live) One more song 2"));
+
+		Assert.assertEquals("(live)", StringUtils.getCommonPrefix(
+				"(live) Song 1", "(live) Song 2", "(live) One more song",
+				"(live)One more song 2"));
 	}
 
 }
