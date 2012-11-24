@@ -46,10 +46,10 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 
 	private static final long serialVersionUID = -9216216930198145476L;
 
-	private final JCheckBox lastFmEnabled;
-	private final JTextField lastFmUser;
-	private final JPasswordField lastFmPassword;
-	private final JButton testLogin;
+	private JCheckBox lastFmEnabled;
+	private JTextField lastFmUser;
+	private JPasswordField lastFmPassword;
+	private JButton testLogin;
 
 	private IStateContext stateContext;
 
@@ -58,9 +58,15 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 	private IControlsBuilder controlsBuilder;
 
 	/**
+	 * Checkbox to select if application must send a love request when user adds
+	 * a favorite song
+	 */
+	private JCheckBox autoLoveFavoriteSongs;
+
+	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
@@ -79,42 +85,46 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 	}
 
 	/**
-	 * Checkbox to select if application must send a love request when user adds
-	 * a favorite song
-	 */
-	private final JCheckBox autoLoveFavoriteSongs;
-
-	/**
 	 * Instantiates a new last fm panel.
 	 */
 	public LastFmPanel() {
 		super("Last.fm");
+	}
+
+	/**
+	 * Initialize panel
+	 */
+	public void initialize() {
 		JLabel lastFmLabel = new JLabel(
 				I18nUtils.getString("LASTFM_PREFERENCES"));
-		lastFmEnabled = new JCheckBox(I18nUtils.getString("LASTFM_ENABLED"));
+		this.lastFmEnabled = new JCheckBox(
+				I18nUtils.getString("LASTFM_ENABLED"));
 		JLabel userLabel = new JLabel(I18nUtils.getString("LASTFM_USER"));
-		lastFmUser = controlsBuilder.createTextField();
-		lastFmUser.setColumns(15);
+		this.lastFmUser = this.controlsBuilder.createTextField();
+		this.lastFmUser.setColumns(15);
 		JLabel passwordLabel = new JLabel(
 				I18nUtils.getString("LASTFM_PASSWORD"));
-		lastFmPassword = new JPasswordField(15);
-		autoLoveFavoriteSongs = new JCheckBox(
+		this.lastFmPassword = new JPasswordField(15);
+		this.autoLoveFavoriteSongs = new JCheckBox(
 				I18nUtils
 						.getString("AUTOMATICALLY_LOVE_IN_LASTFM_FAVORITE_SONGS"));
-		testLogin = new JButton(I18nUtils.getString("TEST_LOGIN"));
+		this.testLogin = new JButton(I18nUtils.getString("TEST_LOGIN"));
 
-		testLogin.addActionListener(new ActionListener() {
+		this.testLogin.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				testLogin.setEnabled(false);
-				new TestLastFmLoginSwingWorker(lastFmUser.getText(), String
-						.valueOf(lastFmPassword.getPassword()), testLogin,
-						getPreferenceDialog(), beanFactory).execute();
+				LastFmPanel.this.testLogin.setEnabled(false);
+				new TestLastFmLoginSwingWorker(LastFmPanel.this.lastFmUser
+						.getText(),
+						String.valueOf(LastFmPanel.this.lastFmPassword
+								.getPassword()), LastFmPanel.this.testLogin,
+						getPreferenceDialog(), LastFmPanel.this.beanFactory)
+						.execute();
 			}
 		});
 
-		lastFmEnabled.addActionListener(new ActionListener() {
+		this.lastFmEnabled.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -130,14 +140,14 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 	 * @param userLabel
 	 * @param passwordLabel
 	 */
-	private void arrangePanel(JLabel lastFmLabel, JLabel userLabel,
-			JLabel passwordLabel) {
+	private void arrangePanel(final JLabel lastFmLabel, final JLabel userLabel,
+			final JLabel passwordLabel) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 1;
 		c.insets = new Insets(5, 2, 5, 2);
-		add(lastFmEnabled, c);
+		add(this.lastFmEnabled, c);
 		c.gridx = 0;
 		c.gridwidth = 2;
 		c.gridy = 1;
@@ -151,7 +161,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 		add(userLabel, c);
 		c.gridx = 1;
 		c.weightx = 1;
-		add(lastFmUser, c);
+		add(this.lastFmUser, c);
 		c.gridx = 0;
 		c.gridy = 3;
 		c.weightx = 0;
@@ -159,33 +169,33 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 		add(passwordLabel, c);
 		c.gridx = 1;
 		c.weightx = 1;
-		add(lastFmPassword, c);
+		add(this.lastFmPassword, c);
 		c.gridx = 1;
 		c.gridy = 4;
 		c.weightx = 0;
-		add(testLogin, c);
+		add(this.testLogin, c);
 		c.gridx = 0;
 		c.gridy = 5;
 		c.weighty = 1;
 		c.gridwidth = 2;
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
-		add(autoLoveFavoriteSongs, c);
+		add(this.autoLoveFavoriteSongs, c);
 	}
 
 	@Override
 	public boolean applyPreferences() {
-		stateContext.setLastFmUser(lastFmUser.getText());
-		stateContext.setLastFmPassword(String.valueOf(lastFmPassword
+		this.stateContext.setLastFmUser(this.lastFmUser.getText());
+		this.stateContext.setLastFmPassword(String.valueOf(this.lastFmPassword
 				.getPassword()));
-		stateContext.setLastFmEnabled(lastFmEnabled.isSelected());
-		stateContext
-				.setAutoLoveFavoriteSong(autoLoveFavoriteSongs.isSelected());
-		beanFactory.getBean(AddLovedSongInLastFMAction.class).setEnabled(
-				stateContext.isLastFmEnabled());
-		beanFactory.getBean(AddBannedSongInLastFMAction.class).setEnabled(
-				stateContext.isLastFmEnabled());
-		beanFactory.getBean(ImportLovedTracksFromLastFMAction.class)
-				.setEnabled(stateContext.isLastFmEnabled());
+		this.stateContext.setLastFmEnabled(this.lastFmEnabled.isSelected());
+		this.stateContext.setAutoLoveFavoriteSong(this.autoLoveFavoriteSongs
+				.isSelected());
+		this.beanFactory.getBean(AddLovedSongInLastFMAction.class).setEnabled(
+				this.stateContext.isLastFmEnabled());
+		this.beanFactory.getBean(AddBannedSongInLastFMAction.class).setEnabled(
+				this.stateContext.isLastFmEnabled());
+		this.beanFactory.getBean(ImportLovedTracksFromLastFMAction.class)
+				.setEnabled(this.stateContext.isLastFmEnabled());
 		return false;
 	}
 
@@ -196,7 +206,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 	 *            if Last.fm is enabled
 	 */
 	private void setLastFmEnabled(final boolean enabled) {
-		lastFmEnabled.setSelected(enabled);
+		this.lastFmEnabled.setSelected(enabled);
 	}
 
 	/**
@@ -206,7 +216,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 	 *            the new last fm password
 	 */
 	private void setLastFmPassword(final String password) {
-		lastFmPassword.setText(password);
+		this.lastFmPassword.setText(password);
 	}
 
 	/**
@@ -216,7 +226,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 	 *            the new last fm user
 	 */
 	private void setLastFmUser(final String user) {
-		lastFmUser.setText(user);
+		this.lastFmUser.setText(user);
 	}
 
 	/**
@@ -225,15 +235,15 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 	 * @param enabled
 	 */
 	private void setAutoLoveFavoriteSong(final boolean enabled) {
-		autoLoveFavoriteSongs.setSelected(enabled);
+		this.autoLoveFavoriteSongs.setSelected(enabled);
 	}
 
 	@Override
 	public void updatePanel() {
-		setLastFmUser(stateContext.getLastFmUser());
-		setLastFmPassword(stateContext.getLastFmPassword());
-		setLastFmEnabled(stateContext.isLastFmEnabled());
-		setAutoLoveFavoriteSong(stateContext.isAutoLoveFavoriteSong());
+		setLastFmUser(this.stateContext.getLastFmUser());
+		setLastFmPassword(this.stateContext.getLastFmPassword());
+		setLastFmEnabled(this.stateContext.isLastFmEnabled());
+		setAutoLoveFavoriteSong(this.stateContext.isAutoLoveFavoriteSong());
 		enableControls();
 	}
 
@@ -241,11 +251,11 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 	 * Enables all controls if main checkbox is selected
 	 */
 	protected void enableControls() {
-		boolean enabled = lastFmEnabled.isSelected();
-		lastFmUser.setEnabled(enabled);
-		lastFmPassword.setEnabled(enabled);
-		autoLoveFavoriteSongs.setEnabled(enabled);
-		testLogin.setEnabled(enabled);
+		boolean enabled = this.lastFmEnabled.isSelected();
+		this.lastFmUser.setEnabled(enabled);
+		this.lastFmPassword.setEnabled(enabled);
+		this.autoLoveFavoriteSongs.setEnabled(enabled);
+		this.testLogin.setEnabled(enabled);
 	}
 
 	@Override
