@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
+import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.IStateHandler;
@@ -27,16 +28,28 @@ import net.sourceforge.atunes.model.IStatePlayer;
 
 /**
  * Reads playlists
+ * 
  * @author alex
- *
+ * 
  */
-public class PlayListHandlerInitializationTask implements IHandlerBackgroundInitializationTask {
+public class PlayListHandlerInitializationTask implements
+		IHandlerBackgroundInitializationTask {
 
 	private PlayListHandler playListHandler;
 
 	private IStateHandler stateHandler;
 
 	private IStatePlayer statePlayer;
+
+	private PlayListEventListeners playListEventListeners;
+
+	/**
+	 * @param playListEventListeners
+	 */
+	public void setPlayListEventListeners(
+			final PlayListEventListeners playListEventListeners) {
+		this.playListEventListeners = playListEventListeners;
+	}
 
 	/**
 	 * @param statePlayer
@@ -64,11 +77,16 @@ public class PlayListHandlerInitializationTask implements IHandlerBackgroundInit
 		return new Runnable() {
 			@Override
 			public void run() {
-				IListOfPlayLists list = stateHandler.retrievePlayListsCache();
+				IListOfPlayLists list = PlayListHandlerInitializationTask.this.stateHandler
+						.retrievePlayListsCache();
 				if (list == null) {
-					list = ListOfPlayLists.getEmptyPlayList(statePlayer);
+					list = ListOfPlayLists
+							.getEmptyPlayList(
+									PlayListHandlerInitializationTask.this.statePlayer,
+									PlayListHandlerInitializationTask.this.playListEventListeners);
 				}
-				playListHandler.setPlayListsRetrievedFromCache(list);
+				PlayListHandlerInitializationTask.this.playListHandler
+						.setPlayListsRetrievedFromCache(list);
 			}
 		};
 	}
@@ -78,7 +96,8 @@ public class PlayListHandlerInitializationTask implements IHandlerBackgroundInit
 		return new Runnable() {
 			@Override
 			public void run() {
-				playListHandler.initializationTaskCompleted();
+				PlayListHandlerInitializationTask.this.playListHandler
+						.initializationTaskCompleted();
 			}
 		};
 	}

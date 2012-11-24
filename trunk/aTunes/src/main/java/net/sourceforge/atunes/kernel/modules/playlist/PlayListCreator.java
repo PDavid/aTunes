@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.List;
 
+import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayList;
@@ -29,14 +30,25 @@ import net.sourceforge.atunes.model.IStatePlayer;
 
 /**
  * Creates play lists
+ * 
  * @author alex
- *
+ * 
  */
 public class PlayListCreator {
 
 	private IStatePlayer statePlayer;
 
 	private IColumnSet playListColumnSet;
+
+	private PlayListEventListeners playListEventListeners;
+
+	/**
+	 * @param playListEventListeners
+	 */
+	public void setPlayListEventListeners(
+			final PlayListEventListeners playListEventListeners) {
+		this.playListEventListeners = playListEventListeners;
+	}
 
 	/**
 	 * @param statePlayer
@@ -54,16 +66,20 @@ public class PlayListCreator {
 
 	/**
 	 * Returns a new play list
+	 * 
 	 * @param nameOfNewPlayList
 	 * @param audioObjects
 	 * @return
 	 */
-	IPlayList getNewPlayList(final String nameOfNewPlayList, final List<? extends IAudioObject> audioObjects) {
+	IPlayList getNewPlayList(final String nameOfNewPlayList,
+			final List<? extends IAudioObject> audioObjects) {
 		PlayList newPlayList;
 		if (audioObjects == null) {
-			newPlayList = new PlayList(statePlayer);
+			newPlayList = new PlayList(this.statePlayer,
+					this.playListEventListeners);
 		} else {
-			newPlayList = new PlayList(audioObjects, statePlayer);
+			newPlayList = new PlayList(audioObjects, this.statePlayer,
+					this.playListEventListeners);
 		}
 		newPlayList.setName(nameOfNewPlayList);
 		return newPlayList;
@@ -71,11 +87,16 @@ public class PlayListCreator {
 
 	/**
 	 * Returns a new play list with filtered audio objects from given play list
+	 * 
 	 * @param playList
 	 * @param filter
 	 * @return
 	 */
-	IPlayList getNewPlayListWithFilter(final IPlayList playList, final String filter) {
-		return getNewPlayList(playList.getName(), playListColumnSet.filterAudioObjects(playList.getAudioObjectsList(), filter));
+	IPlayList getNewPlayListWithFilter(final IPlayList playList,
+			final String filter) {
+		return getNewPlayList(
+				playList.getName(),
+				this.playListColumnSet.filterAudioObjects(
+						playList.getAudioObjectsList(), filter));
 	}
 }
