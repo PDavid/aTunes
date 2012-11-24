@@ -33,25 +33,19 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.gui.views.controls.FadeInPanel;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITreeObject;
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IYear;
-import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * The Class ExtendedToolTip. This is a special window shown as tooltip for
@@ -59,14 +53,10 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class ExtendedToolTip extends AbstractCustomWindow {
 
-	private static final String SONG = "SONG";
-
-	private static final String SONGS2 = "SONGS";
-
 	private static final long serialVersionUID = -5041702404982493070L;
 
 	private static final Dimension IMAGE_DIMENSION = new Dimension(
-			Constants.TOOLTIP_IMAGE_WIDTH + 200,
+			Constants.TOOLTIP_IMAGE_WIDTH + 300,
 			Constants.TOOLTIP_IMAGE_HEIGHT + 10);
 	private static final Dimension NO_IMAGE_DIMENSION = new Dimension(200, 65);
 
@@ -76,21 +66,16 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 	private final JLabel line2;
 	private final JLabel line3;
 
-	private final IUnknownObjectChecker unknownObjectChecker;
-
 	/**
 	 * Instantiates a new extended tool tip.
 	 * 
 	 * @param lookAndFeel
-	 * @param unknownObjectChecker
 	 * @param controlsBuilder
 	 */
 	public ExtendedToolTip(final ILookAndFeel lookAndFeel,
-			final IUnknownObjectChecker unknownObjectChecker,
 			final IControlsBuilder controlsBuilder) {
 		super(null, IMAGE_DIMENSION.width, IMAGE_DIMENSION.height,
 				controlsBuilder);
-		this.unknownObjectChecker = unknownObjectChecker;
 
 		setFocusableWindowState(false);
 		JPanel container = new JPanel(new GridBagLayout());
@@ -186,179 +171,6 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 	}
 
 	/**
-	 * Returns <code>true</code> if given object can be shown in extended
-	 * tooltip
-	 * 
-	 * @param object
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static boolean canObjectBeShownInExtendedToolTip(final Object object) {
-		if (object instanceof ITreeObject) {
-			return isExtendedTooltipSupported((ITreeObject<? extends IAudioObject>) object);
-		}
-		return false;
-	}
-
-	/**
-	 * @param object
-	 * @return <code>true</code> if this object supports extended tool tip
-	 */
-	private static boolean isExtendedTooltipSupported(
-			final ITreeObject<? extends IAudioObject> object) {
-		if (object instanceof IAlbum) {
-			return true;
-		} else if (object instanceof IPodcastFeed) {
-			return true;
-		} else if (object instanceof IFolder) {
-			return true;
-		} else if (object instanceof IGenre) {
-			return true;
-		} else if (object instanceof IYear) {
-			return true;
-		} else if (object instanceof IArtist) {
-			return true;
-		} else if (object instanceof IRadio) {
-			return false;
-		} else {
-			throw new IllegalArgumentException(object.getClass()
-					.getCanonicalName());
-		}
-	}
-
-	/**
-	 * Fills tool tip with data from object
-	 * 
-	 * @param obj
-	 * @param repository
-	 */
-	@SuppressWarnings("unchecked")
-	public void setToolTipContent(final Object obj) {
-		// Picture is set asynchronously
-		setImage(null);
-		if (obj instanceof ITreeObject) {
-			setExtendedToolTipFromTreeObject((ITreeObject<? extends IAudioObject>) obj);
-		}
-	}
-
-	/**
-	 * Fills tool tip from tree object
-	 * 
-	 * @param object
-	 */
-	private void setExtendedToolTipFromTreeObject(
-			final ITreeObject<? extends IAudioObject> object) {
-		if (object instanceof IAlbum) {
-			setFromAlbum(object);
-		} else if (object instanceof IPodcastFeed) {
-			setFromPodcast(object);
-		} else if (object instanceof IFolder) {
-			setFromFolder(object);
-		} else if (object instanceof IGenre) {
-			setFromGenre(object);
-		} else if (object instanceof IYear) {
-			setFromYear(object);
-		} else if (object instanceof IArtist) {
-			setFromArtist(object);
-		}
-	}
-
-	/**
-	 * @param object
-	 */
-	private void setFromArtist(final ITreeObject<? extends IAudioObject> object) {
-		IArtist a = (IArtist) object;
-		setLine1(a.getName());
-		int albumNumber = a.getAlbums().size();
-		setLine2(StringUtils.getString(
-				albumNumber,
-				" ",
-				(albumNumber > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils
-						.getString("ALBUM"))));
-		setLine3(StringUtils.getString(I18nUtils.getString("TIMES_PLAYED"),
-				": ", Context.getBean(IStatisticsHandler.class)
-						.getArtistTimesPlayed(a)));
-	}
-
-	/**
-	 * @param object
-	 */
-	private void setFromYear(final ITreeObject<? extends IAudioObject> object) {
-		IYear y = (IYear) object;
-		setLine1(y.getName(this.unknownObjectChecker));
-		int songs = y.size();
-		setLine2(StringUtils.getString(
-				songs,
-				" ",
-				(songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
-						.getString(SONG))));
-	}
-
-	/**
-	 * @param object
-	 */
-	private void setFromGenre(final ITreeObject<? extends IAudioObject> object) {
-		IGenre g = (IGenre) object;
-		setLine1(g.getName());
-		int songs = g.size();
-		setLine2(StringUtils.getString(
-				songs,
-				" ",
-				(songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
-						.getString(SONG))));
-	}
-
-	/**
-	 * @param object
-	 */
-	private void setFromFolder(final ITreeObject<? extends IAudioObject> object) {
-		IFolder f = (IFolder) object;
-		setLine1(f.getName());
-		int folderNumber = f.getFolders().size();
-		if (folderNumber > 0) {
-			setLine2(StringUtils.getString(folderNumber, " ",
-					(folderNumber > 1 ? I18nUtils.getString("FOLDERS")
-							: I18nUtils.getString("FOLDER"))));
-		} else {
-			setLine2(null);
-		}
-		int songs = f.getAudioObjects().size();
-		setLine3(StringUtils.getString(
-				songs,
-				" ",
-				(songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
-						.getString(SONG))));
-	}
-
-	/**
-	 * @param object
-	 */
-	private void setFromPodcast(final ITreeObject<? extends IAudioObject> object) {
-		IPodcastFeed p = (IPodcastFeed) object;
-		setLine1(p.getName());
-		setLine2(StringUtils.getString(I18nUtils.getString("PODCAST_ENTRIES"),
-				": ", p.getPodcastFeedEntries().size()));
-		setLine3(StringUtils.getString(
-				I18nUtils.getString("NEW_PODCAST_ENTRIES_TOOLTIP"), ": ",
-				p.getNewEntriesCount()));
-	}
-
-	/**
-	 * @param object
-	 */
-	private void setFromAlbum(final ITreeObject<? extends IAudioObject> object) {
-		IAlbum a = (IAlbum) object;
-		setLine1(a.getName());
-		setLine2(a.getArtist().getName());
-		int songNumber = a.size();
-		setLine3(StringUtils.getString(
-				songNumber,
-				" ",
-				(songNumber > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
-						.getString(SONG))));
-	}
-
-	/**
 	 * Adjust size of extended tool tip if it's going to show an image or not
 	 * 
 	 * @param currentAlbumToolTipContent
@@ -376,7 +188,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 	 * @param object
 	 * @return
 	 */
-	public boolean isExtendedTooltipImageSupported(final Object object) {
+	private boolean isExtendedTooltipImageSupported(final Object object) {
 		if (object instanceof IAlbum) {
 			return true;
 		} else if (object instanceof IPodcastFeed) {

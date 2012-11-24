@@ -69,7 +69,6 @@ import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ITreeObject;
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -123,8 +122,6 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 
 	private IBeanFactory beanFactory;
 
-	private IUnknownObjectChecker unknownObjectChecker;
-
 	private IPlayListHandler playListHandler;
 
 	private IControlsBuilder controlsBuilder;
@@ -166,14 +163,6 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	 */
 	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
-	}
-
-	/**
-	 * @param unknownObjectChecker
-	 */
-	public void setUnknownObjectChecker(
-			final IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	/**
@@ -302,7 +291,8 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 				this, this.navigationTable, this.stateNavigation,
 				this.navigationHandler, this.playListHandler, this.osManager);
 		NavigationTreeToolTipListener tooltipListener = new NavigationTreeToolTipListener(
-				this, this.stateNavigation, this.navigationHandler);
+				this, this.stateNavigation, this.navigationHandler,
+				this.beanFactory.getBean(ExtendedTooltipContent.class));
 		for (INavigationView view : this.navigationHandler.getNavigationViews()) {
 			view.getTree().addMouseListener(treeMouseListener);
 			view.getTree().addMouseListener(tooltipListener);
@@ -336,9 +326,11 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 			JDialog.setDefaultLookAndFeelDecorated(false);
 			this.extendedToolTip = new ExtendedToolTip(
 					this.lookAndFeelManager.getCurrentLookAndFeel(),
-					this.unknownObjectChecker, this.controlsBuilder);
+					this.controlsBuilder);
 			JDialog.setDefaultLookAndFeelDecorated(this.lookAndFeelManager
 					.getCurrentLookAndFeel().isDialogUndecorated());
+			this.beanFactory.getBean(ExtendedTooltipContent.class)
+					.setExtendedTooltip(this.extendedToolTip);
 		}
 		return this.extendedToolTip;
 	}

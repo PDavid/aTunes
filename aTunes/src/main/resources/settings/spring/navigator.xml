@@ -106,4 +106,9 @@
 			</list>
 		</property>
 	</bean>
+	
+	
+	
+	
+	<bean id="extendedToolTipContent" class="net.sourceforge.atunes.kernel.modules.navigator.ExtendedTooltipContent"/>
 </beans>

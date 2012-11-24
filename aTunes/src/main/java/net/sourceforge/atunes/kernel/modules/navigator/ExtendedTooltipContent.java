@@ -1,0 +1,242 @@
+/*
+ * aTunes 2.2.0-SNAPSHOT
+ * Copyright (C) 2006-2011 Alex Aranda, Sylvain Gaudard and contributors
+ *
+ * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *
+ * http://www.atunes.org
+ * http://sourceforge.net/projects/atunes
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+package net.sourceforge.atunes.kernel.modules.navigator;
+
+import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFolder;
+import net.sourceforge.atunes.model.IGenre;
+import net.sourceforge.atunes.model.IPodcastFeed;
+import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IStatisticsHandler;
+import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
+import net.sourceforge.atunes.model.IYear;
+import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
+
+/**
+ * Sets content of extended tooltip
+ * 
+ * @author alex
+ * 
+ */
+public class ExtendedTooltipContent {
+
+	private static final String SONG = "SONG";
+
+	private static final String SONGS2 = "SONGS";
+
+	private ExtendedToolTip extendedTooltip;
+
+	private IStatisticsHandler statisticsHandler;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
+	/**
+	 * @param statisticsHandler
+	 */
+	public void setStatisticsHandler(final IStatisticsHandler statisticsHandler) {
+		this.statisticsHandler = statisticsHandler;
+	}
+
+	/**
+	 * @param extendedTooltip
+	 */
+	public void setExtendedTooltip(final ExtendedToolTip extendedTooltip) {
+		this.extendedTooltip = extendedTooltip;
+	}
+
+	/**
+	 * Fills tool tip with data from object
+	 * 
+	 * @param obj
+	 */
+	public void setToolTipContent(final ITreeObject<? extends IAudioObject> obj) {
+		// Picture is set asynchronously
+		this.extendedTooltip.setImage(null);
+		setExtendedToolTipFromTreeObject(obj);
+	}
+
+	/**
+	 * Fills tool tip from tree object
+	 * 
+	 * @param object
+	 */
+	private void setExtendedToolTipFromTreeObject(
+			final ITreeObject<? extends IAudioObject> object) {
+		if (object instanceof IAlbum) {
+			setFromAlbum((IAlbum) object);
+		} else if (object instanceof IPodcastFeed) {
+			setFromPodcast((IPodcastFeed) object);
+		} else if (object instanceof IFolder) {
+			setFromFolder((IFolder) object);
+		} else if (object instanceof IGenre) {
+			setFromGenre((IGenre) object);
+		} else if (object instanceof IYear) {
+			setFromYear((IYear) object);
+		} else if (object instanceof IArtist) {
+			setFromArtist((IArtist) object);
+		}
+	}
+
+	/**
+	 * @param object
+	 */
+	private void setFromArtist(final IArtist a) {
+		this.extendedTooltip.setLine1(a.getName());
+		int albumNumber = a.getAlbums().size();
+		this.extendedTooltip.setLine2(StringUtils.getString(
+				albumNumber,
+				" ",
+				(albumNumber > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils
+						.getString("ALBUM"))));
+		this.extendedTooltip.setLine3(StringUtils.getString(
+				I18nUtils.getString("TIMES_PLAYED"), ": ",
+				this.statisticsHandler.getArtistTimesPlayed(a)));
+	}
+
+	/**
+	 * @param object
+	 */
+	private void setFromYear(final IYear y) {
+		this.extendedTooltip.setLine1(y.getName(this.unknownObjectChecker));
+		int songs = y.size();
+		this.extendedTooltip.setLine2(StringUtils.getString(
+				songs,
+				" ",
+				(songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
+						.getString(SONG))));
+	}
+
+	/**
+	 * @param object
+	 */
+	private void setFromGenre(final IGenre g) {
+		this.extendedTooltip.setLine1(g.getName());
+		int songs = g.size();
+		this.extendedTooltip.setLine2(StringUtils.getString(
+				songs,
+				" ",
+				(songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
+						.getString(SONG))));
+	}
+
+	/**
+	 * @param object
+	 */
+	private void setFromFolder(final IFolder f) {
+		this.extendedTooltip.setLine1(f.getName());
+		int folderNumber = f.getFolders().size();
+		if (folderNumber > 0) {
+			this.extendedTooltip.setLine2(StringUtils.getString(folderNumber,
+					" ", (folderNumber > 1 ? I18nUtils.getString("FOLDERS")
+							: I18nUtils.getString("FOLDER"))));
+		} else {
+			this.extendedTooltip.setLine2(null);
+		}
+		int songs = f.getAudioObjects().size();
+		this.extendedTooltip.setLine3(StringUtils.getString(
+				songs,
+				" ",
+				(songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
+						.getString(SONG))));
+	}
+
+	/**
+	 * @param object
+	 */
+	private void setFromPodcast(final IPodcastFeed p) {
+		this.extendedTooltip.setLine1(p.getName());
+		this.extendedTooltip.setLine2(StringUtils.getString(I18nUtils
+				.getString("PODCAST_ENTRIES"), ": ", p.getPodcastFeedEntries()
+				.size()));
+		this.extendedTooltip.setLine3(StringUtils.getString(
+				I18nUtils.getString("NEW_PODCAST_ENTRIES_TOOLTIP"), ": ",
+				p.getNewEntriesCount()));
+	}
+
+	/**
+	 * @param object
+	 */
+	private void setFromAlbum(final IAlbum a) {
+		this.extendedTooltip.setLine1(a.getName());
+		this.extendedTooltip.setLine2(a.getArtist().getName());
+		int songNumber = a.size();
+		this.extendedTooltip.setLine3(StringUtils.getString(
+				songNumber,
+				" ",
+				(songNumber > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
+						.getString(SONG))));
+	}
+
+	/**
+	 * Returns <code>true</code> if given object can be shown in extended
+	 * tooltip
+	 * 
+	 * @param object
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean canObjectBeShownInExtendedToolTip(final Object object) {
+		if (object instanceof ITreeObject) {
+			return isExtendedTooltipSupported((ITreeObject<? extends IAudioObject>) object);
+		}
+		return false;
+	}
+
+	/**
+	 * @param object
+	 * @return <code>true</code> if this object supports extended tool tip
+	 */
+	private boolean isExtendedTooltipSupported(
+			final ITreeObject<? extends IAudioObject> object) {
+		if (object instanceof IAlbum) {
+			return true;
+		} else if (object instanceof IPodcastFeed) {
+			return true;
+		} else if (object instanceof IFolder) {
+			return true;
+		} else if (object instanceof IGenre) {
+			return true;
+		} else if (object instanceof IYear) {
+			return true;
+		} else if (object instanceof IArtist) {
+			return true;
+		} else if (object instanceof IRadio) {
+			return false;
+		} else {
+			throw new IllegalArgumentException(object.getClass()
+					.getCanonicalName());
+		}
+	}
+
+}
