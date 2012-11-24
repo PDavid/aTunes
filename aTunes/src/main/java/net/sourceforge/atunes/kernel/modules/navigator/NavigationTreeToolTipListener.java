@@ -67,8 +67,8 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
 			return;
 		}
 
-		this.controller.setCurrentExtendedToolTipContent(null);
-		this.controller.getExtendedToolTip().setVisible(false);
+		this.tooltipContent.setCurrentExtendedToolTipContent(null);
+		this.tooltipContent.setVisible(false);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -83,32 +83,35 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
 		if (node != null) {
 			final Object content = node.getUserObject();
 
-			if (content.equals(this.controller
+			if (content.equals(this.tooltipContent
 					.getCurrentExtendedToolTipContent())) {
 				return;
 			}
 
 			// Show extended tooltip
 			if (this.tooltipContent.canObjectBeShownInExtendedToolTip(content)) {
-				if (!this.controller.getExtendedToolTip().isVisible()
-						|| this.controller.getCurrentExtendedToolTipContent() == null
-						|| this.controller.getCurrentExtendedToolTipContent() != content) {
-					if (this.controller.getExtendedToolTip().isVisible()) {
-						this.controller.getExtendedToolTip().setVisible(false);
+				if (!this.tooltipContent.isVisible()
+						|| this.tooltipContent
+								.getCurrentExtendedToolTipContent() == null
+						|| this.tooltipContent
+								.getCurrentExtendedToolTipContent() != content) {
+					if (this.tooltipContent.isVisible()) {
+						this.tooltipContent.setVisible(false);
 					}
-					this.controller.getExtendedToolTip().setLocation(
+					this.tooltipContent.setLocation(
 							(int) this.navigationHandler.getCurrentView()
 									.getTree().getLocationOnScreen().getX()
-									+ e.getX(),
-							(int) this.navigationHandler.getCurrentView()
-									.getTree().getLocationOnScreen().getY()
+									+ e.getX(), (int) this.navigationHandler
+									.getCurrentView().getTree()
+									.getLocationOnScreen().getY()
 									+ e.getY() + 20);
 
 					this.tooltipContent
 							.setToolTipContent((ITreeObject<? extends IAudioObject>) content);
-					this.controller.setCurrentExtendedToolTipContent(content);
+					this.tooltipContent
+							.setCurrentExtendedToolTipContent(content);
 				} else {
-					this.controller.setCurrentExtendedToolTipContent(null);
+					this.tooltipContent.setCurrentExtendedToolTipContent(null);
 				}
 
 				this.controller.getToolTipTimer().setInitialDelay(
@@ -116,13 +119,13 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
 				this.controller.getToolTipTimer().setRepeats(false);
 				this.controller.getToolTipTimer().start();
 			} else {
-				this.controller.setCurrentExtendedToolTipContent(null);
-				this.controller.getExtendedToolTip().setVisible(false);
+				this.tooltipContent.setCurrentExtendedToolTipContent(null);
+				this.tooltipContent.setVisible(false);
 				this.controller.getToolTipTimer().stop();
 			}
 		} else {
-			this.controller.setCurrentExtendedToolTipContent(null);
-			this.controller.getExtendedToolTip().setVisible(false);
+			this.tooltipContent.setCurrentExtendedToolTipContent(null);
+			this.tooltipContent.setVisible(false);
 			this.controller.getToolTipTimer().stop();
 		}
 	}
@@ -133,8 +136,8 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
 			return;
 		}
 
-		this.controller.setCurrentExtendedToolTipContent(null);
-		this.controller.getExtendedToolTip().setVisible(false);
+		this.tooltipContent.setCurrentExtendedToolTipContent(null);
+		this.tooltipContent.setVisible(false);
 	}
 
 	@Override
@@ -147,8 +150,7 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
 			return;
 		}
 
-		this.controller.setCurrentExtendedToolTipContent(null);
-		this.controller.getExtendedToolTip().setVisible(false);
+		this.tooltipContent.setCurrentExtendedToolTipContent(null);
+		this.tooltipContent.setVisible(false);
 	}
-
 }

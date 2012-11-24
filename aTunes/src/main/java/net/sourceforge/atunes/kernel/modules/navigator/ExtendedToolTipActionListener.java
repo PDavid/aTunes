@@ -33,32 +33,32 @@ import net.sourceforge.atunes.model.IBeanFactory;
  */
 public final class ExtendedToolTipActionListener implements ActionListener {
 
-    private NavigationController navigationController;
+	private IBeanFactory beanFactory;
 
-    private IBeanFactory beanFactory;
+	private ExtendedTooltipContent extendedTooltipContent;
 
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
+	/**
+	 * @param extendedTooltipContent
+	 */
+	public void setExtendedTooltipContent(
+			final ExtendedTooltipContent extendedTooltipContent) {
+		this.extendedTooltipContent = extendedTooltipContent;
+	}
 
-    /**
-     * @param navigationController
-     */
-    public void setNavigationController(
-	    final NavigationController navigationController) {
-	this.navigationController = navigationController;
-    }
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
-    @Override
-    public void actionPerformed(final ActionEvent arg0) {
-	navigationController.getExtendedToolTip().setVisible(true);
-	ExtendedToolTipGetAndSetImageSwingWorker worker = beanFactory
-		.getBean(ExtendedToolTipGetAndSetImageSwingWorker.class);
-	worker.setCurrentObject(navigationController
-		.getCurrentExtendedToolTipContent());
-	worker.execute();
-    }
+	@Override
+	public void actionPerformed(final ActionEvent arg0) {
+		this.extendedTooltipContent.setVisible(true);
+		ExtendedToolTipGetAndSetImageSwingWorker worker = this.beanFactory
+				.getBean(ExtendedToolTipGetAndSetImageSwingWorker.class);
+		worker.setCurrentObject(this.extendedTooltipContent
+				.getCurrentExtendedToolTipContent());
+		worker.execute();
+	}
 }
