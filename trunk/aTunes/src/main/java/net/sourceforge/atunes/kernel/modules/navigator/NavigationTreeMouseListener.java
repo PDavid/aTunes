@@ -53,6 +53,8 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
 
 	private final IOSManager osManager;
 
+	private final ExtendedTooltipContent extendedTooltipContent;
+
 	/**
 	 * Instantiates a new navigation tree mouse listener.
 	 * 
@@ -62,18 +64,21 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
 	 * @param navigationHandler
 	 * @param playListHandler
 	 * @param osManager
+	 * @param extendedTooltipContent
 	 */
 	public NavigationTreeMouseListener(final NavigationController controller,
 			final ITable navigationTable,
 			final IStateNavigation stateNavigation,
 			final INavigationHandler navigationHandler,
-			final IPlayListHandler playListHandler, final IOSManager osManager) {
+			final IPlayListHandler playListHandler, final IOSManager osManager,
+			final ExtendedTooltipContent extendedTooltipContent) {
 		this.controller = controller;
 		this.navigationTable = navigationTable;
 		this.stateNavigation = stateNavigation;
 		this.navigationHandler = navigationHandler;
 		this.playListHandler = playListHandler;
 		this.osManager = osManager;
+		this.extendedTooltipContent = extendedTooltipContent;
 	}
 
 	/**
@@ -146,8 +151,8 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
 			return;
 		}
 
-		this.controller.setCurrentExtendedToolTipContent(null);
-		this.controller.getExtendedToolTip().setVisible(false);
+		this.extendedTooltipContent.setCurrentExtendedToolTipContent(null);
+		this.extendedTooltipContent.setVisible(false);
 		this.controller.getToolTipTimer().stop();
 	}
 

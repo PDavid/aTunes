@@ -28,25 +28,28 @@ import org.springframework.context.ApplicationContextAware;
 
 /**
  * A factory of dialogs
+ * 
  * @author alex
- *
+ * 
  */
 public class DialogFactory implements IDialogFactory, ApplicationContextAware {
-	
+
 	private ApplicationContext context;
-	
+
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
+	public void setApplicationContext(
+			final ApplicationContext applicationContext) {
 		this.context = applicationContext;
 	}
-	
+
 	@Override
-	public <T extends IDialog> T newDialog(Class<T> dialogClass) {
-		return context.getBean(dialogClass);
+	public <T extends IDialog> T newDialog(final Class<T> dialogClass) {
+		return this.context.getBean(dialogClass);
 	}
-	
+
 	@Override
-	public <T extends IDialog> T newDialog(String dialogName, Class<T> dialogClass) {
-		return context.getBean(dialogName, dialogClass);
+	public <T extends IDialog> T newDialog(final String dialogName,
+			final Class<T> dialogClass) {
+		return this.context.getBean(dialogName, dialogClass);
 	}
 }

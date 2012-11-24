@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -35,16 +34,8 @@ import javax.swing.ScrollPaneConstants;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.gui.views.controls.FadeInPanel;
-import net.sourceforge.atunes.model.IAlbum;
-import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IControlsBuilder;
-import net.sourceforge.atunes.model.IFolder;
-import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.IPodcastFeed;
-import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.ITreeObject;
-import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.utils.ImageUtils;
 
 /**
@@ -54,11 +45,6 @@ import net.sourceforge.atunes.utils.ImageUtils;
 public final class ExtendedToolTip extends AbstractCustomWindow {
 
 	private static final long serialVersionUID = -5041702404982493070L;
-
-	private static final Dimension IMAGE_DIMENSION = new Dimension(
-			Constants.TOOLTIP_IMAGE_WIDTH + 300,
-			Constants.TOOLTIP_IMAGE_HEIGHT + 10);
-	private static final Dimension NO_IMAGE_DIMENSION = new Dimension(200, 65);
 
 	private final FadeInPanel imagePanel;
 	private final JLabel image;
@@ -71,11 +57,13 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 	 * 
 	 * @param lookAndFeel
 	 * @param controlsBuilder
+	 * @param width
+	 * @param height
 	 */
 	public ExtendedToolTip(final ILookAndFeel lookAndFeel,
-			final IControlsBuilder controlsBuilder) {
-		super(null, IMAGE_DIMENSION.width, IMAGE_DIMENSION.height,
-				controlsBuilder);
+			final IControlsBuilder controlsBuilder, final int width,
+			final int height) {
+		super(null, width, height, controlsBuilder);
 
 		setFocusableWindowState(false);
 		JPanel container = new JPanel(new GridBagLayout());
@@ -168,44 +156,5 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 	 */
 	public void setLine3(final String text) {
 		this.line3.setText(text);
-	}
-
-	/**
-	 * Adjust size of extended tool tip if it's going to show an image or not
-	 * 
-	 * @param currentAlbumToolTipContent
-	 */
-	public void setSizeToFitImage(final Object currentAlbumToolTipContent) {
-		boolean image = currentAlbumToolTipContent instanceof ITreeObject
-				&& isExtendedTooltipImageSupported(currentAlbumToolTipContent);
-		setSize(image ? IMAGE_DIMENSION : NO_IMAGE_DIMENSION);
-	}
-
-	/**
-	 * Returns <code>true</code> if this object supports image in extended tool
-	 * tip
-	 * 
-	 * @param object
-	 * @return
-	 */
-	private boolean isExtendedTooltipImageSupported(final Object object) {
-		if (object instanceof IAlbum) {
-			return true;
-		} else if (object instanceof IPodcastFeed) {
-			return false;
-		} else if (object instanceof IFolder) {
-			return false;
-		} else if (object instanceof IGenre) {
-			return false;
-		} else if (object instanceof IYear) {
-			return false;
-		} else if (object instanceof IArtist) {
-			return true;
-		} else if (object instanceof IRadio) {
-			return false;
-		} else {
-			throw new IllegalArgumentException(object.getClass()
-					.getCanonicalName());
-		}
 	}
 }

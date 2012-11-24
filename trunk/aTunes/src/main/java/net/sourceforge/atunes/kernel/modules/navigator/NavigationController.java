@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.Timer;
@@ -39,7 +38,6 @@ import net.sourceforge.atunes.gui.NavigationTableModel;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
-import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
@@ -86,12 +84,6 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 
 	private INavigationTreePanel navigationTreePanel;
 
-	/** The current extended tool tip content. */
-	private volatile Object currentExtendedToolTipContent;
-
-	/** The album tool tip. */
-	private ExtendedToolTip extendedToolTip;
-
 	/** The popupmenu caller. */
 	private JComponent popupMenuCaller;
 
@@ -127,6 +119,16 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	private IControlsBuilder controlsBuilder;
 
 	private IOSManager osManager;
+
+	private ExtendedTooltipContent extendedTooltipContent;
+
+	/**
+	 * @param extendedTooltipContent
+	 */
+	public void setExtendedTooltipContent(
+			final ExtendedTooltipContent extendedTooltipContent) {
+		this.extendedTooltipContent = extendedTooltipContent;
+	}
 
 	/**
 	 * @param osManager
@@ -289,10 +291,11 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 		// Add tree tool tip listener to all views
 		NavigationTreeMouseListener treeMouseListener = new NavigationTreeMouseListener(
 				this, this.navigationTable, this.stateNavigation,
-				this.navigationHandler, this.playListHandler, this.osManager);
+				this.navigationHandler, this.playListHandler, this.osManager,
+				this.extendedTooltipContent);
 		NavigationTreeToolTipListener tooltipListener = new NavigationTreeToolTipListener(
 				this, this.stateNavigation, this.navigationHandler,
-				this.beanFactory.getBean(ExtendedTooltipContent.class));
+				this.extendedTooltipContent);
 		for (INavigationView view : this.navigationHandler.getNavigationViews()) {
 			view.getTree().addMouseListener(treeMouseListener);
 			view.getTree().addMouseListener(tooltipListener);
@@ -314,25 +317,6 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	 */
 	public Timer getToolTipTimer() {
 		return this.timer;
-	}
-
-	/**
-	 * Gets the album tool tip.
-	 * 
-	 * @return the album tool tip
-	 */
-	public ExtendedToolTip getExtendedToolTip() {
-		if (this.extendedToolTip == null) {
-			JDialog.setDefaultLookAndFeelDecorated(false);
-			this.extendedToolTip = new ExtendedToolTip(
-					this.lookAndFeelManager.getCurrentLookAndFeel(),
-					this.controlsBuilder);
-			JDialog.setDefaultLookAndFeelDecorated(this.lookAndFeelManager
-					.getCurrentLookAndFeel().isDialogUndecorated());
-			this.beanFactory.getBean(ExtendedTooltipContent.class)
-					.setExtendedTooltip(this.extendedToolTip);
-		}
-		return this.extendedToolTip;
 	}
 
 	/**
@@ -358,15 +342,6 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 			}
 		}
 		return files;
-	}
-
-	/**
-	 * Gets the last album tool tip content.
-	 * 
-	 * @return the last album tool tip content
-	 */
-	public Object getCurrentExtendedToolTipContent() {
-		return this.currentExtendedToolTipContent;
 	}
 
 	/**
@@ -426,18 +401,6 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	public void refreshTable() {
 		((NavigationTableModel) this.navigationTable.getModel())
 				.refresh(TableModelEvent.UPDATE);
-	}
-
-	/**
-	 * Sets the current album tool tip content.
-	 * 
-	 * @param currentAlbumToolTipContent
-	 *            the new current album tool tip content
-	 */
-	public void setCurrentExtendedToolTipContent(
-			final Object currentAlbumToolTipContent) {
-		this.currentExtendedToolTipContent = currentAlbumToolTipContent;
-		getExtendedToolTip().setSizeToFitImage(currentAlbumToolTipContent);
 	}
 
 	/**

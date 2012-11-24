@@ -53,14 +53,14 @@ public class TooltipTreeCellDecorator extends
 
 	private IUnknownObjectChecker unknownObjectChecker;
 
-	private ExtendedTooltipContent extendedToolTipContent;
+	private ExtendedTooltipContent extendedTooltipContent;
 
 	/**
-	 * @param extendedToolTipContent
+	 * @param extendedTooltipContent
 	 */
-	public void setExtendedToolTipContent(
-			final ExtendedTooltipContent extendedToolTipContent) {
-		this.extendedToolTipContent = extendedToolTipContent;
+	public void setExtendedTooltipContent(
+			final ExtendedTooltipContent extendedTooltipContent) {
+		this.extendedTooltipContent = extendedTooltipContent;
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class TooltipTreeCellDecorator extends
 	public Component decorateTreeCellComponent(final JLabel component,
 			final Object userObject, final boolean isSelected) {
 		if (!this.stateNavigation.isShowExtendedTooltip()
-				|| !this.extendedToolTipContent
+				|| !this.extendedTooltipContent
 						.canObjectBeShownInExtendedToolTip(userObject)) {
 			if (userObject instanceof ITreeObject) {
 				component

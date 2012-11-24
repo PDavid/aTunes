@@ -20,12 +20,20 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.awt.Dimension;
+
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+
+import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IStatisticsHandler;
@@ -43,6 +51,12 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class ExtendedTooltipContent {
 
+	private static final Dimension IMAGE_DIMENSION = new Dimension(
+			Constants.TOOLTIP_IMAGE_WIDTH + 300,
+			Constants.TOOLTIP_IMAGE_HEIGHT + 10);
+
+	private static final Dimension NO_IMAGE_DIMENSION = new Dimension(200, 65);
+
 	private static final String SONG = "SONG";
 
 	private static final String SONGS2 = "SONGS";
@@ -52,6 +66,28 @@ public class ExtendedTooltipContent {
 	private IStatisticsHandler statisticsHandler;
 
 	private IUnknownObjectChecker unknownObjectChecker;
+
+	private ILookAndFeelManager lookAndFeelManager;
+
+	private IControlsBuilder controlsBuilder;
+
+	/** The current extended tool tip content. */
+	private volatile Object currentExtendedToolTipContent;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
 
 	/**
 	 * @param unknownObjectChecker
@@ -66,13 +102,6 @@ public class ExtendedTooltipContent {
 	 */
 	public void setStatisticsHandler(final IStatisticsHandler statisticsHandler) {
 		this.statisticsHandler = statisticsHandler;
-	}
-
-	/**
-	 * @param extendedTooltip
-	 */
-	public void setExtendedTooltip(final ExtendedToolTip extendedTooltip) {
-		this.extendedTooltip = extendedTooltip;
 	}
 
 	/**
@@ -237,6 +266,120 @@ public class ExtendedTooltipContent {
 			throw new IllegalArgumentException(object.getClass()
 					.getCanonicalName());
 		}
+	}
+
+	/**
+	 * Adjust size of extended tool tip if it's going to show an image or not
+	 * 
+	 * @param currentAlbumToolTipContent
+	 */
+	public void setSizeToFitImage(final Object currentAlbumToolTipContent) {
+		boolean image = currentAlbumToolTipContent instanceof ITreeObject
+				&& isExtendedTooltipImageSupported(currentAlbumToolTipContent);
+		this.extendedTooltip.setSize(image ? IMAGE_DIMENSION
+				: NO_IMAGE_DIMENSION);
+	}
+
+	/**
+	 * Returns <code>true</code> if this object supports image in extended tool
+	 * tip
+	 * 
+	 * @param object
+	 * @return
+	 */
+	private boolean isExtendedTooltipImageSupported(final Object object) {
+		if (object instanceof IAlbum) {
+			return true;
+		} else if (object instanceof IPodcastFeed) {
+			return false;
+		} else if (object instanceof IFolder) {
+			return false;
+		} else if (object instanceof IGenre) {
+			return false;
+		} else if (object instanceof IYear) {
+			return false;
+		} else if (object instanceof IArtist) {
+			return true;
+		} else if (object instanceof IRadio) {
+			return false;
+		} else {
+			throw new IllegalArgumentException(object.getClass()
+					.getCanonicalName());
+		}
+	}
+
+	/**
+	 * Gets the album tool tip.
+	 * 
+	 * @return the album tool tip
+	 */
+	private ExtendedToolTip getExtendedToolTip() {
+		if (this.extendedTooltip == null) {
+			JDialog.setDefaultLookAndFeelDecorated(false);
+			this.extendedTooltip = new ExtendedToolTip(
+					this.lookAndFeelManager.getCurrentLookAndFeel(),
+					this.controlsBuilder, IMAGE_DIMENSION.width,
+					IMAGE_DIMENSION.height);
+			JDialog.setDefaultLookAndFeelDecorated(this.lookAndFeelManager
+					.getCurrentLookAndFeel().isDialogUndecorated());
+		}
+		return this.extendedTooltip;
+	}
+
+	/**
+	 * Shows or hides tooltip
+	 * 
+	 * @param b
+	 */
+	public void setVisible(final boolean b) {
+		getExtendedToolTip().setVisible(b);
+	}
+
+	/**
+	 * @return if tooltip is visible
+	 */
+	public boolean isVisible() {
+		return getExtendedToolTip().isVisible();
+	}
+
+	/**
+	 * Sets location
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void setLocation(final int x, final int y) {
+		getExtendedToolTip().setLocation(x, y);
+	}
+
+	/**
+	 * Sets the current tool tip content.
+	 * 
+	 * @param currentAlbumToolTipContent
+	 *            the new current album tool tip content
+	 */
+	public void setCurrentExtendedToolTipContent(
+			final Object currentAlbumToolTipContent) {
+		this.currentExtendedToolTipContent = currentAlbumToolTipContent;
+		setSizeToFitImage(currentAlbumToolTipContent);
+	}
+
+	/**
+	 * Gets the last album tool tip content.
+	 * 
+	 * @return the last album tool tip content
+	 */
+	public Object getCurrentExtendedToolTipContent() {
+		return this.currentExtendedToolTipContent;
+	}
+
+	/**
+	 * Sets image to tooltip
+	 * 
+	 * @param imageIcon
+	 */
+	public void setImage(final ImageIcon imageIcon) {
+		getExtendedToolTip().setImage(imageIcon);
 	}
 
 }

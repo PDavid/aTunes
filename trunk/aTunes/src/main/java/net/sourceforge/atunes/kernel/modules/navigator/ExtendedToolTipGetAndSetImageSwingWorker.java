@@ -40,75 +40,76 @@ import net.sourceforge.atunes.utils.Logger;
  * 
  */
 public final class ExtendedToolTipGetAndSetImageSwingWorker extends
-	SwingWorker<ImageIcon, Void> {
+		SwingWorker<ImageIcon, Void> {
 
-    private IAudioObjectImageLocator audioObjectImageLocator;
+	private IAudioObjectImageLocator audioObjectImageLocator;
 
-    private NavigationController navigationController;
+	private IWebServicesHandler webServicesHandler;
 
-    private IWebServicesHandler webServicesHandler;
+	private Object currentObject;
 
-    private Object currentObject;
+	private ExtendedTooltipContent extendedTooltipContent;
 
-    /**
-     * @param webServicesHandler
-     */
-    public void setWebServicesHandler(
-	    final IWebServicesHandler webServicesHandler) {
-	this.webServicesHandler = webServicesHandler;
-    }
-
-    /**
-     * @param currentObject
-     */
-    public void setCurrentObject(final Object currentObject) {
-	this.currentObject = currentObject;
-    }
-
-    /**
-     * @param navigationController
-     */
-    public void setNavigationController(
-	    final NavigationController navigationController) {
-	this.navigationController = navigationController;
-    }
-
-    /**
-     * @param audioObjectImageLocator
-     */
-    public void setAudioObjectImageLocator(
-	    final IAudioObjectImageLocator audioObjectImageLocator) {
-	this.audioObjectImageLocator = audioObjectImageLocator;
-    }
-
-    @Override
-    protected ImageIcon doInBackground() {
-	// Get image for albums
-	if (currentObject instanceof ITreeObject) {
-	    if (currentObject instanceof IArtist) {
-		IArtist a = (IArtist) currentObject;
-		return webServicesHandler.getArtistImage(a.getName());
-	    } else if (currentObject instanceof IAlbum) {
-		return audioObjectImageLocator.getImage((IAlbum) currentObject,
-			ImageSize.SIZE_MAX);
-	    }
+	/**
+	 * @param extendedTooltipContent
+	 */
+	public void setExtendedTooltipContent(
+			final ExtendedTooltipContent extendedTooltipContent) {
+		this.extendedTooltipContent = extendedTooltipContent;
 	}
-	return null;
-    }
 
-    @Override
-    protected void done() {
-	try {
-	    // Set image in tooltip when done (tooltip can be not visible then)
-	    if (navigationController.getCurrentExtendedToolTipContent() != null
-		    && navigationController.getCurrentExtendedToolTipContent()
-			    .equals(currentObject)) {
-		navigationController.getExtendedToolTip().setImage(get());
-	    }
-	} catch (InterruptedException e) {
-	    Logger.error(e);
-	} catch (ExecutionException e) {
-	    Logger.error(e);
+	/**
+	 * @param webServicesHandler
+	 */
+	public void setWebServicesHandler(
+			final IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
 	}
-    }
+
+	/**
+	 * @param currentObject
+	 */
+	public void setCurrentObject(final Object currentObject) {
+		this.currentObject = currentObject;
+	}
+
+	/**
+	 * @param audioObjectImageLocator
+	 */
+	public void setAudioObjectImageLocator(
+			final IAudioObjectImageLocator audioObjectImageLocator) {
+		this.audioObjectImageLocator = audioObjectImageLocator;
+	}
+
+	@Override
+	protected ImageIcon doInBackground() {
+		// Get image for albums
+		if (this.currentObject instanceof ITreeObject) {
+			if (this.currentObject instanceof IArtist) {
+				IArtist a = (IArtist) this.currentObject;
+				return this.webServicesHandler.getArtistImage(a.getName());
+			} else if (this.currentObject instanceof IAlbum) {
+				return this.audioObjectImageLocator.getImage(
+						(IAlbum) this.currentObject, ImageSize.SIZE_MAX);
+			}
+		}
+		return null;
+	}
+
+	@Override
+	protected void done() {
+		try {
+			// Set image in tooltip when done (tooltip can be not visible then)
+			if (this.extendedTooltipContent.getCurrentExtendedToolTipContent() != null
+					&& this.extendedTooltipContent
+							.getCurrentExtendedToolTipContent().equals(
+									this.currentObject)) {
+				this.extendedTooltipContent.setImage(get());
+			}
+		} catch (InterruptedException e) {
+			Logger.error(e);
+		} catch (ExecutionException e) {
+			Logger.error(e);
+		}
+	}
 }
