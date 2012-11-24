@@ -111,7 +111,7 @@ public class ExtendedTooltipContent {
 	 */
 	public void setToolTipContent(final ITreeObject<? extends IAudioObject> obj) {
 		// Picture is set asynchronously
-		this.extendedTooltip.setImage(null);
+		getExtendedToolTip().setImage(null);
 		setExtendedToolTipFromTreeObject(obj);
 	}
 
@@ -141,90 +141,93 @@ public class ExtendedTooltipContent {
 	 * @param object
 	 */
 	private void setFromArtist(final IArtist a) {
-		this.extendedTooltip.setLine1(a.getName());
+		getExtendedToolTip().setLine1(a.getName());
 		int albumNumber = a.getAlbums().size();
-		this.extendedTooltip.setLine2(StringUtils.getString(
-				albumNumber,
-				" ",
-				(albumNumber > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils
-						.getString("ALBUM"))));
-		this.extendedTooltip.setLine3(StringUtils.getString(
-				I18nUtils.getString("TIMES_PLAYED"), ": ",
-				this.statisticsHandler.getArtistTimesPlayed(a)));
+		getExtendedToolTip().setLine2(
+				StringUtils.getString(albumNumber, " ",
+						(albumNumber > 1 ? I18nUtils.getString("ALBUMS")
+								: I18nUtils.getString("ALBUM"))));
+		getExtendedToolTip().setLine3(
+				StringUtils.getString(I18nUtils.getString("TIMES_PLAYED"),
+						": ", this.statisticsHandler.getArtistTimesPlayed(a)));
 	}
 
 	/**
 	 * @param object
 	 */
 	private void setFromYear(final IYear y) {
-		this.extendedTooltip.setLine1(y.getName(this.unknownObjectChecker));
+		getExtendedToolTip().setLine1(y.getName(this.unknownObjectChecker));
 		int songs = y.size();
-		this.extendedTooltip.setLine2(StringUtils.getString(
-				songs,
-				" ",
-				(songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
-						.getString(SONG))));
+		getExtendedToolTip().setLine2(
+				StringUtils.getString(
+						songs,
+						" ",
+						(songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
+								.getString(SONG))));
 	}
 
 	/**
 	 * @param object
 	 */
 	private void setFromGenre(final IGenre g) {
-		this.extendedTooltip.setLine1(g.getName());
+		getExtendedToolTip().setLine1(g.getName());
 		int songs = g.size();
-		this.extendedTooltip.setLine2(StringUtils.getString(
-				songs,
-				" ",
-				(songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
-						.getString(SONG))));
+		getExtendedToolTip().setLine2(
+				StringUtils.getString(
+						songs,
+						" ",
+						(songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
+								.getString(SONG))));
 	}
 
 	/**
 	 * @param object
 	 */
 	private void setFromFolder(final IFolder f) {
-		this.extendedTooltip.setLine1(f.getName());
+		getExtendedToolTip().setLine1(f.getName());
 		int folderNumber = f.getFolders().size();
 		if (folderNumber > 0) {
-			this.extendedTooltip.setLine2(StringUtils.getString(folderNumber,
-					" ", (folderNumber > 1 ? I18nUtils.getString("FOLDERS")
-							: I18nUtils.getString("FOLDER"))));
+			getExtendedToolTip().setLine2(
+					StringUtils.getString(folderNumber, " ",
+							(folderNumber > 1 ? I18nUtils.getString("FOLDERS")
+									: I18nUtils.getString("FOLDER"))));
 		} else {
-			this.extendedTooltip.setLine2(null);
+			getExtendedToolTip().setLine2(null);
 		}
 		int songs = f.getAudioObjects().size();
-		this.extendedTooltip.setLine3(StringUtils.getString(
-				songs,
-				" ",
-				(songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
-						.getString(SONG))));
+		getExtendedToolTip().setLine3(
+				StringUtils.getString(
+						songs,
+						" ",
+						(songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
+								.getString(SONG))));
 	}
 
 	/**
 	 * @param object
 	 */
 	private void setFromPodcast(final IPodcastFeed p) {
-		this.extendedTooltip.setLine1(p.getName());
-		this.extendedTooltip.setLine2(StringUtils.getString(I18nUtils
-				.getString("PODCAST_ENTRIES"), ": ", p.getPodcastFeedEntries()
-				.size()));
-		this.extendedTooltip.setLine3(StringUtils.getString(
-				I18nUtils.getString("NEW_PODCAST_ENTRIES_TOOLTIP"), ": ",
-				p.getNewEntriesCount()));
+		getExtendedToolTip().setLine1(p.getName());
+		getExtendedToolTip().setLine2(
+				StringUtils.getString(I18nUtils.getString("PODCAST_ENTRIES"),
+						": ", p.getPodcastFeedEntries().size()));
+		getExtendedToolTip().setLine3(
+				StringUtils.getString(
+						I18nUtils.getString("NEW_PODCAST_ENTRIES_TOOLTIP"),
+						": ", p.getNewEntriesCount()));
 	}
 
 	/**
 	 * @param object
 	 */
 	private void setFromAlbum(final IAlbum a) {
-		this.extendedTooltip.setLine1(a.getName());
-		this.extendedTooltip.setLine2(a.getArtist().getName());
+		getExtendedToolTip().setLine1(a.getName());
+		getExtendedToolTip().setLine2(a.getArtist().getName());
 		int songNumber = a.size();
-		this.extendedTooltip.setLine3(StringUtils.getString(
-				songNumber,
-				" ",
-				(songNumber > 1 ? I18nUtils.getString(SONGS2) : I18nUtils
-						.getString(SONG))));
+		getExtendedToolTip().setLine3(
+				StringUtils.getString(songNumber, " ",
+						(songNumber > 1 ? I18nUtils.getString(SONGS2)
+								: I18nUtils.getString(SONG))));
 	}
 
 	/**
@@ -276,8 +279,8 @@ public class ExtendedTooltipContent {
 	public void setSizeToFitImage(final Object currentAlbumToolTipContent) {
 		boolean image = currentAlbumToolTipContent instanceof ITreeObject
 				&& isExtendedTooltipImageSupported(currentAlbumToolTipContent);
-		this.extendedTooltip.setSize(image ? IMAGE_DIMENSION
-				: NO_IMAGE_DIMENSION);
+		getExtendedToolTip().setSize(
+				image ? IMAGE_DIMENSION : NO_IMAGE_DIMENSION);
 	}
 
 	/**

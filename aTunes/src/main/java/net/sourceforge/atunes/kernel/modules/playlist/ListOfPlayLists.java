@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IStatePlayer;
@@ -35,80 +36,84 @@ import net.sourceforge.atunes.model.IStatePlayer;
  */
 public class ListOfPlayLists implements IListOfPlayLists {
 
-    private static final long serialVersionUID = -9098493526495642598L;
+	private static final long serialVersionUID = -9098493526495642598L;
 
-    /** The play lists. */
-    List<IPlayList> playLists;
+	/** The play lists. */
+	List<IPlayList> playLists;
 
-    /** The selected play list. */
-    int selectedPlayListIndex;
-    
-    ListOfPlayLists() {
+	/** The selected play list. */
+	int selectedPlayListIndex;
+
+	ListOfPlayLists() {
 	}
-    
-    /**
-     * Returns a list of playlists with an empty playlist.
-     * @param statePlayer
-     * @return
-     */
-    static ListOfPlayLists getEmptyPlayList(IStatePlayer statePlayer) {
-        ListOfPlayLists l = new ListOfPlayLists();
-        List<IPlayList> playLists = new ArrayList<IPlayList>();
-        playLists.add(new PlayList(statePlayer));
-        l.setPlayLists(playLists);
-        l.setSelectedPlayList(0);
-        return l;
-    }
 
-    /**
-     * Gets the play lists.
-     * 
-     * @return the playLists
-     */
-    @Override
-    public List<IPlayList> getPlayLists() {
-        return playLists;
-    }
+	/**
+	 * Returns a list of playlists with an empty playlist.
+	 * 
+	 * @param statePlayer
+	 * @param listeners
+	 * @return
+	 */
+	static ListOfPlayLists getEmptyPlayList(final IStatePlayer statePlayer,
+			final PlayListEventListeners listeners) {
+		ListOfPlayLists l = new ListOfPlayLists();
+		List<IPlayList> playLists = new ArrayList<IPlayList>();
+		playLists.add(new PlayList(statePlayer, listeners));
+		l.setPlayLists(playLists);
+		l.setSelectedPlayList(0);
+		return l;
+	}
 
-    /**
-     * Gets the selected play list.
-     * 
-     * @return the selectedPlayList
-     */
-    @Override
-    public int getSelectedPlayList() {
-        return selectedPlayListIndex;
-    }
+	/**
+	 * Gets the play lists.
+	 * 
+	 * @return the playLists
+	 */
+	@Override
+	public List<IPlayList> getPlayLists() {
+		return this.playLists;
+	}
 
-    /**
-     * Sets the play lists.
-     * 
-     * @param playLists
-     *            the playLists to set
-     */
-    void setPlayLists(List<IPlayList> playLists) {
-        this.playLists = playLists;
-    }
+	/**
+	 * Gets the selected play list.
+	 * 
+	 * @return the selectedPlayList
+	 */
+	@Override
+	public int getSelectedPlayList() {
+		return this.selectedPlayListIndex;
+	}
 
-    /**
-     * Sets the selected play list.
-     * 
-     * @param selectedPlayList
-     *            the selectedPlayList to set
-     */
-    @Override
-	public void setSelectedPlayList(int selectedPlayList) {
-        this.selectedPlayListIndex = selectedPlayList;
-    }
+	/**
+	 * Sets the play lists.
+	 * 
+	 * @param playLists
+	 *            the playLists to set
+	 */
+	void setPlayLists(final List<IPlayList> playLists) {
+		this.playLists = playLists;
+	}
 
-    /**
-     * @param statePlayer
-     */
-    void setStatePlayer(IStatePlayer statePlayer) {
-    	for (IPlayList pl : playLists) {
-    		PlayList playList = (PlayList) pl;
-    		playList.setStatePlayer(statePlayer);
-    		playList.setMode(PlayListMode.getPlayListMode(playList, statePlayer));
-    	}
-    }
+	/**
+	 * Sets the selected play list.
+	 * 
+	 * @param selectedPlayList
+	 *            the selectedPlayList to set
+	 */
+	@Override
+	public void setSelectedPlayList(final int selectedPlayList) {
+		this.selectedPlayListIndex = selectedPlayList;
+	}
+
+	/**
+	 * @param statePlayer
+	 */
+	void setStatePlayer(final IStatePlayer statePlayer) {
+		for (IPlayList pl : this.playLists) {
+			PlayList playList = (PlayList) pl;
+			playList.setStatePlayer(statePlayer);
+			playList.setMode(PlayListMode
+					.getPlayListMode(playList, statePlayer));
+		}
+	}
 }

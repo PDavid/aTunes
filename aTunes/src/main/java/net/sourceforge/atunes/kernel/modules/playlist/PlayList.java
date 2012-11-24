@@ -26,7 +26,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
@@ -43,482 +42,537 @@ import net.sourceforge.atunes.utils.TimeUtils;
  */
 public class PlayList implements IPlayList {
 
-    private static final long serialVersionUID = 2756513776762920794L;
+	private static final long serialVersionUID = 2756513776762920794L;
 
-    /**
-     * Play list mode to select audio objects
-     */
-    private transient PlayListMode mode;
+	/**
+	 * Play list mode to select audio objects
+	 */
+	private transient PlayListMode mode;
 
-    /**
-     * Name of play list as shown on play list tabs.
-     */
-    String name;
+	/**
+	 * Name of play list as shown on play list tabs.
+	 */
+	String name;
 
-    /**
-     * Pointed List of audio objects of this play list
-     */
-    PointedList<IAudioObject> audioObjects;
-    
-    private transient IStatePlayer statePlayer;
-    
-    /**
-     * No args constructor for serialization
-     */
-    PlayList() {}
+	/**
+	 * Pointed List of audio objects of this play list
+	 */
+	PointedList<IAudioObject> audioObjects;
 
-    /**
-     * Default constructor
-     * @param statePlayer
-     */
-    protected PlayList(IStatePlayer statePlayer) {
-        this((List<IAudioObject>) null, statePlayer);
-    }
+	private transient IStatePlayer statePlayer;
 
-    /**
-     * Builds a new play list with the given list of audio objects
-     * @param audioObjectsList
-     * @param statePlayer
-     */
-    protected PlayList(List<? extends IAudioObject> audioObjectsList, IStatePlayer statePlayer) {
-        this.audioObjects = new PlayListPointedList(statePlayer);
-        this.mode = PlayListMode.getPlayListMode(this, statePlayer);
-        this.statePlayer = statePlayer;
-        if (audioObjectsList != null) {
-            add(audioObjectsList);
-        }
-    }
+	private transient PlayListEventListeners listeners;
 
-    /**
-     * Private constructor, only for clone
-     * @param playList
-     * @param statePlayer
-     */
-    private PlayList(PlayList playList, IStatePlayer statePlayer) {
-        this.name = playList.name == null ? null : playList.name;
-        this.statePlayer = statePlayer;
-        this.audioObjects = new PlayListPointedList(playList.audioObjects, statePlayer);
-        this.mode = PlayListMode.getPlayListMode(this, statePlayer);
-    }
+	/**
+	 * No args constructor for serialization
+	 */
+	PlayList() {
+	}
+
+	/**
+	 * Default constructor
+	 * 
+	 * @param statePlayer
+	 * @param listeners
+	 */
+	protected PlayList(final IStatePlayer statePlayer,
+			final PlayListEventListeners listeners) {
+		this((List<IAudioObject>) null, statePlayer, listeners);
+	}
+
+	/**
+	 * Builds a new play list with the given list of audio objects
+	 * 
+	 * @param audioObjectsList
+	 * @param statePlayer
+	 * @param listeners
+	 */
+	protected PlayList(final List<? extends IAudioObject> audioObjectsList,
+			final IStatePlayer statePlayer,
+			final PlayListEventListeners listeners) {
+		this.audioObjects = new PlayListPointedList(statePlayer);
+		this.mode = PlayListMode.getPlayListMode(this, statePlayer);
+		this.statePlayer = statePlayer;
+		this.listeners = listeners;
+		if (audioObjectsList != null) {
+			add(audioObjectsList);
+		}
+	}
+
+	/**
+	 * Private constructor, only for clone
+	 * 
+	 * @param playList
+	 * @param statePlayer
+	 * @param listeners
+	 */
+	private PlayList(final PlayList playList, final IStatePlayer statePlayer,
+			final PlayListEventListeners listeners) {
+		this.name = playList.name == null ? null : playList.name;
+		this.statePlayer = statePlayer;
+		this.audioObjects = new PlayListPointedList(playList.audioObjects,
+				statePlayer);
+		this.mode = PlayListMode.getPlayListMode(this, statePlayer);
+		this.listeners = listeners;
+	}
 
 	/**
 	 * @param statePlayer
 	 */
-	public void setStatePlayer(IStatePlayer statePlayer) {
+	public void setStatePlayer(final IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;
-		((PlayListPointedList)this.audioObjects).setStatePlayer(statePlayer);
+		((PlayListPointedList) this.audioObjects).setStatePlayer(statePlayer);
 	}
-    
-    //////////////////////////////////////////////////////////////// ADD OPERATIONS /////////////////////////////////////////////////////////
 
-    /**
-     * Adds an audio object at the end of play list
-     * 
-     * @param audioObject
-     */
-    protected final void add(IAudioObject audioObject) {
-        add(Collections.singletonList(audioObject));
-    }
+	// ////////////////////////////////////////////////////////////// ADD
+	// OPERATIONS /////////////////////////////////////////////////////////
 
-    /**
-     * Adds a list of audio objects at the end of play list
-     * 
-     * @param audioObjectsList
-     */
-    private void add(List<? extends IAudioObject> audioObjectsList) {
-        add(this.audioObjects.size(), audioObjectsList);
-    }
-
-    /**
-     * Adds an audio object at given index position
-     * 
-     * @param index
-     * @param list
-     */
-    @Override
-    public final void add(int index, IAudioObject audioObject) {
-        add(index, Collections.singletonList(audioObject));
-    }
-
-    /**
-     * Adds a list of audio objects at given index position
-     * 
-     * @param index
-     * @param audioObjectsList
-     */
-    @Override
-	public final void add(int index, List<? extends IAudioObject> audioObjectsList) {
-        this.audioObjects.addAll(index, audioObjectsList);
-        notifyAudioObjectsAdded(index, audioObjectsList);
-    }
-
-    ////////////////////////////////////////////////////////////// REMOVE OPERATIONS /////////////////////////////////////////////////////////////
-
-    /**
-     * Removes given row from this play list
-     * 
-     * @param list
-     */
-    @Override
-    public void remove(int index) {
-        IAudioObject ao = get(index);
-        if (ao != null) {
-            PlayListAudioObject plao = new PlayListAudioObject();
-            plao.setPosition(index);
-            plao.setAudioObject(ao);
-            List<IPlayListAudioObject> removedAudioObjects = new ArrayList<IPlayListAudioObject>();
-            removedAudioObjects.add(plao);
-            audioObjects.remove(index);
-            notifyAudioObjectsRemoved(removedAudioObjects);
-        }
-    }
-
-    /**
-     * Removes given list of audio objects from this play list. All ocurrences
-     * are removed
-     * 
-     * @param list
-     */
-    @Override
-    public void remove(List<? extends IAudioObject> list) {
-        // First get all positions of objects to remove
-        List<IPlayListAudioObject> playListAudioObjects = new ArrayList<IPlayListAudioObject>();
-        for (IAudioObject ao : list) {
-            List<IAudioObject> clonedList = new ArrayList<IAudioObject>(audioObjects.getList());
-            while (clonedList.indexOf(ao) != -1) {
-                int index = clonedList.indexOf(ao);
-                PlayListAudioObject playListAudioObject = new PlayListAudioObject();
-                playListAudioObject.setPosition(index);
-                playListAudioObject.setAudioObject(ao);
-                playListAudioObjects.add(playListAudioObject);
-                clonedList = clonedList.subList(index + 1, clonedList.size());
-            }
-        }
-
-        // Sort in reverse order to remove last index first and avoid shift
-        Collections.sort(playListAudioObjects, new PlayListAudioObjectComparator());
-
-        for (IPlayListAudioObject plao : playListAudioObjects) {
-            this.audioObjects.remove(plao.getPosition());
-        }
-        notifyAudioObjectsRemoved(playListAudioObjects);
-    }
-
-    /**
-     * Clears play list
-     */
-    @Override
-    public void clear() {
-        this.audioObjects.clear();
-        notifyAudioObjectsRemovedAll();
-    }
-
-    /**
-     * Replaces given position with given object
-     * 
-     * @param index
-     * @param newObject
-     */
-    protected void replace(int index, IAudioObject newObject) {
-        this.audioObjects.replace(index, newObject);
-    }
-
-    /////////////////////////////////////////////////////////////// ROW MOVE OPERATIONS //////////////////////////////////////////////////////////
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#moveRowTo(int, int)
+	/**
+	 * Adds an audio object at the end of play list
+	 * 
+	 * @param audioObject
 	 */
-    @Override
-	public void moveRowTo(int sourceRow, int targetRow) {
-        // Check arguments
-        if (sourceRow < 0 || sourceRow >= size()) {
-            throw new IllegalArgumentException(StringUtils.getString("sourceRow = ", sourceRow, " playlist size = ", size()));
-        }
-        if (targetRow < 0 || targetRow >= size()) {
-            throw new IllegalArgumentException(StringUtils.getString("targetRow = ", targetRow, " playlist size = ", size()));
-        }
+	protected final void add(final IAudioObject audioObject) {
+		add(Collections.singletonList(audioObject));
+	}
 
-        IAudioObject audioObjectToMove = get(sourceRow);
+	/**
+	 * Adds a list of audio objects at the end of play list
+	 * 
+	 * @param audioObjectsList
+	 */
+	private void add(final List<? extends IAudioObject> audioObjectsList) {
+		add(this.audioObjects.size(), audioObjectsList);
+	}
 
-        boolean sourceRowIsPointed = audioObjects.getPointer() == sourceRow;
+	/**
+	 * Adds an audio object at given index position
+	 * 
+	 * @param index
+	 * @param list
+	 */
+	@Override
+	public final void add(final int index, final IAudioObject audioObject) {
+		add(index, Collections.singletonList(audioObject));
+	}
 
-        // Remove from previous row
-        remove(sourceRow);
+	/**
+	 * Adds a list of audio objects at given index position
+	 * 
+	 * @param index
+	 * @param audioObjectsList
+	 */
+	@Override
+	public final void add(final int index,
+			final List<? extends IAudioObject> audioObjectsList) {
+		this.audioObjects.addAll(index, audioObjectsList);
+		notifyAudioObjectsAdded(index, audioObjectsList);
+	}
 
-        // Add at new row
-        add(targetRow, audioObjectToMove);
+	// //////////////////////////////////////////////////////////// REMOVE
+	// OPERATIONS /////////////////////////////////////////////////////////////
 
-        // Update current index if necessary
-        if (sourceRowIsPointed) {
-            audioObjects.setPointer(targetRow);
-        }
-    }
+	/**
+	 * Removes given row from this play list
+	 * 
+	 * @param list
+	 */
+	@Override
+	public void remove(final int index) {
+		IAudioObject ao = get(index);
+		if (ao != null) {
+			PlayListAudioObject plao = new PlayListAudioObject();
+			plao.setPosition(index);
+			plao.setAudioObject(ao);
+			List<IPlayListAudioObject> removedAudioObjects = new ArrayList<IPlayListAudioObject>();
+			removedAudioObjects.add(plao);
+			this.audioObjects.remove(index);
+			notifyAudioObjectsRemoved(removedAudioObjects);
+		}
+	}
 
-    /**
-     * Sorts this play list with given comparator
-     * 
-     * @param c
-     */
-    @Override
-    public void sort(Comparator<IAudioObject> c) {
-        this.audioObjects.sort(c);
-        notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
-    }
+	/**
+	 * Removes given list of audio objects from this play list. All ocurrences
+	 * are removed
+	 * 
+	 * @param list
+	 */
+	@Override
+	public void remove(final List<? extends IAudioObject> list) {
+		// First get all positions of objects to remove
+		List<IPlayListAudioObject> playListAudioObjects = new ArrayList<IPlayListAudioObject>();
+		for (IAudioObject ao : list) {
+			List<IAudioObject> clonedList = new ArrayList<IAudioObject>(
+					this.audioObjects.getList());
+			while (clonedList.indexOf(ao) != -1) {
+				int index = clonedList.indexOf(ao);
+				PlayListAudioObject playListAudioObject = new PlayListAudioObject();
+				playListAudioObject.setPosition(index);
+				playListAudioObject.setAudioObject(ao);
+				playListAudioObjects.add(playListAudioObject);
+				clonedList = clonedList.subList(index + 1, clonedList.size());
+			}
+		}
 
-    /**
-     * Shuffles this play list
-     */
-    @Override
+		// Sort in reverse order to remove last index first and avoid shift
+		Collections.sort(playListAudioObjects,
+				new PlayListAudioObjectComparator());
+
+		for (IPlayListAudioObject plao : playListAudioObjects) {
+			this.audioObjects.remove(plao.getPosition());
+		}
+		notifyAudioObjectsRemoved(playListAudioObjects);
+	}
+
+	/**
+	 * Clears play list
+	 */
+	@Override
+	public void clear() {
+		this.audioObjects.clear();
+		notifyAudioObjectsRemovedAll();
+	}
+
+	/**
+	 * Replaces given position with given object
+	 * 
+	 * @param index
+	 * @param newObject
+	 */
+	protected void replace(final int index, final IAudioObject newObject) {
+		this.audioObjects.replace(index, newObject);
+	}
+
+	// ///////////////////////////////////////////////////////////// ROW MOVE
+	// OPERATIONS //////////////////////////////////////////////////////////
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sourceforge.atunes.kernel.modules.playlist.IPlayList#moveRowTo(int,
+	 * int)
+	 */
+	@Override
+	public void moveRowTo(final int sourceRow, final int targetRow) {
+		// Check arguments
+		if (sourceRow < 0 || sourceRow >= size()) {
+			throw new IllegalArgumentException(StringUtils.getString(
+					"sourceRow = ", sourceRow, " playlist size = ", size()));
+		}
+		if (targetRow < 0 || targetRow >= size()) {
+			throw new IllegalArgumentException(StringUtils.getString(
+					"targetRow = ", targetRow, " playlist size = ", size()));
+		}
+
+		IAudioObject audioObjectToMove = get(sourceRow);
+
+		boolean sourceRowIsPointed = this.audioObjects.getPointer() == sourceRow;
+
+		// Remove from previous row
+		remove(sourceRow);
+
+		// Add at new row
+		add(targetRow, audioObjectToMove);
+
+		// Update current index if necessary
+		if (sourceRowIsPointed) {
+			this.audioObjects.setPointer(targetRow);
+		}
+	}
+
+	/**
+	 * Sorts this play list with given comparator
+	 * 
+	 * @param c
+	 */
+	@Override
+	public void sort(final Comparator<IAudioObject> c) {
+		this.audioObjects.sort(c);
+		notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
+	}
+
+	/**
+	 * Shuffles this play list
+	 */
+	@Override
 	public void shuffle() {
-        this.audioObjects.shuffle();
-        notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
-    }
+		this.audioObjects.shuffle();
+		notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
+	}
 
-    //////////////////////////////////////////////////////////////// OTHER OPERATIONS /////////////////////////////////////////////////////////////
+	// ////////////////////////////////////////////////////////////// OTHER
+	// OPERATIONS /////////////////////////////////////////////////////////////
 
-    @Override
-	public int indexOf(IAudioObject audioObject) {
-        return this.audioObjects.indexOf(audioObject);
-    }
+	@Override
+	public int indexOf(final IAudioObject audioObject) {
+		return this.audioObjects.indexOf(audioObject);
+	}
 
-    @Override
+	@Override
 	public int size() {
-        return this.audioObjects.size();
-    }
+		return this.audioObjects.size();
+	}
 
-    @Override
+	@Override
 	public boolean isEmpty() {
-        return this.audioObjects.isEmpty();
-    }
+		return this.audioObjects.isEmpty();
+	}
 
-    @Override
-	public IAudioObject get(int index) {
-        if (index < 0 || index >= this.audioObjects.size()) {
-            return null;
-        }
-        return this.audioObjects.get(index);
-    }
+	@Override
+	public IAudioObject get(final int index) {
+		if (index < 0 || index >= this.audioObjects.size()) {
+			return null;
+		}
+		return this.audioObjects.get(index);
+	}
 
-    /**
-     * Return current audio object.
-     * 
-     * @return the current audio object
-     */
-    @Override
-    public IAudioObject getCurrentAudioObject() {
-        return this.audioObjects.getCurrentObject();
-    }
-
-    /**
-     * Sets the current audio object index
-     * 
-     * @param index
-     */
-    @Override
-    public void setCurrentAudioObjectIndex(int index) {
-        this.audioObjects.setPointer(index);
-        notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
-    }
-
-    /**
-     * Returns the index of the current audio object
-     * 
-     * @return
-     */
-    @Override
-    public int getCurrentAudioObjectIndex() {
-        // If pointer is not null return index, otherwise return 0
-        return this.audioObjects.getPointer() != null ? this.audioObjects.getPointer() : 0;
-    }
-
-    @Override
-	public boolean contains(IAudioObject audioObject) {
-        return this.audioObjects.contains(audioObject);
-    }
-
-    /**
-     * Gets the name of this play list
-     * 
-     * @return the name
-     */
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Sets the name of this play list
-     * 
-     * @param name
-     */
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Returns a random index
-     * 
-     * @return
-     */
-    @Override
-    public int getRandomPosition() {
-        return new Random(System.currentTimeMillis()).nextInt(this.audioObjects.size());
-    }
-
-    @Override
-    public PlayList copyPlayList() {
-        return new PlayList(this, statePlayer);
-    }
-
-    /**
-     * Returns next audio object
-     * 
-     * @return
-     */
-    @Override
-    public IAudioObject moveToNextAudioObject() {
-        IAudioObject nextObject = getMode().moveToNextAudioObject();
-        notifyCurrentAudioObjectChanged(nextObject);
-        return nextObject;
-    }
-
-    /**
-     * Returns previous audio object
-     * 
-     * @return
-     */
-    @Override
-    public IAudioObject moveToPreviousAudioObject() {
-        IAudioObject previousObject = getMode().moveToPreviousAudioObject();
-        notifyCurrentAudioObjectChanged(previousObject);
-        return previousObject;
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#getNextAudioObject(int)
+	/**
+	 * Return current audio object.
+	 * 
+	 * @return the current audio object
 	 */
-    @Override
-	public IAudioObject getNextAudioObject(int index) {
-        return getMode().getNextAudioObject(index);
-    }
+	@Override
+	public IAudioObject getCurrentAudioObject() {
+		return this.audioObjects.getCurrentObject();
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#getPreviousAudioObject(int)
+	/**
+	 * Sets the current audio object index
+	 * 
+	 * @param index
 	 */
-    @Override
-	public IAudioObject getPreviousAudioObject(int index) {
-        return getMode().getPreviousAudioObject(index);
-    }
+	@Override
+	public void setCurrentAudioObjectIndex(final int index) {
+		this.audioObjects.setPointer(index);
+		notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
+	}
 
-    /* (non-Javadoc)
+	/**
+	 * Returns the index of the current audio object
+	 * 
+	 * @return
+	 */
+	@Override
+	public int getCurrentAudioObjectIndex() {
+		// If pointer is not null return index, otherwise return 0
+		return this.audioObjects.getPointer() != null ? this.audioObjects
+				.getPointer() : 0;
+	}
+
+	@Override
+	public boolean contains(final IAudioObject audioObject) {
+		return this.audioObjects.contains(audioObject);
+	}
+
+	/**
+	 * Gets the name of this play list
+	 * 
+	 * @return the name
+	 */
+	@Override
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * Sets the name of this play list
+	 * 
+	 * @param name
+	 */
+	@Override
+	public void setName(final String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Returns a random index
+	 * 
+	 * @return
+	 */
+	@Override
+	public int getRandomPosition() {
+		return new Random(System.currentTimeMillis()).nextInt(this.audioObjects
+				.size());
+	}
+
+	@Override
+	public PlayList copyPlayList() {
+		return new PlayList(this, this.statePlayer, this.listeners);
+	}
+
+	/**
+	 * Returns next audio object
+	 * 
+	 * @return
+	 */
+	@Override
+	public IAudioObject moveToNextAudioObject() {
+		IAudioObject nextObject = getMode().moveToNextAudioObject();
+		notifyCurrentAudioObjectChanged(nextObject);
+		return nextObject;
+	}
+
+	/**
+	 * Returns previous audio object
+	 * 
+	 * @return
+	 */
+	@Override
+	public IAudioObject moveToPreviousAudioObject() {
+		IAudioObject previousObject = getMode().moveToPreviousAudioObject();
+		notifyCurrentAudioObjectChanged(previousObject);
+		return previousObject;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sourceforge.atunes.kernel.modules.playlist.IPlayList#getNextAudioObject
+	 * (int)
+	 */
+	@Override
+	public IAudioObject getNextAudioObject(final int index) {
+		return getMode().getNextAudioObject(index);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#
+	 * getPreviousAudioObject(int)
+	 */
+	@Override
+	public IAudioObject getPreviousAudioObject(final int index) {
+		return getMode().getPreviousAudioObject(index);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#getLength()
 	 */
-    @Override
+	@Override
 	public String getLength() {
-        long seconds = 0;
-        for (IAudioObject song : this.audioObjects.getList()) {
-            seconds += song.getDuration();
-        }
-        return TimeUtils.secondsToDaysHoursMinutesSeconds(seconds);
-    }
+		long seconds = 0;
+		for (IAudioObject song : this.audioObjects.getList()) {
+			seconds += song.getDuration();
+		}
+		return TimeUtils.secondsToDaysHoursMinutesSeconds(seconds);
+	}
 
-    /**
-     * Returns audio objects of this play list
-     * 
-     * @return
-     */
-    protected List<IAudioObject> getAudioObjects() {
-        return this.audioObjects.getList();
-    }
+	/**
+	 * Returns audio objects of this play list
+	 * 
+	 * @return
+	 */
+	protected List<IAudioObject> getAudioObjects() {
+		return this.audioObjects.getList();
+	}
 
-    /**
-     * Private method to call listeners
-     * 
-     * @param position
-     * @param audioObjectList
-     */
-    private void notifyAudioObjectsAdded(int position, List<? extends IAudioObject> audioObjectList) {
-        List<IPlayListAudioObject> playListAudioObjects = PlayListAudioObject.getList(position, audioObjectList);
+	/**
+	 * Private method to call listeners
+	 * 
+	 * @param position
+	 * @param audioObjectList
+	 */
+	private void notifyAudioObjectsAdded(final int position,
+			final List<? extends IAudioObject> audioObjectList) {
+		List<IPlayListAudioObject> playListAudioObjects = PlayListAudioObject
+				.getList(position, audioObjectList);
 
-        // Notify mode too
-        getMode().audioObjectsAdded(playListAudioObjects);
+		// Notify mode too
+		getMode().audioObjectsAdded(playListAudioObjects);
 
-        Context.getBean(PlayListEventListeners.class).audioObjectsAdded(playListAudioObjects);
-    }
+		if (this.listeners != null) {
+			this.listeners.audioObjectsAdded(playListAudioObjects);
+		}
+	}
 
-    /**
-     * Private method to call listeners
-     * 
-     * @param audioObjectList
-     */
-    private void notifyAudioObjectsRemoved(List<IPlayListAudioObject> audioObjectList) {   	
-        // Notify mode too
-        getMode().audioObjectsRemoved(audioObjectList);
+	/**
+	 * Private method to call listeners
+	 * 
+	 * @param audioObjectList
+	 */
+	private void notifyAudioObjectsRemoved(
+			final List<IPlayListAudioObject> audioObjectList) {
+		// Notify mode too
+		getMode().audioObjectsRemoved(audioObjectList);
 
-        Context.getBean(PlayListEventListeners.class).audioObjectsRemoved(audioObjectList);
-    }
+		if (this.listeners != null) {
+			this.listeners.audioObjectsRemoved(audioObjectList);
+		}
+	}
 
-    /**
-     * Private method to call listeners
-     */
-    private void notifyAudioObjectsRemovedAll() {
-    	
-        // Notify mode too
-        getMode().audioObjectsRemovedAll();
+	/**
+	 * Private method to call listeners
+	 */
+	private void notifyAudioObjectsRemovedAll() {
 
-        Context.getBean(PlayListEventListeners.class).playListCleared();
-    }
+		// Notify mode too
+		getMode().audioObjectsRemovedAll();
 
-    /**
-     * Private method to call listeners
-     * @param audioObject
-     */
-    private void notifyCurrentAudioObjectChanged(IAudioObject audioObject) {
-    	Context.getBean(PlayListEventListeners.class).selectedAudioObjectHasChanged(audioObject);
-    }
+		if (this.listeners != null) {
+			this.listeners.playListCleared();
+		}
+	}
 
-    /**
-     * @return the mode
-     */
-    protected PlayListMode getMode() {
-        return mode;
-    }
+	/**
+	 * Private method to call listeners
+	 * 
+	 * @param audioObject
+	 */
+	private void notifyCurrentAudioObjectChanged(final IAudioObject audioObject) {
+		if (this.listeners != null) {
+			this.listeners.selectedAudioObjectHasChanged(audioObject);
+		}
+	}
 
-    /**
-     * @param mode
-     *            the mode to set
-     */
-    protected void setMode(PlayListMode mode) {
-        this.mode = mode;
-    }
+	/**
+	 * @return the mode
+	 */
+	protected PlayListMode getMode() {
+		return this.mode;
+	}
 
-    /**
-     * Returns pointed list of audio objects
-     * 
-     * @return
-     */
-    PointedList<IAudioObject> getPointedList() {
-        return this.audioObjects;
-    }
+	/**
+	 * @param mode
+	 *            the mode to set
+	 */
+	protected void setMode(final PlayListMode mode) {
+		this.mode = mode;
+	}
 
-    @Override 
-    public void addToPlaybackHistory(IAudioObject object) {
-        this.mode.addToPlaybackHistory(object);
-    }
+	/**
+	 * Returns pointed list of audio objects
+	 * 
+	 * @return
+	 */
+	PointedList<IAudioObject> getPointedList() {
+		return this.audioObjects;
+	}
 
-    /**
-     * Used when setting content to a play list read from disk
-     * 
-     * @param content
-     */
-    protected void setContent(List<IAudioObject> content) {
-        this.audioObjects.setContent(content);
-        // This is an internal operation used when reading play lists from disk
-        // There is no need to call listeners here. Even it will cause wrong behaviour
-    }
+	@Override
+	public void addToPlaybackHistory(final IAudioObject object) {
+		this.mode.addToPlaybackHistory(object);
+	}
 
-	/* (non-Javadoc)
+	/**
+	 * Used when setting content to a play list read from disk
+	 * 
+	 * @param content
+	 */
+	protected void setContent(final List<IAudioObject> content) {
+		this.audioObjects.setContent(content);
+		// This is an internal operation used when reading play lists from disk
+		// There is no need to call listeners here. Even it will cause wrong
+		// behaviour
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#reset()
 	 */
 	@Override
@@ -526,9 +580,9 @@ public class PlayList implements IPlayList {
 		setCurrentAudioObjectIndex(0);
 		getMode().reset();
 	}
-	
+
 	@Override
 	public List<IAudioObject> getAudioObjectsList() {
-		return new ArrayList<IAudioObject>(audioObjects.getList());
+		return new ArrayList<IAudioObject>(this.audioObjects.getList());
 	}
 }
