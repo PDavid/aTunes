@@ -34,46 +34,56 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class RepeatModeAction extends ActionWithColorMutableIcon {
 
-    private static final long serialVersionUID = 2032609750151412458L;
+	private static final long serialVersionUID = 2032609750151412458L;
 
-    private IIconFactory repeatIcon;
+	private IIconFactory repeatIcon;
 
-    private IStatePlayer statePlayer;
+	private IStatePlayer statePlayer;
 
-    /**
-     * @param statePlayer
-     */
-    public void setStatePlayer(final IStatePlayer statePlayer) {
-	this.statePlayer = statePlayer;
-    }
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(final IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
 
-    /**
-     * @param repeatIcon
-     */
-    public void setRepeatIcon(final IIconFactory repeatIcon) {
-	this.repeatIcon = repeatIcon;
-    }
+	/**
+	 * @param repeatIcon
+	 */
+	public void setRepeatIcon(final IIconFactory repeatIcon) {
+		this.repeatIcon = repeatIcon;
+	}
 
-    /**
-     * Default constructor
-     */
-    public RepeatModeAction() {
-	super(I18nUtils.getString("REPEAT"));
-    }
+	/**
+	 * Default constructor
+	 */
+	public RepeatModeAction() {
+		super(I18nUtils.getString("REPEAT"));
+	}
 
-    @Override
-    protected void initialize() {
-	super.initialize();
-	putValue(SELECTED_KEY, statePlayer.isRepeat());
-    }
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(SELECTED_KEY, this.statePlayer.isRepeat());
+		setTooltip();
+	}
 
-    @Override
-    protected void executeAction() {
-	statePlayer.setRepeat((Boolean) getValue(SELECTED_KEY));
-    }
+	@Override
+	protected void executeAction() {
+		this.statePlayer.setRepeat((Boolean) getValue(SELECTED_KEY));
+		setTooltip();
+	}
 
-    @Override
-    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-	return repeatIcon.getColorMutableIcon();
-    }
+	@Override
+	public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
+		return this.repeatIcon.getColorMutableIcon();
+	}
+
+	private void setTooltip() {
+		if ((Boolean) getValue(SELECTED_KEY)) {
+			putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPEAT_ENABLED"));
+		} else {
+			putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPEAT_DISABLED"));
+		}
+	}
 }

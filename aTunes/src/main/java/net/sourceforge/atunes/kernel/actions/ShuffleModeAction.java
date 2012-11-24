@@ -34,46 +34,56 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ShuffleModeAction extends ActionWithColorMutableIcon {
 
-    private static final long serialVersionUID = 6841858742889010498L;
+	private static final long serialVersionUID = 6841858742889010498L;
 
-    private IIconFactory shuffleIcon;
+	private IIconFactory shuffleIcon;
 
-    private IStatePlayer statePlayer;
+	private IStatePlayer statePlayer;
 
-    /**
-     * @param statePlayer
-     */
-    public void setStatePlayer(final IStatePlayer statePlayer) {
-	this.statePlayer = statePlayer;
-    }
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(final IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
 
-    /**
-     * @param shuffleIcon
-     */
-    public void setShuffleIcon(final IIconFactory shuffleIcon) {
-	this.shuffleIcon = shuffleIcon;
-    }
+	/**
+	 * @param shuffleIcon
+	 */
+	public void setShuffleIcon(final IIconFactory shuffleIcon) {
+		this.shuffleIcon = shuffleIcon;
+	}
 
-    /**
-     * Default constructor
-     */
-    public ShuffleModeAction() {
-	super(I18nUtils.getString("SHUFFLE"));
-    }
+	/**
+	 * Default constructor
+	 */
+	public ShuffleModeAction() {
+		super(I18nUtils.getString("SHUFFLE"));
+	}
 
-    @Override
-    protected void initialize() {
-	super.initialize();
-	putValue(SELECTED_KEY, statePlayer.isShuffle());
-    }
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(SELECTED_KEY, this.statePlayer.isShuffle());
+		setTooltip();
+	}
 
-    @Override
-    protected void executeAction() {
-	statePlayer.setShuffle((Boolean) getValue(SELECTED_KEY));
-    }
+	@Override
+	protected void executeAction() {
+		this.statePlayer.setShuffle((Boolean) getValue(SELECTED_KEY));
+		setTooltip();
+	}
 
-    @Override
-    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-	return shuffleIcon.getColorMutableIcon();
-    }
+	@Override
+	public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
+		return this.shuffleIcon.getColorMutableIcon();
+	}
+
+	private void setTooltip() {
+		if ((Boolean) getValue(SELECTED_KEY)) {
+			putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHUFFLE_ENABLED"));
+		} else {
+			putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHUFFLE_DISABLED"));
+		}
+	}
 }
