@@ -252,7 +252,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * Returns common suffix for all strings
+	 * Returns common suffix for all strings (ignoring case)
 	 * 
 	 * @param strings
 	 * @return
@@ -278,7 +278,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * Returns common prefix for all strings
+	 * Returns common prefix for all strings (ignoring case)
 	 * 
 	 * @param strings
 	 * @return
