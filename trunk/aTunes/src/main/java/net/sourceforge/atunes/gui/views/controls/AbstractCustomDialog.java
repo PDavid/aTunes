@@ -44,7 +44,7 @@ public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 
 	private ILookAndFeelManager lookAndFeelManager;
 
-	private IControlsBuilder controlsBuilder;
+	private final IControlsBuilder controlsBuilder;
 
 	private final boolean modal;
 
@@ -56,10 +56,11 @@ public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 	 * @param frame
 	 * @param width
 	 * @param height
+	 * @param controlsBuilder
 	 */
 	public AbstractCustomDialog(final IFrame frame, final int width,
-			final int height) {
-		this(frame, width, height, true, CloseAction.DISPOSE);
+			final int height, final IControlsBuilder controlsBuilder) {
+		this(frame, width, height, true, CloseAction.DISPOSE, controlsBuilder);
 	}
 
 	/**
@@ -70,21 +71,18 @@ public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 	 * @param height
 	 * @param modal
 	 * @param closeAction
+	 * @param controlsBuilder
 	 */
 	public AbstractCustomDialog(final IFrame frame, final int width,
-			final int height, final boolean modal, final CloseAction closeAction) {
+			final int height, final boolean modal,
+			final CloseAction closeAction,
+			final IControlsBuilder controlsBuilder) {
 		super(frame.getFrame());
 		setSize(width, height);
 		setLocationRelativeTo(frame.getFrame().getWidth() == 0 ? null : frame
 				.getFrame());
 		this.modal = modal;
 		this.closeAction = closeAction;
-	}
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 

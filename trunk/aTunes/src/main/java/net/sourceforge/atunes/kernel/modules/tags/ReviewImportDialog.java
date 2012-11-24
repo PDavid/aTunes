@@ -98,14 +98,14 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
 	/**
 	 * @param genresHelper
 	 */
-	public void setGenresHelper(Genres genresHelper) {
+	public void setGenresHelper(final Genres genresHelper) {
 		this.genresHelper = genresHelper;
 	}
 
@@ -141,10 +141,11 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 	 * Instantiates a new ReviewImportDialog
 	 * 
 	 * @param frame
-	 * @param stateRepository
+	 * @param controlsBuilder
 	 */
-	public ReviewImportDialog(final IFrame frame) {
-		super(frame, 800, 600);
+	public ReviewImportDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 800, 600, controlsBuilder);
 	}
 
 	/**
@@ -171,14 +172,14 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 	 * @return tree table
 	 */
 	JXTreeTable getTreeTable() {
-		return treeTable;
+		return this.treeTable;
 	}
 
 	/**
 	 * @return stateRepository
 	 */
 	IStateRepository getStateRepository() {
-		return stateRepository;
+		return this.stateRepository;
 	}
 
 	/**
@@ -186,15 +187,15 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 	 */
 	private void setContent(final ILookAndFeel lookAndFeel) {
 		JPanel panel = new JPanel(new GridBagLayout());
-		treeTable = new JXTreeTable();
-		treeTable
+		this.treeTable = new JXTreeTable();
+		this.treeTable
 				.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		treeTable.setRootVisible(false);
-		treeTable.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-		treeTable.getTableHeader().setReorderingAllowed(false);
-		treeTable.setSurrendersFocusOnKeystroke(true);
+		this.treeTable.setRootVisible(false);
+		this.treeTable.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+		this.treeTable.getTableHeader().setReorderingAllowed(false);
+		this.treeTable.setSurrendersFocusOnKeystroke(true);
 		JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-		JTextArea reviewInstructions = controlsBuilder.createTextArea();
+		JTextArea reviewInstructions = this.controlsBuilder.createTextArea();
 		reviewInstructions.setText(I18nUtils
 				.getString("REVIEW_TAGS_INSTRUCTIONS"));
 		reviewInstructions.setEditable(false);
@@ -206,7 +207,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				dialogCancelled = false;
+				ReviewImportDialog.this.dialogCancelled = false;
 				setVisible(false);
 			}
 		});
@@ -227,14 +228,16 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 		fillTagsFromFolderName.setEnabled(false);
 		fillTagsFromFolderName
 				.addActionListener(new FillTagsFromFolderNameActionListener(
-						this, dialogFactory, patterns, patternMatcher));
+						this, this.dialogFactory, this.patterns,
+						this.patternMatcher));
 
-		treeTable.getSelectionModel().addListSelectionListener(
+		this.treeTable.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
 					@Override
 					public void valueChanged(final ListSelectionEvent e) {
-						fillTagsFromFolderName.setEnabled(treeTable
-								.getSelectedRowCount() != 0);
+						fillTagsFromFolderName
+								.setEnabled(ReviewImportDialog.this.treeTable
+										.getSelectedRowCount() != 0);
 					}
 				});
 
@@ -244,7 +247,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
-				dialogCancelled = true;
+				ReviewImportDialog.this.dialogCancelled = true;
 			}
 		});
 	}
@@ -270,7 +273,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 		panel.add(topPanel, c);
 		c.gridy = 1;
 		c.weighty = 1;
-		panel.add(lookAndFeel.getScrollPane(treeTable), c);
+		panel.add(lookAndFeel.getScrollPane(this.treeTable), c);
 		c.gridy = 2;
 		c.weightx = 0;
 		c.weighty = 0;
@@ -287,7 +290,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 
 	@Override
 	public boolean isDialogCancelled() {
-		return dialogCancelled;
+		return this.dialogCancelled;
 	}
 
 	@Override
@@ -295,7 +298,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 		// as this dialog is modal we must initialize value of dialogCancelled
 		// before setting visibility to true
 		if (b) {
-			dialogCancelled = true;
+			this.dialogCancelled = true;
 		}
 		super.setVisible(b);
 		if (!b) {
@@ -315,19 +318,20 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 
 	@Override
 	public void showDialog() {
-		treeTable.setTreeTableModel(new ReviewImportTreeTableModel(folders,
-				filesToLoad, treeTable, new TagAttributesReviewed(tagHandler,
-						repositoryHandler, genresHelper)));
-		treeTable.getColumnExt(0).setPreferredWidth(300);
-		((ReviewImportTreeTableModel) treeTable.getTreeTableModel())
+		this.treeTable.setTreeTableModel(new ReviewImportTreeTableModel(
+				this.folders, this.filesToLoad, this.treeTable,
+				new TagAttributesReviewed(this.tagHandler,
+						this.repositoryHandler, this.genresHelper)));
+		this.treeTable.getColumnExt(0).setPreferredWidth(300);
+		((ReviewImportTreeTableModel) this.treeTable.getTreeTableModel())
 				.setCellEditors();
-		treeTable.expandAll();
+		this.treeTable.expandAll();
 		setVisible(true);
 	}
 
 	@Override
 	public ITagAttributesReviewed getResult() {
-		return ((ReviewImportTreeTableModel) treeTable.getTreeTableModel())
+		return ((ReviewImportTreeTableModel) this.treeTable.getTreeTableModel())
 				.getTagAttributesReviewed();
 	}
 

@@ -32,24 +32,29 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IListMessageDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * A dialog to show messages to user
+ * 
  * @author alex
- *
+ * 
  */
-public class ListMessageDialog extends AbstractCustomDialog implements IListMessageDialog {
+public class ListMessageDialog extends AbstractCustomDialog implements
+		IListMessageDialog {
 
 	private static final long serialVersionUID = 2917633207992285783L;
 
 	/**
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public ListMessageDialog(final IFrame frame) {
-		super(frame, 700, 400);
+	public ListMessageDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 700, 400, controlsBuilder);
 	}
 
 	@Override

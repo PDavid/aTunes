@@ -32,6 +32,7 @@ import javax.swing.JProgressBar;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -42,69 +43,72 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public final class IndeterminateProgressDialog extends AbstractCustomDialog implements IIndeterminateProgressDialog {
+public final class IndeterminateProgressDialog extends AbstractCustomDialog
+		implements IIndeterminateProgressDialog {
 
-    private static final long serialVersionUID = -3071934230042256578L;
+	private static final long serialVersionUID = -3071934230042256578L;
 
-    /**
-     * Instantiates a new indeterminate progress dialog.
-     * 
-     * @param parent
-     *            the parent
-     */
-    public IndeterminateProgressDialog(IFrame parent) {
-        super(parent, 450, 160);
-        add(getContent());
-        setResizable(false);
-    }
+	/**
+	 * Instantiates a new indeterminate progress dialog.
+	 * 
+	 * @param parent
+	 * @param controlsBuilder
+	 */
+	public IndeterminateProgressDialog(final IFrame parent,
+			final IControlsBuilder controlsBuilder) {
+		super(parent, 450, 160, controlsBuilder);
+		add(getContent());
+		setResizable(false);
+	}
 
-    /**
-     * Gets the content.
-     * 
-     * @return the content
-     */
-    private JPanel getContent() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        JLabel pictureLabel = new JLabel(Images.getImage(Images.APP_LOGO_90));
-        JLabel label = new JLabel(StringUtils.getString(I18nUtils.getString("PLEASE_WAIT"), "..."));
-        Font f = label.getFont().deriveFont(Font.PLAIN);
-        label.setFont(f);
-        JProgressBar progressBar = new JProgressBar();
-        progressBar.setBorder(BorderFactory.createEmptyBorder());
-        progressBar.setIndeterminate(true);
+	/**
+	 * Gets the content.
+	 * 
+	 * @return the content
+	 */
+	private JPanel getContent() {
+		JPanel panel = new JPanel(new GridBagLayout());
+		JLabel pictureLabel = new JLabel(Images.getImage(Images.APP_LOGO_90));
+		JLabel label = new JLabel(StringUtils.getString(
+				I18nUtils.getString("PLEASE_WAIT"), "..."));
+		Font f = label.getFont().deriveFont(Font.PLAIN);
+		label.setFont(f);
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setBorder(BorderFactory.createEmptyBorder());
+		progressBar.setIndeterminate(true);
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridheight = 2;
-        c.insets = new Insets(0, 20, 0, 0);
-        panel.add(pictureLabel, c);
-        c.gridx = 1;
-        c.gridy = 0;
-        c.gridheight = 1;
-        c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(5, 20, 0, 20);
-        c.anchor = GridBagConstraints.SOUTH;
-        panel.add(label, c);
-        c.gridx = 1;
-        c.gridy = 1;
-        c.weightx = 1;
-        c.gridwidth = 3;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(5, 20, 5, 20);
-        c.anchor = GridBagConstraints.NORTH;
-        panel.add(progressBar, c);
-        return panel;
-    }
-    
-    @Override
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridheight = 2;
+		c.insets = new Insets(0, 20, 0, 0);
+		panel.add(pictureLabel, c);
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridheight = 1;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(5, 20, 0, 20);
+		c.anchor = GridBagConstraints.SOUTH;
+		panel.add(label, c);
+		c.gridx = 1;
+		c.gridy = 1;
+		c.weightx = 1;
+		c.gridwidth = 3;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(5, 20, 5, 20);
+		c.anchor = GridBagConstraints.NORTH;
+		panel.add(progressBar, c);
+		return panel;
+	}
+
+	@Override
 	public void showDialog() {
-    	setVisible(true);
-    }
-    
-    @Override
+		setVisible(true);
+	}
+
+	@Override
 	public void hideDialog() {
-    	setVisible(false);
-    }
+		setVisible(false);
+	}
 }

@@ -39,6 +39,7 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -73,9 +74,11 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog
 	 * Instantiates a new dialog.
 	 * 
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public ArtistAlbumSelectorDialog(final IFrame frame) {
-		super(frame, 600, 500);
+	public ArtistAlbumSelectorDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 600, 500, controlsBuilder);
 	}
 
 	@Override

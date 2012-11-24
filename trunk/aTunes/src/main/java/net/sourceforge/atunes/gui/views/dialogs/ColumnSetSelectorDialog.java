@@ -47,6 +47,7 @@ import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSelectorDialog;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -55,291 +56,300 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * Dialog to select column set
  */
 public final class ColumnSetSelectorDialog extends AbstractCustomDialog
-	implements IColumnSelectorDialog {
+		implements IColumnSelectorDialog {
 
-    private class ColumnsTableModel implements TableModel {
+	private class ColumnsTableModel implements TableModel {
 
-	private static final long serialVersionUID = 5251001708812824836L;
+		private static final long serialVersionUID = 5251001708812824836L;
 
-	private List<IColumn<?>> columns;
-	private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+		private List<IColumn<?>> columns;
+		private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-	/**
-	 * Instantiates a new columns table model.
-	 */
-	ColumnsTableModel() {
-	    // Nothing to do
-	}
-
-	@Override
-	public void addTableModelListener(final TableModelListener l) {
-	    listeners.add(l);
-	}
-
-	@Override
-	public Class<?> getColumnClass(final int columnIndex) {
-	    return columnIndex == 0 ? Boolean.class : String.class;
-	}
-
-	@Override
-	public int getColumnCount() {
-	    return 2;
-	}
-
-	@Override
-	public String getColumnName(final int column) {
-	    return "";
-	}
-
-	@Override
-	public int getRowCount() {
-	    if (this.columns != null) {
-		return this.columns.size();
-	    }
-	    return 0;
-	}
-
-	@Override
-	public Object getValueAt(final int rowIndex, final int columnIndex) {
-	    if (columnIndex == 0) {
-		return columns.get(rowIndex).isVisible();
-	    }
-	    return I18nUtils.getString(columns.get(rowIndex).getColumnName());
-	}
-
-	@Override
-	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
-	    return columnIndex == 0;
-	}
-
-	/**
-	 * Move down.
-	 * 
-	 * @param columnPos
-	 *            the column pos
-	 */
-	public void moveDown(final int columnPos) {
-	    // Get this column and previous
-	    IColumn<?> columnSelected = columns.get(columnPos);
-	    IColumn<?> nextColumn = columns.get(columnPos + 1);
-
-	    // Swap order
-	    int aux = columnSelected.getOrder();
-	    columnSelected.setOrder(nextColumn.getOrder());
-	    nextColumn.setOrder(aux);
-
-	    // Swap position on columns array
-	    columns.remove(nextColumn);
-	    columns.add(columnPos, nextColumn);
-
-	    TableModelEvent event;
-	    event = new TableModelEvent(this, TableModelEvent.ALL_COLUMNS,
-		    TableModelEvent.UPDATE);
-
-	    for (int i = 0; i < listeners.size(); i++) {
-		listeners.get(i).tableChanged(event);
-	    }
-
-	    columnsList.getColumnModel().getColumn(0).setMaxWidth(20);
-
-	    columnsList.getSelectionModel().setSelectionInterval(columnPos + 1,
-		    columnPos + 1);
-	}
-
-	/**
-	 * Move up.
-	 * 
-	 * @param columnPos
-	 *            the column pos
-	 */
-	public void moveUp(final int columnPos) {
-	    // Get this column and previous
-	    IColumn<?> columnSelected = columns.get(columnPos);
-	    IColumn<?> previousColumn = columns.get(columnPos - 1);
-
-	    // Swap order
-	    int aux = columnSelected.getOrder();
-	    columnSelected.setOrder(previousColumn.getOrder());
-	    previousColumn.setOrder(aux);
-
-	    // Swap position on columns array
-	    columns.remove(previousColumn);
-	    columns.add(columnPos, previousColumn);
-
-	    TableModelEvent event;
-	    event = new TableModelEvent(this, TableModelEvent.ALL_COLUMNS,
-		    TableModelEvent.UPDATE);
-
-	    for (int i = 0; i < listeners.size(); i++) {
-		listeners.get(i).tableChanged(event);
-	    }
-
-	    columnsList.getColumnModel().getColumn(0).setMaxWidth(20);
-
-	    columnsList.getSelectionModel().setSelectionInterval(columnPos - 1,
-		    columnPos - 1);
-	}
-
-	@Override
-	public void removeTableModelListener(final TableModelListener l) {
-	    listeners.remove(l);
-	}
-
-	public void setColumns(final List<IColumn<?>> columns) {
-	    this.columns = columns;
-	    Collections.sort(this.columns);
-	}
-
-	@Override
-	public void setValueAt(final Object aValue, final int rowIndex,
-		final int columnIndex) {
-	    if (columnIndex == 0) {
-		columns.get(rowIndex).setVisible((Boolean) aValue);
-	    }
-	}
-    }
-
-    private static final long serialVersionUID = -7592059207162524630L;
-
-    private JTable columnsList;
-    private ColumnsTableModel model;
-
-    private IBeanFactory beanFactory;
-
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
-
-    /**
-     * Instantiates a new play list column selector.
-     * 
-     * @param frame
-     */
-    public ColumnSetSelectorDialog(final IFrame frame) {
-	super(frame, 250, 300);
-    }
-
-    @Override
-    public void initialize() {
-	add(getContent(getLookAndFeel()));
-	setTitle(I18nUtils.getString("ARRANGE_COLUMNS"));
-	setResizable(false);
-	// TODO: Add pack to all dialogs
-	pack();
-    }
-
-    /**
-     * Gets the content.
-     * 
-     * @return the content
-     */
-    private JPanel getContent(final ILookAndFeel lookAndFeel) {
-	JPanel panel = new JPanel(new GridBagLayout());
-
-	model = new ColumnsTableModel();
-
-	columnsList = lookAndFeel.getTable();
-	columnsList.setModel(model);
-	columnsList.setTableHeader(null);
-	columnsList.getColumnModel().getColumn(0).setMaxWidth(20);
-	columnsList.getColumnModel().getColumn(0)
-		.setCellEditor(new DefaultCellEditor(new JCheckBox()));
-	columnsList.getSelectionModel().setSelectionMode(
-		ListSelectionModel.SINGLE_SELECTION);
-	columnsList
-		.setDefaultRenderer(
-			String.class,
-			lookAndFeel.getTableCellRenderer(beanFactory
-				.getBean(ComponentOrientationTableCellRendererCode.class)));
-
-	JScrollPane scrollPane = lookAndFeel.getTableScrollPane(columnsList);
-	JLabel label = new JLabel(I18nUtils.getString("SELECT_COLUMNS"));
-	JButton okButton = new JButton(I18nUtils.getString("OK"));
-	okButton.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(final ActionEvent e) {
-		hideDialog();
-	    }
-	});
-
-	JButton upButton = new JButton(I18nUtils.getString("MOVE_UP"));
-	upButton.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(final ActionEvent e) {
-		int selectedColumn = columnsList.getSelectedRow();
-		// If some column has been selected, not the first one
-		if (selectedColumn > 0) {
-		    model.moveUp(selectedColumn);
+		/**
+		 * Instantiates a new columns table model.
+		 */
+		ColumnsTableModel() {
+			// Nothing to do
 		}
-	    }
-	});
 
-	JButton downButton = new JButton(I18nUtils.getString("MOVE_DOWN"));
-	downButton.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(final ActionEvent e) {
-		int selectedColumn = columnsList.getSelectedRow();
-		// If some column has been selected, not the last one
-		if (selectedColumn < columnsList.getModel().getRowCount() - 1) {
-		    model.moveDown(selectedColumn);
+		@Override
+		public void addTableModelListener(final TableModelListener l) {
+			this.listeners.add(l);
 		}
-	    }
-	});
 
-	GridBagConstraints c = new GridBagConstraints();
+		@Override
+		public Class<?> getColumnClass(final int columnIndex) {
+			return columnIndex == 0 ? Boolean.class : String.class;
+		}
 
-	c.gridx = 0;
-	c.gridy = 0;
-	c.weightx = 1;
-	c.weighty = 0;
-	c.fill = GridBagConstraints.BOTH;
-	c.insets = new Insets(10, 10, 10, 10);
-	panel.add(label, c);
+		@Override
+		public int getColumnCount() {
+			return 2;
+		}
 
-	c.gridy = 1;
-	c.weighty = 1;
-	c.gridheight = 2;
-	panel.add(scrollPane, c);
+		@Override
+		public String getColumnName(final int column) {
+			return "";
+		}
 
-	c.gridx = 1;
-	c.gridheight = 1;
-	c.weightx = 0;
-	c.weighty = 1;
-	c.fill = GridBagConstraints.NONE;
-	c.anchor = GridBagConstraints.SOUTH;
-	c.insets = new Insets(10, 0, 10, 10);
-	panel.add(upButton, c);
+		@Override
+		public int getRowCount() {
+			if (this.columns != null) {
+				return this.columns.size();
+			}
+			return 0;
+		}
 
-	c.gridy = 2;
-	c.anchor = GridBagConstraints.NORTH;
-	panel.add(downButton, c);
+		@Override
+		public Object getValueAt(final int rowIndex, final int columnIndex) {
+			if (columnIndex == 0) {
+				return this.columns.get(rowIndex).isVisible();
+			}
+			return I18nUtils.getString(this.columns.get(rowIndex)
+					.getColumnName());
+		}
 
-	c.gridx = 0;
-	c.gridy = 3;
-	c.weighty = 0;
-	c.gridwidth = 2;
-	c.insets = new Insets(10, 10, 10, 10);
-	panel.add(okButton, c);
+		@Override
+		public boolean isCellEditable(final int rowIndex, final int columnIndex) {
+			return columnIndex == 0;
+		}
 
-	return panel;
-    }
+		/**
+		 * Move down.
+		 * 
+		 * @param columnPos
+		 *            the column pos
+		 */
+		public void moveDown(final int columnPos) {
+			// Get this column and previous
+			IColumn<?> columnSelected = this.columns.get(columnPos);
+			IColumn<?> nextColumn = this.columns.get(columnPos + 1);
 
-    @Override
-    public void setColumnSetToSelect(final IColumnSet columnSet) {
-	model.setColumns(columnSet.getColumnsForSelection());
-    }
+			// Swap order
+			int aux = columnSelected.getOrder();
+			columnSelected.setOrder(nextColumn.getOrder());
+			nextColumn.setOrder(aux);
 
-    @Override
-    public void showDialog() {
-	setVisible(true);
-    }
+			// Swap position on columns array
+			this.columns.remove(nextColumn);
+			this.columns.add(columnPos, nextColumn);
 
-    @Override
-    public void hideDialog() {
-	setVisible(false);
-    }
+			TableModelEvent event;
+			event = new TableModelEvent(this, TableModelEvent.ALL_COLUMNS,
+					TableModelEvent.UPDATE);
+
+			for (int i = 0; i < this.listeners.size(); i++) {
+				this.listeners.get(i).tableChanged(event);
+			}
+
+			ColumnSetSelectorDialog.this.columnsList.getColumnModel()
+					.getColumn(0).setMaxWidth(20);
+
+			ColumnSetSelectorDialog.this.columnsList.getSelectionModel()
+					.setSelectionInterval(columnPos + 1, columnPos + 1);
+		}
+
+		/**
+		 * Move up.
+		 * 
+		 * @param columnPos
+		 *            the column pos
+		 */
+		public void moveUp(final int columnPos) {
+			// Get this column and previous
+			IColumn<?> columnSelected = this.columns.get(columnPos);
+			IColumn<?> previousColumn = this.columns.get(columnPos - 1);
+
+			// Swap order
+			int aux = columnSelected.getOrder();
+			columnSelected.setOrder(previousColumn.getOrder());
+			previousColumn.setOrder(aux);
+
+			// Swap position on columns array
+			this.columns.remove(previousColumn);
+			this.columns.add(columnPos, previousColumn);
+
+			TableModelEvent event;
+			event = new TableModelEvent(this, TableModelEvent.ALL_COLUMNS,
+					TableModelEvent.UPDATE);
+
+			for (int i = 0; i < this.listeners.size(); i++) {
+				this.listeners.get(i).tableChanged(event);
+			}
+
+			ColumnSetSelectorDialog.this.columnsList.getColumnModel()
+					.getColumn(0).setMaxWidth(20);
+
+			ColumnSetSelectorDialog.this.columnsList.getSelectionModel()
+					.setSelectionInterval(columnPos - 1, columnPos - 1);
+		}
+
+		@Override
+		public void removeTableModelListener(final TableModelListener l) {
+			this.listeners.remove(l);
+		}
+
+		public void setColumns(final List<IColumn<?>> columns) {
+			this.columns = columns;
+			Collections.sort(this.columns);
+		}
+
+		@Override
+		public void setValueAt(final Object aValue, final int rowIndex,
+				final int columnIndex) {
+			if (columnIndex == 0) {
+				this.columns.get(rowIndex).setVisible((Boolean) aValue);
+			}
+		}
+	}
+
+	private static final long serialVersionUID = -7592059207162524630L;
+
+	private JTable columnsList;
+	private ColumnsTableModel model;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+
+	/**
+	 * Instantiates a new play list column selector.
+	 * 
+	 * @param frame
+	 * @param controlsBuilder
+	 */
+	public ColumnSetSelectorDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 250, 300, controlsBuilder);
+	}
+
+	@Override
+	public void initialize() {
+		add(getContent(getLookAndFeel()));
+		setTitle(I18nUtils.getString("ARRANGE_COLUMNS"));
+		setResizable(false);
+		// TODO: Add pack to all dialogs
+		pack();
+	}
+
+	/**
+	 * Gets the content.
+	 * 
+	 * @return the content
+	 */
+	private JPanel getContent(final ILookAndFeel lookAndFeel) {
+		JPanel panel = new JPanel(new GridBagLayout());
+
+		this.model = new ColumnsTableModel();
+
+		this.columnsList = lookAndFeel.getTable();
+		this.columnsList.setModel(this.model);
+		this.columnsList.setTableHeader(null);
+		this.columnsList.getColumnModel().getColumn(0).setMaxWidth(20);
+		this.columnsList.getColumnModel().getColumn(0)
+				.setCellEditor(new DefaultCellEditor(new JCheckBox()));
+		this.columnsList.getSelectionModel().setSelectionMode(
+				ListSelectionModel.SINGLE_SELECTION);
+		this.columnsList
+				.setDefaultRenderer(
+						String.class,
+						lookAndFeel.getTableCellRenderer(this.beanFactory
+								.getBean(ComponentOrientationTableCellRendererCode.class)));
+
+		JScrollPane scrollPane = lookAndFeel
+				.getTableScrollPane(this.columnsList);
+		JLabel label = new JLabel(I18nUtils.getString("SELECT_COLUMNS"));
+		JButton okButton = new JButton(I18nUtils.getString("OK"));
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				hideDialog();
+			}
+		});
+
+		JButton upButton = new JButton(I18nUtils.getString("MOVE_UP"));
+		upButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				int selectedColumn = ColumnSetSelectorDialog.this.columnsList
+						.getSelectedRow();
+				// If some column has been selected, not the first one
+				if (selectedColumn > 0) {
+					ColumnSetSelectorDialog.this.model.moveUp(selectedColumn);
+				}
+			}
+		});
+
+		JButton downButton = new JButton(I18nUtils.getString("MOVE_DOWN"));
+		downButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				int selectedColumn = ColumnSetSelectorDialog.this.columnsList
+						.getSelectedRow();
+				// If some column has been selected, not the last one
+				if (selectedColumn < ColumnSetSelectorDialog.this.columnsList
+						.getModel().getRowCount() - 1) {
+					ColumnSetSelectorDialog.this.model.moveDown(selectedColumn);
+				}
+			}
+		});
+
+		GridBagConstraints c = new GridBagConstraints();
+
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(10, 10, 10, 10);
+		panel.add(label, c);
+
+		c.gridy = 1;
+		c.weighty = 1;
+		c.gridheight = 2;
+		panel.add(scrollPane, c);
+
+		c.gridx = 1;
+		c.gridheight = 1;
+		c.weightx = 0;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.SOUTH;
+		c.insets = new Insets(10, 0, 10, 10);
+		panel.add(upButton, c);
+
+		c.gridy = 2;
+		c.anchor = GridBagConstraints.NORTH;
+		panel.add(downButton, c);
+
+		c.gridx = 0;
+		c.gridy = 3;
+		c.weighty = 0;
+		c.gridwidth = 2;
+		c.insets = new Insets(10, 10, 10, 10);
+		panel.add(okButton, c);
+
+		return panel;
+	}
+
+	@Override
+	public void setColumnSetToSelect(final IColumnSet columnSet) {
+		this.model.setColumns(columnSet.getColumnsForSelection());
+	}
+
+	@Override
+	public void showDialog() {
+		setVisible(true);
+	}
+
+	@Override
+	public void hideDialog() {
+		setVisible(false);
+	}
 
 }

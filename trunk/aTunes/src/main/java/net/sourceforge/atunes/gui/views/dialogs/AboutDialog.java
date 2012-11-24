@@ -83,16 +83,6 @@ public final class AboutDialog extends AbstractCustomDialog implements
 
 	private IBeanFactory beanFactory;
 
-	private IControlsBuilder controlsBuilder;
-
-	/**
-	 * @param controlsBuilder
-	 */
-	@Override
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
 	/**
 	 * @param beanFactory
 	 */
@@ -111,9 +101,11 @@ public final class AboutDialog extends AbstractCustomDialog implements
 	 * Instantiates a new about dialog.
 	 * 
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public AboutDialog(final IFrame frame) {
-		super(frame, 600, 550);
+	public AboutDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 600, 550, controlsBuilder);
 	}
 
 	/**
@@ -141,7 +133,7 @@ public final class AboutDialog extends AbstractCustomDialog implements
 
 		JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
 
-		JTextArea license = this.controlsBuilder.createTextArea();
+		JTextArea license = getControlsBuilder().createTextArea();
 		license.setText(this.licenseText);
 		license.setEditable(false);
 		license.setLineWrap(true);

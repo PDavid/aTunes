@@ -70,8 +70,6 @@ public final class PodcastFeedEntryPropertiesDialog extends
 
 	private IUnknownObjectChecker unknownObjectChecker;
 
-	private IControlsBuilder controlsBuilder;
-
 	private IIconFactory rssMediumIcon;
 
 	/**
@@ -79,14 +77,6 @@ public final class PodcastFeedEntryPropertiesDialog extends
 	 */
 	public void setRssMediumIcon(final IIconFactory rssMediumIcon) {
 		this.rssMediumIcon = rssMediumIcon;
-	}
-
-	/**
-	 * @param controlsBuilder
-	 */
-	@Override
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
 	}
 
 	/**
@@ -100,12 +90,12 @@ public final class PodcastFeedEntryPropertiesDialog extends
 	/**
 	 * Instantiates a new podcast feed entry properties dialog.
 	 * 
-	 * @param entry
 	 * @param frame
-	 * @param stateCore
+	 * @param controlsBuilder
 	 */
-	PodcastFeedEntryPropertiesDialog(final IFrame frame) {
-		super(frame);
+	PodcastFeedEntryPropertiesDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, controlsBuilder);
 	}
 
 	/**
@@ -175,7 +165,7 @@ public final class PodcastFeedEntryPropertiesDialog extends
 		this.descriptionLabel = new JLabel();
 		JScrollPane descriptionScrollPane = iLookAndFeel.getScrollPane(null);
 		descriptionScrollPane.setMinimumSize(new Dimension(400, 100));
-		this.descriptionTextArea = this.controlsBuilder.createTextArea();
+		this.descriptionTextArea = getControlsBuilder().createTextArea();
 		this.descriptionTextArea.setEditable(false);
 		this.descriptionTextArea.setLineWrap(true);
 		this.descriptionTextArea.setWrapStyleWord(true);

@@ -86,38 +86,38 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
 	/**
 	 * @param desktop
 	 */
-	public void setDesktop(IDesktop desktop) {
+	public void setDesktop(final IDesktop desktop) {
 		this.desktop = desktop;
 	}
 
 	/**
 	 * @param parent
-	 * @param osManager
-	 * @param desktop
+	 * @param controlsBuilder
 	 */
-	public MacOSXPlayerSelectionDialog(IFrame parent) {
-		super(parent, 450, 250);
+	public MacOSXPlayerSelectionDialog(final IFrame parent,
+			final IControlsBuilder controlsBuilder) {
+		super(parent, 450, 250, controlsBuilder);
 	}
 
 	@Override
@@ -125,35 +125,35 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 		setResizable(false);
 		setTitle(I18nUtils.getString("PLAYER_ENGINE_SELECTION"));
 
-		panelContainer = new JPanel(new CardLayout());
-		panelContainer.add(FIRST_PANEL, getFirstOptionsPanel());
-		panelContainer.add(SEARCH_PANEL, getSearchPanel());
-		panelContainer.add(SEARCH_RESULTS_PANEL, getSearchResultsPanel());
-		panelContainer.add(ENTER_PATH_PANEL, getEnterPlayerEnginePanel());
-		add(panelContainer);
+		this.panelContainer = new JPanel(new CardLayout());
+		this.panelContainer.add(FIRST_PANEL, getFirstOptionsPanel());
+		this.panelContainer.add(SEARCH_PANEL, getSearchPanel());
+		this.panelContainer.add(SEARCH_RESULTS_PANEL, getSearchResultsPanel());
+		this.panelContainer.add(ENTER_PATH_PANEL, getEnterPlayerEnginePanel());
+		add(this.panelContainer);
 
-		((CardLayout) panelContainer.getLayout()).show(panelContainer,
-				FIRST_PANEL);
+		((CardLayout) this.panelContainer.getLayout()).show(
+				this.panelContainer, FIRST_PANEL);
 	}
 
 	/**
 	 * Set first options panel
 	 */
 	private JPanel getFirstOptionsPanel() {
-		JTextPane instructions = controlsBuilder
+		JTextPane instructions = this.controlsBuilder
 				.createReadOnlyTextPane(I18nUtils
 						.getString("MAC_PLAYER_ENGINE_INSTRUCTIONS"));
-		UrlLabel appStoreURL = new UrlLabel(desktop,
+		UrlLabel appStoreURL = new UrlLabel(this.desktop,
 				I18nUtils.getString("MAC_PLAYER_ENGINE_URL"),
 				MPLAYER_APP_STORE_URL);
-		automaticSearch = new JRadioButton(
+		this.automaticSearch = new JRadioButton(
 				I18nUtils.getString("SEARCH_PLAYER_ENGINE"));
 		JRadioButton enterPath = new JRadioButton(
 				I18nUtils.getString("ENTER_PLAYER_ENGINE_PATH"));
 		ButtonGroup b = new ButtonGroup();
-		b.add(automaticSearch);
+		b.add(this.automaticSearch);
 		b.add(enterPath);
-		automaticSearch.setSelected(true);
+		this.automaticSearch.setSelected(true);
 		JButton nextButton = new JButton(I18nUtils.getString("NEXT"));
 		nextButton
 				.addActionListener(new MacOSXPlayerSelectionDialogNextButtonListener(
@@ -172,7 +172,7 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 		c.anchor = GridBagConstraints.CENTER;
 		panel.add(appStoreURL, c);
 		JPanel options = new JPanel(new GridLayout(2, 1));
-		options.add(automaticSearch);
+		options.add(this.automaticSearch);
 		options.add(enterPath);
 		c.gridy = 2;
 		c.fill = GridBagConstraints.BOTH;
@@ -216,8 +216,8 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 * Looks for paths where mplayer is installed and show in a dialog
 	 */
 	void searchPlayerEngine() {
-		((CardLayout) panelContainer.getLayout()).show(panelContainer,
-				SEARCH_PANEL);
+		((CardLayout) this.panelContainer.getLayout()).show(
+				this.panelContainer, SEARCH_PANEL);
 		new MacOSXPlayerEngineSelectionDialogSearchPlayerEngineWorker(this)
 				.execute();
 	}
@@ -227,10 +227,10 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 * 
 	 * @param results
 	 */
-	void showSearchResults(List<String> results) {
-		matchesList.setListData(results.toArray());
-		((CardLayout) panelContainer.getLayout()).show(panelContainer,
-				SEARCH_RESULTS_PANEL);
+	void showSearchResults(final List<String> results) {
+		this.matchesList.setListData(results.toArray());
+		((CardLayout) this.panelContainer.getLayout()).show(
+				this.panelContainer, SEARCH_RESULTS_PANEL);
 	}
 
 	/**
@@ -239,29 +239,29 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 * @return
 	 */
 	private JPanel getSearchResultsPanel() {
-		JTextPane instructions = controlsBuilder
+		JTextPane instructions = this.controlsBuilder
 				.createReadOnlyTextPane(I18nUtils
 						.getString("MAC_PLAYER_ENGINE_SELECTION"));
 
-		matchesList = getLookAndFeel().getList();
-		matchesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.matchesList = getLookAndFeel().getList();
+		this.matchesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JButton previousButton = new JButton(I18nUtils.getString("PREVIOUS"));
 		final JButton finishButton = new JButton(I18nUtils.getString("FINISH"));
 		finishButton.setEnabled(false);
 
 		finishButton
 				.addActionListener(new MacOSXPlayerSelectionDialogSearchResultsFinishButtonListener(
-						this, osManager, matchesList));
+						this, this.osManager, this.matchesList));
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
 		cancelButton
 				.addActionListener(new MacOSXPlayerSelectionDialogCancelButtonActionListener(
 						this));
-		matchesList
+		this.matchesList
 				.addListSelectionListener(new MacOSXPlayerSelectionDialogEnableFinishButtonListener(
 						finishButton));
 		previousButton
 				.addActionListener(new MacOSXPlayerSelectionDialogGoToFirstPanelListener(
-						panelContainer, FIRST_PANEL));
+						this.panelContainer, FIRST_PANEL));
 
 		JPanel buttons = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -286,7 +286,7 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 		panel.add(instructions, c);
 		c.gridy = 1;
 		c.weighty = 0.8;
-		panel.add(getLookAndFeel().getListScrollPane(matchesList), c);
+		panel.add(getLookAndFeel().getListScrollPane(this.matchesList), c);
 		c.gridy = 2;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -301,22 +301,22 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 * @return
 	 */
 	private JPanel getEnterPlayerEnginePanel() {
-		JTextPane instructions = controlsBuilder
+		JTextPane instructions = this.controlsBuilder
 				.createReadOnlyTextPane(I18nUtils
 						.getString("MAC_PLAYER_ENGINE_ENTER_PATH"));
 		final CustomFileChooser locationFileChooser = new CustomFileChooser(
 				I18nUtils.getString("ENTER_PLAYER_ENGINE_PATH"), this, 0,
-				JFileChooser.FILES_ONLY, osManager, beanFactory,
-				controlsBuilder);
+				JFileChooser.FILES_ONLY, this.osManager, this.beanFactory,
+				this.controlsBuilder);
 		JButton previousButton = new JButton(I18nUtils.getString("PREVIOUS"));
 		previousButton
 				.addActionListener(new MacOSXPlayerSelectionDialogGoToFirstPanelListener(
-						panelContainer, FIRST_PANEL));
+						this.panelContainer, FIRST_PANEL));
 		final JButton finishButton = new JButton(I18nUtils.getString("FINISH"));
 		finishButton.setEnabled(false);
 		finishButton
 				.addActionListener(new MacOSXPlayerSelectionDialogEnterPlayerEngineFinishButtonListener(
-						this, osManager, locationFileChooser));
+						this, this.osManager, locationFileChooser));
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
 		cancelButton
 				.addActionListener(new MacOSXPlayerSelectionDialogCancelButtonActionListener(
@@ -362,13 +362,13 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 * @return
 	 */
 	protected boolean automaticSearchSelected() {
-		return automaticSearch.isSelected();
+		return this.automaticSearch.isSelected();
 	}
 
 	/**
 	 * Returns panel container
 	 */
 	protected JPanel getPanelContainer() {
-		return panelContainer;
+		return this.panelContainer;
 	}
 }

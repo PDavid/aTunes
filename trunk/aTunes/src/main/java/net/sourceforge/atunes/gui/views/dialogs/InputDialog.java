@@ -53,44 +53,37 @@ public final class InputDialog extends AbstractCustomDialog implements
 
 	private String text;
 
-	private IControlsBuilder controlsBuilder;
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
 	/**
 	 * Instantiates a new input dialog.
 	 * 
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public InputDialog(IFrame frame) {
-		super(frame, 400, 130);
+	public InputDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 400, 130, controlsBuilder);
 	}
 
 	@Override
 	public void initialize() {
 		setResizable(false);
 		JPanel panel = new JPanel(new GridBagLayout());
-		textField = controlsBuilder.createTextField();
+		this.textField = getControlsBuilder().createTextField();
 		JButton okButton = new JButton(I18nUtils.getString("OK"));
 		ActionListener okListener = new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				result = textField.getText();
+			public void actionPerformed(final ActionEvent e) {
+				InputDialog.this.result = InputDialog.this.textField.getText();
 				dispose();
 			}
 		};
 		okButton.addActionListener(okListener);
-		textField.addActionListener(okListener);
+		this.textField.addActionListener(okListener);
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				result = null;
+			public void actionPerformed(final ActionEvent e) {
+				InputDialog.this.result = null;
 				dispose();
 			}
 		});
@@ -102,8 +95,8 @@ public final class InputDialog extends AbstractCustomDialog implements
 	 * @param okButton
 	 * @param cancelButton
 	 */
-	private void arrangePanel(JPanel panel, JButton okButton,
-			JButton cancelButton) {
+	private void arrangePanel(final JPanel panel, final JButton okButton,
+			final JButton cancelButton) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -114,7 +107,7 @@ public final class InputDialog extends AbstractCustomDialog implements
 		JPanel auxPanel = new JPanel(gl);
 		auxPanel.add(okButton);
 		auxPanel.add(cancelButton);
-		panel.add(textField, c);
+		panel.add(this.textField, c);
 		c.gridx = 0;
 		c.gridy = 1;
 		c.insets = new Insets(10, 50, 0, 50);
@@ -125,19 +118,20 @@ public final class InputDialog extends AbstractCustomDialog implements
 
 	@Override
 	public String getResult() {
-		return result;
+		return this.result;
 	}
 
 	@Override
-	public void setText(String text) {
+	public void setText(final String text) {
 		this.text = text;
 	}
 
 	@Override
 	public void showDialog() {
-		textField.setText(text);
-		textField.setSelectionStart(0);
-		textField.setSelectionEnd(text != null ? text.length() : 0);
+		this.textField.setText(this.text);
+		this.textField.setSelectionStart(0);
+		this.textField.setSelectionEnd(this.text != null ? this.text.length()
+				: 0);
 		setVisible(true);
 	}
 

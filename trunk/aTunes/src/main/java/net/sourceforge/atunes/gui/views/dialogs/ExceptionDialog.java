@@ -69,15 +69,6 @@ public class ExceptionDialog extends AbstractCustomDialog implements
 
 	private ILookAndFeelManager lookAndFeelManager;
 
-	private IControlsBuilder controlsBuilder;
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
 	/**
 	 * @param lookAndFeelManager
 	 */
@@ -106,20 +97,22 @@ public class ExceptionDialog extends AbstractCustomDialog implements
 	 * Default constructor
 	 * 
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public ExceptionDialog(final IFrame frame) {
-		super(frame, WIDTH, HEIGHT, false, CloseAction.DISPOSE);
+	public ExceptionDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, WIDTH, HEIGHT, false, CloseAction.DISPOSE, controlsBuilder);
 	}
 
 	@Override
 	public void showExceptionDialog(final Throwable throwable) {
-		showDialog(errorReportCreator.createReport(null, throwable));
+		showDialog(this.errorReportCreator.createReport(null, throwable));
 	}
 
 	@Override
 	public void showExceptionDialog(final String descriptionError,
 			final Throwable t) {
-		showDialog(errorReportCreator.createReport(descriptionError, t));
+		showDialog(this.errorReportCreator.createReport(descriptionError, t));
 	}
 
 	/**
@@ -132,7 +125,7 @@ public class ExceptionDialog extends AbstractCustomDialog implements
 		panel.setBorder(BorderFactory.createEmptyBorder(BORDER, BORDER, BORDER,
 				BORDER));
 		JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
-		JTextArea messageLabel = controlsBuilder.createTextArea();
+		JTextArea messageLabel = getControlsBuilder().createTextArea();
 		messageLabel.setText(I18nUtils.getString("ERROR_TO_REPORT"));
 		messageLabel.setEditable(false);
 		messageLabel.setEnabled(false);
@@ -142,10 +135,10 @@ public class ExceptionDialog extends AbstractCustomDialog implements
 
 		JButton sendButton = new JButton(I18nUtils.getString("SEND"));
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
-		final JTextArea textArea = controlsBuilder.createTextArea();
+		final JTextArea textArea = getControlsBuilder().createTextArea();
 		textArea.setEditable(false);
-		JScrollPane scrollPane = lookAndFeelManager.getCurrentLookAndFeel()
-				.getScrollPane(textArea);
+		JScrollPane scrollPane = this.lookAndFeelManager
+				.getCurrentLookAndFeel().getScrollPane(textArea);
 
 		JPanel buttonsPanel = new JPanel(new GridLayout(1, 2, BORDER, BORDER));
 		buttonsPanel.add(sendButton);
@@ -180,7 +173,7 @@ public class ExceptionDialog extends AbstractCustomDialog implements
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				errorReporter.reportError(errorReport);
+				ExceptionDialog.this.errorReporter.reportError(errorReport);
 				ExceptionDialog.this.setVisible(false);
 			}
 		});

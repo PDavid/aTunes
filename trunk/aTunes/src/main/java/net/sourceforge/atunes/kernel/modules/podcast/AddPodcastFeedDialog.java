@@ -63,7 +63,7 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
@@ -71,9 +71,11 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements
 	 * Instantiates a new adds the podcast feed dialog.
 	 * 
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public AddPodcastFeedDialog(IFrame frame) {
-		super(frame, 500, 170);
+	public AddPodcastFeedDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 500, 170, controlsBuilder);
 	}
 
 	/**
@@ -94,7 +96,7 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements
 	/**
 	 * @param rssMediumIcon
 	 */
-	public void setRssMediumIcon(IIconFactory rssMediumIcon) {
+	public void setRssMediumIcon(final IIconFactory rssMediumIcon) {
 		this.rssMediumIcon = rssMediumIcon;
 	}
 
@@ -107,9 +109,9 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements
 		JPanel panel = new JPanel(new GridBagLayout());
 
 		JLabel nameLabel = new JLabel(I18nUtils.getString("NAME"));
-		nameTextField = controlsBuilder.createTextField();
+		this.nameTextField = this.controlsBuilder.createTextField();
 		JLabel urlLabel = new JLabel(I18nUtils.getString("URL"));
-		urlTextField = controlsBuilder.createTextField();
+		this.urlTextField = this.controlsBuilder.createTextField();
 
 		JButton okButton = getOkButton();
 		JButton cancelButton = getCancelButton();
@@ -122,21 +124,21 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements
 		panel.add(nameLabel, c);
 		c.gridx = 2;
 		c.weightx = 1;
-		panel.add(nameTextField, c);
+		panel.add(this.nameTextField, c);
 		c.gridx = 1;
 		c.gridy = 1;
 		c.weightx = 0;
 		panel.add(urlLabel, c);
 		c.gridx = 2;
 		c.weightx = 1;
-		panel.add(urlTextField, c);
+		panel.add(this.urlTextField, c);
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridheight = 2;
 		c.fill = GridBagConstraints.NONE;
 		c.weightx = -1;
 		panel.add(
-				new JLabel(rssMediumIcon.getIcon(getLookAndFeel()
+				new JLabel(this.rssMediumIcon.getIcon(getLookAndFeel()
 						.getPaintForSpecialControls())), c);
 
 		JPanel auxPanel = new JPanel();
@@ -159,7 +161,7 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				AddPodcastFeedDialog.this.dispose();
 			}
 		});
@@ -173,14 +175,18 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements
 		JButton okButton = new JButton(I18nUtils.getString("OK"));
 		okButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (nameTextField.getText() == null
-						|| nameTextField.getText().trim().isEmpty()) {
-					podcastFeed = new PodcastFeed("", urlTextField.getText());
-					podcastFeed.setRetrieveNameFromFeed(true);
+			public void actionPerformed(final ActionEvent e) {
+				if (AddPodcastFeedDialog.this.nameTextField.getText() == null
+						|| AddPodcastFeedDialog.this.nameTextField.getText()
+								.trim().isEmpty()) {
+					AddPodcastFeedDialog.this.podcastFeed = new PodcastFeed("",
+							AddPodcastFeedDialog.this.urlTextField.getText());
+					AddPodcastFeedDialog.this.podcastFeed
+							.setRetrieveNameFromFeed(true);
 				} else {
-					podcastFeed = new PodcastFeed(nameTextField.getText(),
-							urlTextField.getText());
+					AddPodcastFeedDialog.this.podcastFeed = new PodcastFeed(
+							AddPodcastFeedDialog.this.nameTextField.getText(),
+							AddPodcastFeedDialog.this.urlTextField.getText());
 				}
 				AddPodcastFeedDialog.this.dispose();
 			}
@@ -190,7 +196,7 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements
 
 	@Override
 	public IPodcastFeed getPodcastFeed() {
-		return podcastFeed;
+		return this.podcastFeed;
 	}
 
 	@Override

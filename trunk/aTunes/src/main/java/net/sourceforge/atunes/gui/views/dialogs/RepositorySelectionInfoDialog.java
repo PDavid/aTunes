@@ -52,7 +52,7 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomDialog {
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
@@ -60,9 +60,11 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomDialog {
 	 * Instantiates a new repository selection info dialog.
 	 * 
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public RepositorySelectionInfoDialog(IFrame frame) {
-		super(frame, 400, 250);
+	public RepositorySelectionInfoDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 400, 250, controlsBuilder);
 	}
 
 	@Override
@@ -78,7 +80,7 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomDialog {
 	private void setContent() {
 		JPanel panel = new JPanel(new GridBagLayout());
 		JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
-		JTextArea text = controlsBuilder.createTextArea();
+		JTextArea text = this.controlsBuilder.createTextArea();
 		text.setText(I18nUtils.getString("REPOSITORY_SELECTION_INFO_TEXT"));
 		text.setOpaque(false);
 		text.setEditable(false);
@@ -88,8 +90,8 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomDialog {
 		JButton button = new JButton(I18nUtils.getString("OK"));
 		button.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				accepted = true;
+			public void actionPerformed(final ActionEvent e) {
+				RepositorySelectionInfoDialog.this.accepted = true;
 				setVisible(false);
 			}
 		});
@@ -120,6 +122,6 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomDialog {
 	 * @return
 	 */
 	public boolean userAccepted() {
-		return accepted;
+		return this.accepted;
 	}
 }

@@ -82,9 +82,11 @@ public final class RadioDialog extends AbstractCustomDialog implements
 	 * Instantiates a new radio dialog for adding a new radio
 	 * 
 	 * @param frame
+	 * @param controlsBuilder
 	 */
-	public RadioDialog(final IFrame frame) {
-		super(frame, 500, 200);
+	public RadioDialog(final IFrame frame,
+			final IControlsBuilder controlsBuilder) {
+		super(frame, 500, 200, controlsBuilder);
 	}
 
 	@Override

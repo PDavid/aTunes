@@ -45,6 +45,7 @@ import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.FontSettings;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFontBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -52,137 +53,169 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * @author alex
- *
+ * 
  */
 public final class FontChooserDialog extends AbstractCustomDialog {
 
-    private static final long serialVersionUID = 2941323406891892062L;
+	private static final long serialVersionUID = 2941323406891892062L;
 
-    private static final Integer[] FONT_SIZES = new Integer[] { 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+	private static final Integer[] FONT_SIZES = new Integer[] { 6, 7, 8, 9, 10,
+			11, 12, 13, 14, 15, 16 };
 
-    private JList fontList;
-    private JList fontSizeList;
-    private JCheckBox useFontSmoothingCheckbox;
-    private JCheckBox useFontSmoothingSettingsFromOsCheckbox;
-    private JLabel fontPreviewLabel;
+	private JList fontList;
+	private JList fontSizeList;
+	private JCheckBox useFontSmoothingCheckbox;
+	private JCheckBox useFontSmoothingSettingsFromOsCheckbox;
+	private JLabel fontPreviewLabel;
 
-    private Locale locale;
+	private Locale locale;
 
-    private FontSettings fontSettings = new FontSettings();
-    
-    private IFontBeanFactory fontBeanFactory;
-    
-    /**
-     * @param fontBeanFactory
-     */
-    public void setFontBeanFactory(IFontBeanFactory fontBeanFactory) {
+	private FontSettings fontSettings = new FontSettings();
+
+	private IFontBeanFactory fontBeanFactory;
+
+	/**
+	 * @param fontBeanFactory
+	 */
+	public void setFontBeanFactory(final IFontBeanFactory fontBeanFactory) {
 		this.fontBeanFactory = fontBeanFactory;
 	}
 
-    /**
-     * @param owner
-     * @param font
-     * @param useFontSmoothing
-     * @param useFontSmoothingSettingsFromOs
-     * @param locale
-     * @param fontBeanFactory
-     */
-    public FontChooserDialog(IFrame owner) {
-        super(owner, 300, 300);
-    }
-    
-    /**
-     * Initializes fonts
-     * @param font
-     * @param useFontSmoothing
-     * @param useFontSmoothingSettingsFromOs
-     * @param locale
-     */
-    public void initializeFont(Font font, boolean useFontSmoothing, boolean useFontSmoothingSettingsFromOs, Locale locale) {
-        this.locale = locale;
-        this.fontSettings.setFont(fontBeanFactory.getFontBean(font));
-        this.fontSettings.setUseFontSmoothing(useFontSmoothing);
-        this.fontSettings.setUseFontSmoothingSettingsFromOs(useFontSmoothingSettingsFromOs);
-        setResizable(false);
-        setTitle(I18nUtils.getString("FONT_SETTINGS"));
-        add(getContent(getLookAndFeel()));
-    }
+	/**
+	 * @param owner
+	 * @param controlsBuilder
+	 */
+	public FontChooserDialog(final IFrame owner,
+			final IControlsBuilder controlsBuilder) {
+		super(owner, 300, 300, controlsBuilder);
+	}
 
-    private JPanel getContent(ILookAndFeel iLookAndFeel) {
-        String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames(locale);
+	/**
+	 * Initializes fonts
+	 * 
+	 * @param font
+	 * @param useFontSmoothing
+	 * @param useFontSmoothingSettingsFromOs
+	 * @param locale
+	 */
+	public void initializeFont(final Font font, final boolean useFontSmoothing,
+			final boolean useFontSmoothingSettingsFromOs, final Locale locale) {
+		this.locale = locale;
+		this.fontSettings.setFont(this.fontBeanFactory.getFontBean(font));
+		this.fontSettings.setUseFontSmoothing(useFontSmoothing);
+		this.fontSettings
+				.setUseFontSmoothingSettingsFromOs(useFontSmoothingSettingsFromOs);
+		setResizable(false);
+		setTitle(I18nUtils.getString("FONT_SETTINGS"));
+		add(getContent(getLookAndFeel()));
+	}
 
-        fontPreviewLabel = new JLabel();
-        fontPreviewLabel.setMinimumSize(new Dimension(50, 20));
-        fontPreviewLabel.setMaximumSize(new Dimension(50, 20));
-        fontPreviewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        fontPreviewLabel.setText("Test Test");
-        fontList = iLookAndFeel.getList();
-        fontList.setListData(fonts);
-        fontList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        fontList.addListSelectionListener(new ListSelectionListener() {
+	private JPanel getContent(final ILookAndFeel iLookAndFeel) {
+		String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment()
+				.getAvailableFontFamilyNames(this.locale);
 
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                fontSettings.setFont(fontBeanFactory.getFontBean(new Font(fontList.getSelectedValue().toString(), fontSettings.getFont().getStyle(), fontSettings.getFont().getSize())));
-                updatePreview();
-            }
-        });
-        fontList.setSelectedValue(fontSettings.getFont().getName(), true);
-        fontSizeList = iLookAndFeel.getList();
-        fontSizeList.setListData(FONT_SIZES);
-        fontSizeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        fontSizeList.addListSelectionListener(new ListSelectionListener() {
+		this.fontPreviewLabel = new JLabel();
+		this.fontPreviewLabel.setMinimumSize(new Dimension(50, 20));
+		this.fontPreviewLabel.setMaximumSize(new Dimension(50, 20));
+		this.fontPreviewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		this.fontPreviewLabel.setText("Test Test");
+		this.fontList = iLookAndFeel.getList();
+		this.fontList.setListData(fonts);
+		this.fontList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.fontList.addListSelectionListener(new ListSelectionListener() {
 
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                fontSettings.setFont(fontBeanFactory.getFontBean(fontSettings.getFont().toFont().deriveFont(Float.valueOf(fontSizeList.getSelectedValue().toString()))));
-                updatePreview();
-            }
-        });
-        fontSizeList.setSelectedValue(fontSettings.getFont().getSize(), true);
-        useFontSmoothingCheckbox = new JCheckBox(I18nUtils.getString("USE_FONT_SMOOTHING"));
-        useFontSmoothingCheckbox.setSelected(fontSettings.isUseFontSmoothing());
-        useFontSmoothingCheckbox.addItemListener(new ItemListener() {
+			@Override
+			public void valueChanged(final ListSelectionEvent e) {
+				FontChooserDialog.this.fontSettings
+						.setFont(FontChooserDialog.this.fontBeanFactory
+								.getFontBean(new Font(
+										FontChooserDialog.this.fontList
+												.getSelectedValue().toString(),
+										FontChooserDialog.this.fontSettings
+												.getFont().getStyle(),
+										FontChooserDialog.this.fontSettings
+												.getFont().getSize())));
+				updatePreview();
+			}
+		});
+		this.fontList.setSelectedValue(this.fontSettings.getFont().getName(),
+				true);
+		this.fontSizeList = iLookAndFeel.getList();
+		this.fontSizeList.setListData(FONT_SIZES);
+		this.fontSizeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.fontSizeList.addListSelectionListener(new ListSelectionListener() {
 
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                fontSettings.setUseFontSmoothing(useFontSmoothingCheckbox.isSelected());
-            }
-        });
-        useFontSmoothingCheckbox.setSelected(fontSettings.isUseFontSmoothing());
-        useFontSmoothingSettingsFromOsCheckbox = new JCheckBox(I18nUtils.getString("USE_OS_SETTINGS_FOR_FONT_SMOOTHING"));
-        useFontSmoothingSettingsFromOsCheckbox.setSelected(fontSettings.isUseFontSmoothingSettingsFromOs());
-        useFontSmoothingSettingsFromOsCheckbox.addItemListener(new ItemListener() {
+			@Override
+			public void valueChanged(final ListSelectionEvent e) {
+				FontChooserDialog.this.fontSettings.setFont(FontChooserDialog.this.fontBeanFactory.getFontBean(FontChooserDialog.this.fontSettings
+						.getFont()
+						.toFont()
+						.deriveFont(
+								Float.valueOf(FontChooserDialog.this.fontSizeList
+										.getSelectedValue().toString()))));
+				updatePreview();
+			}
+		});
+		this.fontSizeList.setSelectedValue(this.fontSettings.getFont()
+				.getSize(), true);
+		this.useFontSmoothingCheckbox = new JCheckBox(
+				I18nUtils.getString("USE_FONT_SMOOTHING"));
+		this.useFontSmoothingCheckbox.setSelected(this.fontSettings
+				.isUseFontSmoothing());
+		this.useFontSmoothingCheckbox.addItemListener(new ItemListener() {
 
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                fontSettings.setUseFontSmoothingSettingsFromOs(useFontSmoothingSettingsFromOsCheckbox.isSelected());
-                useFontSmoothingCheckbox.setEnabled(!useFontSmoothingSettingsFromOsCheckbox.isSelected());
-            }
-        });
-        useFontSmoothingSettingsFromOsCheckbox.setSelected(fontSettings.isUseFontSmoothingSettingsFromOs());
-        JButton okButton = new JButton();
-        okButton.addActionListener(new ActionListener() {
+			@Override
+			public void itemStateChanged(final ItemEvent e) {
+				FontChooserDialog.this.fontSettings
+						.setUseFontSmoothing(FontChooserDialog.this.useFontSmoothingCheckbox
+								.isSelected());
+			}
+		});
+		this.useFontSmoothingCheckbox.setSelected(this.fontSettings
+				.isUseFontSmoothing());
+		this.useFontSmoothingSettingsFromOsCheckbox = new JCheckBox(
+				I18nUtils.getString("USE_OS_SETTINGS_FOR_FONT_SMOOTHING"));
+		this.useFontSmoothingSettingsFromOsCheckbox
+				.setSelected(this.fontSettings
+						.isUseFontSmoothingSettingsFromOs());
+		this.useFontSmoothingSettingsFromOsCheckbox
+				.addItemListener(new ItemListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                FontChooserDialog.this.dispose();
-            }
-        });
-        okButton.setText(I18nUtils.getString("OK"));
-        JButton cancelButton = new JButton();
-        cancelButton.addActionListener(new ActionListener() {
+					@Override
+					public void itemStateChanged(final ItemEvent e) {
+						FontChooserDialog.this.fontSettings
+								.setUseFontSmoothingSettingsFromOs(FontChooserDialog.this.useFontSmoothingSettingsFromOsCheckbox
+										.isSelected());
+						FontChooserDialog.this.useFontSmoothingCheckbox
+								.setEnabled(!FontChooserDialog.this.useFontSmoothingSettingsFromOsCheckbox
+										.isSelected());
+					}
+				});
+		this.useFontSmoothingSettingsFromOsCheckbox
+				.setSelected(this.fontSettings
+						.isUseFontSmoothingSettingsFromOs());
+		JButton okButton = new JButton();
+		okButton.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fontSettings = null;
-                FontChooserDialog.this.dispose();
-            }
-        });
-        cancelButton.setText(I18nUtils.getString("CANCEL"));
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				FontChooserDialog.this.dispose();
+			}
+		});
+		okButton.setText(I18nUtils.getString("OK"));
+		JButton cancelButton = new JButton();
+		cancelButton.addActionListener(new ActionListener() {
 
-        return createPanel(iLookAndFeel, okButton, cancelButton);
-    }
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				FontChooserDialog.this.fontSettings = null;
+				FontChooserDialog.this.dispose();
+			}
+		});
+		cancelButton.setText(I18nUtils.getString("CANCEL"));
+
+		return createPanel(iLookAndFeel, okButton, cancelButton);
+	}
 
 	/**
 	 * @param iLookAndFeel
@@ -190,62 +223,62 @@ public final class FontChooserDialog extends AbstractCustomDialog {
 	 * @param cancelButton
 	 * @return
 	 */
-	private JPanel createPanel(ILookAndFeel iLookAndFeel, JButton okButton,
-			JButton cancelButton) {
+	private JPanel createPanel(final ILookAndFeel iLookAndFeel,
+			final JButton okButton, final JButton cancelButton) {
 		JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 1;
-        c.weightx = 1;
-        c.weighty = 0.7;
-        c.fill = GridBagConstraints.BOTH;
-        c.anchor = GridBagConstraints.CENTER;
-        c.insets = new Insets(5, 5, 5, 5);
-        panel.add(iLookAndFeel.getListScrollPane(fontList), c);
-        c.gridx = 1;
-        c.gridy = 0;
-        c.gridwidth = 1;
-        c.weightx = 0.3;
-        c.weighty = 0.7;
-        c.fill = GridBagConstraints.BOTH;
-        c.anchor = GridBagConstraints.CENTER;
-        panel.add(iLookAndFeel.getListScrollPane(fontSizeList), c);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.gridwidth = 2;
-        c.weightx = 1;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.CENTER;
-        panel.add(fontPreviewLabel, c);
-        c.gridy = 2;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.LINE_START;
-        panel.add(useFontSmoothingCheckbox, c);
-        c.gridy = 3;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.LINE_END;
-        panel.add(useFontSmoothingSettingsFromOsCheckbox, c);
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.add(okButton);
-        buttonPanel.add(cancelButton);
-        c.gridy = 4;
-        c.weightx = 0;
-        c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.CENTER;
-        panel.add(buttonPanel, c);
-        return panel;
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 1;
+		c.weightx = 1;
+		c.weighty = 0.7;
+		c.fill = GridBagConstraints.BOTH;
+		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(5, 5, 5, 5);
+		panel.add(iLookAndFeel.getListScrollPane(this.fontList), c);
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridwidth = 1;
+		c.weightx = 0.3;
+		c.weighty = 0.7;
+		c.fill = GridBagConstraints.BOTH;
+		c.anchor = GridBagConstraints.CENTER;
+		panel.add(iLookAndFeel.getListScrollPane(this.fontSizeList), c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 2;
+		c.weightx = 1;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.CENTER;
+		panel.add(this.fontPreviewLabel, c);
+		c.gridy = 2;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.LINE_START;
+		panel.add(this.useFontSmoothingCheckbox, c);
+		c.gridy = 3;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.LINE_END;
+		panel.add(this.useFontSmoothingSettingsFromOsCheckbox, c);
+		JPanel buttonPanel = new JPanel(new FlowLayout());
+		buttonPanel.add(okButton);
+		buttonPanel.add(cancelButton);
+		c.gridy = 4;
+		c.weightx = 0;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.CENTER;
+		panel.add(buttonPanel, c);
+		return panel;
 	}
 
-    private void updatePreview() {
-        fontPreviewLabel.setFont(fontSettings.getFont().toFont());
-    }
+	private void updatePreview() {
+		this.fontPreviewLabel.setFont(this.fontSettings.getFont().toFont());
+	}
 
-    /**
-     * @return font settings selected by user
-     */
-    public FontSettings getSelectedFontSettings() {
-        return fontSettings;
-    }
+	/**
+	 * @return font settings selected by user
+	 */
+	public FontSettings getSelectedFontSettings() {
+		return this.fontSettings;
+	}
 }
