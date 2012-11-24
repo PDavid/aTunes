@@ -59,15 +59,6 @@ public class PluginEditorDialog extends AbstractCustomDialog {
 
 	private PluginConfiguration configuration;
 
-	private IControlsBuilder controlsBuilder;
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
 	/**
 	 * @param frame
 	 * @param controlsBuilder
@@ -96,7 +87,7 @@ public class PluginEditorDialog extends AbstractCustomDialog {
 	private JPanel getContent(final ILookAndFeel iLookAndFeel) {
 		JPanel panel = new JPanel(new BorderLayout());
 		PluginConfigurationPanel configPanel = new PluginConfigurationPanel(
-				this.configuration, this.controlsBuilder);
+				this.configuration, getControlsBuilder());
 		panel.add(iLookAndFeel.getScrollPane(configPanel), BorderLayout.CENTER);
 		JButton okButton = new JButton(I18nUtils.getString("OK"));
 		okButton.addActionListener(new ActionListener() {

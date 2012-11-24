@@ -93,15 +93,6 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 
 	private Genres genresHelper;
 
-	private IControlsBuilder controlsBuilder;
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
 	/**
 	 * @param genresHelper
 	 */
@@ -195,7 +186,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 		this.treeTable.getTableHeader().setReorderingAllowed(false);
 		this.treeTable.setSurrendersFocusOnKeystroke(true);
 		JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-		JTextArea reviewInstructions = this.controlsBuilder.createTextArea();
+		JTextArea reviewInstructions = getControlsBuilder().createTextArea();
 		reviewInstructions.setText(I18nUtils
 				.getString("REVIEW_TAGS_INSTRUCTIONS"));
 		reviewInstructions.setEditable(false);

@@ -146,15 +146,6 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 
 	private PatternMatcher patternMatcher;
 
-	private IControlsBuilder controlsBuilder;
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
 	/**
 	 * @param patternMatcher
 	 */
@@ -200,7 +191,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 		setTitle(I18nUtils.getString("PATTERN_INPUT"));
 
 		// Label with instructions
-		JTextArea textArea = this.controlsBuilder.createTextArea();
+		JTextArea textArea = getControlsBuilder().createTextArea();
 		textArea.setText(I18nUtils.getString("PATTERN_INPUT_INSTRUCTIONS"));
 		textArea.setBorder(BorderFactory.createEmptyBorder());
 		textArea.setWrapStyleWord(true);

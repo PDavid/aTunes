@@ -57,8 +57,6 @@ public final class RadioDialog extends AbstractCustomDialog implements
 
 	private IRadioHandler radioHandler;
 
-	private IControlsBuilder controlsBuilder;
-
 	/** The radio. */
 	private IRadio result;
 
@@ -69,13 +67,6 @@ public final class RadioDialog extends AbstractCustomDialog implements
 	 */
 	public void setRadioMediumIcon(final IIconFactory radioMediumIcon) {
 		this.radioMediumIcon = radioMediumIcon;
-	}
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
 	}
 
 	/**
@@ -121,11 +112,11 @@ public final class RadioDialog extends AbstractCustomDialog implements
 		JPanel panel = new JPanel(new GridBagLayout());
 
 		JLabel nameLabel = new JLabel(I18nUtils.getString("NAME"));
-		this.nameTextField = this.controlsBuilder.createTextField();
+		this.nameTextField = getControlsBuilder().createTextField();
 		JLabel urlLabel = new JLabel(I18nUtils.getString("URL"));
-		this.urlTextField = this.controlsBuilder.createTextField();
+		this.urlTextField = getControlsBuilder().createTextField();
 		JLabel labelLabel = new JLabel(I18nUtils.getString("LABEL"));
-		this.labelTextField = this.controlsBuilder.createTextField();
+		this.labelTextField = getControlsBuilder().createTextField();
 
 		JButton okButton = new JButton(I18nUtils.getString("OK"));
 		okButton.addActionListener(new ActionListener() {

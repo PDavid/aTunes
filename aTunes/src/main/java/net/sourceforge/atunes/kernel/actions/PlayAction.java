@@ -34,38 +34,40 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class PlayAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -1122746023245126869L;
+	private static final long serialVersionUID = -1122746023245126869L;
 
-    private IPlayerHandler playerHandler;
+	private IPlayerHandler playerHandler;
 
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(final IPlayerHandler playerHandler) {
-	this.playerHandler = playerHandler;
-    }
-
-    /**
-     * Default constructor
-     */
-    public PlayAction() {
-	super(I18nUtils.getString("PLAY"));
-    }
-
-    @Override
-    protected void executeAction() {
-	if (playerHandler.isEnginePlaying() || playerHandler.isEnginePaused()) {
-	    playerHandler.resumeOrPauseCurrentAudioObject();
-	} else {
-	    playerHandler.startPlayingAudioObjectInActivePlayList();
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
 	}
-    }
 
-    @Override
-    public boolean isEnabledForPlayListSelection(
-	    final List<IAudioObject> selection) {
-	// Play action is always enabled even if play list or selection are
-	// empty, because this action is used in play button
-	return true;
-    }
+	/**
+	 * Default constructor
+	 */
+	public PlayAction() {
+		super(I18nUtils.getString("PLAY"));
+	}
+
+	@Override
+	protected void executeAction() {
+		if (this.playerHandler.isEnginePlaying()
+				|| this.playerHandler.isEnginePaused()) {
+			this.playerHandler.resumeOrPauseCurrentAudioObject();
+		} else {
+			this.playerHandler.startPlayingAudioObjectInActivePlayList();
+		}
+		throw new NullPointerException();
+	}
+
+	@Override
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
+		// Play action is always enabled even if play list or selection are
+		// empty, because this action is used in play button
+		return true;
+	}
 }

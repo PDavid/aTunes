@@ -49,15 +49,6 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 
 	private String donationUrl;
 
-	private IControlsBuilder controlsBuilder;
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
 	/**
 	 * Instantiates a new repository selection info dialog.
 	 * 
@@ -96,7 +87,7 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 	private void setContent() {
 		JPanel panel = new JPanel(new GridBagLayout());
 		JLabel icon = new JLabel(Images.getImage(Images.APP_LOGO_90));
-		JTextArea text = this.controlsBuilder.createTextArea();
+		JTextArea text = getControlsBuilder().createTextArea();
 		text.setText(I18nUtils.getString("MAKE_DONATION_INFO"));
 		text.setOpaque(false);
 		text.setEditable(false);

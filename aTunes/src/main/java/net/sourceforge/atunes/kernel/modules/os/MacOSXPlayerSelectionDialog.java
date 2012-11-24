@@ -81,15 +81,6 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 
 	private IBeanFactory beanFactory;
 
-	private IControlsBuilder controlsBuilder;
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
 	/**
 	 * @param beanFactory
 	 */
@@ -140,9 +131,8 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 * Set first options panel
 	 */
 	private JPanel getFirstOptionsPanel() {
-		JTextPane instructions = this.controlsBuilder
-				.createReadOnlyTextPane(I18nUtils
-						.getString("MAC_PLAYER_ENGINE_INSTRUCTIONS"));
+		JTextPane instructions = getControlsBuilder().createReadOnlyTextPane(
+				I18nUtils.getString("MAC_PLAYER_ENGINE_INSTRUCTIONS"));
 		UrlLabel appStoreURL = new UrlLabel(this.desktop,
 				I18nUtils.getString("MAC_PLAYER_ENGINE_URL"),
 				MPLAYER_APP_STORE_URL);
@@ -239,9 +229,8 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 * @return
 	 */
 	private JPanel getSearchResultsPanel() {
-		JTextPane instructions = this.controlsBuilder
-				.createReadOnlyTextPane(I18nUtils
-						.getString("MAC_PLAYER_ENGINE_SELECTION"));
+		JTextPane instructions = getControlsBuilder().createReadOnlyTextPane(
+				I18nUtils.getString("MAC_PLAYER_ENGINE_SELECTION"));
 
 		this.matchesList = getLookAndFeel().getList();
 		this.matchesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -301,13 +290,12 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 * @return
 	 */
 	private JPanel getEnterPlayerEnginePanel() {
-		JTextPane instructions = this.controlsBuilder
-				.createReadOnlyTextPane(I18nUtils
-						.getString("MAC_PLAYER_ENGINE_ENTER_PATH"));
+		JTextPane instructions = getControlsBuilder().createReadOnlyTextPane(
+				I18nUtils.getString("MAC_PLAYER_ENGINE_ENTER_PATH"));
 		final CustomFileChooser locationFileChooser = new CustomFileChooser(
 				I18nUtils.getString("ENTER_PLAYER_ENGINE_PATH"), this, 0,
 				JFileChooser.FILES_ONLY, this.osManager, this.beanFactory,
-				this.controlsBuilder);
+				getControlsBuilder());
 		JButton previousButton = new JButton(I18nUtils.getString("PREVIOUS"));
 		previousButton
 				.addActionListener(new MacOSXPlayerSelectionDialogGoToFirstPanelListener(
