@@ -49,4 +49,11 @@
 	<bean id="tagModifier" class="net.sourceforge.atunes.kernel.modules.tags.TagModifier"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.tags.RefreshTagAfterModifyRunnable" scope="prototype"/>
 	
+	
+	<bean id="ratingsToStars" class="net.sourceforge.atunes.kernel.modules.tags.RatingsToStars">
+		<property name="minRatingValue" value="0"/>
+		<property name="maxRatingValue" value="255"/>
+		<property name="numberOfStars" value="5"/>
+	</bean>
+	
 </beans>

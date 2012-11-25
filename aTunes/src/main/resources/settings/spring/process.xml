@@ -27,6 +27,8 @@
 	<bean id="transferToDeviceProcess" class="net.sourceforge.atunes.kernel.modules.process.TransferToDeviceProcess" parent="abstractLocalAudioObjectTransferProcess" scope="prototype"/>
 	<bean id="transferToRepositoryProcess" class="net.sourceforge.atunes.kernel.modules.process.TransferToRepositoryProcess" parent="abstractLocalAudioObjectTransferProcess" scope="prototype"/>
 
+	<bean id="setStarsProcess" class="net.sourceforge.atunes.kernel.modules.process.SetStarsProcess" parent="abstractChangeTagProcess" scope="prototype"/>
+
 	<bean id="removeCommonPrefixProcess" class="net.sourceforge.atunes.kernel.modules.process.RemoveCommonPrefixProcess" parent="abstractChangeTagProcess" scope="prototype"/>
 	<bean id="removeCommonSuffixProcess" class="net.sourceforge.atunes.kernel.modules.process.RemoveCommonSuffixProcess" parent="abstractChangeTagProcess" scope="prototype"/>
 

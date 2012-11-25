@@ -33,20 +33,25 @@ import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IIconFactory;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 
 /**
  * Column showing score
+ * 
  * @author alex
- *
+ * 
  */
 public class ScoreColumn extends AbstractColumn<Integer> {
 
-	private final class ScoreColumnCellEditorRenderer extends AbstractListCellRendererCode<JLabel, Integer> {
+	private final class ScoreColumnCellEditorRenderer extends
+			AbstractListCellRendererCode<JLabel, Integer> {
 
 		@Override
-		public JComponent getComponent(final JLabel superComponent, final JList list, final Integer value, final int index, final boolean isSelected, final boolean cellHasFocus) {
+		public JComponent getComponent(final JLabel superComponent,
+				final JList list, final Integer value, final int index,
+				final boolean isSelected, final boolean cellHasFocus) {
 			setLabel(superComponent, value);
 			return superComponent;
 		}
@@ -113,7 +118,8 @@ public class ScoreColumn extends AbstractColumn<Integer> {
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
@@ -130,30 +136,40 @@ public class ScoreColumn extends AbstractColumn<Integer> {
 	@Override
 	public TableCellEditor getCellEditor() {
 		JComboBox comboBox = new JComboBox(STARS);
-		comboBox.setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(editor));
+		comboBox.setRenderer(this.lookAndFeelManager.getCurrentLookAndFeel()
+				.getListCellRenderer(this.editor));
 		return new DefaultCellEditor(comboBox);
 	}
 
 	@Override
 	public TableCellRenderer getCellRenderer() {
-		return lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new AbstractTableCellRendererCode<JLabel, Integer>() {
+		return this.lookAndFeelManager.getCurrentLookAndFeel()
+				.getTableCellRenderer(
+						new AbstractTableCellRendererCode<JLabel, Integer>() {
 
-			@Override
-			public JLabel getComponent(final JLabel superComponent, final JTable t, final Integer value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
-				setLabel(superComponent, value);
-				return superComponent;
-			}
-		});
+							@Override
+							public JLabel getComponent(
+									final JLabel superComponent,
+									final JTable t, final Integer value,
+									final boolean isSelected,
+									final boolean hasFocus, final int row,
+									final int column) {
+								setLabel(superComponent, value);
+								return superComponent;
+							}
+						});
 	}
 
 	@Override
-	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+	protected int ascendingCompare(final IAudioObject ao1,
+			final IAudioObject ao2) {
 		return -((Integer) ao1.getStars()).compareTo(ao2.getStars());
 	}
 
 	@Override
-	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return - ascendingCompare(ao1, ao2);
+	protected int descendingCompare(final IAudioObject ao1,
+			final IAudioObject ao2) {
+		return -ascendingCompare(ao1, ao2);
 	}
 
 	@Override
@@ -163,7 +179,8 @@ public class ScoreColumn extends AbstractColumn<Integer> {
 
 	@Override
 	public void setValueFor(final IAudioObject audioObject, final Object value) {
-		repositoryHandler.setStars(audioObject, (Integer)value);
+		this.repositoryHandler.setStars((ILocalAudioObject) audioObject,
+				(Integer) value);
 	}
 
 	/**
@@ -173,24 +190,32 @@ public class ScoreColumn extends AbstractColumn<Integer> {
 	 * @param score
 	 */
 	private void setLabel(final JLabel label, final Integer score) {
-		label.setText(null);
+		label.setText(" "); // Set to white space to display label
 		IIconFactory icon = score != null ? getIcon(score) : null;
 		// TODO: ICONOS Sacar a un renderer
-		label.setIcon(icon != null ? icon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(label, false)) : null);
+		label.setIcon(icon != null ? icon.getIcon(this.lookAndFeelManager
+				.getCurrentLookAndFeel().getPaintForColorMutableIcon(label,
+						false)) : null);
 	}
 
 	/**
 	 * Returns icon for score
+	 * 
 	 * @param score
 	 * @return
 	 */
 	private IIconFactory getIcon(final int score) {
 		switch (score) {
-		case 1: return star1Icon;
-		case 2: return star2Icon;
-		case 3: return star3Icon;
-		case 4: return star4Icon;
-		case 5: return star5Icon;
+		case 1:
+			return this.star1Icon;
+		case 2:
+			return this.star2Icon;
+		case 3:
+			return this.star3Icon;
+		case 4:
+			return this.star4Icon;
+		case 5:
+			return this.star5Icon;
 		}
 		return null;
 	}

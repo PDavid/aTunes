@@ -63,6 +63,15 @@ public final class TagModifier {
 
 	private IBeanFactory beanFactory;
 
+	private RatingsToStars ratingsToStars;
+
+	/**
+	 * @param ratingsToStars
+	 */
+	public void setRatingsToStars(final RatingsToStars ratingsToStars) {
+		this.ratingsToStars = ratingsToStars;
+	}
+
 	/**
 	 * @param beanFactory
 	 */
@@ -484,5 +493,19 @@ public final class TagModifier {
 		Logger.error(StringUtils.getString("Could not edit tag field ",
 				fieldKey.name(), " with value \"", fieldValue, "\" for file: ",
 				file.getUrl(), " Error: ", e));
+	}
+
+	/**
+	 * Sets rating
+	 * 
+	 * @param audioObject
+	 * @param value
+	 */
+	public void setStars(final ILocalAudioObject audioObject,
+			final Integer value) {
+		modifyTag(
+				audioObject,
+				new RatingTagModification(this.ratingsToStars
+						.starsToRating(value)));
 	}
 }

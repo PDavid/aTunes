@@ -190,6 +190,12 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	}
 
 	@Override
+	public void setStars(final ILocalAudioObject audioObject,
+			final Integer value) {
+		this.tagModifier.setStars(audioObject, value);
+	}
+
+	@Override
 	public void setTrackNumber(final ILocalAudioObject audioObject,
 			final Integer integer) {
 		this.tagModifier.setTrackNumber(audioObject, integer);

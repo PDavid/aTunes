@@ -34,186 +34,209 @@ import org.joda.time.base.BaseDateTime;
  */
 public abstract class AbstractTag implements Serializable, ITag {
 
-    private static final long serialVersionUID = -4044670497563446883L;
+	private static final long serialVersionUID = -4044670497563446883L;
 
-    /** The title. */
-    String title;
+	/** The title. */
+	String title;
 
-    /** The artist. */
-    String artist;
+	/** The artist. */
+	String artist;
 
-    /** The album. */
-    String album;
+	/** The album. */
+	String album;
 
-    /** The year. */
-    int year;
+	/** The year. */
+	int year;
 
-    /** The date. */
-    BaseDateTime date;
+	/** The date. */
+	BaseDateTime date;
 
-    /** The comment. */
-    String comment;
+	/** The comment. */
+	String comment;
 
-    /** The genre. */
-    String genre;
+	/** The genre. */
+	String genre;
 
-    /** The lyrics. */
-    String lyrics;
+	/** The lyrics. */
+	String lyrics;
 
-    /** The composer. */
-    String composer;
+	/** The composer. */
+	String composer;
 
-    /** The album artist. */
-    String albumArtist;
+	/** The album artist. */
+	String albumArtist;
 
-    /** The track number. */
-    int trackNumber;
+	/** The track number. */
+	int trackNumber;
 
-    /** The disc number */
-    int discNumber;
+	/** The disc number */
+	int discNumber;
 
-    /** If this tag has an internal image */
-    boolean internalImage;
+	/**
+	 * Rating
+	 */
+	int stars;
 
-    @Override
+	/** If this tag has an internal image */
+	boolean internalImage;
+
+	@Override
 	public String getAlbum() {
-        return album;
-    }
+		return this.album;
+	}
 
-    @Override
+	@Override
 	public String getAlbumArtist() {
-        return albumArtist;
-    }
+		return this.albumArtist;
+	}
 
-    @Override
+	@Override
 	public String getArtist() {
-        return artist;
-    }
+		return this.artist;
+	}
 
-    @Override
+	@Override
 	public String getComment() {
-        return comment;
-    }
+		return this.comment;
+	}
 
-    @Override
+	@Override
 	public String getComposer() {
-        return composer;
-    }
+		return this.composer;
+	}
 
-    @Override
+	@Override
 	public String getGenre() {
-        return genre;
-    }
+		return this.genre;
+	}
 
-    @Override
+	@Override
 	public String getLyrics() {
-        return lyrics;
-    }
+		return this.lyrics;
+	}
 
-    @Override
-	public abstract ITag setTagFromProperties(ITag oldTag, Map<String, Object> properties);
+	@Override
+	public abstract ITag setTagFromProperties(ITag oldTag,
+			Map<String, Object> properties);
 
-    @Override
+	@Override
 	public String getTitle() {
-        return title;
-    }
+		return this.title;
+	}
 
-    @Override
+	@Override
 	public int getTrackNumber() {
-        return trackNumber >= 0 ? trackNumber : 0;
-    }
+		return this.trackNumber >= 0 ? this.trackNumber : 0;
+	}
 
-    @Override
+	@Override
 	public int getYear() {
-        if (date != null) {
-        	return date.getYear();
-        } else if (year >= 0) {
-            return year;
-        } else {
-            return 0;
-        }
-    }
+		if (this.date != null) {
+			return this.date.getYear();
+		} else if (this.year >= 0) {
+			return this.year;
+		} else {
+			return 0;
+		}
+	}
 
-    @Override
+	@Override
 	public BaseDateTime getDate() {
-        return date;
-    }
+		return this.date;
+	}
 
-    @Override
-	public void setAlbum(String album) {
-        this.album = album != null ? album.trim() : "";
-    }
+	@Override
+	public void setAlbum(final String album) {
+		this.album = album != null ? album.trim() : "";
+	}
 
-    @Override
-	public void setAlbumArtist(String albumArtist) {
-        this.albumArtist = albumArtist != null ? albumArtist.trim() : "";
-    }
+	@Override
+	public void setAlbumArtist(final String albumArtist) {
+		this.albumArtist = albumArtist != null ? albumArtist.trim() : "";
+	}
 
-    @Override
-	public void setArtist(String artist) {
-        this.artist = artist != null ? artist.trim() : "";
-    }
+	@Override
+	public void setArtist(final String artist) {
+		this.artist = artist != null ? artist.trim() : "";
+	}
 
-    @Override
-	public void setComment(String comment) {
-        this.comment = comment != null ? comment.trim() : "";
-    }
+	@Override
+	public void setComment(final String comment) {
+		this.comment = comment != null ? comment.trim() : "";
+	}
 
-    @Override
-	public void setComposer(String composer) {
-        this.composer = composer != null ? composer.trim() : "";
-    }
+	@Override
+	public void setComposer(final String composer) {
+		this.composer = composer != null ? composer.trim() : "";
+	}
 
-    @Override
-	public void setGenre(String genre) {
-        this.genre = genre != null ? genre.trim() : "";
-    }
+	@Override
+	public void setGenre(final String genre) {
+		this.genre = genre != null ? genre.trim() : "";
+	}
 
-    @Override
-	public void setLyrics(String lyrics) {
-        this.lyrics = lyrics != null ? lyrics : "";
-    }
+	@Override
+	public void setLyrics(final String lyrics) {
+		this.lyrics = lyrics != null ? lyrics : "";
+	}
 
-    @Override
-	public void setTitle(String title) {
-        this.title = title != null ? title.trim() : "";
-    }
+	@Override
+	public void setTitle(final String title) {
+		this.title = title != null ? title.trim() : "";
+	}
 
-    @Override
-	public void setTrackNumber(int tracknumber) {
-        this.trackNumber = tracknumber;
-    }
+	@Override
+	public void setTrackNumber(final int tracknumber) {
+		this.trackNumber = tracknumber;
+	}
 
-    @Override
-	public void setYear(int year) {
-        // only update year if it is not derived from the date
-        if (date == null) {
-            this.year = year;
-        }
-    }
+	@Override
+	public void setYear(final int year) {
+		// only update year if it is not derived from the date
+		if (this.date == null) {
+			this.year = year;
+		}
+	}
 
-    @Override
-	public void setDate(BaseDateTime date) {
-        this.date = date;
-    }
+	@Override
+	public void setDate(final BaseDateTime date) {
+		this.date = date;
+	}
 
-    @Override
+	@Override
 	public boolean hasInternalImage() {
-        return internalImage;
-    }
+		return this.internalImage;
+	}
 
-    @Override
-	public void setInternalImage(boolean internalImage) {
-        this.internalImage = internalImage;
-    }
+	@Override
+	public void setInternalImage(final boolean internalImage) {
+		this.internalImage = internalImage;
+	}
 
-    @Override
+	@Override
 	public int getDiscNumber() {
-        return discNumber >= 0 ? discNumber : 0;
-    }
+		return this.discNumber >= 0 ? this.discNumber : 0;
+	}
 
-    @Override
-	public void setDiscNumber(int discNumber) {
-        this.discNumber = discNumber;
-    }
+	@Override
+	public void setDiscNumber(final int discNumber) {
+		this.discNumber = discNumber;
+	}
+
+	/**
+	 * @return the stars
+	 */
+	@Override
+	public int getStars() {
+		return this.stars;
+	}
+
+	/**
+	 * @param stars
+	 *            the stars to set
+	 */
+	@Override
+	public void setStars(final int stars) {
+		this.stars = stars;
+	}
 }
