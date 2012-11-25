@@ -27,8 +27,9 @@ import org.joda.time.base.BaseDateTime;
 
 /**
  * Represents the metadata information of an audio file
+ * 
  * @author alex
- *
+ * 
  */
 public interface ITag extends Serializable {
 
@@ -83,6 +84,7 @@ public interface ITag extends Serializable {
 
 	/**
 	 * Sets the tag from properties.
+	 * 
 	 * @param tag
 	 * @param properties
 	 * @return
@@ -230,5 +232,15 @@ public interface ITag extends Serializable {
 	 *            the discNumber to set
 	 */
 	public void setDiscNumber(int discNumber);
+
+	/**
+	 * @return rating of object
+	 */
+	public int getStars();
+
+	/**
+	 * @param stars
+	 */
+	public void setStars(int stars);
 
 }

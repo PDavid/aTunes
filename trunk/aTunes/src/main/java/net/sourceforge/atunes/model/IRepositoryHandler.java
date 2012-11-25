@@ -27,10 +27,12 @@ import java.util.Map;
 
 /**
  * Responsible of managing repository
+ * 
  * @author alex
- *
+ * 
  */
-public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener, IRepositoryListener {
+public interface IRepositoryHandler extends IHandler,
+		IAudioFilesRemovedListener, IRepositoryListener {
 
 	/**
 	 * Adds the given files to repository and refresh.
@@ -42,6 +44,7 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 
 	/**
 	 * Returns folders of repository
+	 * 
 	 * @return
 	 */
 	public List<File> getFolders();
@@ -62,6 +65,7 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 
 	/**
 	 * Returns artist with given name
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -69,12 +73,14 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 
 	/**
 	 * Removes artist
+	 * 
 	 * @param artist
 	 */
 	public void removeArtist(IArtist artist);
 
 	/**
 	 * Returns genre with given name
+	 * 
 	 * @param genre
 	 * @return
 	 */
@@ -82,6 +88,7 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 
 	/**
 	 * Removes genre
+	 * 
 	 * @param genre
 	 */
 	public void removeGenre(IGenre genre);
@@ -149,7 +156,8 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * 
 	 * @return the audio files for albums
 	 */
-	public List<ILocalAudioObject> getAudioFilesForAlbums(Map<String, IAlbum> albums);
+	public List<ILocalAudioObject> getAudioFilesForAlbums(
+			Map<String, IAlbum> albums);
 
 	/**
 	 * Gets the audio files for artists.
@@ -159,7 +167,8 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * 
 	 * @return the audio files for artists
 	 */
-	public List<ILocalAudioObject> getAudioFilesForArtists(Map<String, IArtist> artists);
+	public List<ILocalAudioObject> getAudioFilesForArtists(
+			Map<String, IArtist> artists);
 
 	/**
 	 * Returns true if folder is in repository.
@@ -178,12 +187,14 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 
 	/**
 	 * Refreshes files after being modified
+	 * 
 	 * @param file
 	 */
 	public void refreshFiles(List<ILocalAudioObject> file);
 
 	/**
 	 * Refreshes a list of folder
+	 * 
 	 * @param folders
 	 */
 	public void refreshFolders(List<IFolder> folders);
@@ -233,12 +244,14 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	public void addAudioFilesRemovedListener(IAudioFilesRemovedListener listener);
 
 	/**
-	 * When a repository load in progress, executes task in background, hidding progress to user
+	 * When a repository load in progress, executes task in background, hidding
+	 * progress to user
 	 */
 	public void doInBackground();
 
 	/**
 	 * Returns data to show in tree
+	 * 
 	 * @param viewMode
 	 * @return
 	 */
@@ -246,6 +259,7 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 
 	/**
 	 * Returns file of repository given its name
+	 * 
 	 * @param fileName
 	 * @return
 	 */
@@ -276,14 +290,17 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 
 	/**
 	 * Returns audio objects given its artist and titles
+	 * 
 	 * @param artist
 	 * @param titles
 	 * @return
 	 */
-	public List<ILocalAudioObject> getAudioObjectsByTitle(String artist, List<String> titles);
+	public List<ILocalAudioObject> getAudioObjectsByTitle(String artist,
+			List<String> titles);
 
 	/**
 	 * Checks availability of each track of an artist
+	 * 
 	 * @param artist
 	 * @param tracks
 	 * @return
@@ -292,6 +309,7 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 
 	/**
 	 * Imports folders to repository
+	 * 
 	 * @param folders
 	 * @param path
 	 */
@@ -299,12 +317,14 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 
 	/**
 	 * Tell handler to use these folders as repository
+	 * 
 	 * @param folders
 	 */
 	void setRepositoryFolders(List<File> folders);
 
 	/**
 	 * Updates repository state when a folder is moved to another location
+	 * 
 	 * @param sourceFolder
 	 * @param destination
 	 */
@@ -312,9 +332,10 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 
 	/**
 	 * Sets stars of an audio object
+	 * 
 	 * @param audioObject
 	 * @param value
 	 */
-	public void setStars(IAudioObject audioObject, Integer value);
+	public void setStars(ILocalAudioObject audioObject, Integer value);
 
 }

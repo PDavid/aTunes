@@ -44,374 +44,365 @@ import org.joda.time.base.BaseDateTime;
 @PluginApi
 public final class AudioFile implements ILocalAudioObject, Serializable {
 
-    private static final long serialVersionUID = -1139001443603556703L;
+	private static final long serialVersionUID = -1139001443603556703L;
 
-    ITag tag;
-    int duration;
-    long bitrate;
-    int frequency;
-    long readTime;
-    int stars;
+	ITag tag;
+	int duration;
+	long bitrate;
+	int frequency;
+	long readTime;
 
-    private transient long fileSize;
+	private transient long fileSize;
 
-    /** The file on disk. */
-    String filePath;
+	/** The file on disk. */
+	String filePath;
 
-    /**
-     * Default constructor for serialization
-     */
-    AudioFile() {
-    }
-
-    /**
-     * Instantiates a new audio file
-     * 
-     * @param file
-     *            the file
-     */
-    public AudioFile(final File file) {
-	setFile(file);
-    }
-
-    /**
-     * Instantiates a new audio file
-     * 
-     * @param fileName
-     *            the file name
-     */
-    public AudioFile(final String fileName) {
-	this.filePath = fileName;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-	if (!(o instanceof AudioFile)) {
-	    return false;
+	/**
+	 * Default constructor for serialization
+	 */
+	AudioFile() {
 	}
-	return ((AudioFile) o).getUrl().equals(getUrl());
-    }
 
-    @Override
-    public String getAlbum(final IUnknownObjectChecker checker) {
-	if (tag != null && tag.getAlbum() != null && !tag.getAlbum().isEmpty()) {
-	    return tag.getAlbum();
+	/**
+	 * Instantiates a new audio file
+	 * 
+	 * @param file
+	 *            the file
+	 */
+	public AudioFile(final File file) {
+		setFile(file);
 	}
-	return checker != null ? checker.getUnknownAlbum() : null;
-    }
 
-    @Override
-    public String getAlbumArtist(final IUnknownObjectChecker checker) {
-	if (tag != null && tag.getAlbumArtist() != null
-		&& !tag.getAlbumArtist().isEmpty()) {
-	    return tag.getAlbumArtist();
+	/**
+	 * Instantiates a new audio file
+	 * 
+	 * @param fileName
+	 *            the file name
+	 */
+	public AudioFile(final String fileName) {
+		this.filePath = fileName;
 	}
-	return checker != null ? checker.getUnknownArtist() : null;
-    }
 
-    @Override
-    public String getAlbumArtistOrArtist(final IUnknownObjectChecker checker) {
-	return getAlbumArtist(checker).isEmpty()
-		|| getAlbumArtist(checker).equals(checker.getUnknownArtist()) ? getArtist(checker)
-		: getAlbumArtist(checker);
-    }
-
-    @Override
-    public String getArtist(final IUnknownObjectChecker checker) {
-	if (tag != null && tag.getArtist() != null
-		&& !tag.getArtist().isEmpty()) {
-	    return tag.getArtist();
+	@Override
+	public boolean equals(final Object o) {
+		if (!(o instanceof AudioFile)) {
+			return false;
+		}
+		return ((AudioFile) o).getUrl().equals(getUrl());
 	}
-	return checker != null ? checker.getUnknownArtist() : null;
-    }
 
-    @Override
-    public long getBitrate() {
-	return bitrate;
-    }
-
-    @Override
-    public String getComposer() {
-	if (tag != null && tag.getComposer() != null) {
-	    return tag.getComposer();
+	@Override
+	public String getAlbum(final IUnknownObjectChecker checker) {
+		if (this.tag != null && this.tag.getAlbum() != null
+				&& !this.tag.getAlbum().isEmpty()) {
+			return this.tag.getAlbum();
+		}
+		return checker != null ? checker.getUnknownAlbum() : null;
 	}
-	return "";
-    }
 
-    @Override
-    public int getDuration() {
-	return duration;
-    }
-
-    /**
-     * Return the file on disk
-     * 
-     * @return the file on disk
-     */
-    @Override
-    public File getFile() {
-	return filePath != null ? new File(filePath) : null;
-    }
-
-    @Override
-    public int getFrequency() {
-	return frequency;
-    }
-
-    @Override
-    public String getGenre(final IUnknownObjectChecker checker) {
-	if (tag != null && tag.getGenre() != null && !tag.getGenre().isEmpty()) {
-	    return tag.getGenre();
+	@Override
+	public String getAlbumArtist(final IUnknownObjectChecker checker) {
+		if (this.tag != null && this.tag.getAlbumArtist() != null
+				&& !this.tag.getAlbumArtist().isEmpty()) {
+			return this.tag.getAlbumArtist();
+		}
+		return checker != null ? checker.getUnknownArtist() : null;
 	}
-	return checker != null ? checker.getUnknownGenre() : null;
-    }
 
-    @Override
-    public String getLyrics() {
-	if (tag != null && tag.getLyrics() != null) {
-	    return tag.getLyrics();
+	@Override
+	public String getAlbumArtistOrArtist(final IUnknownObjectChecker checker) {
+		return getAlbumArtist(checker).isEmpty()
+				|| getAlbumArtist(checker).equals(checker.getUnknownArtist()) ? getArtist(checker)
+				: getAlbumArtist(checker);
 	}
-	return "";
-    }
 
-    /**
-     * Return tag comment
-     * 
-     * @return
-     */
-    @Override
-    public String getComment() {
-	if (tag != null && tag.getComment() != null) {
-	    return tag.getComment();
+	@Override
+	public String getArtist(final IUnknownObjectChecker checker) {
+		if (this.tag != null && this.tag.getArtist() != null
+				&& !this.tag.getArtist().isEmpty()) {
+			return this.tag.getArtist();
+		}
+		return checker != null ? checker.getUnknownArtist() : null;
 	}
-	return "";
-    }
 
-    /**
-     * Gets the name without extension.
-     * 
-     * @return the name without extension
-     */
-    @Override
-    public String getNameWithoutExtension() {
-	if (filePath == null) {
-	    return null;
+	@Override
+	public long getBitrate() {
+		return this.bitrate;
 	}
-	return getFile().getName();
-    }
 
-    /**
-     * Gets the stars.
-     * 
-     * @return the stars
-     */
-    @Override
-    public int getStars() {
-	return stars;
-    }
-
-    /**
-     * Gets the tag.
-     * 
-     * @return the tag
-     */
-    @Override
-    public ITag getTag() {
-	return tag;
-    }
-
-    @Override
-    public String getTitle() {
-	if (tag != null && tag.getTitle() != null) {
-	    return tag.getTitle();
+	@Override
+	public String getComposer() {
+		if (this.tag != null && this.tag.getComposer() != null) {
+			return this.tag.getComposer();
+		}
+		return "";
 	}
-	return "";
-    }
 
-    @Override
-    public String getTitleOrFileName() {
-	if (tag != null && tag.getTitle() != null && !tag.getTitle().isEmpty()) {
-	    return tag.getTitle();
+	@Override
+	public int getDuration() {
+		return this.duration;
 	}
-	return getNameWithoutExtension();
-    }
 
-    @Override
-    public int getTrackNumber() {
-	if (tag != null) {
-	    return tag.getTrackNumber();
+	/**
+	 * Return the file on disk
+	 * 
+	 * @return the file on disk
+	 */
+	@Override
+	public File getFile() {
+		return this.filePath != null ? new File(this.filePath) : null;
 	}
-	return 0;
-    }
 
-    @Override
-    public String getUrl() {
-	return filePath;
-    }
-
-    @Override
-    public String getYear() {
-	if (tag != null && tag.getYear() > 0) {
-	    return Integer.toString(tag.getYear());
+	@Override
+	public int getFrequency() {
+		return this.frequency;
 	}
-	return "";
-    }
 
-    @Override
-    public BaseDateTime getDate() {
-	if (tag != null) {
-	    return tag.getDate();
+	@Override
+	public String getGenre(final IUnknownObjectChecker checker) {
+		if (this.tag != null && this.tag.getGenre() != null
+				&& !this.tag.getGenre().isEmpty()) {
+			return this.tag.getGenre();
+		}
+		return checker != null ? checker.getUnknownGenre() : null;
 	}
-	return null;
-    }
 
-    @Override
-    public int hashCode() {
-	return getUrl().hashCode();
-    }
-
-    /**
-     * Checks for internal picture.
-     * 
-     * @return true, if successful
-     */
-    @Override
-    public final boolean hasInternalPicture() {
-	return tag != null && tag.hasInternalImage();
-    }
-
-    /**
-     * Checks if is up to date.
-     * 
-     * @return true, if is up to date
-     */
-    @Override
-    public boolean isUpToDate() {
-	if (filePath == null) {
-	    return false;
+	@Override
+	public String getLyrics() {
+		if (this.tag != null && this.tag.getLyrics() != null) {
+			return this.tag.getLyrics();
+		}
+		return "";
 	}
-	return readTime > getFile().lastModified();
-    }
 
-    /**
-     * Sets the file of this audio file
-     * 
-     * @param file
-     *            the file of this audio file
-     * @throws IOException
-     */
-    @Override
-    public void setFile(final File file) {
-	if (file == null) {
-	    throw new IllegalArgumentException();
+	/**
+	 * Return tag comment
+	 * 
+	 * @return
+	 */
+	@Override
+	public String getComment() {
+		if (this.tag != null && this.tag.getComment() != null) {
+			return this.tag.getComment();
+		}
+		return "";
 	}
-	this.filePath = FileUtils.getNormalizedPath(file);
-    }
 
-    /**
-     * Sets the stars.
-     * 
-     * @param stars
-     *            the stars to set
-     */
-    @Override
-    public void setStars(final int stars) {
-	this.stars = stars;
-    }
-
-    /**
-     * Sets the tag.
-     * 
-     * @param tag
-     *            the new tag
-     */
-    @Override
-    public void setTag(final ITag tag) {
-	this.tag = tag;
-    }
-
-    @Override
-    public String toString() {
-	return filePath;
-    }
-
-    @Override
-    public boolean isSeekable() {
-	return true;
-    }
-
-    @Override
-    public int compareTo(final ILocalAudioObject o) {
-	if (getFile() == null || o.getFile() == null) {
-	    return 0;
+	/**
+	 * Gets the name without extension.
+	 * 
+	 * @return the name without extension
+	 */
+	@Override
+	public String getNameWithoutExtension() {
+		if (this.filePath == null) {
+			return null;
+		}
+		return getFile().getName();
 	}
-	return getFile().compareTo(o.getFile());
-    }
 
-    @Override
-    public int getDiscNumber() {
-	if (tag != null && tag.getDiscNumber() >= 1) {
-	    return tag.getDiscNumber();
+	/**
+	 * Gets the stars.
+	 * 
+	 * @return the stars
+	 */
+	@Override
+	public int getStars() {
+		return this.tag != null ? this.tag.getStars() : 0;
 	}
-	return 0;
-    }
 
-    /**
-     * Sets duration
-     * 
-     * @param duration
-     */
-    @Override
-    public void setDuration(final int duration) {
-	this.duration = duration;
-    }
-
-    /**
-     * @param bitrate
-     *            the bitrate to set
-     */
-    @Override
-    public void setBitrate(final long bitrate) {
-	this.bitrate = bitrate;
-    }
-
-    /**
-     * @param frequency
-     *            the frequency to set
-     */
-    @Override
-    public void setFrequency(final int frequency) {
-	this.frequency = frequency;
-    }
-
-    @Override
-    public String getAudioObjectDescription(
-	    final IUnknownObjectChecker unknownObjectChecker) {
-	return StringUtils.getString(getTitleOrFileName(), " - ",
-		getArtist(unknownObjectChecker), " (",
-		TimeUtils.secondsToHoursMinutesSeconds(getDuration()), ")");
-    }
-
-    /**
-     * Updates time when object if read
-     * 
-     * @param readTime
-     */
-    @Override
-    public void setReadTime(final long readTime) {
-	this.readTime = readTime;
-    }
-
-    @Override
-    public long getSize() {
-	if (fileSize == 0) {
-	    fileSize = getFile() != null ? getFile().length() : 0;
+	/**
+	 * Gets the tag.
+	 * 
+	 * @return the tag
+	 */
+	@Override
+	public ITag getTag() {
+		return this.tag;
 	}
-	return fileSize;
-    }
 
-    @Override
-    public boolean exists() {
-	return getFile().exists();
-    }
+	@Override
+	public String getTitle() {
+		if (this.tag != null && this.tag.getTitle() != null) {
+			return this.tag.getTitle();
+		}
+		return "";
+	}
+
+	@Override
+	public String getTitleOrFileName() {
+		if (this.tag != null && this.tag.getTitle() != null
+				&& !this.tag.getTitle().isEmpty()) {
+			return this.tag.getTitle();
+		}
+		return getNameWithoutExtension();
+	}
+
+	@Override
+	public int getTrackNumber() {
+		if (this.tag != null) {
+			return this.tag.getTrackNumber();
+		}
+		return 0;
+	}
+
+	@Override
+	public String getUrl() {
+		return this.filePath;
+	}
+
+	@Override
+	public String getYear() {
+		if (this.tag != null && this.tag.getYear() > 0) {
+			return Integer.toString(this.tag.getYear());
+		}
+		return "";
+	}
+
+	@Override
+	public BaseDateTime getDate() {
+		if (this.tag != null) {
+			return this.tag.getDate();
+		}
+		return null;
+	}
+
+	@Override
+	public int hashCode() {
+		return getUrl().hashCode();
+	}
+
+	/**
+	 * Checks for internal picture.
+	 * 
+	 * @return true, if successful
+	 */
+	@Override
+	public final boolean hasInternalPicture() {
+		return this.tag != null && this.tag.hasInternalImage();
+	}
+
+	/**
+	 * Checks if is up to date.
+	 * 
+	 * @return true, if is up to date
+	 */
+	@Override
+	public boolean isUpToDate() {
+		if (this.filePath == null) {
+			return false;
+		}
+		return this.readTime > getFile().lastModified();
+	}
+
+	/**
+	 * Sets the file of this audio file
+	 * 
+	 * @param file
+	 *            the file of this audio file
+	 * @throws IOException
+	 */
+	@Override
+	public void setFile(final File file) {
+		if (file == null) {
+			throw new IllegalArgumentException();
+		}
+		this.filePath = FileUtils.getNormalizedPath(file);
+	}
+
+	/**
+	 * Sets the tag.
+	 * 
+	 * @param tag
+	 *            the new tag
+	 */
+	@Override
+	public void setTag(final ITag tag) {
+		this.tag = tag;
+	}
+
+	@Override
+	public String toString() {
+		return this.filePath;
+	}
+
+	@Override
+	public boolean isSeekable() {
+		return true;
+	}
+
+	@Override
+	public int compareTo(final ILocalAudioObject o) {
+		if (getFile() == null || o.getFile() == null) {
+			return 0;
+		}
+		return getFile().compareTo(o.getFile());
+	}
+
+	@Override
+	public int getDiscNumber() {
+		if (this.tag != null && this.tag.getDiscNumber() >= 1) {
+			return this.tag.getDiscNumber();
+		}
+		return 0;
+	}
+
+	/**
+	 * Sets duration
+	 * 
+	 * @param duration
+	 */
+	@Override
+	public void setDuration(final int duration) {
+		this.duration = duration;
+	}
+
+	/**
+	 * @param bitrate
+	 *            the bitrate to set
+	 */
+	@Override
+	public void setBitrate(final long bitrate) {
+		this.bitrate = bitrate;
+	}
+
+	/**
+	 * @param frequency
+	 *            the frequency to set
+	 */
+	@Override
+	public void setFrequency(final int frequency) {
+		this.frequency = frequency;
+	}
+
+	@Override
+	public String getAudioObjectDescription(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		return StringUtils.getString(getTitleOrFileName(), " - ",
+				getArtist(unknownObjectChecker), " (",
+				TimeUtils.secondsToHoursMinutesSeconds(getDuration()), ")");
+	}
+
+	/**
+	 * Updates time when object if read
+	 * 
+	 * @param readTime
+	 */
+	@Override
+	public void setReadTime(final long readTime) {
+		this.readTime = readTime;
+	}
+
+	@Override
+	public long getSize() {
+		if (this.fileSize == 0) {
+			this.fileSize = getFile() != null ? getFile().length() : 0;
+		}
+		return this.fileSize;
+	}
+
+	@Override
+	public boolean exists() {
+		return getFile().exists();
+	}
 }

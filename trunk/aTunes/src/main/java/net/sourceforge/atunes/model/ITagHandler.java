@@ -26,13 +26,15 @@ import java.util.Map;
 
 /**
  * Responsible of tag edition
+ * 
  * @author alex
- *
+ * 
  */
 public interface ITagHandler extends IHandler {
 
 	/**
 	 * Edits a list of local audio objects retrieved from a given source
+	 * 
 	 * @param source
 	 * @param list
 	 */
@@ -40,40 +42,47 @@ public interface ITagHandler extends IHandler {
 
 	/**
 	 * Edits all elements of an album
+	 * 
 	 * @param a
 	 */
 	void editFiles(IAlbum a);
 
 	/**
 	 * Sets tag to audio object
+	 * 
 	 * @param audioObject
 	 * @param tag
 	 */
 	void setTag(ILocalAudioObject audioObject, ITag tag);
-	
+
 	/**
 	 * Sets tags to audio object and optionally cover
+	 * 
 	 * @param audioObject
 	 * @param tag
 	 * @param editCover
 	 * @param cover
 	 */
-	void setTag(ILocalAudioObject audioObject, ITag tag, boolean editCover, byte[] cover);
+	void setTag(ILocalAudioObject audioObject, ITag tag, boolean editCover,
+			byte[] cover);
 
 	/**
 	 * Refreshes after change tags of fiven audio objects
+	 * 
 	 * @param audioObjectsChanged
 	 */
 	void refreshAfterTagModify(Collection<ILocalAudioObject> audioObjectsChanged);
 
 	/**
 	 * Removes tag from given file
+	 * 
 	 * @param file
 	 */
 	void deleteTags(ILocalAudioObject file);
 
 	/**
 	 * Sets title to audio object
+	 * 
 	 * @param audioObject
 	 * @param newTitle
 	 */
@@ -81,6 +90,7 @@ public interface ITagHandler extends IHandler {
 
 	/**
 	 * Sets album to audio object
+	 * 
 	 * @param audioObject
 	 * @param albumName
 	 */
@@ -88,6 +98,7 @@ public interface ITagHandler extends IHandler {
 
 	/**
 	 * Sets genre to audio object
+	 * 
 	 * @param audioObject
 	 * @param genre
 	 */
@@ -95,6 +106,7 @@ public interface ITagHandler extends IHandler {
 
 	/**
 	 * Sets lyrics to audio object
+	 * 
 	 * @param audioObject
 	 * @param lyricsString
 	 */
@@ -102,6 +114,7 @@ public interface ITagHandler extends IHandler {
 
 	/**
 	 * Sets track number to audio object
+	 * 
 	 * @param audioObject
 	 * @param integer
 	 */
@@ -109,32 +122,43 @@ public interface ITagHandler extends IHandler {
 
 	/**
 	 * Creates a new empty tag
+	 * 
 	 * @return
 	 */
 	ITag getNewTag();
 
 	/**
 	 * Creates a new tag with given tag information
+	 * 
 	 * @param file
 	 * @param tagInformation
 	 * @return
 	 */
 	ITag getNewTag(ILocalAudioObject file, Map<String, Object> tagInformation);
-	
-    /**
-     * Returns <code>true</code> if tree object contains audio objects with
-     * incomplete tags
-     * 
-     * @param treeObject
-     * @param state
-     * @return
-     */
-    boolean hasIncompleteTags(ITreeObject<? extends IAudioObject> treeObject);
 
-    /**
-     * Returns <code>true</code> if object has incomplete tag tags
-     * @param audioObject
-     * @return
-     */
-    boolean hasIncompleteTags(IAudioObject audioObject);
+	/**
+	 * Returns <code>true</code> if tree object contains audio objects with
+	 * incomplete tags
+	 * 
+	 * @param treeObject
+	 * @param state
+	 * @return
+	 */
+	boolean hasIncompleteTags(ITreeObject<? extends IAudioObject> treeObject);
+
+	/**
+	 * Returns <code>true</code> if object has incomplete tag tags
+	 * 
+	 * @param audioObject
+	 * @return
+	 */
+	boolean hasIncompleteTags(IAudioObject audioObject);
+
+	/**
+	 * Sets ratings
+	 * 
+	 * @param audioObject
+	 * @param value
+	 */
+	void setStars(ILocalAudioObject audioObject, Integer value);
 }
