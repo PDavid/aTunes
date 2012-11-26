@@ -46,6 +46,10 @@ public final class Main {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
+		// Enable a basic uncaught exception handler to register problems with
+		// Spring
+		Thread.setDefaultUncaughtExceptionHandler(new BasicUncaughtExceptionHandler());
+
 		// Initialize Spring
 		ApplicationContext context = initialize();
 
