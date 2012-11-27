@@ -41,127 +41,128 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 
-    /**
-     * Name of the MacOsX command
-     */
-    private static final String COMMAND_MACOSX = "/usr/bin/open";
+	/**
+	 * Name of the MacOsX command
+	 */
+	private static final String COMMAND_MACOSX = "/usr/bin/open";
 
-    protected static final String MPLAYER_COMMAND = "mplayer.command";
+	protected static final String MPLAYER_COMMAND = "mplayer.command";
 
-    private IDialogFactory dialogFactory;
+	private IDialogFactory dialogFactory;
 
-    private IPlayerTrayIconsHandler macPlayerTrayIconsHandler;
+	private IPlayerTrayIconsHandler macPlayerTrayIconsHandler;
 
-    /**
-     * @param macPlayerTrayIconsHandler
-     */
-    public void setMacPlayerTrayIconsHandler(
-	    final IPlayerTrayIconsHandler macPlayerTrayIconsHandler) {
-	this.macPlayerTrayIconsHandler = macPlayerTrayIconsHandler;
-    }
+	/**
+	 * @param macPlayerTrayIconsHandler
+	 */
+	public void setMacPlayerTrayIconsHandler(
+			final IPlayerTrayIconsHandler macPlayerTrayIconsHandler) {
+		this.macPlayerTrayIconsHandler = macPlayerTrayIconsHandler;
+	}
 
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(final IDialogFactory dialogFactory) {
-	this.dialogFactory = dialogFactory;
-    }
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
-    @Override
-    public String getAppDataFolder() {
-	return StringUtils.getString(getUserHome(),
-		"/Library/Preferences/aTunes");
-    }
+	@Override
+	public String getAppDataFolder() {
+		return StringUtils.getString(getUserHome(),
+				"/Library/Preferences/aTunes");
+	}
 
-    @Override
-    public String getLaunchCommand() {
-	return COMMAND_MACOSX;
-    }
+	@Override
+	public String getLaunchCommand() {
+		return COMMAND_MACOSX;
+	}
 
-    @Override
-    public String getLaunchParameters() {
-	return System.getProperty("atunes.package"); // This property is set in
-						     // Info.plist
-    }
+	@Override
+	public String getLaunchParameters() {
+		return System.getProperty("atunes.package"); // This property is set in
+		// Info.plist
+	}
 
-    @Override
-    public void setupFrame(final IFrame frame) {
-	// Can't be created when creating this object
-	getBeanFactory().getBean(MacOSXInitializer.class).initialize();
-    }
+	@Override
+	public void setupFrame(final IFrame frame) {
+		// Can't be created when creating this object
+		getBeanFactory().getBean(MacOSXInitializer.class).initialize();
+	}
 
-    @Override
-    public boolean isPlayerEngineSupported(final IPlayerEngine engine) {
-	return engine instanceof MPlayerEngine ? true : false; // Only MPLAYER
-    }
+	@Override
+	public boolean isPlayerEngineSupported(final IPlayerEngine engine) {
+		return engine instanceof MPlayerEngine ? true : false; // Only MPLAYER
+	}
 
-    @Override
-    public String getPlayerEngineCommand(final IPlayerEngine engine) {
-	return engine instanceof MPlayerEngine ? getOsManager().getOSProperty(
-		MPLAYER_COMMAND) : null;
-    }
+	@Override
+	public String getPlayerEngineCommand(final IPlayerEngine engine) {
+		return engine instanceof MPlayerEngine ? getOsProperties().getProperty(
+				MPLAYER_COMMAND) : null;
+	}
 
-    /**
-     * Returns list of supported look and feels
-     * 
-     * @return
-     */
-    @Override
-    public Map<String, Class<? extends ILookAndFeel>> getSupportedLookAndFeels() {
-	Map<String, Class<? extends ILookAndFeel>> lookAndFeels = new HashMap<String, Class<? extends ILookAndFeel>>();
-	lookAndFeels.put(SubstanceLookAndFeel.SUBSTANCE,
-		SubstanceLookAndFeel.class);
-	lookAndFeels.put(MacOSXLookAndFeel.SYSTEM, MacOSXLookAndFeel.class);
-	return lookAndFeels;
-    }
+	/**
+	 * Returns list of supported look and feels
+	 * 
+	 * @return
+	 */
+	@Override
+	public Map<String, Class<? extends ILookAndFeel>> getSupportedLookAndFeels() {
+		Map<String, Class<? extends ILookAndFeel>> lookAndFeels = new HashMap<String, Class<? extends ILookAndFeel>>();
+		lookAndFeels.put(SubstanceLookAndFeel.SUBSTANCE,
+				SubstanceLookAndFeel.class);
+		lookAndFeels.put(MacOSXLookAndFeel.SYSTEM, MacOSXLookAndFeel.class);
+		return lookAndFeels;
+	}
 
-    /**
-     * Returns default look and feel class
-     * 
-     * @return
-     */
-    @Override
-    public Class<? extends ILookAndFeel> getDefaultLookAndFeel() {
-	return SubstanceLookAndFeel.class;
-    }
+	/**
+	 * Returns default look and feel class
+	 * 
+	 * @return
+	 */
+	@Override
+	public Class<? extends ILookAndFeel> getDefaultLookAndFeel() {
+		return SubstanceLookAndFeel.class;
+	}
 
-    @Override
-    public void manageNoPlayerEngine(final IFrame frame) {
-	dialogFactory.newDialog(MacOSXPlayerSelectionDialog.class).showDialog();
-    }
+	@Override
+	public void manageNoPlayerEngine(final IFrame frame) {
+		this.dialogFactory.newDialog(MacOSXPlayerSelectionDialog.class)
+				.showDialog();
+	}
 
-    @Override
-    public boolean areTrayIconsSupported() {
-	return true;
-    }
+	@Override
+	public boolean areTrayIconsSupported() {
+		return true;
+	}
 
-    @Override
-    public boolean areMenuEntriesDelegated() {
-	return true;
-    }
+	@Override
+	public boolean areMenuEntriesDelegated() {
+		return true;
+	}
 
-    @Override
-    public boolean isClosingMainWindowClosesApplication() {
-	return false;
-    }
+	@Override
+	public boolean isClosingMainWindowClosesApplication() {
+		return false;
+	}
 
-    @Override
-    public boolean isRipSupported() {
-	return false;
-    }
+	@Override
+	public boolean isRipSupported() {
+		return false;
+	}
 
-    @Override
-    public boolean isMultipleInstancesSupported() {
-	return true;
-    }
+	@Override
+	public boolean isMultipleInstancesSupported() {
+		return true;
+	}
 
-    @Override
-    public IPlayerTrayIconsHandler getPlayerTrayIcons() {
-	return macPlayerTrayIconsHandler;
-    }
+	@Override
+	public IPlayerTrayIconsHandler getPlayerTrayIcons() {
+		return this.macPlayerTrayIconsHandler;
+	}
 
-    @Override
-    public boolean areTrayIconsColorsSupported() {
-	return false;
-    }
+	@Override
+	public boolean areTrayIconsColorsSupported() {
+		return false;
+	}
 }

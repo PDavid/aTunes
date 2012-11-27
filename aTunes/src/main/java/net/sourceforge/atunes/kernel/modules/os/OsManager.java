@@ -28,7 +28,6 @@ import java.util.Properties;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.GuiUtils;
-import net.sourceforge.atunes.kernel.OperatingSystemDetector;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
@@ -49,11 +48,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class OsManager implements IOSManager {
 
-	/**
-	 * Current OS
-	 */
-	private OperatingSystem osType;
-
 	private OperatingSystemAdapter adapter;
 
 	private IApplicationArguments applicationArguments;
@@ -68,31 +62,18 @@ public class OsManager implements IOSManager {
 	}
 
 	/**
+	 * @param adapter
+	 */
+	public void setAdapter(final OperatingSystemAdapter adapter) {
+		this.adapter = adapter;
+	}
+
+	/**
 	 * @param applicationArguments
 	 */
 	public void setApplicationArguments(
 			final IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
-	}
-
-	/**
-	 * Initializes os manager
-	 */
-	public void initialize() {
-		this.osType = OperatingSystemDetector.getOperatingSystem();
-		if (this.osType.isLinux()) {
-			this.adapter = this.beanFactory.getBean(LinuxOperatingSystem.class);
-		} else if (this.osType.isMacOsX()) {
-			this.adapter = this.beanFactory
-					.getBean(MacOSXOperatingSystem.class);
-		} else if (this.osType.isSolaris()) {
-			this.adapter = this.beanFactory
-					.getBean(SolarisOperatingSystem.class);
-		} else {
-			this.adapter = this.beanFactory
-					.getBean(WindowsOperatingSystem.class);
-		}
-		this.adapter.setSystemType(this.osType);
 	}
 
 	@Override
@@ -288,11 +269,6 @@ public class OsManager implements IOSManager {
 	}
 
 	@Override
-	public String getOSProperty(final String key) {
-		return this.adapter.getOsProperties().getProperty(key);
-	}
-
-	@Override
 	public void setOSProperty(final String key, final String value) {
 		Properties p = this.adapter.getOsProperties();
 		p.setProperty(key, value);
@@ -321,37 +297,44 @@ public class OsManager implements IOSManager {
 
 	@Override
 	public boolean isWindowsVista() {
-		return this.osType.isWindowsVista();
+		return this.beanFactory.getBean("osType", OperatingSystem.class)
+				.isWindowsVista();
 	}
 
 	@Override
 	public boolean isWindows7() {
-		return this.osType.isWindows7();
+		return this.beanFactory.getBean("osType", OperatingSystem.class)
+				.isWindows7();
 	}
 
 	@Override
 	public boolean isOldWindows() {
-		return this.osType.isOldWindows();
+		return this.beanFactory.getBean("osType", OperatingSystem.class)
+				.isOldWindows();
 	}
 
 	@Override
 	public boolean isLinux() {
-		return this.osType.isLinux();
+		return this.beanFactory.getBean("osType", OperatingSystem.class)
+				.isLinux();
 	}
 
 	@Override
 	public boolean isMacOsX() {
-		return this.osType.isMacOsX();
+		return this.beanFactory.getBean("osType", OperatingSystem.class)
+				.isMacOsX();
 	}
 
 	@Override
 	public boolean isSolaris() {
-		return this.osType.isSolaris();
+		return this.beanFactory.getBean("osType", OperatingSystem.class)
+				.isSolaris();
 	}
 
 	@Override
 	public boolean isWindows() {
-		return this.osType.isWindows();
+		return this.beanFactory.getBean("osType", OperatingSystem.class)
+				.isWindows();
 	}
 
 	@Override
@@ -361,7 +344,7 @@ public class OsManager implements IOSManager {
 
 	@Override
 	public ITrayIcon getTrayIcon() {
-		return this.adapter.getTrayIcon();
+		return this.beanFactory.getBean("trayIcon", ITrayIcon.class);
 	}
 
 	@Override
