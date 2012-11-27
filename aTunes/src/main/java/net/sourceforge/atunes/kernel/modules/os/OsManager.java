@@ -43,8 +43,9 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Holds information about specific Operating System data
+ * 
  * @author alex
- *
+ * 
  */
 public class OsManager implements IOSManager {
 
@@ -69,25 +70,29 @@ public class OsManager implements IOSManager {
 	/**
 	 * @param applicationArguments
 	 */
-	public void setApplicationArguments(final IApplicationArguments applicationArguments) {
+	public void setApplicationArguments(
+			final IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
 
 	/**
-	 *  Initializes os manager
+	 * Initializes os manager
 	 */
 	public void initialize() {
-		osType = OperatingSystemDetector.getOperatingSystem();
-		if (osType.isLinux()) {
-			adapter = beanFactory.getBean(LinuxOperatingSystem.class);
-		} else if (osType.isMacOsX()) {
-			adapter = beanFactory.getBean(MacOSXOperatingSystem.class);
-		} else if (osType.isSolaris()) {
-			adapter = beanFactory.getBean(SolarisOperatingSystem.class);
+		this.osType = OperatingSystemDetector.getOperatingSystem();
+		if (this.osType.isLinux()) {
+			this.adapter = this.beanFactory.getBean(LinuxOperatingSystem.class);
+		} else if (this.osType.isMacOsX()) {
+			this.adapter = this.beanFactory
+					.getBean(MacOSXOperatingSystem.class);
+		} else if (this.osType.isSolaris()) {
+			this.adapter = this.beanFactory
+					.getBean(SolarisOperatingSystem.class);
 		} else {
-			adapter = beanFactory.getBean(WindowsOperatingSystem.class);
+			this.adapter = this.beanFactory
+					.getBean(WindowsOperatingSystem.class);
 		}
-		adapter.setSystemType(osType);
+		this.adapter.setSystemType(this.osType);
 	}
 
 	@Override
@@ -97,8 +102,11 @@ public class OsManager implements IOSManager {
 
 		// Test if it's valid
 		if (!isValidConfigFolder(userConfigFolder)) {
-			// As workaround if can't get a valid folder, use temporal folder, for example: /tmp/atunes
-			userConfigFolder = StringUtils.getString(System.getProperty("java.io.tmpdir"), getFileSeparator(), "atunes");
+			// As workaround if can't get a valid folder, use temporal folder,
+			// for example: /tmp/atunes
+			userConfigFolder = StringUtils.getString(
+					System.getProperty("java.io.tmpdir"), getFileSeparator(),
+					"atunes");
 			Logger.error("Using ", userConfigFolder, " as config folder");
 		}
 
@@ -107,6 +115,7 @@ public class OsManager implements IOSManager {
 
 	/**
 	 * Test if path is valid
+	 * 
 	 * @param path
 	 * @return
 	 */
@@ -136,16 +145,17 @@ public class OsManager implements IOSManager {
 
 	/**
 	 * Returns folder path where application stores its configuration
+	 * 
 	 * @param useWorkDir
 	 * @return
 	 */
 	private String getConfigFolder() {
-		if (applicationArguments.isDebug()) {
+		if (this.applicationArguments.isDebug()) {
 			return "./debug";
-		} else if (applicationArguments.getUserConfigFolder() != null) {
-			return applicationArguments.getUserConfigFolder();
+		} else if (this.applicationArguments.getUserConfigFolder() != null) {
+			return this.applicationArguments.getUserConfigFolder();
 		} else {
-			return adapter.getAppDataFolder();
+			return this.adapter.getAppDataFolder();
 		}
 	}
 
@@ -161,7 +171,8 @@ public class OsManager implements IOSManager {
 	@Override
 	public String getTempFolder() {
 		String userConfigFolder = getUserConfigFolder();
-		String tempFolder = StringUtils.getString(userConfigFolder, adapter.getFileSeparator(), Constants.TEMP_DIR);
+		String tempFolder = StringUtils.getString(userConfigFolder,
+				this.adapter.getFileSeparator(), Constants.TEMP_DIR);
 		File tempFile = new File(tempFolder);
 		if (!tempFile.exists() && !tempFile.mkdir()) {
 			return userConfigFolder;
@@ -176,87 +187,89 @@ public class OsManager implements IOSManager {
 
 	@Override
 	public String getCustomRepositoryConfigFolder() {
-		return applicationArguments.getRepositoryConfigFolder();
+		return this.applicationArguments.getRepositoryConfigFolder();
 	}
 
 	@Override
 	public String getLaunchCommand() {
-		return adapter.getLaunchCommand();
+		return this.adapter.getLaunchCommand();
 	}
 
 	@Override
 	public String getLaunchParameters() {
-		return adapter.getLaunchParameters();
+		return this.adapter.getLaunchParameters();
 	}
 
 	@Override
 	public void setupFrame(final IFrame frame) {
-		adapter.setupFrame(frame);
+		this.adapter.setupFrame(frame);
 	}
 
 	@Override
 	public boolean areShadowBordersForToolTipsSupported() {
-		return adapter.areShadowBordersForToolTipsSupported();
+		return this.adapter.areShadowBordersForToolTipsSupported();
 	}
 
 	@Override
 	public String getUserHome() {
-		return adapter.getUserHome();
+		return this.adapter.getUserHome();
 	}
 
 	@Override
 	public String getFileSeparator() {
-		return adapter.getFileSeparator();
+		return this.adapter.getFileSeparator();
 	}
 
 	@Override
 	public boolean usesShortPathNames() {
-		return adapter.usesShortPathNames();
+		return this.adapter.usesShortPathNames();
 	}
 
 	@Override
-	public void setFullScreen(final Window window, final boolean fullscreen, final IFrame frame) {
-		adapter.setFullScreen(window, fullscreen, frame);
+	public void setFullScreen(final Window window, final boolean fullscreen,
+			final IFrame frame) {
+		this.adapter.setFullScreen(window, fullscreen, frame);
 	}
 
 	@Override
 	public String getLineTerminator() {
-		return adapter.getSystemLineTerminator();
+		return this.adapter.getSystemLineTerminator();
 	}
 
 	@Override
 	public boolean is64Bit() {
-		return adapter.is64Bit();
+		return this.adapter.is64Bit();
 	}
 
 	@Override
 	public boolean isPlayerEngineSupported(final IPlayerEngine engine) {
-		return adapter.isPlayerEngineSupported(engine);
+		return this.adapter.isPlayerEngineSupported(engine);
 	}
 
 	@Override
 	public String getPlayerEngineCommand(final IPlayerEngine engine) {
-		return adapter.getPlayerEngineCommand(engine);
+		return this.adapter.getPlayerEngineCommand(engine);
 	}
 
 	@Override
-	public Collection<String> getPlayerEngineParameters(final IPlayerEngine engine) {
-		return adapter.getPlayerEngineParameters(engine);
+	public Collection<String> getPlayerEngineParameters(
+			final IPlayerEngine engine) {
+		return this.adapter.getPlayerEngineParameters(engine);
 	}
 
 	@Override
 	public Object getExternalToolsPath() {
-		return adapter.getExternalToolsPath();
+		return this.adapter.getExternalToolsPath();
 	}
 
 	@Override
 	public Map<String, Class<? extends ILookAndFeel>> getLookAndFeels() {
-		return adapter.getSupportedLookAndFeels();
+		return this.adapter.getSupportedLookAndFeels();
 	}
 
 	@Override
 	public Class<? extends ILookAndFeel> getDefaultLookAndFeel() {
-		return adapter.getDefaultLookAndFeel();
+		return this.adapter.getDefaultLookAndFeel();
 	}
 
 	@Override
@@ -264,101 +277,101 @@ public class OsManager implements IOSManager {
 		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
 			public void run() {
-				adapter.manageNoPlayerEngine(frame);
+				OsManager.this.adapter.manageNoPlayerEngine(frame);
 			}
 		});
 	}
 
 	@Override
 	public void playerEngineFound() {
-		adapter.playerEngineFound();
+		this.adapter.playerEngineFound();
 	}
 
 	@Override
 	public String getOSProperty(final String key) {
-		return adapter.getOsProperties().getProperty(key);
+		return this.adapter.getOsProperties().getProperty(key);
 	}
 
 	@Override
 	public void setOSProperty(final String key, final String value) {
-		Properties p = adapter.getOsProperties();
+		Properties p = this.adapter.getOsProperties();
 		p.setProperty(key, value);
-		adapter.setOsProperties(p);
+		this.adapter.setOsProperties(p);
 	}
 
 	@Override
 	public boolean areTrayIconsSupported() {
-		return adapter.areTrayIconsSupported();
+		return this.adapter.areTrayIconsSupported();
 	}
 
 	@Override
 	public boolean areMenuEntriesDelegated() {
-		return adapter.areMenuEntriesDelegated();
+		return this.adapter.areMenuEntriesDelegated();
 	}
 
 	@Override
 	public boolean isClosingMainWindowClosesApplication() {
-		return adapter.isClosingMainWindowClosesApplication();
+		return this.adapter.isClosingMainWindowClosesApplication();
 	}
 
 	@Override
 	public boolean isRipSupported() {
-		return adapter.isRipSupported();
+		return this.adapter.isRipSupported();
 	}
 
 	@Override
 	public boolean isWindowsVista() {
-		return osType.isWindowsVista();
+		return this.osType.isWindowsVista();
 	}
 
 	@Override
 	public boolean isWindows7() {
-		return osType.isWindows7();
+		return this.osType.isWindows7();
 	}
 
 	@Override
 	public boolean isOldWindows() {
-		return osType.isOldWindows();
+		return this.osType.isOldWindows();
 	}
 
 	@Override
 	public boolean isLinux() {
-		return osType.isLinux();
+		return this.osType.isLinux();
 	}
 
 	@Override
 	public boolean isMacOsX() {
-		return osType.isMacOsX();
+		return this.osType.isMacOsX();
 	}
 
 	@Override
 	public boolean isSolaris() {
-		return osType.isSolaris();
+		return this.osType.isSolaris();
 	}
 
 	@Override
 	public boolean isWindows() {
-		return osType.isWindows();
+		return this.osType.isWindows();
 	}
 
 	@Override
 	public boolean isMultipleInstancesSupported() {
-		return adapter.isMultipleInstancesSupported();
+		return this.adapter.isMultipleInstancesSupported();
 	}
 
 	@Override
 	public ITrayIcon getTrayIcon() {
-		return adapter.getTrayIcon();
+		return this.adapter.getTrayIcon();
 	}
 
 	@Override
 	public IPlayerTrayIconsHandler getPlayerTrayIcons() {
-		return adapter.getPlayerTrayIcons();
+		return this.adapter.getPlayerTrayIcons();
 	}
 
 	@Override
 	public boolean areTrayIconsColorsSupported() {
-		return adapter.areTrayIconsColorsSupported();
+		return this.adapter.areTrayIconsColorsSupported();
 	}
 
 	@Override

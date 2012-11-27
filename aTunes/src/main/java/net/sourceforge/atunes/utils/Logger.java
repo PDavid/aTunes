@@ -44,6 +44,7 @@ public final class Logger {
 
 	/**
 	 * sets debug level
+	 * 
 	 * @param debug
 	 */
 	public static void setDebug(final boolean debug) {
@@ -57,7 +58,8 @@ public final class Logger {
 		logger = org.apache.log4j.Logger.getLogger(Logger.class);
 	}
 
-	private Logger() {}
+	private Logger() {
+	}
 
 	/**
 	 * Logs a debug event.
@@ -79,9 +81,10 @@ public final class Logger {
 
 	/**
 	 * Logs an error event
+	 * 
 	 * @param strings
 	 */
-	public static void error(final String...strings) {
+	public static void error(final String... strings) {
 		StringBuilder sb = new StringBuilder();
 		for (String s : strings) {
 			sb.append(s);
@@ -102,7 +105,8 @@ public final class Logger {
 		className = className.substring(className.lastIndexOf('.') + 1);
 		String methodName = s.getMethodName();
 
-		logger.error(StringUtils.getString("--> ", className, ".", methodName, " [", "]\t ", o));
+		logger.error(StringUtils.getString("--> ", className, ".", methodName,
+				" [", "]\t ", o));
 
 		if (o instanceof Throwable) {
 			Throwable throwable = (Throwable) o;
@@ -115,18 +119,23 @@ public final class Logger {
 			}
 
 			if (throwable.getCause() != null) {
-				error(StringUtils.getString(throwable.getCause().getClass().getName(), ": ", throwable.getCause().getMessage()));
+				error(StringUtils.getString(throwable.getCause().getClass()
+						.getName(), ": ", throwable.getCause().getMessage()));
 
-				StackTraceElement[] causeTrace = throwable.getCause().getStackTrace();
+				StackTraceElement[] causeTrace = throwable.getCause()
+						.getStackTrace();
 
 				for (StackTraceElement element : causeTrace) {
-					error( className, methodName, element);
+					error(className, methodName, element);
 				}
 			}
 
-			if (o instanceof InvocationTargetException && ((InvocationTargetException)o).getTargetException() != null) {
-				Throwable target = ((InvocationTargetException) o).getTargetException();
-				error(StringUtils.getString(target.getClass().getName(), ": ", target.getMessage()));
+			if (o instanceof InvocationTargetException
+					&& ((InvocationTargetException) o).getTargetException() != null) {
+				Throwable target = ((InvocationTargetException) o)
+						.getTargetException();
+				error(StringUtils.getString(target.getClass().getName(), ": ",
+						target.getMessage()));
 
 				StackTraceElement[] causeTrace = target.getStackTrace();
 
@@ -139,6 +148,7 @@ public final class Logger {
 
 	/**
 	 * Logs a fatal exception
+	 * 
 	 * @param t
 	 */
 	public static void fatal(final Throwable t) {
@@ -152,8 +162,10 @@ public final class Logger {
 	 * @param methodName
 	 * @param o
 	 */
-	private static void error(final String className, final String methodName, final StackTraceElement o) {
-		logger.error(StringUtils.getString("--> ", className, ".", methodName, " [", "]\t ", o));
+	private static void error(final String className, final String methodName,
+			final StackTraceElement o) {
+		logger.error(StringUtils.getString("--> ", className, ".", methodName,
+				" [", "]\t ", o));
 	}
 
 	/**
@@ -171,20 +183,25 @@ public final class Logger {
 	}
 
 	/**
-	 * Set log4j properties from file, and changes properties if debug mode or debug level
+	 * Set log4j properties from file, and changes properties if debug mode or
+	 * debug level
+	 * 
 	 * @param debug
 	 * @param debugLevel
 	 * @param osManager
 	 */
-	public static void loadProperties(final boolean debug, final boolean debugLevel, final IOSManager osManager) {
+	public static void loadProperties(final boolean debug,
+			final boolean debugLevel, final IOSManager osManager) {
 		PropertyResourceBundle bundle = null;
-		InputStream log4jProperties = Logger.class.getResourceAsStream(Constants.LOG4J_FILE);
+		InputStream log4jProperties = Logger.class
+				.getResourceAsStream(Constants.LOG4J_FILE);
 		Properties props = new Properties();
 		if (log4jProperties != null) {
 			try {
 				bundle = new PropertyResourceBundle(log4jProperties);
 			} catch (IOException e) {
-				System.out.println("ERROR trying to read logger configuration: ");
+				System.out
+						.println("ERROR trying to read logger configuration: ");
 				e.printStackTrace();
 			}
 			if (bundle != null) {
@@ -194,16 +211,32 @@ public final class Logger {
 			// Load default debug log4j properties
 			props.put("log4j.rootLogger", "DEBUG, A");
 			props.put("log4j.appender.A", "org.apache.log4j.ConsoleAppender");
-			props.put("log4j.appender.A.layout", "org.apache.log4j.PatternLayout");
+			props.put("log4j.appender.A.layout",
+					"org.apache.log4j.PatternLayout");
 			props.put("log4j.appender.A.layout.ConversionPattern", "%-7p %m%n");
 		}
 		PropertyConfigurator.configure(props);
 		Logger.setDebug(debug || debugLevel);
 	}
 
-	private static void changeProperties(final boolean debug, final boolean debugLevel,
-			final IOSManager osManager, final PropertyResourceBundle bundle,
-			final Properties props) {
+	/**
+	 * Set log4j start properties
+	 * 
+	 * @param debug
+	 */
+	public static void loadInitProperties(final boolean debug) {
+		Properties props = new Properties();
+		// Load default debug log4j properties
+		props.put("log4j.rootLogger", debug ? "DEBUG, A" : "INFO, A");
+		props.put("log4j.appender.A", "org.apache.log4j.ConsoleAppender");
+		props.put("log4j.appender.A.layout", "org.apache.log4j.PatternLayout");
+		props.put("log4j.appender.A.layout.ConversionPattern", "%-7p %m%n");
+		PropertyConfigurator.configure(props);
+	}
+
+	private static void changeProperties(final boolean debug,
+			final boolean debugLevel, final IOSManager osManager,
+			final PropertyResourceBundle bundle, final Properties props) {
 		Enumeration<String> keys = bundle.getKeys();
 		while (keys.hasMoreElements()) {
 			String key = keys.nextElement();
@@ -215,7 +248,8 @@ public final class Logger {
 			}
 
 			if (key.equals("log4j.appender.A2.file") && !debug) {
-				value = StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), "aTunes.log");
+				value = StringUtils.getString(osManager.getUserConfigFolder(),
+						osManager.getFileSeparator(), "aTunes.log");
 			}
 
 			props.setProperty(key, value);
