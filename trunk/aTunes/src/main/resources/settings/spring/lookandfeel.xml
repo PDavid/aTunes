@@ -5,8 +5,6 @@
 	
 	default-autowire="byName" default-lazy-init="true">
 
-	<bean id="lookAndFeelManager" class="net.sourceforge.atunes.gui.lookandfeel.LookAndFeelManager">
-		<constructor-arg ref="osManager"/>
-	</bean>
+	<bean id="lookAndFeelManager" class="net.sourceforge.atunes.gui.lookandfeel.LookAndFeelManager" init-method="initialize"/>
 
 </beans>

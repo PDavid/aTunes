@@ -33,265 +33,276 @@ import org.commonjukebox.plugins.model.PluginApi;
  * This class defines accepted arguments by application.
  */
 @PluginApi
-public final class ApplicationArguments implements Serializable, IApplicationArguments {
+public final class ApplicationArguments implements Serializable,
+		IApplicationArguments {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8482627877309499076L;
 
-	/** 
-     * Debug constant This argument makes a big log file. 
-     */
-    private static final String DEBUG = "debug";
+	/**
+	 * Debug constant This argument makes a big log file.
+	 */
+	static final String DEBUG = "debug";
 
-	/** 
-     * Debug constant This argument makes a big log file. 
-     */
-    private static final String DEBUG_LOG = "debug-log";
+	/**
+	 * Debug constant This argument makes a big log file.
+	 */
+	private static final String DEBUG_LOG = "debug-log";
 
-    /**
-     * Ignore look and feel constant. This argument makes application use OS default Look And Feel.
-     */
-    private static final String IGNORE_LOOK_AND_FEEL = "ignore-look-and-feel";
+	/**
+	 * Ignore look and feel constant. This argument makes application use OS
+	 * default Look And Feel.
+	 */
+	private static final String IGNORE_LOOK_AND_FEEL = "ignore-look-and-feel";
 
-    /** 
-     * Disable multiple instances control. 
-     */
-    private static final String ALLOW_MULTIPLE_INSTANCE = "multiple-instance";
+	/**
+	 * Disable multiple instances control.
+	 */
+	private static final String ALLOW_MULTIPLE_INSTANCE = "multiple-instance";
 
-    /** 
-     * Argument to define a custom folder from which to read configuration. 
-     */
-    private static final String USE_CONFIG_FOLDER = "use-config-folder=";
+	/**
+	 * Argument to define a custom folder from which to read configuration.
+	 */
+	private static final String USE_CONFIG_FOLDER = "use-config-folder=";
 
-    /**
-     * Argument to define a custom folder from which to read repository
-     * configuration (useful to share a repository configuration) This parameter
-     * has priority over USE_CONFIG_FOLDER
-     */
-    private static final String USE_REPOSITORY_CONFIG_FOLDER = "use-repository-config-folder=";
+	/**
+	 * Argument to define a custom folder from which to read repository
+	 * configuration (useful to share a repository configuration) This parameter
+	 * has priority over USE_CONFIG_FOLDER
+	 */
+	private static final String USE_REPOSITORY_CONFIG_FOLDER = "use-repository-config-folder=";
 
-    /** 
-     * Do not try to update the application (useful for Linux packages). 
-     */
-    private static final String NO_UPDATE = "no-update";
-    
-    /**
-     * Simulates CD ripper process (useful to test application in Mac OS X where cd ripping is not supported at this moment)
-     */
-    private static final String SIMULATE_CD = "simulate-cd";
-    
-    /**
-     * Original arguments passed to application
-     */
-    private List<String> originalArguments;
-    
-    /**
-     * Saved arguments
-     */
-    private List<String> savedArguments;
+	/**
+	 * Do not try to update the application (useful for Linux packages).
+	 */
+	private static final String NO_UPDATE = "no-update";
 
-    /** 
-     * Defines if aTunes is running in debug mode. 
-     */
-    private boolean debug;
+	/**
+	 * Simulates CD ripper process (useful to test application in Mac OS X where
+	 * cd ripping is not supported at this moment)
+	 */
+	private static final String SIMULATE_CD = "simulate-cd";
 
-    /** 
-     * Defines if aTunes is running in debug log level 
-     */
-    private boolean debugLevel;
+	/**
+	 * Original arguments passed to application
+	 */
+	private List<String> originalArguments;
 
-    /** Defines if aTunes will ignore look and feel. */
-    private boolean ignoreLookAndFeel;
+	/**
+	 * Saved arguments
+	 */
+	private List<String> savedArguments;
 
-    /** Defines if aTunes should not try to update (for Linux packages). */
-    private boolean noUpdate;
-    
-    /**
-     * Defines if aTunes will simulate cd ripper
-     */
-    private boolean simulateCD;
-    
-    /**
-     * @return the debug
-     */
-    @Override
+	/**
+	 * Defines if aTunes is running in debug mode.
+	 */
+	private boolean debug;
+
+	/**
+	 * Defines if aTunes is running in debug log level
+	 */
+	private boolean debugLevel;
+
+	/** Defines if aTunes will ignore look and feel. */
+	private boolean ignoreLookAndFeel;
+
+	/** Defines if aTunes should not try to update (for Linux packages). */
+	private boolean noUpdate;
+
+	/**
+	 * Defines if aTunes will simulate cd ripper
+	 */
+	private boolean simulateCD;
+
+	/**
+	 * @return the debug
+	 */
+	@Override
 	public boolean isDebug() {
-        return debug;
-    }
-
-    /**
-     * @return the ignoreLookAndFeel
-     */
-    @Override
-	public boolean isIgnoreLookAndFeel() {
-        return ignoreLookAndFeel;
-    }
-
-    /**
-     * @return the noUpdate
-     */
-    @Override
-	public boolean isNoUpdate() {
-        return noUpdate;
-    }
-    
-    /**
-     * @return thr simulateCd argument
-     */
-    @Override
-    public boolean isSimulateCD() {
-		return simulateCD;
+		return this.debug;
 	}
 
-    /**
-     * Finds USE_CONFIG_FOLDER at argument list and gets value.
-     * 
-     * @param args
-     *            the args
-     * 
-     * @return the user config folder
-     */
-    @Override
-	public String getUserConfigFolder() {
-    	return getArgument(originalArguments, USE_CONFIG_FOLDER);
-    }
+	/**
+	 * @return the ignoreLookAndFeel
+	 */
+	@Override
+	public boolean isIgnoreLookAndFeel() {
+		return this.ignoreLookAndFeel;
+	}
 
-    /**
-     * Finds USE_REPOSITORY_CONFIG_FOLDER at argument list and gets value.
-     * 
-     * @param args
-     *            the args
-     * 
-     * @return the repository config folder
-     */
-    @Override
+	/**
+	 * @return the noUpdate
+	 */
+	@Override
+	public boolean isNoUpdate() {
+		return this.noUpdate;
+	}
+
+	/**
+	 * @return thr simulateCd argument
+	 */
+	@Override
+	public boolean isSimulateCD() {
+		return this.simulateCD;
+	}
+
+	/**
+	 * Finds USE_CONFIG_FOLDER at argument list and gets value.
+	 * 
+	 * @param args
+	 *            the args
+	 * 
+	 * @return the user config folder
+	 */
+	@Override
+	public String getUserConfigFolder() {
+		return getArgument(this.originalArguments, USE_CONFIG_FOLDER);
+	}
+
+	/**
+	 * Finds USE_REPOSITORY_CONFIG_FOLDER at argument list and gets value.
+	 * 
+	 * @param args
+	 *            the args
+	 * 
+	 * @return the repository config folder
+	 */
+	@Override
 	public String getRepositoryConfigFolder() {
-    	return getArgument(originalArguments, USE_REPOSITORY_CONFIG_FOLDER);
-    }
-    
+		return getArgument(this.originalArguments, USE_REPOSITORY_CONFIG_FOLDER);
+	}
+
 	/**
 	 * Returns if application received multiple instance argument
+	 * 
 	 * @return
 	 */
 	@Override
 	public boolean isMultipleInstance() {
-		return originalArguments.contains(ALLOW_MULTIPLE_INSTANCE);
+		return this.originalArguments.contains(ALLOW_MULTIPLE_INSTANCE);
 	}
 
-    
-    private String getArgument(List<String> arguments, String argument) {
-        String value = null;
-        if (arguments != null) {
-            for (String arg : arguments) {
-                if (arg.toLowerCase().startsWith(argument)) {
-                    value = arg.substring(argument.length());
-                }
-            }
-        }
-        return value;
-    }
+	private String getArgument(final List<String> arguments,
+			final String argument) {
+		String value = null;
+		if (arguments != null) {
+			for (String arg : arguments) {
+				if (arg.toLowerCase().startsWith(argument)) {
+					value = arg.substring(argument.length());
+				}
+			}
+		}
+		return value;
+	}
 
-    /**
-     * Save arguments. All arguments defined in this class must be saved.
-     * Commands are also saved but used separately
-     * 
-     * @param arguments
-     */
-    @Override
-	public void saveArguments(List<String> arguments) {
-    	if (arguments == null) {
-    		throw new IllegalArgumentException();
-    	}
-    	originalArguments = arguments;
-        savedArguments = new ArrayList<String>();
-        checkAndSave(arguments, DEBUG);
-        checkAndSave(arguments, DEBUG_LOG);
-        checkAndSave(arguments, IGNORE_LOOK_AND_FEEL);
-        checkAndSave(arguments, ALLOW_MULTIPLE_INSTANCE);
-        checkAndSave(arguments, USE_CONFIG_FOLDER);
-        checkAndSave(arguments, USE_REPOSITORY_CONFIG_FOLDER);
-        checkAndSave(arguments, NO_UPDATE);
-        checkAndSave(arguments, SIMULATE_CD);
-        checkAndSave(arguments, Constants.COMMAND_PREFIX);
-        
-        // Set debug
-        debug = arguments.contains(ApplicationArguments.DEBUG);
-        // Set debug level
-        debugLevel = arguments.contains(ApplicationArguments.DEBUG_LOG);
-        // Set ignore look and feel
-    	ignoreLookAndFeel = arguments.contains(ApplicationArguments.IGNORE_LOOK_AND_FEEL);
-        // Set no update
-    	noUpdate = arguments.contains(ApplicationArguments.NO_UPDATE);
-    	// Set simulate cd
-    	simulateCD = arguments.contains(ApplicationArguments.SIMULATE_CD);
-    }
+	/**
+	 * Save arguments. All arguments defined in this class must be saved.
+	 * Commands are also saved but used separately
+	 * 
+	 * @param arguments
+	 */
+	@Override
+	public void saveArguments(final List<String> arguments) {
+		if (arguments == null) {
+			throw new IllegalArgumentException();
+		}
+		this.originalArguments = arguments;
+		this.savedArguments = new ArrayList<String>();
+		checkAndSave(arguments, DEBUG);
+		checkAndSave(arguments, DEBUG_LOG);
+		checkAndSave(arguments, IGNORE_LOOK_AND_FEEL);
+		checkAndSave(arguments, ALLOW_MULTIPLE_INSTANCE);
+		checkAndSave(arguments, USE_CONFIG_FOLDER);
+		checkAndSave(arguments, USE_REPOSITORY_CONFIG_FOLDER);
+		checkAndSave(arguments, NO_UPDATE);
+		checkAndSave(arguments, SIMULATE_CD);
+		checkAndSave(arguments, Constants.COMMAND_PREFIX);
 
-    /**
-     * Checks if list of arguments contains given arg and saves it
-     * 
-     * @param arguments
-     * @param arg
-     */
-    private void checkAndSave(List<String> arguments, String arg) {
-        if (arguments != null) {
-            for (String argument : arguments) {
-                if (argument.toLowerCase().startsWith(arg.toLowerCase())) {
-                    savedArguments.add(argument);
-                }
-            }
-        }
-    }
+		// Set debug
+		this.debug = arguments.contains(ApplicationArguments.DEBUG);
+		// Set debug level
+		this.debugLevel = arguments.contains(ApplicationArguments.DEBUG_LOG);
+		// Set ignore look and feel
+		this.ignoreLookAndFeel = arguments
+				.contains(ApplicationArguments.IGNORE_LOOK_AND_FEEL);
+		// Set no update
+		this.noUpdate = arguments.contains(ApplicationArguments.NO_UPDATE);
+		// Set simulate cd
+		this.simulateCD = arguments.contains(ApplicationArguments.SIMULATE_CD);
+	}
 
-    /**
-     * Returns original arguments of application
-     * @return
-     */
-    @Override
+	/**
+	 * Checks if list of arguments contains given arg and saves it
+	 * 
+	 * @param arguments
+	 * @param arg
+	 */
+	private void checkAndSave(final List<String> arguments, final String arg) {
+		if (arguments != null) {
+			for (String argument : arguments) {
+				if (argument.toLowerCase().startsWith(arg.toLowerCase())) {
+					this.savedArguments.add(argument);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Returns original arguments of application
+	 * 
+	 * @return
+	 */
+	@Override
 	public List<String> getOriginalArguments() {
-		return originalArguments;
+		return this.originalArguments;
 	}
-    
-    /**
-     * Returns a string with saved arguments (not commands)
-     * @param commandHandler
-     * @return
-     */
-    @Override
-	public String getSavedArguments(ICommandHandler commandHandler) {
-    	return getSavedArguments(commandHandler, false);
-    }
 
-    /**
-     * Returns a string with saved commands
-     * @param commandHandler
-     * @return
-     */
-    @Override
-	public String getSavedCommands(ICommandHandler commandHandler) {
-    	return getSavedArguments(commandHandler, true);
-    }
-    
-    /**
-     * Returns commands or arguments
-     * @param commandHandler
-     * @param commands
-     * @return
-     */
-    private String getSavedArguments(ICommandHandler commandHandler, boolean commands) {
-        StringBuilder sb = new StringBuilder();
-        for (String arg : savedArguments) {
-            if (commands && commandHandler.isValidCommand(arg) || !commands && !commandHandler.isValidCommand(arg)) {
-                sb.append(arg);
-                sb.append(" ");
-            }
-        }
-        return sb.toString().trim();
-    }
-    
-    @Override
-    public boolean isDebugLevelLog() {
-    	return debugLevel;
-    }
+	/**
+	 * Returns a string with saved arguments (not commands)
+	 * 
+	 * @param commandHandler
+	 * @return
+	 */
+	@Override
+	public String getSavedArguments(final ICommandHandler commandHandler) {
+		return getSavedArguments(commandHandler, false);
+	}
+
+	/**
+	 * Returns a string with saved commands
+	 * 
+	 * @param commandHandler
+	 * @return
+	 */
+	@Override
+	public String getSavedCommands(final ICommandHandler commandHandler) {
+		return getSavedArguments(commandHandler, true);
+	}
+
+	/**
+	 * Returns commands or arguments
+	 * 
+	 * @param commandHandler
+	 * @param commands
+	 * @return
+	 */
+	private String getSavedArguments(final ICommandHandler commandHandler,
+			final boolean commands) {
+		StringBuilder sb = new StringBuilder();
+		for (String arg : this.savedArguments) {
+			if (commands && commandHandler.isValidCommand(arg) || !commands
+					&& !commandHandler.isValidCommand(arg)) {
+				sb.append(arg);
+				sb.append(" ");
+			}
+		}
+		return sb.toString().trim();
+	}
+
+	@Override
+	public boolean isDebugLevelLog() {
+		return this.debugLevel;
+	}
 }

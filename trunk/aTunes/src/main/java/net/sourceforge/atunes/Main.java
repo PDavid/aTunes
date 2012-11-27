@@ -25,6 +25,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IApplicationArguments;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.springframework.context.ApplicationContext;
@@ -46,6 +47,12 @@ public final class Main {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
+		List<String> arguments = StringUtils.fromStringArrayToList(args);
+
+		// Add minimal log properties for Spring
+		Logger.loadInitProperties(arguments
+				.contains(ApplicationArguments.DEBUG));
+
 		// Enable a basic uncaught exception handler to register problems with
 		// Spring
 		Thread.setDefaultUncaughtExceptionHandler(new BasicUncaughtExceptionHandler());
@@ -56,8 +63,6 @@ public final class Main {
 		// Enable uncaught exception catching
 		Thread.setDefaultUncaughtExceptionHandler(context
 				.getBean(UncaughtExceptionHandler.class));
-
-		List<String> arguments = StringUtils.fromStringArrayToList(args);
 
 		// Save arguments, if application is restarted they will be necessary
 		context.getBean(IApplicationArguments.class).saveArguments(arguments);
