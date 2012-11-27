@@ -25,16 +25,17 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 
-
 /**
  * Holds information about specific Operating System data
+ * 
  * @author alex
- *
+ * 
  */
 public interface IOSManager {
 
 	/**
 	 * Gets folder where state is stored. If not exists, it's created
+	 * 
 	 * @return The folder where the state is stored
 	 */
 	public String getUserConfigFolder();
@@ -50,7 +51,8 @@ public interface IOSManager {
 	public File getFileFromUserConfigFolder(String name);
 
 	/**
-	 * Return path to temporal folder, which is inside user's configuration folder.
+	 * Return path to temporal folder, which is inside user's configuration
+	 * folder.
 	 * 
 	 * @return the temporal folder
 	 */
@@ -69,8 +71,8 @@ public interface IOSManager {
 	public String getCustomRepositoryConfigFolder();
 
 	/**
-	 * Returns a string with command to launch application This method is
-	 * used when restarting app
+	 * Returns a string with command to launch application This method is used
+	 * when restarting app
 	 * 
 	 * @return
 	 */
@@ -78,42 +80,49 @@ public interface IOSManager {
 
 	/**
 	 * Returns launch parameters
+	 * 
 	 * @return
 	 */
 	public String getLaunchParameters();
 
 	/**
 	 * Setup specific properties for frame
+	 * 
 	 * @param frame
 	 */
 	public void setupFrame(IFrame frame);
 
 	/**
 	 * Returns if shadow borders are supported
+	 * 
 	 * @return
 	 */
 	public boolean areShadowBordersForToolTipsSupported();
 
 	/**
 	 * Returns user home
+	 * 
 	 * @return
 	 */
 	public String getUserHome();
 
 	/**
 	 * Returns path file separator
+	 * 
 	 * @return
 	 */
 	public String getFileSeparator();
 
 	/**
 	 * Returns if OS uses short path names
+	 * 
 	 * @return
 	 */
 	public boolean usesShortPathNames();
 
 	/**
 	 * Sets window in full screen
+	 * 
 	 * @param window
 	 * @param fullscreen
 	 * @param frame
@@ -122,13 +131,14 @@ public interface IOSManager {
 
 	/**
 	 * Returns line terminator for current OS
+	 * 
 	 * @return
 	 */
 	public String getLineTerminator();
 
 	/**
-	 * Returns <code>true</code> if the current operating system (actually
-	 * the VM) is 64 bit.
+	 * Returns <code>true</code> if the current operating system (actually the
+	 * VM) is 64 bit.
 	 * 
 	 * @return If the current operating system is 64 bit
 	 */
@@ -136,6 +146,7 @@ public interface IOSManager {
 
 	/**
 	 * Returns if player engine is supported for current OS
+	 * 
 	 * @param engine
 	 * @return
 	 */
@@ -143,6 +154,7 @@ public interface IOSManager {
 
 	/**
 	 * Returns command used (if any) to execute player engine
+	 * 
 	 * @param engine
 	 * @return
 	 */
@@ -150,33 +162,37 @@ public interface IOSManager {
 
 	/**
 	 * Returns specific player engine parameters
+	 * 
 	 * @param engine
 	 * @return
 	 */
-	public Collection<String> getPlayerEngineParameters(
-			IPlayerEngine engine);
+	public Collection<String> getPlayerEngineParameters(IPlayerEngine engine);
 
 	/**
-	 * Returns path where external tools are (cdda2wav, mencoder, etc.)
-	 * Leave "" when tools are in path
+	 * Returns path where external tools are (cdda2wav, mencoder, etc.) Leave ""
+	 * when tools are in path
+	 * 
 	 * @return
 	 */
 	public Object getExternalToolsPath();
 
 	/**
 	 * Returns supported look and feels
+	 * 
 	 * @return
 	 */
 	public Map<String, Class<? extends ILookAndFeel>> getLookAndFeels();
 
 	/**
 	 * Returns default look and feel class
+	 * 
 	 * @return
 	 */
 	public Class<? extends ILookAndFeel> getDefaultLookAndFeel();
 
 	/**
 	 * Manages when no player engine is available
+	 * 
 	 * @param frame
 	 */
 	public void manageNoPlayerEngine(IFrame frame);
@@ -187,13 +203,6 @@ public interface IOSManager {
 	public void playerEngineFound();
 
 	/**
-	 * Returns os property
-	 * @param key
-	 * @return
-	 */
-	public String getOSProperty(String key);
-
-	/**
 	 * @param key
 	 * @param value
 	 * @return
@@ -202,12 +211,14 @@ public interface IOSManager {
 
 	/**
 	 * Returns if OS supports tray icons
+	 * 
 	 * @return
 	 */
 	public boolean areTrayIconsSupported();
 
 	/**
 	 * Returns if some menu entries (preferences, about) are delegated to OS
+	 * 
 	 * @return
 	 */
 	public boolean areMenuEntriesDelegated();
@@ -216,18 +227,21 @@ public interface IOSManager {
 	 * Returns if closing main window will terminate application
 	 * 
 	 * If not, OS will have to provide some method to make window visible again
+	 * 
 	 * @return
 	 */
 	public boolean isClosingMainWindowClosesApplication();
 
 	/**
 	 * Returns true if rip CDs is supported in current system
+	 * 
 	 * @return
 	 */
 	public boolean isRipSupported();
 
 	/**
 	 * Returns if OS allows to run more than one instance of application
+	 * 
 	 * @return
 	 */
 	public boolean isMultipleInstancesSupported();
@@ -276,18 +290,21 @@ public interface IOSManager {
 
 	/**
 	 * Returns tray icon implementor for current OS
+	 * 
 	 * @return
 	 */
 	public ITrayIcon getTrayIcon();
 
 	/**
 	 * Returns responsible of player tray icons
+	 * 
 	 * @return
 	 */
 	public IPlayerTrayIconsHandler getPlayerTrayIcons();
 
 	/**
 	 * Returns if icons in system tray support change their colors
+	 * 
 	 * @return
 	 */
 	public boolean areTrayIconsColorsSupported();

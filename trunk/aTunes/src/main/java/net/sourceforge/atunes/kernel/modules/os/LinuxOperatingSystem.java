@@ -38,75 +38,74 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class LinuxOperatingSystem extends OperatingSystemAdapter {
 
-    /**
-     * Name of the Linux command
-     */
-    private static final String COMMAND_LINUX = "aTunes.sh";
+	/**
+	 * Name of the Linux command
+	 */
+	private static final String COMMAND_LINUX = "aTunes.sh";
 
-    /**
-     * Command to be executed on Linux systems to launch mplayer. Mplayer should
-     * be in $PATH
-     */
-    private static final String MPLAYER_LINUX_COMMAND = "mplayer";
+	/**
+	 * Command to be executed on Linux systems to launch mplayer. Mplayer should
+	 * be in $PATH
+	 */
+	private static final String MPLAYER_LINUX_COMMAND = "mplayer";
 
-    @Override
-    public String getAppDataFolder() {
-	return StringUtils.getString(getUserHome(), "/.atunes");
-    }
+	@Override
+	public String getAppDataFolder() {
+		return StringUtils.getString(getUserHome(), "/.atunes");
+	}
 
-    @Override
-    public String getLaunchCommand() {
-	return FileUtils.getPath(new File(StringUtils.getString("./",
-		COMMAND_LINUX)));
-    }
+	@Override
+	public String getLaunchCommand() {
+		return FileUtils.getPath(new File(StringUtils.getString("./",
+				COMMAND_LINUX)));
+	}
 
-    @Override
-    public String getLaunchParameters() {
-	return null;
-    }
+	@Override
+	public String getLaunchParameters() {
+		return null;
+	}
 
-    @Override
-    public boolean isPlayerEngineSupported(final IPlayerEngine engine) {
-	return true; // all supported
-    }
+	@Override
+	public boolean isPlayerEngineSupported(final IPlayerEngine engine) {
+		return true; // all supported
+	}
 
-    @Override
-    public String getPlayerEngineCommand(final IPlayerEngine engine) {
-	return engine instanceof MPlayerEngine ? MPLAYER_LINUX_COMMAND : null;
-    }
+	@Override
+	public String getPlayerEngineCommand(final IPlayerEngine engine) {
+		return engine instanceof MPlayerEngine ? MPLAYER_LINUX_COMMAND : null;
+	}
 
-    @Override
-    public boolean areTrayIconsSupported() {
-	return true;
-    }
+	@Override
+	public boolean areTrayIconsSupported() {
+		return true;
+	}
 
-    @Override
-    public void setupFrame(final IFrame frame) {
-    }
+	@Override
+	public void setupFrame(final IFrame frame) {
+	}
 
-    @Override
-    public boolean areMenuEntriesDelegated() {
-	return false;
-    }
+	@Override
+	public boolean areMenuEntriesDelegated() {
+		return false;
+	}
 
-    @Override
-    public boolean isClosingMainWindowClosesApplication() {
-	return true;
-    }
+	@Override
+	public boolean isClosingMainWindowClosesApplication() {
+		return true;
+	}
 
-    @Override
-    public boolean isRipSupported() {
-	return true;
-    }
+	@Override
+	public boolean isRipSupported() {
+		return true;
+	}
 
-    @Override
-    public boolean isMultipleInstancesSupported() {
-	return true;
-    }
+	@Override
+	public boolean isMultipleInstancesSupported() {
+		return true;
+	}
 
-    @Override
-    public IPlayerTrayIconsHandler getPlayerTrayIcons() {
-	return getBeanFactory().getBean(CommonPlayerTrayIconsHandler.class);
-    }
-
+	@Override
+	public IPlayerTrayIconsHandler getPlayerTrayIcons() {
+		return getBeanFactory().getBean(CommonPlayerTrayIconsHandler.class);
+	}
 }
