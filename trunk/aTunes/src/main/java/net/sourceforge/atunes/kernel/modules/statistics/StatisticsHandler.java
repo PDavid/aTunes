@@ -28,10 +28,7 @@ import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
-import net.sourceforge.atunes.model.IControlsBuilder;
-import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStatistics;
@@ -60,27 +57,7 @@ public final class StatisticsHandler extends AbstractHandler implements
 
 	private ITaskService taskService;
 
-	private ILookAndFeelManager lookAndFeelManager;
-
 	private IUnknownObjectChecker unknownObjectChecker;
-
-	private IDialogFactory dialogFactory;
-
-	private IControlsBuilder controlsBuilder;
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(final IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
 
 	/**
 	 * @param unknownObjectChecker
@@ -88,14 +65,6 @@ public final class StatisticsHandler extends AbstractHandler implements
 	public void setUnknownObjectChecker(
 			final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
-	}
-
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(
-			final ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
 	/**
@@ -395,10 +364,7 @@ public final class StatisticsHandler extends AbstractHandler implements
 	@Override
 	public void showStatistics() {
 		if (this.controller == null) {
-			this.controller = new StatsDialogController(
-					this.dialogFactory.newDialog(StatsDialog.class), this,
-					this.lookAndFeelManager, this.repositoryHandler,
-					this.unknownObjectChecker, this.controlsBuilder);
+			this.controller = getBean(StatsDialogController.class);
 		}
 		this.controller.showStats();
 	}
