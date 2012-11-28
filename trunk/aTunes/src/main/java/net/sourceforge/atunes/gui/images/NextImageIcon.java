@@ -29,41 +29,49 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for next control
+ * 
+ * @author alex
+ * 
+ */
 public class NextImageIcon extends CachedIconFactory {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8652785174826761169L;
-	
+
 	private Dimension size;
-	
+
 	/**
 	 * @param size
 	 */
-	public void setSize(Dimension size) {
+	public void setSize(final Dimension size) {
 		this.size = size;
 	}
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
+	protected ImageIcon createIcon(final Color color) {
 		Polygon nextShape = new Polygon();
-        nextShape.addPoint(- size.width / 5, - size.height / 6);
-        nextShape.addPoint(- size.width / 5, size.height / 6);
-        nextShape.addPoint(0,  0);        
+		nextShape.addPoint(-this.size.width / 5, -this.size.height / 6);
+		nextShape.addPoint(-this.size.width / 5, this.size.height / 6);
+		nextShape.addPoint(0, 0);
 
-		BufferedImage bi = new BufferedImage(size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g2 = bi.createGraphics();
-    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    	g2.setPaint(color);
-		g2.translate(size.getWidth() / (double) 2 + size.width / (double) 16, size.getHeight() / (double) 2 );    	
-		
-   		g2.fill(nextShape);
-   		g2.translate(size.width / 5, 0);
-   		g2.fill(nextShape);
-    	g2.dispose();
+		BufferedImage bi = new BufferedImage(this.size.width, this.size.height,
+				BufferedImage.TYPE_4BYTE_ABGR);
+		Graphics2D g2 = bi.createGraphics();
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setPaint(color);
+		g2.translate(this.size.getWidth() / 2 + this.size.width / (double) 16,
+				this.size.getHeight() / 2);
 
-    	return new ImageIcon(bi);
+		g2.fill(nextShape);
+		g2.translate(this.size.width / 5, 0);
+		g2.fill(nextShape);
+		g2.dispose();
+
+		return new ImageIcon(bi);
 	}
 }

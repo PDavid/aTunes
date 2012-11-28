@@ -26,7 +26,12 @@ import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for previous button in tray icon
+ * 
+ * @author alex
+ * 
+ */
 public class PreviousTrayImageIcon extends CachedIconFactory {
 
 	/**
@@ -35,30 +40,37 @@ public class PreviousTrayImageIcon extends CachedIconFactory {
 	private static final long serialVersionUID = -888985666372919140L;
 
 	private Dimension size;
-	
+
 	/**
 	 * @param size
 	 */
-	public void setSize(Dimension size) {
+	public void setSize(final Dimension size) {
 		this.size = size;
 	}
-	
+
 	@Override
-	protected ImageIcon createIcon(Color color) {
+	protected ImageIcon createIcon(final Color color) {
 		// Optimized for low sizes
 		int horizontalFactor = 10;
 		int verticalFactor = 5;
 		Polygon s1 = new Polygon();
-		s1.addPoint(size.width / horizontalFactor, size.height / 2);
-		s1.addPoint(size.width / 2 - size.width / horizontalFactor, size.height / verticalFactor);
-		s1.addPoint(size.width / 2 - size.width / horizontalFactor, size.height - size.height / verticalFactor);
+		s1.addPoint(this.size.width / horizontalFactor, this.size.height / 2);
+		s1.addPoint(this.size.width / 2 - this.size.width / horizontalFactor,
+				this.size.height / verticalFactor);
+		s1.addPoint(this.size.width / 2 - this.size.width / horizontalFactor,
+				this.size.height - this.size.height / verticalFactor);
 
 		Polygon s2 = new Polygon();
-		s2.addPoint(size.width / 2 + size.width / horizontalFactor, size.height / 2);
-		s2.addPoint(size.width / 2 + size.width / 2 - size.width / horizontalFactor, size.height / verticalFactor);
-		s2.addPoint(size.width / 2 + size.width / 2 - size.width / horizontalFactor, size.height - size.height / verticalFactor);
+		s2.addPoint(this.size.width / 2 + this.size.width / horizontalFactor,
+				this.size.height / 2);
+		s2.addPoint(this.size.width / 2 + this.size.width / 2 - this.size.width
+				/ horizontalFactor, this.size.height / verticalFactor);
+		s2.addPoint(this.size.width / 2 + this.size.width / 2 - this.size.width
+				/ horizontalFactor, this.size.height - this.size.height
+				/ verticalFactor);
 
-		return IconGenerator.generateIcon(color, size.width, size.height, s1, s2);
+		return IconGenerator.generateIcon(color, this.size.width,
+				this.size.height, s1, s2);
 	}
 
 }

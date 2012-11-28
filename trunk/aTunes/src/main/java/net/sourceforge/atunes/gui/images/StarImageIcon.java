@@ -29,22 +29,27 @@ import org.jdesktop.swingx.geom.Star2D;
 
 final class StarImageIcon {
 
-	private static final int STAR_SIZE = 16;
+	private static final int STAR_SIZE = 13;
+	private static final int INNER_RADIUS = 3;
+	private static final int OUTER_RADIUS = 7;
 	private static final int STAR_GAP = 3;
-	
-	private StarImageIcon() {}
-	
+
+	private StarImageIcon() {
+	}
+
 	/**
 	 * @param color
 	 * @param stars
 	 * @return
 	 */
-	static ImageIcon getIcon(Paint color, int stars) {
+	static ImageIcon getIcon(final Paint color, final int stars) {
 		Area a = new Area();
 		for (int i = 0; i < stars; i++) {
-			a.add(new Area(new Star2D((STAR_SIZE + STAR_GAP) * i + STAR_SIZE / 2, STAR_SIZE / 2, STAR_SIZE - 12, STAR_SIZE - 6, 5)));
+			a.add(new Area(new Star2D((STAR_SIZE + STAR_GAP) * i + STAR_SIZE
+					/ 2, STAR_SIZE / 2, INNER_RADIUS, OUTER_RADIUS, 5)));
 		}
 
-        return IconGenerator.generateIcon(color, STAR_SIZE * stars + STAR_GAP * (stars - 1), STAR_SIZE, a);
+		return IconGenerator.generateIcon(color, STAR_SIZE * stars + STAR_GAP
+				* (stars - 1), STAR_SIZE, a);
 	}
 }

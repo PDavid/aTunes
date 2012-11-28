@@ -22,17 +22,25 @@ package net.sourceforge.atunes.gui.images;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for minimum volume level
+ * 
+ * @author alex
+ * 
+ */
 public class VolumeMinImageIcon extends CachedIconFactory {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8503926503297530102L;
 
-	protected ImageIcon createIcon(java.awt.Color color) {
-        return IconGenerator.generateIcon(color, VolumeCommonImageIcon.WIDTH, VolumeCommonImageIcon.HEIGHT,  
-        		VolumeCommonImageIcon.getVolumeShape(), VolumeCommonImageIcon.getVolumeLevel1()); 
+	@Override
+	protected ImageIcon createIcon(final java.awt.Color color) {
+		return IconGenerator.generateIcon(color, VolumeCommonImageIcon.WIDTH,
+				VolumeCommonImageIcon.HEIGHT,
+				VolumeCommonImageIcon.getVolumeShape(),
+				VolumeCommonImageIcon.getVolumeLevel1());
 	}
-	
+
 }

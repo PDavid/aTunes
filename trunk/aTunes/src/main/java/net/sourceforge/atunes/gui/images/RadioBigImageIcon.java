@@ -24,7 +24,12 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Big icon for radio
+ * 
+ * @author alex
+ * 
+ */
 public class RadioBigImageIcon extends CachedIconFactory {
 
 	/**
@@ -34,7 +39,7 @@ public class RadioBigImageIcon extends CachedIconFactory {
 	private static final int LARGE_SIZE = 150;
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
+	protected ImageIcon createIcon(final Color color) {
 		return RadioImageIcon.getIcon(color, LARGE_SIZE, LARGE_SIZE);
 	}
 }

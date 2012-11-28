@@ -29,37 +29,46 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for stop button
+ * 
+ * @author alex
+ * 
+ */
 public class StopImageIcon extends CachedIconFactory {
 
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1069304212278748656L;
 
 	private Dimension size;
-	
+
 	/**
 	 * @param size
 	 */
-	public void setSize(Dimension size) {
+	public void setSize(final Dimension size) {
 		this.size = size;
 	}
-	
+
 	@Override
-	protected ImageIcon createIcon(Color color) {
-		Rectangle stopShape = new Rectangle(- size.width / 6, - size.height / 6, 2 * size.width / 6, 2 * size.width / 6);
+	protected ImageIcon createIcon(final Color color) {
+		Rectangle stopShape = new Rectangle(-this.size.width / 6,
+				-this.size.height / 6, 2 * this.size.width / 6,
+				2 * this.size.width / 6);
 
-		BufferedImage bi = new BufferedImage(size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g2 = bi.createGraphics();
-    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    	g2.setPaint(color);
-    	g2.translate(size.getWidth() / 2, size.getHeight() * (4f/9f));    	
-		
-   		g2.fill(stopShape);
-    	g2.dispose();
+		BufferedImage bi = new BufferedImage(this.size.width, this.size.height,
+				BufferedImage.TYPE_4BYTE_ABGR);
+		Graphics2D g2 = bi.createGraphics();
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setPaint(color);
+		g2.translate(this.size.getWidth() / 2, this.size.getHeight()
+				* (4f / 9f));
 
-    	return new ImageIcon(bi);
+		g2.fill(stopShape);
+		g2.dispose();
+
+		return new ImageIcon(bi);
 	}
 }

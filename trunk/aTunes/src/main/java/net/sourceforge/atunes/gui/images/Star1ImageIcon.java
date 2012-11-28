@@ -24,7 +24,12 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * One star icon
+ * 
+ * @author alex
+ * 
+ */
 final class Star1ImageIcon extends CachedIconFactory {
 
 	/**
@@ -33,7 +38,7 @@ final class Star1ImageIcon extends CachedIconFactory {
 	private static final long serialVersionUID = 1105224226210897790L;
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
+	protected ImageIcon createIcon(final Color color) {
 		return StarImageIcon.getIcon(color, 1);
 	}
 }

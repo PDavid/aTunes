@@ -29,7 +29,12 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for play button
+ * 
+ * @author alex
+ * 
+ */
 public class PlayImageIcon extends CachedIconFactory {
 
 	/**
@@ -38,31 +43,33 @@ public class PlayImageIcon extends CachedIconFactory {
 	private static final long serialVersionUID = -5783942087625423176L;
 
 	private Dimension size;
-	
+
 	/**
 	 * @param size
 	 */
-	public void setSize(Dimension size) {
+	public void setSize(final Dimension size) {
 		this.size = size;
 	}
-	
+
 	@Override
-	protected ImageIcon createIcon(Color color) {
+	protected ImageIcon createIcon(final Color color) {
 		Polygon playShape = new Polygon();
-        playShape.addPoint(- size.width / 5, - size.height / 4);
-        playShape.addPoint(- size.width / 5, size.height / 4);
-        playShape.addPoint(size.width / 6,  0);        
+		playShape.addPoint(-this.size.width / 5, -this.size.height / 4);
+		playShape.addPoint(-this.size.width / 5, this.size.height / 4);
+		playShape.addPoint(this.size.width / 6, 0);
 
-		BufferedImage bi = new BufferedImage(size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g2 = bi.createGraphics();
-    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    	g2.setPaint(color);
-    	g2.translate(size.getWidth() * 4/7, size.getHeight() / 2);    	
-		
-   		g2.fill(playShape);
-    	g2.dispose();
+		BufferedImage bi = new BufferedImage(this.size.width, this.size.height,
+				BufferedImage.TYPE_4BYTE_ABGR);
+		Graphics2D g2 = bi.createGraphics();
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setPaint(color);
+		g2.translate(this.size.getWidth() * 4 / 7, this.size.getHeight() / 2);
 
-    	return new ImageIcon(bi);
+		g2.fill(playShape);
+		g2.dispose();
+
+		return new ImageIcon(bi);
 	}
 
 }

@@ -26,7 +26,12 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for stop tray icon
+ * 
+ * @author alex
+ * 
+ */
 public class StopTrayImageIcon extends CachedIconFactory {
 
 	/**
@@ -35,19 +40,22 @@ public class StopTrayImageIcon extends CachedIconFactory {
 	private static final long serialVersionUID = 2286594851677924981L;
 
 	private Dimension size;
-	
+
 	/**
 	 * @param size
 	 */
-	public void setSize(Dimension size) {
+	public void setSize(final Dimension size) {
 		this.size = size;
 	}
-	
+
 	@Override
-	protected ImageIcon createIcon(Color color) {
+	protected ImageIcon createIcon(final Color color) {
 		// Optimized for low sizes
 		int factor = 5;
-		Rectangle r = new Rectangle(size.width / factor, size.height / factor, size.width - 2 * size.width / factor, size.height - 2 * size.height / factor);
-		return IconGenerator.generateIcon(color, size.width, size.height, r);
+		Rectangle r = new Rectangle(this.size.width / factor, this.size.height
+				/ factor, this.size.width - 2 * this.size.width / factor,
+				this.size.height - 2 * this.size.height / factor);
+		return IconGenerator.generateIcon(color, this.size.width,
+				this.size.height, r);
 	}
 }

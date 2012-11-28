@@ -24,21 +24,26 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for medium level volume
+ * 
+ * @author alex
+ * 
+ */
 public class VolumeMedImageIcon extends CachedIconFactory {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4730940129827733035L;
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
-        return IconGenerator.generateIcon(color, VolumeCommonImageIcon.WIDTH, VolumeCommonImageIcon.HEIGHT, 
-        		VolumeCommonImageIcon.getVolumeShape(), 
-        		VolumeCommonImageIcon.getVolumeLevel1(),
-        		VolumeCommonImageIcon.getVolumeLevel2()); 
+	protected ImageIcon createIcon(final Color color) {
+		return IconGenerator.generateIcon(color, VolumeCommonImageIcon.WIDTH,
+				VolumeCommonImageIcon.HEIGHT,
+				VolumeCommonImageIcon.getVolumeShape(),
+				VolumeCommonImageIcon.getVolumeLevel1(),
+				VolumeCommonImageIcon.getVolumeLevel2());
 	}
-
 
 }

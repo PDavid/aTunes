@@ -24,18 +24,24 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Big icon for RSS
+ * 
+ * @author alex
+ * 
+ */
 public class RssBigImageIcon extends CachedIconFactory {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5252653280730093615L;
-	
+
 	private static final int BIG_SIZE = 300;
-	
+
 	@Override
-	protected ImageIcon createIcon(Color color) {
-		return IconGenerator.generateIcon(color, BIG_SIZE, BIG_SIZE, RssImageIcon.getIconArea(BIG_SIZE));
+	protected ImageIcon createIcon(final Color color) {
+		return IconGenerator.generateIcon(color, BIG_SIZE, BIG_SIZE,
+				RssImageIcon.getIconArea(BIG_SIZE));
 	}
 }

@@ -25,16 +25,21 @@ import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for shuffle
+ * 
+ * @author alex
+ * 
+ */
 public class ShuffleImageIcon extends CachedIconFactory {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1198259736200930392L;
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
+	protected ImageIcon createIcon(final Color color) {
 		Polygon p = new Polygon();
 		p.addPoint(2, 3);
 		p.addPoint(12, 3);
@@ -48,7 +53,7 @@ public class ShuffleImageIcon extends CachedIconFactory {
 		p.addPoint(14, 13);
 		p.addPoint(14, 10);
 		p.addPoint(2, 10);
-		
+
 		Polygon p3 = new Polygon();
 		p3.addPoint(12, 1);
 		p3.addPoint(16, 4);

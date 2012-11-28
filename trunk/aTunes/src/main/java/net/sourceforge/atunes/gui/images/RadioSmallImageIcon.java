@@ -29,7 +29,12 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Small icon for radio
+ * 
+ * @author alex
+ * 
+ */
 public class RadioSmallImageIcon extends CachedIconFactory {
 
 	/**
@@ -39,7 +44,7 @@ public class RadioSmallImageIcon extends CachedIconFactory {
 	private static final int SMALL_SIZE = 16;
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
+	protected ImageIcon createIcon(final Color color) {
 		return getSmallIcon(color, SMALL_SIZE, SMALL_SIZE);
 	}
 
@@ -49,12 +54,14 @@ public class RadioSmallImageIcon extends CachedIconFactory {
 	 * @param h
 	 * @return
 	 */
-	private static ImageIcon getSmallIcon(Paint color, int w, int h) {
+	private static ImageIcon getSmallIcon(final Paint color, final int w,
+			final int h) {
 		int marginX = w / 10;
 		int marginTopY = h / 2;
 		int marginBottomY = h / 10;
 		int arc = 4;
-		Area a = new Area(new RoundRectangle2D.Float(marginX, marginTopY, w - 2 * marginX, h - marginTopY - marginBottomY, arc, arc));
+		Area a = new Area(new RoundRectangle2D.Float(marginX, marginTopY, w - 2
+				* marginX, h - marginTopY - marginBottomY, arc, arc));
 
 		int antennaWidth = w / 9;
 		Polygon p = new Polygon();
@@ -62,15 +69,16 @@ public class RadioSmallImageIcon extends CachedIconFactory {
 		p.addPoint(marginX + 2 * antennaWidth, marginBottomY);
 		p.addPoint(w - marginX - antennaWidth, h - marginTopY);
 		p.addPoint(w - marginX - 2 * antennaWidth, h - marginTopY);
-		
+
 		a.add(new Area(p));
-		
+
 		int insideMargin = w / 8;
 		marginX = marginX + insideMargin;
 		marginBottomY = marginBottomY + 2 * insideMargin;
 		marginTopY = marginTopY + insideMargin;
-		a.subtract(new Area(new Rectangle(marginX, marginTopY, w - 2 * marginX, h - marginTopY - marginBottomY)));
-		
-        return IconGenerator.generateIcon(color, w, h, a);
+		a.subtract(new Area(new Rectangle(marginX, marginTopY, w - 2 * marginX,
+				h - marginTopY - marginBottomY)));
+
+		return IconGenerator.generateIcon(color, w, h, a);
 	}
 }

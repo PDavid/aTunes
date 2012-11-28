@@ -28,9 +28,16 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.ImageIcon;
 
+/**
+ * Icon for radio
+ * 
+ * @author alex
+ * 
+ */
 public final class RadioImageIcon {
-	
-	private RadioImageIcon() {}
+
+	private RadioImageIcon() {
+	}
 
 	/**
 	 * @param color
@@ -38,12 +45,14 @@ public final class RadioImageIcon {
 	 * @param h
 	 * @return
 	 */
-	protected static ImageIcon getIcon(Paint color, int w, int h) {
+	protected static ImageIcon getIcon(final Paint color, final int w,
+			final int h) {
 		int marginX = w / 10;
 		int marginTopY = h / 2;
 		int marginBottomY = h / 10;
 		int arc = 4;
-		Area a = new Area(new RoundRectangle2D.Float(marginX, marginTopY, w - 2 * marginX, h - marginTopY - marginBottomY, arc, arc));
+		Area a = new Area(new RoundRectangle2D.Float(marginX, marginTopY, w - 2
+				* marginX, h - marginTopY - marginBottomY, arc, arc));
 
 		int antennaWidth = w / 12;
 		Polygon p = new Polygon();
@@ -51,16 +60,17 @@ public final class RadioImageIcon {
 		p.addPoint(marginX + 2 * antennaWidth, marginBottomY);
 		p.addPoint(w - marginX - antennaWidth, h - marginTopY);
 		p.addPoint(w - marginX - 2 * antennaWidth, h - marginTopY);
-		
+
 		a.add(new Area(p));
-		
+
 		int insideMargin = w / 16;
 		marginX = marginX + insideMargin;
 		marginBottomY = marginBottomY + 2 * insideMargin;
 		marginTopY = marginTopY + insideMargin;
-		a.subtract(new Area(new Rectangle(marginX, marginTopY, w - 2 * marginX, h - marginTopY - marginBottomY)));
-		
-        return IconGenerator.generateIcon(color, w, h, a);
+		a.subtract(new Area(new Rectangle(marginX, marginTopY, w - 2 * marginX,
+				h - marginTopY - marginBottomY)));
+
+		return IconGenerator.generateIcon(color, w, h, a);
 	}
 
 }

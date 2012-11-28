@@ -29,38 +29,49 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for pause
+ * 
+ * @author alex
+ * 
+ */
 public class PauseImageIcon extends CachedIconFactory {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1386224526444536737L;
-	
+
 	private Dimension size;
-	
+
 	/**
 	 * @param size
 	 */
-	public void setSize(Dimension size) {
+	public void setSize(final Dimension size) {
 		this.size = size;
 	}
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
-        Rectangle pauseShape1 = new Rectangle(- size.width / 10 - size.width / 6, - size.height / 5, size.width / 7, (int) (size.height / (5f/2f)));
-        Rectangle pauseShape2 = new Rectangle(- size.width / 20, - size.height / 5, size.width / 7, (int) (size.height / (5f/2f)));
+	protected ImageIcon createIcon(final Color color) {
+		Rectangle pauseShape1 = new Rectangle(-this.size.width / 10
+				- this.size.width / 6, -this.size.height / 5,
+				this.size.width / 7, (int) (this.size.height / (5f / 2f)));
+		Rectangle pauseShape2 = new Rectangle(-this.size.width / 20,
+				-this.size.height / 5, this.size.width / 7,
+				(int) (this.size.height / (5f / 2f)));
 
-		BufferedImage bi = new BufferedImage(size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g2 = bi.createGraphics();
-    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    	g2.setPaint(color);
-    	g2.translate(size.getWidth() * 4/7, size.getHeight() / 2);    	
-		
-   		g2.fill(pauseShape1);
-   		g2.fill(pauseShape2);
-    	g2.dispose();
+		BufferedImage bi = new BufferedImage(this.size.width, this.size.height,
+				BufferedImage.TYPE_4BYTE_ABGR);
+		Graphics2D g2 = bi.createGraphics();
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setPaint(color);
+		g2.translate(this.size.getWidth() * 4 / 7, this.size.getHeight() / 2);
 
-    	return new ImageIcon(bi);
+		g2.fill(pauseShape1);
+		g2.fill(pauseShape2);
+		g2.dispose();
+
+		return new ImageIcon(bi);
 	}
 }

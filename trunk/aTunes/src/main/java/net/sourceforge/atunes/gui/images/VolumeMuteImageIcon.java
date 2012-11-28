@@ -24,18 +24,24 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for muted volume
+ * 
+ * @author alex
+ * 
+ */
 public class VolumeMuteImageIcon extends CachedIconFactory {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8458123977426102321L;
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
-        return IconGenerator.generateIcon(color, VolumeCommonImageIcon.WIDTH, VolumeCommonImageIcon.HEIGHT, 
-        		VolumeCommonImageIcon.getVolumeShape(), 
-        		VolumeCommonImageIcon.getMute()); 
+	protected ImageIcon createIcon(final Color color) {
+		return IconGenerator.generateIcon(color, VolumeCommonImageIcon.WIDTH,
+				VolumeCommonImageIcon.HEIGHT,
+				VolumeCommonImageIcon.getVolumeShape(),
+				VolumeCommonImageIcon.getMute());
 	}
 }

@@ -25,19 +25,24 @@ import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Small icon for play in play list
+ * 
+ * @author alex
+ * 
+ */
 public class PlayListPlayStateImageIcon extends CachedIconFactory {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 339808425000579713L;
-	
+
 	private static final int WIDTH = 14;
 	private static final int HEIGHT = 14;
-	
+
 	@Override
-	protected ImageIcon createIcon(Color color) {
+	protected ImageIcon createIcon(final Color color) {
 		Polygon shape = new Polygon();
 		shape.addPoint(3, 3);
 		shape.addPoint(3, 11);
