@@ -28,12 +28,9 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 
-import net.sourceforge.atunes.gui.views.menus.PlayListMenuFiller;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IBeanFactory;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListPanel;
@@ -54,24 +51,6 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel>
 	private IPlayListPanel playListPanel;
 
 	private IStatePlaylist statePlaylist;
-
-	private IBeanFactory beanFactory;
-
-	private IOSManager osManager;
-
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
-	}
-
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
 
 	/**
 	 * @param statePlaylist
@@ -114,21 +93,6 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel>
 	public void initialize() {
 		setComponentControlled((PlayListPanel) this.playListPanel
 				.getSwingComponent());
-		addBindings();
-		addStateBindings();
-	}
-
-	@Override
-	public void addBindings() {
-		// Set key listener for table
-		this.playListTable.addKeyListener(new PlayListKeyListener(
-				this.playerHandler));
-		PlayListListener listener = new PlayListListener(this.playListTable,
-				this, this.beanFactory.getBean(PlayListMenuFiller.class),
-				this.osManager);
-		this.playListTable.addMouseListener(listener);
-		this.playListTable.getSelectionModel().addListSelectionListener(
-				listener);
 	}
 
 	private static int arrMin(final int[] array) {

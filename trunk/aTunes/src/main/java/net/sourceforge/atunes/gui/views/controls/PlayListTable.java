@@ -27,8 +27,10 @@ import java.awt.dnd.DragSourceDragEvent;
 import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.gui.ColumnRenderers;
@@ -77,6 +80,24 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 	private IBeanFactory beanFactory;
 
 	private IControlsBuilder controlsBuilder;
+
+	private ListSelectionListener playListListener;
+
+	private KeyAdapter playListKeyListener;
+
+	/**
+	 * @param playListKeyListener
+	 */
+	public void setPlayListKeyListener(final KeyAdapter playListKeyListener) {
+		this.playListKeyListener = playListKeyListener;
+	}
+
+	/**
+	 * @param playListListener
+	 */
+	public void setPlayListListener(final ListSelectionListener playListListener) {
+		this.playListListener = playListListener;
+	}
 
 	/**
 	 * @param controlsBuilder
@@ -173,6 +194,10 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 		}
 
 		setOpaque(false);
+
+		addMouseListener((MouseListener) this.playListListener);
+		addKeyListener(this.playListKeyListener);
+		getSelectionModel().addListSelectionListener(this.playListListener);
 	}
 
 	@Override

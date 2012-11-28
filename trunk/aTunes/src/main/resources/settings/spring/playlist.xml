@@ -20,6 +20,10 @@
 	<bean id="playListController" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListController" init-method="initialize"/>
 	<bean id="playListTabController" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListTabController" init-method="initialize"/>
 	
+	<bean id="playListListener" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListListener"/>
+	<bean id="playListKeyListener" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListKeyListener"/>
+	
+	
 	<bean id="playListsContainer" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListsContainer"/>
 	
 	<bean id="playListRemover" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListRemover" scope="prototype"/>

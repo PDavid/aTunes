@@ -37,38 +37,53 @@ import net.sourceforge.atunes.model.IPlayListTable;
 public final class PlayListListener extends MouseAdapter implements
 		ListSelectionListener {
 
-	private final IPlayListTable table;
-	private final PlayListController controller;
-	private final PlayListMenuFiller playListMenuFiller;
-	private final IOSManager osManager;
+	private IPlayListTable playListTable;
+
+	private PlayListController playListController;
+
+	private PlayListMenuFiller playListMenuFiller;
+
+	private IOSManager osManager;
 
 	/**
-	 * Instantiates a new play list listener.
-	 * 
-	 * @param table
-	 * @param controller
+	 * @param playListTable
+	 */
+	public void setPlayListTable(final IPlayListTable playListTable) {
+		this.playListTable = playListTable;
+	}
+
+	/**
+	 * @param playListController
+	 */
+	public void setPlayListController(
+			final PlayListController playListController) {
+		this.playListController = playListController;
+	}
+
+	/**
 	 * @param playListMenuFiller
+	 */
+	public void setPlayListMenuFiller(
+			final PlayListMenuFiller playListMenuFiller) {
+		this.playListMenuFiller = playListMenuFiller;
+	}
+
+	/**
 	 * @param osManager
 	 */
-	protected PlayListListener(final IPlayListTable table,
-			final PlayListController controller,
-			final PlayListMenuFiller playListMenuFiller,
-			final IOSManager osManager) {
-		this.table = table;
-		this.controller = controller;
-		this.playListMenuFiller = playListMenuFiller;
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
 	@Override
 	public void mouseClicked(final MouseEvent e) {
-		if (e.getSource().equals(this.table)) {
+		if (e.getSource().equals(this.playListTable)) {
 			if (e.getClickCount() == 2
 					&& !GuiUtils.isSecondaryMouseButton(this.osManager, e)) {
-				this.controller.playSelectedAudioObject();
+				this.playListController.playSelectedAudioObject();
 			} else if (GuiUtils.isSecondaryMouseButton(this.osManager, e)) {
-				int[] currentlySelected = this.table.getSelectedRows();
-				int selected = this.table.rowAtPoint(e.getPoint());
+				int[] currentlySelected = this.playListTable.getSelectedRows();
+				int selected = this.playListTable.rowAtPoint(e.getPoint());
 				boolean found = false;
 				int i = 0;
 				while (!found && i < currentlySelected.length) {
@@ -78,11 +93,12 @@ public final class PlayListListener extends MouseAdapter implements
 					i++;
 				}
 				if (!found) {
-					this.table.getSelectionModel().setSelectionInterval(
-							selected, selected);
+					this.playListTable.getSelectionModel()
+							.setSelectionInterval(selected, selected);
 				}
 
-				this.table.getMenu().show(e.getComponent(), e.getX(), e.getY());
+				this.playListTable.getMenu().show(e.getComponent(), e.getX(),
+						e.getY());
 			}
 		}
 	}
@@ -91,5 +107,4 @@ public final class PlayListListener extends MouseAdapter implements
 	public void valueChanged(final ListSelectionEvent e) {
 		this.playListMenuFiller.updatePlayListMenuItems();
 	}
-
 }
