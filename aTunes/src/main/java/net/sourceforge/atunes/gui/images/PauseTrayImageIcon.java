@@ -26,34 +26,46 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for pause in tray icon
+ * 
+ * @author alex
+ * 
+ */
 public class PauseTrayImageIcon extends CachedIconFactory {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3869120336472558867L;
-	
+
 	private Dimension size;
-	
+
 	/**
 	 * @param size
 	 */
-	public void setSize(Dimension size) {
+	public void setSize(final Dimension size) {
 		this.size = size;
 	}
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
+	protected ImageIcon createIcon(final Color color) {
 		// Optimized for low sizes
-		
+
 		int hFactor = 5;
 		int vFactor = 5;
-		
-		Rectangle r1 = new Rectangle(size.width / hFactor, size.height / vFactor, size.width / 2 - 3/2 * size.width / hFactor, size.height - 2 * size.height / vFactor);
-		Rectangle r2 = new Rectangle(size.width / 2 + size.width / hFactor, size.height / vFactor, size.width / 2 - 3/2 * size.width / hFactor, size.height - 2 * size.height / vFactor);
-		
-		return IconGenerator.generateIcon(color, size.width, size.height, r1, r2);
+
+		Rectangle r1 = new Rectangle(this.size.width / hFactor,
+				this.size.height / vFactor, this.size.width / 2 - 3 / 2
+						* this.size.width / hFactor, this.size.height - 2
+						* this.size.height / vFactor);
+		Rectangle r2 = new Rectangle(this.size.width / 2 + this.size.width
+				/ hFactor, this.size.height / vFactor, this.size.width / 2 - 3
+				/ 2 * this.size.width / hFactor, this.size.height - 2
+				* this.size.height / vFactor);
+
+		return IconGenerator.generateIcon(color, this.size.width,
+				this.size.height, r1, r2);
 	}
 
 }

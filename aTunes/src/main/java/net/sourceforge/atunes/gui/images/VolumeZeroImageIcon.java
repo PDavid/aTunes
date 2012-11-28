@@ -24,17 +24,24 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for volume zero
+ * 
+ * @author alex
+ * 
+ */
 public class VolumeZeroImageIcon extends CachedIconFactory {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1810849973363034078L;
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
-        return IconGenerator.generateIcon(color, VolumeCommonImageIcon.WIDTH, VolumeCommonImageIcon.HEIGHT,  VolumeCommonImageIcon.getVolumeShape()); 
+	protected ImageIcon createIcon(final Color color) {
+		return IconGenerator.generateIcon(color, VolumeCommonImageIcon.WIDTH,
+				VolumeCommonImageIcon.HEIGHT,
+				VolumeCommonImageIcon.getVolumeShape());
 	}
 
 }

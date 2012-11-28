@@ -24,7 +24,12 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon of medium size for radio
+ * 
+ * @author alex
+ * 
+ */
 public class RadioMediumImageIcon extends CachedIconFactory {
 
 	/**
@@ -34,7 +39,7 @@ public class RadioMediumImageIcon extends CachedIconFactory {
 	private static final int MEDIUM_SIZE = 70;
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
+	protected ImageIcon createIcon(final Color color) {
 		return RadioImageIcon.getIcon(color, MEDIUM_SIZE, MEDIUM_SIZE);
-	}	
+	}
 }

@@ -29,34 +29,41 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for normalization
+ * 
+ * @author alex
+ * 
+ */
 public class NormalizationImageIcon extends CachedIconFactory {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3474284929336191066L;
-	
+
 	private static final int SIZE = 18;
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
-        Line2D l1 = new Line2D.Float(2, 9, 6, 9);
-        Line2D l2 = new Line2D.Float(6, 9, 8, 3);
-        Line2D l3 = new Line2D.Float(8, 3, 11, 14);
-        Line2D l4 = new Line2D.Float(11, 14, 13, 9);
-        Line2D l5 = new Line2D.Float(13, 9, 16, 9);
-		BufferedImage bi = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g = bi.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setPaint(color);
-        g.setStroke(new BasicStroke(2));
-        g.draw(l1);
-        g.draw(l2);
-        g.draw(l3);
-        g.draw(l4);
-        g.draw(l5);
-        g.dispose();
-        return new ImageIcon(bi);
+	protected ImageIcon createIcon(final Color color) {
+		Line2D l1 = new Line2D.Float(2, 9, 6, 9);
+		Line2D l2 = new Line2D.Float(6, 9, 8, 3);
+		Line2D l3 = new Line2D.Float(8, 3, 11, 14);
+		Line2D l4 = new Line2D.Float(11, 14, 13, 9);
+		Line2D l5 = new Line2D.Float(13, 9, 16, 9);
+		BufferedImage bi = new BufferedImage(SIZE, SIZE,
+				BufferedImage.TYPE_4BYTE_ABGR);
+		Graphics2D g = bi.createGraphics();
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setPaint(color);
+		g.setStroke(new BasicStroke(2));
+		g.draw(l1);
+		g.draw(l2);
+		g.draw(l3);
+		g.draw(l4);
+		g.draw(l5);
+		g.dispose();
+		return new ImageIcon(bi);
 	}
 }

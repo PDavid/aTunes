@@ -29,7 +29,12 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for videos
+ * 
+ * @author alex
+ * 
+ */
 public class VideoImageIcon extends CachedIconFactory {
 
 	/**
@@ -40,32 +45,37 @@ public class VideoImageIcon extends CachedIconFactory {
 	private static final int HEIGHT = 16;
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
+	protected ImageIcon createIcon(final Color color) {
 		int margin = 2;
 		int internalMarginX = 6;
 		int internalMarginY = 3;
-		Rectangle r = new Rectangle(margin, margin, WIDTH - 2 * margin, HEIGHT - 2 * margin);
-		Rectangle r2 = new Rectangle(internalMarginX, internalMarginY, WIDTH - 2 * internalMarginX, HEIGHT - 2 * internalMarginY);
-		
-		Rectangle r3 = new Rectangle(internalMarginX - margin - 2, internalMarginX - margin - 2);
-		
-		BufferedImage bi = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g = bi.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setPaint(color);
-       	g.fill(r);
-       	g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-       	g.fill(r2);
-       	
-       	int gap = 3;
-       	for (int i = 0; i < 4; i++) {
-       		r3.setLocation(margin + 1, margin + i * gap);
-       		g.fill(r3);
-       		r3.setLocation(WIDTH - margin - r3.width - 1, margin + i * gap);
-       		g.fill(r3);
-       	}
+		Rectangle r = new Rectangle(margin, margin, WIDTH - 2 * margin, HEIGHT
+				- 2 * margin);
+		Rectangle r2 = new Rectangle(internalMarginX, internalMarginY, WIDTH
+				- 2 * internalMarginX, HEIGHT - 2 * internalMarginY);
 
-        g.dispose();
-        return new ImageIcon(bi);
+		Rectangle r3 = new Rectangle(internalMarginX - margin - 2,
+				internalMarginX - margin - 2);
+
+		BufferedImage bi = new BufferedImage(WIDTH, HEIGHT,
+				BufferedImage.TYPE_4BYTE_ABGR);
+		Graphics2D g = bi.createGraphics();
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setPaint(color);
+		g.fill(r);
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+		g.fill(r2);
+
+		int gap = 3;
+		for (int i = 0; i < 4; i++) {
+			r3.setLocation(margin + 1, margin + i * gap);
+			g.fill(r3);
+			r3.setLocation(WIDTH - margin - r3.width - 1, margin + i * gap);
+			g.fill(r3);
+		}
+
+		g.dispose();
+		return new ImageIcon(bi);
 	}
 }

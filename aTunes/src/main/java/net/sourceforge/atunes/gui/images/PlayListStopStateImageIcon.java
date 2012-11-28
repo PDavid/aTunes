@@ -25,19 +25,23 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * @author alex
+ * 
+ */
 public class PlayListStopStateImageIcon extends CachedIconFactory {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8435203720752628074L;
-	
+
 	private static final int WIDTH = 14;
 	private static final int HEIGHT = 14;
-	
+
 	@Override
-	protected ImageIcon createIcon(Color color) {
-		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, new Rectangle(4, 4, 8, 8));
+	protected ImageIcon createIcon(final Color color) {
+		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, new Rectangle(
+				4, 4, 8, 8));
 	}
 }

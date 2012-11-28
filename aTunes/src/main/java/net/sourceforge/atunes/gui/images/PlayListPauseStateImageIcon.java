@@ -25,19 +25,25 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Small icon for pause in play list
+ * 
+ * @author alex
+ * 
+ */
 public class PlayListPauseStateImageIcon extends CachedIconFactory {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2314011732010305881L;
-	
+
 	private static final int WIDTH = 14;
 	private static final int HEIGHT = 14;
-	
+
 	@Override
-	protected ImageIcon createIcon(Color color) {
-		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, new Rectangle(3, 3, 3, 8), new Rectangle(8, 3, 3, 8));
+	protected ImageIcon createIcon(final Color color) {
+		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, new Rectangle(
+				3, 3, 3, 8), new Rectangle(8, 3, 3, 8));
 	}
 }

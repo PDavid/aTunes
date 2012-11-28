@@ -24,21 +24,27 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for maximum volume level
+ * 
+ * @author alex
+ * 
+ */
 public class VolumeMaxImageIcon extends CachedIconFactory {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7383483794211874250L;
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
-        return IconGenerator.generateIcon(color, VolumeCommonImageIcon.WIDTH, VolumeCommonImageIcon.HEIGHT,
-        		VolumeCommonImageIcon.getVolumeShape(), 
-        		VolumeCommonImageIcon.getVolumeLevel1(),
-        		VolumeCommonImageIcon.getVolumeLevel2(),
-        		VolumeCommonImageIcon.getVolumeLevel3()); 
-    }
+	protected ImageIcon createIcon(final Color color) {
+		return IconGenerator.generateIcon(color, VolumeCommonImageIcon.WIDTH,
+				VolumeCommonImageIcon.HEIGHT,
+				VolumeCommonImageIcon.getVolumeShape(),
+				VolumeCommonImageIcon.getVolumeLevel1(),
+				VolumeCommonImageIcon.getVolumeLevel2(),
+				VolumeCommonImageIcon.getVolumeLevel3());
+	}
 
 }

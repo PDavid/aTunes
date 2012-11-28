@@ -24,18 +24,24 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Medium icon for RSS
+ * 
+ * @author alex
+ * 
+ */
 public class RssMediumImageIcon extends CachedIconFactory {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2649932171666569310L;
-	
+
 	private static final int SIZE = 70;
 
 	@Override
-	protected ImageIcon createIcon(Color color) {
-		return IconGenerator.generateIcon(color, SIZE, SIZE, RssImageIcon.getIconArea(SIZE));
+	protected ImageIcon createIcon(final Color color) {
+		return IconGenerator.generateIcon(color, SIZE, SIZE,
+				RssImageIcon.getIconArea(SIZE));
 	}
 }

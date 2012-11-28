@@ -27,19 +27,26 @@ import javax.swing.ImageIcon;
 
 import org.jdesktop.swingx.geom.Star2D;
 
+/**
+ * Icon for new elements
+ * 
+ * @author alex
+ * 
+ */
 public class NewImageIcon extends CachedIconFactory {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4433286891763946857L;
-	
+
 	private static final int SIZE = 18;
 	private static final int STAR_SIZE = 16;
-	
+
 	@Override
-	protected ImageIcon createIcon(Color color) {
-		Shape star = new Star2D(SIZE / 2, SIZE / 2, STAR_SIZE - 12, STAR_SIZE - 8, 9);
-        return IconGenerator.generateIcon(color, SIZE, SIZE, star);
+	protected ImageIcon createIcon(final Color color) {
+		Shape star = new Star2D(SIZE / 2, SIZE / 2, STAR_SIZE - 12,
+				STAR_SIZE - 8, 9);
+		return IconGenerator.generateIcon(color, SIZE, SIZE, star);
 	}
 }

@@ -26,7 +26,12 @@ import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for play in tray icon
+ * 
+ * @author alex
+ * 
+ */
 public class PlayTrayImageIcon extends CachedIconFactory {
 
 	/**
@@ -35,26 +40,30 @@ public class PlayTrayImageIcon extends CachedIconFactory {
 	private static final long serialVersionUID = 5269753321532297780L;
 
 	private Dimension size;
-	
+
 	/**
 	 * @param size
 	 */
-	public void setSize(Dimension size) {
+	public void setSize(final Dimension size) {
 		this.size = size;
 	}
-	
+
 	@Override
-	protected ImageIcon createIcon(Color color) {
+	protected ImageIcon createIcon(final Color color) {
 		// Optimized for low sizes
 		int horizontalFactor = 4;
 		int verticalFactor = 5;
-		
+
 		Polygon s1 = new Polygon();
-		s1.addPoint(size.width / horizontalFactor, size.height / verticalFactor);
-		s1.addPoint(size.width / horizontalFactor, size.height - size.height / verticalFactor);
-		s1.addPoint(size.width - size.width / horizontalFactor, size.height / 2);
-		
-		return IconGenerator.generateIcon(color, size.width, size.height, s1);
+		s1.addPoint(this.size.width / horizontalFactor, this.size.height
+				/ verticalFactor);
+		s1.addPoint(this.size.width / horizontalFactor, this.size.height
+				- this.size.height / verticalFactor);
+		s1.addPoint(this.size.width - this.size.width / horizontalFactor,
+				this.size.height / 2);
+
+		return IconGenerator.generateIcon(color, this.size.width,
+				this.size.height, s1);
 	}
 
 }

@@ -25,16 +25,21 @@ import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icon for repeat
+ * 
+ * @author alex
+ * 
+ */
 public class RepeatImageIcon extends CachedIconFactory {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2210195660630167447L;
-	
+
 	@Override
-	protected ImageIcon createIcon(Color color) {
+	protected ImageIcon createIcon(final Color color) {
 		Polygon p = new Polygon();
 		p.addPoint(2, 5);
 		p.addPoint(2, 3);
@@ -46,7 +51,7 @@ public class RepeatImageIcon extends CachedIconFactory {
 		p.addPoint(4, 13);
 		p.addPoint(14, 13);
 		p.addPoint(14, 5);
-		
+
 		Polygon p3 = new Polygon();
 		p3.addPoint(11, 1);
 		p3.addPoint(15, 4);
@@ -57,7 +62,6 @@ public class RepeatImageIcon extends CachedIconFactory {
 		p4.addPoint(7, 11);
 		p4.addPoint(7, 17);
 
-		
 		return IconGenerator.generateIcon(color, 18, 18, p, p3, p4);
 	}
 }
