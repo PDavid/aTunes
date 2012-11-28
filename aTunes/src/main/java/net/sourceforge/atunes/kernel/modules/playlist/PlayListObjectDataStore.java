@@ -23,6 +23,8 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.io.IOException;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.PlayListEventListeners;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IObjectDataStore;
@@ -33,44 +35,60 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Data store for playlist definition
+ * 
  * @author alex
- *
+ * 
  */
-public class PlayListObjectDataStore implements IObjectDataStore<IListOfPlayLists> {
-	
+public class PlayListObjectDataStore implements
+		IObjectDataStore<IListOfPlayLists> {
+
 	private KryoSerializerService kryoSerializerService;
-	
+
 	private IOSManager osManager;
-	
+
 	private IStatePlayer statePlayer;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param statePlayer
 	 */
-	public void setStatePlayer(IStatePlayer statePlayer) {
+	public void setStatePlayer(final IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;
 	}
-	
+
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	/**
 	 * @param kryoSerializerService
 	 */
-	public void setKryoSerializerService(KryoSerializerService kryoSerializerService) {
+	public void setKryoSerializerService(
+			final KryoSerializerService kryoSerializerService) {
 		this.kryoSerializerService = kryoSerializerService;
 	}
-	
+
 	@Override
 	public IListOfPlayLists read() {
 		try {
-			ListOfPlayLists listOfPlayLists = (ListOfPlayLists) kryoSerializerService.readObjectFromFile(getFileName(), ListOfPlayLists.class);
+			ListOfPlayLists listOfPlayLists = (ListOfPlayLists) this.kryoSerializerService
+					.readObjectFromFile(getFileName(), ListOfPlayLists.class);
 			if (listOfPlayLists != null) {
-				listOfPlayLists.setStatePlayer(statePlayer);
+				// Put here all transient fields of play lists
+				listOfPlayLists.setStatePlayer(this.statePlayer);
+				listOfPlayLists.setPlayListEventListeners(this.beanFactory
+						.getBean(PlayListEventListeners.class));
 			}
 			return listOfPlayLists;
 		} catch (IOException e) {
@@ -83,21 +101,22 @@ public class PlayListObjectDataStore implements IObjectDataStore<IListOfPlayList
 	 * @return file name to store play list definition
 	 */
 	private String getFileName() {
-		return StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), Constants.PLAYLISTS_FILE);
+		return StringUtils.getString(this.osManager.getUserConfigFolder(),
+				this.osManager.getFileSeparator(), Constants.PLAYLISTS_FILE);
 	}
 
 	@Override
-	public void write(IListOfPlayLists contents) {
-		kryoSerializerService.writeObjectToFile(getFileName(), contents);
+	public void write(final IListOfPlayLists contents) {
+		this.kryoSerializerService.writeObjectToFile(getFileName(), contents);
 	}
-	
+
 	@Override
-	public IListOfPlayLists read(String id) {
+	public IListOfPlayLists read(final String id) {
 		return read();
 	}
-	
+
 	@Override
-	public void write(String id, IListOfPlayLists object) {
+	public void write(final String id, final IListOfPlayLists object) {
 		write(object);
 	}
 }

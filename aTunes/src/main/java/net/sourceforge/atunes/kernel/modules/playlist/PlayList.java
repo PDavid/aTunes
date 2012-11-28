@@ -40,6 +40,10 @@ import net.sourceforge.atunes.utils.TimeUtils;
  * 
  * @author fleax
  */
+/**
+ * @author alex
+ * 
+ */
 public class PlayList implements IPlayList {
 
 	private static final long serialVersionUID = 2756513776762920794L;
@@ -119,9 +123,16 @@ public class PlayList implements IPlayList {
 	/**
 	 * @param statePlayer
 	 */
-	public void setStatePlayer(final IStatePlayer statePlayer) {
+	void setStatePlayer(final IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;
 		((PlayListPointedList) this.audioObjects).setStatePlayer(statePlayer);
+	}
+
+	/**
+	 * @param listeners
+	 */
+	void setPlayListEventListeners(final PlayListEventListeners listeners) {
+		this.listeners = listeners;
 	}
 
 	// ////////////////////////////////////////////////////////////// ADD
