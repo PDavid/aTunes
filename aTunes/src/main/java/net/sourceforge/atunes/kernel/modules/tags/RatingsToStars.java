@@ -63,7 +63,6 @@ public class RatingsToStars {
 	 * @return stars
 	 */
 	int ratingToStars(final String rating) {
-		System.out.println(rating);
 		if (!StringUtils.isEmpty(rating)) {
 			try {
 				Integer stars = Integer.parseInt(rating);
