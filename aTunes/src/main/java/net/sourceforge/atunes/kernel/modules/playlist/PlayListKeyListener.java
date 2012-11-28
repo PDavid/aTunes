@@ -31,21 +31,21 @@ import net.sourceforge.atunes.model.IPlayerHandler;
 public final class PlayListKeyListener extends KeyAdapter {
 
 	private IPlayerHandler playerHandler;
-	
-    /**
-     * Constructor
-     * @param playerHandler
-     */
-    PlayListKeyListener(IPlayerHandler playerHandler) {
-        this.playerHandler = playerHandler;
-    }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // FIX: ENTER key event can't be used as it's also fired from "PlayAction" which is associated to Play menu item
-        // If user presses SPACE -> Pause actually playing song
-        if (e.getKeyChar() == KeyEvent.VK_SPACE) {
-        	playerHandler.resumeOrPauseCurrentAudioObject();
-        }
-    }
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+
+	@Override
+	public void keyTyped(final KeyEvent e) {
+		// FIX: ENTER key event can't be used as it's also fired from
+		// "PlayAction" which is associated to Play menu item
+		// If user presses SPACE -> Pause actually playing song
+		if (e.getKeyChar() == KeyEvent.VK_SPACE) {
+			this.playerHandler.resumeOrPauseCurrentAudioObject();
+		}
+	}
 }
