@@ -116,4 +116,15 @@ public class ListOfPlayLists implements IListOfPlayLists {
 					.getPlayListMode(playList, statePlayer));
 		}
 	}
+
+	/**
+	 * @param playListEventListeners
+	 */
+	void setPlayListEventListeners(
+			final PlayListEventListeners playListEventListeners) {
+		for (IPlayList pl : this.playLists) {
+			PlayList playList = (PlayList) pl;
+			playList.setPlayListEventListeners(playListEventListeners);
+		}
+	}
 }
