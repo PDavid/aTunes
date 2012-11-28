@@ -181,5 +181,12 @@
 	</bean>
 	
 	<bean id="controlsBuilder" class="net.sourceforge.atunes.gui.views.controls.ControlsBuilder"/>
+
+
+
+	<bean class="net.sourceforge.atunes.kernel.modules.statistics.StatsDialogController" scope="prototype" init-method="initialize">
+		<constructor-arg ref="statsDialog"/>
+	</bean>
+
 	
 </beans>

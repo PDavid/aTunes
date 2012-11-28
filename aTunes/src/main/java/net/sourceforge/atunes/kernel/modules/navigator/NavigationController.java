@@ -70,9 +70,6 @@ import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.Logger;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
 /**
  * Controller to manage
  * 
@@ -80,7 +77,7 @@ import org.springframework.context.ApplicationContextAware;
  * 
  */
 public final class NavigationController implements IAudioFilesRemovedListener,
-		IController, ApplicationContextAware {
+		IController {
 
 	private INavigationTreePanel navigationTreePanel;
 
@@ -179,13 +176,6 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	 */
 	public void setStateNavigation(final IStateNavigation stateNavigation) {
 		this.stateNavigation = stateNavigation;
-	}
-
-	@Override
-	public void setApplicationContext(
-			final ApplicationContext applicationContext) {
-		this.timer = new Timer(0,
-				applicationContext.getBean(ExtendedToolTipActionListener.class));
 	}
 
 	/**
@@ -315,7 +305,12 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	/**
 	 * @return the timer
 	 */
-	public Timer getToolTipTimer() {
+	Timer getToolTipTimer() {
+		if (this.timer == null) {
+			this.timer = new Timer(0,
+					this.beanFactory
+							.getBean(ExtendedToolTipActionListener.class));
+		}
 		return this.timer;
 	}
 

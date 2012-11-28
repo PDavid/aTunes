@@ -53,42 +53,77 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.RectangleInsets;
 
-final class StatsDialogController extends AbstractSimpleController<StatsDialog>
-		implements ILookAndFeelChangeListener {
+/**
+ * Controller for statistics dialog
+ * 
+ * @author alex
+ * 
+ */
+public final class StatsDialogController extends
+		AbstractSimpleController<StatsDialog> implements
+		ILookAndFeelChangeListener {
 
-	private final IStatisticsHandler statisticsHandler;
+	private IStatisticsHandler statisticsHandler;
 
-	private final IRepositoryHandler repositoryHandler;
+	private IRepositoryHandler repositoryHandler;
 
-	private final ILookAndFeelManager lookAndFeelManager;
+	private ILookAndFeelManager lookAndFeelManager;
 
-	private final IUnknownObjectChecker unknownObjectChecker;
+	private IUnknownObjectChecker unknownObjectChecker;
 
-	private final IControlsBuilder controlsBuilder;
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param statisticsHandler
+	 */
+	public void setStatisticsHandler(final IStatisticsHandler statisticsHandler) {
+		this.statisticsHandler = statisticsHandler;
+	}
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	/**
 	 * Instantiates a new stats dialog controller.
 	 * 
 	 * @param frame
-	 * @param statisticsHandler
-	 * @param lookAndFeelManager
-	 * @param repositoryHandler
-	 * @param unknownObjectChecker
-	 * @param controlsBuilder
 	 */
-	StatsDialogController(final StatsDialog frame,
-			final IStatisticsHandler statisticsHandler,
-			final ILookAndFeelManager lookAndFeelManager,
-			final IRepositoryHandler repositoryHandler,
-			final IUnknownObjectChecker unknownObjectChecker,
-			final IControlsBuilder controlsBuilder) {
+	StatsDialogController(final StatsDialog frame) {
 		super(frame);
-		this.statisticsHandler = statisticsHandler;
-		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
+	 * Initializes controller
+	 */
+	public void initialize() {
 		this.lookAndFeelManager.addLookAndFeelChangeListener(this);
-		this.repositoryHandler = repositoryHandler;
-		this.unknownObjectChecker = unknownObjectChecker;
-		this.controlsBuilder = controlsBuilder;
 	}
 
 	/**
