@@ -41,48 +41,52 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  */
 public class SimilarArtistTableCellRendererCode extends
-	ContextTableRowPanelRendererCode<IArtistInfo> {
+		ContextTableRowPanelRendererCode<IArtistInfo> {
 
-    private IBeanFactory beanFactory;
+	private IBeanFactory beanFactory;
 
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
-    @Override
-    public String getCacheKeyControl(final IArtistInfo a) {
-	return a.getSimilarTo();
-    }
+	@Override
+	public String getCacheKeyControl(final IArtistInfo a) {
+		return a.getSimilarTo();
+	}
 
-    @Override
-    public ContextTableRowPanel<IArtistInfo> createPanel(
-	    final JComponent superComponent, final IArtistInfo value) {
-	return getPanelForTableRenderer(value.getImage(),
-		StringUtils.getString(
-			"<html>",
-			value.getName(),
-			"<br>",
-			value.getMatch(),
-			"%<br>",
-			value.isAvailable() ? I18nUtils
-				.getString("AVAILABLE_IN_REPOSITORY") : "",
-			"</html>"), Constants.THUMB_IMAGE_WIDTH);
-    }
+	@Override
+	public ContextTableRowPanel<IArtistInfo> createPanel(
+			final JComponent superComponent, final IArtistInfo value) {
+		return getPanelForTableRenderer(value.getImage(),
+				StringUtils.getString(
+						"<html>",
+						value.getName(),
+						"<br>",
+						value.getMatch(),
+						"%<br>",
+						value.isAvailable() ? I18nUtils
+								.getString("AVAILABLE_IN_REPOSITORY") : "",
+						"</html>"), Constants.THUMB_IMAGE_WIDTH);
+	}
 
-    @Override
-    public List<ContextTableAction<IArtistInfo>> getActions() {
-	List<ContextTableAction<IArtistInfo>> actions = new ArrayList<ContextTableAction<IArtistInfo>>();
-	ContextTableAction<IArtistInfo> readMore = beanFactory
-		.getBean(ReadMoreContextTableAction.class);
-	readMore.setTable(getTable());
-	ContextTableAction<IArtistInfo> addAlbum = beanFactory
-		.getBean(AddAlbumArtistToPlayListContextTableAction.class);
-	addAlbum.setTable(getTable());
-	actions.add(readMore);
-	actions.add(addAlbum);
-	return actions;
-    }
+	@Override
+	public List<ContextTableAction<IArtistInfo>> getActions() {
+		List<ContextTableAction<IArtistInfo>> actions = new ArrayList<ContextTableAction<IArtistInfo>>();
+		ContextTableAction<IArtistInfo> readMore = this.beanFactory
+				.getBean(ReadMoreContextTableAction.class);
+		readMore.setTable(getTable());
+		ContextTableAction<IArtistInfo> search = this.beanFactory
+				.getBean(SearchArtistContextTableAction.class);
+		search.setTable(getTable());
+		ContextTableAction<IArtistInfo> addAlbum = this.beanFactory
+				.getBean(AddAlbumArtistToPlayListContextTableAction.class);
+		addAlbum.setTable(getTable());
+		actions.add(readMore);
+		actions.add(search);
+		actions.add(addAlbum);
+		return actions;
+	}
 }

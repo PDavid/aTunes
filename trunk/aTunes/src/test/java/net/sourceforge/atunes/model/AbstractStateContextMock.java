@@ -28,80 +28,90 @@ public abstract class AbstractStateContextMock implements IStateContext {
 	public String getLastFmPassword() {
 		return null;
 	}
-	
+
 	@Override
 	public String getLastFmUser() {
 		return null;
 	}
-	
+
 	@Override
 	public List<ILyricsEngineInfo> getLyricsEnginesInfo() {
 		return null;
 	}
-	
+
 	@Override
 	public String getSelectedContextTab() {
 		return null;
 	}
-	
+
 	@Override
 	public boolean isAutoLoveFavoriteSong() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isLastFmEnabled() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isSaveContextPicture() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isShowContextAlbumsInGrid() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isUseContext() {
 		return false;
 	}
-	
+
 	@Override
-	public void setAutoLoveFavoriteSong(boolean autoLoveFavoriteSong) {
+	public void setAutoLoveFavoriteSong(final boolean autoLoveFavoriteSong) {
 	}
-	
+
 	@Override
-	public void setLastFmEnabled(boolean lastFmEnabled) {
+	public void setLastFmEnabled(final boolean lastFmEnabled) {
 	}
-	
+
 	@Override
-	public void setLastFmPassword(String lastFmPassword) {
+	public void setLastFmPassword(final String lastFmPassword) {
 	}
-	
+
 	@Override
-	public void setLastFmUser(String lastFmUser) {
+	public void setLastFmUser(final String lastFmUser) {
 	}
-	
+
 	@Override
-	public void setLyricsEnginesInfo(List<ILyricsEngineInfo> lyricsEnginesInfo) {
+	public void setLyricsEnginesInfo(
+			final List<ILyricsEngineInfo> lyricsEnginesInfo) {
 	}
-	
+
 	@Override
-	public void setSaveContextPicture(boolean saveContextPicture) {
+	public void setSaveContextPicture(final boolean saveContextPicture) {
 	}
-	
+
 	@Override
-	public void setSelectedContextTab(String selectedContextTab) {
+	public void setSelectedContextTab(final String selectedContextTab) {
 	}
-	
+
 	@Override
-	public void setShowContextAlbumsInGrid(boolean showContextAlbumsInGrid) {
+	public void setShowContextAlbumsInGrid(final boolean showContextAlbumsInGrid) {
 	}
-	
+
 	@Override
-	public void setUseContext(boolean useContext) {
+	public void setUseContext(final boolean useContext) {
+	}
+
+	@Override
+	public void setSimilarArtistSearchQuery(final String query) {
+	}
+
+	@Override
+	public String getSimilarArtistSearchQuery() {
+		return null;
 	}
 }
