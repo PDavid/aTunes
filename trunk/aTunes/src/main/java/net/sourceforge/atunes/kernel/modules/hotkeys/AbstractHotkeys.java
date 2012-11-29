@@ -28,77 +28,100 @@ import net.sourceforge.atunes.model.IHotkeyListener;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.Logger;
 
+/**
+ * Abstract implementation of hotkeys
+ * 
+ * @author alex
+ * 
+ */
 abstract class AbstractHotkeys {
 
-    private static final String NO_HOTKEYS_SUPPORTED = "No hotkeys supported";
-	private IHotkeyListener hotkeyListener;
+	private static final String NO_HOTKEYS_SUPPORTED = "No hotkeys supported";
+	private final IHotkeyListener hotkeyListener;
 
-    protected AbstractHotkeys(IHotkeyListener hotkeyListener) {
-        this.hotkeyListener = hotkeyListener;
-    }
+	/**
+	 * @param hotkeyListener
+	 */
+	protected AbstractHotkeys(final IHotkeyListener hotkeyListener) {
+		this.hotkeyListener = hotkeyListener;
+	}
 
-    /**
-     * Tries to register a hotkey in the system
-     * 
-     * @param hotkey
-     * @return <code>true</code> if hotkey was registered, <code>false</code>
-     *         otherwise
-     */
-    public abstract boolean registerHotkey(IHotkey hotkey);
+	/**
+	 * Tries to register a hotkey in the system
+	 * 
+	 * @param hotkey
+	 * @return <code>true</code> if hotkey was registered, <code>false</code>
+	 *         otherwise
+	 */
+	public abstract boolean registerHotkey(IHotkey hotkey);
 
-    public abstract void unregisterHotkey(IHotkey hotkey);
+	public abstract void unregisterHotkey(IHotkey hotkey);
 
-    public abstract void deactivate();
+	public abstract void deactivate();
 
-    public abstract void activate();
+	public abstract void activate();
 
-    public abstract void cleanUp();
+	public abstract void cleanUp();
 
-    public static AbstractHotkeys createInstance(IHotkeyListener hotkeyListener, IOSManager osManager) {
-        try {
-        	Class<?> clazz = getHotkeysClass(osManager);
-        	
-        	if (clazz != null) {
-                Constructor<?> constructor = clazz.getConstructor(IHotkeyListener.class);
-                return (AbstractHotkeys) constructor.newInstance(hotkeyListener);
-            } else {
-                return null;
-            }
-        } catch (SecurityException e) {
-            Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
-            return null;
+	/**
+	 * Creates an AbstractHotkeys instance
+	 * 
+	 * @param hotkeyListener
+	 * @param osManager
+	 * @return
+	 */
+	public static AbstractHotkeys createInstance(
+			final IHotkeyListener hotkeyListener, final IOSManager osManager) {
+		try {
+			Class<?> clazz = getHotkeysClass(osManager);
+
+			if (clazz != null) {
+				Constructor<?> constructor = clazz
+						.getConstructor(IHotkeyListener.class);
+				return (AbstractHotkeys) constructor
+						.newInstance(hotkeyListener);
+			} else {
+				return null;
+			}
+		} catch (SecurityException e) {
+			Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
+			return null;
 		} catch (NoSuchMethodException e) {
-            Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
-            return null;
+			Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
+			return null;
 		} catch (IllegalArgumentException e) {
-            Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
-            return null;
+			Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
+			return null;
 		} catch (InstantiationException e) {
-            Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
-            return null;
+			Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
+			return null;
 		} catch (IllegalAccessException e) {
-            Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
-            return null;
+			Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
+			return null;
 		} catch (InvocationTargetException e) {
-            Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
-            return null;
+			Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
+			return null;
 		}
-    }
+	}
 
 	/**
 	 * @param osManager
 	 * @return
 	 */
-	private static Class<?> getHotkeysClass(IOSManager osManager) {
+	private static Class<?> getHotkeysClass(final IOSManager osManager) {
 		if (osManager.isLinux()) {
 			return X11Hotkeys.class;
 		} else if (osManager.isWindows()) {
-			return WindowsHotkeys.isSupported(osManager) ? WindowsHotkeys.class : null;
+			return WindowsHotkeys.isSupported(osManager) ? WindowsHotkeys.class
+					: null;
 		}
 		return null;
 	}
 
-    protected IHotkeyListener getHotkeyListener() {
-        return hotkeyListener;
-    }
+	/**
+	 * @return hotkey listener
+	 */
+	protected IHotkeyListener getHotkeyListener() {
+		return this.hotkeyListener;
+	}
 }
