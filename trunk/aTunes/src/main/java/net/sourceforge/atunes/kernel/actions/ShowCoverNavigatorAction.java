@@ -20,12 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
 import net.sourceforge.atunes.kernel.modules.covernavigator.CoverNavigatorController;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
-import net.sourceforge.atunes.model.IControlsBuilder;
-import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IProcessFactory;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -41,41 +37,13 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction {
 
 	private IRepositoryHandler repositoryHandler;
 
-	private IAudioObjectImageLocator audioObjectImageLocator;
-
-	private IProcessFactory processFactory;
-
-	private IDialogFactory dialogFactory;
-
-	private IControlsBuilder controlsBuilder;
+	private IBeanFactory beanFactory;
 
 	/**
-	 * @param controlsBuilder
+	 * @param beanFactory
 	 */
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
-	}
-
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(final IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
-
-	/**
-	 * @param processFactory
-	 */
-	public void setProcessFactory(final IProcessFactory processFactory) {
-		this.processFactory = processFactory;
-	}
-
-	/**
-	 * @param audioObjectImageLocator
-	 */
-	public void setAudioObjectImageLocator(
-			final IAudioObjectImageLocator audioObjectImageLocator) {
-		this.audioObjectImageLocator = audioObjectImageLocator;
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -94,12 +62,9 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction {
 
 	@Override
 	protected void executeAction() {
-		CoverNavigatorDialog coverNavigator = this.dialogFactory
-				.newDialog(CoverNavigatorDialog.class);
-		coverNavigator.setArtists(this.repositoryHandler.getArtists());
-		new CoverNavigatorController(coverNavigator,
-				this.audioObjectImageLocator, this.processFactory,
-				this.controlsBuilder);
-		coverNavigator.setVisible(true);
+		CoverNavigatorController controller = this.beanFactory
+				.getBean(CoverNavigatorController.class);
+		controller.setArtists(this.repositoryHandler.getArtists());
+		controller.setVisible(true);
 	}
 }

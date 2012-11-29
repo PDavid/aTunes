@@ -187,6 +187,11 @@
 	<bean class="net.sourceforge.atunes.kernel.modules.statistics.StatsDialogController" scope="prototype" init-method="initialize">
 		<constructor-arg ref="statsDialog"/>
 	</bean>
+	
+	<bean id="coverNavigatorController" class="net.sourceforge.atunes.kernel.modules.covernavigator.CoverNavigatorController" init-method="addBindings">
+		<constructor-arg ref="coverNavigatorDialog"/>
+	</bean>
+	<bean id="coverNavigationListSelectionListener" class="net.sourceforge.atunes.kernel.modules.covernavigator.CoverNavigationListSelectionListener" scope="prototype"/>
 
 	
 </beans>
