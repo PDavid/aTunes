@@ -28,53 +28,63 @@ import javax.swing.JToggleButton;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
-public final class MuteButton extends JToggleButton implements ILookAndFeelChangeListener {
+/**
+ * Mute button
+ * 
+ * @author alex
+ * 
+ */
+public final class MuteButton extends JToggleButton implements
+		ILookAndFeelChangeListener {
 
-    private static final long serialVersionUID = 6007885049773560874L;
+	private static final long serialVersionUID = 6007885049773560874L;
 
-    private VolumeIconCalculator volumeIconCalculator;
-    
-    /**
-     * Instantiates a new mute button.
-     * 
-     * @param size
-     * @param muteAction
-     */
-    public MuteButton(Dimension size, Action muteAction) {
-        super(muteAction);
+	private VolumeIconCalculator volumeIconCalculator;
 
-        // Force size
-        setPreferredSize(size);
-        setMinimumSize(size);
-        setMaximumSize(size);
-        setFocusable(false);
-    }
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	/**
+	 * Instantiates a new mute button.
+	 * 
+	 * @param size
+	 * @param muteAction
+	 */
+	public MuteButton(final Dimension size, final Action muteAction) {
+		super(muteAction);
+
+		// Force size
+		setPreferredSize(size);
+		setMinimumSize(size);
+		setMaximumSize(size);
+		setFocusable(false);
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
 		lookAndFeelManager.addLookAndFeelChangeListener(this);
 	}
-    
-    /**
-     * @param volumeIconCalculator
-     */
-    public void setVolumeIconCalculator(VolumeIconCalculator volumeIconCalculator) {
+
+	/**
+	 * @param volumeIconCalculator
+	 */
+	public void setVolumeIconCalculator(
+			final VolumeIconCalculator volumeIconCalculator) {
 		this.volumeIconCalculator = volumeIconCalculator;
 	}
-    
-    @Override
-    public void lookAndFeelChanged() {
-    	updateIcon();
-    }
-    
-    /**
-     * Updates icon of mute
-     * @param state
-     */
-    public void updateIcon() {
-    	setIcon(volumeIconCalculator.getVolumeIcon());
-    }
+
+	@Override
+	public void lookAndFeelChanged() {
+		updateIcon();
+	}
+
+	/**
+	 * Updates icon of mute
+	 * 
+	 * @param state
+	 */
+	public void updateIcon() {
+		setIcon(this.volumeIconCalculator.getVolumeIcon());
+	}
 }

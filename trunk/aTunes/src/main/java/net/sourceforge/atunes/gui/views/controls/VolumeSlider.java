@@ -24,29 +24,36 @@ import java.awt.Dimension;
 
 import javax.swing.JSlider;
 
+/**
+ * Slider to control volume
+ * 
+ * @author alex
+ * 
+ */
 public final class VolumeSlider extends JSlider {
 
-    private static final long serialVersionUID = -7802263658163323018L;
+	private static final long serialVersionUID = -7802263658163323018L;
 
-    /**
-     * @param volumeSliderSize
-     */
-    public void setVolumeSliderSize(Dimension volumeSliderSize) {
-        setMinimumSize(volumeSliderSize);
-        setPreferredSize(volumeSliderSize);
+	/**
+	 * @param volumeSliderSize
+	 */
+	public void setVolumeSliderSize(final Dimension volumeSliderSize) {
+		setMinimumSize(volumeSliderSize);
+		setPreferredSize(volumeSliderSize);
 	}
-    
-    /**
-     * Slider to control volume
-     * @param state
-     * @param playerHandler
-     */
-    public VolumeSlider() {
-        super();
-        setOpaque(false);
-        setMinimum(0);
-        setMaximum(100);
-        setValue(50);
-        setFocusable(false);
-    }
+
+	/**
+	 * Slider to control volume
+	 * 
+	 * @param state
+	 * @param playerHandler
+	 */
+	public VolumeSlider() {
+		super();
+		setOpaque(false);
+		setMinimum(0);
+		setMaximum(100);
+		setValue(50);
+		setFocusable(false);
+	}
 }

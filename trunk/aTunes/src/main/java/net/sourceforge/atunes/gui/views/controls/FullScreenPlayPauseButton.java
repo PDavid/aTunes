@@ -28,24 +28,33 @@ import javax.swing.JButton;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 
+/**
+ * Play / pause button in full screen mode
+ * 
+ * @author alex
+ * 
+ */
 public final class FullScreenPlayPauseButton extends JButton {
 
 	private static final long serialVersionUID = 4348041346542204394L;
 
 	private boolean playing;
 
-	private ImageIcon playIcon;
+	private final ImageIcon playIcon;
 
-	private ImageIcon pauseIcon;
+	private final ImageIcon pauseIcon;
 
 	/**
 	 * Instantiates a new play pause button.
+	 * 
 	 * @param size
 	 * @param playIcon
 	 * @param pauseIcon
 	 * @param action
 	 */
-	public FullScreenPlayPauseButton(Dimension size, ImageIcon playIcon, ImageIcon pauseIcon, Action action) {
+	public FullScreenPlayPauseButton(final Dimension size,
+			final ImageIcon playIcon, final ImageIcon pauseIcon,
+			final Action action) {
 		super(action);
 		// Force size of button
 		setPreferredSize(size);
@@ -79,7 +88,7 @@ public final class FullScreenPlayPauseButton extends JButton {
 		});
 	}
 
-	private void setPlayingState(boolean playing) {
+	private void setPlayingState(final boolean playing) {
 		this.playing = playing;
 		setIcon();
 	}
@@ -90,14 +99,14 @@ public final class FullScreenPlayPauseButton extends JButton {
 	 * @return true, if is playing
 	 */
 	public boolean isPlaying() {
-		return playing;
+		return this.playing;
 	}
 
 	private void setIcon() {
-		if (playing) {
-			setIcon(pauseIcon);
+		if (this.playing) {
+			setIcon(this.pauseIcon);
 		} else {
-			setIcon(playIcon);
+			setIcon(this.playIcon);
 		}
 	}
 }

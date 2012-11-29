@@ -25,27 +25,34 @@ import javax.swing.JToggleButton;
 
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
+/**
+ * A player toggle control for secondary functions
+ * 
+ * @author alex
+ * 
+ */
 public class SecondaryToggleControl extends JToggleButton {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = -124604413114002586L;
+	private static final long serialVersionUID = -124604413114002586L;
 
-    /**
-     * @param a
-     * @param preferredSize
-     */
-    public SecondaryToggleControl(Action a) {
-        super(a);
-        setText(null);
-        setFocusable(false);
-    }
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-        lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
-    }    
+	/**
+	 * @param a
+	 * @param preferredSize
+	 */
+	public SecondaryToggleControl(final Action a) {
+		super(a);
+		setText(null);
+		setFocusable(false);
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
+	}
 }

@@ -29,6 +29,12 @@ import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
+/**
+ * Next button
+ * 
+ * @author alex
+ * 
+ */
 public final class NextButton extends JButton implements
 		ILookAndFeelChangeListener {
 
@@ -43,30 +49,31 @@ public final class NextButton extends JButton implements
 	/**
 	 * @param nextIcon
 	 */
-	public void setNextIcon(IIconFactory nextIcon) {
+	public void setNextIcon(final IIconFactory nextIcon) {
 		this.nextIcon = nextIcon;
 	}
 
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
 	/**
 	 * @param previousNextButtonSize
 	 */
-	public void setPreviousNextButtonSize(Dimension previousNextButtonSize) {
+	public void setPreviousNextButtonSize(final Dimension previousNextButtonSize) {
 		this.previousNextButtonSize = previousNextButtonSize;
 	}
 
 	/**
-	 * Instantiates a new next button. /**
+	 * Instantiates a new next button.
 	 * 
-	 * @param action
+	 * @param nextAction
 	 */
-	public NextButton(Action nextAction) {
+	public NextButton(final Action nextAction) {
 		super(nextAction);
 	}
 
@@ -74,14 +81,15 @@ public final class NextButton extends JButton implements
 	 * Initialize button
 	 */
 	public void initialize() {
-		setPreferredSize(previousNextButtonSize);
-		setMinimumSize(previousNextButtonSize);
-		setMaximumSize(previousNextButtonSize);
+		setPreferredSize(this.previousNextButtonSize);
+		setMinimumSize(this.previousNextButtonSize);
+		setMaximumSize(this.previousNextButtonSize);
 		setFocusable(false);
 		setText(null);
 		updateIcon();
-		lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
-		lookAndFeelManager.addLookAndFeelChangeListener(this);
+		this.lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(
+				this);
+		this.lookAndFeelManager.addLookAndFeelChangeListener(this);
 	}
 
 	@Override
@@ -90,7 +98,7 @@ public final class NextButton extends JButton implements
 	}
 
 	private void updateIcon() {
-		setIcon(nextIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel()
-				.getPaintForSpecialControls()));
+		setIcon(this.nextIcon.getIcon(this.lookAndFeelManager
+				.getCurrentLookAndFeel().getPaintForSpecialControls()));
 	}
 }

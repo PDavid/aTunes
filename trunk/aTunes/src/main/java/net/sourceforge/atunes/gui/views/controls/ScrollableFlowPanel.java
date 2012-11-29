@@ -29,62 +29,72 @@ import javax.swing.JPanel;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
+/**
+ * A panel that can be scrolled
+ * 
+ * @author alex
+ * 
+ */
 public class ScrollableFlowPanel extends JPanel implements Scrollable {
 
-    private static final long serialVersionUID = -6868667863386961211L;
+	private static final long serialVersionUID = -6868667863386961211L;
 
-    @Override
-    public Dimension getMinimumSize() {
-    	return getPreferredSize();
-    }
-    
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(getWidth(), getPreferredHeight());
-    }
-    
-    @Override
-    public Dimension getMaximumSize() {
-    	return getPreferredSize();
-    }
-    
-    @Override
-    public Dimension getPreferredScrollableViewportSize() {
-        return getPreferredSize();
-    }
+	@Override
+	public Dimension getMinimumSize() {
+		return getPreferredSize();
+	}
 
-    @Override
-    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-        int hundredth = (orientation == SwingConstants.VERTICAL ? getParent().getHeight() : getParent().getWidth()) / 100;
-        return (hundredth == 0 ? 1 : hundredth);
-    }
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(getWidth(), getPreferredHeight());
+	}
 
-    @Override
-    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return orientation == SwingConstants.VERTICAL ? getParent().getHeight() : getParent().getWidth();
-    }
+	@Override
+	public Dimension getMaximumSize() {
+		return getPreferredSize();
+	}
 
-    @Override
-    public boolean getScrollableTracksViewportWidth() {
-        return true;
-    }
+	@Override
+	public Dimension getPreferredScrollableViewportSize() {
+		return getPreferredSize();
+	}
 
-    @Override
-    public boolean getScrollableTracksViewportHeight() {
-        return false;
-    }
+	@Override
+	public int getScrollableUnitIncrement(final Rectangle visibleRect,
+			final int orientation, final int direction) {
+		int hundredth = (orientation == SwingConstants.VERTICAL ? getParent()
+				.getHeight() : getParent().getWidth()) / 100;
+		return (hundredth == 0 ? 1 : hundredth);
+	}
 
-    private int getPreferredHeight() {
-        int rv = 0;
-        for (int k = 0, count = getComponentCount(); k < count; k++) {
-            Component comp = getComponent(k);
-            Rectangle r = comp.getBounds();
-            int height = r.y + r.height;
-            if (height > rv) {
-                rv = height;
-            }
-        }
-        rv += ((FlowLayout) getLayout()).getVgap();
-        return rv;
-    }
+	@Override
+	public int getScrollableBlockIncrement(final Rectangle visibleRect,
+			final int orientation, final int direction) {
+		return orientation == SwingConstants.VERTICAL ? getParent().getHeight()
+				: getParent().getWidth();
+	}
+
+	@Override
+	public boolean getScrollableTracksViewportWidth() {
+		return true;
+	}
+
+	@Override
+	public boolean getScrollableTracksViewportHeight() {
+		return false;
+	}
+
+	private int getPreferredHeight() {
+		int rv = 0;
+		for (int k = 0, count = getComponentCount(); k < count; k++) {
+			Component comp = getComponent(k);
+			Rectangle r = comp.getBounds();
+			int height = r.y + r.height;
+			if (height > rv) {
+				rv = height;
+			}
+		}
+		rv += ((FlowLayout) getLayout()).getVgap();
+		return rv;
+	}
 }

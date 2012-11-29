@@ -44,82 +44,93 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.TimeUtils;
 
+/**
+ * Slider to show and move progress of an audio object
+ * 
+ * @author alex
+ * 
+ */
 public class ProgressSlider extends JPanel implements IProgressSlider {
 
-    private static final long serialVersionUID = 8921834666233975274L;
+	private static final long serialVersionUID = 8921834666233975274L;
 
-    private JLabel time;
-    private JLabel remainingTime;
-    private JSlider progressBar;
-    private JProgressBar indeterminateProgressBar;
-    
-    private boolean paintIcon = true;
-    
-    private boolean paintIconAllowed;
-    
-    /**
-     * @param paintIconAllowed
-     */
-    public void setPaintIconAllowed(boolean paintIconAllowed) {
+	private JLabel time;
+	private JLabel remainingTime;
+	private JSlider progressBar;
+	private JProgressBar indeterminateProgressBar;
+
+	private boolean paintIcon = true;
+
+	private boolean paintIconAllowed;
+
+	/**
+	 * @param paintIconAllowed
+	 */
+	public void setPaintIconAllowed(final boolean paintIconAllowed) {
 		this.paintIconAllowed = paintIconAllowed;
 	}
-    
-    /**
-     * Builds a new progress slider
-     */
-    public ProgressSlider() {
-        super(new GridBagLayout());
-    }
-    
-    /**
-     * Initialize component
-     */
-    public void initialize() {
-        time = new JLabel();
-        time.setHorizontalAlignment(SwingConstants.RIGHT);
-        // Need enough space to show time for long audio objects
-        time.setPreferredSize(new Dimension(100, 0));
 
-        progressBar = new JSlider();
-        progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
-        progressBar.setMinimum(0);
-        progressBar.setValue(0);
-        progressBar.setFocusable(false);
-        progressBar.setVisible(false);
-        
-        indeterminateProgressBar = new JProgressBar();
-        indeterminateProgressBar.setIndeterminate(true);
-        indeterminateProgressBar.setFocusable(false);
-        indeterminateProgressBar.setVisible(false);
-        indeterminateProgressBar.setBorderPainted(false);
-        
-        remainingTime = new JLabel();
-        remainingTime.setHorizontalAlignment(SwingConstants.LEFT);
-        // Need enough space to show time for long audio objects
-        remainingTime.setPreferredSize(new Dimension(100, 0));
+	/**
+	 * Builds a new progress slider
+	 */
+	public ProgressSlider() {
+		super(new GridBagLayout());
+	}
 
-        setLayout();
-    }
-    
-    /**
-     * Sets played time
-     * @param time in milliseconds
-     */
-    @Override
-	public void setProgress(long time, long remainingTime) {
-        boolean showDeterminateControls = time != 0 && remainingTime != 0;
-        boolean showIndeterminateControls = time > remainingTime && remainingTime == 0;                               
+	/**
+	 * Initialize component
+	 */
+	public void initialize() {
+		this.time = new JLabel();
+		this.time.setHorizontalAlignment(SwingConstants.RIGHT);
+		// Need enough space to show time for long audio objects
+		this.time.setPreferredSize(new Dimension(100, 0));
 
-        showControls(time, remainingTime, showDeterminateControls, showIndeterminateControls);
-       	
-       	if (paintIconAllowed) {
-       		boolean previousPaintIcon = paintIcon;
-       		this.paintIcon = !showDeterminateControls && !showIndeterminateControls;
-       		if (previousPaintIcon != paintIcon) {
-       			repaint();
-       		}
-       	}
-    }
+		this.progressBar = new JSlider();
+		this.progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
+		this.progressBar.setMinimum(0);
+		this.progressBar.setValue(0);
+		this.progressBar.setFocusable(false);
+		this.progressBar.setVisible(false);
+
+		this.indeterminateProgressBar = new JProgressBar();
+		this.indeterminateProgressBar.setIndeterminate(true);
+		this.indeterminateProgressBar.setFocusable(false);
+		this.indeterminateProgressBar.setVisible(false);
+		this.indeterminateProgressBar.setBorderPainted(false);
+
+		this.remainingTime = new JLabel();
+		this.remainingTime.setHorizontalAlignment(SwingConstants.LEFT);
+		// Need enough space to show time for long audio objects
+		this.remainingTime.setPreferredSize(new Dimension(100, 0));
+
+		setLayout();
+	}
+
+	/**
+	 * Sets played time
+	 * 
+	 * @param time
+	 *            in milliseconds
+	 */
+	@Override
+	public void setProgress(final long time, final long remainingTime) {
+		boolean showDeterminateControls = time != 0 && remainingTime != 0;
+		boolean showIndeterminateControls = time > remainingTime
+				&& remainingTime == 0;
+
+		showControls(time, remainingTime, showDeterminateControls,
+				showIndeterminateControls);
+
+		if (this.paintIconAllowed) {
+			boolean previousPaintIcon = this.paintIcon;
+			this.paintIcon = !showDeterminateControls
+					&& !showIndeterminateControls;
+			if (previousPaintIcon != this.paintIcon) {
+				repaint();
+			}
+		}
+	}
 
 	/**
 	 * @param time
@@ -127,19 +138,25 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 	 * @param showDeterminateControls
 	 * @param showIndeterminateControls
 	 */
-	private void showControls(long time, long remainingTime, boolean showDeterminateControls, boolean showIndeterminateControls) {
+	private void showControls(final long time, final long remainingTime,
+			final boolean showDeterminateControls,
+			final boolean showIndeterminateControls) {
 		if (showDeterminateControls && !showIndeterminateControls) {
 			this.time.setVisible(true);
-	        this.time.setText(time > 0 ? TimeUtils.millisecondsToHoursMinutesSeconds(time) : "");
-	       	this.remainingTime.setVisible(true);
-	        this.remainingTime.setText(remainingTime > 0 ? StringUtils.getString("- ", TimeUtils.millisecondsToHoursMinutesSeconds(remainingTime)) : "");
-	       	this.progressBar.setVisible(true);
-	       	this.indeterminateProgressBar.setVisible(false);
+			this.time.setText(time > 0 ? TimeUtils
+					.millisecondsToHoursMinutesSeconds(time) : "");
+			this.remainingTime.setVisible(true);
+			this.remainingTime.setText(remainingTime > 0 ? StringUtils
+					.getString("- ", TimeUtils
+							.millisecondsToHoursMinutesSeconds(remainingTime))
+					: "");
+			this.progressBar.setVisible(true);
+			this.indeterminateProgressBar.setVisible(false);
 		} else {
 			this.time.setVisible(false);
 			this.remainingTime.setVisible(false);
 			this.progressBar.setVisible(false);
-	       	this.indeterminateProgressBar.setVisible(showIndeterminateControls);
+			this.indeterminateProgressBar.setVisible(showIndeterminateControls);
 		}
 	}
 
@@ -147,143 +164,149 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 	 * Arrange components
 	 */
 	private void setLayout() {
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.weightx = 0;
-        c.insets = new Insets(0, 0, 3, 0);
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        add(time, c);
-        c.gridx = 1;
-        c.weightx = 1;
-        c.insets = new Insets(0, 0, 0, 0);
-        c.weighty = 1;
-        add(getProgressBarPanel(), c);
-        c.gridx = 2;
-        c.weightx = 0;
-        c.insets = new Insets(0, 0, 3, 0);
-        add(remainingTime, c);
-    }
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.weightx = 0;
+		c.insets = new Insets(0, 0, 3, 0);
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		add(this.time, c);
+		c.gridx = 1;
+		c.weightx = 1;
+		c.insets = new Insets(0, 0, 0, 0);
+		c.weighty = 1;
+		add(getProgressBarPanel(), c);
+		c.gridx = 2;
+		c.weightx = 0;
+		c.insets = new Insets(0, 0, 3, 0);
+		add(this.remainingTime, c);
+	}
 
 	/**
 	 * @return
 	 */
 	private JPanel getProgressBarPanel() {
 		JPanel progressBarPanel = new JPanel(new GridBagLayout());
-        progressBarPanel.setOpaque(false);
-        GridBagConstraints c = new GridBagConstraints();
-        c.weightx = 1;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        progressBarPanel.add(progressBar, c);
-        progressBarPanel.add(indeterminateProgressBar, c);
+		progressBarPanel.setOpaque(false);
+		GridBagConstraints c = new GridBagConstraints();
+		c.weightx = 1;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		progressBarPanel.add(this.progressBar, c);
+		progressBarPanel.add(this.indeterminateProgressBar, c);
 		return progressBarPanel;
 	}
 
 	/**
 	 * Delegate method
+	 * 
 	 * @param value
 	 */
 	@Override
-	public void setValue(int value) {
-		progressBar.setValue(value);
+	public void setValue(final int value) {
+		this.progressBar.setValue(value);
 	}
 
 	/**
 	 * Delegate method
+	 * 
 	 * @return
 	 */
 	@Override
 	public int getMaximum() {
-		return progressBar.getMaximum();
+		return this.progressBar.getMaximum();
 	}
 
 	/**
 	 * Delegate method
+	 * 
 	 * @return
 	 */
 	@Override
 	public int getProgressBarWidth() {
-		return progressBar.getWidth();
+		return this.progressBar.getWidth();
 	}
 
 	/**
 	 * Delegate method
+	 * 
 	 * @param length
 	 */
 	@Override
-	public void setMaximum(int length) {
-		progressBar.setMaximum(length);
+	public void setMaximum(final int length) {
+		this.progressBar.setMaximum(length);
 	}
 
 	/**
 	 * Delegate method
+	 * 
 	 * @return
 	 */
 	@Override
 	public int getValue() {
-		return progressBar.getValue();
+		return this.progressBar.getValue();
 	}
 
 	@Override
-	public void setFont(Font font) {
+	public void setFont(final Font font) {
 		// Can be null when calling "super"
-		if (time != null) {
-			time.setFont(font);
+		if (this.time != null) {
+			this.time.setFont(font);
 		}
-		if (remainingTime != null) {
-			remainingTime.setFont(font);
+		if (this.remainingTime != null) {
+			this.remainingTime.setFont(font);
 		}
 	}
-	
+
 	@Override
-	public synchronized void addMouseListener(MouseListener l) {
-		progressBar.addMouseListener(l);
+	public synchronized void addMouseListener(final MouseListener l) {
+		this.progressBar.addMouseListener(l);
 	}
-	
+
 	@Override
-	public synchronized void addKeyListener(KeyListener l) {
-		progressBar.addKeyListener(l);
+	public synchronized void addKeyListener(final KeyListener l) {
+		this.progressBar.addKeyListener(l);
 	}
-	
+
 	@Override
-	public void setEnabled(boolean enabled) {
-		progressBar.setEnabled(enabled);
+	public void setEnabled(final boolean enabled) {
+		this.progressBar.setEnabled(enabled);
 	}
-	
+
 	@Override
-	public void setOpaque(boolean isOpaque) {
+	public void setOpaque(final boolean isOpaque) {
 		super.setOpaque(isOpaque);
-		if (time != null) {
-			time.setOpaque(isOpaque);
+		if (this.time != null) {
+			this.time.setOpaque(isOpaque);
 		}
-		if (remainingTime != null) {
-			remainingTime.setOpaque(isOpaque);
+		if (this.remainingTime != null) {
+			this.remainingTime.setOpaque(isOpaque);
 		}
-		if (progressBar != null) {
-			progressBar.setOpaque(isOpaque);
+		if (this.progressBar != null) {
+			this.progressBar.setOpaque(isOpaque);
 		}
 	}
-	
+
 	@Override
 	public JPanel getSwingComponent() {
 		return this;
-	}    
-	
+	}
+
 	@Override
-	protected void paintComponent(Graphics g) {
+	protected void paintComponent(final Graphics g) {
 		super.paintComponent(g);
-		if (paintIcon && paintIconAllowed) {
+		if (this.paintIcon && this.paintIconAllowed) {
 			int width = getWidth();
 
 			Graphics2D graphics = (Graphics2D) g;
-			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+					RenderingHints.VALUE_ANTIALIAS_ON);
 
 			ImageIcon icon = Images.getImage(Images.APP_LOGO_48);
-			
-			graphics.drawImage(icon.getImage(), width / 2 - icon.getIconWidth() / 2, 2, null);
+
+			graphics.drawImage(icon.getImage(), width / 2 - icon.getIconWidth()
+					/ 2, 2, null);
 		}
 
 	}
 }
-
