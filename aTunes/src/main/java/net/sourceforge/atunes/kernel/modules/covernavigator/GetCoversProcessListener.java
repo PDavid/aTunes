@@ -30,39 +30,39 @@ import net.sourceforge.atunes.utils.Logger;
 final class GetCoversProcessListener implements IProcessListener<Void> {
 
 	private final CoverNavigatorController controller;
-	
+
 	/**
 	 * @param controller
 	 */
-	public GetCoversProcessListener(CoverNavigatorController controller) {
+	public GetCoversProcessListener(final CoverNavigatorController controller) {
 		this.controller = controller;
-	}
-	
-	@Override
-	public void processCanceled() {
-	    update();
 	}
 
 	@Override
-	public void processFinished(boolean ok, Void result) {
-	    update();
+	public void processCanceled() {
+		update();
+	}
+
+	@Override
+	public void processFinished(final boolean ok, final Void result) {
+		update();
 	}
 
 	/**
 	 * Called to update covers
 	 */
 	private void update() {
-	    try {
-	        SwingUtilities.invokeAndWait(new Runnable() {
-	            @Override
-	            public void run() {
-	                controller.updateCovers();
-	            }
-	        });
-	    } catch (InvocationTargetException e) {
-	    	Logger.error(e);
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run() {
+					GetCoversProcessListener.this.controller.updateCovers();
+				}
+			});
+		} catch (InvocationTargetException e) {
+			Logger.error(e);
 		} catch (InterruptedException e) {
-	    	Logger.error(e);
+			Logger.error(e);
 		}
 	}
 }

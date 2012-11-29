@@ -21,11 +21,9 @@
 package net.sourceforge.atunes.kernel.modules.covernavigator;
 
 import java.awt.Cursor;
+import java.util.List;
 
-import javax.swing.JList;
 import javax.swing.SwingWorker;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
@@ -49,43 +47,74 @@ public final class CoverNavigatorController extends
 	static final int COVER_PANEL_HEIGHT = Constants.COVER_NAVIGATOR_IMAGE_SIZE
 			.getSize() + 40;
 
-	private final IProcessFactory processFactory;
+	private IProcessFactory processFactory;
 
-	private final IAudioObjectImageLocator audioObjectImageLocator;
+	private IControlsBuilder controlsBuilder;
 
-	private final IControlsBuilder controlsBuilder;
+	private IAudioObjectImageLocator audioObjectImageLocator;
+
+	private CoverNavigationListSelectionListener coverNavigationListSelectionListener;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
+	/**
+	 * @param audioObjectImageLocator
+	 */
+	public void setAudioObjectImageLocator(
+			final IAudioObjectImageLocator audioObjectImageLocator) {
+		this.audioObjectImageLocator = audioObjectImageLocator;
+	}
+
+	/**
+	 * @param coverNavigationListSelectionListener
+	 */
+	public void setCoverNavigationListSelectionListener(
+			final CoverNavigationListSelectionListener coverNavigationListSelectionListener) {
+		this.coverNavigationListSelectionListener = coverNavigationListSelectionListener;
+	}
+
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(final IProcessFactory processFactory) {
+		this.processFactory = processFactory;
+	}
 
 	/**
 	 * Instantiates a new cover navigator controller.
 	 * 
 	 * @param frame
-	 * @param audioObjectImageLocator
-	 * @param processFactory
-	 * @param controlsBuilder
 	 */
-	public CoverNavigatorController(final CoverNavigatorDialog frame,
-			final IAudioObjectImageLocator audioObjectImageLocator,
-			final IProcessFactory processFactory,
-			final IControlsBuilder controlsBuilder) {
+	public CoverNavigatorController(final CoverNavigatorDialog frame) {
 		super(frame);
-		this.audioObjectImageLocator = audioObjectImageLocator;
-		this.processFactory = processFactory;
-		this.controlsBuilder = controlsBuilder;
-		addBindings();
+	}
+
+	/**
+	 * Sets list of artists
+	 * 
+	 * @param artists
+	 */
+	public void setArtists(final List<IArtist> artists) {
+		getComponentControlled().setArtists(artists);
+	}
+
+	/**
+	 * @param visible
+	 */
+	public void setVisible(final boolean visible) {
+		getComponentControlled().setVisible(visible);
 	}
 
 	@Override
 	public void addBindings() {
 		final CoverNavigatorDialog frame = getComponentControlled();
-		frame.getList().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(final ListSelectionEvent e) {
-				if (!((JList) e.getSource()).getValueIsAdjusting()) {
-					updateCovers();
-				}
-			}
-
-		});
+		frame.getList().addListSelectionListener(
+				this.coverNavigationListSelectionListener);
 		frame.getCoversButton().addActionListener(
 				new GetCoversButtonActionListener(this, this.processFactory,
 						frame));
@@ -94,22 +123,22 @@ public final class CoverNavigatorController extends
 	/**
 	 * Update covers.
 	 */
-	protected void updateCovers() {
+	void updateCovers() {
 		final IArtist artistSelected = (IArtist) getComponentControlled()
 				.getList().getSelectedValue();
 		if (artistSelected == null) {
 			return;
 		}
 
-		getComponentControlled().getCoversPanel().removeAll();
+		this.getComponentControlled().getCoversPanel().removeAll();
 
-		getComponentControlled().getList().setEnabled(false);
-		getComponentControlled().getCoversButton().setEnabled(false);
-		getComponentControlled().setCursor(
+		this.getComponentControlled().getList().setEnabled(false);
+		this.getComponentControlled().getCoversButton().setEnabled(false);
+		this.getComponentControlled().setCursor(
 				Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 		SwingWorker<Void, IntermediateResult> generateAndShowAlbumPanels = new GenerateAndShowAlbumPanelsSwingWorker(
-				getComponentControlled(), this.audioObjectImageLocator,
+				this.getComponentControlled(), this.audioObjectImageLocator,
 				artistSelected, this.controlsBuilder);
 		generateAndShowAlbumPanels.execute();
 	}
