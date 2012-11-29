@@ -28,24 +28,28 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
  * A JLabel that is repaint when look and feel changes
+ * 
  * @author fleax
- *
+ * 
  */
-public class LookAndFeelAwareLabel extends JLabel implements ILookAndFeelChangeListener {
+public class LookAndFeelAwareLabel extends JLabel implements
+		ILookAndFeelChangeListener {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5017109922596290169L;
 
-	private ILookAndFeelManager lookAndFeelManager;
-	
-	private IColorMutableImageIcon icon;
-	
+	private final ILookAndFeelManager lookAndFeelManager;
+
+	private final IColorMutableImageIcon icon;
+
 	/**
 	 * @param lookAndFeelManager
+	 * @param icon
 	 */
-	public LookAndFeelAwareLabel(ILookAndFeelManager lookAndFeelManager, IColorMutableImageIcon icon) {
+	public LookAndFeelAwareLabel(final ILookAndFeelManager lookAndFeelManager,
+			final IColorMutableImageIcon icon) {
 		super();
 		this.lookAndFeelManager = lookAndFeelManager;
 		this.icon = icon;
@@ -54,9 +58,10 @@ public class LookAndFeelAwareLabel extends JLabel implements ILookAndFeelChangeL
 	}
 
 	private void paintIcon() {
-		setIcon(icon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
+		setIcon(this.icon.getIcon(this.lookAndFeelManager
+				.getCurrentLookAndFeel().getPaintForSpecialControls()));
 	}
-	
+
 	@Override
 	public void lookAndFeelChanged() {
 		paintIcon();

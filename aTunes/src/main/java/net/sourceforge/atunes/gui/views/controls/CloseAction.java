@@ -22,17 +22,39 @@ package net.sourceforge.atunes.gui.views.controls;
 
 import javax.swing.WindowConstants;
 
+/**
+ * Types of actions when closing a dialog
+ * 
+ * @author alex
+ * 
+ */
 public enum CloseAction {
-	
-	DISPOSE(WindowConstants.DISPOSE_ON_CLOSE), HIDE(WindowConstants.HIDE_ON_CLOSE), NOTHING(WindowConstants.DO_NOTHING_ON_CLOSE);
-	
+
+	/**
+	 * Release memory of dialog
+	 */
+	DISPOSE(WindowConstants.DISPOSE_ON_CLOSE),
+
+	/**
+	 * Just hide dialog
+	 */
+	HIDE(WindowConstants.HIDE_ON_CLOSE),
+
+	/**
+	 * Ignore closes events
+	 */
+	NOTHING(WindowConstants.DO_NOTHING_ON_CLOSE);
+
 	private int constant;
-	
-	private CloseAction(int constant) {
+
+	private CloseAction(final int constant) {
 		this.constant = constant;
 	}
-	
+
+	/**
+	 * @return Swing constant associated
+	 */
 	public int getConstant() {
-		return constant;
+		return this.constant;
 	}
 }

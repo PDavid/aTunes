@@ -29,19 +29,22 @@ import javax.swing.event.PopupMenuListener;
  */
 public class JTrayIconPopupMenu extends JPopupMenu {
 
-    private static final long serialVersionUID = -220434547680783992L;
+	private static final long serialVersionUID = -220434547680783992L;
 
-    private PopupMenuListener listener;
-    
-    public JTrayIconPopupMenu(JTrayIcon trayIcon) {
-    	this.listener = trayIcon.getPopupMenuListener();
+	private final PopupMenuListener listener;
+
+	/**
+	 * @param trayIcon
+	 */
+	public JTrayIconPopupMenu(final JTrayIcon trayIcon) {
+		this.listener = trayIcon.getPopupMenuListener();
 	}
 
 	@Override
-    public void removePopupMenuListener(PopupMenuListener l) {
-        if (l.equals(listener)) {
-            return;
-        }
-        super.removePopupMenuListener(l);
-    }
+	public void removePopupMenuListener(final PopupMenuListener l) {
+		if (l.equals(this.listener)) {
+			return;
+		}
+		super.removePopupMenuListener(l);
+	}
 }

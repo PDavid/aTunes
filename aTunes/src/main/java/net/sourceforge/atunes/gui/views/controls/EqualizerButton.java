@@ -25,33 +25,41 @@ import javax.swing.Action;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 
+/**
+ * Secondary player control to manage equalizer
+ * 
+ * @author alex
+ * 
+ */
 public final class EqualizerButton extends SecondaryControl {
 
-    private static final long serialVersionUID = 6007885049773560874L;
+	private static final long serialVersionUID = 6007885049773560874L;
 
-    private IPlayerHandler playerHandler;
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
+	private IPlayerHandler playerHandler;
+
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
-    
-    /**
-     * Instantiates a new equalizer button.
-     * @param a
-     */
-    public EqualizerButton(Action a) {
-        super(a);
-    }
-    
-    /**
-     * Initializes control
-     */
-    public void initialize() {
-        if (!playerHandler.supportsCapability(PlayerEngineCapability.EQUALIZER)) {
-            setVisible(false);
-        }
-    }
+
+	/**
+	 * Instantiates a new equalizer button.
+	 * 
+	 * @param a
+	 */
+	public EqualizerButton(final Action a) {
+		super(a);
+	}
+
+	/**
+	 * Initializes control
+	 */
+	public void initialize() {
+		if (!this.playerHandler
+				.supportsCapability(PlayerEngineCapability.EQUALIZER)) {
+			setVisible(false);
+		}
+	}
 }

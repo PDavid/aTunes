@@ -25,39 +25,42 @@ import javax.swing.Action;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 
-/*
- * based on code from Xtreme Media Player
+/**
+ * Normalization button
+ * 
+ * @author alex
+ * 
  */
 public final class NormalizationButton extends SecondaryToggleControl {
 
-    private static final long serialVersionUID = 6007885049773560874L;
+	private static final long serialVersionUID = 6007885049773560874L;
 
-    private IPlayerHandler playerHandler;
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
+	private IPlayerHandler playerHandler;
+
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
-    
-    /**
-     * Instantiates a new Normalize button.
-     * @param lookAndFeelManager
-     * @param playerHandler
-     * @param preferredSize
-     */
-    public NormalizationButton(Action a) {
-        super(a);
-    }
-    
-    /**
-     * Initializes control
-     */
-    public void initialize() {
-        if (!playerHandler.supportsCapability(PlayerEngineCapability.NORMALIZATION)) {
-            setVisible(false);
-        }
-    }
+
+	/**
+	 * Instantiates a new Normalize button.
+	 * 
+	 * @param a
+	 */
+	public NormalizationButton(final Action a) {
+		super(a);
+	}
+
+	/**
+	 * Initializes control
+	 */
+	public void initialize() {
+		if (!this.playerHandler
+				.supportsCapability(PlayerEngineCapability.NORMALIZATION)) {
+			setVisible(false);
+		}
+	}
 
 }

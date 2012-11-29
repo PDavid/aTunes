@@ -26,27 +26,35 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+/**
+ * Next button in full screen mode
+ * 
+ * @author alex
+ * 
+ */
 public final class FullScreenNextButton extends JButton {
 
-    private static final long serialVersionUID = -4939372038840047335L;
+	private static final long serialVersionUID = -4939372038840047335L;
 
-    /**
-     * Instantiates a new next button.
-     * @param size
-     * @param icon
-     * @param action
-     */
-    public FullScreenNextButton(Dimension size, ImageIcon icon, Action action) {
-        super(action);
-        setPreferredSize(size);
-        setMinimumSize(size);
-        setMaximumSize(size);
-        setFocusable(false);
-        setText(null);
-        setIcon(icon);
-        
-        setOpaque(false);
-        setBorderPainted(false);
-        setContentAreaFilled(false);
-    }    
+	/**
+	 * Instantiates a new next button.
+	 * 
+	 * @param size
+	 * @param icon
+	 * @param action
+	 */
+	public FullScreenNextButton(final Dimension size, final ImageIcon icon,
+			final Action action) {
+		super(action);
+		setPreferredSize(size);
+		setMinimumSize(size);
+		setMaximumSize(size);
+		setFocusable(false);
+		setText(null);
+		setIcon(icon);
+
+		setOpaque(false);
+		setBorderPainted(false);
+		setContentAreaFilled(false);
+	}
 }

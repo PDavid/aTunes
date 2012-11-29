@@ -28,53 +28,61 @@ import net.sourceforge.atunes.model.IDesktop;
 
 import org.jdesktop.swingx.JXHyperlink;
 
+/**
+ * A label which opens browser when user clicks
+ * 
+ * @author alex
+ * 
+ */
 public final class UrlLabel extends JXHyperlink {
 
-    private static final long serialVersionUID = -8368596300673361747L;
+	private static final long serialVersionUID = -8368596300673361747L;
 
-    private IDesktop desktop;
-    
-    /**
-     * Instantiates a new url label.
-     * @param desktop
-     */
-    public UrlLabel(IDesktop desktop) {
-        super();
-        this.desktop = desktop;
-    }
+	private final IDesktop desktop;
 
-    /**
-     * Instantiates a new url label.
-     * 
-     * @param desktop
-     * @param text
-     * @param url
-     */
-    public UrlLabel(IDesktop desktop, String text, final String url) {
-        super(new Link(desktop, url));
-        this.desktop = desktop;
-        setTextAndColor(text);
-    }
+	/**
+	 * Instantiates a new url label.
+	 * 
+	 * @param desktop
+	 */
+	public UrlLabel(final IDesktop desktop) {
+		super();
+		this.desktop = desktop;
+	}
 
-    /**
-     * Sets the text.
-     * @param desktop
-     * @param text
-     * @param url
-     */
-    public void setText(String text, final String url) {
-        setAction(new Link(desktop, url));
-        setTextAndColor(text);
-    }
+	/**
+	 * Instantiates a new url label.
+	 * 
+	 * @param desktop
+	 * @param text
+	 * @param url
+	 */
+	public UrlLabel(final IDesktop desktop, final String text, final String url) {
+		super(new Link(desktop, url));
+		this.desktop = desktop;
+		setTextAndColor(text);
+	}
 
-    /**
-     * Sets the text and color.
-     * 
-     * @param text
-     *            the new text and color
-     */
-    private void setTextAndColor(String text) {
-        setText(text);
-        setForeground((Color) UIManager.get("Label.foreground"));
-    }
+	/**
+	 * Sets the text.
+	 * 
+	 * @param desktop
+	 * @param text
+	 * @param url
+	 */
+	public void setText(final String text, final String url) {
+		setAction(new Link(this.desktop, url));
+		setTextAndColor(text);
+	}
+
+	/**
+	 * Sets the text and color.
+	 * 
+	 * @param text
+	 *            the new text and color
+	 */
+	private void setTextAndColor(final String text) {
+		setText(text);
+		setForeground((Color) UIManager.get("Label.foreground"));
+	}
 }

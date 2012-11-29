@@ -29,6 +29,12 @@ import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
+/**
+ * Previous button
+ * 
+ * @author alex
+ * 
+ */
 public final class PreviousButton extends JButton implements
 		ILookAndFeelChangeListener {
 
@@ -43,14 +49,15 @@ public final class PreviousButton extends JButton implements
 	/**
 	 * @param previousIcon
 	 */
-	public void setPreviousIcon(IIconFactory previousIcon) {
+	public void setPreviousIcon(final IIconFactory previousIcon) {
 		this.previousIcon = previousIcon;
 	}
 
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
@@ -66,7 +73,7 @@ public final class PreviousButton extends JButton implements
 	 * 
 	 * @param previousAction
 	 */
-	public PreviousButton(Action previousAction) {
+	public PreviousButton(final Action previousAction) {
 		super(previousAction);
 	}
 
@@ -74,14 +81,15 @@ public final class PreviousButton extends JButton implements
 	 * Initialize button
 	 */
 	public void initialize() {
-		setPreferredSize(previousNextButtonSize);
-		setMinimumSize(previousNextButtonSize);
-		setMaximumSize(previousNextButtonSize);
+		setPreferredSize(this.previousNextButtonSize);
+		setMinimumSize(this.previousNextButtonSize);
+		setMaximumSize(this.previousNextButtonSize);
 		setFocusable(false);
 		setText(null);
 		updateIcon();
-		lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
-		lookAndFeelManager.addLookAndFeelChangeListener(this);
+		this.lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(
+				this);
+		this.lookAndFeelManager.addLookAndFeelChangeListener(this);
 	}
 
 	@Override
@@ -90,7 +98,7 @@ public final class PreviousButton extends JButton implements
 	}
 
 	private void updateIcon() {
-		setIcon(previousIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel()
-				.getPaintForSpecialControls()));
+		setIcon(this.previousIcon.getIcon(this.lookAndFeelManager
+				.getCurrentLookAndFeel().getPaintForSpecialControls()));
 	}
 }

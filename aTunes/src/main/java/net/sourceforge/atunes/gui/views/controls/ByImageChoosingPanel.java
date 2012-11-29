@@ -35,108 +35,143 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+/**
+ * A panel to choose an item given a list of images
+ * 
+ * @author alex
+ * 
+ * @param <T>
+ */
 public final class ByImageChoosingPanel<T> extends ScrollableFlowPanel {
 
-    public static class ImageEntry<U> {
+	/**
+	 * An image representing an object
+	 * 
+	 * @author alex
+	 * 
+	 * @param <U>
+	 */
+	public static class ImageEntry<U> {
 
-        private U object;
-        private ImageIcon image;
+		private final U object;
+		private final ImageIcon image;
 
-        public ImageEntry(U object, ImageIcon image) {
-            super();
-            this.object = object;
-            this.image = image;
-        }
+		/**
+		 * @param object
+		 * @param image
+		 */
+		public ImageEntry(final U object, final ImageIcon image) {
+			super();
+			this.object = object;
+			this.image = image;
+		}
 
-        public U getObject() {
-            return object;
-        }
+		/**
+		 * @return object
+		 */
+		public U getObject() {
+			return this.object;
+		}
 
-        public ImageIcon getImage() {
-            return image;
-        }
+		/**
+		 * @return image
+		 */
+		public ImageIcon getImage() {
+			return this.image;
+		}
 
-    }
+	}
 
-    private class CustomJRadioButton extends JRadioButton {
+	private static class CustomJRadioButton<T> extends JRadioButton {
 
-        private static final long serialVersionUID = -6933585654529381134L;
+		private static final long serialVersionUID = -6933585654529381134L;
 
-        private T object;
+		private final T object;
 
-        public CustomJRadioButton(T object) {
-            this.object = object;
-        }
+		public CustomJRadioButton(final T object) {
+			this.object = object;
+		}
 
-        public T getObject() {
-            return object;
-        }
-    }
+		public T getObject() {
+			return this.object;
+		}
+	}
 
-    private static final long serialVersionUID = -3541046889511348904L;
+	private static final long serialVersionUID = -3541046889511348904L;
 
-    private Set<CustomJRadioButton> buttons = new HashSet<CustomJRadioButton>();
-    private ButtonGroup buttonGroup = new ButtonGroup();
+	private final Set<CustomJRadioButton<T>> buttons = new HashSet<CustomJRadioButton<T>>();
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 
-    public ByImageChoosingPanel(List<? extends ImageEntry<T>> entries) {
-        setLayout(new FlowLayout(FlowLayout.LEADING, 20, 20));
-        init(entries);
-        setOpaque(false);
-    }
+	/**
+	 * @param entries
+	 */
+	public ByImageChoosingPanel(final List<? extends ImageEntry<T>> entries) {
+		setLayout(new FlowLayout(FlowLayout.LEADING, 20, 20));
+		init(entries);
+		setOpaque(false);
+	}
 
-    private void init(List<? extends ImageEntry<T>> entries) {
-        for (ImageEntry<T> entry : entries) {
-            JLabel imageLabel = new JLabel();
-            final CustomJRadioButton button = new CustomJRadioButton(entry.getObject());
-            button.setFocusPainted(false);
-            imageLabel.setIcon(entry.getImage());
-            buttons.add(button);
-            buttonGroup.add(button);
+	private void init(final List<? extends ImageEntry<T>> entries) {
+		for (ImageEntry<T> entry : entries) {
+			JLabel imageLabel = new JLabel();
+			final CustomJRadioButton<T> button = new CustomJRadioButton<T>(
+					entry.getObject());
+			button.setFocusPainted(false);
+			imageLabel.setIcon(entry.getImage());
+			this.buttons.add(button);
+			this.buttonGroup.add(button);
 
-            imageLabel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    button.setSelected(!button.isSelected());
-                }
-            });
+			imageLabel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(final MouseEvent e) {
+					button.setSelected(!button.isSelected());
+				}
+			});
 
-            JPanel panel = createPanel(imageLabel, button);
-            add(panel);
-        }
-    }
+			JPanel panel = createPanel(imageLabel, button);
+			add(panel);
+		}
+	}
 
-    private JPanel createPanel(JLabel imageLabel, CustomJRadioButton button) {
-        JPanel p = new JPanel(new GridBagLayout());
-        p.setOpaque(false);
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        p.add(imageLabel, c);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.NONE;
-        p.add(button, c);
-        return p;
-    }
+	private JPanel createPanel(final JLabel imageLabel,
+			final CustomJRadioButton<T> button) {
+		JPanel p = new JPanel(new GridBagLayout());
+		p.setOpaque(false);
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		p.add(imageLabel, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.NONE;
+		p.add(button, c);
+		return p;
+	}
 
-    public void setSelectedItem(T object) {
-        for (CustomJRadioButton button : buttons) {
-            if (button.getObject().equals(object)) {
-                button.setSelected(true);
-            }
-        }
-    }
+	/**
+	 * @param object
+	 */
+	public void setSelectedItem(final T object) {
+		for (CustomJRadioButton<T> button : this.buttons) {
+			if (button.getObject().equals(object)) {
+				button.setSelected(true);
+			}
+		}
+	}
 
-    public T getSelectedItem() {
-        for (CustomJRadioButton button : buttons) {
-            if (button.isSelected()) {
-                return button.getObject();
-            }
-        }
-        return null;
-    }
+	/**
+	 * @return
+	 */
+	public T getSelectedItem() {
+		for (CustomJRadioButton<T> button : this.buttons) {
+			if (button.isSelected()) {
+				return button.getObject();
+			}
+		}
+		return null;
+	}
 
 }

@@ -25,27 +25,34 @@ import javax.swing.JButton;
 
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
+/**
+ * A player button with secondary function
+ * 
+ * @author alex
+ * 
+ */
 public class SecondaryControl extends JButton {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = -124604413114002586L;
+	private static final long serialVersionUID = -124604413114002586L;
 
-    /**
-     * @param a
-     * @param preferredSize
-     */
-    public SecondaryControl(Action a) {
-        super(a);
-        setText(null);
-        setFocusable(false);
-    }
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-        lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
-    }    
+	/**
+	 * @param a
+	 * @param preferredSize
+	 */
+	public SecondaryControl(final Action a) {
+		super(a);
+		setText(null);
+		setFocusable(false);
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
+	}
 }
