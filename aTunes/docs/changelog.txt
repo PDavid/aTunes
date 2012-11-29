@@ -35,6 +35,7 @@ aTunes 2.2.0
 - Automatically remove objects from play lists that are no longer available
 - New action to remove common prefixes or suffixes from titles
 - Store song ratings in tag
+- New option to search for similar artist information in browser
 - FIX: Use last.fm API to obtain last.fm loved tracks
 - FIX: Detection of radio audio streams blocks playing
 - FIX: Start mplayer process with volume argument

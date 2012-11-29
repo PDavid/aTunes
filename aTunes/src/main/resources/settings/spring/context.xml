@@ -171,9 +171,19 @@
 	<bean id="contextTableAction" class="net.sourceforge.atunes.kernel.modules.context.ContextTableAction" abstract="true"/>
 	
 	<bean class="net.sourceforge.atunes.kernel.modules.context.similar.ReadMoreContextTableAction" parent="contextTableAction" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.context.similar.SearchArtistContextTableAction" parent="contextTableAction" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.context.similar.AddAlbumArtistToPlayListContextTableAction" parent="contextTableAction" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.context.artist.OpenAlbumUrlAction" parent="contextTableAction" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.context.youtube.OpenYoutubeVideoAction" parent="contextTableAction" scope="prototype"/>
+
+
+    <!-- SEARCH FOR SIMILAR ARTISTS -->
+	<bean id="similarArtistSearchQueryDefault" class="java.lang.String">
+		<constructor-arg value="http://www.google.com/search?q=%A"/>
+	</bean>	
+	<bean id="similarArtistSearchQueryWildcard" class="java.lang.String">
+		<constructor-arg value="%A"/>
+	</bean>
 	
 	
 </beans>

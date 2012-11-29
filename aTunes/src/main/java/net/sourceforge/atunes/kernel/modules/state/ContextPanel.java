@@ -36,6 +36,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode;
@@ -82,6 +83,8 @@ public final class ContextPanel extends AbstractPreferencesPanel {
 	private IBeanFactory beanFactory;
 
 	private IControlsBuilder controlsBuilder;
+
+	private JTextField similarArtistsQueryTextField;
 
 	/**
 	 * @param controlsBuilder
@@ -198,8 +201,12 @@ public final class ContextPanel extends AbstractPreferencesPanel {
 				.getCurrentLookAndFeel().getTableScrollPane(this.enginesTable);
 		enginesScrollPane.setMinimumSize(new Dimension(200, 100));
 
+		this.similarArtistsQueryTextField = this.controlsBuilder
+				.createTextField();
+		this.similarArtistsQueryTextField.setColumns(30);
+
 		arrangePanel(clearCache, info, enginesTableLabel, upButton, downButton,
-				enginesScrollPane);
+				enginesScrollPane, this.similarArtistsQueryTextField);
 	}
 
 	/**
@@ -209,10 +216,12 @@ public final class ContextPanel extends AbstractPreferencesPanel {
 	 * @param upButton
 	 * @param downButton
 	 * @param enginesScrollPane
+	 * @param similarArtistsQueryTextField2
 	 */
 	private void arrangePanel(final JButton clearCache, final JLabel info,
 			final JLabel enginesTableLabel, final JButton upButton,
-			final JButton downButton, final JScrollPane enginesScrollPane) {
+			final JButton downButton, final JScrollPane enginesScrollPane,
+			final JTextField similarArtistsQueryTextField2) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -224,27 +233,37 @@ public final class ContextPanel extends AbstractPreferencesPanel {
 		add(this.savePictures, c);
 		c.gridy = 2;
 		add(this.showAlbumsInGrid, c);
-		c.fill = GridBagConstraints.NONE;
 		c.gridy = 3;
+		c.gridx = 0;
+		c.weightx = 0;
 		c.insets = new Insets(10, 0, 10, 0);
-		add(clearCache, c);
+		add(new JLabel(I18nUtils.getString("SIMILAR_ARTIST_SEARCH_QUERY")), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		add(similarArtistsQueryTextField2, c);
+		c.gridx = 0;
+		c.fill = GridBagConstraints.NONE;
 		c.gridy = 4;
+		add(clearCache, c);
+		c.gridy = 5;
 		c.insets = new Insets(0, 0, 5, 0);
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		c.gridwidth = 2;
 		add(enginesTableLabel, c);
-		c.gridy = 5;
+		c.gridy = 6;
 		c.insets = new Insets(0, 10, 0, 0);
 		add(enginesScrollPane, c);
-		c.gridy = 6;
+		c.gridy = 7;
 		c.gridheight = 1;
 		c.insets = new Insets(0, 0, 0, 0);
 		JPanel p = new JPanel(new FlowLayout());
 		p.add(upButton);
 		p.add(downButton);
 		add(p, c);
-		c.gridy = 7;
-		c.insets = new Insets(20, 0, 0, 0);
+		c.gridy = 8;
 		c.weighty = 1;
+		c.insets = new Insets(20, 0, 0, 0);
 		add(info, c);
 	}
 
@@ -259,6 +278,9 @@ public final class ContextPanel extends AbstractPreferencesPanel {
 				.isShowContextAlbumsInGrid();
 		this.stateContext.setShowContextAlbumsInGrid(this.showAlbumsInGrid
 				.isSelected());
+		this.stateContext
+				.setSimilarArtistSearchQuery(this.similarArtistsQueryTextField
+						.getText());
 		return showAlbumsInGridPreviousValue != this.showAlbumsInGrid
 				.isSelected();
 	}
@@ -314,6 +336,8 @@ public final class ContextPanel extends AbstractPreferencesPanel {
 		setSavePictures(this.stateContext.isSaveContextPicture());
 		setLyricsEnginesInfo(this.stateContext.getLyricsEnginesInfo());
 		setShowAlbumsInGrid(this.stateContext.isShowContextAlbumsInGrid());
+		this.similarArtistsQueryTextField.setText(this.stateContext
+				.getSimilarArtistSearchQuery());
 	}
 
 	@Override
