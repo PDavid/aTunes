@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-
 /**
  * Responsible of playing music
  * @author alex
@@ -28,7 +27,7 @@ package net.sourceforge.atunes.model;
  */
 /**
  * @author alex
- *
+ * 
  */
 public interface IPlayerHandler extends IHandler {
 
@@ -93,6 +92,7 @@ public interface IPlayerHandler extends IHandler {
 
 	/**
 	 * Starts playing audio object in given position of visible play list
+	 * 
 	 * @param position
 	 */
 	public void playAudioObjectInPlayListPositionOfVisiblePlayList(int position);
@@ -119,6 +119,7 @@ public interface IPlayerHandler extends IHandler {
 	/**
 	 * Seek function: play current audio object from position defined by
 	 * parameter milliseconds or perCent
+	 * 
 	 * @param milliseconds
 	 * @param perCent
 	 */
@@ -136,6 +137,7 @@ public interface IPlayerHandler extends IHandler {
 
 	/**
 	 * Returns current audio object
+	 * 
 	 * @return
 	 */
 	public IAudioObject getAudioObject();
@@ -160,11 +162,6 @@ public interface IPlayerHandler extends IHandler {
 	public long getCurrentAudioObjectLength();
 
 	/**
-	 * @param playing
-	 */
-	public void setPlaying(boolean playing);
-
-	/**
 	 * Initializes after user have selected player engine
 	 */
 	public void initializeAndCheck();
@@ -184,6 +181,7 @@ public interface IPlayerHandler extends IHandler {
 	/**
 	 * This method must be implemented by player engines. Method to apply
 	 * equalizer values in player engine
+	 * 
 	 * @param enabled
 	 * @param eqSettings
 	 */

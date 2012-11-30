@@ -44,7 +44,8 @@ import net.sourceforge.atunes.utils.Logger;
 /**
  * The system tray handler.
  */
-public final class SystemTrayHandler extends AbstractHandler implements ISystemTrayHandler {
+public final class SystemTrayHandler extends AbstractHandler implements
+		ISystemTrayHandler {
 
 	private boolean trayInitialized;
 	private boolean trayIconVisible;
@@ -87,22 +88,23 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	/**
 	 * @param playerTrayIconsBuilder
 	 */
-	public void setPlayerTrayIconsBuilder(final PlayerTrayIconsBuilder playerTrayIconsBuilder) {
+	public void setPlayerTrayIconsBuilder(
+			final PlayerTrayIconsBuilder playerTrayIconsBuilder) {
 		this.playerTrayIconsBuilder = playerTrayIconsBuilder;
 	}
 
 	@Override
 	public void allHandlersInitialized() {
 		if (getOsManager().areTrayIconsSupported()) {
-			iconsHandler = getOsManager().getPlayerTrayIcons();
-			customTrayIcon = getOsManager().getTrayIcon();
+			this.iconsHandler = getOsManager().getPlayerTrayIcons();
+			this.customTrayIcon = getOsManager().getTrayIcon();
 			// System tray player
-			if (stateUI.isShowTrayPlayer()) {
+			if (this.stateUI.isShowTrayPlayer()) {
 				initTrayPlayerIcons();
 			}
 
 			// System tray
-			if (stateUI.isShowSystemTray()) {
+			if (this.stateUI.isShowSystemTray()) {
 				initTrayIcon();
 			}
 		}
@@ -121,9 +123,9 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	 * Inits the system tray.
 	 */
 	private void initSystemTray() {
-		if (!trayInitialized && SystemTray.isSupported()) {
-			tray = SystemTray.getSystemTray();
-			trayInitialized = true;
+		if (!this.trayInitialized && SystemTray.isSupported()) {
+			this.tray = SystemTray.getSystemTray();
+			this.trayInitialized = true;
 		}
 	}
 
@@ -133,7 +135,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	private void initTrayIcon() {
 		initSystemTray();
 		if (isTrayInitialized()) {
-			trayIconVisible = true;
+			this.trayIconVisible = true;
 			addTrayIcon(getTrayIcon());
 			getFrame().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		} else {
@@ -147,7 +149,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	private void initTrayPlayerIcons() {
 		initSystemTray();
 		if (isTrayInitialized()) {
-			trayPlayerVisible = true;
+			this.trayPlayerVisible = true;
 			// Icons must be added in reverse order
 			addTrayIcon(getNextTrayIcon());
 			addTrayIcon(getPlayTrayIcon());
@@ -165,23 +167,26 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	 */
 	private void addTrayIcon(final TrayIcon icon) {
 		try {
-			tray.add(icon);
+			this.tray.add(icon);
 		} catch (AWTException e) {
 			Logger.error(e);
 		}
 	}
 
-	@Override
-	public void setPlaying(final boolean playing) {
+	private void setPlaying(final boolean playing) {
 		this.playing = playing;
 		if (isTrayInitialized()) {
 			Image icon = null;
 			if (playing) {
-				customTrayIcon.setPlayMenuItemText(I18nUtils.getString("PAUSE"));
-				icon = iconsHandler.getPauseIcon(tray.getTrayIconSize());
+				this.customTrayIcon.setPlayMenuItemText(I18nUtils
+						.getString("PAUSE"));
+				icon = this.iconsHandler.getPauseIcon(this.tray
+						.getTrayIconSize());
 			} else {
-				customTrayIcon.setPlayMenuItemText(I18nUtils.getString("PLAY"));
-				icon = iconsHandler.getPlayIcon(tray.getTrayIconSize());
+				this.customTrayIcon.setPlayMenuItemText(I18nUtils
+						.getString("PLAY"));
+				icon = this.iconsHandler.getPlayIcon(this.tray
+						.getTrayIconSize());
 			}
 			getPlayTrayIcon().setImage(icon);
 		}
@@ -194,16 +199,17 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	 *            the new tray icon visible
 	 */
 	private void setTrayIconVisible(final boolean visible) {
-		if (visible && !trayIconVisible) {
+		if (visible && !this.trayIconVisible) {
 			initTrayIcon();
 			if (isTrayInitialized()) {
 				trayIconAdvice();
 			}
 		} else {
-			if (!visible && trayIconVisible && isTrayInitialized()) {
-				tray.remove(getTrayIcon());
-				getFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-				trayIconVisible = false;
+			if (!visible && this.trayIconVisible && isTrayInitialized()) {
+				this.tray.remove(getTrayIcon());
+				getFrame().setDefaultCloseOperation(
+						WindowConstants.DISPOSE_ON_CLOSE);
+				this.trayIconVisible = false;
 			}
 		}
 	}
@@ -215,15 +221,15 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	 *            the new tray player visible
 	 */
 	private void setTrayPlayerVisible(final boolean visible) {
-		if (visible && !trayPlayerVisible) {
+		if (visible && !this.trayPlayerVisible) {
 			initTrayPlayerIcons();
 		} else {
-			if (!visible && trayPlayerVisible && isTrayInitialized()) {
-				tray.remove(getPreviousTrayIcon());
-				tray.remove(getPlayTrayIcon());
-				tray.remove(getStopTrayIcon());
-				tray.remove(getNextTrayIcon());
-				trayPlayerVisible = false;
+			if (!visible && this.trayPlayerVisible && isTrayInitialized()) {
+				this.tray.remove(getPreviousTrayIcon());
+				this.tray.remove(getPlayTrayIcon());
+				this.tray.remove(getStopTrayIcon());
+				this.tray.remove(getNextTrayIcon());
+				this.trayPlayerVisible = false;
 			}
 		}
 	}
@@ -240,14 +246,16 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	private void trayIconAdvice() {
 		// For some reason, in Linux systems display message causes Swing freeze
 		if (!getOsManager().isLinux() && isTrayInitialized()) {
-			getTrayIcon().displayMessage(Constants.APP_NAME, I18nUtils.getString("TRAY_ICON_MESSAGE"), TrayIcon.MessageType.INFO);
+			getTrayIcon().displayMessage(Constants.APP_NAME,
+					I18nUtils.getString("TRAY_ICON_MESSAGE"),
+					TrayIcon.MessageType.INFO);
 		}
 	}
 
 	@Override
 	public void applicationStateChanged() {
-		setTrayIconVisible(stateUI.isShowSystemTray());
-		setTrayPlayerVisible(stateUI.isShowTrayPlayer());
+		setTrayIconVisible(this.stateUI.isShowSystemTray());
+		setTrayPlayerVisible(this.stateUI.isShowTrayPlayer());
 		updateTrayPlayerIconsColor();
 	}
 
@@ -255,15 +263,23 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	 * Changes color of tray player icons
 	 */
 	private void updateTrayPlayerIconsColor() {
-		if (trayPlayerVisible) {
-			getStopTrayIcon().setImage(iconsHandler.getStopIcon(tray.getTrayIconSize()));
-			if (playing) {
-				getPlayTrayIcon().setImage(iconsHandler.getPauseIcon(tray.getTrayIconSize()));
+		if (this.trayPlayerVisible) {
+			getStopTrayIcon().setImage(
+					this.iconsHandler.getStopIcon(this.tray.getTrayIconSize()));
+			if (this.playing) {
+				getPlayTrayIcon().setImage(
+						this.iconsHandler.getPauseIcon(this.tray
+								.getTrayIconSize()));
 			} else {
-				getPlayTrayIcon().setImage(iconsHandler.getPlayIcon(tray.getTrayIconSize()));
+				getPlayTrayIcon().setImage(
+						this.iconsHandler.getPlayIcon(this.tray
+								.getTrayIconSize()));
 			}
-			getNextTrayIcon().setImage(iconsHandler.getNextIcon(tray.getTrayIconSize()));
-			getPreviousTrayIcon().setImage(iconsHandler.getPreviousIcon(tray.getTrayIconSize()));
+			getNextTrayIcon().setImage(
+					this.iconsHandler.getNextIcon(this.tray.getTrayIconSize()));
+			getPreviousTrayIcon().setImage(
+					this.iconsHandler.getPreviousIcon(this.tray
+							.getTrayIconSize()));
 		}
 	}
 
@@ -273,10 +289,12 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	 * @return
 	 */
 	private TrayIcon getTrayIcon() {
-		if (trayIcon == null) {
-			trayIcon = customTrayIcon.getTrayIcon(Images.getImage(Images.APP_LOGO_32).getImage(), tray.getTrayIconSize().width);
+		if (this.trayIcon == null) {
+			this.trayIcon = this.customTrayIcon.getTrayIcon(
+					Images.getImage(Images.APP_LOGO_32).getImage(),
+					this.tray.getTrayIconSize().width);
 		}
-		return trayIcon;
+		return this.trayIcon;
 	}
 
 	/**
@@ -285,10 +303,11 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	 * @return
 	 */
 	private TrayIcon getNextTrayIcon() {
-		if (nextIcon == null) {
-			nextIcon = playerTrayIconsBuilder.getNextTrayIcon(tray.getTrayIconSize());
+		if (this.nextIcon == null) {
+			this.nextIcon = this.playerTrayIconsBuilder
+					.getNextTrayIcon(this.tray.getTrayIconSize());
 		}
-		return nextIcon;
+		return this.nextIcon;
 	}
 
 	/**
@@ -297,10 +316,11 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	 * @return
 	 */
 	private TrayIcon getStopTrayIcon() {
-		if (stopIcon == null) {
-			stopIcon = playerTrayIconsBuilder.getStopTrayIcon(tray.getTrayIconSize());
+		if (this.stopIcon == null) {
+			this.stopIcon = this.playerTrayIconsBuilder
+					.getStopTrayIcon(this.tray.getTrayIconSize());
 		}
-		return stopIcon;
+		return this.stopIcon;
 	}
 
 	/**
@@ -309,10 +329,11 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	 * @return
 	 */
 	private TrayIcon getPlayTrayIcon() {
-		if (playIcon == null) {
-			playIcon = playerTrayIconsBuilder.getPlayTrayIcon(tray.getTrayIconSize());
+		if (this.playIcon == null) {
+			this.playIcon = this.playerTrayIconsBuilder
+					.getPlayTrayIcon(this.tray.getTrayIconSize());
 		}
-		return playIcon;
+		return this.playIcon;
 	}
 
 	/**
@@ -321,31 +342,38 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	 * @return
 	 */
 	private TrayIcon getPreviousTrayIcon() {
-		if (previousIcon == null) {
-			previousIcon = playerTrayIconsBuilder.getPreviousTrayIcon(tray.getTrayIconSize());
+		if (this.previousIcon == null) {
+			this.previousIcon = this.playerTrayIconsBuilder
+					.getPreviousTrayIcon(this.tray.getTrayIconSize());
 		}
-		return previousIcon;
+		return this.previousIcon;
 	}
 
 	/**
 	 * @return the trayInitialized
 	 */
 	protected boolean isTrayInitialized() {
-		return trayInitialized;
+		return this.trayInitialized;
 	}
 
 	@Override
-	public void playbackStateChanged(final PlaybackState newState, final IAudioObject currentAudioObject) {
+	public void playbackStateChanged(final PlaybackState newState,
+			final IAudioObject currentAudioObject) {
 		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
 			public void run() {
-				playbackStateChangedEDT(currentAudioObject);
+				playbackStateChangedEDT(newState, currentAudioObject);
 			}
 		});
 	}
 
-	private void playbackStateChangedEDT(final IAudioObject currentAudioObject) {
-		String text = currentAudioObject != null ? currentAudioObject.getAudioObjectDescription(unknownObjectChecker) : "";
+	private void playbackStateChangedEDT(final PlaybackState newState,
+			final IAudioObject currentAudioObject) {
+		setPlaying(newState == PlaybackState.RESUMING
+				|| newState == PlaybackState.PLAYING);
+
+		String text = currentAudioObject != null ? currentAudioObject
+				.getAudioObjectDescription(this.unknownObjectChecker) : "";
 		StringBuilder strBuilder = new StringBuilder();
 		if (!text.equals("")) {
 			strBuilder.append(text);

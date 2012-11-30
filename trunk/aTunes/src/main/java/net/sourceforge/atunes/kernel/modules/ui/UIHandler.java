@@ -37,16 +37,12 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrameState;
-import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStateUI;
-import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.PlaybackState;
@@ -166,18 +162,6 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 	}
 
 	/**
-	 * Sets the playing.
-	 * 
-	 * @param playing
-	 *            the new playing
-	 */
-	private void setPlaying(final boolean playing) {
-		getBean(IPlayerHandler.class).setPlaying(playing);
-		getBean(IFullScreenHandler.class).setPlaying(playing);
-		getBean(ISystemTrayHandler.class).setPlaying(playing);
-	}
-
-	/**
 	 * Sets title bar text, adding app name and version.
 	 * 
 	 * @param text
@@ -282,26 +266,13 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 
 	private void playbackStateChangedEDT(final PlaybackState newState,
 			final IAudioObject currentAudioObject) {
-		if (newState == PlaybackState.PAUSED) {
-			// Pause
-			setPlaying(false);
-			setTitleBar("");
+		if (newState == PlaybackState.PAUSED
+				|| newState == PlaybackState.STOPPED) {
+			updateTitleBar(null);
 
-		} else if (newState == PlaybackState.RESUMING) {
-			// Resume
-			setPlaying(true);
-			updateTitleBar(getBean(IPlayListHandler.class)
-					.getCurrentAudioObjectFromCurrentPlayList());
-
-		} else if (newState == PlaybackState.PLAYING) {
-			// Playing
+		} else if (newState == PlaybackState.RESUMING
+				|| newState == PlaybackState.PLAYING) {
 			updateTitleBar(currentAudioObject);
-			setPlaying(true);
-
-		} else if (newState == PlaybackState.STOPPED) {
-			// Stop
-			setPlaying(false);
-			setTitleBar("");
 		}
 	}
 

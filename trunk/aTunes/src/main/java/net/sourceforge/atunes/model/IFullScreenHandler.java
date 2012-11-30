@@ -20,11 +20,11 @@
 
 package net.sourceforge.atunes.model;
 
-
 /**
  * Responsible of show a full screen window to show what is being played
+ * 
  * @author alex
- *
+ * 
  */
 public interface IFullScreenHandler extends IHandler {
 
@@ -34,13 +34,8 @@ public interface IFullScreenHandler extends IHandler {
 	public void toggleFullScreenVisibility();
 
 	/**
-	 * Sets playing
-	 * @param playing
-	 */
-	public void setPlaying(boolean playing);
-
-	/**
 	 * Returns true if full screen is visible
+	 * 
 	 * @return
 	 */
 	public boolean isVisible();

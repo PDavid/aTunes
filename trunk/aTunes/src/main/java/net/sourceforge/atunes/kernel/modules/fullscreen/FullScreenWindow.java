@@ -172,7 +172,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	/**
 	 * Initializes window
 	 */
-	public void initialize() {
+	public void initializeDialog() {
 		setLocation(0, 0);
 		setAlwaysOnTop(true);
 		setContent();
