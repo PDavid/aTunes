@@ -44,8 +44,9 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Responsible of filling tray menu with tray icons
+ * 
  * @author alex
- *
+ * 
  */
 public class MacTrayIconFiller implements ITrayIconFiller {
 
@@ -83,7 +84,7 @@ public class MacTrayIconFiller implements ITrayIconFiller {
 
 	@Override
 	public void setPlayMenuItemText(final String text) {
-		playMenuItem.setLabel(text);
+		getPlayMenuItem().setLabel(text);
 	}
 
 	/**
@@ -92,11 +93,12 @@ public class MacTrayIconFiller implements ITrayIconFiller {
 	 * @return
 	 */
 	private MenuItem getPlayMenuItem() {
-		if (playMenuItem == null) {
-			playMenuItem = new MenuItem(I18nUtils.getString("PLAY"));
-			playMenuItem.addActionListener(beanFactory.getBean(PlayAction.class));
+		if (this.playMenuItem == null) {
+			this.playMenuItem = new MenuItem(I18nUtils.getString("PLAY"));
+			this.playMenuItem.addActionListener(this.beanFactory
+					.getBean(PlayAction.class));
 		}
-		return playMenuItem;
+		return this.playMenuItem;
 	}
 
 	/**
@@ -106,7 +108,8 @@ public class MacTrayIconFiller implements ITrayIconFiller {
 	 */
 	private MenuItem getStopMenuItem() {
 		MenuItem mi = new MenuItem(I18nUtils.getString("STOP"));
-		mi.addActionListener(beanFactory.getBean(StopCurrentAudioObjectAction.class));
+		mi.addActionListener(this.beanFactory
+				.getBean(StopCurrentAudioObjectAction.class));
 		return mi;
 	}
 
@@ -117,7 +120,8 @@ public class MacTrayIconFiller implements ITrayIconFiller {
 	 */
 	private MenuItem getPreviousMenuItem() {
 		MenuItem mi = new MenuItem(I18nUtils.getString("PREVIOUS"));
-		mi.addActionListener(beanFactory.getBean(PlayPreviousAudioObjectAction.class));
+		mi.addActionListener(this.beanFactory
+				.getBean(PlayPreviousAudioObjectAction.class));
 		return mi;
 	}
 
@@ -128,7 +132,8 @@ public class MacTrayIconFiller implements ITrayIconFiller {
 	 */
 	private MenuItem getNextMenuItem() {
 		MenuItem mi = new MenuItem(I18nUtils.getString("NEXT"));
-		mi.addActionListener(beanFactory.getBean(PlayNextAudioObjectAction.class));
+		mi.addActionListener(this.beanFactory
+				.getBean(PlayNextAudioObjectAction.class));
 		return mi;
 	}
 
@@ -138,17 +143,21 @@ public class MacTrayIconFiller implements ITrayIconFiller {
 	 * @return
 	 */
 	private CheckboxMenuItem getMuteCheckBoxMenuItem() {
-		CheckboxMenuItem mute = new CheckboxMenuItem(I18nUtils.getString("MUTE"));
+		CheckboxMenuItem mute = new CheckboxMenuItem(
+				I18nUtils.getString("MUTE"));
 		mute.addItemListener(new ItemListener() {
 
 			@Override
 			public void itemStateChanged(final ItemEvent arg0) {
-				AbstractAction action = beanFactory.getBean(MuteAction.class);
-				action.putValue(AbstractAction.SELECTED_KEY, !(Boolean) action.getValue(AbstractAction.SELECTED_KEY));
+				AbstractAction action = MacTrayIconFiller.this.beanFactory
+						.getBean(MuteAction.class);
+				action.putValue(AbstractAction.SELECTED_KEY,
+						!(Boolean) action.getValue(AbstractAction.SELECTED_KEY));
 				action.actionPerformed(null);
 			}
 		});
-		boolean selected = (Boolean) beanFactory.getBean(MuteAction.class).getValue(AbstractAction.SELECTED_KEY);
+		boolean selected = (Boolean) this.beanFactory.getBean(MuteAction.class)
+				.getValue(AbstractAction.SELECTED_KEY);
 		mute.setState(selected);
 		return mute;
 	}
@@ -159,16 +168,20 @@ public class MacTrayIconFiller implements ITrayIconFiller {
 	 * @return
 	 */
 	private CheckboxMenuItem getShuffleCheckBoxMenuItem() {
-		CheckboxMenuItem mi = new CheckboxMenuItem(I18nUtils.getString("SHUFFLE"));
+		CheckboxMenuItem mi = new CheckboxMenuItem(
+				I18nUtils.getString("SHUFFLE"));
 		mi.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(final ItemEvent e) {
-				AbstractAction action = beanFactory.getBean(ShuffleModeAction.class);
-				action.putValue(AbstractAction.SELECTED_KEY, !(Boolean) action.getValue(AbstractAction.SELECTED_KEY));
+				AbstractAction action = MacTrayIconFiller.this.beanFactory
+						.getBean(ShuffleModeAction.class);
+				action.putValue(AbstractAction.SELECTED_KEY,
+						!(Boolean) action.getValue(AbstractAction.SELECTED_KEY));
 				action.actionPerformed(null);
 			}
 		});
-		boolean selected = (Boolean) beanFactory.getBean(ShuffleModeAction.class).getValue(AbstractAction.SELECTED_KEY);
+		boolean selected = (Boolean) this.beanFactory.getBean(
+				ShuffleModeAction.class).getValue(AbstractAction.SELECTED_KEY);
 		mi.setState(selected);
 		return mi;
 	}
@@ -177,16 +190,20 @@ public class MacTrayIconFiller implements ITrayIconFiller {
 	 * Getter for repeat menu item
 	 */
 	private CheckboxMenuItem getRepeatCheckBoxMenuItem() {
-		CheckboxMenuItem mi = new CheckboxMenuItem(I18nUtils.getString("REPEAT"));
+		CheckboxMenuItem mi = new CheckboxMenuItem(
+				I18nUtils.getString("REPEAT"));
 		mi.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(final ItemEvent e) {
-				AbstractAction action = beanFactory.getBean(RepeatModeAction.class);
-				action.putValue(AbstractAction.SELECTED_KEY, !(Boolean) action.getValue(AbstractAction.SELECTED_KEY));
+				AbstractAction action = MacTrayIconFiller.this.beanFactory
+						.getBean(RepeatModeAction.class);
+				action.putValue(AbstractAction.SELECTED_KEY,
+						!(Boolean) action.getValue(AbstractAction.SELECTED_KEY));
 				action.actionPerformed(null);
 			}
 		});
-		boolean selected = (Boolean) beanFactory.getBean(RepeatModeAction.class).getValue(AbstractAction.SELECTED_KEY);
+		boolean selected = (Boolean) this.beanFactory.getBean(
+				RepeatModeAction.class).getValue(AbstractAction.SELECTED_KEY);
 		mi.setState(selected);
 		return mi;
 	}
@@ -197,16 +214,21 @@ public class MacTrayIconFiller implements ITrayIconFiller {
 	 * @return
 	 */
 	private CheckboxMenuItem getShowOSDCheckBoxMenuItem() {
-		CheckboxMenuItem mi = new CheckboxMenuItem(I18nUtils.getString("SHOW_OSD"));
+		CheckboxMenuItem mi = new CheckboxMenuItem(
+				I18nUtils.getString("SHOW_OSD"));
 		mi.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(final ItemEvent e) {
-				AbstractAction action = beanFactory.getBean(ToggleOSDSettingAction.class);
-				action.putValue(AbstractAction.SELECTED_KEY, !(Boolean) action.getValue(AbstractAction.SELECTED_KEY));
+				AbstractAction action = MacTrayIconFiller.this.beanFactory
+						.getBean(ToggleOSDSettingAction.class);
+				action.putValue(AbstractAction.SELECTED_KEY,
+						!(Boolean) action.getValue(AbstractAction.SELECTED_KEY));
 				action.actionPerformed(null);
 			}
 		});
-		boolean selected = (Boolean) beanFactory.getBean(ToggleOSDSettingAction.class).getValue(AbstractAction.SELECTED_KEY);
+		boolean selected = (Boolean) this.beanFactory.getBean(
+				ToggleOSDSettingAction.class).getValue(
+				AbstractAction.SELECTED_KEY);
 		mi.setState(selected);
 		return mi;
 	}
@@ -218,7 +240,7 @@ public class MacTrayIconFiller implements ITrayIconFiller {
 	 */
 	private MenuItem getAboutMenuItem() {
 		MenuItem mi = new MenuItem(I18nUtils.getString("ABOUT"));
-		mi.addActionListener(beanFactory.getBean(ShowAboutAction.class));
+		mi.addActionListener(this.beanFactory.getBean(ShowAboutAction.class));
 		return mi;
 	}
 
@@ -229,7 +251,7 @@ public class MacTrayIconFiller implements ITrayIconFiller {
 	 */
 	private MenuItem getExitMenuItem() {
 		MenuItem mi = new MenuItem(I18nUtils.getString("EXIT"));
-		mi.addActionListener(beanFactory.getBean(ExitAction.class));
+		mi.addActionListener(this.beanFactory.getBean(ExitAction.class));
 		return mi;
 	}
 }

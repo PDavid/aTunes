@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IStatePlaylist;
+import net.sourceforge.atunes.model.PlaybackState;
 
 /**
  * Manages full screen window
@@ -36,122 +37,127 @@ import net.sourceforge.atunes.model.IStatePlaylist;
  * 
  */
 public class FullScreenHandler extends AbstractHandler implements
-	IFullScreenHandler {
+		IFullScreenHandler {
 
-    private FullScreenController controller;
+	private FullScreenController controller;
 
-    private IPlayListHandler playListHandler;
+	private IPlayListHandler playListHandler;
 
-    private IStatePlaylist statePlaylist;
+	private IStatePlaylist statePlaylist;
 
-    /**
-     * @param statePlaylist
-     */
-    public void setStatePlaylist(final IStatePlaylist statePlaylist) {
-	this.statePlaylist = statePlaylist;
-    }
-
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(final IPlayListHandler playListHandler) {
-	this.playListHandler = playListHandler;
-    }
-
-    @Override
-    public void playListCleared() {
-	// Next actions must be done ONLY if stopPlayerWhenPlayListClear is
-	// enabled
-	if (statePlaylist.isStopPlayerOnPlayListClear()
-		&& getFullScreenController() != null) {
-	    getFullScreenController().setAudioObjects(null);
+	/**
+	 * @param statePlaylist
+	 */
+	public void setStatePlaylist(final IStatePlaylist statePlaylist) {
+		this.statePlaylist = statePlaylist;
 	}
-    }
 
-    @Override
-    public void selectedAudioObjectChanged(final IAudioObject audioObject) {
-	updateAudioObjectsToShow(audioObject);
-    }
-
-    /**
-     * Returns full screen controller or null if not created, so it must be
-     * checked first
-     * 
-     * @return
-     */
-    private FullScreenController getFullScreenController() {
-	return controller;
-    }
-
-    /**
-     * Creates full screen controller, to be called only when needed
-     */
-    private void createFullScreenController() {
-	if (controller == null) {
-	    controller = getBean(FullScreenController.class);
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
 	}
-    }
 
-    /**
-     * @param audioObject
-     */
-    private void updateAudioObjectsToShow(final IAudioObject audioObject) {
-	if (getFullScreenController() != null) {
-	    getFullScreenController().setAudioObjects(
-		    getAudioObjectsToShow(audioObject));
+	@Override
+	public void playListCleared() {
+		// Next actions must be done ONLY if stopPlayerWhenPlayListClear is
+		// enabled
+		if (this.statePlaylist.isStopPlayerOnPlayListClear()
+				&& getFullScreenController() != null) {
+			getFullScreenController().setAudioObjects(null);
+		}
 	}
-    }
 
-    /**
-     * Returns audio objects to show in full screen: 2 previous audio objects,
-     * current one, and next three objects
-     * 
-     * @param current
-     *            current
-     * @return
-     */
-    private List<IAudioObject> getAudioObjectsToShow(final IAudioObject current) {
-	List<IAudioObject> objects = new ArrayList<IAudioObject>(6);
-	objects.add(playListHandler.getActivePlayList().getPreviousAudioObject(
-		2));
-	objects.add(playListHandler.getActivePlayList().getPreviousAudioObject(
-		1));
-	objects.add(current);
-	objects.add(playListHandler.getActivePlayList().getNextAudioObject(1));
-	objects.add(playListHandler.getActivePlayList().getNextAudioObject(2));
-
-	// This object is not shown, but image is prefetched
-	objects.add(playListHandler.getActivePlayList().getNextAudioObject(3));
-	return objects;
-    }
-
-    @Override
-    public void toggleFullScreenVisibility() {
-	// Here must create controller and window, as first call to this method
-	// will be when full screen becomes visible
-	createFullScreenController();
-
-	// Be sure to update audio objects before show window
-	if (!getFullScreenController().isVisible()) {
-	    updateAudioObjectsToShow(playListHandler
-		    .getCurrentAudioObjectFromCurrentPlayList());
+	@Override
+	public void selectedAudioObjectChanged(final IAudioObject audioObject) {
+		updateAudioObjectsToShow(audioObject);
 	}
-	getFullScreenController().toggleVisibility();
-    }
 
-    @Override
-    public void setPlaying(final boolean playing) {
-	if (getFullScreenController() != null) {
-	    getFullScreenController().setPlaying(playing);
+	/**
+	 * Returns full screen controller or null if not created, so it must be
+	 * checked first
+	 * 
+	 * @return
+	 */
+	private FullScreenController getFullScreenController() {
+		return this.controller;
 	}
-    }
 
-    @Override
-    public boolean isVisible() {
-	if (getFullScreenController() != null) {
-	    return getFullScreenController().isVisible();
+	/**
+	 * Creates full screen controller, to be called only when needed
+	 */
+	private void createFullScreenController() {
+		if (this.controller == null) {
+			this.controller = getBean(FullScreenController.class);
+		}
 	}
-	return false;
-    }
 
+	/**
+	 * @param audioObject
+	 */
+	private void updateAudioObjectsToShow(final IAudioObject audioObject) {
+		if (getFullScreenController() != null) {
+			getFullScreenController().setAudioObjects(
+					getAudioObjectsToShow(audioObject));
+		}
+	}
+
+	/**
+	 * Returns audio objects to show in full screen: 2 previous audio objects,
+	 * current one, and next three objects
+	 * 
+	 * @param current
+	 *            current
+	 * @return
+	 */
+	private List<IAudioObject> getAudioObjectsToShow(final IAudioObject current) {
+		List<IAudioObject> objects = new ArrayList<IAudioObject>(6);
+		objects.add(this.playListHandler.getActivePlayList()
+				.getPreviousAudioObject(2));
+		objects.add(this.playListHandler.getActivePlayList()
+				.getPreviousAudioObject(1));
+		objects.add(current);
+		objects.add(this.playListHandler.getActivePlayList()
+				.getNextAudioObject(1));
+		objects.add(this.playListHandler.getActivePlayList()
+				.getNextAudioObject(2));
+
+		// This object is not shown, but image is prefetched
+		objects.add(this.playListHandler.getActivePlayList()
+				.getNextAudioObject(3));
+		return objects;
+	}
+
+	@Override
+	public void toggleFullScreenVisibility() {
+		// Here must create controller and window, as first call to this method
+		// will be when full screen becomes visible
+		createFullScreenController();
+
+		// Be sure to update audio objects before show window
+		if (!getFullScreenController().isVisible()) {
+			updateAudioObjectsToShow(this.playListHandler
+					.getCurrentAudioObjectFromCurrentPlayList());
+		}
+		getFullScreenController().toggleVisibility();
+	}
+
+	@Override
+	public boolean isVisible() {
+		if (getFullScreenController() != null) {
+			return getFullScreenController().isVisible();
+		}
+		return false;
+	}
+
+	@Override
+	public void playbackStateChanged(final PlaybackState newState,
+			final IAudioObject currentAudioObject) {
+		if (getFullScreenController() != null) {
+			getFullScreenController().setPlaying(
+					newState == PlaybackState.RESUMING
+							|| newState == PlaybackState.PLAYING);
+		}
+	}
 }
