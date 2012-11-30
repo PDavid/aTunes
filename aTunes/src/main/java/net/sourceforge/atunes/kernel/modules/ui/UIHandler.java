@@ -31,6 +31,7 @@ import net.sourceforge.atunes.gui.FadingPopupFactory;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.model.ApplicationVersion.VersionType;
 import net.sourceforge.atunes.model.IAboutDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IControlsBuilder;
@@ -189,8 +190,11 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 			strBuilder.append(" - ");
 		}
 		strBuilder.append(Constants.APP_NAME);
-		strBuilder.append(" ");
-		strBuilder.append(Constants.VERSION.toShortString());
+		if (!Constants.VERSION.getVersionType().equals(VersionType.FINAL)) {
+			// Include version for beta and release candidate versions
+			strBuilder.append(" ");
+			strBuilder.append(Constants.VERSION.toShortString());
+		}
 
 		String result = strBuilder.toString();
 
