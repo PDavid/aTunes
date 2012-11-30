@@ -38,7 +38,8 @@ public final class Constants {
 	/**
 	 * Version of application
 	 */
-	public static final ApplicationVersion VERSION = new ApplicationVersion("", 2, 2, 0, VersionType.BETA, "", "http://www.atunes.org/update.php");
+	public static final ApplicationVersion VERSION = new ApplicationVersion("",
+			2, 2, 0, VersionType.BETA, "", "http://www.atunes.org/update.php");
 
 	/** File containing log4j properties. */
 	public static final String LOG4J_FILE = "/settings/log4j.properties";
@@ -77,7 +78,8 @@ public final class Constants {
 	public static final String APP_DESCRIPTION = "GPL Audio Player";
 
 	/** Version string. */
-	public static final String APP_VERSION = StringUtils.getString("Version ", VERSION.toString());
+	public static final String APP_VERSION = StringUtils.getString("Version ",
+			VERSION.toString());
 
 	/** Author and year. */
 	public static final String APP_AUTHOR = "2006-2010 The aTunes Team";
@@ -158,13 +160,15 @@ public final class Constants {
 	public static final String LUCENE_INDEX_DIR = "index";
 
 	/** Repository index dir. */
-	public static final String REPOSITORY_INDEX_DIR = LUCENE_INDEX_DIR + "/repository";
+	public static final String REPOSITORY_INDEX_DIR = LUCENE_INDEX_DIR
+			+ "/repository";
 
 	/** Device index dir. */
 	public static final String DEVICE_INDEX_DIR = LUCENE_INDEX_DIR + "/device";
 
 	/** Favorites index dir. */
-	public static final String FAVORITES_INDEX_DIR = LUCENE_INDEX_DIR + "/favorites";
+	public static final String FAVORITES_INDEX_DIR = LUCENE_INDEX_DIR
+			+ "/favorites";
 
 	/** Radio index dir. */
 	public static final String RADIO_INDEX_DIR = LUCENE_INDEX_DIR + "/radio";
@@ -174,7 +178,6 @@ public final class Constants {
 
 	/** Temp dir. */
 	public static final String TEMP_DIR = "temp";
-
 
 	/**
 	 * Name of the file used to store device identifier
@@ -207,7 +210,6 @@ public final class Constants {
 	/** Plugins dir */
 	public static final String PLUGINS_DIR = "plugins";
 
-
 	/**
 	 * Default player engine
 	 */
@@ -217,6 +219,5 @@ public final class Constants {
 	 * Prefix used in all commands when invoked
 	 */
 	public static final String COMMAND_PREFIX = "command:";
-
 
 }
