@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.context.similar;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -40,6 +41,15 @@ public final class SearchArtistContextTableAction extends
 	private IStateContext stateContext;
 
 	private IBeanFactory beanFactory;
+
+	private INetworkHandler networkHandler;
+
+	/**
+	 * @param networkHandler
+	 */
+	public void setNetworkHandler(final INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
 
 	/**
 	 * @param beanFactory
@@ -64,11 +74,11 @@ public final class SearchArtistContextTableAction extends
 
 	@Override
 	protected void execute(final IArtistInfo object) {
-		getDesktop().openURL(
-				this.stateContext.getSimilarArtistSearchQuery().replace(
-						this.beanFactory.getBean(
-								"similarArtistSearchQueryWildcard",
-								String.class), object.getName()));
+		String url = this.stateContext.getSimilarArtistSearchQuery().replace(
+				this.beanFactory.getBean("similarArtistSearchQueryWildcard",
+						String.class),
+				this.networkHandler.encodeString(object.getName()));
+		getDesktop().openURL(url);
 	}
 
 	@Override
