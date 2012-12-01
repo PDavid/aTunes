@@ -9,8 +9,10 @@
 		diskPersistent="true" diskExpiryThreadIntervalSeconds="1"
 		memoryStoreEvictionPolicy="LFU" />
 
+
+    <!--  timeToIdle and timeToLive to one week -->
 	<cache name="cache" maxElementsInMemory="1"
-		maxElementsOnDisk="1000000" eternal="true" overflowToDisk="true"
+		maxElementsOnDisk="1000000" timeToIdleSeconds="604800" timeToLiveSeconds="604800" overflowToDisk="true"
 		diskSpoolBufferSizeMB="5" diskPersistent="true"
 		memoryStoreEvictionPolicy="LFU" />
 
