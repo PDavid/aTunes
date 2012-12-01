@@ -18,14 +18,13 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.decorators;
+package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.awt.Component;
 
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.kernel.modules.navigator.ExtendedTooltipContent;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.Album;
