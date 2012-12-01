@@ -22,7 +22,7 @@
 	<bean id="stringTreeCellDecorator"
 		class="net.sourceforge.atunes.gui.views.decorators.StringTreeCellDecorator" />
 	<bean id="tooltipTreeCellDecorator"
-		class="net.sourceforge.atunes.gui.views.decorators.TooltipTreeCellDecorator" />
+		class="net.sourceforge.atunes.kernel.modules.navigator.TooltipTreeCellDecorator" />
 	<bean id="unknownElementTreeCellDecorator"
 		class="net.sourceforge.atunes.gui.views.decorators.UnknownElementTreeCellDecorator" />
 	<bean id="yearTreeCellDecorator"
