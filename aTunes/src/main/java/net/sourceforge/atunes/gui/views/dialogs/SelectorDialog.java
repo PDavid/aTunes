@@ -81,7 +81,7 @@ public final class SelectorDialog extends AbstractCustomDialog implements
 	@Override
 	public void setOptions(final String[] options) {
 		this.list.setListData(options);
-		this.list.setSelectedIndex(0);
+		this.list.setSelectedIndex(-1);
 	}
 
 	@Override

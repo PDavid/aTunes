@@ -41,7 +41,6 @@ import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IEqualizerDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.ISelectorDialog;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -54,57 +53,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class EqualizerDialog extends AbstractCustomDialog implements
 		IEqualizerDialog {
-
-	private final class CancelActionListener implements ActionListener {
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			EqualizerDialog.this.setVisible(false);
-		}
-	}
-
-	private final class ApplyActionListener implements ActionListener {
-		// When Apply is clicked, save settings and change application state
-		// and restart the current playing media from its's last postion
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			EqualizerDialog.this.equalizer.setEqualizerFromGUI(
-					EqualizerDialog.this.equalizerEnabled.isSelected(),
-					EqualizerDialog.this.bands);
-		}
-	}
-
-	private final class OkActionListener implements ActionListener {
-		// When OK is clicked, save settings and change application state
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			EqualizerDialog.this.equalizer.setEqualizerFromGUI(
-					EqualizerDialog.this.equalizerEnabled.isSelected(),
-					EqualizerDialog.this.bands);
-			EqualizerDialog.this.setVisible(false);
-		}
-	}
-
-	private final class LoadPresetActionListener implements ActionListener {
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			String[] names = EqualizerDialog.this.equalizer.getPresetsNames();
-
-			// Show selector
-			ISelectorDialog selector = EqualizerDialog.this.dialogFactory
-					.newDialog(ISelectorDialog.class);
-			selector.setTitle(I18nUtils.getString("LOAD_PRESET"));
-			selector.setOptions(names);
-			selector.showDialog();
-
-			// Get result
-			Integer[] presets = EqualizerDialog.this.equalizer
-					.getPresetByNameForShowInGUI(selector.getSelection());
-
-			for (int i = 0; i < EqualizerDialog.this.bands.length; i++) {
-				EqualizerDialog.this.bands[i].setValue(presets[i]);
-			}
-		}
-	}
 
 	private static final long serialVersionUID = 7295438534550341824L;
 
@@ -146,6 +94,14 @@ public final class EqualizerDialog extends AbstractCustomDialog implements
 	}
 
 	/**
+	 * Updates equalizer
+	 */
+	void updateEqualizer() {
+		this.equalizer.setEqualizerFromGUI(this.equalizerEnabled.isSelected(),
+				this.bands);
+	}
+
+	/**
 	 * @param equalizer
 	 */
 	public void setEqualizer(final IEqualizer equalizer) {
@@ -169,6 +125,10 @@ public final class EqualizerDialog extends AbstractCustomDialog implements
 		add(getContent());
 		setResizable(false);
 		setEqualizerState();
+	}
+
+	JSlider[] getBands() {
+		return this.bands;
 	}
 
 	/**
@@ -231,16 +191,17 @@ public final class EqualizerDialog extends AbstractCustomDialog implements
 				I18nUtils.getString("CAN_ONLY_CHANGE_WHEN_STOPPED"));
 
 		this.loadPresetButton = new JButton(I18nUtils.getString("LOAD_PRESET"));
-		this.loadPresetButton.addActionListener(new LoadPresetActionListener());
+		this.loadPresetButton.addActionListener(new LoadPresetActionListener(
+				this.equalizer, this.dialogFactory, this));
 
 		JButton okButton = new JButton(I18nUtils.getString("OK"));
-		okButton.addActionListener(new OkActionListener());
+		okButton.addActionListener(new OkActionListener(this));
 
 		this.applyButton = new JButton(I18nUtils.getString("APPLY"));
-		this.applyButton.addActionListener(new ApplyActionListener());
+		this.applyButton.addActionListener(new ApplyActionListener(this));
 
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
-		cancelButton.addActionListener(new CancelActionListener());
+		cancelButton.addActionListener(new CancelActionListener(this));
 
 		arrangePanel(panel, this.equalizerEnabled, this.labels,
 				this.changeWhenStopped, this.loadPresetButton, okButton,
