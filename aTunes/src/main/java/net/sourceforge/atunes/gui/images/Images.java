@@ -33,43 +33,102 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class Images {
 
-    // Every time a image is added, an attribute must be added
-    public static final String APP_LOGO_16 = "logo16x16.png";
-    public static final String APP_LOGO_24 = "logo24x24.png";
-    public static final String APP_LOGO_32 = "logo32x32.png";
-    public static final String APP_LOGO_48 = "logo48x48.png";
-    public static final String APP_LOGO_90 = "logo90x90.png";
-    public static final String APP_LOGO_150 = "logo150x150.png";
-    public static final String APP_LOGO_300 = "logo300x300.png";
-    public static final String APP_LOGO_TRAY_ICON_MAC = "trayIconMac.png";
-    public static final String POWERED_BY_LAST_FM = "poweredByLastFm.png";
-    public static final String PREVIOUS_TRAY_ICON_MAC = "previousTrayIconMac.png";
-    public static final String NEXT_TRAY_ICON_MAC = "nextTrayIconMac.png";
-    public static final String STOP_TRAY_ICON_MAC = "stopTrayIconMac.png";
-    public static final String PLAY_TRAY_ICON_MAC = "playTrayIconMac.png";
-    public static final String PAUSE_TRAY_ICON_MAC = "pauseTrayIconMac.png";
-    public static final String PREVIOUS_FULL_SCREEN = "previousFullScreen.png";
-    public static final String PROJECT_SUPPORT = "project-support.jpg";
-    public static final String NEXT_FULL_SCREEN = "nextFullScreen.png";
-    public static final String PLAY_FULL_SCREEN = "playFullScreen.png";
-    public static final String PAUSE_FULL_SCREEN = "pauseFullScreen.png";
-    
-    private Images() {}
+	/**
+	 * Logo 16x16
+	 */
+	public static final String APP_LOGO_16 = "logo16x16.png";
+	/**
+	 * Logo 24x24
+	 */
+	public static final String APP_LOGO_24 = "logo24x24.png";
+	/**
+	 * Logo 32x32
+	 */
+	public static final String APP_LOGO_32 = "logo32x32.png";
+	/**
+	 * Logo 48x48
+	 */
+	public static final String APP_LOGO_48 = "logo48x48.png";
+	/**
+	 * Logo 90x90
+	 */
+	public static final String APP_LOGO_90 = "logo90x90.png";
+	/**
+	 * Logo 150x150
+	 */
+	public static final String APP_LOGO_150 = "logo150x150.png";
+	/**
+	 * Logo 300x300
+	 */
+	public static final String APP_LOGO_300 = "logo300x300.png";
+	/**
+	 * Logo for tray icon in mac
+	 */
+	public static final String APP_LOGO_TRAY_ICON_MAC = "trayIconMac.png";
+	/**
+	 * Last.fm logo
+	 */
+	public static final String POWERED_BY_LAST_FM = "poweredByLastFm.png";
+	/**
+	 * Previous icon for tray icon in mac
+	 */
+	public static final String PREVIOUS_TRAY_ICON_MAC = "previousTrayIconMac.png";
+	/**
+	 * Next icon for tray icon in mac
+	 */
+	public static final String NEXT_TRAY_ICON_MAC = "nextTrayIconMac.png";
+	/**
+	 * Stop icon for tray icon in mac
+	 */
+	public static final String STOP_TRAY_ICON_MAC = "stopTrayIconMac.png";
+	/**
+	 * Play icon for tray icon in mac
+	 */
+	public static final String PLAY_TRAY_ICON_MAC = "playTrayIconMac.png";
+	/**
+	 * Pause icon for tray icon in mac
+	 */
+	public static final String PAUSE_TRAY_ICON_MAC = "pauseTrayIconMac.png";
+	/**
+	 * Previous icon for full screen
+	 */
+	public static final String PREVIOUS_FULL_SCREEN = "previousFullScreen.png";
+	/**
+	 * Sourceforge donation button
+	 */
+	public static final String PROJECT_SUPPORT = "project-support.jpg";
+	/**
+	 * Next icon for full screen
+	 */
+	public static final String NEXT_FULL_SCREEN = "nextFullScreen.png";
+	/**
+	 * Play icon for full screen
+	 */
+	public static final String PLAY_FULL_SCREEN = "playFullScreen.png";
+	/**
+	 * Pause icon for full screen
+	 */
+	public static final String PAUSE_FULL_SCREEN = "pauseFullScreen.png";
 
-    /**
-     * Returns an image.
-     * 
-     * @param imgName
-     *            the img name
-     * 
-     * @return An ImageIcon
-     */
-    public static ImageIcon getImage(String imgName) {
-    	URL imgURL = Images.class.getResource(StringUtils.getString("/images/", imgName));
-    	if (imgURL != null) {
-    		return new ImageIcon(imgURL);
-    	} else {
-    		throw new IllegalArgumentException(StringUtils.getString("Image not found: ", imgName));
-    	}
-    }
+	private Images() {
+	}
+
+	/**
+	 * Returns an image.
+	 * 
+	 * @param imgName
+	 *            the img name
+	 * 
+	 * @return An ImageIcon
+	 */
+	public static ImageIcon getImage(final String imgName) {
+		URL imgURL = Images.class.getResource(StringUtils.getString("/images/",
+				imgName));
+		if (imgURL != null) {
+			return new ImageIcon(imgURL);
+		} else {
+			throw new IllegalArgumentException(StringUtils.getString(
+					"Image not found: ", imgName));
+		}
+	}
 }
