@@ -79,6 +79,7 @@ public class ShowEqualizerAction extends ActionWithColorMutableIcon {
 
 	@Override
 	protected void initialize() {
+		super.initialize();
 		putValue(
 				ACCELERATOR_KEY,
 				KeyStroke.getKeyStroke(KeyEvent.VK_E,
