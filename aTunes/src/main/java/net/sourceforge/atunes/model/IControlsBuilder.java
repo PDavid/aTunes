@@ -139,4 +139,8 @@ public interface IControlsBuilder {
 	 */
 	int getComponentOrientationAsSwingConstant();
 
+	/**
+	 * @return a new button panel
+	 */
+	IButtonPanel createButtonPanel();
 }

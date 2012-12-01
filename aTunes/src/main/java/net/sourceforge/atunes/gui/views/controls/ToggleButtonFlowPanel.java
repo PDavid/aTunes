@@ -44,7 +44,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
 
-import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IButtonPanel;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
@@ -52,10 +52,12 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
  * A panel with toggle buttons
+ * 
  * @author alex
- *
+ * 
  */
-public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeListener {
+public class ToggleButtonFlowPanel extends JPanel implements
+		ILookAndFeelChangeListener, IButtonPanel {
 
 	/**
 	 * 
@@ -68,54 +70,86 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 
 	private ButtonGroup group;
 
-	private final JScrollPane scrollPane;
+	private JScrollPane scrollPane;
 
-	private final JPanel buttonContainer;
+	private JPanel buttonContainer;
 
-	private final JButton leftButton;
+	private JButton leftButton;
 
-	private final JButton rightButton;
+	private JButton rightButton;
 
-	private final List<ItemListener> itemListeners;
+	private List<ItemListener> itemListeners;
 
-	private final ILookAndFeelManager lookAndFeelManager;
+	private ILookAndFeelManager lookAndFeelManager;
 
-	private final boolean iconOnly;
+	private boolean iconOnly;
 
-	private final IIconFactory arrowLeftImageIcon;
+	private IIconFactory arrowLeftImageIcon;
 
-	private final IIconFactory arrowRightImageIcon;
+	private IIconFactory arrowRightImageIcon;
 
 	/**
-	 * Creates a new panel
 	 * @param iconOnly
-	 * @param beanFactory
 	 */
-	public ToggleButtonFlowPanel(final boolean iconOnly, final IBeanFactory beanFactory) {
-		super();
+	@Override
+	public void setIconOnly(final boolean iconOnly) {
 		this.iconOnly = iconOnly;
-		this.lookAndFeelManager = beanFactory.getBean(ILookAndFeelManager.class);
-		this.arrowLeftImageIcon = beanFactory.getBean("arrowLeftImageIcon", IIconFactory.class);
-		this.arrowRightImageIcon = beanFactory.getBean("arrowRightImageIcon", IIconFactory.class);
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
+	 * @param arrowLeftImageIcon
+	 */
+	public void setArrowLeftImageIcon(final IIconFactory arrowLeftImageIcon) {
+		this.arrowLeftImageIcon = arrowLeftImageIcon;
+	}
+
+	/**
+	 * @param arrowRightImageIcon
+	 */
+	public void setArrowRightImageIcon(final IIconFactory arrowRightImageIcon) {
+		this.arrowRightImageIcon = arrowRightImageIcon;
+	}
+
+	/**
+	 * Initializes component
+	 */
+	public void initialize() {
 		this.itemListeners = new ArrayList<ItemListener>();
 		this.group = new ButtonGroup();
 		this.buttons = new ArrayList<ToggleButtonOfFlowPanel>();
 		this.toggles = new HashMap<ToggleButtonOfFlowPanel, JToggleButton>();
-		buttonContainer = new JPanel(new GridBagLayout());
-		scrollPane = new JScrollPane(buttonContainer);
-		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		this.buttonContainer = new JPanel(new GridBagLayout());
+		this.scrollPane = new JScrollPane(this.buttonContainer);
+		this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		this.scrollPane
+				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		this.scrollPane
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		setLayout(new GridBagLayout());
 
-		leftButton = new JButton();
-		rightButton = new JButton();
+		this.leftButton = new JButton();
+		this.rightButton = new JButton();
 
 		setArrows();
-
 		arrangeComponents();
+		addListeners();
+		setMinimumSize(new Dimension(10,
+				this.leftButton.getMinimumSize().height + 3));
+	}
 
-		scrollPane.addComponentListener(new ComponentAdapter() {
+	/**
+	 * 
+	 */
+	private void addListeners() {
+		this.scrollPane.addComponentListener(new ComponentAdapter() {
 
 			@Override
 			public void componentResized(final ComponentEvent e) {
@@ -128,7 +162,7 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 			}
 		});
 
-		leftButton.addActionListener(new ActionListener() {
+		this.leftButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
@@ -136,16 +170,13 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 			}
 		});
 
-		rightButton.addActionListener(new ActionListener() {
+		this.rightButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				moveToRight();
 			}
 		});
-
-
-		setMinimumSize(new Dimension(10, leftButton.getMinimumSize().height + 3));
 	}
 
 	/**
@@ -158,32 +189,37 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 		c.weightx = 0;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.VERTICAL;
-		add(leftButton, c);
+		add(this.leftButton, c);
 
 		c.gridx = 1;
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		add(scrollPane, c);
+		add(this.scrollPane, c);
 
 		c.gridx = 2;
 		c.weightx = 0;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.VERTICAL;
-		add(rightButton, c);
+		add(this.rightButton, c);
 	}
 
 	/**
 	 * Adds a new button to this panel
+	 * 
 	 * @param name
 	 * @param tooltip
 	 * @param icon
 	 * @param action
 	 * @param userObject
 	 */
-	public void addButton(final String name, final String tooltip, final IColorMutableImageIcon icon, final Action action, final Object userObject) {
-		ToggleButtonOfFlowPanel button = new ToggleButtonOfFlowPanel(name, tooltip, icon, action, userObject);
-		buttons.add(button);
+	@Override
+	public void addButton(final String name, final String tooltip,
+			final IColorMutableImageIcon icon, final Action action,
+			final Object userObject) {
+		ToggleButtonOfFlowPanel button = new ToggleButtonOfFlowPanel(name,
+				tooltip, icon, action, userObject);
+		this.buttons.add(button);
 		addButtonToPanel(button);
 		checkButtonsVisible();
 	}
@@ -191,23 +227,26 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 	/**
 	 * Removes all buttons
 	 */
+	@Override
 	public void clear() {
-		buttonContainer.removeAll();
+		this.buttonContainer.removeAll();
 		this.group = new ButtonGroup();
 		this.buttons = new ArrayList<ToggleButtonOfFlowPanel>();
 		this.toggles = new HashMap<ToggleButtonOfFlowPanel, JToggleButton>();
 		invalidate();
 		revalidate();
 		repaint();
-		for (ItemListener l : itemListeners) {
+		for (ItemListener l : this.itemListeners) {
 			l.itemStateChanged(null);
 		}
 	}
 
 	/**
 	 * Removes a button
+	 * 
 	 * @param index
 	 */
+	@Override
 	public void removeButton(final int index) {
 		ToggleButtonOfFlowPanel button = this.buttons.get(index);
 		this.buttons.remove(index);
@@ -216,19 +255,21 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 		invalidate();
 		revalidate();
 		repaint();
-		for (ItemListener l : itemListeners) {
+		for (ItemListener l : this.itemListeners) {
 			l.itemStateChanged(null);
 		}
 	}
 
 	/**
 	 * Sets button identified by name as selected
+	 * 
 	 * @param buttonName
 	 */
+	@Override
 	public void setSelectedButton(final String buttonName) {
-		for (ToggleButtonOfFlowPanel button : toggles.keySet()) {
+		for (ToggleButtonOfFlowPanel button : this.toggles.keySet()) {
 			if (button.getButtonName().equals(buttonName)) {
-				toggles.get(button).setSelected(true);
+				this.toggles.get(button).setSelected(true);
 				break;
 			}
 		}
@@ -236,19 +277,23 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 
 	/**
 	 * Sets button identified by index
+	 * 
 	 * @param index
 	 */
+	@Override
 	public void setSelectedButton(final int index) {
 		setSelectedButton(this.buttons.get(index).getButtonName());
 	}
 
 	/**
 	 * Returns user object of selected toggle
+	 * 
 	 * @return
 	 */
+	@Override
 	public Object getSelectedItem() {
-		for (ToggleButtonOfFlowPanel button : toggles.keySet()) {
-			if (toggles.get(button).isSelected()) {
+		for (ToggleButtonOfFlowPanel button : this.toggles.keySet()) {
+			if (this.toggles.get(button).isSelected()) {
 				return button.getUserObject();
 			}
 		}
@@ -256,14 +301,18 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 	}
 
 	private void addButtonToPanel(final ToggleButtonOfFlowPanel button) {
-		JToggleButton toggle = new JToggleButton(iconOnly ? "" : button.getButtonName());
+		JToggleButton toggle = new JToggleButton(this.iconOnly ? ""
+				: button.getButtonName());
 		toggle.setToolTipText(button.getTooltip());
 		if (button.getIcon() != null) {
-			toggle.setIcon(button.getIcon().getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
+			toggle.setIcon(button.getIcon().getIcon(
+					this.lookAndFeelManager.getCurrentLookAndFeel()
+							.getPaintForSpecialControls()));
 		}
-		// Use action listener to encapsulate action to avoid toggle button use text and icon from action object
+		// Use action listener to encapsulate action to avoid toggle button use
+		// text and icon from action object
 		toggle.addActionListener(new ToggleButtonActionListener(button));
-		group.add(toggle);
+		this.group.add(toggle);
 		this.toggles.put(button, toggle);
 
 		rearrangeButtons();
@@ -274,49 +323,61 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 	}
 
 	private void rearrangeButtons() {
-		buttonContainer.removeAll();
+		this.buttonContainer.removeAll();
 		GridBagConstraints c = new GridBagConstraints();
 		c.weighty = 1;
 		c.fill = GridBagConstraints.VERTICAL;
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
-		for (int i = 0; i < buttons.size(); i++) {
+		for (int i = 0; i < this.buttons.size(); i++) {
 			c.gridx = i;
-			if (i == buttons.size() - 1) {
+			if (i == this.buttons.size() - 1) {
 				c.weightx = 1;
 			}
-			buttonContainer.add(toggles.get(buttons.get(i)), c);
+			this.buttonContainer.add(this.toggles.get(this.buttons.get(i)), c);
 		}
 	}
 
-
 	@Override
 	public void lookAndFeelChanged() {
-		removeAll();
-		group = new ButtonGroup();
-		for (ToggleButtonOfFlowPanel button : buttons) {
-			addButtonToPanel(button);
+		for (Map.Entry<ToggleButtonOfFlowPanel, JToggleButton> button : this.toggles
+				.entrySet()) {
+			IColorMutableImageIcon icon = button.getKey().getIcon();
+			if (icon != null) {
+				button.getValue().setIcon(
+						icon.getIcon(this.lookAndFeelManager
+								.getCurrentLookAndFeel()
+								.getPaintForSpecialControls()));
+			}
 		}
 		setArrows();
 	}
 
 	private void setArrows() {
-		leftButton.setIcon(arrowLeftImageIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
-		rightButton.setIcon(arrowRightImageIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
+		this.leftButton.setIcon(this.arrowLeftImageIcon
+				.getIcon(this.lookAndFeelManager.getCurrentLookAndFeel()
+						.getPaintForSpecialControls()));
+		this.rightButton.setIcon(this.arrowRightImageIcon
+				.getIcon(this.lookAndFeelManager.getCurrentLookAndFeel()
+						.getPaintForSpecialControls()));
 	}
 
 	/**
 	 * Adds an item listener
+	 * 
 	 * @param l
 	 */
+	@Override
 	public void addItemListener(final ItemListener l) {
-		itemListeners.add(l);
+		this.itemListeners.add(l);
 	}
 
 	/**
 	 * Renames button
+	 * 
 	 * @param index
 	 * @param newName
 	 */
+	@Override
 	public void renameButton(final int index, final String newName) {
 		ToggleButtonOfFlowPanel button = this.buttons.get(index);
 		if (button != null) {
@@ -347,29 +408,31 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 	 * 
 	 */
 	private void move(final int move) {
-		Rectangle r = scrollPane.getVisibleRect();
+		Rectangle r = this.scrollPane.getVisibleRect();
 		r = new Rectangle(r.x + move, r.y, r.width, r.height);
-		scrollPane.getViewport().scrollRectToVisible(r);
+		this.scrollPane.getViewport().scrollRectToVisible(r);
 	}
 
 	/**
 	 * 
 	 */
 	private void checkButtonsVisible() {
-		Rectangle r1 = buttonContainer.getBounds();
-		Rectangle r2 = scrollPane.getVisibleRect();
+		Rectangle r1 = this.buttonContainer.getBounds();
+		Rectangle r2 = this.scrollPane.getVisibleRect();
 		boolean allButtonsVisible = r1.width <= r2.width;
-		leftButton.setVisible(!allButtonsVisible);
-		rightButton.setVisible(!allButtonsVisible);
+		this.leftButton.setVisible(!allButtonsVisible);
+		this.rightButton.setVisible(!allButtonsVisible);
 	}
 
 	/**
 	 * @param event
 	 * @return index of button selected in an action event
 	 */
+	@Override
 	public int getIndexOfButtonSelected(final ActionEvent event) {
 		JToggleButton toggle = (JToggleButton) event.getSource();
-		for (Entry<ToggleButtonOfFlowPanel, JToggleButton> entry : this.toggles.entrySet()) {
+		for (Entry<ToggleButtonOfFlowPanel, JToggleButton> entry : this.toggles
+				.entrySet()) {
 			if (entry.getValue().equals(toggle)) {
 				return this.buttons.indexOf(entry.getKey());
 			}

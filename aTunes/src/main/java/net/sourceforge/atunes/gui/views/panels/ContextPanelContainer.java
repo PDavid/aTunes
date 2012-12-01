@@ -28,12 +28,12 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
-import net.sourceforge.atunes.gui.views.controls.ToggleButtonFlowPanel;
-import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IButtonPanel;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
@@ -52,7 +52,7 @@ public final class ContextPanelContainer extends JPanel implements
 
 	private static final long serialVersionUID = 707242790413122482L;
 
-	private ToggleButtonFlowPanel contextSelector;
+	private IButtonPanel contextSelector;
 
 	private PopUpButton options;
 
@@ -65,8 +65,6 @@ public final class ContextPanelContainer extends JPanel implements
 	private ILookAndFeelManager lookAndFeelManager;
 
 	private IContextHandler contextHandler;
-
-	private IBeanFactory beanFactory;
 
 	private IControlsBuilder controlsBuilder;
 
@@ -82,13 +80,6 @@ public final class ContextPanelContainer extends JPanel implements
 	 */
 	public ContextPanelContainer() {
 		super(new GridBagLayout());
-	}
-
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -112,7 +103,8 @@ public final class ContextPanelContainer extends JPanel implements
 	 * @param lookAndFeelManager
 	 */
 	public void initialize() {
-		this.contextSelector = new ToggleButtonFlowPanel(true, this.beanFactory);
+		this.contextSelector = this.controlsBuilder.createButtonPanel();
+		this.contextSelector.setIconOnly(true);
 		this.options = this.controlsBuilder
 				.createPopUpButton(PopUpButton.BOTTOM_RIGHT);
 		this.container = new JPanel(new CardLayout());
@@ -128,7 +120,7 @@ public final class ContextPanelContainer extends JPanel implements
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.NORTH;
 		c.insets = new Insets(0, 0, 1, 0);
-		add(this.contextSelector, c);
+		add((JComponent) this.contextSelector, c);
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weightx = 1;
