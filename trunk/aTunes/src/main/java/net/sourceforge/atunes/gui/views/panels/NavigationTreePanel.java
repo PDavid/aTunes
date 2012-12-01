@@ -28,14 +28,14 @@ import java.awt.Insets;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.TransferHandler;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
-import net.sourceforge.atunes.gui.views.controls.ToggleButtonFlowPanel;
-import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IButtonPanel;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -54,7 +54,7 @@ public final class NavigationTreePanel extends JPanel implements
 
 	private static final long serialVersionUID = -2900418193013495812L;
 
-	private ToggleButtonFlowPanel viewButtonsPanel;
+	private IButtonPanel viewButtonsPanel;
 
 	private JPanel treePanel;
 
@@ -73,8 +73,6 @@ public final class NavigationTreePanel extends JPanel implements
 
 	private IFilterPanel navigatorFilterPanel;
 
-	private IBeanFactory beanFactory;
-
 	private IControlsBuilder controlsBuilder;
 
 	/**
@@ -89,13 +87,6 @@ public final class NavigationTreePanel extends JPanel implements
 	 */
 	public NavigationTreePanel() {
 		super(new GridBagLayout(), true);
-	}
-
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -186,8 +177,8 @@ public final class NavigationTreePanel extends JPanel implements
 	 * Adds the content.
 	 */
 	public void initialize() {
-		this.viewButtonsPanel = new ToggleButtonFlowPanel(true,
-				this.beanFactory);
+		this.viewButtonsPanel = this.controlsBuilder.createButtonPanel();
+		this.viewButtonsPanel.setIconOnly(true);
 		this.treePanel = new JPanel(new CardLayout());
 		addTrees();
 		GridBagConstraints c = new GridBagConstraints();
@@ -199,7 +190,7 @@ public final class NavigationTreePanel extends JPanel implements
 		c.gridx = 1;
 		c.weightx = 1;
 		c.insets = new Insets(1, 0, 0, 0);
-		add(this.viewButtonsPanel, c);
+		add((JComponent) this.viewButtonsPanel, c);
 
 		c.gridx = 2;
 		c.weightx = 0;

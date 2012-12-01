@@ -181,7 +181,7 @@
 	</bean>
 	
 	<bean id="controlsBuilder" class="net.sourceforge.atunes.gui.views.controls.ControlsBuilder"/>
-
+	<bean class="net.sourceforge.atunes.gui.views.controls.ToggleButtonFlowPanel" scope="prototype" init-method="initialize"/>
 
 
 	<bean class="net.sourceforge.atunes.kernel.modules.statistics.StatsDialogController" scope="prototype" init-method="initialize">

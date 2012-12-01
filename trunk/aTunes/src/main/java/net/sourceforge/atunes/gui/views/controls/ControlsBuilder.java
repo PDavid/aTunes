@@ -39,6 +39,7 @@ import javax.swing.text.StyleConstants;
 
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IButtonPanel;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocaleBean;
@@ -292,5 +293,13 @@ public class ControlsBuilder implements IControlsBuilder {
 			final AbstractCommonColumnModel columnModel) {
 		return new ColumnSetPopupMenu(table, columnModel, this.dialogFactory,
 				this.osManager);
+	}
+
+	@Override
+	public IButtonPanel createButtonPanel() {
+		ToggleButtonFlowPanel panel = this.beanFactory
+				.getBean(ToggleButtonFlowPanel.class);
+		this.lookAndFeelManager.addLookAndFeelChangeListener(panel);
+		return panel;
 	}
 }

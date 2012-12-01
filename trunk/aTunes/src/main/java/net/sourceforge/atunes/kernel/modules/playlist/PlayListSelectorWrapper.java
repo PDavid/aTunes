@@ -27,10 +27,11 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 
-import net.sourceforge.atunes.gui.views.controls.ToggleButtonFlowPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel;
-import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IButtonPanel;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IStatePlaylist;
 
@@ -42,156 +43,160 @@ import net.sourceforge.atunes.model.IStatePlaylist;
  */
 public class PlayListSelectorWrapper {
 
-    private JComboBox playListCombo;
+	private JComboBox playListCombo;
 
-    private ToggleButtonFlowPanel playListButtonFlowPanel;
+	private IButtonPanel playListButtonFlowPanel;
 
-    private IStatePlaylist statePlaylist;
+	private IStatePlaylist statePlaylist;
 
-    private IPlayListHandler playListHandler;
+	private IPlayListHandler playListHandler;
 
-    private IBeanFactory beanFactory;
+	private IControlsBuilder controlsBuilder;
 
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
-
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(final IPlayListHandler playListHandler) {
-	this.playListHandler = playListHandler;
-    }
-
-    /**
-     * @param statePlaylist
-     */
-    public void setStatePlaylist(final IStatePlaylist statePlaylist) {
-	this.statePlaylist = statePlaylist;
-    }
-
-    /**
-     * Creates both type of selectors
-     */
-    public void initialize() {
-	playListCombo = new JComboBox();
-	playListCombo.setMaximumRowCount(30);
-
-	playListButtonFlowPanel = new ToggleButtonFlowPanel(false, beanFactory);
-    }
-
-    /**
-     * Arrange components in play list selector panel
-     * 
-     * @param selectorPanel
-     * @param options
-     * @param playListFilterPanel
-     */
-    public void arrangeComponents(final PlayListSelectorPanel selectorPanel) {
-	GridBagConstraints c = new GridBagConstraints();
-
-	c.weighty = 1;
-	c.fill = GridBagConstraints.VERTICAL;
-	c.insets = new Insets(1, 0, 1, 0);
-	selectorPanel.add(selectorPanel.getOptions().getSwingComponent(), c);
-
-	c.gridx = 1;
-	c.weightx = 1;
-	c.anchor = GridBagConstraints.WEST;
-	if (statePlaylist.isShowPlayListSelectorComboBox()) {
-	    c.fill = GridBagConstraints.VERTICAL;
-	    selectorPanel.add(playListCombo, c);
-	} else {
-	    c.fill = GridBagConstraints.BOTH;
-	    c.insets = new Insets(1, 0, 1, 10);
-	    selectorPanel.add(playListButtonFlowPanel, c);
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
 	}
 
-	c.gridx = 2;
-	c.weightx = 0;
-	c.anchor = GridBagConstraints.EAST;
-	c.insets = new Insets(0, 0, 0, 5);
-	selectorPanel.add(selectorPanel.getPlayListFilterPanel()
-		.getSwingComponent(), c);
-    }
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
 
-    /**
-     * Initializes both components
-     * 
-     * @param l
-     */
-    void addBindings(final PlayListTabListener l) {
-	playListCombo.addItemListener(l);
-	playListCombo.setModel(PlayListComboModel.getNewComboModel());
+	/**
+	 * @param statePlaylist
+	 */
+	public void setStatePlaylist(final IStatePlaylist statePlaylist) {
+		this.statePlaylist = statePlaylist;
+	}
 
-	playListButtonFlowPanel.addItemListener(l);
-    }
+	/**
+	 * Creates both type of selectors
+	 */
+	public void initialize() {
+		this.playListCombo = new JComboBox();
+		this.playListCombo.setMaximumRowCount(30);
 
-    void deletePlayList(final int index) {
-	((PlayListComboModel) playListCombo.getModel()).removeItemAt(index);
-	playListButtonFlowPanel.removeButton(index);
-    }
+		this.playListButtonFlowPanel = this.controlsBuilder.createButtonPanel();
+		this.playListButtonFlowPanel.setIconOnly(false);
+	}
 
-    /**
-     * @param index
-     */
-    void forceSwitchTo(final int index) {
-	playListCombo.setSelectedIndex(index);
+	/**
+	 * Arrange components in play list selector panel
+	 * 
+	 * @param selectorPanel
+	 * @param options
+	 * @param playListFilterPanel
+	 */
+	public void arrangeComponents(final PlayListSelectorPanel selectorPanel) {
+		GridBagConstraints c = new GridBagConstraints();
 
-	playListButtonFlowPanel.setSelectedButton(index);
-    }
+		c.weighty = 1;
+		c.fill = GridBagConstraints.VERTICAL;
+		c.insets = new Insets(1, 0, 1, 0);
+		selectorPanel.add(selectorPanel.getOptions().getSwingComponent(), c);
 
-    void newPlayList(final String name) {
-	((PlayListComboModel) playListCombo.getModel()).addItem(name);
+		c.gridx = 1;
+		c.weightx = 1;
+		c.anchor = GridBagConstraints.WEST;
+		if (this.statePlaylist.isShowPlayListSelectorComboBox()) {
+			c.fill = GridBagConstraints.VERTICAL;
+			selectorPanel.add(this.playListCombo, c);
+		} else {
+			c.fill = GridBagConstraints.BOTH;
+			c.insets = new Insets(1, 0, 1, 10);
+			selectorPanel.add((JComponent) this.playListButtonFlowPanel, c);
+		}
 
-	playListButtonFlowPanel.addButton(name, name, null,
-		new AbstractAction() {
+		c.gridx = 2;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.EAST;
+		c.insets = new Insets(0, 0, 0, 5);
+		selectorPanel.add(selectorPanel.getPlayListFilterPanel()
+				.getSwingComponent(), c);
+	}
 
-		    private static final long serialVersionUID = -8487582617110724128L;
+	/**
+	 * Initializes both components
+	 * 
+	 * @param l
+	 */
+	void addBindings(final PlayListTabListener l) {
+		this.playListCombo.addItemListener(l);
+		this.playListCombo.setModel(PlayListComboModel.getNewComboModel());
 
-		    @Override
-		    public void actionPerformed(final ActionEvent event) {
-			forceSwitchTo(playListButtonFlowPanel
-				.getIndexOfButtonSelected(event));
-		    }
-		}, name);
-    }
+		this.playListButtonFlowPanel.addItemListener(l);
+	}
 
-    void renamePlayList(final int index, final String newName) {
-	((PlayListComboModel) playListCombo.getModel()).rename(index, newName);
-	// Forces update of combo box by selecting again current play list
-	playListCombo.setSelectedIndex(index);
+	void deletePlayList(final int index) {
+		((PlayListComboModel) this.playListCombo.getModel())
+				.removeItemAt(index);
+		this.playListButtonFlowPanel.removeButton(index);
+	}
 
-	playListButtonFlowPanel.renameButton(index, newName);
-    }
+	/**
+	 * @param index
+	 */
+	void forceSwitchTo(final int index) {
+		this.playListCombo.setSelectedIndex(index);
 
-    List<String> getNamesOfPlayLists() {
-	return ((PlayListComboModel) playListCombo.getModel()).getItems();
-    }
+		this.playListButtonFlowPanel.setSelectedButton(index);
+	}
 
-    int getSelectedPlayListIndex() {
-	return playListCombo.getSelectedIndex() != -1 ? playListCombo
-		.getSelectedIndex() : 0;
-    }
+	void newPlayList(final String name) {
+		((PlayListComboModel) this.playListCombo.getModel()).addItem(name);
 
-    String getPlayListName(final int index) {
-	return ((PlayListComboModel) playListCombo.getModel())
-		.getElementAt(index);
-    }
+		this.playListButtonFlowPanel.addButton(name, name, null,
+				new AbstractAction() {
 
-    /**
-     * Switches to playlist
-     * 
-     * @param selectedPlayListIndex
-     */
-    public void switchToPlaylist(final int selectedPlayListIndex) {
-	playListHandler.switchToPlaylist(getSelectedPlayListIndex());
-	// This is called when selecting item in combo so set selected button
-	// too
-	playListButtonFlowPanel.setSelectedButton(getSelectedPlayListIndex());
-    }
+					private static final long serialVersionUID = -8487582617110724128L;
+
+					@Override
+					public void actionPerformed(final ActionEvent event) {
+						forceSwitchTo(PlayListSelectorWrapper.this.playListButtonFlowPanel
+								.getIndexOfButtonSelected(event));
+					}
+				}, name);
+	}
+
+	void renamePlayList(final int index, final String newName) {
+		((PlayListComboModel) this.playListCombo.getModel()).rename(index,
+				newName);
+		// Forces update of combo box by selecting again current play list
+		this.playListCombo.setSelectedIndex(index);
+
+		this.playListButtonFlowPanel.renameButton(index, newName);
+	}
+
+	List<String> getNamesOfPlayLists() {
+		return ((PlayListComboModel) this.playListCombo.getModel()).getItems();
+	}
+
+	int getSelectedPlayListIndex() {
+		return this.playListCombo.getSelectedIndex() != -1 ? this.playListCombo
+				.getSelectedIndex() : 0;
+	}
+
+	String getPlayListName(final int index) {
+		return ((PlayListComboModel) this.playListCombo.getModel())
+				.getElementAt(index);
+	}
+
+	/**
+	 * Switches to playlist
+	 * 
+	 * @param selectedPlayListIndex
+	 */
+	public void switchToPlaylist(final int selectedPlayListIndex) {
+		this.playListHandler.switchToPlaylist(getSelectedPlayListIndex());
+		// This is called when selecting item in combo so set selected button
+		// too
+		this.playListButtonFlowPanel
+				.setSelectedButton(getSelectedPlayListIndex());
+	}
 
 }
