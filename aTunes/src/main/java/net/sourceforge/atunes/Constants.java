@@ -1,5 +1,5 @@
 /*
- * aTunes 2.2.0-SNAPSHOT
+ * aTunes 3.0.0
  * Copyright (C) 2006-2011 Alex Aranda, Sylvain Gaudard and contributors
  *
  * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
@@ -39,7 +39,8 @@ public final class Constants {
 	 * Version of application
 	 */
 	public static final ApplicationVersion VERSION = new ApplicationVersion("",
-			2, 2, 0, VersionType.BETA, "", "http://www.atunes.org/update.php");
+			3, 0, 0, VersionType.RELEASE_CANDIDATE, "",
+			"http://www.atunes.org/update.php");
 
 	/** File containing log4j properties. */
 	public static final String LOG4J_FILE = "/settings/log4j.properties";
