@@ -20,17 +20,12 @@
 
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
-import java.util.Collections;
-import java.util.List;
-
 import javax.swing.JComponent;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanelRendererCode;
 import net.sourceforge.atunes.model.IAlbumInfo;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -40,44 +35,27 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  */
 public class AlbumsTableCellRendererCode extends
-	ContextTableRowPanelRendererCode<IAlbumInfo> {
+		ContextTableRowPanelRendererCode<IAlbumInfo> {
 
-    private IBeanFactory beanFactory;
+	private ArtistAlbumListImagesDataSource source;
 
-    private ArtistAlbumListImagesDataSource source;
+	/**
+	 * @param source
+	 */
+	public void setSource(final ArtistAlbumListImagesDataSource source) {
+		this.source = source;
+	}
 
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
+	@Override
+	public String getCacheKeyControl(final IAlbumInfo a) {
+		return a.getArtist();
+	}
 
-    /**
-     * @param source
-     */
-    public void setSource(final ArtistAlbumListImagesDataSource source) {
-	this.source = source;
-    }
-
-    @Override
-    public String getCacheKeyControl(final IAlbumInfo a) {
-	return a.getArtist();
-    }
-
-    @Override
-    public ContextTableRowPanel<IAlbumInfo> createPanel(
-	    final JComponent superComponent, final IAlbumInfo value) {
-	return getPanelForTableRenderer(source.getCovers().get(value),
-		StringUtils.getString("<html>", value.getTitle(), "</html>"),
-		Constants.THUMB_IMAGE_WIDTH);
-    }
-
-    @Override
-    public List<ContextTableAction<IAlbumInfo>> getActions() {
-	ContextTableAction<IAlbumInfo> action = beanFactory
-		.getBean(OpenAlbumUrlAction.class);
-	action.setTable(getTable());
-	return Collections.singletonList(action);
-    }
+	@Override
+	public ContextTableRowPanel<IAlbumInfo> createPanel(
+			final JComponent superComponent, final IAlbumInfo value) {
+		return getPanelForTableRenderer(this.source.getCovers().get(value),
+				StringUtils.getString("<html>", value.getTitle(), "</html>"),
+				Constants.THUMB_IMAGE_WIDTH);
+	}
 }

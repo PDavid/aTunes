@@ -143,4 +143,5 @@ public interface IControlsBuilder {
 	 * @return a new button panel
 	 */
 	IButtonPanel createButtonPanel();
+
 }

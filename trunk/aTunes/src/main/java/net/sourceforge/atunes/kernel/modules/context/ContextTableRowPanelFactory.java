@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
-import java.util.List;
-
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.IControlsBuilder;
@@ -32,7 +30,6 @@ class ContextTableRowPanelFactory<T> {
 	/**
 	 * Creates a panel to be shown in each row of a panel table
 	 * 
-	 * @param actions
 	 * @param table
 	 * @param image
 	 * @param text
@@ -41,7 +38,6 @@ class ContextTableRowPanelFactory<T> {
 	 * @return
 	 */
 	public ContextTableRowPanel<T> getPanelForTableRenderer(
-			final List<ContextTableAction<T>> actions,
 			final ContextTable table, final ImageIcon image, final String text,
 			final int imageMaxWidth, final IControlsBuilder controlsBuilder) {
 
@@ -56,7 +52,7 @@ class ContextTableRowPanelFactory<T> {
 		final ContextTableRowPanel<T> panel = new ContextTableRowPanel<T>();
 		panel.setImage(image);
 		panel.setText(text);
-		panel.build(imageMaxWidth, actions, table, controlsBuilder);
+		panel.build(imageMaxWidth, table, controlsBuilder);
 		return panel;
 	}
 

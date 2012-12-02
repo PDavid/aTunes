@@ -21,9 +21,13 @@
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
+import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
+import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -33,7 +37,8 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class ArtistAlbumsContent extends AbstractContextPanelContent<ArtistAlbumListImagesDataSource> {
+public class ArtistAlbumsContent extends
+		AbstractContextPanelContent<ArtistAlbumListImagesDataSource> {
 
 	private static final long serialVersionUID = -5538266144953409867L;
 	private ContextTable albumsTable;
@@ -53,24 +58,32 @@ public class ArtistAlbumsContent extends AbstractContextPanelContent<ArtistAlbum
 	}
 
 	@Override
-	public void updateContentFromDataSource(final ArtistAlbumListImagesDataSource source) {
-		((ContextAlbumsTableModel)albumsTable.getModel()).setAlbums(source.getAlbumList().getAlbums());
+	public void updateContentFromDataSource(
+			final ArtistAlbumListImagesDataSource source) {
+		((ContextAlbumsTableModel) this.albumsTable.getModel())
+				.setAlbums(source.getAlbumList().getAlbums());
 	}
 
 	@Override
 	public void clearContextPanelContent() {
 		super.clearContextPanelContent();
-		((ContextAlbumsTableModel)albumsTable.getModel()).setAlbums(null);
+		((ContextAlbumsTableModel) this.albumsTable.getModel()).setAlbums(null);
 	}
 
 	@Override
 	public Component getComponent() {
 		// Create components
-		albumsTable = new ContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
-		AlbumsTableCellRendererCode renderer = beanFactory.getBean(AlbumsTableCellRendererCode.class);
-		renderer.setSource((ArtistAlbumListImagesDataSource)getDataSource());
-		albumsTable.addContextRowPanel(renderer);
-		albumsTable.setModel(new ContextAlbumsTableModel());
-		return albumsTable;
+		this.albumsTable = this.beanFactory.getBean(ContextTable.class);
+		AlbumsTableCellRendererCode renderer = this.beanFactory
+				.getBean(AlbumsTableCellRendererCode.class);
+		renderer.setSource((ArtistAlbumListImagesDataSource) getDataSource());
+		this.albumsTable.addContextRowPanel(renderer);
+		this.albumsTable.setModel(new ContextAlbumsTableModel());
+		ContextTableAction<IAlbumInfo> action = this.beanFactory
+				.getBean(OpenAlbumUrlAction.class);
+		List<ContextTableAction<?>> list = new ArrayList<ContextTableAction<?>>();
+		list.add(action);
+		this.albumsTable.setRowActions(list);
+		return this.albumsTable;
 	}
 }

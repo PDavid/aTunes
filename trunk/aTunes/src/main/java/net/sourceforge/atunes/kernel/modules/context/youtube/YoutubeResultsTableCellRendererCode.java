@@ -20,16 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.context.youtube;
 
-import java.util.Collections;
-import java.util.List;
-
 import javax.swing.JComponent;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanelRendererCode;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -40,42 +35,20 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  */
 public class YoutubeResultsTableCellRendererCode extends
-	ContextTableRowPanelRendererCode<IVideoEntry> {
+		ContextTableRowPanelRendererCode<IVideoEntry> {
 
-    private IBeanFactory beanFactory;
+	@Override
+	public ContextTableRowPanel<IVideoEntry> createPanel(
+			final JComponent superComponent, final IVideoEntry value) {
+		return getPanelForTableRenderer(
+				value.getImage(),
+				StringUtils.getString("<html>", value.getName(), "<br>(",
+						value.getDuration(), ")</html>"),
+				Constants.THUMB_IMAGE_WIDTH);
+	}
 
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
-
-    @Override
-    public ContextTableRowPanel<IVideoEntry> createPanel(
-	    final JComponent superComponent, final IVideoEntry value) {
-	return getPanelForTableRenderer(
-		value.getImage(),
-		StringUtils.getString("<html>", value.getName(), "<br>(",
-			value.getDuration(), ")</html>"),
-		Constants.THUMB_IMAGE_WIDTH);
-    }
-
-    @Override
-    public String getCacheKeyControl(final IVideoEntry v) {
-	return v.getArtist();
-    }
-
-    @Override
-    public List<ContextTableAction<IVideoEntry>> getActions() {
-	ContextTableAction<IVideoEntry> action = beanFactory
-		.getBean(OpenYoutubeVideoAction.class);
-	action.setTable(getTable());
-
-	// DOWNLOAD NOT WORKING AS API HAS CHANGED AND MP4 FILES ARE NOT
-	// AVAILABLE
-	// SEE BUG 3405858
-
-	return Collections.singletonList(action);
-    }
+	@Override
+	public String getCacheKeyControl(final IVideoEntry v) {
+		return v.getArtist();
+	}
 }
