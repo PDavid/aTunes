@@ -24,9 +24,7 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,7 +32,6 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.model.IControlsBuilder;
-import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * A panel to render each row of a context table
@@ -109,9 +106,8 @@ public class ContextTableRowPanel<T> extends JPanel {
 	 * @param table
 	 * @param controlsBuilder
 	 */
-	public void build(final int imageMaxWidth,
-			final List<ContextTableAction<T>> actions,
-			final ContextTable table, final IControlsBuilder controlsBuilder) {
+	public void build(final int imageMaxWidth, final ContextTable table,
+			final IControlsBuilder controlsBuilder) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -132,28 +128,6 @@ public class ContextTableRowPanel<T> extends JPanel {
 		add(this.textLabel, c);
 
 		controlsBuilder.applyComponentOrientation(this);
-
-		if (!net.sourceforge.atunes.utils.CollectionUtils.isEmpty(actions)) {
-			this.button = controlsBuilder
-					.createPopUpButton(controlsBuilder
-							.getComponentOrientationAsSwingConstant() == SwingConstants.LEFT ? PopUpButton.TOP_LEFT
-							: PopUpButton.TOP_RIGHT);
-			this.button.setText(I18nUtils.getString("OPTIONS"));
-			for (AbstractAction action : actions) {
-				this.button.add(action);
-			}
-			c.gridx = 2;
-			c.fill = GridBagConstraints.NONE;
-			c.anchor = GridBagConstraints.EAST;
-			c.insets = new Insets(0, 0, 0, 10);
-			add(this.button, c);
-
-			addMouseListener(new ContextTableRowPanelMouseAdapter(this, table,
-					this.button));
-			this.button
-					.addPopupMenuListener(new ContextTableRowPopupMenuListener<T>(
-							actions, table));
-		}
 	}
 
 	/**

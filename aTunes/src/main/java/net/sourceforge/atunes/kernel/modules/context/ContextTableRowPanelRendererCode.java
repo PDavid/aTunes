@@ -20,18 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
-import java.awt.Component;
 import java.lang.reflect.ParameterizedType;
-import java.util.EventObject;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JTable;
-import javax.swing.event.CellEditorListener;
-import javax.swing.table.TableCellEditor;
 
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.model.IControlsBuilder;
@@ -44,7 +39,7 @@ import net.sourceforge.atunes.model.IControlsBuilder;
  * @param <T>
  */
 public abstract class ContextTableRowPanelRendererCode<T> extends
-		AbstractTableCellRendererCode<JComponent, T> implements TableCellEditor {
+		AbstractTableCellRendererCode<JComponent, T> {
 
 	private final Class<?> clazz;
 
@@ -114,7 +109,6 @@ public abstract class ContextTableRowPanelRendererCode<T> extends
 		this.table = table;
 		this.table.setDefaultRenderer(this.clazz, getLookAndFeel()
 				.getTableCellRenderer(this));
-		this.table.setDefaultEditor(this.clazz, this);
 	}
 
 	/**
@@ -124,58 +118,12 @@ public abstract class ContextTableRowPanelRendererCode<T> extends
 		return this.table;
 	}
 
-	@Override
-	public Component getTableCellEditorComponent(final JTable table,
-			final Object value, final boolean isSelected, final int row,
-			final int column) {
-		return table.getDefaultRenderer(this.clazz)
-				.getTableCellRendererComponent(table, value, isSelected, true,
-						row, column);
-	}
-
-	@Override
-	public void cancelCellEditing() {
-	}
-
-	@Override
-	public boolean stopCellEditing() {
-		return true;
-	}
-
-	@Override
-	public Object getCellEditorValue() {
-		return null;
-	}
-
-	@Override
-	public boolean isCellEditable(final EventObject anEvent) {
-		return true;
-	}
-
-	@Override
-	public boolean shouldSelectCell(final EventObject anEvent) {
-		return true;
-	}
-
-	@Override
-	public void addCellEditorListener(final CellEditorListener l) {
-	}
-
-	@Override
-	public void removeCellEditorListener(final CellEditorListener l) {
-	}
-
 	protected final ContextTableRowPanel<T> getPanelForTableRenderer(
 			final ImageIcon image, final String text, final int imageMaxWidth) {
 
-		return this.factory.getPanelForTableRenderer(this.getActions(),
-				this.table, image, text, imageMaxWidth, this.controlsBuilder);
+		return this.factory.getPanelForTableRenderer(this.table, image, text,
+				imageMaxWidth, this.controlsBuilder);
 	}
-
-	/**
-	 * @return list of actions available in this row
-	 */
-	public abstract List<ContextTableAction<T>> getActions();
 
 	/**
 	 * @param object

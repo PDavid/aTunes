@@ -88,7 +88,7 @@ public final class SearchArtistContextTableAction extends
 	}
 
 	@Override
-	protected boolean isEnabledForObject(final IArtistInfo object) {
+	protected boolean isEnabledForObject(final Object object) {
 		return true;
 	}
 }

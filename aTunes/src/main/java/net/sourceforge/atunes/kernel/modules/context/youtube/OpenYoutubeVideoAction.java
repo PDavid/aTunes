@@ -32,43 +32,43 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public final class OpenYoutubeVideoAction extends
-	ContextTableAction<IVideoEntry> {
+		ContextTableAction<IVideoEntry> {
 
-    private static final long serialVersionUID = -7758596564970276630L;
+	private static final long serialVersionUID = -7758596564970276630L;
 
-    private IPlayerHandler playerHandler;
+	private IPlayerHandler playerHandler;
 
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(final IPlayerHandler playerHandler) {
-	this.playerHandler = playerHandler;
-    }
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
 
-    /**
+	/**
      * 
      */
-    public OpenYoutubeVideoAction() {
-	super(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE"));
-    }
-
-    @Override
-    protected void execute(final IVideoEntry entry) {
-	// open youtube url
-	getDesktop().openURL(entry.getUrl());
-	// When playing a video in web browser automatically pause current song
-	if (playerHandler.isEnginePlaying()) {
-	    playerHandler.resumeOrPauseCurrentAudioObject();
+	public OpenYoutubeVideoAction() {
+		super(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE"));
 	}
-    }
 
-    @Override
-    protected IVideoEntry getSelectedObject(final int row) {
-	return ((YoutubeResultTableModel) getTable().getModel()).getEntry(row);
-    }
+	@Override
+	protected void execute(final IVideoEntry entry) {
+		// open youtube url
+		getDesktop().openURL(entry.getUrl());
+		// When playing a video in web browser automatically pause current song
+		if (this.playerHandler.isEnginePlaying()) {
+			this.playerHandler.resumeOrPauseCurrentAudioObject();
+		}
+	}
 
-    @Override
-    protected boolean isEnabledForObject(final IVideoEntry object) {
-	return true;
-    }
+	@Override
+	protected IVideoEntry getSelectedObject(final int row) {
+		return ((YoutubeResultTableModel) getTable().getModel()).getEntry(row);
+	}
+
+	@Override
+	protected boolean isEnabledForObject(final Object object) {
+		return true;
+	}
 }

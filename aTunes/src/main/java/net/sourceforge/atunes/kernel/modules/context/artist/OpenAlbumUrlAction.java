@@ -32,27 +32,27 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class OpenAlbumUrlAction extends ContextTableAction<IAlbumInfo> {
 
-    private static final long serialVersionUID = 4367597772680455920L;
+	private static final long serialVersionUID = 4367597772680455920L;
 
-    /**
+	/**
      * 
      */
-    public OpenAlbumUrlAction() {
-	super(I18nUtils.getString("READ_MORE"));
-    }
+	public OpenAlbumUrlAction() {
+		super(I18nUtils.getString("READ_MORE"));
+	}
 
-    @Override
-    protected void execute(final IAlbumInfo object) {
-	getDesktop().openURL(object.getUrl());
-    }
+	@Override
+	protected void execute(final IAlbumInfo object) {
+		getDesktop().openURL(object.getUrl());
+	}
 
-    @Override
-    protected IAlbumInfo getSelectedObject(final int row) {
-	return ((ContextAlbumsTableModel) getTable().getModel()).getAlbum(row);
-    }
+	@Override
+	protected IAlbumInfo getSelectedObject(final int row) {
+		return ((ContextAlbumsTableModel) getTable().getModel()).getAlbum(row);
+	}
 
-    @Override
-    protected boolean isEnabledForObject(final IAlbumInfo object) {
-	return true;
-    }
+	@Override
+	protected boolean isEnabledForObject(final Object object) {
+		return true;
+	}
 }

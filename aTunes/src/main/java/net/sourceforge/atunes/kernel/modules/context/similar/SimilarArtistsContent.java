@@ -21,17 +21,22 @@
 package net.sourceforge.atunes.kernel.modules.context.similar;
 
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
+import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
+import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * @author alex
- *
+ * 
  */
-public class SimilarArtistsContent extends AbstractContextPanelContent<SimilarArtistsDataSource> {
+public class SimilarArtistsContent extends
+		AbstractContextPanelContent<SimilarArtistsDataSource> {
 
 	private static final long serialVersionUID = 5041098100868186051L;
 	private ContextTable similarArtistsTable;
@@ -51,26 +56,44 @@ public class SimilarArtistsContent extends AbstractContextPanelContent<SimilarAr
 	}
 
 	@Override
-	public void updateContentFromDataSource(final SimilarArtistsDataSource source) {
+	public void updateContentFromDataSource(
+			final SimilarArtistsDataSource source) {
 		if (source.getSimilarArtistsInfo() != null) {
-			((SimilarArtistsTableModel)similarArtistsTable.getModel()).setArtists(source.getSimilarArtistsInfo().getArtists());
+			((SimilarArtistsTableModel) this.similarArtistsTable.getModel())
+					.setArtists(source.getSimilarArtistsInfo().getArtists());
 		} else {
-			((SimilarArtistsTableModel)similarArtistsTable.getModel()).setArtists(null);
+			((SimilarArtistsTableModel) this.similarArtistsTable.getModel())
+					.setArtists(null);
 		}
 	}
 
 	@Override
 	public void clearContextPanelContent() {
 		super.clearContextPanelContent();
-		((SimilarArtistsTableModel)similarArtistsTable.getModel()).setArtists(null);
+		((SimilarArtistsTableModel) this.similarArtistsTable.getModel())
+				.setArtists(null);
 	}
 
 	@Override
 	public Component getComponent() {
 		// Create components
-		similarArtistsTable = new SimilarArtistsContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
-		similarArtistsTable.addContextRowPanel(beanFactory.getBean(SimilarArtistTableCellRendererCode.class));
-		similarArtistsTable.setModel(new SimilarArtistsTableModel());
-		return similarArtistsTable;
+		this.similarArtistsTable = this.beanFactory.getBean(ContextTable.class);
+		new SimilarArtistsDragAndDrop(this.similarArtistsTable);
+		this.similarArtistsTable.addContextRowPanel(this.beanFactory
+				.getBean(SimilarArtistTableCellRendererCode.class));
+		this.similarArtistsTable.setModel(new SimilarArtistsTableModel());
+
+		List<ContextTableAction<?>> actions = new ArrayList<ContextTableAction<?>>();
+		ContextTableAction<IArtistInfo> readMore = this.beanFactory
+				.getBean(ReadMoreContextTableAction.class);
+		ContextTableAction<IArtistInfo> search = this.beanFactory
+				.getBean(SearchArtistContextTableAction.class);
+		ContextTableAction<IArtistInfo> addAlbum = this.beanFactory
+				.getBean(AddAlbumArtistToPlayListContextTableAction.class);
+		actions.add(readMore);
+		actions.add(search);
+		actions.add(addAlbum);
+		this.similarArtistsTable.setRowActions(actions);
+		return this.similarArtistsTable;
 	}
 }

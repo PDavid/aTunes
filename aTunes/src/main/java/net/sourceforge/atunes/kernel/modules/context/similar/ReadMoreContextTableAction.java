@@ -31,30 +31,30 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public final class ReadMoreContextTableAction extends
-	ContextTableAction<IArtistInfo> {
+		ContextTableAction<IArtistInfo> {
 
-    private static final long serialVersionUID = -4964635263019533125L;
+	private static final long serialVersionUID = -4964635263019533125L;
 
-    /**
+	/**
      * 
      */
-    public ReadMoreContextTableAction() {
-	super(I18nUtils.getString("READ_MORE"));
-    }
+	public ReadMoreContextTableAction() {
+		super(I18nUtils.getString("READ_MORE"));
+	}
 
-    @Override
-    protected void execute(final IArtistInfo object) {
-	getDesktop().openURL(object.getUrl());
-    }
+	@Override
+	protected void execute(final IArtistInfo object) {
+		getDesktop().openURL(object.getUrl());
+	}
 
-    @Override
-    protected IArtistInfo getSelectedObject(final int row) {
-	return ((SimilarArtistsTableModel) getTable().getModel())
-		.getArtist(row);
-    }
+	@Override
+	protected IArtistInfo getSelectedObject(final int row) {
+		return ((SimilarArtistsTableModel) getTable().getModel())
+				.getArtist(row);
+	}
 
-    @Override
-    protected boolean isEnabledForObject(final IArtistInfo object) {
-	return true;
-    }
+	@Override
+	protected boolean isEnabledForObject(final Object object) {
+		return true;
+	}
 }
