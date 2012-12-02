@@ -29,10 +29,10 @@ import org.jdesktop.swingx.geom.Star2D;
 
 final class StarImageIcon {
 
-	private static final int STAR_SIZE = 13;
-	private static final int INNER_RADIUS = 3;
-	private static final int OUTER_RADIUS = 7;
-	private static final int STAR_GAP = 3;
+	private static final int STAR_SIZE = 12;
+	private static final int INNER_RADIUS = 2;
+	private static final int OUTER_RADIUS = 6;
+	private static final int STAR_GAP = 4;
 
 	private StarImageIcon() {
 	}
