@@ -227,6 +227,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
 		c.gridy = 0;
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		c.gridwidth = 2;
 		add(this.activateContext, c);
 		c.gridx = 0;
 		c.gridy = 1;
@@ -237,6 +238,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
 		c.gridx = 0;
 		c.weightx = 0;
 		c.insets = new Insets(10, 0, 10, 0);
+		c.gridwidth = 1;
 		add(new JLabel(I18nUtils.getString("SIMILAR_ARTIST_SEARCH_QUERY")), c);
 		c.gridx = 1;
 		c.weightx = 1;
