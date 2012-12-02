@@ -6,7 +6,7 @@
 	<artifactId>atunes</artifactId>
 	<packaging>jar</packaging>
 	<name>aTunes</name>
-	<version>2.2.0-SNAPSHOT</version>
+	<version>3.0.0</version>
 	<url>http://www.atunes.org</url>
 
 	<licenses>

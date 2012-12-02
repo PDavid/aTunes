@@ -1,5 +1,5 @@
 /*
- * aTunes 2.2.0-SNAPSHOT
+ * aTunes 3.0.0
  * Copyright (C) 2006-2011 Alex Aranda, Sylvain Gaudard and contributors
  *
  * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
@@ -17,6 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+
 package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
