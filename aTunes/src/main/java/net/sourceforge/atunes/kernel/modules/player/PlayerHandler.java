@@ -177,17 +177,27 @@ public final class PlayerHandler extends AbstractHandler implements
 	@Override
 	public void playAudioObjectInPlayListPositionOfVisiblePlayList(
 			final int position) {
-		this.playListHandler.getVisiblePlayList().setCurrentAudioObjectIndex(
-				position);
-		this.playerEngine
-				.playAudioObjectInPlayListPositionOfVisiblePlayList(position);
+		// Only allow this if player engine is valid
+		if (!(this.playerEngine instanceof VoidPlayerEngine)) {
+			this.playListHandler.getVisiblePlayList()
+					.setCurrentAudioObjectIndex(position);
+			this.playerEngine
+					.playAudioObjectInPlayListPositionOfVisiblePlayList(position);
+		} else {
+			manageNoPlayerEngine(getOsManager(), getFrame());
+		}
 	}
 
 	@Override
 	public void startPlayingAudioObjectInActivePlayList() {
-		this.playerEngine
-				.playAudioObjectInPlayListPositionOfActivePlayList(this.playListHandler
-						.getActivePlayList().getCurrentAudioObjectIndex());
+		// Only allow this if player engine is valid
+		if (!(this.playerEngine instanceof VoidPlayerEngine)) {
+			this.playerEngine
+					.playAudioObjectInPlayListPositionOfActivePlayList(this.playListHandler
+							.getActivePlayList().getCurrentAudioObjectIndex());
+		} else {
+			manageNoPlayerEngine(getOsManager(), getFrame());
+		}
 	}
 
 	@Override
@@ -197,12 +207,22 @@ public final class PlayerHandler extends AbstractHandler implements
 
 	@Override
 	public final void playPreviousAudioObject() {
-		this.playerEngine.playPreviousAudioObject();
+		// Only allow this if player engine is valid
+		if (!(this.playerEngine instanceof VoidPlayerEngine)) {
+			this.playerEngine.playPreviousAudioObject();
+		} else {
+			manageNoPlayerEngine(getOsManager(), getFrame());
+		}
 	}
 
 	@Override
 	public final void playNextAudioObject() {
-		this.playerEngine.playNextAudioObject(false);
+		// Only allow this if player engine is valid
+		if (!(this.playerEngine instanceof VoidPlayerEngine)) {
+			this.playerEngine.playNextAudioObject(false);
+		} else {
+			manageNoPlayerEngine(getOsManager(), getFrame());
+		}
 	}
 
 	@Override
