@@ -15,7 +15,6 @@
 
 	<bean id="applicationArguments" class="net.sourceforge.atunes.ApplicationArguments"/>
 	
-	<bean class="net.sourceforge.atunes.UncaughtExceptionHandler"/>
 	<bean id="errorReportCreator" class="net.sourceforge.atunes.ErrorReportCreator"/>
 	<bean id="errorReporter" class="net.sourceforge.atunes.MailErrorReporter">
 		<property name="url" value="http://www.atunes.org/bug_report_post.php"/>
@@ -111,5 +110,23 @@
 	<bean class="net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController" scope="prototype" init-method="initialize">
 		<constructor-arg ref="editTagDialog"></constructor-arg>
 	</bean>
+
+
+
+
+    <!-- EXCEPTION HANDLER WITH ALL KNOWN EXCEPTIONS THAT DON'T WANT TO SHOW TO USER -->
+	<bean class="net.sourceforge.atunes.UncaughtExceptionHandler">
+		<property name="knownExceptions">
+			<list>
+				<bean class="net.sourceforge.atunes.KnownException">
+				    <!-- http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6933331 -->
+					<property name="exceptionClass" value="java.lang.IllegalStateException"/>
+					<property name="message" value="Buffers have not been created"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+
 	
 </beans>

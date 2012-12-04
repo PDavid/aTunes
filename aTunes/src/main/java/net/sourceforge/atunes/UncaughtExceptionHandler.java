@@ -21,10 +21,12 @@
 package net.sourceforge.atunes;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IExceptionDialog;
+import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -39,6 +41,15 @@ public final class UncaughtExceptionHandler implements
 
 	private IDialogFactory dialogFactory;
 
+	private List<KnownException> knownExceptions;
+
+	/**
+	 * @param knownExceptions
+	 */
+	public void setKnownExceptions(final List<KnownException> knownExceptions) {
+		this.knownExceptions = knownExceptions;
+	}
+
 	/**
 	 * @param dialogFactory
 	 */
@@ -50,17 +61,43 @@ public final class UncaughtExceptionHandler implements
 	public void uncaughtException(final Thread t, final Throwable e) {
 		Logger.error(StringUtils.getString("Thread: ", t.getName()));
 		Logger.error(e);
-		if (e instanceof InvocationTargetException
-				&& ((InvocationTargetException) e).getCause() != null) {
-			uncaughtException(t, ((InvocationTargetException) e).getCause());
-		}
 
-		GuiUtils.callInEventDispatchThread(new Runnable() {
-			@Override
-			public void run() {
-				UncaughtExceptionHandler.this.dialogFactory.newDialog(
-						IExceptionDialog.class).showExceptionDialog(e);
+		if (!isKnownException(e)) {
+			if (e instanceof InvocationTargetException
+					&& ((InvocationTargetException) e).getCause() != null) {
+				uncaughtException(t, ((InvocationTargetException) e).getCause());
 			}
-		});
+
+			GuiUtils.callInEventDispatchThread(new Runnable() {
+				@Override
+				public void run() {
+					UncaughtExceptionHandler.this.dialogFactory.newDialog(
+							IExceptionDialog.class).showExceptionDialog(e);
+				}
+			});
+		}
+	}
+
+	private boolean isKnownException(final Throwable e) {
+		if (!CollectionUtils.isEmpty(this.knownExceptions)) {
+			for (KnownException exception : this.knownExceptions) {
+				if (isKnownException(e, exception)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @param e
+	 * @param exception
+	 * @return
+	 */
+	private boolean isKnownException(final Throwable e,
+			final KnownException exception) {
+		return e.getClass().getName()
+				.equalsIgnoreCase(exception.getExceptionClass())
+				&& e.getMessage().equalsIgnoreCase(exception.getMessage());
 	}
 }
