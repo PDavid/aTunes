@@ -114,6 +114,10 @@ public final class TagReader implements ILocalAudioObjectReader {
 		AudioFile audioFile = null;
 		try {
 			audioFile = AudioFileIO.read(file);
+		} catch (NumberFormatException e) {
+			// With fields with very big numbers this exception can be thrown
+			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
+			Logger.error(e.getMessage());
 		} catch (CannotReadException e) {
 			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
 			Logger.error(e.getMessage());
