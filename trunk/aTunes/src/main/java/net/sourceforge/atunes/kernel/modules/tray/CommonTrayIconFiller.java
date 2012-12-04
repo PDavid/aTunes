@@ -96,7 +96,7 @@ public class CommonTrayIconFiller implements ITrayIconFiller {
 
 	@Override
 	public void setPlayMenuItemText(final String text) {
-		this.playMenuItem.setText(text);
+		getPlayMenuItem().setText(text);
 	}
 
 	/**
