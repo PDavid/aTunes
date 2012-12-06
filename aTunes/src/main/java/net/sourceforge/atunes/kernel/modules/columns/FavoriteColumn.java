@@ -32,8 +32,9 @@ import net.sourceforge.atunes.model.IRadio;
 
 /**
  * Column to show favorite
+ * 
  * @author alex
- *
+ * 
  */
 public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> {
 
@@ -54,12 +55,14 @@ public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> {
 	}
 
 	@Override
-	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+	protected int ascendingCompare(final IAudioObject ao1,
+			final IAudioObject ao2) {
 		return 0;
 	}
 
 	@Override
-	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+	protected int descendingCompare(final IAudioObject ao1,
+			final IAudioObject ao2) {
 		return 0;
 	}
 
@@ -69,7 +72,8 @@ public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> {
 	}
 
 	@Override
-	public AudioObjectProperty getValueFor(final IAudioObject audioObject, final int row) {
+	public AudioObjectProperty getValueFor(final IAudioObject audioObject,
+			final int row) {
 		// Return image
 		if (audioObject instanceof IRadio) {
 			return null;
@@ -77,12 +81,13 @@ public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> {
 		if (audioObject instanceof IPodcastFeedEntry) {
 			return null;
 		}
-		return getFavoriteObjects().containsValue(audioObject) ? AudioObjectProperty.FAVORITE : null;
+		return getFavoriteObjects().containsValue(audioObject) ? AudioObjectProperty.FAVORITE
+				: null;
 	}
 
 	@Override
 	public String getHeaderText() {
-		return "";
+		return null;
 	}
 
 	/**
@@ -93,10 +98,11 @@ public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> {
 	}
 
 	private Map<String, ILocalAudioObject> getFavoriteObjects() {
-		if (favoriteObjects == null) {
+		if (this.favoriteObjects == null) {
 			// Access directly to favorites
-			favoriteObjects = beanFactory.getBean(IFavoritesHandler.class).getFavoriteSongsInfo();
+			this.favoriteObjects = this.beanFactory.getBean(
+					IFavoritesHandler.class).getFavoriteSongsInfo();
 		}
-		return favoriteObjects;
+		return this.favoriteObjects;
 	}
 }
