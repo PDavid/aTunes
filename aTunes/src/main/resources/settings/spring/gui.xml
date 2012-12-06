@@ -151,8 +151,7 @@
 	<bean class="net.sourceforge.atunes.gui.IntegerTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.gui.NavigationTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype" init-method="initialize"/>
 	<bean class="net.sourceforge.atunes.gui.PlaybackStateTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype"/>
-	<bean class="net.sourceforge.atunes.gui.PlayListIntegerTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype"/>
-	<bean class="net.sourceforge.atunes.gui.PlayListStringTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.gui.PlayListTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.gui.PlayListTextAndIconTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.gui.PropertyTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.state.PluginsTableCellRendererCode" parent="abstractTableCellRenderer" scope="prototype"/>

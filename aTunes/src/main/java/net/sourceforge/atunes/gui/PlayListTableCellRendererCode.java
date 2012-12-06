@@ -20,21 +20,35 @@
 
 package net.sourceforge.atunes.gui;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
+import net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.ITableCellRendererCode;
 
 /**
- * Renderer for play list strings
+ * Renderer for play list table, includes highlight of incomplete tags
  * 
  * @author alex
  * 
  */
-public final class PlayListStringTableCellRendererCode extends
-		StringTableCellRendererCode {
+public class PlayListTableCellRendererCode extends
+		AbstractTableCellRendererCode<JComponent, Object> {
+
+	private ITableCellRendererCode<JComponent, Object> renderer;
 
 	private IPlayListHandler playListHandler;
+
+	private PlayListColumnSet playListColumnSet;
+
+	/**
+	 * @param playListColumnSet
+	 */
+	public void setPlayListColumnSet(final PlayListColumnSet playListColumnSet) {
+		this.playListColumnSet = playListColumnSet;
+	}
 
 	/**
 	 * @param playListHandler
@@ -43,15 +57,32 @@ public final class PlayListStringTableCellRendererCode extends
 		this.playListHandler = playListHandler;
 	}
 
+	/**
+	 * @param renderer
+	 */
+	public void setRenderer(
+			final ITableCellRendererCode<JComponent, Object> renderer) {
+		this.renderer = renderer;
+	}
+
 	@Override
-	public JLabel getComponent(final JLabel c, final JTable t,
-			final String value, final boolean isSelected,
+	public JComponent getComponent(final JComponent superComponent,
+			final JTable t, final Object value, final boolean isSelected,
 			final boolean hasFocus, final int row, final int column) {
+		// Get result from super renderer
+		JComponent c = this.renderer.getComponent(superComponent, t, value,
+				isSelected, hasFocus, row, column);
+
+		// Apply component orientation
+		((JLabel) c).setHorizontalAlignment(this.playListColumnSet.getColumn(
+				this.playListColumnSet.getColumnId(column)).getAlignment());
+
+		// Apply font to current row
 		if (this.playListHandler.isCurrentVisibleRowPlaying(row)) {
 			if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
-				(c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
+				c.setFont(getLookAndFeel().getPlayListSelectedItemFont());
 			} else if (getLookAndFeel().getPlayListFont() != null) {
-				(c).setFont(getLookAndFeel().getPlayListFont());
+				c.setFont(getLookAndFeel().getPlayListFont());
 			}
 		}
 		return c;
