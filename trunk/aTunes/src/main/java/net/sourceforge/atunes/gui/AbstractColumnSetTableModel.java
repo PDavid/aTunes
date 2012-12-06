@@ -26,73 +26,80 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * @author alex
- *
+ * 
  */
-public abstract class AbstractColumnSetTableModel extends AbstractCommonTableModel {
+public abstract class AbstractColumnSetTableModel extends
+		AbstractCommonTableModel {
 
-    private IColumnSet columnSet;
+	private IColumnSet columnSet;
 
-    /**
-     * Returns column data class.
-     * 
-     * @param colIndex
-     *            the col index
-     * 
-     * @return the column class
-     */
-    @Override
-    public Class<?> getColumnClass(int colIndex) {
-        return getColumn(colIndex).getColumnClass();
-    }
+	/**
+	 * Returns column data class.
+	 * 
+	 * @param colIndex
+	 *            the col index
+	 * 
+	 * @return the column class
+	 */
+	@Override
+	public Class<?> getColumnClass(final int colIndex) {
+		return getColumn(colIndex).getColumnClass();
+	}
 
-    /**
-     * Return column count.
-     * 
-     * @return the column count
-     */
-    @Override
-    public int getColumnCount() {
-        return columnSet != null ? columnSet.getVisibleColumnCount() : 0;
-    }
+	/**
+	 * Return column count.
+	 * 
+	 * @return the column count
+	 */
+	@Override
+	public int getColumnCount() {
+		return this.columnSet != null ? this.columnSet.getVisibleColumnCount()
+				: 0;
+	}
 
-    /**
-     * Return column name.
-     * 
-     * @param colIndex
-     *            the col index
-     * 
-     * @return the column name
-     */
-    @Override
-    public String getColumnName(int colIndex) {
-        return I18nUtils.getString(getColumn(colIndex).getHeaderText());
-    }
+	/**
+	 * Return column name.
+	 * 
+	 * @param colIndex
+	 *            the col index
+	 * 
+	 * @return the column name
+	 */
+	@Override
+	public String getColumnName(final int colIndex) {
+		String text = getColumn(colIndex).getHeaderText();
+		// Use a white space if empty to force to show header if no more columns
+		// are visible
+		return I18nUtils.getString(StringUtils.isEmpty(text) ? " " : text);
+	}
 
-    /**
-     * Returns column in given index
-     * 
-     * @param colIndex
-     * @return
-     */
-    protected IColumn<?> getColumn(int colIndex) {
-        return columnSet != null ? columnSet.getColumn(columnSet.getColumnId(colIndex)) : null;
-    }
+	/**
+	 * Returns column in given index
+	 * 
+	 * @param colIndex
+	 * @return
+	 */
+	protected IColumn<?> getColumn(final int colIndex) {
+		return this.columnSet != null ? this.columnSet.getColumn(this.columnSet
+				.getColumnId(colIndex)) : null;
+	}
 
-    /**
-     * Abstract method to sort by the given comparator
-     * 
-     * @param comparator
-     */
-    public abstract void sort(Comparator<IAudioObject> comparator);
+	/**
+	 * Abstract method to sort by the given comparator
+	 * 
+	 * @param comparator
+	 */
+	public abstract void sort(Comparator<IAudioObject> comparator);
 
-    /**
-     * @param columnSet
-     *            the columnSet to set
-     */
-    public void setColumnSet(IColumnSet columnSet) {
-        this.columnSet = columnSet;
-    }
+	/**
+	 * @param columnSet
+	 *            the columnSet to set
+	 */
+	public void setColumnSet(final IColumnSet columnSet) {
+		this.columnSet = columnSet;
+	}
 }
