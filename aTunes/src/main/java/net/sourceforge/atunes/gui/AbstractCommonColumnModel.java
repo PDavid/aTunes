@@ -50,8 +50,9 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Common column model for tables
+ * 
  * @author alex
- *
+ * 
  */
 public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel {
 
@@ -76,7 +77,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	private IBeanFactory beanFactory;
 
 	protected final IBeanFactory getBeanFactory() {
-		return beanFactory;
+		return this.beanFactory;
 	}
 
 	/**
@@ -96,7 +97,8 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
@@ -115,7 +117,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	}
 
 	protected final ILookAndFeel getLookAndFeel() {
-		return lookAndFeelManager.getCurrentLookAndFeel();
+		return this.lookAndFeelManager.getCurrentLookAndFeel();
 	}
 
 	/**
@@ -161,7 +163,8 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	 * @param width
 	 *            the width
 	 */
-	private final void setWidthForColumn(final Class<? extends IColumn<?>> c, final int width) {
+	private final void setWidthForColumn(final Class<? extends IColumn<?>> c,
+			final int width) {
 		getColumn(c).setWidth(width);
 	}
 
@@ -173,7 +176,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	 */
 	public final void arrangeColumns(final boolean reapplyFilter) {
 		setCurrentColumns();
-		model.refresh(TableModelEvent.UPDATE);
+		this.model.refresh(TableModelEvent.UPDATE);
 		if (reapplyFilter) {
 			reapplyFilter();
 		}
@@ -198,7 +201,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	 * @return
 	 */
 	private final Class<? extends IColumn<?>> getColumnId(final int index) {
-		return columnSet.getColumnId(index);
+		return this.columnSet.getColumnId(index);
 	}
 
 	/**
@@ -207,8 +210,9 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	 * @param columnClass
 	 * @return
 	 */
-	private final IColumn<?> getColumn(final Class<? extends IColumn<?>> columnClass) {
-		return columnSet.getColumn(columnClass);
+	private final IColumn<?> getColumn(
+			final Class<? extends IColumn<?>> columnClass) {
+		return this.columnSet.getColumn(columnClass);
 	}
 
 	/**
@@ -225,37 +229,46 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	 * Initializes columns
 	 */
 	private void setCurrentColumns() {
-		columnSet.setCurrentColumns();
+		this.columnSet.setCurrentColumns();
 	}
 
 	private class ColumnMoveListener extends MouseAdapter {
 
 		@Override
 		public void mouseReleased(final MouseEvent e) {
-			if (columnBeingMoved != -1 && columnBeingMoved != columnMovedTo) {
+			if (AbstractCommonColumnModel.this.columnBeingMoved != -1
+					&& AbstractCommonColumnModel.this.columnBeingMoved != AbstractCommonColumnModel.this.columnMovedTo) {
 				// Swap order in model
 				// Column moved to right
-				if (columnBeingMoved < columnMovedTo) {
-					int columnDestinyOrder = getColumnObject(columnMovedTo).getOrder();
-					for (int i = columnBeingMoved + 1; i <= columnMovedTo; i++) {
+				if (AbstractCommonColumnModel.this.columnBeingMoved < AbstractCommonColumnModel.this.columnMovedTo) {
+					int columnDestinyOrder = getColumnObject(
+							AbstractCommonColumnModel.this.columnMovedTo)
+							.getOrder();
+					for (int i = AbstractCommonColumnModel.this.columnBeingMoved + 1; i <= AbstractCommonColumnModel.this.columnMovedTo; i++) {
 						int order = getColumnObject(i).getOrder();
 						getColumnObject(i).setOrder(order - 1);
 					}
-					getColumnObject(columnBeingMoved).setOrder(columnDestinyOrder);
+					getColumnObject(
+							AbstractCommonColumnModel.this.columnBeingMoved)
+							.setOrder(columnDestinyOrder);
 				} // Column moved to left
-				else if (columnBeingMoved > columnMovedTo) {
-					int columnDestinyOrder = getColumnObject(columnMovedTo).getOrder();
-					for (int i = columnBeingMoved - 1; i >= columnMovedTo; i--) {
+				else if (AbstractCommonColumnModel.this.columnBeingMoved > AbstractCommonColumnModel.this.columnMovedTo) {
+					int columnDestinyOrder = getColumnObject(
+							AbstractCommonColumnModel.this.columnMovedTo)
+							.getOrder();
+					for (int i = AbstractCommonColumnModel.this.columnBeingMoved - 1; i >= AbstractCommonColumnModel.this.columnMovedTo; i--) {
 						int order = getColumnObject(i).getOrder();
 						getColumnObject(i).setOrder(order + 1);
 					}
-					getColumnObject(columnBeingMoved).setOrder(columnDestinyOrder);
+					getColumnObject(
+							AbstractCommonColumnModel.this.columnBeingMoved)
+							.setOrder(columnDestinyOrder);
 				}
 
 				arrangeColumns(false);
 			}
-			columnBeingMoved = -1;
-			columnMovedTo = -1;
+			AbstractCommonColumnModel.this.columnBeingMoved = -1;
+			AbstractCommonColumnModel.this.columnMovedTo = -1;
 		}
 	};
 
@@ -264,18 +277,22 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 		private Future<?> future;
 
 		private void saveColumnSet() {
-			if (future != null) {
-				future.cancel(false);
+			if (this.future != null) {
+				this.future.cancel(false);
 			}
-			future = taskService.submitOnce("Save Column Model", 1, new Runnable() {
+			this.future = AbstractCommonColumnModel.this.taskService
+					.submitOnce("Save Column Model", 1, new Runnable() {
 
-				@Override
-				public void run() {
-					// One second after last column width change save column set
-					// This is to avoid saving column set after each column change event
-					columnSet.saveColumnSet();
-				}
-			});
+						@Override
+						public void run() {
+							// One second after last column width change save
+							// column set
+							// This is to avoid saving column set after each
+							// column change event
+							AbstractCommonColumnModel.this.columnSet
+									.saveColumnSet();
+						}
+					});
 		}
 
 		@Override
@@ -291,10 +308,11 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 
 		@Override
 		public void columnMoved(final TableColumnModelEvent e) {
-			if (columnBeingMoved == -1) {
-				columnBeingMoved = e.getFromIndex();
+			if (AbstractCommonColumnModel.this.columnBeingMoved == -1) {
+				AbstractCommonColumnModel.this.columnBeingMoved = e
+						.getFromIndex();
 			}
-			columnMovedTo = e.getToIndex();
+			AbstractCommonColumnModel.this.columnMovedTo = e.getToIndex();
 			saveColumnSet();
 		}
 
@@ -310,21 +328,22 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	};
 
 	private ColumnMoveListener getColumnMoveListener() {
-		if (columnMoveListener == null) {
-			columnMoveListener = new ColumnMoveListener();
+		if (this.columnMoveListener == null) {
+			this.columnMoveListener = new ColumnMoveListener();
 		}
-		return columnMoveListener;
+		return this.columnMoveListener;
 	}
 
 	private ColumnModelListener getColumnModelListener() {
-		if (columnModelListener == null) {
-			columnModelListener = new ColumnModelListener();
+		if (this.columnModelListener == null) {
+			this.columnModelListener = new ColumnModelListener();
 		}
-		return columnModelListener;
+		return this.columnModelListener;
 	}
 
 	/**
 	 * Allows user to move columns
+	 * 
 	 * @param enable
 	 */
 	public void enableColumnChange(final boolean enable) {
@@ -332,10 +351,12 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 		if (enable) {
 			// Add listener for column size changes
 			addColumnModelListener(getColumnModelListener());
-			this.table.getTableHeader().addMouseListener(getColumnMoveListener());
+			this.table.getTableHeader().addMouseListener(
+					getColumnMoveListener());
 		} else {
 			removeColumnModelListener(getColumnModelListener());
-			this.table.getTableHeader().removeMouseListener(getColumnMoveListener());
+			this.table.getTableHeader().removeMouseListener(
+					getColumnMoveListener());
 		}
 	}
 
@@ -377,7 +398,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	 * @return the columnSet
 	 */
 	public IColumnSet getColumnSet() {
-		return columnSet;
+		return this.columnSet;
 	}
 
 	/**
@@ -397,23 +418,30 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	public ITableCellRendererCode<?, ?> getRendererCodeFor(final Class<?> clazz) {
 		AbstractTableCellRendererCode<?, ?> renderer = null;
 		if (clazz.equals(PlaybackState.class)) {
-			renderer = beanFactory.getBean(PlaybackStateTableCellRendererCode.class);
+			renderer = this.beanFactory
+					.getBean(PlaybackStateTableCellRendererCode.class);
 		} else if (clazz.equals(Integer.class)) {
-			renderer = beanFactory.getBean(IntegerTableCellRendererCode.class);
+			renderer = this.beanFactory
+					.getBean(IntegerTableCellRendererCode.class);
 		} else if (clazz.equals(ImageIcon.class)) {
-			renderer = beanFactory.getBean(ImageIconTableCellRendererCode.class);
+			renderer = this.beanFactory
+					.getBean(ImageIconTableCellRendererCode.class);
 		} else if (clazz.equals(String.class)) {
-			renderer = beanFactory.getBean("stringTableCellRendererCode", StringTableCellRendererCode.class);
+			renderer = this.beanFactory.getBean("stringTableCellRendererCode",
+					StringTableCellRendererCode.class);
 		} else if (clazz.equals(TextAndIcon.class)) {
-			renderer = beanFactory.getBean(TextAndIconTableCellRendererCode.class);
+			renderer = this.beanFactory
+					.getBean(TextAndIconTableCellRendererCode.class);
 		} else if (clazz.equals(AudioObjectProperty.class)) {
-			renderer = beanFactory.getBean(PropertyTableCellRendererCode.class);
+			renderer = this.beanFactory
+					.getBean(PropertyTableCellRendererCode.class);
 		} else if (clazz.equals(IColorMutableImageIcon.class)) {
-			renderer = beanFactory.getBean(ColorMutableTableCellRendererCode.class);
+			renderer = this.beanFactory
+					.getBean(ColorMutableTableCellRendererCode.class);
 		} else {
-			throw new IllegalArgumentException(StringUtils.getString("No renderer found for class: ", clazz.getName()));
+			throw new IllegalArgumentException(StringUtils.getString(
+					"No renderer found for class: ", clazz.getName()));
 		}
-		renderer.setModel(this);
 		return renderer;
 	}
 
@@ -421,6 +449,6 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	 * @return the table
 	 */
 	protected JTable getTable() {
-		return table;
+		return this.table;
 	}
 }

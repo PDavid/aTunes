@@ -64,7 +64,7 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 	private int order;
 
 	/** Text alignment. */
-	private int alignment;
+	private int alignment = -1;
 
 	/** Editable flag. */
 	private boolean editable = false;
@@ -108,8 +108,10 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 	public void initialize() {
 		this.columnClass = (Class<?>) ReflectionUtils
 				.getTypeArgumentsOfParameterizedType(this.getClass())[0];
-		this.alignment = this.controlsBuilder
-				.getComponentOrientationAsSwingConstant();
+		if (this.alignment == -1) {
+			this.alignment = this.controlsBuilder
+					.getComponentOrientationAsSwingConstant();
+		}
 	}
 
 	/**

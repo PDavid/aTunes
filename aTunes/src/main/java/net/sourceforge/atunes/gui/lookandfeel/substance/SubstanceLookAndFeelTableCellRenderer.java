@@ -27,18 +27,23 @@ import net.sourceforge.atunes.model.ITableCellRendererCode;
 
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 
-final class SubstanceLookAndFeelTableCellRenderer extends SubstanceDefaultTableCellRenderer {
-    private final ITableCellRendererCode code;
+final class SubstanceLookAndFeelTableCellRenderer extends
+		SubstanceDefaultTableCellRenderer {
+	private final ITableCellRendererCode code;
 
-    private static final long serialVersionUID = 2844251523912028654L;
+	private static final long serialVersionUID = 2844251523912028654L;
 
-    SubstanceLookAndFeelTableCellRenderer(ITableCellRendererCode code) {
-        this.code = code;
-    }
+	SubstanceLookAndFeelTableCellRenderer(final ITableCellRendererCode code) {
+		this.code = code;
+	}
 
-    @Override
-    public JComponent getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    	JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
-    }
+	@Override
+	public JComponent getTableCellRendererComponent(final JTable table,
+			final Object value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
+		JComponent c = (JComponent) super.getTableCellRendererComponent(table,
+				value, isSelected, hasFocus, row, column);
+		return this.code.getComponent(c, table, value, isSelected, hasFocus,
+				row, column);
+	}
 }

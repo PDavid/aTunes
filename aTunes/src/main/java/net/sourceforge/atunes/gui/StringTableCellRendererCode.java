@@ -25,15 +25,17 @@ import javax.swing.JTable;
 
 /**
  * Simple cell renderer for strings
+ * 
  * @author alex
- *
+ * 
  */
-public class StringTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, String> {
+public class StringTableCellRendererCode extends
+		AbstractTableCellRendererCode<JLabel, String> {
 
 	@Override
-	public JLabel getComponent(final JLabel c, final JTable table, final String value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
-		// Get alignment from model
-		c.setHorizontalAlignment(getModel().getColumnAlignment(column));
+	public JLabel getComponent(final JLabel c, final JTable table,
+			final String value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
 		return c;
 	}
 }

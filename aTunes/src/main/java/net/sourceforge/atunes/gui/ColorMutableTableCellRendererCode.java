@@ -29,19 +29,23 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 
 /**
  * Cell renderer for color mutable icons
+ * 
  * @author alex
- *
+ * 
  */
-public class ColorMutableTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, IColorMutableImageIcon> {
+public class ColorMutableTableCellRendererCode extends
+		AbstractTableCellRendererCode<JLabel, IColorMutableImageIcon> {
 
 	@Override
-	public JLabel getComponent(final JLabel c, final JTable table, final IColorMutableImageIcon value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+	public JLabel getComponent(final JLabel c, final JTable table,
+			final IColorMutableImageIcon value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
 		c.setText(null);
-		Color color = getLookAndFeel().getPaintForColorMutableIcon(c, isSelected);
+		Color color = getLookAndFeel().getPaintForColorMutableIcon(c,
+				isSelected);
 		if (value != null) {
 			c.setIcon(value.getIcon(color));
 		}
-		c.setHorizontalAlignment(getModel().getColumnAlignment(column));
 		return c;
 	}
 }

@@ -26,18 +26,19 @@ import javax.swing.JTable;
 
 /**
  * Renderer for ImageIcon objects
+ * 
  * @author alex
- *
+ * 
  */
-public class ImageIconTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, ImageIcon> {
+public class ImageIconTableCellRendererCode extends
+		AbstractTableCellRendererCode<JLabel, ImageIcon> {
 
 	@Override
-	public JLabel getComponent(final JLabel c, final JTable table, final ImageIcon value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+	public JLabel getComponent(final JLabel c, final JTable table,
+			final ImageIcon value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
 		c.setText(null);
 		c.setIcon(value);
-
-		// Get alignment from model
-		c.setHorizontalAlignment(getModel().getColumnAlignment(column));
 		return c;
 	}
 }

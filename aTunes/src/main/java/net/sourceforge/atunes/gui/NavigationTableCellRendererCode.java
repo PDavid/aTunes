@@ -28,6 +28,7 @@ import javax.swing.JTable;
 import javax.swing.UIManager;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITableCellRendererCode;
@@ -40,82 +41,103 @@ import net.sourceforge.atunes.model.ITagHandler;
  * 
  */
 public class NavigationTableCellRendererCode extends
-	AbstractTableCellRendererCode<JComponent, Object> {
+		AbstractTableCellRendererCode<JComponent, Object> {
 
-    private ITableCellRendererCode<JComponent, Object> renderer;
+	private ITableCellRendererCode<JComponent, Object> renderer;
 
-    private INavigationHandler navigationHandler;
+	private INavigationHandler navigationHandler;
 
-    private boolean isSubstance;
+	private boolean isSubstance;
 
-    private ITagHandler tagHandler;
+	private ITagHandler tagHandler;
 
-    private IStateNavigation stateNavigation;
+	private IStateNavigation stateNavigation;
 
-    /**
-     * @param renderer
-     */
-    public void setRenderer(
-	    final ITableCellRendererCode<JComponent, Object> renderer) {
-	this.renderer = renderer;
-    }
+	private IColumnSet navigatorColumnSet;
 
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(final INavigationHandler navigationHandler) {
-	this.navigationHandler = navigationHandler;
-    }
-
-    /**
-     * @param tagHandler
-     */
-    public void setTagHandler(final ITagHandler tagHandler) {
-	this.tagHandler = tagHandler;
-    }
-
-    /**
-     * @param stateNavigation
-     */
-    public void setStateNavigation(final IStateNavigation stateNavigation) {
-	this.stateNavigation = stateNavigation;
-    }
-
-    /**
-     * Initialization needed
-     */
-    public void initialize() {
-	this.isSubstance = getLookAndFeel().getName().equalsIgnoreCase(
-		"Substance");
-    }
-
-    @Override
-    public JComponent getComponent(final JComponent superComponent,
-	    final JTable t, final Object value, final boolean isSelected,
-	    final boolean hasFocus, final int row, final int column) {
-	// Get result from super renderer
-	JComponent c = renderer.getComponent(superComponent, t, value,
-		isSelected, hasFocus, row, column);
-	// Check incomplete tags if necessary
-	if (stateNavigation.isHighlightIncompleteTagElements()) {
-	    IAudioObject audioObject = navigationHandler
-		    .getAudioObjectInNavigationTable(row);
-	    if (tagHandler.hasIncompleteTags(audioObject)) {
-		((JLabel) c).setForeground(Color.red);
-	    } else {
-		// Only Substance doesn't need this workaround
-		if (!isSubstance) {
-		    ((JLabel) c).setForeground(c.getForeground());
-		    if (isSelected) {
-			((JLabel) c).setForeground(UIManager
-				.getColor("List.selectionForeground"));
-		    } else {
-			((JLabel) c).setForeground(UIManager
-				.getColor("List.foreground"));
-		    }
-		}
-	    }
+	/**
+	 * @param navigatorColumnSet
+	 */
+	public void setNavigatorColumnSet(final IColumnSet navigatorColumnSet) {
+		this.navigatorColumnSet = navigatorColumnSet;
 	}
-	return c;
-    }
+
+	/**
+	 * @param renderer
+	 */
+	public void setRenderer(
+			final ITableCellRendererCode<JComponent, Object> renderer) {
+		this.renderer = renderer;
+	}
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+
+	/**
+	 * @param tagHandler
+	 */
+	public void setTagHandler(final ITagHandler tagHandler) {
+		this.tagHandler = tagHandler;
+	}
+
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
+
+	/**
+	 * Initialization needed
+	 */
+	public void initialize() {
+		this.isSubstance = getLookAndFeel().getName().equalsIgnoreCase(
+				"Substance");
+	}
+
+	@Override
+	public JComponent getComponent(final JComponent superComponent,
+			final JTable t, final Object value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
+		// Get result from super renderer
+		JComponent c = this.renderer.getComponent(superComponent, t, value,
+				isSelected, hasFocus, row, column);
+
+		// Apply component orientation
+		IColumnSet columnSet = this.navigatorColumnSet;
+		if (!this.navigationHandler.getCurrentView()
+				.isUseDefaultNavigatorColumnSet()) {
+			columnSet = this.navigationHandler.getCurrentView()
+					.getCustomColumnSet();
+		}
+
+		((JLabel) c).setHorizontalAlignment(columnSet.getColumn(
+				columnSet.getColumnId(column)).getAlignment());
+
+		// Check incomplete tags if necessary
+		if (this.stateNavigation.isHighlightIncompleteTagElements()) {
+			IAudioObject audioObject = this.navigationHandler
+					.getAudioObjectInNavigationTable(row);
+			if (this.tagHandler.hasIncompleteTags(audioObject)) {
+				((JLabel) c).setForeground(Color.red);
+			} else {
+				// Only Substance doesn't need this workaround
+				if (!this.isSubstance) {
+					((JLabel) c).setForeground(c.getForeground());
+					if (isSelected) {
+						((JLabel) c).setForeground(UIManager
+								.getColor("List.selectionForeground"));
+					} else {
+						((JLabel) c).setForeground(UIManager
+								.getColor("List.foreground"));
+					}
+				}
+			}
+		}
+		return c;
+	}
 }

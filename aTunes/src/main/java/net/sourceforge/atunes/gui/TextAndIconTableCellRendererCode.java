@@ -25,24 +25,28 @@ import javax.swing.JTable;
 
 /**
  * Renderer for text and icon
+ * 
  * @author alex
- *
+ * 
  */
-public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, TextAndIcon> {
+public class TextAndIconTableCellRendererCode extends
+		AbstractTableCellRendererCode<JLabel, TextAndIcon> {
 
 	@Override
-	public JLabel getComponent(final JLabel c, final JTable table, final TextAndIcon value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+	public JLabel getComponent(final JLabel c, final JTable table,
+			final TextAndIcon value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
 		if (value != null) {
 			c.setText(value.getText());
 			if (value.getIcon() != null) {
-				c.setIcon(value.getIcon().getIcon(getLookAndFeel().getPaintForColorMutableIcon(c, isSelected)));
+				c.setIcon(value.getIcon().getIcon(
+						getLookAndFeel().getPaintForColorMutableIcon(c,
+								isSelected)));
 			} else {
 				c.setIcon(null);
 			}
 			c.setHorizontalTextPosition((value).getHorizontalTextPosition());
 		}
-		// Get alignment from model
-		c.setHorizontalAlignment(getModel().getColumnAlignment(column));
 		return c;
 	}
 

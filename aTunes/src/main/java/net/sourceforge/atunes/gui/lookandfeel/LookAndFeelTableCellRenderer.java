@@ -27,25 +27,29 @@ import javax.swing.table.DefaultTableCellRenderer;
 import net.sourceforge.atunes.model.ITableCellRendererCode;
 
 final class LookAndFeelTableCellRenderer extends DefaultTableCellRenderer {
-	
-    private final ITableCellRendererCode code;
-    
-    /**
+
+	private final ITableCellRendererCode code;
+
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    LookAndFeelTableCellRenderer(ITableCellRendererCode<?, ?> code) {
-        this.code = code;
-    }
+	LookAndFeelTableCellRenderer(final ITableCellRendererCode<?, ?> code) {
+		this.code = code;
+	}
 
-    @Override
-    public JComponent getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    	JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    	if (code != null) {
-    		c = code.getComponent(c, table, value, isSelected, hasFocus, row, column);
-    	}
-        c.setOpaque(isSelected);
-        return c;
-    }
+	@Override
+	public JComponent getTableCellRendererComponent(final JTable table,
+			final Object value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
+		JComponent c = (JComponent) super.getTableCellRendererComponent(table,
+				value, isSelected, hasFocus, row, column);
+		if (this.code != null) {
+			c = this.code.getComponent(c, table, value, isSelected, hasFocus,
+					row, column);
+		}
+		c.setOpaque(isSelected);
+		return c;
+	}
 }
