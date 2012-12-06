@@ -23,8 +23,6 @@ package net.sourceforge.atunes.gui;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.model.IPlayListHandler;
-
 /**
  * Renderer for columns with text and icon
  * 
@@ -33,15 +31,6 @@ import net.sourceforge.atunes.model.IPlayListHandler;
  */
 public final class PlayListTextAndIconTableCellRendererCode extends
 		AbstractTableCellRendererCode<JLabel, TextAndIcon> {
-
-	private IPlayListHandler playListHandler;
-
-	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(final IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
 
 	@Override
 	public JLabel getComponent(final JLabel c, final JTable table,
@@ -57,14 +46,6 @@ public final class PlayListTextAndIconTableCellRendererCode extends
 				c.setIcon(null);
 			}
 			c.setHorizontalTextPosition((value).getHorizontalTextPosition());
-		}
-
-		if (this.playListHandler.isCurrentVisibleRowPlaying(row)) {
-			if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
-				(c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
-			} else if (getLookAndFeel().getPlayListFont() != null) {
-				(c).setFont(getLookAndFeel().getPlayListFont());
-			}
 		}
 		return c;
 	}

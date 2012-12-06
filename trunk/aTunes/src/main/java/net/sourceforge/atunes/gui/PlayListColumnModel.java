@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui;
 
+import javax.swing.JComponent;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.model.IColumnSet;
@@ -85,21 +86,21 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
 		// so keep ordering has no sense
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ITableCellRendererCode<?, ?> getRendererCodeFor(final Class<?> clazz) {
-		AbstractTableCellRendererCode<?, ?> renderer = null;
-		if (clazz.equals(Integer.class)) {
-			renderer = getBeanFactory().getBean(
-					PlayListIntegerTableCellRendererCode.class);
-		} else if (clazz.equals(String.class)) {
-			renderer = getBeanFactory().getBean(
-					PlayListStringTableCellRendererCode.class);
-		} else if (clazz.equals(TextAndIcon.class)) {
+		ITableCellRendererCode<?, ?> renderer = null;
+		if (clazz.equals(TextAndIcon.class)) {
 			renderer = getBeanFactory().getBean(
 					PlayListTextAndIconTableCellRendererCode.class);
 		} else {
-			return super.getRendererCodeFor(clazz);
+			renderer = super.getRendererCodeFor(clazz);
 		}
-		return renderer;
+
+		PlayListTableCellRendererCode playListTableRenderer = getBeanFactory()
+				.getBean(PlayListTableCellRendererCode.class);
+		playListTableRenderer
+				.setRenderer((ITableCellRendererCode<JComponent, Object>) renderer);
+		return playListTableRenderer;
 	}
 }
