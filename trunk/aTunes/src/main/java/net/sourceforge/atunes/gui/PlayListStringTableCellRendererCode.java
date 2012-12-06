@@ -27,10 +27,12 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 
 /**
  * Renderer for play list strings
+ * 
  * @author alex
- *
+ * 
  */
-public final class PlayListStringTableCellRendererCode extends StringTableCellRendererCode {
+public final class PlayListStringTableCellRendererCode extends
+		StringTableCellRendererCode {
 
 	private IPlayListHandler playListHandler;
 
@@ -42,15 +44,16 @@ public final class PlayListStringTableCellRendererCode extends StringTableCellRe
 	}
 
 	@Override
-	public JLabel getComponent(final JLabel c, final JTable t, final String value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
-		if (playListHandler.isCurrentVisibleRowPlaying(row)) {
+	public JLabel getComponent(final JLabel c, final JTable t,
+			final String value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
+		if (this.playListHandler.isCurrentVisibleRowPlaying(row)) {
 			if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
 				(c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
 			} else if (getLookAndFeel().getPlayListFont() != null) {
 				(c).setFont(getLookAndFeel().getPlayListFont());
 			}
 		}
-		c.setHorizontalAlignment(getModel().getColumnAlignment(column));
 		return c;
 	}
 }

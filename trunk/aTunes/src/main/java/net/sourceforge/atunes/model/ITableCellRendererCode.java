@@ -25,8 +25,9 @@ import javax.swing.JTable;
 
 /**
  * Code to decorate a cell of a table
+ * 
  * @author alex
- *
+ * 
  * @param <T>
  * @param <U>
  */

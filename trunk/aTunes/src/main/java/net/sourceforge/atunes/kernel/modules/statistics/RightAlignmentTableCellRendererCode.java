@@ -26,10 +26,13 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
 
-class RightAlignmentTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
+class RightAlignmentTableCellRendererCode extends
+		AbstractTableCellRendererCode<JLabel, Object> {
 
 	@Override
-	public JLabel getComponent(final JLabel superComponent, final JTable t, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+	public JLabel getComponent(final JLabel superComponent, final JTable t,
+			final Object value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
 		superComponent.setHorizontalAlignment(SwingConstants.RIGHT);
 		return superComponent;
 	}

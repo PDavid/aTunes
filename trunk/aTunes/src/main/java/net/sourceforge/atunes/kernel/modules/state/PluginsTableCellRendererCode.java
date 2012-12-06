@@ -30,16 +30,21 @@ import org.commonjukebox.plugins.model.PluginInfo;
 
 /**
  * Renderer for plugins table
+ * 
  * @author alex
- *
+ * 
  */
-public class PluginsTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, PluginInfo> {
+public class PluginsTableCellRendererCode extends
+		AbstractTableCellRendererCode<JLabel, PluginInfo> {
 
 	@Override
-	public JLabel getComponent(final JLabel c, final JTable table, final PluginInfo value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+	public JLabel getComponent(final JLabel c, final JTable table,
+			final PluginInfo value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
 		c.setText(value.getName());
 		if (value.getIcon() != null) {
-			c.setIcon(ImageUtils.scaleImageBicubic(value.getIcon(), PluginsPanel.CELL_HEIGHT - 5, PluginsPanel.CELL_HEIGHT - 5));
+			c.setIcon(ImageUtils.scaleImageBicubic(value.getIcon(),
+					PluginsPanel.CELL_HEIGHT - 5, PluginsPanel.CELL_HEIGHT - 5));
 		} else {
 			c.setIcon(null);
 		}

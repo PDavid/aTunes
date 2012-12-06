@@ -27,10 +27,12 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 
 /**
  * Renderer for columns with text and icon
+ * 
  * @author alex
- *
+ * 
  */
-public final class PlayListTextAndIconTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, TextAndIcon> {
+public final class PlayListTextAndIconTableCellRendererCode extends
+		AbstractTableCellRendererCode<JLabel, TextAndIcon> {
 
 	private IPlayListHandler playListHandler;
 
@@ -42,20 +44,22 @@ public final class PlayListTextAndIconTableCellRendererCode extends AbstractTabl
 	}
 
 	@Override
-	public JLabel getComponent(final JLabel c, final JTable table, final TextAndIcon value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+	public JLabel getComponent(final JLabel c, final JTable table,
+			final TextAndIcon value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
 		if (value != null) {
 			c.setText(value.getText());
 			if (value.getIcon() != null) {
-				c.setIcon(value.getIcon().getIcon(getLookAndFeel().getPaintForColorMutableIcon(c, isSelected)));
+				c.setIcon(value.getIcon().getIcon(
+						getLookAndFeel().getPaintForColorMutableIcon(c,
+								isSelected)));
 			} else {
 				c.setIcon(null);
 			}
 			c.setHorizontalTextPosition((value).getHorizontalTextPosition());
 		}
-		// Get alignment from model
-		c.setHorizontalAlignment(getModel().getColumnAlignment(column));
 
-		if (playListHandler.isCurrentVisibleRowPlaying(row)) {
+		if (this.playListHandler.isCurrentVisibleRowPlaying(row)) {
 			if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
 				(c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
 			} else if (getLookAndFeel().getPlayListFont() != null) {

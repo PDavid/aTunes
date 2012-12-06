@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui;
 
-
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.model.IColumnSet;
@@ -66,14 +65,14 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
 	 * Initialization needed
 	 */
 	public void initialize() {
-		setTable(playListTable.getSwingComponent());
-		setColumnSet(playListColumnSet);
+		setTable(this.playListTable.getSwingComponent());
+		setColumnSet(this.playListColumnSet);
 		enableColumnChange(true);
 	}
 
 	@Override
 	protected void reapplyFilter() {
-		playListHandler.reapplyFilter();
+		this.playListHandler.reapplyFilter();
 	}
 
 	@Override
@@ -81,7 +80,8 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
 		super.addColumn(aColumn);
 		updateColumnSettings(aColumn);
 
-		// No header renderer is added to play list since user can change order of table manually by adding, removing or moving rows
+		// No header renderer is added to play list since user can change order
+		// of table manually by adding, removing or moving rows
 		// so keep ordering has no sense
 	}
 
@@ -89,15 +89,17 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
 	public ITableCellRendererCode<?, ?> getRendererCodeFor(final Class<?> clazz) {
 		AbstractTableCellRendererCode<?, ?> renderer = null;
 		if (clazz.equals(Integer.class)) {
-			renderer = getBeanFactory().getBean(PlayListIntegerTableCellRendererCode.class);
+			renderer = getBeanFactory().getBean(
+					PlayListIntegerTableCellRendererCode.class);
 		} else if (clazz.equals(String.class)) {
-			renderer = getBeanFactory().getBean(PlayListStringTableCellRendererCode.class);
+			renderer = getBeanFactory().getBean(
+					PlayListStringTableCellRendererCode.class);
 		} else if (clazz.equals(TextAndIcon.class)) {
-			renderer = getBeanFactory().getBean(PlayListTextAndIconTableCellRendererCode.class);
+			renderer = getBeanFactory().getBean(
+					PlayListTextAndIconTableCellRendererCode.class);
 		} else {
 			return super.getRendererCodeFor(clazz);
 		}
-		renderer.setModel(this);
 		return renderer;
 	}
 }
