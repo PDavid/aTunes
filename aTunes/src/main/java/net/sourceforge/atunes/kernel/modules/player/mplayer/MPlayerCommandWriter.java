@@ -30,159 +30,162 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 class MPlayerCommandWriter {
 
-    /** The process. */
-    private volatile Process process;
+	/** The process. */
+	private volatile Process process;
 
-    /** Stream used to send commands to mplayer */
-    private volatile PrintStream streamToProcess;
+	/** Stream used to send commands to mplayer */
+	private volatile PrintStream streamToProcess;
 
-    /**
-     * Indicates if process must send more commands or not
-     */
-    private volatile boolean stopSendingCommands;
+	/**
+	 * Indicates if process must send more commands or not
+	 */
+	private volatile boolean stopSendingCommands;
 
-    /**
-     * Returns new command writer for mplayer instance
-     * 
-     * @param process
-     * @param osManager
-     * @return
-     */
-    static MPlayerCommandWriter newCommandWriter(final Process process,
-	    final IOSManager osManager) {
-	if (osManager.isMacOsX()) {
-	    return new MPlayerXCommandWriter(process);
+	/**
+	 * Returns new command writer for mplayer instance
+	 * 
+	 * @param process
+	 * @param osManager
+	 * @return
+	 */
+	static MPlayerCommandWriter newCommandWriter(final Process process,
+			final IOSManager osManager) {
+		if (osManager.isMacOsX()) {
+			return new MPlayerXCommandWriter(process);
+		}
+		return new MPlayerCommandWriter(process);
 	}
-	return new MPlayerCommandWriter(process);
-    }
 
-    /**
-     * Instantiates a new m player command writer.
-     * 
-     * @param process
-     *            the process
-     */
-    protected MPlayerCommandWriter(final Process process) {
-	this.process = process;
-    }
-
-    /**
-     * Send command.
-     * 
-     * @param command
-     *            the command
-     */
-    protected void sendCommand(final String command) {
-	// Must check process and stream for null as they can be changed from
-	// another thread
-	if (!stopSendingCommands) {
-	    if (process != null) {
-		if (streamToProcess == null) {
-		    streamToProcess = new PrintStream(process.getOutputStream());
-		}
-		if (streamToProcess != null) {
-		    streamToProcess.print(command);
-		}
-		if (streamToProcess != null) {
-		    streamToProcess.print('\n');
-		}
-		if (streamToProcess != null) {
-		    streamToProcess.flush();
-		}
-	    }
+	/**
+	 * Instantiates a new m player command writer.
+	 * 
+	 * @param process
+	 *            the process
+	 */
+	protected MPlayerCommandWriter(final Process process) {
+		this.process = process;
 	}
-    }
 
-    /**
-     * Send get duration command.
-     */
-    void sendGetDurationCommand() {
-	sendCommand("get_time_length");
-    }
+	/**
+	 * Send command.
+	 * 
+	 * @param command
+	 *            the command
+	 */
+	protected void sendCommand(final String command) {
+		// Must check process and stream for null as they can be changed from
+		// another thread
+		if (!this.stopSendingCommands) {
+			if (this.process != null) {
+				if (this.streamToProcess == null) {
+					this.streamToProcess = new PrintStream(
+							this.process.getOutputStream());
+				}
+				if (this.streamToProcess != null) {
+					this.streamToProcess.print(command);
+				}
+				if (this.streamToProcess != null) {
+					this.streamToProcess.print('\n');
+				}
+				if (this.streamToProcess != null) {
+					this.streamToProcess.flush();
+				}
+			}
+		}
+	}
 
-    /**
-     * Send get position command.
-     */
-    void sendGetPositionCommand() {
-	sendCommand("get_time_pos");
-    }
+	/**
+	 * Send get duration command.
+	 */
+	void sendGetDurationCommand() {
+		sendCommand("get_time_length");
+	}
 
-    /**
-     * Send mute command.
-     */
-    void sendMuteCommand() {
-	sendCommand("mute");
-    }
+	/**
+	 * Send get position command.
+	 */
+	void sendGetPositionCommand() {
+		sendCommand("get_time_pos");
+	}
 
-    /**
-     * Send pause command.
-     */
-    void sendPauseCommand() {
-	sendCommand("pause");
-    }
+	/**
+	 * Send mute command.
+	 */
+	void sendMuteCommand() {
+		sendCommand("mute");
+	}
 
-    /**
-     * Send resume command.
-     */
-    void sendResumeCommand() {
-	sendCommand("pause");
-    }
+	/**
+	 * Send pause command.
+	 */
+	void sendPauseCommand() {
+		sendCommand("pause");
+	}
 
-    /**
-     * Send seek command.
-     * 
-     * @param milliseconds
-     */
-    void sendSeekCommandMilliseconds(final long milliseconds) {
-	sendCommand(StringUtils.getString("seek ", milliseconds / 1000, " 2"));
-	sendPauseCommand();
-    }
+	/**
+	 * Send resume command.
+	 */
+	void sendResumeCommand() {
+		sendCommand("pause");
+	}
 
-    /**
-     * Send seek command
-     */
-    void sendSeekCommandPerCent(final int perCent) {
-	sendCommand(StringUtils.getString("seek ", perCent, " 1"));
-    }
+	/**
+	 * Send seek command.
+	 * 
+	 * @param milliseconds
+	 */
+	void sendSeekCommandMilliseconds(final long milliseconds) {
+		sendCommand(StringUtils.getString("seek ", milliseconds / 1000, " 2"));
+		sendPauseCommand();
+	}
 
-    /**
-     * Send stop command.
-     */
-    void sendStopCommand() {
-	sendCommand("quit");
-    }
+	/**
+	 * Send seek command
+	 */
+	void sendSeekCommandPerCent(final int perCent) {
+		sendCommand(StringUtils.getString("seek ", perCent, " 1"));
+	}
 
-    /**
-     * Send volume command.
-     * 
-     * @param perCent
-     *            the per cent
-     */
+	/**
+	 * Send stop command.
+	 */
+	void sendStopCommand() {
+		sendCommand("quit");
+	}
 
-    void sendVolumeCommand(final int perCent) {
-	sendCommand(StringUtils
-		.getString("pausing_keep volume ", perCent, " 1"));
-    }
+	/**
+	 * Send volume command.
+	 * 
+	 * @param perCent
+	 *            the per cent
+	 */
 
-    /**
-     * Gets the process.
-     * 
-     * @return the process
-     */
-    Process getProcess() {
-	return process;
-    }
+	void sendVolumeCommand(final int perCent) {
+		sendCommand(StringUtils
+				.getString("pausing_keep volume ", perCent, " 1"));
+	}
 
-    /**
-     * Finish the process.
-     * 
-     * @param process
-     *            the new process
-     */
-    void finishProcess() {
-	this.stopSendingCommands = true;
-	this.process = null;
-	this.streamToProcess.close();
-	this.streamToProcess = null;
-    }
+	/**
+	 * Gets the process.
+	 * 
+	 * @return the process
+	 */
+	Process getProcess() {
+		return this.process;
+	}
+
+	/**
+	 * Finish the process.
+	 * 
+	 * @param process
+	 *            the new process
+	 */
+	void finishProcess() {
+		this.stopSendingCommands = true;
+		this.process = null;
+		if (this.streamToProcess != null) {
+			this.streamToProcess.close();
+			this.streamToProcess = null;
+		}
+	}
 }
