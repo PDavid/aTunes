@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Selects random audio objects and adds to device
@@ -37,65 +38,70 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class FillDeviceWithRandomSongsAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -201250351035880261L;
+	private static final long serialVersionUID = -201250351035880261L;
 
-    /**
-     * Default constructor
-     */
-    FillDeviceWithRandomSongsAction() {
-	super(I18nUtils.getString("FILL_DEVICE_WITH_RANDOM_SONGS"));
-    }
-
-    private String freeMemory;
-
-    private IDeviceHandler deviceHandler;
-
-    private IDialogFactory dialogFactory;
-
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(final IDialogFactory dialogFactory) {
-	this.dialogFactory = dialogFactory;
-    }
-
-    @Override
-    protected void executeAction() {
-	// Ask how much memory should be left free
-	IInputDialog inputDialog = dialogFactory.newDialog(IInputDialog.class);
-	inputDialog.setTitle(I18nUtils.getString("MEMORY_TO_LEAVE_FREE"));
-	inputDialog.setText(freeMemory);
-	inputDialog.showDialog();
-	freeMemory = inputDialog.getResult();
-	try {
-	    deviceHandler
-		    .fillWithRandomSongs(Long.parseLong(freeMemory.trim()));
-	} catch (NumberFormatException e) {
-	    // User did not enter numerical value. Show error dialog
-	    dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(
-		    I18nUtils.getString("ERROR_NO_NUMERICAL_VALUE"));
+	/**
+	 * Default constructor
+	 */
+	FillDeviceWithRandomSongsAction() {
+		super(I18nUtils.getString("FILL_DEVICE_WITH_RANDOM_SONGS"));
 	}
-    }
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(
-	    final boolean rootSelected, final List<ITreeNode> selection) {
-	return deviceHandler.isDeviceConnected();
-    }
+	private String freeMemory;
 
-    /**
-     * @param freeMemory
-     *            the freeMemory to set
-     */
-    public void setFreeMemory(final String freeMemory) {
-	this.freeMemory = freeMemory;
-    }
+	private IDeviceHandler deviceHandler;
 
-    /**
-     * @param deviceHandler
-     *            the deviceHandler to set
-     */
-    public void setDeviceHandler(final IDeviceHandler deviceHandler) {
-	this.deviceHandler = deviceHandler;
-    }
+	private IDialogFactory dialogFactory;
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
+
+	@Override
+	protected void executeAction() {
+		// Ask how much memory should be left free
+		IInputDialog inputDialog = this.dialogFactory
+				.newDialog(IInputDialog.class);
+		inputDialog.setTitle(I18nUtils.getString("MEMORY_TO_LEAVE_FREE"));
+		inputDialog.setText(this.freeMemory);
+		inputDialog.showDialog();
+		this.freeMemory = inputDialog.getResult();
+		if (!StringUtils.isEmpty(this.freeMemory)) {
+			try {
+				this.deviceHandler.fillWithRandomSongs(Long
+						.parseLong(this.freeMemory.trim()));
+			} catch (NumberFormatException e) {
+				// User did not enter numerical value. Show error dialog
+				this.dialogFactory
+						.newDialog(IErrorDialog.class)
+						.showErrorDialog(
+								I18nUtils.getString("ERROR_NO_NUMERICAL_VALUE"));
+			}
+		}
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(
+			final boolean rootSelected, final List<ITreeNode> selection) {
+		return this.deviceHandler.isDeviceConnected();
+	}
+
+	/**
+	 * @param freeMemory
+	 *            the freeMemory to set
+	 */
+	public void setFreeMemory(final String freeMemory) {
+		this.freeMemory = freeMemory;
+	}
+
+	/**
+	 * @param deviceHandler
+	 *            the deviceHandler to set
+	 */
+	public void setDeviceHandler(final IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
 }

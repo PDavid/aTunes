@@ -43,18 +43,43 @@ public class FillDeviceWithRandomSongsActionTest {
 		IDialogFactory dialogFactory = mock(IDialogFactory.class);
 		IInputDialog inputDialog = mock(IInputDialog.class);
 		when(inputDialog.getResult()).thenReturn("20");
-		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(inputDialog);
+		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(
+				inputDialog);
 		IErrorDialog errorDialog = mock(IErrorDialog.class);
-		when(dialogFactory.newDialog(IErrorDialog.class)).thenReturn(errorDialog);
-		
+		when(dialogFactory.newDialog(IErrorDialog.class)).thenReturn(
+				errorDialog);
+
 		sut.setDeviceHandler(deviceHandler);
 		sut.setDialogFactory(dialogFactory);
 		sut.setFreeMemory("20");
-		
+
 		sut.executeAction();
 
 		verify(inputDialog).showDialog();
 		verify(deviceHandler).fillWithRandomSongs(20);
+	}
+
+	@Test
+	public void testNull() {
+		FillDeviceWithRandomSongsAction sut = new FillDeviceWithRandomSongsAction();
+		IDeviceHandler deviceHandler = mock(IDeviceHandler.class);
+		IDialogFactory dialogFactory = mock(IDialogFactory.class);
+		IInputDialog inputDialog = mock(IInputDialog.class);
+		when(inputDialog.getResult()).thenReturn(null);
+		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(
+				inputDialog);
+		IErrorDialog errorDialog = mock(IErrorDialog.class);
+		when(dialogFactory.newDialog(IErrorDialog.class)).thenReturn(
+				errorDialog);
+
+		sut.setDeviceHandler(deviceHandler);
+		sut.setDialogFactory(dialogFactory);
+		sut.setFreeMemory("20");
+
+		sut.executeAction();
+
+		verify(inputDialog).showDialog();
+		verify(deviceHandler, never()).fillWithRandomSongs(anyLong());
 	}
 
 	@Test
@@ -63,21 +88,23 @@ public class FillDeviceWithRandomSongsActionTest {
 		IDeviceHandler deviceHandler = mock(IDeviceHandler.class);
 		IDialogFactory dialogFactory = mock(IDialogFactory.class);
 		IInputDialog inputDialog = mock(IInputDialog.class);
-		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(inputDialog);
+		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(
+				inputDialog);
 		when(inputDialog.getResult()).thenReturn("not a number");
 		IErrorDialog errorDialog = mock(IErrorDialog.class);
-		when(dialogFactory.newDialog(IErrorDialog.class)).thenReturn(errorDialog);
-		
+		when(dialogFactory.newDialog(IErrorDialog.class)).thenReturn(
+				errorDialog);
+
 		sut.setDeviceHandler(deviceHandler);
 		sut.setDialogFactory(dialogFactory);
 		sut.setFreeMemory("20");
-		
+
 		sut.executeAction();
 
 		verify(errorDialog).showErrorDialog(anyString());
 		verify(deviceHandler, never()).fillWithRandomSongs(anyLong());
 	}
-	
+
 	@Test
 	public void testEnabled() {
 		FillDeviceWithRandomSongsAction sut = new FillDeviceWithRandomSongsAction();
