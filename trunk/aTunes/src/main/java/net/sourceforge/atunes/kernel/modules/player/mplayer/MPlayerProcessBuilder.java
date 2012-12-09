@@ -214,6 +214,10 @@ public class MPlayerProcessBuilder {
 					.getDownloadPath((IPodcastFeedEntry) audioObject);
 		} else {
 			url = audioObject.getUrl();
+			// Normalize URLs adding http if necessary
+			if (url != null && !url.toLowerCase().startsWith("http")) {
+				url = StringUtils.getString("http://", url);
+			}
 		}
 		return url;
 	}
