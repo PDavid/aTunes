@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.TextTagAttribute;
 import net.sourceforge.atunes.model.ViewMode;
+import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
  * This class represents the application settings that are stored at application
@@ -48,6 +49,7 @@ public class ApplicationStateNavigation implements IStateNavigation {
 
 	/**
 	 * Sets state store
+	 * 
 	 * @param store
 	 */
 	public void setStateStore(final IStateStore store) {
@@ -56,27 +58,33 @@ public class ApplicationStateNavigation implements IStateNavigation {
 
 	@Override
 	public boolean isShowNavigationTable() {
-		return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_NAVIGATION_TABLE, true);
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.SHOW_NAVIGATION_TABLE, true);
 	}
 
 	@Override
 	public void setShowNavigationTable(final boolean showNavigationTable) {
-		this.stateStore.storePreference(Preferences.SHOW_NAVIGATION_TABLE, showNavigationTable);
+		this.stateStore.storePreference(Preferences.SHOW_NAVIGATION_TABLE,
+				showNavigationTable);
 	}
 
 	@Override
 	public String getNavigationView() {
-		return (String) this.stateStore.retrievePreference(Preferences.NAVIGATION_VIEW, RepositoryNavigationView.class.getName());
+		return (String) this.stateStore.retrievePreference(
+				Preferences.NAVIGATION_VIEW,
+				RepositoryNavigationView.class.getName());
 	}
 
 	@Override
 	public void setNavigationView(final String navigationView) {
-		this.stateStore.storePreference(Preferences.NAVIGATION_VIEW, navigationView);
+		this.stateStore.storePreference(Preferences.NAVIGATION_VIEW,
+				navigationView);
 	}
 
 	@Override
 	public ViewMode getViewMode() {
-		return (ViewMode) this.stateStore.retrievePreference(Preferences.VIEW_MODE, ViewMode.ARTIST);
+		return (ViewMode) this.stateStore.retrievePreference(
+				Preferences.VIEW_MODE, ViewMode.ARTIST);
 	}
 
 	@Override
@@ -86,76 +94,98 @@ public class ApplicationStateNavigation implements IStateNavigation {
 
 	@Override
 	public boolean isShowFavoritesInNavigator() {
-		return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_FAVORITES_IN_NAVIGATOR, true);
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.SHOW_FAVORITES_IN_NAVIGATOR, true);
 	}
 
 	@Override
-	public void setShowFavoritesInNavigator(final boolean showFavoritesInNavigator) {
-		this.stateStore.storePreference(Preferences.SHOW_FAVORITES_IN_NAVIGATOR, showFavoritesInNavigator);
+	public void setShowFavoritesInNavigator(
+			final boolean showFavoritesInNavigator) {
+		this.stateStore.storePreference(
+				Preferences.SHOW_FAVORITES_IN_NAVIGATOR,
+				showFavoritesInNavigator);
 	}
 
 	@Override
 	public boolean isUseSmartTagViewSorting() {
-		return (Boolean) this.stateStore.retrievePreference(Preferences.USE_SMART_TAG_VIEW_SORTING, false);
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.USE_SMART_TAG_VIEW_SORTING, false);
 	}
 
 	@Override
 	public void setUseSmartTagViewSorting(final boolean useSmartTagViewSorting) {
-		this.stateStore.storePreference(Preferences.USE_SMART_TAG_VIEW_SORTING, useSmartTagViewSorting);
+		this.stateStore.storePreference(Preferences.USE_SMART_TAG_VIEW_SORTING,
+				useSmartTagViewSorting);
 	}
 
 	@Override
 	public boolean isUsePersonNamesArtistTagViewSorting() {
-		return (Boolean) this.stateStore.retrievePreference(Preferences.USE_PERSON_NAMES_ARTIST_TAG_SORTING, false);
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.USE_PERSON_NAMES_ARTIST_TAG_SORTING, false);
 	}
 
 	@Override
-	public void setUsePersonNamesArtistTagViewSorting(final boolean usePersonNamesArtistTagViewSorting) {
-		this.stateStore.storePreference(Preferences.USE_PERSON_NAMES_ARTIST_TAG_SORTING, usePersonNamesArtistTagViewSorting);
+	public void setUsePersonNamesArtistTagViewSorting(
+			final boolean usePersonNamesArtistTagViewSorting) {
+		this.stateStore.storePreference(
+				Preferences.USE_PERSON_NAMES_ARTIST_TAG_SORTING,
+				usePersonNamesArtistTagViewSorting);
 	}
 
 	@Override
 	public boolean isShowExtendedTooltip() {
-		return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_EXTENDED_TOOLTIP, true);
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.SHOW_EXTENDED_TOOLTIP, true);
 	}
 
 	@Override
 	public void setShowExtendedTooltip(final boolean showExtendedTooltip) {
-		this.stateStore.storePreference(Preferences.SHOW_EXTENDED_TOOLTIP, showExtendedTooltip);
+		this.stateStore.storePreference(Preferences.SHOW_EXTENDED_TOOLTIP,
+				showExtendedTooltip);
 	}
 
 	@Override
 	public int getExtendedTooltipDelay() {
-		return (Integer) this.stateStore.retrievePreference(Preferences.EXTENDED_TOOLTIP_DELAY, 1);
+		return (Integer) this.stateStore.retrievePreference(
+				Preferences.EXTENDED_TOOLTIP_DELAY, 1);
 	}
 
 	@Override
 	public void setExtendedTooltipDelay(final int extendedTooltipDelay) {
-		this.stateStore.storePreference(Preferences.EXTENDED_TOOLTIP_DELAY, extendedTooltipDelay);
+		this.stateStore.storePreference(Preferences.EXTENDED_TOOLTIP_DELAY,
+				extendedTooltipDelay);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public Map<String, ColumnBean> getNavigatorColumns() {
-		Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore.retrievePreference(Preferences.NAVIGATOR_COLUMNS, null);
+		Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore
+				.retrievePreference(Preferences.NAVIGATOR_COLUMNS, null);
 		return map != null ? Collections.unmodifiableMap(map) : null;
 	}
 
 	@Override
-	public void setNavigatorColumns(final Map<String, ColumnBean> navigatorColumns) {
-		if (getNavigatorColumns() == null || !getNavigatorColumns().equals(navigatorColumns)) {
-			this.stateStore.storePreference(Preferences.NAVIGATOR_COLUMNS, navigatorColumns);
+	public void setNavigatorColumns(
+			final Map<String, ColumnBean> navigatorColumns) {
+		if (getNavigatorColumns() == null
+				|| !getNavigatorColumns().equals(navigatorColumns)) {
+			this.stateStore.storePreference(Preferences.NAVIGATOR_COLUMNS,
+					navigatorColumns);
 		}
 	}
 
 	@Override
 	public boolean isHighlightIncompleteTagElements() {
-		return (Boolean) this.stateStore.retrievePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS, true);
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS, true);
 	}
 
 	@Override
-	public void setHighlightIncompleteTagElements(final boolean highlightIncompleteTagElements) {
-		this.stateStore.storePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS, highlightIncompleteTagElements);
+	public void setHighlightIncompleteTagElements(
+			final boolean highlightIncompleteTagElements) {
+		this.stateStore.storePreference(
+				Preferences.HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS,
+				highlightIncompleteTagElements);
 	}
 
 	@Override
@@ -164,23 +194,30 @@ public class ApplicationStateNavigation implements IStateNavigation {
 		List<TextTagAttribute> defaultTagAttributes = new ArrayList<TextTagAttribute>();
 		defaultTagAttributes.add(TextTagAttribute.ARTIST);
 		defaultTagAttributes.add(TextTagAttribute.ALBUM);
-		return (List<TextTagAttribute> ) this.stateStore.retrievePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_FOLDERS_ATTRIBUTES, defaultTagAttributes);
+		return (List<TextTagAttribute>) this.stateStore.retrievePreference(
+				Preferences.HIGHLIGHT_INCOMPLETE_TAG_FOLDERS_ATTRIBUTES,
+				defaultTagAttributes);
 	}
 
 	@Override
-	public void setHighlightIncompleteTagFoldersAttributes(final List<TextTagAttribute> highlightIncompleteTagFoldersAttributes) {
-		this.stateStore.storePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_FOLDERS_ATTRIBUTES, highlightIncompleteTagFoldersAttributes);
+	public void setHighlightIncompleteTagFoldersAttributes(
+			final List<TextTagAttribute> highlightIncompleteTagFoldersAttributes) {
+		this.stateStore.storePreference(
+				Preferences.HIGHLIGHT_INCOMPLETE_TAG_FOLDERS_ATTRIBUTES,
+				highlightIncompleteTagFoldersAttributes);
 	}
 
 	@Override
 	public boolean isShowNavigationTree() {
-		return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_NAVIGATION_TREE, true);
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.SHOW_NAVIGATION_TREE, true);
 	}
 
 	@Override
 	public void setShowNavigationTree(final boolean showNavigationTree) {
 		if (isShowNavigationTree() != showNavigationTree) {
-			this.stateStore.storePreference(Preferences.SHOW_NAVIGATION_TREE, showNavigationTree);
+			this.stateStore.storePreference(Preferences.SHOW_NAVIGATION_TREE,
+					showNavigationTree);
 		}
 	}
 
@@ -188,22 +225,33 @@ public class ApplicationStateNavigation implements IStateNavigation {
 	@SuppressWarnings("unchecked")
 	public Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns() {
 		// This map is not unmodifiable
-		return (Map<String, Map<String, ColumnBean>>) this.stateStore.retrievePreference(Preferences.CUSTOM_NAVIGATOR_COLUMNS, null);
+		return (Map<String, Map<String, ColumnBean>>) this.stateStore
+				.retrievePreference(Preferences.CUSTOM_NAVIGATOR_COLUMNS, null);
 	}
 
 	@Override
-	public void setCustomNavigatorColumns(final Map<String, Map<String, ColumnBean>> customNavigatorColumns) {
-		this.stateStore.storePreference(Preferences.CUSTOM_NAVIGATOR_COLUMNS, customNavigatorColumns);
+	public void setCustomNavigatorColumns(
+			final Map<String, Map<String, ColumnBean>> customNavigatorColumns) {
+		this.stateStore.storePreference(Preferences.CUSTOM_NAVIGATOR_COLUMNS,
+				customNavigatorColumns);
 	}
 
 	@Override
 	public void setArtistViewMode(final ArtistViewMode artistViewMode) {
-		this.stateStore.storePreference(Preferences.ARTIST_VIEW_MODE, artistViewMode);
+		this.stateStore.storePreference(Preferences.ARTIST_VIEW_MODE,
+				artistViewMode);
 
 	}
 
 	@Override
 	public ArtistViewMode getArtistViewMode() {
-		return (ArtistViewMode) this.stateStore.retrievePreference(Preferences.ARTIST_VIEW_MODE, ArtistViewMode.BOTH);
+		return (ArtistViewMode) this.stateStore.retrievePreference(
+				Preferences.ARTIST_VIEW_MODE, ArtistViewMode.BOTH);
 	}
+
+	@Override
+	public Map<String, String> describeState() {
+		return ReflectionUtils.describe(this);
+	}
+
 }

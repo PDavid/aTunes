@@ -26,6 +26,7 @@ import java.util.Map;
 
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.IStatePlaylist;
+import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
  * This class represents the application settings that are stored at application
@@ -37,90 +38,116 @@ import net.sourceforge.atunes.model.IStatePlaylist;
 public class ApplicationStatePlaylist implements IStatePlaylist {
 
 	/**
-     * Component responsible of store state
-     */
-    private IStateStore stateStore;
-    
-    /**
-     * Sets state store
-     * @param store
-     */
-    public void setStateStore(IStateStore store) {
+	 * Component responsible of store state
+	 */
+	private IStateStore stateStore;
+
+	/**
+	 * Sets state store
+	 * 
+	 * @param store
+	 */
+	public void setStateStore(final IStateStore store) {
 		this.stateStore = store;
 	}
 
-    @Override
+	@Override
 	@SuppressWarnings("unchecked")
 	public Map<String, ColumnBean> getColumns() {
-    	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore.retrievePreference(Preferences.COLUMNS, null);
-    	return map != null ? Collections.unmodifiableMap(map) : null;
-    }
+		Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore
+				.retrievePreference(Preferences.COLUMNS, null);
+		return map != null ? Collections.unmodifiableMap(map) : null;
+	}
 
-    @Override
-	public void setColumns(Map<String, ColumnBean> columns) {
-    	if (getColumns() == null || !getColumns().equals(columns)) {
-    		this.stateStore.storePreference(Preferences.COLUMNS, new HashMap<String, ColumnBean>(columns));
-    	}
-    }
-    
-    @Override
+	@Override
+	public void setColumns(final Map<String, ColumnBean> columns) {
+		if (getColumns() == null || !getColumns().equals(columns)) {
+			this.stateStore.storePreference(Preferences.COLUMNS,
+					new HashMap<String, ColumnBean>(columns));
+		}
+	}
+
+	@Override
 	public boolean isAutoScrollPlayListEnabled() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.AUTO_SCROLL_PLAYLIST, true);
-    }
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.AUTO_SCROLL_PLAYLIST, true);
+	}
 
-    @Override
-	public void setAutoScrollPlayListEnabled(boolean autoScrollPlayListEnabled) {
-    	this.stateStore.storePreference(Preferences.AUTO_SCROLL_PLAYLIST, autoScrollPlayListEnabled);
-    }
-    
-    @Override
+	@Override
+	public void setAutoScrollPlayListEnabled(
+			final boolean autoScrollPlayListEnabled) {
+		this.stateStore.storePreference(Preferences.AUTO_SCROLL_PLAYLIST,
+				autoScrollPlayListEnabled);
+	}
+
+	@Override
 	public String getLoadPlaylistPath() {
-    	return (String) this.stateStore.retrievePreference(Preferences.LOAD_PLAYLIST_PATH, null); 
-    }
+		return (String) this.stateStore.retrievePreference(
+				Preferences.LOAD_PLAYLIST_PATH, null);
+	}
 
-    @Override
-	public void setLoadPlaylistPath(String loadPlaylistPath) {
-    	this.stateStore.storePreference(Preferences.LOAD_PLAYLIST_PATH, loadPlaylistPath);
-    }
-    
-    @Override
+	@Override
+	public void setLoadPlaylistPath(final String loadPlaylistPath) {
+		this.stateStore.storePreference(Preferences.LOAD_PLAYLIST_PATH,
+				loadPlaylistPath);
+	}
+
+	@Override
 	public String getSavePlaylistPath() {
-    	return (String) this.stateStore.retrievePreference(Preferences.SAVE_PLAYLIST_PATH, null);
-    }
+		return (String) this.stateStore.retrievePreference(
+				Preferences.SAVE_PLAYLIST_PATH, null);
+	}
 
-    @Override
-	public void setSavePlaylistPath(String savePlaylistPath) {
-    	this.stateStore.storePreference(Preferences.SAVE_PLAYLIST_PATH, savePlaylistPath);
-    }
-    
-    @Override
+	@Override
+	public void setSavePlaylistPath(final String savePlaylistPath) {
+		this.stateStore.storePreference(Preferences.SAVE_PLAYLIST_PATH,
+				savePlaylistPath);
+	}
+
+	@Override
 	public boolean isStopPlayerOnPlayListSwitch() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.STOP_PLAYER_ON_PLAYLIST_SWITCH, false);
-    }
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.STOP_PLAYER_ON_PLAYLIST_SWITCH, false);
+	}
 
-    @Override
-	public void setStopPlayerOnPlayListSwitch(boolean stopPlayerOnPlayListSwitch) {
-    	this.stateStore.storePreference(Preferences.STOP_PLAYER_ON_PLAYLIST_SWITCH, stopPlayerOnPlayListSwitch);
-    }
-    
-    @Override
+	@Override
+	public void setStopPlayerOnPlayListSwitch(
+			final boolean stopPlayerOnPlayListSwitch) {
+		this.stateStore.storePreference(
+				Preferences.STOP_PLAYER_ON_PLAYLIST_SWITCH,
+				stopPlayerOnPlayListSwitch);
+	}
+
+	@Override
 	public boolean isStopPlayerOnPlayListClear() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.STOP_PLAYER_ON_PLAYLIST_CLEAR, true);
-    }
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.STOP_PLAYER_ON_PLAYLIST_CLEAR, true);
+	}
 
-    @Override
-	public void setStopPlayerOnPlayListClear(boolean stopPlayerOnPlayListClear) {
-    	this.stateStore.storePreference(Preferences.STOP_PLAYER_ON_PLAYLIST_CLEAR, stopPlayerOnPlayListClear);
-    }
-    
-    @Override
-    public boolean isShowPlayListSelectorComboBox() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_PLAYLIST_COMBO, false);
-    }
-    
-    @Override
-    public void setShowPlayListSelectorComboBox(boolean showPlayListSelectorComboBox) {
-    	this.stateStore.storePreference(Preferences.SHOW_PLAYLIST_COMBO, showPlayListSelectorComboBox);
-    }
-    
+	@Override
+	public void setStopPlayerOnPlayListClear(
+			final boolean stopPlayerOnPlayListClear) {
+		this.stateStore.storePreference(
+				Preferences.STOP_PLAYER_ON_PLAYLIST_CLEAR,
+				stopPlayerOnPlayListClear);
+	}
+
+	@Override
+	public boolean isShowPlayListSelectorComboBox() {
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.SHOW_PLAYLIST_COMBO, false);
+	}
+
+	@Override
+	public void setShowPlayListSelectorComboBox(
+			final boolean showPlayListSelectorComboBox) {
+		this.stateStore.storePreference(Preferences.SHOW_PLAYLIST_COMBO,
+				showPlayListSelectorComboBox);
+	}
+
+	@Override
+	public Map<String, String> describeState() {
+		return ReflectionUtils.describe(this);
+	}
+
 }

@@ -22,66 +22,76 @@ package net.sourceforge.atunes.model;
 
 /**
  * @author alex
- *
+ * 
  */
-public interface IStateRipper {
+public interface IStateRipper extends IState {
 
 	/**
 	 * Use cd error correction
+	 * 
 	 * @return
 	 */
 	public boolean isUseCdErrorCorrection();
 
 	/**
 	 * Use cd error correction
+	 * 
 	 * @param useCdErrorCorrection
 	 */
 	public void setUseCdErrorCorrection(boolean useCdErrorCorrection);
-	
+
 	/**
 	 * Encoder used
+	 * 
 	 * @return
 	 */
 	public String getEncoder();
 
 	/**
 	 * Encoder used
+	 * 
 	 * @param encoder
 	 */
 	public void setEncoder(String encoder);
 
 	/**
 	 * Encoder quality
+	 * 
 	 * @return
 	 */
 	public String getEncoderQuality();
 
 	/**
 	 * Encoder quality
+	 * 
 	 * @param encoderQuality
 	 */
 	public void setEncoderQuality(String encoderQuality);
 
 	/**
 	 * MP3 encoder quality
+	 * 
 	 * @return
 	 */
 	public String getMp3EncoderQuality();
 
 	/**
 	 * MP3 encoder quality
+	 * 
 	 * @param mp3EncoderQuality
 	 */
 	public void setMp3EncoderQuality(String mp3EncoderQuality);
 
 	/**
 	 * Flac encoder quality
+	 * 
 	 * @return
 	 */
 	public String getFlacEncoderQuality();
 
 	/**
 	 * Flac encoder quality
+	 * 
 	 * @param flacEncoderQuality
 	 */
 	public void setFlacEncoderQuality(String flacEncoderQuality);

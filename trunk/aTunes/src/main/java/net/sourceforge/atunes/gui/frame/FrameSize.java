@@ -24,6 +24,9 @@ import java.io.Serializable;
 
 import net.sourceforge.atunes.model.IFrameSize;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 /**
  * Bean representing size of frame
  * 
@@ -32,41 +35,48 @@ import net.sourceforge.atunes.model.IFrameSize;
  */
 public class FrameSize implements Serializable, IFrameSize {
 
-    private static final long serialVersionUID = 4174654285204418759L;
+	private static final long serialVersionUID = 4174654285204418759L;
 
-    private boolean maximized;
+	private boolean maximized;
 
-    private int windowWidth;
+	private int windowWidth;
 
-    private int windowHeight;
+	private int windowHeight;
 
-    @Override
-    public boolean isMaximized() {
-	return maximized;
-    }
+	@Override
+	public boolean isMaximized() {
+		return this.maximized;
+	}
 
-    @Override
-    public void setMaximized(final boolean maximized) {
-	this.maximized = maximized;
-    }
+	@Override
+	public void setMaximized(final boolean maximized) {
+		this.maximized = maximized;
+	}
 
-    @Override
-    public int getWindowWidth() {
-	return windowWidth;
-    }
+	@Override
+	public int getWindowWidth() {
+		return this.windowWidth;
+	}
 
-    @Override
-    public void setWindowWidth(final int windowWidth) {
-	this.windowWidth = windowWidth;
-    }
+	@Override
+	public void setWindowWidth(final int windowWidth) {
+		this.windowWidth = windowWidth;
+	}
 
-    @Override
-    public int getWindowHeight() {
-	return windowHeight;
-    }
+	@Override
+	public int getWindowHeight() {
+		return this.windowHeight;
+	}
 
-    @Override
-    public void setWindowHeight(final int windowHeight) {
-	this.windowHeight = windowHeight;
-    }
+	@Override
+	public void setWindowHeight(final int windowHeight) {
+		this.windowHeight = windowHeight;
+	}
+
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
 }

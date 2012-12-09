@@ -22,57 +22,64 @@ package net.sourceforge.atunes.model;
 
 /**
  * @author alex
- *
+ * 
  */
-public interface IStateDevice {
+public interface IStateDevice extends IState {
 
 	/**
 	 * Default device location
+	 * 
 	 * @return
 	 */
 	public String getDefaultDeviceLocation();
 
 	/**
 	 * Default device location
+	 * 
 	 * @param defaultDeviceLocation
 	 */
 	public void setDefaultDeviceLocation(String defaultDeviceLocation);
-	
+
 	/**
 	 * Device file name pattern
+	 * 
 	 * @return
 	 */
 	public String getDeviceFileNamePattern();
 
 	/**
 	 * Device file name pattern
+	 * 
 	 * @param deviceFileNamePattern
 	 */
 	public void setDeviceFileNamePattern(String deviceFileNamePattern);
 
 	/**
 	 * Device folder path pattern
+	 * 
 	 * @return
 	 */
 	public String getDeviceFolderPathPattern();
 
 	/**
 	 * Device folder path pattern
+	 * 
 	 * @param deviceFolderPathPattern
 	 */
 	public void setDeviceFolderPathPattern(String deviceFolderPathPattern);
 
 	/**
 	 * Allow repeated songs in device
+	 * 
 	 * @return
 	 */
 	public boolean isAllowRepeatedSongsInDevice();
 
 	/**
 	 * Allow repeated songs in device
+	 * 
 	 * @param allowRepeatedSongsInDevice
 	 */
 	public void setAllowRepeatedSongsInDevice(boolean allowRepeatedSongsInDevice);
-
 
 }

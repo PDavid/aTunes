@@ -22,6 +22,8 @@ package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  * This class represents information about a column to be saved into application
@@ -31,108 +33,109 @@ import java.io.Serializable;
  */
 public final class ColumnBean implements Serializable {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3224708329958757496L;
 
 	/** The order. */
-    private int order;
+	private int order;
 
-    /** The visible. */
-    private boolean visible;
+	/** The visible. */
+	private boolean visible;
 
-    /** The width. */
-    private int width;
+	/** The width. */
+	private int width;
 
-    /** The sort */
-    private ColumnSort sort;
+	/** The sort */
+	private ColumnSort sort;
 
-    /**
-     * Gets the order.
-     * 
-     * @return the order
-     */
-    public int getOrder() {
-        return order;
-    }
+	/**
+	 * Gets the order.
+	 * 
+	 * @return the order
+	 */
+	public int getOrder() {
+		return this.order;
+	}
 
-    /**
-     * Gets the width.
-     * 
-     * @return the width
-     */
-    public int getWidth() {
-        return width;
-    }
+	/**
+	 * Gets the width.
+	 * 
+	 * @return the width
+	 */
+	public int getWidth() {
+		return this.width;
+	}
 
-    /**
-     * Checks if is visible.
-     * 
-     * @return the visible
-     */
-    public boolean isVisible() {
-        return visible;
-    }
+	/**
+	 * Checks if is visible.
+	 * 
+	 * @return the visible
+	 */
+	public boolean isVisible() {
+		return this.visible;
+	}
 
-    /**
-     * Sets the order.
-     * 
-     * @param order
-     *            the order to set
-     */
-    public void setOrder(int order) {
-        this.order = order;
-    }
+	/**
+	 * Sets the order.
+	 * 
+	 * @param order
+	 *            the order to set
+	 */
+	public void setOrder(final int order) {
+		this.order = order;
+	}
 
-    /**
-     * Sets the visible.
-     * 
-     * @param visible
-     *            the visible to set
-     */
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
+	/**
+	 * Sets the visible.
+	 * 
+	 * @param visible
+	 *            the visible to set
+	 */
+	public void setVisible(final boolean visible) {
+		this.visible = visible;
+	}
 
-    /**
-     * Sets the width.
-     * 
-     * @param width
-     *            the width to set
-     */
-    public void setWidth(int width) {
-        this.width = width;
-    }
+	/**
+	 * Sets the width.
+	 * 
+	 * @param width
+	 *            the width to set
+	 */
+	public void setWidth(final int width) {
+		this.width = width;
+	}
 
-    /**
-     * @return the sort
-     */
-    public ColumnSort getSort() {
-        return sort;
-    }
+	/**
+	 * @return the sort
+	 */
+	public ColumnSort getSort() {
+		return this.sort;
+	}
 
-    /**
-     * @param sort
-     *            the sort to set
-     */
-    public void setSort(ColumnSort sort) {
-        this.sort = sort;
-    }
+	/**
+	 * @param sort
+	 *            the sort to set
+	 */
+	public void setSort(final ColumnSort sort) {
+		this.sort = sort;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + order;
-		result = prime * result + ((sort == null) ? 0 : sort.hashCode());
-		result = prime * result + (visible ? 1231 : 1237);
-		result = prime * result + width;
+		result = prime * result + this.order;
+		result = prime * result
+				+ ((this.sort == null) ? 0 : this.sort.hashCode());
+		result = prime * result + (this.visible ? 1231 : 1237);
+		result = prime * result + this.width;
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -143,18 +146,24 @@ public final class ColumnBean implements Serializable {
 			return false;
 		}
 		ColumnBean other = (ColumnBean) obj;
-		if (order != other.order) {
+		if (this.order != other.order) {
 			return false;
 		}
-		if (sort != other.sort) {
+		if (this.sort != other.sort) {
 			return false;
 		}
-		if (visible != other.visible) {
+		if (this.visible != other.visible) {
 			return false;
 		}
-		if (width != other.width) {
+		if (this.width != other.width) {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 }

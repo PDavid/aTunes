@@ -28,171 +28,177 @@ public class AbstractStateUIMock implements IStateUI {
 	public FontSettings getFontSettings() {
 		return null;
 	}
-	
+
 	@Override
 	public Class<? extends IFrame> getFrameClass() {
 		return null;
 	}
-	
+
 	@Override
-	public IFrameState getFrameState(Class<? extends IFrame> frame) {
+	public IFrameState getFrameState(final Class<? extends IFrame> frame) {
 		return null;
 	}
-	
+
 	@Override
 	public String getFullScreenBackground() {
 		return null;
 	}
-	
+
 	@Override
 	public LookAndFeelBean getLookAndFeel() {
 		return null;
 	}
-	
+
 	@Override
 	public int getOsdDuration() {
 		return 0;
 	}
-	
+
 	@Override
 	public int getOsdHorizontalAlignment() {
 		return 0;
 	}
-	
+
 	@Override
 	public int getOsdVerticalAlignment() {
 		return 0;
 	}
-	
+
 	@Override
 	public int getOsdWidth() {
 		return 0;
 	}
-	
+
 	@Override
 	public Map<String, ColumnBean> getSearchResultsColumns() {
 		return null;
 	}
-	
+
 	@Override
 	public IColorBean getTrayPlayerIconsColor() {
 		return null;
 	}
-	
+
 	@Override
 	public boolean isShowAdvancedPlayerControls() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isShowOSD() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isShowPlayerControlsOnTop() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isShowStatusBar() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isShowSystemTray() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isShowTrayPlayer() {
 		return false;
 	}
-	
+
 	@Override
-	public void setFontSettings(FontSettings fontSettings) {
+	public void setFontSettings(final FontSettings fontSettings) {
 	}
-	
+
 	@Override
-	public void setFrameClass(Class<? extends IFrame> frameClass) {
+	public void setFrameClass(final Class<? extends IFrame> frameClass) {
 	}
-	
+
 	@Override
-	public void setFrameState(Class<? extends IFrame> frame, IFrameState fs) {
+	public void setFrameState(final Class<? extends IFrame> frame,
+			final IFrameState fs) {
 	}
-	
+
 	@Override
-	public void setFullScreenBackground(String fullScreenBackground) {
+	public void setFullScreenBackground(final String fullScreenBackground) {
 	}
-	
+
 	@Override
-	public void setLookAndFeel(LookAndFeelBean lookAndFeel) {
+	public void setLookAndFeel(final LookAndFeelBean lookAndFeel) {
 	}
-	
+
 	@Override
-	public void setOsdDuration(int osdDuration) {
+	public void setOsdDuration(final int osdDuration) {
 	}
-	
+
 	@Override
-	public void setOsdHorizontalAlignment(int osdHorizontalAlignment) {
+	public void setOsdHorizontalAlignment(final int osdHorizontalAlignment) {
 	}
-	
+
 	@Override
-	public void setOsdVerticalAlignment(int osdVerticalAlignment) {
+	public void setOsdVerticalAlignment(final int osdVerticalAlignment) {
 	}
-	
+
 	@Override
-	public void setOsdWidth(int osdWidth) {
+	public void setOsdWidth(final int osdWidth) {
 	}
-	
+
 	@Override
 	public void setSearchResultsColumns(
-			Map<String, ColumnBean> searchResultsColumns) {
+			final Map<String, ColumnBean> searchResultsColumns) {
 	}
-	
+
 	@Override
-	public void setShowAdvancedPlayerControls(boolean show) {
+	public void setShowAdvancedPlayerControls(final boolean show) {
 	}
-	
+
 	@Override
-	public void setShowOSD(boolean showOSD) {
+	public void setShowOSD(final boolean showOSD) {
 	}
-	
+
 	@Override
-	public void setShowPlayerControlsOnTop(boolean onTop) {
+	public void setShowPlayerControlsOnTop(final boolean onTop) {
 	}
-	
+
 	@Override
-	public void setShowStatusBar(boolean showStatusBar) {
+	public void setShowStatusBar(final boolean showStatusBar) {
 	}
-	
+
 	@Override
-	public void setShowSystemTray(boolean showSystemTray) {
+	public void setShowSystemTray(final boolean showSystemTray) {
 	}
-	
+
 	@Override
-	public void setShowTrayPlayer(boolean showTrayPlayer) {
+	public void setShowTrayPlayer(final boolean showTrayPlayer) {
 	}
-	
+
 	@Override
-	public void setTrayPlayerIconsColor(IColorBean color) {
+	public void setTrayPlayerIconsColor(final IColorBean color) {
 	}
-	
+
 	@Override
 	public IFrameSize getFrameSize() {
 		return null;
 	}
-	
+
 	@Override
-	public void setFrameSize(IFrameSize frameSize) {
+	public void setFrameSize(final IFrameSize frameSize) {
 	}
 
 	@Override
 	public IFramePosition getFramePosition() {
 		return null;
 	}
-	
+
 	@Override
-	public void setFramePosition(IFramePosition framePosition) {
+	public void setFramePosition(final IFramePosition framePosition) {
+	}
+
+	@Override
+	public Map<String, String> describeState() {
+		return null;
 	}
 }

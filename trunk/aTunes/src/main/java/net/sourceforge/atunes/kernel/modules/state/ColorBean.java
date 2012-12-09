@@ -24,28 +24,33 @@ import java.awt.Color;
 
 import net.sourceforge.atunes.model.IColorBean;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 /**
  * Stores a color, by storing its components (red, green, blue, alpha)
+ * 
  * @author alex
- *
+ * 
  */
 public class ColorBean implements IColorBean {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7992112016045974559L;
-	
-	private int red;
-	private int green;
-	private int blue;
-	private int alpha;
-	
+
+	private final int red;
+	private final int green;
+	private final int blue;
+	private final int alpha;
+
 	/**
 	 * Creates new color bean
+	 * 
 	 * @param c
 	 */
-	public ColorBean(Color c) {
+	public ColorBean(final Color c) {
 		this.red = c.getRed();
 		this.green = c.getGreen();
 		this.blue = c.getBlue();
@@ -54,10 +59,17 @@ public class ColorBean implements IColorBean {
 
 	/**
 	 * Returns original color object
+	 * 
 	 * @return
 	 */
 	@Override
 	public Color getColor() {
-		return new Color(red, green, blue, alpha);
+		return new Color(this.red, this.green, this.blue, this.alpha);
+	}
+
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 }

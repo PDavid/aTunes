@@ -47,13 +47,13 @@ public class AddBannedSongInLastFMActionTest {
 		sut.setWebServicesHandler(webServicesHandler);
 		sut.setContextHandler(contextHandler);
 		sut.setBackgroundWorkerFactory(new BackgroundWorkerFactoryMock());
-		
+
 		sut.initialize();
-		
+
 		Assert.assertTrue(sut.isEnabled());
-		
+
 		sut.executeAction();
-		
+
 		verify(webServicesHandler).addBannedSong(ao);
 	}
 }

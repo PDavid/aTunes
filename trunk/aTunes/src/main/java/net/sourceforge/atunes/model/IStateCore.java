@@ -24,129 +24,148 @@ import java.util.Map;
 
 /**
  * @author alex
- *
+ * 
  */
-public interface IStateCore {
+public interface IStateCore extends IState {
 
 	/**
 	 * Locale
+	 * 
 	 * @return
 	 */
 	public ILocaleBean getLocale();
 
 	/**
 	 * Locale
+	 * 
 	 * @param locale
 	 */
 	public void setLocale(ILocaleBean locale);
 
 	/**
 	 * Previous locale
+	 * 
 	 * @return
 	 */
 	public ILocaleBean getOldLocale();
 
 	/**
 	 * Previous locale
+	 * 
 	 * @param oldLocale
 	 */
 	public void setOldLocale(ILocaleBean oldLocale);
-	
+
 	/**
 	 * Search engine used
+	 * 
 	 * @return
 	 */
 	public String getDefaultSearch();
 
 	/**
 	 * Search engine used
+	 * 
 	 * @param defaultSearch
 	 */
 	public void setDefaultSearch(String defaultSearch);
-	
+
 	/**
 	 * Proxy used
+	 * 
 	 * @return
 	 */
 	public IProxyBean getProxy();
 
 	/**
 	 * Proxy used
+	 * 
 	 * @param proxy
 	 */
 	public void setProxy(IProxyBean proxy);
 
 	/**
 	 * Enable advanced search
+	 * 
 	 * @return
 	 */
 	public boolean isEnableAdvancedSearch();
 
 	/**
 	 * Enable advanced search
+	 * 
 	 * @param enableAdvancedSearch
 	 */
 	public void setEnableAdvancedSearch(boolean enableAdvancedSearch);
 
 	/**
 	 * Use hotkeys
+	 * 
 	 * @return
 	 */
 	public boolean isEnableHotkeys();
 
 	/**
 	 * Use hotkeys
+	 * 
 	 * @param enableHotkeys
 	 */
 	public void setEnableHotkeys(boolean enableHotkeys);
 
 	/**
 	 * Hotkeys
+	 * 
 	 * @return
 	 */
 	public IHotkeysConfig getHotkeysConfig();
 
 	/**
 	 * Hotkeys
+	 * 
 	 * @param hotkeysConfig
 	 */
 	public void setHotkeysConfig(IHotkeysConfig hotkeysConfig);
 
 	/**
 	 * Notification engine
+	 * 
 	 * @return
 	 */
 	public String getNotificationEngine();
 
 	/**
 	 * Notification engine
+	 * 
 	 * @param notificationEngine
 	 */
 	public void setNotificationEngine(String notificationEngine);
 
 	/**
 	 * Albums columns
+	 * 
 	 * @return
 	 */
 	public Map<String, ColumnBean> getAlbumsColumns();
 
 	/**
 	 * Albums columns
+	 * 
 	 * @param columnsConfiguration
 	 */
 	public void setAlbumColumns(Map<String, ColumnBean> columnsConfiguration);
 
 	/**
 	 * Plugins enabled
+	 * 
 	 * @param pluginsEnabled
 	 */
 	public void setPluginsEnabled(boolean pluginsEnabled);
 
 	/**
 	 * Plugins enabled
+	 * 
 	 * @return
 	 */
 	public boolean isPluginsEnabled();
-
 
 }

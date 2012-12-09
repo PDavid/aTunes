@@ -21,6 +21,7 @@
 package net.sourceforge.atunes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -30,46 +31,50 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Description of an error
+ * 
  * @author alex
- *
+ * 
  */
 public class ErrorReport implements IErrorReport {
 
 	private String errorDescription;
-	
+
 	private Throwable throwable;
-	
+
 	private Map<String, String> state;
+
+	private Map<String, Map<String, String>> states;
 
 	/**
 	 * @return the errorDescrition
 	 */
 	@Override
 	public String getErrorDescrition() {
-		return errorDescription;
+		return this.errorDescription;
 	}
 
 	/**
 	 * @param errorDescription
 	 */
 	@Override
-	public void setErrorDescription(String errorDescription) {
+	public void setErrorDescription(final String errorDescription) {
 		this.errorDescription = errorDescription;
 	}
-	
+
 	/**
 	 * @return the throwable
 	 */
 	@Override
 	public Throwable getThrowable() {
-		return throwable;
+		return this.throwable;
 	}
 
 	/**
-	 * @param throwable the throwable to set
+	 * @param throwable
+	 *            the throwable to set
 	 */
 	@Override
-	public void setThrowable(Throwable throwable) {
+	public void setThrowable(final Throwable throwable) {
 		this.throwable = throwable;
 	}
 
@@ -78,61 +83,94 @@ public class ErrorReport implements IErrorReport {
 	 */
 	@Override
 	public Map<String, String> getState() {
-		return state;
+		return this.state;
 	}
 
 	/**
-	 * @param state the state to set
+	 * @param state
+	 *            the state to set
 	 */
 	@Override
-	public void setState(Map<String, String> state) {
+	public void setBasicEnvironmentState(final Map<String, String> state) {
 		this.state = state;
 	}
-	
+
 	@Override
 	public String toString() {
-    	StringBuilder sb = new StringBuilder();
-    	sb.append("ERROR REPORT\n");
-    	sb.append("\n---------------------------------------------\n");
-    	sb.append(StringUtils.getString("Message: ", StringUtils.isEmpty(errorDescription) ? "Unknown error" : errorDescription));
-    	sb.append("\n---------------------------------------------\n");
-    	sb.append(getStateString(state));
-    	sb.append("\n---------------------------------------------\n");
-    	sb.append(getThrowableString());
-    	return sb.toString();
+		StringBuilder sb = new StringBuilder();
+		sb.append("ERROR REPORT\n");
+		sb.append("\n---------------------------------------------\n");
+		sb.append(StringUtils.getString("Message: ", StringUtils
+				.isEmpty(this.errorDescription) ? "Unknown error"
+				: this.errorDescription));
+		sb.append("\n---------------------------------------------\n");
+		sb.append(getStateString(this.state));
+		sb.append("\n---------------------------------------------\n");
+		sb.append(getThrowableString());
+		sb.append("\n---------------------------------------------\n");
+		if (this.states != null) {
+			sb.append("\n---------------------------------------------\n");
+			sb.append("FULL STATE:\n");
+			for (Map.Entry<String, Map<String, String>> state : this.states
+					.entrySet()) {
+				sb.append("\n---------------------------------------------\n");
+				sb.append("STATE: ").append(state.getKey());
+				sb.append("\n---------------------------------------------\n");
+				if (state.getValue() != null) {
+					for (Map.Entry<String, String> descEntry : state.getValue()
+							.entrySet()) {
+						sb.append(StringUtils.getString(descEntry.getKey(),
+								" = ", descEntry.getValue(), "\n"));
+					}
+				}
+			}
+		}
+		return sb.toString();
 	}
-	
+
 	/**
 	 * Returns string information about throwable
+	 * 
 	 * @return
 	 */
 	private String getThrowableString() {
 		List<String> values = new ArrayList<String>();
-		values.add(StringUtils.getString(throwable.getClass().getCanonicalName(), ": ", throwable.getMessage()));
-		for (StackTraceElement ste : throwable.getStackTrace()) {
+		values.add(StringUtils.getString(this.throwable.getClass()
+				.getCanonicalName(), ": ", this.throwable.getMessage()));
+		for (StackTraceElement ste : this.throwable.getStackTrace()) {
 			values.add(StringUtils.getString(ste.toString()));
 		}
-		Throwable cause = throwable.getCause();
+		Throwable cause = this.throwable.getCause();
 		if (cause != null && cause.getStackTrace() != null) {
 			values.add("Cause: ");
 			for (StackTraceElement ste : cause.getStackTrace()) {
 				values.add(StringUtils.getString(ste.toString()));
 			}
-			
+
 		}
 		return org.apache.commons.lang.StringUtils.join(values, "\n");
 	}
-	
+
 	/**
 	 * Returns string in format "key1=value1\nkey2=value2\nkey3=value3"
+	 * 
 	 * @param state
 	 * @return
 	 */
-	private String getStateString(Map<String, String> state) {
+	private String getStateString(final Map<String, String> state) {
 		List<String> values = new ArrayList<String>();
 		for (Entry<String, String> key : state.entrySet()) {
 			values.add(StringUtils.getString(key.getKey(), "=", key.getValue()));
 		}
 		return org.apache.commons.lang.StringUtils.join(values, "\n");
+	}
+
+	@Override
+	public void addStateDescription(final String state,
+			final Map<String, String> description) {
+		if (this.states == null) {
+			this.states = new HashMap<String, Map<String, String>>();
+		}
+		this.states.put(state, description);
 	}
 }

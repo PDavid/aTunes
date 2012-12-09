@@ -21,10 +21,12 @@
 package net.sourceforge.atunes.kernel.modules.state;
 
 import java.util.List;
+import java.util.Map;
 
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.IStateContext;
+import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
  * This class represents the application settings that are stored at application
@@ -185,5 +187,14 @@ public class ApplicationStateContext implements IStateContext {
 	public void setSimilarArtistSearchQuery(final String query) {
 		this.stateStore.storePreference(
 				Preferences.SIMILAR_ARTIST_SEARCH_QUERY, query);
+	}
+
+	@Override
+	public Map<String, String> describeState() {
+		// EXPLICITLY REMOVE USER AND PASSWORD FROM DESCRIPTION
+		Map<String, String> state = ReflectionUtils.describe(this);
+		state.remove("lastFmPassword");
+		state.remove("lastFmUser");
+		return state;
 	}
 }

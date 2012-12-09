@@ -23,6 +23,9 @@ package net.sourceforge.atunes.model;
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 /**
  * Font settings for application
  * 
@@ -31,112 +34,119 @@ import java.io.Serializable;
  */
 public class FontSettings implements Serializable {
 
-    private static final long serialVersionUID = -8438133427543514976L;
-    private IFontBean font;
-    private boolean useFontSmoothing;
-    private boolean useFontSmoothingSettingsFromOs;
+	private static final long serialVersionUID = -8438133427543514976L;
+	private IFontBean font;
+	private boolean useFontSmoothing;
+	private boolean useFontSmoothingSettingsFromOs;
 
-    /**
-     * @param font
-     * @param useFontSmoothing
-     * @param useFontSmoothingSettingsFromOs
-     */
-    @ConstructorProperties({ "font", "useFontSmoothing",
-	    "useFontSmoothingSettingsFromOs" })
-    public FontSettings(final IFontBean font, final boolean useFontSmoothing,
-	    final boolean useFontSmoothingSettingsFromOs) {
-	super();
-	this.font = font;
-	this.useFontSmoothing = useFontSmoothing;
-	this.useFontSmoothingSettingsFromOs = useFontSmoothingSettingsFromOs;
-    }
-
-    /**
-     * Default constructor
-     */
-    public FontSettings() {
-    }
-
-    /**
-     * @param font
-     */
-    public void setFont(final IFontBean font) {
-	this.font = font;
-    }
-
-    /**
-     * @return font
-     */
-    public IFontBean getFont() {
-	return font;
-    }
-
-    /**
-     * @param useFontSmoothing
-     */
-    public void setUseFontSmoothing(final boolean useFontSmoothing) {
-	this.useFontSmoothing = useFontSmoothing;
-    }
-
-    /**
-     * @return use font smoothing
-     */
-    public boolean isUseFontSmoothing() {
-	return useFontSmoothing;
-    }
-
-    /**
-     * @param useFontSmoothingSettingsFromOs
-     */
-    public void setUseFontSmoothingSettingsFromOs(
-	    final boolean useFontSmoothingSettingsFromOs) {
-	this.useFontSmoothingSettingsFromOs = useFontSmoothingSettingsFromOs;
-    }
-
-    /**
-     * @return use font smotthing settings from os
-     */
-    public boolean isUseFontSmoothingSettingsFromOs() {
-	return useFontSmoothingSettingsFromOs;
-    }
-
-    @Override
-    public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((font == null) ? 0 : font.hashCode());
-	result = prime * result + (useFontSmoothing ? 1231 : 1237);
-	result = prime * result
-		+ (useFontSmoothingSettingsFromOs ? 1231 : 1237);
-	return result;
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-	if (this == obj) {
-	    return true;
+	/**
+	 * @param font
+	 * @param useFontSmoothing
+	 * @param useFontSmoothingSettingsFromOs
+	 */
+	@ConstructorProperties({ "font", "useFontSmoothing",
+			"useFontSmoothingSettingsFromOs" })
+	public FontSettings(final IFontBean font, final boolean useFontSmoothing,
+			final boolean useFontSmoothingSettingsFromOs) {
+		super();
+		this.font = font;
+		this.useFontSmoothing = useFontSmoothing;
+		this.useFontSmoothingSettingsFromOs = useFontSmoothingSettingsFromOs;
 	}
-	if (obj == null) {
-	    return false;
+
+	/**
+	 * Default constructor
+	 */
+	public FontSettings() {
 	}
-	if (getClass() != obj.getClass()) {
-	    return false;
+
+	/**
+	 * @param font
+	 */
+	public void setFont(final IFontBean font) {
+		this.font = font;
 	}
-	FontSettings other = (FontSettings) obj;
-	if (font == null) {
-	    if (other.font != null) {
-		return false;
-	    }
-	} else if (!font.equals(other.font)) {
-	    return false;
+
+	/**
+	 * @return font
+	 */
+	public IFontBean getFont() {
+		return this.font;
 	}
-	if (useFontSmoothing != other.useFontSmoothing) {
-	    return false;
+
+	/**
+	 * @param useFontSmoothing
+	 */
+	public void setUseFontSmoothing(final boolean useFontSmoothing) {
+		this.useFontSmoothing = useFontSmoothing;
 	}
-	if (useFontSmoothingSettingsFromOs != other.useFontSmoothingSettingsFromOs) {
-	    return false;
+
+	/**
+	 * @return use font smoothing
+	 */
+	public boolean isUseFontSmoothing() {
+		return this.useFontSmoothing;
 	}
-	return true;
-    }
+
+	/**
+	 * @param useFontSmoothingSettingsFromOs
+	 */
+	public void setUseFontSmoothingSettingsFromOs(
+			final boolean useFontSmoothingSettingsFromOs) {
+		this.useFontSmoothingSettingsFromOs = useFontSmoothingSettingsFromOs;
+	}
+
+	/**
+	 * @return use font smotthing settings from os
+	 */
+	public boolean isUseFontSmoothingSettingsFromOs() {
+		return this.useFontSmoothingSettingsFromOs;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((this.font == null) ? 0 : this.font.hashCode());
+		result = prime * result + (this.useFontSmoothing ? 1231 : 1237);
+		result = prime * result
+				+ (this.useFontSmoothingSettingsFromOs ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		FontSettings other = (FontSettings) obj;
+		if (this.font == null) {
+			if (other.font != null) {
+				return false;
+			}
+		} else if (!this.font.equals(other.font)) {
+			return false;
+		}
+		if (this.useFontSmoothing != other.useFontSmoothing) {
+			return false;
+		}
+		if (this.useFontSmoothingSettingsFromOs != other.useFontSmoothingSettingsFromOs) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 }

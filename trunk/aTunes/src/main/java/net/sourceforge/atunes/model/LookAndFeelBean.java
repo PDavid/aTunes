@@ -22,56 +22,66 @@ package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 /**
  * Configuration of a look and feel: name and skin
+ * 
  * @author alex
- *
+ * 
  */
 public class LookAndFeelBean implements Serializable {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3123539477818725302L;
 
 	/**
-     * Name of the look and feel
-     */
-    private String name;
+	 * Name of the look and feel
+	 */
+	private String name;
 
-    /**
-     * Name of the selected skin
-     */
-    private String skin;
+	/**
+	 * Name of the selected skin
+	 */
+	private String skin;
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return this.name;
+	}
 
-    /**
-     * @param name
-     *            the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+	/**
+	 * @param name
+	 *            the name to set
+	 */
+	public void setName(final String name) {
+		this.name = name;
+	}
 
-    /**
-     * @return the skin
-     */
-    public String getSkin() {
-        return skin;
-    }
+	/**
+	 * @return the skin
+	 */
+	public String getSkin() {
+		return this.skin;
+	}
 
-    /**
-     * @param skin
-     *            the skin to set
-     */
-    public void setSkin(String skin) {
-        this.skin = skin;
-    }
+	/**
+	 * @param skin
+	 *            the skin to set
+	 */
+	public void setSkin(final String skin) {
+		this.skin = skin;
+	}
+
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 }
