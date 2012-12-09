@@ -39,6 +39,7 @@ import javax.swing.event.TableModelListener;
 
 import net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColumnSelectorDialog;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -77,7 +78,8 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog
 	 */
 	public ColumnSetSelectorDialog(final IFrame frame,
 			final IControlsBuilder controlsBuilder) {
-		super(frame, 250, 300, controlsBuilder);
+		// Don't allow close dialog so user has to select columns
+		super(frame, 250, 300, true, CloseAction.NOTHING, controlsBuilder);
 	}
 
 	@Override
