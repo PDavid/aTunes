@@ -46,8 +46,6 @@ public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 
 	private final IControlsBuilder controlsBuilder;
 
-	private final boolean modal;
-
 	private final CloseAction closeAction;
 
 	/**
@@ -77,11 +75,12 @@ public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 			final int height, final boolean modal,
 			final CloseAction closeAction,
 			final IControlsBuilder controlsBuilder) {
-		super(frame.getFrame());
+		// Use DOCUMENT_MODAL to avoid problems in Linux platforms
+		super(frame.getFrame(), modal ? ModalityType.DOCUMENT_MODAL
+				: ModalityType.MODELESS);
 		setSize(width, height);
 		setLocationRelativeTo(frame.getFrame().getWidth() == 0 ? null : frame
 				.getFrame());
-		this.modal = modal;
 		this.closeAction = closeAction;
 		this.controlsBuilder = controlsBuilder;
 	}
@@ -99,8 +98,6 @@ public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 	 */
 	public void initializeDialog() {
 		setUndecorated(getLookAndFeel().isDialogUndecorated());
-		setModalityType(this.modal ? ModalityType.APPLICATION_MODAL
-				: ModalityType.MODELESS);
 		setDefaultCloseOperation(this.closeAction.getConstant());
 		if (this.closeAction == CloseAction.DISPOSE) {
 			GuiUtils.addDisposeActionWithEscapeKey(this, getRootPane());
