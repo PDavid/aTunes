@@ -25,85 +25,94 @@ import java.util.Locale;
 
 import net.sourceforge.atunes.model.ILocaleBean;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 /**
  * Bean for java.util.Locale
  */
 public final class LocaleBean implements ILocaleBean {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7198874125338846198L;
-	
-	private String language;
-    private String country;
 
-    /**
-     * Constructs LocaleBean from a given java.util.Locale
-     * 
-     * @param locale
-     *            locale
-     */
-    public LocaleBean(Locale locale) {
-        this.language = locale.getLanguage();
-        this.country = locale.getCountry();
-    }
+	private final String language;
+	private final String country;
 
-    /**
-     * Instantiates a new locale bean.
-     * 
-     * @param language
-     *            the language
-     * @param country
-     *            the country
-     */
-    @ConstructorProperties( { "language", "country" })
-    public LocaleBean(String language, String country) {
-        this.language = language;
-        this.country = country;
-    }
+	/**
+	 * Constructs LocaleBean from a given java.util.Locale
+	 * 
+	 * @param locale
+	 *            locale
+	 */
+	public LocaleBean(final Locale locale) {
+		this.language = locale.getLanguage();
+		this.country = locale.getCountry();
+	}
 
-    /**
-     * Gets the country.
-     * 
-     * @return the country
-     */
-    @Override
+	/**
+	 * Instantiates a new locale bean.
+	 * 
+	 * @param language
+	 *            the language
+	 * @param country
+	 *            the country
+	 */
+	@ConstructorProperties({ "language", "country" })
+	public LocaleBean(final String language, final String country) {
+		this.language = language;
+		this.country = country;
+	}
+
+	/**
+	 * Gets the country.
+	 * 
+	 * @return the country
+	 */
+	@Override
 	public String getCountry() {
-        return country;
-    }
+		return this.country;
+	}
 
-    /**
-     * Gets the language.
-     * 
-     * @return the language
-     */
-    @Override
+	/**
+	 * Gets the language.
+	 * 
+	 * @return the language
+	 */
+	@Override
 	public String getLanguage() {
-        return language;
-    }
+		return this.language;
+	}
 
-    /**
-     * Get suitable java.util.Locale object
-     * 
-     * @return A suitable java.util.Locale object
-     */
-    @Override
+	/**
+	 * Get suitable java.util.Locale object
+	 * 
+	 * @return A suitable java.util.Locale object
+	 */
+	@Override
 	public Locale getLocale() {
-        return new Locale(language, country);
-    }
+		return new Locale(this.language, this.country);
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof LocaleBean) {
-            return language.equals(((ILocaleBean) obj).getLanguage()) && country.equals(((ILocaleBean) obj).getCountry());
-        }
-        return false;
-    }
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj instanceof LocaleBean) {
+			return this.language.equals(((ILocaleBean) obj).getLanguage())
+					&& this.country.equals(((ILocaleBean) obj).getCountry());
+		}
+		return false;
+	}
 
-    @Override
-    public int hashCode() {
-        return (language + country).hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return (this.language + this.country).hashCode();
+	}
 
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 }

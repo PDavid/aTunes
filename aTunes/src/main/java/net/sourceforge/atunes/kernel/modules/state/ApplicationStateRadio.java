@@ -20,7 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
+import java.util.Map;
+
 import net.sourceforge.atunes.model.IStateRadio;
+import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
  * This class represents the application settings that are stored at application
@@ -32,35 +35,47 @@ import net.sourceforge.atunes.model.IStateRadio;
 public class ApplicationStateRadio implements IStateRadio {
 
 	/**
-     * Component responsible of store state
-     */
-    private IStateStore stateStore;
-    
-    /**
-     * Sets state store
-     * @param store
-     */
-    public void setStateStore(IStateStore store) {
+	 * Component responsible of store state
+	 */
+	private IStateStore stateStore;
+
+	/**
+	 * Sets state store
+	 * 
+	 * @param store
+	 */
+	public void setStateStore(final IStateStore store) {
 		this.stateStore = store;
 	}
 
-    @Override
+	@Override
 	public boolean isShowAllRadioStations() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_ALL_RADIO_STATIONS, true);
-    }
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.SHOW_ALL_RADIO_STATIONS, true);
+	}
 
-    @Override
-	public void setShowAllRadioStations(boolean showAllRadioStations) {
-        this.stateStore.storePreference(Preferences.SHOW_ALL_RADIO_STATIONS, showAllRadioStations);
-    }
+	@Override
+	public void setShowAllRadioStations(final boolean showAllRadioStations) {
+		this.stateStore.storePreference(Preferences.SHOW_ALL_RADIO_STATIONS,
+				showAllRadioStations);
+	}
 
-    @Override
+	@Override
 	public boolean isReadInfoFromRadioStream() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.READ_INFO_FROM_RADIO_STREAM, true);
-    }
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.READ_INFO_FROM_RADIO_STREAM, true);
+	}
 
-    @Override
-	public void setReadInfoFromRadioStream(boolean readInfoFromRadioStream) {
-    	this.stateStore.storePreference(Preferences.READ_INFO_FROM_RADIO_STREAM, readInfoFromRadioStream);
-    }	
+	@Override
+	public void setReadInfoFromRadioStream(final boolean readInfoFromRadioStream) {
+		this.stateStore.storePreference(
+				Preferences.READ_INFO_FROM_RADIO_STREAM,
+				readInfoFromRadioStream);
+	}
+
+	@Override
+	public Map<String, String> describeState() {
+		return ReflectionUtils.describe(this);
+	}
+
 }

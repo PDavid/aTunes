@@ -25,96 +25,106 @@ import java.beans.ConstructorProperties;
 
 import net.sourceforge.atunes.model.IFontBean;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 /**
  * Bean for java.awt.Font
  */
 public final class FontBean implements IFontBean {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = -6799372094994034976L;
-    private final String name;
-    private final int style;
-    private final int size;
+	private static final long serialVersionUID = -6799372094994034976L;
+	private final String name;
+	private final int style;
+	private final int size;
 
-    /**
-     * @param name
-     * @param style
-     * @param size
-     */
-    @ConstructorProperties({ "name", "style", "size" })
-    public FontBean(final String name, final int style, final int size) {
-	this.name = name;
-	this.style = style;
-	this.size = size;
-    }
-
-    /**
-     * @param font
-     */
-    public FontBean(final Font font) {
-	this.name = font.getName();
-	this.style = font.getStyle();
-	this.size = font.getSize();
-    }
-
-    @Override
-    public String getName() {
-	return name;
-    }
-
-    @Override
-    public int getStyle() {
-	return style;
-    }
-
-    @Override
-    public int getSize() {
-	return size;
-    }
-
-    @Override
-    public Font toFont() {
-	return new Font(name, style, size);
-    }
-
-    @Override
-    public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((name == null) ? 0 : name.hashCode());
-	result = prime * result + size;
-	result = prime * result + style;
-	return result;
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-	if (this == obj) {
-	    return true;
+	/**
+	 * @param name
+	 * @param style
+	 * @param size
+	 */
+	@ConstructorProperties({ "name", "style", "size" })
+	public FontBean(final String name, final int style, final int size) {
+		this.name = name;
+		this.style = style;
+		this.size = size;
 	}
-	if (obj == null) {
-	    return false;
+
+	/**
+	 * @param font
+	 */
+	public FontBean(final Font font) {
+		this.name = font.getName();
+		this.style = font.getStyle();
+		this.size = font.getSize();
 	}
-	if (getClass() != obj.getClass()) {
-	    return false;
+
+	@Override
+	public String getName() {
+		return this.name;
 	}
-	FontBean other = (FontBean) obj;
-	if (name == null) {
-	    if (other.name != null) {
-		return false;
-	    }
-	} else if (!name.equals(other.name)) {
-	    return false;
+
+	@Override
+	public int getStyle() {
+		return this.style;
 	}
-	if (size != other.size) {
-	    return false;
+
+	@Override
+	public int getSize() {
+		return this.size;
 	}
-	if (style != other.style) {
-	    return false;
+
+	@Override
+	public Font toFont() {
+		return new Font(this.name, this.style, this.size);
 	}
-	return true;
-    }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((this.name == null) ? 0 : this.name.hashCode());
+		result = prime * result + this.size;
+		result = prime * result + this.style;
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		FontBean other = (FontBean) obj;
+		if (this.name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!this.name.equals(other.name)) {
+			return false;
+		}
+		if (this.size != other.size) {
+			return false;
+		}
+		if (this.style != other.style) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 }

@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.Map;
+
 public class AbstractStatePlayerMock implements IStatePlayer {
 
 	@Override
@@ -137,5 +139,10 @@ public class AbstractStatePlayerMock implements IStatePlayer {
 
 	@Override
 	public void setEqualizerEnabled(final boolean enabled) {
+	}
+
+	@Override
+	public Map<String, String> describeState() {
+		return null;
 	}
 }

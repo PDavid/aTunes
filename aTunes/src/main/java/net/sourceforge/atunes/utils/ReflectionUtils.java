@@ -152,7 +152,9 @@ public final class ReflectionUtils {
 	@SuppressWarnings("unchecked")
 	public static Map<String, String> describe(final Object bean) {
 		try {
-			return PropertyUtils.describe(bean);
+			Map<String, String> description = PropertyUtils.describe(bean);
+			description.remove("class");
+			return description;
 		} catch (IllegalAccessException e) {
 			Logger.error(e);
 		} catch (InvocationTargetException e) {

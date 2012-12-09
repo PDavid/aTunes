@@ -21,8 +21,10 @@
 package net.sourceforge.atunes;
 
 import net.sourceforge.atunes.model.IApplicationStateGenerator;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IErrorReport;
 import net.sourceforge.atunes.model.IErrorReportCreator;
+import net.sourceforge.atunes.model.IState;
 
 /**
  * Creates error reports
@@ -32,24 +34,39 @@ import net.sourceforge.atunes.model.IErrorReportCreator;
  */
 public class ErrorReportCreator implements IErrorReportCreator {
 
-    private IApplicationStateGenerator applicationStateGenerator;
+	private IApplicationStateGenerator applicationStateGenerator;
 
-    /**
-     * @param applicationStateGenerator
-     */
-    public void setApplicationStateGenerator(
-	    final IApplicationStateGenerator applicationStateGenerator) {
-	this.applicationStateGenerator = applicationStateGenerator;
-    }
+	private IBeanFactory beanFactory;
 
-    @Override
-    public IErrorReport createReport(final String descriptionError,
-	    final Throwable throwable) {
-	IErrorReport result = new ErrorReport();
-	result.setState(applicationStateGenerator.generateState());
-	result.setThrowable(throwable);
-	result.setErrorDescription(descriptionError);
-	return result;
-    }
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
+	/**
+	 * @param applicationStateGenerator
+	 */
+	public void setApplicationStateGenerator(
+			final IApplicationStateGenerator applicationStateGenerator) {
+		this.applicationStateGenerator = applicationStateGenerator;
+	}
+
+	@Override
+	public IErrorReport createReport(final String descriptionError,
+			final Throwable throwable) {
+		IErrorReport result = new ErrorReport();
+		result.setBasicEnvironmentState(this.applicationStateGenerator
+				.generateState());
+		result.setThrowable(throwable);
+		result.setErrorDescription(descriptionError);
+
+		for (IState state : this.beanFactory.getBeans(IState.class)) {
+			result.addStateDescription(state.getClass().getName(),
+					state.describeState());
+		}
+
+		return result;
+	}
 }

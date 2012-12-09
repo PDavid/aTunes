@@ -20,7 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
+import java.util.Map;
+
 import net.sourceforge.atunes.model.IStateDevice;
+import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
  * This class represents the application settings that are stored at application
@@ -32,55 +35,71 @@ import net.sourceforge.atunes.model.IStateDevice;
 public class ApplicationStateDevice implements IStateDevice {
 
 	/**
-     * Component responsible of store state
-     */
-    private IStateStore stateStore;
-    
-    /**
-     * Sets state store
-     * @param store
-     */
-    public void setStateStore(IStateStore store) {
+	 * Component responsible of store state
+	 */
+	private IStateStore stateStore;
+
+	/**
+	 * Sets state store
+	 * 
+	 * @param store
+	 */
+	public void setStateStore(final IStateStore store) {
 		this.stateStore = store;
 	}
 
-    @Override
+	@Override
 	public String getDefaultDeviceLocation() {
-    	return (String) this.stateStore.retrievePreference(Preferences.DEFAULT_DEVICE_LOCATION, null);
-    }
+		return (String) this.stateStore.retrievePreference(
+				Preferences.DEFAULT_DEVICE_LOCATION, null);
+	}
 
-    @Override
-	public void setDefaultDeviceLocation(String defaultDeviceLocation) {
-    	this.stateStore.storePreference(Preferences.DEFAULT_DEVICE_LOCATION, defaultDeviceLocation);
-    }
-    
-    @Override
+	@Override
+	public void setDefaultDeviceLocation(final String defaultDeviceLocation) {
+		this.stateStore.storePreference(Preferences.DEFAULT_DEVICE_LOCATION,
+				defaultDeviceLocation);
+	}
+
+	@Override
 	public String getDeviceFileNamePattern() {
-    	return (String) this.stateStore.retrievePreference(Preferences.DEVICE_FILENAME_PATTERN, null);
-    }
+		return (String) this.stateStore.retrievePreference(
+				Preferences.DEVICE_FILENAME_PATTERN, null);
+	}
 
-    @Override
-	public void setDeviceFileNamePattern(String deviceFileNamePattern) {
-    	this.stateStore.storePreference(Preferences.DEVICE_FILENAME_PATTERN, deviceFileNamePattern);
-    }
-    
-    @Override
+	@Override
+	public void setDeviceFileNamePattern(final String deviceFileNamePattern) {
+		this.stateStore.storePreference(Preferences.DEVICE_FILENAME_PATTERN,
+				deviceFileNamePattern);
+	}
+
+	@Override
 	public String getDeviceFolderPathPattern() {
-    	return (String) this.stateStore.retrievePreference(Preferences.DEVICE_FOLDER_PATH_PATTERN, null);
-    }
+		return (String) this.stateStore.retrievePreference(
+				Preferences.DEVICE_FOLDER_PATH_PATTERN, null);
+	}
 
-    @Override
-	public void setDeviceFolderPathPattern(String deviceFolderPathPattern) {
-    	this.stateStore.storePreference(Preferences.DEVICE_FOLDER_PATH_PATTERN, deviceFolderPathPattern);
-    }
-    
-    @Override
+	@Override
+	public void setDeviceFolderPathPattern(final String deviceFolderPathPattern) {
+		this.stateStore.storePreference(Preferences.DEVICE_FOLDER_PATH_PATTERN,
+				deviceFolderPathPattern);
+	}
+
+	@Override
 	public boolean isAllowRepeatedSongsInDevice() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.ALLOW_REPEATED_SONGS_IN_DEVICE, true);
-    }
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.ALLOW_REPEATED_SONGS_IN_DEVICE, true);
+	}
 
-    @Override
-	public void setAllowRepeatedSongsInDevice(boolean allowRepeatedSongsInDevice) {
-    	this.stateStore.storePreference(Preferences.ALLOW_REPEATED_SONGS_IN_DEVICE, allowRepeatedSongsInDevice);
-    }
+	@Override
+	public void setAllowRepeatedSongsInDevice(
+			final boolean allowRepeatedSongsInDevice) {
+		this.stateStore.storePreference(
+				Preferences.ALLOW_REPEATED_SONGS_IN_DEVICE,
+				allowRepeatedSongsInDevice);
+	}
+
+	@Override
+	public Map<String, String> describeState() {
+		return ReflectionUtils.describe(this);
+	}
 }

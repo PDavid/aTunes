@@ -24,6 +24,9 @@ import java.io.Serializable;
 
 import net.sourceforge.atunes.model.IFramePosition;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 /**
  * Bean representing position in screen of frame
  * 
@@ -32,62 +35,69 @@ import net.sourceforge.atunes.model.IFramePosition;
  */
 public class FramePosition implements Serializable, IFramePosition {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 7151433173240724338L;
+	private static final long serialVersionUID = 7151433173240724338L;
 
-    private int xPosition = -1;
+	private int xPosition = -1;
 
-    private int yPosition = -1;
+	private int yPosition = -1;
 
-    @Override
-    public int getXPosition() {
-	return xPosition;
-    }
-
-    @Override
-    public void setXPosition(final int xPosition) {
-	this.xPosition = xPosition;
-    }
-
-    @Override
-    public int getYPosition() {
-	return yPosition;
-    }
-
-    @Override
-    public void setYPosition(final int yPosition) {
-	this.yPosition = yPosition;
-    }
-
-    @Override
-    public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + xPosition;
-	result = prime * result + yPosition;
-	return result;
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-	if (this == obj) {
-	    return true;
+	@Override
+	public int getXPosition() {
+		return this.xPosition;
 	}
-	if (obj == null) {
-	    return false;
+
+	@Override
+	public void setXPosition(final int xPosition) {
+		this.xPosition = xPosition;
 	}
-	if (getClass() != obj.getClass()) {
-	    return false;
+
+	@Override
+	public int getYPosition() {
+		return this.yPosition;
 	}
-	FramePosition other = (FramePosition) obj;
-	if (xPosition != other.xPosition) {
-	    return false;
+
+	@Override
+	public void setYPosition(final int yPosition) {
+		this.yPosition = yPosition;
 	}
-	if (yPosition != other.yPosition) {
-	    return false;
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + this.xPosition;
+		result = prime * result + this.yPosition;
+		return result;
 	}
-	return true;
-    }
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		FramePosition other = (FramePosition) obj;
+		if (this.xPosition != other.xPosition) {
+			return false;
+		}
+		if (this.yPosition != other.yPosition) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
 }

@@ -24,8 +24,9 @@ import java.util.Map;
 
 /**
  * Description of an error
+ * 
  * @author alex
- *
+ * 
  */
 public interface IErrorReport {
 
@@ -45,7 +46,8 @@ public interface IErrorReport {
 	public Throwable getThrowable();
 
 	/**
-	 * @param throwable the throwable to set
+	 * @param throwable
+	 *            the throwable to set
 	 */
 	public void setThrowable(Throwable throwable);
 
@@ -55,8 +57,16 @@ public interface IErrorReport {
 	public Map<String, String> getState();
 
 	/**
-	 * @param state the state to set
+	 * @param state
+	 *            the state to set
 	 */
-	public void setState(Map<String, String> state);
+	public void setBasicEnvironmentState(Map<String, String> state);
+
+	/**
+	 * @param state
+	 * @param description
+	 */
+	public void addStateDescription(String state,
+			Map<String, String> description);
 
 }

@@ -40,6 +40,7 @@ import net.sourceforge.atunes.model.IFrameSize;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.LookAndFeelBean;
+import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
  * This class represents the application settings that are stored at application
@@ -51,239 +52,287 @@ import net.sourceforge.atunes.model.LookAndFeelBean;
 public class ApplicationStateUI implements IStateUI {
 
 	private static final String UNCHECKED = "unchecked";
-	
+
 	/**
-     * Component responsible of store state
-     */
-    private IStateStore stateStore;
-    
-    private IColorBeanFactory colorBeanFactory;
-    
-    /**
-     * @param colorBeanFactory
-     */
-    public void setColorBeanFactory(IColorBeanFactory colorBeanFactory) {
+	 * Component responsible of store state
+	 */
+	private IStateStore stateStore;
+
+	private IColorBeanFactory colorBeanFactory;
+
+	/**
+	 * @param colorBeanFactory
+	 */
+	public void setColorBeanFactory(final IColorBeanFactory colorBeanFactory) {
 		this.colorBeanFactory = colorBeanFactory;
 	}
-    
-    /**
-     * Sets state store
-     * @param store
-     */
-    public void setStateStore(IStateStore store) {
+
+	/**
+	 * Sets state store
+	 * 
+	 * @param store
+	 */
+	public void setStateStore(final IStateStore store) {
 		this.stateStore = store;
 	}
 
-    @Override
+	@Override
 	public boolean isShowStatusBar() {
-        return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_STATUS_BAR, true);
-    }
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.SHOW_STATUS_BAR, true);
+	}
 
-    @Override
-	public void setShowStatusBar(boolean showStatusBar) {
-        this.stateStore.storePreference(Preferences.SHOW_STATUS_BAR, showStatusBar);
-    }
-    
-    @Override
+	@Override
+	public void setShowStatusBar(final boolean showStatusBar) {
+		this.stateStore.storePreference(Preferences.SHOW_STATUS_BAR,
+				showStatusBar);
+	}
+
+	@Override
 	public boolean isShowOSD() {
-        return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_OSD, true);
-    }
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.SHOW_OSD, true);
+	}
 
-    @Override
-	public void setShowOSD(boolean showOSD) {
-    	this.stateStore.storePreference(Preferences.SHOW_OSD, showOSD);
-    }
-    
-    @Override
+	@Override
+	public void setShowOSD(final boolean showOSD) {
+		this.stateStore.storePreference(Preferences.SHOW_OSD, showOSD);
+	}
+
+	@Override
 	public boolean isShowSystemTray() {
-        return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_SYSTEM_TRAY, false);
-    }
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.SHOW_SYSTEM_TRAY, false);
+	}
 
-    @Override
-	public void setShowSystemTray(boolean showSystemTray) {
-    	this.stateStore.storePreference(Preferences.SHOW_SYSTEM_TRAY, showSystemTray);
-    }
-    
-    @Override
+	@Override
+	public void setShowSystemTray(final boolean showSystemTray) {
+		this.stateStore.storePreference(Preferences.SHOW_SYSTEM_TRAY,
+				showSystemTray);
+	}
+
+	@Override
 	public boolean isShowTrayPlayer() {
-        return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_TRAY_PLAYER, false);
-    }
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.SHOW_TRAY_PLAYER, false);
+	}
 
-    @Override
-	public void setShowTrayPlayer(boolean showTrayPlayer) {
-    	this.stateStore.storePreference(Preferences.SHOW_TRAY_PLAYER, showTrayPlayer);
-    }
-    
-    @Override
+	@Override
+	public void setShowTrayPlayer(final boolean showTrayPlayer) {
+		this.stateStore.storePreference(Preferences.SHOW_TRAY_PLAYER,
+				showTrayPlayer);
+	}
+
+	@Override
 	@SuppressWarnings(UNCHECKED)
 	public Class<? extends IFrame> getFrameClass() {
-        return (Class<? extends IFrame>) this.stateStore.retrievePreference(Preferences.FRAME_CLASS, null);
-    }
+		return (Class<? extends IFrame>) this.stateStore.retrievePreference(
+				Preferences.FRAME_CLASS, null);
+	}
 
-    @Override
-	public void setFrameClass(Class<? extends IFrame> frameClass) {
-    	this.stateStore.storePreference(Preferences.FRAME_CLASS, frameClass);
-    }
-    
-    @Override
+	@Override
+	public void setFrameClass(final Class<? extends IFrame> frameClass) {
+		this.stateStore.storePreference(Preferences.FRAME_CLASS, frameClass);
+	}
+
+	@Override
 	public LookAndFeelBean getLookAndFeel() {
-        return (LookAndFeelBean) this.stateStore.retrievePreference(Preferences.LOOK_AND_FEEL, null);
-    }
+		return (LookAndFeelBean) this.stateStore.retrievePreference(
+				Preferences.LOOK_AND_FEEL, null);
+	}
 
-    @Override
-	public void setLookAndFeel(LookAndFeelBean lookAndFeel) {
-    	this.stateStore.storePreference(Preferences.LOOK_AND_FEEL, lookAndFeel);
-    }
+	@Override
+	public void setLookAndFeel(final LookAndFeelBean lookAndFeel) {
+		this.stateStore.storePreference(Preferences.LOOK_AND_FEEL, lookAndFeel);
+	}
 
-    @Override
+	@Override
 	public FontSettings getFontSettings() {
-        return (FontSettings) this.stateStore.retrievePreference(Preferences.FONT_SETTINGS, null);
-    }
+		return (FontSettings) this.stateStore.retrievePreference(
+				Preferences.FONT_SETTINGS, null);
+	}
 
-    @Override
-	public void setFontSettings(FontSettings fontSettings) {
-    	this.stateStore.storePreference(Preferences.FONT_SETTINGS, fontSettings);
-    }
-    
-    @Override
+	@Override
+	public void setFontSettings(final FontSettings fontSettings) {
+		this.stateStore
+				.storePreference(Preferences.FONT_SETTINGS, fontSettings);
+	}
+
+	@Override
 	public boolean isShowAdvancedPlayerControls() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_ADVANCED_PLAYER_CONTROLS, false);
-    }
-    
-    @Override
-	public void setShowAdvancedPlayerControls(boolean show) {
-    	this.stateStore.storePreference(Preferences.SHOW_ADVANCED_PLAYER_CONTROLS, show);
-    }
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.SHOW_ADVANCED_PLAYER_CONTROLS, false);
+	}
 
-    @Override
+	@Override
+	public void setShowAdvancedPlayerControls(final boolean show) {
+		this.stateStore.storePreference(
+				Preferences.SHOW_ADVANCED_PLAYER_CONTROLS, show);
+	}
+
+	@Override
 	public int getOsdDuration() {
-    	return (Integer) this.stateStore.retrievePreference(Preferences.OSD_DURATION, 2);
-    }
+		return (Integer) this.stateStore.retrievePreference(
+				Preferences.OSD_DURATION, 2);
+	}
 
-    @Override
-	public void setOsdDuration(int osdDuration) {
-    	this.stateStore.storePreference(Preferences.OSD_DURATION, osdDuration);
-    }
+	@Override
+	public void setOsdDuration(final int osdDuration) {
+		this.stateStore.storePreference(Preferences.OSD_DURATION, osdDuration);
+	}
 
-    @Override
+	@Override
 	public String getFullScreenBackground() {
-    	return (String) this.stateStore.retrievePreference(Preferences.FULL_SCREEN_BACKGROUND, null);
-    }
+		return (String) this.stateStore.retrievePreference(
+				Preferences.FULL_SCREEN_BACKGROUND, null);
+	}
 
-    @Override
-	public void setFullScreenBackground(String fullScreenBackground) {
-    	this.stateStore.storePreference(Preferences.FULL_SCREEN_BACKGROUND, fullScreenBackground);
-    }
+	@Override
+	public void setFullScreenBackground(final String fullScreenBackground) {
+		this.stateStore.storePreference(Preferences.FULL_SCREEN_BACKGROUND,
+				fullScreenBackground);
+	}
 
-    @Override
+	@Override
 	@SuppressWarnings(UNCHECKED)
 	public Map<String, ColumnBean> getSearchResultsColumns() {
-    	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore.retrievePreference(Preferences.SEARCH_RESULTS_COLUMNS, null);
-    	return map != null ? Collections.unmodifiableMap(map) : null;
-    }
+		Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore
+				.retrievePreference(Preferences.SEARCH_RESULTS_COLUMNS, null);
+		return map != null ? Collections.unmodifiableMap(map) : null;
+	}
 
-    @Override
-	public void setSearchResultsColumns(Map<String, ColumnBean> searchResultsColumns) {
-    	if (getSearchResultsColumns() == null || !getSearchResultsColumns().equals(searchResultsColumns)) {
-    		this.stateStore.storePreference(Preferences.SEARCH_RESULTS_COLUMNS, searchResultsColumns);
-    	}
-    }
-    
-    @Override
-	public FrameState getFrameState(Class<? extends IFrame> frame) {
-    	// Map creation is controlled in this class to avoid modification without persistence 
-    	@SuppressWarnings(UNCHECKED)
-		Map<Class<? extends IFrame>, FrameState> state = (Map<Class<? extends IFrame>, FrameState>) this.stateStore.retrievePreference(Preferences.FRAME_STATES, null);
-    	if (state == null) {
-    		state = new HashMap<Class<? extends IFrame>, FrameState>();
-    		this.stateStore.storePreference(Preferences.FRAME_STATES, state);
-    	}
-    	// Clone object to be sure changes made by application to frame state are not made over object in cache
-    	return state.containsKey(frame) ? new FrameState(state.get(frame)) : null;
-    }
+	@Override
+	public void setSearchResultsColumns(
+			final Map<String, ColumnBean> searchResultsColumns) {
+		if (getSearchResultsColumns() == null
+				|| !getSearchResultsColumns().equals(searchResultsColumns)) {
+			this.stateStore.storePreference(Preferences.SEARCH_RESULTS_COLUMNS,
+					searchResultsColumns);
+		}
+	}
 
-    @Override
-	public void setFrameState(Class<? extends IFrame> frame, IFrameState fs) {
-    	// Clone object to be sure changes made by application to frame state are not made over object in cache
-    	FrameState frameState = new FrameState(fs);
-    	if (getFrameState(frame) == null || !getFrameState(frame).equals(frameState)) {
-        	@SuppressWarnings(UNCHECKED)
-    		Map<Class<? extends IFrame>, FrameState> state = (Map<Class<? extends IFrame>, FrameState>) this.stateStore.retrievePreference(Preferences.FRAME_STATES, null);
-    		if (state == null) {
-    			state = new HashMap<Class<? extends IFrame>, FrameState>();
-    		}
-    		state.put(frame, frameState);
-    		this.stateStore.storePreference(Preferences.FRAME_STATES, state);
-    	}
-    }
-    
-    @Override
+	@Override
+	public FrameState getFrameState(final Class<? extends IFrame> frame) {
+		// Map creation is controlled in this class to avoid modification
+		// without persistence
+		@SuppressWarnings(UNCHECKED)
+		Map<Class<? extends IFrame>, FrameState> state = (Map<Class<? extends IFrame>, FrameState>) this.stateStore
+				.retrievePreference(Preferences.FRAME_STATES, null);
+		if (state == null) {
+			state = new HashMap<Class<? extends IFrame>, FrameState>();
+			this.stateStore.storePreference(Preferences.FRAME_STATES, state);
+		}
+		// Clone object to be sure changes made by application to frame state
+		// are not made over object in cache
+		return state.containsKey(frame) ? new FrameState(state.get(frame))
+				: null;
+	}
+
+	@Override
+	public void setFrameState(final Class<? extends IFrame> frame,
+			final IFrameState fs) {
+		// Clone object to be sure changes made by application to frame state
+		// are not made over object in cache
+		FrameState frameState = new FrameState(fs);
+		if (getFrameState(frame) == null
+				|| !getFrameState(frame).equals(frameState)) {
+			@SuppressWarnings(UNCHECKED)
+			Map<Class<? extends IFrame>, FrameState> state = (Map<Class<? extends IFrame>, FrameState>) this.stateStore
+					.retrievePreference(Preferences.FRAME_STATES, null);
+			if (state == null) {
+				state = new HashMap<Class<? extends IFrame>, FrameState>();
+			}
+			state.put(frame, frameState);
+			this.stateStore.storePreference(Preferences.FRAME_STATES, state);
+		}
+	}
+
+	@Override
 	public int getOsdWidth() {
-    	return (Integer) this.stateStore.retrievePreference(Preferences.OSD_WIDTH, 300);
-    }
+		return (Integer) this.stateStore.retrievePreference(
+				Preferences.OSD_WIDTH, 300);
+	}
 
-    @Override
-	public void setOsdWidth(int osdWidth) {
-    	this.stateStore.storePreference(Preferences.OSD_WIDTH, osdWidth);
-    }
-    
-    @Override
+	@Override
+	public void setOsdWidth(final int osdWidth) {
+		this.stateStore.storePreference(Preferences.OSD_WIDTH, osdWidth);
+	}
+
+	@Override
 	public int getOsdHorizontalAlignment() {
-    	return (Integer) this.stateStore.retrievePreference(Preferences.OSD_HORIZONTAL_ALINGMENT, SwingConstants.RIGHT);        
-    }
+		return (Integer) this.stateStore.retrievePreference(
+				Preferences.OSD_HORIZONTAL_ALINGMENT, SwingConstants.RIGHT);
+	}
 
-    @Override
-	public void setOsdHorizontalAlignment(int osdHorizontalAlignment) {
-    	this.stateStore.storePreference(Preferences.OSD_HORIZONTAL_ALINGMENT, osdHorizontalAlignment);
-    }
-    
-    @Override
+	@Override
+	public void setOsdHorizontalAlignment(final int osdHorizontalAlignment) {
+		this.stateStore.storePreference(Preferences.OSD_HORIZONTAL_ALINGMENT,
+				osdHorizontalAlignment);
+	}
+
+	@Override
 	public int getOsdVerticalAlignment() {
-    	return (Integer) this.stateStore.retrievePreference(Preferences.OSD_VERTICAL_ALINGMENT, SwingConstants.BOTTOM);        
-    }
+		return (Integer) this.stateStore.retrievePreference(
+				Preferences.OSD_VERTICAL_ALINGMENT, SwingConstants.BOTTOM);
+	}
 
-    @Override
-	public void setOsdVerticalAlignment(int osdVerticalAlignment) {
-    	this.stateStore.storePreference(Preferences.OSD_VERTICAL_ALINGMENT, osdVerticalAlignment);
-    }
-    
-    @Override
+	@Override
+	public void setOsdVerticalAlignment(final int osdVerticalAlignment) {
+		this.stateStore.storePreference(Preferences.OSD_VERTICAL_ALINGMENT,
+				osdVerticalAlignment);
+	}
+
+	@Override
 	public IColorBean getTrayPlayerIconsColor() {
-    	return (IColorBean) this.stateStore.retrievePreference(Preferences.TRAY_PLAYER_ICONS_COLOR, colorBeanFactory.getColorBean(Color.BLACK));
-    }
-    
-    @Override
-	public void setTrayPlayerIconsColor(IColorBean color) {
-    	this.stateStore.storePreference(Preferences.TRAY_PLAYER_ICONS_COLOR, color);
-    }
-    
-    @Override
+		return (IColorBean) this.stateStore.retrievePreference(
+				Preferences.TRAY_PLAYER_ICONS_COLOR,
+				this.colorBeanFactory.getColorBean(Color.BLACK));
+	}
+
+	@Override
+	public void setTrayPlayerIconsColor(final IColorBean color) {
+		this.stateStore.storePreference(Preferences.TRAY_PLAYER_ICONS_COLOR,
+				color);
+	}
+
+	@Override
 	public boolean isShowPlayerControlsOnTop() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_PLAYER_CONTROLS_ON_TOP, true);
-    }
-    
-    @Override
-	public void setShowPlayerControlsOnTop(boolean onTop) {
-    	this.stateStore.storePreference(Preferences.SHOW_PLAYER_CONTROLS_ON_TOP, onTop);
-    }
-    
-    @Override
-    public IFrameSize getFrameSize() {
-    	return (IFrameSize) this.stateStore.retrievePreference(Preferences.FRAME_SIZE, new FrameSize());
-    }
-    
-    @Override
-    public void setFrameSize(IFrameSize frameSize) {
-    	this.stateStore.storePreference(Preferences.FRAME_SIZE, frameSize);
-    }
-    
-    @Override
-    public IFramePosition getFramePosition() {
-    	return (IFramePosition) this.stateStore.retrievePreference(Preferences.FRAME_POSITION, new FramePosition());
-    }
-    
-    @Override
-    public void setFramePosition(IFramePosition framePosition) {
-    	this.stateStore.storePreference(Preferences.FRAME_POSITION, framePosition);
-    }
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.SHOW_PLAYER_CONTROLS_ON_TOP, true);
+	}
+
+	@Override
+	public void setShowPlayerControlsOnTop(final boolean onTop) {
+		this.stateStore.storePreference(
+				Preferences.SHOW_PLAYER_CONTROLS_ON_TOP, onTop);
+	}
+
+	@Override
+	public IFrameSize getFrameSize() {
+		return (IFrameSize) this.stateStore.retrievePreference(
+				Preferences.FRAME_SIZE, new FrameSize());
+	}
+
+	@Override
+	public void setFrameSize(final IFrameSize frameSize) {
+		this.stateStore.storePreference(Preferences.FRAME_SIZE, frameSize);
+	}
+
+	@Override
+	public IFramePosition getFramePosition() {
+		return (IFramePosition) this.stateStore.retrievePreference(
+				Preferences.FRAME_POSITION, new FramePosition());
+	}
+
+	@Override
+	public void setFramePosition(final IFramePosition framePosition) {
+		this.stateStore.storePreference(Preferences.FRAME_POSITION,
+				framePosition);
+	}
+
+	@Override
+	public Map<String, String> describeState() {
+		return ReflectionUtils.describe(this);
+	}
+
 }

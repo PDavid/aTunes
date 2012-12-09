@@ -28,102 +28,102 @@ import java.util.Map;
  * @author alex
  * 
  */
-public interface IStatePlaylist {
+public interface IStatePlaylist extends IState {
 
-    /**
-     * Autoscroll playlist
-     * 
-     * @return
-     */
-    public boolean isAutoScrollPlayListEnabled();
+	/**
+	 * Autoscroll playlist
+	 * 
+	 * @return
+	 */
+	public boolean isAutoScrollPlayListEnabled();
 
-    /**
-     * Autoscroll playlist
-     * 
-     * @param autoScrollPlayListEnabled
-     */
-    public void setAutoScrollPlayListEnabled(boolean autoScrollPlayListEnabled);
+	/**
+	 * Autoscroll playlist
+	 * 
+	 * @param autoScrollPlayListEnabled
+	 */
+	public void setAutoScrollPlayListEnabled(boolean autoScrollPlayListEnabled);
 
-    /**
-     * Playlist columns
-     * 
-     * @return
-     */
-    public Map<String, ColumnBean> getColumns();
+	/**
+	 * Playlist columns
+	 * 
+	 * @return
+	 */
+	public Map<String, ColumnBean> getColumns();
 
-    /**
-     * Playlist columns
-     * 
-     * @param columns
-     */
-    public void setColumns(Map<String, ColumnBean> columns);
+	/**
+	 * Playlist columns
+	 * 
+	 * @param columns
+	 */
+	public void setColumns(Map<String, ColumnBean> columns);
 
-    /**
-     * Path for load playlists
-     * 
-     * @return
-     */
-    public String getLoadPlaylistPath();
+	/**
+	 * Path for load playlists
+	 * 
+	 * @return
+	 */
+	public String getLoadPlaylistPath();
 
-    /**
-     * Path for load playlists
-     * 
-     * @param loadPlaylistPath
-     */
-    public void setLoadPlaylistPath(String loadPlaylistPath);
+	/**
+	 * Path for load playlists
+	 * 
+	 * @param loadPlaylistPath
+	 */
+	public void setLoadPlaylistPath(String loadPlaylistPath);
 
-    /**
-     * Path for save playlists
-     * 
-     * @return
-     */
-    public String getSavePlaylistPath();
+	/**
+	 * Path for save playlists
+	 * 
+	 * @return
+	 */
+	public String getSavePlaylistPath();
 
-    /**
-     * Path for save playlists
-     * 
-     * @param savePlaylistPath
-     */
-    public void setSavePlaylistPath(String savePlaylistPath);
+	/**
+	 * Path for save playlists
+	 * 
+	 * @param savePlaylistPath
+	 */
+	public void setSavePlaylistPath(String savePlaylistPath);
 
-    /**
-     * Stop player when switching playlist
-     * 
-     * @return
-     */
-    public boolean isStopPlayerOnPlayListSwitch();
+	/**
+	 * Stop player when switching playlist
+	 * 
+	 * @return
+	 */
+	public boolean isStopPlayerOnPlayListSwitch();
 
-    /**
-     * Stop player when switching playlist
-     * 
-     * @param stopPlayerOnPlayListSwitch
-     */
-    public void setStopPlayerOnPlayListSwitch(boolean stopPlayerOnPlayListSwitch);
+	/**
+	 * Stop player when switching playlist
+	 * 
+	 * @param stopPlayerOnPlayListSwitch
+	 */
+	public void setStopPlayerOnPlayListSwitch(boolean stopPlayerOnPlayListSwitch);
 
-    /**
-     * Stop player when clearing playlist
-     * 
-     * @return
-     */
-    public boolean isStopPlayerOnPlayListClear();
+	/**
+	 * Stop player when clearing playlist
+	 * 
+	 * @return
+	 */
+	public boolean isStopPlayerOnPlayListClear();
 
-    /**
-     * Stop player when clearing playlist
-     * 
-     * @param stopPlayerOnPlayListClear
-     */
-    public void setStopPlayerOnPlayListClear(boolean stopPlayerOnPlayListClear);
+	/**
+	 * Stop player when clearing playlist
+	 * 
+	 * @param stopPlayerOnPlayListClear
+	 */
+	public void setStopPlayerOnPlayListClear(boolean stopPlayerOnPlayListClear);
 
-    /**
-     * If true shows a combo box with play lists instead of buttons
-     * 
-     * @param showPlayListSelectorComboBox
-     */
-    public void setShowPlayListSelectorComboBox(
-	    boolean showPlayListSelectorComboBox);
+	/**
+	 * If true shows a combo box with play lists instead of buttons
+	 * 
+	 * @param showPlayListSelectorComboBox
+	 */
+	public void setShowPlayListSelectorComboBox(
+			boolean showPlayListSelectorComboBox);
 
-    /**
-     * @return If true shows a combo box with play lists instead of buttons
-     */
-    public boolean isShowPlayListSelectorComboBox();
+	/**
+	 * @return If true shows a combo box with play lists instead of buttons
+	 */
+	public boolean isShowPlayListSelectorComboBox();
 }

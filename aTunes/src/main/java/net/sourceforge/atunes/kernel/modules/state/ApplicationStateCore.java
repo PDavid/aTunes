@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.IHotkeysConfig;
 import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IStateCore;
+import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
  * This class represents the application settings that are stored at application
@@ -39,119 +40,142 @@ import net.sourceforge.atunes.model.IStateCore;
 public class ApplicationStateCore implements IStateCore {
 
 	/**
-     * Component responsible of store state
-     */
-    private IStateStore stateStore;
-    
-    /**
-     * Sets state store
-     * @param store
-     */
-    public void setStateStore(IStateStore store) {
+	 * Component responsible of store state
+	 */
+	private IStateStore stateStore;
+
+	/**
+	 * Sets state store
+	 * 
+	 * @param store
+	 */
+	public void setStateStore(final IStateStore store) {
 		this.stateStore = store;
 	}
 
-    @Override
+	@Override
 	public ILocaleBean getLocale() {
-    	return (ILocaleBean) this.stateStore.retrievePreference(Preferences.LOCALE, null);
-    }
-
-    @Override
-	public void setLocale(ILocaleBean locale) {
-        this.stateStore.storePreference(Preferences.LOCALE, locale);
-    }
-    
-    @Override
-	public ILocaleBean getOldLocale() {
-        return (ILocaleBean) this.stateStore.retrievePreference(Preferences.OLD_LOCALE, null);
-    }
-
-    @Override
-	public void setOldLocale(ILocaleBean oldLocale) {
-        this.stateStore.storePreference(Preferences.OLD_LOCALE, oldLocale);
-    }
-    
-    @Override
-	public String getDefaultSearch() {
-        return (String) this.stateStore.retrievePreference(Preferences.DEFAULT_SEARCH, null);
-    }
-
-    @Override
-	public void setDefaultSearch(String defaultSearch) {
-    	this.stateStore.storePreference(Preferences.DEFAULT_SEARCH, defaultSearch);
-    }
-    
-    @Override
-	public IProxyBean getProxy() {
-        return (IProxyBean) this.stateStore.retrievePreference(Preferences.PROXY, null);
-    }
-
-    @Override
-	public void setProxy(IProxyBean proxy) {
-        this.stateStore.storePreference(Preferences.PROXY, proxy);
-    }
-    
-    @Override
-	public boolean isEnableAdvancedSearch() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.ENABLE_ADVANCED_SEARCH, false);
-    }
-
-    @Override
-	public void setEnableAdvancedSearch(boolean enableAdvancedSearch) {
-    	this.stateStore.storePreference(Preferences.ENABLE_ADVANCED_SEARCH, enableAdvancedSearch);
-    }
-    
-    @Override
-	public boolean isEnableHotkeys() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.ENABLE_HOTKEYS, false);
-    }
-
-    @Override
-	public void setEnableHotkeys(boolean enableHotkeys) {
-    	this.stateStore.storePreference(Preferences.ENABLE_HOTKEYS, enableHotkeys);
-    }
-    
-    @Override
-	public IHotkeysConfig getHotkeysConfig() {
-    	return (IHotkeysConfig) this.stateStore.retrievePreference(Preferences.HOTKEYS_CONFIG, null);
-    }
-
-    @Override
-	public void setHotkeysConfig(IHotkeysConfig hotkeysConfig) {
-    	this.stateStore.storePreference(Preferences.HOTKEYS_CONFIG, hotkeysConfig);
-    }
-    
-    @Override
-	public String getNotificationEngine() {
-    	return (String) this.stateStore.retrievePreference(Preferences.NOTIFICATION_ENGINE, null);
-    }
-
-    @Override
-	public void setNotificationEngine(String notificationEngine) {
-    	this.stateStore.storePreference(Preferences.NOTIFICATION_ENGINE, notificationEngine);
-    }
-    
-    
-    @Override
-	@SuppressWarnings("unchecked")
-    public Map<String, ColumnBean> getAlbumsColumns() {
-    	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore.retrievePreference(Preferences.ALBUM_COLUMNS, null);
-    	return map != null ? Collections.unmodifiableMap(map) : null;
-    }
-
-    @Override
-	public void setAlbumColumns(Map<String, ColumnBean> columnsConfiguration) {
-    	this.stateStore.storePreference(Preferences.ALBUM_COLUMNS, columnsConfiguration);
-    }
+		return (ILocaleBean) this.stateStore.retrievePreference(
+				Preferences.LOCALE, null);
+	}
 
 	@Override
-	public void setPluginsEnabled(boolean pluginsEnabled) {
-		this.stateStore.storePreference(Preferences.PLUGINS_ENABLED, pluginsEnabled);
-		
+	public void setLocale(final ILocaleBean locale) {
+		this.stateStore.storePreference(Preferences.LOCALE, locale);
+	}
+
+	@Override
+	public ILocaleBean getOldLocale() {
+		return (ILocaleBean) this.stateStore.retrievePreference(
+				Preferences.OLD_LOCALE, null);
+	}
+
+	@Override
+	public void setOldLocale(final ILocaleBean oldLocale) {
+		this.stateStore.storePreference(Preferences.OLD_LOCALE, oldLocale);
+	}
+
+	@Override
+	public String getDefaultSearch() {
+		return (String) this.stateStore.retrievePreference(
+				Preferences.DEFAULT_SEARCH, null);
+	}
+
+	@Override
+	public void setDefaultSearch(final String defaultSearch) {
+		this.stateStore.storePreference(Preferences.DEFAULT_SEARCH,
+				defaultSearch);
+	}
+
+	@Override
+	public IProxyBean getProxy() {
+		return (IProxyBean) this.stateStore.retrievePreference(
+				Preferences.PROXY, null);
+	}
+
+	@Override
+	public void setProxy(final IProxyBean proxy) {
+		this.stateStore.storePreference(Preferences.PROXY, proxy);
+	}
+
+	@Override
+	public boolean isEnableAdvancedSearch() {
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.ENABLE_ADVANCED_SEARCH, false);
+	}
+
+	@Override
+	public void setEnableAdvancedSearch(final boolean enableAdvancedSearch) {
+		this.stateStore.storePreference(Preferences.ENABLE_ADVANCED_SEARCH,
+				enableAdvancedSearch);
+	}
+
+	@Override
+	public boolean isEnableHotkeys() {
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.ENABLE_HOTKEYS, false);
+	}
+
+	@Override
+	public void setEnableHotkeys(final boolean enableHotkeys) {
+		this.stateStore.storePreference(Preferences.ENABLE_HOTKEYS,
+				enableHotkeys);
+	}
+
+	@Override
+	public IHotkeysConfig getHotkeysConfig() {
+		return (IHotkeysConfig) this.stateStore.retrievePreference(
+				Preferences.HOTKEYS_CONFIG, null);
+	}
+
+	@Override
+	public void setHotkeysConfig(final IHotkeysConfig hotkeysConfig) {
+		this.stateStore.storePreference(Preferences.HOTKEYS_CONFIG,
+				hotkeysConfig);
+	}
+
+	@Override
+	public String getNotificationEngine() {
+		return (String) this.stateStore.retrievePreference(
+				Preferences.NOTIFICATION_ENGINE, null);
+	}
+
+	@Override
+	public void setNotificationEngine(final String notificationEngine) {
+		this.stateStore.storePreference(Preferences.NOTIFICATION_ENGINE,
+				notificationEngine);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Map<String, ColumnBean> getAlbumsColumns() {
+		Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore
+				.retrievePreference(Preferences.ALBUM_COLUMNS, null);
+		return map != null ? Collections.unmodifiableMap(map) : null;
+	}
+
+	@Override
+	public void setAlbumColumns(
+			final Map<String, ColumnBean> columnsConfiguration) {
+		this.stateStore.storePreference(Preferences.ALBUM_COLUMNS,
+				columnsConfiguration);
+	}
+
+	@Override
+	public void setPluginsEnabled(final boolean pluginsEnabled) {
+		this.stateStore.storePreference(Preferences.PLUGINS_ENABLED,
+				pluginsEnabled);
+
 	}
 
 	@Override
 	public boolean isPluginsEnabled() {
-		return (Boolean) this.stateStore.retrievePreference(Preferences.PLUGINS_ENABLED, false);
+		return (Boolean) this.stateStore.retrievePreference(
+				Preferences.PLUGINS_ENABLED, false);
+	}
+
+	@Override
+	public Map<String, String> describeState() {
+		return ReflectionUtils.describe(this);
 	}
 }

@@ -26,7 +26,7 @@ import java.util.List;
  * @author alex
  * 
  */
-public interface IStateContext {
+public interface IStateContext extends IState {
 
 	/**
 	 * Use context information

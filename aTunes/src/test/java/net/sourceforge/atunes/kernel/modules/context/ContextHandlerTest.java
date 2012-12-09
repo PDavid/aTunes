@@ -28,6 +28,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import net.sourceforge.atunes.model.AbstractStateContextMock;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -52,127 +53,136 @@ public class ContextHandlerTest {
 	private IContextPanelsContainer container;
 	private IPlayListHandler playListHandler;
 	private List<IContextPanel> panels;
-	
+
 	private ContextHandler sut;
 
 	@Before
 	public void init() {
-		frame = mock(IFrame.class);
-		osManager = mock(IOSManager.class);
-		
-		p1 = mock(IContextPanel.class);
-		when(p1.getContextPanelName()).thenReturn("PANEL1");
-		when(p1.panelNeedsToBeUpdated(any(IAudioObject.class), any(IAudioObject.class))).thenReturn(true);
-	
-		p2 = mock(IContextPanel.class);
-		when(p2.getContextPanelName()).thenReturn("PANEL2");
-		when(p2.panelNeedsToBeUpdated(any(IAudioObject.class), any(IAudioObject.class))).thenReturn(true);
+		this.frame = mock(IFrame.class);
+		this.osManager = mock(IOSManager.class);
 
-		panels = new ArrayList<IContextPanel>();
-		panels.add(p1);
-		panels.add(p2);
+		this.p1 = mock(IContextPanel.class);
+		when(this.p1.getContextPanelName()).thenReturn("PANEL1");
+		when(
+				this.p1.panelNeedsToBeUpdated(any(IAudioObject.class),
+						any(IAudioObject.class))).thenReturn(true);
 
-		ao = mock(IAudioObject.class);
-		
-		container = mock(IContextPanelsContainer.class);
-		playListHandler = mock(IPlayListHandler.class);
-		when(playListHandler.getCurrentAudioObjectFromVisiblePlayList()).thenReturn(ao);
-		
-		
-		sut = new ContextHandler();
-		sut.setFrame(frame);
-		sut.setPlayListHandler(playListHandler);
-		sut.setOsManager(osManager);
-		sut.setContextPanelsContainer(container);
-		sut.setContextPanels(panels);		
+		this.p2 = mock(IContextPanel.class);
+		when(this.p2.getContextPanelName()).thenReturn("PANEL2");
+		when(
+				this.p2.panelNeedsToBeUpdated(any(IAudioObject.class),
+						any(IAudioObject.class))).thenReturn(true);
+
+		this.panels = new ArrayList<IContextPanel>();
+		this.panels.add(this.p1);
+		this.panels.add(this.p2);
+
+		this.ao = mock(IAudioObject.class);
+
+		this.container = mock(IContextPanelsContainer.class);
+		this.playListHandler = mock(IPlayListHandler.class);
+		when(this.playListHandler.getCurrentAudioObjectFromVisiblePlayList())
+				.thenReturn(this.ao);
+
+		this.sut = new ContextHandler();
+		this.sut.setFrame(this.frame);
+		this.sut.setPlayListHandler(this.playListHandler);
+		this.sut.setOsManager(this.osManager);
+		this.sut.setContextPanelsContainer(this.container);
+		this.sut.setContextPanels(this.panels);
 	}
-	
+
 	@Test
 	public void testInitializationWithUseContextTrue() {
 		// Prepare state
-		state = mock(IStateContext.class);
-		when(state.getSelectedContextTab()).thenReturn("PANEL2");
-		when(state.isUseContext()).thenReturn(true);
-		sut.setStateContext(state);
+		this.state = mock(IStateContext.class);
+		when(this.state.getSelectedContextTab()).thenReturn("PANEL2");
+		when(this.state.isUseContext()).thenReturn(true);
+		this.sut.setStateContext(this.state);
 
 		// Act
-		sut.applicationStarted();		
-		sut.allHandlersInitialized();
-		sut.deferredInitialization();
-		
+		this.sut.applicationStarted();
+		this.sut.allHandlersInitialized();
+		this.sut.deferredInitialization();
+
 		// Verify
 
 		// Context panels added
-		verify(container, times(1)).addContextPanel(p1);
-		verify(container, times(1)).addContextPanel(p2);
-		
+		verify(this.container, times(1)).addContextPanel(this.p1);
+		verify(this.container, times(1)).addContextPanel(this.p2);
+
 		// Context panel selected
-		verify(container, times(1)).setSelectedContextPanel("PANEL2");
+		verify(this.container, times(1)).setSelectedContextPanel("PANEL2");
 	}
-	
+
 	@Test
 	public void testInitializationWithUseContextFalse() {
-		// Prepare		
-		state = mock(IStateContext.class);
-		when(state.getSelectedContextTab()).thenReturn("PANEL2");
-		when(state.isUseContext()).thenReturn(false);
-		sut.setStateContext(state);
-		
+		// Prepare
+		this.state = mock(IStateContext.class);
+		when(this.state.getSelectedContextTab()).thenReturn("PANEL2");
+		when(this.state.isUseContext()).thenReturn(false);
+		this.sut.setStateContext(this.state);
+
 		// Act
-		sut.applicationStarted();		
-		sut.allHandlersInitialized();
-		sut.deferredInitialization();
-		
+		this.sut.applicationStarted();
+		this.sut.allHandlersInitialized();
+		this.sut.deferredInitialization();
+
 		// Verify
 
 		// Context panels added
-		verify(container, times(1)).addContextPanel(p1);
-		verify(container, times(1)).addContextPanel(p2);
-		
+		verify(this.container, times(1)).addContextPanel(this.p1);
+		verify(this.container, times(1)).addContextPanel(this.p2);
+
 		// Context panel selected
-		verify(container, times(1)).setSelectedContextPanel("PANEL2");
-		
+		verify(this.container, times(1)).setSelectedContextPanel("PANEL2");
+
 		// Context information NOT updated
-		verify(p1, times(0)).updateContextPanel(ao, false);
-		verify(p2, times(0)).updateContextPanel(ao, false);
+		verify(this.p1, times(0)).updateContextPanel(this.ao, false);
+		verify(this.p2, times(0)).updateContextPanel(this.ao, false);
 	}
 
 	@Test
 	public void testShowContextPanel() {
-		// Prepare		
-		state = new StateMock();
-		
+		// Prepare
+		this.state = new StateMock();
+
 		// Act
-		sut.setStateContext(state);
-		sut.applicationStarted();		
-		sut.allHandlersInitialized();
-		sut.deferredInitialization();
-		sut.showContextPanel(true);
-		
+		this.sut.setStateContext(this.state);
+		this.sut.applicationStarted();
+		this.sut.allHandlersInitialized();
+		this.sut.deferredInitialization();
+		this.sut.showContextPanel(true);
+
 		// Verify
 
 		// Context information updated
-		verify(p1, times(0)).updateContextPanel(ao, false);
-		verify(p2, times(1)).updateContextPanel(ao, false);		
+		verify(this.p1, times(0)).updateContextPanel(this.ao, false);
+		verify(this.p2, times(1)).updateContextPanel(this.ao, false);
 	}
-	
+
 	private static class StateMock extends AbstractStateContextMock {
-		
+
 		boolean useContext = false; // Initially false
-		
+
 		@Override
 		public boolean isUseContext() {
-			return useContext;
+			return this.useContext;
 		}
-		
+
 		@Override
-		public void setUseContext(boolean useContext) {
+		public void setUseContext(final boolean useContext) {
 			this.useContext = useContext;
 		}
-		
+
 		@Override
 		public String getSelectedContextTab() {
 			return "PANEL2";
+		}
+
+		@Override
+		public Map<String, String> describeState() {
+			return null;
 		}
 	}
 }

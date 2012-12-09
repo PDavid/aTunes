@@ -29,206 +29,206 @@ import java.util.Map;
  * @author alex
  * 
  */
-public interface IStateNavigation {
+public interface IStateNavigation extends IState {
 
-    /**
-     * Show navigation table
-     * 
-     * @return
-     */
-    public boolean isShowNavigationTable();
+	/**
+	 * Show navigation table
+	 * 
+	 * @return
+	 */
+	public boolean isShowNavigationTable();
 
-    /**
-     * Show navigation table
-     * 
-     * @param showNavigationTable
-     */
-    public void setShowNavigationTable(boolean showNavigationTable);
+	/**
+	 * Show navigation table
+	 * 
+	 * @param showNavigationTable
+	 */
+	public void setShowNavigationTable(boolean showNavigationTable);
 
-    /**
-     * Navigation view
-     * 
-     * @return
-     */
-    public String getNavigationView();
+	/**
+	 * Navigation view
+	 * 
+	 * @return
+	 */
+	public String getNavigationView();
 
-    /**
-     * Navigation view
-     * 
-     * @param navigationView
-     */
-    public void setNavigationView(String navigationView);
+	/**
+	 * Navigation view
+	 * 
+	 * @param navigationView
+	 */
+	public void setNavigationView(String navigationView);
 
-    /**
-     * View mode of navigator
-     * 
-     * @return
-     */
-    public ViewMode getViewMode();
+	/**
+	 * View mode of navigator
+	 * 
+	 * @return
+	 */
+	public ViewMode getViewMode();
 
-    /**
-     * View mode of navigator
-     * 
-     * @param viewMode
-     */
-    public void setViewMode(ViewMode viewMode);
+	/**
+	 * View mode of navigator
+	 * 
+	 * @param viewMode
+	 */
+	public void setViewMode(ViewMode viewMode);
 
-    /**
-     * Show favorites in navigator
-     * 
-     * @return
-     */
-    public boolean isShowFavoritesInNavigator();
+	/**
+	 * Show favorites in navigator
+	 * 
+	 * @return
+	 */
+	public boolean isShowFavoritesInNavigator();
 
-    /**
-     * Show favorites in navigator
-     * 
-     * @param showFavoritesInNavigator
-     */
-    public void setShowFavoritesInNavigator(boolean showFavoritesInNavigator);
+	/**
+	 * Show favorites in navigator
+	 * 
+	 * @param showFavoritesInNavigator
+	 */
+	public void setShowFavoritesInNavigator(boolean showFavoritesInNavigator);
 
-    /**
-     * Use smart tag view sorting
-     * 
-     * @return
-     */
-    public boolean isUseSmartTagViewSorting();
+	/**
+	 * Use smart tag view sorting
+	 * 
+	 * @return
+	 */
+	public boolean isUseSmartTagViewSorting();
 
-    /**
-     * Use smart tag view sorting
-     * 
-     * @param useSmartTagViewSorting
-     */
-    public void setUseSmartTagViewSorting(boolean useSmartTagViewSorting);
+	/**
+	 * Use smart tag view sorting
+	 * 
+	 * @param useSmartTagViewSorting
+	 */
+	public void setUseSmartTagViewSorting(boolean useSmartTagViewSorting);
 
-    /**
-     * Use person name artist sorting
-     * 
-     * @return
-     */
-    public boolean isUsePersonNamesArtistTagViewSorting();
+	/**
+	 * Use person name artist sorting
+	 * 
+	 * @return
+	 */
+	public boolean isUsePersonNamesArtistTagViewSorting();
 
-    /**
-     * Use person name artist sorting
-     * 
-     * @param usePersonNamesArtistTagViewSorting
-     */
-    public void setUsePersonNamesArtistTagViewSorting(
-	    boolean usePersonNamesArtistTagViewSorting);
+	/**
+	 * Use person name artist sorting
+	 * 
+	 * @param usePersonNamesArtistTagViewSorting
+	 */
+	public void setUsePersonNamesArtistTagViewSorting(
+			boolean usePersonNamesArtistTagViewSorting);
 
-    /**
-     * Show extended tooltip
-     * 
-     * @return
-     */
-    public boolean isShowExtendedTooltip();
+	/**
+	 * Show extended tooltip
+	 * 
+	 * @return
+	 */
+	public boolean isShowExtendedTooltip();
 
-    /**
-     * Show extended tooltip
-     * 
-     * @param showExtendedTooltip
-     */
-    public void setShowExtendedTooltip(boolean showExtendedTooltip);
+	/**
+	 * Show extended tooltip
+	 * 
+	 * @param showExtendedTooltip
+	 */
+	public void setShowExtendedTooltip(boolean showExtendedTooltip);
 
-    /**
-     * Extended tooltip delay
-     * 
-     * @return
-     */
-    public int getExtendedTooltipDelay();
+	/**
+	 * Extended tooltip delay
+	 * 
+	 * @return
+	 */
+	public int getExtendedTooltipDelay();
 
-    /**
-     * Extended tooltip delay
-     * 
-     * @param extendedTooltipDelay
-     */
-    public void setExtendedTooltipDelay(int extendedTooltipDelay);
+	/**
+	 * Extended tooltip delay
+	 * 
+	 * @param extendedTooltipDelay
+	 */
+	public void setExtendedTooltipDelay(int extendedTooltipDelay);
 
-    /**
-     * Navigator columns
-     * 
-     * @return
-     */
-    public Map<String, ColumnBean> getNavigatorColumns();
+	/**
+	 * Navigator columns
+	 * 
+	 * @return
+	 */
+	public Map<String, ColumnBean> getNavigatorColumns();
 
-    /**
-     * Navigator columns
-     * 
-     * @param navigatorColumns
-     */
-    public void setNavigatorColumns(Map<String, ColumnBean> navigatorColumns);
+	/**
+	 * Navigator columns
+	 * 
+	 * @param navigatorColumns
+	 */
+	public void setNavigatorColumns(Map<String, ColumnBean> navigatorColumns);
 
-    /**
-     * Highlight incomplete tag elements
-     * 
-     * @return
-     */
-    public boolean isHighlightIncompleteTagElements();
+	/**
+	 * Highlight incomplete tag elements
+	 * 
+	 * @return
+	 */
+	public boolean isHighlightIncompleteTagElements();
 
-    /**
-     * Highlight incomplete tag elements
-     * 
-     * @param highlightIncompleteTagElements
-     */
-    public void setHighlightIncompleteTagElements(
-	    boolean highlightIncompleteTagElements);
+	/**
+	 * Highlight incomplete tag elements
+	 * 
+	 * @param highlightIncompleteTagElements
+	 */
+	public void setHighlightIncompleteTagElements(
+			boolean highlightIncompleteTagElements);
 
-    /**
-     * Attributes used to highlight incomplete elements
-     * 
-     * @return
-     */
-    public List<TextTagAttribute> getHighlightIncompleteTagFoldersAttributes();
+	/**
+	 * Attributes used to highlight incomplete elements
+	 * 
+	 * @return
+	 */
+	public List<TextTagAttribute> getHighlightIncompleteTagFoldersAttributes();
 
-    /**
-     * Attributes used to highlight incomplete elements
-     * 
-     * @param highlightIncompleteTagFoldersAttributes
-     */
-    public void setHighlightIncompleteTagFoldersAttributes(
-	    List<TextTagAttribute> highlightIncompleteTagFoldersAttributes);
+	/**
+	 * Attributes used to highlight incomplete elements
+	 * 
+	 * @param highlightIncompleteTagFoldersAttributes
+	 */
+	public void setHighlightIncompleteTagFoldersAttributes(
+			List<TextTagAttribute> highlightIncompleteTagFoldersAttributes);
 
-    /**
-     * Show navigation tree
-     * 
-     * @return
-     */
-    public boolean isShowNavigationTree();
+	/**
+	 * Show navigation tree
+	 * 
+	 * @return
+	 */
+	public boolean isShowNavigationTree();
 
-    /**
-     * Show navigation tree
-     * 
-     * @param showNavigationTree
-     */
-    public void setShowNavigationTree(boolean showNavigationTree);
+	/**
+	 * Show navigation tree
+	 * 
+	 * @param showNavigationTree
+	 */
+	public void setShowNavigationTree(boolean showNavigationTree);
 
-    /**
-     * Custom navigator columns
-     * 
-     * @return
-     */
-    public Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns();
+	/**
+	 * Custom navigator columns
+	 * 
+	 * @return
+	 */
+	public Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns();
 
-    /**
-     * Custom navigator columns
-     * 
-     * @param customNavigatorColumns
-     */
-    public void setCustomNavigatorColumns(
-	    Map<String, Map<String, ColumnBean>> customNavigatorColumns);
+	/**
+	 * Custom navigator columns
+	 * 
+	 * @param customNavigatorColumns
+	 */
+	public void setCustomNavigatorColumns(
+			Map<String, Map<String, ColumnBean>> customNavigatorColumns);
 
-    /**
-     * Artist view mode
-     * 
-     * @return
-     */
-    public ArtistViewMode getArtistViewMode();
+	/**
+	 * Artist view mode
+	 * 
+	 * @return
+	 */
+	public ArtistViewMode getArtistViewMode();
 
-    /**
-     * Artist view mode
-     * 
-     * @param artistViewMode
-     */
-    void setArtistViewMode(ArtistViewMode artistViewMode);
+	/**
+	 * Artist view mode
+	 * 
+	 * @param artistViewMode
+	 */
+	void setArtistViewMode(ArtistViewMode artistViewMode);
 
 }

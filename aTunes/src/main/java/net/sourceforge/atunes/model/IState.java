@@ -20,40 +20,19 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.Map;
+
 /**
- * State specific for radios
+ * Common interface for state objects
  * 
  * @author alex
  * 
  */
-public interface IStateRadio extends IState {
+public interface IState {
 
 	/**
-	 * Show all radio stations or just the ones defined by user
-	 * 
-	 * @return
+	 * @return a map describing the state
 	 */
-	public boolean isShowAllRadioStations();
-
-	/**
-	 * Show all radio stations or just the ones defined by user
-	 * 
-	 * @param showAllRadioStations
-	 */
-	public void setShowAllRadioStations(boolean showAllRadioStations);
-
-	/**
-	 * Read metadata information from radios
-	 * 
-	 * @return
-	 */
-	public boolean isReadInfoFromRadioStream();
-
-	/**
-	 * Read metadata information from radios
-	 * 
-	 * @param readInfoFromRadioStream
-	 */
-	public void setReadInfoFromRadioStream(boolean readInfoFromRadioStream);
+	Map<String, String> describeState();
 
 }
