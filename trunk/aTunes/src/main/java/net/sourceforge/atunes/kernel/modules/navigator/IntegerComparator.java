@@ -24,20 +24,17 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 final class IntegerComparator implements Comparator<String>, Serializable {
-	
+
 	private static final long serialVersionUID = 5171861656685204053L;
 
 	@Override
-	public int compare(String s1, String s2) {
-		if (s1 == null || s2 == null) {
-			return 0;
-		}
+	public int compare(final String s1, final String s2) {
 		int compare;
 		try {
 			compare = Integer.valueOf(s1).compareTo(Integer.valueOf(s2));
 		} catch (NumberFormatException e) {
 			compare = 0;
 		}
-	    return compare;
+		return compare;
 	}
 }
