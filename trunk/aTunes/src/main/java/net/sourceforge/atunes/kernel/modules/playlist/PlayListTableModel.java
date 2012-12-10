@@ -55,8 +55,8 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
 	 */
 	@Override
 	public int getRowCount() {
-		if (visiblePlayList != null) {
-			return visiblePlayList.size();
+		if (this.visiblePlayList != null) {
+			return this.visiblePlayList.size();
 		}
 		return 0;
 	}
@@ -74,8 +74,9 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
 	@Override
 	public Object getValueAt(final int rowIndex, final int colIndex) {
 		// Call Column method to get value from AudioFile
-		if (visiblePlayList != null) {
-			return getColumn(colIndex).getValueFor(visiblePlayList.get(rowIndex), rowIndex);
+		if (this.visiblePlayList != null) {
+			IAudioObject ao = this.visiblePlayList.get(rowIndex);
+			return getColumn(colIndex).getValueFor(ao, rowIndex);
 		}
 		return null;
 	}
@@ -106,15 +107,17 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
 	 *            the column index
 	 */
 	@Override
-	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
+	public void setValueAt(final Object aValue, final int rowIndex,
+			final int columnIndex) {
 		// AudioFile
-		IAudioObject audioObject = visiblePlayList.get(rowIndex);
+		IAudioObject audioObject = this.visiblePlayList.get(rowIndex);
 
 		// Call column set value
 		getColumn(columnIndex).setValueFor(audioObject, aValue);
 
-		// After changing audio object refresh playlist, as the same object can be duplicated
-		playListHandler.refreshPlayList();
+		// After changing audio object refresh playlist, as the same object can
+		// be duplicated
+		this.playListHandler.refreshPlayList();
 	}
 
 	/**
@@ -133,10 +136,10 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
 		}
 
 		// If current play list is empty, don't sort
-		if (visiblePlayList == null || visiblePlayList.isEmpty()) {
+		if (this.visiblePlayList == null || this.visiblePlayList.isEmpty()) {
 			return;
 		}
 
-		visiblePlayList.sort(comparator);
+		this.visiblePlayList.sort(comparator);
 	}
 }
