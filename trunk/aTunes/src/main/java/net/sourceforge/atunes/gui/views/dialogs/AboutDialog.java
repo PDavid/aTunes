@@ -65,7 +65,7 @@ public final class AboutDialog extends AbstractCustomDialog implements
 	private static final long serialVersionUID = 8666235475424750562L;
 
 	/** The table model. */
-	private final JavaVirtualMachineStatisticsTableModel tableModel = new JavaVirtualMachineStatisticsTableModel();
+	private JavaVirtualMachineStatisticsTableModel tableModel;
 
 	/** The license text. */
 	private final String licenseText = getLicenseText();
@@ -113,6 +113,7 @@ public final class AboutDialog extends AbstractCustomDialog implements
 	 */
 	@Override
 	public void initialize() {
+		tableModel = new JavaVirtualMachineStatisticsTableModel(beanFactory);
 		add(getContent(getLookAndFeel()));
 		setResizable(false);
 	}

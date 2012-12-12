@@ -28,16 +28,16 @@ import java.lang.management.ManagementFactory;
  * @author alex
  * 
  */
-public final class JavaUnloadedClassesCountStatistic extends
-	JavaVirtualMachineStatistic {
-    @Override
-    public String getValue() {
-	return String.valueOf(ManagementFactory.getClassLoadingMXBean()
-		.getUnloadedClassCount());
-    }
+public final class JavaUnloadedClassesCountStatistic implements
+		IJavaVirtualMachineStatistic {
+	@Override
+	public String getValue() {
+		return String.valueOf(ManagementFactory.getClassLoadingMXBean()
+				.getUnloadedClassCount());
+	}
 
-    @Override
-    public String getDescription() {
-	return "Unloaded Classes Count";
-    }
+	@Override
+	public String getDescription() {
+		return "Unloaded Classes Count";
+	}
 }

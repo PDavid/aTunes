@@ -26,15 +26,15 @@ package net.sourceforge.atunes.utils;
  * @author alex
  * 
  */
-public final class JavaOsNameStatistic extends JavaVirtualMachineStatistic {
-    @Override
-    public String getValue() {
-	return StringUtils.getString(System.getProperty("os.name"), " (",
-		System.getProperty("os.arch"), ')');
-    }
+public final class JavaOsNameStatistic implements IJavaVirtualMachineStatistic {
+	@Override
+	public String getValue() {
+		return StringUtils.getString(System.getProperty("os.name"), " (",
+				System.getProperty("os.arch"), ')');
+	}
 
-    @Override
-    public String getDescription() {
-	return "OS";
-    }
+	@Override
+	public String getDescription() {
+		return "OS";
+	}
 }

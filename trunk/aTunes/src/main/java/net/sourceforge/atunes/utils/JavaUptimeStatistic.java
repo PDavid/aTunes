@@ -28,15 +28,15 @@ import java.lang.management.ManagementFactory;
  * @author alex
  * 
  */
-public final class JavaUptimeStatistic extends JavaVirtualMachineStatistic {
-    @Override
-    public String getValue() {
-	return TimeUtils.secondsToDaysHoursMinutesSeconds(ManagementFactory
-		.getRuntimeMXBean().getUptime() / 1000);
-    }
+public final class JavaUptimeStatistic implements IJavaVirtualMachineStatistic {
+	@Override
+	public String getValue() {
+		return TimeUtils.secondsToDaysHoursMinutesSeconds(ManagementFactory
+				.getRuntimeMXBean().getUptime() / 1000);
+	}
 
-    @Override
-    public String getDescription() {
-	return "Uptime";
-    }
+	@Override
+	public String getDescription() {
+		return "Uptime";
+	}
 }

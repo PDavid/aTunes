@@ -28,17 +28,17 @@ import java.lang.management.ManagementFactory;
  * @author alex
  * 
  */
-public final class JavaCommittedNonHeapSpaceStatistic extends
-	JavaVirtualMachineStatistic {
+public final class JavaCommittedNonHeapSpaceStatistic implements
+		IJavaVirtualMachineStatistic {
 
-    @Override
-    public String getValue() {
-	return StringUtils.fromByteToMegaOrGiga(ManagementFactory
-		.getMemoryMXBean().getNonHeapMemoryUsage().getCommitted());
-    }
+	@Override
+	public String getValue() {
+		return StringUtils.fromByteToMegaOrGiga(ManagementFactory
+				.getMemoryMXBean().getNonHeapMemoryUsage().getCommitted());
+	}
 
-    @Override
-    public String getDescription() {
-	return "Committed Non Heap Space";
-    }
+	@Override
+	public String getDescription() {
+		return "Committed Non Heap Space";
+	}
 }

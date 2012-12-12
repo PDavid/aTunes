@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.sourceforge.atunes.model.IErrorReport;
+import net.sourceforge.atunes.utils.IJavaVirtualMachineStatistic;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -44,6 +45,10 @@ public class ErrorReport implements IErrorReport {
 	private Map<String, String> state;
 
 	private Map<String, Map<String, String>> states;
+
+	private Map<String, String> jvmMetrics;
+
+	private int repositorySize;
 
 	/**
 	 * @return the errorDescrition
@@ -105,6 +110,16 @@ public class ErrorReport implements IErrorReport {
 				: this.errorDescription));
 		sb.append("\n---------------------------------------------\n");
 		sb.append(getStateString(this.state));
+		sb.append("\n---------------------------------------------\n");
+		if (this.jvmMetrics != null) {
+			for (Map.Entry<String, String> metric : jvmMetrics.entrySet()) {
+				sb.append(StringUtils.getString(metric.getKey(), ": ",
+						metric.getValue(), "\n"));
+			}
+		}
+		sb.append("\n---------------------------------------------\n");
+		sb.append(StringUtils.getString("Repository size: ",
+				this.repositorySize, "\n"));
 		sb.append("\n---------------------------------------------\n");
 		sb.append(getThrowableString());
 		sb.append("\n---------------------------------------------\n");
@@ -172,5 +187,18 @@ public class ErrorReport implements IErrorReport {
 			this.states = new HashMap<String, Map<String, String>>();
 		}
 		this.states.put(state, description);
+	}
+
+	@Override
+	public void addJVMState(IJavaVirtualMachineStatistic metric) {
+		if (this.jvmMetrics == null) {
+			this.jvmMetrics = new HashMap<String, String>();
+		}
+		this.jvmMetrics.put(metric.getDescription(), metric.getValue());
+	}
+
+	@Override
+	public void setRepositorySize(int numberOfFiles) {
+		this.repositorySize = numberOfFiles;
 	}
 }

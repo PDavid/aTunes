@@ -25,83 +25,55 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import net.sourceforge.atunes.utils.JavaCommittedHeapSpaceStatistic;
-import net.sourceforge.atunes.utils.JavaCommittedNonHeapSpaceStatistic;
-import net.sourceforge.atunes.utils.JavaGarbageCollectionCountStatistic;
-import net.sourceforge.atunes.utils.JavaInitialHeapSpaceStatistic;
-import net.sourceforge.atunes.utils.JavaInitialNonHeapSpaceStatistic;
-import net.sourceforge.atunes.utils.JavaLoadedClassesCountStatistic;
-import net.sourceforge.atunes.utils.JavaMaxHeapSpaceStatistic;
-import net.sourceforge.atunes.utils.JavaMaxNonHeapSpaceStatistic;
-import net.sourceforge.atunes.utils.JavaOsNameStatistic;
-import net.sourceforge.atunes.utils.JavaRuntimeStatistic;
-import net.sourceforge.atunes.utils.JavaThreadCountStatistic;
-import net.sourceforge.atunes.utils.JavaTotalLoadedClassesCountStatistic;
-import net.sourceforge.atunes.utils.JavaUnloadedClassesCountStatistic;
-import net.sourceforge.atunes.utils.JavaUptimeStatistic;
-import net.sourceforge.atunes.utils.JavaUsedHeapSpaceStatistic;
-import net.sourceforge.atunes.utils.JavaUsedNonHeapSpaceStatistic;
-import net.sourceforge.atunes.utils.JavaVirtualMachineStatistic;
-
+import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.utils.IJavaVirtualMachineStatistic;
 
 /**
  * The Class AboutDialogTableModel.
  */
 public class JavaVirtualMachineStatisticsTableModel extends AbstractTableModel {
 
-    private static final long serialVersionUID = 1786557125033788184L;
-    
-	private List<JavaVirtualMachineStatistic> statistics;
+	private static final long serialVersionUID = 1786557125033788184L;
 
-    /**
-     * Instantiates a new about dialog table model.
-     */
-    public JavaVirtualMachineStatisticsTableModel() {
-    	setStatisticsModel();
-    	fireTableDataChanged();
-    }
+	private List<IJavaVirtualMachineStatistic> statistics;
 
-    @Override
-    public int getColumnCount() {
-        return 2;
-    }
+	/**
+	 * Instantiates a new about dialog table model.
+	 * 
+	 * @param beanFactory
+	 */
+	public JavaVirtualMachineStatisticsTableModel(IBeanFactory beanFactory) {
+		setStatisticsModel(beanFactory);
+		fireTableDataChanged();
+	}
 
-    @Override
-    public String getColumnName(int column) {
-        return column == 0 ? "Property" : "Value";
-    }
+	@Override
+	public int getColumnCount() {
+		return 2;
+	}
 
-    @Override
-    public int getRowCount() {
-        return statistics.size();
-    }
-    
-    private void setStatisticsModel() {
-    	this.statistics = new ArrayList<JavaVirtualMachineStatistic>();
-    	this.statistics.add(new JavaRuntimeStatistic());
-    	this.statistics.add(new JavaOsNameStatistic());
-    	this.statistics.add(new JavaUsedHeapSpaceStatistic());
-    	this.statistics.add(new JavaMaxHeapSpaceStatistic());
-    	this.statistics.add(new JavaInitialHeapSpaceStatistic());
-    	this.statistics.add(new JavaCommittedHeapSpaceStatistic());
-    	this.statistics.add(new JavaUsedNonHeapSpaceStatistic());
-    	this.statistics.add(new JavaMaxNonHeapSpaceStatistic());
-    	this.statistics.add(new JavaInitialNonHeapSpaceStatistic());
-    	this.statistics.add(new JavaCommittedNonHeapSpaceStatistic());
-    	this.statistics.add(new JavaUptimeStatistic());
-    	this.statistics.add(new JavaTotalLoadedClassesCountStatistic());
-    	this.statistics.add(new JavaLoadedClassesCountStatistic());
-    	this.statistics.add(new JavaUnloadedClassesCountStatistic());
-    	this.statistics.add(new JavaThreadCountStatistic());
-    	this.statistics.add(new JavaGarbageCollectionCountStatistic());
-    }
+	@Override
+	public String getColumnName(int column) {
+		return column == 0 ? "Property" : "Value";
+	}
 
-    @Override
-    public String getValueAt(int rowIndex, int columnIndex) {
-    	if (columnIndex == 0) {
-    		return this.statistics.get(rowIndex).getDescription();
-    	} else {
-    		return this.statistics.get(rowIndex).getValue();
-    	}
-    }
+	@Override
+	public int getRowCount() {
+		return statistics.size();
+	}
+
+	private void setStatisticsModel(IBeanFactory beanFactory) {
+		this.statistics = new ArrayList<IJavaVirtualMachineStatistic>();
+		this.statistics.addAll(beanFactory
+				.getBeans(IJavaVirtualMachineStatistic.class));
+	}
+
+	@Override
+	public String getValueAt(int rowIndex, int columnIndex) {
+		if (columnIndex == 0) {
+			return this.statistics.get(rowIndex).getDescription();
+		} else {
+			return this.statistics.get(rowIndex).getValue();
+		}
+	}
 }

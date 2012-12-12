@@ -22,6 +22,8 @@ package net.sourceforge.atunes.model;
 
 import java.util.Map;
 
+import net.sourceforge.atunes.utils.IJavaVirtualMachineStatistic;
+
 /**
  * Description of an error
  * 
@@ -68,5 +70,19 @@ public interface IErrorReport {
 	 */
 	public void addStateDescription(String state,
 			Map<String, String> description);
+
+	/**
+	 * Add a JVM metric
+	 * 
+	 * @param metric
+	 */
+	public void addJVMState(IJavaVirtualMachineStatistic metric);
+
+	/**
+	 * Set number of files
+	 * 
+	 * @param numberOfFiles
+	 */
+	public void setRepositorySize(int numberOfFiles);
 
 }

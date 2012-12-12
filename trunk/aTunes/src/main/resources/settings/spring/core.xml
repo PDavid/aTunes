@@ -127,6 +127,25 @@
 		</property>
 	</bean>
 	
+	
+	<!-- JVM STATISTICS -->
+	<bean class="net.sourceforge.atunes.utils.JavaCommittedHeapSpaceStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaCommittedNonHeapSpaceStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaGarbageCollectionCountStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaInitialHeapSpaceStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaInitialNonHeapSpaceStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaLoadedClassesCountStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaMaxHeapSpaceStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaMaxNonHeapSpaceStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaOsNameStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaRuntimeStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaThreadCountStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaTotalLoadedClassesCountStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaUnloadedClassesCountStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaUptimeStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaUsedHeapSpaceStatistic"/>
+	<bean class="net.sourceforge.atunes.utils.JavaUsedNonHeapSpaceStatistic"/>
+	
 
 	
 </beans>

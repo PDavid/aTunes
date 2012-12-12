@@ -29,22 +29,22 @@ import java.lang.management.ManagementFactory;
  * @author alex
  * 
  */
-public final class JavaGarbageCollectionCountStatistic extends
-	JavaVirtualMachineStatistic {
+public final class JavaGarbageCollectionCountStatistic implements
+		IJavaVirtualMachineStatistic {
 
-    @Override
-    public String getValue() {
-	long collectionCount = 0;
-	for (GarbageCollectorMXBean garbageCollectorMXBean : ManagementFactory
-		.getGarbageCollectorMXBeans()) {
-	    collectionCount += Math.max(0,
-		    garbageCollectorMXBean.getCollectionCount());
+	@Override
+	public String getValue() {
+		long collectionCount = 0;
+		for (GarbageCollectorMXBean garbageCollectorMXBean : ManagementFactory
+				.getGarbageCollectorMXBeans()) {
+			collectionCount += Math.max(0,
+					garbageCollectorMXBean.getCollectionCount());
+		}
+		return String.valueOf(collectionCount);
 	}
-	return String.valueOf(collectionCount);
-    }
 
-    @Override
-    public String getDescription() {
-	return "Garbage Collection Count";
-    }
+	@Override
+	public String getDescription() {
+		return "Garbage Collection Count";
+	}
 }
