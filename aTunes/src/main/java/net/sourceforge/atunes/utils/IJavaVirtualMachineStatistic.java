@@ -21,21 +21,24 @@
 package net.sourceforge.atunes.utils;
 
 /**
- * Represents a metric or statistics about java runtima environment
+ * Represents a metric or statistics about java runtime environment
+ * 
  * @author alex
- *
+ * 
  */
-public abstract class JavaVirtualMachineStatistic {
+public interface IJavaVirtualMachineStatistic {
 
 	/**
 	 * Description of metric
+	 * 
 	 * @return
 	 */
-	public abstract String getDescription();
-	
+	String getDescription();
+
 	/**
 	 * Value of metric
+	 * 
 	 * @return
 	 */
-	public abstract String getValue();
+	String getValue();
 }

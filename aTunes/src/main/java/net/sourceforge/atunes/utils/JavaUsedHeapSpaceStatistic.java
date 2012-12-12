@@ -28,16 +28,16 @@ import java.lang.management.ManagementFactory;
  * @author alex
  * 
  */
-public final class JavaUsedHeapSpaceStatistic extends
-	JavaVirtualMachineStatistic {
-    @Override
-    public String getValue() {
-	return StringUtils.fromByteToMegaOrGiga(ManagementFactory
-		.getMemoryMXBean().getHeapMemoryUsage().getUsed());
-    }
+public final class JavaUsedHeapSpaceStatistic implements
+		IJavaVirtualMachineStatistic {
+	@Override
+	public String getValue() {
+		return StringUtils.fromByteToMegaOrGiga(ManagementFactory
+				.getMemoryMXBean().getHeapMemoryUsage().getUsed());
+	}
 
-    @Override
-    public String getDescription() {
-	return "Used Heap Space";
-    }
+	@Override
+	public String getDescription() {
+		return "Used Heap Space";
+	}
 }

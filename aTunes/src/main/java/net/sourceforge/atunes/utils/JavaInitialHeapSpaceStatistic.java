@@ -28,17 +28,17 @@ import java.lang.management.ManagementFactory;
  * @author alex
  * 
  */
-public final class JavaInitialHeapSpaceStatistic extends
-	JavaVirtualMachineStatistic {
+public final class JavaInitialHeapSpaceStatistic implements
+		IJavaVirtualMachineStatistic {
 
-    @Override
-    public String getValue() {
-	return StringUtils.fromByteToMegaOrGiga(ManagementFactory
-		.getMemoryMXBean().getHeapMemoryUsage().getInit());
-    }
+	@Override
+	public String getValue() {
+		return StringUtils.fromByteToMegaOrGiga(ManagementFactory
+				.getMemoryMXBean().getHeapMemoryUsage().getInit());
+	}
 
-    @Override
-    public String getDescription() {
-	return "Initial Heap Space";
-    }
+	@Override
+	public String getDescription() {
+		return "Initial Heap Space";
+	}
 }

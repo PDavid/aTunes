@@ -24,7 +24,9 @@ import net.sourceforge.atunes.model.IApplicationStateGenerator;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IErrorReport;
 import net.sourceforge.atunes.model.IErrorReportCreator;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.IJavaVirtualMachineStatistic;
 
 /**
  * Creates error reports
@@ -36,7 +38,16 @@ public class ErrorReportCreator implements IErrorReportCreator {
 
 	private IApplicationStateGenerator applicationStateGenerator;
 
+	private IRepositoryHandler repositoryHandler;
+
 	private IBeanFactory beanFactory;
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
 
 	/**
 	 * @param beanFactory
@@ -66,6 +77,13 @@ public class ErrorReportCreator implements IErrorReportCreator {
 			result.addStateDescription(state.getClass().getName(),
 					state.describeState());
 		}
+
+		for (IJavaVirtualMachineStatistic metric : this.beanFactory
+				.getBeans(IJavaVirtualMachineStatistic.class)) {
+			result.addJVMState(metric);
+		}
+
+		result.setRepositorySize(repositoryHandler.getNumberOfFiles());
 
 		return result;
 	}

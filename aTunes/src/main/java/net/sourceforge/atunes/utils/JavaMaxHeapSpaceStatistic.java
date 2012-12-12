@@ -28,16 +28,16 @@ import java.lang.management.ManagementFactory;
  * @author alex
  * 
  */
-public final class JavaMaxHeapSpaceStatistic extends
-	JavaVirtualMachineStatistic {
-    @Override
-    public String getValue() {
-	return StringUtils.fromByteToMegaOrGiga(ManagementFactory
-		.getMemoryMXBean().getHeapMemoryUsage().getMax());
-    }
+public final class JavaMaxHeapSpaceStatistic implements
+		IJavaVirtualMachineStatistic {
+	@Override
+	public String getValue() {
+		return StringUtils.fromByteToMegaOrGiga(ManagementFactory
+				.getMemoryMXBean().getHeapMemoryUsage().getMax());
+	}
 
-    @Override
-    public String getDescription() {
-	return "Max Heap Space";
-    }
+	@Override
+	public String getDescription() {
+		return "Max Heap Space";
+	}
 }
