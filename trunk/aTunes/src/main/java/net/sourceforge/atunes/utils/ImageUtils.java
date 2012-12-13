@@ -59,7 +59,8 @@ public final class ImageUtils {
 	 * 
 	 * @return the image icon
 	 */
-	public static ImageIcon resize(final ImageIcon image, final int width, final int height) {
+	public static ImageIcon resize(final ImageIcon image, final int width,
+			final int height) {
 		if (image == null) {
 			throw new IllegalArgumentException("null image");
 		}
@@ -70,7 +71,8 @@ public final class ImageUtils {
 			return image;
 		}
 
-		int maxSize = (image.getIconWidth() > image.getIconHeight()) ? image.getIconWidth() : image.getIconHeight();
+		int maxSize = (image.getIconWidth() > image.getIconHeight()) ? image
+				.getIconWidth() : image.getIconHeight();
 		int newWidth = (int) ((float) image.getIconWidth() / (float) maxSize * width);
 		int newHeight = (int) ((float) image.getIconHeight() / (float) maxSize * height);
 
@@ -89,7 +91,8 @@ public final class ImageUtils {
 	 * 
 	 * @return the image icon
 	 */
-	public static ImageIcon scaleImageBicubic(final Image image, final int width, final int height) {
+	public static ImageIcon scaleImageBicubic(final Image image,
+			final int width, final int height) {
 		int imageWidth = image.getWidth(null);
 		int imageHeight = image.getHeight(null);
 
@@ -113,7 +116,8 @@ public final class ImageUtils {
 	 * 
 	 * @return the image icon
 	 */
-	public static BufferedImage scaleBufferedImageBicubic(final Image image, final int width, final int height) {
+	public static BufferedImage scaleBufferedImageBicubic(final Image image,
+			final int width, final int height) {
 		if (image == null) {
 			return null;
 		}
@@ -136,15 +140,20 @@ public final class ImageUtils {
 		}
 
 		if (imageWidth <= calculatedWidth || imageHeight <= calculatedHeight) {
-			BufferedImage thumbImage = new BufferedImage(calculatedWidth, calculatedHeight, BufferedImage.TYPE_INT_ARGB);
+			BufferedImage thumbImage = new BufferedImage(calculatedWidth,
+					calculatedHeight, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = thumbImage.createGraphics();
-			graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-			graphics2D.drawImage(image, 0, 0, calculatedWidth, calculatedHeight, null);
+			graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			graphics2D.drawImage(image, 0, 0, calculatedWidth,
+					calculatedHeight, null);
 			graphics2D.dispose();
 			return thumbImage;
 		} else {
-			// If scaled image is smaller then use SwingX utilities (looks much better)
-			return GraphicsUtilities.createThumbnailFast(toBufferedImage(image), calculatedWidth, calculatedHeight);
+			// If scaled image is smaller then use SwingX utilities (looks much
+			// better)
+			return GraphicsUtilities.createThumbnailFast(
+					toBufferedImage(image), calculatedWidth, calculatedHeight);
 		}
 	}
 
@@ -160,7 +169,8 @@ public final class ImageUtils {
 	 * 
 	 * @return the image icon
 	 */
-	public static BufferedImage scaleBufferedImageBilinear(final Image image, final int width, final int height) {
+	public static BufferedImage scaleBufferedImageBilinear(final Image image,
+			final int width, final int height) {
 		if (image == null) {
 			return null;
 		}
@@ -182,17 +192,20 @@ public final class ImageUtils {
 			calculatedWidth = (int) (height * imageRatio);
 		}
 
-		BufferedImage thumbImage = new BufferedImage(calculatedWidth, calculatedHeight, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage thumbImage = new BufferedImage(calculatedWidth,
+				calculatedHeight, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics2D = thumbImage.createGraphics();
-		graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		graphics2D.drawImage(image, 0, 0, calculatedWidth, calculatedHeight, null);
+		graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		graphics2D.drawImage(image, 0, 0, calculatedWidth, calculatedHeight,
+				null);
 		graphics2D.dispose();
 		return thumbImage;
 	}
 
-
 	/**
 	 * Gets a BufferedImage from an Image object.
+	 * 
 	 * @param img
 	 * @return
 	 */
@@ -218,16 +231,21 @@ public final class ImageUtils {
 	 *             If an IO exception occurs
 	 * @throws ImageWriteException
 	 */
-	public static void writeImageToFile(final Image image, final String fileName) throws IOException, ImageWriteException {
+	public static void writeImageToFile(final Image image, final String fileName)
+			throws IOException, ImageWriteException {
 		if (image == null) {
 			return;
 		}
 		String fileNameWithExtension = fileName;
-		if (!fileName.toUpperCase().endsWith(StringUtils.getString(".", FILES_EXTENSION).toUpperCase())) {
-			fileNameWithExtension = StringUtils.getString(fileName, ".", FILES_EXTENSION);
+		if (!fileName.toUpperCase().endsWith(
+				StringUtils.getString(".", FILES_EXTENSION).toUpperCase())) {
+			fileNameWithExtension = StringUtils.getString(fileName, ".",
+					FILES_EXTENSION);
 		}
 
-		ImageIO.write(toBufferedImage(image), FILES_EXTENSION, new File(fileNameWithExtension));
+		BufferedImage bi = toBufferedImage(image);
+		if (bi != null) {
+			ImageIO.write(bi, FILES_EXTENSION, new File(fileNameWithExtension));
+		}
 	}
-
 }
