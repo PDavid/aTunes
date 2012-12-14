@@ -77,11 +77,7 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
 
 	@Override
 	public boolean areTrayIconsSupported() {
-		// ALEX: Given all types of Linux distributions with different desktops
-		// (unity, gnome, etc)
-		// keep a tray icon working for all has become very difficult so I
-		// decided to remove support
-		return false;
+		return true;
 	}
 
 	@Override
