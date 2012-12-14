@@ -141,22 +141,55 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 	private void showControls(final long time, final long remainingTime,
 			final boolean showDeterminateControls,
 			final boolean showIndeterminateControls) {
+
+		this.time.setText(getTimeText(time, showDeterminateControls,
+				showIndeterminateControls));
+
+		this.remainingTime.setText(getRemainingTime(remainingTime,
+				showDeterminateControls, showIndeterminateControls));
+
+		this.progressBar.setVisible(showDeterminateControls
+				&& !showIndeterminateControls);
+
 		if (showDeterminateControls && !showIndeterminateControls) {
-			this.time.setVisible(true);
-			this.time.setText(time > 0 ? TimeUtils
-					.millisecondsToHoursMinutesSeconds(time) : "");
-			this.remainingTime.setVisible(true);
-			this.remainingTime.setText(remainingTime > 0 ? StringUtils
-					.getString("- ", TimeUtils
-							.millisecondsToHoursMinutesSeconds(remainingTime))
-					: "");
-			this.progressBar.setVisible(true);
 			this.indeterminateProgressBar.setVisible(false);
 		} else {
-			this.time.setVisible(false);
-			this.remainingTime.setVisible(false);
-			this.progressBar.setVisible(false);
 			this.indeterminateProgressBar.setVisible(showIndeterminateControls);
+		}
+	}
+
+	/**
+	 * @param time
+	 * @param showDeterminateControls
+	 * @param showIndeterminateControls
+	 * @return
+	 */
+	private String getTimeText(final long time,
+			final boolean showDeterminateControls,
+			final boolean showIndeterminateControls) {
+		if (showDeterminateControls && !showIndeterminateControls) {
+			return time > 0 ? TimeUtils.millisecondsToHoursMinutesSeconds(time)
+					: "";
+		} else {
+			return "";
+		}
+	}
+
+	/**
+	 * @param remainingTime
+	 * @param showDeterminateControls
+	 * @param showIndeterminateControls
+	 * @return
+	 */
+	private String getRemainingTime(final long remainingTime,
+			final boolean showDeterminateControls,
+			final boolean showIndeterminateControls) {
+		if (showDeterminateControls && !showIndeterminateControls) {
+			return remainingTime > 0 ? StringUtils.getString("- ",
+					TimeUtils.millisecondsToHoursMinutesSeconds(remainingTime))
+					: "";
+		} else {
+			return "";
 		}
 	}
 
@@ -193,6 +226,7 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		progressBarPanel.add(this.progressBar, c);
+		c.insets = new Insets(0, 50, 0, 50);
 		progressBarPanel.add(this.indeterminateProgressBar, c);
 		return progressBarPanel;
 	}
