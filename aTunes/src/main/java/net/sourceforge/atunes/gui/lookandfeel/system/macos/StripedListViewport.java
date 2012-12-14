@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.lookandfeel.system.macos;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import javax.swing.JList;
 import javax.swing.JViewport;
@@ -32,68 +33,70 @@ import javax.swing.event.ListSelectionListener;
 
 class StripedListViewport extends JViewport {
 
-    private static final long serialVersionUID = 7217178968532613985L;
+	private static final long serialVersionUID = 7217178968532613985L;
 
-    private final JList list;
+	private final JList list;
 
-    /**
-     * @param list
-     */
-    public StripedListViewport(final JList list) {
-	this.list = list;
-	setOpaque(false);
-	initListeners();
-    }
-
-    private void initListeners() {
-	list.addListSelectionListener(new ListSelectionListener() {
-
-	    @Override
-	    public void valueChanged(final ListSelectionEvent arg0) {
-		repaint();
-	    }
-	});
-
-	addChangeListener(new ChangeListener() {
-
-	    @Override
-	    public void stateChanged(final ChangeEvent e) {
-		repaint();
-	    }
-	});
-    }
-
-    @Override
-    protected void paintComponent(final Graphics g) {
-	paintStripedBackground(g);
-	super.paintComponent(g);
-    }
-
-    private void paintStripedBackground(final Graphics g) {
-	// get the row index at the top of the clip bounds (the first row
-	// to paint).
-	int rowAtPoint = list.locationToIndex(g.getClipBounds().getLocation());
-	// get the y coordinate of the first row to paint. if there are no
-	// rows in the tree, start painting at the top of the supplied
-	// clipping bounds.
-	int topY = rowAtPoint < 0 ? g.getClipBounds().y : list.getCellBounds(
-		rowAtPoint, rowAtPoint).y;
-
-	// create a counter variable to hold the current row. if there are no
-	// rows in the tree, start the counter at 0.
-	int currentRow = rowAtPoint < 0 ? 0 : rowAtPoint;
-	while (topY < g.getClipBounds().y + g.getClipBounds().height) {
-	    int bottomY = topY
-		    + list.getCellBounds(rowAtPoint, rowAtPoint).height;
-	    g.setColor(getRowColor(currentRow));
-	    g.fillRect(g.getClipBounds().x, topY, g.getClipBounds().width,
-		    bottomY);
-	    topY = bottomY;
-	    currentRow++;
+	/**
+	 * @param list
+	 */
+	public StripedListViewport(final JList list) {
+		this.list = list;
+		setOpaque(false);
+		initListeners();
 	}
-    }
 
-    private Color getRowColor(final int row) {
-	return row % 2 == 0 ? MacOSColors.EVEN_ROW_COLOR : getBackground();
-    }
+	private void initListeners() {
+		this.list.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(final ListSelectionEvent arg0) {
+				repaint();
+			}
+		});
+
+		addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(final ChangeEvent e) {
+				repaint();
+			}
+		});
+	}
+
+	@Override
+	protected void paintComponent(final Graphics g) {
+		paintStripedBackground(g);
+		super.paintComponent(g);
+	}
+
+	private void paintStripedBackground(final Graphics g) {
+		// get the row index at the top of the clip bounds (the first row
+		// to paint).
+		int rowAtPoint = this.list.locationToIndex(g.getClipBounds()
+				.getLocation());
+		// get the y coordinate of the first row to paint. if there are no
+		// rows in the tree, start painting at the top of the supplied
+		// clipping bounds.
+		int topY = rowAtPoint < 0 ? g.getClipBounds().y : this.list
+				.getCellBounds(rowAtPoint, rowAtPoint).y;
+
+		// create a counter variable to hold the current row. if there are no
+		// rows in the tree, start the counter at 0.
+		int currentRow = rowAtPoint < 0 ? 0 : rowAtPoint;
+		while (topY < g.getClipBounds().y + g.getClipBounds().height) {
+			Rectangle cellBounds = this.list.getCellBounds(rowAtPoint,
+					rowAtPoint);
+			int bottomY = topY + (cellBounds != null ? cellBounds.height : 0);
+			g.setColor(getRowColor(currentRow));
+			g.fillRect(g.getClipBounds().x, topY, g.getClipBounds().width,
+					bottomY);
+			topY = bottomY;
+			currentRow++;
+		}
+	}
+
+	private Color getRowColor(final int row) {
+		return row % 2 == 0 ? MacOSColors.EVEN_ROW_COLOR : getBackground();
+	}
 }
