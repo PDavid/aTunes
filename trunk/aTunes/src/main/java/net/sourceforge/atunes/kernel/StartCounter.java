@@ -35,66 +35,83 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * counts how many times application has been started
+ * 
  * @author alex
- *
+ * 
  */
 public final class StartCounter {
 
 	private IOSManager osManager;
-	
+
 	private String counterFile;
-	
+
 	private String counterProperty;
-	
+
 	private int counter;
-	
+
 	private int counterLevelNeededToFireAction;
-	
+
+	private String dontFireActionProperty;
+
 	private Action actionToFire;
-	
+
+	/**
+	 * @param dontFireActionProperty
+	 */
+	public void setDontFireActionProperty(final String dontFireActionProperty) {
+		this.dontFireActionProperty = dontFireActionProperty;
+	}
+
 	/**
 	 * @param counterLevelNeededToFireAction
 	 */
 	public void setCounterLevelNeededToFireAction(
-			int counterLevelNeededToFireAction) {
+			final int counterLevelNeededToFireAction) {
 		this.counterLevelNeededToFireAction = counterLevelNeededToFireAction;
 	}
-	
+
 	/**
 	 * @param actionToFire
 	 */
-	public void setActionToFire(Action actionToFire) {
+	public void setActionToFire(final Action actionToFire) {
 		this.actionToFire = actionToFire;
 	}
-	
+
 	/**
 	 * @param counterProperty
 	 */
-	public void setCounterProperty(String counterProperty) {
+	public void setCounterProperty(final String counterProperty) {
 		this.counterProperty = counterProperty;
 	}
-	
+
 	/**
 	 * @param counterFile
 	 */
-	public void setCounterFile(String counterFile) {
+	public void setCounterFile(final String counterFile) {
 		this.counterFile = counterFile;
 	}
-	
+
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	/**
-	 * Initializes counter and adds 1 
+	 * Initializes counter and adds 1
 	 */
 	public void initialize() {
 		Properties properties = getProperties();
-		counter = addOneToCounter(properties);
-		Logger.info("Start count: ", counter);
+		this.counter = addOneToCounter(properties);
+		Logger.info("Start count: ", this.counter);
+		writeProperties(properties);
+	}
+
+	/**
+	 * @param properties
+	 */
+	private void writeProperties(final Properties properties) {
 		FileOutputStream fos = null;
 		try {
 			fos = new FileOutputStream(getCounterFilePath());
@@ -111,10 +128,10 @@ public final class StartCounter {
 	 * @param properties
 	 * @return
 	 */
-	private int addOneToCounter(Properties properties) {
+	private int addOneToCounter(final Properties properties) {
 		int counter = 0;
 		try {
-			String valueString = properties.getProperty(counterProperty);
+			String valueString = properties.getProperty(this.counterProperty);
 			if (valueString != null) {
 				counter = Integer.valueOf(valueString);
 			}
@@ -122,8 +139,16 @@ public final class StartCounter {
 			Logger.error(e);
 		}
 		counter++;
-		properties.put(counterProperty, String.valueOf(counter));
+		properties.put(this.counterProperty, String.valueOf(counter));
 		return counter;
+	}
+
+	/**
+	 * @param properties
+	 * @return
+	 */
+	private void dontFireActionAgain(final Properties properties) {
+		properties.put(this.dontFireActionProperty, Boolean.toString(true));
 	}
 
 	/**
@@ -149,15 +174,35 @@ public final class StartCounter {
 	 * @return
 	 */
 	private String getCounterFilePath() {
-		return StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), counterFile);
+		return StringUtils.getString(this.osManager.getUserConfigFolder(),
+				this.osManager.getFileSeparator(), this.counterFile);
 	}
 
 	/**
 	 * Checks counter value
 	 */
 	public void checkCounter() {
-		if (counter == counterLevelNeededToFireAction) {
-			actionToFire.actionPerformed(null);
+		if (!isDontFireActionAgain()) {
+			if (this.counter >= this.counterLevelNeededToFireAction) {
+				this.actionToFire.actionPerformed(null);
+			}
 		}
+	}
+
+	/**
+	 * @return
+	 */
+	private boolean isDontFireActionAgain() {
+		Object property = getProperties().get(this.dontFireActionProperty);
+		return property != null ? Boolean.valueOf((String) property) : false;
+	}
+
+	/**
+	 * Blocks action to be fired again
+	 */
+	public void dontFireActionAgain() {
+		Properties properties = getProperties();
+		dontFireActionAgain(properties);
+		writeProperties(properties);
 	}
 }

@@ -97,6 +97,7 @@
 		<property name="counterProperty" value="counter"/>
 		<property name="counterLevelNeededToFireAction" value="3"/>
 		<property name="actionToFire" ref="makeDonationAction"/>
+		<property name="dontFireActionProperty" value="dontFireActionAgain"/>
 	</bean>
 
 	<bean id="searchableObject" class="net.sourceforge.atunes.kernel.modules.search.AbstractCommonAudioFileSearchableObject" abstract="true"/>	
