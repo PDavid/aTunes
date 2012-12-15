@@ -107,7 +107,10 @@ public class XineEngine extends AbstractPlayerEngine {
 	public void startPlayback(final IAudioObject audioObjectToPlay,
 			final IAudioObject audioObject) {
 
-		if (audioObjectToPlay.getUrl() == null) {
+		if (audioObjectToPlay instanceof IPodcastFeedEntry
+				|| audioObjectToPlay instanceof IRadio) {
+			showMessage("XINE RADIOS NOT SUPPORTED");
+		} else if (audioObjectToPlay.getUrl() == null) {
 			handlePlayerEngineError(new FileNotFoundException(
 					audioObjectToPlay.getTitleOrFileName()));
 		} else {
@@ -135,27 +138,15 @@ public class XineEngine extends AbstractPlayerEngine {
 
 			String errorMessage = null;
 			int streamLength = this.xineController.getStreamLength();
-			if (audioObjectToPlay instanceof IPodcastFeedEntry
-					|| audioObjectToPlay instanceof IRadio) {
-
-				// Removed previous check of xineController.hasAudio() as seems
-				// to fail with radios for some xine implementations
-
-				// logic from init() of PodcastFeedEntryMPlayerOutputReader
-				long duration = audioObjectToPlay.getDuration() * 1000L;
-				setCurrentAudioObjectLength(duration);
-				notifyRadioOrPodcastFeedEntryStarted();
-			} else {
-				// Check if stream length is 0 which may indicate a wrong audio
-				// object, and then skip
-				if (streamLength <= 0) {
-					valid = false;
-					errorMessage = StringUtils.getString(
-							I18nUtils.getString("ERROR"), ": ",
-							audioObjectToPlay.getUrl());
-				}
-				setCurrentAudioObjectLength(streamLength);
+			// Check if stream length is 0 which may indicate a wrong audio
+			// object, and then skip
+			if (streamLength <= 0) {
+				valid = false;
+				errorMessage = StringUtils.getString(
+						I18nUtils.getString("ERROR"), ": ",
+						audioObjectToPlay.getUrl());
 			}
+			setCurrentAudioObjectLength(streamLength);
 
 			if (valid) {
 				startPlayback(0);
