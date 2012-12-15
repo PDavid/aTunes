@@ -109,7 +109,8 @@ public class XineEngine extends AbstractPlayerEngine {
 
 		if (audioObjectToPlay instanceof IPodcastFeedEntry
 				|| audioObjectToPlay instanceof IRadio) {
-			showMessage("XINE RADIOS NOT SUPPORTED");
+			showMessage(I18nUtils.getString("XINE_RADIOS_NOT_SUPPORTED"));
+			stopCurrentAudioObject(false);
 		} else if (audioObjectToPlay.getUrl() == null) {
 			handlePlayerEngineError(new FileNotFoundException(
 					audioObjectToPlay.getTitleOrFileName()));
