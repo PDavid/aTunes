@@ -20,13 +20,17 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
+import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -49,6 +53,8 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 
 	private String donationUrl;
 
+	private boolean dontShowAgain;
+
 	/**
 	 * Instantiates a new repository selection info dialog.
 	 * 
@@ -57,7 +63,7 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 	 */
 	public MakeDonationDialog(final IFrame frame,
 			final IControlsBuilder controlsBuilder) {
-		super(frame, 500, 300, controlsBuilder);
+		super(frame, 500, 350, controlsBuilder);
 	}
 
 	/**
@@ -96,11 +102,22 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 		text.setBorder(BorderFactory.createEmptyBorder());
 		JLabel donateButton = new JLabel(
 				Images.getImage(Images.PROJECT_SUPPORT));
+		donateButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		donateButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
 				MakeDonationDialog.this.desktop
 						.openURL(MakeDonationDialog.this.donationUrl);
+			}
+		});
+		final JCheckBox dontShowAgain = new JCheckBox(
+				I18nUtils.getString("DONT_SHOW_AGAIN"));
+		dontShowAgain.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(final ItemEvent event) {
+				MakeDonationDialog.this.dontShowAgain = dontShowAgain
+						.isSelected();
 			}
 		});
 		GridBagConstraints c = new GridBagConstraints();
@@ -117,10 +134,23 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 		c.gridx = 0;
 		c.gridy = 2;
 		c.gridwidth = 2;
-		c.weighty = 1;
 		c.anchor = GridBagConstraints.CENTER;
 		c.insets = new Insets(0, 0, 0, 0);
+		c.weighty = 1;
 		panel.add(donateButton, c);
+		c.gridy = 3;
+		c.weighty = 0;
+		c.weightx = 0;
+		c.fill = GridBagConstraints.NONE;
+		c.insets = new Insets(20, 0, 20, 0);
+		panel.add(dontShowAgain, c);
 		add(panel);
+	}
+
+	/**
+	 * @return the dontShowAgain
+	 */
+	public boolean isDontShowAgain() {
+		return this.dontShowAgain;
 	}
 }

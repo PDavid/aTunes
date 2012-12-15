@@ -21,36 +21,53 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import net.sourceforge.atunes.gui.views.dialogs.MakeDonationDialog;
+import net.sourceforge.atunes.kernel.StartCounter;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Action to make a donation
+ * 
  * @author alex
- *
+ * 
  */
 public class MakeDonationAction extends CustomAbstractAction {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -9125170460288897027L;
-	
+
 	private IDialogFactory dialogFactory;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	MakeDonationAction() {
 		super(I18nUtils.getString("MAKE_DONATION"));
 	}
-	
+
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-	
+
 	@Override
 	protected void executeAction() {
-		dialogFactory.newDialog(MakeDonationDialog.class).showDialog();
+		MakeDonationDialog dialog = this.dialogFactory
+				.newDialog(MakeDonationDialog.class);
+		dialog.showDialog();
+		if (dialog.isDontShowAgain()) {
+			this.beanFactory.getBean(StartCounter.class).dontFireActionAgain();
+		}
 	}
 }
