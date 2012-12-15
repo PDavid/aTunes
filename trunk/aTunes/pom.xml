@@ -238,6 +238,7 @@
 								<property name="scp_classpath" refid="maven.plugin.classpath" />
 								<property name="user" value="{user}" />
 								<property name="password" value="{password}" />
+								<property name="folder" value="{folder}"/>
 								<ant antfile="${basedir}/mvn-ant-run.xml">
 									<target name="upload" />
 								</ant>
