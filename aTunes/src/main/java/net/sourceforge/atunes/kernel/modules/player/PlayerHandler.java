@@ -202,7 +202,9 @@ public final class PlayerHandler extends AbstractHandler implements
 
 	@Override
 	public final void stopCurrentAudioObject(final boolean userStopped) {
-		this.playerEngine.stopCurrentAudioObject(userStopped);
+		if (isEnginePlaying() || isEnginePaused()) {
+			this.playerEngine.stopCurrentAudioObject(userStopped);
+		}
 	}
 
 	@Override
