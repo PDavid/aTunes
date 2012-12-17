@@ -3,6 +3,7 @@ aTunes 3.0.1
 - FIX: Better control of exceptions reading tags with JAudiotagger
 - FIX: NPE when importing from a folder without parent file
 - FIX: Disable play list menu actions when play list selection changes, not only popup menu
+- FIX: Problem reordering columns with Java 7
 
 aTunes 3.0.0
 ------------
