@@ -98,7 +98,14 @@ class ColumnsTableModel implements TableModel {
 	 *            the column pos
 	 */
 	public void moveDown(final int columnPos) {
-		// Get this column and previous
+		// Can't move down last column
+		if (columnPos == (this.columns.size() - 1)) {
+			return;
+		} else if (columnPos >= this.columns.size() || columnPos < 0) {
+			throw new IllegalArgumentException("Wrong columnPos = " + columnPos);
+		}
+
+		// Get this column and next
 		IColumn<?> columnSelected = this.columns.get(columnPos);
 		IColumn<?> nextColumn = this.columns.get(columnPos + 1);
 
@@ -125,6 +132,13 @@ class ColumnsTableModel implements TableModel {
 	 *            the column pos
 	 */
 	public void moveUp(final int columnPos) {
+		// Can't move up first column
+		if (columnPos == 0) {
+			return;
+		} else if (columnPos >= this.columns.size() || columnPos < 0) {
+			throw new IllegalArgumentException("Wrong columnPos = " + columnPos);
+		}
+
 		// Get this column and previous
 		IColumn<?> columnSelected = this.columns.get(columnPos);
 		IColumn<?> previousColumn = this.columns.get(columnPos - 1);

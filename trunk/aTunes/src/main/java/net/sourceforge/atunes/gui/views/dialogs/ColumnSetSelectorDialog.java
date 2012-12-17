@@ -141,8 +141,7 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog
 			public void actionPerformed(final ActionEvent e) {
 				int selectedColumn = ColumnSetSelectorDialog.this.columnsList
 						.getSelectedRow();
-				// If some column has been selected, not the first one
-				if (selectedColumn > 0) {
+				if (selectedColumn != -1) {
 					ColumnSetSelectorDialog.this.model.moveUp(selectedColumn);
 				}
 			}
@@ -154,9 +153,7 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog
 			public void actionPerformed(final ActionEvent e) {
 				int selectedColumn = ColumnSetSelectorDialog.this.columnsList
 						.getSelectedRow();
-				// If some column has been selected, not the last one
-				if (selectedColumn < ColumnSetSelectorDialog.this.columnsList
-						.getModel().getRowCount() - 1) {
+				if (selectedColumn != -1) {
 					ColumnSetSelectorDialog.this.model.moveDown(selectedColumn);
 				}
 			}
