@@ -114,26 +114,36 @@ public final class TagReader implements ILocalAudioObjectReader {
 		AudioFile audioFile = null;
 		try {
 			audioFile = AudioFileIO.read(file);
+		} catch (NegativeArraySizeException e) {
+			// Reading wrong tags can happen this
+			// java.lang.NegativeArraySizeException: null
+			// org.jaudiotagger.tag.id3.ID3Compression.uncompress(ID3Compression.java:38)
+			logExceptionReadingTag(file, e);
 		} catch (NumberFormatException e) {
 			// With fields with very big numbers this exception can be thrown
-			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
-			Logger.error(e.getMessage());
+			logExceptionReadingTag(file, e);
+		} catch (IllegalArgumentException e) {
+			// Reading wrong tags can happen this
+			// java.lang.IllegalArgumentException: null
+			// java.nio.Buffer.position(Unknown Source)
+			// org.jaudiotagger.tag.id3.ID3v23Frame.read(ID3v23Frame.java:460)
+			logExceptionReadingTag(file, e);
 		} catch (CannotReadException e) {
-			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
-			Logger.error(e.getMessage());
+			logExceptionReadingTag(file, e);
 		} catch (IOException e) {
-			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
-			Logger.error(e.getMessage());
+			logExceptionReadingTag(file, e);
 		} catch (TagException e) {
-			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
-			Logger.error(e.getMessage());
+			logExceptionReadingTag(file, e);
 		} catch (ReadOnlyFileException e) {
-			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
-			Logger.error(e.getMessage());
+			logExceptionReadingTag(file, e);
 		} catch (InvalidAudioFrameException e) {
-			Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
-			Logger.error(e.getMessage());
+			logExceptionReadingTag(file, e);
 		}
 		return audioFile;
+	}
+
+	private void logExceptionReadingTag(final File file, Exception e) {
+		Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
+		Logger.error(e.getMessage());
 	}
 }
