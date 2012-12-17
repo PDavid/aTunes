@@ -29,125 +29,135 @@ import javax.swing.Icon;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectsSource;
+import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * An action called after selecting audio objects which are parameters of action
+ * 
  * @author alex
- *
+ * 
  * @param <T>
  */
 @PluginApi
-public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> extends CustomAbstractAction {
+public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject>
+		extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 1673432955671008277L;
+	private static final long serialVersionUID = 1673432955671008277L;
 
-    private IAudioObjectsSource audioObjectsSource;
+	private IAudioObjectsSource audioObjectsSource;
 
-    private Class<?> clazz;
-    
-    /**
-     * @param name
-     */
-    public AbstractActionOverSelectedObjects(String name) {
-        super(name);
-        clazz = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-    }
+	private final Class<?> clazz;
 
-    /**
-     * @param name
-     * @param icon
-     */
-    public AbstractActionOverSelectedObjects(String name, Icon icon) {
-        super(name, icon);
-        clazz = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];        
-    }
+	/**
+	 * @param name
+	 */
+	public AbstractActionOverSelectedObjects(String name) {
+		super(name);
+		clazz = (Class<?>) ((ParameterizedType) getClass()
+				.getGenericSuperclass()).getActualTypeArguments()[0];
+	}
 
-    /**
-     * Returns if preprocess is needed
-     * 
-     * Default implementation does not need preprocess
-     * 
-     * @return
-     */
-    protected boolean isPreprocessNeeded() {
-    	return false;
-    }
-    
-    /**
-     * Given an audio object performs a pre-process returning audio object to
-     * include in list or null if given audio object must be excluded from list
-     * 
-     * Default implementation returns the same object
-     * 
-     * @param audioObject
-     * @return
-     */
-    protected T preprocessObject(T audioObject) {
-        return audioObject;
-    }
+	/**
+	 * @param name
+	 * @param icon
+	 */
+	public AbstractActionOverSelectedObjects(String name, Icon icon) {
+		super(name, icon);
+		clazz = (Class<?>) ((ParameterizedType) getClass()
+				.getGenericSuperclass()).getActualTypeArguments()[0];
+	}
 
-    /**
-     * @param audioObjectsSource
-     */
-    public final void setAudioObjectsSource(IAudioObjectsSource audioObjectsSource) {
+	/**
+	 * Returns if preprocess is needed
+	 * 
+	 * Default implementation does not need preprocess
+	 * 
+	 * @return
+	 */
+	protected boolean isPreprocessNeeded() {
+		return false;
+	}
+
+	/**
+	 * Given an audio object performs a pre-process returning audio object to
+	 * include in list or null if given audio object must be excluded from list
+	 * 
+	 * Default implementation returns the same object
+	 * 
+	 * @param audioObject
+	 * @return
+	 */
+	protected T preprocessObject(T audioObject) {
+		return audioObject;
+	}
+
+	/**
+	 * @param audioObjectsSource
+	 */
+	public final void setAudioObjectsSource(
+			IAudioObjectsSource audioObjectsSource) {
 		this.audioObjectsSource = audioObjectsSource;
 	}
-    
-    protected abstract void executeAction(List<T> objects);
-    
-    @Override
-    protected final void executeAction() {
-    	// Use executionAction(List<T> objects)
-    }
 
-    @SuppressWarnings("unchecked")
+	protected abstract void executeAction(List<T> objects);
+
 	@Override
-    public final void actionPerformed(ActionEvent e) {
-    	Logger.debug("Executing action: ", this.getClass().getName());
+	protected final void executeAction() {
+		// Use executionAction(List<T> objects)
+	}
 
-        if (this.audioObjectsSource == null) {
-            return;
-        }
+	@SuppressWarnings("unchecked")
+	@Override
+	public final void actionPerformed(ActionEvent e) {
+		Logger.debug("Executing action: ", this.getClass().getName());
 
-        List<IAudioObject> audioObjects = this.audioObjectsSource.getSelectedAudioObjects();
+		if (this.audioObjectsSource == null) {
+			return;
+		}
 
-        if (audioObjects == null || audioObjects.isEmpty()) {
-            return;
-        }
+		List<IAudioObject> audioObjects = this.audioObjectsSource
+				.getSelectedAudioObjects();
 
-        List<T> selectedObjects = new ArrayList<T>();
-        
-        for (IAudioObject ao : audioObjects) {
-            if (clazz.isAssignableFrom(ao.getClass())) {
-            	if (isPreprocessNeeded()) {
-            		T processedAudioObject = preprocessObject((T) ao);
-            		if (processedAudioObject != null) {
-            			selectedObjects.add(processedAudioObject);
-            		}
-            	} else {
-            		selectedObjects.add((T)ao);
-            	}
-            }
-        }
+		if (audioObjects == null || audioObjects.isEmpty()) {
+			return;
+		}
 
-        // Call to perform action
-        executeAction(selectedObjects);
-    }
+		List<T> selectedObjects = new ArrayList<T>();
 
-    @Override
-    public final boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        if (selection.isEmpty()) {
-            return false;
-        }
+		for (IAudioObject ao : audioObjects) {
+			if (clazz.isAssignableFrom(ao.getClass())) {
+				if (isPreprocessNeeded()) {
+					T processedAudioObject = preprocessObject((T) ao);
+					if (processedAudioObject != null) {
+						selectedObjects.add(processedAudioObject);
+					}
+				} else {
+					selectedObjects.add((T) ao);
+				}
+			}
+		}
 
-        for (IAudioObject ao : selection) {
-            if (!clazz.isAssignableFrom(ao.getClass())) {
-                return false;
-            }
-        }
-        return true;
-    }
+		// Call to perform action if some object is selected and valid
+		if (!CollectionUtils.isEmpty(selectedObjects)) {
+			executeAction(selectedObjects);
+		}
+	}
+
+	@Override
+	public final boolean isEnabledForPlayListSelection(
+			List<IAudioObject> selection) {
+		if (selection.isEmpty()) {
+			return false;
+		}
+
+		for (IAudioObject ao : selection) {
+			if (!clazz.isAssignableFrom(ao.getClass())) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

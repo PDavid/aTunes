@@ -269,8 +269,11 @@ public final class PlayListMenuFiller {
 	 * @param table
 	 */
 	public void updatePlayListMenuItems() {
+		// Update both menu and popup menu
 		updatePlayListPopupMenuItems(
 				this.beanFactory.getBean(IPlayListTable.class).getMenu(),
+				this.playListHandler.getSelectedAudioObjects());
+		updatePlayListMenuItems(this.beanFactory.getBean(PlayListMenu.class),
 				this.playListHandler.getSelectedAudioObjects());
 	}
 
