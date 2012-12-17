@@ -1,3 +1,8 @@
+aTunes 3.0.1
+------------
+- FIX: Better control of exceptions reading tags with JAudiotagger
+- FIX: NPE when importing from a folder without parent file
+
 aTunes 3.0.0
 ------------
 - Allow truncate playlist when copying to device [ patch by deathgorepain ]
