@@ -34,17 +34,17 @@ import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.FileNameUtils;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-
-import org.apache.commons.io.FileUtils;
 
 /**
  * Imports (song) files to repository
  */
 public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess {
 
-	private static final Pattern NUMBER_SEPARATOR_PATTERN = Pattern.compile("[^0-9]+");
+	private static final Pattern NUMBER_SEPARATOR_PATTERN = Pattern
+			.compile("[^0-9]+");
 
 	/**
 	 * Folders to import
@@ -63,7 +63,8 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 	/**
 	 * @param webServicesHandler
 	 */
-	public void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
+	public void setWebServicesHandler(
+			final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
 
@@ -76,6 +77,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 
 	/**
 	 * Replaces tags before import audio objects
+	 * 
 	 * @param tagAttributesReviewed
 	 */
 	public void initialize(final ITagAttributesReviewed tagAttributesReviewed) {
@@ -99,7 +101,8 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 	/**
 	 * @param localAudioObjectFactory
 	 */
-	public void setLocalAudioObjectFactory(final ILocalAudioObjectFactory localAudioObjectFactory) {
+	public void setLocalAudioObjectFactory(
+			final ILocalAudioObjectFactory localAudioObjectFactory) {
 		this.localAudioObjectFactory = localAudioObjectFactory;
 	}
 
@@ -118,11 +121,17 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 	 * @return Returns the directory structure with full path where the file
 	 *         will be written
 	 */
-	public File getDirectory(final ILocalAudioObject song, final File destinationBaseFolder) {
+	private File getDirectory(final ILocalAudioObject song,
+			final File destinationBaseFolder) {
 		// Get base folder or the first folder if there is any error
 		File baseFolder = null;
 		for (File folder : folders) {
-			if (net.sourceforge.atunes.utils.FileUtils.getPath(song.getFile()).startsWith(net.sourceforge.atunes.utils.FileUtils.getPath(folder.getParentFile()))) {
+			String filePath = song.getFile() != null ? FileUtils.getPath(song
+					.getFile()) : null;
+			String folderParentPath = folder.getParentFile() != null ? FileUtils
+					.getPath(folder.getParentFile()) : null;
+			if (filePath != null && folderParentPath != null
+					&& filePath.startsWith(folderParentPath)) {
 				baseFolder = folder.getParentFile();
 				break;
 			}
@@ -131,17 +140,28 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 			baseFolder = folders.get(0);
 		}
 
-		String songPath = net.sourceforge.atunes.utils.FileUtils.getPath(song.getFile().getParentFile());
-		String songRelativePath = songPath.replaceFirst(net.sourceforge.atunes.utils.FileUtils.getPath(baseFolder).replace("\\", "\\\\").replace("$", "\\$"), "");
+		String songPath = FileUtils.getPath(song.getFile().getParentFile());
+		String songRelativePath = songPath.replaceFirst(
+				FileUtils.getPath(baseFolder).replace("\\", "\\\\")
+						.replace("$", "\\$"), "");
 		if (getStateRepository().getImportFolderPathPattern() != null) {
-			songRelativePath = FileNameUtils.getValidFolderName(getNewFolderPath(getStateRepository().getImportFolderPathPattern(), song, getOsManager()), getOsManager());
+			songRelativePath = FileNameUtils
+					.getValidFolderName(
+							getNewFolderPath(getStateRepository()
+									.getImportFolderPathPattern(), song,
+									getOsManager()), getOsManager());
 		}
-		return new File(StringUtils.getString(net.sourceforge.atunes.utils.FileUtils.getPath(destinationBaseFolder), getOsManager().getFileSeparator(), songRelativePath));
+		return new File(StringUtils.getString(FileUtils
+				.getPath(destinationBaseFolder), getOsManager()
+				.getFileSeparator(), songRelativePath));
 	}
 
 	@Override
-	protected File transferAudioFile(final File destination, final ILocalAudioObject file, final List<Exception> thrownExceptions) {
-		// Change title. As this can be a long-time task we get titles during transfer process instead of before to avoid not showing any progress dialog
+	protected File transferAudioFile(final File destination,
+			final ILocalAudioObject file, final List<Exception> thrownExceptions) {
+		// Change title. As this can be a long-time task we get titles during
+		// transfer process instead of before to avoid not showing any progress
+		// dialog
 		// while performing this task
 		setTitle(file);
 
@@ -155,7 +175,8 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 
 		// Change tag if necessary after import
 		if (!getStateRepository().isApplyChangesToSourceFilesBeforeImport()) {
-			changeTag(file, localAudioObjectFactory.getLocalAudioObject(destFile));
+			changeTag(file,
+					localAudioObjectFactory.getLocalAudioObject(destFile));
 		}
 
 		return destFile;
@@ -171,20 +192,26 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 	 * @return A reference to the created file
 	 * @throws IOException
 	 */
-	private File importFile(final File destination, final ILocalAudioObject file, final List<Exception> thrownExceptions) {
+	private File importFile(final File destination,
+			final ILocalAudioObject file, final List<Exception> thrownExceptions) {
 		File destDir = getDirectory(file, destination);
 		String newName;
 		if (getStateRepository().getImportFileNamePattern() != null) {
-			newName = getNewFileName(getStateRepository().getImportFileNamePattern(), file, getOsManager());
+			newName = getNewFileName(getStateRepository()
+					.getImportFileNamePattern(), file, getOsManager());
 		} else {
-			newName = FileNameUtils.getValidFileName(file.getFile().getName().replace("\\", "\\\\").replace("$", "\\$"), false, getOsManager());
+			newName = FileNameUtils.getValidFileName(file.getFile().getName()
+					.replace("\\", "\\\\").replace("$", "\\$"), false,
+					getOsManager());
 		}
 
-		File destFile = new File(StringUtils.getString(net.sourceforge.atunes.utils.FileUtils.getPath(destDir), getOsManager().getFileSeparator(), newName));
+		File destFile = new File(StringUtils.getString(
+				FileUtils.getPath(destDir), getOsManager().getFileSeparator(),
+				newName));
 
 		try {
 			// Now that we (supposedly) have a valid filename write file
-			FileUtils.copyFile(file.getFile(), destFile);
+			org.apache.commons.io.FileUtils.copyFile(file.getFile(), destFile);
 		} catch (IOException e) {
 			thrownExceptions.add(e);
 		}
@@ -200,7 +227,8 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 	 * @param destFile
 	 *            destination file
 	 */
-	private void changeTag(final ILocalAudioObject sourceFile, final ILocalAudioObject destFile) {
+	private void changeTag(final ILocalAudioObject sourceFile,
+			final ILocalAudioObject destFile) {
 		if (filesToChangeTag.contains(sourceFile)) {
 			tagHandler.setTag(destFile, sourceFile.getTag());
 		}
@@ -208,14 +236,17 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 
 	/**
 	 * Changes tag of a file if it is defined in a TagAttributesReviewed object
-	 * LocalAudioObject is added to list of files to change tag physically on disk
+	 * LocalAudioObject is added to list of files to change tag physically on
+	 * disk
 	 * 
 	 * @param fileToImport
 	 * @param tagAttributesReviewed
 	 */
-	private void replaceTag(final ILocalAudioObject fileToImport, final ITagAttributesReviewed tagAttributesReviewed) {
+	private void replaceTag(final ILocalAudioObject fileToImport,
+			final ITagAttributesReviewed tagAttributesReviewed) {
 		if (tagAttributesReviewed != null) {
-			ITag modifiedTag = tagAttributesReviewed.getTagForAudioFile(fileToImport);
+			ITag modifiedTag = tagAttributesReviewed
+					.getTagForAudioFile(fileToImport);
 			// This file must be changed
 			if (modifiedTag != null) {
 				fileToImport.setTag(modifiedTag);
@@ -225,13 +256,14 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 	}
 
 	/**
-	 * Changes track number of a file. LocalAudioObject is added to list of files to
-	 * change tag physically on disk
+	 * Changes track number of a file. LocalAudioObject is added to list of
+	 * files to change tag physically on disk
 	 * 
 	 * @param fileToImport
 	 */
 	private void setTrackNumber(final ILocalAudioObject fileToImport) {
-		if (getStateRepository().isSetTrackNumbersWhenImporting() && fileToImport.getTrackNumber() < 1) {
+		if (getStateRepository().isSetTrackNumbersWhenImporting()
+				&& fileToImport.getTrackNumber() < 1) {
 			int newTrackNumber = getTrackNumber(fileToImport);
 			if (newTrackNumber > 0) {
 				if (fileToImport.getTag() == null) {
@@ -271,7 +303,8 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 			i++;
 		}
 
-		// If trackNumber could not be retrieved from file name, try to get from last.fm
+		// If trackNumber could not be retrieved from file name, try to get from
+		// last.fm
 		// To get this, titles must match
 		if (trackNumber == 0) {
 			trackNumber = webServicesHandler.getTrackNumber(audioFile);
@@ -280,16 +313,16 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 		return trackNumber;
 	}
 
-
 	/**
-	 * Changes title of a file. LocalAudioObject is added to list of files to change
-	 * tag physically on disk
+	 * Changes title of a file. LocalAudioObject is added to list of files to
+	 * change tag physically on disk
 	 * 
 	 * @param fileToImport
 	 */
 	private void setTitle(final ILocalAudioObject fileToImport) {
 		if (getStateRepository().isSetTitlesWhenImporting()) {
-			String newTitle = webServicesHandler.getTitleForAudioObject(fileToImport);
+			String newTitle = webServicesHandler
+					.getTitleForAudioObject(fileToImport);
 			if (newTitle != null) {
 				if (fileToImport.getTag() == null) {
 					fileToImport.setTag(tagHandler.getNewTag());
