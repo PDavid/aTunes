@@ -8,6 +8,7 @@ aTunes 3.0.1
 - FIX: Error retrieving titles from CDDB while ripping a CD
 - FIX: Avoid concurrency problems with album collections
 - FIX: Updated JNA library to avoid initialization errors
+- FIX: Initial heap size changed to 128MB
 
 
 aTunes 3.0.0
