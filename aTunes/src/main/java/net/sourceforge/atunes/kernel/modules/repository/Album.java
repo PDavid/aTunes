@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -47,6 +48,9 @@ public class Album implements IAlbum {
 	/** List of songs of this album. */
 	Set<ILocalAudioObject> audioFiles;
 
+	/** List of songs of this album. */
+	private transient Set<ILocalAudioObject> synchronizedAudioFiles;
+
 	/**
 	 * Default constructor for serialization
 	 */
@@ -66,13 +70,23 @@ public class Album implements IAlbum {
 
 	/**
 	 * Returns audio files
+	 * 
 	 * @return
 	 */
 	private Set<ILocalAudioObject> getAudioFiles() {
+		// Need to use a synchronized set to avoid concurrency problems
+		// However as kryo serialization is tricky with synchronized collections
+		// use a non-synchronized collection with kryo
 		if (audioFiles == null) {
-			audioFiles = new TreeSet<ILocalAudioObject>(new TrackNumberComparator());
+			TreeSet<ILocalAudioObject> treeSet = new TreeSet<ILocalAudioObject>(
+					new TrackNumberComparator());
+			audioFiles = treeSet;
+			synchronizedAudioFiles = Collections.synchronizedSortedSet(treeSet);
+		} else if (synchronizedAudioFiles == null) {
+			synchronizedAudioFiles = Collections
+					.synchronizedSortedSet((TreeSet<ILocalAudioObject>) audioFiles);
 		}
-		return audioFiles;
+		return synchronizedAudioFiles;
 	}
 
 	/**
@@ -199,6 +213,7 @@ public class Album implements IAlbum {
 
 	/**
 	 * Returns true if album has no audio files
+	 * 
 	 * @return
 	 */
 	@Override
@@ -208,6 +223,7 @@ public class Album implements IAlbum {
 
 	/**
 	 * Returns number of audio files of album
+	 * 
 	 * @return
 	 */
 	@Override
