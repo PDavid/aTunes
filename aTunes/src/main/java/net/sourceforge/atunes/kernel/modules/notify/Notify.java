@@ -20,6 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.notify;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.sourceforge.atunes.utils.Logger;
 
 import com.sun.jna.Native;
@@ -33,200 +36,204 @@ import com.sun.jna.Structure;
  */
 public final class Notify {
 
-    /**
-     * Uses default value for expire time.
-     * 
-     * @see #setTimeout(NotifyNotification, int)
-     */
-    public static final int NOTIFY_EXPIRES_DEFAULT = -1;
-    /**
-     * Keep a notify visible until the user or the applications closes it.
-     * 
-     * @see #setTimeout(NotifyNotification, int)
-     */
-    public static final int NOTIFY_EXPIRES_NEVER = 0;
+	/**
+	 * Uses default value for expire time.
+	 * 
+	 * @see #setTimeout(NotifyNotification, int)
+	 */
+	public static final int NOTIFY_EXPIRES_DEFAULT = -1;
+	/**
+	 * Keep a notify visible until the user or the applications closes it.
+	 * 
+	 * @see #setTimeout(NotifyNotification, int)
+	 */
+	public static final int NOTIFY_EXPIRES_NEVER = 0;
 
-    /*
-     * Determines if libnotify is present.
-     */
-    private static boolean notifyPresent;
+	/*
+	 * Determines if libnotify is present.
+	 */
+	private static boolean notifyPresent;
 
-    /**
-     * Register the libnotify and sets the <code>notifyPresent</code> flag to
-     * true if everything occurs successfully.
-     */
-    static {
-	Logger.info("Starting libnotify...");
-	try {
-	    Native.register("notify");
-	    notifyPresent = true;
-	    Logger.info("libnotify started");
-	} catch (UnsatisfiedLinkError e) {
-	    Logger.info("libnotify is not present");
+	/**
+	 * Register the libnotify and sets the <code>notifyPresent</code> flag to
+	 * true if everything occurs successfully.
+	 */
+	static {
+		Logger.info("Starting libnotify...");
+		try {
+			Native.register("notify");
+			notifyPresent = true;
+			Logger.info("libnotify started");
+		} catch (UnsatisfiedLinkError e) {
+			Logger.info("libnotify is not present");
+		}
 	}
-    }
 
-    private Notify() {
+	private Notify() {
 
-    }
-
-    /**
-     * Class that model a NotifyNotification object, used by libnotify.
-     * 
-     * @author Marco Biscaro
-     */
-    public static final class NotifyNotification extends Structure {
+	}
 
 	/**
-	 * Must be public in order to JNA work
+	 * Class that model a NotifyNotification object, used by libnotify.
+	 * 
+	 * @author Marco Biscaro
 	 */
-	public Pointer parent_object;
+	public static final class NotifyNotification extends Structure {
+
+		/**
+		 * Must be public in order to JNA work
+		 */
+		public Pointer parent_object;
+
+		/**
+		 * Must be public in order to JNA work
+		 */
+		public Pointer priv;
+
+		@Override
+		protected List getFieldOrder() {
+			return Arrays.asList(new String[] { "parent_object", "priv" });
+		}
+	}
 
 	/**
-	 * Must be public in order to JNA work
+	 * Determines if the libnotify is present or not.
+	 * 
+	 * @return <code>true</code> if libnotify is present, <code>false</code>
+	 *         otherwise
 	 */
-	public Pointer priv;
+	public static boolean isNotifyPresent() {
+		return notifyPresent;
+	}
 
-    }
+	/**
+	 * Initializes the libnotify API for use.
+	 * 
+	 * @param appName
+	 *            the program name
+	 * @return <code>true</code> if the libnotify was successfully started,
+	 *         <code>false</code> otherwise
+	 * @see #uninit()
+	 */
+	public static boolean init(final String appName) {
+		return notify_init(appName);
+	}
 
-    /**
-     * Determines if the libnotify is present or not.
-     * 
-     * @return <code>true</code> if libnotify is present, <code>false</code>
-     *         otherwise
-     */
-    public static boolean isNotifyPresent() {
-	return notifyPresent;
-    }
+	/**
+	 * Informs to libnotify that we will not use it again.
+	 * 
+	 * @see #init(String)
+	 */
+	public static void uninit() {
+		notify_uninit();
+	}
 
-    /**
-     * Initializes the libnotify API for use.
-     * 
-     * @param appName
-     *            the program name
-     * @return <code>true</code> if the libnotify was successfully started,
-     *         <code>false</code> otherwise
-     * @see #uninit()
-     */
-    public static boolean init(final String appName) {
-	return notify_init(appName);
-    }
+	/**
+	 * Determines if the libnotify was initialized.
+	 * 
+	 * @return <code>true</code> if libnotify was already initialized,
+	 *         <code>false</code> otherwise
+	 * @see #init(String)
+	 * @see #uninit()
+	 */
+	public static boolean isInitted() {
+		return notify_is_initted();
+	}
 
-    /**
-     * Informs to libnotify that we will not use it again.
-     * 
-     * @see #init(String)
-     */
-    public static void uninit() {
-	notify_uninit();
-    }
+	/**
+	 * Gets the name registered by libnotify.
+	 * 
+	 * @return the application name registered by libnotify
+	 * @see #init(String)
+	 */
+	public static String getAppName() {
+		return notify_get_app_name();
+	}
 
-    /**
-     * Determines if the libnotify was initialized.
-     * 
-     * @return <code>true</code> if libnotify was already initialized,
-     *         <code>false</code> otherwise
-     * @see #init(String)
-     * @see #uninit()
-     */
-    public static boolean isInitted() {
-	return notify_is_initted();
-    }
+	/**
+	 * Creates a new notification with specified parameters. The notification is
+	 * invisible by default. To show it, call {@link #show(NotifyNotification)}.
+	 * 
+	 * @param summary
+	 *            the notification title
+	 * @param body
+	 *            the notification message
+	 * @param icon
+	 *            the path to icon or null if it will not be used
+	 * @return a {@link NotifyNotification} containing the given information
+	 */
+	public static NotifyNotification newNotification(final String summary,
+			final String body, final String icon) {
+		return notify_notification_new(summary, body, icon, null);
+	}
 
-    /**
-     * Gets the name registered by libnotify.
-     * 
-     * @return the application name registered by libnotify
-     * @see #init(String)
-     */
-    public static String getAppName() {
-	return notify_get_app_name();
-    }
+	/**
+	 * Changes the timeout to notification. The value can be
+	 * {@link #NOTIFY_EXPIRES_DEFAULT} (use default value),
+	 * {@link #NOTIFY_EXPIRES_NEVER} (still visible until the user or the
+	 * program closes it) or a number greater than zero, representing the time
+	 * in milliseconds.
+	 * <p>
+	 * <b>Note:</b> not all operational systems respect this value.
+	 * 
+	 * @param notification
+	 *            the {@link NotifyNotification} object to set the timeout
+	 * @param timeout
+	 *            {@link #NOTIFY_EXPIRES_DEFAULT}, {@link #NOTIFY_EXPIRES_NEVER}
+	 *            or the time in milliseconds
+	 */
+	public static void setTimeout(final NotifyNotification notification,
+			final int timeout) {
+		notify_notification_set_timeout(notification, timeout);
+	}
 
-    /**
-     * Creates a new notification with specified parameters. The notification is
-     * invisible by default. To show it, call {@link #show(NotifyNotification)}.
-     * 
-     * @param summary
-     *            the notification title
-     * @param body
-     *            the notification message
-     * @param icon
-     *            the path to icon or null if it will not be used
-     * @return a {@link NotifyNotification} containing the given information
-     */
-    public static NotifyNotification newNotification(final String summary,
-	    final String body, final String icon) {
-	return notify_notification_new(summary, body, icon, null);
-    }
+	/**
+	 * Show the given {@link NotifyNotification} on screen.
+	 * 
+	 * @param notification
+	 *            the {@link NotifyNotification} to show
+	 * @return <code>true</code> if everything occurs without errors,
+	 *         <code>false</code> otherwise
+	 * @see #setTimeout(NotifyNotification, int)
+	 */
+	public static boolean show(final NotifyNotification notification) {
+		return notify_notification_show(notification, null);
+	}
 
-    /**
-     * Changes the timeout to notification. The value can be
-     * {@link #NOTIFY_EXPIRES_DEFAULT} (use default value),
-     * {@link #NOTIFY_EXPIRES_NEVER} (still visible until the user or the
-     * program closes it) or a number greater than zero, representing the time
-     * in milliseconds.
-     * <p>
-     * <b>Note:</b> not all operational systems respect this value.
-     * 
-     * @param notification
-     *            the {@link NotifyNotification} object to set the timeout
-     * @param timeout
-     *            {@link #NOTIFY_EXPIRES_DEFAULT}, {@link #NOTIFY_EXPIRES_NEVER}
-     *            or the time in milliseconds
-     */
-    public static void setTimeout(final NotifyNotification notification,
-	    final int timeout) {
-	notify_notification_set_timeout(notification, timeout);
-    }
+	/**
+	 * Hides the given {@link NotifyNotification}, if applicable.
+	 * <p>
+	 * <b>Note:</b> not all operational systems honors this method call.
+	 * 
+	 * @param notification
+	 *            the {@link NotifyNotification} to hide
+	 * @return <code>true</code> if everything occurs without errors,
+	 *         <code>false</code> otherwise
+	 */
+	public static boolean close(final NotifyNotification notification) {
+		return notify_notification_close(notification, null);
+	}
 
-    /**
-     * Show the given {@link NotifyNotification} on screen.
-     * 
-     * @param notification
-     *            the {@link NotifyNotification} to show
-     * @return <code>true</code> if everything occurs without errors,
-     *         <code>false</code> otherwise
-     * @see #setTimeout(NotifyNotification, int)
-     */
-    public static boolean show(final NotifyNotification notification) {
-	return notify_notification_show(notification, null);
-    }
+	// private native methods
 
-    /**
-     * Hides the given {@link NotifyNotification}, if applicable.
-     * <p>
-     * <b>Note:</b> not all operational systems honors this method call.
-     * 
-     * @param notification
-     *            the {@link NotifyNotification} to hide
-     * @return <code>true</code> if everything occurs without errors,
-     *         <code>false</code> otherwise
-     */
-    public static boolean close(final NotifyNotification notification) {
-	return notify_notification_close(notification, null);
-    }
+	private static native boolean notify_init(String appName);
 
-    // private native methods
+	private static native void notify_uninit();
 
-    private static native boolean notify_init(String appName);
+	private static native boolean notify_is_initted();
 
-    private static native void notify_uninit();
+	private static native String notify_get_app_name();
 
-    private static native boolean notify_is_initted();
+	private static native NotifyNotification notify_notification_new(
+			String summary, String body, String icon, Structure attach);
 
-    private static native String notify_get_app_name();
+	private static native void notify_notification_set_timeout(
+			NotifyNotification notification, int timeout);
 
-    private static native NotifyNotification notify_notification_new(
-	    String summary, String body, String icon, Structure attach);
+	private static native boolean notify_notification_show(
+			NotifyNotification notification, Structure error);
 
-    private static native void notify_notification_set_timeout(
-	    NotifyNotification notification, int timeout);
-
-    private static native boolean notify_notification_show(
-	    NotifyNotification notification, Structure error);
-
-    private static native boolean notify_notification_close(
-	    NotifyNotification notification, Structure error);
+	private static native boolean notify_notification_close(
+			NotifyNotification notification, Structure error);
 
 }
