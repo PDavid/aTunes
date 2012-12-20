@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.gui.images;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -40,24 +41,25 @@ import org.apache.sanselan.ImageWriteException;
 
 /**
  * Stores icons generated in memory and disk
+ * 
  * @author alex
- *
+ * 
  */
 public class IconCache implements IIconCache {
 
 	private IOSManager osManager;
-	
+
 	private Map<String, ImageIcon> iconsInMemory;
-	
+
 	private String iconsFolderName;
-	
+
 	/**
 	 * @param iconsFolderName
 	 */
 	public void setIconsFolderName(String iconsFolderName) {
 		this.iconsFolderName = iconsFolderName;
 	}
-	
+
 	/**
 	 * @param osManager
 	 */
@@ -69,15 +71,18 @@ public class IconCache implements IIconCache {
 	 * Initializes cache
 	 */
 	public void initialize() {
-		File iconsFolder = new File(StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), iconsFolderName, osManager.getFileSeparator()));
+		File iconsFolder = new File(StringUtils.getString(
+				osManager.getUserConfigFolder(), osManager.getFileSeparator(),
+				iconsFolderName, osManager.getFileSeparator()));
 		if (!iconsFolder.exists()) {
 			iconsFolder.mkdir();
 		}
 		iconsInMemory = new HashMap<String, ImageIcon>();
 	}
-	
+
 	/**
 	 * Returns icon for given color
+	 * 
 	 * @param icon
 	 * @param color
 	 * @return
@@ -91,9 +96,14 @@ public class IconCache implements IIconCache {
 			File iconFile = new File(getIconFileName(icon, color));
 			if (iconFile.exists()) {
 				try {
-					ImageIcon imageIcon = new ImageIcon(ImageIO.read(iconFile));
-					iconsInMemory.put(iconFileName, imageIcon);
-					return imageIcon;
+					BufferedImage bi = ImageIO.read(iconFile);
+					// Check if there is any error reading icon file, then
+					// return null to force create icon
+					if (bi != null) {
+						ImageIcon imageIcon = new ImageIcon(bi);
+						iconsInMemory.put(iconFileName, imageIcon);
+						return imageIcon;
+					}
 				} catch (IOException e) {
 					Logger.error(e);
 				}
@@ -101,9 +111,10 @@ public class IconCache implements IIconCache {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Stores icon
+	 * 
 	 * @param icon
 	 * @param color
 	 * @param image
@@ -112,21 +123,26 @@ public class IconCache implements IIconCache {
 	public void storeIcon(IIconFactory icon, Color color, ImageIcon image) {
 		try {
 			iconsInMemory.put(getIconFileName(icon, color), image);
-			ImageUtils.writeImageToFile(image.getImage(), getIconFileName(icon, color));
+			ImageUtils.writeImageToFile(image.getImage(),
+					getIconFileName(icon, color));
 		} catch (IOException e) {
 			Logger.error(e);
 		} catch (ImageWriteException e) {
 			Logger.error(e);
 		}
 	}
-	
+
 	/**
 	 * Name of file containing icon for given color
+	 * 
 	 * @param icon
 	 * @param color
 	 * @return
 	 */
 	private String getIconFileName(IIconFactory icon, Color color) {
-		return StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), iconsFolderName, osManager.getFileSeparator(), icon.getClass().getName(), "_", color.toString(), ".png");
+		return StringUtils.getString(osManager.getUserConfigFolder(),
+				osManager.getFileSeparator(), iconsFolderName,
+				osManager.getFileSeparator(), icon.getClass().getName(), "_",
+				color.toString(), ".png");
 	}
 }
