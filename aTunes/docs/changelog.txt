@@ -5,6 +5,7 @@ aTunes 3.0.1
 - FIX: Disable play list menu actions when play list selection changes, not only popup menu
 - FIX: Problem reordering columns with Java 7
 - FIX: Problem changing look and feel and skin using keyboard in combos
+- FIX: Error retrieving titles from CDDC while ripping a CD
 
 aTunes 3.0.0
 ------------
