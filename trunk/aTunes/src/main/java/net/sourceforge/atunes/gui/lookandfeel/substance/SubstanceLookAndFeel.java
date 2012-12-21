@@ -184,6 +184,12 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 				.put(org.pushingpixels.substance.api.SubstanceLookAndFeel.TABBED_PANE_CONTENT_BORDER_KIND,
 						SubstanceConstants.TabContentPaneBorderKind.SINGLE_FULL);
 
+		// Disable rounded corners as causes problems with early 1.6.0 virtual
+		// machines
+		UIManager
+				.put(org.pushingpixels.substance.api.SubstanceLookAndFeel.WINDOW_ROUNDED_CORNERS,
+						Boolean.FALSE);
+
 		if (!getOsManager().isMacOsX()) {
 			// Avoid custom window decoration in mac os to draw window controls
 			// at left

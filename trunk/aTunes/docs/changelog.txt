@@ -12,6 +12,7 @@ aTunes 3.0.1
 - FIX: Check if icon cache fails reading icon files
 - FIX: Problem with play lists active and visible after upgrading version
 - FIX: Problem marking artist as favorite when artist is unknown or artist album is used
+- FIX: Disabled rounded corners with Substance as seem to cause problems with early 1.6.0 virtual machines
 
 aTunes 3.0.0
 ------------
