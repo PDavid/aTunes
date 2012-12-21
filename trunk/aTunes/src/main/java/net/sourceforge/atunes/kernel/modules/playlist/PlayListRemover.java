@@ -39,8 +39,9 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Responsible of removing play lists
+ * 
  * @author alex
- *
+ * 
  */
 public class PlayListRemover {
 
@@ -79,14 +80,16 @@ public class PlayListRemover {
 	/**
 	 * @param playListInformationInStatusBar
 	 */
-	public void setPlayListInformationInStatusBar(final PlayListInformationInStatusBar playListInformationInStatusBar) {
+	public void setPlayListInformationInStatusBar(
+			final PlayListInformationInStatusBar playListInformationInStatusBar) {
 		this.playListInformationInStatusBar = playListInformationInStatusBar;
 	}
 
 	/**
 	 * @param playListEventListeners
 	 */
-	public void setPlayListEventListeners(final PlayListEventListeners playListEventListeners) {
+	public void setPlayListEventListeners(
+			final PlayListEventListeners playListEventListeners) {
 		this.playListEventListeners = playListEventListeners;
 	}
 
@@ -100,7 +103,8 @@ public class PlayListRemover {
 	/**
 	 * @param playListController
 	 */
-	public void setPlayListController(final IPlayListController playListController) {
+	public void setPlayListController(
+			final IPlayListController playListController) {
 		this.playListController = playListController;
 	}
 
@@ -114,19 +118,22 @@ public class PlayListRemover {
 	/**
 	 * @param playListsContainer
 	 */
-	public void setPlayListsContainer(final IPlayListsContainer playListsContainer) {
+	public void setPlayListsContainer(
+			final IPlayListsContainer playListsContainer) {
 		this.playListsContainer = playListsContainer;
 	}
 
 	/**
 	 * @param playListTabController
 	 */
-	public void setPlayListTabController(final IPlayListTabController playListTabController) {
+	public void setPlayListTabController(
+			final IPlayListTabController playListTabController) {
 		this.playListTabController = playListTabController;
 	}
 
 	/**
 	 * Removes play list by given index
+	 * 
 	 * @param index
 	 * @return
 	 */
@@ -157,7 +164,8 @@ public class PlayListRemover {
 		// The current selected play list when this action is fired
 		int i = playListTabController.getSelectedPlayListIndex();
 		if (i != -1) {
-			// As this action is not called when pressing close button in tab set removeTab argument to true
+			// As this action is not called when pressing close button in tab
+			// set removeTab argument to true
 			removePlayList(i);
 		}
 	}
@@ -169,14 +177,18 @@ public class PlayListRemover {
 		// The current selected play list when this action is fired
 		int i = playListTabController.getSelectedPlayListIndex();
 		if (i != -1) {
-			// Remove play lists from 0 to i. Remove first play list until current play list is at index 0
+			// Remove play lists from 0 to i. Remove first play list until
+			// current play list is at index 0
 			for (int j = 0; j < i; j++) {
-				// As this action is not called when pressing close button in tab set removeTab argument to true
+				// As this action is not called when pressing close button in
+				// tab set removeTab argument to true
 				removePlayList(0);
 			}
-			// Now current play list is at index 0, so delete from play list size down to 1
+			// Now current play list is at index 0, so delete from play list
+			// size down to 1
 			while (playListsContainer.getPlayListsCount() > 1) {
-				// As this action is not called when pressing close button in tab set removeTab argument to true
+				// As this action is not called when pressing close button in
+				// tab set removeTab argument to true
 				removePlayList(playListsContainer.getPlayListsCount() - 1);
 			}
 		}
@@ -186,16 +198,21 @@ public class PlayListRemover {
 	 * @param index
 	 */
 	private void adjustVisibleAndActivePlayLists(final int index) {
-		// If index < visiblePlayListIndex, visible play list has been moved to left, so decrease in 1
+		// If index < visiblePlayListIndex, visible play list has been moved to
+		// left, so decrease in 1
 		if (index < playListsContainer.getVisiblePlayListIndex()) {
 			// If active play list visible then decrease in 1 too
-			if (playListsContainer.getActivePlayListIndex() == playListsContainer.getVisiblePlayListIndex()) {
-				playListsContainer.setActivePlayListIndex(playListsContainer.getActivePlayListIndex() - 1);
+			if (playListsContainer.getActivePlayListIndex() == playListsContainer
+					.getVisiblePlayListIndex()) {
+				playListsContainer.setActivePlayListIndex(playListsContainer
+						.getActivePlayListIndex() - 1);
 			}
-			playListsContainer.setVisiblePlayListIndex(playListsContainer.getVisiblePlayListIndex() - 1);
+			playListsContainer.setVisiblePlayListIndex(playListsContainer
+					.getVisiblePlayListIndex() - 1);
 		}
 
-		// Removed play list is active, then set visible play list as active and stop player
+		// Removed play list is active, then set visible play list as active and
+		// stop player
 		if (index == playListsContainer.getActivePlayListIndex()) {
 			playListsContainer.setVisiblePlayListActive();
 			playerHandler.stopCurrentAudioObject(false);
@@ -212,7 +229,8 @@ public class PlayListRemover {
 			if (index == 0) {
 				playListHandler.switchToPlaylist(1);
 			} else {
-				playListHandler.switchToPlaylist(playListsContainer.getVisiblePlayListIndex() - 1);
+				playListHandler.switchToPlaylist(playListsContainer
+						.getVisiblePlayListIndex() - 1);
 			}
 		}
 	}
@@ -234,7 +252,8 @@ public class PlayListRemover {
 
 	void removeAudioObjects(final int[] rows) {
 		IPlayList currentPlayList = playListHandler.getVisiblePlayList();
-		IAudioObject playingAudioObject = currentPlayList.getCurrentAudioObject();
+		IAudioObject playingAudioObject = currentPlayList
+				.getCurrentAudioObject();
 		boolean hasToBeRemoved = false;
 		for (int element : rows) {
 			if (element == currentPlayList.getCurrentAudioObjectIndex()) {
@@ -248,9 +267,12 @@ public class PlayListRemover {
 		if (hasToBeRemoved) {
 			currentAudioObjectHasToBeRemoved(currentPlayList);
 		} else {
-			currentPlayList.setCurrentAudioObjectIndex(currentPlayList.indexOf(playingAudioObject));
+			currentPlayList.setCurrentAudioObjectIndex(currentPlayList
+					.indexOf(playingAudioObject));
 			if (playListHandler.isActivePlayListVisible()) {
-				playListEventListeners.selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
+				playListEventListeners
+						.selectedAudioObjectHasChanged(currentPlayList
+								.getCurrentAudioObject());
 			}
 		}
 
@@ -262,13 +284,15 @@ public class PlayListRemover {
 			beanFactory.getBean(ShufflePlayListAction.class).setEnabled(false);
 		}
 		playListInformationInStatusBar.showPlayListInformation(currentPlayList);
-		Logger.info(StringUtils.getString(rows.length, " objects removed from play list"));
+		Logger.info(StringUtils.getString(rows.length,
+				" objects removed from play list"));
 	}
 
 	/**
 	 * @param currentPlayList
 	 */
-	private void currentAudioObjectHasToBeRemoved(final IPlayList currentPlayList) {
+	private void currentAudioObjectHasToBeRemoved(
+			final IPlayList currentPlayList) {
 		// Only stop if this is the active play list
 		if (playListHandler.isActivePlayListVisible()) {
 			playerHandler.stopCurrentAudioObject(false);
@@ -276,12 +300,18 @@ public class PlayListRemover {
 		if (currentPlayList.isEmpty()) {
 			playListEventListeners.playListCleared();
 		} else {
-			// If current audio object is removed, check if it's necessary to move current audio object (after remove current index is greater than play list size)
-			if (currentPlayList.getCurrentAudioObjectIndex() >= currentPlayList.size()) {
-				currentPlayList.setCurrentAudioObjectIndex(currentPlayList.size() - 1);
+			// If current audio object is removed, check if it's necessary to
+			// move current audio object (after remove current index is greater
+			// than play list size)
+			if (currentPlayList.getCurrentAudioObjectIndex() >= currentPlayList
+					.size()) {
+				currentPlayList.setCurrentAudioObjectIndex(currentPlayList
+						.size() - 1);
 			}
 			if (playListHandler.isActivePlayListVisible()) {
-				playListEventListeners.selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
+				playListEventListeners
+						.selectedAudioObjectHasChanged(currentPlayList
+								.getCurrentAudioObject());
 			}
 		}
 	}
@@ -295,7 +325,8 @@ public class PlayListRemover {
 			playListsContainer.getPlayListAt(i).remove(audioFiles);
 		}
 		// Update status bar
-		playListInformationInStatusBar.showPlayListInformation(playListHandler.getVisiblePlayList());
+		playListInformationInStatusBar.showPlayListInformation(playListHandler
+				.getVisiblePlayList());
 	}
 
 	/**
@@ -314,7 +345,8 @@ public class PlayListRemover {
 			playList.clear();
 
 			// Only if this play list is the active stop playback
-			if (playListHandler.isActivePlayListVisible() && statePlaylist.isStopPlayerOnPlayListClear()) {
+			if (playListHandler.isActivePlayListVisible()
+					&& statePlaylist.isStopPlayerOnPlayListClear()) {
 				playerHandler.stopCurrentAudioObject(false);
 			}
 
@@ -331,7 +363,8 @@ public class PlayListRemover {
 
 			// disable progress slider
 			if (!statePlaylist.isStopPlayerOnPlayListClear()) {
-				beanFactory.getBean(IPlayerControlsPanel.class).getProgressSlider().setEnabled(false);
+				beanFactory.getBean(IPlayerControlsPanel.class)
+						.getProgressSlider().setEnabled(false);
 			}
 			playListController.repaint();
 

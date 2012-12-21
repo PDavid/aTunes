@@ -24,12 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IPlayList;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Container holding playlists
+ * 
  * @author alex
- *
+ * 
  */
 public final class PlayListsContainer implements IPlayListsContainer {
 
@@ -73,6 +75,7 @@ public final class PlayListsContainer implements IPlayListsContainer {
 
 	/**
 	 * Returns number of play lists
+	 * 
 	 * @return
 	 */
 	@Override
@@ -82,6 +85,7 @@ public final class PlayListsContainer implements IPlayListsContainer {
 
 	/**
 	 * Index of visible play list
+	 * 
 	 * @return
 	 */
 	@Override
@@ -91,6 +95,7 @@ public final class PlayListsContainer implements IPlayListsContainer {
 
 	/**
 	 * Index of active play list
+	 * 
 	 * @return
 	 */
 	@Override
@@ -104,7 +109,8 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	@Override
 	public void setActivePlayListIndex(final int activePlayListIndex) {
 		if (activePlayListIndex < 0 || activePlayListIndex >= playLists.size()) {
-			throw new IllegalArgumentException(StringUtils.getString("Wrong activePlayListIndex: ", activePlayListIndex));
+			throw new IllegalArgumentException(StringUtils.getString(
+					"Wrong activePlayListIndex: ", activePlayListIndex));
 		}
 		this.activePlayListIndex = activePlayListIndex;
 	}
@@ -114,14 +120,17 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	 */
 	@Override
 	public void setVisiblePlayListIndex(final int visiblePlayListIndex) {
-		if (visiblePlayListIndex < 0 || visiblePlayListIndex >= playLists.size()) {
-			throw new IllegalArgumentException(StringUtils.getString("Wrong visiblePlayListIndex: ", visiblePlayListIndex));
+		if (visiblePlayListIndex < 0
+				|| visiblePlayListIndex >= playLists.size()) {
+			throw new IllegalArgumentException(StringUtils.getString(
+					"Wrong visiblePlayListIndex: ", visiblePlayListIndex));
 		}
 		this.visiblePlayListIndex = visiblePlayListIndex;
 	}
 
 	/**
 	 * Removes play list of given index
+	 * 
 	 * @param index
 	 */
 	@Override
@@ -131,19 +140,22 @@ public final class PlayListsContainer implements IPlayListsContainer {
 
 	/**
 	 * Returns play list at index
+	 * 
 	 * @param i
 	 * @return
 	 */
 	@Override
 	public IPlayList getPlayListAt(final int i) {
 		if (i < 0 || i >= playLists.size()) {
-			throw new IllegalArgumentException(StringUtils.getString("Wrong index ", i));
+			throw new IllegalArgumentException(StringUtils.getString(
+					"Wrong index ", i));
 		}
 		return playLists.get(i);
 	}
 
 	/**
 	 * Adds play list
+	 * 
 	 * @param newPlayList
 	 */
 	@Override
@@ -159,6 +171,15 @@ public final class PlayListsContainer implements IPlayListsContainer {
 		if (getPlayListsCount() == 0) {
 			return new VoidPlayList();
 		}
+		// When upgrading from a previous version this can happen if playlists
+		// can't be read
+		if (visiblePlayListIndex >= playLists.size()) {
+			Logger.error("Visible play list index = ",
+					Integer.toString(visiblePlayListIndex),
+					" greater than number of playlists: ",
+					Integer.toString(playLists.size()));
+			visiblePlayListIndex = 0;
+		}
 		return playLists.get(visiblePlayListIndex);
 	}
 
@@ -166,6 +187,16 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	public IPlayList getActivePlayList() {
 		if (getPlayListsCount() == 0) {
 			return new VoidPlayList();
+		}
+
+		// When upgrading from a previous version this can happen if playlists
+		// can't be read
+		if (activePlayListIndex >= playLists.size()) {
+			Logger.error("Active play list index = ",
+					Integer.toString(activePlayListIndex),
+					" greater than number of playlists: ",
+					Integer.toString(playLists.size()));
+			activePlayListIndex = 0;
 		}
 		return playLists.get(activePlayListIndex);
 	}
@@ -180,6 +211,7 @@ public final class PlayListsContainer implements IPlayListsContainer {
 
 	/**
 	 * Adds play list at given position
+	 * 
 	 * @param position
 	 * @param playList
 	 */
@@ -207,8 +239,12 @@ public final class PlayListsContainer implements IPlayListsContainer {
 			// If play list was filtered, back to non-filtered play list
 			if (nonFilteredPlayList != null) {
 				if (getVisiblePlayList().getCurrentAudioObject() != null) {
-					// User selected another object -> keep that object selected in original play list
-					nonFilteredPlayList.setCurrentAudioObjectIndex(nonFilteredPlayList.indexOf(getVisiblePlayList().getCurrentAudioObject()));
+					// User selected another object -> keep that object selected
+					// in original play list
+					nonFilteredPlayList
+							.setCurrentAudioObjectIndex(nonFilteredPlayList
+									.indexOf(getVisiblePlayList()
+											.getCurrentAudioObject()));
 				}
 				setPlayListAfterFiltering(nonFilteredPlayList);
 				nonFilteredPlayList = null;
@@ -220,9 +256,12 @@ public final class PlayListsContainer implements IPlayListsContainer {
 			}
 
 			// Create a new play list by filtering elements
-			IPlayList newPlayList = playListCreator.getNewPlayListWithFilter(nonFilteredPlayList, filterText);
-			if (newPlayList.contains(nonFilteredPlayList.getCurrentAudioObject())) {
-				newPlayList.setCurrentAudioObjectIndex(newPlayList.indexOf(nonFilteredPlayList.getCurrentAudioObject()));
+			IPlayList newPlayList = playListCreator.getNewPlayListWithFilter(
+					nonFilteredPlayList, filterText);
+			if (newPlayList.contains(nonFilteredPlayList
+					.getCurrentAudioObject())) {
+				newPlayList.setCurrentAudioObjectIndex(newPlayList
+						.indexOf(nonFilteredPlayList.getCurrentAudioObject()));
 			}
 			setPlayListAfterFiltering(newPlayList);
 		}
