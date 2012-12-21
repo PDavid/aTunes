@@ -11,6 +11,7 @@ aTunes 3.0.1
 - FIX: Initial heap size changed to 128MB
 - FIX: Check if icon cache fails reading icon files
 - FIX: Problem with play lists active and visible after upgrading version
+- FIX: Problem marking artist as favorite when artist is unknown or artist album is used
 
 aTunes 3.0.0
 ------------
