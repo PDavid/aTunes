@@ -21,12 +21,10 @@
 		<property name="engine" ref="mplayerEngine"/>
 	</bean>
 	
-	<bean id="xineEngine" class="net.sourceforge.atunes.kernel.modules.player.xine.XineEngine" parent="abstractPlayerEngine"/>
 	<bean id="engines" class="java.util.ArrayList">
 		<constructor-arg>
 			<list>
 				<ref bean="mplayerEngine"/>
-				<ref bean="xineEngine"/>
 			</list>
 		</constructor-arg>
 	</bean>

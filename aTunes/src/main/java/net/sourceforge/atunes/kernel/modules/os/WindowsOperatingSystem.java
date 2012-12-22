@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
-import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.kernel.modules.tray.CommonPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayerEngine;
@@ -109,8 +108,7 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 
 	@Override
 	public boolean isPlayerEngineSupported(final IPlayerEngine engine) {
-		return engine instanceof XineEngine ? false : true; // Xine is not
-		// supported
+		return true;
 	}
 
 	@Override
