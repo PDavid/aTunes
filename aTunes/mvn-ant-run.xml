@@ -242,8 +242,8 @@
 		    <fileset dir="${basedir}/target/">
 		      <include name="*installer.*"/>
 		      <include name="*.dmg"/>
-		      <include name="*app.zip"/> <!-- That is Mac OS X app without a DMG package -->
 		      <include name="*.deb"/>
+		      <include name="*.tar.gz"/>
 		    </fileset>
 		  </scp>
 		
