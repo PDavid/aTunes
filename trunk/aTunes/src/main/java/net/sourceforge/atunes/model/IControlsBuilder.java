@@ -23,6 +23,7 @@ package net.sourceforge.atunes.model;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
 
+import javax.swing.JFileChooser;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -143,5 +144,16 @@ public interface IControlsBuilder {
 	 * @return a new button panel
 	 */
 	IButtonPanel createButtonPanel();
+
+	/**
+	 * @return file chooser
+	 */
+	JFileChooser getFileChooser();
+
+	/**
+	 * @param path
+	 * @return file chooser
+	 */
+	JFileChooser getFileChooser(String path);
 
 }

@@ -46,6 +46,7 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.process.EditTagsProcess;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
@@ -80,8 +81,8 @@ public final class EditTagDialogController extends
 
 		@Override
 		protected ImageIcon doInBackground() {
-			return AudioFilePictureUtils.getInsidePicture(audioFiles.get(0),
-					Constants.DIALOG_LARGE_IMAGE_WIDTH,
+			return AudioFilePictureUtils.getInsidePicture(
+					this.audioFiles.get(0), Constants.DIALOG_LARGE_IMAGE_WIDTH,
 					Constants.DIALOG_LARGE_IMAGE_HEIGHT);
 		}
 
@@ -89,7 +90,8 @@ public final class EditTagDialogController extends
 		protected void done() {
 			try {
 				// Check if it's the right dialog
-				if (audioFilesEditing.equals(audioFiles)) {
+				if (EditTagDialogController.this.audioFilesEditing
+						.equals(this.audioFiles)) {
 					ImageIcon cover = get();
 					getEditTagDialog().getCover().setIcon(cover);
 					getEditTagDialog().getCoverButton().setEnabled(true);
@@ -121,6 +123,15 @@ public final class EditTagDialogController extends
 
 	private Genres genresHelper;
 
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
 	/**
 	 * Instantiates a new edits the tag dialog controller.
 	 * 
@@ -141,28 +152,28 @@ public final class EditTagDialogController extends
 	/**
 	 * @param genresHelper
 	 */
-	public void setGenresHelper(Genres genresHelper) {
+	public void setGenresHelper(final Genres genresHelper) {
 		this.genresHelper = genresHelper;
 	}
 
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
 	/**
 	 * @param playListHandler
 	 */
-	public void setPlayListHandler(IPlayListHandler playListHandler) {
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
 
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
@@ -170,21 +181,21 @@ public final class EditTagDialogController extends
 	 * @param localAudioObjectValidator
 	 */
 	public void setLocalAudioObjectValidator(
-			ILocalAudioObjectValidator localAudioObjectValidator) {
+			final ILocalAudioObjectValidator localAudioObjectValidator) {
 		this.localAudioObjectValidator = localAudioObjectValidator;
 	}
 
 	/**
 	 * @param processFactory
 	 */
-	public void setProcessFactory(IProcessFactory processFactory) {
+	public void setProcessFactory(final IProcessFactory processFactory) {
 		this.processFactory = processFactory;
 	}
 
 	@Override
 	public void addBindings() {
 		// Add genres combo box items
-		List<String> genresSorted = genresHelper.getGenres();
+		List<String> genresSorted = this.genresHelper.getGenres();
 		Collections.sort(genresSorted);
 		getComponentControlled().getComboBoxEditor(TextTagAttribute.GENRE)
 				.setModel(new ListComboBoxModel<String>(genresSorted));
@@ -193,8 +204,8 @@ public final class EditTagDialogController extends
 				.getComboBoxEditor(TextTagAttribute.GENRE));
 
 		EditTagDialogActionListener actionListener = new EditTagDialogActionListener(
-				this, getComponentControlled(), playListHandler,
-				localAudioObjectValidator);
+				this, getComponentControlled(), this.playListHandler,
+				this.localAudioObjectValidator, this.controlsBuilder);
 		getComponentControlled().getOkButton()
 				.addActionListener(actionListener);
 		getComponentControlled().getCancelButton().addActionListener(
@@ -219,7 +230,7 @@ public final class EditTagDialogController extends
 	 */
 	private final boolean supportsInternalPicture(
 			final ILocalAudioObject audioObject) {
-		return localAudioObjectValidator.isOneOfTheseFormats(
+		return this.localAudioObjectValidator.isOneOfTheseFormats(
 				audioObject.getUrl(), LocalAudioObjectFormat.FLAC,
 				LocalAudioObjectFormat.MP3, LocalAudioObjectFormat.MP4_1,
 				LocalAudioObjectFormat.MP4_2, LocalAudioObjectFormat.OGG,
@@ -237,13 +248,13 @@ public final class EditTagDialogController extends
 			return;
 		}
 
-		audioFilesEditing = audioFiles;
+		this.audioFilesEditing = audioFiles;
 
 		getComponentControlled().getCover().setIcon(null);
 		getComponentControlled().getCoverButton().setEnabled(false);
 		getComponentControlled().getRemoveCoverButton().setEnabled(false);
-		newCover = null;
-		coverEdited = false;
+		this.newCover = null;
+		this.coverEdited = false;
 
 		// Load artists into combo box
 		getComponentControlled().getComboBoxEditor(TextTagAttribute.ARTIST)
@@ -298,7 +309,7 @@ public final class EditTagDialogController extends
 	 * @return
 	 */
 	private List<String> getAlbumNames() {
-		List<IAlbum> albumList = repositoryHandler.getAlbums();
+		List<IAlbum> albumList = this.repositoryHandler.getAlbums();
 		List<String> albumNames = new ArrayList<String>();
 		for (IAlbum alb : albumList) {
 			// Because of artists and album artists there can be more than one
@@ -314,7 +325,7 @@ public final class EditTagDialogController extends
 	 * @return
 	 */
 	private List<String> getArtistsNames() {
-		List<IArtist> artistList = repositoryHandler.getArtists();
+		List<IArtist> artistList = this.repositoryHandler.getArtists();
 		List<String> artistNames = new ArrayList<String>();
 		for (IArtist a : artistList) {
 			artistNames.add(a.getName());
@@ -377,7 +388,7 @@ public final class EditTagDialogController extends
 	private void enableOrDisableCheckBoxes(
 			final List<ILocalAudioObject> audioFiles) {
 		boolean supportsInternalPicture = false;
-		for (ILocalAudioObject af : audioFilesEditing) {
+		for (ILocalAudioObject af : this.audioFilesEditing) {
 			if (supportsInternalPicture(af)) {
 				supportsInternalPicture = true;
 				break;
@@ -517,7 +528,7 @@ public final class EditTagDialogController extends
 				// Text area line breaks are \n so in some OS (Windows) is not a
 				// correct line break -> Replace with OS line terminator
 				if (attribute.equals(TextTagAttribute.LYRICS)
-						&& osManager.isWindows()) {
+						&& this.osManager.isWindows()) {
 					text = text.replaceAll("^[\r]\n", "\r\n");
 				}
 				editTagInfo.put(attribute.toString(), text);
@@ -539,14 +550,14 @@ public final class EditTagDialogController extends
 		}
 
 		if ((!getComponentControlled().getCoverCheckBox().isEnabled() || getComponentControlled()
-				.getCoverCheckBox().isSelected()) && coverEdited) {
-			editTagInfo.put("COVER", newCover);
+				.getCoverCheckBox().isSelected()) && this.coverEdited) {
+			editTagInfo.put("COVER", this.newCover);
 		}
 
-		EditTagsProcess process = (EditTagsProcess) processFactory
+		EditTagsProcess process = (EditTagsProcess) this.processFactory
 				.getProcessByName("editTagsProcess");
 		process.setFilesToChange(new ArrayList<ILocalAudioObject>(
-				audioFilesEditing));
+				this.audioFilesEditing));
 		process.setEditTagInfo(editTagInfo);
 		process.execute();
 	}
@@ -573,15 +584,15 @@ public final class EditTagDialogController extends
 	 * @return
 	 */
 	public List<ILocalAudioObject> getAudioFilesEditing() {
-		return new ArrayList<ILocalAudioObject>(audioFilesEditing);
+		return new ArrayList<ILocalAudioObject>(this.audioFilesEditing);
 	}
 
 	/**
 	 * Clear dialog
 	 */
 	public void clear() {
-		audioFilesEditing = Collections.emptyList();
-		newCover = null;
-		coverEdited = false;
+		this.audioFilesEditing = Collections.emptyList();
+		this.newCover = null;
+		this.coverEdited = false;
 	}
 }
