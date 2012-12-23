@@ -50,6 +50,7 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
@@ -69,8 +70,9 @@ import org.commonjukebox.plugins.model.PluginInfo;
 
 /**
  * Panel to manage plugins
+ * 
  * @author alex
- *
+ * 
  */
 public final class PluginsPanel extends AbstractPreferencesPanel {
 
@@ -112,6 +114,15 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 	private IDialogFactory dialogFactory;
 
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
 	/**
 	 * @param dialogFactory
 	 */
@@ -136,7 +147,8 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
@@ -158,15 +170,19 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	 * Initializes panel
 	 */
 	public void initialize() {
-		enabledPluginBox = new JCheckBox(I18nUtils.getString("ENABLED_PLUGINS"));
+		this.enabledPluginBox = new JCheckBox(
+				I18nUtils.getString("ENABLED_PLUGINS"));
 		JPanel mainPanel = new JPanel(new GridBagLayout());
-		mainPanel.setVisible(stateCore.isPluginsEnabled());
+		mainPanel.setVisible(this.stateCore.isPluginsEnabled());
 
-		pluginsTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
-		pluginsTable.setRowHeight(CELL_HEIGHT);
-		pluginsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		pluginsTable.setColumnModel(new PluginsTableDefaultTableColumnModel());
-		JScrollPane scrollPane = lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(pluginsTable);
+		this.pluginsTable = this.lookAndFeelManager.getCurrentLookAndFeel()
+				.getTable();
+		this.pluginsTable.setRowHeight(CELL_HEIGHT);
+		this.pluginsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.pluginsTable
+				.setColumnModel(new PluginsTableDefaultTableColumnModel());
+		JScrollPane scrollPane = this.lookAndFeelManager
+				.getCurrentLookAndFeel().getTableScrollPane(this.pluginsTable);
 
 		JPanel pluginDetailPanel = new JPanel(new GridBagLayout());
 		final JLabel pluginNameLabel = new JLabel();
@@ -174,27 +190,39 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		final JLabel pluginClassNameLabel = new JLabel();
 		final JLabel pluginLocationLabel = new JLabel();
 		final JLabel pluginAuthorLabel = new JLabel();
-		final UrlLabel pluginUrlLabel = new UrlLabel(desktop);
+		final UrlLabel pluginUrlLabel = new UrlLabel(this.desktop);
 
-		pluginsTable.setDefaultRenderer(PluginInfo.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new PluginsTableCellRendererCode()));
+		this.pluginsTable.setDefaultRenderer(
+				PluginInfo.class,
+				this.lookAndFeelManager.getCurrentLookAndFeel()
+						.getTableCellRenderer(
+								new PluginsTableCellRendererCode()));
 
-		pluginsTable.getSelectionModel().addListSelectionListener(new PluginsTableListSelectionListener(pluginLocationLabel,
-				pluginUrlLabel, pluginClassNameLabel, pluginAuthorLabel,
-				pluginVersionLabel, pluginNameLabel));
+		this.pluginsTable.getSelectionModel()
+				.addListSelectionListener(
+						new PluginsTableListSelectionListener(
+								pluginLocationLabel, pluginUrlLabel,
+								pluginClassNameLabel, pluginAuthorLabel,
+								pluginVersionLabel, pluginNameLabel));
 
-		pluginPreferencesButton = new JButton(StringUtils.getString(I18nUtils.getString("PREFERENCES"), "..."));
-		pluginPreferencesButton.setEnabled(false);
+		this.pluginPreferencesButton = new JButton(StringUtils.getString(
+				I18nUtils.getString("PREFERENCES"), "..."));
+		this.pluginPreferencesButton.setEnabled(false);
 
-		pluginPreferencesButton.addActionListener(new PluginPreferencesActionListener());
+		this.pluginPreferencesButton
+				.addActionListener(new PluginPreferencesActionListener());
 
-		JButton installNewPluginButton = new JButton(StringUtils.getString(I18nUtils.getString("INSTALL"), "..."));
-		installNewPluginButton.addActionListener(new InstallNewPluginActionListener());
+		JButton installNewPluginButton = new JButton(StringUtils.getString(
+				I18nUtils.getString("INSTALL"), "..."));
+		installNewPluginButton
+				.addActionListener(new InstallNewPluginActionListener());
 
-		uninstallPluginButton = new JButton(I18nUtils.getString("UNINSTALL"));
-		uninstallPluginButton.setEnabled(false);
+		this.uninstallPluginButton = new JButton(
+				I18nUtils.getString("UNINSTALL"));
+		this.uninstallPluginButton.setEnabled(false);
 
-		uninstallPluginButton.addActionListener(new UninstallPluginActionListener());
-
+		this.uninstallPluginButton
+				.addActionListener(new UninstallPluginActionListener());
 
 		arrangePanel(mainPanel, scrollPane, pluginDetailPanel, pluginNameLabel,
 				pluginVersionLabel, pluginClassNameLabel, pluginLocationLabel,
@@ -214,19 +242,20 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	 * @param pluginUrlLabel
 	 * @param installNewPluginButton
 	 */
-	private void arrangePanel(final JPanel mainPanel, final JScrollPane scrollPane,
-			final JPanel pluginDetailPanel, final JLabel pluginNameLabel,
-			final JLabel pluginVersionLabel, final JLabel pluginClassNameLabel,
+	private void arrangePanel(final JPanel mainPanel,
+			final JScrollPane scrollPane, final JPanel pluginDetailPanel,
+			final JLabel pluginNameLabel, final JLabel pluginVersionLabel,
+			final JLabel pluginClassNameLabel,
 			final JLabel pluginLocationLabel, final JLabel pluginAuthorLabel,
 			final UrlLabel pluginUrlLabel, final JButton installNewPluginButton) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 1;
-		c.weighty = stateCore.isPluginsEnabled() ? 0 : 1;
+		c.weighty = this.stateCore.isPluginsEnabled() ? 0 : 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.NORTHWEST;
-		add(enabledPluginBox,c);
+		add(this.enabledPluginBox, c);
 
 		c = new GridBagConstraints();
 		c.gridx = 0;
@@ -234,7 +263,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		add(mainPanel,c);
+		add(mainPanel, c);
 
 		c = new GridBagConstraints();
 		c.gridx = 0;
@@ -266,13 +295,13 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		c.anchor = GridBagConstraints.NORTH;
 		c.insets = new Insets(10, 10, 0, 0);
 		c.gridwidth = 1;
-		mainPanel.add(pluginPreferencesButton, c);
+		mainPanel.add(this.pluginPreferencesButton, c);
 
 		c.gridy = 1;
 		mainPanel.add(installNewPluginButton, c);
 
 		c.gridy = 2;
-		mainPanel.add(uninstallPluginButton, c);
+		mainPanel.add(this.uninstallPluginButton, c);
 	}
 
 	/**
@@ -311,12 +340,14 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	@Override
 	public boolean applyPreferences() {
 		boolean restartNeeded = false;
-		if (stateCore.isPluginsEnabled() != enabledPluginBox.isSelected()){
-			stateCore.setPluginsEnabled(enabledPluginBox.isSelected());
+		if (this.stateCore.isPluginsEnabled() != this.enabledPluginBox
+				.isSelected()) {
+			this.stateCore
+					.setPluginsEnabled(this.enabledPluginBox.isSelected());
 			restartNeeded = true;
 		}
 
-		if (stateCore.isPluginsEnabled()) {
+		if (this.stateCore.isPluginsEnabled()) {
 			restartNeeded = writePluginsConfiguration(restartNeeded);
 		}
 		return restartNeeded;
@@ -330,31 +361,37 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		boolean restart = restartNeeded;
 		try {
 			// if any plugin has been modified then write configuration
-			for (PluginInfo plugin : pluginsModified.keySet()) {
-				Logger.debug("Writting configuration of plugin: ", plugin.getName());
+			for (PluginInfo plugin : this.pluginsModified.keySet()) {
+				Logger.debug("Writting configuration of plugin: ",
+						plugin.getName());
 
 				// Avoid plugins throw exceptions when setting configuration
 				try {
-					pluginsHandler.setConfiguration(plugin, pluginsModified.get(plugin));
+					this.pluginsHandler.setConfiguration(plugin,
+							this.pluginsModified.get(plugin));
 				} catch (PluginSystemException t) {
 					StringBuilder sb = new StringBuilder();
 					sb.append(I18nUtils.getString("PLUGIN_CONFIGURATION_ERROR"));
 					sb.append(" ");
 					sb.append(plugin.getName());
-					dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(sb.toString(), t);
+					this.dialogFactory.newDialog(IExceptionDialog.class)
+							.showExceptionDialog(sb.toString(), t);
 				}
 
-				restart = restart || pluginsHandler.pluginNeedsRestart(plugin);
+				restart = restart
+						|| this.pluginsHandler.pluginNeedsRestart(plugin);
 			}
-			// If any plugin has been activated or deactivated then apply changes
-			for (PluginInfo plugin : pluginsActivation.keySet()) {
-				if (pluginsActivation.get(plugin)) {
-					pluginsHandler.activatePlugin(plugin);
+			// If any plugin has been activated or deactivated then apply
+			// changes
+			for (PluginInfo plugin : this.pluginsActivation.keySet()) {
+				if (this.pluginsActivation.get(plugin)) {
+					this.pluginsHandler.activatePlugin(plugin);
 				} else {
-					pluginsHandler.deactivatePlugin(plugin);
+					this.pluginsHandler.deactivatePlugin(plugin);
 				}
 
-				restart = restart || pluginsHandler.pluginNeedsRestart(plugin);
+				restart = restart
+						|| this.pluginsHandler.pluginNeedsRestart(plugin);
 			}
 		} catch (PluginSystemException e) {
 			Logger.error(e);
@@ -371,15 +408,16 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	 * @param enabled
 	 */
 	private void setPluginsEnabled(final boolean enabled) {
-		enabledPluginBox.setSelected(enabled);
+		this.enabledPluginBox.setSelected(enabled);
 	}
 
 	@Override
 	public void updatePanel() {
-		setPluginsEnabled(stateCore.isPluginsEnabled());
-		if (stateCore.isPluginsEnabled()){
-			List<PluginInfo> plugins = pluginsHandler.getAvailablePlugins();
-			pluginsTable.setModel(new PluginsTableModel(plugins));
+		setPluginsEnabled(this.stateCore.isPluginsEnabled());
+		if (this.stateCore.isPluginsEnabled()) {
+			List<PluginInfo> plugins = this.pluginsHandler
+					.getAvailablePlugins();
+			this.pluginsTable.setModel(new PluginsTableModel(plugins));
 		}
 	}
 
@@ -396,11 +434,13 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	public void dialogVisibilityChanged(final boolean visible) {
 		if (visible) {
 			// Initialize plugins modified
-			pluginsModified = new HashMap<PluginInfo, PluginConfiguration>();
-			pluginsActivation = new HashMap<PluginInfo, Boolean>();
+			this.pluginsModified = new HashMap<PluginInfo, PluginConfiguration>();
+			this.pluginsActivation = new HashMap<PluginInfo, Boolean>();
 			// Select first plugin
-			if (stateCore.isPluginsEnabled() && !pluginsHandler.getAvailablePlugins().isEmpty()) {
-				pluginsTable.getSelectionModel().setSelectionInterval(0, 0);
+			if (this.stateCore.isPluginsEnabled()
+					&& !this.pluginsHandler.getAvailablePlugins().isEmpty()) {
+				this.pluginsTable.getSelectionModel()
+						.setSelectionInterval(0, 0);
 			}
 		}
 	}
@@ -408,47 +448,65 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	private final class UninstallPluginActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-			int row = pluginsTable.getSelectedRow();
-			PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
+			int row = PluginsPanel.this.pluginsTable.getSelectedRow();
+			PluginInfo plugin = ((PluginsTableModel) PluginsPanel.this.pluginsTable
+					.getModel()).getPluginAt(row);
 			try {
-				Map<PluginFolder, PluginSystemException> problemsFound = PluginsPanel.this.pluginsHandler.uninstallPlugin(plugin);
+				Map<PluginFolder, PluginSystemException> problemsFound = PluginsPanel.this.pluginsHandler
+						.uninstallPlugin(plugin);
 				if (problemsFound != null) {
-					for (Map.Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
-						dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
+					for (Map.Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound
+							.entrySet()) {
+						PluginsPanel.this.dialogFactory
+								.newDialog(IExceptionDialog.class)
+								.showExceptionDialog(
+										I18nUtils
+												.getString("PLUGIN_UNINSTALLATION_ERROR"),
+										pluginFolderEntry.getValue());
 					}
 				}
 			} catch (Exception e1) {
-				dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(e1.getMessage());
+				PluginsPanel.this.dialogFactory.newDialog(IErrorDialog.class)
+						.showErrorDialog(e1.getMessage());
 				Logger.error(e1);
 			}
 		}
 	}
 
 	private final class PluginPreferencesActionListener implements
-	ActionListener {
+			ActionListener {
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-			int row = pluginsTable.getSelectedRow();
-			PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
-			PluginConfiguration configuration = ((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(row);
-			PluginEditorDialog editorDialog = dialogFactory.newDialog(PluginEditorDialog.class);
+			int row = PluginsPanel.this.pluginsTable.getSelectedRow();
+			PluginInfo plugin = ((PluginsTableModel) PluginsPanel.this.pluginsTable
+					.getModel()).getPluginAt(row);
+			PluginConfiguration configuration = ((PluginsTableModel) PluginsPanel.this.pluginsTable
+					.getModel()).getPluginConfigurationAt(row);
+			PluginEditorDialog editorDialog = PluginsPanel.this.dialogFactory
+					.newDialog(PluginEditorDialog.class);
 			editorDialog.initializeDialog(plugin, configuration);
 			editorDialog.showDialog();
 			configuration = editorDialog.getConfiguration();
 			if (configuration != null) {
 				// Validate plugin configuration
 				try {
-					PluginsPanel.this.pluginsHandler.validateConfiguration(plugin, configuration);
-					pluginsModified.put(plugin, configuration);
+					PluginsPanel.this.pluginsHandler.validateConfiguration(
+							plugin, configuration);
+					PluginsPanel.this.pluginsModified
+							.put(plugin, configuration);
 				} catch (InvalidPluginConfigurationException ex) {
-					dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(StringUtils.getString(I18nUtils.getString("PLUGIN_CONFIGURATION_INVALID"), ex.getMessage()));
+					PluginsPanel.this.dialogFactory.newDialog(
+							IErrorDialog.class).showErrorDialog(
+							StringUtils.getString(I18nUtils
+									.getString("PLUGIN_CONFIGURATION_INVALID"),
+									ex.getMessage()));
 				}
 			}
 		}
 	}
 
 	private final class PluginsTableListSelectionListener implements
-	ListSelectionListener {
+			ListSelectionListener {
 		private final JLabel pluginLocationLabel;
 		private final UrlLabel pluginUrlLabel;
 		private final JLabel pluginClassNameLabel;
@@ -456,10 +514,12 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		private final JLabel pluginVersionLabel;
 		private final JLabel pluginNameLabel;
 
-		private PluginsTableListSelectionListener(final JLabel pluginLocationLabel,
-				final UrlLabel pluginUrlLabel, final JLabel pluginClassNameLabel,
-				final JLabel pluginAuthorLabel, final JLabel pluginVersionLabel,
-				final JLabel pluginNameLabel) {
+		private PluginsTableListSelectionListener(
+				final JLabel pluginLocationLabel,
+				final UrlLabel pluginUrlLabel,
+				final JLabel pluginClassNameLabel,
+				final JLabel pluginAuthorLabel,
+				final JLabel pluginVersionLabel, final JLabel pluginNameLabel) {
 			this.pluginLocationLabel = pluginLocationLabel;
 			this.pluginUrlLabel = pluginUrlLabel;
 			this.pluginClassNameLabel = pluginClassNameLabel;
@@ -470,30 +530,52 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 		@Override
 		public void valueChanged(final ListSelectionEvent e) {
-			// Enable preferences button if plugin has any configuration and update detail panel
-			if (pluginsTable.getSelectedRow() != -1) {
-				PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(pluginsTable.getSelectedRow());
-				pluginNameLabel.setText(StringUtils.getString(HTML_B, I18nUtils.getString("NAME"), B, plugin.getName(), HTML));
-				pluginVersionLabel.setText(StringUtils.getString(HTML_B, I18nUtils.getString("VERSION"), B, plugin.getVersion(), HTML));
-				pluginClassNameLabel.setText(StringUtils.getString(HTML_B, I18nUtils.getString("CLASS_NAME"), B, plugin.getClassName(), HTML));
-				pluginLocationLabel.setText(StringUtils.getString(HTML_B, I18nUtils.getString("LOCATION"), B, plugin.getPluginFolder().getName(), HTML));
-				pluginAuthorLabel.setText(StringUtils.getString(HTML_B, I18nUtils.getString("AUTHOR"), B, plugin.getAuthor(), HTML));
-				pluginUrlLabel.setText(plugin.getUrl(), plugin.getUrl());
-				pluginPreferencesButton.setEnabled(((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(pluginsTable.getSelectedRow()) != null);
-				uninstallPluginButton.setEnabled(pluginsTable.getSelectedRow() != -1);
+			// Enable preferences button if plugin has any configuration and
+			// update detail panel
+			if (PluginsPanel.this.pluginsTable.getSelectedRow() != -1) {
+				PluginInfo plugin = ((PluginsTableModel) PluginsPanel.this.pluginsTable
+						.getModel()).getPluginAt(PluginsPanel.this.pluginsTable
+						.getSelectedRow());
+				this.pluginNameLabel
+						.setText(StringUtils.getString(HTML_B,
+								I18nUtils.getString("NAME"), B,
+								plugin.getName(), HTML));
+				this.pluginVersionLabel.setText(StringUtils.getString(HTML_B,
+						I18nUtils.getString("VERSION"), B, plugin.getVersion(),
+						HTML));
+				this.pluginClassNameLabel.setText(StringUtils.getString(HTML_B,
+						I18nUtils.getString("CLASS_NAME"), B,
+						plugin.getClassName(), HTML));
+				this.pluginLocationLabel.setText(StringUtils.getString(HTML_B,
+						I18nUtils.getString("LOCATION"), B, plugin
+								.getPluginFolder().getName(), HTML));
+				this.pluginAuthorLabel.setText(StringUtils.getString(HTML_B,
+						I18nUtils.getString("AUTHOR"), B, plugin.getAuthor(),
+						HTML));
+				this.pluginUrlLabel.setText(plugin.getUrl(), plugin.getUrl());
+				PluginsPanel.this.pluginPreferencesButton
+						.setEnabled(((PluginsTableModel) PluginsPanel.this.pluginsTable
+								.getModel())
+								.getPluginConfigurationAt(PluginsPanel.this.pluginsTable
+										.getSelectedRow()) != null);
+				PluginsPanel.this.uninstallPluginButton
+						.setEnabled(PluginsPanel.this.pluginsTable
+								.getSelectedRow() != -1);
 			}
 		}
 	}
 
 	private final class InstallNewPluginActionListener implements
-	ActionListener {
+			ActionListener {
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-			JFileChooser fileChooser = new JFileChooser();
+			JFileChooser fileChooser = PluginsPanel.this.controlsBuilder
+					.getFileChooser();
 			FileFilter filter = new FileFilter() {
 				@Override
 				public boolean accept(final File f) {
-					return f.isDirectory() || f.getName().toUpperCase().endsWith("ZIP");
+					return f.isDirectory()
+							|| f.getName().toUpperCase().endsWith("ZIP");
 				}
 
 				@Override
@@ -505,15 +587,25 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 			if (fileChooser.showOpenDialog(getPreferenceDialog()) == JFileChooser.APPROVE_OPTION) {
 				File zipFile = fileChooser.getSelectedFile();
 				try {
-					Map<PluginFolder, PluginSystemException> problemsFound = pluginsHandler.installPlugin(zipFile);
+					Map<PluginFolder, PluginSystemException> problemsFound = PluginsPanel.this.pluginsHandler
+							.installPlugin(zipFile);
 					if (problemsFound != null) {
-						for (Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
-							dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), pluginFolderEntry.getValue());
+						for (Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound
+								.entrySet()) {
+							PluginsPanel.this.dialogFactory
+									.newDialog(IExceptionDialog.class)
+									.showExceptionDialog(
+											I18nUtils
+													.getString("PLUGIN_INSTALLATION_ERROR"),
+											pluginFolderEntry.getValue());
 						}
 					}
 
 				} catch (Exception e1) {
-					dialogFactory.newDialog(IExceptionDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), e1);
+					PluginsPanel.this.dialogFactory.newDialog(
+							IExceptionDialog.class).showExceptionDialog(
+							I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"),
+							e1);
 				}
 			}
 		}
@@ -539,7 +631,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 		@Override
 		public void addTableModelListener(final TableModelListener l) {
-			listeners.add(l);
+			this.listeners.add(l);
 		}
 
 		@Override
@@ -582,7 +674,10 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		public Object getValueAt(final int rowIndex, final int columnIndex) {
 			switch (columnIndex) {
 			case 0:
-				return (pluginsActivation.containsKey(this.plugins.get(rowIndex)) ? pluginsActivation.get(this.plugins.get(rowIndex)) : this.plugins.get(rowIndex).isActive());
+				return (PluginsPanel.this.pluginsActivation
+						.containsKey(this.plugins.get(rowIndex)) ? PluginsPanel.this.pluginsActivation
+						.get(this.plugins.get(rowIndex)) : this.plugins.get(
+						rowIndex).isActive());
 			case 1:
 				return this.plugins.get(rowIndex);
 			default:
@@ -598,25 +693,30 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 		@Override
 		public void removeTableModelListener(final TableModelListener l) {
-			listeners.remove(l);
+			this.listeners.remove(l);
 		}
 
 		@Override
-		public void setValueAt(final Object value, final int rowIndex, final int columnIndex) {
+		public void setValueAt(final Object value, final int rowIndex,
+				final int columnIndex) {
 			if (columnIndex == 0) {
 				// If value changed then add to map
 				if (((Boolean) value) != this.plugins.get(rowIndex).isActive()) {
-					pluginsActivation.put(this.plugins.get(rowIndex), (Boolean) value);
+					PluginsPanel.this.pluginsActivation.put(
+							this.plugins.get(rowIndex), (Boolean) value);
 				} else {
-					// If value is the same then remove from map to avoid set the same status as it was previously
-					pluginsActivation.remove(this.plugins.get(rowIndex));
+					// If value is the same then remove from map to avoid set
+					// the same status as it was previously
+					PluginsPanel.this.pluginsActivation.remove(this.plugins
+							.get(rowIndex));
 				}
 			}
 		}
 
 		public PluginConfiguration getPluginConfigurationAt(final int row) {
 			try {
-				return pluginsHandler.getConfiguration(this.plugins.get(row));
+				return PluginsPanel.this.pluginsHandler
+						.getConfiguration(this.plugins.get(row));
 			} catch (PluginSystemException e) {
 				Logger.error(e);
 				return null;

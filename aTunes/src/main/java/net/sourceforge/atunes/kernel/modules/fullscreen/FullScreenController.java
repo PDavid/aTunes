@@ -28,6 +28,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.utils.FileUtils;
@@ -46,6 +47,15 @@ public class FullScreenController extends
 	private IStateUI stateUI;
 
 	private IOSManager osManager;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	/**
 	 * @param osManager
@@ -92,7 +102,7 @@ public class FullScreenController extends
 		window.getCovers().addMouseMotionListener(moveListener);
 
 		window.getSelectBackground().addActionListener(
-				new SelectBackgroundActionListener(this));
+				new SelectBackgroundActionListener(this, this.controlsBuilder));
 
 		window.getRemoveBackground().addActionListener(
 				new RemoveBackgroundActionListener(window, this.stateUI));

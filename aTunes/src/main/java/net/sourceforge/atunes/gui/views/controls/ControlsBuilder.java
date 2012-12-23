@@ -20,12 +20,17 @@
 
 package net.sourceforge.atunes.gui.views.controls;
 
+import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
+import java.awt.Dialog.ModalityType;
+import java.awt.HeadlessException;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -302,4 +307,45 @@ public class ControlsBuilder implements IControlsBuilder {
 		this.lookAndFeelManager.addLookAndFeelChangeListener(panel);
 		return panel;
 	}
+
+	@Override
+	public JFileChooser getFileChooser() {
+		return new CustomFileChooser();
+	}
+
+	@Override
+	public JFileChooser getFileChooser(final String path) {
+		return new CustomFileChooser(path);
+	}
+
+	private class CustomFileChooser extends JFileChooser {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -5589049318786579475L;
+
+		/**
+		 * @param path
+		 */
+		public CustomFileChooser(final String path) {
+			super(path);
+		}
+
+		/**
+		 * Default constructor
+		 */
+		public CustomFileChooser() {
+			super();
+		}
+
+		@Override
+		protected JDialog createDialog(final Component parent)
+				throws HeadlessException {
+			JDialog dialog = super.createDialog(parent);
+			// Use DOCUMENT_MODAL to avoid problems with Linux platforms:
+			// ERROR: Trying to unblock window blocked by another dialog
+			dialog.setModalityType(ModalityType.DOCUMENT_MODAL);
+			return dialog;
+		}
+	};
 }

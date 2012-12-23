@@ -28,6 +28,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFileSelectorDialog;
 import net.sourceforge.atunes.model.IFrame;
@@ -37,8 +38,9 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Dialog to select file
+ * 
  * @author alex
- *
+ * 
  */
 public class FileSelectorDialog implements IFileSelectorDialog {
 
@@ -49,6 +51,15 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 	private IOSManager osManager;
 
 	private IDialogFactory dialogFactory;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	/**
 	 * @param dialogFactory
@@ -81,6 +92,7 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 
 	/**
 	 * Selects a file
+	 * 
 	 * @param path
 	 * @return
 	 */
@@ -91,6 +103,7 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 
 	/**
 	 * Selects a file
+	 * 
 	 * @param path
 	 * @return
 	 */
@@ -116,7 +129,7 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 	}
 
 	private File getFile(final String path, final String title, final int mode) {
-		if (osManager.isMacOsX()) {
+		if (this.osManager.isMacOsX()) {
 			return getFileWithFileDialog(path, title, mode);
 		} else {
 			return getFileWithJFileChooser(path, title, mode);
@@ -125,56 +138,60 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 
 	/**
 	 * Opens file dialog to get file
+	 * 
 	 * @param path
 	 * @param title
 	 * @param mode
 	 * @return
 	 */
-	private File getFileWithFileDialog(final String path, final String title, final int mode) {
-		FileDialog dialog = new FileDialog(frame.getFrame(), title, mode);
+	private File getFileWithFileDialog(final String path, final String title,
+			final int mode) {
+		FileDialog dialog = new FileDialog(this.frame.getFrame(), title, mode);
 		dialog.setDirectory(path);
-		if (fileFilter != null) {
-			dialog.setFilenameFilter(fileFilter);
+		if (this.fileFilter != null) {
+			dialog.setFilenameFilter(this.fileFilter);
 		}
 		dialog.setVisible(true);
 		String file = dialog.getFile();
 		String dir = dialog.getDirectory();
 		if (file != null) {
 			// Get selected file
-			return osManager.getFile(dir, file);
+			return this.osManager.getFile(dir, file);
 		}
 		return null;
 	}
 
-
 	/**
 	 * Opens file dialog to get file
+	 * 
 	 * @param path
 	 * @param title
 	 * @param mode
 	 * @return
 	 */
-	private File getFileWithJFileChooser(final String path, final String title, final int mode) {
-		JFileChooser dialog = new JFileChooser(path);
-		if (fileFilter != null) {
+	private File getFileWithJFileChooser(final String path, final String title,
+			final int mode) {
+		JFileChooser dialog = this.controlsBuilder.getFileChooser(path);
+		if (this.fileFilter != null) {
 			dialog.setFileFilter(new FileFilter() {
 
 				@Override
 				public String getDescription() {
-					return fileFilter.toString();
+					return FileSelectorDialog.this.fileFilter.toString();
 				}
 
 				@Override
 				public boolean accept(final File f) {
-					return fileFilter.accept(f.getParentFile(), f.getName());
+					return FileSelectorDialog.this.fileFilter.accept(
+							f.getParentFile(), f.getName());
 				}
 			});
 		}
 		int userResponse;
 		if (mode == FileDialog.LOAD) {
-			userResponse = dialog.showOpenDialog(frame.getFrame());
+			userResponse = dialog.showOpenDialog(this.frame.getFrame());
 		} else {
-			userResponse = dialog.showSaveDialog(frame.getFrame());
+			userResponse = dialog.showSaveDialog(this.frame.getFrame());
 		}
 		if (userResponse == JFileChooser.APPROVE_OPTION) {
 			File file = dialog.getSelectedFile();
@@ -182,13 +199,16 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 				// If file exists ask user to confirm
 				boolean canWrite = !file.exists();
 				if (!canWrite) {
-					IConfirmationDialog confirmationDialog = dialogFactory.newDialog(IConfirmationDialog.class);
-					confirmationDialog.setMessage(I18nUtils.getString("OVERWRITE_FILE"));
+					IConfirmationDialog confirmationDialog = this.dialogFactory
+							.newDialog(IConfirmationDialog.class);
+					confirmationDialog.setMessage(I18nUtils
+							.getString("OVERWRITE_FILE"));
 					confirmationDialog.showDialog();
 					canWrite = confirmationDialog.userAccepted();
 				}
 				if (!canWrite) {
-					// User rejected to overwrite file so ask again to select a file
+					// User rejected to overwrite file so ask again to select a
+					// file
 					file = getFileWithJFileChooser(path, title, mode);
 				}
 			}

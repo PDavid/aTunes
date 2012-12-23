@@ -26,6 +26,7 @@ import java.io.FilenameFilter;
 
 import javax.swing.JFileChooser;
 
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFolderSelectorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
@@ -33,12 +34,14 @@ import net.sourceforge.atunes.utils.FileUtils;
 
 /**
  * Dialog to select folder
+ * 
  * @author alex
- *
+ * 
  */
 public class FolderSelectorDialog implements IFolderSelectorDialog {
 
-	private static final class RejectAllFilesFileFilter implements FilenameFilter {
+	private static final class RejectAllFilesFileFilter implements
+			FilenameFilter {
 		@Override
 		public boolean accept(final File dir, final String name) {
 			return false;
@@ -50,6 +53,15 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
 	private String title;
 
 	private IOSManager osManager;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	/**
 	 * @param osManager
@@ -91,7 +103,7 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
 	@Override
 	public File selectFolder(final String path) {
 		File file = null;
-		if (osManager.isMacOsX()) {
+		if (this.osManager.isMacOsX()) {
 			file = selectFolderWithFileChooser(path);
 		} else {
 			file = selectFolderWithJFileChooser(path);
@@ -104,9 +116,9 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
 	 * @return
 	 */
 	private File selectFolderWithJFileChooser(final String path) {
-		JFileChooser dialog = new JFileChooser(path);
+		JFileChooser dialog = this.controlsBuilder.getFileChooser(path);
 		dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		dialog.showOpenDialog(frame.getFrame());
+		dialog.showOpenDialog(this.frame.getFrame());
 		return dialog.getSelectedFile();
 	}
 
@@ -116,7 +128,8 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
 	 */
 	private File selectFolderWithFileChooser(final String path) {
 		System.setProperty("apple.awt.fileDialogForDirectories", "true");
-		FileDialog dialog = new FileDialog(frame.getFrame(), title, FileDialog.LOAD);
+		FileDialog dialog = new FileDialog(this.frame.getFrame(), this.title,
+				FileDialog.LOAD);
 		dialog.setFilenameFilter(new RejectAllFilesFileFilter());
 		dialog.setDirectory(path);
 		dialog.setVisible(true);

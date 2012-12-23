@@ -1,3 +1,7 @@
+aTunes 3.0.2
+------------
+- FIX: Error with modal dialogs in Linux
+
 aTunes 3.0.1
 ------------
 - XINE Engine discontinued
