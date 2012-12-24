@@ -31,8 +31,9 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Executes repository load when loading a new repository
+ * 
  * @author alex
- *
+ * 
  */
 public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 
@@ -45,7 +46,8 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 	/**
 	 * @param repositoryActions
 	 */
-	public void setRepositoryActions(final RepositoryActionsHelper repositoryActions) {
+	public void setRepositoryActions(
+			final RepositoryActionsHelper repositoryActions) {
 		this.repositoryActions = repositoryActions;
 	}
 
@@ -59,7 +61,8 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 	/**
 	 * @param backgroundWorkerFactory
 	 */
-	public void setBackgroundWorkerFactory(final IBackgroundWorkerFactory backgroundWorkerFactory) {
+	public void setBackgroundWorkerFactory(
+			final IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
 
@@ -70,9 +73,10 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 
 			@Override
 			public void run() {
-				String text = StringUtils.getString(I18nUtils.getString("REFRESHING"), "...");
+				String text = StringUtils.getString(
+						I18nUtils.getString("REFRESHING"), "...");
 				frame.showProgressBar(true, text);
-				repositoryActions.enableRepositoryActions(false);
+				repositoryActions.disableAllRepositoryActions();
 			}
 		});
 		worker.setBackgroundActions(new Callable<Void>() {
@@ -116,7 +120,8 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
 			public void run() {
-				getRepositoryLoaderListener().notifyFinishRefresh(RepositoryRefreshLoader.this);
+				getRepositoryLoaderListener().notifyFinishRefresh(
+						RepositoryRefreshLoader.this);
 			}
 		});
 	}

@@ -33,8 +33,9 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Refresh a list of folders from repository
+ * 
  * @author alex
- *
+ * 
  */
 public final class RefreshFoldersTask {
 
@@ -58,14 +59,16 @@ public final class RefreshFoldersTask {
 	/**
 	 * @param repositoryActions
 	 */
-	public void setRepositoryActions(final RepositoryActionsHelper repositoryActions) {
+	public void setRepositoryActions(
+			final RepositoryActionsHelper repositoryActions) {
 		this.repositoryActions = repositoryActions;
 	}
 
 	/**
 	 * @param backgroundWorkerFactory
 	 */
-	public void setBackgroundWorkerFactory(final IBackgroundWorkerFactory backgroundWorkerFactory) {
+	public void setBackgroundWorkerFactory(
+			final IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
 
@@ -85,16 +88,19 @@ public final class RefreshFoldersTask {
 
 	/**
 	 * Executes task to refresh folders of repository
+	 * 
 	 * @param repository
 	 * @param folders
 	 */
-	public void execute(final IRepository repository, final List<IFolder> folders) {
+	public void execute(final IRepository repository,
+			final List<IFolder> folders) {
 		IBackgroundWorker<Void> worker = backgroundWorkerFactory.getWorker();
 		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 			@Override
 			public void run() {
-				frame.showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
-				repositoryActions.enableRepositoryActions(false);
+				frame.showProgressBar(true, StringUtils.getString(
+						I18nUtils.getString("REFRESHING"), "..."));
+				repositoryActions.disableAllRepositoryActions();
 			}
 		});
 		worker.setBackgroundActions(new Callable<Void>() {
