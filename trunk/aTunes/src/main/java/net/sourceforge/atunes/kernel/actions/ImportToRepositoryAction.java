@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISelectorDialog;
 import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -40,75 +41,81 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class ImportToRepositoryAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -5708270585764283210L;
+	private static final long serialVersionUID = -5708270585764283210L;
 
-    private IRepositoryHandler repositoryHandler;
+	private IRepositoryHandler repositoryHandler;
 
-    private IDialogFactory dialogFactory;
+	private IDialogFactory dialogFactory;
 
-    /**
-     * Default constructor
-     */
-    public ImportToRepositoryAction() {
-	super(StringUtils.getString(I18nUtils.getString("IMPORT"), "..."));
-	setEnabled(false); // Initially disabled, will be enabled when
-			   // repository is loaded
-    }
-
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(final IDialogFactory dialogFactory) {
-	this.dialogFactory = dialogFactory;
-    }
-
-    @Override
-    protected void executeAction() {
-	IFolderSelectorDialog dialog = dialogFactory
-		.newDialog(IFolderSelectorDialog.class);
-	dialog.setTitle(I18nUtils.getString("IMPORT"));
-	File folder = dialog.selectFolder((String) null);
-	if (folder != null) {
-	    List<File> folders = new ArrayList<File>();
-	    folders.add(folder);
-	    repositoryHandler.importFolders(folders, getRepositoryPath());
+	/**
+	 * Default constructor
+	 */
+	public ImportToRepositoryAction() {
+		super(StringUtils.getString(I18nUtils.getString("IMPORT"), "..."));
+		setEnabled(false); // Initially disabled, will be enabled when
+		// repository is loaded
 	}
-    }
 
-    /**
-     * @return repository path
-     */
-    private String getRepositoryPath() {
-	String path;
-	String[] foldersList = new String[repositoryHandler.getFoldersCount()];
-	for (int i = 0; i < repositoryHandler.getFolders().size(); i++) {
-	    foldersList[i] = FileUtils.getPath(repositoryHandler.getFolders()
-		    .get(i));
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
-	// If repository folders are more than one then user must select where
-	// to import songs
-	if (foldersList.length > 1) {
-	    ISelectorDialog selectorDialog = dialogFactory
-		    .newDialog(ISelectorDialog.class);
-	    selectorDialog.setTitle(I18nUtils
-		    .getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"));
-	    selectorDialog.setOptions(foldersList);
-	    selectorDialog.showDialog();
-	    path = selectorDialog.getSelection();
-	    // If user closed dialog then select first entry
-	    if (path == null) {
-		path = foldersList[0];
-	    }
-	} else {
-	    path = foldersList[0];
-	}
-	return path;
-    }
 
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-	this.repositoryHandler = repositoryHandler;
-    }
+	@Override
+	protected void executeAction() {
+		// It's supposed to not happen, but check that repository contains
+		// folders
+		if (repositoryHandler.getFoldersCount() > 0) {
+			IFolderSelectorDialog dialog = dialogFactory
+					.newDialog(IFolderSelectorDialog.class);
+			dialog.setTitle(I18nUtils.getString("IMPORT"));
+			File folder = dialog.selectFolder((String) null);
+			if (folder != null) {
+				List<File> folders = new ArrayList<File>();
+				folders.add(folder);
+				repositoryHandler.importFolders(folders, getRepositoryPath());
+			}
+		} else {
+			Logger.error("Importing folders to repository with no folders");
+		}
+	}
+
+	/**
+	 * @return repository path
+	 */
+	private String getRepositoryPath() {
+		String path;
+		String[] foldersList = new String[repositoryHandler.getFoldersCount()];
+		for (int i = 0; i < repositoryHandler.getFolders().size(); i++) {
+			foldersList[i] = FileUtils.getPath(repositoryHandler.getFolders()
+					.get(i));
+		}
+		// If repository folders are more than one then user must select where
+		// to import songs
+		if (foldersList.length > 1) {
+			ISelectorDialog selectorDialog = dialogFactory
+					.newDialog(ISelectorDialog.class);
+			selectorDialog.setTitle(I18nUtils
+					.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"));
+			selectorDialog.setOptions(foldersList);
+			selectorDialog.showDialog();
+			path = selectorDialog.getSelection();
+			// If user closed dialog then select first entry
+			if (path == null) {
+				path = foldersList[0];
+			}
+		} else {
+			path = foldersList[0];
+		}
+		return path;
+	}
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
 }

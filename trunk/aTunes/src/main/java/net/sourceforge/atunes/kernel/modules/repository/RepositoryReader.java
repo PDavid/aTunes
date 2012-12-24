@@ -333,7 +333,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	}
 
 	private boolean retrieve(final List<File> folders) {
-		this.repositoryActions.enableRepositoryActions(false);
+		this.repositoryActions.disableAllRepositoryActions();
 		// Start with indeterminate dialog
 		this.repositoryProgressDialog.showDialog();
 		this.repositoryProgressDialog.setProgressBarIndeterminate(true);
@@ -596,7 +596,8 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 */
 	private void repositoryReadCompleted() {
 		this.repositoryHandler.setRepository(this.repository);
-		this.repositoryActions.enableRepositoryActions(true);
+		this.repositoryActions
+				.enableActionsDependingOnRepository(this.repository);
 		this.showRepositoryDataHelper.showRepositoryAudioFileNumber(
 				this.repository.getFiles().size(),
 				this.repository.getTotalSizeInBytes(),

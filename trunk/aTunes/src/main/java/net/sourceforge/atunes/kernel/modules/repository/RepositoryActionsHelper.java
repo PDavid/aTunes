@@ -22,13 +22,16 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import javax.swing.Action;
 
+import net.sourceforge.atunes.model.IRepository;
+
 /**
  * Enables or disables actions related to repository
+ * 
  * @author alex
- *
+ * 
  */
 public class RepositoryActionsHelper {
-	
+
 	private Action addFolderToRepositoryAction;
 	private Action refreshRepositoryAction;
 	private Action importToRepositoryAction;
@@ -39,10 +42,11 @@ public class RepositoryActionsHelper {
 	/**
 	 * @param addFolderToRepositoryAction
 	 */
-	public void setAddFolderToRepositoryAction(Action addFolderToRepositoryAction) {
+	public void setAddFolderToRepositoryAction(
+			Action addFolderToRepositoryAction) {
 		this.addFolderToRepositoryAction = addFolderToRepositoryAction;
 	}
-	
+
 	/**
 	 * @param refreshFolderFromNavigatorAction
 	 */
@@ -50,46 +54,81 @@ public class RepositoryActionsHelper {
 			Action refreshFolderFromNavigatorAction) {
 		this.refreshFolderFromNavigatorAction = refreshFolderFromNavigatorAction;
 	}
-	
+
 	/**
 	 * @param importToRepositoryAction
 	 */
 	public void setImportToRepositoryAction(Action importToRepositoryAction) {
 		this.importToRepositoryAction = importToRepositoryAction;
 	}
-	
+
 	/**
 	 * @param connectDeviceAction
 	 */
 	public void setConnectDeviceAction(Action connectDeviceAction) {
 		this.connectDeviceAction = connectDeviceAction;
 	}
-	
+
 	/**
 	 * @param ripCDAction
 	 */
 	public void setRipCDAction(Action ripCDAction) {
 		this.ripCDAction = ripCDAction;
 	}
+
 	/**
 	 * @param refreshRepositoryAction
 	 */
 	public void setRefreshRepositoryAction(Action refreshRepositoryAction) {
 		this.refreshRepositoryAction = refreshRepositoryAction;
 	}
-	
-    /**
-     * Enables or disables actions that can't be performed while loading
-     * repository
-     * 
-     * @param enable
-     */
-    public void enableRepositoryActions(boolean enable) {
-        addFolderToRepositoryAction.setEnabled(enable);
-        refreshFolderFromNavigatorAction.setEnabled(enable);
-        importToRepositoryAction.setEnabled(enable);
-        connectDeviceAction.setEnabled(enable);
-        ripCDAction.setEnabled(enable);
-        refreshRepositoryAction.setEnabled(enable);
-    }
+
+	/**
+	 * Disables all actions to repository
+	 */
+	public void disableAllRepositoryActions() {
+		addFolderToRepositoryAction.setEnabled(false);
+		refreshFolderFromNavigatorAction.setEnabled(false);
+		importToRepositoryAction.setEnabled(false);
+		connectDeviceAction.setEnabled(false);
+		ripCDAction.setEnabled(false);
+		refreshRepositoryAction.setEnabled(false);
+	}
+
+	/**
+	 * Enables repository actions for current repository
+	 */
+	public void enableRepositoryActions() {
+		addFolderToRepositoryAction.setEnabled(true);
+		refreshFolderFromNavigatorAction.setEnabled(true);
+		importToRepositoryAction.setEnabled(true);
+		connectDeviceAction.setEnabled(true);
+		ripCDAction.setEnabled(true);
+		refreshRepositoryAction.setEnabled(true);
+	}
+
+	/**
+	 * Disable all repository actions except the one to add a folder to
+	 * repository
+	 */
+	public void onlyAllowAddFolderToRepository() {
+		addFolderToRepositoryAction.setEnabled(true);
+		refreshFolderFromNavigatorAction.setEnabled(false);
+		importToRepositoryAction.setEnabled(false);
+		connectDeviceAction.setEnabled(false);
+		ripCDAction.setEnabled(false);
+		refreshRepositoryAction.setEnabled(false);
+	}
+
+	/**
+	 * Enables actions or allow only add folders depending if repository is null
+	 * or void
+	 */
+	public void enableActionsDependingOnRepository(IRepository repository) {
+		if (repository != null && !(repository instanceof VoidRepository)) {
+			enableRepositoryActions();
+		} else {
+			onlyAllowAddFolderToRepository();
+		}
+	}
 }

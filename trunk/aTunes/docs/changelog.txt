@@ -1,6 +1,7 @@
 aTunes 3.0.2
 ------------
 - FIX: Error with modal dialogs in Linux
+- FIX: Error when importing folders after canceling repository load
 
 aTunes 3.0.1
 ------------
