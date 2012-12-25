@@ -32,8 +32,9 @@ import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Do all necessary to start application
+ * 
  * @author alex
- *
+ * 
  */
 public class ApplicationStarter {
 
@@ -54,7 +55,8 @@ public class ApplicationStarter {
 	/**
 	 * @param applicationArguments
 	 */
-	public void setApplicationArguments(final IApplicationArguments applicationArguments) {
+	public void setApplicationArguments(
+			final IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
 
@@ -68,40 +70,48 @@ public class ApplicationStarter {
 	/**
 	 * @param applicationPropertiesLogger
 	 */
-	public void setApplicationPropertiesLogger(final ApplicationPropertiesLogger applicationPropertiesLogger) {
+	public void setApplicationPropertiesLogger(
+			final ApplicationPropertiesLogger applicationPropertiesLogger) {
 		this.applicationPropertiesLogger = applicationPropertiesLogger;
 	}
 
 	/**
 	 * @param multipleInstancesCheck
 	 */
-	public void setMultipleInstancesCheck(final MultipleInstancesCheck multipleInstancesCheck) {
+	public void setMultipleInstancesCheck(
+			final MultipleInstancesCheck multipleInstancesCheck) {
 		this.multipleInstancesCheck = multipleInstancesCheck;
 	}
 
 	/**
 	 * @param applicationArgumentsSender
 	 */
-	public void setApplicationArgumentsSender(final ApplicationArgumentsSender applicationArgumentsSender) {
+	public void setApplicationArgumentsSender(
+			final ApplicationArgumentsSender applicationArgumentsSender) {
 		this.applicationArgumentsSender = applicationArgumentsSender;
 	}
 
 	/**
 	 * Starts application logic
+	 * 
 	 * @param arguments
 	 */
 	public void start(final List<String> arguments) {
 		// For detecting Swing threading violations
 		if (applicationArguments.isDebug()) {
-			RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
+			RepaintManager
+					.setCurrentManager(new CheckThreadViolationRepaintManager());
 		}
 
 		// Set log4j properties
-		Logger.loadProperties(applicationArguments.isDebug(), applicationArguments.isDebugLevelLog(), osManager);
+		Logger.loadProperties(applicationArguments.isDebug(),
+				applicationArguments.isDebugLevelLog(), osManager);
 
 		// First, look up for other instances running
-		if (!applicationArguments.isMultipleInstance() && !multipleInstancesCheck.isFirstInstance()) {
-			// Is not first aTunes instance running, so send parameters and finalize
+		if (!applicationArguments.isMultipleInstance()
+				&& !multipleInstancesCheck.isFirstInstance()) {
+			// Is not first aTunes instance running, so send parameters and
+			// finalize
 			applicationArgumentsSender.sendArgumentsToFirstInstance(arguments);
 		} else {
 			// WE ARE CLOSING ERROR STREAM!!!
