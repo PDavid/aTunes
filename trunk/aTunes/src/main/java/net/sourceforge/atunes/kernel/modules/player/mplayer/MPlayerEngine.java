@@ -43,322 +43,324 @@ import org.apache.commons.io.IOUtils;
  */
 public class MPlayerEngine extends AbstractPlayerEngine {
 
-    private MPlayerProcessBuilder processBuilder;
+	private MPlayerProcessBuilder processBuilder;
 
-    private Process process;
-    private MPlayerCommandWriter commandWriter;
-    private AbstractMPlayerOutputReader mPlayerOutputReader;
-    private MPlayerErrorReader mPlayerErrorReader;
-    private MPlayerPositionThread mPlayerPositionThread;
-    /** The current fade away process running */
-    private FadeAwayRunnable currentFadeAwayRunnable = null;
+	private Process process;
+	private MPlayerCommandWriter commandWriter;
+	private AbstractMPlayerOutputReader mPlayerOutputReader;
+	private MPlayerErrorReader mPlayerErrorReader;
+	private MPlayerPositionThread mPlayerPositionThread;
+	/** The current fade away process running */
+	private FadeAwayRunnable currentFadeAwayRunnable = null;
 
-    private ILocalAudioObjectValidator localAudioObjectValidator;
+	private ILocalAudioObjectValidator localAudioObjectValidator;
 
-    private IStateRadio stateRadio;
+	private IStateRadio stateRadio;
 
-    private IContextHandler contextHandler;
+	private IContextHandler contextHandler;
 
-    /**
-     * @param contextHandler
-     */
-    public void setContextHandler(final IContextHandler contextHandler) {
-	this.contextHandler = contextHandler;
-    }
-
-    /**
-     * @param stateRadio
-     */
-    public void setStateRadio(final IStateRadio stateRadio) {
-	this.stateRadio = stateRadio;
-    }
-
-    /**
-     * @param localAudioObjectValidator
-     */
-    public void setLocalAudioObjectValidator(
-	    final ILocalAudioObjectValidator localAudioObjectValidator) {
-	this.localAudioObjectValidator = localAudioObjectValidator;
-    }
-
-    @Override
-    public void setOsManager(final IOSManager osManager) {
-	super.setOsManager(osManager);
-	commandWriter = MPlayerCommandWriter.newCommandWriter(null, osManager);
-    }
-
-    /**
-     * @param processBuilder
-     */
-    public void setProcessBuilder(final MPlayerProcessBuilder processBuilder) {
-	this.processBuilder = processBuilder;
-    }
-
-    @Override
-    public boolean isEngineAvailable() {
-	InputStream in = null;
-	try {
-	    // Processes in Windows need to read input stream, if not process is
-	    // blocked
-	    // so read input stream
-	    String command = getOsManager().getPlayerEngineCommand(this);
-	    if (command != null) {
-		Process testEngineProcess = new ProcessBuilder(command).start();
-		in = testEngineProcess.getInputStream();
-		IOUtils.readLines(in);
-		int rc = testEngineProcess.waitFor();
-		return rc == 0;
-	    }
-	} catch (IOException e) {
-	    Logger.error(e);
-	} catch (InterruptedException e) {
-	    Logger.error(e);
-	} finally {
-	    ClosingUtils.close(in);
-	}
-	return false;
-    }
-
-    @Override
-    public void pausePlayback() {
-	commandWriter.sendPauseCommand();
-    }
-
-    @Override
-    public void resumePlayback() {
-	commandWriter.sendResumeCommand();
-	/*
-	 * Mplayer volume problem workaround If player was paused, set volume
-	 * again as it could be changed when paused
+	/**
+	 * @param contextHandler
 	 */
-	if (!isMuteEnabled()) {
-	    commandWriter.sendVolumeCommand(getStatePlayer().getVolume());
+	public void setContextHandler(final IContextHandler contextHandler) {
+		this.contextHandler = contextHandler;
 	}
-	/*
-	 * End Mplayer volume problem workaround
+
+	/**
+	 * @param stateRadio
 	 */
-    }
-
-    @Override
-    public void startPlayback(final IAudioObject audioObjectToPlay,
-	    final IAudioObject audioObject) {
-	try {
-	    // If there is a fade away working, stop it inmediately
-	    if (currentFadeAwayRunnable != null) {
-		currentFadeAwayRunnable.finish();
-	    }
-
-	    // Send stop command in order to try to avoid two mplayer
-	    // instaces are running at the same time
-	    commandWriter.sendStopCommand();
-
-	    // Start the play process
-	    process = processBuilder.getProcess(audioObjectToPlay);
-
-	    if (process != null) {
-		commandWriter = MPlayerCommandWriter.newCommandWriter(process,
-			getOsManager());
-		// Output reader needs original audio object, specially when
-		// cacheFilesBeforePlaying is true, as
-		// statistics must be applied over original audio object, not
-		// the cached one
-		mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(
-			this, process, audioObject, stateRadio, getFrame(),
-			getPlayListHandler(), localAudioObjectValidator,
-			contextHandler);
-		mPlayerErrorReader = new MPlayerErrorReader(this, process,
-			mPlayerOutputReader, audioObjectToPlay);
-		mPlayerOutputReader.start();
-		mPlayerErrorReader.start();
-		mPlayerPositionThread = new MPlayerPositionThread(this);
-		mPlayerPositionThread.start();
-		commandWriter.sendGetDurationCommand();
-	    }
-
-	} catch (Exception e) {
-	    stopCurrentAudioObject(false);
-	    handlePlayerEngineError(e);
-	}
-    }
-
-    @Override
-    public void stopPlayback(final boolean userStopped,
-	    final boolean useFadeAway) {
-	if (!isEnginePlaying()) {
-	    return;
+	public void setStateRadio(final IStateRadio stateRadio) {
+		this.stateRadio = stateRadio;
 	}
 
-	if (useFadeAway && !isEnginePaused()) {
-	    // If there is a fade away process working don't create
-	    // a new process
-	    if (currentFadeAwayRunnable != null) {
-		return;
-	    }
-	    mPlayerErrorReader.interrupt();
-	    currentFadeAwayRunnable = new FadeAwayRunnable(process,
-		    getStatePlayer().getVolume(), this, getOsManager());
-	    Thread t = new Thread(currentFadeAwayRunnable);
-	    // Start fade away process
-	    t.start();
-	} else {
-	    commandWriter.sendStopCommand();
-	    // If there is a fade away process stop inmediately
-	    if (currentFadeAwayRunnable != null) {
-		currentFadeAwayRunnable.finish();
-	    } else {
-		// This is already called from fade away runnable when finishing
+	/**
+	 * @param localAudioObjectValidator
+	 */
+	public void setLocalAudioObjectValidator(
+			final ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
+
+	@Override
+	public void setOsManager(final IOSManager osManager) {
+		super.setOsManager(osManager);
+		commandWriter = MPlayerCommandWriter.newCommandWriter(null, osManager);
+	}
+
+	/**
+	 * @param processBuilder
+	 */
+	public void setProcessBuilder(final MPlayerProcessBuilder processBuilder) {
+		this.processBuilder = processBuilder;
+	}
+
+	@Override
+	public boolean isEngineAvailable() {
+		InputStream in = null;
+		try {
+			// Processes in Windows need to read input stream, if not process is
+			// blocked
+			// so read input stream
+			String command = getOsManager().getPlayerEngineCommand(this);
+			if (command != null) {
+				Process testEngineProcess = new ProcessBuilder(command).start();
+				in = testEngineProcess.getInputStream();
+				IOUtils.readLines(in);
+				int rc = testEngineProcess.waitFor();
+				return rc == 0;
+			}
+		} catch (IOException e) {
+			Logger.error(e);
+		} catch (InterruptedException e) {
+			Logger.error(e);
+		} finally {
+			ClosingUtils.close(in);
+		}
+		return false;
+	}
+
+	@Override
+	public void pausePlayback() {
+		commandWriter.sendPauseCommand();
+	}
+
+	@Override
+	public void resumePlayback() {
+		commandWriter.sendResumeCommand();
+		/*
+		 * Mplayer volume problem workaround If player was paused, set volume
+		 * again as it could be changed when paused
+		 */
+		if (!isMuteEnabled()) {
+			commandWriter.sendVolumeCommand(getStatePlayer().getVolume());
+		}
+		/*
+		 * End Mplayer volume problem workaround
+		 */
+	}
+
+	@Override
+	public void startPlayback(final IAudioObject audioObjectToPlay,
+			final IAudioObject audioObject) {
+		try {
+			// If there is a fade away working, stop it inmediately
+			if (currentFadeAwayRunnable != null) {
+				currentFadeAwayRunnable.finish();
+			}
+
+			// Send stop command in order to try to avoid two mplayer
+			// instaces are running at the same time
+			commandWriter.sendStopCommand();
+
+			// Start the play process
+			process = processBuilder.getProcess(audioObjectToPlay);
+
+			if (process != null) {
+				commandWriter = MPlayerCommandWriter.newCommandWriter(process,
+						getOsManager());
+				// Output reader needs original audio object, specially when
+				// cacheFilesBeforePlaying is true, as
+				// statistics must be applied over original audio object, not
+				// the cached one
+				mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(
+						this, process, audioObject, stateRadio, getFrame(),
+						getPlayListHandler(), localAudioObjectValidator,
+						contextHandler);
+				mPlayerErrorReader = new MPlayerErrorReader(this, process,
+						mPlayerOutputReader, audioObjectToPlay);
+				mPlayerOutputReader.start();
+				mPlayerErrorReader.start();
+				mPlayerPositionThread = new MPlayerPositionThread(this);
+				mPlayerPositionThread.start();
+				commandWriter.sendGetDurationCommand();
+			}
+
+		} catch (Exception e) {
+			stopCurrentAudioObject(false);
+			handlePlayerEngineError(e);
+		}
+	}
+
+	@Override
+	public void stopPlayback(final boolean userStopped,
+			final boolean useFadeAway) {
+		if (!isEnginePlaying()) {
+			return;
+		}
+
+		if (useFadeAway && !isEnginePaused()) {
+			// If there is a fade away process working don't create
+			// a new process
+			if (currentFadeAwayRunnable != null) {
+				return;
+			}
+			mPlayerErrorReader.interrupt();
+			currentFadeAwayRunnable = new FadeAwayRunnable(process,
+					getStatePlayer().getVolume(), this, getOsManager());
+			Thread t = new Thread(currentFadeAwayRunnable);
+			// Start fade away process
+			t.start();
+		} else {
+			commandWriter.sendStopCommand();
+			// If there is a fade away process stop immediately
+			if (currentFadeAwayRunnable != null) {
+				currentFadeAwayRunnable.finish();
+			} else {
+				// This is already called from fade away runnable when finishing
+				process = null;
+				mPlayerErrorReader = null;
+				mPlayerOutputReader = null;
+				commandWriter.finishProcess();
+				if (mPlayerPositionThread != null) {
+					mPlayerPositionThread.interrupt();
+					mPlayerPositionThread = null;
+				}
+			}
+			setCurrentAudioObjectPlayedTime(0);
+		}
+	}
+
+	/**
+	 * Called when finished fade away
+	 */
+	protected void finishedFadeAway() {
+		// NOTE: interrupting output reader means closing standard input
+		// of mplayer process, so process is finished
+		mPlayerOutputReader.interrupt();
 		process = null;
 		mPlayerErrorReader = null;
 		mPlayerOutputReader = null;
-		commandWriter.finishProcess();
 		mPlayerPositionThread.interrupt();
 		mPlayerPositionThread = null;
-	    }
-	    setCurrentAudioObjectPlayedTime(0);
+		commandWriter.finishProcess();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				setTime(0);
+			}
+		});
+		// No fade away process working
+		currentFadeAwayRunnable = null;
 	}
-    }
 
-    /**
-     * Called when finished fade away
-     */
-    protected void finishedFadeAway() {
-	// NOTE: interrupting output reader means closing standard input
-	// of mplayer process, so process is finished
-	mPlayerOutputReader.interrupt();
-	process = null;
-	mPlayerErrorReader = null;
-	mPlayerOutputReader = null;
-	mPlayerPositionThread.interrupt();
-	mPlayerPositionThread = null;
-	commandWriter.finishProcess();
-	SwingUtilities.invokeLater(new Runnable() {
-	    @Override
-	    public void run() {
-		setTime(0);
-	    }
-	});
-	// No fade away process working
-	currentFadeAwayRunnable = null;
-    }
-
-    protected void setTime(final int time) {
-	super.setCurrentAudioObjectPlayedTime(time);
-    }
-
-    @Override
-    public void seekTo(final long position, final int perCent) {
-	commandWriter.sendSeekCommandPerCent(perCent);
-    }
-
-    @Override
-    public void finishPlayer() {
-	stopCurrentAudioObject(false);
-	Logger.info("Stopping player");
-    }
-
-    @Override
-    public boolean isEnginePlaying() {
-	return process != null && !isEnginePaused();
-    }
-
-    @Override
-    public void applyMuteState(final boolean mute) {
-	commandWriter.sendMuteCommand();
-
-	// volume must be applied again because of the volume bug
-	setVolume(getStatePlayer().getVolume());
-
-	// MPlayer bug: paused, demute, muted -> starts playing
-	if (isEnginePaused() && !mute) {
-	    commandWriter.sendPauseCommand();
-	    Logger.debug("MPlayer bug (paused, demute, muted -> starts playing) workaround applied");
+	protected void setTime(final int time) {
+		super.setCurrentAudioObjectPlayedTime(time);
 	}
-    }
 
-    @Override
-    public void setVolume(final int volume) {
-	// MPlayer bug: paused, volume change -> starts playing
-	// If is paused, volume will be sent to mplayer when user resumes
-	// playback
-	if (!isEnginePaused() && !isMuteEnabled()) {
-	    commandWriter.sendVolumeCommand(volume);
+	@Override
+	public void seekTo(final long position, final int perCent) {
+		commandWriter.sendSeekCommandPerCent(perCent);
 	}
-    }
 
-    /**
-     * Gets the command writer.
-     * 
-     * @return the command writer
-     */
-    MPlayerCommandWriter getCommandWriter() {
-	return commandWriter;
-    }
-
-    @Override
-    public boolean supportsCapability(final PlayerEngineCapability capability) {
-	return EnumSet.of(PlayerEngineCapability.EQUALIZER,
-		PlayerEngineCapability.EQUALIZER_CHANGE,
-		PlayerEngineCapability.STREAMING, PlayerEngineCapability.PROXY,
-		PlayerEngineCapability.NORMALIZATION).contains(capability);
-    }
-
-    @Override
-    public void applyEqualization(final boolean enabled, final float[] values) {
-	// Mplayer does not support equalizer change
-	// workaround:
-	// we can stop/restart the current playing song to
-	// its last position when users applied the EQ
-	// test to avoid non desired startup of player
-	if (isEnginePlaying()) {
-	    restartPlayback();
+	@Override
+	public void finishPlayer() {
+		stopCurrentAudioObject(false);
+		Logger.info("Stopping player");
 	}
-    }
 
-    @Override
-    public void applyNormalization() {
-	// same comment as above, but for normalization mode
-	if (isEnginePlaying()) {
-	    restartPlayback();
+	@Override
+	public boolean isEnginePlaying() {
+		return process != null && !isEnginePaused();
 	}
-    }
 
-    @Override
-    public float[] transformEqualizerValues(final float[] values) {
-	return values;
-    }
+	@Override
+	public void applyMuteState(final boolean mute) {
+		commandWriter.sendMuteCommand();
 
-    protected void setCurrentLength(final long currentDuration) {
-	super.setCurrentAudioObjectLength(currentDuration);
-    }
+		// volume must be applied again because of the volume bug
+		setVolume(getStatePlayer().getVolume());
 
-    /**
-     * Checks if playback is paused.
-     * 
-     * @return true, if is paused
-     */
-    protected boolean isPlaybackPaused() {
-	return isEnginePaused();
-    }
+		// MPlayer bug: paused, demute, muted -> starts playing
+		if (isEnginePaused() && !mute) {
+			commandWriter.sendPauseCommand();
+			Logger.debug("MPlayer bug (paused, demute, muted -> starts playing) workaround applied");
+		}
+	}
 
-    protected void notifyRadioOrPodcastFeedEntry() {
-	super.notifyRadioOrPodcastFeedEntryStarted();
-    }
+	@Override
+	public void setVolume(final int volume) {
+		// MPlayer bug: paused, volume change -> starts playing
+		// If is paused, volume will be sent to mplayer when user resumes
+		// playback
+		if (!isEnginePaused() && !isMuteEnabled()) {
+			commandWriter.sendVolumeCommand(volume);
+		}
+	}
 
-    protected boolean isMute() {
-	return super.isMuteEnabled();
-    }
+	/**
+	 * Gets the command writer.
+	 * 
+	 * @return the command writer
+	 */
+	MPlayerCommandWriter getCommandWriter() {
+		return commandWriter;
+	}
 
-    @Override
-    public String getEngineName() {
-	return "MPlayer";
-    }
+	@Override
+	public boolean supportsCapability(final PlayerEngineCapability capability) {
+		return EnumSet.of(PlayerEngineCapability.EQUALIZER,
+				PlayerEngineCapability.EQUALIZER_CHANGE,
+				PlayerEngineCapability.STREAMING, PlayerEngineCapability.PROXY,
+				PlayerEngineCapability.NORMALIZATION).contains(capability);
+	}
 
-    @Override
-    public void destroyPlayer() {
-	commandWriter.sendStopCommand();
-    }
+	@Override
+	public void applyEqualization(final boolean enabled, final float[] values) {
+		// Mplayer does not support equalizer change
+		// workaround:
+		// we can stop/restart the current playing song to
+		// its last position when users applied the EQ
+		// test to avoid non desired startup of player
+		if (isEnginePlaying()) {
+			restartPlayback();
+		}
+	}
 
-    @Override
-    public void initializePlayerEngine() {
-    }
+	@Override
+	public void applyNormalization() {
+		// same comment as above, but for normalization mode
+		if (isEnginePlaying()) {
+			restartPlayback();
+		}
+	}
+
+	@Override
+	public float[] transformEqualizerValues(final float[] values) {
+		return values;
+	}
+
+	protected void setCurrentLength(final long currentDuration) {
+		super.setCurrentAudioObjectLength(currentDuration);
+	}
+
+	/**
+	 * Checks if playback is paused.
+	 * 
+	 * @return true, if is paused
+	 */
+	protected boolean isPlaybackPaused() {
+		return isEnginePaused();
+	}
+
+	protected void notifyRadioOrPodcastFeedEntry() {
+		super.notifyRadioOrPodcastFeedEntryStarted();
+	}
+
+	protected boolean isMute() {
+		return super.isMuteEnabled();
+	}
+
+	@Override
+	public String getEngineName() {
+		return "MPlayer";
+	}
+
+	@Override
+	public void destroyPlayer() {
+		commandWriter.sendStopCommand();
+	}
+
+	@Override
+	public void initializePlayerEngine() {
+	}
 }
