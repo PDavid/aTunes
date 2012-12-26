@@ -35,6 +35,7 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISmartPlayListHandler;
 import net.sourceforge.atunes.model.IStatisticsHandler;
+import net.sourceforge.atunes.utils.CollectionUtils;
 
 /**
  * Creates play lists based on statistics
@@ -43,141 +44,148 @@ import net.sourceforge.atunes.model.IStatisticsHandler;
  * 
  */
 public final class SmartPlayListHandler extends AbstractHandler implements
-	ISmartPlayListHandler {
+		ISmartPlayListHandler {
 
-    private IStatisticsHandler statisticsHandler;
-    private IPlayListHandler playListHandler;
+	private IStatisticsHandler statisticsHandler;
+	private IPlayListHandler playListHandler;
 
-    private IAudioObjectComparator audioObjectComparator;
+	private IAudioObjectComparator audioObjectComparator;
 
-    private IRepositoryHandler repositoryHandler;
+	private IRepositoryHandler repositoryHandler;
 
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-	this.repositoryHandler = repositoryHandler;
-    }
-
-    /**
-     * @param audioObjectComparator
-     */
-    public void setAudioObjectComparator(
-	    final IAudioObjectComparator audioObjectComparator) {
-	this.audioObjectComparator = audioObjectComparator;
-    }
-
-    /**
-     * @param statisticsHandler
-     */
-    public void setStatisticsHandler(final IStatisticsHandler statisticsHandler) {
-	this.statisticsHandler = statisticsHandler;
-    }
-
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(final IPlayListHandler playListHandler) {
-	this.playListHandler = playListHandler;
-    }
-
-    @Override
-    public void addAlbumsMostPlayed(final int n) {
-	// Get n most played albums
-	List<IAlbum> albums = statisticsHandler.getMostPlayedAlbums(n);
-
-	// Songs selected
-	List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
-
-	// Add album songs
-	for (IAlbum a : albums) {
-	    songsSelected.addAll(repositoryHandler
-		    .getAudioFilesForAlbums(Collections.singletonMap(
-			    a.getName(), a)));
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
 	}
 
-	// Sort
-	audioObjectComparator.sort(songsSelected);
-
-	// Add to playlist
-	playListHandler.addToVisiblePlayList(songsSelected);
-    }
-
-    @Override
-    public void addArtistsMostPlayed(final int n) {
-	// Get n most played albums
-	List<IArtist> artists = statisticsHandler.getMostPlayedArtists(n);
-
-	// Songs selected
-	List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
-
-	// Add album songs
-	for (IArtist a : artists) {
-	    songsSelected.addAll(a.getAudioObjects());
+	/**
+	 * @param audioObjectComparator
+	 */
+	public void setAudioObjectComparator(
+			final IAudioObjectComparator audioObjectComparator) {
+		this.audioObjectComparator = audioObjectComparator;
 	}
 
-	// Sort
-	audioObjectComparator.sort(songsSelected);
-
-	// Add to playlist
-	playListHandler.addToVisiblePlayList(songsSelected);
-    }
-
-    @Override
-    public void addRandomSongs(final int n) {
-	// Get reference to Repository songs
-	List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>(
-		getBean(IRepositoryHandler.class).getAudioFilesList());
-
-	// Songs selected
-	List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
-
-	// Initialize random generator
-	Random r = new Random(System.currentTimeMillis());
-
-	// Get n songs
-	for (int i = 0; i < n; i++) {
-	    // Get song number
-	    int number = r.nextInt(songs.size());
-
-	    // Add selectedSong
-	    songsSelected.add(songs.get(number));
+	/**
+	 * @param statisticsHandler
+	 */
+	public void setStatisticsHandler(final IStatisticsHandler statisticsHandler) {
+		this.statisticsHandler = statisticsHandler;
 	}
 
-	// Sort
-	audioObjectComparator.sort(songsSelected);
-
-	// Add to playlist
-	playListHandler.addToVisiblePlayList(songsSelected);
-    }
-
-    @Override
-    public void addSongsMostPlayed(final int n) {
-	// Get songs
-	List<IAudioObject> songsSelected = statisticsHandler
-		.getMostPlayedAudioObjects(n);
-
-	// Sort
-	audioObjectComparator.sort(songsSelected);
-
-	// Add to playlist
-	playListHandler.addToVisiblePlayList(songsSelected);
-    }
-
-    @Override
-    public void addUnplayedSongs(final int n) {
-	// Get unplayed files
-	List<IAudioObject> unplayedSongs = statisticsHandler
-		.getUnplayedAudioObjects();
-	Collections.shuffle(unplayedSongs);
-
-	// Add to playlist
-	int count = Math.min(unplayedSongs.size(), n);
-	if (count > 0) {
-	    List<IAudioObject> audioObjects = new ArrayList<IAudioObject>(
-		    unplayedSongs.subList(0, count));
-	    audioObjectComparator.sort(audioObjects);
-	    playListHandler.addToVisiblePlayList(audioObjects);
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
 	}
-    }
+
+	@Override
+	public void addAlbumsMostPlayed(final int n) {
+		// Get n most played albums
+		List<IAlbum> albums = statisticsHandler.getMostPlayedAlbums(n);
+
+		// Songs selected
+		List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
+
+		// Add album songs
+		for (IAlbum a : albums) {
+			songsSelected.addAll(repositoryHandler
+					.getAudioFilesForAlbums(Collections.singletonMap(
+							a.getName(), a)));
+		}
+
+		// Sort
+		audioObjectComparator.sort(songsSelected);
+
+		// Add to playlist
+		playListHandler.addToVisiblePlayList(songsSelected);
+	}
+
+	@Override
+	public void addArtistsMostPlayed(final int n) {
+		// Get n most played albums
+		List<IArtist> artists = statisticsHandler.getMostPlayedArtists(n);
+
+		// Songs selected
+		List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
+
+		// Add album songs
+		for (IArtist a : artists) {
+			songsSelected.addAll(a.getAudioObjects());
+		}
+
+		// Sort
+		audioObjectComparator.sort(songsSelected);
+
+		// Add to playlist
+		playListHandler.addToVisiblePlayList(songsSelected);
+	}
+
+	@Override
+	public void addRandomSongs(final int n) {
+		// Get reference to Repository songs
+		List<ILocalAudioObject> songs = null;
+		if (repositoryHandler.getAudioFilesList() != null) {
+			songs = new ArrayList<ILocalAudioObject>(
+					repositoryHandler.getAudioFilesList());
+		} else {
+			songs = new ArrayList<ILocalAudioObject>();
+		}
+
+		// Songs selected
+		List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
+
+		if (!CollectionUtils.isEmpty(songs)) {
+			// Initialize random generator
+			Random r = new Random(System.currentTimeMillis());
+
+			// Get n songs
+			for (int i = 0; i < n; i++) {
+				// Get song number
+				int number = r.nextInt(songs.size());
+
+				// Add selectedSong
+				songsSelected.add(songs.get(number));
+			}
+		}
+
+		// Sort
+		audioObjectComparator.sort(songsSelected);
+
+		// Add to playlist
+		playListHandler.addToVisiblePlayList(songsSelected);
+	}
+
+	@Override
+	public void addSongsMostPlayed(final int n) {
+		// Get songs
+		List<IAudioObject> songsSelected = statisticsHandler
+				.getMostPlayedAudioObjects(n);
+
+		// Sort
+		audioObjectComparator.sort(songsSelected);
+
+		// Add to playlist
+		playListHandler.addToVisiblePlayList(songsSelected);
+	}
+
+	@Override
+	public void addUnplayedSongs(final int n) {
+		// Get unplayed files
+		List<IAudioObject> unplayedSongs = statisticsHandler
+				.getUnplayedAudioObjects();
+		Collections.shuffle(unplayedSongs);
+
+		// Add to playlist
+		int count = Math.min(unplayedSongs.size(), n);
+		if (count > 0) {
+			List<IAudioObject> audioObjects = new ArrayList<IAudioObject>(
+					unplayedSongs.subList(0, count));
+			audioObjectComparator.sort(audioObjects);
+			playListHandler.addToVisiblePlayList(audioObjects);
+		}
+	}
 }
