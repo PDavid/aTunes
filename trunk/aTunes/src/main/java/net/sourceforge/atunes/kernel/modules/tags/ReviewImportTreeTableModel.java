@@ -67,12 +67,16 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 
 	/**
 	 * Constructor
+	 * 
 	 * @param folders
 	 * @param filesToImport
 	 * @param treeTable
 	 * @param tagAttributesReviewed
 	 */
-	public ReviewImportTreeTableModel(final List<File> folders, final List<ILocalAudioObject> filesToImport, final JXTreeTable treeTable, final TagAttributesReviewed tagAttributesReviewed) {
+	public ReviewImportTreeTableModel(final List<File> folders,
+			final List<ILocalAudioObject> filesToImport,
+			final JXTreeTable treeTable,
+			final TagAttributesReviewed tagAttributesReviewed) {
 		super(new DefaultMutableTreeTableNode(ROOT));
 		this.folders = folders;
 		this.audioFilesToImport = filesToImport;
@@ -86,7 +90,8 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 	 */
 	public void setCellEditors() {
 		for (int i = 0; i < this.tagAttributesReviewed.getTagAttributesCount(); i++) {
-			TableCellEditor cellEditor = this.tagAttributesReviewed.getCellEditorForTagAttribute(i);
+			TableCellEditor cellEditor = this.tagAttributesReviewed
+					.getCellEditorForTagAttribute(i);
 			if (cellEditor != null) {
 				this.treeTable.getColumnExt(i + 1).setCellEditor(cellEditor);
 			}
@@ -105,12 +110,14 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 	@Override
 	public Object getChild(final Object parent, final int index) {
 		if (isRoot((DefaultMutableTreeTableNode) parent)) {
-			return new DefaultMutableTreeTableNode(folders.get(index));
+			return new DefaultMutableTreeTableNode(this.folders.get(index));
 		}
 
-		File folder = ((File) ((DefaultMutableTreeTableNode) parent).getUserObject()).getAbsoluteFile();
-		if (foldersMap.containsKey(folder)) {
-			return new DefaultMutableTreeTableNode(foldersMap.get(folder).get(index));
+		File folder = ((File) ((DefaultMutableTreeTableNode) parent)
+				.getUserObject()).getAbsoluteFile();
+		if (this.foldersMap.containsKey(folder)) {
+			return new DefaultMutableTreeTableNode(this.foldersMap.get(folder)
+					.get(index));
 		}
 
 		File[] childFiles = folder.listFiles();
@@ -123,41 +130,45 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 
 		Collections.sort(childFolders);
 
-		foldersMap.put(folder, childFolders);
+		this.foldersMap.put(folder, childFolders);
 		return new DefaultMutableTreeTableNode(childFolders.get(index));
 	}
 
 	@Override
 	public int getChildCount(final Object parent) {
 		if (isRoot((DefaultMutableTreeTableNode) parent)) {
-			return folders.size();
+			return this.folders.size();
 		}
 
-		File folder = ((File) ((DefaultMutableTreeTableNode) parent).getUserObject()).getAbsoluteFile();
-		if (foldersMap.containsKey(folder)) {
-			return foldersMap.get(folder).size();
+		File folder = ((File) ((DefaultMutableTreeTableNode) parent)
+				.getUserObject()).getAbsoluteFile();
+		if (this.foldersMap.containsKey(folder)) {
+			return this.foldersMap.get(folder).size();
 		}
 
 		File[] childFiles = folder.listFiles();
 		List<File> childFolders = new ArrayList<File>();
-		for (File childFile : childFiles) {
-			if (childFile.isDirectory()) {
-				childFolders.add(childFile);
+		if (childFiles != null) {
+			for (File childFile : childFiles) {
+				if (childFile.isDirectory()) {
+					childFolders.add(childFile);
+				}
 			}
+			Collections.sort(childFolders);
 		}
 
-		Collections.sort(childFolders);
-
-		foldersMap.put(folder, childFolders);
+		this.foldersMap.put(folder, childFolders);
 		return childFolders.size();
 	}
 
 	@Override
 	public int getIndexOfChild(final Object parent, final Object child) {
-		File folder = ((File) ((DefaultMutableTreeTableNode) parent).getUserObject()).getAbsoluteFile();
-		File childFolder = ((File) ((DefaultMutableTreeTableNode) child).getUserObject()).getAbsoluteFile();
-		if (foldersMap.containsKey(folder)) {
-			return foldersMap.get(folder).indexOf(childFolder);
+		File folder = ((File) ((DefaultMutableTreeTableNode) parent)
+				.getUserObject()).getAbsoluteFile();
+		File childFolder = ((File) ((DefaultMutableTreeTableNode) child)
+				.getUserObject()).getAbsoluteFile();
+		if (this.foldersMap.containsKey(folder)) {
+			return this.foldersMap.get(folder).indexOf(childFolder);
 		}
 		return 0;
 	}
@@ -173,19 +184,22 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 			return I18nUtils.getString("FOLDER");
 		}
 
-		return I18nUtils.getString(this.getTagAttributesReviewed().getTagAttributeName(column - 1));
+		return I18nUtils.getString(this.getTagAttributesReviewed()
+				.getTagAttributeName(column - 1));
 	}
 
 	/**
-	 * Returns value of a tag attribute for a given LocalAudioObject at the given
-	 * column
+	 * Returns value of a tag attribute for a given LocalAudioObject at the
+	 * given column
 	 * 
 	 * @param column
 	 * @param audioFile
 	 * @return
 	 */
-	private String getValueForColumn(final int column, final ILocalAudioObject audioFile) {
-		return this.tagAttributesReviewed.getValueForTagAttribute(column - 1, audioFile);
+	private String getValueForColumn(final int column,
+			final ILocalAudioObject audioFile) {
+		return this.tagAttributesReviewed.getValueForTagAttribute(column - 1,
+				audioFile);
 	}
 
 	@Override
@@ -194,21 +208,23 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 			return "";
 		}
 
-		File folder = ((File) ((DefaultMutableTreeTableNode) node).getUserObject()).getAbsoluteFile();
+		File folder = ((File) ((DefaultMutableTreeTableNode) node)
+				.getUserObject()).getAbsoluteFile();
 		if (column == 0) {
-			if (folders.contains(folder)) {
+			if (this.folders.contains(folder)) {
 				return net.sourceforge.atunes.utils.FileUtils.getPath(folder);
 			}
 			return folder.getName();
 		}
 
-		String change = this.tagAttributesReviewed.getChangeForAttributeAndFolder(column - 1, folder);
+		String change = this.tagAttributesReviewed
+				.getChangeForAttributeAndFolder(column - 1, folder);
 		if (change != null) {
 			return change;
 		}
 
 		String value = "";
-		for (ILocalAudioObject audioFile : audioFilesToImport) {
+		for (ILocalAudioObject audioFile : this.audioFilesToImport) {
 			if (audioFile.getFile().getParentFile().equals(folder)) {
 				if (value.equals("")) {
 					value = getValueForColumn(column, audioFile);
@@ -232,26 +248,33 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 	}
 
 	@Override
-	public void setValueAt(final Object value, final Object node, final int column) {
+	public void setValueAt(final Object value, final Object node,
+			final int column) {
 		super.setValueAt(value, node, column);
-		File folder = ((File) ((DefaultMutableTreeTableNode) node).getUserObject()).getAbsoluteFile();
+		File folder = ((File) ((DefaultMutableTreeTableNode) node)
+				.getUserObject()).getAbsoluteFile();
 		recursiveFolderChange(column, folder, (String) value);
 		// If folder has childs then update UI to show recursive changes
-		if (!foldersMap.get(folder).isEmpty()) {
-			// Use repaint instead of updateUI since there are problems when using with combo box cell editors
-			treeTable.repaint();
+		if (!this.foldersMap.get(folder).isEmpty()) {
+			// Use repaint instead of updateUI since there are problems when
+			// using with combo box cell editors
+			this.treeTable.repaint();
 		}
 	}
 
 	/**
 	 * Sets value of column for given row (a folder)
+	 * 
 	 * @param row
 	 * @param tagAttributeName
 	 * @param value
 	 */
-	public void setValueForColumn(final int row, final String tagAttributeName, final String value) {
-		int column = this.tagAttributesReviewed.getTagAttributeIndex(tagAttributeName);
-		setValueAt(value, treeTable.getPathForRow(row).getLastPathComponent(), column + 1);
+	public void setValueForColumn(final int row, final String tagAttributeName,
+			final String value) {
+		int column = this.tagAttributesReviewed
+				.getTagAttributeIndex(tagAttributeName);
+		setValueAt(value, this.treeTable.getPathForRow(row)
+				.getLastPathComponent(), column + 1);
 	}
 
 	/**
@@ -261,9 +284,11 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 	 * @param folder
 	 * @param value
 	 */
-	private void recursiveFolderChange(final int column, final File folder, final String value) {
-		this.tagAttributesReviewed.setTagAttributeForFolder(column - 1, folder, value);
-		for (File childFolder : foldersMap.get(folder)) {
+	private void recursiveFolderChange(final int column, final File folder,
+			final String value) {
+		this.tagAttributesReviewed.setTagAttributeForFolder(column - 1, folder,
+				value);
+		for (File childFolder : this.foldersMap.get(folder)) {
 			recursiveFolderChange(column, childFolder, value);
 		}
 	}
@@ -272,6 +297,6 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 	 * @return the tagAttributesReviewed
 	 */
 	public ITagAttributesReviewed getTagAttributesReviewed() {
-		return tagAttributesReviewed;
+		return this.tagAttributesReviewed;
 	}
 }
