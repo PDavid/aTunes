@@ -61,10 +61,13 @@ public class TrackInfoTableCellRendererCode extends
 	public JLabel getComponent(final JLabel superComponent, final JTable t,
 			final ITrackInfo value, final boolean isSelected,
 			final boolean hasFocus, final int row, final int column) {
-		superComponent.setText(value.getTitle());
-		this.controlsBuilder.applyComponentOrientation(superComponent);
-		if (!value.isAvailable()) {
-			superComponent.setForeground(this.unknownElementForegroundColor);
+		if (value != null) {
+			superComponent.setText(value.getTitle());
+			this.controlsBuilder.applyComponentOrientation(superComponent);
+			if (!value.isAvailable()) {
+				superComponent
+						.setForeground(this.unknownElementForegroundColor);
+			}
 		}
 		return superComponent;
 	}
