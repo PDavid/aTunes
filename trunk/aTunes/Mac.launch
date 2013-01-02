@@ -11,5 +11,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="debug simulate-cd multiple-instance"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="aTunes"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.sourcepathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dinsubstantial.looseTableCellRenderers=true -Datunes.package=$APP_PACKAGE -Dapple.laf.useScreenMenuBar=true -Dapple.awt.showGrowBox=true -Dcom.apple.mrj.application.apple.menu.about.name=aTunes -Dcom.apple.mrj.application.growbox.intrudes=false -Dcom.apple.mrj.application.live-resize=true -Dcom.apple.macos.smallTabs=true"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dsubstancelaf.windowRoundedCorners=false -Dinsubstantial.looseTableCellRenderers=true -Datunes.package=$APP_PACKAGE -Dapple.laf.useScreenMenuBar=true -Dapple.awt.showGrowBox=true -Dcom.apple.mrj.application.apple.menu.about.name=aTunes -Dcom.apple.mrj.application.growbox.intrudes=false -Dcom.apple.mrj.application.live-resize=true -Dcom.apple.macos.smallTabs=true"/>
 </launchConfiguration>

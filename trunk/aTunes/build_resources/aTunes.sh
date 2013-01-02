@@ -27,4 +27,4 @@ do
   args="$args \"$arg\""
 done
 
-java -Dinsubstantial.looseTableCellRenderers=true -Djava.library.path=./ -Xms128m -Xmx256m -splash:splash.gif -cp aTunes.jar:lib/* net.sourceforge.atunes.Main $args
+java -Dsubstancelaf.windowRoundedCorners=false -Dinsubstantial.looseTableCellRenderers=true -Djava.library.path=./ -Xms128m -Xmx256m -splash:splash.gif -cp aTunes.jar:lib/* net.sourceforge.atunes.Main $args
