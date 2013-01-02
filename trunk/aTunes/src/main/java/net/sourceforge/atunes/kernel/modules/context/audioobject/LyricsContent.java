@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.JMenu;
@@ -81,7 +82,7 @@ public class LyricsContent extends
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
@@ -104,35 +105,36 @@ public class LyricsContent extends
 	 * Constructor
 	 */
 	public LyricsContent() {
-		copyLyrics = new JMenuItem(new AbstractAction(
+		this.copyLyrics = new JMenuItem(new AbstractAction(
 				I18nUtils.getString("COPY_TO_CLIPBOARD")) {
 
 			private static final long serialVersionUID = -851267486478098295L;
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				String sLyric = lyricsContainer.getText();
+				String sLyric = LyricsContent.this.lyricsContainer.getText();
 				if (sLyric == null) {
 					sLyric = "";
 				}
-				clipboard.copyToClipboard(sLyric);
+				LyricsContent.this.clipboard.copyToClipboard(sLyric);
 			}
 		});
-		addLyrics = new JMenu(I18nUtils.getString("ADD_LYRICS"));
-		openLyrics = new JMenuItem(new AbstractAction(
+		this.addLyrics = new JMenu(I18nUtils.getString("ADD_LYRICS"));
+		this.openLyrics = new JMenuItem(new AbstractAction(
 				I18nUtils.getString("OPEN_LYRICS_SOURCE")) {
 
 			private static final long serialVersionUID = 9043861642969889713L;
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				if (lyricsSourceUrl != null
-						&& !lyricsSourceUrl.trim().isEmpty()) {
-					getDesktop().openURL(lyricsSourceUrl);
+				if (LyricsContent.this.lyricsSourceUrl != null
+						&& !LyricsContent.this.lyricsSourceUrl.trim().isEmpty()) {
+					getDesktop().openURL(LyricsContent.this.lyricsSourceUrl);
 				} else {
-					if (audioObject instanceof ILocalAudioObject) {
-						tagHandler.editFiles(EditTagSources.NAVIGATOR,
-								Arrays.asList((ILocalAudioObject) audioObject));
+					if (LyricsContent.this.audioObject instanceof ILocalAudioObject) {
+						LyricsContent.this.tagHandler.editFiles(
+								EditTagSources.NAVIGATOR,
+								Arrays.asList((ILocalAudioObject) LyricsContent.this.audioObject));
 					}
 				}
 			}
@@ -143,40 +145,51 @@ public class LyricsContent extends
 	public void updateContentFromDataSource(final LyricsDataSource source) {
 		this.audioObject = source.getAudioObject();
 		ILyrics lyrics = source.getLyrics();
-		lyricsContainer.setText(lyrics != null ? lyrics.getLyrics() : null);
-		lyricsContainer.setCaretPosition(0);
+		this.lyricsContainer
+				.setText(lyrics != null ? lyrics.getLyrics() : null);
+		this.lyricsContainer.setCaretPosition(0);
 
 		boolean lyricsNotEmpty = lyrics != null
 				&& !lyrics.getLyrics().trim().isEmpty();
-		copyLyrics.setEnabled(lyricsNotEmpty);
-		addLyrics.setEnabled(!lyricsNotEmpty);
-		lyricsSourceUrl = lyrics != null ? lyrics.getUrl() : null;
-		openLyrics.setEnabled(lyricsNotEmpty);
+		this.copyLyrics.setEnabled(lyricsNotEmpty);
+		this.addLyrics.setEnabled(!lyricsNotEmpty);
+		this.lyricsSourceUrl = lyrics != null ? lyrics.getUrl() : null;
+		this.openLyrics.setEnabled(lyricsNotEmpty);
 		if (!lyricsNotEmpty) {
-			addLyrics.removeAll();
-			for (final Entry<String, String> entry : lyricsService
-					.getUrlsForAddingNewLyrics(
-							audioObject.getArtist(unknownObjectChecker),
-							audioObject.getTitle()).entrySet()) {
-				JMenuItem mi = new JMenuItem(entry.getKey());
-				mi.addActionListener(new OpenUrlActionListener(entry,
-						getDesktop()));
-				addLyrics.add(mi);
+			this.addLyrics.removeAll();
+			if (this.audioObject != null) {
+				// Can be null due to race condition when clearing context panel
+				for (final Entry<String, String> entry : getUrlsForAddingNewLyrics()) {
+					JMenuItem mi = new JMenuItem(entry.getKey());
+					mi.addActionListener(new OpenUrlActionListener(entry,
+							getDesktop()));
+					this.addLyrics.add(mi);
+				}
 			}
-			addLyrics.setEnabled(addLyrics.getMenuComponentCount() > 0);
+			this.addLyrics
+					.setEnabled(this.addLyrics.getMenuComponentCount() > 0);
 		}
+	}
+
+	/**
+	 * @return
+	 */
+	private Set<Entry<String, String>> getUrlsForAddingNewLyrics() {
+		return this.lyricsService.getUrlsForAddingNewLyrics(
+				this.audioObject.getArtist(this.unknownObjectChecker),
+				this.audioObject.getTitle()).entrySet();
 	}
 
 	@Override
 	public void clearContextPanelContent() {
 		super.clearContextPanelContent();
-		lyricsContainer.setText(null);
-		copyLyrics.setEnabled(false);
-		addLyrics.setEnabled(false);
-		addLyrics.removeAll();
-		openLyrics.setEnabled(false);
-		lyricsSourceUrl = null;
-		audioObject = null;
+		this.lyricsContainer.setText(null);
+		this.copyLyrics.setEnabled(false);
+		this.addLyrics.setEnabled(false);
+		this.addLyrics.removeAll();
+		this.openLyrics.setEnabled(false);
+		this.lyricsSourceUrl = null;
+		this.audioObject = null;
 	}
 
 	@Override
@@ -186,20 +199,20 @@ public class LyricsContent extends
 
 	@Override
 	public Component getComponent() {
-		lyricsContainer = controlsBuilder
+		this.lyricsContainer = this.controlsBuilder
 				.createTextPane(StyleConstants.ALIGN_CENTER);
-		lyricsContainer.setBorder(null);
-		lyricsContainer.setEditable(false);
-		lyricsContainer.setOpaque(false);
-		return lyricsContainer;
+		this.lyricsContainer.setBorder(null);
+		this.lyricsContainer.setEditable(false);
+		this.lyricsContainer.setOpaque(false);
+		return this.lyricsContainer;
 	}
 
 	@Override
 	public List<Component> getOptions() {
 		List<Component> options = new ArrayList<Component>();
-		options.add(copyLyrics);
-		options.add(addLyrics);
-		options.add(openLyrics);
+		options.add(this.copyLyrics);
+		options.add(this.addLyrics);
+		options.add(this.openLyrics);
 		return options;
 	}
 
