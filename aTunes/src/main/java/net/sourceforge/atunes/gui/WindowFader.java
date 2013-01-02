@@ -32,118 +32,120 @@ import javax.swing.Timer;
  */
 public class WindowFader {
 
-    private final WeakReference<Window> window;
-    private Timer fadeInTimer;
-    private Timer fadeOutTimer;
-    private int currentOpacity;
-    private final int duration;
+	private final WeakReference<Window> window;
+	private Timer fadeInTimer;
+	private Timer fadeOutTimer;
+	private int currentOpacity;
+	private final int duration;
 
-    /**
-     * @param window
-     * @param duration
-     */
-    public WindowFader(final Window window, final int duration) {
-	this.window = new WeakReference<Window>(window);
-	this.duration = duration;
-    }
-
-    /**
-     * Starts the fade-in of the window
-     */
-    public void fadeIn() {
-	stop();
-	Window w = window.get();
-	if (w != null) {
-	    GuiUtils.setWindowOpacity(w, currentOpacity / 100.0f);
-	    w.setVisible(true);
+	/**
+	 * @param window
+	 * @param duration
+	 */
+	public WindowFader(final Window window, final int duration) {
+		this.window = new WeakReference<Window>(window);
+		this.duration = duration;
 	}
-	fadeInTimer = new Timer(duration, new ActionListener() {
 
-	    @Override
-	    public void actionPerformed(final ActionEvent e) {
-		currentOpacity += 20;
-		if (currentOpacity <= 100) {
-		    Window w = window.get();
-		    if (w != null) {
-			GuiUtils.setWindowOpacity(w, currentOpacity / 100.0f);
-			w.repaint();
-		    }
-		} else {
-		    fadeInFinished();
-		    currentOpacity = 100;
-		    fadeInTimer.stop();
+	/**
+	 * Starts the fade-in of the window
+	 */
+	public void fadeIn() {
+		stop();
+		Window w = this.window.get();
+		if (w != null) {
+			GuiUtils.setWindowOpacity(w, this.currentOpacity / 100.0f);
+			w.setVisible(true);
 		}
-	    }
+		this.fadeInTimer = new Timer(this.duration, new ActionListener() {
 
-	});
-	fadeInTimer.setRepeats(true);
-	fadeInTimer.start();
-    }
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				WindowFader.this.currentOpacity += 20;
+				if (WindowFader.this.currentOpacity <= 100) {
+					Window w = WindowFader.this.window.get();
+					if (w != null) {
+						GuiUtils.setWindowOpacity(w,
+								WindowFader.this.currentOpacity / 100.0f);
+						w.repaint();
+					}
+				} else {
+					fadeInFinished();
+					WindowFader.this.currentOpacity = 100;
+					WindowFader.this.fadeInTimer.stop();
+				}
+			}
 
-    /**
-     * Starts the fade-out of the window
-     */
-    public void fadeOut() {
-	stop();
-	fadeOutTimer = new Timer(duration, new ActionListener() {
+		});
+		this.fadeInTimer.setRepeats(true);
+		this.fadeInTimer.start();
+	}
 
-	    @Override
-	    public void actionPerformed(final ActionEvent e) {
-		currentOpacity -= 10;
-		if (currentOpacity >= 0) {
-		    Window w = window.get();
-		    if (w != null) {
-			GuiUtils.setWindowOpacity(w, currentOpacity / 100.0f);
-			w.repaint();
-		    }
-		} else {
-		    fadeOutFinished();
-		    fadeOutTimer.stop();
-		    currentOpacity = 0;
+	/**
+	 * Starts the fade-out of the window
+	 */
+	public void fadeOut() {
+		stop();
+		this.fadeOutTimer = new Timer(this.duration, new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				WindowFader.this.currentOpacity -= 10;
+				if (WindowFader.this.currentOpacity >= 0) {
+					Window w = WindowFader.this.window.get();
+					if (w != null) {
+						GuiUtils.setWindowOpacity(w,
+								WindowFader.this.currentOpacity / 100.0f);
+						w.repaint();
+					}
+				} else {
+					fadeOutFinished();
+					WindowFader.this.fadeOutTimer.stop();
+					WindowFader.this.currentOpacity = 0;
+				}
+			}
+
+		});
+		this.fadeOutTimer.setRepeats(true);
+		this.fadeOutTimer.start();
+	}
+
+	protected void fadeOutFinished() {
+		Window w = this.window.get();
+		if (w != null) {
+			w.dispose();
 		}
-	    }
-
-	});
-	fadeOutTimer.setRepeats(true);
-	fadeOutTimer.start();
-    }
-
-    protected void fadeOutFinished() {
-	Window w = window.get();
-	if (w != null) {
-	    w.dispose();
-	}
-    }
-
-    protected void fadeInFinished() {
-    }
-
-    /**
-     * Stops all fading effects
-     */
-    private void stop() {
-	if (fadeInTimer != null) {
-	    fadeInTimer.stop();
-	    fadeInTimer = null;
-	}
-	if (fadeOutTimer != null) {
-	    fadeOutTimer.stop();
-	    fadeOutTimer = null;
-	}
-    }
-
-    /**
-     * Stops all fading effects and disposes window
-     */
-    public void clear() {
-	stop();
-	currentOpacity = 0;
-	Window w = window.get();
-	if (w != null) {
-	    GuiUtils.setWindowOpacity(w, 1);
-	    w.dispose();
 	}
 
-    }
+	protected void fadeInFinished() {
+	}
+
+	/**
+	 * Stops all fading effects
+	 */
+	private void stop() {
+		if (this.fadeInTimer != null) {
+			this.fadeInTimer.stop();
+			this.fadeInTimer = null;
+		}
+		if (this.fadeOutTimer != null) {
+			this.fadeOutTimer.stop();
+			this.fadeOutTimer = null;
+		}
+	}
+
+	/**
+	 * Stops all fading effects and disposes window
+	 */
+	public void clear() {
+		stop();
+		this.currentOpacity = 0;
+		Window w = this.window.get();
+		if (w != null) {
+			GuiUtils.setWindowOpacity(w, 1);
+			w.dispose();
+		}
+
+	}
 
 }
