@@ -5,6 +5,7 @@ aTunes 3.0.2
 - FIX: Add random songs fails if repository not loaded or empty
 - FIX: Disabled rounded corners with Substance as seem to cause problems with early 1.6.0 virtual machines (3.0.1 fix not working)
 - FIX: Problem when importing files from a Windows system folder with no childs
+- FIX: Problem with modal dialogs in Linux
 
 aTunes 3.0.1
 ------------
