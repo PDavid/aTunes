@@ -23,6 +23,8 @@ package net.sourceforge.atunes.kernel.modules.radio;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.tree.TreePath;
+
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
 
@@ -34,33 +36,39 @@ import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
  */
 final class RadioBrowserDialogListener extends MouseAdapter {
 
-    /** The radio browser dialog. */
-    private RadioBrowserDialog radioBrowserDialog;
-    
-    private IRadioHandler radioHandler;
+	/** The radio browser dialog. */
+	private final RadioBrowserDialog radioBrowserDialog;
 
-    /**
-     * Instantiates a new radio browser dialog listener.
-     * 
-     * @param radioBrowserDialog
-     * @param radioHandler
-     */
-    RadioBrowserDialogListener(RadioBrowserDialog radioBrowserDialog, IRadioHandler radioHandler) {
-        this.radioBrowserDialog = radioBrowserDialog;
-        this.radioHandler = radioHandler;
-    }
+	private final IRadioHandler radioHandler;
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        if (e.getSource() == radioBrowserDialog.getTreeTable()) {
-            JXTreeTable treeTable = radioBrowserDialog.getTreeTable();
-            if (e.getClickCount() == 2) {
-            	Object objectSelected = ((DefaultMutableTreeTableNode) treeTable.getPathForLocation(e.getX(), e.getY()).getLastPathComponent()).getUserObject();
-            	if (objectSelected instanceof IRadio) {
-            		// User selected a radio (not a label node or row)
-            		radioHandler.addRadio((IRadio) objectSelected);
-            	}
-            }
-        }
-    }
+	/**
+	 * Instantiates a new radio browser dialog listener.
+	 * 
+	 * @param radioBrowserDialog
+	 * @param radioHandler
+	 */
+	RadioBrowserDialogListener(final RadioBrowserDialog radioBrowserDialog,
+			final IRadioHandler radioHandler) {
+		this.radioBrowserDialog = radioBrowserDialog;
+		this.radioHandler = radioHandler;
+	}
+
+	@Override
+	public void mousePressed(final MouseEvent e) {
+		if (e.getSource() == this.radioBrowserDialog.getTreeTable()) {
+			JXTreeTable treeTable = this.radioBrowserDialog.getTreeTable();
+			if (e.getClickCount() == 2) {
+				TreePath path = treeTable
+						.getPathForLocation(e.getX(), e.getY());
+				if (path != null) {
+					Object objectSelected = ((DefaultMutableTreeTableNode) path
+							.getLastPathComponent()).getUserObject();
+					if (objectSelected instanceof IRadio) {
+						// User selected a radio (not a label node or row)
+						this.radioHandler.addRadio((IRadio) objectSelected);
+					}
+				}
+			}
+		}
+	}
 }
