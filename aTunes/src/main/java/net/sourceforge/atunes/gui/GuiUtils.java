@@ -423,6 +423,15 @@ public final class GuiUtils {
 	}
 
 	/**
+	 * Executes a code in Event Dispatch Thread after all pending events
+	 * 
+	 * @param runnable
+	 */
+	public static void callInEventDispatchThreadLater(final Runnable runnable) {
+		SwingUtilities.invokeLater(runnable);
+	}
+
+	/**
 	 * Executes a code in Event Dispatch Thread, waiting for finalization
 	 * 
 	 * @param runnable
