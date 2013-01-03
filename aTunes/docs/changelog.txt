@@ -1,3 +1,7 @@
+aTunes 3.0.3
+------------
+- More heap size for Mac OS X version
+
 aTunes 3.0.2
 ------------
 - FIX: Error with modal dialogs in Linux
