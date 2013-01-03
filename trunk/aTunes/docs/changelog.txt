@@ -1,6 +1,7 @@
 aTunes 3.0.3
 ------------
 - More heap size for Mac OS X version
+- FIX: Error when changing look and feel sin in Windows with Java 1.7.X
 
 aTunes 3.0.2
 ------------

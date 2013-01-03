@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -216,7 +217,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 
 		lookAndFeel = getLookAndFeelComboBox();
 
-		skin = new JComboBox();
+		skin = new JComboBox(new DefaultComboBoxModel());
 		skin.addItemListener(new ApplySkinActionListener());
 		List<ImageEntry<Class<? extends IFrame>>> data = new ArrayList<ImageEntry<Class<? extends IFrame>>>();
 		for (Class<? extends IFrame> clazz : frameTypes.getFrames()) {
@@ -227,7 +228,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 				data);
 
 		JScrollPane sp = lookAndFeelManager.getCurrentLookAndFeel()
-				.getScrollPane(windowTypeChoosingPanel);
+		.getScrollPane(windowTypeChoosingPanel);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getVerticalScrollBar().setUnitIncrement(20);
 
@@ -247,8 +248,8 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 					if (!currentLookAndFeelIsSelected()) {
 						updateSkins((String) lookAndFeel.getSelectedItem(),
 								lookAndFeelManager
-										.getDefaultSkin((String) lookAndFeel
-												.getSelectedItem()));
+								.getDefaultSkin((String) lookAndFeel
+										.getSelectedItem()));
 
 					} else {
 						if (skinApplied != null) {
@@ -264,8 +265,8 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 
 			private boolean currentLookAndFeelIsSelected() {
 				return GeneralPanel.this.lookAndFeelManager
-						.getCurrentLookAndFeelName().equals(
-								lookAndFeel.getSelectedItem());
+				.getCurrentLookAndFeelName().equals(
+						lookAndFeel.getSelectedItem());
 			}
 		});
 
@@ -282,22 +283,22 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				FontChooserDialog fontChooserDialog = dialogFactory
-						.newDialog(FontChooserDialog.class);
+				.newDialog(FontChooserDialog.class);
 				fontChooserDialog.initializeFont(
 						currentFontSettings != null ? currentFontSettings
 								.getFont().toFont()
 								: GeneralPanel.this.lookAndFeelManager
-										.getCurrentLookAndFeel()
-										.getDefaultFont(),
-						currentFontSettings != null ? currentFontSettings
-								.isUseFontSmoothing() : true,
-						currentFontSettings != null ? currentFontSettings
-								.isUseFontSmoothingSettingsFromOs() : false,
-						stateCore.getLocale().getLocale());
+								.getCurrentLookAndFeel()
+								.getDefaultFont(),
+								currentFontSettings != null ? currentFontSettings
+										.isUseFontSmoothing() : true,
+										currentFontSettings != null ? currentFontSettings
+												.isUseFontSmoothingSettingsFromOs() : false,
+												stateCore.getLocale().getLocale());
 				fontChooserDialog.showDialog();
 				if (fontChooserDialog.getSelectedFontSettings() != null) {
 					currentFontSettings = fontChooserDialog
-							.getSelectedFontSettings();
+					.getSelectedFontSettings();
 				}
 			}
 		});
@@ -443,7 +444,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 
 		Class<? extends IFrame> oldFrameClass = stateUI.getFrameClass();
 		Class<? extends IFrame> newFrameClass = windowTypeChoosingPanel
-				.getSelectedItem();
+		.getSelectedItem();
 		stateUI.setFrameClass(newFrameClass);
 		if (!oldFrameClass.equals(newFrameClass)) {
 			needRestart = true;
@@ -451,7 +452,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 
 		ILocaleBean oldLocale = stateCore.getLocale();
 		ILocaleBean newLocale = localeBeanFactory
-				.getLocaleBean((Locale) language.getSelectedItem());
+		.getLocaleBean((Locale) language.getSelectedItem());
 		stateCore.setLocale(newLocale);
 		if (!oldLocale.equals(newLocale)) {
 			needRestart = true;
@@ -557,24 +558,24 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 		setShowTrayPlayer(stateUI.isShowTrayPlayer());
 		// If look and feel is not available then set default
 		String lookAndFeelName = lookAndFeelManager.getAvailableLookAndFeels()
-				.contains(stateUI.getLookAndFeel().getName()) ? stateUI
+		.contains(stateUI.getLookAndFeel().getName()) ? stateUI
 				.getLookAndFeel().getName() : lookAndFeelManager
 				.getDefaultLookAndFeel().getName();
-		setLookAndFeel(lookAndFeelName);
+				setLookAndFeel(lookAndFeelName);
 
-		String skinName = stateUI.getLookAndFeel().getSkin() != null ? stateUI
-				.getLookAndFeel().getSkin() : lookAndFeelManager
-				.getDefaultSkin(lookAndFeelName);
-		updateSkins(lookAndFeelName, skinName);
+				String skinName = stateUI.getLookAndFeel().getSkin() != null ? stateUI
+						.getLookAndFeel().getSkin() : lookAndFeelManager
+						.getDefaultSkin(lookAndFeelName);
+						updateSkins(lookAndFeelName, skinName);
 
-		currentFontSettings = stateUI.getFontSettings();
+						currentFontSettings = stateUI.getFontSettings();
 	}
 
 	@Override
 	public void resetImmediateChanges() {
 		if (stateUI.getLookAndFeel().getSkin() == null
 				|| !stateUI.getLookAndFeel().getSkin()
-						.equals(skin.getSelectedItem())) {
+				.equals(skin.getSelectedItem())) {
 			lookAndFeelManager.applySkin(stateUI.getLookAndFeel().getSkin(),
 					stateCore, stateUI, osManager);
 		}
@@ -603,14 +604,14 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 		skin.setEnabled(false);
 
 		List<String> availableSkins = lookAndFeelManager
-				.getAvailableSkins(selectedLookAndFeel);
+		.getAvailableSkins(selectedLookAndFeel);
 
-		ListComboBoxModel<String> model = new ListComboBoxModel<String>(
-				availableSkins != null ? availableSkins
-						: new ArrayList<String>());
-		skin.setModel(model);
+		((DefaultComboBoxModel)skin.getModel()).removeAllElements();
 		if (availableSkins != null) {
-			skin.setSelectedItem(selectedSkin);
+			for (String availableSkin : availableSkins) {
+				((DefaultComboBoxModel)skin.getModel()).addElement(availableSkin);			
+			}
+			skin.getModel().setSelectedItem(selectedSkin);
 		} else {
 			skin.setSelectedIndex(-1);
 		}
@@ -624,12 +625,12 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 			if (e.getStateChange() == ItemEvent.SELECTED && skin.isEnabled()) {
 				final String selectedSkin = (String) skin.getSelectedItem();
 				boolean isCurrentLookAndFeel = lookAndFeelManager
-						.getCurrentLookAndFeelName().equals(
-								lookAndFeel.getSelectedItem());
+				.getCurrentLookAndFeelName().equals(
+						lookAndFeel.getSelectedItem());
 				if (isCurrentLookAndFeel) {
 					// Finish all pending Swing events before updating skin to
 					// avoid weird Swing exceptions
-					GuiUtils.callInEventDispatchThread(new Runnable() {
+					GuiUtils.callInEventDispatchThreadLater(new Runnable() {
 						@Override
 						public void run() {
 							lookAndFeelManager.applySkin(selectedSkin,
