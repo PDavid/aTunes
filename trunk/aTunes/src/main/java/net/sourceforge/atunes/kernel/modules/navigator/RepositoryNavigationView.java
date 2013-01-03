@@ -1,6 +1,6 @@
 /*
- * aTunes 3.1.0
- * Copyright (C) 2006-2011 Alex Aranda, Sylvain Gaudard and contributors
+ * aTunes
+ * Copyright (C) Alex Aranda, Sylvain Gaudard and contributors
  *
  * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
  *
