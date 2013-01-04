@@ -63,11 +63,15 @@ public class MakeDonationAction extends CustomAbstractAction {
 
 	@Override
 	protected void executeAction() {
+		StartCounter startCounter = this.beanFactory
+				.getBean(StartCounter.class);
 		MakeDonationDialog dialog = this.dialogFactory
 				.newDialog(MakeDonationDialog.class);
+		dialog.setShowOptionToNotShowAgain(!startCounter
+				.isFirstTimeActionFired());
 		dialog.showDialog();
 		if (dialog.isDontShowAgain()) {
-			this.beanFactory.getBean(StartCounter.class).dontFireActionAgain();
+			startCounter.dontFireActionAgain();
 		}
 	}
 }

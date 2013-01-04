@@ -20,10 +20,12 @@
 
 package net.sourceforge.atunes.model;
 
+import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
 
 import javax.swing.JFileChooser;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -156,4 +158,11 @@ public interface IControlsBuilder {
 	 */
 	JFileChooser getFileChooser(String path);
 
+	/**
+	 * Returns scroll pane with special look and feel settings
+	 * 
+	 * @param component
+	 * @return
+	 */
+	JScrollPane getScrollPane(Component component);
 }

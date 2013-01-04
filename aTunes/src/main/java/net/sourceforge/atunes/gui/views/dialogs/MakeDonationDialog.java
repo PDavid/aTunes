@@ -33,6 +33,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import net.sourceforge.atunes.gui.images.Images;
@@ -55,6 +56,8 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 
 	private boolean dontShowAgain;
 
+	private boolean showOptionToNotShowAgain;
+
 	/**
 	 * Instantiates a new repository selection info dialog.
 	 * 
@@ -64,6 +67,14 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 	public MakeDonationDialog(final IFrame frame,
 			final IControlsBuilder controlsBuilder) {
 		super(frame, 500, 350, controlsBuilder);
+	}
+
+	/**
+	 * @param showOptionToNotShowAgain
+	 */
+	public void setShowOptionToNotShowAgain(
+			final boolean showOptionToNotShowAgain) {
+		this.showOptionToNotShowAgain = showOptionToNotShowAgain;
 	}
 
 	/**
@@ -84,7 +95,14 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 	public void initialize() {
 		setResizable(false);
 		setTitle(I18nUtils.getString("MAKE_DONATION"));
+	}
+
+	@Override
+	public void showDialog() {
+		// Set content when showing dialog to set visible controls depending on
+		// showOptionToNotShowAgain
 		setContent();
+		super.showDialog();
 	}
 
 	/**
@@ -100,6 +118,8 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 		text.setWrapStyleWord(true);
 		text.setLineWrap(true);
 		text.setBorder(BorderFactory.createEmptyBorder());
+		JScrollPane scrollPane = getControlsBuilder().getScrollPane(text);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		JLabel donateButton = new JLabel(
 				Images.getImage(Images.PROJECT_SUPPORT));
 		donateButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -130,21 +150,24 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 		c.weightx = 1;
 		c.fill = GridBagConstraints.BOTH;
 		c.insets = new Insets(20, 0, 20, 20);
-		panel.add(text, c);
+		c.weighty = 1;
+		panel.add(scrollPane, c);
 		c.gridx = 0;
 		c.gridy = 2;
 		c.gridwidth = 2;
 		c.anchor = GridBagConstraints.CENTER;
-		c.insets = new Insets(0, 0, 0, 0);
-		c.weighty = 1;
+		c.insets = !this.showOptionToNotShowAgain ? new Insets(0, 0, 40, 0)
+				: new Insets(0, 0, 0, 0);
+		c.weighty = 0;
 		panel.add(donateButton, c);
 		c.gridy = 3;
-		c.weighty = 0;
 		c.weightx = 0;
 		c.fill = GridBagConstraints.NONE;
 		c.insets = new Insets(20, 0, 20, 0);
 		panel.add(dontShowAgain, c);
 		add(panel);
+
+		dontShowAgain.setVisible(this.showOptionToNotShowAgain);
 	}
 
 	/**

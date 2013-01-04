@@ -190,6 +190,13 @@ public final class StartCounter {
 	}
 
 	/**
+	 * @return if it's the first time the action must be fired
+	 */
+	public boolean isFirstTimeActionFired() {
+		return this.counter == this.counterLevelNeededToFireAction;
+	}
+
+	/**
 	 * @return
 	 */
 	private boolean isDontFireActionAgain() {
