@@ -318,9 +318,12 @@ public interface ILookAndFeel {
 	/**
 	 * Returns scroll pane with special look and feel settings
 	 * 
+	 * @deprecated only call this method from ControlsBuilder
+	 * 
 	 * @param component
 	 * @return
 	 */
+	@Deprecated
 	public JScrollPane getScrollPane(Component component);
 
 	/**

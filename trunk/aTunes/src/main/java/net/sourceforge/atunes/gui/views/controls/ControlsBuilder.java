@@ -31,6 +31,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -316,6 +317,12 @@ public class ControlsBuilder implements IControlsBuilder {
 	@Override
 	public JFileChooser getFileChooser(final String path) {
 		return new CustomFileChooser(path);
+	}
+
+	@Override
+	public JScrollPane getScrollPane(final Component component) {
+		return this.lookAndFeelManager.getCurrentLookAndFeel().getScrollPane(
+				component);
 	}
 
 	private class CustomFileChooser extends JFileChooser {
