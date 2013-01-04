@@ -98,7 +98,8 @@ public final class NavigationTree extends JTree implements DragSourceListener,
 			}
 			TransferableList<Object> items = new TransferableList<Object>(
 					itemsToDrag);
-			dragSource.startDrag(dge, DragSource.DefaultCopyDrop, items, this);
+			this.dragSource.startDrag(dge, DragSource.DefaultCopyDrop, items,
+					this);
 		}
 	}
 
@@ -116,8 +117,8 @@ public final class NavigationTree extends JTree implements DragSourceListener,
 	 * Sets the drag source.
 	 */
 	private void setDragSource() {
-		dragSource = new DragSource();
-		dragSource.createDefaultDragGestureRecognizer(this,
+		this.dragSource = new DragSource();
+		this.dragSource.createDefaultDragGestureRecognizer(this,
 				DnDConstants.ACTION_COPY, this);
 	}
 
@@ -177,7 +178,12 @@ public final class NavigationTree extends JTree implements DragSourceListener,
 
 	@Override
 	public void expandNode(final ITreeNode node) {
-		expandPath(new TreePath(node.getNode().getPath()));
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				expandPath(new TreePath(node.getNode().getPath()));
+			}
+		});
 	}
 
 	@Override
