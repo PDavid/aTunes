@@ -310,7 +310,12 @@ public final class LookAndFeelManager implements PluginListener,
 		bean.setSkin(selectedSkin);
 		setLookAndFeel(bean, stateCore, stateUI, osManager);
 		for (Window window : Window.getWindows()) {
-			SwingUtilities.updateComponentTreeUI(window);
+			// Only update displayable windows
+			// References to disposed windows (not displayable) are kept so
+			// calling to update those windows can throw exceptions or errors
+			if (window.isDisplayable()) {
+				SwingUtilities.updateComponentTreeUI(window);
+			}
 		}
 		// Notify listeners
 		for (ILookAndFeelChangeListener listener : getChangeListeners()) {

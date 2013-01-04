@@ -3,6 +3,7 @@ aTunes 3.0.3
 - More heap size for Mac OS X version
 - FIX: Error when changing look and feel sin in Windows with Java 1.7.X
 - FIX: Radio navigator not controlling clicking out of table bounds
+- FIX: Only update displayable windows when changing look and feel skin
 
 aTunes 3.0.2
 ------------
