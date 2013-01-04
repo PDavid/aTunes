@@ -47,7 +47,6 @@ import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IReviewImportDialog;
 import net.sourceforge.atunes.model.IStateRepository;
@@ -156,7 +155,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 	@Override
 	public void initialize() {
 		setTitle(I18nUtils.getString("REVIEW_TAGS"));
-		setContent(getLookAndFeel());
+		setContent();
 	}
 
 	/**
@@ -176,7 +175,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 	/**
 	 * Sets the content.
 	 */
-	private void setContent(final ILookAndFeel lookAndFeel) {
+	private void setContent() {
 		JPanel panel = new JPanel(new GridBagLayout());
 		this.treeTable = new JXTreeTable();
 		this.treeTable
@@ -232,7 +231,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 					}
 				});
 
-		arrangePanel(lookAndFeel, panel, topPanel, okButton, cancelButton,
+		arrangePanel(panel, topPanel, okButton, cancelButton,
 				fillTagsFromFolderName);
 
 		addWindowListener(new WindowAdapter() {
@@ -244,16 +243,15 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 	}
 
 	/**
-	 * @param lookAndFeel
 	 * @param panel
 	 * @param topPanel
 	 * @param okButton
 	 * @param cancelButton
 	 * @param fillTagsFromFolderName
 	 */
-	private void arrangePanel(final ILookAndFeel lookAndFeel,
-			final JPanel panel, final JPanel topPanel, final JButton okButton,
-			final JButton cancelButton, final JButton fillTagsFromFolderName) {
+	private void arrangePanel(final JPanel panel, final JPanel topPanel,
+			final JButton okButton, final JButton cancelButton,
+			final JButton fillTagsFromFolderName) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -264,7 +262,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 		panel.add(topPanel, c);
 		c.gridy = 1;
 		c.weighty = 1;
-		panel.add(lookAndFeel.getScrollPane(this.treeTable), c);
+		panel.add(getControlsBuilder().getScrollPane(this.treeTable), c);
 		c.gridy = 2;
 		c.weightx = 0;
 		c.weighty = 0;
