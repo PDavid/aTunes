@@ -32,44 +32,54 @@ import net.sourceforge.atunes.kernel.modules.search.SearchHandler.LogicalOperato
 /**
  * This class controls selection events in complex rules tree.
  */
-public final class ComplexTreeSelectionListener implements TreeSelectionListener {
+public final class ComplexTreeSelectionListener implements
+		TreeSelectionListener {
 
-    /** Dialog controlled. */
-    private CustomSearchDialog dialog;
+	/** Dialog controlled. */
+	private final CustomSearchDialog dialog;
 
-    /** Tree controlled. */
-    private JTree tree;
+	/** Tree controlled. */
+	private final JTree tree;
 
-    /**
-     * Constructor.
-     * 
-     * @param dialog
-     *            the dialog
-     * @param tree
-     *            the tree
-     */
-    public ComplexTreeSelectionListener(CustomSearchDialog dialog, JTree tree) {
-        this.dialog = dialog;
-        this.tree = tree;
-    }
+	/**
+	 * Constructor.
+	 * 
+	 * @param dialog
+	 *            the dialog
+	 * @param tree
+	 *            the tree
+	 */
+	public ComplexTreeSelectionListener(final CustomSearchDialog dialog,
+			final JTree tree) {
+		this.dialog = dialog;
+		this.tree = tree;
+	}
 
-    @Override
-    public void valueChanged(TreeSelectionEvent e) {
-        // Get selected tree path
-        TreePath path = tree.getSelectionPath();
+	@Override
+	public void valueChanged(final TreeSelectionEvent e) {
+		// Get selected tree path
+		TreePath path = this.tree.getSelectionPath();
 
-        if (path != null) {
-            // Get node selected
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) (path.getLastPathComponent());
+		// Enable or disable AND, OR, NOT, REMOVE controls
+		this.dialog.enableComplexRuleButtons(path != null);
 
-            // If node is a NOT user can't add more simple rules, as one has been already added
-            if (node.getUserObject().equals(LogicalOperator.NOT)) {
-                dialog.getSimpleRulesAddButton().setEnabled(false);
-            } else {
-                // If it's not a NOT, user can add rules if node is any other logical operator or an empty rule
-                dialog.getSimpleRulesAddButton().setEnabled(node.getUserObject() instanceof LogicalOperator || node.getUserObject() instanceof EmptyRule);
-            }
-        }
-    }
+		if (path != null) {
+			// Get node selected
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) (path
+					.getLastPathComponent());
+
+			// If node is a NOT user can't add more simple rules, as one has
+			// been already added
+			if (node.getUserObject().equals(LogicalOperator.NOT)) {
+				this.dialog.getSimpleRulesAddButton().setEnabled(false);
+			} else {
+				// If it's not a NOT, user can add rules if node is any other
+				// logical operator or an empty rule
+				this.dialog.getSimpleRulesAddButton().setEnabled(
+						node.getUserObject() instanceof LogicalOperator
+								|| node.getUserObject() instanceof EmptyRule);
+			}
+		}
+	}
 
 }

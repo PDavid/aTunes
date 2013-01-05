@@ -6,6 +6,7 @@ aTunes 3.0.3
 - FIX: Only update displayable windows when changing look and feel skin
 - FIX: Some UI operations with navigation tree where not performed in EDT
 - FIX: Block device disconnection while refreshing
+- FIX: CustomSearchDialog controls not disabled when empty rules
 
 aTunes 3.0.2
 ------------
