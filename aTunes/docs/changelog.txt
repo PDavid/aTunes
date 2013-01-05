@@ -5,6 +5,7 @@ aTunes 3.0.3
 - FIX: Radio navigator not controlling clicking out of table bounds
 - FIX: Only update displayable windows when changing look and feel skin
 - FIX: Some UI operations with navigation tree where not performed in EDT
+- FIX: Block device disconnection while refreshing
 
 aTunes 3.0.2
 ------------
