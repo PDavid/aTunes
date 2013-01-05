@@ -477,4 +477,17 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 		return this.searchButton;
 	}
 
+	/**
+	 * Enables or disables complex rules controls
+	 * 
+	 * @param enable
+	 */
+	public void enableComplexRuleButtons(final boolean enable) {
+		boolean complexRuleSelected = getComplexRulesTree().getSelectionPath() != null;
+		getComplexRulesAndButton().setEnabled(enable && complexRuleSelected);
+		getComplexRulesOrButton().setEnabled(enable && complexRuleSelected);
+		getComplexRulesNotButton().setEnabled(enable && complexRuleSelected);
+		getComplexRulesRemoveButton().setEnabled(enable && complexRuleSelected);
+	}
+
 }
