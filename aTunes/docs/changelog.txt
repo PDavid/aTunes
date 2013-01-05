@@ -7,6 +7,7 @@ aTunes 3.0.3
 - FIX: Some UI operations with navigation tree where not performed in EDT
 - FIX: Block device disconnection while refreshing
 - FIX: CustomSearchDialog controls not disabled when empty rules
+- FIX: NPE when setting an unknown album as favorite
 
 aTunes 3.0.2
 ------------
