@@ -38,6 +38,8 @@ public class CollectionUtilsTest {
 	@Test
 	public void testGetElementOrNull() {
 		Assert.assertNull(CollectionUtils.getElementOrNull(
+				new ArrayList<String>(), -1));
+		Assert.assertNull(CollectionUtils.getElementOrNull(
 				new ArrayList<String>(), 0));
 		Assert.assertEquals("string",
 				CollectionUtils.getElementOrNull(Arrays.asList("string"), 0));

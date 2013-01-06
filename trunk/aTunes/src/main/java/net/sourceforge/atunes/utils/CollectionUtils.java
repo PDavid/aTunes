@@ -53,7 +53,7 @@ public final class CollectionUtils {
 	 * @return
 	 */
 	public static <T> T getElementOrNull(final List<T> list, final int index) {
-		if (list.size() > index) {
+		if (index >= 0 && list.size() > index) {
 			return list.get(index);
 		}
 		return null;

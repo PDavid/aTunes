@@ -468,7 +468,10 @@ public class PlayList implements IPlayList {
 	public String getLength() {
 		long seconds = 0;
 		for (IAudioObject song : this.audioObjects.getList()) {
-			seconds += song.getDuration();
+			// Check for null elements
+			if (song != null) {
+				seconds += song.getDuration();
+			}
 		}
 		return TimeUtils.secondsToDaysHoursMinutesSeconds(seconds);
 	}
