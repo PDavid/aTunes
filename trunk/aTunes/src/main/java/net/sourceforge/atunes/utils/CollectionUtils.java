@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.utils;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Utilities for collections
@@ -30,16 +31,31 @@ import java.util.Collection;
  */
 public final class CollectionUtils {
 
-    private CollectionUtils() {
-    }
+	private CollectionUtils() {
+	}
 
-    /**
-     * Returns if collection is empty or null
-     * 
-     * @param collection
-     * @return
-     */
-    public static boolean isEmpty(final Collection<?> collection) {
-	return collection == null || collection.isEmpty();
-    }
+	/**
+	 * Returns if collection is empty or null
+	 * 
+	 * @param collection
+	 * @return
+	 */
+	public static boolean isEmpty(final Collection<?> collection) {
+		return collection == null || collection.isEmpty();
+	}
+
+	/**
+	 * Returns given element of list or null
+	 * 
+	 * @param <T>
+	 * @param list
+	 * @param index
+	 * @return
+	 */
+	public static <T> T getElementOrNull(final List<T> list, final int index) {
+		if (list.size() > index) {
+			return list.get(index);
+		}
+		return null;
+	}
 }
