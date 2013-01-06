@@ -128,6 +128,12 @@ public final class TagReader implements ILocalAudioObjectReader {
 			// java.nio.Buffer.position(Unknown Source)
 			// org.jaudiotagger.tag.id3.ID3v23Frame.read(ID3v23Frame.java:460)
 			logExceptionReadingTag(file, e);
+		} catch (RuntimeException e) {
+			// Reading wrong tags can happen this
+			// java.lang.RuntimeException:
+			// org.jaudiotagger.tag.id3.framebody.FrameBodyEQUA.<init>(java.nio.ByteBuffer,
+			// int)
+			logExceptionReadingTag(file, e);
 		} catch (CannotReadException e) {
 			logExceptionReadingTag(file, e);
 		} catch (IOException e) {
@@ -142,7 +148,7 @@ public final class TagReader implements ILocalAudioObjectReader {
 		return audioFile;
 	}
 
-	private void logExceptionReadingTag(final File file, Exception e) {
+	private void logExceptionReadingTag(final File file, final Exception e) {
 		Logger.error(net.sourceforge.atunes.utils.FileUtils.getPath(file));
 		Logger.error(e.getMessage());
 	}
