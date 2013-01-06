@@ -34,4 +34,14 @@ public class CollectionUtilsTest {
 		Assert.assertTrue(CollectionUtils.isEmpty(new ArrayList<String>()));
 		Assert.assertFalse(CollectionUtils.isEmpty(Arrays.asList("test")));
 	}
+
+	@Test
+	public void testGetElementOrNull() {
+		Assert.assertNull(CollectionUtils.getElementOrNull(
+				new ArrayList<String>(), 0));
+		Assert.assertEquals("string",
+				CollectionUtils.getElementOrNull(Arrays.asList("string"), 0));
+		Assert.assertNull(CollectionUtils.getElementOrNull(
+				Arrays.asList("string"), 1));
+	}
 }
