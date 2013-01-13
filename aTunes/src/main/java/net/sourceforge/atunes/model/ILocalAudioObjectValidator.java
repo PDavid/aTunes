@@ -23,11 +23,11 @@ package net.sourceforge.atunes.model;
 import java.io.File;
 import java.io.FileFilter;
 
-
 /**
  * Tests if a file is a valid local audio object
+ * 
  * @author alex
- *
+ * 
  */
 public interface ILocalAudioObjectValidator {
 
@@ -58,11 +58,22 @@ public interface ILocalAudioObjectValidator {
 	 * @param formats
 	 * @return if the file is a valid audio file
 	 */
-	boolean isOneOfTheseFormats(String fileName, LocalAudioObjectFormat... formats);
-	
+	boolean isOneOfTheseFormats(String fileName,
+			LocalAudioObjectFormat... formats);
+
 	/**
 	 * Returns a file filter to select valid local audio objects
+	 * 
 	 * @return
 	 */
 	FileFilter getValidLocalAudioObjectFileFilter();
+
+	/**
+	 * Checks if a file is a valid audio file given its name This method does
+	 * not check if file exists or it's a directory or even if file is null
+	 * 
+	 * @param file
+	 * @return if the file is a valid audio file
+	 */
+	boolean isOneOfValidFormats(final File file);
 }
