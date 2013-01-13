@@ -26,6 +26,7 @@ import java.net.ServerSocket;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IApplicationArguments;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IMultipleInstancesHandler;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -33,71 +34,79 @@ import net.sourceforge.atunes.utils.Logger;
 
 /**
  * @author alex
- *
+ * 
  */
-public final class MultipleInstancesHandler extends AbstractHandler implements IMultipleInstancesHandler {
+public final class MultipleInstancesHandler extends AbstractHandler implements
+		IMultipleInstancesHandler {
 
-    /**
-     * Used to ignore errors in sockets when closing application
-     */
-    private boolean closing = false;
+	/**
+	 * Used to ignore errors in sockets when closing application
+	 */
+	private boolean closing = false;
 
-    /** The server socket. */
-    private ServerSocket serverSocket;
-    
-    private IApplicationArguments applicationArguments;
-    
-    /**
-     * @param applicationArguments
-     */
-    public void setApplicationArguments(IApplicationArguments applicationArguments) {
+	/** The server socket. */
+	private ServerSocket serverSocket;
+
+	private IApplicationArguments applicationArguments;
+
+	/**
+	 * @param applicationArguments
+	 */
+	public void setApplicationArguments(
+			final IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
 
-    /**
-     * Called when aTunes finishes.
-     */
-    public void applicationFinish() {
-        if (serverSocket != null) {
-            closing = true;
-            ClosingUtils.close(serverSocket);
-        }
-    }
+	/**
+	 * Called when aTunes finishes.
+	 */
+	@Override
+	public void applicationFinish() {
+		if (this.serverSocket != null) {
+			this.closing = true;
+			ClosingUtils.close(this.serverSocket);
+		}
+	}
 
-    @Override
-    public void deferredInitialization() {
-    	if (getOsManager().isMultipleInstancesSupported() && !applicationArguments.isMultipleInstance()) {
-    		startListening();
-    	}
-    }
-    
-    @Override
+	@Override
+	public void deferredInitialization() {
+		if (getOsManager().isMultipleInstancesSupported()
+				&& !this.applicationArguments.isMultipleInstance()) {
+			startListening();
+		}
+	}
+
+	@Override
 	public void startListening() {
-        try {
-            // Open server socket
-            serverSocket = new ServerSocket(Constants.MULTIPLE_INSTANCES_SOCKET);
-            Logger.info("Listening for other instances on port ", Constants.MULTIPLE_INSTANCES_SOCKET);
+		try {
+			// Open server socket
+			this.serverSocket = new ServerSocket(
+					Constants.MULTIPLE_INSTANCES_SOCKET);
+			Logger.info("Listening for other instances on port ",
+					Constants.MULTIPLE_INSTANCES_SOCKET);
 
-            // Initialize socket listener
-            SocketListener listener = new SocketListener(this, serverSocket, getBean(ICommandHandler.class));
+			// Initialize socket listener
+			SocketListener listener = new SocketListener(this,
+					this.serverSocket, getBean(ICommandHandler.class),
+					getBean(IBeanFactory.class));
 
-            // Start threads
-            listener.start();
+			// Start threads
+			listener.start();
 
-            // Server socket could be opened, so this instance is a "master"
-        } catch (IOException e) {
-        	Logger.error(e);
-            // Server socket could not be opened, so this instance is a "slave"
-        } catch (SecurityException e) {
-        	Logger.error(e);
-            // Server socket could not be opened, so this instance is a "slave"
-        }
-    }
+			// Server socket could be opened, so this instance is a "master"
+		} catch (IOException e) {
+			Logger.error(e);
+			// Server socket could not be opened, so this instance is a "slave"
+		} catch (SecurityException e) {
+			Logger.error(e);
+			// Server socket could not be opened, so this instance is a "slave"
+		}
+	}
 
 	/**
 	 * @return the closing
 	 */
 	boolean isClosing() {
-		return closing;
+		return this.closing;
 	}
 }

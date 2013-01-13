@@ -20,18 +20,23 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.List;
+
 /**
  * Core of application, responsible of start, restart and stop application
+ * 
  * @author alex
- *
+ * 
  */
 public interface IKernel {
 
 	/**
 	 * Static method to create the Kernel instance. This method starts the
 	 * application, so should be called from the main method of the application.
+	 * 
+	 * @param arguments
 	 */
-	public void start();
+	public void start(List<String> arguments);
 
 	/**
 	 * Called when closing application
@@ -45,6 +50,7 @@ public interface IKernel {
 
 	/**
 	 * Terminates execution due to a fatal error
+	 * 
 	 * @param e
 	 */
 	public void terminateWithError(Throwable e);

@@ -98,31 +98,32 @@ public class ApplicationStarter {
 	 */
 	public void start(final List<String> arguments) {
 		// For detecting Swing threading violations
-		if (applicationArguments.isDebug()) {
+		if (this.applicationArguments.isDebug()) {
 			RepaintManager
 					.setCurrentManager(new CheckThreadViolationRepaintManager());
 		}
 
 		// Set log4j properties
-		Logger.loadProperties(applicationArguments.isDebug(),
-				applicationArguments.isDebugLevelLog(), osManager);
+		Logger.loadProperties(this.applicationArguments.isDebug(),
+				this.applicationArguments.isDebugLevelLog(), this.osManager);
 
 		// First, look up for other instances running
-		if (!applicationArguments.isMultipleInstance()
-				&& !multipleInstancesCheck.isFirstInstance()) {
+		if (!this.applicationArguments.isMultipleInstance()
+				&& !this.multipleInstancesCheck.isFirstInstance()) {
 			// Is not first aTunes instance running, so send parameters and
 			// finalize
-			applicationArgumentsSender.sendArgumentsToFirstInstance(arguments);
+			this.applicationArgumentsSender
+					.sendArgumentsToFirstInstance(arguments);
 		} else {
 			// WE ARE CLOSING ERROR STREAM!!!
 			// THIS IS DONE TO AVOID ANNOYING MESSAGES FROM SOME LIBRARIES
 			System.err.close();
 
 			// Log program properties
-			applicationPropertiesLogger.logProgramProperties();
+			this.applicationPropertiesLogger.logProgramProperties();
 
 			// Start the Kernel, which really starts application
-			kernel.start();
+			this.kernel.start(arguments);
 		}
 	}
 }
