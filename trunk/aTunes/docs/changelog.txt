@@ -1,5 +1,6 @@
 aTunes 3.0.4
 ------------
+- Faster count of repository files
 - FIX: Add to play list and play when user uses "Open With" option in Windows
 
 aTunes 3.0.3

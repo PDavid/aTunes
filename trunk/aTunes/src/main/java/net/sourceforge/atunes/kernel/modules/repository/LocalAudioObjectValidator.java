@@ -22,6 +22,8 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
@@ -36,70 +38,92 @@ import org.apache.commons.io.FilenameUtils;
  */
 public class LocalAudioObjectValidator implements ILocalAudioObjectValidator {
 
-    private FileFilter validLocalAudioObjectFileFilter;
+	private FileFilter validLocalAudioObjectFileFilter;
 
-    /**
-     * @param validLocalAudioObjectFileFilter
-     */
-    public void setValidLocalAudioObjectFileFilter(
-	    final FileFilter validLocalAudioObjectFileFilter) {
-	this.validLocalAudioObjectFileFilter = validLocalAudioObjectFileFilter;
-    }
+	private Set<String> extensions;
 
-    /**
-     * Checks if is valid audio file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is valid audio file
-     */
-    @Override
-    public boolean isValidAudioFile(final String file) {
-	return isValidAudioFile(new File(file));
-    }
-
-    /**
-     * Checks if is valid audio file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is valid audio file
-     */
-    @Override
-    public boolean isValidAudioFile(final File file) {
-	return file != null
-		&& file.exists()
-		&& !file.isDirectory()
-		&& isOneOfTheseFormats(file.getName(),
-			LocalAudioObjectFormat.values());
-    }
-
-    /**
-     * Checks if a file is a valid audio file given its name
-     * 
-     * @param fileName
-     * @param formats
-     * @return if the file is a valid audio file
-     */
-    @Override
-    public boolean isOneOfTheseFormats(final String fileName,
-	    final LocalAudioObjectFormat... formats) {
-	if (fileName == null) {
-	    return false;
+	/**
+	 * Initializes validator
+	 */
+	public void initialize() {
+		this.extensions = new HashSet<String>();
+		for (LocalAudioObjectFormat format : LocalAudioObjectFormat.values()) {
+			this.extensions.add(format.getExtension().toLowerCase());
+		}
 	}
-	String extension = FilenameUtils.getExtension(fileName);
-	for (LocalAudioObjectFormat format : formats) {
-	    if (extension.equalsIgnoreCase(format.getExtension())) {
-		return true;
-	    }
-	}
-	return false;
-    }
 
-    @Override
-    public FileFilter getValidLocalAudioObjectFileFilter() {
-	return validLocalAudioObjectFileFilter;
-    }
+	/**
+	 * @param validLocalAudioObjectFileFilter
+	 */
+	public void setValidLocalAudioObjectFileFilter(
+			final FileFilter validLocalAudioObjectFileFilter) {
+		this.validLocalAudioObjectFileFilter = validLocalAudioObjectFileFilter;
+	}
+
+	/**
+	 * Checks if is valid audio file.
+	 * 
+	 * @param file
+	 *            the file
+	 * 
+	 * @return true, if is valid audio file
+	 */
+	@Override
+	public boolean isValidAudioFile(final String file) {
+		return isValidAudioFile(new File(file));
+	}
+
+	/**
+	 * Checks if is valid audio file.
+	 * 
+	 * @param file
+	 *            the file
+	 * 
+	 * @return true, if is valid audio file
+	 */
+	@Override
+	public boolean isValidAudioFile(final File file) {
+		return file != null && file.exists() && !file.isDirectory()
+				&& isOneOfValidFormats(file);
+	}
+
+	/**
+	 * Checks if a file is a valid audio file given its name
+	 * 
+	 * @param fileName
+	 * @param formats
+	 * @return if the file is a valid audio file
+	 */
+	@Override
+	public boolean isOneOfTheseFormats(final String fileName,
+			final LocalAudioObjectFormat... formats) {
+		if (fileName == null) {
+			return false;
+		}
+		String extension = FilenameUtils.getExtension(fileName);
+		for (LocalAudioObjectFormat format : formats) {
+			if (extension.equalsIgnoreCase(format.getExtension())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks if a file is a valid audio file given its name This method does
+	 * not check if file exists or it's a directory or even if file is null
+	 * 
+	 * @param file
+	 * @return if the file is a valid audio file
+	 */
+	@Override
+	public boolean isOneOfValidFormats(final File file) {
+		return this.extensions.contains(FilenameUtils.getExtension(
+				file.getName()).toLowerCase());
+	}
+
+	@Override
+	public FileFilter getValidLocalAudioObjectFileFilter() {
+		return this.validLocalAudioObjectFileFilter;
+	}
 }

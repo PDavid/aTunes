@@ -28,8 +28,9 @@ import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 
 /**
  * Executes repository load when loading a new repository
+ * 
  * @author alex
- *
+ * 
  */
 public class RepositoryReadLoader extends AbstractRepositoryLoader {
 
@@ -40,7 +41,8 @@ public class RepositoryReadLoader extends AbstractRepositoryLoader {
 	/**
 	 * @param localAudioObjectValidator
 	 */
-	public void setLocalAudioObjectValidator(final ILocalAudioObjectValidator localAudioObjectValidator) {
+	public void setLocalAudioObjectValidator(
+			final ILocalAudioObjectValidator localAudioObjectValidator) {
 		this.localAudioObjectValidator = localAudioObjectValidator;
 	}
 
@@ -53,11 +55,12 @@ public class RepositoryReadLoader extends AbstractRepositoryLoader {
 
 	@Override
 	protected void runTasksBeforeLoadRepository() {
-		totalFilesToLoad = countFilesInDir(getFolders());
+		this.totalFilesToLoad = countFilesInDir(getFolders());
 		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
 			public void run() {
-				getRepositoryLoaderListener().notifyFilesInRepository(totalFilesToLoad);
+				getRepositoryLoaderListener().notifyFilesInRepository(
+						RepositoryReadLoader.this.totalFilesToLoad);
 			}
 		});
 	}
@@ -72,7 +75,9 @@ public class RepositoryReadLoader extends AbstractRepositoryLoader {
 		// Update remaining time after a number of files
 		if (getFilesLoaded() % 100 == 0 && !isInterrupt()) {
 			long t1 = System.currentTimeMillis();
-			final long remainingTime = getFilesLoaded() != 0 ? (totalFilesToLoad - getFilesLoaded()) * (t1 - getStartReadTime()) / getFilesLoaded() : 0;
+			final long remainingTime = getFilesLoaded() != 0 ? (this.totalFilesToLoad - getFilesLoaded())
+					* (t1 - getStartReadTime()) / getFilesLoaded()
+					: 0;
 			getRepositoryLoaderListener().notifyRemainingTime(remainingTime);
 			getRepositoryLoaderListener().notifyReadProgress();
 		}
@@ -94,7 +99,8 @@ public class RepositoryReadLoader extends AbstractRepositoryLoader {
 		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
 			public void run() {
-				getRepositoryLoaderListener().notifyFinishRead(RepositoryReadLoader.this);
+				getRepositoryLoaderListener().notifyFinishRead(
+						RepositoryReadLoader.this);
 			}
 		});
 	}
@@ -115,10 +121,13 @@ public class RepositoryReadLoader extends AbstractRepositoryLoader {
 				return files;
 			}
 			for (File element : list) {
-				if (localAudioObjectValidator.isValidAudioFile(element)) {
-					files++;
-				} else if (element.isDirectory()) {
+				if (element.isDirectory()) {
 					files = files + countFilesInDir(element);
+				} else if (this.localAudioObjectValidator
+						.isOneOfValidFormats(element)) {
+					// Check before if it's directory as this method does not
+					// check it
+					files++;
 				}
 			}
 		}

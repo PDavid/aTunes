@@ -15,7 +15,7 @@
 	
 	<bean id="localAudioObjectFactory" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFactory"/>
 	<bean id="localAudioObjectReader" class="net.sourceforge.atunes.kernel.modules.tags.TagReader"/>
-	<bean id="localAudioObjectValidator" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator"/>
+	<bean id="localAudioObjectValidator" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator" init-method="initialize"/>
 	<bean id="localAudioObjectLocator" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectLocator"/>
 	<bean id="validLocalAudioObjectFileFilter" class="net.sourceforge.atunes.kernel.modules.repository.ValidLocalAudioObjectFileFilter"/>
 	
