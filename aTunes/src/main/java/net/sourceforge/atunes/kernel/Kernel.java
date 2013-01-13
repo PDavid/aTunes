@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
 
@@ -89,16 +90,17 @@ public final class Kernel implements IKernel {
 	}
 
 	@Override
-	public void start() {
+	public void start(final List<String> arguments) {
 		Logger.debug("Starting Kernel");
 
-		timer = new Timer();
-		timer.start();
+		this.timer = new Timer();
+		this.timer.start();
 
-		new LanguageSelector().setLanguage(stateCore, localeBeanFactory);
+		new LanguageSelector().setLanguage(this.stateCore,
+				this.localeBeanFactory);
 
 		initializeUI();
-		beanFactory.getBean(HandlerInitializer.class).initializeHandlers();
+		this.beanFactory.getBean(HandlerInitializer.class).initializeHandlers();
 		createUI();
 	}
 
@@ -112,9 +114,18 @@ public final class Kernel implements IKernel {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
-					beanFactory.getBean(ILookAndFeelManager.class).setLookAndFeel(stateUI.getLookAndFeel(), stateCore, stateUI, beanFactory.getBean(IOSManager.class));
+					Kernel.this.beanFactory.getBean(ILookAndFeelManager.class)
+							.setLookAndFeel(
+									Kernel.this.stateUI.getLookAndFeel(),
+									Kernel.this.stateCore,
+									Kernel.this.stateUI,
+									Kernel.this.beanFactory
+											.getBean(IOSManager.class));
 
-					beanFactory.getBean(HandlerInitializer.class).setFrameForHandlers(beanFactory.getBean(IFrame.class));
+					Kernel.this.beanFactory.getBean(HandlerInitializer.class)
+							.setFrameForHandlers(
+									Kernel.this.beanFactory
+											.getBean(IFrame.class));
 				}
 			});
 		} catch (InvocationTargetException e) {
@@ -139,8 +150,10 @@ public final class Kernel implements IKernel {
 					startCreation();
 
 					callActionsAfterStart();
-					Logger.info(StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
-					timer = null;
+					Logger.info(StringUtils.getString("Application started (",
+							StringUtils.toString(Kernel.this.timer.stop(), 3),
+							" seconds)"));
+					Kernel.this.timer = null;
 				}
 			});
 		} catch (InterruptedException e) {
@@ -155,15 +168,19 @@ public final class Kernel implements IKernel {
 		Timer finishTimer = new Timer();
 		try {
 			finishTimer.start();
-			Logger.info(StringUtils.getString("Closing ", Constants.APP_NAME, " ", Constants.VERSION.toString()));
-			beanFactory.getBean(ITemporalDiskStorage.class).removeAll();
+			Logger.info(StringUtils.getString("Closing ", Constants.APP_NAME,
+					" ", Constants.VERSION.toString()));
+			this.beanFactory.getBean(ITemporalDiskStorage.class).removeAll();
 
-			beanFactory.getBean(ApplicationLifeCycleListeners.class).applicationFinish();
+			this.beanFactory.getBean(ApplicationLifeCycleListeners.class)
+					.applicationFinish();
 
-			beanFactory.getBean("taskService", ITaskService.class).shutdownService();
+			this.beanFactory.getBean("taskService", ITaskService.class)
+					.shutdownService();
 
 		} finally {
-			Logger.info(StringUtils.getString("Application finished (", StringUtils.toString(finishTimer.stop(), 3), " seconds)"));
+			Logger.info(StringUtils.getString("Application finished (",
+					StringUtils.toString(finishTimer.stop(), 3), " seconds)"));
 			Logger.info("Goodbye!!");
 			// Exit normally
 			System.exit(0);
@@ -174,15 +191,20 @@ public final class Kernel implements IKernel {
 	 * Call actions after start.
 	 */
 	void callActionsAfterStart() {
-		beanFactory.getBean(ApplicationLifeCycleListeners.class).applicationStarted();
-		beanFactory.getBean(ApplicationLifeCycleListeners.class).allHandlersInitialized();
-		beanFactory.getBean("taskService", ITaskService.class).submitOnce("Deferred handler initialization", 3, new Runnable() {
-			@Override
-			public void run() {
-				beanFactory.getBean(ApplicationLifeCycleListeners.class).deferredInitialization();
-			}
-		});
-		beanFactory.getBean(StartCounter.class).checkCounter();
+		this.beanFactory.getBean(ApplicationLifeCycleListeners.class)
+				.applicationStarted();
+		this.beanFactory.getBean(ApplicationLifeCycleListeners.class)
+				.allHandlersInitialized();
+		this.beanFactory.getBean("taskService", ITaskService.class).submitOnce(
+				"Deferred handler initialization", 3, new Runnable() {
+					@Override
+					public void run() {
+						Kernel.this.beanFactory.getBean(
+								ApplicationLifeCycleListeners.class)
+								.deferredInitialization();
+					}
+				});
+		this.beanFactory.getBean(StartCounter.class).checkCounter();
 	}
 
 	/**
@@ -190,24 +212,39 @@ public final class Kernel implements IKernel {
 	 */
 	private void startCreation() {
 		Logger.debug("Starting components");
-		beanFactory.getBean(IUIHandler.class).startVisualization();
+		this.beanFactory.getBean(IUIHandler.class).startVisualization();
 	}
 
 	@Override
 	public void restart() {
 		try {
 			// Store all configuration and finish all active modules
-			beanFactory.getBean(ApplicationLifeCycleListeners.class).applicationFinish();
+			this.beanFactory.getBean(ApplicationLifeCycleListeners.class)
+					.applicationFinish();
 
-			IOSManager osManager = beanFactory.getBean(IOSManager.class);
+			IOSManager osManager = this.beanFactory.getBean(IOSManager.class);
 
-			// Build a process builder with OS-specific command and saved arguments
+			// Build a process builder with OS-specific command and saved
+			// arguments
 			String parameters = osManager.getLaunchParameters();
 			ProcessBuilder pb = null;
 			if (parameters != null && !parameters.trim().isEmpty()) {
-				pb = new ProcessBuilder(osManager.getLaunchCommand(), parameters, beanFactory.getBean(IApplicationArguments.class).getSavedArguments(beanFactory.getBean(ICommandHandler.class)));
+				pb = new ProcessBuilder(
+						osManager.getLaunchCommand(),
+						parameters,
+						this.beanFactory
+								.getBean(IApplicationArguments.class)
+								.getSavedArguments(
+										this.beanFactory
+												.getBean(ICommandHandler.class)));
 			} else {
-				pb = new ProcessBuilder(osManager.getLaunchCommand(), beanFactory.getBean(IApplicationArguments.class).getSavedArguments(beanFactory.getBean(ICommandHandler.class)));
+				pb = new ProcessBuilder(
+						osManager.getLaunchCommand(),
+						this.beanFactory
+								.getBean(IApplicationArguments.class)
+								.getSavedArguments(
+										this.beanFactory
+												.getBean(ICommandHandler.class)));
 			}
 
 			// Start new application instance
