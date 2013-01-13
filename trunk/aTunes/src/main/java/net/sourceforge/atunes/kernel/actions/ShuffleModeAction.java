@@ -63,15 +63,13 @@ public class ShuffleModeAction extends ActionWithColorMutableIcon {
 
 	@Override
 	protected void initialize() {
-		super.initialize();
 		putValue(SELECTED_KEY, this.statePlayer.isShuffle());
-		setTooltip();
+		super.initialize();
 	}
 
 	@Override
 	protected void executeAction() {
 		this.statePlayer.setShuffle((Boolean) getValue(SELECTED_KEY));
-		setTooltip();
 	}
 
 	@Override
@@ -79,7 +77,8 @@ public class ShuffleModeAction extends ActionWithColorMutableIcon {
 		return this.shuffleIcon.getColorMutableIcon();
 	}
 
-	private void setTooltip() {
+	@Override
+	protected void updateTooltip() {
 		if ((Boolean) getValue(SELECTED_KEY)) {
 			putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHUFFLE_ENABLED"));
 		} else {

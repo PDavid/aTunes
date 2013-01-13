@@ -38,64 +38,76 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class SimilarArtistsModeAction extends ActionWithColorMutableIcon {
 
-    private static final long serialVersionUID = -5259044473957293968L;
+	private static final long serialVersionUID = -5259044473957293968L;
 
-    private IStatePlayer statePlayer;
-    private IIconFactory artistSimilarIcon;
-    private IAdvancedPlayingModeHandler advancedPlayingModeHandler;
+	private IStatePlayer statePlayer;
+	private IIconFactory artistSimilarIcon;
+	private IAdvancedPlayingModeHandler advancedPlayingModeHandler;
 
-    /**
-     * @param advancedPlayingModeHandler
-     */
-    public void setAdvancedPlayingModeHandler(
-	    final IAdvancedPlayingModeHandler advancedPlayingModeHandler) {
-	this.advancedPlayingModeHandler = advancedPlayingModeHandler;
-    }
+	/**
+	 * @param advancedPlayingModeHandler
+	 */
+	public void setAdvancedPlayingModeHandler(
+			final IAdvancedPlayingModeHandler advancedPlayingModeHandler) {
+		this.advancedPlayingModeHandler = advancedPlayingModeHandler;
+	}
 
-    /**
-     * @param statePlayer
-     */
-    public void setStatePlayer(final IStatePlayer statePlayer) {
-	this.statePlayer = statePlayer;
-    }
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(final IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
 
-    /**
-     * @param artistSimilarIcon
-     */
-    public void setArtistSimilarIcon(final IIconFactory artistSimilarIcon) {
-	this.artistSimilarIcon = artistSimilarIcon;
-    }
+	/**
+	 * @param artistSimilarIcon
+	 */
+	public void setArtistSimilarIcon(final IIconFactory artistSimilarIcon) {
+		this.artistSimilarIcon = artistSimilarIcon;
+	}
 
-    /**
-     * Default constructor
-     */
-    public SimilarArtistsModeAction() {
-	super(I18nUtils.getString("SIMILAR_ARTISTS"));
-    }
+	/**
+	 * Default constructor
+	 */
+	public SimilarArtistsModeAction() {
+		super(I18nUtils.getString("SIMILAR_ARTISTS"));
+	}
 
-    @Override
-    protected void initialize() {
-	super.initialize();
-	putValue(SELECTED_KEY, statePlayer.isSimilarArtistMode());
-    }
+	@Override
+	protected void initialize() {
+		putValue(SELECTED_KEY, this.statePlayer.isSimilarArtistMode());
+		super.initialize();
+	}
 
-    @Override
-    protected void executeAction() {
-	boolean enabled = (Boolean) getValue(SELECTED_KEY);
-	statePlayer.setSimilarArtistMode(enabled);
-	advancedPlayingModeHandler.enableSimilarArtistMode(enabled);
-    }
+	@Override
+	protected void executeAction() {
+		boolean enabled = (Boolean) getValue(SELECTED_KEY);
+		this.statePlayer.setSimilarArtistMode(enabled);
+		this.advancedPlayingModeHandler.enableSimilarArtistMode(enabled);
+	}
 
-    @Override
-    public boolean isEnabledForPlayListSelection(
-	    final List<IAudioObject> selection) {
-	// Play action is always enabled even if play list or selection are
-	// empty, because this action is used in play button
-	return true;
-    }
+	@Override
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
+		// Play action is always enabled even if play list or selection are
+		// empty, because this action is used in play button
+		return true;
+	}
 
-    @Override
-    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-	return artistSimilarIcon.getColorMutableIcon();
-    }
+	@Override
+	public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
+		return this.artistSimilarIcon.getColorMutableIcon();
+	}
+
+	@Override
+	protected void updateTooltip() {
+		if ((Boolean) getValue(SELECTED_KEY)) {
+			putValue(SHORT_DESCRIPTION,
+					I18nUtils.getString("SIMILAR_ARTIST_MODE_ENABLED"));
+		} else {
+			putValue(SHORT_DESCRIPTION,
+					I18nUtils.getString("SIMILAR_ARTIST_MODE_DISABLED"));
+		}
+	}
+
 }

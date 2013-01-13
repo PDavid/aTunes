@@ -40,101 +40,113 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public abstract class CustomAbstractAction extends javax.swing.AbstractAction {
 
-    private static final long serialVersionUID = 1648027023533465104L;
+	private static final long serialVersionUID = 1648027023533465104L;
 
-    /**
-     * Source of the action
-     */
-    private Object source;
+	/**
+	 * Source of the action
+	 */
+	private Object source;
 
-    /**
-     * Default constructor
-     */
-    public CustomAbstractAction() {
-	super();
-    }
+	/**
+	 * Default constructor
+	 */
+	public CustomAbstractAction() {
+		super();
+	}
 
-    /**
-     * Creates a new action with given name
-     * 
-     * @param name
-     */
-    public CustomAbstractAction(final String name) {
-	super(name);
-    }
+	/**
+	 * Creates a new action with given name
+	 * 
+	 * @param name
+	 */
+	public CustomAbstractAction(final String name) {
+		super(name);
+	}
 
-    /**
-     * Creates a new action with given name and icon
-     * 
-     * @param name
-     * @param icon
-     */
-    public CustomAbstractAction(final String name, final Icon icon) {
-	super(name, icon);
-    }
+	/**
+	 * Creates a new action with given name and icon
+	 * 
+	 * @param name
+	 * @param icon
+	 */
+	public CustomAbstractAction(final String name, final Icon icon) {
+		super(name, icon);
+	}
 
-    /**
-     * Indicates whether this action must be enabled or disabled when used in
-     * navigator tree with given selection
-     * 
-     * @param rootSelected
-     * @param selection
-     * @return
-     */
-    public boolean isEnabledForNavigationTreeSelection(
-	    final boolean rootSelected, final List<ITreeNode> selection) {
-	return false;
-    }
+	/**
+	 * Indicates whether this action must be enabled or disabled when used in
+	 * navigator tree with given selection
+	 * 
+	 * @param rootSelected
+	 * @param selection
+	 * @return
+	 */
+	public boolean isEnabledForNavigationTreeSelection(
+			final boolean rootSelected, final List<ITreeNode> selection) {
+		return false;
+	}
 
-    /**
-     * Indicates whether this action must be enabled or disabled when used in
-     * navigator table with given selection
-     * 
-     * @param selection
-     * @return
-     */
-    public boolean isEnabledForNavigationTableSelection(
-	    final List<IAudioObject> selection) {
-	return false;
-    }
+	/**
+	 * Indicates whether this action must be enabled or disabled when used in
+	 * navigator table with given selection
+	 * 
+	 * @param selection
+	 * @return
+	 */
+	public boolean isEnabledForNavigationTableSelection(
+			final List<IAudioObject> selection) {
+		return false;
+	}
 
-    /**
-     * Initializes action if needed All initialization needed retrieving values
-     * from <code>getState</code> must be done here
-     */
-    protected void initialize() {
-    }
+	/**
+	 * Initializes action if needed All initialization needed retrieving values
+	 * from <code>getState</code> must be done here
+	 */
+	protected void initialize() {
+		// For toggle actions
+		updateTooltip();
+	}
 
-    /**
-     * Indicates whether this action must be enabled or disabled when used in
-     * play list with given selection
-     * 
-     * @param selection
-     * @return
-     */
-    public boolean isEnabledForPlayListSelection(
-	    final List<IAudioObject> selection) {
-	return false;
-    }
+	/**
+	 * Indicates whether this action must be enabled or disabled when used in
+	 * play list with given selection
+	 * 
+	 * @param selection
+	 * @return
+	 */
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
+		return false;
+	}
 
-    @Override
-    public void actionPerformed(final ActionEvent e) {
-	Logger.debug("Executing action: ", this.getClass().getName());
-	this.source = e != null ? e.getSource() : null;
-	executeAction();
-    }
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+		Logger.debug("Executing action: ", this.getClass().getName());
+		this.source = e != null ? e.getSource() : null;
+		executeAction();
 
-    /**
-     * Source component that fired this action
-     * 
-     * @return
-     */
-    protected final Object getSource() {
-	return source;
-    }
+		// For toggle actions
+		updateTooltip();
+	}
 
-    /**
-     * Override this method to execute action
-     */
-    protected abstract void executeAction();
+	/**
+	 * Source component that fired this action
+	 * 
+	 * @return
+	 */
+	protected final Object getSource() {
+		return this.source;
+	}
+
+	/**
+	 * Override this method to execute action
+	 */
+	protected abstract void executeAction();
+
+	/**
+	 * Override this method to update tooltip
+	 */
+	protected void updateTooltip() {
+		// Does nothing by default
+	}
 }
