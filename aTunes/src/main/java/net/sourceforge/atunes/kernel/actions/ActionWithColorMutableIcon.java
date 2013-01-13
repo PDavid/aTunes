@@ -29,10 +29,12 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
  * An action with an icon. Icon color changes with look and feel
+ * 
  * @author alex
- *
+ * 
  */
-public abstract class ActionWithColorMutableIcon extends CustomAbstractAction  implements ILookAndFeelChangeListener {
+public abstract class ActionWithColorMutableIcon extends CustomAbstractAction
+		implements ILookAndFeelChangeListener {
 
 	private static final long serialVersionUID = 6248901947210263210L;
 
@@ -40,6 +42,7 @@ public abstract class ActionWithColorMutableIcon extends CustomAbstractAction  i
 
 	/**
 	 * Creates a new action
+	 * 
 	 * @param text
 	 */
 	public ActionWithColorMutableIcon(final String text) {
@@ -49,7 +52,8 @@ public abstract class ActionWithColorMutableIcon extends CustomAbstractAction  i
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 		this.lookAndFeelManager.addLookAndFeelChangeListener(this);
 	}
@@ -64,20 +68,24 @@ public abstract class ActionWithColorMutableIcon extends CustomAbstractAction  i
 	 * @return
 	 */
 	public ILookAndFeelManager getLookAndFeelManager() {
-		return lookAndFeelManager;
+		return this.lookAndFeelManager;
 	}
 
 	/**
 	 * Returns the current look and feel
+	 * 
 	 * @return
 	 */
 	public ILookAndFeel getLookAndFeel() {
-		return lookAndFeelManager.getCurrentLookAndFeel();
+		return this.lookAndFeelManager.getCurrentLookAndFeel();
 	}
 
 	@Override
 	public final void lookAndFeelChanged() {
-		putValue(SMALL_ICON, getIcon(getLookAndFeel()).getIcon(getLookAndFeel().getPaintForSpecialControls()));
+		putValue(
+				SMALL_ICON,
+				getIcon(getLookAndFeel()).getIcon(
+						getLookAndFeel().getPaintForSpecialControls()));
 	}
 
 	@Override
@@ -87,6 +95,7 @@ public abstract class ActionWithColorMutableIcon extends CustomAbstractAction  i
 
 	/**
 	 * Returns color mutable icon for given look and feel
+	 * 
 	 * @param lookAndFeel
 	 * @return
 	 */

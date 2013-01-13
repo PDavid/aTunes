@@ -63,15 +63,13 @@ public class RepeatModeAction extends ActionWithColorMutableIcon {
 
 	@Override
 	protected void initialize() {
-		super.initialize();
 		putValue(SELECTED_KEY, this.statePlayer.isRepeat());
-		setTooltip();
+		super.initialize();
 	}
 
 	@Override
 	protected void executeAction() {
 		this.statePlayer.setRepeat((Boolean) getValue(SELECTED_KEY));
-		setTooltip();
 	}
 
 	@Override
@@ -79,7 +77,8 @@ public class RepeatModeAction extends ActionWithColorMutableIcon {
 		return this.repeatIcon.getColorMutableIcon();
 	}
 
-	private void setTooltip() {
+	@Override
+	protected void updateTooltip() {
 		if ((Boolean) getValue(SELECTED_KEY)) {
 			putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPEAT_ENABLED"));
 		} else {
