@@ -2,6 +2,7 @@ aTunes 3.0.4
 ------------
 - Faster count of repository files
 - FIX: Add to play list and play when user uses "Open With" option in Windows
+- FIX: Error trying to remove repository folder from disk
 
 aTunes 3.0.3
 ------------
