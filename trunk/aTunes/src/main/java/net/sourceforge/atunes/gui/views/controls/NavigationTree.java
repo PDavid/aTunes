@@ -145,16 +145,23 @@ public final class NavigationTree extends JTree implements DragSourceListener,
 
 	@Override
 	public void selectNodes(final List<ITreeNode> nodesToSelect) {
-		if (nodesToSelect.isEmpty()) {
-			setSelectionRow(0);
-		} else {
-			TreePath[] pathsToSelect = new TreePath[nodesToSelect.size()];
-			int i = 0;
-			for (ITreeNode node : nodesToSelect) {
-				pathsToSelect[i++] = new TreePath(node.getNode().getPath());
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				if (nodesToSelect.isEmpty()) {
+					setSelectionRow(0);
+				} else {
+					TreePath[] pathsToSelect = new TreePath[nodesToSelect
+							.size()];
+					int i = 0;
+					for (ITreeNode node : nodesToSelect) {
+						pathsToSelect[i++] = new TreePath(node.getNode()
+								.getPath());
+					}
+					setSelectionPaths(pathsToSelect);
+				}
 			}
-			setSelectionPaths(pathsToSelect);
-		}
+		});
 	}
 
 	@Override
