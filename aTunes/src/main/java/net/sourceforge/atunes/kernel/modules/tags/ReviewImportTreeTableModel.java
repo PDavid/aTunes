@@ -163,12 +163,17 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 
 	@Override
 	public int getIndexOfChild(final Object parent, final Object child) {
-		File folder = ((File) ((DefaultMutableTreeTableNode) parent)
-				.getUserObject()).getAbsoluteFile();
-		File childFolder = ((File) ((DefaultMutableTreeTableNode) child)
-				.getUserObject()).getAbsoluteFile();
-		if (this.foldersMap.containsKey(folder)) {
-			return this.foldersMap.get(folder).indexOf(childFolder);
+		Object folderObject = ((DefaultMutableTreeTableNode) parent)
+				.getUserObject();
+		Object childFolderObject = ((DefaultMutableTreeTableNode) child)
+				.getUserObject();
+
+		if (folderObject instanceof File && childFolderObject instanceof File) {
+			File folder = ((File) folderObject).getAbsoluteFile();
+			File childFolder = ((File) childFolderObject).getAbsoluteFile();
+			if (this.foldersMap.containsKey(folder)) {
+				return this.foldersMap.get(folder).indexOf(childFolder);
+			}
 		}
 		return 0;
 	}
