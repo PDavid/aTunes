@@ -31,20 +31,24 @@ import com.esotericsoftware.kryo.io.Output;
 
 /**
  * Kryo serializer for joda time
+ * 
  * @author alex
- *
+ * 
  */
 public class DateSerializer extends Serializer<BaseDateTime> {
 
-	private DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
+	private final DateTimeFormatter fmt = DateTimeFormat
+			.forPattern("yyyyMMddHHmm");
 
 	@Override
-	public BaseDateTime read(Kryo kryo, Input input, Class<BaseDateTime> dateClass) {
-		return fmt.parseDateTime(input.readString());
+	public BaseDateTime read(final Kryo kryo, final Input input,
+			final Class<BaseDateTime> dateClass) {
+		return this.fmt.parseDateTime(input.readString());
 	}
-	
+
 	@Override
-	public void write(Kryo kryo, Output output, BaseDateTime date) {
-		output.writeString(fmt.print(date));
+	public void write(final Kryo kryo, final Output output,
+			final BaseDateTime date) {
+		output.writeString(this.fmt.print(date));
 	}
 }

@@ -4,6 +4,7 @@ aTunes 3.0.4
 - FIX: Add to play list and play when user uses "Open With" option in Windows
 - FIX: Error trying to remove repository folder from disk
 - FIX: Error removing favorite objects from device
+- FIX: Last play date loses hour and minute
 
 aTunes 3.0.3
 ------------
