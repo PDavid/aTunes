@@ -66,6 +66,8 @@ final class RefreshSearchIndexSwingWorker extends SwingWorker<Void, Void> {
 		this.indexLocks = indexLocks;
 		this.searchableObject = searchableObject;
 		this.audioObjectIndexCreator = audioObjectIndexCreator;
+		Logger.debug(this.getClass().getName(), " for searchable object: ",
+				searchableObject.getClass().getName());
 	}
 
 	@Override
