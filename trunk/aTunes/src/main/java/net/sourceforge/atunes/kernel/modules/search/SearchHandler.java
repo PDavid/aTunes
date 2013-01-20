@@ -67,262 +67,286 @@ import org.apache.lucene.util.Version;
  * 
  */
 public final class SearchHandler extends AbstractHandler implements
-	ISearchHandler {
+		ISearchHandler {
 
-    /** Dummy lucene field to retrieve all elements. */
-    static final String INDEX_FIELD_DUMMY = "dummy";
-
-    /**
-     * Logical operators used to create complex rules.
-     */
-    public enum LogicalOperator {
-	/**
-	 * And logical operator
-	 */
-	AND,
+	/** Dummy lucene field to retrieve all elements. */
+	static final String INDEX_FIELD_DUMMY = "dummy";
 
 	/**
-	 * Or logical operator
+	 * Logical operators used to create complex rules.
 	 */
-	OR,
+	public enum LogicalOperator {
+		/**
+		 * And logical operator
+		 */
+		AND,
+
+		/**
+		 * Or logical operator
+		 */
+		OR,
+
+		/**
+		 * Not logical operator
+		 */
+		NOT
+	}
+
+	private IDialogFactory dialogFactory;
+
+	/** List of searchable objects available. */
+	private final List<ISearchableObject> searchableObjects = new ArrayList<ISearchableObject>();
+
+	/** List of operators for simple rules. */
+	private List<String> searchOperators;
 
 	/**
-	 * Not logical operator
+	 * List which indicates if an indexing process is currently running for a
+	 * given searchable object.
 	 */
-	NOT
-    }
+	private volatile Map<ISearchableObject, Boolean> currentIndexingWorks = new HashMap<ISearchableObject, Boolean>();
 
-    private IDialogFactory dialogFactory;
+	/** Map with locks for each index. */
+	private final Map<ISearchableObject, ReadWriteLock> indexLocks = new HashMap<ISearchableObject, ReadWriteLock>();
 
-    /** List of searchable objects available. */
-    private final List<ISearchableObject> searchableObjects = new ArrayList<ISearchableObject>();
+	private CustomSearchController customSearchController;
 
-    /** List of operators for simple rules. */
-    private List<String> searchOperators;
+	private SearchResultsController searchResultsController;
 
-    /**
-     * List which indicates if an indexing process is currently running for a
-     * given searchable object.
-     */
-    private volatile Map<ISearchableObject, Boolean> currentIndexingWorks = new HashMap<ISearchableObject, Boolean>();
+	private IAudioObjectComparator audioObjectComparator;
 
-    /** Map with locks for each index. */
-    private final Map<ISearchableObject, ReadWriteLock> indexLocks = new HashMap<ISearchableObject, ReadWriteLock>();
+	private IStateCore stateCore;
 
-    private CustomSearchController customSearchController;
+	private DeviceSearchableObject deviceSearchableObject;
 
-    private SearchResultsController searchResultsController;
+	private AttributesList searchAttributesList;
 
-    private IAudioObjectComparator audioObjectComparator;
+	private AudioObjectIndexCreator audioObjectIndexCreator;
 
-    private IStateCore stateCore;
-
-    private DeviceSearchableObject deviceSearchableObject;
-
-    /**
-     * @param deviceSearchableObject
-     */
-    public void setDeviceSearchableObject(
-	    final DeviceSearchableObject deviceSearchableObject) {
-	this.deviceSearchableObject = deviceSearchableObject;
-    }
-
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(final IDialogFactory dialogFactory) {
-	this.dialogFactory = dialogFactory;
-    }
-
-    /**
-     * @param stateCore
-     */
-    public void setStateCore(final IStateCore stateCore) {
-	this.stateCore = stateCore;
-    }
-
-    /**
-     * @param audioObjectComparator
-     */
-    public void setAudioObjectComparator(
-	    final IAudioObjectComparator audioObjectComparator) {
-	this.audioObjectComparator = audioObjectComparator;
-    }
-
-    /**
-     * Gets the custom search controller.
-     * 
-     * @return the custom search controller
-     */
-    private CustomSearchController getSearchController() {
-	if (customSearchController == null) {
-	    customSearchController = new CustomSearchController(
-		    dialogFactory.newDialog(CustomSearchDialog.class),
-		    stateCore, this, dialogFactory);
-	}
-	return customSearchController;
-    }
-
-    /**
-     * Gets the search results controller.
-     * 
-     * @return the search results controller
-     */
-    private SearchResultsController getSearchResultsController() {
-	if (searchResultsController == null) {
-	    searchResultsController = new SearchResultsController(
-		    getBeanFactory(),
-		    dialogFactory.newDialog(SearchResultsDialog.class),
-		    getBean(IPlayListHandler.class),
-		    getBean(ILookAndFeelManager.class), audioObjectComparator);
-	}
-	return searchResultsController;
-    }
-
-    @Override
-    protected void initHandler() {
-	searchOperators = new ArrayList<String>();
-	searchOperators.add(":");
-    }
-
-    @Override
-    public void registerSearchableObject(final ISearchableObject so) {
-	currentIndexingWorks.put(so, Boolean.FALSE);
-	indexLocks.put(so, new ReentrantReadWriteLock(true));
-	searchableObjects.add(so);
-    }
-
-    @Override
-    public void unregisterSearchableObject(final ISearchableObject so) {
-	currentIndexingWorks.remove(so);
-	indexLocks.remove(so);
-	searchableObjects.remove(so);
-    }
-
-    @Override
-    public void startSearch() {
-	// Updates indexes
-	for (ISearchableObject searchableObject : searchableObjects) {
-	    updateSearchIndex(searchableObject);
+	/**
+	 * @param searchAttributesList
+	 */
+	public void setSearchAttributesList(
+			final AttributesList searchAttributesList) {
+		this.searchAttributesList = searchAttributesList;
 	}
 
-	// Set list of searchable objects
-	getSearchController().setListOfSearchableObjects(searchableObjects);
-
-	// Set list of operators
-	getSearchController().setListOfOperators(searchOperators);
-
-	// Show dialog to start search
-	getSearchController().showSearchDialog();
-    }
-
-    @Override
-    public List<IAudioObject> search(final ISearchableObject searchableObject,
-	    final String queryStr) throws SearchIndexNotAvailableException,
-	    SearchQuerySyntaxException {
-	ReadWriteLock searchIndexLock = indexLocks.get(searchableObject);
-	Searcher searcher = null;
-	try {
-	    searchIndexLock.readLock().lock();
-
-	    String queryString = applyQueryTransformations(queryStr);
-
-	    Query query = new QueryParser(Version.LUCENE_30, DEFAULT_INDEX,
-		    new SimpleAnalyzer()).parse(queryString);
-	    searcher = new IndexSearcher(searchableObject.getIndexDirectory(),
-		    true);
-	    TopDocs topDocs = searcher.search(query, 1000);
-	    List<ISearchResult> rawSearchResults = new ArrayList<ISearchResult>();
-	    for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
-		rawSearchResults.add(new RawSearchResult(searcher
-			.doc(scoreDoc.doc), scoreDoc.score));
-	    }
-	    List<IAudioObject> result = searchableObject
-		    .getSearchResult(rawSearchResults);
-	    Logger.debug("Query: ", queryString, " (", result.size(),
-		    " search results)");
-	    return result;
-	} catch (IOException e) {
-	    throw new SearchIndexNotAvailableException(e);
-	} catch (ParseException e) {
-	    throw new SearchQuerySyntaxException(e);
-	} finally {
-	    ClosingUtils.close(searcher);
-	    searchIndexLock.readLock().unlock();
-	}
-    }
-
-    /**
-     * Applies a set of transformations to match Lucene syntax.
-     * 
-     * @param query
-     *            the query
-     * 
-     * @return Query transformed in Lucene language
-     */
-    private String applyQueryTransformations(final String query) {
-	String tempQuery;
-
-	// Replace "NOT xx" by Lucene syntax: "dummy:dummy NOT xx"
-	tempQuery = query.replaceAll(LogicalOperator.NOT.toString(),
-		StringUtils.getString(INDEX_FIELD_DUMMY, ":",
-			INDEX_FIELD_DUMMY, " NOT"));
-
-	// Find numeric values and replace to Lucene numeric ranges:
-	// year: 2000 ---> year: [2000 TO 2000]
-	StringBuilder sb = new StringBuilder();
-	StringTokenizer st = new StringTokenizer(tempQuery, " ");
-	while (st.hasMoreTokens()) {
-	    String token = st.nextToken();
-	    if (token.matches("\"[0-9]+\"")) {
-		sb.append(StringUtils.getString("[", token, " TO ", token, "]"));
-	    } else {
-		sb.append(token);
-	    }
-	    sb.append(" ");
+	/**
+	 * @param audioObjectIndexCreator
+	 */
+	public void setAudioObjectIndexCreator(
+			final AudioObjectIndexCreator audioObjectIndexCreator) {
+		this.audioObjectIndexCreator = audioObjectIndexCreator;
 	}
 
-	return sb.toString();
-    }
-
-    /**
-     * Generic method to update any searchable object.
-     * 
-     * @param searchableObject
-     *            the searchable object
-     */
-    private void updateSearchIndex(final ISearchableObject searchableObject) {
-	if (currentIndexingWorks.get(searchableObject) == null
-		|| !currentIndexingWorks.get(searchableObject)) {
-	    currentIndexingWorks.put(searchableObject, Boolean.TRUE);
-	    SwingWorker<Void, Void> refreshSearchIndex = new RefreshSearchIndexSwingWorker(
-		    currentIndexingWorks, indexLocks, searchableObject);
-	    refreshSearchIndex.execute();
+	/**
+	 * @param deviceSearchableObject
+	 */
+	public void setDeviceSearchableObject(
+			final DeviceSearchableObject deviceSearchableObject) {
+		this.deviceSearchableObject = deviceSearchableObject;
 	}
-    }
 
-    @Override
-    public void showSearchResults(final ISearchableObject searchableObject,
-	    final List<IAudioObject> result) {
-	// Open search results dialog
-	getSearchResultsController()
-		.showSearchResults(searchableObject, result);
-    }
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
-    @Override
-    public void refreshSearchResultColumns() {
-	((SearchResultColumnModel) getSearchResultsController()
-		.getComponentControlled().getSearchResultsTable()
-		.getColumnModel()).arrangeColumns(false);
-    }
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(final IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
 
-    @Override
-    public void deviceReady(final String location) {
-	registerSearchableObject(deviceSearchableObject);
-    }
+	/**
+	 * @param audioObjectComparator
+	 */
+	public void setAudioObjectComparator(
+			final IAudioObjectComparator audioObjectComparator) {
+		this.audioObjectComparator = audioObjectComparator;
+	}
 
-    @Override
-    public void deviceDisconnected(final String location) {
-	unregisterSearchableObject(deviceSearchableObject);
-    }
+	/**
+	 * Gets the custom search controller.
+	 * 
+	 * @return the custom search controller
+	 */
+	private CustomSearchController getSearchController() {
+		if (this.customSearchController == null) {
+			this.customSearchController = new CustomSearchController(
+					this.dialogFactory.newDialog(CustomSearchDialog.class),
+					this.stateCore, this, this.dialogFactory,
+					this.searchAttributesList);
+		}
+		return this.customSearchController;
+	}
+
+	/**
+	 * Gets the search results controller.
+	 * 
+	 * @return the search results controller
+	 */
+	private SearchResultsController getSearchResultsController() {
+		if (this.searchResultsController == null) {
+			this.searchResultsController = new SearchResultsController(
+					getBeanFactory(),
+					this.dialogFactory.newDialog(SearchResultsDialog.class),
+					getBean(IPlayListHandler.class),
+					getBean(ILookAndFeelManager.class),
+					this.audioObjectComparator);
+		}
+		return this.searchResultsController;
+	}
+
+	@Override
+	protected void initHandler() {
+		this.searchOperators = new ArrayList<String>();
+		this.searchOperators.add(":");
+	}
+
+	@Override
+	public void registerSearchableObject(final ISearchableObject so) {
+		this.currentIndexingWorks.put(so, Boolean.FALSE);
+		this.indexLocks.put(so, new ReentrantReadWriteLock(true));
+		this.searchableObjects.add(so);
+	}
+
+	@Override
+	public void unregisterSearchableObject(final ISearchableObject so) {
+		this.currentIndexingWorks.remove(so);
+		this.indexLocks.remove(so);
+		this.searchableObjects.remove(so);
+	}
+
+	@Override
+	public void startSearch() {
+		// Updates indexes
+		for (ISearchableObject searchableObject : this.searchableObjects) {
+			updateSearchIndex(searchableObject);
+		}
+
+		// Set list of searchable objects
+		getSearchController()
+				.setListOfSearchableObjects(this.searchableObjects);
+
+		// Set list of operators
+		getSearchController().setListOfOperators(this.searchOperators);
+
+		// Show dialog to start search
+		getSearchController().showSearchDialog();
+	}
+
+	@Override
+	public List<IAudioObject> search(final ISearchableObject searchableObject,
+			final String queryStr) throws SearchIndexNotAvailableException,
+			SearchQuerySyntaxException {
+		ReadWriteLock searchIndexLock = this.indexLocks.get(searchableObject);
+		Searcher searcher = null;
+		try {
+			searchIndexLock.readLock().lock();
+
+			String queryString = applyQueryTransformations(queryStr);
+
+			Query query = new QueryParser(Version.LUCENE_30, DEFAULT_INDEX,
+					new SimpleAnalyzer()).parse(queryString);
+			searcher = new IndexSearcher(searchableObject.getIndexDirectory(),
+					true);
+			TopDocs topDocs = searcher.search(query, 1000);
+			List<ISearchResult> rawSearchResults = new ArrayList<ISearchResult>();
+			for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
+				rawSearchResults.add(new RawSearchResult(searcher
+						.doc(scoreDoc.doc), scoreDoc.score));
+			}
+			List<IAudioObject> result = searchableObject
+					.getSearchResult(rawSearchResults);
+			Logger.debug("Query: ", queryString, " (", result.size(),
+					" search results)");
+			return result;
+		} catch (IOException e) {
+			throw new SearchIndexNotAvailableException(e);
+		} catch (ParseException e) {
+			throw new SearchQuerySyntaxException(e);
+		} finally {
+			ClosingUtils.close(searcher);
+			searchIndexLock.readLock().unlock();
+		}
+	}
+
+	/**
+	 * Applies a set of transformations to match Lucene syntax.
+	 * 
+	 * @param query
+	 *            the query
+	 * 
+	 * @return Query transformed in Lucene language
+	 */
+	private String applyQueryTransformations(final String query) {
+		String tempQuery;
+
+		// Replace "NOT xx" by Lucene syntax: "dummy:dummy NOT xx"
+		tempQuery = query.replaceAll(LogicalOperator.NOT.toString(),
+				StringUtils.getString(INDEX_FIELD_DUMMY, ":",
+						INDEX_FIELD_DUMMY, " NOT"));
+
+		// Find numeric values and replace to Lucene numeric ranges:
+		// year: 2000 ---> year: [2000 TO 2000]
+		StringBuilder sb = new StringBuilder();
+		StringTokenizer st = new StringTokenizer(tempQuery, " ");
+		while (st.hasMoreTokens()) {
+			String token = st.nextToken();
+			if (token.matches("\"[0-9]+\"")) {
+				sb.append(StringUtils.getString("[", token, " TO ", token, "]"));
+			} else {
+				sb.append(token);
+			}
+			sb.append(" ");
+		}
+
+		return sb.toString();
+	}
+
+	/**
+	 * Generic method to update any searchable object.
+	 * 
+	 * @param searchableObject
+	 *            the searchable object
+	 */
+	private void updateSearchIndex(final ISearchableObject searchableObject) {
+		if (this.currentIndexingWorks.get(searchableObject) == null
+				|| !this.currentIndexingWorks.get(searchableObject)) {
+			this.currentIndexingWorks.put(searchableObject, Boolean.TRUE);
+			SwingWorker<Void, Void> refreshSearchIndex = new RefreshSearchIndexSwingWorker(
+					this.currentIndexingWorks, this.indexLocks,
+					searchableObject, this.audioObjectIndexCreator);
+			refreshSearchIndex.execute();
+		}
+	}
+
+	@Override
+	public void showSearchResults(final ISearchableObject searchableObject,
+			final List<IAudioObject> result) {
+		// Open search results dialog
+		getSearchResultsController()
+				.showSearchResults(searchableObject, result);
+	}
+
+	@Override
+	public void refreshSearchResultColumns() {
+		((SearchResultColumnModel) getSearchResultsController()
+				.getComponentControlled().getSearchResultsTable()
+				.getColumnModel()).arrangeColumns(false);
+	}
+
+	@Override
+	public void deviceReady(final String location) {
+		registerSearchableObject(this.deviceSearchableObject);
+	}
+
+	@Override
+	public void deviceDisconnected(final String location) {
+		unregisterSearchableObject(this.deviceSearchableObject);
+	}
 }

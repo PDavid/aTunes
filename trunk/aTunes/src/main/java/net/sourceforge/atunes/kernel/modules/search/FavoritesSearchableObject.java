@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearchResult;
+import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.apache.lucene.store.FSDirectory;
@@ -37,10 +38,11 @@ import org.apache.lucene.store.SimpleFSDirectory;
 
 /**
  * Searchable object for favorites
+ * 
  * @author alex
- *
+ * 
  */
-public final class FavoritesSearchableObject extends AbstractCommonAudioFileSearchableObject {
+public final class FavoritesSearchableObject implements ISearchableObject {
 
 	private FSDirectory indexDirectory;
 
@@ -69,17 +71,22 @@ public final class FavoritesSearchableObject extends AbstractCommonAudioFileSear
 
 	@Override
 	public FSDirectory getIndexDirectory() throws IOException {
-		if (indexDirectory == null) {
-			indexDirectory = new SimpleFSDirectory(osManager.getFile(osManager.getUserConfigFolder(), Constants.FAVORITES_INDEX_DIR));
+		if (this.indexDirectory == null) {
+			this.indexDirectory = new SimpleFSDirectory(this.osManager.getFile(
+					this.osManager.getUserConfigFolder(),
+					Constants.FAVORITES_INDEX_DIR));
 		}
-		return indexDirectory;
+		return this.indexDirectory;
 	}
 
 	@Override
-	public List<IAudioObject> getSearchResult(final List<ISearchResult> rawSearchResults) {
+	public List<IAudioObject> getSearchResult(
+			final List<ISearchResult> rawSearchResults) {
 		List<IAudioObject> result = new ArrayList<IAudioObject>();
 		for (ISearchResult rawSearchResult : rawSearchResults) {
-			ILocalAudioObject audioFile = favoritesHandler.getFavoriteSongsMap().get(rawSearchResult.getObject().get("url"));
+			ILocalAudioObject audioFile = this.favoritesHandler
+					.getFavoriteSongsMap().get(
+							rawSearchResult.getObject().get("url"));
 			if (audioFile != null) {
 				result.add(audioFile);
 			}
@@ -89,6 +96,7 @@ public final class FavoritesSearchableObject extends AbstractCommonAudioFileSear
 
 	@Override
 	public List<IAudioObject> getElementsToIndex() {
-		return new ArrayList<IAudioObject>(favoritesHandler.getFavoriteSongsMap().values());
+		return new ArrayList<IAudioObject>(this.favoritesHandler
+				.getFavoriteSongsMap().values());
 	}
 }

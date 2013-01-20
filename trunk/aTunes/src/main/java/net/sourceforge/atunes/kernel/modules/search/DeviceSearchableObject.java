@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearchResult;
+import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.apache.lucene.store.FSDirectory;
@@ -37,10 +38,11 @@ import org.apache.lucene.store.SimpleFSDirectory;
 
 /**
  * Searchable object for device
+ * 
  * @author alex
- *
+ * 
  */
-public final class DeviceSearchableObject extends AbstractCommonAudioFileSearchableObject {
+public final class DeviceSearchableObject implements ISearchableObject {
 
 	private FSDirectory indexDirectory;
 
@@ -69,17 +71,21 @@ public final class DeviceSearchableObject extends AbstractCommonAudioFileSearcha
 
 	@Override
 	public synchronized FSDirectory getIndexDirectory() throws IOException {
-		if (indexDirectory == null) {
-			indexDirectory = new SimpleFSDirectory(osManager.getFile(osManager.getUserConfigFolder(), Constants.DEVICE_INDEX_DIR));
+		if (this.indexDirectory == null) {
+			this.indexDirectory = new SimpleFSDirectory(this.osManager.getFile(
+					this.osManager.getUserConfigFolder(),
+					Constants.DEVICE_INDEX_DIR));
 		}
-		return indexDirectory;
+		return this.indexDirectory;
 	}
 
 	@Override
-	public List<IAudioObject> getSearchResult(final List<ISearchResult> rawSearchResults) {
+	public List<IAudioObject> getSearchResult(
+			final List<ISearchResult> rawSearchResults) {
 		List<IAudioObject> result = new ArrayList<IAudioObject>();
 		for (ISearchResult rawSearchResult : rawSearchResults) {
-			ILocalAudioObject audioFile = deviceHandler.getFileIfLoaded(rawSearchResult.getObject().get("url"));
+			ILocalAudioObject audioFile = this.deviceHandler
+					.getFileIfLoaded(rawSearchResult.getObject().get("url"));
 			if (audioFile != null) {
 				result.add(audioFile);
 			}
@@ -89,6 +95,7 @@ public final class DeviceSearchableObject extends AbstractCommonAudioFileSearcha
 
 	@Override
 	public List<IAudioObject> getElementsToIndex() {
-		return new ArrayList<IAudioObject>(deviceHandler.getAudioFilesList());
+		return new ArrayList<IAudioObject>(
+				this.deviceHandler.getAudioFilesList());
 	}
 }

@@ -42,92 +42,107 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.store.LockObtainFailedException;
 
 final class RefreshSearchIndexSwingWorker extends SwingWorker<Void, Void> {
-	
-    private final Map<ISearchableObject, Boolean> currentIndexingWorks;
 
-    private final Map<ISearchableObject, ReadWriteLock> indexLocks;
+	private final Map<ISearchableObject, Boolean> currentIndexingWorks;
+
+	private final Map<ISearchableObject, ReadWriteLock> indexLocks;
 
 	private final ISearchableObject searchableObject;
 	private IndexWriter indexWriter;
+	private final AudioObjectIndexCreator audioObjectIndexCreator;
 
 	/**
 	 * @param currentIndexingWorks
 	 * @param indexLocks
 	 * @param searchableObject
+	 * @param audioObjectIndexCreator
 	 */
-	RefreshSearchIndexSwingWorker(Map<ISearchableObject, Boolean> currentIndexingWorks, Map<ISearchableObject, ReadWriteLock> indexLocks, ISearchableObject searchableObject) {
+	RefreshSearchIndexSwingWorker(
+			final Map<ISearchableObject, Boolean> currentIndexingWorks,
+			final Map<ISearchableObject, ReadWriteLock> indexLocks,
+			final ISearchableObject searchableObject,
+			final AudioObjectIndexCreator audioObjectIndexCreator) {
 		this.currentIndexingWorks = currentIndexingWorks;
 		this.indexLocks = indexLocks;
 		this.searchableObject = searchableObject;
+		this.audioObjectIndexCreator = audioObjectIndexCreator;
 	}
 
 	@Override
 	protected Void doInBackground() {
-	    ReadWriteLock searchIndexLock = indexLocks.get(searchableObject);
-	    try {
-	        searchIndexLock.writeLock().lock();
-	        initSearchIndex();
-	        updateSearchIndex(searchableObject.getElementsToIndex());
-	        finishSearchIndex();
-	        return null;
-	    } finally {
-	        searchIndexLock.writeLock().unlock();
-	        ClosingUtils.close(indexWriter);
-	        currentIndexingWorks.put(searchableObject, Boolean.FALSE);
-	    }
+		ReadWriteLock searchIndexLock = this.indexLocks
+				.get(this.searchableObject);
+		try {
+			searchIndexLock.writeLock().lock();
+			initSearchIndex();
+			updateSearchIndex(this.searchableObject.getElementsToIndex());
+			finishSearchIndex();
+			return null;
+		} finally {
+			searchIndexLock.writeLock().unlock();
+			ClosingUtils.close(this.indexWriter);
+			this.currentIndexingWorks.put(this.searchableObject, Boolean.FALSE);
+		}
 	}
 
 	@Override
 	protected void done() {
-	    // Nothing to do
+		// Nothing to do
 	}
 
 	private void initSearchIndex() {
-	    Logger.info("Updating index for " + searchableObject.getClass());
-	    try {
-	        FileUtils.deleteDirectory(searchableObject.getIndexDirectory().getFile());
-	        indexWriter = new IndexWriter(searchableObject.getIndexDirectory(), new SimpleAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
-	    } catch (CorruptIndexException e) {
-	        Logger.error(e);
-	    } catch (LockObtainFailedException e) {
-	        Logger.error(e);
-	    } catch (IOException e) {
-	        Logger.error(e);
-	    }
+		Logger.info("Updating index for " + this.searchableObject.getClass());
+		try {
+			FileUtils.deleteDirectory(this.searchableObject.getIndexDirectory()
+					.getFile());
+			this.indexWriter = new IndexWriter(
+					this.searchableObject.getIndexDirectory(),
+					new SimpleAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
+		} catch (CorruptIndexException e) {
+			Logger.error(e);
+		} catch (LockObtainFailedException e) {
+			Logger.error(e);
+		} catch (IOException e) {
+			Logger.error(e);
+		}
 	}
 
-	private void updateSearchIndex(List<IAudioObject> audioObjects) {
-	    Logger.info("update search index");
-	    if (indexWriter != null) {
-	        for (IAudioObject audioObject : audioObjects) {
-	            Document d = searchableObject.getDocumentForElement(audioObject);
-	            // Add dummy field
-	            d.add(new Field(SearchHandler.INDEX_FIELD_DUMMY, SearchHandler.INDEX_FIELD_DUMMY, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS));
+	private void updateSearchIndex(final List<IAudioObject> audioObjects) {
+		Logger.info("update search index");
+		if (this.indexWriter != null) {
+			for (IAudioObject audioObject : audioObjects) {
+				Document d = this.audioObjectIndexCreator
+						.getDocumentForElement(audioObject);
+				// Add dummy field
+				d.add(new Field(SearchHandler.INDEX_FIELD_DUMMY,
+						SearchHandler.INDEX_FIELD_DUMMY, Field.Store.YES,
+						Field.Index.NOT_ANALYZED_NO_NORMS));
 
-	            try {
-	                indexWriter.addDocument(d);
-	            } catch (CorruptIndexException e) {
-	                Logger.error(e);
-	            } catch (IOException e) {
-	                Logger.error(e);
-	            }
-	        }
-	    }
+				try {
+					this.indexWriter.addDocument(d);
+				} catch (CorruptIndexException e) {
+					Logger.error(e);
+				} catch (IOException e) {
+					Logger.error(e);
+				}
+			}
+		}
 	}
 
 	private void finishSearchIndex() {
-	    Logger.info(StringUtils.getString("Update index for ", searchableObject.getClass(), " finished"));
-	    if (indexWriter != null) {
-	        try {
-	            indexWriter.optimize();
-	            indexWriter.close();
+		Logger.info(StringUtils.getString("Update index for ",
+				this.searchableObject.getClass(), " finished"));
+		if (this.indexWriter != null) {
+			try {
+				this.indexWriter.optimize();
+				this.indexWriter.close();
 
-	            indexWriter = null;
-	        } catch (CorruptIndexException e) {
-	            Logger.error(e);
-	        } catch (IOException e) {
-	            Logger.error(e);
-	        }
-	    }
+				this.indexWriter = null;
+			} catch (CorruptIndexException e) {
+				Logger.error(e);
+			} catch (IOException e) {
+				Logger.error(e);
+			}
+		}
 	}
 }

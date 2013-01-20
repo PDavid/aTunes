@@ -100,7 +100,8 @@
 		<property name="dontFireActionProperty" value="dontFireActionAgain"/>
 	</bean>
 
-	<bean id="searchableObject" class="net.sourceforge.atunes.kernel.modules.search.AbstractCommonAudioFileSearchableObject" abstract="true"/>	
+	<bean id="searchAttributesList" class="net.sourceforge.atunes.kernel.modules.search.AttributesList"/>	
+	<bean id="audioObjectIndexCreator" class="net.sourceforge.atunes.kernel.modules.search.AudioObjectIndexCreator"/>
 
 
 	<bean id="notificationEngine" class="net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine" abstract="true"/>
