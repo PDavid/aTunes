@@ -202,7 +202,7 @@ public final class LocalAudioObjectPropertiesDialog extends
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridheight = 4;
-		c.insets = new Insets(15, 20, 5, 20);
+		c.insets = new Insets(15, 20, 5, 0);
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.NONE;
 		panel.add(this.pictureLabel, c);
@@ -212,7 +212,7 @@ public final class LocalAudioObjectPropertiesDialog extends
 		c.gridheight = 1;
 		c.weightx = 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.insets = new Insets(15, 0, 0, 20);
+		c.insets = new Insets(15, 20, 0, 20);
 		panel.add(this.songLabel, c);
 
 		c.gridy = 1;
