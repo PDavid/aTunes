@@ -23,7 +23,6 @@ package net.sourceforge.atunes.model;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.lucene.document.Document;
 import org.apache.lucene.store.FSDirectory;
 
 /**
@@ -31,54 +30,37 @@ import org.apache.lucene.store.FSDirectory;
  */
 public interface ISearchableObject {
 
-    /**
-     * Returns string representation of this searchable object.
-     * 
-     * @return the searchable object name
-     */
-    public String getSearchableObjectName();
+	/**
+	 * Returns string representation of this searchable object.
+	 * 
+	 * @return the searchable object name
+	 */
+	public String getSearchableObjectName();
 
-    /**
-     * Returns a list of attributes that can be used in queries.
-     * 
-     * @return the searchable attributes
-     */
-    public List<String> getSearchableAttributes();
+	/**
+	 * Returns the index directory.
+	 * 
+	 * @return the index directory
+	 * @throws IOException
+	 */
+	public FSDirectory getIndexDirectory() throws IOException;
 
-    /**
-     * Returns the index directory.
-     * 
-     * @return the index directory
-     * @throws IOException
-     */
-    public FSDirectory getIndexDirectory() throws IOException;
+	/**
+	 * Returns result from hits.
+	 * 
+	 * @param rawSearchResults
+	 *            the raw search results
+	 * 
+	 * @return the search result
+	 * 
+	 */
+	public List<IAudioObject> getSearchResult(
+			List<ISearchResult> rawSearchResults);
 
-    /**
-     * Returns result from hits.
-     * 
-     * @param rawSearchResults
-     *            the raw search results
-     * 
-     * @return the search result
-     * 
-     */
-    public List<IAudioObject> getSearchResult(
-	    List<ISearchResult> rawSearchResults);
-
-    /**
-     * Returns elements to index.
-     * 
-     * @return the elements to index
-     */
-    public List<IAudioObject> getElementsToIndex();
-
-    /**
-     * Builds a Lucene Document for a given AudioObject.
-     * 
-     * @param audioObject
-     *            the audio object
-     * 
-     * @return the document for element
-     */
-    public Document getDocumentForElement(IAudioObject audioObject);
+	/**
+	 * Returns elements to index.
+	 * 
+	 * @return the elements to index
+	 */
+	public List<IAudioObject> getElementsToIndex();
 }

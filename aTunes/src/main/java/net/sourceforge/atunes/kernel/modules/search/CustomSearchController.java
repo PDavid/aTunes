@@ -66,6 +66,8 @@ final class CustomSearchController extends
 
 	private final IDialogFactory dialogFactory;
 
+	private final AttributesList attributesList;
+
 	/**
 	 * Constructor.
 	 * 
@@ -73,14 +75,17 @@ final class CustomSearchController extends
 	 * @param stateCore
 	 * @param searchHandler
 	 * @param dialogFactory
+	 * @param attributesList
 	 */
 	CustomSearchController(final CustomSearchDialog dialog,
 			final IStateCore stateCore, final ISearchHandler searchHandler,
-			final IDialogFactory dialogFactory) {
+			final IDialogFactory dialogFactory,
+			final AttributesList attributesList) {
 		super(dialog);
 		this.searchHandler = searchHandler;
 		this.stateCore = stateCore;
 		this.dialogFactory = dialogFactory;
+		this.attributesList = attributesList;
 		addBindings();
 	}
 
@@ -137,13 +142,8 @@ final class CustomSearchController extends
 	 */
 	void updateAttributesList() {
 		if (this.searchableObjects != null) {
-			// Get selected searchable object
-			ISearchableObject selectedSearchableObject = this.searchableObjects
-					.get(getComponentControlled().getSearchAtComboBox()
-							.getSelectedIndex());
-
 			// Get attributes
-			List<String> attributes = selectedSearchableObject
+			List<String> attributes = this.attributesList
 					.getSearchableAttributes();
 			attributes.add(0, ISearchHandler.DEFAULT_INDEX);
 
