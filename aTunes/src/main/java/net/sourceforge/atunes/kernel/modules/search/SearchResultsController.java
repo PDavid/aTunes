@@ -122,6 +122,7 @@ final class SearchResultsController extends
 		// TODO: Created manually
 		SearchResultColumnModel columnModel = new SearchResultColumnModel();
 		columnModel.setTable(table);
+		columnModel.setModel(tableModel);
 		columnModel.setBeanFactory(this.beanFactory);
 		columnModel.setTaskService(this.beanFactory.getBean("taskService",
 				ITaskService.class));
