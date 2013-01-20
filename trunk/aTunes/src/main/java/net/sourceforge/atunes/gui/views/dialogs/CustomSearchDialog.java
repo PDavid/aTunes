@@ -24,7 +24,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -196,7 +195,6 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	private JPanel getSearchAtPanel() {
 		if (this.searchAtPanel == null) {
 			this.searchAtPanel = new JPanel();
-			this.searchAtPanel.setBorder(BorderFactory.createEtchedBorder());
 			this.searchAtLabel = new JLabel(I18nUtils.getString("SEARCH_IN"));
 			this.searchAtComboBox = new JComboBox();
 			this.searchAtPanel.add(this.searchAtLabel);
@@ -213,7 +211,6 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	public JPanel getSimpleRulesPanel() {
 		if (this.simpleRulesPanel == null) {
 			this.simpleRulesPanel = new JPanel(new GridBagLayout());
-			this.simpleRulesPanel.setBorder(BorderFactory.createEtchedBorder());
 			this.simpleRulesList = getLookAndFeel().getList();
 			this.simpleRulesList
 					.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -265,8 +262,6 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	public JPanel getComplexRulesPanel() {
 		if (this.complexRulesPanel == null) {
 			this.complexRulesPanel = new JPanel(new GridBagLayout());
-			this.complexRulesPanel
-					.setBorder(BorderFactory.createEtchedBorder());
 			this.complexRulesTree = new JTree();
 
 			this.complexRulesScrollPane = getLookAndFeel().getTreeScrollPane(
@@ -316,8 +311,6 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	private JPanel getAdvancedSearchPanel() {
 		if (this.advancedSearchPanel == null) {
 			this.advancedSearchPanel = new JPanel(new GridBagLayout());
-			this.advancedSearchPanel.setBorder(BorderFactory
-					.createEtchedBorder());
 			this.advancedSearchCheckBox = new JCheckBox(
 					I18nUtils.getString("ENABLE_ADVANCED_SEARCH"));
 			this.advancedSearchTextField = getControlsBuilder()

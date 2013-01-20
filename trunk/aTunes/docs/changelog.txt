@@ -6,6 +6,7 @@ aTunes 3.0.4
 - FIX: Error removing favorite objects from device
 - FIX: Last play date loses hour and minute
 - FIX: Can't add columns to search results dialog
+- FIX: Search numbers in title field does not work
 
 aTunes 3.0.3
 ------------
