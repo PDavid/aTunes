@@ -1,3 +1,7 @@
+aTunes 3.0.5
+------------
+- FIX: Statistics not shown in tables
+
 aTunes 3.0.4
 ------------
 - Faster count of repository files

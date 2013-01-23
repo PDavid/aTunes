@@ -33,6 +33,7 @@ import java.util.Map.Entry;
  * This class represents a Rank: a list of objects, every one with an associate
  * counter. Objects are ordered by this counter. This class is used for
  * statistics
+ * 
  * @param <T>
  */
 public class RankList<T> implements Serializable {
@@ -43,8 +44,8 @@ public class RankList<T> implements Serializable {
 	final Map<T, Integer> count;
 
 	/**
-	 * OLD list with order of objects
-	 * DEPRECATED: used only to keep compatibility with statistics of previous versions
+	 * OLD list with order of objects DEPRECATED: used only to keep
+	 * compatibility with statistics of previous versions
 	 */
 	List<T> order;
 
@@ -52,7 +53,7 @@ public class RankList<T> implements Serializable {
 	 * Constructor.
 	 */
 	public RankList() {
-		count = new HashMap<T, Integer>();
+		this.count = new HashMap<T, Integer>();
 	}
 
 	/**
@@ -66,11 +67,11 @@ public class RankList<T> implements Serializable {
 		if (obj == null) {
 			return;
 		}
-		if (count.containsKey(obj)) {
-			Integer previousCount = count.get(obj);
-			count.put(obj, previousCount + 1);
+		if (this.count.containsKey(obj)) {
+			Integer previousCount = this.count.get(obj);
+			this.count.put(obj, previousCount + 1);
 		} else {
-			count.put(obj, 1);
+			this.count.put(obj, 1);
 		}
 	}
 
@@ -83,7 +84,7 @@ public class RankList<T> implements Serializable {
 	 * @return the count
 	 */
 	public Integer getCount(final T obj) {
-		return count.get(obj);
+		return this.count.get(obj);
 	}
 
 	/**
@@ -112,18 +113,20 @@ public class RankList<T> implements Serializable {
 	 * @return elements sorted
 	 */
 	private List<Entry<T, Integer>> getElementsSorted() {
-		List<Entry<T, Integer>> list = new ArrayList<Map.Entry<T,Integer>>(count.entrySet());
+		List<Entry<T, Integer>> list = new ArrayList<Map.Entry<T, Integer>>(
+				this.count.entrySet());
 		Collections.sort(list, new Comparator<Entry<T, Integer>>() {
 			@Override
-			public int compare(final Entry<T, Integer> o1, final Entry<T, Integer> o2) {
-				return - o1.getValue().compareTo(o2.getValue());
+			public int compare(final Entry<T, Integer> o1,
+					final Entry<T, Integer> o2) {
+				return -o1.getValue().compareTo(o2.getValue());
 			}
 		});
 		return list;
 	}
 
 	/**
-	 * Returns the first n elements of this rank.
+	 * Returns the first n elements of this rank or all if n is negative
 	 * 
 	 * @param n
 	 *            the n
@@ -135,6 +138,9 @@ public class RankList<T> implements Serializable {
 
 		List<T> elements = new ArrayList<T>();
 		int aux = Math.min(n, list.size());
+		if (aux < 0) {
+			aux = list.size();
+		}
 		for (int i = 0; i < aux; i++) {
 			elements.add(list.get(i).getKey());
 		}
@@ -147,7 +153,7 @@ public class RankList<T> implements Serializable {
 	 * @return the order
 	 */
 	public List<T> getOrder() {
-		return getNFirstElements(count.size());
+		return getNFirstElements(this.count.size());
 	}
 
 	/**
@@ -172,13 +178,13 @@ public class RankList<T> implements Serializable {
 	 * @return the int
 	 */
 	public int size() {
-		return count.size();
+		return this.count.size();
 	}
 
 	/**
 	 * Removes all data
 	 */
 	public void clear() {
-		count.clear();
+		this.count.clear();
 	}
 }
