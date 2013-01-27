@@ -34,41 +34,36 @@ import net.sourceforge.atunes.utils.ReflectionUtils;
  */
 public class ApplicationStateRadio implements IStateRadio {
 
-	/**
-	 * Component responsible of store state
-	 */
-	private IStateStore stateStore;
+	private PreferenceHelper preferenceHelper;
 
 	/**
-	 * Sets state store
-	 * 
-	 * @param store
+	 * @param preferenceHelper
 	 */
-	public void setStateStore(final IStateStore store) {
-		this.stateStore = store;
+	public void setPreferenceHelper(final PreferenceHelper preferenceHelper) {
+		this.preferenceHelper = preferenceHelper;
 	}
 
 	@Override
 	public boolean isShowAllRadioStations() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.SHOW_ALL_RADIO_STATIONS, true);
+		return this.preferenceHelper.getPreference(
+				Preferences.SHOW_ALL_RADIO_STATIONS, Boolean.class, true);
 	}
 
 	@Override
 	public void setShowAllRadioStations(final boolean showAllRadioStations) {
-		this.stateStore.storePreference(Preferences.SHOW_ALL_RADIO_STATIONS,
-				showAllRadioStations);
+		this.preferenceHelper.setPreference(
+				Preferences.SHOW_ALL_RADIO_STATIONS, showAllRadioStations);
 	}
 
 	@Override
 	public boolean isReadInfoFromRadioStream() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.READ_INFO_FROM_RADIO_STREAM, true);
+		return this.preferenceHelper.getPreference(
+				Preferences.READ_INFO_FROM_RADIO_STREAM, Boolean.class, true);
 	}
 
 	@Override
 	public void setReadInfoFromRadioStream(final boolean readInfoFromRadioStream) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.READ_INFO_FROM_RADIO_STREAM,
 				readInfoFromRadioStream);
 	}

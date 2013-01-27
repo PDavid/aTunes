@@ -35,43 +35,39 @@ import net.sourceforge.atunes.utils.ReflectionUtils;
  */
 public class ApplicationStateRepository implements IStateRepository {
 
-	/**
-	 * Component responsible of store state
-	 */
-	private IStateStore stateStore;
+	private PreferenceHelper preferenceHelper;
 
 	/**
-	 * Sets state store
-	 * 
-	 * @param store
+	 * @param preferenceHelper
 	 */
-	public void setStateStore(final IStateStore store) {
-		this.stateStore = store;
+	public void setPreferenceHelper(final PreferenceHelper preferenceHelper) {
+		this.preferenceHelper = preferenceHelper;
 	}
 
 	@Override
 	public boolean isKeyAlwaysCaseSensitiveInRepositoryStructure() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.CASE_SENSITIVE_REPOSITORY_STRUCTURE_KEYS, false);
+		return this.preferenceHelper.getPreference(
+				Preferences.CASE_SENSITIVE_REPOSITORY_STRUCTURE_KEYS,
+				Boolean.class, false);
 	}
 
 	@Override
 	public void setKeyAlwaysCaseSensitiveInRepositoryStructure(
 			final boolean caseSensitiveRepositoryStructureKeys) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.CASE_SENSITIVE_REPOSITORY_STRUCTURE_KEYS,
 				caseSensitiveRepositoryStructureKeys);
 	}
 
 	@Override
 	public int getAutoRepositoryRefreshTime() {
-		return (Integer) this.stateStore.retrievePreference(
-				Preferences.AUTO_REPOSITORY_REFRESH_TIME, 60);
+		return this.preferenceHelper.getPreference(
+				Preferences.AUTO_REPOSITORY_REFRESH_TIME, Integer.class, 60);
 	}
 
 	@Override
 	public void setAutoRepositoryRefreshTime(final int autoRepositoryRefreshTime) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.AUTO_REPOSITORY_REFRESH_TIME,
 				autoRepositoryRefreshTime);
 	}
@@ -79,169 +75,175 @@ public class ApplicationStateRepository implements IStateRepository {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<String> getLastRepositoryFolders() {
-		return (List<String>) this.stateStore.retrievePreference(
-				Preferences.LAST_REPOSITORY_FOLDERS, null);
+		return this.preferenceHelper.getPreference(
+				Preferences.LAST_REPOSITORY_FOLDERS, List.class, null);
 	}
 
 	@Override
 	public void setLastRepositoryFolders(
 			final List<String> lastRepositoryFolders) {
-		this.stateStore.storePreference(Preferences.LAST_REPOSITORY_FOLDERS,
-				lastRepositoryFolders);
+		this.preferenceHelper.setPreference(
+				Preferences.LAST_REPOSITORY_FOLDERS, lastRepositoryFolders);
 	}
 
 	@Override
 	public String getImportFileNamePattern() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.IMPORT_FILENAME_PATTERN, null);
+		return this.preferenceHelper.getPreference(
+				Preferences.IMPORT_FILENAME_PATTERN, String.class, null);
 	}
 
 	@Override
 	public void setImportFileNamePattern(final String importFileNamePattern) {
-		this.stateStore.storePreference(Preferences.IMPORT_FILENAME_PATTERN,
-				importFileNamePattern);
+		this.preferenceHelper.setPreference(
+				Preferences.IMPORT_FILENAME_PATTERN, importFileNamePattern);
 	}
 
 	@Override
 	public String getImportFolderPathPattern() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.IMPORT_FOLDER_PATH_PATTERN, null);
+		return this.preferenceHelper.getPreference(
+				Preferences.IMPORT_FOLDER_PATH_PATTERN, String.class, null);
 	}
 
 	@Override
 	public void setImportFolderPathPattern(final String importFolderPathPattern) {
-		this.stateStore.storePreference(Preferences.IMPORT_FOLDER_PATH_PATTERN,
-				importFolderPathPattern);
+		this.preferenceHelper
+				.setPreference(Preferences.IMPORT_FOLDER_PATH_PATTERN,
+						importFolderPathPattern);
 	}
 
 	@Override
 	public String getExportFileNamePattern() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.EXPORT_FILENAME_PATTERN, null);
+		return this.preferenceHelper.getPreference(
+				Preferences.EXPORT_FILENAME_PATTERN, String.class, null);
 	}
 
 	@Override
 	public void setExportFileNamePattern(final String exportFileNamePattern) {
-		this.stateStore.storePreference(Preferences.EXPORT_FILENAME_PATTERN,
-				exportFileNamePattern);
+		this.preferenceHelper.setPreference(
+				Preferences.EXPORT_FILENAME_PATTERN, exportFileNamePattern);
 	}
 
 	@Override
 	public String getExportFolderPathPattern() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.EXPORT_FOLDER_PATH_PATTERN, null);
+		return this.preferenceHelper.getPreference(
+				Preferences.EXPORT_FOLDER_PATH_PATTERN, String.class, null);
 	}
 
 	@Override
 	public void setExportFolderPathPattern(final String exportFolderPathPattern) {
-		this.stateStore.storePreference(Preferences.EXPORT_FOLDER_PATH_PATTERN,
-				exportFolderPathPattern);
+		this.preferenceHelper
+				.setPreference(Preferences.EXPORT_FOLDER_PATH_PATTERN,
+						exportFolderPathPattern);
 	}
 
 	@Override
 	public boolean isReviewTagsBeforeImport() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.REVIEW_TAGS_BEFORE_IMPORT, true);
+		return this.preferenceHelper.getPreference(
+				Preferences.REVIEW_TAGS_BEFORE_IMPORT, Boolean.class, true);
 	}
 
 	@Override
 	public void setReviewTagsBeforeImport(final boolean reviewTagsBeforeImport) {
-		this.stateStore.storePreference(Preferences.REVIEW_TAGS_BEFORE_IMPORT,
-				reviewTagsBeforeImport);
+		this.preferenceHelper.setPreference(
+				Preferences.REVIEW_TAGS_BEFORE_IMPORT, reviewTagsBeforeImport);
 	}
 
 	@Override
 	public boolean isApplyChangesToSourceFilesBeforeImport() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.APPLY_CHANGES_TO_SOURCE_FILES_BEFORE_IMPORT, false);
+		return this.preferenceHelper.getPreference(
+				Preferences.APPLY_CHANGES_TO_SOURCE_FILES_BEFORE_IMPORT,
+				Boolean.class, false);
 	}
 
 	@Override
 	public void setApplyChangesToSourceFilesBeforeImport(
 			final boolean applyChangesToSourceFilesBeforeImport) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.APPLY_CHANGES_TO_SOURCE_FILES_BEFORE_IMPORT,
 				applyChangesToSourceFilesBeforeImport);
 	}
 
 	@Override
 	public boolean isSetTrackNumbersWhenImporting() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.SET_TRACK_NUMBERS_WHEN_IMPORTING, true);
+		return this.preferenceHelper.getPreference(
+				Preferences.SET_TRACK_NUMBERS_WHEN_IMPORTING, Boolean.class,
+				true);
 	}
 
 	@Override
 	public void setSetTrackNumbersWhenImporting(
 			final boolean setTrackNumbersWhenImporting) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.SET_TRACK_NUMBERS_WHEN_IMPORTING,
 				setTrackNumbersWhenImporting);
 	}
 
 	@Override
 	public boolean isSetTitlesWhenImporting() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.SET_TITLES_WHEN_IMPORTING, true);
+		return this.preferenceHelper.getPreference(
+				Preferences.SET_TITLES_WHEN_IMPORTING, Boolean.class, true);
 	}
 
 	@Override
 	public void setSetTitlesWhenImporting(final boolean setTitlesWhenImporting) {
-		this.stateStore.storePreference(Preferences.SET_TITLES_WHEN_IMPORTING,
-				setTitlesWhenImporting);
+		this.preferenceHelper.setPreference(
+				Preferences.SET_TITLES_WHEN_IMPORTING, setTitlesWhenImporting);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<String> getRecognitionPatterns() {
-		return (List<String>) this.stateStore.retrievePreference(
-				Preferences.RECOGNITION_PATTERNS, null);
+		return this.preferenceHelper.getPreference(
+				Preferences.RECOGNITION_PATTERNS, List.class, null);
 	}
 
 	@Override
 	public void setRecognitionPatterns(final List<String> recognitionPatterns) {
-		this.stateStore.storePreference(Preferences.RECOGNITION_PATTERNS,
+		this.preferenceHelper.setPreference(Preferences.RECOGNITION_PATTERNS,
 				recognitionPatterns);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<String> getMassiveRecognitionPatterns() {
-		return (List<String>) this.stateStore.retrievePreference(
-				Preferences.MASSIVE_RECOGNITION_PATTERNS, null);
+		return this.preferenceHelper.getPreference(
+				Preferences.MASSIVE_RECOGNITION_PATTERNS, List.class, null);
 	}
 
 	@Override
 	public void setMassiveRecognitionPatterns(
 			final List<String> massiveRecognitionPatterns) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.MASSIVE_RECOGNITION_PATTERNS,
 				massiveRecognitionPatterns);
 	}
 
 	@Override
 	public String getCommandBeforeAccessRepository() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.COMMAND_BEFORE_ACCESS_REPOSITORY, null);
+		return this.preferenceHelper.getPreference(
+				Preferences.COMMAND_BEFORE_ACCESS_REPOSITORY, String.class,
+				null);
 	}
 
 	@Override
 	public void setCommandBeforeAccessRepository(
 			final String commandBeforeAccessRepository) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.COMMAND_BEFORE_ACCESS_REPOSITORY,
 				commandBeforeAccessRepository);
 	}
 
 	@Override
 	public String getCommandAfterAccessRepository() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.COMMAND_AFTER_ACCESS_REPOSITORY, null);
+		return this.preferenceHelper
+				.getPreference(Preferences.COMMAND_AFTER_ACCESS_REPOSITORY,
+						String.class, null);
 	}
 
 	@Override
 	public void setCommandAfterAccessRepository(
 			final String commandAfterAccessRepository) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.COMMAND_AFTER_ACCESS_REPOSITORY,
 				commandAfterAccessRepository);
 	}

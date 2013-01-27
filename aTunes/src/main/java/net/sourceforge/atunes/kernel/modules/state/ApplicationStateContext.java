@@ -37,12 +37,16 @@ import net.sourceforge.atunes.utils.ReflectionUtils;
  */
 public class ApplicationStateContext implements IStateContext {
 
-	/**
-	 * Component responsible of store state
-	 */
-	private IStateStore stateStore;
+	private PreferenceHelper preferenceHelper;
 
 	private IBeanFactory beanFactory;
+
+	/**
+	 * @param preferenceHelper
+	 */
+	public void setPreferenceHelper(final PreferenceHelper preferenceHelper) {
+		this.preferenceHelper = preferenceHelper;
+	}
 
 	/**
 	 * @param beanFactory
@@ -51,141 +55,128 @@ public class ApplicationStateContext implements IStateContext {
 		this.beanFactory = beanFactory;
 	}
 
-	/**
-	 * Sets state store
-	 * 
-	 * @param store
-	 */
-	public void setStateStore(final IStateStore store) {
-		this.stateStore = store;
-	}
-
 	@Override
 	public boolean isUseContext() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.USE_CONTEXT, true);
+		return this.preferenceHelper.getPreference(Preferences.USE_CONTEXT,
+				Boolean.class, true);
 	}
 
 	@Override
 	public void setUseContext(final boolean useContext) {
-		if (isUseContext() != useContext) {
-			this.stateStore
-					.storePreference(Preferences.USE_CONTEXT, useContext);
-		}
+		this.preferenceHelper
+				.setPreference(Preferences.USE_CONTEXT, useContext);
 	}
 
 	@Override
 	public String getSelectedContextTab() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.SELECTED_CONTEXT_TAB, null);
+		return this.preferenceHelper.getPreference(
+				Preferences.SELECTED_CONTEXT_TAB, String.class, null);
 	}
 
 	@Override
 	public void setSelectedContextTab(final String selectedContextTab) {
-		if (getSelectedContextTab() == null
-				|| !getSelectedContextTab().equals(selectedContextTab)) {
-			this.stateStore.storePreference(Preferences.SELECTED_CONTEXT_TAB,
-					selectedContextTab);
-		}
+		this.preferenceHelper.setPreference(Preferences.SELECTED_CONTEXT_TAB,
+				selectedContextTab);
 	}
 
 	@Override
 	public boolean isSaveContextPicture() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.SAVE_CONTEXT_PICTURE, false);
+		return this.preferenceHelper.getPreference(
+				Preferences.SAVE_CONTEXT_PICTURE, Boolean.class, false);
 	}
 
 	@Override
 	public void setSaveContextPicture(final boolean saveContextPicture) {
-		this.stateStore.storePreference(Preferences.SAVE_CONTEXT_PICTURE,
+		this.preferenceHelper.setPreference(Preferences.SAVE_CONTEXT_PICTURE,
 				saveContextPicture);
 	}
 
 	@Override
 	public boolean isLastFmEnabled() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.LASTFM_ENABLED, false);
+		return this.preferenceHelper.getPreference(Preferences.LASTFM_ENABLED,
+				Boolean.class, false);
 	}
 
 	@Override
 	public void setLastFmEnabled(final boolean lastFmEnabled) {
-		this.stateStore.storePreference(Preferences.LASTFM_ENABLED,
+		this.preferenceHelper.setPreference(Preferences.LASTFM_ENABLED,
 				lastFmEnabled);
 	}
 
 	@Override
 	public String getLastFmUser() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.LASTFM_USER, null);
+		return this.preferenceHelper.getPreference(Preferences.LASTFM_USER,
+				String.class, null);
 	}
 
 	@Override
 	public void setLastFmUser(final String lastFmUser) {
-		this.stateStore.storePreference(Preferences.LASTFM_USER, lastFmUser);
+		this.preferenceHelper
+				.setPreference(Preferences.LASTFM_USER, lastFmUser);
 	}
 
 	@Override
 	public String getLastFmPassword() {
-		return this.stateStore
-				.retrievePasswordPreference(Preferences.LASTFM_PASSWORD);
+		return this.preferenceHelper
+				.getPasswordPreference(Preferences.LASTFM_PASSWORD);
 	}
 
 	@Override
 	public void setLastFmPassword(final String lastFmPassword) {
-		this.stateStore.storePasswordPreference(Preferences.LASTFM_PASSWORD,
-				lastFmPassword);
+		this.preferenceHelper.setPasswordPreference(
+				Preferences.LASTFM_PASSWORD, lastFmPassword);
 	}
 
 	@Override
 	public boolean isAutoLoveFavoriteSong() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.AUTO_LOVE_FAVORITE_SONG, false);
+		return this.preferenceHelper.getPreference(
+				Preferences.AUTO_LOVE_FAVORITE_SONG, Boolean.class, false);
 	}
 
 	@Override
 	public void setAutoLoveFavoriteSong(final boolean autoLoveFavoriteSong) {
-		this.stateStore.storePreference(Preferences.AUTO_LOVE_FAVORITE_SONG,
-				autoLoveFavoriteSong);
+		this.preferenceHelper.setPreference(
+				Preferences.AUTO_LOVE_FAVORITE_SONG, autoLoveFavoriteSong);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<ILyricsEngineInfo> getLyricsEnginesInfo() {
-		return (List<ILyricsEngineInfo>) this.stateStore.retrievePreference(
-				Preferences.LYRICS_ENGINES_INFO, null);
+		return this.preferenceHelper.getPreference(
+				Preferences.LYRICS_ENGINES_INFO, List.class, null);
 	}
 
 	@Override
 	public void setLyricsEnginesInfo(
 			final List<ILyricsEngineInfo> lyricsEnginesInfo) {
-		this.stateStore.storePreference(Preferences.LYRICS_ENGINES_INFO,
+		this.preferenceHelper.setPreference(Preferences.LYRICS_ENGINES_INFO,
 				lyricsEnginesInfo);
 	}
 
 	@Override
 	public boolean isShowContextAlbumsInGrid() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.SHOW_CONTEXT_ALBUMS_IN_GRID, true);
+		return this.preferenceHelper.getPreference(
+				Preferences.SHOW_CONTEXT_ALBUMS_IN_GRID, Boolean.class, true);
 	}
 
 	@Override
 	public void setShowContextAlbumsInGrid(final boolean showContextAlbumsInGrid) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.SHOW_CONTEXT_ALBUMS_IN_GRID,
 				showContextAlbumsInGrid);
 	}
 
 	@Override
 	public String getSimilarArtistSearchQuery() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.SIMILAR_ARTIST_SEARCH_QUERY, this.beanFactory
-						.getBean("similarArtistSearchQueryDefault",
-								String.class));
+		return this.preferenceHelper.getPreference(
+				Preferences.SIMILAR_ARTIST_SEARCH_QUERY, String.class,
+				this.beanFactory.getBean("similarArtistSearchQueryDefault",
+						String.class));
 	}
 
 	@Override
 	public void setSimilarArtistSearchQuery(final String query) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.SIMILAR_ARTIST_SEARCH_QUERY, query);
 	}
 

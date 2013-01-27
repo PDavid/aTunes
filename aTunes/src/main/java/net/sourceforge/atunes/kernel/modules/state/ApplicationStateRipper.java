@@ -34,76 +34,71 @@ import net.sourceforge.atunes.utils.ReflectionUtils;
  */
 public class ApplicationStateRipper implements IStateRipper {
 
-	/**
-	 * Component responsible of store state
-	 */
-	private IStateStore stateStore;
+	private PreferenceHelper preferenceHelper;
 
 	/**
-	 * Sets state store
-	 * 
-	 * @param store
+	 * @param preferenceHelper
 	 */
-	public void setStateStore(final IStateStore store) {
-		this.stateStore = store;
+	public void setPreferenceHelper(final PreferenceHelper preferenceHelper) {
+		this.preferenceHelper = preferenceHelper;
 	}
 
 	@Override
 	public boolean isUseCdErrorCorrection() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.USE_CD_ERROR_CORRECTION, false);
+		return this.preferenceHelper.getPreference(
+				Preferences.USE_CD_ERROR_CORRECTION, Boolean.class, false);
 	}
 
 	@Override
 	public void setUseCdErrorCorrection(final boolean useCdErrorCorrection) {
-		this.stateStore.storePreference(Preferences.USE_CD_ERROR_CORRECTION,
-				useCdErrorCorrection);
+		this.preferenceHelper.setPreference(
+				Preferences.USE_CD_ERROR_CORRECTION, useCdErrorCorrection);
 	}
 
 	@Override
 	public String getEncoder() {
-		return (String) this.stateStore.retrievePreference(Preferences.ENCODER,
-				"OGG");
+		return this.preferenceHelper.getPreference(Preferences.ENCODER,
+				String.class, "OGG");
 	}
 
 	@Override
 	public void setEncoder(final String encoder) {
-		this.stateStore.storePreference(Preferences.ENCODER, encoder);
+		this.preferenceHelper.setPreference(Preferences.ENCODER, encoder);
 	}
 
 	@Override
 	public String getEncoderQuality() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.ENCODER_QUALITY, "5");
+		return this.preferenceHelper.getPreference(Preferences.ENCODER_QUALITY,
+				String.class, "5");
 	}
 
 	@Override
 	public void setEncoderQuality(final String encoderQuality) {
-		this.stateStore.storePreference(Preferences.ENCODER_QUALITY,
+		this.preferenceHelper.setPreference(Preferences.ENCODER_QUALITY,
 				encoderQuality);
 	}
 
 	@Override
 	public String getMp3EncoderQuality() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.MP3_ENCODER_QUALITY, "medium");
+		return this.preferenceHelper.getPreference(
+				Preferences.MP3_ENCODER_QUALITY, String.class, "medium");
 	}
 
 	@Override
 	public void setMp3EncoderQuality(final String mp3EncoderQuality) {
-		this.stateStore.storePreference(Preferences.MP3_ENCODER_QUALITY,
+		this.preferenceHelper.setPreference(Preferences.MP3_ENCODER_QUALITY,
 				mp3EncoderQuality);
 	}
 
 	@Override
 	public String getFlacEncoderQuality() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.FLAC_ENCODER_QUALITY, "-5");
+		return this.preferenceHelper.getPreference(
+				Preferences.FLAC_ENCODER_QUALITY, String.class, "-5");
 	}
 
 	@Override
 	public void setFlacEncoderQuality(final String flacEncoderQuality) {
-		this.stateStore.storePreference(Preferences.FLAC_ENCODER_QUALITY,
+		this.preferenceHelper.setPreference(Preferences.FLAC_ENCODER_QUALITY,
 				flacEncoderQuality);
 	}
 

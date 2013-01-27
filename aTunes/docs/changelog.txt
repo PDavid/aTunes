@@ -1,6 +1,7 @@
 aTunes 3.0.5
 ------------
 - FIX: Statistics not shown in tables
+- FIX: Avoid cast errors when reading preferences with kryo fails
 
 aTunes 3.0.4
 ------------

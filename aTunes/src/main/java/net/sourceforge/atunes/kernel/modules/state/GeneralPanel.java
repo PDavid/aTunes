@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -177,20 +176,23 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 	public void initialize() {
 		JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
 		JLabel languageLabel = new JLabel(I18nUtils.getString("LANGUAGE"));
-		language = new JComboBox();
+		this.language = new JComboBox();
 
-		showIconTray = new JCheckBox(I18nUtils.getString("SHOW_TRAY_ICON"));
-		showTrayPlayer = new JCheckBox(I18nUtils.getString("SHOW_TRAY_PLAYER"));
-		showTrayPlayer.addChangeListener(new ChangeListener() {
+		this.showIconTray = new JCheckBox(I18nUtils.getString("SHOW_TRAY_ICON"));
+		this.showTrayPlayer = new JCheckBox(
+				I18nUtils.getString("SHOW_TRAY_PLAYER"));
+		this.showTrayPlayer.addChangeListener(new ChangeListener() {
 
 			@Override
 			public void stateChanged(final ChangeEvent e) {
-				trayPlayerColorSelector.setEnabled(showTrayPlayer.isSelected());
+				GeneralPanel.this.trayPlayerColorSelector
+						.setEnabled(GeneralPanel.this.showTrayPlayer
+								.isSelected());
 			}
 		});
-		trayPlayerColorSelector = new JButton(
+		this.trayPlayerColorSelector = new JButton(
 				I18nUtils.getString("SELECT_TRAY_PLAYER_COLOR"));
-		trayPlayerColorSelector.addActionListener(new ActionListener() {
+		this.trayPlayerColorSelector.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -198,37 +200,38 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 						getPreferenceDialog(),
 						I18nUtils.getString("SELECT_TRAY_PLAYER_COLOR"), null);
 				if (selectedColor != null) {
-					currentTrayIconColor = selectedColor;
+					GeneralPanel.this.currentTrayIconColor = selectedColor;
 				}
 			}
 		});
 
 		// Hide tray icons controls if not supported by operating system
-		showIconTray.setVisible(osManager.areTrayIconsSupported());
-		showTrayPlayer.setVisible(osManager.areTrayIconsSupported());
-		trayPlayerColorSelector.setVisible(osManager.areTrayIconsSupported()
-				&& osManager.areTrayIconsColorsSupported());
+		this.showIconTray.setVisible(this.osManager.areTrayIconsSupported());
+		this.showTrayPlayer.setVisible(this.osManager.areTrayIconsSupported());
+		this.trayPlayerColorSelector.setVisible(this.osManager
+				.areTrayIconsSupported()
+				&& this.osManager.areTrayIconsColorsSupported());
 
 		JLabel lookAndFeelLabel = new JLabel(
 				I18nUtils.getString("LOOK_AND_FEEL"));
-		skinLabel = new JLabel(I18nUtils.getString("THEME"));
+		this.skinLabel = new JLabel(I18nUtils.getString("THEME"));
 
 		JButton fontSettings = getFontSettingsButton();
 
-		lookAndFeel = getLookAndFeelComboBox();
+		this.lookAndFeel = getLookAndFeelComboBox();
 
-		skin = new JComboBox(new DefaultComboBoxModel());
-		skin.addItemListener(new ApplySkinActionListener());
+		this.skin = new JComboBox(new DefaultComboBoxModel());
+		this.skin.addItemListener(new ApplySkinActionListener());
 		List<ImageEntry<Class<? extends IFrame>>> data = new ArrayList<ImageEntry<Class<? extends IFrame>>>();
-		for (Class<? extends IFrame> clazz : frameTypes.getFrames()) {
-			data.add(new ImageEntry<Class<? extends IFrame>>(clazz, frameTypes
-					.getImage(clazz)));
+		for (Class<? extends IFrame> clazz : this.frameTypes.getFrames()) {
+			data.add(new ImageEntry<Class<? extends IFrame>>(clazz,
+					this.frameTypes.getImage(clazz)));
 		}
-		windowTypeChoosingPanel = new ByImageChoosingPanel<Class<? extends IFrame>>(
+		this.windowTypeChoosingPanel = new ByImageChoosingPanel<Class<? extends IFrame>>(
 				data);
 
-		JScrollPane sp = lookAndFeelManager.getCurrentLookAndFeel()
-		.getScrollPane(windowTypeChoosingPanel);
+		JScrollPane sp = this.lookAndFeelManager.getCurrentLookAndFeel()
+				.getScrollPane(this.windowTypeChoosingPanel);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getVerticalScrollBar().setUnitIncrement(20);
 
@@ -241,23 +244,24 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 		lookAndFeel.addItemListener(new ItemListener() {
 
 			@Override
-			public void itemStateChanged(ItemEvent e) {
+			public void itemStateChanged(final ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					// When changing look and feel set default skin in combo or
 					// current skin if selected look and feel is the current one
 					if (!currentLookAndFeelIsSelected()) {
 						updateSkins((String) lookAndFeel.getSelectedItem(),
-								lookAndFeelManager
-								.getDefaultSkin((String) lookAndFeel
-										.getSelectedItem()));
+								GeneralPanel.this.lookAndFeelManager
+										.getDefaultSkin((String) lookAndFeel
+												.getSelectedItem()));
 
 					} else {
-						if (skinApplied != null) {
+						if (GeneralPanel.this.skinApplied != null) {
 							updateSkins((String) lookAndFeel.getSelectedItem(),
-									skinApplied);
+									GeneralPanel.this.skinApplied);
 						} else {
 							updateSkins((String) lookAndFeel.getSelectedItem(),
-									stateUI.getLookAndFeel().getSkin());
+									GeneralPanel.this.stateUI.getLookAndFeel()
+											.getSkin());
 						}
 					}
 				}
@@ -265,8 +269,8 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 
 			private boolean currentLookAndFeelIsSelected() {
 				return GeneralPanel.this.lookAndFeelManager
-				.getCurrentLookAndFeelName().equals(
-						lookAndFeel.getSelectedItem());
+						.getCurrentLookAndFeelName().equals(
+								lookAndFeel.getSelectedItem());
 			}
 		});
 
@@ -276,29 +280,31 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 	private JButton getFontSettingsButton() {
 		JButton fontSettings = new JButton(
 				I18nUtils.getString("CHANGE_FONT_SETTINGS"));
-		fontSettings.setEnabled(lookAndFeelManager.getCurrentLookAndFeel()
+		fontSettings.setEnabled(this.lookAndFeelManager.getCurrentLookAndFeel()
 				.supportsCustomFontSettings());
 		fontSettings.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				FontChooserDialog fontChooserDialog = dialogFactory
-				.newDialog(FontChooserDialog.class);
-				fontChooserDialog.initializeFont(
-						currentFontSettings != null ? currentFontSettings
-								.getFont().toFont()
-								: GeneralPanel.this.lookAndFeelManager
-								.getCurrentLookAndFeel()
-								.getDefaultFont(),
-								currentFontSettings != null ? currentFontSettings
+				FontChooserDialog fontChooserDialog = GeneralPanel.this.dialogFactory
+						.newDialog(FontChooserDialog.class);
+				fontChooserDialog
+						.initializeFont(
+								GeneralPanel.this.currentFontSettings != null ? GeneralPanel.this.currentFontSettings
+										.getFont().toFont()
+										: GeneralPanel.this.lookAndFeelManager
+												.getCurrentLookAndFeel()
+												.getDefaultFont(),
+								GeneralPanel.this.currentFontSettings != null ? GeneralPanel.this.currentFontSettings
 										.isUseFontSmoothing() : true,
-										currentFontSettings != null ? currentFontSettings
-												.isUseFontSmoothingSettingsFromOs() : false,
-												stateCore.getLocale().getLocale());
+								GeneralPanel.this.currentFontSettings != null ? GeneralPanel.this.currentFontSettings
+										.isUseFontSmoothingSettingsFromOs()
+										: false, GeneralPanel.this.stateCore
+										.getLocale().getLocale());
 				fontChooserDialog.showDialog();
 				if (fontChooserDialog.getSelectedFontSettings() != null) {
-					currentFontSettings = fontChooserDialog
-					.getSelectedFontSettings();
+					GeneralPanel.this.currentFontSettings = fontChooserDialog
+							.getSelectedFontSettings();
 				}
 			}
 		});
@@ -332,7 +338,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 	private void addShowIconTray(final GridBagConstraints c) {
 		c.gridx = 2;
 		c.gridy = 7;
-		add(showIconTray, c);
+		add(this.showIconTray, c);
 	}
 
 	/**
@@ -342,7 +348,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 		c.gridx = 1;
 		c.gridy = 7;
 		c.weighty = 0.2;
-		add(trayPlayerColorSelector, c);
+		add(this.trayPlayerColorSelector, c);
 	}
 
 	/**
@@ -352,7 +358,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 		c.gridy = 7;
 		c.weighty = 0.2;
 		c.insets = new Insets(5, 0, 0, 0);
-		add(showTrayPlayer, c);
+		add(this.showTrayPlayer, c);
 	}
 
 	/**
@@ -398,11 +404,11 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 		c.gridy = 3;
 		c.insets = new Insets(10, 0, 5, 0);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		add(skinLabel, c);
+		add(this.skinLabel, c);
 		c.gridx = 1;
 		c.insets = new Insets(10, 0, 0, 0);
 		c.fill = GridBagConstraints.NONE;
-		add(skin, c);
+		add(this.skin, c);
 	}
 
 	/**
@@ -419,7 +425,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 		c.gridx = 1;
 		c.insets = new Insets(25, 0, 0, 0);
 		c.fill = GridBagConstraints.NONE;
-		add(lookAndFeel, c);
+		add(this.lookAndFeel, c);
 	}
 
 	/**
@@ -435,53 +441,53 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 		add(languageLabel, c);
 		c.gridx = 1;
 		c.fill = GridBagConstraints.NONE;
-		add(language, c);
+		add(this.language, c);
 	}
 
 	@Override
 	public boolean applyPreferences() {
 		boolean needRestart = false;
 
-		Class<? extends IFrame> oldFrameClass = stateUI.getFrameClass();
-		Class<? extends IFrame> newFrameClass = windowTypeChoosingPanel
-		.getSelectedItem();
-		stateUI.setFrameClass(newFrameClass);
+		Class<? extends IFrame> oldFrameClass = this.stateUI.getFrameClass();
+		Class<? extends IFrame> newFrameClass = this.windowTypeChoosingPanel
+				.getSelectedItem();
+		this.stateUI.setFrameClass(newFrameClass);
 		if (!oldFrameClass.equals(newFrameClass)) {
 			needRestart = true;
 		}
 
-		ILocaleBean oldLocale = stateCore.getLocale();
-		ILocaleBean newLocale = localeBeanFactory
-		.getLocaleBean((Locale) language.getSelectedItem());
-		stateCore.setLocale(newLocale);
+		ILocaleBean oldLocale = this.stateCore.getLocale();
+		ILocaleBean newLocale = this.localeBeanFactory
+				.getLocaleBean((Locale) this.language.getSelectedItem());
+		this.stateCore.setLocale(newLocale);
 		if (!oldLocale.equals(newLocale)) {
 			needRestart = true;
-			stateCore.setOldLocale(localeBeanFactory.getLocaleBean(Locale
-					.getDefault()));
+			this.stateCore.setOldLocale(this.localeBeanFactory
+					.getLocaleBean(Locale.getDefault()));
 		}
 
-		if (lookAndFeelManager.getCurrentLookAndFeel()
+		if (this.lookAndFeelManager.getCurrentLookAndFeel()
 				.supportsCustomFontSettings()) {
-			FontSettings oldFontSettings = stateUI.getFontSettings();
-			stateUI.setFontSettings(currentFontSettings);
-			if (!oldFontSettings.equals(currentFontSettings)) {
+			FontSettings oldFontSettings = this.stateUI.getFontSettings();
+			this.stateUI.setFontSettings(this.currentFontSettings);
+			if (!oldFontSettings.equals(this.currentFontSettings)) {
 				needRestart = true;
 			}
 		}
 
-		stateUI.setShowSystemTray(showIconTray.isSelected());
-		stateUI.setShowTrayPlayer(showTrayPlayer.isSelected());
+		this.stateUI.setShowSystemTray(this.showIconTray.isSelected());
+		this.stateUI.setShowTrayPlayer(this.showTrayPlayer.isSelected());
 
-		if (currentTrayIconColor != null) {
-			stateUI.setTrayPlayerIconsColor(colorBeanFactory
-					.getColorBean(currentTrayIconColor));
+		if (this.currentTrayIconColor != null) {
+			this.stateUI.setTrayPlayerIconsColor(this.colorBeanFactory
+					.getColorBean(this.currentTrayIconColor));
 		}
 
-		LookAndFeelBean oldLookAndFeel = stateUI.getLookAndFeel();
+		LookAndFeelBean oldLookAndFeel = this.stateUI.getLookAndFeel();
 		LookAndFeelBean newLookAndFeel = new LookAndFeelBean();
-		newLookAndFeel.setName((String) lookAndFeel.getSelectedItem());
-		newLookAndFeel.setSkin((String) skin.getSelectedItem());
-		stateUI.setLookAndFeel(newLookAndFeel);
+		newLookAndFeel.setName((String) this.lookAndFeel.getSelectedItem());
+		newLookAndFeel.setSkin((String) this.skin.getSelectedItem());
+		this.stateUI.setLookAndFeel(newLookAndFeel);
 		if (!oldLookAndFeel.getName().equals(newLookAndFeel.getName())) {
 			needRestart = true;
 		}
@@ -536,48 +542,49 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 	 *            the new window type
 	 */
 	private void setWindowType(final Class<? extends IFrame> type) {
-		windowTypeChoosingPanel.setSelectedItem(type);
+		this.windowTypeChoosingPanel.setSelectedItem(type);
 	}
 
 	@Override
 	public void updatePanel() {
 		List<Locale> langs = I18nUtils.getLanguages();
 		Locale[] array = langs.toArray(new Locale[langs.size()]);
-		final Locale currentLocale = stateCore.getLocale().getLocale();
+		final Locale currentLocale = this.stateCore.getLocale().getLocale();
 		Arrays.sort(array, new LocaleComparator(currentLocale));
-		language.setModel(new DefaultComboBoxModel(array));
-		language.setRenderer(lookAndFeelManager.getCurrentLookAndFeel()
-				.getListCellRenderer(
-						new LanguageListCellRendererCode(stateCore)));
+		this.language.setModel(new DefaultComboBoxModel(array));
+		this.language.setRenderer(this.lookAndFeelManager
+				.getCurrentLookAndFeel().getListCellRenderer(
+						new LanguageListCellRendererCode(this.stateCore)));
 
-		lookAndFeel.setModel(new ListComboBoxModel<String>(lookAndFeelManager
-				.getAvailableLookAndFeels()));
-		setWindowType(stateUI.getFrameClass());
+		this.lookAndFeel.setModel(new ListComboBoxModel<String>(
+				this.lookAndFeelManager.getAvailableLookAndFeels()));
+		setWindowType(this.stateUI.getFrameClass());
 		setLanguage(I18nUtils.getSelectedLocale());
-		setShowIconTray(stateUI.isShowSystemTray());
-		setShowTrayPlayer(stateUI.isShowTrayPlayer());
+		setShowIconTray(this.stateUI.isShowSystemTray());
+		setShowTrayPlayer(this.stateUI.isShowTrayPlayer());
 		// If look and feel is not available then set default
-		String lookAndFeelName = lookAndFeelManager.getAvailableLookAndFeels()
-		.contains(stateUI.getLookAndFeel().getName()) ? stateUI
-				.getLookAndFeel().getName() : lookAndFeelManager
+		String lookAndFeelName = this.lookAndFeelManager
+				.getAvailableLookAndFeels().contains(
+						this.stateUI.getLookAndFeel().getName()) ? this.stateUI
+				.getLookAndFeel().getName() : this.lookAndFeelManager
 				.getDefaultLookAndFeel().getName();
-				setLookAndFeel(lookAndFeelName);
+		setLookAndFeel(lookAndFeelName);
 
-				String skinName = stateUI.getLookAndFeel().getSkin() != null ? stateUI
-						.getLookAndFeel().getSkin() : lookAndFeelManager
-						.getDefaultSkin(lookAndFeelName);
-						updateSkins(lookAndFeelName, skinName);
+		String skinName = this.stateUI.getLookAndFeel().getSkin() != null ? this.stateUI
+				.getLookAndFeel().getSkin() : this.lookAndFeelManager
+				.getDefaultSkin(lookAndFeelName);
+		updateSkins(lookAndFeelName, skinName);
 
-						currentFontSettings = stateUI.getFontSettings();
+		this.currentFontSettings = this.stateUI.getFontSettings();
 	}
 
 	@Override
 	public void resetImmediateChanges() {
-		if (stateUI.getLookAndFeel().getSkin() == null
-				|| !stateUI.getLookAndFeel().getSkin()
-				.equals(skin.getSelectedItem())) {
-			lookAndFeelManager.applySkin(stateUI.getLookAndFeel().getSkin(),
-					stateCore, stateUI, osManager);
+		if (this.stateUI.getLookAndFeel().getSkin() == null
+				|| !this.stateUI.getLookAndFeel().getSkin()
+						.equals(this.skin.getSelectedItem())) {
+			this.lookAndFeelManager.applySkin(this.stateUI.getLookAndFeel()
+					.getSkin(), this.stateCore, this.stateUI, this.osManager);
 		}
 	}
 
@@ -598,46 +605,51 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 	 */
 	protected void updateSkins(final String selectedLookAndFeel,
 			final String selectedSkin) {
-		boolean hasSkins = !lookAndFeelManager.getAvailableSkins(
+		boolean hasSkins = !this.lookAndFeelManager.getAvailableSkins(
 				selectedLookAndFeel).isEmpty();
-		skinLabel.setEnabled(hasSkins);
-		skin.setEnabled(false);
+		this.skinLabel.setEnabled(hasSkins);
+		this.skin.setEnabled(false);
 
-		List<String> availableSkins = lookAndFeelManager
-		.getAvailableSkins(selectedLookAndFeel);
+		List<String> availableSkins = this.lookAndFeelManager
+				.getAvailableSkins(selectedLookAndFeel);
 
-		((DefaultComboBoxModel)skin.getModel()).removeAllElements();
+		((DefaultComboBoxModel) this.skin.getModel()).removeAllElements();
 		if (availableSkins != null) {
 			for (String availableSkin : availableSkins) {
-				((DefaultComboBoxModel)skin.getModel()).addElement(availableSkin);			
+				((DefaultComboBoxModel) this.skin.getModel())
+						.addElement(availableSkin);
 			}
-			skin.getModel().setSelectedItem(selectedSkin);
+			this.skin.getModel().setSelectedItem(selectedSkin);
 		} else {
-			skin.setSelectedIndex(-1);
+			this.skin.setSelectedIndex(-1);
 		}
-		skin.setEnabled(hasSkins);
+		this.skin.setEnabled(hasSkins);
 	}
 
 	private class ApplySkinActionListener implements ItemListener {
 
 		@Override
-		public void itemStateChanged(ItemEvent e) {
-			if (e.getStateChange() == ItemEvent.SELECTED && skin.isEnabled()) {
-				final String selectedSkin = (String) skin.getSelectedItem();
-				boolean isCurrentLookAndFeel = lookAndFeelManager
-				.getCurrentLookAndFeelName().equals(
-						lookAndFeel.getSelectedItem());
+		public void itemStateChanged(final ItemEvent e) {
+			if (e.getStateChange() == ItemEvent.SELECTED
+					&& GeneralPanel.this.skin.isEnabled()) {
+				final String selectedSkin = (String) GeneralPanel.this.skin
+						.getSelectedItem();
+				boolean isCurrentLookAndFeel = GeneralPanel.this.lookAndFeelManager
+						.getCurrentLookAndFeelName()
+						.equals(GeneralPanel.this.lookAndFeel.getSelectedItem());
 				if (isCurrentLookAndFeel) {
 					// Finish all pending Swing events before updating skin to
 					// avoid weird Swing exceptions
 					GuiUtils.callInEventDispatchThreadLater(new Runnable() {
 						@Override
 						public void run() {
-							lookAndFeelManager.applySkin(selectedSkin,
-									stateCore, stateUI, osManager);
+							GeneralPanel.this.lookAndFeelManager.applySkin(
+									selectedSkin, GeneralPanel.this.stateCore,
+									GeneralPanel.this.stateUI,
+									GeneralPanel.this.osManager);
 						};
 					});
-					skinApplied = selectedSkin;
+					GeneralPanel.this.skinApplied = selectedSkin;
 				}
 			}
 		}

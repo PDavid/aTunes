@@ -33,6 +33,8 @@
 	<bean id="stateRipper" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStateRipper" />
 	<bean id="stateDevice" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStateDevice" />
 	<bean id="statePodcast" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStatePodcast" />
+	
+	<bean id="preferenceHelper" class="net.sourceforge.atunes.kernel.modules.state.PreferenceHelper"/>
 	<bean id="stateStore" class="net.sourceforge.atunes.kernel.modules.state.PreferencesCache">
 		<constructor-arg ref="osManager"/>
 		<constructor-arg value="/settings/ehcache-preferences.xml" />
