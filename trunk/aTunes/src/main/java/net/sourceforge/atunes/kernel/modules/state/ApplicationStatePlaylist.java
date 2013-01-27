@@ -37,111 +37,107 @@ import net.sourceforge.atunes.utils.ReflectionUtils;
  */
 public class ApplicationStatePlaylist implements IStatePlaylist {
 
-	/**
-	 * Component responsible of store state
-	 */
-	private IStateStore stateStore;
+	private PreferenceHelper preferenceHelper;
 
 	/**
-	 * Sets state store
-	 * 
-	 * @param store
+	 * @param preferenceHelper
 	 */
-	public void setStateStore(final IStateStore store) {
-		this.stateStore = store;
+	public void setPreferenceHelper(final PreferenceHelper preferenceHelper) {
+		this.preferenceHelper = preferenceHelper;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public Map<String, ColumnBean> getColumns() {
-		Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore
-				.retrievePreference(Preferences.COLUMNS, null);
+		Map<String, ColumnBean> map = this.preferenceHelper.getPreference(
+				Preferences.COLUMNS, Map.class, null);
 		return map != null ? Collections.unmodifiableMap(map) : null;
 	}
 
 	@Override
 	public void setColumns(final Map<String, ColumnBean> columns) {
 		if (getColumns() == null || !getColumns().equals(columns)) {
-			this.stateStore.storePreference(Preferences.COLUMNS,
+			this.preferenceHelper.setPreference(Preferences.COLUMNS,
 					new HashMap<String, ColumnBean>(columns));
 		}
 	}
 
 	@Override
 	public boolean isAutoScrollPlayListEnabled() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.AUTO_SCROLL_PLAYLIST, true);
+		return this.preferenceHelper.getPreference(
+				Preferences.AUTO_SCROLL_PLAYLIST, Boolean.class, true);
 	}
 
 	@Override
 	public void setAutoScrollPlayListEnabled(
 			final boolean autoScrollPlayListEnabled) {
-		this.stateStore.storePreference(Preferences.AUTO_SCROLL_PLAYLIST,
+		this.preferenceHelper.setPreference(Preferences.AUTO_SCROLL_PLAYLIST,
 				autoScrollPlayListEnabled);
 	}
 
 	@Override
 	public String getLoadPlaylistPath() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.LOAD_PLAYLIST_PATH, null);
+		return this.preferenceHelper.getPreference(
+				Preferences.LOAD_PLAYLIST_PATH, String.class, null);
 	}
 
 	@Override
 	public void setLoadPlaylistPath(final String loadPlaylistPath) {
-		this.stateStore.storePreference(Preferences.LOAD_PLAYLIST_PATH,
+		this.preferenceHelper.setPreference(Preferences.LOAD_PLAYLIST_PATH,
 				loadPlaylistPath);
 	}
 
 	@Override
 	public String getSavePlaylistPath() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.SAVE_PLAYLIST_PATH, null);
+		return this.preferenceHelper.getPreference(
+				Preferences.SAVE_PLAYLIST_PATH, String.class, null);
 	}
 
 	@Override
 	public void setSavePlaylistPath(final String savePlaylistPath) {
-		this.stateStore.storePreference(Preferences.SAVE_PLAYLIST_PATH,
+		this.preferenceHelper.setPreference(Preferences.SAVE_PLAYLIST_PATH,
 				savePlaylistPath);
 	}
 
 	@Override
 	public boolean isStopPlayerOnPlayListSwitch() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.STOP_PLAYER_ON_PLAYLIST_SWITCH, false);
+		return this.preferenceHelper.getPreference(
+				Preferences.STOP_PLAYER_ON_PLAYLIST_SWITCH, Boolean.class,
+				false);
 	}
 
 	@Override
 	public void setStopPlayerOnPlayListSwitch(
 			final boolean stopPlayerOnPlayListSwitch) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.STOP_PLAYER_ON_PLAYLIST_SWITCH,
 				stopPlayerOnPlayListSwitch);
 	}
 
 	@Override
 	public boolean isStopPlayerOnPlayListClear() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.STOP_PLAYER_ON_PLAYLIST_CLEAR, true);
+		return this.preferenceHelper.getPreference(
+				Preferences.STOP_PLAYER_ON_PLAYLIST_CLEAR, Boolean.class, true);
 	}
 
 	@Override
 	public void setStopPlayerOnPlayListClear(
 			final boolean stopPlayerOnPlayListClear) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.STOP_PLAYER_ON_PLAYLIST_CLEAR,
 				stopPlayerOnPlayListClear);
 	}
 
 	@Override
 	public boolean isShowPlayListSelectorComboBox() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.SHOW_PLAYLIST_COMBO, false);
+		return this.preferenceHelper.getPreference(
+				Preferences.SHOW_PLAYLIST_COMBO, Boolean.class, false);
 	}
 
 	@Override
 	public void setShowPlayListSelectorComboBox(
 			final boolean showPlayListSelectorComboBox) {
-		this.stateStore.storePreference(Preferences.SHOW_PLAYLIST_COMBO,
+		this.preferenceHelper.setPreference(Preferences.SHOW_PLAYLIST_COMBO,
 				showPlayListSelectorComboBox);
 	}
 

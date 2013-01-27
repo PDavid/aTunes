@@ -35,77 +35,75 @@ import net.sourceforge.atunes.utils.ReflectionUtils;
  */
 public class ApplicationStatePodcast implements IStatePodcast {
 
-	/**
-	 * Component responsible of store state
-	 */
-	private IStateStore stateStore;
+	private PreferenceHelper preferenceHelper;
 
 	/**
-	 * Sets state store
-	 * 
-	 * @param store
+	 * @param preferenceHelper
 	 */
-	public void setStateStore(final IStateStore store) {
-		this.stateStore = store;
+	public void setPreferenceHelper(final PreferenceHelper preferenceHelper) {
+		this.preferenceHelper = preferenceHelper;
 	}
 
 	@Override
 	public long getPodcastFeedEntriesRetrievalInterval() {
-		return (Long) this.stateStore
-				.retrievePreference(
+		return this.preferenceHelper
+				.getPreference(
 						Preferences.PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL,
+						Long.class,
 						PodcastFeedHandler.DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL);
 	}
 
 	@Override
 	public void setPodcastFeedEntriesRetrievalInterval(
 			final long podcastFeedEntriesRetrievalInterval) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL,
 				podcastFeedEntriesRetrievalInterval);
 	}
 
 	@Override
 	public String getPodcastFeedEntryDownloadPath() {
-		return (String) this.stateStore.retrievePreference(
-				Preferences.PODCAST_FEED_ENTRY_DOWNLOAD_PATH, null);
+		return this.preferenceHelper.getPreference(
+				Preferences.PODCAST_FEED_ENTRY_DOWNLOAD_PATH, String.class,
+				null);
 	}
 
 	@Override
 	public void setPodcastFeedEntryDownloadPath(
 			final String podcastFeedEntryDownloadPath) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.PODCAST_FEED_ENTRY_DOWNLOAD_PATH,
 				podcastFeedEntryDownloadPath);
 	}
 
 	@Override
 	public boolean isUseDownloadedPodcastFeedEntries() {
-		return (Boolean) this.stateStore.retrievePreference(
-				Preferences.USE_DOWNLOADED_PODCAST_FEED_ENTRIES, true);
+		return this.preferenceHelper.getPreference(
+				Preferences.USE_DOWNLOADED_PODCAST_FEED_ENTRIES, Boolean.class,
+				true);
 	}
 
 	@Override
 	public void setUseDownloadedPodcastFeedEntries(
 			final boolean useDownloadedPodcastFeedEntries) {
-		this.stateStore.storePreference(
+		this.preferenceHelper.setPreference(
 				Preferences.USE_DOWNLOADED_PODCAST_FEED_ENTRIES,
 				useDownloadedPodcastFeedEntries);
 	}
 
 	@Override
 	public boolean isRemovePodcastFeedEntriesRemovedFromPodcastFeed() {
-		return (Boolean) this.stateStore
-				.retrievePreference(
+		return this.preferenceHelper
+				.getPreference(
 						Preferences.REMOVE_PODCAST_FEED_ENTRIES_REMOVED_FROM_PODCAST_FEED,
-						false);
+						Boolean.class, false);
 	}
 
 	@Override
 	public void setRemovePodcastFeedEntriesRemovedFromPodcastFeed(
 			final boolean removePodcastFeedEntriesRemovedFromPodcastFeed) {
-		this.stateStore
-				.storePreference(
+		this.preferenceHelper
+				.setPreference(
 						Preferences.REMOVE_PODCAST_FEED_ENTRIES_REMOVED_FROM_PODCAST_FEED,
 						removePodcastFeedEntriesRemovedFromPodcastFeed);
 	}
