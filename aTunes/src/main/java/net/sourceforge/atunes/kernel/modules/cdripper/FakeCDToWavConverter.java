@@ -32,20 +32,25 @@ import org.apache.commons.io.FileUtils;
 
 /**
  * Fake cd to wav converter used for simulation
+ * 
  * @author alex
- *
+ * 
  */
 public class FakeCDToWavConverter extends AbstractCdToWavConverter {
 
 	@Override
 	public boolean cdda2wav(final int track, final File file) {
-		Logger.info("Converting with fake wav converter: Track ", track, " File ", net.sourceforge.atunes.utils.FileUtils.getPath(file));
+		Logger.info("Converting with fake wav converter: Track ", track,
+				" File ", net.sourceforge.atunes.utils.FileUtils.getPath(file));
 		return waitConversion(file);
 	}
 
 	@Override
-	public boolean cdda2wav(final int track, final File file, final boolean useParanoia) {
-		Logger.info("Converting with fake wav converter: Track ", track, " File ", net.sourceforge.atunes.utils.FileUtils.getPath(file), " useParanoia ", useParanoia);
+	public boolean cdda2wav(final int track, final File file,
+			final boolean useParanoia) {
+		Logger.info("Converting with fake wav converter: Track ", track,
+				" File ", net.sourceforge.atunes.utils.FileUtils.getPath(file),
+				" useParanoia ", useParanoia);
 		return waitConversion(file);
 	}
 
@@ -88,7 +93,8 @@ public class FakeCDToWavConverter extends AbstractCdToWavConverter {
 		fakeCdInfo.setDuration("42:19");
 		fakeCdInfo.setGenre("Pop");
 		fakeCdInfo.setID("1");
-		fakeCdInfo.setTracks(9);
+		fakeCdInfo.setTracks(50); // Use a big number of tracks to simulate not
+									// retrieving all titles
 		fakeCdInfo.setTitles(getEmptyList(0));
 		fakeCdInfo.setArtists(getEmptyList(9));
 		fakeCdInfo.setComposers(getEmptyList(9));
