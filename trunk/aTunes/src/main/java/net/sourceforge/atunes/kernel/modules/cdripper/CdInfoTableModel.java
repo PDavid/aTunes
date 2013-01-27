@@ -33,196 +33,212 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 class CdInfoTableModel extends AbstractTableModel {
 
-    private static final String TRACK = "TRACK";
+	private static final String TRACK = "TRACK";
 
 	private static final long serialVersionUID = -7577681531593039707L;
 
-    private transient CDInfo cdInfo;
-    private List<String> trackNames = new ArrayList<String>();
-    private List<String> artistNames = new ArrayList<String>();
-    private List<String> composerNames = new ArrayList<String>();
-    private List<Boolean> tracksSelected;
+	private transient CDInfo cdInfo;
+	private List<String> trackNames;
+	private List<String> artistNames = new ArrayList<String>();
+	private List<String> composerNames = new ArrayList<String>();
+	private List<Boolean> tracksSelected;
 
-    @Override
-    public Class<?> getColumnClass(int columnIndex) {
-        return columnIndex == 0 ? Boolean.class : String.class;
-    }
-
-    @Override
-    public int getColumnCount() {
-        return 5;
-    }
-
-    @Override
-    public String getColumnName(int column) {
-        if (column == 0) {
-            return "";
-        } else if (column == 1) {
-            return I18nUtils.getString("TITLE");
-        } else if (column == 2) {
-            return I18nUtils.getString("ARTIST");
-        } else if (column == 3) {
-            return I18nUtils.getString("COMPOSER");
-        } else {
-            return "";
-        }
-    }
-
-    @Override
-    public int getRowCount() {
-        return cdInfo != null ? cdInfo.getTracks() : 0;
-    }
-
-    /**
-     * Gets the tracks selected.
-     * 
-     * @return the tracks selected
-     */
-    public List<Boolean> getTracksSelected() {
-        return tracksSelected;
-    }
-
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        if (columnIndex == 0) {
-            return tracksSelected.get(rowIndex);
-        } else if (columnIndex == 1) {
-            return getTrackNameValue(rowIndex);
-        } else if (columnIndex == 2) {
-            return getArtistNameValue(rowIndex);
-        } else if (columnIndex == 4) {
-        	return getDurationValue(rowIndex);
-        } else {
-            return getComposerValue(rowIndex);
-        }
-    }
-
-	private Object getTrackNameValue(int rowIndex) {
-		if (rowIndex > trackNames.size() - 1) {
-		    trackNames.add(rowIndex, StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1)));
-		    return StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1));
-		}
-		if (rowIndex < trackNames.size()) {
-		    return trackNames.get(rowIndex);
-		}
-
-		trackNames.add(rowIndex, StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1)));
-		return StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1));
+	@Override
+	public Class<?> getColumnClass(final int columnIndex) {
+		return columnIndex == 0 ? Boolean.class : String.class;
 	}
 
-	private Object getArtistNameValue(int rowIndex) {
-		if (rowIndex > artistNames.size() - 1) {
-		    // TODO if cdda2wav is modified for detecting song artist modify here
-		    if (cdInfo.getArtist() != null) {
-		        return cdInfo.getArtist();
-		    }
-		    return "";
-		}
-		return artistNames.get(rowIndex);
+	@Override
+	public int getColumnCount() {
+		return 5;
 	}
 
-	private Object getDurationValue(int rowIndex) {
-		if (rowIndex > cdInfo.getDurations().size() - 1) {
+	@Override
+	public String getColumnName(final int column) {
+		if (column == 0) {
+			return "";
+		} else if (column == 1) {
+			return I18nUtils.getString("TITLE");
+		} else if (column == 2) {
+			return I18nUtils.getString("ARTIST");
+		} else if (column == 3) {
+			return I18nUtils.getString("COMPOSER");
+		} else {
 			return "";
 		}
-		return cdInfo.getDurations().get(rowIndex);
 	}
 
-	private Object getComposerValue(int rowIndex) {
-		if (rowIndex > composerNames.size() - 1) {
-		    composerNames.add(rowIndex, "");
-		    return "";
+	@Override
+	public int getRowCount() {
+		return this.cdInfo != null ? this.cdInfo.getTracks() : 0;
+	}
+
+	/**
+	 * Gets the tracks selected.
+	 * 
+	 * @return the tracks selected
+	 */
+	public List<Boolean> getTracksSelected() {
+		return this.tracksSelected;
+	}
+
+	@Override
+	public Object getValueAt(final int rowIndex, final int columnIndex) {
+		if (columnIndex == 0) {
+			return this.tracksSelected.get(rowIndex);
+		} else if (columnIndex == 1) {
+			return this.trackNames.get(rowIndex);
+		} else if (columnIndex == 2) {
+			return getArtistNameValue(rowIndex);
+		} else if (columnIndex == 4) {
+			return getDurationValue(rowIndex);
+		} else {
+			return getComposerValue(rowIndex);
 		}
-		return composerNames.get(rowIndex);
 	}
 
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex != 4;
-    }
-
-    /**
-     * Sets the artist names.
-     * 
-     * @param artistNames
-     *            the new artist names
-     */
-    public void setArtistNames(List<String> artistNames) {
-        this.artistNames = artistNames;
-    }
-
-    /**
-     * Sets the cd info.
-     * 
-     * @param cdInfo
-     *            the new cd info
-     */
-    public void setCDInfo(CDInfo cdInfo) {
-        if (cdInfo != null) {
-            this.cdInfo = cdInfo;
-            if (tracksSelected == null) {
-                tracksSelected = new ArrayList<Boolean>();
-            }
-            tracksSelected.clear();
-            for (int i = 0; i < cdInfo.getTracks(); i++) {
-                tracksSelected.add(true);
-            }
-        }
-    }
-
-    /**
-     * Sets the composer names.
-     * 
-     * @param composerNames
-     *            the new composer names
-     */
-    public void setComposerNames(List<String> composerNames) {
-        this.composerNames = composerNames;
-    }
-
-    /**
-     * Sets the track names.
-     * 
-     * @param trackNames
-     *            the new track names
-     */
-    public void setTrackNames(List<String> trackNames) {
-        this.trackNames = trackNames;
-    }
-
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        if (columnIndex == 0) {
-            tracksSelected.remove(rowIndex);
-            tracksSelected.add(rowIndex, (Boolean) aValue);
-        } else if (columnIndex == 1) {
-            trackNames.set(rowIndex, (String) aValue);
-        } else if (columnIndex == 2) {
-            artistNames.set(rowIndex, (String) aValue);
-        } else if (columnIndex == 3) {
-            composerNames.set(rowIndex, (String) aValue);
-        }
-        fireTableCellUpdated(rowIndex, columnIndex);
-    }
-    
-    /**
-     * @return
-     */
-    public List<String> getTrackNames() {
-		return trackNames;
+	private Object getArtistNameValue(final int rowIndex) {
+		if (rowIndex > this.artistNames.size() - 1) {
+			// TODO if cdda2wav is modified for detecting song artist modify
+			// here
+			if (this.cdInfo.getArtist() != null) {
+				return this.cdInfo.getArtist();
+			}
+			return "";
+		}
+		return this.artistNames.get(rowIndex);
 	}
-    
-    /**
-     * @return
-     */
-    public List<String> getComposerNames() {
-		return composerNames;
+
+	private Object getDurationValue(final int rowIndex) {
+		if (rowIndex > this.cdInfo.getDurations().size() - 1) {
+			return "";
+		}
+		return this.cdInfo.getDurations().get(rowIndex);
 	}
-    
-    /**
-     * @return
-     */
-    public List<String> getArtistNames() {
-		return artistNames;
+
+	private Object getComposerValue(final int rowIndex) {
+		if (rowIndex > this.composerNames.size() - 1) {
+			this.composerNames.add(rowIndex, "");
+			return "";
+		}
+		return this.composerNames.get(rowIndex);
+	}
+
+	@Override
+	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
+		return columnIndex != 4;
+	}
+
+	/**
+	 * Sets the artist names.
+	 * 
+	 * @param artistNames
+	 *            the new artist names
+	 */
+	public void setArtistNames(final List<String> artistNames) {
+		this.artistNames = artistNames;
+	}
+
+	/**
+	 * Sets the cd info.
+	 * 
+	 * @param cdInfo
+	 *            the new cd info
+	 */
+	public void setCDInfo(final CDInfo cdInfo) {
+		if (cdInfo != null) {
+			this.cdInfo = cdInfo;
+			if (this.tracksSelected == null) {
+				this.tracksSelected = new ArrayList<Boolean>();
+			}
+			this.tracksSelected.clear();
+			for (int i = 0; i < cdInfo.getTracks(); i++) {
+				this.tracksSelected.add(true);
+			}
+
+			fillTrackNames(this.cdInfo.getTracks());
+		}
+	}
+
+	private void fillTrackNames(final int tracks) {
+		if (this.trackNames == null) {
+			this.trackNames = new ArrayList<String>();
+		}
+		this.trackNames.clear();
+		for (int i = 0; i < tracks; i++) {
+			this.trackNames.add(StringUtils.getString(
+					I18nUtils.getString(TRACK), " ", (i + 1)));
+		}
+	}
+
+	/**
+	 * Sets the composer names.
+	 * 
+	 * @param composerNames
+	 *            the new composer names
+	 */
+	public void setComposerNames(final List<String> composerNames) {
+		this.composerNames = composerNames;
+	}
+
+	/**
+	 * Sets the track names.
+	 * 
+	 * @param trackNames
+	 *            the new track names
+	 */
+	public void setTrackNames(final List<String> trackNames) {
+		List<String> newTrackNames = trackNames;
+		if (trackNames.size() < this.trackNames.size()) {
+			newTrackNames = new ArrayList<String>();
+			// Use titles from argument list, and remaining titles use default
+			// title
+			for (int i = 0; i < this.trackNames.size(); i++) {
+				if (i < trackNames.size()) {
+					newTrackNames.add(trackNames.get(i));
+				} else {
+					newTrackNames.add(StringUtils.getString(
+							I18nUtils.getString(TRACK), " ", (i + 1)));
+				}
+			}
+		}
+		this.trackNames = newTrackNames;
+	}
+
+	@Override
+	public void setValueAt(final Object aValue, final int rowIndex,
+			final int columnIndex) {
+		if (columnIndex == 0) {
+			this.tracksSelected.remove(rowIndex);
+			this.tracksSelected.add(rowIndex, (Boolean) aValue);
+		} else if (columnIndex == 1) {
+			this.trackNames.set(rowIndex, (String) aValue);
+		} else if (columnIndex == 2) {
+			this.artistNames.set(rowIndex, (String) aValue);
+		} else if (columnIndex == 3) {
+			this.composerNames.set(rowIndex, (String) aValue);
+		}
+		fireTableCellUpdated(rowIndex, columnIndex);
+	}
+
+	/**
+	 * @return
+	 */
+	public List<String> getTrackNames() {
+		return this.trackNames;
+	}
+
+	/**
+	 * @return
+	 */
+	public List<String> getComposerNames() {
+		return this.composerNames;
+	}
+
+	/**
+	 * @return
+	 */
+	public List<String> getArtistNames() {
+		return this.artistNames;
 	}
 }

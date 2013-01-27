@@ -141,7 +141,7 @@ public final class ApplicationArguments implements Serializable,
 	}
 
 	/**
-	 * @return thr simulateCd argument
+	 * @return the simulateCd argument
 	 */
 	@Override
 	public boolean isSimulateCD() {
