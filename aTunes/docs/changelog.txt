@@ -5,6 +5,7 @@ aTunes 3.0.5
 - FIX: Avoid cast errors when reading preferences with kryo fails
 - FIX: Error retrieving titles from CD when CD has more tracks than the album information
 - FIX: Drag and drop from navigator
+- Control+F for advanced search
 
 aTunes 3.0.4
 ------------
