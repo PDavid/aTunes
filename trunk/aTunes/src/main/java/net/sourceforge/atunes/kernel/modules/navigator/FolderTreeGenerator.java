@@ -45,155 +45,173 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class FolderTreeGenerator implements ITreeGenerator {
 
-    private INavigationViewSorter folderSorter;
+	private INavigationViewSorter folderSorter;
 
-    private IOSManager osManager;
+	private IOSManager osManager;
 
-    /**
-     * @param osManager
-     */
-    public void setOsManager(final IOSManager osManager) {
-	this.osManager = osManager;
-    }
-
-    /**
-     * @param folderSorter
-     */
-    public void setFolderSorter(final INavigationViewSorter folderSorter) {
-	this.folderSorter = folderSorter;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void buildTree(final INavigationTree tree, final String rootTextKey,
-	    final INavigationView view, final Map<String, ?> structure,
-	    final String currentFilter,
-	    final List<ITreeObject<? extends IAudioObject>> objectsSelected,
-	    final List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
-	// Refresh nodes
-	tree.setRoot(I18nUtils.getString(rootTextKey));
-
-	addFolderNodes(tree, structure, currentFilter, folderSorter);
-
-	tree.reload();
-
-	if (objectsExpanded.isEmpty()) {
-	    // In folder view root child nodes must be expanded always
-	    // So when refreshing folder view for first time add these nodes to
-	    // list of expanded objects
-	    List<?> rootChilds = tree.getRootChilds();
-	    for (Object rootChild : rootChilds) {
-		objectsExpanded
-			.add((ITreeObject<? extends IAudioObject>) rootChild);
-	    }
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
 	}
 
-	// Get nodes to select after refresh
-	List<ITreeNode> nodesToSelect = tree.getNodes(objectsSelected);
+	/**
+	 * @param folderSorter
+	 */
+	public void setFolderSorter(final INavigationViewSorter folderSorter) {
+		this.folderSorter = folderSorter;
+	}
 
-	// Get nodes to expand after refresh
-	List<ITreeNode> nodesToExpand = tree.getNodes(objectsExpanded);
+	@SuppressWarnings("unchecked")
+	@Override
+	public void buildTree(final INavigationTree tree, final String rootTextKey,
+			final INavigationView view, final Map<String, ?> structure,
+			final String currentFilter,
+			final List<ITreeObject<? extends IAudioObject>> objectsSelected,
+			final List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
+		// Refresh nodes
+		tree.setRoot(I18nUtils.getString(rootTextKey));
 
-	// Expand nodes
-	tree.expandNodes(nodesToExpand);
+		addFolderNodes(tree, structure, currentFilter, folderSorter);
 
-	// Once tree has been refreshed, select previously selected nodes
-	tree.selectNodes(nodesToSelect);
-    }
+		tree.reload();
 
-    @Override
-    public void selectAudioObject(final INavigationTree tree,
-	    final IAudioObject audioObject) {
-	if (audioObject instanceof ILocalAudioObject) {
-	    String filePath = audioObject.getUrl();
-	    ITreeNode folderNode = new FolderAudioObjectSelector()
-		    .getNodeRepresentingAudioObject(tree, filePath);
-	    if (folderNode != null) {
-		IFolder f = (IFolder) folderNode.getUserObject();
-		String searchPath = filePath
-			.substring(f.getName().length() + 1);
-		String[] paths = searchPath.split(osManager.getFileSeparator());
-		ITreeNode node = getTreeNodeForLevel(paths, 0, tree, folderNode);
-		if (node != null) {
-		    tree.selectNode(node);
-		    tree.scrollToNode(node);
-		    tree.expandNode(node);
+		if (objectsExpanded.isEmpty()) {
+			// In folder view root child nodes must be expanded always
+			// So when refreshing folder view for first time add these nodes to
+			// list of expanded objects
+			List<?> rootChilds = tree.getRootChilds();
+			for (Object rootChild : rootChilds) {
+				objectsExpanded
+						.add((ITreeObject<? extends IAudioObject>) rootChild);
+			}
 		}
-	    }
-	}
-    }
 
-    private ITreeNode getTreeNodeForLevel(final String[] paths,
-	    final int currentLevel, final INavigationTree tree,
-	    final ITreeNode foldersRootNode) {
-	ITreeNode folderNode = new FolderAudioObjectSelector()
-		.getNodeRepresentingAudioObject(tree, foldersRootNode,
-			paths[currentLevel]);
-	if (folderNode != null) {
-	    if (currentLevel == paths.length - 2) {
-		return folderNode;
-	    } else {
-		return getTreeNodeForLevel(paths, currentLevel + 1, tree,
-			folderNode);
-	    }
-	}
-	return null;
-    }
+		// Get nodes to select after refresh
+		List<ITreeNode> nodesToSelect = tree.getNodes(objectsSelected);
 
-    @Override
-    public void selectArtist(final INavigationTree tree, final String artist) {
-    }
+		// Get nodes to expand after refresh
+		List<ITreeNode> nodesToExpand = tree.getNodes(objectsExpanded);
 
-    /**
-     * Adds the folder nodes to root node
-     * 
-     * @param folders
-     *            the folders
-     * @param currentFilter
-     *            the current filter
-     * @param sorter
-     *            the comparator for node sorting
-     */
-    private void addFolderNodes(final INavigationTree tree,
-	    final Map<String, ?> folders, final String currentFilter,
-	    final INavigationViewSorter sorter) {
-	List<String> folderNamesList = new ArrayList<String>(folders.keySet());
-	sorter.sort(folderNamesList);
-	for (int i = 0; i < folderNamesList.size(); i++) {
-	    IFolder f = (IFolder) folders.get(folderNamesList.get(i));
-	    ITreeNode child = tree.createNode(f);
-	    tree.addNode(child);
-	    addFolderNodes(tree, f.getFolders(), child, currentFilter, sorter);
-	}
-    }
+		// Expand nodes
+		tree.expandNodes(nodesToExpand);
 
-    /**
-     * Adds the folder nodes.
-     * 
-     * @param folders
-     *            the folders
-     * @param node
-     *            the node
-     * @param currentFilter
-     *            the current filter
-     * @param sorter
-     *            the comparator for node sorting
-     */
-    private void addFolderNodes(final INavigationTree tree,
-	    final Map<String, ?> folders, final ITreeNode node,
-	    final String currentFilter, final INavigationViewSorter sorter) {
-	List<String> folderNamesList = new ArrayList<String>(folders.keySet());
-	sorter.sort(folderNamesList);
-	for (int i = 0; i < folderNamesList.size(); i++) {
-	    IFolder f = (IFolder) folders.get(folderNamesList.get(i));
-	    if (currentFilter == null
-		    || f.getName().toUpperCase()
-			    .contains(currentFilter.toUpperCase())) {
-		ITreeNode child = tree.createNode(f);
-		node.add(child);
-		addFolderNodes(tree, f.getFolders(), child, currentFilter,
-			sorter);
-	    }
+		// Once tree has been refreshed, select previously selected nodes
+		tree.selectNodes(nodesToSelect);
 	}
-    }
+
+	@Override
+	public void selectAudioObject(final INavigationTree tree,
+			final IAudioObject audioObject) {
+		if (audioObject instanceof ILocalAudioObject) {
+			String filePath = audioObject.getUrl();
+			ITreeNode folderNode = new FolderAudioObjectSelector()
+					.getNodeRepresentingAudioObject(tree, filePath);
+			if (folderNode != null) {
+				IFolder f = (IFolder) folderNode.getUserObject();
+				String searchPath = filePath
+						.substring(f.getName().length() + 1);
+				String[] paths = searchPath.split(osManager.getFileSeparator());
+				ITreeNode node = getTreeNodeForLevel(paths, 0, tree, folderNode);
+				if (node != null) {
+					tree.selectNode(node);
+					tree.scrollToNode(node);
+					tree.expandNode(node);
+				}
+			}
+		}
+	}
+
+	private ITreeNode getTreeNodeForLevel(final String[] paths,
+			final int currentLevel, final INavigationTree tree,
+			final ITreeNode foldersRootNode) {
+		ITreeNode folderNode = new FolderAudioObjectSelector()
+				.getNodeRepresentingAudioObject(tree, foldersRootNode,
+						paths[currentLevel]);
+		if (folderNode != null) {
+			if (currentLevel == paths.length - 2) {
+				return folderNode;
+			} else {
+				return getTreeNodeForLevel(paths, currentLevel + 1, tree,
+						folderNode);
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public void selectArtist(final INavigationTree tree, final String artist) {
+	}
+
+	/**
+	 * Adds the folder nodes to root node
+	 * 
+	 * @param folders
+	 *            the folders
+	 * @param currentFilter
+	 *            the current filter
+	 * @param sorter
+	 *            the comparator for node sorting
+	 */
+	private void addFolderNodes(final INavigationTree tree,
+			final Map<String, ?> folders, final String currentFilter,
+			final INavigationViewSorter sorter) {
+		List<String> folderNamesList = new ArrayList<String>(folders.keySet());
+		sorter.sort(folderNamesList);
+		for (int i = 0; i < folderNamesList.size(); i++) {
+			IFolder f = (IFolder) folders.get(folderNamesList.get(i));
+			ITreeNode child = tree.createNode(f);
+			tree.addNode(child);
+			addFolderNodes(tree, f.getFolders(), child, currentFilter, sorter);
+		}
+	}
+
+	/**
+	 * Adds the folder nodes.
+	 * 
+	 * @param folders
+	 *            the folders
+	 * @param node
+	 *            the node
+	 * @param currentFilter
+	 *            the current filter
+	 * @param sorter
+	 *            the comparator for node sorting
+	 */
+	private void addFolderNodes(final INavigationTree tree,
+			final Map<String, ?> folders, final ITreeNode node,
+			final String currentFilter, final INavigationViewSorter sorter) {
+		List<String> folderNamesList = new ArrayList<String>(folders.keySet());
+		sorter.sort(folderNamesList);
+		for (int i = 0; i < folderNamesList.size(); i++) {
+			IFolder f = (IFolder) folders.get(folderNamesList.get(i));
+			if (folderMatchesFilter(currentFilter, f)) {
+				ITreeNode child = tree.createNode(f);
+				node.add(child);
+				addFolderNodes(tree, f.getFolders(), child, currentFilter,
+						sorter);
+			}
+		}
+	}
+
+	private boolean folderMatchesFilter(final String currentFilter, IFolder f) {
+		return currentFilter == null
+				|| folderOrSubfoldersMatchFilter(currentFilter, f);
+	}
+
+	private boolean folderOrSubfoldersMatchFilter(final String currentFilter,
+			IFolder f) {
+		if (f.isLeaf()) {
+			return f.getName().toUpperCase()
+					.contains(currentFilter.toUpperCase());
+		} else {
+			for (IFolder childFolder : f.getFolders().values()) {
+				if (folderOrSubfoldersMatchFilter(currentFilter, childFolder)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }
