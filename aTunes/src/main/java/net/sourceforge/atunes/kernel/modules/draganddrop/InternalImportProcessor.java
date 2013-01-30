@@ -28,8 +28,8 @@ import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.TransferHandler.TransferSupport;
-import javax.swing.tree.DefaultMutableTreeNode;
 
+import net.sourceforge.atunes.gui.views.controls.NavigatorTreeNode;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
@@ -52,225 +52,225 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class InternalImportProcessor {
 
-    private INavigationHandler navigationHandler;
+	private INavigationHandler navigationHandler;
 
-    private IPlayListTable playListTable;
+	private IPlayListTable playListTable;
 
-    private IPlayListHandler playListHandler;
+	private IPlayListHandler playListHandler;
 
-    private IAudioObjectComparator audioObjectComparator;
+	private IAudioObjectComparator audioObjectComparator;
 
-    private IDialogFactory dialogFactory;
+	private IDialogFactory dialogFactory;
 
-    private IRepositoryHandler repositoryHandler;
+	private IRepositoryHandler repositoryHandler;
 
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(final INavigationHandler navigationHandler) {
-	this.navigationHandler = navigationHandler;
-    }
-
-    /**
-     * @param playListTable
-     */
-    public void setPlayListTable(final IPlayListTable playListTable) {
-	this.playListTable = playListTable;
-    }
-
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(final IPlayListHandler playListHandler) {
-	this.playListHandler = playListHandler;
-    }
-
-    /**
-     * @param audioObjectComparator
-     */
-    public void setAudioObjectComparator(
-	    final IAudioObjectComparator audioObjectComparator) {
-	this.audioObjectComparator = audioObjectComparator;
-    }
-
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(final IDialogFactory dialogFactory) {
-	this.dialogFactory = dialogFactory;
-    }
-
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-	this.repositoryHandler = repositoryHandler;
-    }
-
-    /**
-     * Perform drop with data dragged from another component
-     * 
-     * @param support
-     * @param frame
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public boolean processInternalImport(final TransferSupport support) {
-	List<?> listOfObjectsDragged = getObjectsDragged(support);
-	if (!CollectionUtils.isEmpty(listOfObjectsDragged)) {
-	    // DRAG AND DROP FROM PLAY LIST -> MOVE
-	    if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
-		return moveRowsInPlayList(
-			(List<PlayListDragableRow>) listOfObjectsDragged,
-			((JTable.DropLocation) support.getDropLocation())
-				.getRow());
-	    }
-
-	    // DRAG AND DROP OF AN ARTIST -> add songs from this artist
-	    if (listOfObjectsDragged.get(0) instanceof DragableArtist) {
-		return getArtistSongs((List<DragableArtist>) listOfObjectsDragged);
-	    }
-
-	    dragFromNavigator(support, listOfObjectsDragged);
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
 	}
 
-	return false;
-    }
+	/**
+	 * @param playListTable
+	 */
+	public void setPlayListTable(final IPlayListTable playListTable) {
+		this.playListTable = playListTable;
+	}
 
-    /**
-     * @param support
-     * @param listOfObjectsDragged
-     */
-    private void dragFromNavigator(final TransferSupport support,
-	    final List<?> listOfObjectsDragged) {
-	List<IAudioObject> audioObjectsToAdd = new ArrayList<IAudioObject>();
-	for (int i = 0; i < listOfObjectsDragged.size(); i++) {
-	    Object objectDragged = listOfObjectsDragged.get(i);
-	    // DRAG AND DROP FROM TREE
-	    if (objectDragged instanceof DefaultMutableTreeNode) {
-		List<? extends IAudioObject> objectsToImport = navigationHandler
-			.getAudioObjectsForTreeNode(navigationHandler
-				.getCurrentView().getClass(),
-				(ITreeNode) objectDragged);
-		if (objectsToImport != null) {
-		    audioObjectsToAdd.addAll(objectsToImport);
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
+	/**
+	 * @param audioObjectComparator
+	 */
+	public void setAudioObjectComparator(
+			final IAudioObjectComparator audioObjectComparator) {
+		this.audioObjectComparator = audioObjectComparator;
+	}
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+
+	/**
+	 * Perform drop with data dragged from another component
+	 * 
+	 * @param support
+	 * @param frame
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean processInternalImport(final TransferSupport support) {
+		List<?> listOfObjectsDragged = getObjectsDragged(support);
+		if (!CollectionUtils.isEmpty(listOfObjectsDragged)) {
+			// DRAG AND DROP FROM PLAY LIST -> MOVE
+			if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
+				return moveRowsInPlayList(
+						(List<PlayListDragableRow>) listOfObjectsDragged,
+						((JTable.DropLocation) support.getDropLocation())
+								.getRow());
+			}
+
+			// DRAG AND DROP OF AN ARTIST -> add songs from this artist
+			if (listOfObjectsDragged.get(0) instanceof DragableArtist) {
+				return getArtistSongs((List<DragableArtist>) listOfObjectsDragged);
+			}
+
+			dragFromNavigator(support, listOfObjectsDragged);
 		}
-	    } else if (objectDragged instanceof Integer) {
-		// DRAG AND DROP FROM TABLE
-		Integer row = (Integer) objectDragged;
-		audioObjectsToAdd.add(navigationHandler
-			.getAudioObjectInNavigationTable(row));
-	    }
+
+		return false;
 	}
 
-	int dropRow = playListTable.rowAtPoint(support.getDropLocation()
-		.getDropPoint());
+	/**
+	 * @param support
+	 * @param listOfObjectsDragged
+	 */
+	private void dragFromNavigator(final TransferSupport support,
+			final List<?> listOfObjectsDragged) {
+		List<IAudioObject> audioObjectsToAdd = new ArrayList<IAudioObject>();
+		for (int i = 0; i < listOfObjectsDragged.size(); i++) {
+			Object objectDragged = listOfObjectsDragged.get(i);
+			// DRAG AND DROP FROM TREE
+			if (objectDragged instanceof NavigatorTreeNode) {
+				List<? extends IAudioObject> objectsToImport = navigationHandler
+						.getAudioObjectsForTreeNode(navigationHandler
+								.getCurrentView().getClass(),
+								(ITreeNode) objectDragged);
+				if (objectsToImport != null) {
+					audioObjectsToAdd.addAll(objectsToImport);
+				}
+			} else if (objectDragged instanceof Integer) {
+				// DRAG AND DROP FROM TABLE
+				Integer row = (Integer) objectDragged;
+				audioObjectsToAdd.add(navigationHandler
+						.getAudioObjectInNavigationTable(row));
+			}
+		}
 
-	if (!audioObjectsToAdd.isEmpty()) {
-	    audioObjectComparator.sort(audioObjectsToAdd);
-	    playListHandler.addToVisiblePlayList(dropRow, audioObjectsToAdd);
-	    // Keep selected rows: if drop row is the bottom of play list (-1)
-	    // then select last row
-	    if (dropRow == -1) {
-		dropRow = playListHandler.getVisiblePlayList().size()
-			- audioObjectsToAdd.size();
-	    }
-	    playListTable.getSelectionModel().addSelectionInterval(dropRow,
-		    dropRow + audioObjectsToAdd.size() - 1);
-	}
-    }
+		int dropRow = playListTable.rowAtPoint(support.getDropLocation()
+				.getDropPoint());
 
-    /**
-     * @param support
-     * @return
-     * @throws UnsupportedFlavorException
-     * @throws IOException
-     */
-    private List<?> getObjectsDragged(final TransferSupport support) {
-	try {
-	    return (List<?>) support.getTransferable().getTransferData(
-		    DragAndDropHelper.getInternalDataFlavor());
-	} catch (UnsupportedFlavorException e) {
-	    Logger.error(e);
-	} catch (IOException e) {
-	    Logger.error(e);
-	}
-	return null;
-    }
-
-    private boolean getArtistSongs(
-	    final List<DragableArtist> listOfObjectsDragged) {
-	DragableArtist dragabreArtist = listOfObjectsDragged.get(0);
-	IArtist currentArtist = repositoryHandler.getArtist(dragabreArtist
-		.getArtistInfo().getName());
-	showAddArtistDragDialog(currentArtist);
-	return true;
-    }
-
-    private void showAddArtistDragDialog(final IArtist currentArtist) {
-	IArtistAlbumSelectorDialog dialog = dialogFactory
-		.newDialog(IArtistAlbumSelectorDialog.class);
-	dialog.setArtist(currentArtist);
-	dialog.showDialog();
-	IAlbum album = dialog.getAlbum();
-	if (album != null) {
-	    playListHandler.addToVisiblePlayList(album.getAudioObjects());
-	}
-    }
-
-    /**
-     * Move rows in play list
-     * 
-     * @param rowsDragged
-     * @param targetRow
-     * @return
-     */
-    private boolean moveRowsInPlayList(
-	    final List<PlayListDragableRow> rowsDragged, final int targetRow) {
-	if (rowsDragged == null || rowsDragged.isEmpty()) {
-	    return true;
+		if (!audioObjectsToAdd.isEmpty()) {
+			audioObjectComparator.sort(audioObjectsToAdd);
+			playListHandler.addToVisiblePlayList(dropRow, audioObjectsToAdd);
+			// Keep selected rows: if drop row is the bottom of play list (-1)
+			// then select last row
+			if (dropRow == -1) {
+				dropRow = playListHandler.getVisiblePlayList().size()
+						- audioObjectsToAdd.size();
+			}
+			playListTable.getSelectionModel().addSelectionInterval(dropRow,
+					dropRow + audioObjectsToAdd.size() - 1);
+		}
 	}
 
-	// sort rows in reverse order if necessary: if target row index is
-	// greater than original row position we need to reverse rows to move
-	// them without change the order
-	final boolean needReverseRows = rowsDragged.get(0).getRowPosition() < targetRow;
-	Collections.sort(rowsDragged, new PlayListDragableRowComparator(
-		needReverseRows));
-	// get first row index
-	int baseRow = (needReverseRows ? rowsDragged
-		.get(rowsDragged.size() - 1) : rowsDragged.get(0))
-		.getRowPosition();
-
-	List<Integer> rowsToKeepSelected = new ArrayList<Integer>();
-
-	boolean dropAtEnd = targetRow == playListHandler.getVisiblePlayList()
-		.size() - 1;
-
-	int rowMovedCounter = 0;
-	// Move every row
-	for (PlayListDragableRow rowDragged : rowsDragged) {
-	    // Calculate drop row, since targetRow is the row where to drop the
-	    // first row (baseRow)
-	    int dropRow = targetRow + (rowDragged.getRowPosition() - baseRow);
-	    if (dropAtEnd) {
-		dropRow = playListHandler.getVisiblePlayList().size()
-			- (rowMovedCounter + 1);
-	    }
-	    rowsToKeepSelected.add(dropRow);
-	    playListHandler.moveRowTo(rowDragged.getRowPosition(), dropRow);
-	    rowMovedCounter++;
+	/**
+	 * @param support
+	 * @return
+	 * @throws UnsupportedFlavorException
+	 * @throws IOException
+	 */
+	private List<?> getObjectsDragged(final TransferSupport support) {
+		try {
+			return (List<?>) support.getTransferable().getTransferData(
+					DragAndDropHelper.getInternalDataFlavor());
+		} catch (UnsupportedFlavorException e) {
+			Logger.error(e);
+		} catch (IOException e) {
+			Logger.error(e);
+		}
+		return null;
 	}
 
-	// Refresh play list after moving
-	playListHandler.refreshPlayList();
-
-	// Set dragged rows as selected
-	for (Integer rowToKeepSelected : rowsToKeepSelected) {
-	    playListTable.getSelectionModel().addSelectionInterval(
-		    rowToKeepSelected, rowToKeepSelected);
+	private boolean getArtistSongs(
+			final List<DragableArtist> listOfObjectsDragged) {
+		DragableArtist dragabreArtist = listOfObjectsDragged.get(0);
+		IArtist currentArtist = repositoryHandler.getArtist(dragabreArtist
+				.getArtistInfo().getName());
+		showAddArtistDragDialog(currentArtist);
+		return true;
 	}
 
-	return true;
-    }
+	private void showAddArtistDragDialog(final IArtist currentArtist) {
+		IArtistAlbumSelectorDialog dialog = dialogFactory
+				.newDialog(IArtistAlbumSelectorDialog.class);
+		dialog.setArtist(currentArtist);
+		dialog.showDialog();
+		IAlbum album = dialog.getAlbum();
+		if (album != null) {
+			playListHandler.addToVisiblePlayList(album.getAudioObjects());
+		}
+	}
+
+	/**
+	 * Move rows in play list
+	 * 
+	 * @param rowsDragged
+	 * @param targetRow
+	 * @return
+	 */
+	private boolean moveRowsInPlayList(
+			final List<PlayListDragableRow> rowsDragged, final int targetRow) {
+		if (rowsDragged == null || rowsDragged.isEmpty()) {
+			return true;
+		}
+
+		// sort rows in reverse order if necessary: if target row index is
+		// greater than original row position we need to reverse rows to move
+		// them without change the order
+		final boolean needReverseRows = rowsDragged.get(0).getRowPosition() < targetRow;
+		Collections.sort(rowsDragged, new PlayListDragableRowComparator(
+				needReverseRows));
+		// get first row index
+		int baseRow = (needReverseRows ? rowsDragged
+				.get(rowsDragged.size() - 1) : rowsDragged.get(0))
+				.getRowPosition();
+
+		List<Integer> rowsToKeepSelected = new ArrayList<Integer>();
+
+		boolean dropAtEnd = targetRow == playListHandler.getVisiblePlayList()
+				.size() - 1;
+
+		int rowMovedCounter = 0;
+		// Move every row
+		for (PlayListDragableRow rowDragged : rowsDragged) {
+			// Calculate drop row, since targetRow is the row where to drop the
+			// first row (baseRow)
+			int dropRow = targetRow + (rowDragged.getRowPosition() - baseRow);
+			if (dropAtEnd) {
+				dropRow = playListHandler.getVisiblePlayList().size()
+						- (rowMovedCounter + 1);
+			}
+			rowsToKeepSelected.add(dropRow);
+			playListHandler.moveRowTo(rowDragged.getRowPosition(), dropRow);
+			rowMovedCounter++;
+		}
+
+		// Refresh play list after moving
+		playListHandler.refreshPlayList();
+
+		// Set dragged rows as selected
+		for (Integer rowToKeepSelected : rowsToKeepSelected) {
+			playListTable.getSelectionModel().addSelectionInterval(
+					rowToKeepSelected, rowToKeepSelected);
+		}
+
+		return true;
+	}
 }
