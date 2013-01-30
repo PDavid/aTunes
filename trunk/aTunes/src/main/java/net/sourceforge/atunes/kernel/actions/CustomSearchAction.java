@@ -68,7 +68,7 @@ public class CustomSearchAction extends CustomAbstractAction {
 	protected void initialize() {
 		putValue(
 				ACCELERATOR_KEY,
-				KeyStroke.getKeyStroke(KeyEvent.VK_D,
+				KeyStroke.getKeyStroke(KeyEvent.VK_F,
 						GuiUtils.getCtrlOrMetaActionEventMask(this.osManager)));
 	}
 
