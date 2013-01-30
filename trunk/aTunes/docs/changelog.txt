@@ -3,6 +3,7 @@ aTunes 3.0.5
 - FIX: Statistics not shown in tables
 - FIX: Avoid cast errors when reading preferences with kryo fails
 - FIX: Error retrieving titles from CD when CD has more tracks than the album information
+- FIX: Drag and drop from navigator
 
 aTunes 3.0.4
 ------------
