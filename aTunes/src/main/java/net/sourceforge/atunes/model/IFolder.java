@@ -26,8 +26,9 @@ import java.util.Map;
 
 /**
  * Represents a folder with a name, and a list of files and more
+ * 
  * @author alex
- *
+ * 
  */
 public interface IFolder extends Serializable, ITreeObject<ILocalAudioObject> {
 
@@ -109,12 +110,17 @@ public interface IFolder extends Serializable, ITreeObject<ILocalAudioObject> {
 	 */
 	public File getFolderPath(IOSManager osManager);
 
-    /**
-     * Sets the parent folder.
-     * 
-     * @param parentFolder
-     *            the parentFolder to set
-     */
-    public void setParentFolder(IFolder parentFolder);
+	/**
+	 * Sets the parent folder.
+	 * 
+	 * @param parentFolder
+	 *            the parentFolder to set
+	 */
+	public void setParentFolder(IFolder parentFolder);
+
+	/**
+	 * @return true if folder has no child folders
+	 */
+	public boolean isLeaf();
 
 }
