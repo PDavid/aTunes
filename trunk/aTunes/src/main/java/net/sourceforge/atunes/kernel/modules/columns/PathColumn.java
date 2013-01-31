@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
@@ -28,12 +29,22 @@ import net.sourceforge.atunes.utils.FileUtils;
 
 /**
  * Column to show path
+ * 
  * @author alex
- *
+ * 
  */
 public class PathColumn extends AbstractColumn<String> {
 
 	private static final long serialVersionUID = 2053462205073873545L;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(final IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * Default constructor
@@ -46,21 +57,23 @@ public class PathColumn extends AbstractColumn<String> {
 	}
 
 	@Override
-	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+	protected int ascendingCompare(final IAudioObject ao1,
+			final IAudioObject ao2) {
 		String p1 = "";
 		String p2 = "";
 		if (ao1 instanceof ILocalAudioObject) {
-			p1 = FileUtils.getPath(((ILocalAudioObject) ao1).getFile().getParentFile());
+			p1 = this.fileManager.getParentFile((ILocalAudioObject) ao1);
 		}
 		if (ao2 instanceof ILocalAudioObject) {
-			p2 = FileUtils.getPath(((ILocalAudioObject) ao2).getFile().getParentFile());
+			p2 = this.fileManager.getParentFile((ILocalAudioObject) ao2);
 		}
 		return compare(p1, p2);
 	}
 
 	@Override
-	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return - ascendingCompare(ao1, ao2);
+	protected int descendingCompare(final IAudioObject ao1,
+			final IAudioObject ao2) {
+		return -ascendingCompare(ao1, ao2);
 	}
 
 	@Override
@@ -72,7 +85,8 @@ public class PathColumn extends AbstractColumn<String> {
 			return ((IPodcastFeedEntry) audioObject).getUrl();
 		}
 		if (audioObject instanceof ILocalAudioObject) {
-			return FileUtils.getPath(((ILocalAudioObject) audioObject).getFile().getParentFile());
+			return FileUtils.getPath(((ILocalAudioObject) audioObject)
+					.getFile().getParentFile());
 		}
 		return null;
 	}

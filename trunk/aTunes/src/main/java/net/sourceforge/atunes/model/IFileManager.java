@@ -60,4 +60,10 @@ public interface IFileManager {
 	 */
 	String getFileName(ILocalAudioObject ao);
 
+	/**
+	 * @param ao
+	 * @return path of parent file
+	 */
+	String getParentFile(ILocalAudioObject ao);
+
 }

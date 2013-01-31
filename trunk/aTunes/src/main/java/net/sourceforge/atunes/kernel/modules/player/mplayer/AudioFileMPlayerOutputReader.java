@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
@@ -38,12 +39,18 @@ class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
 	 * @param process
 	 * @param audioFile
 	 * @param localAudioObjectValidator
+	 * @param fileManager
 	 */
-	AudioFileMPlayerOutputReader(final MPlayerEngine engine, final Process process, final ILocalAudioObject audioFile, final ILocalAudioObjectValidator localAudioObjectValidator) {
+	AudioFileMPlayerOutputReader(final MPlayerEngine engine,
+			final Process process, final ILocalAudioObject audioFile,
+			final ILocalAudioObjectValidator localAudioObjectValidator,
+			final IFileManager fileManager) {
 		super(engine, process);
 		this.audioFile = audioFile;
-		// Check audio file type only once and use calculated value in read method
-		this.isMp3File = localAudioObjectValidator.isOneOfTheseFormats(audioFile.getFile().getName(), LocalAudioObjectFormat.MP3);
+		// Check audio file type only once and use calculated value in read
+		// method
+		this.isMp3File = localAudioObjectValidator.isOneOfTheseFormats(
+				fileManager.getFileName(audioFile), LocalAudioObjectFormat.MP3);
 	}
 
 	@Override
@@ -54,10 +61,11 @@ class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
 	protected void read(final String line) {
 		super.read(line);
 
-		readAndApplyLength(audioFile, line, isMp3File);
+		readAndApplyLength(this.audioFile, line, this.isMp3File);
 
 		// MPlayer bug: Workaround (for audio files) for "mute bug" [1868482]
-		if (getEngine().isMute() && getLength() > 0 && getLength() - getTime() < 2000) {
+		if (getEngine().isMute() && getLength() > 0
+				&& getLength() - getTime() < 2000) {
 			Logger.debug("MPlayer 'mute bug' workaround applied");
 			getEngine().currentAudioObjectFinished();
 			interrupt();

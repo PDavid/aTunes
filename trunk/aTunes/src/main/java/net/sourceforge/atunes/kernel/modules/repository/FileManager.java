@@ -26,10 +26,16 @@ import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.FileUtils;
 
+/**
+ * Several utilities to manage files of local audio objects
+ * 
+ * @author alex
+ * 
+ */
 public class FileManager implements IFileManager {
 
 	@Override
-	public String getPath(ILocalAudioObject ao) {
+	public String getPath(final ILocalAudioObject ao) {
 		if (ao != null) {
 			return FileUtils.getPath(ao.getFile());
 		}
@@ -37,7 +43,7 @@ public class FileManager implements IFileManager {
 	}
 
 	@Override
-	public File getFile(ILocalAudioObject ao) {
+	public File getFile(final ILocalAudioObject ao) {
 		if (ao != null) {
 			return ao.getFile();
 		}
@@ -45,7 +51,7 @@ public class FileManager implements IFileManager {
 	}
 
 	@Override
-	public boolean fileExists(ILocalAudioObject ao) {
+	public boolean fileExists(final ILocalAudioObject ao) {
 		if (ao != null) {
 			return ao.getFile().exists();
 		}
@@ -53,7 +59,7 @@ public class FileManager implements IFileManager {
 	}
 
 	@Override
-	public long getFileSize(ILocalAudioObject ao) {
+	public long getFileSize(final ILocalAudioObject ao) {
 		if (ao != null) {
 			return ao.getFile().length();
 		}
@@ -61,9 +67,17 @@ public class FileManager implements IFileManager {
 	}
 
 	@Override
-	public String getFileName(ILocalAudioObject ao) {
+	public String getFileName(final ILocalAudioObject ao) {
 		if (ao != null) {
 			return ao.getFile().getName();
+		}
+		return null;
+	}
+
+	@Override
+	public String getParentFile(final ILocalAudioObject ao) {
+		if (ao != null) {
+			return FileUtils.getPath(ao.getFile().getParentFile());
 		}
 		return null;
 	}

@@ -29,6 +29,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateRadio;
@@ -59,6 +60,15 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
 	private IContextHandler contextHandler;
 
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(final IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
+
 	/**
 	 * @param contextHandler
 	 */
@@ -84,7 +94,8 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 	@Override
 	public void setOsManager(final IOSManager osManager) {
 		super.setOsManager(osManager);
-		commandWriter = MPlayerCommandWriter.newCommandWriter(null, osManager);
+		this.commandWriter = MPlayerCommandWriter.newCommandWriter(null,
+				osManager);
 	}
 
 	/**
@@ -121,18 +132,18 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
 	@Override
 	public void pausePlayback() {
-		commandWriter.sendPauseCommand();
+		this.commandWriter.sendPauseCommand();
 	}
 
 	@Override
 	public void resumePlayback() {
-		commandWriter.sendResumeCommand();
+		this.commandWriter.sendResumeCommand();
 		/*
 		 * Mplayer volume problem workaround If player was paused, set volume
 		 * again as it could be changed when paused
 		 */
 		if (!isMuteEnabled()) {
-			commandWriter.sendVolumeCommand(getStatePlayer().getVolume());
+			this.commandWriter.sendVolumeCommand(getStatePlayer().getVolume());
 		}
 		/*
 		 * End Mplayer volume problem workaround
@@ -144,35 +155,38 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 			final IAudioObject audioObject) {
 		try {
 			// If there is a fade away working, stop it inmediately
-			if (currentFadeAwayRunnable != null) {
-				currentFadeAwayRunnable.finish();
+			if (this.currentFadeAwayRunnable != null) {
+				this.currentFadeAwayRunnable.finish();
 			}
 
 			// Send stop command in order to try to avoid two mplayer
 			// instaces are running at the same time
-			commandWriter.sendStopCommand();
+			this.commandWriter.sendStopCommand();
 
 			// Start the play process
-			process = processBuilder.getProcess(audioObjectToPlay);
+			this.process = this.processBuilder.getProcess(audioObjectToPlay);
 
-			if (process != null) {
-				commandWriter = MPlayerCommandWriter.newCommandWriter(process,
-						getOsManager());
+			if (this.process != null) {
+				this.commandWriter = MPlayerCommandWriter.newCommandWriter(
+						this.process, getOsManager());
 				// Output reader needs original audio object, specially when
 				// cacheFilesBeforePlaying is true, as
 				// statistics must be applied over original audio object, not
 				// the cached one
-				mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(
-						this, process, audioObject, stateRadio, getFrame(),
-						getPlayListHandler(), localAudioObjectValidator,
-						contextHandler);
-				mPlayerErrorReader = new MPlayerErrorReader(this, process,
-						mPlayerOutputReader, audioObjectToPlay);
-				mPlayerOutputReader.start();
-				mPlayerErrorReader.start();
-				mPlayerPositionThread = new MPlayerPositionThread(this);
-				mPlayerPositionThread.start();
-				commandWriter.sendGetDurationCommand();
+				this.mPlayerOutputReader = AbstractMPlayerOutputReader
+						.newInstance(this, this.process, audioObject,
+								this.stateRadio, getFrame(),
+								getPlayListHandler(),
+								this.localAudioObjectValidator,
+								this.contextHandler, this.fileManager);
+				this.mPlayerErrorReader = new MPlayerErrorReader(this,
+						this.process, this.mPlayerOutputReader,
+						audioObjectToPlay);
+				this.mPlayerOutputReader.start();
+				this.mPlayerErrorReader.start();
+				this.mPlayerPositionThread = new MPlayerPositionThread(this);
+				this.mPlayerPositionThread.start();
+				this.commandWriter.sendGetDurationCommand();
 			}
 
 		} catch (Exception e) {
@@ -191,29 +205,29 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 		if (useFadeAway && !isEnginePaused()) {
 			// If there is a fade away process working don't create
 			// a new process
-			if (currentFadeAwayRunnable != null) {
+			if (this.currentFadeAwayRunnable != null) {
 				return;
 			}
-			mPlayerErrorReader.interrupt();
-			currentFadeAwayRunnable = new FadeAwayRunnable(process,
+			this.mPlayerErrorReader.interrupt();
+			this.currentFadeAwayRunnable = new FadeAwayRunnable(this.process,
 					getStatePlayer().getVolume(), this, getOsManager());
-			Thread t = new Thread(currentFadeAwayRunnable);
+			Thread t = new Thread(this.currentFadeAwayRunnable);
 			// Start fade away process
 			t.start();
 		} else {
-			commandWriter.sendStopCommand();
+			this.commandWriter.sendStopCommand();
 			// If there is a fade away process stop immediately
-			if (currentFadeAwayRunnable != null) {
-				currentFadeAwayRunnable.finish();
+			if (this.currentFadeAwayRunnable != null) {
+				this.currentFadeAwayRunnable.finish();
 			} else {
 				// This is already called from fade away runnable when finishing
-				process = null;
-				mPlayerErrorReader = null;
-				mPlayerOutputReader = null;
-				commandWriter.finishProcess();
-				if (mPlayerPositionThread != null) {
-					mPlayerPositionThread.interrupt();
-					mPlayerPositionThread = null;
+				this.process = null;
+				this.mPlayerErrorReader = null;
+				this.mPlayerOutputReader = null;
+				this.commandWriter.finishProcess();
+				if (this.mPlayerPositionThread != null) {
+					this.mPlayerPositionThread.interrupt();
+					this.mPlayerPositionThread = null;
 				}
 			}
 			setCurrentAudioObjectPlayedTime(0);
@@ -226,13 +240,13 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 	protected void finishedFadeAway() {
 		// NOTE: interrupting output reader means closing standard input
 		// of mplayer process, so process is finished
-		mPlayerOutputReader.interrupt();
-		process = null;
-		mPlayerErrorReader = null;
-		mPlayerOutputReader = null;
-		mPlayerPositionThread.interrupt();
-		mPlayerPositionThread = null;
-		commandWriter.finishProcess();
+		this.mPlayerOutputReader.interrupt();
+		this.process = null;
+		this.mPlayerErrorReader = null;
+		this.mPlayerOutputReader = null;
+		this.mPlayerPositionThread.interrupt();
+		this.mPlayerPositionThread = null;
+		this.commandWriter.finishProcess();
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -240,7 +254,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 			}
 		});
 		// No fade away process working
-		currentFadeAwayRunnable = null;
+		this.currentFadeAwayRunnable = null;
 	}
 
 	protected void setTime(final int time) {
@@ -249,7 +263,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
 	@Override
 	public void seekTo(final long position, final int perCent) {
-		commandWriter.sendSeekCommandPerCent(perCent);
+		this.commandWriter.sendSeekCommandPerCent(perCent);
 	}
 
 	@Override
@@ -260,19 +274,19 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
 	@Override
 	public boolean isEnginePlaying() {
-		return process != null && !isEnginePaused();
+		return this.process != null && !isEnginePaused();
 	}
 
 	@Override
 	public void applyMuteState(final boolean mute) {
-		commandWriter.sendMuteCommand();
+		this.commandWriter.sendMuteCommand();
 
 		// volume must be applied again because of the volume bug
 		setVolume(getStatePlayer().getVolume());
 
 		// MPlayer bug: paused, demute, muted -> starts playing
 		if (isEnginePaused() && !mute) {
-			commandWriter.sendPauseCommand();
+			this.commandWriter.sendPauseCommand();
 			Logger.debug("MPlayer bug (paused, demute, muted -> starts playing) workaround applied");
 		}
 	}
@@ -283,7 +297,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 		// If is paused, volume will be sent to mplayer when user resumes
 		// playback
 		if (!isEnginePaused() && !isMuteEnabled()) {
-			commandWriter.sendVolumeCommand(volume);
+			this.commandWriter.sendVolumeCommand(volume);
 		}
 	}
 
@@ -293,7 +307,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 	 * @return the command writer
 	 */
 	MPlayerCommandWriter getCommandWriter() {
-		return commandWriter;
+		return this.commandWriter;
 	}
 
 	@Override
@@ -357,7 +371,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
 	@Override
 	public void destroyPlayer() {
-		commandWriter.sendStopCommand();
+		this.commandWriter.sendStopCommand();
 	}
 
 	@Override
