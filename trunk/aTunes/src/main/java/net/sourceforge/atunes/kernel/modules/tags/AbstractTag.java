@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import net.sourceforge.atunes.model.ITag;
 
@@ -114,10 +113,6 @@ public abstract class AbstractTag implements Serializable, ITag {
 	public String getLyrics() {
 		return this.lyrics;
 	}
-
-	@Override
-	public abstract ITag setTagFromProperties(ITag oldTag,
-			Map<String, Object> properties);
 
 	@Override
 	public String getTitle() {

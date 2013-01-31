@@ -49,226 +49,226 @@ import de.umass.lastfm.Playlist;
  */
 public class LastFmAlbumServices {
 
-    private LastFmCache lastFmCache;
+	private LastFmCache lastFmCache;
 
-    private LastFmAPIKey lastFmAPIKey;
+	private LastFmAPIKey lastFmAPIKey;
 
-    private INetworkHandler networkHandler;
+	private INetworkHandler networkHandler;
 
-    /**
-     * @param lastFmAPIKey
-     */
-    public void setLastFmAPIKey(final LastFmAPIKey lastFmAPIKey) {
-	this.lastFmAPIKey = lastFmAPIKey;
-    }
+	/**
+	 * @param lastFmAPIKey
+	 */
+	public void setLastFmAPIKey(final LastFmAPIKey lastFmAPIKey) {
+		this.lastFmAPIKey = lastFmAPIKey;
+	}
 
-    /**
-     * @param lastFmCache
-     */
-    public void setLastFmCache(final LastFmCache lastFmCache) {
-	this.lastFmCache = lastFmCache;
-    }
+	/**
+	 * @param lastFmCache
+	 */
+	public void setLastFmCache(final LastFmCache lastFmCache) {
+		this.lastFmCache = lastFmCache;
+	}
 
-    /**
-     * @param networkHandler
-     */
-    public void setNetworkHandler(final INetworkHandler networkHandler) {
-	this.networkHandler = networkHandler;
-    }
+	/**
+	 * @param networkHandler
+	 */
+	public void setNetworkHandler(final INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
 
-    /**
-     * Gets the album.
-     * 
-     * @param artist
-     *            the artist
-     * @param album
-     *            the album
-     * 
-     * @return the album
-     */
-    IAlbumInfo getAlbum(final String artist, final String album) {
-	try {
-	    // Try to get from cache
-	    IAlbumInfo albumObject = lastFmCache.retrieveAlbumInfo(artist,
-		    album);
-	    if (albumObject == null) {
-		Album a = Album
-			.getInfo(artist, album, lastFmAPIKey.getApiKey());
+	/**
+	 * Gets the album.
+	 * 
+	 * @param artist
+	 *            the artist
+	 * @param album
+	 *            the album
+	 * 
+	 * @return the album
+	 */
+	IAlbumInfo getAlbum(final String artist, final String album) {
+		try {
+			// Try to get from cache
+			IAlbumInfo albumObject = lastFmCache.retrieveAlbumInfo(artist,
+					album);
+			if (albumObject == null) {
+				Album a = Album
+						.getInfo(artist, album, lastFmAPIKey.getApiKey());
+				if (a != null) {
+					Playlist pl = Playlist.fetchAlbumPlaylist(a.getId(),
+							lastFmAPIKey.getApiKey());
+					albumObject = LastFmAlbum.getAlbum(a, pl);
+					lastFmCache.storeAlbumInfo(artist, album, albumObject);
+				}
+			}
+			return albumObject;
+		} catch (Exception e) {
+			Logger.error(e.getMessage());
+		}
+		return null;
+	}
+
+	/**
+	 * Gets the image of the album
+	 * 
+	 * @param artist
+	 * @param album
+	 * @return
+	 */
+	ImageIcon getAlbumImage(final String artist, final String album) {
+		ImageIcon image = null;
+		IAlbumInfo a = getAlbum(artist, album);
 		if (a != null) {
-		    Playlist pl = Playlist.fetchAlbumPlaylist(a.getId(),
-			    lastFmAPIKey.getApiKey());
-		    albumObject = LastFmAlbum.getAlbum(a, pl);
-		    lastFmCache.storeAlbumInfo(artist, album, albumObject);
+			image = getAlbumImage(a);
 		}
-	    }
-	    return albumObject;
-	} catch (Exception e) {
-	    Logger.error(e);
-	}
-	return null;
-    }
-
-    /**
-     * Gets the image of the album
-     * 
-     * @param artist
-     * @param album
-     * @return
-     */
-    ImageIcon getAlbumImage(final String artist, final String album) {
-	ImageIcon image = null;
-	IAlbumInfo a = getAlbum(artist, album);
-	if (a != null) {
-	    image = getAlbumImage(a);
-	}
-	return image;
-    }
-
-    /**
-     * Gets the album list.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the album list
-     */
-    IAlbumListInfo getAlbumList(final String artist) {
-	// Try to get from cache
-	IAlbumListInfo albumList = lastFmCache.retrieveAbumList(artist);
-	if (albumList == null) {
-	    Collection<Album> as = Artist.getTopAlbums(artist,
-		    lastFmAPIKey.getApiKey());
-	    if (as != null) {
-		IAlbumListInfo albums = LastFmAlbumList
-			.getAlbumList(as, artist);
-
-		List<IAlbumInfo> result = filterAlbumsFromSource(artist, albums);
-
-		albumList = new LastFmAlbumList();
-		albumList.setArtist(artist);
-		albumList.setAlbums(result);
-		lastFmCache.storeAlbumList(artist, albumList);
-	    }
+		return image;
 	}
 
-	return albumList;
-    }
+	/**
+	 * Gets the album list.
+	 * 
+	 * @param artist
+	 *            the artist
+	 * 
+	 * @return the album list
+	 */
+	IAlbumListInfo getAlbumList(final String artist) {
+		// Try to get from cache
+		IAlbumListInfo albumList = lastFmCache.retrieveAbumList(artist);
+		if (albumList == null) {
+			Collection<Album> as = Artist.getTopAlbums(artist,
+					lastFmAPIKey.getApiKey());
+			if (as != null) {
+				IAlbumListInfo albums = LastFmAlbumList
+						.getAlbumList(as, artist);
 
-    /**
-     * Removes albums with no image or no mbid and with correct artist
-     * 
-     * @param artist
-     * @param albums
-     * @return
-     */
-    private List<IAlbumInfo> filterAlbumsFromSource(final String artist,
-	    final IAlbumListInfo albums) {
-	List<IAlbumInfo> result = new ArrayList<IAlbumInfo>();
-	for (IAlbumInfo a : albums.getAlbums()) {
-	    if (hasMbid(a) && artistMatches(artist, a) && hasImage(a)) {
-		result.add(a);
-	    }
-	}
-	return result;
-    }
+				List<IAlbumInfo> result = filterAlbumsFromSource(artist, albums);
 
-    /**
-     * Returns if album has mbid
-     * 
-     * @param a
-     * @return
-     */
-    private boolean hasMbid(final IAlbumInfo a) {
-	return !StringUtils.isEmpty(a.getMbid());
-    }
-
-    /**
-     * Returns if album has image
-     * 
-     * @param a
-     * @return
-     */
-    private boolean hasImage(final IAlbumInfo a) {
-	return !StringUtils.isEmpty(a.getThumbCoverURL())
-		&& !a.getThumbCoverURL().contains("noimage");
-    }
-
-    /**
-     * Checks if artist of album is equal to given artist
-     * 
-     * @param artist
-     * @param album
-     * @return
-     */
-    private boolean artistMatches(final String artist, final IAlbumInfo album) {
-	return album.getArtist().equalsIgnoreCase(artist);
-    }
-
-    /**
-     * Gets the image.
-     * 
-     * @param album
-     *            the album
-     * 
-     * @return the image
-     */
-    ImageIcon getAlbumImage(final IAlbumInfo album) {
-	try {
-	    ImageIcon img = null;
-	    // Try to retrieve from cache
-	    img = lastFmCache.retrieveAlbumCover(album);
-	    if (img == null && !StringUtils.isEmpty(album.getBigCoverURL())) {
-		Image tmp = networkHandler.getImage(networkHandler
-			.getConnection(album.getBigCoverURL()));
-		if (tmp != null) {
-		    img = new ImageIcon(tmp);
-		    lastFmCache.storeAlbumCover(album, img);
+				albumList = new LastFmAlbumList();
+				albumList.setArtist(artist);
+				albumList.setAlbums(result);
+				lastFmCache.storeAlbumList(artist, albumList);
+			}
 		}
-	    }
 
-	    return img;
-	} catch (IOException e) {
-	    // Sometimes urls given by last.fm are forbidden, so avoid show full
-	    // error stack traces
-	    Logger.error(e.getMessage());
-	    Logger.debug(e);
+		return albumList;
 	}
-	return null;
-    }
 
-    /**
-     * Gets the thumbnail image of album
-     * 
-     * @param album
-     *            the album
-     * 
-     * @return the image
-     */
-    ImageIcon getAlbumThumbImage(final IAlbumInfo album) {
-	try {
-	    ImageIcon img = null;
-	    // Try to retrieve from cache
-	    img = lastFmCache.retrieveAlbumCoverThumb(album);
-	    if (img == null && !StringUtils.isEmpty(album.getThumbCoverURL())) {
-		Image tmp = networkHandler.getImage(networkHandler
-			.getConnection(album.getThumbCoverURL()));
-		if (tmp != null) {
-		    // Resize image for thumb images
-		    img = new ImageIcon(ImageUtils.scaleBufferedImageBicubic(
-			    tmp, Constants.THUMB_IMAGE_WIDTH,
-			    Constants.THUMB_IMAGE_HEIGHT));
-		    lastFmCache.storeAlbumCoverThumb(album, img);
+	/**
+	 * Removes albums with no image or no mbid and with correct artist
+	 * 
+	 * @param artist
+	 * @param albums
+	 * @return
+	 */
+	private List<IAlbumInfo> filterAlbumsFromSource(final String artist,
+			final IAlbumListInfo albums) {
+		List<IAlbumInfo> result = new ArrayList<IAlbumInfo>();
+		for (IAlbumInfo a : albums.getAlbums()) {
+			if (hasMbid(a) && artistMatches(artist, a) && hasImage(a)) {
+				result.add(a);
+			}
 		}
-	    }
-
-	    return img;
-	} catch (IOException e) {
-	    // Sometimes urls given by last.fm are forbidden, so avoid show full
-	    // error stack traces
-	    Logger.error(e.getMessage());
-	    Logger.debug(e);
+		return result;
 	}
-	return null;
-    }
+
+	/**
+	 * Returns if album has mbid
+	 * 
+	 * @param a
+	 * @return
+	 */
+	private boolean hasMbid(final IAlbumInfo a) {
+		return !StringUtils.isEmpty(a.getMbid());
+	}
+
+	/**
+	 * Returns if album has image
+	 * 
+	 * @param a
+	 * @return
+	 */
+	private boolean hasImage(final IAlbumInfo a) {
+		return !StringUtils.isEmpty(a.getThumbCoverURL())
+				&& !a.getThumbCoverURL().contains("noimage");
+	}
+
+	/**
+	 * Checks if artist of album is equal to given artist
+	 * 
+	 * @param artist
+	 * @param album
+	 * @return
+	 */
+	private boolean artistMatches(final String artist, final IAlbumInfo album) {
+		return album.getArtist().equalsIgnoreCase(artist);
+	}
+
+	/**
+	 * Gets the image.
+	 * 
+	 * @param album
+	 *            the album
+	 * 
+	 * @return the image
+	 */
+	ImageIcon getAlbumImage(final IAlbumInfo album) {
+		try {
+			ImageIcon img = null;
+			// Try to retrieve from cache
+			img = lastFmCache.retrieveAlbumCover(album);
+			if (img == null && !StringUtils.isEmpty(album.getBigCoverURL())) {
+				Image tmp = networkHandler.getImage(networkHandler
+						.getConnection(album.getBigCoverURL()));
+				if (tmp != null) {
+					img = new ImageIcon(tmp);
+					lastFmCache.storeAlbumCover(album, img);
+				}
+			}
+
+			return img;
+		} catch (IOException e) {
+			// Sometimes urls given by last.fm are forbidden, so avoid show full
+			// error stack traces
+			Logger.error(e.getMessage());
+			Logger.debug(e);
+		}
+		return null;
+	}
+
+	/**
+	 * Gets the thumbnail image of album
+	 * 
+	 * @param album
+	 *            the album
+	 * 
+	 * @return the image
+	 */
+	ImageIcon getAlbumThumbImage(final IAlbumInfo album) {
+		try {
+			ImageIcon img = null;
+			// Try to retrieve from cache
+			img = lastFmCache.retrieveAlbumCoverThumb(album);
+			if (img == null && !StringUtils.isEmpty(album.getThumbCoverURL())) {
+				Image tmp = networkHandler.getImage(networkHandler
+						.getConnection(album.getThumbCoverURL()));
+				if (tmp != null) {
+					// Resize image for thumb images
+					img = new ImageIcon(ImageUtils.scaleBufferedImageBicubic(
+							tmp, Constants.THUMB_IMAGE_WIDTH,
+							Constants.THUMB_IMAGE_HEIGHT));
+					lastFmCache.storeAlbumCoverThumb(album, img);
+				}
+			}
+
+			return img;
+		} catch (IOException e) {
+			// Sometimes urls given by last.fm are forbidden, so avoid show full
+			// error stack traces
+			Logger.error(e.getMessage());
+			Logger.debug(e);
+		}
+		return null;
+	}
 
 }

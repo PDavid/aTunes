@@ -22,16 +22,18 @@ package net.sourceforge.atunes.model;
 
 /**
  * Gets a local audio object and reads data (tag and audio properties)
+ * 
  * @author alex
- *
+ * 
  */
 public interface ILocalAudioObjectReader {
 
 	/**
-	 * Reads audio object and sets tags, and optionally audio properties too
+	 * Reads audio object and sets tags
+	 * 
 	 * @param ao
 	 * @param readAudioProperties
 	 */
 	void readAudioObject(ILocalAudioObject ao, boolean readAudioProperties);
-	
+
 }

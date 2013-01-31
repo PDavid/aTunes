@@ -26,38 +26,37 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
 
 /**
- * The Class EditTagsProcess.
- * Process for writing tag to files. Receives AudioFiles to be written and
- * new properties (meta-information)
+ * The Class EditTagsProcess. Process for writing tag to files. Receives
+ * AudioFiles to be written and new properties (meta-information)
  */
 public class EditTagsProcess extends AbstractChangeTagProcess {
 
-    private Map<String, Object> editTagInfo;
-    
-    /**
-     * @param editTagInfo
-     */
-    public void setEditTagInfo(Map<String, Object> editTagInfo) {
+	private Map<String, Object> editTagInfo;
+
+	/**
+	 * @param editTagInfo
+	 */
+	public void setEditTagInfo(Map<String, Object> editTagInfo) {
 		this.editTagInfo = editTagInfo;
 	}
 
-    @Override
-    protected void changeTag(ILocalAudioObject audioFile) {
-        ITag newTag = getTagHandler().getNewTag(audioFile, editTagInfo);
-        ITag oldTag = audioFile.getTag();
+	@Override
+	protected void changeTag(ILocalAudioObject audioFile) {
+		ITag newTag = getTagHandler().getNewTag(audioFile, editTagInfo);
+		ITag oldTag = audioFile.getTag();
 
-        byte[] c = null;
-        boolean shouldEditCover = editTagInfo.containsKey("COVER");
-        if (shouldEditCover) {
-            Object cover = editTagInfo.get("COVER");
-            if (cover != null) {
-                c = (byte[]) cover;
-            }
-            
-            setInternalImage(newTag, oldTag, shouldEditCover, cover);
-        }
-        getTagHandler().setTag(audioFile, newTag, shouldEditCover, c);
-    }
+		byte[] c = null;
+		boolean shouldEditCover = editTagInfo.containsKey("COVER");
+		if (shouldEditCover) {
+			Object cover = editTagInfo.get("COVER");
+			if (cover != null) {
+				c = (byte[]) cover;
+			}
+
+			setInternalImage(newTag, oldTag, shouldEditCover, cover);
+		}
+		getTagHandler().setTag(audioFile, newTag, shouldEditCover, c);
+	}
 
 	/**
 	 * @param newTag
@@ -65,7 +64,8 @@ public class EditTagsProcess extends AbstractChangeTagProcess {
 	 * @param shouldEditCover
 	 * @param cover
 	 */
-	private void setInternalImage(ITag newTag, ITag oldTag, boolean shouldEditCover, Object cover) {
+	private void setInternalImage(ITag newTag, ITag oldTag,
+			boolean shouldEditCover, Object cover) {
 		if (oldTag != null && oldTag.hasInternalImage() && !shouldEditCover) {
 			newTag.setInternalImage(true);
 		} else if (shouldEditCover && cover != null) {
