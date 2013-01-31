@@ -31,7 +31,8 @@ import net.sourceforge.atunes.utils.FileUtils;
 /**
  * The Class EditTagFromFolderNamePatternProcess.
  */
-public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProcess {
+public class EditTagFromFolderNamePatternProcess extends
+		AbstractChangeTagProcess {
 
 	/**
 	 * Pattern used to get tag from folder name
@@ -72,8 +73,11 @@ public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProces
 		if (filesAndTags == null) {
 			filesAndTags = new HashMap<ILocalAudioObject, Map<String, Object>>();
 			for (ILocalAudioObject file : getFilesToChange()) {
-				Map<String, String> matches = patternMatcher.getPatternMatches(pattern, FileUtils.getPath(file.getFile().getParentFile()), true);
-				Map<String, Object> editTagInfo = patterns.getEditTagInfoFromMatches(matches);
+				Map<String, String> matches = patternMatcher
+						.getPatternMatches(pattern, FileUtils.getPath(file
+								.getFile().getParentFile()), true);
+				Map<String, Object> editTagInfo = patterns
+						.getEditTagInfoFromMatches(matches);
 				filesAndTags.put(file, editTagInfo);
 			}
 		}
@@ -81,6 +85,7 @@ public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProces
 
 	@Override
 	protected void changeTag(final ILocalAudioObject file) {
-		getTagHandler().setTag(file, getTagHandler().getNewTag(file, filesAndTags.get(file)));
+		getTagHandler().setTag(file,
+				getTagHandler().getNewTag(file, filesAndTags.get(file)));
 	}
 }

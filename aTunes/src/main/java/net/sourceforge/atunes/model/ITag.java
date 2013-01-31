@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import org.joda.time.base.BaseDateTime;
 
@@ -81,15 +80,6 @@ public interface ITag extends Serializable {
 	 * @return the lyrics
 	 */
 	public String getLyrics();
-
-	/**
-	 * Sets the tag from properties.
-	 * 
-	 * @param tag
-	 * @param properties
-	 * @return
-	 */
-	public ITag setTagFromProperties(ITag tag, Map<String, Object> properties);
 
 	/**
 	 * Gets the title.

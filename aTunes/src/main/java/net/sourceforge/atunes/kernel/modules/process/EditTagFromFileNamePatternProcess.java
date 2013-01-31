@@ -32,54 +32,57 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
  */
 public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess {
 
-    /**
-     * Pattern used to get tag from file name
-     */
-    private String pattern;
+	/**
+	 * Pattern used to get tag from file name
+	 */
+	private String pattern;
 
-    /** The files and tags. */
-    private Map<ILocalAudioObject, Map<String, Object>> filesAndTags;
-    
-    private Patterns patterns;
-    
-    private PatternMatcher patternMatcher;
-    
-    /**
-     * @param patternMatcher
-     */
-    public void setPatternMatcher(PatternMatcher patternMatcher) {
+	/** The files and tags. */
+	private Map<ILocalAudioObject, Map<String, Object>> filesAndTags;
+
+	private Patterns patterns;
+
+	private PatternMatcher patternMatcher;
+
+	/**
+	 * @param patternMatcher
+	 */
+	public void setPatternMatcher(PatternMatcher patternMatcher) {
 		this.patternMatcher = patternMatcher;
 	}
-    
-    /**
-     * @param patterns
-     */
-    public void setPatterns(Patterns patterns) {
+
+	/**
+	 * @param patterns
+	 */
+	public void setPatterns(Patterns patterns) {
 		this.patterns = patterns;
 	}
-    
-    /**
-     * @param pattern
-     */
-    public void setPattern(String pattern) {
+
+	/**
+	 * @param pattern
+	 */
+	public void setPattern(String pattern) {
 		this.pattern = pattern;
 	}
-    
-    @Override
-    protected void retrieveInformationBeforeChangeTags() {
-        super.retrieveInformationBeforeChangeTags();
-        if (filesAndTags == null) {
-            filesAndTags = new HashMap<ILocalAudioObject, Map<String, Object>>();
-            for (ILocalAudioObject file : getFilesToChange()) {
-                Map<String, String> matches = patternMatcher.getPatternMatches(pattern, file.getNameWithoutExtension(), false);
-                Map<String, Object> editTagInfo = patterns.getEditTagInfoFromMatches(matches);
-                filesAndTags.put(file, editTagInfo);
-            }
-        }
-    }
 
-    @Override
-    protected void changeTag(ILocalAudioObject file) {
-        getTagHandler().setTag(file, getTagHandler().getNewTag(file, filesAndTags.get(file)));
-    }
+	@Override
+	protected void retrieveInformationBeforeChangeTags() {
+		super.retrieveInformationBeforeChangeTags();
+		if (filesAndTags == null) {
+			filesAndTags = new HashMap<ILocalAudioObject, Map<String, Object>>();
+			for (ILocalAudioObject file : getFilesToChange()) {
+				Map<String, String> matches = patternMatcher.getPatternMatches(
+						pattern, file.getNameWithoutExtension(), false);
+				Map<String, Object> editTagInfo = patterns
+						.getEditTagInfoFromMatches(matches);
+				filesAndTags.put(file, editTagInfo);
+			}
+		}
+	}
+
+	@Override
+	protected void changeTag(ILocalAudioObject file) {
+		getTagHandler().setTag(file,
+				getTagHandler().getNewTag(file, filesAndTags.get(file)));
+	}
 }

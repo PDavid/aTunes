@@ -24,16 +24,15 @@ import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 
-final class RatingTagModification implements ITagModification {
+final class JAudiotaggerGenreTagModification implements IJAudiotaggerTagModification {
+	private final String genre;
 
-	private final String rating;
-
-	RatingTagModification(final String rating) {
-		this.rating = rating;
+	JAudiotaggerGenreTagModification(String genre) {
+		this.genre = genre;
 	}
 
 	@Override
-	public void modify(final Tag tag) throws FieldDataInvalidException {
-		tag.setField(FieldKey.RATING, this.rating);
+	public void modify(Tag tag) throws FieldDataInvalidException {
+		tag.setField(tag.createField(FieldKey.GENRE, genre));
 	}
 }

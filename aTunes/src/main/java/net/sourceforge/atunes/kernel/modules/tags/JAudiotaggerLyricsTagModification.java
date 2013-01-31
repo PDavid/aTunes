@@ -20,17 +20,20 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
-/**
- * The default tag
- */
-public class DefaultTag extends AbstractTag {
+import org.jaudiotagger.tag.FieldDataInvalidException;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
 
-	private static final long serialVersionUID = 6200185803652819029L;
+final class JAudiotaggerLyricsTagModification implements
+		IJAudiotaggerTagModification {
+	private final String lyrics;
 
-	/**
-	 * Instantiates a new default tag.
-	 */
-	DefaultTag() {
-		// Nothing to do
+	JAudiotaggerLyricsTagModification(String lyrics) {
+		this.lyrics = lyrics;
+	}
+
+	@Override
+	public void modify(Tag tag) throws FieldDataInvalidException {
+		tag.setField(tag.createField(FieldKey.LYRICS, lyrics));
 	}
 }

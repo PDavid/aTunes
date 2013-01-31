@@ -21,18 +21,21 @@
 package net.sourceforge.atunes.kernel.modules.tags;
 
 import org.jaudiotagger.tag.FieldDataInvalidException;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.Tag;
 
-final class TrackNumberTagModification implements ITagModification {
-	private final Integer track;
+/**
+ * Used to define a tag modification for JAudiotagger
+ * 
+ * @author alex
+ * 
+ */
+interface IJAudiotaggerTagModification {
 
-	TrackNumberTagModification(Integer track) {
-		this.track = track;
-	}
+	/**
+	 * Changes tag
+	 * 
+	 * @param tag
+	 * @throws FieldDataInvalidException
+	 */
+	void modify(org.jaudiotagger.tag.Tag tag) throws FieldDataInvalidException;
 
-	@Override
-	public void modify(Tag tag) throws FieldDataInvalidException {
-		tag.setField(FieldKey.TRACK, track.toString());
-	}
 }

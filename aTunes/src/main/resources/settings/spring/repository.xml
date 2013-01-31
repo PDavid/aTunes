@@ -47,6 +47,11 @@
 	<bean id="localAudioObjectFilter" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFilter"/>	
 	
 	<bean id="tagModifier" class="net.sourceforge.atunes.kernel.modules.tags.TagModifier"/>
+	<bean id="tagAdapterSelector" class="net.sourceforge.atunes.kernel.modules.tags.TagAdapterSelector"/>
+	<bean id="jAudiotaggerTagAdapter" class="net.sourceforge.atunes.kernel.modules.tags.JAudiotaggerTagAdapter"/>
+	<bean id="jAudiotaggerTagCreator" class="net.sourceforge.atunes.kernel.modules.tags.JAudiotaggerTagCreator"/>
+	<bean id="jAudiotaggerFileReader" class="net.sourceforge.atunes.kernel.modules.tags.JAudiotaggerFileReader"/>
+	<bean id="jAudiotaggerAudioPropertiesReader" class="net.sourceforge.atunes.kernel.modules.repository.JAudiotaggerAudioPropertiesReader"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.tags.RefreshTagAfterModifyRunnable" scope="prototype"/>
 	
 	

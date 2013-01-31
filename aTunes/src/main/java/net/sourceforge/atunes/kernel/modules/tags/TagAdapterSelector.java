@@ -20,19 +20,34 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
-import org.jaudiotagger.tag.FieldDataInvalidException;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.Tag;
+import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ITagAdapter;
 
-final class AlbumTagModification implements ITagModification {
-	private final String album;
+/**
+ * Selects tag adapter for a specific file type
+ * 
+ * @author alex
+ * 
+ */
+public class TagAdapterSelector {
 
-	AlbumTagModification(String album) {
-		this.album = album;
+	private JAudiotaggerTagAdapter jAudiotaggerTagAdapter;
+
+	/**
+	 * @param jAudiotaggerTagAdapter
+	 */
+	public void setjAudiotaggerTagAdapter(
+			JAudiotaggerTagAdapter jAudiotaggerTagAdapter) {
+		this.jAudiotaggerTagAdapter = jAudiotaggerTagAdapter;
 	}
 
-	@Override
-	public void modify(Tag tag) throws FieldDataInvalidException {
-		tag.setField(FieldKey.ALBUM, album);
+	/**
+	 * Selects adapter for given local audio object
+	 * 
+	 * @param audioObject
+	 * @return
+	 */
+	ITagAdapter selectAdapter(final ILocalAudioObject audioObject) {
+		return jAudiotaggerTagAdapter;
 	}
 }
