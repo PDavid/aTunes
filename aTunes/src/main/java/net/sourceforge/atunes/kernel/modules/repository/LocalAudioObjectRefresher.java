@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IRepository;
@@ -33,49 +34,62 @@ import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Refreshes local audio object of a repository
+ * 
  * @author alex
- *
+ * 
  */
 public class LocalAudioObjectRefresher {
 
 	private IStatisticsHandler statisticsHandler;
-	
+
 	private ILocalAudioObjectFactory localAudioObjectFactory;
-	
+
 	private IStateNavigation stateNavigation;
-	
+
 	private IUnknownObjectChecker unknownObjectChecker;
-	
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(
+			IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
-	
+
 	/**
 	 * @param stateNavigation
 	 */
 	public void setStateNavigation(IStateNavigation stateNavigation) {
 		this.stateNavigation = stateNavigation;
 	}
-	
+
 	/**
 	 * @param statisticsHandler
 	 */
 	public void setStatisticsHandler(IStatisticsHandler statisticsHandler) {
 		this.statisticsHandler = statisticsHandler;
 	}
-	
+
 	/**
 	 * @param localAudioObjectFactory
 	 */
-	public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
+	public void setLocalAudioObjectFactory(
+			ILocalAudioObjectFactory localAudioObjectFactory) {
 		this.localAudioObjectFactory = localAudioObjectFactory;
 	}
-	
+
 	/**
 	 * Refresh file
+	 * 
 	 * @param repository
 	 * @param file
 	 */
@@ -83,12 +97,14 @@ public class LocalAudioObjectRefresher {
 		try {
 			// Get old tag
 			ITag oldTag = file.getTag();
-			
+
 			// Update tag
 			localAudioObjectFactory.refreshAudioObject(file);
-			
+
 			// Update repository
-			new RepositoryFiller(repository, stateNavigation, unknownObjectChecker).refreshAudioFile(file, oldTag);
+			new RepositoryFiller(repository, stateNavigation,
+					unknownObjectChecker, fileManager).refreshAudioFile(file,
+					oldTag);
 
 			// Compare old tag with new tag
 			ITag newTag = file.getTag();
@@ -110,9 +126,10 @@ public class LocalAudioObjectRefresher {
 		boolean artistChanged = isArtistChanged(oldTag, newTag);
 		boolean albumChanged = isAlbumChanged(oldTag, newTag);
 		boolean oldArtistRemoved = false;
-		
+
 		if (artistChanged) {
-			oldArtistRemoved = updateArtistStatistics(repository, oldTag, newTag, oldArtistRemoved);
+			oldArtistRemoved = updateArtistStatistics(repository, oldTag,
+					newTag, oldArtistRemoved);
 		}
 		if (albumChanged) {
 			updateAlbumStatistics(repository, oldTag, newTag, oldArtistRemoved);
@@ -125,12 +142,16 @@ public class LocalAudioObjectRefresher {
 	 * @param newTag
 	 * @param oldArtistRemoved
 	 */
-	private void updateAlbumStatistics(IRepository repository, ITag oldTag, ITag newTag, boolean oldArtistRemoved) {
-		IArtist artistWithOldAlbum = repository.getArtist(oldArtistRemoved ? newTag.getArtist() : oldTag.getArtist()); 
+	private void updateAlbumStatistics(IRepository repository, ITag oldTag,
+			ITag newTag, boolean oldArtistRemoved) {
+		IArtist artistWithOldAlbum = repository
+				.getArtist(oldArtistRemoved ? newTag.getArtist() : oldTag
+						.getArtist());
 		IAlbum oldAlbum = artistWithOldAlbum.getAlbum(oldTag.getAlbum());
 		if (oldAlbum == null) {
 			// Album has been renamed -> Update statistics
-			statisticsHandler.replaceAlbum(artistWithOldAlbum.getName(), oldTag.getAlbum(), newTag.getAlbum());
+			statisticsHandler.replaceAlbum(artistWithOldAlbum.getName(),
+					oldTag.getAlbum(), newTag.getAlbum());
 		}
 	}
 
@@ -141,12 +162,14 @@ public class LocalAudioObjectRefresher {
 	 * @param oldArtistRemoved
 	 * @return
 	 */
-	private boolean updateArtistStatistics(IRepository repository, ITag oldTag, ITag newTag, boolean oldArtistRemoved) {
+	private boolean updateArtistStatistics(IRepository repository, ITag oldTag,
+			ITag newTag, boolean oldArtistRemoved) {
 		boolean removed = oldArtistRemoved;
 		IArtist oldArtist = repository.getArtist(oldTag.getArtist());
 		if (oldArtist == null) {
 			// Artist has been renamed -> Update statistics
-			statisticsHandler.replaceArtist(oldTag.getArtist(), newTag.getArtist());
+			statisticsHandler.replaceArtist(oldTag.getArtist(),
+					newTag.getArtist());
 			removed = true;
 		}
 		return removed;
@@ -154,14 +177,15 @@ public class LocalAudioObjectRefresher {
 
 	/**
 	 * Returns if album changed between the two tags
+	 * 
 	 * @param oldTag
 	 * @param newTag
 	 * @return
 	 */
 	private boolean isAlbumChanged(ITag oldTag, ITag newTag) {
-		return albumAddedToTag(oldTag, newTag) ||
-			   albumRemovedFromTag(oldTag, newTag) ||
-			   albumChangedInTag(oldTag, newTag);
+		return albumAddedToTag(oldTag, newTag)
+				|| albumRemovedFromTag(oldTag, newTag)
+				|| albumChangedInTag(oldTag, newTag);
 	}
 
 	/**
@@ -190,19 +214,18 @@ public class LocalAudioObjectRefresher {
 	private boolean albumAddedToTag(ITag oldTag, ITag newTag) {
 		return oldTag.getAlbum() == null && newTag.getAlbum() != null;
 	}
-	
-	
 
 	/**
 	 * Returns if artist changed between the two tags
+	 * 
 	 * @param oldTag
 	 * @param newTag
 	 * @return
 	 */
 	private boolean isArtistChanged(ITag oldTag, ITag newTag) {
-		return  artistAddedToTag(oldTag, newTag) ||
-				artistRemovedFromTag(oldTag, newTag) || 
-				artistChangedInTag(oldTag, newTag);
+		return artistAddedToTag(oldTag, newTag)
+				|| artistRemovedFromTag(oldTag, newTag)
+				|| artistChangedInTag(oldTag, newTag);
 	}
 
 	/**
