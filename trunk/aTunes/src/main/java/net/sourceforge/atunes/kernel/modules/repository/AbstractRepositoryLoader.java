@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.List;
 
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IRepository;
@@ -41,7 +42,8 @@ import net.sourceforge.atunes.utils.Timer;
 /**
  * Class for loading audio files into repository.
  */
-public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Runnable {
+public abstract class AbstractRepositoryLoader implements IRepositoryLoader,
+		Runnable {
 
 	// Some attributes to speed up populate info process
 	private IRepositoryLoaderListener listener;
@@ -61,15 +63,26 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 
 	private IUnknownObjectChecker unknownObjectChecker;
 
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	/**
 	 * Starts load
+	 * 
 	 * @param state
 	 * @param transaction
 	 * @param folders
@@ -77,7 +90,9 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 	 * @param repository
 	 */
 	@Override
-	public void start(final IRepositoryTransaction transaction, final List<File> folders, final IRepository oldRepository, final IRepository repository) {
+	public void start(final IRepositoryTransaction transaction,
+			final List<File> folders, final IRepository oldRepository,
+			final IRepository repository) {
 		this.transaction = transaction;
 		this.folders = folders;
 		this.oldRepository = oldRepository;
@@ -137,14 +152,16 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 	/**
 	 * @param localAudioObjectFactory
 	 */
-	public void setLocalAudioObjectFactory(final ILocalAudioObjectFactory localAudioObjectFactory) {
+	public void setLocalAudioObjectFactory(
+			final ILocalAudioObjectFactory localAudioObjectFactory) {
 		this.localAudioObjectFactory = localAudioObjectFactory;
 	}
 
 	/**
 	 * @param validLocalAudioObjectFileFilter
 	 */
-	public void setValidLocalAudioObjectFileFilter(final FileFilter validLocalAudioObjectFileFilter) {
+	public void setValidLocalAudioObjectFileFilter(
+			final FileFilter validLocalAudioObjectFileFilter) {
 		this.validLocalAudioObjectFileFilter = validLocalAudioObjectFileFilter;
 	}
 
@@ -155,7 +172,8 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 	 *            the listener
 	 */
 	@Override
-	public void setRepositoryLoaderListener(final IRepositoryLoaderListener listener) {
+	public void setRepositoryLoaderListener(
+			final IRepositoryLoaderListener listener) {
 		this.listener = listener;
 	}
 
@@ -182,7 +200,8 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 		runTasksBeforeLoadRepository();
 		startReadTime = System.currentTimeMillis();
 
-		RepositoryFiller filler = new RepositoryFiller(repository, stateNavigation, unknownObjectChecker);
+		RepositoryFiller filler = new RepositoryFiller(repository,
+				stateNavigation, unknownObjectChecker, fileManager);
 		for (File folder : folders) {
 			String fastRepositoryPath = FileUtils.getNormalizedPath(folder);
 			fastFirstChar = fastRepositoryPath.length() + 1;
@@ -195,11 +214,13 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 
 	/**
 	 * Navigates directory loading audio files and directories
+	 * 
 	 * @param filler
 	 * @param relativeTo
 	 * @param dir
 	 */
-	private void navigateDir(final RepositoryFiller filler, final File relativeTo, final File dir) {
+	private void navigateDir(final RepositoryFiller filler,
+			final File relativeTo, final File dir) {
 		if (!interrupt) {
 			// Process directories
 			processDirectories(filler, dir, relativeTo);
@@ -211,11 +232,13 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 
 	/**
 	 * Process directory
+	 * 
 	 * @param filler
 	 * @param dir
 	 * @param relativeTo
 	 */
-	private void processDirectories(final RepositoryFiller filler, final File dir, final File relativeTo) {
+	private void processDirectories(final RepositoryFiller filler,
+			final File dir, final File relativeTo) {
 		// Directories
 		File[] dirs = dir.listFiles(directoryFileFilter);
 
@@ -229,11 +252,13 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 
 	/**
 	 * Process audio files in a directory
+	 * 
 	 * @param filler
 	 * @param dir
 	 * @param relativeTo
 	 */
-	private void processAudioFiles(final RepositoryFiller filler, final File dir, final File relativeTo) {
+	private void processAudioFiles(final RepositoryFiller filler,
+			final File dir, final File relativeTo) {
 		// Get audio files
 		File[] audiofiles = dir.listFiles(validLocalAudioObjectFileFilter);
 
@@ -252,7 +277,8 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 
 			for (File audiofile : audiofiles) {
 				if (!interrupt) {
-					processAudioFile(audiofile, filler, relativeTo, relativePath);
+					processAudioFile(audiofile, filler, relativeTo,
+							relativePath);
 				}
 			}
 
@@ -262,6 +288,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 
 	/**
 	 * Actions needed to notify current relative path
+	 * 
 	 * @param relativePath
 	 */
 	protected abstract void notifyCurrentPath(String relativePath);
@@ -278,30 +305,36 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 
 	/**
 	 * Actions needed to notify current album being loaded
+	 * 
 	 * @param artist
 	 * @param album
 	 */
 	protected abstract void notifyCurrentAlbum(String artist, String album);
 
-
 	/**
 	 * Processes a single audio file
+	 * 
 	 * @param audiofile
 	 * @param filler
 	 * @param relativeTo
 	 * @param relativePath
 	 */
-	private void processAudioFile(final File audiofile, final RepositoryFiller filler, final File relativeTo, final String relativePath) {
+	private void processAudioFile(final File audiofile,
+			final RepositoryFiller filler, final File relativeTo,
+			final String relativePath) {
 		ILocalAudioObject audio = null;
 
 		// If a previous repository exists, check if file already was loaded.
-		// If so, compare modification date. If modification date is equal to last repository load
+		// If so, compare modification date. If modification date is equal to
+		// last repository load
 		// don't read file again
 
 		if (oldRepository == null) {
 			audio = localAudioObjectFactory.getLocalAudioObject(audiofile);
 		} else {
-			ILocalAudioObject oldAudioFile = oldRepository.getFile(net.sourceforge.atunes.utils.FileUtils.getPath(audiofile));
+			ILocalAudioObject oldAudioFile = oldRepository
+					.getFile(net.sourceforge.atunes.utils.FileUtils
+							.getPath(audiofile));
 			if (oldAudioFile != null && oldAudioFile.isUpToDate()) {
 				audio = oldAudioFile;
 			} else {
@@ -312,7 +345,8 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 		notifyFileLoaded();
 		filesLoaded++;
 		filler.addAudioFile(audio, relativeTo, relativePath);
-		notifyCurrentAlbum(audio.getArtist(unknownObjectChecker), audio.getAlbum(unknownObjectChecker));
+		notifyCurrentAlbum(audio.getArtist(unknownObjectChecker),
+				audio.getAlbum(unknownObjectChecker));
 	}
 
 	/**
@@ -342,7 +376,10 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 			double time = timer.stop();
 			long files = repository.countFiles();
 			double averageFileTime = time / files;
-			Logger.info(StringUtils.getString("Read repository process DONE (", files, " files, ", time, " seconds, ", StringUtils.toString(averageFileTime, 4), " seconds / file)"));
+			Logger.info(StringUtils.getString("Read repository process DONE (",
+					files, " files, ", time, " seconds, ",
+					StringUtils.toString(averageFileTime, 4),
+					" seconds / file)"));
 			notifyFinish();
 		}
 	}

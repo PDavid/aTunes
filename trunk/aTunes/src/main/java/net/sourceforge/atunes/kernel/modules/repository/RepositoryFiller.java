@@ -25,6 +25,7 @@ import java.io.File;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -38,8 +39,9 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * A class responsible of load repository structure
+ * 
  * @author fleax
- *
+ * 
  */
 final class RepositoryFiller {
 
@@ -49,28 +51,39 @@ final class RepositoryFiller {
 
 	private final IUnknownObjectChecker unknownObjectChecker;
 
+	private final IFileManager fileManager;
+
 	/**
 	 * Creates a new filler for given repository
+	 * 
 	 * @param repository
 	 * @param stateNavigation
 	 * @param unknownObjectChecker
+	 * @param fileManager
 	 */
-	RepositoryFiller(final IRepository repository, final IStateNavigation stateNavigation, final IUnknownObjectChecker unknownObjectChecker) {
+	RepositoryFiller(final IRepository repository,
+			final IStateNavigation stateNavigation,
+			final IUnknownObjectChecker unknownObjectChecker,
+			IFileManager fileManager) {
 		if (repository == null) {
 			throw new IllegalArgumentException("Repository is null");
 		}
 		this.repository = repository;
 		this.stateNavigation = stateNavigation;
 		this.unknownObjectChecker = unknownObjectChecker;
+		this.fileManager = fileManager;
 	}
 
 	/**
 	 * Adds a new audio file with a relative path
+	 * 
 	 * @param audioFile
 	 * @param repositoryFolderRoot
 	 * @param relativePathToRepositoryFolderRoot
 	 */
-	void addAudioFile(final ILocalAudioObject audioFile, final File repositoryFolderRoot, final String relativePathToRepositoryFolderRoot) {
+	void addAudioFile(final ILocalAudioObject audioFile,
+			final File repositoryFolderRoot,
+			final String relativePathToRepositoryFolderRoot) {
 		if (audioFile == null) {
 			throw new IllegalArgumentException("AudioFile is null");
 		}
@@ -85,13 +98,15 @@ final class RepositoryFiller {
 
 		addToRepository(audioFile);
 		addToArtistStructure(audioFile);
-		addToFolderStructure(repositoryFolderRoot, relativePathToRepositoryFolderRoot, audioFile);
+		addToFolderStructure(repositoryFolderRoot,
+				relativePathToRepositoryFolderRoot, audioFile);
 		addToGenreStructure(audioFile);
 		addToYearStructure(audioFile);
 	}
 
 	/**
 	 * Refreshes audio file already added to repository
+	 * 
 	 * @param audioFile
 	 */
 	void refreshAudioFile(final ILocalAudioObject audioFile, final ITag oldTag) {
@@ -115,7 +130,7 @@ final class RepositoryFiller {
 	 */
 	private void addToRepository(final ILocalAudioObject audioFile) {
 		repository.putFile(audioFile);
-		repository.addSizeInBytes(audioFile.getFile().length());
+		repository.addSizeInBytes(fileManager.getFileSize(audioFile));
 		repository.addDurationInSeconds(audioFile.getDuration());
 	}
 
@@ -128,7 +143,8 @@ final class RepositoryFiller {
 		String artist = null;
 		if (ArtistViewMode.ARTIST.equals(stateNavigation.getArtistViewMode())) {
 			artist = audioFile.getArtist(unknownObjectChecker);
-		} else if (ArtistViewMode.ARTIST_OF_ALBUM.equals(stateNavigation.getArtistViewMode())) {
+		} else if (ArtistViewMode.ARTIST_OF_ALBUM.equals(stateNavigation
+				.getArtistViewMode())) {
 			artist = audioFile.getAlbumArtist(unknownObjectChecker);
 		} else {
 			artist = audioFile.getAlbumArtistOrArtist(unknownObjectChecker);
@@ -196,10 +212,14 @@ final class RepositoryFiller {
 	 * @param file
 	 *            the file
 	 */
-	private void addToFolderStructure(final File relativeTo, final String relativePath, final ILocalAudioObject file) {
-		IFolder relativeFolder = repository.getFolder(net.sourceforge.atunes.utils.FileUtils.getPath(relativeTo));
+	private void addToFolderStructure(final File relativeTo,
+			final String relativePath, final ILocalAudioObject file) {
+		IFolder relativeFolder = repository
+				.getFolder(net.sourceforge.atunes.utils.FileUtils
+						.getPath(relativeTo));
 		if (relativeFolder == null) {
-			relativeFolder = new Folder(net.sourceforge.atunes.utils.FileUtils.getPath(relativeTo));
+			relativeFolder = new Folder(
+					net.sourceforge.atunes.utils.FileUtils.getPath(relativeTo));
 			repository.putFolder(relativeFolder);
 		}
 
@@ -219,9 +239,11 @@ final class RepositoryFiller {
 
 	/**
 	 * Removes from artist structure if necessary
+	 * 
 	 * @param file
 	 */
-	private void updateArtistStructure(final ITag oldTag, final ILocalAudioObject file) {
+	private void updateArtistStructure(final ITag oldTag,
+			final ILocalAudioObject file) {
 		String albumArtist = getAlbumArtist(oldTag);
 		String artist = getArtist(oldTag);
 		String album = getAlbum(oldTag);
@@ -244,7 +266,9 @@ final class RepositoryFiller {
 	 * @param albumArtistPresent
 	 * @param a
 	 */
-	private void storeArtistInStructure(final ILocalAudioObject file, final String artist, final String album, final boolean albumArtistPresent, final IArtist a) {
+	private void storeArtistInStructure(final ILocalAudioObject file,
+			final String artist, final String album,
+			final boolean albumArtistPresent, final IArtist a) {
 		IArtist artistObject = a;
 		IAlbum alb = artistObject.getAlbum(album);
 		if (alb != null) {
@@ -302,10 +326,12 @@ final class RepositoryFiller {
 
 	/**
 	 * Removes from genre structure if necessary
+	 * 
 	 * @param oldTag
 	 * @param file
 	 */
-	private void updateGenreStructure(final ITag oldTag, final ILocalAudioObject file) {
+	private void updateGenreStructure(final ITag oldTag,
+			final ILocalAudioObject file) {
 		String genre = null;
 		if (oldTag != null) {
 			genre = oldTag.getGenre();
@@ -326,13 +352,16 @@ final class RepositoryFiller {
 
 	/**
 	 * Removes from year structure if necessary
+	 * 
 	 * @param oldTag
 	 * @param file
 	 */
-	private void updateYearStructure(final ITag oldTag, final ILocalAudioObject file) {
+	private void updateYearStructure(final ITag oldTag,
+			final ILocalAudioObject file) {
 		String year = null;
 		if (oldTag != null) {
-			year = oldTag.getYear() > 0 ? Integer.toString(oldTag.getYear()) : "";
+			year = oldTag.getYear() > 0 ? Integer.toString(oldTag.getYear())
+					: "";
 		}
 		if (year == null || year.equals("")) {
 			year = unknownObjectChecker.getUnknownYear();
