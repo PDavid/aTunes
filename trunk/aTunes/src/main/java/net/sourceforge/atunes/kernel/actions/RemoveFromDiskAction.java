@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.modules.repository.DeleteFilesWorker;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
@@ -81,6 +82,15 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 	private IDialogFactory dialogFactory;
 
 	private ILocalAudioObjectFilter localAudioObjectFilter;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * @param localAudioObjectFilter
@@ -159,7 +169,8 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 		final List<IAudioObject> files = navigationHandler
 				.getFilesSelectedInNavigator();
 		new DeleteFilesWorker(dialogFactory, repositoryHandler,
-				localAudioObjectFilter.getLocalAudioObjects(files)).execute();
+				localAudioObjectFilter.getLocalAudioObjects(files), fileManager)
+				.execute();
 	}
 
 	private void fromRepositoryOrDeviceView(

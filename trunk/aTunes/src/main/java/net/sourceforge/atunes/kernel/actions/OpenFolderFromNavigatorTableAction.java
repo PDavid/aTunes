@@ -21,13 +21,11 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDesktop;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -39,73 +37,67 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public class OpenFolderFromNavigatorTableAction extends
-	AbstractActionOverSelectedObjects<ILocalAudioObject> {
+		AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    private static final long serialVersionUID = 8251208528513562627L;
+	private static final long serialVersionUID = 8251208528513562627L;
 
-    private IDesktop desktop;
+	private IDesktop desktop;
 
-    private ILocalAudioObjectFilter localAudioObjectFilter;
+	private ILocalAudioObjectFilter localAudioObjectFilter;
 
-    /**
-     * @param localAudioObjectFilter
-     */
-    public void setLocalAudioObjectFilter(
-	    final ILocalAudioObjectFilter localAudioObjectFilter) {
-	this.localAudioObjectFilter = localAudioObjectFilter;
-    }
+	private IFileManager fileManager;
 
-    /**
-     * Default constructor
-     */
-    public OpenFolderFromNavigatorTableAction() {
-	super(I18nUtils.getString("OPEN_FOLDER"));
-    }
-
-    /**
-     * @param desktop
-     */
-    public void setDesktop(final IDesktop desktop) {
-	this.desktop = desktop;
-    }
-
-    @Override
-    public boolean isEnabledForNavigationTableSelection(
-	    final List<IAudioObject> selection) {
-	return sameParentFile(localAudioObjectFilter
-		.getLocalAudioObjects(selection));
-    }
-
-    /**
-     * Checks if a collection of files have the same parent file.
-     * 
-     * @param c
-     *            collection of files
-     * @return if a collection of files have the same parent file
-     */
-    private boolean sameParentFile(
-	    final Collection<? extends ILocalAudioObject> c) {
-	Set<File> set = new HashSet<File>();
-	for (ILocalAudioObject af : c) {
-	    set.add(af.getFile().getParentFile());
-	}
-	return set.size() == 1;
-    }
-
-    @Override
-    protected void executeAction(final List<ILocalAudioObject> objects) {
-	HashSet<File> foldersToOpen = new HashSet<File>();
-
-	// Get folders ...
-	for (ILocalAudioObject ao : objects) {
-	    if (!foldersToOpen.contains(ao.getFile().getParentFile())) {
-		foldersToOpen.add(ao.getFile().getParentFile());
-	    }
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
 	}
 
-	// ... then open
-	for (File folder : foldersToOpen) {
-	    desktop.openFile(folder);
+	/**
+	 * @param localAudioObjectFilter
+	 */
+	public void setLocalAudioObjectFilter(
+			final ILocalAudioObjectFilter localAudioObjectFilter) {
+		this.localAudioObjectFilter = localAudioObjectFilter;
 	}
-    }
+
+	/**
+	 * Default constructor
+	 */
+	public OpenFolderFromNavigatorTableAction() {
+		super(I18nUtils.getString("OPEN_FOLDER"));
+	}
+
+	/**
+	 * @param desktop
+	 */
+	public void setDesktop(final IDesktop desktop) {
+		this.desktop = desktop;
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTableSelection(
+			final List<IAudioObject> selection) {
+		return sameParentFile(localAudioObjectFilter
+				.getLocalAudioObjects(selection));
+	}
+
+	/**
+	 * Checks if a collection of files have the same parent file.
+	 * 
+	 * @param c
+	 *            collection of files
+	 * @return if a collection of files have the same parent file
+	 */
+	private boolean sameParentFile(final List<ILocalAudioObject> c) {
+		return fileManager.getFolders(c).size() == 1;
+	}
+
+	@Override
+	protected void executeAction(final List<ILocalAudioObject> objects) {
+		for (File folder : fileManager.getFolders(objects)) {
+			desktop.openFile(folder);
+		}
+	}
 }

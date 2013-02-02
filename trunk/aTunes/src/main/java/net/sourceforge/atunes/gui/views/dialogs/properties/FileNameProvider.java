@@ -20,9 +20,17 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 class FileNameProvider extends AbstractFieldProvider {
+
+	private final IFileManager fileManager;
+
+	public FileNameProvider(IFileManager fileManager) {
+		super();
+		this.fileManager = fileManager;
+	}
 
 	@Override
 	public String getI18Name() {
@@ -31,6 +39,6 @@ class FileNameProvider extends AbstractFieldProvider {
 
 	@Override
 	public String getClearValue(ILocalAudioObject file) {
-		return file.getFile().getName();
+		return fileManager.getFileName(file);
 	}
 }

@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +27,11 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Removes files from repository
@@ -43,54 +41,55 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class DeleteFilesWorker extends SwingWorker<Void, Void> {
 
-    private final IDialogFactory dialogFactory;
+	private final IDialogFactory dialogFactory;
 
-    private final IRepositoryHandler repositoryHandler;
+	private final IRepositoryHandler repositoryHandler;
 
-    private IIndeterminateProgressDialog dialog;
+	private IIndeterminateProgressDialog dialog;
 
-    private final List<ILocalAudioObject> files;
+	private final List<ILocalAudioObject> files;
 
-    /**
-     * @param dialogFactory
-     * @param repositoryHandler
-     * @param files
-     */
-    public DeleteFilesWorker(final IDialogFactory dialogFactory,
-	    final IRepositoryHandler repositoryHandler,
-	    final List<ILocalAudioObject> files) {
-	this.dialogFactory = dialogFactory;
-	this.repositoryHandler = repositoryHandler;
-	this.files = files;
-    }
+	private final IFileManager fileManager;
 
-    @Override
-    protected Void doInBackground() {
-	GuiUtils.callInEventDispatchThread(new Runnable() {
-	    @Override
-	    public void run() {
-		dialog = dialogFactory
-			.newDialog(IIndeterminateProgressDialog.class);
-		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
-		dialog.showDialog();
-	    }
-	});
-
-	List<ILocalAudioObject> filesDeleted = new ArrayList<ILocalAudioObject>();
-	for (ILocalAudioObject audioFile : files) {
-	    File file = audioFile.getFile();
-	    if (file != null && !file.delete()) {
-		Logger.error(StringUtils.getString(file, " not deleted"));
-	    } else {
-		filesDeleted.add(audioFile);
-	    }
+	/**
+	 * @param dialogFactory
+	 * @param repositoryHandler
+	 * @param files
+	 * @param fileManager
+	 */
+	public DeleteFilesWorker(final IDialogFactory dialogFactory,
+			final IRepositoryHandler repositoryHandler,
+			final List<ILocalAudioObject> files, IFileManager fileManager) {
+		this.dialogFactory = dialogFactory;
+		this.repositoryHandler = repositoryHandler;
+		this.files = files;
+		this.fileManager = fileManager;
 	}
-	repositoryHandler.remove(filesDeleted);
-	return null;
-    }
 
-    @Override
-    protected void done() {
-	dialog.hideDialog();
-    }
+	@Override
+	protected Void doInBackground() {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				dialog = dialogFactory
+						.newDialog(IIndeterminateProgressDialog.class);
+				dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
+				dialog.showDialog();
+			}
+		});
+
+		List<ILocalAudioObject> filesDeleted = new ArrayList<ILocalAudioObject>();
+		for (ILocalAudioObject audioFile : files) {
+			if (fileManager.delete(audioFile)) {
+				filesDeleted.add(audioFile);
+			}
+		}
+		repositoryHandler.remove(filesDeleted);
+		return null;
+	}
+
+	@Override
+	protected void done() {
+		dialog.hideDialog();
+	}
 }

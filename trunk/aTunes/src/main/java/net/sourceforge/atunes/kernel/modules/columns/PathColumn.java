@@ -62,10 +62,10 @@ public class PathColumn extends AbstractColumn<String> {
 		String p1 = "";
 		String p2 = "";
 		if (ao1 instanceof ILocalAudioObject) {
-			p1 = this.fileManager.getParentFile((ILocalAudioObject) ao1);
+			p1 = this.fileManager.getFolderPath((ILocalAudioObject) ao1);
 		}
 		if (ao2 instanceof ILocalAudioObject) {
-			p2 = this.fileManager.getParentFile((ILocalAudioObject) ao2);
+			p2 = this.fileManager.getFolderPath((ILocalAudioObject) ao2);
 		}
 		return compare(p1, p2);
 	}

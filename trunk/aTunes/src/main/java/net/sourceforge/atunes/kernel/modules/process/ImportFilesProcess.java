@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ITag;
@@ -59,6 +60,15 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 	private ITagHandler tagHandler;
 
 	private IWebServicesHandler webServicesHandler;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * @param webServicesHandler
@@ -126,8 +136,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 		// Get base folder or the first folder if there is any error
 		File baseFolder = null;
 		for (File folder : folders) {
-			String filePath = song.getFile() != null ? FileUtils.getPath(song
-					.getFile()) : null;
+			String filePath = fileManager.getPath(song);
 			String folderParentPath = folder.getParentFile() != null ? FileUtils
 					.getPath(folder.getParentFile()) : null;
 			if (filePath != null && folderParentPath != null
@@ -140,7 +149,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 			baseFolder = folders.get(0);
 		}
 
-		String songPath = FileUtils.getPath(song.getFile().getParentFile());
+		String songPath = fileManager.getPath(song);
 		String songRelativePath = songPath.replaceFirst(
 				FileUtils.getPath(baseFolder).replace("\\", "\\\\")
 						.replace("$", "\\$"), "");
@@ -200,9 +209,9 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 			newName = getNewFileName(getStateRepository()
 					.getImportFileNamePattern(), file, getOsManager());
 		} else {
-			newName = FileNameUtils.getValidFileName(file.getFile().getName()
-					.replace("\\", "\\\\").replace("$", "\\$"), false,
-					getOsManager());
+			newName = FileNameUtils.getValidFileName(
+					fileManager.getFileName(file).replace("\\", "\\\\")
+							.replace("$", "\\$"), false, getOsManager());
 		}
 
 		File destFile = new File(StringUtils.getString(
@@ -211,7 +220,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 
 		try {
 			// Now that we (supposedly) have a valid filename write file
-			org.apache.commons.io.FileUtils.copyFile(file.getFile(), destFile);
+			fileManager.copyFile(file, destFile);
 		} catch (IOException e) {
 			thrownExceptions.add(e);
 		}

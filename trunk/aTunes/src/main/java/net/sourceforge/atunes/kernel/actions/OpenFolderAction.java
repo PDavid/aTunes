@@ -21,10 +21,10 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IDesktop;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,40 +35,39 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public class OpenFolderAction extends
-	AbstractActionOverSelectedObjects<ILocalAudioObject> {
+		AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    private static final long serialVersionUID = 1682289345922375850L;
+	private static final long serialVersionUID = 1682289345922375850L;
 
-    private IDesktop desktop;
+	private IDesktop desktop;
 
-    /**
-     * @param desktop
-     */
-    public void setDesktop(final IDesktop desktop) {
-	this.desktop = desktop;
-    }
+	private IFileManager fileManager;
 
-    /**
-     * Default constructor
-     */
-    public OpenFolderAction() {
-	super(I18nUtils.getString("OPEN_FOLDER"));
-    }
-
-    @Override
-    protected void executeAction(final List<ILocalAudioObject> objects) {
-	HashSet<File> foldersToOpen = new HashSet<File>();
-
-	// Get folders ...
-	for (ILocalAudioObject ao : objects) {
-	    if (!foldersToOpen.contains(ao.getFile().getParentFile())) {
-		foldersToOpen.add(ao.getFile().getParentFile());
-	    }
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
 	}
 
-	// ... then open
-	for (File folder : foldersToOpen) {
-	    desktop.openFile(folder);
+	/**
+	 * @param desktop
+	 */
+	public void setDesktop(final IDesktop desktop) {
+		this.desktop = desktop;
 	}
-    }
+
+	/**
+	 * Default constructor
+	 */
+	public OpenFolderAction() {
+		super(I18nUtils.getString("OPEN_FOLDER"));
+	}
+
+	@Override
+	protected void executeAction(final List<ILocalAudioObject> objects) {
+		for (File folder : fileManager.getFolders(objects)) {
+			desktop.openFile(folder);
+		}
+	}
 }

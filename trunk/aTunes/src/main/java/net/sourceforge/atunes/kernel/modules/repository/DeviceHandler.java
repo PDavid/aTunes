@@ -54,6 +54,7 @@ import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IFolderSelectorDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
@@ -143,6 +144,15 @@ public final class DeviceHandler extends AbstractHandler implements
 	private IBeanFactory beanFactory;
 
 	private IUnknownObjectChecker unknownObjectChecker;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * @param unknownObjectChecker
@@ -345,7 +355,7 @@ public final class DeviceHandler extends AbstractHandler implements
 				Collection<ILocalAudioObject> toCopy = new ArrayList<ILocalAudioObject>();
 				long size = 0;
 				for (ILocalAudioObject file : collection) {
-					long fileSize = file.getFile().length();
+					long fileSize = fileManager.getFileSize(file);
 					if ((fileSize + size) < freeSpace) {
 						toCopy.add(file);
 						size += fileSize;
@@ -372,7 +382,7 @@ public final class DeviceHandler extends AbstractHandler implements
 	private long getSize(final Collection<ILocalAudioObject> collection) {
 		long size = 0;
 		for (ILocalAudioObject file : collection) {
-			size = size + file.getFile().length();
+			size = size + fileManager.getFileSize(file);
 		}
 		return size;
 	}
@@ -742,8 +752,7 @@ public final class DeviceHandler extends AbstractHandler implements
 
 		boolean refresh = false;
 		for (ILocalAudioObject af : audioFiles) {
-			if (isDevicePath(net.sourceforge.atunes.utils.FileUtils.getPath(af
-					.getFile()))) {
+			if (isDevicePath(fileManager.getPath(af))) {
 				refresh = true;
 				break;
 			}

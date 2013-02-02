@@ -37,6 +37,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IControlsBuilder;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -58,6 +59,7 @@ public final class EditTagDialogActionListener implements ActionListener {
 	private final IPlayListHandler playListHandler;
 	private final ILocalAudioObjectValidator localAudioObjectValidator;
 	private final IControlsBuilder controlsBuilder;
+	private final IFileManager fileManager;
 
 	/**
 	 * Instantiates a new edits the tag dialog action listener.
@@ -67,17 +69,19 @@ public final class EditTagDialogActionListener implements ActionListener {
 	 * @param playListHandler
 	 * @param localAudioObjectValidator
 	 * @param controlsBuilder
+	 * @param fileManager
 	 */
 	public EditTagDialogActionListener(
 			final EditTagDialogController controller,
 			final EditTagDialog dialog, final IPlayListHandler playListHandler,
 			final ILocalAudioObjectValidator localAudioObjectValidator,
-			final IControlsBuilder controlsBuilder) {
+			final IControlsBuilder controlsBuilder, IFileManager fileManager) {
 		this.controller = controller;
 		this.dialog = dialog;
 		this.playListHandler = playListHandler;
 		this.localAudioObjectValidator = localAudioObjectValidator;
 		this.controlsBuilder = controlsBuilder;
+		this.fileManager = fileManager;
 	}
 
 	@Override
@@ -252,7 +256,7 @@ public final class EditTagDialogActionListener implements ActionListener {
 		List<ILocalAudioObject> audioFilesEditing = this.controller
 				.getAudioFilesEditing();
 		if (audioFilesEditing.size() == 1) {
-			return audioFilesEditing.get(0).getFile().getParentFile();
+			return fileManager.getFolder(audioFilesEditing.get(0));
 		} else {
 			return null;
 		}

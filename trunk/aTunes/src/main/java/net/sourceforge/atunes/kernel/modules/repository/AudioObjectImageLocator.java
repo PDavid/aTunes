@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
@@ -33,14 +34,24 @@ import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 /**
  * Locates audio objects for local audio objects
+ * 
  * @author alex
- *
+ * 
  */
 public class AudioObjectImageLocator implements IAudioObjectImageLocator {
 
 	private IOSManager osManager;
 
 	private IUnknownObjectChecker unknownObjectChecker;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * @param unknownObjectChecker
@@ -58,13 +69,18 @@ public class AudioObjectImageLocator implements IAudioObjectImageLocator {
 	}
 
 	@Override
-	public ImageIcon getImage(final IAudioObject audioObject, final ImageSize imageSize) {
+	public ImageIcon getImage(final IAudioObject audioObject,
+			final ImageSize imageSize) {
 		if (audioObject instanceof ILocalAudioObject) {
 			ILocalAudioObject localAudioObject = (ILocalAudioObject) audioObject;
 
-			ImageIcon result = AudioFilePictureUtils.getInsidePicture(localAudioObject, imageSize.getSize(), imageSize.getSize());
+			ImageIcon result = AudioFilePictureUtils.getInsidePicture(
+					localAudioObject, imageSize.getSize(), imageSize.getSize());
 			if (result == null) {
-				result = AudioFilePictureUtils.getExternalPicture(localAudioObject, imageSize.getSize(), imageSize.getSize(), osManager, unknownObjectChecker);
+				result = AudioFilePictureUtils.getExternalPicture(
+						localAudioObject, imageSize.getSize(),
+						imageSize.getSize(), osManager, unknownObjectChecker,
+						fileManager);
 			}
 
 			return result;
