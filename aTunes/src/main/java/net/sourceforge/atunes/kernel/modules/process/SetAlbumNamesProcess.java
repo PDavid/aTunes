@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.process;
 
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
@@ -30,18 +31,29 @@ public class SetAlbumNamesProcess extends AbstractChangeTagProcess {
 
 	private IUnknownObjectChecker unknownObjectChecker;
 
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	@Override
 	protected void changeTag(final ILocalAudioObject file) {
-		if (unknownObjectChecker.isUnknownAlbum(file.getAlbum(unknownObjectChecker))) {
+		if (unknownObjectChecker.isUnknownAlbum(file
+				.getAlbum(unknownObjectChecker))) {
 			// Take name from folder
-			String albumName = file.getFile().getParentFile().getName();
+			String albumName = fileManager.getParentName(file);
 			getTagHandler().setAlbum(file, albumName);
 		}
 	}

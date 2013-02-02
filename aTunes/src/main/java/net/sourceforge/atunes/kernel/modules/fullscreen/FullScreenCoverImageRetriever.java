@@ -26,6 +26,7 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
@@ -37,8 +38,9 @@ import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 /**
  * Gets covers for full screen mode
+ * 
  * @author alex
- *
+ * 
  */
 public class FullScreenCoverImageRetriever {
 
@@ -51,6 +53,15 @@ public class FullScreenCoverImageRetriever {
 	private IIconFactory rssBigIcon;
 
 	private IUnknownObjectChecker unknownObjectChecker;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * @param unknownObjectChecker
@@ -77,7 +88,8 @@ public class FullScreenCoverImageRetriever {
 	/**
 	 * @param webServicesHandler
 	 */
-	public void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
+	public void setWebServicesHandler(
+			final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
 
@@ -101,7 +113,7 @@ public class FullScreenCoverImageRetriever {
 			image = radioBigIcon.getIcon(Color.WHITE);
 		} else if (audioObject instanceof IPodcastFeedEntry) {
 			image = rssBigIcon.getIcon(Color.WHITE);
-		} else if (audioObject instanceof ILocalAudioObject){
+		} else if (audioObject instanceof ILocalAudioObject) {
 			image = getPictureForLocalAudioObject(audioObject);
 		}
 
@@ -112,15 +124,19 @@ public class FullScreenCoverImageRetriever {
 	 * @param audioObject
 	 * @return
 	 */
-	private ImageIcon getPictureForLocalAudioObject(final IAudioObject audioObject) {
-		ImageIcon image = webServicesHandler.getAlbumImage(audioObject.getArtist(unknownObjectChecker), audioObject.getAlbum(unknownObjectChecker));
+	private ImageIcon getPictureForLocalAudioObject(
+			final IAudioObject audioObject) {
+		ImageIcon image = webServicesHandler.getAlbumImage(
+				audioObject.getArtist(unknownObjectChecker),
+				audioObject.getAlbum(unknownObjectChecker));
 		if (image == null) {
 			// Get inside picture
 			image = AudioFilePictureUtils.getInsidePicture(audioObject, -1, -1);
 		}
 		if (image == null) {
 			// Get external picture
-			image = AudioFilePictureUtils.getExternalPicture(audioObject, -1, -1, osManager, unknownObjectChecker);
+			image = AudioFilePictureUtils.getExternalPicture(audioObject, -1,
+					-1, osManager, unknownObjectChecker, fileManager);
 		}
 		if (image == null) {
 			image = Images.getImage(Images.APP_LOGO_300);

@@ -24,20 +24,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.model.IPlayList;
 
 /**
  * Checks play lists to find non existent local audio objects
+ * 
  * @author alex
- *
+ * 
  */
 public class PlayListsChecker {
 
 	private PlayListsContainer playListsContainer;
 
 	private ILocalAudioObjectFilter localAudioObjectFilter;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * @param localAudioObjectFilter
@@ -50,7 +61,8 @@ public class PlayListsChecker {
 	/**
 	 * @param playListsContainer
 	 */
-	public void setPlayListsContainer(final PlayListsContainer playListsContainer) {
+	public void setPlayListsContainer(
+			final PlayListsContainer playListsContainer) {
 		this.playListsContainer = playListsContainer;
 	}
 
@@ -61,7 +73,8 @@ public class PlayListsChecker {
 		List<ILocalAudioObject> audioObjectsNotFound = new ArrayList<ILocalAudioObject>();
 		for (int i = 0; i < playListsContainer.getPlayListsCount(); i++) {
 			IPlayList playList = playListsContainer.getPlayListAt(i);
-			for (ILocalAudioObject audioObject : localAudioObjectFilter.getLocalAudioObjects(playList.getAudioObjectsList())) {
+			for (ILocalAudioObject audioObject : localAudioObjectFilter
+					.getLocalAudioObjects(playList.getAudioObjectsList())) {
 				if (!exists(audioObject)) {
 					audioObjectsNotFound.add(audioObject);
 				}
@@ -73,7 +86,7 @@ public class PlayListsChecker {
 	private boolean exists(final IAudioObject audioObject) {
 		// Currently only checks for local audio objects
 		if (audioObject instanceof ILocalAudioObject) {
-			return ((ILocalAudioObject)audioObject).getFile().exists();
+			return fileManager.fileExists((ILocalAudioObject) audioObject);
 		}
 		return true;
 	}

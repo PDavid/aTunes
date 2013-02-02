@@ -35,6 +35,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -162,10 +163,10 @@ public final class LocalAudioObjectPropertiesDialog extends
 		this.albumLabel = new ProviderLabel(new AlbumProvider(
 				this.unknownObjectChecker), getControlsBuilder());
 		this.albumLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
-		this.fileNameLabel = new ProviderLabel(new FileNameProvider(),
-				getControlsBuilder());
-		this.pathLabel = new ProviderLabel(new FilePathProvider(),
-				getControlsBuilder());
+		this.fileNameLabel = new ProviderLabel(new FileNameProvider(
+				beanFactory.getBean(IFileManager.class)), getControlsBuilder());
+		this.pathLabel = new ProviderLabel(new FilePathProvider(
+				beanFactory.getBean(IFileManager.class)), getControlsBuilder());
 		this.durationLabel = new JLabel();
 		this.trackLabel = new JLabel();
 		this.discNumberLabel = new JLabel();

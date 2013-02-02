@@ -26,6 +26,7 @@ import java.util.StringTokenizer;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IDeviceHandler;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -50,6 +51,15 @@ public class RepositoryRemover {
 	private IDeviceHandler deviceHandler;
 
 	private IUnknownObjectChecker unknownObjectChecker;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(final IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * @param unknownObjectChecker
@@ -93,7 +103,7 @@ public class RepositoryRemover {
 	 */
 	public void deleteFile(final ILocalAudioObject file) {
 		// Only do this if file is in repository
-		if (getFolderForFile(file, this.osManager, this.repositoryHandler) != null) {
+		if (getFolderForFile(file) != null) {
 			removeFromRepository(file);
 		}
 		// File is on a device
@@ -184,8 +194,7 @@ public class RepositoryRemover {
 	 * @param file
 	 */
 	void removeFromFolderStructure(final ILocalAudioObject file) {
-		IFolder f = getFolderForFile(file, this.osManager,
-				this.repositoryHandler);
+		IFolder f = getFolderForFile(file);
 		if (f != null) {
 			f.removeAudioFile(file);
 			// Remove all empty parent folders
@@ -204,15 +213,11 @@ public class RepositoryRemover {
 	 * @param file
 	 *            Audio file for which the folder is wanted
 	 * 
-	 * @param osManager
-	 * @param repositoryHandler
 	 * @return Either folder or null if file is not in repository
 	 */
-	private IFolder getFolderForFile(final ILocalAudioObject file,
-			final IOSManager osManager,
-			final IRepositoryHandler repositoryHandler) {
+	private IFolder getFolderForFile(final ILocalAudioObject file) {
 		// Get repository folder where file is
-		File repositoryFolder = repositoryHandler
+		File repositoryFolder = this.repositoryHandler
 				.getRepositoryFolderContainingFile(file);
 		// If the file is not in the repository, return null
 		if (repositoryFolder == null) {
@@ -220,19 +225,18 @@ public class RepositoryRemover {
 		}
 
 		// Get root folder
-		IFolder rootFolder = repositoryHandler
+		IFolder rootFolder = this.repositoryHandler
 				.getFolder(net.sourceforge.atunes.utils.FileUtils
 						.getPath(repositoryFolder));
 
 		// Now navigate through folder until find folder that contains file
-		String path = net.sourceforge.atunes.utils.FileUtils.getPath(file
-				.getFile().getParentFile());
+		String path = this.fileManager.getFolderPath(file);
 		path = path.replace(net.sourceforge.atunes.utils.FileUtils
 				.getPath(repositoryFolder), "");
 
 		IFolder f = rootFolder;
 		StringTokenizer st = new StringTokenizer(path,
-				osManager.getFileSeparator());
+				this.osManager.getFileSeparator());
 		while (st.hasMoreTokens()) {
 			String folderName = st.nextToken();
 			f = f.getFolder(folderName);

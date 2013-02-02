@@ -47,6 +47,7 @@ import net.sourceforge.atunes.kernel.modules.process.EditTagsProcess;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IControlsBuilder;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
@@ -124,6 +125,15 @@ public final class EditTagDialogController extends
 	private Genres genresHelper;
 
 	private IControlsBuilder controlsBuilder;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * @param controlsBuilder
@@ -205,7 +215,8 @@ public final class EditTagDialogController extends
 
 		EditTagDialogActionListener actionListener = new EditTagDialogActionListener(
 				this, getComponentControlled(), this.playListHandler,
-				this.localAudioObjectValidator, this.controlsBuilder);
+				this.localAudioObjectValidator, this.controlsBuilder,
+				fileManager);
 		getComponentControlled().getOkButton()
 				.addActionListener(actionListener);
 		getComponentControlled().getCancelButton().addActionListener(

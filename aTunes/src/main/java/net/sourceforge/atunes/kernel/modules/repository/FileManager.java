@@ -21,10 +21,18 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.FileUtils;
+import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.StringUtils;
+
+import com.google.common.base.Preconditions;
 
 /**
  * Several utilities to manage files of local audio objects
@@ -36,49 +44,76 @@ public class FileManager implements IFileManager {
 
 	@Override
 	public String getPath(final ILocalAudioObject ao) {
-		if (ao != null) {
-			return FileUtils.getPath(ao.getFile());
-		}
-		return null;
+		return FileUtils.getPath(getAudioObjectFile(ao));
 	}
 
 	@Override
 	public File getFile(final ILocalAudioObject ao) {
-		if (ao != null) {
-			return ao.getFile();
-		}
-		return null;
+		return getAudioObjectFile(ao);
 	}
 
 	@Override
 	public boolean fileExists(final ILocalAudioObject ao) {
-		if (ao != null) {
-			return ao.getFile().exists();
-		}
-		return false;
+		return getAudioObjectFile(ao).exists();
 	}
 
 	@Override
 	public long getFileSize(final ILocalAudioObject ao) {
-		if (ao != null) {
-			return ao.getFile().length();
-		}
-		return 0;
+		return getAudioObjectFile(ao).length();
 	}
 
 	@Override
 	public String getFileName(final ILocalAudioObject ao) {
-		if (ao != null) {
-			return ao.getFile().getName();
-		}
-		return null;
+		return getAudioObjectFile(ao).getName();
 	}
 
 	@Override
-	public String getParentFile(final ILocalAudioObject ao) {
-		if (ao != null) {
-			return FileUtils.getPath(ao.getFile().getParentFile());
-		}
-		return null;
+	public String getFolderPath(final ILocalAudioObject ao) {
+		return FileUtils.getPath(getAudioObjectFile(ao).getParentFile());
 	}
+
+	/**
+	 * @param ao
+	 * @return
+	 */
+	private File getAudioObjectFile(final ILocalAudioObject ao) {
+		Preconditions.checkNotNull(ao);
+		return ao.getFile();
+	}
+
+	@Override
+	public String getParentName(final ILocalAudioObject ao) {
+		return getAudioObjectFile(ao).getParentFile().getName();
+	}
+
+	@Override
+	public boolean delete(final ILocalAudioObject ao) {
+		boolean deleted = getAudioObjectFile(ao).delete();
+		if (!deleted) {
+			Logger.error(StringUtils.getString(ao, " not deleted"));
+		}
+		return deleted;
+	}
+
+	@Override
+	public File getFolder(final ILocalAudioObject ao) {
+		return getAudioObjectFile(ao).getParentFile();
+	}
+
+	@Override
+	public Set<File> getFolders(final List<ILocalAudioObject> aos) {
+		Set<File> folders = new HashSet<File>();
+		for (ILocalAudioObject ao : aos) {
+			folders.add(getAudioObjectFile(ao).getParentFile());
+		}
+		return folders;
+	}
+
+	@Override
+	public void copyFile(final ILocalAudioObject file, final File destFile)
+			throws IOException {
+		org.apache.commons.io.FileUtils.copyFile(getAudioObjectFile(file),
+				destFile);
+	}
+
 }

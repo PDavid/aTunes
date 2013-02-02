@@ -21,6 +21,9 @@
 package net.sourceforge.atunes.model;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Manages basic operations for local files
@@ -64,6 +67,41 @@ public interface IFileManager {
 	 * @param ao
 	 * @return path of parent file
 	 */
-	String getParentFile(ILocalAudioObject ao);
+	String getFolderPath(ILocalAudioObject ao);
+
+	/**
+	 * @param ao
+	 * @return folder of audio object
+	 */
+	File getFolder(ILocalAudioObject ao);
+
+	/**
+	 * @param aos
+	 * @return folders of audio objects without repeated folders
+	 */
+	Set<File> getFolders(final List<ILocalAudioObject> aos);
+
+	/**
+	 * @param file
+	 * @return name of parent file of audio object
+	 */
+	String getParentName(ILocalAudioObject file);
+
+	/**
+	 * Deletes audio object
+	 * 
+	 * @param audioFile
+	 * @return true if deleted
+	 */
+	boolean delete(ILocalAudioObject audioFile);
+
+	/**
+	 * Copies audio object to given destination file
+	 * 
+	 * @param file
+	 * @param destFile
+	 * @throws IOException
+	 */
+	void copyFile(ILocalAudioObject file, File destFile) throws IOException;
 
 }
