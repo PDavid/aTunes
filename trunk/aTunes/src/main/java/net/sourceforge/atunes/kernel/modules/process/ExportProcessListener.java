@@ -20,39 +20,43 @@
 
 package net.sourceforge.atunes.kernel.modules.process;
 
-import java.io.File;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-class ExportProcessListener implements IProcessListener<List<File>> {
+class ExportProcessListener implements
+		IProcessListener<List<ILocalAudioObject>> {
 
 	private IDialogFactory dialogFactory;
 
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
 
 	@Override
-	public void processCanceled() { 
+	public void processCanceled() {
 		// Nothing to do
 	}
 
 	@Override
-	public void processFinished(final boolean ok, List<File> result) {
+	public void processFinished(final boolean ok,
+			final List<ILocalAudioObject> result) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				if (!ok) {
-					dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
+					ExportProcessListener.this.dialogFactory.newDialog(
+							IErrorDialog.class).showErrorDialog(
+							I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
 				}
 			}
 		});

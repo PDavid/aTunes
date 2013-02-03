@@ -20,18 +20,18 @@
 
 package net.sourceforge.atunes.model;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * Manages device
+ * 
  * @author alex
- *
+ * 
  */
-public interface IDeviceHandler extends IHandler, IRepositoryLoaderListener, IAudioFilesRemovedListener {
+public interface IDeviceHandler extends IHandler, IRepositoryLoaderListener,
+		IAudioFilesRemovedListener {
 
 	/**
 	 * Fills the device with songs until the specified memory is left.
@@ -51,7 +51,7 @@ public interface IDeviceHandler extends IHandler, IRepositoryLoaderListener, IAu
 	 * 
 	 * @param collection
 	 */
-	public void copyFilesToDevice(Collection<ILocalAudioObject> collection);
+	public void copyFilesToDevice(List<ILocalAudioObject> collection);
 
 	/**
 	 * Copy files to mp3 device.
@@ -61,7 +61,8 @@ public interface IDeviceHandler extends IHandler, IRepositoryLoaderListener, IAu
 	 * @param listener
 	 *            A listener to be notified
 	 */
-	public void copyFilesToDevice(Collection<ILocalAudioObject> collection, IProcessListener<List<File>> listener);
+	public void copyFilesToDevice(List<ILocalAudioObject> collection,
+			IProcessListener<List<ILocalAudioObject>> listener);
 
 	/**
 	 * Gets the device songs.
@@ -127,12 +128,14 @@ public interface IDeviceHandler extends IHandler, IRepositoryLoaderListener, IAu
 
 	/**
 	 * Returns device location
+	 * 
 	 * @return
 	 */
 	public String getDeviceLocation();
 
 	/**
 	 * Returns artist with given name
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -140,6 +143,7 @@ public interface IDeviceHandler extends IHandler, IRepositoryLoaderListener, IAu
 
 	/**
 	 * Returns data to show in a tree
+	 * 
 	 * @param viewMode
 	 * @return
 	 */

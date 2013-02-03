@@ -20,31 +20,32 @@
 
 package net.sourceforge.atunes.model;
 
-import java.io.File;
-import java.util.Collection;
 import java.util.List;
-
 
 /**
  * A type of processes that move local audio objects
+ * 
  * @author alex
- *
+ * 
  */
-public interface ILocalAudioObjectTransferProcess extends IProcess<List<File>> {
+public interface ILocalAudioObjectTransferProcess extends
+		IProcess<List<ILocalAudioObject>> {
 
 	/**
 	 * Sets the files to transfer by this process
+	 * 
 	 * @param filesToTransfer
 	 */
-	void setFilesToTransfer(Collection<ILocalAudioObject> filesToTransfer);
+	void setFilesToTransfer(List<ILocalAudioObject> filesToTransfer);
 
 	/**
 	 * @return the filesTransferred
 	 */
-	List<File> getFilesTransferred();
-	
+	List<ILocalAudioObject> getFilesTransferred();
+
 	/**
 	 * Destination of transfer
+	 * 
 	 * @param destination
 	 */
 	void setDestination(String destination);

@@ -20,11 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
-import java.io.File;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -36,40 +36,41 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public class ImportToRepositoryProcessListener implements
-	IProcessListener<List<File>> {
+		IProcessListener<List<ILocalAudioObject>> {
 
-    private IDialogFactory dialogFactory;
+	private IDialogFactory dialogFactory;
 
-    private IRepositoryHandler repositoryHandler;
+	private IRepositoryHandler repositoryHandler;
 
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(final IDialogFactory dialogFactory) {
-	this.dialogFactory = dialogFactory;
-    }
-
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-	this.repositoryHandler = repositoryHandler;
-    }
-
-    @Override
-    public void processCanceled() {
-	// Nothing to do
-    }
-
-    @Override
-    public void processFinished(final boolean ok, final List<File> result) {
-	if (!ok) {
-	    // Show error message
-	    dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(
-		    I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
-	} else {
-	    // If import is ok then add files to repository
-	    repositoryHandler.addFilesAndRefresh(result);
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
-    }
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+
+	@Override
+	public void processCanceled() {
+		// Nothing to do
+	}
+
+	@Override
+	public void processFinished(final boolean ok,
+			final List<ILocalAudioObject> result) {
+		if (!ok) {
+			// Show error message
+			this.dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(
+					I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
+		} else {
+			// If import is ok then add files to repository
+			this.repositoryHandler.addAudioObjectsAndRefresh(result);
+		}
+	}
 }

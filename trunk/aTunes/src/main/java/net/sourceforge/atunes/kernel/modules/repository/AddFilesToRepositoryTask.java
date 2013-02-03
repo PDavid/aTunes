@@ -20,9 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
-import java.io.File;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -47,120 +45,134 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class AddFilesToRepositoryTask {
 
-    private IFrame frame;
+	private IFrame frame;
 
-    private IRepositoryHandler repositoryHandler;
+	private IRepositoryHandler repositoryHandler;
 
-    private ShowRepositoryDataHelper showRepositoryDataHelper;
+	private ShowRepositoryDataHelper showRepositoryDataHelper;
 
-    private IBackgroundWorkerFactory backgroundWorkerFactory;
+	private IBackgroundWorkerFactory backgroundWorkerFactory;
 
-    private RepositoryAddService repositoryAddService;
+	private RepositoryAddService repositoryAddService;
 
-    private IPlayListHandler playListHandler;
+	private IPlayListHandler playListHandler;
 
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(final IPlayListHandler playListHandler) {
-	this.playListHandler = playListHandler;
-    }
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
 
-    /**
-     * @param repositoryAddService
-     */
-    public void setRepositoryAddService(
-	    final RepositoryAddService repositoryAddService) {
-	this.repositoryAddService = repositoryAddService;
-    }
+	/**
+	 * @param repositoryAddService
+	 */
+	public void setRepositoryAddService(
+			final RepositoryAddService repositoryAddService) {
+		this.repositoryAddService = repositoryAddService;
+	}
 
-    /**
-     * @param backgroundWorkerFactory
-     */
-    public void setBackgroundWorkerFactory(
-	    final IBackgroundWorkerFactory backgroundWorkerFactory) {
-	this.backgroundWorkerFactory = backgroundWorkerFactory;
-    }
+	/**
+	 * @param backgroundWorkerFactory
+	 */
+	public void setBackgroundWorkerFactory(
+			final IBackgroundWorkerFactory backgroundWorkerFactory) {
+		this.backgroundWorkerFactory = backgroundWorkerFactory;
+	}
 
-    /**
-     * @param showRepositoryDataHelper
-     */
-    public void setShowRepositoryDataHelper(
-	    final ShowRepositoryDataHelper showRepositoryDataHelper) {
-	this.showRepositoryDataHelper = showRepositoryDataHelper;
-    }
+	/**
+	 * @param showRepositoryDataHelper
+	 */
+	public void setShowRepositoryDataHelper(
+			final ShowRepositoryDataHelper showRepositoryDataHelper) {
+		this.showRepositoryDataHelper = showRepositoryDataHelper;
+	}
 
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-	this.repositoryHandler = repositoryHandler;
-    }
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
 
-    /**
-     * @param frame
-     */
-    public void setFrame(final IFrame frame) {
-	this.frame = frame;
-    }
+	/**
+	 * @param frame
+	 */
+	public void setFrame(final IFrame frame) {
+		this.frame = frame;
+	}
 
-    /**
-     * Adds files to repository and refreshes it
-     * 
-     * @param repository
-     * @param files
-     */
-    public void execute(final IRepository repository, final List<File> files) {
-	IBackgroundWorker<Void> worker = backgroundWorkerFactory.getWorker();
-	worker.setActionsBeforeBackgroundStarts(new Runnable() {
+	/**
+	 * Adds files to repository and refreshes it
+	 * 
+	 * @param repository
+	 * @param files
+	 */
+	public void execute(final IRepository repository,
+			final List<ILocalAudioObject> files) {
+		IBackgroundWorker<Void> worker = this.backgroundWorkerFactory
+				.getWorker();
+		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 
-	    @Override
-	    public void run() {
-		frame.showProgressBar(true, StringUtils.getString(
-			I18nUtils.getString("REFRESHING"), "..."));
-	    }
-	});
-	worker.setBackgroundActions(new Callable<Void>() {
+			@Override
+			public void run() {
+				showProgressBar();
+			}
+		});
+		worker.setBackgroundActions(new Callable<Void>() {
 
-	    @Override
-	    public Void call() {
-		repositoryAddService.addFilesToRepository(repository, files);
-		return null;
-	    }
-	});
-	worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
+			@Override
+			public Void call() {
+				AddFilesToRepositoryTask.this.repositoryAddService
+						.addFilesToRepository(repository, files);
+				return null;
+			}
+		});
+		worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
 
-	    @Override
-	    public void call(final Void result) {
-		frame.hideProgressBar();
-		showRepositoryDataHelper.showRepositoryAudioFileNumber(
-			repositoryHandler.getAudioFilesList().size(),
-			repositoryHandler.getRepositoryTotalSize(),
-			repository.getTotalDurationInSeconds());
+			@Override
+			public void call(final Void result) {
+				processResult(repository, files);
+			}
+		});
+		worker.execute();
+	}
+
+	/**
+	 * @param repository
+	 * @param files
+	 */
+	private void processResult(final IRepository repository,
+			final List<ILocalAudioObject> files) {
+		this.frame.hideProgressBar();
+		this.showRepositoryDataHelper.showRepositoryAudioFileNumber(
+				this.repositoryHandler.getAudioFilesList().size(),
+				this.repositoryHandler.getRepositoryTotalSize(),
+				repository.getTotalDurationInSeconds());
 		Logger.info("Repository refresh done");
+		createPlayListWithImportedObjects(files);
+	}
 
-		// Create a playlist with imported files
-		List<ILocalAudioObject> audioObjects = new ArrayList<ILocalAudioObject>();
-		for (File file : files) {
-		    ILocalAudioObject ao = repositoryHandler
-			    .getFileIfLoaded(net.sourceforge.atunes.utils.FileUtils
-				    .getPath(file));
-		    if (ao != null) {
-			audioObjects.add(ao);
-		    }
-		}
-
+	/**
+	 * @param files
+	 */
+	private void createPlayListWithImportedObjects(
+			final List<ILocalAudioObject> files) {
 		Date now = new Date();
-		String dateString = DateFormat.getDateTimeInstance()
-			.format(now);
+		String dateString = DateFormat.getDateTimeInstance().format(now);
 
 		String name = StringUtils.getString(
-			I18nUtils.getString("FILES_IMPORTED"), " - ",
-			dateString);
-		playListHandler.newPlayList(name, audioObjects);
+				I18nUtils.getString("FILES_IMPORTED"), " - ", dateString);
+		this.playListHandler.newPlayList(name, files);
+	}
 
-	    }
-	});
-	worker.execute();
-    }
+	/**
+	 * 
+	 */
+	private void showProgressBar() {
+		this.frame
+				.showProgressBar(true, StringUtils.getString(
+						I18nUtils.getString("REFRESHING"), "..."));
+	}
+
 }

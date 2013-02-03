@@ -28,6 +28,8 @@ import java.util.Set;
 
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -41,6 +43,25 @@ import com.google.common.base.Preconditions;
  * 
  */
 public class FileManager implements IFileManager {
+
+	private IOSManager osManager;
+
+	private ILocalAudioObjectFactory localAudioObjectFactory;
+
+	/**
+	 * @param localAudioObjectFactory
+	 */
+	public void setLocalAudioObjectFactory(
+			final ILocalAudioObjectFactory localAudioObjectFactory) {
+		this.localAudioObjectFactory = localAudioObjectFactory;
+	}
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
 	@Override
 	public String getPath(final ILocalAudioObject ao) {
@@ -114,6 +135,17 @@ public class FileManager implements IFileManager {
 			throws IOException {
 		org.apache.commons.io.FileUtils.copyFile(getAudioObjectFile(file),
 				destFile);
+	}
+
+	@Override
+	public ILocalAudioObject copyFile(final ILocalAudioObject source,
+			final String destinationPath, final String fileName)
+			throws IOException {
+		File destFile = new File(StringUtils.getString(destinationPath,
+				this.osManager.getFileSeparator(), fileName));
+		org.apache.commons.io.FileUtils.copyFile(getAudioObjectFile(source),
+				destFile);
+		return this.localAudioObjectFactory.getLocalAudioObject(destFile);
 	}
 
 }

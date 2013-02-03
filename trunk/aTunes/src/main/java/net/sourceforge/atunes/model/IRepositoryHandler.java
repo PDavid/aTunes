@@ -35,14 +35,6 @@ public interface IRepositoryHandler extends IHandler,
 		IAudioFilesRemovedListener, IRepositoryListener {
 
 	/**
-	 * Adds the given files to repository and refresh.
-	 * 
-	 * @param files
-	 *            the files
-	 */
-	public void addFilesAndRefresh(final List<File> files);
-
-	/**
 	 * Returns folders of repository
 	 * 
 	 * @return
@@ -337,5 +329,12 @@ public interface IRepositoryHandler extends IHandler,
 	 * @param value
 	 */
 	public void setStars(ILocalAudioObject audioObject, Integer value);
+
+	/**
+	 * Adds the given audio objects to repository and refresh.
+	 * 
+	 * @param result
+	 */
+	public void addAudioObjectsAndRefresh(List<ILocalAudioObject> result);
 
 }
