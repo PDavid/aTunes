@@ -60,5 +60,7 @@
 		<property name="maxRatingValue" value="255"/>
 		<property name="numberOfStars" value="5"/>
 	</bean>
+
+	<bean class="net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed" scope="prototype"/>
 	
 </beans>

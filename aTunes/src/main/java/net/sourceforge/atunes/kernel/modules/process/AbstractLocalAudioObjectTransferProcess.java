@@ -180,7 +180,7 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends
 		// Get size of files
 		long totalBytes = 0;
 		for (ILocalAudioObject file : this.filesToTransfer) {
-			totalBytes = totalBytes + file.getFile().length();
+			totalBytes = totalBytes + this.fileManager.getFileSize(file);
 		}
 		return totalBytes;
 	}
@@ -272,7 +272,7 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends
 				}
 			}
 			// Add size to bytes transferred
-			bytesTransferred += file.getFile().length();
+			bytesTransferred += this.fileManager.getFileSize(file);
 			setCurrentProgress(bytesTransferred);
 		}
 		Logger.info("Transfer process done");
@@ -403,9 +403,9 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends
 		if (pattern != null) {
 			newName = getNewFileName(pattern, file, this.osManager);
 		} else {
-			newName = FileNameUtils.getValidFileName(file.getFile().getName()
-					.replace("\\", "\\\\").replace("$", "\\$"), isMp3Device,
-					this.osManager);
+			newName = FileNameUtils.getValidFileName(this.fileManager
+					.getFileName(file).replace("\\", "\\\\")
+					.replace("$", "\\$"), isMp3Device, this.osManager);
 		}
 		return newName;
 	}
@@ -431,8 +431,10 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends
 		// We need to place \\ before escape sequences otherwise the ripper
 		// hangs. We can not do this later.
 		result = result.replace("\\", "\\\\").replace("$", "\\$");
-		result = StringUtils.getString(result, song.getFile().getName()
-				.substring(song.getFile().getName().lastIndexOf('.')));
+		result = StringUtils.getString(
+				result,
+				this.fileManager.getFileName(song).substring(
+						this.fileManager.getFileName(song).lastIndexOf('.')));
 		result = FileNameUtils.getValidFileName(result, osManager);
 		return result;
 	}

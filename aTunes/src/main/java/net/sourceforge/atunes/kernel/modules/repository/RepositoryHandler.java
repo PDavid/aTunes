@@ -37,6 +37,7 @@ import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
@@ -112,6 +113,15 @@ public final class RepositoryHandler extends AbstractHandler implements
 	private IUnknownObjectChecker unknownObjectChecker;
 
 	private IProcessFactory processFactory;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(final IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * @param processFactory
@@ -617,7 +627,7 @@ public final class RepositoryHandler extends AbstractHandler implements
 	@Override
 	public void removeFile(final ILocalAudioObject file) {
 		this.repository.removeFile(file);
-		this.repository.removeSizeInBytes(file.getFile().length());
+		this.repository.removeSizeInBytes(this.fileManager.getFileSize(file));
 		this.repository.removeDurationInSeconds(file.getDuration());
 	}
 

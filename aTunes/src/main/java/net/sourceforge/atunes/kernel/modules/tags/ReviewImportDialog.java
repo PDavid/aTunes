@@ -43,15 +43,15 @@ import javax.swing.event.ListSelectionListener;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.modules.pattern.PatternMatcher;
 import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IReviewImportDialog;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
-import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -86,31 +86,13 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 
 	private PatternMatcher patternMatcher;
 
-	private ITagHandler tagHandler;
-
-	private IRepositoryHandler repositoryHandler;
-
-	private Genres genresHelper;
+	private IBeanFactory beanFactory;
 
 	/**
-	 * @param genresHelper
+	 * @param beanFactory
 	 */
-	public void setGenresHelper(final Genres genresHelper) {
-		this.genresHelper = genresHelper;
-	}
-
-	/**
-	 * @param repositoryHandler
-	 */
-	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-
-	/**
-	 * @param tagHandler
-	 */
-	public void setTagHandler(final ITagHandler tagHandler) {
-		this.tagHandler = tagHandler;
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -309,8 +291,8 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 	public void showDialog() {
 		this.treeTable.setTreeTableModel(new ReviewImportTreeTableModel(
 				this.folders, this.filesToLoad, this.treeTable,
-				new TagAttributesReviewed(this.tagHandler,
-						this.repositoryHandler, this.genresHelper)));
+				this.beanFactory.getBean(TagAttributesReviewed.class),
+				this.beanFactory.getBean(IFileManager.class)));
 		this.treeTable.getColumnExt(0).setPreferredWidth(300);
 		((ReviewImportTreeTableModel) this.treeTable.getTreeTableModel())
 				.setCellEditors();
