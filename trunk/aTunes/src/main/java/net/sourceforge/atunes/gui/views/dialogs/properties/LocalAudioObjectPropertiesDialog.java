@@ -75,6 +75,15 @@ public final class LocalAudioObjectPropertiesDialog extends
 
 	private IBeanFactory beanFactory;
 
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(final IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
+
 	/**
 	 * @param beanFactory
 	 */
@@ -139,7 +148,7 @@ public final class LocalAudioObjectPropertiesDialog extends
 	 */
 	private String getTitleText(final ILocalAudioObject file) {
 		return StringUtils.getString(I18nUtils.getString("INFO_OF_FILE"), " ",
-				file.getFile().getName());
+				this.fileManager.getFileName(file));
 	}
 
 	/**
@@ -164,9 +173,9 @@ public final class LocalAudioObjectPropertiesDialog extends
 				this.unknownObjectChecker), getControlsBuilder());
 		this.albumLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
 		this.fileNameLabel = new ProviderLabel(new FileNameProvider(
-				beanFactory.getBean(IFileManager.class)), getControlsBuilder());
+				this.fileManager), getControlsBuilder());
 		this.pathLabel = new ProviderLabel(new FilePathProvider(
-				beanFactory.getBean(IFileManager.class)), getControlsBuilder());
+				this.fileManager), getControlsBuilder());
 		this.durationLabel = new JLabel();
 		this.trackLabel = new JLabel();
 		this.discNumberLabel = new JLabel();

@@ -25,7 +25,6 @@ import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.utils.FileUtils;
 
 /**
  * Column to show path
@@ -85,8 +84,8 @@ public class PathColumn extends AbstractColumn<String> {
 			return ((IPodcastFeedEntry) audioObject).getUrl();
 		}
 		if (audioObject instanceof ILocalAudioObject) {
-			return FileUtils.getPath(((ILocalAudioObject) audioObject)
-					.getFile().getParentFile());
+			return this.fileManager
+					.getFolderPath((ILocalAudioObject) audioObject);
 		}
 		return null;
 	}

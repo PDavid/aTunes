@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.swing.table.TableCellEditor;
 
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITag;
@@ -46,22 +47,40 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
 	 */
 	private List<AbstractTagAttributeReviewed> tagAttributes;
 
-	private final ITagHandler tagHandler;
+	private ITagHandler tagHandler;
 
-	private final IRepositoryHandler repositoryHandler;
+	private IRepositoryHandler repositoryHandler;
 
-	private final Genres genresHelper;
+	private Genres genresHelper;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(final IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
+
+	/**
+	 * @param genresHelper
+	 */
+	public void setGenresHelper(final Genres genresHelper) {
+		this.genresHelper = genresHelper;
+	}
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
 
 	/**
 	 * @param tagHandler
-	 * @param repositoryHandler
-	 * @param genresHelper
 	 */
-	TagAttributesReviewed(final ITagHandler tagHandler,
-			final IRepositoryHandler repositoryHandler, Genres genresHelper) {
+	public void setTagHandler(final ITagHandler tagHandler) {
 		this.tagHandler = tagHandler;
-		this.repositoryHandler = repositoryHandler;
-		this.genresHelper = genresHelper;
 	}
 
 	/**
@@ -70,21 +89,22 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
 	 * @return
 	 */
 	private List<AbstractTagAttributeReviewed> getTagAttributes() {
-		if (tagAttributes == null) {
-			tagAttributes = new ArrayList<AbstractTagAttributeReviewed>();
-			tagAttributes.add(new ArtistTagAttributeReviewed("ARTIST",
-					repositoryHandler));
-			tagAttributes.add(new AlbumArtistTagAttributeReviewed(
+		if (this.tagAttributes == null) {
+			this.tagAttributes = new ArrayList<AbstractTagAttributeReviewed>();
+			this.tagAttributes.add(new ArtistTagAttributeReviewed("ARTIST",
+					this.repositoryHandler));
+			this.tagAttributes.add(new AlbumArtistTagAttributeReviewed(
 					"ALBUM_ARTIST"));
-			tagAttributes.add(new ComposerTagAttributeReviewed("COMPOSER"));
-			tagAttributes.add(new AlbumTagAttributeReviewed("ALBUM"));
-			tagAttributes.add(new GenreTagAttributeReviewed("GENRE",
-					genresHelper.getGenres()));
-			tagAttributes.add(new YearTagAttributeReviewed("YEAR"));
-			tagAttributes
-					.add(new DiscNumberTagAttributeReviewed("DISC_NUMBER"));
+			this.tagAttributes
+					.add(new ComposerTagAttributeReviewed("COMPOSER"));
+			this.tagAttributes.add(new AlbumTagAttributeReviewed("ALBUM"));
+			this.tagAttributes.add(new GenreTagAttributeReviewed("GENRE",
+					this.genresHelper.getGenres()));
+			this.tagAttributes.add(new YearTagAttributeReviewed("YEAR"));
+			this.tagAttributes.add(new DiscNumberTagAttributeReviewed(
+					"DISC_NUMBER"));
 		}
-		return tagAttributes;
+		return this.tagAttributes;
 	}
 
 	@Override
@@ -132,13 +152,13 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
 
 	@Override
 	public ITag getTagForAudioFile(final ILocalAudioObject file) {
-		File parentFolder = file.getFile().getParentFile();
+		File parentFolder = this.fileManager.getFolder(file);
 		ITag tag = null;
 		for (AbstractTagAttributeReviewed tagAttribute : getTagAttributes()) {
 			if (tagAttribute.getChangesMade().containsKey(parentFolder)) {
 				if (tag == null) {
-					tag = file.getTag() != null ? file.getTag() : tagHandler
-							.getNewTag();
+					tag = file.getTag() != null ? file.getTag()
+							: this.tagHandler.getNewTag();
 				}
 				tag = tagAttribute.changeTag(tag, tagAttribute.getChangesMade()
 						.get(parentFolder));
@@ -157,8 +177,8 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
 
 	@Override
 	public int getTagAttributeIndex(final String tagAttributeName) {
-		for (int i = 0; i < tagAttributes.size(); i++) {
-			if (tagAttributes.get(i).getName().equals(tagAttributeName)) {
+		for (int i = 0; i < this.tagAttributes.size(); i++) {
+			if (this.tagAttributes.get(i).getName().equals(tagAttributeName)) {
 				return i;
 			}
 		}

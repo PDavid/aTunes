@@ -29,6 +29,7 @@ import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.process.EditTitlesProcess;
 import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -42,17 +43,20 @@ final class EditTitlesDialogController extends
 
 	private IWebServicesHandler webServicesHandler;
 
+	private final IFileManager fileManager;
+
 	/**
 	 * @param webServicesHandler
 	 */
-	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+	public void setWebServicesHandler(
+			final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
 
 	/**
 	 * @param processFactory
 	 */
-	public void setProcessFactory(IProcessFactory processFactory) {
+	public void setProcessFactory(final IProcessFactory processFactory) {
 		this.processFactory = processFactory;
 	}
 
@@ -62,20 +66,23 @@ final class EditTitlesDialogController extends
 	 * @param dialog
 	 * @param processFactory
 	 * @param webServicesHandler
+	 * @param fileManager
 	 */
-	EditTitlesDialogController(EditTitlesDialog dialog,
-			IProcessFactory processFactory,
-			IWebServicesHandler webServicesHandler) {
+	EditTitlesDialogController(final EditTitlesDialog dialog,
+			final IProcessFactory processFactory,
+			final IWebServicesHandler webServicesHandler,
+			final IFileManager fileManager) {
 		super(dialog);
 		this.processFactory = processFactory;
 		this.webServicesHandler = webServicesHandler;
+		this.fileManager = fileManager;
 		addBindings();
 	}
 
 	@Override
 	public void addBindings() {
 		EditTitlesDialogActionListener actionListener = new EditTitlesDialogActionListener(
-				getComponentControlled(), this, webServicesHandler);
+				getComponentControlled(), this, this.webServicesHandler);
 		getComponentControlled().getRetrieveTitles().addActionListener(
 				actionListener);
 		getComponentControlled().getOkButton()
@@ -90,7 +97,7 @@ final class EditTitlesDialogController extends
 	protected void editFiles() {
 		Map<ILocalAudioObject, String> filesAndTitles = ((EditTitlesTableModel) getComponentControlled()
 				.getTable().getModel()).getNewValues();
-		EditTitlesProcess process = (EditTitlesProcess) processFactory
+		EditTitlesProcess process = (EditTitlesProcess) this.processFactory
 				.getProcessByName("editTitlesProcess");
 		process.setFilesToChange(new ArrayList<ILocalAudioObject>(
 				filesAndTitles.keySet()));
@@ -104,12 +111,12 @@ final class EditTitlesDialogController extends
 	 * @param alb
 	 *            the alb
 	 */
-	public void editFiles(IAlbum alb) {
+	public void editFiles(final IAlbum alb) {
 		this.album = alb;
 		List<ILocalAudioObject> filesToEdit = alb.getAudioObjects();
 		Collections.sort(filesToEdit);
-		model = new EditTitlesTableModel(filesToEdit);
-		getComponentControlled().getTable().setModel(model);
+		this.model = new EditTitlesTableModel(filesToEdit, this.fileManager);
+		getComponentControlled().getTable().setModel(this.model);
 		getComponentControlled().setVisible(true);
 	}
 
@@ -119,7 +126,7 @@ final class EditTitlesDialogController extends
 	 * @return the album
 	 */
 	protected IAlbum getAlbum() {
-		return album;
+		return this.album;
 	}
 
 	/**
@@ -128,8 +135,8 @@ final class EditTitlesDialogController extends
 	 * @param tracks
 	 *            the new titles
 	 */
-	protected void setTitles(List<String> tracks) {
-		model.setTitles(tracks);
+	protected void setTitles(final List<String> tracks) {
+		this.model.setTitles(tracks);
 		getComponentControlled().getTable().repaint();
 	}
 }

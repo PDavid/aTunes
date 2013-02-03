@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IStateNavigation;
@@ -62,6 +63,15 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	private IWebServicesHandler webServicesHandler;
 
 	private TagModifier tagModifier;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(final IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * @param tagModifier
@@ -141,7 +151,8 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	public void editFiles(final IAlbum a) {
 		new EditTitlesDialogController(
 				this.dialogFactory.newDialog(EditTitlesDialog.class),
-				this.processFactory, this.webServicesHandler).editFiles(a);
+				this.processFactory, this.webServicesHandler, this.fileManager)
+				.editFiles(a);
 	}
 
 	@Override

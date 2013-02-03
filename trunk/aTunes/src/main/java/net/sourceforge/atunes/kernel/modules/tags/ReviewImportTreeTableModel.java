@@ -29,6 +29,7 @@ import java.util.Map;
 
 import javax.swing.table.TableCellEditor;
 
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -65,6 +66,8 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 	 */
 	private final ITagAttributesReviewed tagAttributesReviewed;
 
+	private final IFileManager fileManager;
+
 	/**
 	 * Constructor
 	 * 
@@ -72,16 +75,19 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 	 * @param filesToImport
 	 * @param treeTable
 	 * @param tagAttributesReviewed
+	 * @param fileManager
 	 */
 	public ReviewImportTreeTableModel(final List<File> folders,
 			final List<ILocalAudioObject> filesToImport,
 			final JXTreeTable treeTable,
-			final TagAttributesReviewed tagAttributesReviewed) {
+			final TagAttributesReviewed tagAttributesReviewed,
+			final IFileManager fileManager) {
 		super(new DefaultMutableTreeTableNode(ROOT));
 		this.folders = folders;
 		this.audioFilesToImport = filesToImport;
 		this.treeTable = treeTable;
 		this.tagAttributesReviewed = tagAttributesReviewed;
+		this.fileManager = fileManager;
 		Collections.sort(this.folders);
 	}
 
@@ -230,7 +236,7 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 
 		String value = "";
 		for (ILocalAudioObject audioFile : this.audioFilesToImport) {
-			if (audioFile.getFile().getParentFile().equals(folder)) {
+			if (this.fileManager.getFolder(audioFile).equals(folder)) {
 				if (value.equals("")) {
 					value = getValueForColumn(column, audioFile);
 					if (value == null) {

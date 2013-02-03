@@ -29,13 +29,15 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Table model for title edition when importing CD
+ * 
  * @author alex
- *
+ * 
  */
 public final class EditTitlesTableModel extends AbstractTableModel {
 
@@ -50,16 +52,20 @@ public final class EditTitlesTableModel extends AbstractTableModel {
 	/** The listeners. */
 	private final List<TableModelListener> listeners;
 
+	private final IFileManager fileManager;
+
 	/**
 	 * Instantiates a new edits the titles table model.
 	 * 
 	 * @param files
-	 *            the files
+	 * @param fileManager
 	 */
-	public EditTitlesTableModel(final List<ILocalAudioObject> files) {
+	public EditTitlesTableModel(final List<ILocalAudioObject> files,
+			final IFileManager fileManager) {
 		this.files = files;
 		this.newValues = new HashMap<ILocalAudioObject, String>();
 		this.listeners = new ArrayList<TableModelListener>();
+		this.fileManager = fileManager;
 	}
 
 	/**
@@ -69,7 +75,7 @@ public final class EditTitlesTableModel extends AbstractTableModel {
 	 *            the listener
 	 */
 	public void addListener(final TableModelListener listener) {
-		listeners.add(listener);
+		this.listeners.add(listener);
 	}
 
 	/*
@@ -96,22 +102,22 @@ public final class EditTitlesTableModel extends AbstractTableModel {
 	 * @return the new values
 	 */
 	public Map<ILocalAudioObject, String> getNewValues() {
-		return newValues;
+		return this.newValues;
 	}
 
 	@Override
 	public int getRowCount() {
-		return files.size();
+		return this.files.size();
 	}
 
 	@Override
 	public String getValueAt(final int rowIndex, final int columnIndex) {
-		ILocalAudioObject file = files.get(rowIndex);
+		ILocalAudioObject file = this.files.get(rowIndex);
 		if (columnIndex == 0) {
-			return file.getFile().getName();
+			return this.fileManager.getFileName(file);
 		}
-		if (newValues.containsKey(file)) {
-			return newValues.get(file);
+		if (this.newValues.containsKey(file)) {
+			return this.newValues.get(file);
 		}
 		return file.getTitle();
 	}
@@ -128,16 +134,17 @@ public final class EditTitlesTableModel extends AbstractTableModel {
 	 *            the new titles
 	 */
 	public void setTitles(final List<String> titles) {
-		for (int i = 0; i < files.size(); i++) {
+		for (int i = 0; i < this.files.size(); i++) {
 			String title = titles.size() > i ? titles.get(i) : "";
-			newValues.put(files.get(i), title);
+			this.newValues.put(this.files.get(i), title);
 		}
 
 		TableModelEvent event;
-		event = new TableModelEvent(this, TableModelEvent.ALL_COLUMNS, TableModelEvent.UPDATE);
+		event = new TableModelEvent(this, TableModelEvent.ALL_COLUMNS,
+				TableModelEvent.UPDATE);
 
-		for (int i = 0; i < listeners.size(); i++) {
-			listeners.get(i).tableChanged(event);
+		for (int i = 0; i < this.listeners.size(); i++) {
+			this.listeners.get(i).tableChanged(event);
 		}
 	}
 
@@ -152,8 +159,9 @@ public final class EditTitlesTableModel extends AbstractTableModel {
 	 *            the column index
 	 */
 	@Override
-	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
-		newValues.put(files.get(rowIndex), (String) aValue);
+	public void setValueAt(final Object aValue, final int rowIndex,
+			final int columnIndex) {
+		this.newValues.put(this.files.get(rowIndex), (String) aValue);
 		fireTableCellUpdated(rowIndex, columnIndex);
 	}
 }
