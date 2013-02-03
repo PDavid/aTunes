@@ -27,9 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.model.ITagHandler;
@@ -55,20 +53,9 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 	/** Set of audio files whose tag must be written */
 	private Set<ILocalAudioObject> filesToChangeTag;
 
-	private ILocalAudioObjectFactory localAudioObjectFactory;
-
 	private ITagHandler tagHandler;
 
 	private IWebServicesHandler webServicesHandler;
-
-	private IFileManager fileManager;
-
-	/**
-	 * @param fileManager
-	 */
-	public void setFileManager(IFileManager fileManager) {
-		this.fileManager = fileManager;
-	}
 
 	/**
 	 * @param webServicesHandler
@@ -108,14 +95,6 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 		this.folders = folders;
 	}
 
-	/**
-	 * @param localAudioObjectFactory
-	 */
-	public void setLocalAudioObjectFactory(
-			final ILocalAudioObjectFactory localAudioObjectFactory) {
-		this.localAudioObjectFactory = localAudioObjectFactory;
-	}
-
 	@Override
 	public String getProgressDialogTitle() {
 		return StringUtils.getString(I18nUtils.getString("IMPORTING"), "...");
@@ -135,8 +114,8 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 			final File destinationBaseFolder) {
 		// Get base folder or the first folder if there is any error
 		File baseFolder = null;
-		for (File folder : folders) {
-			String filePath = fileManager.getPath(song);
+		for (File folder : this.folders) {
+			String filePath = getFileManager().getPath(song);
 			String folderParentPath = folder.getParentFile() != null ? FileUtils
 					.getPath(folder.getParentFile()) : null;
 			if (filePath != null && folderParentPath != null
@@ -146,10 +125,10 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 			}
 		}
 		if (baseFolder == null) {
-			baseFolder = folders.get(0);
+			baseFolder = this.folders.get(0);
 		}
 
-		String songPath = fileManager.getPath(song);
+		String songPath = this.getFileManager().getPath(song);
 		String songRelativePath = songPath.replaceFirst(
 				FileUtils.getPath(baseFolder).replace("\\", "\\\\")
 						.replace("$", "\\$"), "");
@@ -166,7 +145,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 	}
 
 	@Override
-	protected File transferAudioFile(final File destination,
+	protected ILocalAudioObject transferAudioFile(final File destination,
 			final ILocalAudioObject file, final List<Exception> thrownExceptions) {
 		// Change title. As this can be a long-time task we get titles during
 		// transfer process instead of before to avoid not showing any progress
@@ -180,12 +159,14 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 		}
 
 		// Import file
-		File destFile = importFile(destination, file, thrownExceptions);
+		ILocalAudioObject destFile = importFile(destination, file,
+				thrownExceptions);
 
-		// Change tag if necessary after import
-		if (!getStateRepository().isApplyChangesToSourceFilesBeforeImport()) {
-			changeTag(file,
-					localAudioObjectFactory.getLocalAudioObject(destFile));
+		if (destFile != null) {
+			// Change tag if necessary after import
+			if (!getStateRepository().isApplyChangesToSourceFilesBeforeImport()) {
+				changeTag(file, destFile);
+			}
 		}
 
 		return destFile;
@@ -198,10 +179,10 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 	 * @param file
 	 * @param list
 	 *            to add exceptions when thrown
-	 * @return A reference to the created file
+	 * @return A reference to the created file or null if error
 	 * @throws IOException
 	 */
-	private File importFile(final File destination,
+	private ILocalAudioObject importFile(final File destination,
 			final ILocalAudioObject file, final List<Exception> thrownExceptions) {
 		File destDir = getDirectory(file, destination);
 		String newName;
@@ -209,23 +190,18 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 			newName = getNewFileName(getStateRepository()
 					.getImportFileNamePattern(), file, getOsManager());
 		} else {
-			newName = FileNameUtils.getValidFileName(
-					fileManager.getFileName(file).replace("\\", "\\\\")
-							.replace("$", "\\$"), false, getOsManager());
+			newName = FileNameUtils.getValidFileName(this.getFileManager()
+					.getFileName(file).replace("\\", "\\\\")
+					.replace("$", "\\$"), false, getOsManager());
 		}
-
-		File destFile = new File(StringUtils.getString(
-				FileUtils.getPath(destDir), getOsManager().getFileSeparator(),
-				newName));
 
 		try {
-			// Now that we (supposedly) have a valid filename write file
-			fileManager.copyFile(file, destFile);
+			return this.getFileManager().copyFile(file,
+					FileUtils.getPath(destDir), newName);
 		} catch (IOException e) {
 			thrownExceptions.add(e);
+			return null;
 		}
-
-		return destFile;
 	}
 
 	/**
@@ -238,8 +214,8 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 	 */
 	private void changeTag(final ILocalAudioObject sourceFile,
 			final ILocalAudioObject destFile) {
-		if (filesToChangeTag.contains(sourceFile)) {
-			tagHandler.setTag(destFile, sourceFile.getTag());
+		if (this.filesToChangeTag.contains(sourceFile)) {
+			this.tagHandler.setTag(destFile, sourceFile.getTag());
 		}
 	}
 
@@ -259,7 +235,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 			// This file must be changed
 			if (modifiedTag != null) {
 				fileToImport.setTag(modifiedTag);
-				filesToChangeTag.add(fileToImport);
+				this.filesToChangeTag.add(fileToImport);
 			}
 		}
 	}
@@ -276,11 +252,11 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 			int newTrackNumber = getTrackNumber(fileToImport);
 			if (newTrackNumber > 0) {
 				if (fileToImport.getTag() == null) {
-					fileToImport.setTag(tagHandler.getNewTag());
+					fileToImport.setTag(this.tagHandler.getNewTag());
 				}
 				fileToImport.getTag().setTrackNumber(newTrackNumber);
-				if (!filesToChangeTag.contains(fileToImport)) {
-					filesToChangeTag.add(fileToImport);
+				if (!this.filesToChangeTag.contains(fileToImport)) {
+					this.filesToChangeTag.add(fileToImport);
 				}
 			}
 		}
@@ -316,7 +292,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 		// last.fm
 		// To get this, titles must match
 		if (trackNumber == 0) {
-			trackNumber = webServicesHandler.getTrackNumber(audioFile);
+			trackNumber = this.webServicesHandler.getTrackNumber(audioFile);
 		}
 
 		return trackNumber;
@@ -330,15 +306,15 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 	 */
 	private void setTitle(final ILocalAudioObject fileToImport) {
 		if (getStateRepository().isSetTitlesWhenImporting()) {
-			String newTitle = webServicesHandler
+			String newTitle = this.webServicesHandler
 					.getTitleForAudioObject(fileToImport);
 			if (newTitle != null) {
 				if (fileToImport.getTag() == null) {
-					fileToImport.setTag(tagHandler.getNewTag());
+					fileToImport.setTag(this.tagHandler.getNewTag());
 				}
 				fileToImport.getTag().setTitle(newTitle);
-				if (!filesToChangeTag.contains(fileToImport)) {
-					filesToChangeTag.add(fileToImport);
+				if (!this.filesToChangeTag.contains(fileToImport)) {
+					this.filesToChangeTag.add(fileToImport);
 				}
 			}
 		}

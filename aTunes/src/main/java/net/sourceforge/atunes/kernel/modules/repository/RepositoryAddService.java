@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -57,7 +56,7 @@ public class RepositoryAddService {
 	/**
 	 * @param fileManager
 	 */
-	public void setFileManager(IFileManager fileManager) {
+	public void setFileManager(final IFileManager fileManager) {
 		this.fileManager = fileManager;
 	}
 
@@ -108,18 +107,19 @@ public class RepositoryAddService {
 	 * @param localAudioObjectFactory
 	 */
 	public void addFilesToRepository(final IRepository rep,
-			final List<File> files) {
-		repositoryHandler.startTransaction();
+			final List<ILocalAudioObject> files) {
+		this.repositoryHandler.startTransaction();
 
 		// Get folders where files are
-		Set<File> folders = getFoldersOfFiles(files);
-		RepositoryFiller filler = new RepositoryFiller(rep, stateNavigation,
-				unknownObjectChecker, fileManager);
+		Set<File> folders = this.fileManager.getFolders(files);
+		RepositoryFiller filler = new RepositoryFiller(rep,
+				this.stateNavigation, this.unknownObjectChecker,
+				this.fileManager);
 		for (File folder : folders) {
 			addFilesFromFolder(rep, files, filler, folder);
 		}
 
-		repositoryHandler.endTransaction();
+		this.repositoryHandler.endTransaction();
 	}
 
 	/**
@@ -130,8 +130,9 @@ public class RepositoryAddService {
 	 */
 	protected void addFoldersToRepositoryInsideTransaction(
 			final IRepository rep, final List<File> folders) {
-		RepositoryFiller filler = new RepositoryFiller(rep, stateNavigation,
-				unknownObjectChecker, fileManager);
+		RepositoryFiller filler = new RepositoryFiller(rep,
+				this.stateNavigation, this.unknownObjectChecker,
+				this.fileManager);
 		for (File folder : folders) {
 			if (folder.isDirectory()) {
 				addFilesFromFolder(rep, filler, folder);
@@ -146,18 +147,16 @@ public class RepositoryAddService {
 	 * @param folder
 	 */
 	private void addFilesFromFolder(final IRepository repository,
-			final List<File> files, final RepositoryFiller filler,
+			final List<ILocalAudioObject> files, final RepositoryFiller filler,
 			final File folder) {
 		String repositoryPath = getRepositoryPathForFolder(repository, folder);
 		int firstChar = repositoryPath.length() + 1;
 
-		for (File f : files) {
-			if (f.getParentFile().equals(folder)) {
-				ILocalAudioObject audioObject = localAudioObjectFactory
-						.getLocalAudioObject(f);
-				filler.addAudioFile(audioObject,
+		for (ILocalAudioObject f : files) {
+			if (this.fileManager.getFolder(f).equals(folder)) {
+				filler.addAudioFile(f,
 						getRepositoryFolderContaining(repository, folder),
-						getRelativePath(firstChar, audioObject));
+						getRelativePath(firstChar, f));
 			}
 		}
 	}
@@ -178,8 +177,8 @@ public class RepositoryAddService {
 		for (File f : folder.listFiles()) {
 			if (f.isDirectory()) {
 				addFilesFromFolder(repository, filler, f);
-			} else if (localAudioObjectValidator.isValidAudioFile(f)) {
-				ILocalAudioObject audioObject = localAudioObjectFactory
+			} else if (this.localAudioObjectValidator.isValidAudioFile(f)) {
+				ILocalAudioObject audioObject = this.localAudioObjectFactory
 						.getLocalAudioObject(f);
 				filler.addAudioFile(audioObject,
 						getRepositoryFolderContaining(repository, folder),
@@ -215,18 +214,6 @@ public class RepositoryAddService {
 			final File folder) {
 		return FileUtils.getNormalizedPath(getRepositoryFolderContaining(rep,
 				folder));
-	}
-
-	/**
-	 * @param files
-	 * @return
-	 */
-	private Set<File> getFoldersOfFiles(final List<File> files) {
-		Set<File> folders = new HashSet<File>();
-		for (File file : files) {
-			folders.add(file.getParentFile());
-		}
-		return folders;
 	}
 
 	/**

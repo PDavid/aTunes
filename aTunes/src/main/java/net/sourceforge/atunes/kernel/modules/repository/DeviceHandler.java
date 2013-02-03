@@ -85,7 +85,7 @@ public final class DeviceHandler extends AbstractHandler implements
 		IDeviceHandler {
 
 	private final class CopyFilesToDeviceProcessListener implements
-			IProcessListener<List<File>> {
+			IProcessListener<List<ILocalAudioObject>> {
 
 		@Override
 		public void processCanceled() {
@@ -93,7 +93,8 @@ public final class DeviceHandler extends AbstractHandler implements
 		}
 
 		@Override
-		public void processFinished(final boolean ok, final List<File> result) {
+		public void processFinished(final boolean ok,
+				final List<ILocalAudioObject> result) {
 			SwingUtilities.invokeLater(new Runnable() {
 
 				@Override
@@ -150,7 +151,7 @@ public final class DeviceHandler extends AbstractHandler implements
 	/**
 	 * @param fileManager
 	 */
-	public void setFileManager(IFileManager fileManager) {
+	public void setFileManager(final IFileManager fileManager) {
 		this.fileManager = fileManager;
 	}
 
@@ -333,15 +334,15 @@ public final class DeviceHandler extends AbstractHandler implements
 	}
 
 	@Override
-	public void copyFilesToDevice(final Collection<ILocalAudioObject> collection) {
+	public void copyFilesToDevice(final List<ILocalAudioObject> collection) {
 		copyFilesToDevice(collection, null);
 	}
 
 	@Override
 	public void copyFilesToDevice(
-			final Collection<ILocalAudioObject> collectionToCopy,
-			final IProcessListener<List<File>> listener) {
-		Collection<ILocalAudioObject> collection = collectionToCopy;
+			final List<ILocalAudioObject> collectionToCopy,
+			final IProcessListener<List<ILocalAudioObject>> listener) {
+		List<ILocalAudioObject> collection = collectionToCopy;
 		this.filesCopiedToDevice = 0;
 		if (collection.isEmpty()) {
 			return;
@@ -352,10 +353,10 @@ public final class DeviceHandler extends AbstractHandler implements
 		if (getSize(collection) > freeSpace) {
 			// If user accepts truncate the list and continue
 			if (askUserToTruncateCopy()) {
-				Collection<ILocalAudioObject> toCopy = new ArrayList<ILocalAudioObject>();
+				List<ILocalAudioObject> toCopy = new ArrayList<ILocalAudioObject>();
 				long size = 0;
 				for (ILocalAudioObject file : collection) {
-					long fileSize = fileManager.getFileSize(file);
+					long fileSize = this.fileManager.getFileSize(file);
 					if ((fileSize + size) < freeSpace) {
 						toCopy.add(file);
 						size += fileSize;
@@ -382,7 +383,7 @@ public final class DeviceHandler extends AbstractHandler implements
 	private long getSize(final Collection<ILocalAudioObject> collection) {
 		long size = 0;
 		for (ILocalAudioObject file : collection) {
-			size = size + fileManager.getFileSize(file);
+			size = size + this.fileManager.getFileSize(file);
 		}
 		return size;
 	}
@@ -415,8 +416,8 @@ public final class DeviceHandler extends AbstractHandler implements
 	 * @param listener
 	 */
 	private void runProcessToCopyFiles(
-			final Collection<ILocalAudioObject> collection,
-			final IProcessListener<List<File>> listener) {
+			final List<ILocalAudioObject> collection,
+			final IProcessListener<List<ILocalAudioObject>> listener) {
 		final ILocalAudioObjectTransferProcess process = (ILocalAudioObjectTransferProcess) this.processFactory
 				.getProcessByName("transferToDeviceProcess");
 		process.setFilesToTransfer(collection);
@@ -752,7 +753,7 @@ public final class DeviceHandler extends AbstractHandler implements
 
 		boolean refresh = false;
 		for (ILocalAudioObject af : audioFiles) {
-			if (isDevicePath(fileManager.getPath(af))) {
+			if (isDevicePath(this.fileManager.getPath(af))) {
 				refresh = true;
 				break;
 			}

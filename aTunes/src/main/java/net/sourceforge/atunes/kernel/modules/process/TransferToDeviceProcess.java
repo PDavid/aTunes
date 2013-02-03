@@ -27,62 +27,60 @@ import java.util.List;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IStateDevice;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
-
-import org.apache.commons.io.FileUtils;
 
 /**
  * Transfer files to a partition/device and checks if filename is valid.
  */
-public class TransferToDeviceProcess extends AbstractLocalAudioObjectTransferProcess {
+public class TransferToDeviceProcess extends
+		AbstractLocalAudioObjectTransferProcess {
 
 	private IStateDevice stateDevice;
-	
+
 	/**
 	 * @param stateDevice
 	 */
-	public void setStateDevice(IStateDevice stateDevice) {
+	public void setStateDevice(final IStateDevice stateDevice) {
 		this.stateDevice = stateDevice;
 	}
-	
-    @Override
-    public String getProgressDialogTitle() {
-        return I18nUtils.getString("COPYING_TO_DEVICE");
-    }
 
-    @Override
-    protected File transferAudioFile(File destination, ILocalAudioObject file, List<Exception> thrownExceptions) {
-        String destDir = getDirectory(file, destination, true);
-        String newName = getName(file, true);
-        File destFile = new File(StringUtils.getString(destDir, getOsManager().getFileSeparator(), newName));
+	@Override
+	public String getProgressDialogTitle() {
+		return I18nUtils.getString("COPYING_TO_DEVICE");
+	}
 
-        try {
-            // Now that we (supposedly) have a valid filename write file
-            FileUtils.copyFile(file.getFile(), destFile);
-        } catch (IOException e) {
-            thrownExceptions.add(e);
-        }
+	@Override
+	protected ILocalAudioObject transferAudioFile(final File destination,
+			final ILocalAudioObject file, final List<Exception> thrownExceptions) {
+		try {
+			return getFileManager().copyFile(file,
+					getDirectory(file, destination, true), getName(file, true));
+		} catch (IOException e) {
+			thrownExceptions.add(e);
+			return null;
+		}
+	}
 
-        return destFile;
-    }
+	@Override
+	public String getDirectory(final ILocalAudioObject song,
+			final File destination, final boolean isMp3Device) {
+		return getDirectory(song, destination, isMp3Device,
+				this.stateDevice.getDeviceFolderPathPattern());
+	}
 
-    @Override
-    public String getDirectory(ILocalAudioObject song, File destination, boolean isMp3Device) {
-        return getDirectory(song, destination, isMp3Device, stateDevice.getDeviceFolderPathPattern());
-    }
+	@Override
+	public String getName(final ILocalAudioObject file,
+			final boolean isMp3Device) {
+		return getName(file, isMp3Device,
+				this.stateDevice.getDeviceFileNamePattern());
+	}
 
-    @Override
-    public String getName(ILocalAudioObject file, boolean isMp3Device) {
-        return getName(file, isMp3Device, stateDevice.getDeviceFileNamePattern());
-    }
-    
-    @Override
-    protected String getFileNamePattern() {
-    	return stateDevice.getDeviceFileNamePattern();
-    }
-    
-    @Override
-    protected String getFolderPathPattern() {
-    	return stateDevice.getDeviceFolderPathPattern();
-    }
+	@Override
+	protected String getFileNamePattern() {
+		return this.stateDevice.getDeviceFileNamePattern();
+	}
+
+	@Override
+	protected String getFolderPathPattern() {
+		return this.stateDevice.getDeviceFolderPathPattern();
+	}
 }

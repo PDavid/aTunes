@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.IMessageDialog;
@@ -45,8 +46,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.apache.commons.io.FileUtils;
-
 /**
  * A type of processes that move local audio objects
  * @author alex
@@ -54,9 +53,11 @@ import org.apache.commons.io.FileUtils;
  */
 /**
  * @author alex
- *
+ * 
  */
-public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractProcess<List<File>> implements ILocalAudioObjectTransferProcess {
+public abstract class AbstractLocalAudioObjectTransferProcess extends
+		AbstractProcess<List<ILocalAudioObject>> implements
+		ILocalAudioObjectTransferProcess {
 
 	/**
 	 * The files to be transferred.
@@ -67,7 +68,7 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 	 * List of files transferred. Used if process is canceled to delete these
 	 * files
 	 */
-	private final List<File> filesTransferred;
+	private final List<ILocalAudioObject> filesTransferred;
 
 	/**
 	 * The dialog used to show the progress of this process
@@ -89,6 +90,22 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 
 	private Patterns patterns;
 
+	private IFileManager fileManager;
+
+	/**
+	 * @return
+	 */
+	protected IFileManager getFileManager() {
+		return this.fileManager;
+	}
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(final IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
+
 	/**
 	 * @param patterns
 	 */
@@ -107,18 +124,19 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 	 * @return
 	 */
 	protected IStateRepository getStateRepository() {
-		return stateRepository;
+		return this.stateRepository;
 	}
 
 	/**
 	 * @param collection
 	 */
 	public AbstractLocalAudioObjectTransferProcess() {
-		this.filesTransferred = new ArrayList<File>();
+		this.filesTransferred = new ArrayList<ILocalAudioObject>();
 	}
 
 	/**
 	 * Destination of transfer
+	 * 
 	 * @param destination
 	 */
 	@Override
@@ -130,7 +148,7 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 	 * @return
 	 */
 	protected Collection<ILocalAudioObject> getFilesToTransfer() {
-		return filesToTransfer;
+		return this.filesToTransfer;
 	}
 
 	/**
@@ -142,10 +160,11 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 
 	/**
 	 * Sets the files to transfer by this process
+	 * 
 	 * @param filesToTransfer
 	 */
 	@Override
-	public void setFilesToTransfer(final Collection<ILocalAudioObject> filesToTransfer) {
+	public void setFilesToTransfer(final List<ILocalAudioObject> filesToTransfer) {
 		this.filesToTransfer = filesToTransfer;
 	}
 
@@ -168,21 +187,23 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 
 	@Override
 	protected IProgressDialog getProgressDialog() {
-		if (progressDialog == null) {
-			progressDialog = transferDialog;
-			progressDialog.setTitle(getProgressDialogTitle());
-			progressDialog.setInfoText(getProgressDialogInformation());
-			progressDialog.setCurrentProgress(0);
-			progressDialog.setProgressBarValue(0);
-			progressDialog.addCancelButtonActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(final ActionEvent e) {
-					cancelProcess();
-					progressDialog.disableCancelButton();
-				}
-			});
+		if (this.progressDialog == null) {
+			this.progressDialog = this.transferDialog;
+			this.progressDialog.setTitle(getProgressDialogTitle());
+			this.progressDialog.setInfoText(getProgressDialogInformation());
+			this.progressDialog.setCurrentProgress(0);
+			this.progressDialog.setProgressBarValue(0);
+			this.progressDialog
+					.addCancelButtonActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(final ActionEvent e) {
+							cancelProcess();
+							AbstractLocalAudioObjectTransferProcess.this.progressDialog
+									.disableCancelButton();
+						}
+					});
 		}
-		return progressDialog;
+		return this.progressDialog;
 	}
 
 	@Override
@@ -191,12 +212,17 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 		File destinationFile = new File(getDestination());
 		long bytesTransferred = 0;
 		boolean ignoreAllErrors = false;
-		Logger.info(StringUtils.getString("Transferring ", this.filesToTransfer.size(), " files to ", destinationFile));
-		for (Iterator<ILocalAudioObject> it = this.filesToTransfer.iterator(); it.hasNext() && !isCanceled();) {
+		Logger.info(StringUtils.getString("Transferring ",
+				this.filesToTransfer.size(), " files to ", destinationFile));
+		for (Iterator<ILocalAudioObject> it = this.filesToTransfer.iterator(); it
+				.hasNext() && !isCanceled();) {
 			ILocalAudioObject file = it.next();
 			final List<Exception> thrownExceptions = new ArrayList<Exception>();
-			File transferredFile = transferAudioFile(destinationFile, file, thrownExceptions);
-			filesTransferred.add(transferredFile);
+			ILocalAudioObject transferredFile = transferAudioFile(
+					destinationFile, file, thrownExceptions);
+			if (transferredFile != null) {
+				this.filesTransferred.add(transferredFile);
+			}
 			if (!thrownExceptions.isEmpty()) {
 				for (Exception e : thrownExceptions) {
 					Logger.error(e);
@@ -206,10 +232,23 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 						SwingUtilities.invokeAndWait(new Runnable() {
 							@Override
 							public void run() {
-								userSelectionWhenErrors = (String) getDialogFactory().newDialog(IMessageDialog.class)
-								.showMessage(StringUtils.getString(I18nUtils.getString("ERROR"), ": ", thrownExceptions.get(0).getMessage()), I18nUtils.getString("ERROR"),
-										JOptionPane.ERROR_MESSAGE,
-										new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("IGNORE_ALL"), I18nUtils.getString("CANCEL") });
+								AbstractLocalAudioObjectTransferProcess.this.userSelectionWhenErrors = (String) getDialogFactory()
+										.newDialog(IMessageDialog.class)
+										.showMessage(
+												StringUtils.getString(I18nUtils
+														.getString("ERROR"),
+														": ", thrownExceptions
+																.get(0)
+																.getMessage()),
+												I18nUtils.getString("ERROR"),
+												JOptionPane.ERROR_MESSAGE,
+												new String[] {
+														I18nUtils
+																.getString("IGNORE"),
+														I18nUtils
+																.getString("IGNORE_ALL"),
+														I18nUtils
+																.getString("CANCEL") });
 							}
 						});
 					} catch (InterruptedException e1) {
@@ -217,11 +256,14 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 					} catch (InvocationTargetException e1) {
 						// Do nothing
 					}
-					if (I18nUtils.getString("IGNORE_ALL").equals(userSelectionWhenErrors)) {
+					if (I18nUtils.getString("IGNORE_ALL").equals(
+							this.userSelectionWhenErrors)) {
 						// Don't display more error messages
 						ignoreAllErrors = true;
-					} else if (I18nUtils.getString("CANCEL").equals(userSelectionWhenErrors)) {
-						// Only in this case set errors to true to force refresh in other case
+					} else if (I18nUtils.getString("CANCEL").equals(
+							this.userSelectionWhenErrors)) {
+						// Only in this case set errors to true to force refresh
+						// in other case
 						errors = true;
 
 						// Don't continue
@@ -240,12 +282,8 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 	@Override
 	protected void runCancel() {
 		// Remove all transferred files
-		for (File f : this.filesTransferred) {
-			if (f.delete()) {
-				Logger.info(f, " deleted");
-			} else {
-				Logger.error(StringUtils.getString(f, " not deleted"));
-			}
+		for (ILocalAudioObject f : this.filesTransferred) {
+			this.fileManager.delete(f);
 		}
 	}
 
@@ -255,39 +293,36 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 	 * @return
 	 */
 	protected String getDestination() {
-		return destination;
+		return this.destination;
 	}
 
 	/**
 	 * Transfers a file to a destination
 	 * 
 	 * @param destination
-	 * @param file
+	 * @param ao
 	 * @param list
 	 *            to add exceptions thrown
-	 * @return
+	 * @return audio object copied or null if an exception happens
 	 * @throws IOException
 	 */
-	protected File transferAudioFile(final File destination, final ILocalAudioObject file, final List<Exception> thrownExceptions) {
-		String destDir = getDirectory(file, destination, false);
-		String newName = getName(file, false);
-		File destFile = new File(StringUtils.getString(destDir, osManager.getFileSeparator(), newName));
-
+	protected ILocalAudioObject transferAudioFile(final File destination,
+			final ILocalAudioObject ao, final List<Exception> thrownExceptions) {
 		try {
-			// Now that we (supposedly) have a valid filename write file
-			FileUtils.copyFile(file.getFile(), destFile);
+			return this.fileManager.copyFile(ao,
+					getDirectory(ao, destination, false), getName(ao, false));
 		} catch (IOException e) {
 			thrownExceptions.add(e);
+			return null;
 		}
-		return destFile;
 	}
 
 	/**
 	 * @return the filesTransferred
 	 */
 	@Override
-	public List<File> getFilesTransferred() {
-		return filesTransferred;
+	public List<ILocalAudioObject> getFilesTransferred() {
+		return this.filesTransferred;
 	}
 
 	/**
@@ -296,11 +331,14 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 	 * @param song
 	 * @param destination
 	 * @param isMp3Device
-	 * @param data.osManager
+	 * @param data
+	 *            .osManager
 	 * @return
 	 */
-	protected String getDirectory(final ILocalAudioObject song, final File destination, final boolean isMp3Device) {
-		return getDirectory(song, destination, isMp3Device, getFolderPathPattern());
+	protected String getDirectory(final ILocalAudioObject song,
+			final File destination, final boolean isMp3Device) {
+		return getDirectory(song, destination, isMp3Device,
+				getFolderPathPattern());
 	}
 
 	/**
@@ -318,12 +356,18 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 	 * @return Returns the directory structure with full path where the file
 	 *         will be written
 	 */
-	protected String getDirectory(final ILocalAudioObject song, final File destination, final boolean isMp3Device, final String pattern) {
+	protected String getDirectory(final ILocalAudioObject song,
+			final File destination, final boolean isMp3Device,
+			final String pattern) {
 		String songRelativePath = "";
 		if (pattern != null) {
-			songRelativePath = FileNameUtils.getValidFolderName(getNewFolderPath(pattern, song, osManager), isMp3Device, osManager);
+			songRelativePath = FileNameUtils.getValidFolderName(
+					getNewFolderPath(pattern, song, this.osManager),
+					isMp3Device, this.osManager);
 		}
-		return StringUtils.getString(net.sourceforge.atunes.utils.FileUtils.getPath(destination), osManager.getFileSeparator(), songRelativePath);
+		return StringUtils.getString(
+				net.sourceforge.atunes.utils.FileUtils.getPath(destination),
+				this.osManager.getFileSeparator(), songRelativePath);
 	}
 
 	/**
@@ -334,7 +378,8 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 	 * @param isMp3Device
 	 * @return
 	 */
-	protected String getName(final ILocalAudioObject file, final boolean isMp3Device) {
+	protected String getName(final ILocalAudioObject file,
+			final boolean isMp3Device) {
 		return getName(file, isMp3Device, getFileNamePattern());
 	}
 
@@ -352,19 +397,21 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 	 * @param pattern
 	 * @return
 	 */
-	protected String getName(final ILocalAudioObject file, final boolean isMp3Device, final String pattern) {
+	protected String getName(final ILocalAudioObject file,
+			final boolean isMp3Device, final String pattern) {
 		String newName;
 		if (pattern != null) {
-			newName = getNewFileName(pattern, file, osManager);
+			newName = getNewFileName(pattern, file, this.osManager);
 		} else {
-			newName = FileNameUtils.getValidFileName(file.getFile().getName().replace("\\", "\\\\").replace("$", "\\$"), isMp3Device, osManager);
+			newName = FileNameUtils.getValidFileName(file.getFile().getName()
+					.replace("\\", "\\\\").replace("$", "\\$"), isMp3Device,
+					this.osManager);
 		}
 		return newName;
 	}
 
-
 	protected IOSManager getOsManager() {
-		return osManager;
+		return this.osManager;
 	}
 
 	/**
@@ -377,11 +424,15 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 	 * 
 	 * @return Returns a (hopefully) valid filename
 	 */
-	protected String getNewFileName(final String pattern, final ILocalAudioObject song, final IOSManager osManager) {
-		String result = patterns.applyPatternTransformations(pattern, song);
-		// We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
+	protected String getNewFileName(final String pattern,
+			final ILocalAudioObject song, final IOSManager osManager) {
+		String result = this.patterns
+				.applyPatternTransformations(pattern, song);
+		// We need to place \\ before escape sequences otherwise the ripper
+		// hangs. We can not do this later.
 		result = result.replace("\\", "\\\\").replace("$", "\\$");
-		result = StringUtils.getString(result, song.getFile().getName().substring(song.getFile().getName().lastIndexOf('.')));
+		result = StringUtils.getString(result, song.getFile().getName()
+				.substring(song.getFile().getName().lastIndexOf('.')));
 		result = FileNameUtils.getValidFileName(result, osManager);
 		return result;
 	}
@@ -396,16 +447,19 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 	 * 
 	 * @return Returns a (hopefully) valid filename
 	 */
-	protected String getNewFolderPath(final String pattern, final ILocalAudioObject song, final IOSManager osManager) {
-		String result = patterns.applyPatternTransformations(pattern, song);
-		// We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
+	protected String getNewFolderPath(final String pattern,
+			final ILocalAudioObject song, final IOSManager osManager) {
+		String result = this.patterns
+				.applyPatternTransformations(pattern, song);
+		// We need to place \\ before escape sequences otherwise the ripper
+		// hangs. We can not do this later.
 		result = result.replace("\\", "\\\\").replace("$", "\\$");
 		result = FileNameUtils.getValidFolderName(result, false, osManager);
 		return result;
 	}
 
 	@Override
-	protected List<File> getProcessResult() {
-		return filesTransferred;
+	protected List<ILocalAudioObject> getProcessResult() {
+		return this.filesTransferred;
 	}
 }

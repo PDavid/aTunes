@@ -54,7 +54,7 @@ public class FolderRefresher {
 	/**
 	 * @param fileManager
 	 */
-	public void setFileManager(IFileManager fileManager) {
+	public void setFileManager(final IFileManager fileManager) {
 		this.fileManager = fileManager;
 	}
 
@@ -104,11 +104,11 @@ public class FolderRefresher {
 	 */
 	public void refreshFolders(final IRepository repository,
 			final List<IFolder> folders) {
-		repositoryHandler.startTransaction();
+		this.repositoryHandler.startTransaction();
 		for (IFolder folder : folders) {
 			refreshFolder(repository, folder);
 		}
-		repositoryHandler.endTransaction();
+		this.repositoryHandler.endTransaction();
 	}
 
 	/**
@@ -127,15 +127,15 @@ public class FolderRefresher {
 	 */
 	private void addNewFiles(final IRepository repository, final IFolder folder) {
 		// Add new files
-		List<ILocalAudioObject> allObjects = localAudioObjectLocator
+		List<ILocalAudioObject> allObjects = this.localAudioObjectLocator
 				.locateLocalAudioObjectsInFolder(
-						folder.getFolderPath(osManager), null);
+						folder.getFolderPath(this.osManager), null);
 		for (ILocalAudioObject ao : allObjects) {
-			String path = fileManager.getPath(ao);
+			String path = this.fileManager.getPath(ao);
 			if (repository.getFile(path) == null) {
 				Logger.debug("Adding file: ", path);
-				repositoryAddService.addFilesToRepository(repository,
-						Collections.singletonList(fileManager.getFile(ao)));
+				this.repositoryAddService.addFilesToRepository(repository,
+						Collections.singletonList(ao));
 			}
 		}
 	}
@@ -149,12 +149,12 @@ public class FolderRefresher {
 		// Remove o refresh previous files
 		List<ILocalAudioObject> aos = folder.getAudioObjects();
 		for (ILocalAudioObject ao : aos) {
-			if (fileManager.fileExists(ao)) {
-				Logger.debug("Refreshing file: ", fileManager.getPath(ao));
-				localAudioObjectRefresher.refreshFile(repository, ao);
+			if (this.fileManager.fileExists(ao)) {
+				Logger.debug("Refreshing file: ", this.fileManager.getPath(ao));
+				this.localAudioObjectRefresher.refreshFile(repository, ao);
 			} else {
-				Logger.debug("Removing file: ", fileManager.getPath(ao));
-				repositoryHandler.remove(Collections.singletonList(ao));
+				Logger.debug("Removing file: ", this.fileManager.getPath(ao));
+				this.repositoryHandler.remove(Collections.singletonList(ao));
 			}
 		}
 	}

@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.process;
 
-import java.io.File;
-import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -31,53 +29,55 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * A process to copy files to repository
+ * 
  * @author alex
- *
+ * 
  */
-public class TransferToRepositoryProcess extends AbstractLocalAudioObjectTransferProcess {
+public class TransferToRepositoryProcess extends
+		AbstractLocalAudioObjectTransferProcess {
 
 	private IRepositoryHandler repositoryHandler;
-	
-	private IProcessListener<List<File>> importToRepositoryProcessListener;
-	
+
+	private IProcessListener<List<ILocalAudioObject>> importToRepositoryProcessListener;
+
 	/**
 	 * @param importToRepositoryProcessListener
 	 */
-	public void setImportToRepositoryProcessListener(IProcessListener<List<File>> importToRepositoryProcessListener) {
+	public void setImportToRepositoryProcessListener(
+			final IProcessListener<List<ILocalAudioObject>> importToRepositoryProcessListener) {
 		this.importToRepositoryProcessListener = importToRepositoryProcessListener;
 	}
-	
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
-    @Override
-    public String getProgressDialogTitle() {
-        return I18nUtils.getString("COPYING_TO_REPOSITORY");
-    }
+	@Override
+	public String getProgressDialogTitle() {
+		return I18nUtils.getString("COPYING_TO_REPOSITORY");
+	}
 
-    @Override
-    protected String getDestination() {
-        return repositoryHandler.getRepositoryPath();
-    }
-    
-    @Override
-    public void setFilesToTransfer(Collection<ILocalAudioObject> filesToTransfer) {
-    	super.setFilesToTransfer(filesToTransfer);
-    	addProcessListener(importToRepositoryProcessListener);
-    }
-    
-    
-    @Override
-    protected String getFileNamePattern() {
-    	return getStateRepository().getImportFileNamePattern();
-    }
-    
-    @Override
-    protected String getFolderPathPattern() {
-    	return getStateRepository().getImportFolderPathPattern();
-    }
+	@Override
+	protected String getDestination() {
+		return this.repositoryHandler.getRepositoryPath();
+	}
+
+	@Override
+	public void setFilesToTransfer(final List<ILocalAudioObject> filesToTransfer) {
+		super.setFilesToTransfer(filesToTransfer);
+		addProcessListener(this.importToRepositoryProcessListener);
+	}
+
+	@Override
+	protected String getFileNamePattern() {
+		return getStateRepository().getImportFileNamePattern();
+	}
+
+	@Override
+	protected String getFolderPathPattern() {
+		return getStateRepository().getImportFolderPathPattern();
+	}
 }

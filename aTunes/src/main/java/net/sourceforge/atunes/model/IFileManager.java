@@ -104,4 +104,16 @@ public interface IFileManager {
 	 */
 	void copyFile(ILocalAudioObject file, File destFile) throws IOException;
 
+	/**
+	 * Copies audio object to given destination directory and file name
+	 * 
+	 * @param source
+	 * @param destinationPath
+	 * @param fileName
+	 * @return reference to copied file
+	 * @throws IOException
+	 */
+	ILocalAudioObject copyFile(ILocalAudioObject source,
+			String destinationPath, String fileName) throws IOException;
+
 }

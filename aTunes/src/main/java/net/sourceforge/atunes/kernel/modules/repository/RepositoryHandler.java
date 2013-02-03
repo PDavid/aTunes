@@ -275,8 +275,9 @@ public final class RepositoryHandler extends AbstractHandler implements
 	}
 
 	@Override
-	public void addFilesAndRefresh(final List<File> files) {
-		getBean(AddFilesToRepositoryTask.class).execute(this.repository, files);
+	public void addAudioObjectsAndRefresh(final List<ILocalAudioObject> result) {
+		getBean(AddFilesToRepositoryTask.class)
+				.execute(this.repository, result);
 	}
 
 	/**

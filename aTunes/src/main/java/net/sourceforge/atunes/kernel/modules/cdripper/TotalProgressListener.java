@@ -27,25 +27,27 @@ import net.sourceforge.atunes.model.IRipperProgressDialog;
 import net.sourceforge.atunes.utils.StringUtils;
 
 final class TotalProgressListener implements ProgressListener {
-    private final IRipperProgressDialog dialog;
-    private final List<File> filesImported;
 
-    TotalProgressListener(IRipperProgressDialog dialog, List<File> filesImported) {
-        this.dialog = dialog;
-        this.filesImported = filesImported;
-    }
+	private final IRipperProgressDialog dialog;
+	private final List<File> filesImported;
 
-    @Override
-    public void notifyFileFinished(File file) {
-        filesImported.add(file);
-    }
+	TotalProgressListener(final IRipperProgressDialog dialog,
+			final List<File> filesImported) {
+		this.dialog = dialog;
+		this.filesImported = filesImported;
+	}
 
-    @Override
-    public void notifyProgress(int value) {
-        dialog.setTotalProgressValue(value);
-        dialog.setDecodeProgressValue(0);
-        dialog.setDecodeProgressValue(StringUtils.getString(0, "%"));
-        dialog.setEncodeProgressValue(0);
-        dialog.setEncodeProgressValue(StringUtils.getString(0, "%"));
-    }
+	@Override
+	public void notifyFileFinished(final File file) {
+		this.filesImported.add(file);
+	}
+
+	@Override
+	public void notifyProgress(final int value) {
+		this.dialog.setTotalProgressValue(value);
+		this.dialog.setDecodeProgressValue(0);
+		this.dialog.setDecodeProgressValue(StringUtils.getString(0, "%"));
+		this.dialog.setEncodeProgressValue(0);
+		this.dialog.setEncodeProgressValue(StringUtils.getString(0, "%"));
+	}
 }
