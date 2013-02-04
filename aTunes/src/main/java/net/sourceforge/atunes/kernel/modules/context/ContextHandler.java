@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
@@ -47,283 +48,311 @@ import org.commonjukebox.plugins.model.PluginListener;
 
 /**
  * Responsible of showing context information
+ * 
  * @author alex
- *
+ * 
  */
-public final class ContextHandler extends AbstractHandler implements PluginListener, IContextHandler {
+public final class ContextHandler extends AbstractHandler implements
+		PluginListener, IContextHandler {
 
-    /**
-     * The current audio object used to retrieve information
-     */
-    private IAudioObject currentAudioObject;
+	/**
+	 * The current audio object used to retrieve information
+	 */
+	private IAudioObject currentAudioObject;
 
-    /**
-     * Time stamp when audio object was modified. Used to decide if context info
-     * must be updated
-     */
-    private long lastAudioObjectModificationTime = 0;
+	/**
+	 * Time stamp when audio object was modified. Used to decide if context info
+	 * must be updated
+	 */
+	private long lastAudioObjectModificationTime = 0;
 
-    /**
-     * Context panels defined
-     */
-    private List<IContextPanel> contextPanels;
-    
-    private IContextPanelsContainer contextPanelsContainer;
-    
-    private IPlayListHandler playListHandler;
-    
-    private ITaskService taskService;
-    
-    private IWebServicesHandler webServicesHandler;
-    
-    private IStateContext stateContext;
-    
-    private IStatePlaylist statePlaylist;
-    
-    /**
-     * Task Service
-     */
-    private ITaskService contextTaskService;
-    
-    /**
-     * @param contextTaskService
-     */
-    public void setContextTaskService(ITaskService contextTaskService) {
+	/**
+	 * Context panels defined
+	 */
+	private List<IContextPanel> contextPanels;
+
+	private IContextPanelsContainer contextPanelsContainer;
+
+	private IPlayListHandler playListHandler;
+
+	private ITaskService taskService;
+
+	private IWebServicesHandler webServicesHandler;
+
+	private IStateContext stateContext;
+
+	private IStatePlaylist statePlaylist;
+
+	/**
+	 * Task Service
+	 */
+	private ITaskService contextTaskService;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
+
+	/**
+	 * @param contextTaskService
+	 */
+	public void setContextTaskService(ITaskService contextTaskService) {
 		this.contextTaskService = contextTaskService;
 	}
 
-    /**
-     * @param statePlaylist
-     */
-    public void setStatePlaylist(IStatePlaylist statePlaylist) {
+	/**
+	 * @param statePlaylist
+	 */
+	public void setStatePlaylist(IStatePlaylist statePlaylist) {
 		this.statePlaylist = statePlaylist;
 	}
-    
-    /**
-     * @param stateContext
-     */
-    public void setStateContext(IStateContext stateContext) {
+
+	/**
+	 * @param stateContext
+	 */
+	public void setStateContext(IStateContext stateContext) {
 		this.stateContext = stateContext;
 	}
-    
-    /**
-     * @param webServicesHandler
-     */
-    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+
+	/**
+	 * @param webServicesHandler
+	 */
+	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
-    
-    /**
-     * @param taskService
-     */
-    public void setTaskService(ITaskService taskService) {
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(ITaskService taskService) {
 		this.taskService = taskService;
 	}
 
 	@Override
-    public void applicationStarted() {
-    	addContextPanels(contextPanels);
-    	
-        // Set previous selected tab
-    	setContextTab(stateContext.getSelectedContextTab());
-    	
-    	getFrame().showContextPanel(stateContext.isUseContext());
-    }
-    
-    /**
-     * Called when user changes context tab
-     */
-    public void contextPanelChanged() {
-        // Update selected tab
-        stateContext.setSelectedContextTab(getContextTab() != null ? getContextTab().getContextPanelName() : null);
-        // Call to fill information: Don't force update since audio object can be the same
-        retrieveInfo(currentAudioObject, false);
-    }
+	public void applicationStarted() {
+		addContextPanels(contextPanels);
 
-    /**
-     * Clears all context panels
-     * 
-     */
-    private void clearContextPanels() {
-        clearTabsContent();
-        currentAudioObject = null;
+		// Set previous selected tab
+		setContextTab(stateContext.getSelectedContextTab());
 
-        // Select first tab
-        stateContext.setSelectedContextTab(null);
-        setContextTab(null);
-    }
+		getFrame().showContextPanel(stateContext.isUseContext());
+	}
 
-    /**
-     * Clears tabs content
-     */
-    private void clearTabsContent() {
-        // Clear all context panels
-        for (IContextPanel panel : contextPanels) {
-            panel.clearContextPanel();
-        }
-    }
-    
-    @Override
+	/**
+	 * Called when user changes context tab
+	 */
+	@Override
+	public void contextPanelChanged() {
+		// Update selected tab
+		stateContext
+				.setSelectedContextTab(getContextTab() != null ? getContextTab()
+						.getContextPanelName() : null);
+		// Call to fill information: Don't force update since audio object can
+		// be the same
+		retrieveInfo(currentAudioObject, false);
+	}
+
+	/**
+	 * Clears all context panels
+	 * 
+	 */
+	private void clearContextPanels() {
+		clearTabsContent();
+		currentAudioObject = null;
+
+		// Select first tab
+		stateContext.setSelectedContextTab(null);
+		setContextTab(null);
+	}
+
+	/**
+	 * Clears tabs content
+	 */
+	private void clearTabsContent() {
+		// Clear all context panels
+		for (IContextPanel panel : contextPanels) {
+			panel.clearContextPanel();
+		}
+	}
+
+	@Override
 	public void retrieveInfoAndShowInPanel(IAudioObject ao) {
-        boolean audioObjectModified = false;
-        // Avoid retrieve information about the same audio object twice except if is an LocalAudioObject and has been recently changed
-        if (currentAudioObject != null && currentAudioObject.equals(ao)) {
-            if (ao instanceof ILocalAudioObject) {
-                if (((ILocalAudioObject) ao).getFile().lastModified() == lastAudioObjectModificationTime) {
-                    return;
-                } else {
-                    audioObjectModified = true;
-                }
-            } else if (!(ao instanceof IRadio)) {
-                return;
-            }
-        }
-        currentAudioObject = ao;
+		boolean audioObjectModified = false;
+		// Avoid retrieve information about the same audio object twice except
+		// if is an LocalAudioObject and has been recently changed
+		if (currentAudioObject != null && currentAudioObject.equals(ao)) {
+			if (ao instanceof ILocalAudioObject) {
+				if (fileManager.getModificationTime((ILocalAudioObject) ao) != lastAudioObjectModificationTime) {
+					audioObjectModified = true;
+				} else {
+					return;
+				}
+			} else if (!(ao instanceof IRadio)) {
+				return;
+			}
+		}
+		currentAudioObject = ao;
 
-        // Update modification time if necessary
-        updateModificationTimeOfLastAudioObject(ao);
+		// Update modification time if necessary
+		updateModificationTimeOfLastAudioObject(ao);
 
-        // Call to retrieve and show information
-        if (stateContext.isUseContext()) {
-            retrieveInfoAndShowInPanel(ao, audioObjectModified);
-        }
-    }
+		// Call to retrieve and show information
+		if (stateContext.isUseContext()) {
+			retrieveInfoAndShowInPanel(ao, audioObjectModified);
+		}
+	}
 
 	/**
 	 * @param ao
 	 */
 	private void updateModificationTimeOfLastAudioObject(IAudioObject ao) {
 		if (ao instanceof ILocalAudioObject) {
-        	if ( ((ILocalAudioObject) ao).getFile() != null) {
-            	lastAudioObjectModificationTime = ((ILocalAudioObject) ao).getFile().lastModified();
-        	}
-        } else {
-            lastAudioObjectModificationTime = 0;
-        }
+			lastAudioObjectModificationTime = fileManager
+					.getModificationTime((ILocalAudioObject) ao);
+		} else {
+			lastAudioObjectModificationTime = 0;
+		}
 	}
 
 	/**
 	 * @param ao
 	 * @param audioObjectModified
 	 */
-	private void retrieveInfoAndShowInPanel(IAudioObject ao, boolean audioObjectModified) {
-		
+	private void retrieveInfoAndShowInPanel(IAudioObject ao,
+			boolean audioObjectModified) {
+
 		// Enable or disable tabs
 		updateContextTabs();
 
 		if (ao == null) {
-		    // Clear all tabs
-		    clearContextPanels();
+			// Clear all tabs
+			clearContextPanels();
 		} else {
-		    if (audioObjectModified) {
-		        clearTabsContent();
-		    }
-		    // Retrieve data for audio object. Force Update since audio file has been modified
-		    retrieveInfo(ao, audioObjectModified);
+			if (audioObjectModified) {
+				clearTabsContent();
+			}
+			// Retrieve data for audio object. Force Update since audio file has
+			// been modified
+			retrieveInfo(ao, audioObjectModified);
 		}
 	}
 
-    /**
-     * Retrieve info.
-     * 
-     * @param audioObject
-     *            the audio object
-     * @param forceUpdate
-     *            If <code>true</code> data will be retrieved and shown even if
-     *            the audio object is the same as before This is necessary when
-     *            audio object is the same but has been modified so context data
-     *            can be different
-     */
-    private void retrieveInfo(IAudioObject audioObject, boolean forceUpdate) {
-        if (audioObject == null) {
-            return;
-        }
-
-        // Context panel can be removed so check index
-        String selectedTab = stateContext.getSelectedContextTab();
-        // Update current context panel
-        for (IContextPanel panel : contextPanels) {
-        	if (panel.getContextPanelName().equals(selectedTab)) {
-        		panel.updateContextPanel(audioObject, forceUpdate);
-        		break;
-        	}
-        }
-    }
-
-    @Override
-    public void applicationStateChanged() {
-        // Show or hide context panel
-        showContextPanel(stateContext.isUseContext());
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextHandler#getCurrentAudioObject()
+	/**
+	 * Retrieve info.
+	 * 
+	 * @param audioObject
+	 *            the audio object
+	 * @param forceUpdate
+	 *            If <code>true</code> data will be retrieved and shown even if
+	 *            the audio object is the same as before This is necessary when
+	 *            audio object is the same but has been modified so context data
+	 *            can be different
 	 */
-    @Override
+	private void retrieveInfo(IAudioObject audioObject, boolean forceUpdate) {
+		if (audioObject == null) {
+			return;
+		}
+
+		// Context panel can be removed so check index
+		String selectedTab = stateContext.getSelectedContextTab();
+		// Update current context panel
+		for (IContextPanel panel : contextPanels) {
+			if (panel.getContextPanelName().equals(selectedTab)) {
+				panel.updateContextPanel(audioObject, forceUpdate);
+				break;
+			}
+		}
+	}
+
+	@Override
+	public void applicationStateChanged() {
+		// Show or hide context panel
+		showContextPanel(stateContext.isUseContext());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextHandler#
+	 * getCurrentAudioObject()
+	 */
+	@Override
 	public IAudioObject getCurrentAudioObject() {
-        return currentAudioObject;
-    }
+		return currentAudioObject;
+	}
 
-    @Override
-    public void pluginActivated(PluginInfo plugin) {
-        try {
-        	IContextPanel newPanel = (IContextPanel) getBean(IPluginsHandler.class).getNewInstance(plugin);
-            contextPanels.add(newPanel);
-        } catch (PluginSystemException e) {
-            Logger.error(e);
-        }
-    }
+	@Override
+	public void pluginActivated(PluginInfo plugin) {
+		try {
+			IContextPanel newPanel = (IContextPanel) getBean(
+					IPluginsHandler.class).getNewInstance(plugin);
+			contextPanels.add(newPanel);
+		} catch (PluginSystemException e) {
+			Logger.error(e);
+		}
+	}
 
-    @Override
-    public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
-        for (Plugin instance : createdInstances) {
-        	contextPanels.remove((IContextPanel)instance);
-            removeContextPanel((IContextPanel) instance);
-        }
-    }
-    
-    @Override
-    public void selectedAudioObjectChanged(IAudioObject audioObject) {
-        if (stateContext.isUseContext()) {
-            retrieveInfoAndShowInPanel(audioObject);
-        }
-    }
-    
-    @Override
-    public void playListCleared() {
-        if (stateContext.isUseContext()) {
-            retrieveInfoAndShowInPanel(null);
-            
-            if (statePlaylist.isStopPlayerOnPlayListClear()) {
-            	clearContextPanels();
-            }
-        }
-    }
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextHandler#showContextPanel(boolean)
+	@Override
+	public void pluginDeactivated(PluginInfo plugin,
+			Collection<Plugin> createdInstances) {
+		for (Plugin instance : createdInstances) {
+			contextPanels.remove(instance);
+			removeContextPanel((IContextPanel) instance);
+		}
+	}
+
+	@Override
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {
+		if (stateContext.isUseContext()) {
+			retrieveInfoAndShowInPanel(audioObject);
+		}
+	}
+
+	@Override
+	public void playListCleared() {
+		if (stateContext.isUseContext()) {
+			retrieveInfoAndShowInPanel(null);
+
+			if (statePlaylist.isStopPlayerOnPlayListClear()) {
+				clearContextPanels();
+			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextHandler#
+	 * showContextPanel(boolean)
 	 */
-    @Override
+	@Override
 	public void showContextPanel(boolean show) {
-        stateContext.setUseContext(show);
-        getFrame().showContextPanel(show);
-        if (show) {
-            retrieveInfoAndShowInPanel(playListHandler.getCurrentAudioObjectFromVisiblePlayList());
-        }
-    }
+		stateContext.setUseContext(show);
+		getFrame().showContextPanel(show);
+		if (show) {
+			retrieveInfoAndShowInPanel(playListHandler
+					.getCurrentAudioObjectFromVisiblePlayList());
+		}
+	}
 
 	/**
 	 * Selects context tab
+	 * 
 	 * @param selectedContextTab
 	 */
-    @Override
-    public void setContextTab(String selectedContextTab) {
+	@Override
+	public void setContextTab(String selectedContextTab) {
 		contextPanelsContainer.setSelectedContextPanel(selectedContextTab);
 		contextPanelChanged();
 	}
-	
+
 	/**
 	 * Returns context tab
+	 * 
 	 * @return
 	 */
 	private IContextPanel getContextTab() {
@@ -346,12 +375,13 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
 	/**
 	 * Adds context panels
+	 * 
 	 * @param contextPanels
 	 */
 	private void addContextPanels(List<IContextPanel> contextPanels) {
 		for (IContextPanel panel : contextPanels) {
 			contextPanelsContainer.addContextPanel(panel);
-		}		
+		}
 		contextPanelsContainer.updateContextPanels();
 	}
 
@@ -361,21 +391,22 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 	public void setContextPanels(List<IContextPanel> contextPanels) {
 		this.contextPanels = contextPanels;
 	}
-	
+
 	/**
 	 * @param contextPanelsContainer
 	 */
-	public void setContextPanelsContainer(IContextPanelsContainer contextPanelsContainer) {
+	public void setContextPanelsContainer(
+			IContextPanelsContainer contextPanelsContainer) {
 		this.contextPanelsContainer = contextPanelsContainer;
 	}
-	
+
 	/**
 	 * @param playListHandler
 	 */
 	public void setPlayListHandler(IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-	
+
 	@Override
 	public void finishedContextPanelUpdate() {
 		taskService.submitNow("Consolidate Web Content", new Runnable() {
@@ -385,7 +416,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 			}
 		});
 	}
-	
+
 	@Override
 	public void applicationFinish() {
 		contextTaskService.shutdownService();

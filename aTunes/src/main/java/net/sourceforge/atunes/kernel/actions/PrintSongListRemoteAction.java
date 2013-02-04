@@ -26,17 +26,21 @@ import java.util.List;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.CollectionUtils;
 
 import org.apache.commons.lang.StringUtils;
+
 /**
- * This action enables a telnet client to browse the repository. It enables a client to view a list of all song path so that
- * a client then can create a local list of songs and play them when needed.
- * With parameters, it outputs either all artists or all albums, then when an artist/album name is provided it can output all songs belonging to him/it.
- *
+ * This action enables a telnet client to browse the repository. It enables a
+ * client to view a list of all song path so that a client then can create a
+ * local list of songs and play them when needed. With parameters, it outputs
+ * either all artists or all albums, then when an artist/album name is provided
+ * it can output all songs belonging to him/it.
+ * 
  */
 public class PrintSongListRemoteAction extends RemoteAction {
 
@@ -48,6 +52,15 @@ public class PrintSongListRemoteAction extends RemoteAction {
 	private IRepositoryHandler repositoryHandler;
 
 	private IPlayListHandler playListHandler;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * @param handler
@@ -70,7 +83,8 @@ public class PrintSongListRemoteAction extends RemoteAction {
 		if (!CollectionUtils.isEmpty(parameters)) {
 			String query = null;
 			if (parameters.size() > 1) {
-				query = StringUtils.join(parameters.subList(1, parameters.size()), ' ');
+				query = StringUtils.join(
+						parameters.subList(1, parameters.size()), ' ');
 			}
 			String firstParameter = parameters.get(0);
 			if (firstParameter.equalsIgnoreCase(ARTIST)) {
@@ -95,7 +109,7 @@ public class PrintSongListRemoteAction extends RemoteAction {
 		StringBuilder sb = new StringBuilder();
 		if (objects != null) {
 			for (ILocalAudioObject iao : objects) {
-				sb.append(iao.getFile().getAbsoluteFile()).append("\n");
+				sb.append(fileManager.getPath(iao)).append("\n");
 			}
 		}
 		return sb.toString();
@@ -106,7 +120,8 @@ public class PrintSongListRemoteAction extends RemoteAction {
 	}
 
 	private String processPlaylistParameter() {
-		Collection<IAudioObject> playlistObjects = playListHandler.getActivePlayList().getAudioObjectsList();
+		Collection<IAudioObject> playlistObjects = playListHandler
+				.getActivePlayList().getAudioObjectsList();
 		if (playlistObjects.isEmpty()) {
 			return "Playlist is empty";
 		} else {
@@ -122,7 +137,8 @@ public class PrintSongListRemoteAction extends RemoteAction {
 	 * @param query
 	 * @return
 	 */
-	private Collection<ILocalAudioObject> processArtistParameter(final String query) {
+	private Collection<ILocalAudioObject> processArtistParameter(
+			final String query) {
 		if (net.sourceforge.atunes.utils.StringUtils.isEmpty(query)) {
 			returnArtistList();
 			return null;
@@ -136,7 +152,8 @@ public class PrintSongListRemoteAction extends RemoteAction {
 		}
 	}
 
-	private Collection<ILocalAudioObject> processAlbumParameter(final String query) {
+	private Collection<ILocalAudioObject> processAlbumParameter(
+			final String query) {
 		if (net.sourceforge.atunes.utils.StringUtils.isEmpty(query)) {
 			returnAlbumList();
 			return null;
@@ -182,9 +199,9 @@ public class PrintSongListRemoteAction extends RemoteAction {
 
 	@Override
 	protected String getHelpText() {
-		return "Prints out a list of all song files. " +
-		"When parameter artist is used it prints the list of all artists, when the name of an artist is provided, " +
-		"it ouputs all song which belong to the artist";
+		return "Prints out a list of all song files. "
+				+ "When parameter artist is used it prints the list of all artists, when the name of an artist is provided, "
+				+ "it ouputs all song which belong to the artist";
 	}
 
 	@Override

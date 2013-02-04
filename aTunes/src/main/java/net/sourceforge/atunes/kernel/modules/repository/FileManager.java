@@ -148,4 +148,8 @@ public class FileManager implements IFileManager {
 		return this.localAudioObjectFactory.getLocalAudioObject(destFile);
 	}
 
+	@Override
+	public long getModificationTime(ILocalAudioObject ao) {
+		return getAudioObjectFile(ao).lastModified();
+	}
 }

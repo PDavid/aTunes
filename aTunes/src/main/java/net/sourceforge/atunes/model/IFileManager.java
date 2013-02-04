@@ -116,4 +116,11 @@ public interface IFileManager {
 	ILocalAudioObject copyFile(ILocalAudioObject source,
 			String destinationPath, String fileName) throws IOException;
 
+	/**
+	 * Returns modification time in milliseconds
+	 * 
+	 * @param ao
+	 * @return modification time in milliseconds
+	 */
+	long getModificationTime(ILocalAudioObject ao);
 }
