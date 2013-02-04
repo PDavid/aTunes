@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -47,6 +48,16 @@ public class FileManager implements IFileManager {
 	private IOSManager osManager;
 
 	private ILocalAudioObjectFactory localAudioObjectFactory;
+
+	private ITemporalDiskStorage temporalDiskStorage;
+
+	/**
+	 * @param temporalDiskStorage
+	 */
+	public void setTemporalDiskStorage(
+			final ITemporalDiskStorage temporalDiskStorage) {
+		this.temporalDiskStorage = temporalDiskStorage;
+	}
 
 	/**
 	 * @param localAudioObjectFactory
@@ -149,7 +160,23 @@ public class FileManager implements IFileManager {
 	}
 
 	@Override
-	public long getModificationTime(ILocalAudioObject ao) {
+	public long getModificationTime(final ILocalAudioObject ao) {
 		return getAudioObjectFile(ao).lastModified();
+	}
+
+	@Override
+	public ILocalAudioObject cacheAudioObject(
+			final ILocalAudioObject audioObject) {
+		File tempFile = this.temporalDiskStorage
+				.addFile(getAudioObjectFile(audioObject));
+		if (tempFile != null) {
+			return this.localAudioObjectFactory.getLocalAudioObject(tempFile);
+		}
+		return null;
+	}
+
+	@Override
+	public void removeCachedAudioObject(final ILocalAudioObject ao) {
+		this.temporalDiskStorage.removeFile(getAudioObjectFile(ao));
 	}
 }

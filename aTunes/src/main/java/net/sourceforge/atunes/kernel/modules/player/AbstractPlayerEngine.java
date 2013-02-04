@@ -20,17 +20,15 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
-import java.io.File;
-
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IExceptionDialog;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
@@ -41,7 +39,6 @@ import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IStatePlayer;
-import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.model.SubmissionState;
@@ -82,7 +79,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	 * This attribute is used when caching files option is enabled. When caching
 	 * a new file, file pointed by this object is removed from temp folder
 	 */
-	private File lastFileCached;
+	private IAudioObject lastFileCached;
 
 	/**
 	 * The submission state of the current audio object
@@ -102,13 +99,9 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 
 	private INavigationHandler navigationHandler;
 
-	private ITemporalDiskStorage temporalDiskStorage;
-
 	private IPlayerHandler playerHandler;
 
 	private PlayListEventListeners playListEventListeners;
-
-	private ILocalAudioObjectFactory localAudioObjectFactory;
 
 	private INavigationView podcastNavigationView;
 
@@ -121,6 +114,15 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	private PlaybackStateListeners playbackStateListeners;
 
 	private IWebServicesHandler webServicesHandler;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(final IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * @param webServicesHandler
@@ -176,14 +178,6 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	 */
 	public IPlayListHandler getPlayListHandler() {
 		return this.playListHandler;
-	}
-
-	/**
-	 * @param localAudioObjectFactory
-	 */
-	public void setLocalAudioObjectFactory(
-			final ILocalAudioObjectFactory localAudioObjectFactory) {
-		this.localAudioObjectFactory = localAudioObjectFactory;
 	}
 
 	/**
@@ -520,7 +514,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 			if (this.statePlayer.isCacheFilesBeforePlaying()) {
 
 				PlayAudioObjectRunnable r = new PlayAudioObjectRunnable(this,
-						audioObject, this.frame, this.temporalDiskStorage);
+						audioObject, this.frame);
 
 				// NOTE: This thread was initially a SwingWorker but as number
 				// of
@@ -544,11 +538,9 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	 * Caches audio object
 	 * 
 	 * @param audioObject
-	 * @param temporalDiskStorage
 	 * @return
 	 */
-	IAudioObject cacheAudioObject(final IAudioObject audioObject,
-			final ITemporalDiskStorage temporalDiskStorage) {
+	IAudioObject cacheAudioObject(final IAudioObject audioObject) {
 		IAudioObject audioObjectToPlay = null;
 
 		// If cacheFilesBeforePlaying is true and audio object is an audio file,
@@ -561,19 +553,13 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 
 			// Remove previous cached file
 			if (this.lastFileCached != null) {
-				temporalDiskStorage.removeFile(this.lastFileCached);
+				this.fileManager
+						.removeCachedAudioObject((ILocalAudioObject) this.lastFileCached);
 			}
 
-			File tempFile = temporalDiskStorage
-					.addFile(((ILocalAudioObject) audioObject).getFile());
-			if (tempFile != null) {
-				audioObjectToPlay = this.localAudioObjectFactory
-						.getLocalAudioObject(tempFile);
-				this.lastFileCached = tempFile;
-			} else {
-				this.lastFileCached = null;
-			}
-
+			audioObjectToPlay = this.fileManager
+					.cacheAudioObject((ILocalAudioObject) audioObject);
+			this.lastFileCached = audioObjectToPlay;
 			Logger.debug("End caching file: ", audioObject.getUrl());
 		} else {
 			audioObjectToPlay = audioObject;
@@ -783,14 +769,6 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	 */
 	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
-	}
-
-	/**
-	 * @param temporalDiskStorage
-	 */
-	public void setTemporalDiskStorage(
-			final ITemporalDiskStorage temporalDiskStorage) {
-		this.temporalDiskStorage = temporalDiskStorage;
 	}
 
 	/**

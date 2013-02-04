@@ -123,4 +123,19 @@ public interface IFileManager {
 	 * @return modification time in milliseconds
 	 */
 	long getModificationTime(ILocalAudioObject ao);
+
+	/**
+	 * Caches audio object in temporal disk storage
+	 * 
+	 * @param audioObject
+	 * @return
+	 */
+	ILocalAudioObject cacheAudioObject(ILocalAudioObject audioObject);
+
+	/**
+	 * Removes cached audio object
+	 * 
+	 * @param ao
+	 */
+	void removeCachedAudioObject(ILocalAudioObject ao);
 }

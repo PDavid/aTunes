@@ -24,34 +24,36 @@ import java.awt.Cursor;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ITemporalDiskStorage;
 
 /**
  * Runnable to play audio objects and (if needed) cache files
+ * 
  * @author fleax
- *
+ * 
  */
 final class PlayAudioObjectRunnable implements Runnable {
-	
-	private AbstractPlayerEngine abstractPlayerEngine;
-	private IAudioObject audioObject;
-	private IFrame frame;
-	private ITemporalDiskStorage temporalDiskStorage;
-	
-	PlayAudioObjectRunnable(AbstractPlayerEngine abstractPlayerEngine, IAudioObject audioObject, IFrame frame, ITemporalDiskStorage temporalDiskStorage) {
+
+	private final AbstractPlayerEngine abstractPlayerEngine;
+	private final IAudioObject audioObject;
+	private final IFrame frame;
+
+	PlayAudioObjectRunnable(final AbstractPlayerEngine abstractPlayerEngine,
+			final IAudioObject audioObject, final IFrame frame) {
 		this.abstractPlayerEngine = abstractPlayerEngine;
-		this.audioObject = audioObject;			
+		this.audioObject = audioObject;
 		this.frame = frame;
-		this.temporalDiskStorage = temporalDiskStorage;
-		this.frame.getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		this.frame.getFrame().setCursor(
+				Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 	}
-			
+
 	@Override
 	public void run() {
-	    IAudioObject audioObjectToPlay = this.abstractPlayerEngine.cacheAudioObject(audioObject, temporalDiskStorage);
+		IAudioObject audioObjectToPlay = this.abstractPlayerEngine
+				.cacheAudioObject(this.audioObject);
 		// Set default cursor again
 		this.frame.getFrame().setCursor(Cursor.getDefaultCursor());
-		this.abstractPlayerEngine.playAudioObjectAfterCache(audioObjectToPlay, audioObject);
+		this.abstractPlayerEngine.playAudioObjectAfterCache(audioObjectToPlay,
+				this.audioObject);
 		this.abstractPlayerEngine.setPlayAudioObjectThread(null);
-	}		
+	}
 }
