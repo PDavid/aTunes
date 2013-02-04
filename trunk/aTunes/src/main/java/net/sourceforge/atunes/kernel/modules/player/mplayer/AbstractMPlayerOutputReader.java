@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
-import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
@@ -74,7 +73,6 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	 * @param playListHandler
 	 * @param localAudioObjectValidator
 	 * @param contextHandler
-	 * @param fileManager
 	 * @return
 	 */
 	static AbstractMPlayerOutputReader newInstance(final MPlayerEngine engine,
@@ -82,11 +80,10 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 			final IStateRadio stateRadio, final IFrame frame,
 			final IPlayListHandler playListHandler,
 			final ILocalAudioObjectValidator localAudioObjectValidator,
-			final IContextHandler contextHandler, final IFileManager fileManager) {
+			final IContextHandler contextHandler) {
 		if (ao instanceof ILocalAudioObject) {
 			return new AudioFileMPlayerOutputReader(engine, process,
-					(ILocalAudioObject) ao, localAudioObjectValidator,
-					fileManager);
+					(ILocalAudioObject) ao, localAudioObjectValidator);
 		} else if (ao instanceof IRadio) {
 			return new RadioMPlayerOutputReader(engine, process, (IRadio) ao,
 					stateRadio, playListHandler, contextHandler);

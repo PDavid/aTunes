@@ -131,7 +131,7 @@ public final class EditTagDialogController extends
 	/**
 	 * @param fileManager
 	 */
-	public void setFileManager(IFileManager fileManager) {
+	public void setFileManager(final IFileManager fileManager) {
 		this.fileManager = fileManager;
 	}
 
@@ -216,7 +216,7 @@ public final class EditTagDialogController extends
 		EditTagDialogActionListener actionListener = new EditTagDialogActionListener(
 				this, getComponentControlled(), this.playListHandler,
 				this.localAudioObjectValidator, this.controlsBuilder,
-				fileManager);
+				this.fileManager);
 		getComponentControlled().getOkButton()
 				.addActionListener(actionListener);
 		getComponentControlled().getCancelButton().addActionListener(
@@ -241,11 +241,10 @@ public final class EditTagDialogController extends
 	 */
 	private final boolean supportsInternalPicture(
 			final ILocalAudioObject audioObject) {
-		return this.localAudioObjectValidator.isOneOfTheseFormats(
-				audioObject.getUrl(), LocalAudioObjectFormat.FLAC,
-				LocalAudioObjectFormat.MP3, LocalAudioObjectFormat.MP4_1,
-				LocalAudioObjectFormat.MP4_2, LocalAudioObjectFormat.OGG,
-				LocalAudioObjectFormat.WMA);
+		return this.localAudioObjectValidator.isOneOfTheseFormats(audioObject,
+				LocalAudioObjectFormat.FLAC, LocalAudioObjectFormat.MP3,
+				LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2,
+				LocalAudioObjectFormat.OGG, LocalAudioObjectFormat.WMA);
 	}
 
 	/**
