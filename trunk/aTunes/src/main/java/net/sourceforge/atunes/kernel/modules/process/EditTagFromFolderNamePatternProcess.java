@@ -25,8 +25,8 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.pattern.PatternMatcher;
 import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.utils.FileUtils;
 
 /**
  * The Class EditTagFromFolderNamePatternProcess.
@@ -45,6 +45,15 @@ public class EditTagFromFolderNamePatternProcess extends
 	private Patterns patterns;
 
 	private PatternMatcher patternMatcher;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * @param patternMatcher
@@ -73,9 +82,8 @@ public class EditTagFromFolderNamePatternProcess extends
 		if (filesAndTags == null) {
 			filesAndTags = new HashMap<ILocalAudioObject, Map<String, Object>>();
 			for (ILocalAudioObject file : getFilesToChange()) {
-				Map<String, String> matches = patternMatcher
-						.getPatternMatches(pattern, FileUtils.getPath(file
-								.getFile().getParentFile()), true);
+				Map<String, String> matches = patternMatcher.getPatternMatches(
+						pattern, fileManager.getFolderPath(file), true);
 				Map<String, Object> editTagInfo = patterns
 						.getEditTagInfoFromMatches(matches);
 				filesAndTags.put(file, editTagInfo);
