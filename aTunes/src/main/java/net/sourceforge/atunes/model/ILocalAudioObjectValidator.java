@@ -54,11 +54,11 @@ public interface ILocalAudioObjectValidator {
 	/**
 	 * Checks if a file is a valid audio file given its name
 	 * 
-	 * @param fileName
+	 * @param localAudioObject
 	 * @param formats
 	 * @return if the file is a valid audio file
 	 */
-	boolean isOneOfTheseFormats(String fileName,
+	boolean isOneOfTheseFormats(ILocalAudioObject localAudioObject,
 			LocalAudioObjectFormat... formats);
 
 	/**

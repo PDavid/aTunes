@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.tags;
 import java.io.IOException;
 
 import net.sourceforge.atunes.kernel.modules.repository.JAudiotaggerAudioPropertiesReader;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.ITagAdapter;
@@ -61,11 +62,20 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 
 	private JAudiotaggerAudioPropertiesReader jAudiotaggerAudioPropertiesReader;
 
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(final IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
+
 	/**
 	 * @param jAudiotaggerAudioPropertiesReader
 	 */
 	public void setjAudiotaggerAudioPropertiesReader(
-			JAudiotaggerAudioPropertiesReader jAudiotaggerAudioPropertiesReader) {
+			final JAudiotaggerAudioPropertiesReader jAudiotaggerAudioPropertiesReader) {
 		this.jAudiotaggerAudioPropertiesReader = jAudiotaggerAudioPropertiesReader;
 	}
 
@@ -73,7 +83,7 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 	 * @param jAudiotaggerFileReader
 	 */
 	public void setjAudiotaggerFileReader(
-			JAudiotaggerFileReader jAudiotaggerFileReader) {
+			final JAudiotaggerFileReader jAudiotaggerFileReader) {
 		this.jAudiotaggerFileReader = jAudiotaggerFileReader;
 	}
 
@@ -81,7 +91,7 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 	 * @param jAudiotaggerTagCreator
 	 */
 	public void setjAudiotaggerTagCreator(
-			JAudiotaggerTagCreator jAudiotaggerTagCreator) {
+			final JAudiotaggerTagCreator jAudiotaggerTagCreator) {
 		this.jAudiotaggerTagCreator = jAudiotaggerTagCreator;
 	}
 
@@ -129,7 +139,7 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 	public void deleteTags(final ILocalAudioObject file) {
 		try {
 			// Be sure file is writable before setting info
-			FileUtils.setWritable(file.getFile());
+			this.fileManager.makeWritable(file);
 			org.jaudiotagger.audio.AudioFileIO
 					.delete(org.jaudiotagger.audio.AudioFileIO.read(file
 							.getFile()));
@@ -215,15 +225,15 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 			ReadOnlyFileException, InvalidAudioFrameException,
 			ImageReadException, CannotWriteException {
 		// Be sure file is writable before setting info
-		FileUtils.setWritable(file.getFile());
+		this.fileManager.makeWritable(file);
 
 		org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO
 				.read(file.getFile());
 		org.jaudiotagger.tag.Tag newTag = audioFile
 				.getTagOrCreateAndSetDefault();
 
-		if (this.localAudioObjectValidator.isOneOfTheseFormats(file.getFile()
-				.getName(), LocalAudioObjectFormat.MP3)) {
+		if (this.localAudioObjectValidator.isOneOfTheseFormats(file,
+				LocalAudioObjectFormat.MP3)) {
 			org.jaudiotagger.audio.mp3.MP3File mp3file = (org.jaudiotagger.audio.mp3.MP3File) audioFile;
 			if (mp3file.hasID3v1Tag() && !mp3file.hasID3v2Tag()) {
 				deleteTags(file);
@@ -237,9 +247,8 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 
 		// Workaround for mp4 files - strings outside genre list might not be
 		// written otherwise
-		if (this.localAudioObjectValidator.isOneOfTheseFormats(file.getFile()
-				.getName(), LocalAudioObjectFormat.MP4_1,
-				LocalAudioObjectFormat.MP4_2)) {
+		if (this.localAudioObjectValidator.isOneOfTheseFormats(file,
+				LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2)) {
 			newTag.deleteField(FieldKey.GENRE);
 		}
 
@@ -430,9 +439,10 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 	}
 
 	@Override
-	public void readTag(final ILocalAudioObject ao, boolean readAudioProperties) {
-		AudioFile file = jAudiotaggerFileReader.getAudioFile(ao.getFile());
-		ao.setTag(jAudiotaggerTagCreator.createTag(ao, file));
-		jAudiotaggerAudioPropertiesReader.readAudioProperties(ao, file);
+	public void readTag(final ILocalAudioObject ao,
+			final boolean readAudioProperties) {
+		AudioFile file = this.jAudiotaggerFileReader.getAudioFile(ao.getFile());
+		ao.setTag(this.jAudiotaggerTagCreator.createTag(ao, file));
+		this.jAudiotaggerAudioPropertiesReader.readAudioProperties(ao, file);
 	}
 }

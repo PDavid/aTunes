@@ -333,10 +333,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 
 	@Override
 	public int compareTo(final ILocalAudioObject o) {
-		if (getFile() == null || o.getFile() == null) {
-			return 0;
-		}
-		return getFile().compareTo(o.getFile());
+		return getUrl().compareTo(o.getUrl());
 	}
 
 	@Override

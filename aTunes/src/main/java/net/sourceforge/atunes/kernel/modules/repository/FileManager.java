@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
@@ -178,5 +179,14 @@ public class FileManager implements IFileManager {
 	@Override
 	public void removeCachedAudioObject(final ILocalAudioObject ao) {
 		this.temporalDiskStorage.removeFile(getAudioObjectFile(ao));
+	}
+
+	@Override
+	public void makeWritable(final ILocalAudioObject file) {
+		try {
+			FileUtils.setWritable(getAudioObjectFile(file));
+		} catch (FileNotFoundException e) {
+			Logger.error(e);
+		}
 	}
 }

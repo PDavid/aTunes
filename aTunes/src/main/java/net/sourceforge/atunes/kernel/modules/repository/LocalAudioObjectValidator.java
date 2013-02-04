@@ -25,6 +25,8 @@ import java.io.FileFilter;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.sourceforge.atunes.model.IFileManager;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 
@@ -41,6 +43,15 @@ public class LocalAudioObjectValidator implements ILocalAudioObjectValidator {
 	private FileFilter validLocalAudioObjectFileFilter;
 
 	private Set<String> extensions;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(final IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
 
 	/**
 	 * Initializes validator
@@ -87,20 +98,15 @@ public class LocalAudioObjectValidator implements ILocalAudioObjectValidator {
 				&& isOneOfValidFormats(file);
 	}
 
-	/**
-	 * Checks if a file is a valid audio file given its name
-	 * 
-	 * @param fileName
-	 * @param formats
-	 * @return if the file is a valid audio file
-	 */
 	@Override
-	public boolean isOneOfTheseFormats(final String fileName,
+	public boolean isOneOfTheseFormats(
+			final ILocalAudioObject localAudioObject,
 			final LocalAudioObjectFormat... formats) {
-		if (fileName == null) {
+		if (localAudioObject == null) {
 			return false;
 		}
-		String extension = FilenameUtils.getExtension(fileName);
+		String extension = FilenameUtils.getExtension(this.fileManager
+				.getFileName(localAudioObject));
 		for (LocalAudioObjectFormat format : formats) {
 			if (extension.equalsIgnoreCase(format.getExtension())) {
 				return true;

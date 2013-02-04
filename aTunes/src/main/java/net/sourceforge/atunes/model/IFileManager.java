@@ -138,4 +138,11 @@ public interface IFileManager {
 	 * @param ao
 	 */
 	void removeCachedAudioObject(ILocalAudioObject ao);
+
+	/**
+	 * Makes audio object writable
+	 * 
+	 * @param file
+	 */
+	void makeWritable(ILocalAudioObject file);
 }
