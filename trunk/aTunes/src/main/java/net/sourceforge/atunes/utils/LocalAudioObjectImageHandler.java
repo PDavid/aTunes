@@ -32,6 +32,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
@@ -43,13 +44,37 @@ import org.jaudiotagger.tag.datatype.Artwork;
  * This class gets images associated to audio files Images can be internal (like
  * in ID3v2) or external (in the same folder than audio file).
  * 
- * <b>Consider using icon methods from AudioObject<b/>
- * 
  * @author fleax
  */
-public final class AudioFilePictureUtils {
+public final class LocalAudioObjectImageHandler implements
+		ILocalAudioObjectImageHandler {
 
-	private AudioFilePictureUtils() {
+	private IOSManager osManager;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(IFileManager fileManager) {
+		this.fileManager = fileManager;
 	}
 
 	/**
@@ -58,15 +83,11 @@ public final class AudioFilePictureUtils {
 	 * @param audioObject
 	 * @param width
 	 * @param height
-	 * @param osManager
-	 * @param unknownObjectChecker
-	 * @param fileManager
 	 * @return
 	 */
-	public static ImageIcon getExternalPicture(final IAudioObject audioObject,
-			final int width, final int height, final IOSManager osManager,
-			final IUnknownObjectChecker unknownObjectChecker,
-			IFileManager fileManager) {
+	@Override
+	public ImageIcon getExternalPicture(final IAudioObject audioObject,
+			final int width, final int height) {
 		if (!(audioObject instanceof ILocalAudioObject)) {
 			return null;
 		}
@@ -74,8 +95,7 @@ public final class AudioFilePictureUtils {
 		ILocalAudioObject file = (ILocalAudioObject) audioObject;
 
 		// Try first to get picture with file name "ARTIST_ALBUM_COVER" pattern
-		String coverFileName = getFileNameForCover(file, osManager,
-				unknownObjectChecker, fileManager);
+		String coverFileName = getFileNameForCover(file);
 		ImageIcon image = null;
 		if (coverFileName != null && new File(coverFileName).exists()) {
 			image = new ImageIcon(coverFileName);
@@ -101,15 +121,10 @@ public final class AudioFilePictureUtils {
 	 * file.
 	 * 
 	 * @param file
-	 * @param osManager
-	 * @param unknownObjectChecker
-	 * @param fileManager
 	 * @return
 	 */
-	public static String getFileNameForCover(final ILocalAudioObject file,
-			final IOSManager osManager,
-			final IUnknownObjectChecker unknownObjectChecker,
-			final IFileManager fileManager) {
+	@Override
+	public String getFileNameForCover(final ILocalAudioObject file) {
 		if (file == null) {
 			return null;
 		}
@@ -119,9 +134,8 @@ public final class AudioFilePictureUtils {
 				file.getArtist(unknownObjectChecker), osManager);
 		String album = FileNameUtils.getValidFileName(
 				file.getAlbum(unknownObjectChecker), osManager);
-		return StringUtils.getString(net.sourceforge.atunes.utils.FileUtils
-				.getPath(file.getFile().getParentFile()), osManager
-				.getFileSeparator(), artist, '_', album, "_Cover.",
+		return StringUtils.getString(fileManager.getFolderPath(file),
+				osManager.getFileSeparator(), artist, '_', album, "_Cover.",
 				ImageUtils.FILES_EXTENSION);
 	}
 
@@ -137,7 +151,8 @@ public final class AudioFilePictureUtils {
 	 * 
 	 * @return the inside picture
 	 */
-	public static ImageIcon getInsidePicture(final IAudioObject audioObject,
+	@Override
+	public ImageIcon getInsidePicture(final IAudioObject audioObject,
 			final int width, final int height) {
 		if (!(audioObject instanceof ILocalAudioObject)) {
 			return null;
@@ -180,8 +195,8 @@ public final class AudioFilePictureUtils {
 	 * @param imageRawData
 	 * @throws IOException
 	 */
-	private static ImageIcon processInternalPicture(final int width,
-			final int height, final byte[] imageRawData) throws IOException {
+	private ImageIcon processInternalPicture(final int width, final int height,
+			final byte[] imageRawData) throws IOException {
 		BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
 		if (bi != null) {
 			ImageIcon imageIcon = new ImageIcon(bi);
@@ -220,11 +235,11 @@ public final class AudioFilePictureUtils {
 	 *             Signals that an I/O exception has occurred.
 	 * @throws ImageWriteException
 	 */
-	public static void savePictureToFile(final ILocalAudioObject song,
-			final File file) throws IOException, ImageWriteException {
+	@Override
+	public void savePictureToFile(final ILocalAudioObject song, final File file)
+			throws IOException, ImageWriteException {
 		ImageIcon image = getInsidePicture(song, -1, -1);
 		ImageUtils.writeImageToFile(image.getImage(),
 				net.sourceforge.atunes.utils.FileUtils.getPath(file));
 	}
-
 }

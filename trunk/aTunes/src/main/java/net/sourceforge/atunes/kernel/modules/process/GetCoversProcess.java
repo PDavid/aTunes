@@ -29,11 +29,8 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
-import net.sourceforge.atunes.model.IFileManager;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
+import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
-import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -49,27 +46,16 @@ public class GetCoversProcess extends AbstractProcess<Void> {
 	/** The artist. */
 	private IArtist artist;
 
-	private IOSManager osManager;
-
 	private IWebServicesHandler webServicesHandler;
 
-	private IUnknownObjectChecker unknownObjectChecker;
-
-	private IFileManager fileManager;
+	private ILocalAudioObjectImageHandler localAudioObjectImageHandler;
 
 	/**
-	 * @param fileManager
+	 * @param localAudioObjectImageHandler
 	 */
-	public void setFileManager(IFileManager fileManager) {
-		this.fileManager = fileManager;
-	}
-
-	/**
-	 * @param unknownObjectChecker
-	 */
-	public void setUnknownObjectChecker(
-			final IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
+	public void setLocalAudioObjectImageHandler(
+			ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
+		this.localAudioObjectImageHandler = localAudioObjectImageHandler;
 	}
 
 	/**
@@ -85,13 +71,6 @@ public class GetCoversProcess extends AbstractProcess<Void> {
 	 */
 	public void setArtist(final IArtist artist) {
 		this.artist = artist;
-	}
-
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
 	}
 
 	@Override
@@ -111,9 +90,9 @@ public class GetCoversProcess extends AbstractProcess<Void> {
 				if (albumImage != null) {
 					try {
 						ImageUtils.writeImageToFile(albumImage.getImage(),
-								AudioFilePictureUtils.getFileNameForCover(album
-										.getAudioObjects().get(0), osManager,
-										unknownObjectChecker, fileManager));
+								localAudioObjectImageHandler
+										.getFileNameForCover(album
+												.getAudioObjects().get(0)));
 					} catch (IOException e1) {
 						Logger.error(StringUtils.getString(
 								"Error writing image for artist: ",
@@ -152,9 +131,8 @@ public class GetCoversProcess extends AbstractProcess<Void> {
 	 * @return true, if checks for cover downloaded
 	 */
 	private boolean hasCoverDownloaded(final IAlbum album) {
-		return new File(AudioFilePictureUtils.getFileNameForCover(
-				(album.getAudioObjects().get(0)), osManager,
-				unknownObjectChecker, fileManager)).exists();
+		return new File(localAudioObjectImageHandler.getFileNameForCover((album
+				.getAudioObjects().get(0)))).exists();
 	}
 
 	@Override
