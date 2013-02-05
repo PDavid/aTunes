@@ -26,15 +26,13 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
-import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 /**
  * Gets covers for full screen mode
@@ -46,21 +44,20 @@ public class FullScreenCoverImageRetriever {
 
 	private IWebServicesHandler webServicesHandler;
 
-	private IOSManager osManager;
-
 	private IIconFactory radioBigIcon;
 
 	private IIconFactory rssBigIcon;
 
 	private IUnknownObjectChecker unknownObjectChecker;
 
-	private IFileManager fileManager;
+	private ILocalAudioObjectImageHandler localAudioObjectImageHandler;
 
 	/**
-	 * @param fileManager
+	 * @param localAudioObjectImageHandler
 	 */
-	public void setFileManager(IFileManager fileManager) {
-		this.fileManager = fileManager;
+	public void setLocalAudioObjectImageHandler(
+			ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
+		this.localAudioObjectImageHandler = localAudioObjectImageHandler;
 	}
 
 	/**
@@ -94,13 +91,6 @@ public class FullScreenCoverImageRetriever {
 	}
 
 	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
-	}
-
-	/**
 	 * Returns picture for audio object
 	 * 
 	 * @param audioObject
@@ -131,12 +121,13 @@ public class FullScreenCoverImageRetriever {
 				audioObject.getAlbum(unknownObjectChecker));
 		if (image == null) {
 			// Get inside picture
-			image = AudioFilePictureUtils.getInsidePicture(audioObject, -1, -1);
+			image = localAudioObjectImageHandler.getInsidePicture(audioObject,
+					-1, -1);
 		}
 		if (image == null) {
 			// Get external picture
-			image = AudioFilePictureUtils.getExternalPicture(audioObject, -1,
-					-1, osManager, unknownObjectChecker, fileManager);
+			image = localAudioObjectImageHandler.getExternalPicture(
+					audioObject, -1, -1);
 		}
 		if (image == null) {
 			image = Images.getImage(Images.APP_LOGO_300);

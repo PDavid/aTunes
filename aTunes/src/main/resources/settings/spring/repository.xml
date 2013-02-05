@@ -62,5 +62,7 @@
 	</bean>
 
 	<bean class="net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed" scope="prototype"/>
+
+	<bean id="localAudioObjectImageHandler" class="net.sourceforge.atunes.utils.LocalAudioObjectImageHandler"/>
 	
 </beans>

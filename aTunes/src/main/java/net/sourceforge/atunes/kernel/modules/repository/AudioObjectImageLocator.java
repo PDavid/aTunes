@@ -25,12 +25,9 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
-import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
+import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
 /**
  * Locates audio objects for local audio objects
@@ -40,32 +37,14 @@ import net.sourceforge.atunes.utils.AudioFilePictureUtils;
  */
 public class AudioObjectImageLocator implements IAudioObjectImageLocator {
 
-	private IOSManager osManager;
-
-	private IUnknownObjectChecker unknownObjectChecker;
-
-	private IFileManager fileManager;
+	private ILocalAudioObjectImageHandler localAudioObjectImageHandler;
 
 	/**
-	 * @param fileManager
+	 * @param localAudioObjectImageHandler
 	 */
-	public void setFileManager(IFileManager fileManager) {
-		this.fileManager = fileManager;
-	}
-
-	/**
-	 * @param unknownObjectChecker
-	 */
-	public void setUnknownObjectChecker(
-			final IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
-	}
-
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
+	public void setLocalAudioObjectImageHandler(
+			ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
+		this.localAudioObjectImageHandler = localAudioObjectImageHandler;
 	}
 
 	@Override
@@ -74,13 +53,12 @@ public class AudioObjectImageLocator implements IAudioObjectImageLocator {
 		if (audioObject instanceof ILocalAudioObject) {
 			ILocalAudioObject localAudioObject = (ILocalAudioObject) audioObject;
 
-			ImageIcon result = AudioFilePictureUtils.getInsidePicture(
+			ImageIcon result = localAudioObjectImageHandler.getInsidePicture(
 					localAudioObject, imageSize.getSize(), imageSize.getSize());
 			if (result == null) {
-				result = AudioFilePictureUtils.getExternalPicture(
+				result = localAudioObjectImageHandler.getExternalPicture(
 						localAudioObject, imageSize.getSize(),
-						imageSize.getSize(), osManager, unknownObjectChecker,
-						fileManager);
+						imageSize.getSize());
 			}
 
 			return result;

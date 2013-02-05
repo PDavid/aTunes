@@ -49,6 +49,7 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -57,7 +58,6 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.model.TextTagAttribute;
-import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
@@ -82,7 +82,7 @@ public final class EditTagDialogController extends
 
 		@Override
 		protected ImageIcon doInBackground() {
-			return AudioFilePictureUtils.getInsidePicture(
+			return localAudioObjectImageHandler.getInsidePicture(
 					this.audioFiles.get(0), Constants.DIALOG_LARGE_IMAGE_WIDTH,
 					Constants.DIALOG_LARGE_IMAGE_HEIGHT);
 		}
@@ -127,6 +127,16 @@ public final class EditTagDialogController extends
 	private IControlsBuilder controlsBuilder;
 
 	private IFileManager fileManager;
+
+	private ILocalAudioObjectImageHandler localAudioObjectImageHandler;
+
+	/**
+	 * @param localAudioObjectImageHandler
+	 */
+	public void setLocalAudioObjectImageHandler(
+			ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
+		this.localAudioObjectImageHandler = localAudioObjectImageHandler;
+	}
 
 	/**
 	 * @param fileManager

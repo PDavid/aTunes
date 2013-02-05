@@ -32,15 +32,13 @@ import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IContextInformationSource;
-import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -59,8 +57,6 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 
 	private IWebServicesHandler webServicesHandler;
 
-	private IOSManager osManager;
-
 	private IAudioObjectImageLocator audioObjectImageLocator;
 
 	private IAlbumInfo albumInfo;
@@ -73,13 +69,14 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 
 	private IRepositoryHandler repositoryHandler;
 
-	private IFileManager fileManager;
+	private ILocalAudioObjectImageHandler localAudioObjectImageHandler;
 
 	/**
-	 * @param fileManager
+	 * @param localAudioObjectImageHandler
 	 */
-	public void setFileManager(IFileManager fileManager) {
-		this.fileManager = fileManager;
+	public void setLocalAudioObjectImageHandler(
+			ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
+		this.localAudioObjectImageHandler = localAudioObjectImageHandler;
 	}
 
 	/**
@@ -285,8 +282,8 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 		if (img != null && stateContext.isSaveContextPicture()) { // save image
 																	// in folder
 																	// of file
-			String imageFileName = AudioFilePictureUtils.getFileNameForCover(
-					file, osManager, unknownObjectChecker, fileManager);
+			String imageFileName = localAudioObjectImageHandler
+					.getFileNameForCover(file);
 
 			File imageFile = new File(imageFileName);
 			if (!imageFile.exists()) {
@@ -325,13 +322,6 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 	 */
 	private boolean forbiddenToken(final String t) {
 		return t.contains("/");
-	}
-
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
 	}
 
 	/**
