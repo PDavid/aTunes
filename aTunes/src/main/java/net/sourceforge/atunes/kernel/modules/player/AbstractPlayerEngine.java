@@ -507,7 +507,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	 */
 	private void playAudioObject(final IAudioObject audioObject) {
 		// First check audio object exists to avoid playing a non-existing file
-		if (audioObject.exists()) {
+		if (exists(audioObject)) {
 			Logger.info(StringUtils.getString("Started play of file ",
 					audioObject));
 
@@ -532,6 +532,13 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 		} else {
 			this.playListHandler.checkPlayListsItems();
 		}
+	}
+
+	private boolean exists(IAudioObject ao) {
+		if (ao instanceof ILocalAudioObject) {
+			return fileManager.exists((ILocalAudioObject) ao);
+		}
+		return true;
 	}
 
 	/**

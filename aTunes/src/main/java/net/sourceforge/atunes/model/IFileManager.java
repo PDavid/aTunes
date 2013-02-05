@@ -145,4 +145,10 @@ public interface IFileManager {
 	 * @param file
 	 */
 	void makeWritable(ILocalAudioObject file);
+
+	/**
+	 * @param ao
+	 * @return true if audio object exists
+	 */
+	boolean exists(ILocalAudioObject ao);
 }

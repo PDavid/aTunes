@@ -364,9 +364,4 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 			final IUnknownObjectChecker unknownObjectChecker) {
 		return getTitle();
 	}
-
-	@Override
-	public boolean exists() {
-		return true;
-	}
 }

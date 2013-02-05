@@ -28,7 +28,6 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.ITagAdapter;
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
-import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -141,25 +140,21 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 			// Be sure file is writable before setting info
 			this.fileManager.makeWritable(file);
 			org.jaudiotagger.audio.AudioFileIO
-					.delete(org.jaudiotagger.audio.AudioFileIO.read(file
-							.getFile()));
-		} catch (IOException e) {
-			reportWriteError(file, e);
+					.delete(readFile(file));
 		} catch (CannotReadException e) {
 			reportWriteError(file, e);
 		} catch (CannotWriteException e) {
-			reportWriteError(file, e);
-		} catch (TagException e) {
-			reportWriteError(file, e);
-		} catch (ReadOnlyFileException e) {
-			reportWriteError(file, e);
-		} catch (InvalidAudioFrameException e) {
 			reportWriteError(file, e);
 		} catch (Exception e) {
 			// We must catch any other exception to avoid throw exceptions
 			// outside this method
 			reportWriteError(file, e);
 		}
+	}
+
+	private AudioFile readFile(final ILocalAudioObject file) {
+		return this.jAudiotaggerFileReader.getAudioFile(file
+				.getFile());
 	}
 
 	@Override
@@ -227,8 +222,7 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 		// Be sure file is writable before setting info
 		this.fileManager.makeWritable(file);
 
-		org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO
-				.read(file.getFile());
+		org.jaudiotagger.audio.AudioFile audioFile = readFile(file);
 		org.jaudiotagger.tag.Tag newTag = audioFile
 				.getTagOrCreateAndSetDefault();
 
@@ -237,8 +231,7 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 			org.jaudiotagger.audio.mp3.MP3File mp3file = (org.jaudiotagger.audio.mp3.MP3File) audioFile;
 			if (mp3file.hasID3v1Tag() && !mp3file.hasID3v2Tag()) {
 				deleteTags(file);
-				audioFile = org.jaudiotagger.audio.AudioFileIO.read(file
-						.getFile());
+				audioFile = readFile(file);
 				newTag = audioFile.getTagOrCreateAndSetDefault();
 			}
 		}
@@ -412,22 +405,13 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 			final IJAudiotaggerTagModification modification) {
 		// Be sure file is writable before setting info
 		try {
-			FileUtils.setWritable(file.getFile());
-			org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO
-					.read(file.getFile());
+			fileManager.makeWritable(file);
+			org.jaudiotagger.audio.AudioFile audioFile = readFile(file);
 			org.jaudiotagger.tag.Tag newTag = audioFile
 					.getTagOrCreateAndSetDefault();
 			modification.modify(newTag);
 			audioFile.commit();
-		} catch (IOException e) {
-			reportWriteError(file, e);
-		} catch (CannotReadException e) {
-			reportWriteError(file, e);
 		} catch (TagException e) {
-			reportWriteError(file, e);
-		} catch (ReadOnlyFileException e) {
-			reportWriteError(file, e);
-		} catch (InvalidAudioFrameException e) {
 			reportWriteError(file, e);
 		} catch (CannotWriteException e) {
 			reportWriteError(file, e);
@@ -441,7 +425,7 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 	@Override
 	public void readTag(final ILocalAudioObject ao,
 			final boolean readAudioProperties) {
-		AudioFile file = this.jAudiotaggerFileReader.getAudioFile(ao.getFile());
+		AudioFile file = readFile(ao);
 		ao.setTag(this.jAudiotaggerTagCreator.createTag(ao, file));
 		this.jAudiotaggerAudioPropertiesReader.readAudioProperties(ao, file);
 	}

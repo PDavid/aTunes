@@ -185,9 +185,4 @@ public interface IAudioObject {
 	 */
 	public String getAudioObjectDescription(
 			IUnknownObjectChecker unknownObjectChecker);
-
-	/**
-	 * @return checks if audio object exists
-	 */
-	public boolean exists();
 }
