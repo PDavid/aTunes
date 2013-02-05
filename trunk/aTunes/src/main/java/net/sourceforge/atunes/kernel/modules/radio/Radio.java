@@ -329,9 +329,4 @@ public final class Radio implements IRadio {
 			final IUnknownObjectChecker unknownObjectChecker) {
 		return getTitle();
 	}
-
-	@Override
-	public boolean exists() {
-		return true;
-	}
 }

@@ -31,6 +31,7 @@ import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.TimeUtils;
 
+import org.apache.commons.io.FilenameUtils;
 import org.commonjukebox.plugins.model.PluginApi;
 import org.joda.time.base.BaseDateTime;
 
@@ -195,10 +196,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	 */
 	@Override
 	public String getNameWithoutExtension() {
-		if (this.filePath == null) {
-			return null;
-		}
-		return getFile().getName();
+		return FilenameUtils.getBaseName(filePath);
 	}
 
 	/**
@@ -396,10 +394,5 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 			this.fileSize = getFile() != null ? getFile().length() : 0;
 		}
 		return this.fileSize;
-	}
-
-	@Override
-	public boolean exists() {
-		return getFile().exists();
 	}
 }

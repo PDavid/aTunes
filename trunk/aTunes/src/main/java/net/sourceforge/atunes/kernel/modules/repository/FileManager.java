@@ -189,4 +189,9 @@ public class FileManager implements IFileManager {
 			Logger.error(e);
 		}
 	}
+
+	@Override
+	public boolean exists(ILocalAudioObject ao) {
+		return getAudioObjectFile(ao).exists();
+	}
 }
