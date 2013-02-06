@@ -29,6 +29,7 @@ import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -56,6 +57,15 @@ public class AddFilesToRepositoryTask {
 	private RepositoryAddService repositoryAddService;
 
 	private IPlayListHandler playListHandler;
+
+	private INavigationHandler navigationHandler;
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
 
 	/**
 	 * @param playListHandler
@@ -150,6 +160,7 @@ public class AddFilesToRepositoryTask {
 				this.repositoryHandler.getRepositoryTotalSize(),
 				repository.getTotalDurationInSeconds());
 		Logger.info("Repository refresh done");
+		this.navigationHandler.repositoryReloaded();
 		createPlayListWithImportedObjects(files);
 	}
 
