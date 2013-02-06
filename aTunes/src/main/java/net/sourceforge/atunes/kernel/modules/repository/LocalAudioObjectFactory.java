@@ -27,6 +27,7 @@ import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectReader;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
+import net.sourceforge.atunes.utils.FileUtils;
 
 /**
  * Returns local audio objects by reading or refreshing a file
@@ -58,7 +59,8 @@ public class LocalAudioObjectFactory implements ILocalAudioObjectFactory {
 
 	@Override
 	public ILocalAudioObject getLocalAudioObject(final File file) {
-		ILocalAudioObject audioObject = new AudioFile(file);
+		ILocalAudioObject audioObject = new AudioFile(
+				FileUtils.getNormalizedPath(file));
 		readAudioObject(audioObject);
 		return audioObject;
 	}
