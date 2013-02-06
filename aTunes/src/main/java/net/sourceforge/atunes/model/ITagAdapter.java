@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.model;
 
+import javax.swing.ImageIcon;
+
 /**
  * Handles tag read and write
  * 
@@ -113,4 +115,12 @@ public interface ITagAdapter {
 	 * @param readAudioProperties
 	 */
 	void readTag(ILocalAudioObject ao, boolean readAudioProperties);
+
+	/**
+	 * @param ao
+	 * @param width
+	 * @param height
+	 * @return image from audio object
+	 */
+	ImageIcon getImage(ILocalAudioObject ao, int width, int height);
 }

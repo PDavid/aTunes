@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
+import javax.swing.ImageIcon;
+
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectReader;
 
@@ -45,5 +47,11 @@ public final class TagReader implements ILocalAudioObjectReader {
 			boolean readAudioProperties) {
 		this.tagAdapterSelector.selectAdapter(ao).readTag(ao,
 				readAudioProperties);
+	}
+
+	@Override
+	public ImageIcon getImage(ILocalAudioObject ao, int width, int height) {
+		return this.tagAdapterSelector.selectAdapter(ao).getImage(ao, width,
+				height);
 	}
 }
