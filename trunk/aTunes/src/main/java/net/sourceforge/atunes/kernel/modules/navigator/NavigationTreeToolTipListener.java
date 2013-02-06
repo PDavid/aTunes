@@ -35,30 +35,42 @@ import net.sourceforge.atunes.model.ITreeObject;
  */
 public final class NavigationTreeToolTipListener extends MouseAdapter {
 
-	private final NavigationController controller;
+	private NavigationController navigationController;
 
-	private final INavigationHandler navigationHandler;
+	private INavigationHandler navigationHandler;
 
-	private final IStateNavigation stateNavigation;
+	private IStateNavigation stateNavigation;
 
-	private final ExtendedTooltipContent tooltipContent;
+	private ExtendedTooltipContent extendedTooltipContent;
 
 	/**
-	 * Instantiates a new navigation tree tool tip listener.
-	 * 
-	 * @param controller
-	 * @param stateNavigation
-	 * @param navigationHandler
-	 * @param tooltipContent
+	 * @param extendedTooltipContent
 	 */
-	public NavigationTreeToolTipListener(final NavigationController controller,
-			final IStateNavigation stateNavigation,
-			final INavigationHandler navigationHandler,
-			final ExtendedTooltipContent tooltipContent) {
-		this.controller = controller;
-		this.stateNavigation = stateNavigation;
+	public void setExtendedTooltipContent(
+			final ExtendedTooltipContent extendedTooltipContent) {
+		this.extendedTooltipContent = extendedTooltipContent;
+	}
+
+	/**
+	 * @param navigationController
+	 */
+	public void setNavigationController(
+			final NavigationController navigationController) {
+		this.navigationController = navigationController;
+	}
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
-		this.tooltipContent = tooltipContent;
+	}
+
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
 	}
 
 	@Override
@@ -67,8 +79,8 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
 			return;
 		}
 
-		this.tooltipContent.setCurrentExtendedToolTipContent(null);
-		this.tooltipContent.setVisible(false);
+		this.extendedTooltipContent.setCurrentExtendedToolTipContent(null);
+		this.extendedTooltipContent.setVisible(false);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -83,22 +95,23 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
 		if (node != null) {
 			final Object content = node.getUserObject();
 
-			if (content.equals(this.tooltipContent
+			if (content.equals(this.extendedTooltipContent
 					.getCurrentExtendedToolTipContent())) {
 				return;
 			}
 
 			// Show extended tooltip
-			if (this.tooltipContent.canObjectBeShownInExtendedToolTip(content)) {
-				if (!this.tooltipContent.isVisible()
-						|| this.tooltipContent
+			if (this.extendedTooltipContent
+					.canObjectBeShownInExtendedToolTip(content)) {
+				if (!this.extendedTooltipContent.isVisible()
+						|| this.extendedTooltipContent
 								.getCurrentExtendedToolTipContent() == null
-						|| this.tooltipContent
+						|| this.extendedTooltipContent
 								.getCurrentExtendedToolTipContent() != content) {
-					if (this.tooltipContent.isVisible()) {
-						this.tooltipContent.setVisible(false);
+					if (this.extendedTooltipContent.isVisible()) {
+						this.extendedTooltipContent.setVisible(false);
 					}
-					this.tooltipContent.setLocation(
+					this.extendedTooltipContent.setLocation(
 							(int) this.navigationHandler.getCurrentView()
 									.getTree().getLocationOnScreen().getX()
 									+ e.getX(), (int) this.navigationHandler
@@ -106,27 +119,29 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
 									.getLocationOnScreen().getY()
 									+ e.getY() + 20);
 
-					this.tooltipContent
+					this.extendedTooltipContent
 							.setToolTipContent((ITreeObject<? extends IAudioObject>) content);
-					this.tooltipContent
+					this.extendedTooltipContent
 							.setCurrentExtendedToolTipContent(content);
 				} else {
-					this.tooltipContent.setCurrentExtendedToolTipContent(null);
+					this.extendedTooltipContent
+							.setCurrentExtendedToolTipContent(null);
 				}
 
-				this.controller.getToolTipTimer().setInitialDelay(
+				this.navigationController.getToolTipTimer().setInitialDelay(
 						this.stateNavigation.getExtendedTooltipDelay() * 1000);
-				this.controller.getToolTipTimer().setRepeats(false);
-				this.controller.getToolTipTimer().start();
+				this.navigationController.getToolTipTimer().setRepeats(false);
+				this.navigationController.getToolTipTimer().start();
 			} else {
-				this.tooltipContent.setCurrentExtendedToolTipContent(null);
-				this.tooltipContent.setVisible(false);
-				this.controller.getToolTipTimer().stop();
+				this.extendedTooltipContent
+						.setCurrentExtendedToolTipContent(null);
+				this.extendedTooltipContent.setVisible(false);
+				this.navigationController.getToolTipTimer().stop();
 			}
 		} else {
-			this.tooltipContent.setCurrentExtendedToolTipContent(null);
-			this.tooltipContent.setVisible(false);
-			this.controller.getToolTipTimer().stop();
+			this.extendedTooltipContent.setCurrentExtendedToolTipContent(null);
+			this.extendedTooltipContent.setVisible(false);
+			this.navigationController.getToolTipTimer().stop();
 		}
 	}
 
@@ -136,8 +151,8 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
 			return;
 		}
 
-		this.tooltipContent.setCurrentExtendedToolTipContent(null);
-		this.tooltipContent.setVisible(false);
+		this.extendedTooltipContent.setCurrentExtendedToolTipContent(null);
+		this.extendedTooltipContent.setVisible(false);
 	}
 
 	@Override
@@ -150,7 +165,7 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
 			return;
 		}
 
-		this.tooltipContent.setCurrentExtendedToolTipContent(null);
-		this.tooltipContent.setVisible(false);
+		this.extendedTooltipContent.setCurrentExtendedToolTipContent(null);
+		this.extendedTooltipContent.setVisible(false);
 	}
 }

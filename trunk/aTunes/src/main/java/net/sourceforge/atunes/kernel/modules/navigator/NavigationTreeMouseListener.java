@@ -41,44 +41,69 @@ import net.sourceforge.atunes.model.ITreeNode;
  */
 public final class NavigationTreeMouseListener extends MouseAdapter {
 
-	private final NavigationController controller;
+	private NavigationController navigationController;
 
-	private final INavigationHandler navigationHandler;
+	private INavigationHandler navigationHandler;
 
-	private final ITable navigationTable;
+	private ITable navigationTable;
 
-	private final IStateNavigation stateNavigation;
+	private IStateNavigation stateNavigation;
 
-	private final IPlayListHandler playListHandler;
+	private IPlayListHandler playListHandler;
 
-	private final IOSManager osManager;
+	private IOSManager osManager;
 
-	private final ExtendedTooltipContent extendedTooltipContent;
+	private ExtendedTooltipContent extendedTooltipContent;
 
 	/**
-	 * Instantiates a new navigation tree mouse listener.
-	 * 
-	 * @param controller
-	 * @param navigationTable
-	 * @param stateNavigation
-	 * @param navigationHandler
-	 * @param playListHandler
-	 * @param osManager
 	 * @param extendedTooltipContent
 	 */
-	public NavigationTreeMouseListener(final NavigationController controller,
-			final ITable navigationTable,
-			final IStateNavigation stateNavigation,
-			final INavigationHandler navigationHandler,
-			final IPlayListHandler playListHandler, final IOSManager osManager,
+	public void setExtendedTooltipContent(
 			final ExtendedTooltipContent extendedTooltipContent) {
-		this.controller = controller;
-		this.navigationTable = navigationTable;
-		this.stateNavigation = stateNavigation;
-		this.navigationHandler = navigationHandler;
-		this.playListHandler = playListHandler;
-		this.osManager = osManager;
 		this.extendedTooltipContent = extendedTooltipContent;
+	}
+
+	/**
+	 * @param navigationController
+	 */
+	public void setNavigationController(
+			final NavigationController navigationController) {
+		this.navigationController = navigationController;
+	}
+
+	/**
+	 * @param navigationTable
+	 */
+	public void setNavigationTable(final ITable navigationTable) {
+		this.navigationTable = navigationTable;
+	}
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
 	}
 
 	/**
@@ -111,7 +136,7 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
 	@Override
 	public void mouseClicked(final MouseEvent e) {
 		INavigationView currentView = this.navigationHandler.getCurrentView();
-		this.controller.setPopupMenuCaller(currentView.getTree()
+		this.navigationController.setPopupMenuCaller(currentView.getTree()
 				.getSwingComponent());
 
 		if (GuiUtils.isSecondaryMouseButton(this.osManager, e)) {
@@ -134,7 +159,7 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
 					.getRowForLocation(e.getX(), e.getY());
 			if (selRow != -1 && e.getClickCount() == 2) {
 				ITreeNode node = currentView.getTree().getSelectedNode(e);
-				List<? extends IAudioObject> songs = this.controller
+				List<? extends IAudioObject> songs = this.navigationController
 						.getAudioObjectsForTreeNode(currentView.getClass(),
 								node);
 				this.playListHandler.addToVisiblePlayList(songs);
@@ -153,7 +178,7 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
 
 		this.extendedTooltipContent.setCurrentExtendedToolTipContent(null);
 		this.extendedTooltipContent.setVisible(false);
-		this.controller.getToolTipTimer().stop();
+		this.navigationController.getToolTipTimer().stop();
 	}
 
 }

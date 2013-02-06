@@ -38,29 +38,45 @@ import net.sourceforge.atunes.model.ITable;
  */
 public final class NavigationTableMouseListener extends MouseAdapter {
 
-	private final NavigationController controller;
-	private final ITable navigationTable;
-	private final INavigationHandler navigationHandler;
-	private final IPlayListHandler playListHandler;
-	private final IOSManager osManager;
+	private NavigationController navigationController;
+	private ITable navigationTable;
+	private INavigationHandler navigationHandler;
+	private IPlayListHandler playListHandler;
+	private IOSManager osManager;
 
 	/**
-	 * Instantiates a new navigation table mouse listener.
-	 * 
-	 * @param controller
+	 * @param navigationController
+	 */
+	public void setNavigationController(
+			final NavigationController navigationController) {
+		this.navigationController = navigationController;
+	}
+
+	/**
 	 * @param navigationTable
+	 */
+	public void setNavigationTable(final ITable navigationTable) {
+		this.navigationTable = navigationTable;
+	}
+
+	/**
 	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+
+	/**
 	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
+	/**
 	 * @param osManager
 	 */
-	public NavigationTableMouseListener(final NavigationController controller,
-			final ITable navigationTable,
-			final INavigationHandler navigationHandler,
-			final IPlayListHandler playListHandler, final IOSManager osManager) {
-		this.controller = controller;
-		this.navigationTable = navigationTable;
-		this.navigationHandler = navigationHandler;
-		this.playListHandler = playListHandler;
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
@@ -69,7 +85,7 @@ public final class NavigationTableMouseListener extends MouseAdapter {
 		INavigationView currentView = this.navigationHandler.getCurrentView();
 
 		if (GuiUtils.isSecondaryMouseButton(this.osManager, event)) {
-			this.controller.setPopupMenuCaller(this.navigationTable
+			this.navigationController.setPopupMenuCaller(this.navigationTable
 					.getSwingComponent());
 			int[] rowsSelected = this.navigationTable.getSelectedRows();
 			int selected = this.navigationTable.rowAtPoint(event.getPoint());
@@ -92,8 +108,8 @@ public final class NavigationTableMouseListener extends MouseAdapter {
 
 			// Show popup
 			currentView.getTablePopupMenu().show(
-					this.controller.getPopupMenuCaller(), event.getX(),
-					event.getY());
+					this.navigationController.getPopupMenuCaller(),
+					event.getX(), event.getY());
 		} else {
 			if (event.getClickCount() == 2) {
 				int[] selRow = this.navigationTable.getSelectedRows();

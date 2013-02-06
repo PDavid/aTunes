@@ -58,8 +58,6 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTree;
 import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
@@ -111,28 +109,7 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 
 	private IBeanFactory beanFactory;
 
-	private IPlayListHandler playListHandler;
-
 	private IControlsBuilder controlsBuilder;
-
-	private IOSManager osManager;
-
-	private ExtendedTooltipContent extendedTooltipContent;
-
-	/**
-	 * @param extendedTooltipContent
-	 */
-	public void setExtendedTooltipContent(
-			final ExtendedTooltipContent extendedTooltipContent) {
-		this.extendedTooltipContent = extendedTooltipContent;
-	}
-
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
-	}
 
 	/**
 	 * @param controlsBuilder
@@ -155,13 +132,6 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	public void setNavigationTableModel(
 			final NavigationTableModel navigationTableModel) {
 		this.navigationTableModel = navigationTableModel;
-	}
-
-	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(final IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
 	}
 
 	/**
@@ -279,13 +249,10 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 
 		// Add tree mouse listeners to all views
 		// Add tree tool tip listener to all views
-		NavigationTreeMouseListener treeMouseListener = new NavigationTreeMouseListener(
-				this, this.navigationTable, this.stateNavigation,
-				this.navigationHandler, this.playListHandler, this.osManager,
-				this.extendedTooltipContent);
-		NavigationTreeToolTipListener tooltipListener = new NavigationTreeToolTipListener(
-				this, this.stateNavigation, this.navigationHandler,
-				this.extendedTooltipContent);
+		NavigationTreeMouseListener treeMouseListener = this.beanFactory
+				.getBean(NavigationTreeMouseListener.class);
+		NavigationTreeToolTipListener tooltipListener = this.beanFactory
+				.getBean(NavigationTreeToolTipListener.class);
 		for (INavigationView view : this.navigationHandler.getNavigationViews()) {
 			view.getTree().addMouseListener(treeMouseListener);
 			view.getTree().addMouseListener(tooltipListener);
@@ -293,9 +260,8 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 			view.getTreeScrollPane().addMouseWheelListener(tooltipListener);
 		}
 
-		this.navigationTable.addMouseListener(new NavigationTableMouseListener(
-				this, this.navigationTable, this.navigationHandler,
-				this.playListHandler, this.osManager));
+		this.navigationTable.addMouseListener(this.beanFactory
+				.getBean(NavigationTableMouseListener.class));
 	}
 
 	@Override
