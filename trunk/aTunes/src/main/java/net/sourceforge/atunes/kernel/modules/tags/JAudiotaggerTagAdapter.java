@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -159,7 +160,8 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 	}
 
 	private AudioFile readFile(final ILocalAudioObject file) {
-		return this.jAudiotaggerFileReader.getAudioFile(file.getFile());
+		return this.jAudiotaggerFileReader
+				.getAudioFile(new File(file.getUrl()));
 	}
 
 	@Override
@@ -410,7 +412,7 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 			final IJAudiotaggerTagModification modification) {
 		// Be sure file is writable before setting info
 		try {
-			fileManager.makeWritable(file);
+			this.fileManager.makeWritable(file);
 			org.jaudiotagger.audio.AudioFile audioFile = readFile(file);
 			org.jaudiotagger.tag.Tag newTag = audioFile
 					.getTagOrCreateAndSetDefault();
@@ -436,9 +438,10 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 	}
 
 	@Override
-	public ImageIcon getImage(ILocalAudioObject file, int width, int height) {
+	public ImageIcon getImage(final ILocalAudioObject file, final int width,
+			final int height) {
 		Logger.debug("Getting internal image to file: ",
-				fileManager.getPath(file));
+				this.fileManager.getPath(file));
 		try {
 			org.jaudiotagger.tag.Tag tag = readFile(file).getTag();
 			if (tag != null) {
@@ -452,7 +455,7 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 			}
 		} catch (FileNotFoundException e) {
 			Logger.error(StringUtils.getString("File not found: ",
-					fileManager.getPath(file)));
+					this.fileManager.getPath(file)));
 		} catch (Exception e) {
 			Logger.error(e);
 		}

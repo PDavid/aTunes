@@ -149,8 +149,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	 * 
 	 * @return the file on disk
 	 */
-	@Override
-	public File getFile() {
+	private File getFile() {
 		return this.filePath != null ? new File(this.filePath) : null;
 	}
 
@@ -196,7 +195,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	 */
 	@Override
 	public String getNameWithoutExtension() {
-		return FilenameUtils.getBaseName(filePath);
+		return FilenameUtils.getBaseName(this.filePath);
 	}
 
 	/**
@@ -280,17 +279,9 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 		return this.tag != null && this.tag.hasInternalImage();
 	}
 
-	/**
-	 * Checks if is up to date.
-	 * 
-	 * @return true, if is up to date
-	 */
 	@Override
-	public boolean isUpToDate() {
-		if (this.filePath == null) {
-			return false;
-		}
-		return this.readTime > getFile().lastModified();
+	public long getReadTime() {
+		return this.readTime;
 	}
 
 	/**
