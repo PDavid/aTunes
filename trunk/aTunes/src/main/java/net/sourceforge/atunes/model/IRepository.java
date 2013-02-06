@@ -27,8 +27,9 @@ import java.util.Map;
 
 /**
  * An object that holds information about a collection of music
+ * 
  * @author alex
- *
+ * 
  */
 public interface IRepository {
 
@@ -69,12 +70,14 @@ public interface IRepository {
 
 	/**
 	 * Adds the size in bytes
+	 * 
 	 * @param bytes
 	 */
 	public void addSizeInBytes(long bytes);
 
 	/**
 	 * Removes the size in bytes
+	 * 
 	 * @param bytes
 	 */
 	public void removeSizeInBytes(long bytes);
@@ -95,7 +98,9 @@ public interface IRepository {
 
 	/**
 	 * Validates this repository throwing exception if object is not consistent.
-	 * For example when a new attribute is added a repository object without that attribute can be considered invalid
+	 * For example when a new attribute is added a repository object without
+	 * that attribute can be considered invalid
+	 * 
 	 * @throws InconsistentRepositoryException
 	 */
 	public void validateRepository() throws InconsistentRepositoryException;
@@ -119,12 +124,14 @@ public interface IRepository {
 
 	/**
 	 * Gets all files
+	 * 
 	 * @return
 	 */
 	public Collection<ILocalAudioObject> getFiles();
 
 	/**
 	 * Puts a new file
+	 * 
 	 * @param file
 	 * @return
 	 */
@@ -132,24 +139,28 @@ public interface IRepository {
 
 	/**
 	 * Removes a file
+	 * 
 	 * @param file
 	 */
 	public void removeFile(ILocalAudioObject file);
 
 	/**
 	 * Removes a file
-	 * @param file
+	 * 
+	 * @param path
 	 */
-	public void removeFile(File file);
+	public void removeFile(String path);
 
 	/**
 	 * Return number of artists
+	 * 
 	 * @return
 	 */
 	public int countArtists();
 
 	/**
 	 * Returns artist given by name or null
+	 * 
 	 * @param artistName
 	 * @return
 	 */
@@ -157,12 +168,14 @@ public interface IRepository {
 
 	/**
 	 * Returns all artists
+	 * 
 	 * @return
 	 */
 	public Collection<IArtist> getArtists();
 
 	/**
 	 * Adds an artist to repository
+	 * 
 	 * @param artist
 	 * @return created artist
 	 */
@@ -170,12 +183,14 @@ public interface IRepository {
 
 	/**
 	 * Removes artist from repository
+	 * 
 	 * @param artist
 	 */
 	public void removeArtist(IArtist artist);
 
 	/**
 	 * Returns folder
+	 * 
 	 * @param path
 	 * @return
 	 */
@@ -183,12 +198,14 @@ public interface IRepository {
 
 	/**
 	 * Returns all folders
+	 * 
 	 * @return
 	 */
 	public Collection<IFolder> getFolders();
 
 	/**
 	 * Puts folder
+	 * 
 	 * @param folder
 	 * @return
 	 */
@@ -196,12 +213,14 @@ public interface IRepository {
 
 	/**
 	 * Returns all genres
+	 * 
 	 * @return
 	 */
 	public Collection<IGenre> getGenres();
 
 	/**
 	 * Returns genre given by name or null
+	 * 
 	 * @param genre
 	 * @return
 	 */
@@ -209,6 +228,7 @@ public interface IRepository {
 
 	/**
 	 * Adds a genre to repository
+	 * 
 	 * @param genre
 	 * @return created genre
 	 */
@@ -216,12 +236,14 @@ public interface IRepository {
 
 	/**
 	 * Removes genre from repository
+	 * 
 	 * @param genre
 	 */
 	public void removeGenre(IGenre genre);
 
 	/**
 	 * Returns year
+	 * 
 	 * @param year
 	 * @return
 	 */
@@ -229,12 +251,14 @@ public interface IRepository {
 
 	/**
 	 * Gets all years
+	 * 
 	 * @return
 	 */
 	public Collection<IYear> getYears();
 
 	/**
 	 * Puts a year
+	 * 
 	 * @param year
 	 * @param unknownObjectChecker
 	 * @return
@@ -243,37 +267,44 @@ public interface IRepository {
 
 	/**
 	 * Removes a year
+	 * 
 	 * @param year
 	 * @param unknownObjectChecker
 	 */
-	public void removeYear(IYear year, IUnknownObjectChecker unknownObjectChecker);
+	public void removeYear(IYear year,
+			IUnknownObjectChecker unknownObjectChecker);
 
 	/**
 	 * Returns data organized by years
+	 * 
 	 * @return
 	 */
 	public Map<String, ?> getYearStructure();
 
 	/**
 	 * Returns data organized by genre
+	 * 
 	 * @return
 	 */
 	public Map<String, ?> getGenreStructure();
 
 	/**
 	 * Returns data organized by folder
+	 * 
 	 * @return
 	 */
 	public Map<String, ?> getFolderStructure();
 
 	/**
 	 * Returns data organized by folder
+	 * 
 	 * @return
 	 */
 	public Map<String, ?> getAlbumStructure();
 
 	/**
 	 * Returns data organized by artist
+	 * 
 	 * @return
 	 */
 	public Map<String, ?> getArtistStructure();

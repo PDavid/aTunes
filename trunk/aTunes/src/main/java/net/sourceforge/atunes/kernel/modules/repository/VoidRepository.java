@@ -38,13 +38,15 @@ import net.sourceforge.atunes.model.InconsistentRepositoryException;
 
 /**
  * A repository used before repository is loaded or selected, it does nothing
+ * 
  * @author alex
- *
+ * 
  */
 public class VoidRepository implements IRepository {
 
 	@Override
-	public void setStateRepository(final IStateRepository state) {}
+	public void setStateRepository(final IStateRepository state) {
+	}
 
 	@Override
 	public List<File> getRepositoryFolders() {
@@ -52,10 +54,12 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public void addDurationInSeconds(final long seconds) {}
+	public void addDurationInSeconds(final long seconds) {
+	}
 
 	@Override
-	public void removeDurationInSeconds(final long seconds) {}
+	public void removeDurationInSeconds(final long seconds) {
+	}
 
 	@Override
 	public long getTotalDurationInSeconds() {
@@ -63,10 +67,12 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public void addSizeInBytes(final long bytes) {}
+	public void addSizeInBytes(final long bytes) {
+	}
 
 	@Override
-	public void removeSizeInBytes(final long bytes) {}
+	public void removeSizeInBytes(final long bytes) {
+	}
 
 	@Override
 	public long getTotalSizeInBytes() {
@@ -79,7 +85,8 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public void validateRepository() throws InconsistentRepositoryException {}
+	public void validateRepository() throws InconsistentRepositoryException {
+	}
 
 	@Override
 	public int countFiles() {
@@ -102,10 +109,8 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public void removeFile(final ILocalAudioObject file) {}
-
-	@Override
-	public void removeFile(final File file) {}
+	public void removeFile(final ILocalAudioObject file) {
+	}
 
 	@Override
 	public int countArtists() {
@@ -128,7 +133,8 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public void removeArtist(final IArtist artist) {}
+	public void removeArtist(final IArtist artist) {
+	}
 
 	@Override
 	public IFolder getFolder(final String path) {
@@ -161,7 +167,8 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public void removeGenre(final IGenre genre) {}
+	public void removeGenre(final IGenre genre) {
+	}
 
 	@Override
 	public IYear getYear(final String year) {
@@ -174,7 +181,8 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public IYear putYear(final IYear year, final IUnknownObjectChecker unknownObjectChecker) {
+	public IYear putYear(final IYear year,
+			final IUnknownObjectChecker unknownObjectChecker) {
 		return null;
 	}
 
@@ -206,5 +214,9 @@ public class VoidRepository implements IRepository {
 	@Override
 	public Map<String, ?> getArtistStructure() {
 		return Collections.emptyMap();
+	}
+
+	@Override
+	public void removeFile(String path) {
 	}
 }

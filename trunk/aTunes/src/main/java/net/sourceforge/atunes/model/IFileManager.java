@@ -151,4 +151,11 @@ public interface IFileManager {
 	 * @return true if audio object exists
 	 */
 	boolean exists(ILocalAudioObject ao);
+
+	/**
+	 * @param audioFile
+	 * @param name
+	 * @return true if rename completed successfully
+	 */
+	boolean rename(ILocalAudioObject audioFile, String name);
 }

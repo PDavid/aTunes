@@ -55,13 +55,9 @@ import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.CollectionUtils;
-import net.sourceforge.atunes.utils.FileNameUtils;
-import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
-
-import org.apache.commons.io.FilenameUtils;
 
 /**
  * The repository handler.
@@ -506,39 +502,16 @@ public final class RepositoryHandler extends AbstractHandler implements
 
 	@Override
 	public void rename(final ILocalAudioObject audioFile, final String name) {
-		File file = audioFile.getFile();
-		String extension = FilenameUtils
-				.getExtension(net.sourceforge.atunes.utils.FileUtils
-						.getPath(file));
-		File newFile = getOsManager().getFile(
-				FileUtils.getPath(file.getParentFile()),
-				StringUtils.getString(
-						FileNameUtils.getValidFileName(name, getOsManager()),
-						".", extension));
-		boolean succeeded = file.renameTo(newFile);
-		if (succeeded) {
-			renameFile(audioFile, file, newFile);
+		String oldName = fileManager.getPath(audioFile);
+		if (fileManager.rename(audioFile, name)) {
+			startTransaction();
+			this.repository.removeFile(oldName);
+			this.repository.putFile(audioFile);
+			endTransaction();
 			this.navigationHandler.repositoryReloaded();
-			this.statisticsHandler.updateFileName(audioFile,
-					net.sourceforge.atunes.utils.FileUtils.getPath(file),
-					net.sourceforge.atunes.utils.FileUtils.getPath(newFile));
+			this.statisticsHandler.updateFileName(audioFile, oldName,
+					fileManager.getPath(audioFile));
 		}
-	}
-
-	/**
-	 * Renames a file in repository
-	 * 
-	 * @param audioFile
-	 * @param oldFile
-	 * @param newFile
-	 */
-	private void renameFile(final ILocalAudioObject audioFile,
-			final File oldFile, final File newFile) {
-		startTransaction();
-		audioFile.setFile(newFile);
-		this.repository.removeFile(oldFile);
-		this.repository.putFile(audioFile);
-		endTransaction();
 	}
 
 	/**
