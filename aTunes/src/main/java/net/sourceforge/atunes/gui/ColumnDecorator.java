@@ -26,31 +26,62 @@ import javax.swing.JTable;
 import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.PlaybackState;
 
 /**
- * Common renderers for columns
+ * Used to decorate columns with renderers
  * 
- * @author fleax
+ * @author alex
  * 
  */
-public final class ColumnRenderers {
+public class ColumnDecorator {
 
-	private ColumnRenderers() {
+	private ILookAndFeelManager lookAndFeelManager;
 
+	private ITable table;
+
+	private AbstractCommonColumnModel columnModel;
+
+	/**
+	 * @param table
+	 */
+	public void setTable(final ITable table) {
+		this.table = table;
+	}
+
+	/**
+	 * @param columnModel
+	 */
+	public void setColumnModel(final AbstractCommonColumnModel columnModel) {
+		this.columnModel = columnModel;
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
+	 * Apply decorator
+	 */
+	public void decorate() {
+		addRenderers(this.table.getSwingComponent(), this.columnModel,
+				this.lookAndFeelManager.getCurrentLookAndFeel());
 	}
 
 	/**
 	 * Add renderers to table
 	 * 
-	 * USE ColumnDecorator
-	 * 
 	 * @param jtable
 	 * @param model
 	 * @param lookAndFeel
 	 */
-	@Deprecated
-	public static void addRenderers(final JTable jtable,
+	private void addRenderers(final JTable jtable,
 			final AbstractCommonColumnModel model,
 			final ILookAndFeel lookAndFeel) {
 
@@ -87,4 +118,5 @@ public final class ColumnRenderers {
 				.getTableCellRenderer(model
 						.getRendererCodeFor(PlaybackState.class)));
 	}
+
 }

@@ -32,7 +32,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
-import net.sourceforge.atunes.gui.ColumnRenderers;
+import net.sourceforge.atunes.gui.ColumnDecorator;
 import net.sourceforge.atunes.gui.NavigationTableColumnModel;
 import net.sourceforge.atunes.gui.NavigationTableModel;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
@@ -53,7 +53,6 @@ import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTree;
 import net.sourceforge.atunes.model.INavigationTreePanel;
@@ -90,8 +89,6 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	private IColumnSet navigatorColumnSet;
 
 	private INavigationHandler navigationHandler;
-
-	private ILookAndFeelManager lookAndFeelManager;
 
 	private IFilterHandler filterHandler;
 
@@ -185,14 +182,6 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	}
 
 	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(
-			final ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-
-	/**
 	 * @param filterHandler
 	 */
 	public void setFilterHandler(final IFilterHandler filterHandler) {
@@ -223,9 +212,8 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 
 	@Override
 	public void addBindings() {
-		ColumnRenderers.addRenderers(this.navigationTable.getSwingComponent(),
-				this.navigationTableColumnModel,
-				this.lookAndFeelManager.getCurrentLookAndFeel());
+		this.beanFactory.getBean("navigatorTableColumnDecorator",
+				ColumnDecorator.class).decorate();
 
 		new ColumnSetRowSorter(this.navigationTable.getSwingComponent(),
 				this.navigationTableModel, this.navigationTableColumnModel);
