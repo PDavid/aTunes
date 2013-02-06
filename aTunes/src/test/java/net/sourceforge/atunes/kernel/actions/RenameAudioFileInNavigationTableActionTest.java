@@ -26,12 +26,12 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -52,16 +52,19 @@ public class RenameAudioFileInNavigationTableActionTest {
 		sut.setNavigationHandler(navigationHandler);
 		sut.setDialogFactory(dialogFactory);
 		IInputDialog inputDialog = mock(IInputDialog.class);
-		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(inputDialog);
+		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(
+				inputDialog);
 		when(inputDialog.getResult()).thenReturn("new");
 		ILocalAudioObject ao = mock(ILocalAudioObject.class);
-		when(ao.getFile()).thenReturn(new File("old"));
+		IFileManager fileManager = mock(IFileManager.class);
+		sut.setFileManager(fileManager);
+		when(fileManager.getPath(ao)).thenReturn("old");
 		List<IAudioObject> list = new ArrayList<IAudioObject>();
 		list.add(ao);
 		when(navigationHandler.getFilesSelectedInNavigator()).thenReturn(list);
-		
+
 		sut.executeAction();
-		
+
 		verify(repositoryHandler).rename(ao, "new");
 	}
 
@@ -75,16 +78,18 @@ public class RenameAudioFileInNavigationTableActionTest {
 		sut.setNavigationHandler(navigationHandler);
 		sut.setDialogFactory(dialogFactory);
 		IInputDialog inputDialog = mock(IInputDialog.class);
-		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(inputDialog);
+		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(
+				inputDialog);
 		when(inputDialog.getResult()).thenReturn("new");
 		IRadio radio = mock(IRadio.class);
 		List<IAudioObject> list = new ArrayList<IAudioObject>();
 		list.add(radio);
 		when(navigationHandler.getFilesSelectedInNavigator()).thenReturn(list);
-		
+
 		sut.executeAction();
-		
-		verify(repositoryHandler, never()).rename(any(ILocalAudioObject.class), any(String.class));
+
+		verify(repositoryHandler, never()).rename(any(ILocalAudioObject.class),
+				any(String.class));
 	}
 
 	@Test
@@ -97,16 +102,20 @@ public class RenameAudioFileInNavigationTableActionTest {
 		sut.setNavigationHandler(navigationHandler);
 		sut.setDialogFactory(dialogFactory);
 		IInputDialog inputDialog = mock(IInputDialog.class);
-		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(inputDialog);
+		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(
+				inputDialog);
 		when(inputDialog.getResult()).thenReturn(null);
 		ILocalAudioObject ao = mock(ILocalAudioObject.class);
-		when(ao.getFile()).thenReturn(new File("old"));
+		IFileManager fileManager = mock(IFileManager.class);
+		sut.setFileManager(fileManager);
+		when(fileManager.getPath(ao)).thenReturn("old");
 		List<IAudioObject> list = new ArrayList<IAudioObject>();
 		list.add(ao);
 		when(navigationHandler.getFilesSelectedInNavigator()).thenReturn(list);
-		
+
 		sut.executeAction();
-		
-		verify(repositoryHandler, never()).rename(any(ILocalAudioObject.class), any(String.class));
+
+		verify(repositoryHandler, never()).rename(any(ILocalAudioObject.class),
+				any(String.class));
 	}
 }
