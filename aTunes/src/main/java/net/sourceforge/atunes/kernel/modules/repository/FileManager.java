@@ -114,7 +114,7 @@ public class FileManager implements IFileManager {
 	 */
 	private File getAudioObjectFile(final ILocalAudioObject ao) {
 		Preconditions.checkNotNull(ao);
-		return ao.getFile();
+		return new File(ao.getUrl());
 	}
 
 	@Override
@@ -194,21 +194,28 @@ public class FileManager implements IFileManager {
 	}
 
 	@Override
-	public boolean exists(ILocalAudioObject ao) {
+	public boolean exists(final ILocalAudioObject ao) {
 		return getAudioObjectFile(ao).exists();
 	}
 
 	@Override
-	public boolean rename(ILocalAudioObject audioFile, String name) {
-		File file = audioFile.getFile();
+	public boolean rename(final ILocalAudioObject audioFile, final String name) {
+		File file = getAudioObjectFile(audioFile);
 		String extension = FilenameUtils.getExtension(getPath(audioFile));
-		File newFile = osManager.getFile(getFolderPath(audioFile), StringUtils
-				.getString(FileNameUtils.getValidFileName(name, osManager),
+		File newFile = this.osManager.getFile(getFolderPath(audioFile),
+				StringUtils.getString(
+						FileNameUtils.getValidFileName(name, this.osManager),
 						".", extension));
 		boolean succeeded = file.renameTo(newFile);
 		if (succeeded) {
 			audioFile.setFile(newFile);
 		}
 		return succeeded;
+	}
+
+	@Override
+	public boolean isUpToDate(final ILocalAudioObject audioFile) {
+		return audioFile.getReadTime() > getAudioObjectFile(audioFile)
+				.lastModified();
 	}
 }

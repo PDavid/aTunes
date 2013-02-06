@@ -23,25 +23,14 @@ package net.sourceforge.atunes.model;
 import java.io.File;
 import java.io.Serializable;
 
-
 /**
  * An audio object located in disk
+ * 
  * @author alex
- *
+ * 
  */
-public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioObject>, Serializable {
-
-	/**
-	 * Returns file containing audio object
-	 * @return
-	 */
-	File getFile();
-
-	/**
-	 * Returns true if audio object information is updated
-	 * @return
-	 */
-	boolean isUpToDate();
+public interface ILocalAudioObject extends IAudioObject,
+		Comparable<ILocalAudioObject>, Serializable {
 
 	/**
 	 * Gets the tag.
@@ -81,24 +70,28 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
 
 	/**
 	 * Sets duration
+	 * 
 	 * @param trackLength
 	 */
 	void setDuration(int trackLength);
 
 	/**
 	 * Set bitrate
+	 * 
 	 * @param bitRateAsNumber
 	 */
 	void setBitrate(long bitRateAsNumber);
 
 	/**
 	 * Set frequency
+	 * 
 	 * @param sampleRateAsNumber
 	 */
 	void setFrequency(int sampleRateAsNumber);
 
 	/**
 	 * Set when object is read
+	 * 
 	 * @param currentTimeMillis
 	 */
 	void setReadTime(long currentTimeMillis);
@@ -107,4 +100,9 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
 	 * @return size in bytes
 	 */
 	long getSize();
+
+	/**
+	 * @return time when audio object was read
+	 */
+	long getReadTime();
 }

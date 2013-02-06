@@ -158,4 +158,12 @@ public interface IFileManager {
 	 * @return true if rename completed successfully
 	 */
 	boolean rename(ILocalAudioObject audioFile, String name);
+
+	/**
+	 * Checks if is up to date.
+	 * 
+	 * @param audioFile
+	 * @return true, if is up to date
+	 */
+	boolean isUpToDate(ILocalAudioObject audioFile);
 }

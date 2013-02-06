@@ -68,7 +68,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader,
 	/**
 	 * @param fileManager
 	 */
-	public void setFileManager(IFileManager fileManager) {
+	public void setFileManager(final IFileManager fileManager) {
 		this.fileManager = fileManager;
 	}
 
@@ -108,21 +108,21 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader,
 	 * @return
 	 */
 	protected final List<File> getFolders() {
-		return folders;
+		return this.folders;
 	}
 
 	/**
 	 * @return
 	 */
 	protected final int getFilesLoaded() {
-		return filesLoaded;
+		return this.filesLoaded;
 	}
 
 	/**
 	 * @return
 	 */
 	protected final boolean isInterrupt() {
-		return interrupt;
+		return this.interrupt;
 	}
 
 	/**
@@ -139,7 +139,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader,
 	 * @return
 	 */
 	protected final long getStartReadTime() {
-		return startReadTime;
+		return this.startReadTime;
 	}
 
 	/**
@@ -181,7 +181,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader,
 	 * @return
 	 */
 	protected final IRepositoryLoaderListener getRepositoryLoaderListener() {
-		return listener;
+		return this.listener;
 	}
 
 	/**
@@ -190,7 +190,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader,
 	@Override
 	public void interruptLoad() {
 		Logger.info("Load interrupted");
-		interrupt = true;
+		this.interrupt = true;
 	}
 
 	/**
@@ -198,13 +198,14 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader,
 	 */
 	private void loadRepository() {
 		runTasksBeforeLoadRepository();
-		startReadTime = System.currentTimeMillis();
+		this.startReadTime = System.currentTimeMillis();
 
-		RepositoryFiller filler = new RepositoryFiller(repository,
-				stateNavigation, unknownObjectChecker, fileManager);
-		for (File folder : folders) {
+		RepositoryFiller filler = new RepositoryFiller(this.repository,
+				this.stateNavigation, this.unknownObjectChecker,
+				this.fileManager);
+		for (File folder : this.folders) {
 			String fastRepositoryPath = FileUtils.getNormalizedPath(folder);
-			fastFirstChar = fastRepositoryPath.length() + 1;
+			this.fastFirstChar = fastRepositoryPath.length() + 1;
 
 			if (folder.exists()) {
 				navigateDir(filler, folder, folder);
@@ -221,7 +222,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader,
 	 */
 	private void navigateDir(final RepositoryFiller filler,
 			final File relativeTo, final File dir) {
-		if (!interrupt) {
+		if (!this.interrupt) {
 			// Process directories
 			processDirectories(filler, dir, relativeTo);
 
@@ -240,7 +241,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader,
 	private void processDirectories(final RepositoryFiller filler,
 			final File dir, final File relativeTo) {
 		// Directories
-		File[] dirs = dir.listFiles(directoryFileFilter);
+		File[] dirs = dir.listFiles(this.directoryFileFilter);
 
 		// Process directories
 		if (dirs != null) {
@@ -260,15 +261,15 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader,
 	private void processAudioFiles(final RepositoryFiller filler,
 			final File dir, final File relativeTo) {
 		// Get audio files
-		File[] audiofiles = dir.listFiles(validLocalAudioObjectFileFilter);
+		File[] audiofiles = dir.listFiles(this.validLocalAudioObjectFileFilter);
 
 		// Process audio files
 		if (audiofiles != null && audiofiles.length > 0) {
 			String pathToFile = FileUtils.getNormalizedPath(dir);
 			int lastChar = pathToFile.lastIndexOf('/') + 1;
 			final String relativePath;
-			if (fastFirstChar <= lastChar) {
-				relativePath = pathToFile.substring(fastFirstChar);
+			if (this.fastFirstChar <= lastChar) {
+				relativePath = pathToFile.substring(this.fastFirstChar);
 			} else {
 				relativePath = ".";
 			}
@@ -276,7 +277,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader,
 			notifyCurrentPath(relativePath);
 
 			for (File audiofile : audiofiles) {
-				if (!interrupt) {
+				if (!this.interrupt) {
 					processAudioFile(audiofile, filler, relativeTo,
 							relativePath);
 				}
@@ -329,31 +330,33 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader,
 		// last repository load
 		// don't read file again
 
-		if (oldRepository == null) {
-			audio = localAudioObjectFactory.getLocalAudioObject(audiofile);
+		if (this.oldRepository == null) {
+			audio = this.localAudioObjectFactory.getLocalAudioObject(audiofile);
 		} else {
-			ILocalAudioObject oldAudioFile = oldRepository
+			ILocalAudioObject oldAudioFile = this.oldRepository
 					.getFile(net.sourceforge.atunes.utils.FileUtils
 							.getPath(audiofile));
-			if (oldAudioFile != null && oldAudioFile.isUpToDate()) {
+			if (oldAudioFile != null
+					&& this.fileManager.isUpToDate(oldAudioFile)) {
 				audio = oldAudioFile;
 			} else {
-				audio = localAudioObjectFactory.getLocalAudioObject(audiofile);
+				audio = this.localAudioObjectFactory
+						.getLocalAudioObject(audiofile);
 			}
 		}
 
 		notifyFileLoaded();
-		filesLoaded++;
+		this.filesLoaded++;
 		filler.addAudioFile(audio, relativeTo, relativePath);
-		notifyCurrentAlbum(audio.getArtist(unknownObjectChecker),
-				audio.getAlbum(unknownObjectChecker));
+		notifyCurrentAlbum(audio.getArtist(this.unknownObjectChecker),
+				audio.getAlbum(this.unknownObjectChecker));
 	}
 
 	/**
 	 * Notify finish.
 	 */
 	private void notifyFinish() {
-		transaction.finishTransaction();
+		this.transaction.finishTransaction();
 		notifyFinishLoader();
 	}
 
@@ -367,14 +370,14 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader,
 		Logger.info("Starting repository read");
 		Timer timer = new Timer();
 		timer.start();
-		if (!folders.isEmpty()) {
+		if (!this.folders.isEmpty()) {
 			loadRepository();
 		} else {
 			Logger.error("No folders selected for repository");
 		}
-		if (!interrupt) {
+		if (!this.interrupt) {
 			double time = timer.stop();
-			long files = repository.countFiles();
+			long files = this.repository.countFiles();
 			double averageFileTime = time / files;
 			Logger.info(StringUtils.getString("Read repository process DONE (",
 					files, " files, ", time, " seconds, ",
@@ -389,6 +392,6 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader,
 	 */
 	@Override
 	public IRepository getOldRepository() {
-		return oldRepository;
+		return this.oldRepository;
 	}
 }
