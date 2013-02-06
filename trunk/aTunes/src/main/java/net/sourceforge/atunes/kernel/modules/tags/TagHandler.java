@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.EditTagSources;
@@ -340,4 +342,9 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 		return this.checkers.get(attribute);
 	}
 
+	@Override
+	public ImageIcon getImage(ILocalAudioObject audioObject, int width,
+			int height) {
+		return null;
+	}
 }

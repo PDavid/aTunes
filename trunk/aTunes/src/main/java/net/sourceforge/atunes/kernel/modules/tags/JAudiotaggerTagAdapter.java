@@ -20,7 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.kernel.modules.repository.JAudiotaggerAudioPropertiesReader;
 import net.sourceforge.atunes.model.IFileManager;
@@ -28,6 +34,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.ITagAdapter;
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
+import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -139,8 +146,7 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 		try {
 			// Be sure file is writable before setting info
 			this.fileManager.makeWritable(file);
-			org.jaudiotagger.audio.AudioFileIO
-					.delete(readFile(file));
+			org.jaudiotagger.audio.AudioFileIO.delete(readFile(file));
 		} catch (CannotReadException e) {
 			reportWriteError(file, e);
 		} catch (CannotWriteException e) {
@@ -153,8 +159,7 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 	}
 
 	private AudioFile readFile(final ILocalAudioObject file) {
-		return this.jAudiotaggerFileReader.getAudioFile(file
-				.getFile());
+		return this.jAudiotaggerFileReader.getAudioFile(file.getFile());
 	}
 
 	@Override
@@ -429,4 +434,63 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 		ao.setTag(this.jAudiotaggerTagCreator.createTag(ao, file));
 		this.jAudiotaggerAudioPropertiesReader.readAudioProperties(ao, file);
 	}
+
+	@Override
+	public ImageIcon getImage(ILocalAudioObject file, int width, int height) {
+		Logger.debug("Getting internal image to file: ",
+				fileManager.getPath(file));
+		try {
+			org.jaudiotagger.tag.Tag tag = readFile(file).getTag();
+			if (tag != null) {
+				Artwork artwork = tag.getFirstArtwork();
+				byte[] imageRawData = artwork != null ? artwork.getBinaryData()
+						: null;
+
+				if (imageRawData != null) {
+					return processInternalPicture(width, height, imageRawData);
+				}
+			}
+		} catch (FileNotFoundException e) {
+			Logger.error(StringUtils.getString("File not found: ",
+					fileManager.getPath(file)));
+		} catch (Exception e) {
+			Logger.error(e);
+		}
+		return null;
+	}
+
+	/**
+	 * @param width
+	 * @param height
+	 * @param imageRawData
+	 * @throws IOException
+	 */
+	private ImageIcon processInternalPicture(final int width, final int height,
+			final byte[] imageRawData) throws IOException {
+		BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
+		if (bi != null) {
+			ImageIcon imageIcon = new ImageIcon(bi);
+			if (width != -1 || height != -1) {
+				int maxSize = (imageIcon.getIconWidth() > imageIcon
+						.getIconHeight()) ? imageIcon.getIconWidth()
+						: imageIcon.getIconHeight();
+				int newWidth = (int) ((float) imageIcon.getIconWidth()
+						/ (float) maxSize * width);
+				int newHeight = (int) ((float) imageIcon.getIconHeight()
+						/ (float) maxSize * height);
+
+				BufferedImage resizedImage = ImageUtils
+						.toBufferedImage(ImageUtils.scaleImageBicubic(
+								imageIcon.getImage(), newWidth, newHeight)
+								.getImage());
+				if (resizedImage != null) {
+					return new ImageIcon(resizedImage);
+				}
+			} else {
+				return new ImageIcon(bi);
+			}
+		}
+		return null;
+	}
+
 }

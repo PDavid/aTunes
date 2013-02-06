@@ -24,6 +24,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+
 /**
  * Responsible of tag edition
  * 
@@ -161,4 +163,12 @@ public interface ITagHandler extends IHandler {
 	 * @param value
 	 */
 	void setStars(ILocalAudioObject audioObject, Integer value);
+
+	/**
+	 * @param audioObject
+	 * @param width
+	 * @param height
+	 * @return image stored in tag
+	 */
+	ImageIcon getImage(ILocalAudioObject audioObject, int width, int height);
 }

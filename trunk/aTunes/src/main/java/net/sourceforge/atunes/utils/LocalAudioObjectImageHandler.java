@@ -20,13 +20,9 @@
 
 package net.sourceforge.atunes.utils;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.IAudioObject;
@@ -34,11 +30,10 @@ import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 import org.apache.sanselan.ImageWriteException;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.tag.datatype.Artwork;
 
 /**
  * This class gets images associated to audio files Images can be internal (like
@@ -54,6 +49,15 @@ public final class LocalAudioObjectImageHandler implements
 	private IUnknownObjectChecker unknownObjectChecker;
 
 	private IFileManager fileManager;
+
+	private ITagHandler tagHandler;
+
+	/**
+	 * @param tagHandler
+	 */
+	public void setTagHandler(ITagHandler tagHandler) {
+		this.tagHandler = tagHandler;
+	}
 
 	/**
 	 * @param osManager
@@ -158,69 +162,8 @@ public final class LocalAudioObjectImageHandler implements
 			return null;
 		}
 
-		ILocalAudioObject file = (ILocalAudioObject) audioObject;
-		if (file.getFile() == null) {
-			return null;
-		}
-		Logger.debug("Getting internal image to file: ",
-				net.sourceforge.atunes.utils.FileUtils.getPath(file.getFile()));
-		try {
-			org.jaudiotagger.tag.Tag tag = AudioFileIO.read(file.getFile())
-					.getTag();
-			if (tag == null) {
-				return null;
-			}
-			Artwork artwork = tag.getFirstArtwork();
-			byte[] imageRawData = artwork != null ? artwork.getBinaryData()
-					: null;
-
-			if (imageRawData != null) {
-				return processInternalPicture(width, height, imageRawData);
-			}
-			return null;
-		} catch (FileNotFoundException e) {
-			Logger.error(StringUtils.getString("File not found: ",
-					net.sourceforge.atunes.utils.FileUtils.getPath(file
-							.getFile())));
-			return null;
-		} catch (Exception e) {
-			Logger.error(e);
-			return null;
-		}
-	}
-
-	/**
-	 * @param width
-	 * @param height
-	 * @param imageRawData
-	 * @throws IOException
-	 */
-	private ImageIcon processInternalPicture(final int width, final int height,
-			final byte[] imageRawData) throws IOException {
-		BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
-		if (bi != null) {
-			ImageIcon imageIcon = new ImageIcon(bi);
-			if (width != -1 || height != -1) {
-				int maxSize = (imageIcon.getIconWidth() > imageIcon
-						.getIconHeight()) ? imageIcon.getIconWidth()
-						: imageIcon.getIconHeight();
-				int newWidth = (int) ((float) imageIcon.getIconWidth()
-						/ (float) maxSize * width);
-				int newHeight = (int) ((float) imageIcon.getIconHeight()
-						/ (float) maxSize * height);
-
-				BufferedImage resizedImage = ImageUtils
-						.toBufferedImage(ImageUtils.scaleImageBicubic(
-								imageIcon.getImage(), newWidth, newHeight)
-								.getImage());
-				if (resizedImage != null) {
-					return new ImageIcon(resizedImage);
-				}
-			} else {
-				return new ImageIcon(bi);
-			}
-		}
-		return null;
+		return tagHandler.getImage((ILocalAudioObject) audioObject, width,
+				height);
 	}
 
 	/**

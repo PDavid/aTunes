@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.model;
 
+import javax.swing.ImageIcon;
+
 /**
  * Gets a local audio object and reads data (tag and audio properties)
  * 
@@ -35,5 +37,13 @@ public interface ILocalAudioObjectReader {
 	 * @param readAudioProperties
 	 */
 	void readAudioObject(ILocalAudioObject ao, boolean readAudioProperties);
+
+	/**
+	 * @param ao
+	 * @param width
+	 * @param height
+	 * @return
+	 */
+	ImageIcon getImage(ILocalAudioObject ao, int width, int height);
 
 }
