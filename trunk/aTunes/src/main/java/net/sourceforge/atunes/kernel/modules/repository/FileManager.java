@@ -208,7 +208,15 @@ public class FileManager implements IFileManager {
 						".", extension));
 		boolean succeeded = file.renameTo(newFile);
 		if (succeeded) {
-			audioFile.setFile(newFile);
+			if (audioFile instanceof AudioFile) {
+				((AudioFile) audioFile).setFile(FileUtils
+						.getNormalizedPath(newFile));
+			} else {
+				throw new IllegalArgumentException(StringUtils.getString(
+						"setFile operation not implemented for ", audioFile
+								.getClass().getName()));
+			}
+
 		}
 		return succeeded;
 	}

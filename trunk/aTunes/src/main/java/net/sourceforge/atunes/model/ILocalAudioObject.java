@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -53,13 +52,6 @@ public interface ILocalAudioObject extends IAudioObject,
 	 * @return the name without extension
 	 */
 	String getNameWithoutExtension();
-
-	/**
-	 * Sets the file of this audio file
-	 * 
-	 * @param file
-	 */
-	void setFile(File file);
 
 	/**
 	 * Checks for internal picture.

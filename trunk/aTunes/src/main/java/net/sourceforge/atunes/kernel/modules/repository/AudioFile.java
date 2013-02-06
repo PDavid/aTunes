@@ -21,13 +21,11 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
-import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.TimeUtils;
 
@@ -62,16 +60,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	 * Default constructor for serialization
 	 */
 	AudioFile() {
-	}
-
-	/**
-	 * Instantiates a new audio file
-	 * 
-	 * @param file
-	 *            the file
-	 */
-	public AudioFile(final File file) {
-		setFile(file);
 	}
 
 	/**
@@ -285,18 +273,16 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	}
 
 	/**
-	 * Sets the file of this audio file
+	 * Sets the path of this audio file
 	 * 
-	 * @param file
-	 *            the file of this audio file
-	 * @throws IOException
+	 * @param path
+	 *            the path of this audio file
 	 */
-	@Override
-	public void setFile(final File file) {
-		if (file == null) {
-			throw new IllegalArgumentException();
+	void setFile(final String path) {
+		if (path == null) {
+			throw new IllegalArgumentException("Null path");
 		}
-		this.filePath = FileUtils.getNormalizedPath(file);
+		this.filePath = path;
 	}
 
 	/**
