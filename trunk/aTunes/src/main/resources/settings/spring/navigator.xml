@@ -10,6 +10,11 @@
 	<bean class="net.sourceforge.atunes.kernel.modules.navigator.NavigationTreeToolTipListener" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.navigator.NavigationTableMouseListener" scope="prototype"/>
 	
+	<bean id="navigatorTableColumnDecorator" class="net.sourceforge.atunes.gui.ColumnDecorator" scope="prototype">
+		<property name="columnModel" ref="navigationTableColumnModel"/>
+		<property name="table" ref="navigationTable"/>
+	</bean>
+	
 	<bean id="extendedToolTipActionListener" class="net.sourceforge.atunes.kernel.modules.navigator.ExtendedToolTipActionListener"/>
 	<bean id="extendedToolTipGetAndSetImage" class="net.sourceforge.atunes.kernel.modules.navigator.ExtendedToolTipGetAndSetImageSwingWorker" scope="prototype"/>
 	
