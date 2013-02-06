@@ -32,9 +32,12 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
+import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import org.apache.commons.io.FilenameUtils;
 
 import com.google.common.base.Preconditions;
 
@@ -193,5 +196,19 @@ public class FileManager implements IFileManager {
 	@Override
 	public boolean exists(ILocalAudioObject ao) {
 		return getAudioObjectFile(ao).exists();
+	}
+
+	@Override
+	public boolean rename(ILocalAudioObject audioFile, String name) {
+		File file = audioFile.getFile();
+		String extension = FilenameUtils.getExtension(getPath(audioFile));
+		File newFile = osManager.getFile(getFolderPath(audioFile), StringUtils
+				.getString(FileNameUtils.getValidFileName(name, osManager),
+						".", extension));
+		boolean succeeded = file.renameTo(newFile);
+		if (succeeded) {
+			audioFile.setFile(newFile);
+		}
+		return succeeded;
 	}
 }

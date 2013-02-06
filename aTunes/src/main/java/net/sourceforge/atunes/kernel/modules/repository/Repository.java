@@ -40,11 +40,11 @@ import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.InconsistentRepositoryException;
 import net.sourceforge.atunes.utils.StringUtils;
 
-
 /**
  * Stores information about collection of local audio files
+ * 
  * @author alex
- *
+ * 
  */
 public class Repository implements Serializable, IRepository {
 
@@ -56,7 +56,7 @@ public class Repository implements Serializable, IRepository {
 	List<File> folders;
 
 	/**
-	 *  The total size in bytes of all files
+	 * The total size in bytes of all files
 	 */
 	long totalSizeInBytes;
 
@@ -86,7 +86,7 @@ public class Repository implements Serializable, IRepository {
 	RepositoryStructure<IGenre> genresStructure;
 
 	/**
-	 *  Year structure
+	 * Year structure
 	 */
 	RepositoryStructure<IYear> yearStructure;
 
@@ -97,10 +97,12 @@ public class Repository implements Serializable, IRepository {
 
 	/**
 	 * Instantiates a new repository.
+	 * 
 	 * @param folders
 	 * @param stateRepository
 	 */
-	public Repository(final List<File> folders, final IStateRepository stateRepository) {
+	public Repository(final List<File> folders,
+			final IStateRepository stateRepository) {
 		this.folders = folders;
 		this.filesStructure = new RepositoryStructure<ILocalAudioObject>();
 		this.artistsStructure = new RepositoryStructure<IArtist>();
@@ -114,7 +116,8 @@ public class Repository implements Serializable, IRepository {
 	 * This constructor can't be used
 	 */
 	@SuppressWarnings("unused")
-	private Repository() {}
+	private Repository() {
+	}
 
 	@Override
 	public void setStateRepository(final IStateRepository stateRepository) {
@@ -183,7 +186,8 @@ public class Repository implements Serializable, IRepository {
 	 * @param structure
 	 * @throws InconsistentRepositoryException
 	 */
-	private void checkConsistency(final RepositoryStructure<?> structure) throws InconsistentRepositoryException {
+	private void checkConsistency(final RepositoryStructure<?> structure)
+			throws InconsistentRepositoryException {
 		if (structure == null) {
 			throw new InconsistentRepositoryException();
 		}
@@ -216,14 +220,16 @@ public class Repository implements Serializable, IRepository {
 	}
 
 	@Override
-	public void removeFile(final File file) {
-		filesStructure.remove(net.sourceforge.atunes.utils.FileUtils.getPath(file));
+	public void removeFile(final String path) {
+		filesStructure.remove(path);
 	}
 
-	// --------------------------------------- ARTIST OPERATIONS ------------------------------------- //
+	// --------------------------------------- ARTIST OPERATIONS
+	// ------------------------------------- //
 
 	/**
 	 * Access artist structure
+	 * 
 	 * @return
 	 */
 	@Override
@@ -240,7 +246,8 @@ public class Repository implements Serializable, IRepository {
 	public IArtist getArtist(final String artistName) {
 		if (artistName == null) {
 			return null;
-		} else if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+		} else if (stateRepository
+				.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
 			return artistsStructure.get(artistName);
 		} else {
 			return artistsStructure.get(artistName.toLowerCase());
@@ -271,10 +278,12 @@ public class Repository implements Serializable, IRepository {
 		}
 	}
 
-	// -------------------------------- ALBUM OPERATIONS ----------------------------------------- //
+	// -------------------------------- ALBUM OPERATIONS
+	// ----------------------------------------- //
 
 	/**
 	 * Access album structure
+	 * 
 	 * @return
 	 */
 	@Override
@@ -283,16 +292,20 @@ public class Repository implements Serializable, IRepository {
 		Collection<IArtist> artistCollection = getArtists();
 		for (IArtist artist : artistCollection) {
 			for (IAlbum album : artist.getAlbums().values()) {
-				albumsStructure.put(StringUtils.getString(album.getName(), " (", album.getArtist(), ")"), album);
+				albumsStructure.put(
+						StringUtils.getString(album.getName(), " (",
+								album.getArtist(), ")"), album);
 			}
 		}
 		return albumsStructure;
 	}
 
-	// -------------------------------- FOLDER OPERATIONS ----------------------------------------- //
+	// -------------------------------- FOLDER OPERATIONS
+	// ----------------------------------------- //
 
 	/**
 	 * Access folder structure
+	 * 
 	 * @return
 	 */
 	@Override
@@ -316,10 +329,12 @@ public class Repository implements Serializable, IRepository {
 		return folder;
 	}
 
-	// --------------------------------------------------- GENRE OPERATIONS ---------------------------------------------- //
+	// --------------------------------------------------- GENRE OPERATIONS
+	// ---------------------------------------------- //
 
 	/**
 	 * Returns genre structure
+	 * 
 	 * @return
 	 */
 	@Override
@@ -360,10 +375,12 @@ public class Repository implements Serializable, IRepository {
 		}
 	}
 
-	// ----------------------------------------------- YEAR OPERATIONS --------------------------------------------------- //
+	// ----------------------------------------------- YEAR OPERATIONS
+	// --------------------------------------------------- //
 
 	/**
 	 * Structure
+	 * 
 	 * @return
 	 */
 	@Override
@@ -382,13 +399,15 @@ public class Repository implements Serializable, IRepository {
 	}
 
 	@Override
-	public IYear putYear(final IYear year, final IUnknownObjectChecker unknownObjectChecker) {
+	public IYear putYear(final IYear year,
+			final IUnknownObjectChecker unknownObjectChecker) {
 		yearStructure.put(year.getName(unknownObjectChecker), year);
 		return year;
 	}
 
 	@Override
-	public void removeYear(final IYear year, final IUnknownObjectChecker unknownObjectChecker) {
+	public void removeYear(final IYear year,
+			final IUnknownObjectChecker unknownObjectChecker) {
 		yearStructure.remove(year.getName(unknownObjectChecker));
 	}
 }
