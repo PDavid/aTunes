@@ -53,7 +53,7 @@ public class Repository implements Serializable, IRepository {
 	/**
 	 * Root folders of repository
 	 */
-	List<File> folders;
+	List<String> folders;
 
 	/**
 	 * The total size in bytes of all files
@@ -103,7 +103,10 @@ public class Repository implements Serializable, IRepository {
 	 */
 	public Repository(final List<File> folders,
 			final IStateRepository stateRepository) {
-		this.folders = folders;
+		this.folders = new ArrayList<String>();
+		for (File folder : folders) {
+			this.folders.add(folder.getAbsolutePath());
+		}
 		this.filesStructure = new RepositoryStructure<ILocalAudioObject>();
 		this.artistsStructure = new RepositoryStructure<IArtist>();
 		this.foldersStructure = new RepositoryStructure<IFolder>();
@@ -126,7 +129,11 @@ public class Repository implements Serializable, IRepository {
 
 	@Override
 	public List<File> getRepositoryFolders() {
-		return new ArrayList<File>(folders);
+		List<File> folders = new ArrayList<File>();
+		for (String path : this.folders) {
+			folders.add(new File(path));
+		}
+		return folders;
 	}
 
 	@Override
@@ -136,27 +143,27 @@ public class Repository implements Serializable, IRepository {
 
 	@Override
 	public void removeDurationInSeconds(final long seconds) {
-		totalDurationInSeconds -= seconds;
+		this.totalDurationInSeconds -= seconds;
 	}
 
 	@Override
 	public long getTotalDurationInSeconds() {
-		return totalDurationInSeconds;
+		return this.totalDurationInSeconds;
 	}
 
 	@Override
 	public void addSizeInBytes(final long bytes) {
-		totalSizeInBytes += bytes;
+		this.totalSizeInBytes += bytes;
 	}
 
 	@Override
 	public void removeSizeInBytes(final long bytes) {
-		totalSizeInBytes -= bytes;
+		this.totalSizeInBytes -= bytes;
 	}
 
 	@Override
 	public long getTotalSizeInBytes() {
-		return totalSizeInBytes;
+		return this.totalSizeInBytes;
 	}
 
 	@Override
@@ -172,12 +179,12 @@ public class Repository implements Serializable, IRepository {
 
 	@Override
 	public void validateRepository() throws InconsistentRepositoryException {
-		checkConsistency(filesStructure);
-		checkConsistency(artistsStructure);
-		checkConsistency(foldersStructure);
-		checkConsistency(genresStructure);
-		checkConsistency(yearStructure);
-		if (folders == null) {
+		checkConsistency(this.filesStructure);
+		checkConsistency(this.artistsStructure);
+		checkConsistency(this.foldersStructure);
+		checkConsistency(this.genresStructure);
+		checkConsistency(this.yearStructure);
+		if (this.folders == null) {
 			throw new InconsistentRepositoryException();
 		}
 	}
@@ -195,33 +202,33 @@ public class Repository implements Serializable, IRepository {
 
 	@Override
 	public int countFiles() {
-		return filesStructure.count();
+		return this.filesStructure.count();
 	}
 
 	@Override
 	public ILocalAudioObject getFile(final String fileName) {
-		return filesStructure.get(fileName);
+		return this.filesStructure.get(fileName);
 	}
 
 	@Override
 	public Collection<ILocalAudioObject> getFiles() {
-		return filesStructure.getAll();
+		return this.filesStructure.getAll();
 	}
 
 	@Override
 	public ILocalAudioObject putFile(final ILocalAudioObject file) {
-		filesStructure.put(file.getUrl(), file);
+		this.filesStructure.put(file.getUrl(), file);
 		return file;
 	}
 
 	@Override
 	public void removeFile(final ILocalAudioObject file) {
-		filesStructure.remove(file.getUrl());
+		this.filesStructure.remove(file.getUrl());
 	}
 
 	@Override
 	public void removeFile(final String path) {
-		filesStructure.remove(path);
+		this.filesStructure.remove(path);
 	}
 
 	// --------------------------------------- ARTIST OPERATIONS
@@ -234,47 +241,49 @@ public class Repository implements Serializable, IRepository {
 	 */
 	@Override
 	public Map<String, IArtist> getArtistStructure() {
-		return artistsStructure.getStructure();
+		return this.artistsStructure.getStructure();
 	}
 
 	@Override
 	public int countArtists() {
-		return artistsStructure.count();
+		return this.artistsStructure.count();
 	}
 
 	@Override
 	public IArtist getArtist(final String artistName) {
 		if (artistName == null) {
 			return null;
-		} else if (stateRepository
+		} else if (this.stateRepository
 				.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-			return artistsStructure.get(artistName);
+			return this.artistsStructure.get(artistName);
 		} else {
-			return artistsStructure.get(artistName.toLowerCase());
+			return this.artistsStructure.get(artistName.toLowerCase());
 		}
 	}
 
 	@Override
 	public Collection<IArtist> getArtists() {
-		return artistsStructure.getAll();
+		return this.artistsStructure.getAll();
 	}
 
 	@Override
 	public IArtist putArtist(final IArtist artist) {
-		if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-			artistsStructure.put(artist.getName(), artist);
+		if (this.stateRepository
+				.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+			this.artistsStructure.put(artist.getName(), artist);
 		} else {
-			artistsStructure.put(artist.getName().toLowerCase(), artist);
+			this.artistsStructure.put(artist.getName().toLowerCase(), artist);
 		}
 		return artist;
 	}
 
 	@Override
 	public void removeArtist(final IArtist artist) {
-		if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-			artistsStructure.remove(artist.getName());
+		if (this.stateRepository
+				.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+			this.artistsStructure.remove(artist.getName());
 		} else {
-			artistsStructure.remove(artist.getName().toLowerCase());
+			this.artistsStructure.remove(artist.getName().toLowerCase());
 		}
 	}
 
@@ -310,22 +319,22 @@ public class Repository implements Serializable, IRepository {
 	 */
 	@Override
 	public Map<String, IFolder> getFolderStructure() {
-		return foldersStructure.getStructure();
+		return this.foldersStructure.getStructure();
 	}
 
 	@Override
 	public IFolder getFolder(final String path) {
-		return foldersStructure.get(path);
+		return this.foldersStructure.get(path);
 	}
 
 	@Override
 	public Collection<IFolder> getFolders() {
-		return foldersStructure.getAll();
+		return this.foldersStructure.getAll();
 	}
 
 	@Override
 	public IFolder putFolder(final IFolder folder) {
-		foldersStructure.put(folder.getName(), folder);
+		this.foldersStructure.put(folder.getName(), folder);
 		return folder;
 	}
 
@@ -339,39 +348,42 @@ public class Repository implements Serializable, IRepository {
 	 */
 	@Override
 	public Map<String, IGenre> getGenreStructure() {
-		return genresStructure.getStructure();
+		return this.genresStructure.getStructure();
 	}
 
 	@Override
 	public Collection<IGenre> getGenres() {
-		return genresStructure.getAll();
+		return this.genresStructure.getAll();
 	}
 
 	@Override
 	public IGenre getGenre(final String genre) {
-		if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-			return genresStructure.get(genre);
+		if (this.stateRepository
+				.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+			return this.genresStructure.get(genre);
 		} else {
-			return genresStructure.get(genre.toLowerCase());
+			return this.genresStructure.get(genre.toLowerCase());
 		}
 	}
 
 	@Override
 	public IGenre putGenre(final IGenre genre) {
-		if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-			genresStructure.put(genre.getName(), genre);
+		if (this.stateRepository
+				.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+			this.genresStructure.put(genre.getName(), genre);
 		} else {
-			genresStructure.put(genre.getName().toLowerCase(), genre);
+			this.genresStructure.put(genre.getName().toLowerCase(), genre);
 		}
 		return genre;
 	}
 
 	@Override
 	public void removeGenre(final IGenre genre) {
-		if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-			genresStructure.remove(genre.getName());
+		if (this.stateRepository
+				.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+			this.genresStructure.remove(genre.getName());
 		} else {
-			genresStructure.remove(genre.getName().toLowerCase());
+			this.genresStructure.remove(genre.getName().toLowerCase());
 		}
 	}
 
@@ -385,29 +397,29 @@ public class Repository implements Serializable, IRepository {
 	 */
 	@Override
 	public Map<String, IYear> getYearStructure() {
-		return yearStructure.getStructure();
+		return this.yearStructure.getStructure();
 	}
 
 	@Override
 	public IYear getYear(final String year) {
-		return yearStructure.get(year);
+		return this.yearStructure.get(year);
 	}
 
 	@Override
 	public Collection<IYear> getYears() {
-		return yearStructure.getAll();
+		return this.yearStructure.getAll();
 	}
 
 	@Override
 	public IYear putYear(final IYear year,
 			final IUnknownObjectChecker unknownObjectChecker) {
-		yearStructure.put(year.getName(unknownObjectChecker), year);
+		this.yearStructure.put(year.getName(unknownObjectChecker), year);
 		return year;
 	}
 
 	@Override
 	public void removeYear(final IYear year,
 			final IUnknownObjectChecker unknownObjectChecker) {
-		yearStructure.remove(year.getName(unknownObjectChecker));
+		this.yearStructure.remove(year.getName(unknownObjectChecker));
 	}
 }
