@@ -126,6 +126,11 @@
 					<property name="exceptionClass" value="java.lang.IllegalStateException"/>
 					<property name="message" value="Buffers have not been created"/>
 				</bean>
+				<bean class="net.sourceforge.atunes.KnownException">
+				    <!-- Support for Tray Icon in Linux discontinued -->
+					<property name="exceptionClass" value="java.lang.ClassCastException"/>
+					<property name="message" value="net.sourceforge.atunes.gui.views.controls.JTrayIcon cannot be cast to java.awt.Component"/>
+				</bean>
 			</list>
 		</property>
 	</bean>
