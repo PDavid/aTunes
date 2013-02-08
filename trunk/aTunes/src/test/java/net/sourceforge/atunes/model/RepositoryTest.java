@@ -30,14 +30,13 @@ import net.sourceforge.atunes.kernel.modules.repository.Repository;
 import org.junit.Before;
 import org.junit.Test;
 
-
 public class RepositoryTest {
 
 	private static final String REP_FOLDER_1 = "folder_1";
 	private static final String REP_FOLDER_2 = "folder_2";
-	
+
 	private IRepository rep;
-	
+
 	private static File f1 = new File(REP_FOLDER_1);
 	private static File f2 = new File(REP_FOLDER_2);
 
@@ -46,40 +45,44 @@ public class RepositoryTest {
 		List<File> folders = new ArrayList<File>();
 		folders.add(f1);
 		folders.add(f2);
-		rep = new Repository(folders, null);
+		this.rep = new Repository(folders, null);
 	}
-	
+
 	@Test
 	public void createRepository() {
-		Assert.assertTrue(rep.getFiles().isEmpty());
-		Assert.assertTrue(rep.getArtists().isEmpty());
-		Assert.assertTrue(rep.getFolders().isEmpty());
-		Assert.assertTrue(rep.getGenres().isEmpty());
-		Assert.assertTrue(rep.getYears().isEmpty());
-		Assert.assertTrue(rep.getRepositoryFolders().contains(f1));
-		Assert.assertTrue(rep.getRepositoryFolders().contains(f2));
-		
-		Assert.assertEquals(0, rep.getTotalDurationInSeconds());
-		Assert.assertEquals(0, rep.getTotalSizeInBytes());
-		Assert.assertEquals(0, rep.countFiles());
+		Assert.assertTrue(this.rep.getFiles().isEmpty());
+		Assert.assertTrue(this.rep.getArtists().isEmpty());
+		Assert.assertTrue(this.rep.getFolders().isEmpty());
+		Assert.assertTrue(this.rep.getGenres().isEmpty());
+		Assert.assertTrue(this.rep.getYears().isEmpty());
+		List<String> paths = new ArrayList<String>();
+		for (File folder : this.rep.getRepositoryFolders()) {
+			paths.add(folder.getAbsolutePath());
+		}
+		Assert.assertTrue(paths.contains(f1.getAbsolutePath()));
+		Assert.assertTrue(paths.contains(f2.getAbsolutePath()));
+
+		Assert.assertEquals(0, this.rep.getTotalDurationInSeconds());
+		Assert.assertEquals(0, this.rep.getTotalSizeInBytes());
+		Assert.assertEquals(0, this.rep.countFiles());
 	}
-	
+
 	@Test
 	public void testDuration() {
-		rep.addDurationInSeconds(2);
-		rep.addDurationInSeconds(3);
-		Assert.assertEquals(5, rep.getTotalDurationInSeconds());
-		rep.removeDurationInSeconds(1);
-		Assert.assertEquals(4, rep.getTotalDurationInSeconds());
+		this.rep.addDurationInSeconds(2);
+		this.rep.addDurationInSeconds(3);
+		Assert.assertEquals(5, this.rep.getTotalDurationInSeconds());
+		this.rep.removeDurationInSeconds(1);
+		Assert.assertEquals(4, this.rep.getTotalDurationInSeconds());
 	}
-	
+
 	@Test
 	public void testSize() {
-		rep.addSizeInBytes(2);
-		rep.addSizeInBytes(3);
-		Assert.assertEquals(5, rep.getTotalSizeInBytes());
-		rep.removeSizeInBytes(1);
-		Assert.assertEquals(4, rep.getTotalSizeInBytes());
+		this.rep.addSizeInBytes(2);
+		this.rep.addSizeInBytes(3);
+		Assert.assertEquals(5, this.rep.getTotalSizeInBytes());
+		this.rep.removeSizeInBytes(1);
+		Assert.assertEquals(4, this.rep.getTotalSizeInBytes());
 	}
 
 }
