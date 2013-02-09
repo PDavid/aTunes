@@ -265,7 +265,8 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 									I18nUtils.getString("SELECT_REPOSITORY"),
 									I18nUtils.getString("EXIT") });
 
-			if (selection.equals(I18nUtils.getString("EXIT"))) {
+			if (selection != null
+					&& selection.equals(I18nUtils.getString("EXIT"))) {
 				GuiUtils.callInEventDispatchThread(new Runnable() {
 					@Override
 					public void run() {
