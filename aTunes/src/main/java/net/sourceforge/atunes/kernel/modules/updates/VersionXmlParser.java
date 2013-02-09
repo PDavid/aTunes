@@ -22,25 +22,79 @@ package net.sourceforge.atunes.kernel.modules.updates;
 
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.ApplicationVersion.VersionType;
+import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-class VersionXmlParser {
+/**
+ * Reads version data from XML
+ * 
+ * @author alex
+ * 
+ */
+public class VersionXmlParser {
+
+	private IOSManager osManager;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
 	/**
 	 * Parses XML of version
+	 * 
 	 * @param xml
 	 * @return
 	 */
-	ApplicationVersion getApplicationVersionFromXml(Document xml) {
+	ApplicationVersion getApplicationVersionFromXml(final Document xml) {
 		Element element = (Element) xml.getElementsByTagName("latest").item(0);
 		String date = XMLUtils.getChildElementContent(element, "date");
-		int major = Integer.parseInt(XMLUtils.getChildElementContent(element, "majorNumber"));
-		int minor = Integer.parseInt(XMLUtils.getChildElementContent(element, "minorNumber"));
-		int revision = Integer.parseInt(XMLUtils.getChildElementContent(element, "revisionNumber"));
+		int major = Integer.parseInt(XMLUtils.getChildElementContent(element,
+				"majorNumber"));
+		int minor = Integer.parseInt(XMLUtils.getChildElementContent(element,
+				"minorNumber"));
+		int revision = Integer.parseInt(XMLUtils.getChildElementContent(
+				element, "revisionNumber"));
 		String url = element.getAttribute("url");
-		return new ApplicationVersion(date, major, minor, revision, VersionType.FINAL, "", url);
+
+		String directDownloadURL = applyVersion(
+				XMLUtils.getChildElementContent(element, getElementNameForOS()),
+				major, minor, revision);
+
+		String changes = XMLUtils.getChildElementContent(element, "changes");
+
+		return new ApplicationVersion(date, major, minor, revision,
+				VersionType.FINAL, "", url, directDownloadURL, changes);
+	}
+
+	private String applyVersion(final String url, final int major,
+			final int minor, final int revision) {
+		return url.replace("%VERSION%",
+				StringUtils.getString(major, '.', minor, '.', revision));
+	}
+
+	/**
+	 * 
+	 */
+	private String getElementNameForOS() {
+		String elementName = null;
+		if (this.osManager.isWindows()) {
+			elementName = "windows";
+		} else if (this.osManager.isLinux()) {
+			elementName = "linux";
+		} else if (this.osManager.isMacOsX()) {
+			elementName = "mac";
+		} else if (this.osManager.isSolaris()) {
+			elementName = "solaris";
+		} else {
+			elementName = "default";
+		}
+		return elementName;
 	}
 }

@@ -31,6 +31,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
@@ -39,7 +40,6 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IControlsBuilder;
-import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IUpdateDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -55,22 +55,13 @@ public final class UpdateDialog extends AbstractCustomDialog implements
 
 	private static final long serialVersionUID = -778226654176158965L;
 
-	private IDesktop desktop;
-
-	/**
-	 * @param desktop
-	 */
-	public void setDesktop(final IDesktop desktop) {
-		this.desktop = desktop;
-	}
-
 	/**
 	 * @param frame
 	 * @param controlsBuilder
 	 */
 	public UpdateDialog(final IFrame frame,
 			final IControlsBuilder controlsBuilder) {
-		super(frame, 400, 150, controlsBuilder);
+		super(frame, 550, 600, controlsBuilder);
 	}
 
 	/**
@@ -98,9 +89,18 @@ public final class UpdateDialog extends AbstractCustomDialog implements
 		text1.setLineWrap(true);
 		text1.setWrapStyleWord(true);
 
-		UrlLabel url = new UrlLabel(this.desktop,
+		JTextPane changes = getControlsBuilder().createReadOnlyTextPane(
+				version.getChanges());
+
+		UrlLabel url = getControlsBuilder().getUrlLabel(
 				I18nUtils.getString("GO_TO_DOWNLOAD_PAGE"),
 				version.getDownloadURL());
+
+		UrlLabel downloadNow = getControlsBuilder().getUrlLabel(
+				I18nUtils.getString("DOWNLOAD_NOW"),
+				version.getDirectDownloadURL());
+
+		downloadNow.setHorizontalAlignment(SwingConstants.CENTER);
 		url.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JButton ok = new JButton(I18nUtils.getString("OK"));
@@ -114,24 +114,24 @@ public final class UpdateDialog extends AbstractCustomDialog implements
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
-		c.gridheight = 3;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.insets = new Insets(10, 10, 10, 10);
 		panel.add(img, c);
-		c.gridx = 1;
-		c.gridy = 0;
-		c.gridheight = 1;
-		c.weightx = 1;
-		c.weighty = 0.5;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		panel.add(text1, c);
 		c.gridy = 1;
-		c.insets = new Insets(0, 0, 0, 0);
-		c.fill = GridBagConstraints.BOTH;
-		panel.add(url, c);
+		panel.add(text1, c);
 		c.gridy = 2;
+		c.fill = GridBagConstraints.BOTH;
+		c.weighty = 0.5;
+		panel.add(getControlsBuilder().getScrollPane(changes), c);
+		c.gridy = 3;
+		c.insets = new Insets(10, 0, 10, 0);
 		c.weighty = 0;
+		panel.add(url, c);
+		c.gridy = 4;
+		panel.add(downloadNow, c);
+		c.gridy = 5;
 		c.fill = GridBagConstraints.NONE;
-		c.insets = new Insets(15, 0, 10, 0);
 		panel.add(ok, c);
 
 		add(panel);

@@ -45,7 +45,6 @@ import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.model.IAboutDialog;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
-import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -79,8 +78,6 @@ public final class AboutDialog extends AbstractCustomDialog implements
 
 	});
 
-	private IDesktop desktop;
-
 	private IBeanFactory beanFactory;
 
 	/**
@@ -88,13 +85,6 @@ public final class AboutDialog extends AbstractCustomDialog implements
 	 */
 	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
-	}
-
-	/**
-	 * @param desktop
-	 */
-	public void setDesktop(final IDesktop desktop) {
-		this.desktop = desktop;
 	}
 
 	/**
@@ -113,7 +103,8 @@ public final class AboutDialog extends AbstractCustomDialog implements
 	 */
 	@Override
 	public void initialize() {
-		tableModel = new JavaVirtualMachineStatisticsTableModel(beanFactory);
+		this.tableModel = new JavaVirtualMachineStatisticsTableModel(
+				this.beanFactory);
 		add(getContent(getLookAndFeel()));
 		setResizable(false);
 	}
@@ -125,9 +116,9 @@ public final class AboutDialog extends AbstractCustomDialog implements
 	 * @return
 	 */
 	private JPanel getContent(final ILookAndFeel lookAndFeel) {
-		UrlLabel title = new UrlLabel(this.desktop, StringUtils.getString(
-				Constants.APP_NAME, " ", Constants.VERSION.toString()),
-				Constants.APP_WEB);
+		UrlLabel title = getControlsBuilder().getUrlLabel(
+				StringUtils.getString(Constants.APP_NAME, " ",
+						Constants.VERSION.toString()), Constants.APP_WEB);
 		title.setFont(lookAndFeel.getAboutBigFont());
 		title.setFocusPainted(false);
 		JLabel description = new JLabel(Constants.APP_DESCRIPTION);
@@ -142,8 +133,9 @@ public final class AboutDialog extends AbstractCustomDialog implements
 		license.setOpaque(false);
 		license.setBorder(BorderFactory.createEmptyBorder());
 
-		UrlLabel contributors = new UrlLabel(this.desktop,
-				I18nUtils.getString("CONTRIBUTORS"), Constants.CONTRIBUTORS_WEB);
+		UrlLabel contributors = getControlsBuilder()
+				.getUrlLabel(I18nUtils.getString("CONTRIBUTORS"),
+						Constants.CONTRIBUTORS_WEB);
 
 		JTable propertiesTable = lookAndFeel.getTable();
 		propertiesTable.setModel(this.tableModel);

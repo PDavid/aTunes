@@ -51,7 +51,6 @@ import javax.swing.table.TableModel;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
 import net.sourceforge.atunes.model.IControlsBuilder;
-import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IExceptionDialog;
@@ -108,8 +107,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 	private ILookAndFeelManager lookAndFeelManager;
 
-	private IDesktop desktop;
-
 	private IStateCore stateCore;
 
 	private IDialogFactory dialogFactory;
@@ -153,13 +150,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	}
 
 	/**
-	 * @param desktop
-	 */
-	public void setDesktop(final IDesktop desktop) {
-		this.desktop = desktop;
-	}
-
-	/**
 	 * Instantiates a new plugins panel.
 	 */
 	public PluginsPanel() {
@@ -190,7 +180,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		final JLabel pluginClassNameLabel = new JLabel();
 		final JLabel pluginLocationLabel = new JLabel();
 		final JLabel pluginAuthorLabel = new JLabel();
-		final UrlLabel pluginUrlLabel = new UrlLabel(this.desktop);
+		final UrlLabel pluginUrlLabel = this.controlsBuilder.getUrlLabel();
 
 		this.pluginsTable.setDefaultRenderer(
 				PluginInfo.class,

@@ -35,65 +35,90 @@ import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
-final class CheckUpdatesSwingWorker extends
-	SwingWorker<ApplicationVersion, Void> {
+/**
+ * Checks for updates
+ * 
+ * @author alex
+ * 
+ */
+public final class CheckUpdatesSwingWorker extends
+		SwingWorker<ApplicationVersion, Void> {
 
-    /**
-	 * 
+	private IUpdateHandler updateHandler;
+	private boolean showNoNewVersion;
+	private boolean alwaysInDialog;
+	private IStateUI stateUI;
+	private IFrame frame;
+	private IDialogFactory dialogFactory;
+
+	/**
+	 * @param updateHandler
 	 */
-    private final IUpdateHandler updateHandler;
-    private final boolean showNoNewVersion;
-    private final boolean alwaysInDialog;
-    private final IStateUI stateUI;
-    private final IFrame frame;
-    private final IDialogFactory dialogFactory;
-
-    /**
-     * @param updateHandler
-     * @param showNoNewVersion
-     * @param alwaysInDialog
-     * @param stateUI
-     * @param frame
-     * @param dialogFactory
-     */
-    CheckUpdatesSwingWorker(final IUpdateHandler updateHandler,
-	    final boolean showNoNewVersion, final boolean alwaysInDialog,
-	    final IStateUI stateUI, final IFrame frame,
-	    final IDialogFactory dialogFactory) {
-	this.updateHandler = updateHandler;
-	this.showNoNewVersion = showNoNewVersion;
-	this.alwaysInDialog = alwaysInDialog;
-	this.stateUI = stateUI;
-	this.frame = frame;
-	this.dialogFactory = dialogFactory;
-    }
-
-    @Override
-    protected ApplicationVersion doInBackground() {
-	return this.updateHandler.getLastVersion();
-    }
-
-    @Override
-    protected void done() {
-	try {
-	    ApplicationVersion version = get();
-	    if (version != null && version.compareTo(Constants.VERSION) == 1) {
-		if (alwaysInDialog || !stateUI.isShowStatusBar()) {
-		    IUpdateDialog dialog = dialogFactory
-			    .newDialog(IUpdateDialog.class);
-		    dialog.initialize(version);
-		    dialog.showDialog();
-		} else {
-		    frame.showNewVersionInfo(true, version);
-		}
-	    } else if (showNoNewVersion) {
-		dialogFactory.newDialog(IMessageDialog.class).showMessage(
-			I18nUtils.getString("NOT_NEW_VERSION"));
-	    }
-	} catch (InterruptedException e) {
-	    Logger.error(e);
-	} catch (ExecutionException e) {
-	    Logger.error(e);
+	public void setUpdateHandler(final IUpdateHandler updateHandler) {
+		this.updateHandler = updateHandler;
 	}
-    }
+
+	/**
+	 * @param showNoNewVersion
+	 */
+	public void setShowNoNewVersion(final boolean showNoNewVersion) {
+		this.showNoNewVersion = showNoNewVersion;
+	}
+
+	/**
+	 * @param alwaysInDialog
+	 */
+	public void setAlwaysInDialog(final boolean alwaysInDialog) {
+		this.alwaysInDialog = alwaysInDialog;
+	}
+
+	/**
+	 * @param stateUI
+	 */
+	public void setStateUI(final IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
+
+	/**
+	 * @param frame
+	 */
+	public void setFrame(final IFrame frame) {
+		this.frame = frame;
+	}
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
+
+	@Override
+	protected ApplicationVersion doInBackground() {
+		return this.updateHandler.getLastVersion();
+	}
+
+	@Override
+	protected void done() {
+		try {
+			ApplicationVersion version = get();
+			if (version != null && version.compareTo(Constants.VERSION) == 1) {
+				if (this.alwaysInDialog || !this.stateUI.isShowStatusBar()) {
+					IUpdateDialog dialog = this.dialogFactory
+							.newDialog(IUpdateDialog.class);
+					dialog.initialize(version);
+					dialog.showDialog();
+				} else {
+					this.frame.showNewVersionInfo(true, version);
+				}
+			} else if (this.showNoNewVersion) {
+				this.dialogFactory.newDialog(IMessageDialog.class).showMessage(
+						I18nUtils.getString("NOT_NEW_VERSION"));
+			}
+		} catch (InterruptedException e) {
+			Logger.error(e);
+		} catch (ExecutionException e) {
+			Logger.error(e);
+		}
+	}
 }

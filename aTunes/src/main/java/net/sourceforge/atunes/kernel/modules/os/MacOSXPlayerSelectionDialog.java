@@ -44,7 +44,6 @@ import net.sourceforge.atunes.gui.views.controls.CustomFileChooser;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
-import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -77,8 +76,6 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 
 	private JRadioButton automaticSearch;
 
-	private IDesktop desktop;
-
 	private IBeanFactory beanFactory;
 
 	/**
@@ -93,13 +90,6 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 */
 	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
-	}
-
-	/**
-	 * @param desktop
-	 */
-	public void setDesktop(final IDesktop desktop) {
-		this.desktop = desktop;
 	}
 
 	/**
@@ -133,7 +123,7 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	private JPanel getFirstOptionsPanel() {
 		JTextPane instructions = getControlsBuilder().createReadOnlyTextPane(
 				I18nUtils.getString("MAC_PLAYER_ENGINE_INSTRUCTIONS"));
-		UrlLabel appStoreURL = new UrlLabel(this.desktop,
+		UrlLabel appStoreURL = getControlsBuilder().getUrlLabel(
 				I18nUtils.getString("MAC_PLAYER_ENGINE_URL"),
 				MPLAYER_APP_STORE_URL);
 		this.automaticSearch = new JRadioButton(

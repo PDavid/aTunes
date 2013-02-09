@@ -50,7 +50,8 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author alex
  * 
  */
-public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfoDataSource> {
+public class AlbumBasicInfoContent extends
+		AbstractContextPanelContent<AlbumInfoDataSource> {
 
 	private static final long serialVersionUID = -5538266144953409867L;
 
@@ -86,14 +87,16 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 	/**
 	 * @param contextTableURLOpener
 	 */
-	public void setContextTableURLOpener(final ITracksTableListener contextTableURLOpener) {
+	public void setContextTableURLOpener(
+			final ITracksTableListener contextTableURLOpener) {
 		this.contextTableURLOpener = contextTableURLOpener;
 	}
 
 	/**
 	 * @param contextInformationTableFactory
 	 */
-	public void setContextInformationTableFactory(final ContextInformationTableFactory contextInformationTableFactory) {
+	public void setContextInformationTableFactory(
+			final ContextInformationTableFactory contextInformationTableFactory) {
 		this.contextInformationTableFactory = contextInformationTableFactory;
 	}
 
@@ -105,7 +108,7 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 		updateAlbum(album);
 		updateYear(album);
 		updateAlbumCover(source);
-		((ContextTracksTableModel)tracksTable.getModel()).setAlbum(album);
+		((ContextTracksTableModel) this.tracksTable.getModel()).setAlbum(album);
 	}
 
 	/**
@@ -115,11 +118,13 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 		ImageIcon image = source.getImage();
 		ImageIcon imageIcon = null;
 		if (image != null) {
-			imageIcon = ImageUtils.resize(image, Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
+			imageIcon = ImageUtils.resize(image,
+					Constants.ALBUM_IMAGE_SIZE.getSize(),
+					Constants.ALBUM_IMAGE_SIZE.getSize());
 		} else {
 			imageIcon = Images.getImage(Images.APP_LOGO_150);
 		}
-		albumCoverLabel.setIcon(imageIcon);
+		this.albumCoverLabel.setIcon(imageIcon);
 	}
 
 	/**
@@ -127,52 +132,64 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 	 */
 	private void updateYear(final IAlbumInfo album) {
 		// TODO: wikipedia is opened in English
-		yearLabel.setText(album != null ? album.getYear() : "", album != null && album.getYear() != null ? StringUtils.getString("http://en.wikipedia.org/wiki/", album
-				.getYear()) : null);
+		this.yearLabel.setText(
+				album != null ? album.getYear() : "",
+				album != null && album.getYear() != null ? StringUtils
+						.getString("http://en.wikipedia.org/wiki/",
+								album.getYear()) : null);
 	}
 
 	/**
 	 * @param album
 	 */
 	private void updateAlbum(final IAlbumInfo album) {
-		albumLabel.setText(album != null ? album.getTitle() : I18nUtils.getString("UNKNOWN_ALBUM"), album != null ? album.getUrl() : null);
-		albumLabel.setEnabled(album != null && album.getUrl() != null);
+		this.albumLabel.setText(
+				album != null ? album.getTitle() : I18nUtils
+						.getString("UNKNOWN_ALBUM"),
+				album != null ? album.getUrl() : null);
+		this.albumLabel.setEnabled(album != null && album.getUrl() != null);
 	}
 
 	/**
 	 * @param audioObject
 	 * @param album
 	 */
-	private void updateArtist(final IAudioObject audioObject, final IAlbumInfo album) {
-		artistLabel.setText(album != null ? album.getArtist() : audioObject.getArtist(unknownObjectChecker), album != null ? album.getArtistUrl() : null);
-		artistLabel.setEnabled(album != null && album.getArtistUrl() != null);
+	private void updateArtist(final IAudioObject audioObject,
+			final IAlbumInfo album) {
+		this.artistLabel.setText(album != null ? album.getArtist()
+				: audioObject.getArtist(this.unknownObjectChecker),
+				album != null ? album.getArtistUrl() : null);
+		this.artistLabel.setEnabled(album != null
+				&& album.getArtistUrl() != null);
 	}
 
 	@Override
 	public void clearContextPanelContent() {
 		super.clearContextPanelContent();
-		albumCoverLabel.setIcon(null);
-		albumCoverLabel.setBorder(null);
-		albumLabel.setText(null);
-		artistLabel.setText(null);
-		yearLabel.setText(null);
-		((ContextTracksTableModel)tracksTable.getModel()).setAlbum(null);
+		this.albumCoverLabel.setIcon(null);
+		this.albumCoverLabel.setBorder(null);
+		this.albumLabel.setText(null);
+		this.artistLabel.setText(null);
+		this.yearLabel.setText(null);
+		((ContextTracksTableModel) this.tracksTable.getModel()).setAlbum(null);
 	}
 
 	@Override
 	public Component getComponent() {
 		// Create components
-		albumCoverLabel = new JLabel();
-		albumLabel = new UrlLabel(getDesktop());
-		albumLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		albumLabel.setFont(getLookAndFeelManager().getCurrentLookAndFeel().getContextInformationBigFont());
-		artistLabel = new UrlLabel(getDesktop());
-		artistLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		yearLabel = new UrlLabel(getDesktop());
-		yearLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		this.albumCoverLabel = new JLabel();
+		this.albumLabel = getControlsBuilder().getUrlLabel();
+		this.albumLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		this.albumLabel.setFont(getLookAndFeelManager().getCurrentLookAndFeel()
+				.getContextInformationBigFont());
+		this.artistLabel = getControlsBuilder().getUrlLabel();
+		this.artistLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		this.yearLabel = getControlsBuilder().getUrlLabel();
+		this.yearLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-		tracksTable = contextInformationTableFactory.getNewTracksTable(contextTableURLOpener);
-		tracksTable.setModel(new ContextTracksTableModel());
+		this.tracksTable = this.contextInformationTableFactory
+				.getNewTracksTable(this.contextTableURLOpener);
+		this.tracksTable.setModel(new ContextTracksTableModel());
 
 		// Add components
 		return arrangeComponents();
@@ -187,18 +204,18 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 		c.gridx = 0;
 		c.gridy = 0;
 		c.insets = new Insets(15, 0, 0, 0);
-		panel.add(albumCoverLabel, c);
+		panel.add(this.albumCoverLabel, c);
 		c.gridy = 1;
 		c.insets = new Insets(5, 5, 0, 5);
-		panel.add(albumLabel, c);
+		panel.add(this.albumLabel, c);
 		c.gridy = 2;
-		panel.add(artistLabel, c);
+		panel.add(this.artistLabel, c);
 		c.gridy = 3;
-		panel.add(yearLabel, c);
+		panel.add(this.yearLabel, c);
 		c.gridy = 4;
 		c.weightx = 1;
 		c.fill = GridBagConstraints.BOTH;
-		panel.add(tracksTable, c);
+		panel.add(this.tracksTable, c);
 		return panel;
 	}
 }
