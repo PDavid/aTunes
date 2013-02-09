@@ -155,5 +155,7 @@
 	<bean class="net.sourceforge.atunes.utils.JavaUsedNonHeapSpaceStatistic"/>
 	
 
+    <bean class="net.sourceforge.atunes.kernel.modules.updates.CheckUpdatesSwingWorker" scope="prototype"/>
+    <bean class="net.sourceforge.atunes.kernel.modules.updates.VersionXmlParser" scope="prototype"/>
 	
 </beans>

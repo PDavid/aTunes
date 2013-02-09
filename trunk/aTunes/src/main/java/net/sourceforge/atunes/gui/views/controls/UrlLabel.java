@@ -45,7 +45,7 @@ public final class UrlLabel extends JXHyperlink {
 	 * 
 	 * @param desktop
 	 */
-	public UrlLabel(final IDesktop desktop) {
+	UrlLabel(final IDesktop desktop) {
 		super();
 		this.desktop = desktop;
 	}
@@ -57,7 +57,7 @@ public final class UrlLabel extends JXHyperlink {
 	 * @param text
 	 * @param url
 	 */
-	public UrlLabel(final IDesktop desktop, final String text, final String url) {
+	UrlLabel(final IDesktop desktop, final String text, final String url) {
 		super(new Link(desktop, url));
 		this.desktop = desktop;
 		setTextAndColor(text);

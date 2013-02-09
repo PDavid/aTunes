@@ -47,6 +47,7 @@ import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IButtonPanel;
 import net.sourceforge.atunes.model.IControlsBuilder;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -109,6 +110,15 @@ public class ControlsBuilder implements IControlsBuilder {
 
 	/** The component orientation. */
 	private ComponentOrientation componentOrientation;
+
+	private IDesktop desktop;
+
+	/**
+	 * @param desktop
+	 */
+	public void setDesktop(final IDesktop desktop) {
+		this.desktop = desktop;
+	}
 
 	/**
 	 * @param dialogFactory
@@ -323,6 +333,16 @@ public class ControlsBuilder implements IControlsBuilder {
 	public JScrollPane getScrollPane(final Component component) {
 		return this.lookAndFeelManager.getCurrentLookAndFeel().getScrollPane(
 				component);
+	}
+
+	@Override
+	public UrlLabel getUrlLabel(final String text, final String url) {
+		return new UrlLabel(this.desktop, text, url);
+	}
+
+	@Override
+	public UrlLabel getUrlLabel() {
+		return new UrlLabel(this.desktop);
 	}
 
 	private class CustomFileChooser extends JFileChooser {

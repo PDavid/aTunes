@@ -26,9 +26,7 @@ import java.net.UnknownHostException;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IApplicationArguments;
-import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.INetworkHandler;
-import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.Logger;
@@ -40,123 +38,116 @@ import org.w3c.dom.Document;
 /**
  * Handler for updates
  */
-public final class UpdateHandler extends AbstractHandler implements IUpdateHandler {
+public final class UpdateHandler extends AbstractHandler implements
+		IUpdateHandler {
 
-    /** 
-     * Url to look for new version. 
-     */
-    private String updatesURL;
-    
-    private IApplicationArguments applicationArguments;
-    
-    private ITaskService taskService;
-    
-    private INetworkHandler networkHandler;
-    
-    private IStateUI stateUI;
-    
-    private IDialogFactory dialogFactory;
-    
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
-    
-    /**
-     * @param stateUI
-     */
-    public void setStateUI(IStateUI stateUI) {
-		this.stateUI = stateUI;
-	}
-    
-    /**
-     * @param networkHandler
-     */
-    public void setNetworkHandler(INetworkHandler networkHandler) {
+	/**
+	 * Url to look for new version.
+	 */
+	private String updatesURL;
+
+	private IApplicationArguments applicationArguments;
+
+	private ITaskService taskService;
+
+	private INetworkHandler networkHandler;
+
+	/**
+	 * @param networkHandler
+	 */
+	public void setNetworkHandler(final INetworkHandler networkHandler) {
 		this.networkHandler = networkHandler;
 	}
-    
-    /**
-     * @param taskService
-     */
-    public void setTaskService(ITaskService taskService) {
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
 		this.taskService = taskService;
 	}
-    
-    /**
-     * @param applicationArguments
-     */
-    public void setApplicationArguments(IApplicationArguments applicationArguments) {
+
+	/**
+	 * @param applicationArguments
+	 */
+	public void setApplicationArguments(
+			final IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
 
-    /**
-     * @param updatesURL
-     */
-    public final void setUpdatesURL(String updatesURL) {
+	/**
+	 * @param updatesURL
+	 */
+	public final void setUpdatesURL(final String updatesURL) {
 		this.updatesURL = updatesURL;
 	}
-    
-    @Override
-    public void deferredInitialization() {
-        if (!applicationArguments.isNoUpdate()) {
-        	taskService.submitNow("Check updates", new Runnable() {
-        		@Override
-        		public void run() {
-        			checkUpdates(false, false);
-        		}
-        	});
-        }
-    }
-    
-    /**
-     * Used to check for new version.
-     * @param alwaysInDialog
-     * @param showNoNewVersion
-     */
-    @Override
-    public void checkUpdates(boolean alwaysInDialog, boolean showNoNewVersion) {
-        new CheckUpdatesSwingWorker(this, showNoNewVersion, alwaysInDialog, stateUI, getFrame(), dialogFactory).execute();
-    }
 
-    /**
-     * Tries to find a new release by connecting to update URL.
-     * 
-     * @param p
-     *            the p
-     * 
-     * @return the last version
-     */
-    @Override
-    public ApplicationVersion getLastVersion() {
-        ApplicationVersion result = null;
-        try {
-            Document xml = getVersionXml();
+	@Override
+	public void deferredInitialization() {
+		if (!this.applicationArguments.isNoUpdate()) {
+			this.taskService.submitNow("Check updates", new Runnable() {
+				@Override
+				public void run() {
+					checkUpdates(false, false);
+				}
+			});
+		}
+	}
 
-            // Check if xml is not null: if URL is not found response is a HTTP 200 code, as current hosting system
-            // returns a valid html page reporting the real HTTP 404 code
-            if (xml == null) {
-                throw new IOException(StringUtils.getString("Failled to retrieve xml from ", updatesURL));
-            }
+	/**
+	 * Used to check for new version.
+	 * 
+	 * @param alwaysInDialog
+	 * @param showNoNewVersion
+	 */
+	@Override
+	public void checkUpdates(final boolean alwaysInDialog,
+			final boolean showNoNewVersion) {
+		CheckUpdatesSwingWorker worker = getBean(CheckUpdatesSwingWorker.class);
+		worker.setShowNoNewVersion(showNoNewVersion);
+		worker.setAlwaysInDialog(alwaysInDialog);
+		worker.execute();
+	}
 
-            // Parse xml document
-            result = new VersionXmlParser().getApplicationVersionFromXml(xml);
+	/**
+	 * Tries to find a new release by connecting to update URL.
+	 * 
+	 * @param p
+	 *            the p
+	 * 
+	 * @return the last version
+	 */
+	@Override
+	public ApplicationVersion getLastVersion() {
+		ApplicationVersion result = null;
+		try {
+			Document xml = getVersionXml();
 
-        } catch (UnknownHostException uhe) {
-            Logger.error("Could not connect to www.atunes.org");
-        } catch (IOException e) {
-            Logger.error("Could not connect to www.atunes.org");
-        }
-        return result;
-    }
+			// Check if xml is not null: if URL is not found response is a HTTP
+			// 200 code, as current hosting system
+			// returns a valid html page reporting the real HTTP 404 code
+			if (xml == null) {
+				throw new IOException(StringUtils.getString(
+						"Failled to retrieve xml from ", this.updatesURL));
+			}
+
+			// Parse xml document
+			result = getBean(VersionXmlParser.class)
+					.getApplicationVersionFromXml(xml);
+
+		} catch (UnknownHostException uhe) {
+			Logger.error("Could not connect to www.atunes.org");
+		} catch (IOException e) {
+			Logger.error("Could not connect to www.atunes.org");
+		}
+		return result;
+	}
 
 	/**
 	 * @return xml document retrieved from update url
 	 * @throws IOException
 	 */
 	private Document getVersionXml() throws IOException {
-		return  XMLUtils.getXMLDocument(networkHandler.readURL(networkHandler.getConnection(updatesURL)));
+		return XMLUtils.getXMLDocument(this.networkHandler
+				.readURL(this.networkHandler.getConnection(this.updatesURL)));
 	}
 }

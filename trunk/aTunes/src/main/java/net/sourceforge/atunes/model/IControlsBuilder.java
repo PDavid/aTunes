@@ -39,6 +39,7 @@ import net.sourceforge.atunes.gui.views.controls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.gui.views.controls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.StopButton;
+import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 
 /**
  * Interface to build UI components
@@ -165,4 +166,16 @@ public interface IControlsBuilder {
 	 * @return
 	 */
 	JScrollPane getScrollPane(Component component);
+
+	/**
+	 * @param text
+	 * @param url
+	 * @return new url label
+	 */
+	UrlLabel getUrlLabel(String text, String url);
+
+	/**
+	 * @return new url label
+	 */
+	UrlLabel getUrlLabel();
 }
