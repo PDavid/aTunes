@@ -294,12 +294,31 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	}
 
 	/**
-	 * Gets the audio object in navigation table.
-	 * 
-	 * @param row
-	 *            the row
+	 * Gets the audio object in navigation table for selected row
 	 * 
 	 * @return the song in navigation table
+	 */
+	public IAudioObject getAudioObjectInNavigationTable() {
+		return getAudioObjectInNavigationTable(this.navigationTable
+				.getSelectedRow());
+	}
+
+	/**
+	 * @return audio objects in all selected rows
+	 */
+	public List<IAudioObject> getAudioObjectsInNavigationTable() {
+		List<IAudioObject> result = new ArrayList<IAudioObject>();
+		for (int i = 0; i < this.navigationTable.getSelectedRows().length; i++) {
+			result.add(getAudioObjectInNavigationTable(i));
+		}
+		return result;
+	}
+
+	/**
+	 * Gets the audio object in navigation table for selected row
+	 * 
+	 * @param row
+	 * @return
 	 */
 	public IAudioObject getAudioObjectInNavigationTable(final int row) {
 		return ((NavigationTableModel) this.navigationTable.getModel())
