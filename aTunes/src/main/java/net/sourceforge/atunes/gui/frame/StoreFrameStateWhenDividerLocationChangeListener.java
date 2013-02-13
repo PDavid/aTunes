@@ -20,47 +20,24 @@
 
 package net.sourceforge.atunes.gui.frame;
 
-import net.sourceforge.atunes.model.IFramePosition;
-import net.sourceforge.atunes.model.IStateUI;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-/**
- * Saves frame position of frame
- * 
- * @author alex
- * 
- */
-public final class SaveFramePositionTask implements Runnable {
+final class StoreFrameStateWhenDividerLocationChangeListener
+		implements PropertyChangeListener {
+	private final AbstractSingleFrame frame;
+	private final String splitPaneId;
 
-	private IStateUI stateUI;
-	private int x;
-	private int y;
-
-	/**
-	 * @param stateUI
-	 */
-	public void setStateUI(final IStateUI stateUI) {
-		this.stateUI = stateUI;
-	}
-
-	/**
-	 * @param x
-	 */
-	public void setX(final int x) {
-		this.x = x;
-	}
-
-	/**
-	 * @param y
-	 */
-	public void setY(final int y) {
-		this.y = y;
+	StoreFrameStateWhenDividerLocationChangeListener(
+			final AbstractSingleFrame frame, final String splitPaneId) {
+		this.frame = frame;
+		this.splitPaneId = splitPaneId;
 	}
 
 	@Override
-	public void run() {
-		IFramePosition framePosition = this.stateUI.getFramePosition();
-		framePosition.setXPosition(this.x);
-		framePosition.setYPosition(this.y);
-		this.stateUI.setFramePosition(framePosition);
+	public void propertyChange(final PropertyChangeEvent evt) {
+		this.frame.getFrameState().putSplitPaneDividerPos(this.splitPaneId,
+				(Integer) evt.getNewValue());
+		this.frame.storeFrameState();
 	}
 }

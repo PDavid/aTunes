@@ -23,21 +23,30 @@ package net.sourceforge.atunes.gui.frame;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Collection;
 
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IWindowListener;
 import net.sourceforge.atunes.utils.Logger;
 
-class WindowListener extends WindowAdapter {
+/**
+ * Listens to window events
+ * 
+ * @author alex
+ * 
+ */
+public class WindowListener extends WindowAdapter {
 
-	private final Collection<IWindowListener> listeners;
-	
-	WindowListener(Collection<IWindowListener> listeners) {
-		this.listeners = listeners;
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
-	
+
 	@Override
-	public void windowStateChanged(WindowEvent e) {
+	public void windowStateChanged(final WindowEvent e) {
 		if (e.getNewState() == Frame.ICONIFIED) {
 			Logger.debug("Window Iconified");
 			windowIconifiedEvent();
@@ -46,23 +55,27 @@ class WindowListener extends WindowAdapter {
 			windowDeiconifiedEvent();
 		}
 	}
-	
+
 	/**
 	 * Called when window is deiconified
+	 * 
 	 * @param path
 	 */
 	private void windowDeiconifiedEvent() {
-		for (IWindowListener l : listeners) {
+		for (IWindowListener l : this.beanFactory
+				.getBeans(IWindowListener.class)) {
 			l.windowDeiconified();
 		}
 	}
 
 	/**
 	 * Called when window is iconified
+	 * 
 	 * @param path
 	 */
 	private void windowIconifiedEvent() {
-		for (IWindowListener l : listeners) {
+		for (IWindowListener l : this.beanFactory
+				.getBeans(IWindowListener.class)) {
 			l.windowIconified();
 		}
 	}

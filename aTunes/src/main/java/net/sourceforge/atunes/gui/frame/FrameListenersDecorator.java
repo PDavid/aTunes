@@ -20,51 +20,33 @@
 
 package net.sourceforge.atunes.gui.frame;
 
-import java.util.Collection;
-
-import net.sourceforge.atunes.model.IStateUI;
-import net.sourceforge.atunes.model.ITaskService;
-import net.sourceforge.atunes.model.IWindowListener;
-
+import net.sourceforge.atunes.model.IBeanFactory;
 
 /**
- * Decorates a frame by adding all listeners needed to keep size, location, play list scrolled etc.
+ * Decorates a frame by adding all listeners needed to keep size, location, play
+ * list scrolled etc.
+ * 
  * @author alex
- *
+ * 
  */
-class FrameListenersDecorator {
+public class FrameListenersDecorator {
 
-	private AbstractSingleFrame frame;
-
-	private ITaskService taskService;
-
-	private IStateUI stateUI;
-	
-	private Collection<IWindowListener> listeners;
+	private IBeanFactory beanFactory;
 
 	/**
-	 * @param frame
-	 * @param taskService
-	 * @param stateUI
-	 * @param listeners
+	 * @param beanFactory
 	 */
-	FrameListenersDecorator(AbstractSingleFrame frame,
-			ITaskService taskService, IStateUI stateUI,
-			Collection<IWindowListener> listeners) {
-		super();
-		this.frame = frame;
-		this.taskService = taskService;
-		this.stateUI = stateUI;
-		this.listeners = listeners;
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
-	void decorate() {
+	void decorate(final AbstractSingleFrame frame) {
 		// Set window state listener
-		net.sourceforge.atunes.gui.frame.WindowListener listener = new net.sourceforge.atunes.gui.frame.WindowListener(listeners);
+		net.sourceforge.atunes.gui.frame.WindowListener listener = this.beanFactory
+				.getBean(WindowListener.class);
 		frame.addWindowStateListener(listener);
 		frame.addWindowFocusListener(listener);
-		frame.addComponentListener(new SingleFrameComponentAdapter(frame, taskService, stateUI));
+		frame.addComponentListener(this.beanFactory
+				.getBean(SingleFrameComponentAdapter.class));
 	}
 }
-
-

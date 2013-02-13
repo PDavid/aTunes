@@ -34,14 +34,19 @@ public class SaveFrameSizeTaskTest {
 	@Test
 	public void test() {
 		AbstractSingleFrame frame = mock(AbstractSingleFrame.class);
-		when(frame.getExtendedState()).thenReturn(java.awt.Frame.MAXIMIZED_BOTH);
+		when(frame.getExtendedState())
+				.thenReturn(java.awt.Frame.MAXIMIZED_BOTH);
 		IStateUI stateUI = mock(IStateUI.class);
 		IFrameSize frameSize = new FrameSize();
 		when(stateUI.getFrameSize()).thenReturn(frameSize);
-		SaveFrameSizeTask sut = new SaveFrameSizeTask(frame, stateUI, 1, 2);
-		
+		SaveFrameSizeTask sut = new SaveFrameSizeTask();
+		sut.setFrame(frame);
+		sut.setStateUI(stateUI);
+		sut.setWidth(1);
+		sut.setHeight(2);
+
 		sut.run();
-		
+
 		verify(stateUI).setFrameSize(frameSize);
 		Assert.assertEquals(1, frameSize.getWindowWidth());
 		Assert.assertEquals(2, frameSize.getWindowHeight());
