@@ -1,6 +1,7 @@
 aTunes 3.0.6
 ------------
 - FIX: Window size ignored if window is maximized
+- FIX: Folder filter does not work with child folders
 
 aTunes 3.0.5
 ------------
