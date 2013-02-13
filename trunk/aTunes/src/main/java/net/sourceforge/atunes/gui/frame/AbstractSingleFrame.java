@@ -55,10 +55,8 @@ import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IStateUI;
-import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.model.IUpdateDialog;
-import net.sourceforge.atunes.model.IWindowListener;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -94,8 +92,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements
 	private INavigationHandler navigationHandler;
 	private ILookAndFeelManager lookAndFeelManager;
 	private IUIHandler uiHandler;
-
-	private ITaskService taskService;
 
 	private ApplicationContext context;
 
@@ -149,10 +145,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements
 		// Set OS-dependent frame configuration
 		this.osManager.setupFrame(this);
 
-		FrameListenersDecorator decorator = new FrameListenersDecorator(this,
-				this.taskService, this.stateUI, this.context.getBeansOfType(
-						IWindowListener.class).values());
-		decorator.decorate();
+		getContext().getBean(FrameListenersDecorator.class).decorate(this);
 
 		// Create frame content
 		setContent();
@@ -718,13 +711,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements
 	 * @return
 	 */
 	protected abstract Dimension getWindowMinimumSize();
-
-	/**
-	 * @param taskService
-	 */
-	public void setTaskService(final ITaskService taskService) {
-		this.taskService = taskService;
-	}
 
 	/**
 	 * @param uiHandler

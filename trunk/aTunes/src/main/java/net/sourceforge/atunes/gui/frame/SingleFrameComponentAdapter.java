@@ -24,17 +24,44 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.concurrent.Future;
 
-import net.sourceforge.atunes.model.IStateUI;
+import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ITaskService;
 
+/**
+ * Saves size and position of frame
+ * 
+ * @author alex
+ * 
+ */
+public final class SingleFrameComponentAdapter extends ComponentAdapter {
 
-final class SingleFrameComponentAdapter extends ComponentAdapter {
-	
-	private final AbstractSingleFrame abstractSingleFrame;
-	
-	private final ITaskService taskService;
-	
-	private final IStateUI stateUI;
+	private IFrame frame;
+
+	private ITaskService taskService;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+
+	/**
+	 * @param frame
+	 */
+	public void setFrame(final IFrame frame) {
+		this.frame = frame;
+	}
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
+		this.taskService = taskService;
+	}
 
 	/**
 	 * Previous size tasks (if any)
@@ -46,24 +73,13 @@ final class SingleFrameComponentAdapter extends ComponentAdapter {
 	 */
 	private Future<?> positionFuture;
 
-	/**
-	 * @param abstractSingleFrame
-	 * @param taskService
-	 * @param stateUI
-	 */
-	SingleFrameComponentAdapter(AbstractSingleFrame abstractSingleFrame, ITaskService taskService, IStateUI stateUI) {
-		this.abstractSingleFrame = abstractSingleFrame;
-		this.taskService = taskService;
-		this.stateUI = stateUI;
-	}
-
 	@Override
-	public void componentResized(ComponentEvent event) {				
+	public void componentResized(final ComponentEvent event) {
 		saveSize();
 	}
 
 	@Override
-	public void componentMoved(ComponentEvent event) {
+	public void componentMoved(final ComponentEvent event) {
 		savePosition(event);
 	}
 
@@ -71,34 +87,47 @@ final class SingleFrameComponentAdapter extends ComponentAdapter {
 	 * Called to save size when an event is detected in single frame
 	 */
 	private void saveSize() {
-		int width = abstractSingleFrame.getSize().width;
-		int height = abstractSingleFrame.getSize().height;
-		
-		if (abstractSingleFrame.isVisible() && width != 0 && height != 0) {
-			// Task submitted after canceling previous ones to avoid executing task after each call to component listener
-			if (sizeFuture != null) {
-				sizeFuture.cancel(false);
+		int width = this.frame.getSize().width;
+		int height = this.frame.getSize().height;
+
+		if (this.frame.isVisible() && width != 0 && height != 0) {
+			// Task submitted after canceling previous ones to avoid executing
+			// task after each call to component listener
+			if (this.sizeFuture != null) {
+				this.sizeFuture.cancel(false);
 			}
-			
-			sizeFuture = taskService.submitOnce("Save Frame Size", 1, new SaveFrameSizeTask(abstractSingleFrame, stateUI, width, height));
+
+			SaveFrameSizeTask task = this.beanFactory
+					.getBean(SaveFrameSizeTask.class);
+			task.setWidth(width);
+			task.setHeight(height);
+			this.sizeFuture = this.taskService.submitOnce("Save Frame Size", 1,
+					task);
 		}
 	}
 
 	/**
 	 * Called to save position when an event is detected in single frame
+	 * 
 	 * @param event
 	 */
 	private void savePosition(final ComponentEvent event) {
 		final int x = event.getComponent().getX();
 		final int y = event.getComponent().getY();
-		
-		if (abstractSingleFrame.isVisible()) {
-			// Task submitted after canceling previous ones to avoid executing task after each call to component listener
-			if (positionFuture != null) {
-				positionFuture.cancel(false);
+
+		if (this.frame.isVisible()) {
+			// Task submitted after canceling previous ones to avoid executing
+			// task after each call to component listener
+			if (this.positionFuture != null) {
+				this.positionFuture.cancel(false);
 			}
-			
-			positionFuture = taskService.submitOnce("Save Frame Position", 1, new SaveFramePositionTask(stateUI, x, y));
+
+			SaveFramePositionTask task = this.beanFactory
+					.getBean(SaveFramePositionTask.class);
+			task.setX(x);
+			task.setY(y);
+			this.positionFuture = this.taskService.submitOnce(
+					"Save Frame Position", 1, task);
 		}
 	}
 }

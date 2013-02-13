@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.gui.frame;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
@@ -35,25 +33,6 @@ import net.sourceforge.atunes.model.IControlsBuilder;
  * 
  */
 class SplitPaneFactory {
-
-	private static final class StoreFrameStateWhenDividerLocationChangeListener
-			implements PropertyChangeListener {
-		private final AbstractSingleFrame frame;
-		private final String splitPaneId;
-
-		private StoreFrameStateWhenDividerLocationChangeListener(
-				final AbstractSingleFrame frame, final String splitPaneId) {
-			this.frame = frame;
-			this.splitPaneId = splitPaneId;
-		}
-
-		@Override
-		public void propertyChange(final PropertyChangeEvent evt) {
-			this.frame.getFrameState().putSplitPaneDividerPos(this.splitPaneId,
-					(Integer) evt.getNewValue());
-			this.frame.storeFrameState();
-		}
-	}
 
 	/**
 	 * Creates a new navigator split pane for a frame with a split pane id

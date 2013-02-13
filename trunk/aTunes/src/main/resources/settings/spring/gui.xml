@@ -42,6 +42,14 @@
 	
 	<bean id="frame" factory-bean="frameFactory" factory-method="create"/>
 	
+	
+	<bean class="net.sourceforge.atunes.gui.frame.FrameListenersDecorator" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.gui.frame.WindowListener" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.gui.frame.SingleFrameComponentAdapter" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.gui.frame.SaveFrameSizeTask" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.gui.frame.SaveFramePositionTask" scope="prototype"/>
+	
+	
 	<bean id="appMenuBar" class="net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar"/>
 	<bean id="fileMenu" class="net.sourceforge.atunes.gui.views.menus.FileMenu" init-method="initialize">
 		<constructor-arg value="FILE"/>

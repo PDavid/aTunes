@@ -1,3 +1,7 @@
+aTunes 3.0.6
+------------
+- FIX: Window size ignored if window is maximized
+
 aTunes 3.0.5
 ------------
 - Folder view allows filtering subfolders

@@ -25,31 +25,42 @@ import net.sourceforge.atunes.model.IStateUI;
 
 /**
  * Saves frame position of frame
+ * 
  * @author alex
- *
+ * 
  */
-final class SaveFramePositionTask implements Runnable {
-	
-	private final IStateUI stateUI;
-	private final int x;
-	private final int y;
+public final class SaveFramePositionTask implements Runnable {
+
+	private IStateUI stateUI;
+	private int x;
+	private int y;
 
 	/**
 	 * @param stateUI
+	 */
+	public void setStateUI(final IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
+
+	/**
 	 * @param x
+	 */
+	public void setX(final int x) {
+		this.x = x;
+	}
+
+	/**
 	 * @param y
 	 */
-	SaveFramePositionTask(IStateUI stateUI, int x, int y) {
-		this.stateUI = stateUI;
-		this.x = x;
+	public void setY(final int y) {
 		this.y = y;
 	}
 
 	@Override
 	public void run() {
-		IFramePosition framePosition = stateUI.getFramePosition();
-		framePosition.setXPosition(x);
-		framePosition.setYPosition(y);
-		stateUI.setFramePosition(framePosition);
+		IFramePosition framePosition = this.stateUI.getFramePosition();
+		framePosition.setXPosition(this.x);
+		framePosition.setYPosition(this.y);
+		this.stateUI.setFramePosition(framePosition);
 	}
 }

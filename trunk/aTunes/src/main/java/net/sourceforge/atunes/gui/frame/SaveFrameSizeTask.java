@@ -20,40 +20,74 @@
 
 package net.sourceforge.atunes.gui.frame;
 
+import java.awt.Dimension;
+
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFrameSize;
 import net.sourceforge.atunes.model.IStateUI;
 
 /**
  * Saves frame size of frame
+ * 
  * @author alex
- *
+ * 
  */
 final class SaveFrameSizeTask implements Runnable {
-	
-	private final AbstractSingleFrame abstractSingleFrame;
-	private final IStateUI stateUI;
-	private final int width;
-	private final int height;
+
+	private IFrame frame;
+	private IStateUI stateUI;
+	private int width;
+	private int height;
+
+	private Dimension screenSize;
 
 	/**
-	 * @param abstractSingleFrame
+	 * @param screenSize
+	 */
+	public void setScreenSize(final Dimension screenSize) {
+		this.screenSize = screenSize;
+	}
+
+	/**
+	 * @param frame
+	 */
+	public void setFrame(final IFrame frame) {
+		this.frame = frame;
+	}
+
+	/**
 	 * @param stateUI
+	 */
+	public void setStateUI(final IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
+
+	/**
 	 * @param width
+	 */
+	public void setWidth(final int width) {
+		this.width = width;
+	}
+
+	/**
 	 * @param height
 	 */
-	SaveFrameSizeTask(AbstractSingleFrame abstractSingleFrame, IStateUI stateUI, int width, int height) {
-		this.abstractSingleFrame = abstractSingleFrame;
-		this.stateUI = stateUI;
-		this.width = width;
+	public void setHeight(final int height) {
 		this.height = height;
 	}
 
 	@Override
 	public void run() {
-		IFrameSize frameSize = stateUI.getFrameSize();
-		frameSize.setWindowWidth(width);
-		frameSize.setWindowHeight(height);
-		frameSize.setMaximized(abstractSingleFrame.getExtendedState() == java.awt.Frame.MAXIMIZED_BOTH);
-		stateUI.setFrameSize(frameSize);
+		IFrameSize frameSize = this.stateUI.getFrameSize();
+		frameSize.setWindowWidth(this.width);
+		frameSize.setWindowHeight(this.height);
+
+		// Window is maximized if Swing constant has needed value and at least
+		// one of the
+		// dimensions is equals to screen dimension
+		frameSize
+				.setMaximized(this.frame.getExtendedState() == java.awt.Frame.MAXIMIZED_BOTH
+						&& (this.width == this.screenSize.width || this.height == this.screenSize.height));
+		this.stateUI.setFrameSize(frameSize);
 	}
 }
