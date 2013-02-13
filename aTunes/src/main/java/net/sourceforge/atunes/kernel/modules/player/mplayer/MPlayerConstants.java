@@ -22,23 +22,25 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 final class MPlayerConstants {
 
-    /** Argument to not display more information than needed. */
-    static final String QUIET = "-quiet";
-    /** Argument to control mplayer through commands. */
-    static final String SLAVE = "-slave";
-    /** Argument to pass mplayer a play list. */
-    static final String PLAYLIST = "-playlist";
-    /** Arguments to filter audio output. */
-    static final String AUDIO_FILTER = "-af";
-    static final String VOLUME_NORM = "volnorm";
-    static final String EQUALIZER = "equalizer=";
-    static final String CACHE = "-cache";
-    static final String CACHE_SIZE = "500";
-    static final String CACHE_MIN = "-cache-min";
-    static final String CACHE_FILL_SIZE_IN_PERCENT = "7.0";
-    static final String PREFER_IPV4 = "-prefer-ipv4";
-    static final String VOLUME = "-volume";
+	/** Argument to not display more information than needed. */
+	static final String QUIET = "-quiet";
+	/** Argument to control mplayer through commands. */
+	static final String SLAVE = "-slave";
+	/** Argument to pass mplayer a play list. */
+	static final String PLAYLIST = "-playlist";
+	/** Arguments to filter audio output. */
+	static final String AUDIO_FILTER = "-af";
+	static final String VOLUME_NORM = "volnorm";
+	static final String EQUALIZER = "equalizer=";
+	static final String CACHE = "-cache";
+	static final String CACHE_SIZE = "500";
+	static final String CACHE_MIN = "-cache-min";
+	static final String CACHE_FILL_SIZE_IN_PERCENT = "7.0";
+	static final String PREFER_IPV4 = "-prefer-ipv4";
+	static final String VOLUME = "-volume";
+	public static final String NOVIDEO = "-novideo";
 
-    private MPlayerConstants() {}
+	private MPlayerConstants() {
+	}
 
 }
