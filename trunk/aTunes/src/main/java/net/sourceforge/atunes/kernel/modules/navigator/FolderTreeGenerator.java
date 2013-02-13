@@ -73,7 +73,7 @@ public class FolderTreeGenerator implements ITreeGenerator {
 		// Refresh nodes
 		tree.setRoot(I18nUtils.getString(rootTextKey));
 
-		addFolderNodes(tree, structure, currentFilter, folderSorter);
+		addFolderNodes(tree, structure, currentFilter, this.folderSorter);
 
 		tree.reload();
 
@@ -112,7 +112,8 @@ public class FolderTreeGenerator implements ITreeGenerator {
 				IFolder f = (IFolder) folderNode.getUserObject();
 				String searchPath = filePath
 						.substring(f.getName().length() + 1);
-				String[] paths = searchPath.split(osManager.getFileSeparator());
+				String[] paths = searchPath.split(this.osManager
+						.getFileSeparator());
 				ITreeNode node = getTreeNodeForLevel(paths, 0, tree, folderNode);
 				if (node != null) {
 					tree.selectNode(node);
@@ -195,17 +196,17 @@ public class FolderTreeGenerator implements ITreeGenerator {
 		}
 	}
 
-	private boolean folderMatchesFilter(final String currentFilter, IFolder f) {
+	private boolean folderMatchesFilter(final String currentFilter,
+			final IFolder f) {
 		return currentFilter == null
 				|| folderOrSubfoldersMatchFilter(currentFilter, f);
 	}
 
 	private boolean folderOrSubfoldersMatchFilter(final String currentFilter,
-			IFolder f) {
-		if (f.isLeaf()) {
-			return f.getName().toUpperCase()
-					.contains(currentFilter.toUpperCase());
-		} else {
+			final IFolder f) {
+		if (folderMatches(currentFilter, f)) {
+			return true;
+		} else if (!f.isLeaf()) {
 			for (IFolder childFolder : f.getFolders().values()) {
 				if (folderOrSubfoldersMatchFilter(currentFilter, childFolder)) {
 					return true;
@@ -213,5 +214,14 @@ public class FolderTreeGenerator implements ITreeGenerator {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * @param currentFilter
+	 * @param f
+	 * @return
+	 */
+	private boolean folderMatches(final String currentFilter, final IFolder f) {
+		return f.getName().toUpperCase().contains(currentFilter.toUpperCase());
 	}
 }
