@@ -1,5 +1,6 @@
 aTunes 3.0.6
 ------------
+- Updated mplayer binary for Windows
 - FIX: Window size ignored if window is maximized
 - FIX: Folder filter does not work with child folders
 
