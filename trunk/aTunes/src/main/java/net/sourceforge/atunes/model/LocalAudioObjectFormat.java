@@ -28,81 +28,86 @@ package net.sourceforge.atunes.model;
  */
 public enum LocalAudioObjectFormat {
 
-    /**
-     * MP3
-     */
-    MP3("mp3"),
+	/**
+	 * MP3
+	 */
+	MP3("mp3"),
 
-    /**
-     * OGG
-     */
-    OGG("ogg"),
+	/**
+	 * OGG
+	 */
+	OGG("ogg"),
 
-    /**
-     * MP4
-     */
-    MP4_1("m4a"),
+	/**
+	 * MP4
+	 */
+	MP4_1("m4a"),
 
-    /**
-     * MP4
-     */
-    MP4_2("mp4"),
+	/**
+	 * MP4
+	 */
+	MP4_2("mp4"),
 
-    /**
-     * WAV
-     */
-    WAV("wav"),
+	/**
+	 * WAV
+	 */
+	WAV("wav"),
 
-    /**
-     * WMA
-     */
-    WMA("wma"),
+	/**
+	 * WMA
+	 */
+	WMA("wma"),
 
-    /**
-     * FLAC
-     */
-    FLAC("flac"),
+	/**
+	 * FLAC
+	 */
+	FLAC("flac"),
 
-    /**
-     * APE
-     */
-    APE("ape"),
+	/**
+	 * APE
+	 */
+	APE("ape"),
 
-    /**
-     * MPC
-     */
-    MPC("mpc"),
+	/**
+	 * MPC
+	 */
+	MPC("mpc"),
 
-    /**
-     * Real media
-     */
-    REAL_1("ra"),
+	/**
+	 * Real media
+	 */
+	REAL_1("ra"),
 
-    /**
-     * Real media
-     */
-    REAL_2("rm"),
+	/**
+	 * Real media
+	 */
+	REAL_2("rm"),
 
-    /**
-     * mp+
-     */
-    MPPLUS("mp+"),
+	/**
+	 * mp+
+	 */
+	MPPLUS("mp+"),
 
-    /**
-     * mac
-     */
-    MAC("mac");
+	/**
+	 * mac
+	 */
+	MAC("mac"),
 
-    private String extension;
+	/**
+	 * FLV
+	 */
+	FLV("flv");
 
-    private LocalAudioObjectFormat(final String extension) {
-	this.extension = extension;
-    }
+	private String extension;
 
-    /**
-     * @return
-     */
-    public String getExtension() {
-	return extension;
-    }
+	private LocalAudioObjectFormat(final String extension) {
+		this.extension = extension;
+	}
+
+	/**
+	 * @return
+	 */
+	public String getExtension() {
+		return this.extension;
+	}
 }
