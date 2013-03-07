@@ -101,6 +101,15 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 
 	private String skinApplied;
 
+	private List<Locale> availableLanguages;
+
+	/**
+	 * @param availableLanguages
+	 */
+	public void setAvailableLanguages(final List<Locale> availableLanguages) {
+		this.availableLanguages = availableLanguages;
+	}
+
 	/**
 	 * @param frameTypes
 	 */
@@ -547,8 +556,8 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 
 	@Override
 	public void updatePanel() {
-		List<Locale> langs = I18nUtils.getLanguages();
-		Locale[] array = langs.toArray(new Locale[langs.size()]);
+		Locale[] array = this.availableLanguages
+				.toArray(new Locale[this.availableLanguages.size()]);
 		final Locale currentLocale = this.stateCore.getLocale().getLocale();
 		Arrays.sort(array, new LocaleComparator(currentLocale));
 		this.language.setModel(new DefaultComboBoxModel(array));

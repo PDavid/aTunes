@@ -157,5 +157,100 @@
 
     <bean class="net.sourceforge.atunes.kernel.modules.updates.CheckUpdatesSwingWorker" scope="prototype"/>
     <bean class="net.sourceforge.atunes.kernel.modules.updates.VersionXmlParser" scope="prototype"/>
+    
+    <bean id="availableLanguages" class="java.util.ArrayList">
+    	<constructor-arg>
+    		<list>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="ar"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="ca"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="cs"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="da"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="de"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="el"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="en"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="es"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="eu"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="fr"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="gl"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    			    <!-- Hebrew translation and image files must have "iw" ID, not "he".
+    			         Bug in Java? Official ISO code is "he", "iw" being used previously. -->
+    				<constructor-arg value="he"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="hr"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="hu"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="it"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="ja"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="nl"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="no"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="pl"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="pt"/>
+    				<constructor-arg value="BR"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="pt"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="ru"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="sk"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="sv"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="tr"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="uk"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="zh"/>
+    				<constructor-arg value="TW"/>
+    			</bean>
+    			<bean class="java.util.Locale">
+    				<constructor-arg value="zh"/>
+    			</bean>
+    		</list>
+    	</constructor-arg>
+    </bean>
 	
 </beans>
