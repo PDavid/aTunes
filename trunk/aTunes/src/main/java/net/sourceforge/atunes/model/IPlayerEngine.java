@@ -20,13 +20,12 @@
 
 package net.sourceforge.atunes.model;
 
-
-
-
 /**
- * Classes implementing this interface are responsible of work with native player engine
+ * Classes implementing this interface are responsible of work with native
+ * player engine
+ * 
  * @author alex
- *
+ * 
  */
 public interface IPlayerEngine {
 
@@ -83,12 +82,14 @@ public interface IPlayerEngine {
 
 	/**
 	 * Starts playing audio object in given position of visible play list
+	 * 
 	 * @param position
 	 */
 	void playAudioObjectInPlayListPositionOfVisiblePlayList(int position);
 
 	/**
 	 * Starts playing audio object in active play list
+	 * 
 	 * @param position
 	 */
 	void playAudioObjectInPlayListPositionOfActivePlayList(int position);
@@ -109,13 +110,16 @@ public interface IPlayerEngine {
 	void currentAudioObjectFinished();
 
 	/**
-	 * This method must be called by engine when audio object finishes its playback with error
+	 * This method must be called by engine when audio object finishes its
+	 * playback with error
+	 * 
 	 * @param exception
 	 */
 	void currentAudioObjectFinishedWithError(Exception exception);
 
 	/**
-	 * Seek function: play current audio object from milliseconds or percent defined by parameter
+	 * Seek function: play current audio object from milliseconds or percent
+	 * defined by parameter
 	 * 
 	 * @param milliseconds
 	 * @param perCent
@@ -142,18 +146,21 @@ public interface IPlayerEngine {
 
 	/**
 	 * Returns current audio object being played
+	 * 
 	 * @return
 	 */
 	IAudioObject getAudioObject();
 
 	/**
 	 * Time played of current audio object
+	 * 
 	 * @return
 	 */
 	long getCurrentAudioObjectPlayedTime();
 
 	/**
 	 * Total length of current audio object
+	 * 
 	 * @return
 	 */
 	long getCurrentAudioObjectLength();
@@ -172,6 +179,7 @@ public interface IPlayerEngine {
 	/**
 	 * This method must be implemented by player engines. Method to apply
 	 * equalizer values in player engine
+	 * 
 	 * @param enabled
 	 * @param values
 	 */
@@ -209,7 +217,8 @@ public interface IPlayerEngine {
 	void destroyPlayer();
 
 	/**
-	 * @param submissionState the submissionState to set
+	 * @param submissionState
+	 *            the submissionState to set
 	 */
 	void setSubmissionState(SubmissionState submissionState);
 
@@ -223,8 +232,9 @@ public interface IPlayerEngine {
 	 * 
 	 * @param playedTime
 	 *            played time in milliseconds (ms)
+	 * @param fading
 	 */
-	void setCurrentAudioObjectPlayedTime(long playedTime);
+	void setCurrentAudioObjectPlayedTime(long playedTime, boolean fading);
 
 	/**
 	 * Interrupts playing thread
@@ -282,6 +292,7 @@ public interface IPlayerEngine {
 	/**
 	 * This method must be implemented by player engines. Applies a seek
 	 * operation in player engine. Engine can use milliseconds or perCent
+	 * 
 	 * @param milliseconds
 	 * @param perCent
 	 */

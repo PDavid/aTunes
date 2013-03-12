@@ -5,6 +5,7 @@ aTunes 3.0.6
 - Added basque translation (thanks to Xabier Aramendi)
 - FIX: Window size ignored if window is maximized
 - FIX: Folder filter does not work with child folders
+- FIX: Hide progress slider when fading away
 
 aTunes 3.0.5
 ------------

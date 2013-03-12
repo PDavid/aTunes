@@ -400,7 +400,7 @@ public final class PlayerHandler extends AbstractHandler implements
 	 */
 	private void stopPlayerEngineIfNecessary(final PlaybackState newState) {
 		if (newState == PlaybackState.STOPPED) {
-			this.playerEngine.setCurrentAudioObjectPlayedTime(0);
+			this.playerEngine.setCurrentAudioObjectPlayedTime(0, false);
 			this.playerEngine.interruptPlayAudioObjectThread();
 		}
 	}
@@ -431,9 +431,9 @@ public final class PlayerHandler extends AbstractHandler implements
 
 	@Override
 	public void setCurrentAudioObjectTimePlayed(final long actualPlayedTime,
-			final long currentAudioObjectLength) {
+			final long currentAudioObjectLength, final boolean fading) {
 		this.playerControlsController.setCurrentAudioObjectTimePlayed(
-				actualPlayedTime, currentAudioObjectLength);
+				actualPlayedTime, currentAudioObjectLength, fading);
 	}
 
 	@Override
