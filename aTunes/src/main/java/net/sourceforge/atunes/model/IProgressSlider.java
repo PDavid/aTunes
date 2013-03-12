@@ -28,47 +28,48 @@ package net.sourceforge.atunes.model;
  */
 public interface IProgressSlider extends IPanel {
 
-    /**
-     * Sets played time
-     * 
-     * @param time
-     * @param remainingTime
-     */
-    public void setProgress(long time, long remainingTime);
+	/**
+	 * Sets played time
+	 * 
+	 * @param time
+	 * @param remainingTime
+	 * @param fading
+	 */
+	public void setProgress(long time, long remainingTime, boolean fading);
 
-    /**
-     * Delegate method
-     * 
-     * @param value
-     */
-    public void setValue(int value);
+	/**
+	 * Delegate method
+	 * 
+	 * @param value
+	 */
+	public void setValue(int value);
 
-    /**
-     * Delegate method
-     * 
-     * @return
-     */
-    public int getMaximum();
+	/**
+	 * Delegate method
+	 * 
+	 * @return
+	 */
+	public int getMaximum();
 
-    /**
-     * Delegate method
-     * 
-     * @return
-     */
-    public int getProgressBarWidth();
+	/**
+	 * Delegate method
+	 * 
+	 * @return
+	 */
+	public int getProgressBarWidth();
 
-    /**
-     * Delegate method
-     * 
-     * @param length
-     */
-    public void setMaximum(int length);
+	/**
+	 * Delegate method
+	 * 
+	 * @param length
+	 */
+	public void setMaximum(int length);
 
-    /**
-     * Delegate method
-     * 
-     * @return
-     */
-    public int getValue();
+	/**
+	 * Delegate method
+	 * 
+	 * @return
+	 */
+	public int getValue();
 
 }

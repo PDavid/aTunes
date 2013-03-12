@@ -460,13 +460,15 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	 * 
 	 * @param playedTime
 	 *            played time in milliseconds (ms)
+	 * @param fading
 	 */
 	@Override
-	public final void setCurrentAudioObjectPlayedTime(final long playedTime) {
+	public final void setCurrentAudioObjectPlayedTime(final long playedTime,
+			final boolean fading) {
 		long actualPlayedTime = playedTime;
 		this.currentAudioObjectPlayedTime = actualPlayedTime;
 		this.playerHandler.setCurrentAudioObjectTimePlayed(actualPlayedTime,
-				this.currentAudioObjectLength);
+				this.currentAudioObjectLength, fading);
 
 		// Conditions to submit an object:
 		// - Not submitted before
@@ -534,9 +536,9 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 		}
 	}
 
-	private boolean exists(IAudioObject ao) {
+	private boolean exists(final IAudioObject ao) {
 		if (ao instanceof ILocalAudioObject) {
-			return fileManager.exists((ILocalAudioObject) ao);
+			return this.fileManager.exists((ILocalAudioObject) ao);
 		}
 		return true;
 	}

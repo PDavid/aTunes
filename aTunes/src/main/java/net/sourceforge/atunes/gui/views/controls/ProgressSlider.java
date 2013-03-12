@@ -111,12 +111,15 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 	 * Sets played time
 	 * 
 	 * @param time
-	 *            in milliseconds
+	 * @param remainingTime
+	 * @param fading
 	 */
 	@Override
-	public void setProgress(final long time, final long remainingTime) {
-		boolean showDeterminateControls = time != 0 && remainingTime != 0;
-		boolean showIndeterminateControls = time > remainingTime
+	public void setProgress(final long time, final long remainingTime,
+			final boolean fading) {
+		boolean showDeterminateControls = !fading && time != 0
+				&& remainingTime != 0;
+		boolean showIndeterminateControls = !fading && time > remainingTime
 				&& remainingTime == 0;
 
 		showControls(time, remainingTime, showDeterminateControls,

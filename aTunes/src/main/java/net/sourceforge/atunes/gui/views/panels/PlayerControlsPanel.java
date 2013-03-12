@@ -217,8 +217,10 @@ public final class PlayerControlsPanel extends JPanel implements
 	}
 
 	@Override
-	public void setProgress(final long time, final long remainingTime) {
-		this.playerControlsProgressSlider.setProgress(time, remainingTime);
+	public void setProgress(final long time, final long remainingTime,
+			final boolean fading) {
+		this.playerControlsProgressSlider.setProgress(time, remainingTime,
+				fading);
 	}
 
 	/**

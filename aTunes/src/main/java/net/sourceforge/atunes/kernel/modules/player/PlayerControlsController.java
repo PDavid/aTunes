@@ -32,183 +32,196 @@ import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IStatePodcast;
 
-final class PlayerControlsController extends AbstractSimpleController<PlayerControlsPanel> {
+final class PlayerControlsController extends
+		AbstractSimpleController<PlayerControlsPanel> {
 
 	private IPlayerControlsPanel playerControls;
-	
-    private IPlayerHandler playerHandler;
-    
-    private VolumeSlider volumeSlider;
-    
-    private VolumeSliderMouseWheelListener volumeSliderMouseWheelListener;
-    
-    private VolumeSliderChangeListener volumeSliderChangeListener;
-    
-    private IStatePodcast statePodcast;
-    
-    /**
-     * @param statePodcast
-     */
-    public void setStatePodcast(IStatePodcast statePodcast) {
+
+	private IPlayerHandler playerHandler;
+
+	private VolumeSlider volumeSlider;
+
+	private VolumeSliderMouseWheelListener volumeSliderMouseWheelListener;
+
+	private VolumeSliderChangeListener volumeSliderChangeListener;
+
+	private IStatePodcast statePodcast;
+
+	/**
+	 * @param statePodcast
+	 */
+	public void setStatePodcast(final IStatePodcast statePodcast) {
 		this.statePodcast = statePodcast;
 	}
-    
-    /**
-     * @param volumeSliderChangeListener
-     */
-    public void setVolumeSliderChangeListener(VolumeSliderChangeListener volumeSliderChangeListener) {
+
+	/**
+	 * @param volumeSliderChangeListener
+	 */
+	public void setVolumeSliderChangeListener(
+			final VolumeSliderChangeListener volumeSliderChangeListener) {
 		this.volumeSliderChangeListener = volumeSliderChangeListener;
 	}
-    
-    /**
-     * @param volumeSliderMouseWheelListener
-     */
-    public void setVolumeSliderMouseWheelListener(VolumeSliderMouseWheelListener volumeSliderMouseWheelListener) {
+
+	/**
+	 * @param volumeSliderMouseWheelListener
+	 */
+	public void setVolumeSliderMouseWheelListener(
+			final VolumeSliderMouseWheelListener volumeSliderMouseWheelListener) {
 		this.volumeSliderMouseWheelListener = volumeSliderMouseWheelListener;
 	}
-    
-    /**
-     * @param volumeSlider
-     */
-    public void setVolumeSlider(VolumeSlider volumeSlider) {
+
+	/**
+	 * @param volumeSlider
+	 */
+	public void setVolumeSlider(final VolumeSlider volumeSlider) {
 		this.volumeSlider = volumeSlider;
 	}
-    
-    /**
-     * @param playerControls
-     */
-    public void setPlayerControls(IPlayerControlsPanel playerControls) {
+
+	/**
+	 * @param playerControls
+	 */
+	public void setPlayerControls(final IPlayerControlsPanel playerControls) {
 		this.playerControls = playerControls;
 	}
 
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
-    
-    /**
-     * Instantiates a new player controls controller.
-     * 
-     * @param panel
-     * @param state
-     * @param playerHandler
-     */
-    public void initialize() {
-        setComponentControlled((PlayerControlsPanel) playerControls.getSwingComponent());
-        addBindings();
-        addStateBindings();
-    }
 
-    @Override
+	/**
+	 * Instantiates a new player controls controller.
+	 * 
+	 * @param panel
+	 * @param state
+	 * @param playerHandler
+	 */
+	public void initialize() {
+		setComponentControlled((PlayerControlsPanel) this.playerControls
+				.getSwingComponent());
+		addBindings();
+		addStateBindings();
+	}
+
+	@Override
 	public void addBindings() {
-        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(getComponentControlled().getProgressSlider(), playerHandler);        
-        getComponentControlled().getProgressSlider().addMouseListener(seekListener);
-        // Add volume behavior
-        volumeSlider.addMouseWheelListener(volumeSliderMouseWheelListener);
-        volumeSlider.addChangeListener(volumeSliderChangeListener);
-    }
+		ProgressBarSeekListener seekListener = new ProgressBarSeekListener(
+				getComponentControlled().getProgressSlider(),
+				this.playerHandler);
+		getComponentControlled().getProgressSlider().addMouseListener(
+				seekListener);
+		// Add volume behavior
+		this.volumeSlider
+				.addMouseWheelListener(this.volumeSliderMouseWheelListener);
+		this.volumeSlider.addChangeListener(this.volumeSliderChangeListener);
+	}
 
-    /**
-     * Sets the max duration.
-     * 
-     * @param length
-     *            the new length
-     */
-    void setAudioObjectLength(final long length) {
-    	SwingUtilities.invokeLater(new Runnable() {
-    		@Override
-    		public void run() {
-    	        getComponentControlled().getProgressSlider().setMaximum((int) length);
-    		}
-    	});
-    }
+	/**
+	 * Sets the max duration.
+	 * 
+	 * @param length
+	 *            the new length
+	 */
+	void setAudioObjectLength(final long length) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				getComponentControlled().getProgressSlider().setMaximum(
+						(int) length);
+			}
+		});
+	}
 
-    /**
-     * Sets the playing.
-     * 
-     * @param playing
-     *            the new playing
-     */
-    void setPlaying(boolean playing) {
-        getComponentControlled().setPlaying(playing);
-    }
+	/**
+	 * Sets the playing.
+	 * 
+	 * @param playing
+	 *            the new playing
+	 */
+	void setPlaying(final boolean playing) {
+		getComponentControlled().setPlaying(playing);
+	}
 
-    /**
-     * Sets the slidable.
-     * 
-     * @param slidable
-     *            the new slidable
-     */
-    void setSlidable(boolean slidable) {
-        getComponentControlled().getProgressSlider().setEnabled(slidable);
-    }
+	/**
+	 * Sets the slidable.
+	 * 
+	 * @param slidable
+	 *            the new slidable
+	 */
+	void setSlidable(final boolean slidable) {
+		getComponentControlled().getProgressSlider().setEnabled(slidable);
+	}
 
-    /**
-     * Sets the time.
-     * 
-     * @param timePlayed
-     *            the time played
-     * @param totalTime
-     *            the total time
-     */
-    void setCurrentAudioObjectTimePlayed(final long timePlayed, final long totalTime) {
-    	GuiUtils.callInEventDispatchThread(new Runnable() {
-    		@Override
-    		public void run() {
-    			setCurrentAudioObjectTimePlayedEDT(timePlayed, totalTime);
-    		}
-    	});
-    }
+	/**
+	 * Sets the time.
+	 * 
+	 * @param timePlayed
+	 * @param totalTime
+	 * @param fading
+	 */
+	void setCurrentAudioObjectTimePlayed(final long timePlayed,
+			final long totalTime, final boolean fading) {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				setCurrentAudioObjectTimePlayedEDT(timePlayed, totalTime,
+						fading);
+			}
+		});
+	}
 
-    private void setCurrentAudioObjectTimePlayedEDT(long timePlayed, long totalTime) {
-        long remainingTime = totalTime > 0 ? totalTime - timePlayed : 0;
-        getComponentControlled().setProgress(timePlayed, timePlayed == 0 ? 0 : remainingTime);
-        getComponentControlled().getProgressSlider().setValue((int) timePlayed);
-    }
+	private void setCurrentAudioObjectTimePlayedEDT(final long timePlayed,
+			final long totalTime, final boolean fading) {
+		long remainingTime = totalTime > 0 ? totalTime - timePlayed : 0;
+		getComponentControlled().setProgress(timePlayed,
+				timePlayed == 0 ? 0 : remainingTime, fading);
+		getComponentControlled().getProgressSlider().setValue((int) timePlayed);
+	}
 
-    /**
-     * Sets the volume.
-     * 
-     * @param value
-     *            the new volume
-     */
-    void setVolume(final int value) {
-    	GuiUtils.callInEventDispatchThread(new Runnable() {
-    		@Override
-    		public void run() {
-    			getComponentControlled().setVolume(value);
-    		}
-    	});
-    }
+	/**
+	 * Sets the volume.
+	 * 
+	 * @param value
+	 *            the new volume
+	 */
+	void setVolume(final int value) {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				getComponentControlled().setVolume(value);
+			}
+		});
+	}
 
-    /**
-     * Gets the position in percent.
-     */
-    float getPostionInPercent() {
-        int max = getComponentControlled().getProgressSlider().getMaximum();
-        int pos = getComponentControlled().getProgressSlider().getValue();
+	/**
+	 * Gets the position in percent.
+	 */
+	float getPostionInPercent() {
+		int max = getComponentControlled().getProgressSlider().getMaximum();
+		int pos = getComponentControlled().getProgressSlider().getValue();
 
-        float floatPercent = 0;
+		float floatPercent = 0;
 
-        if (max > 0 && pos >= 0) {
-            int intPercent = pos * 100 / max;
-            floatPercent = intPercent / 100f;
-        }
-        return floatPercent;
-    }
+		if (max > 0 && pos >= 0) {
+			int intPercent = pos * 100 / max;
+			floatPercent = intPercent / 100f;
+		}
+		return floatPercent;
+	}
 
-    /**
-     * Updates controls when playing given audio object
-     * @param audioObject
-     */
-    void updatePlayerControls(IAudioObject audioObject) {
-        // Disable slider if audio object is a radio or podcast feed entry
-        boolean b = audioObject.isSeekable();
-        if (b && audioObject instanceof IPodcastFeedEntry) {
-            b = statePodcast.isUseDownloadedPodcastFeedEntries();
-        }
-        setSlidable(b);
-    }
+	/**
+	 * Updates controls when playing given audio object
+	 * 
+	 * @param audioObject
+	 */
+	void updatePlayerControls(final IAudioObject audioObject) {
+		// Disable slider if audio object is a radio or podcast feed entry
+		boolean b = audioObject.isSeekable();
+		if (b && audioObject instanceof IPodcastFeedEntry) {
+			b = this.statePodcast.isUseDownloadedPodcastFeedEntries();
+		}
+		setSlidable(b);
+	}
 }

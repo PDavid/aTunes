@@ -174,9 +174,10 @@ public interface IPlayerHandler extends IHandler {
 	/**
 	 * @param actualPlayedTime
 	 * @param currentAudioObjectLength
+	 * @param fading
 	 */
 	public void setCurrentAudioObjectTimePlayed(long actualPlayedTime,
-			long currentAudioObjectLength);
+			long currentAudioObjectLength, boolean fading);
 
 	/**
 	 * This method must be implemented by player engines. Method to apply

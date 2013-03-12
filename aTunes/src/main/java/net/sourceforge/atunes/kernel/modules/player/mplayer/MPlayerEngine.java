@@ -145,7 +145,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 			final IAudioObject audioObject) {
 		try {
 			// If there is a fade away working, stop it inmediately
-			if (this.currentFadeAwayRunnable != null) {
+			if (isFadeAwayInProgress()) {
 				this.currentFadeAwayRunnable.finish();
 			}
 
@@ -195,7 +195,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 		if (useFadeAway && !isEnginePaused()) {
 			// If there is a fade away process working don't create
 			// a new process
-			if (this.currentFadeAwayRunnable != null) {
+			if (isFadeAwayInProgress()) {
 				return;
 			}
 			this.mPlayerErrorReader.interrupt();
@@ -207,7 +207,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 		} else {
 			this.commandWriter.sendStopCommand();
 			// If there is a fade away process stop immediately
-			if (this.currentFadeAwayRunnable != null) {
+			if (isFadeAwayInProgress()) {
 				this.currentFadeAwayRunnable.finish();
 			} else {
 				// This is already called from fade away runnable when finishing
@@ -220,8 +220,12 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 					this.mPlayerPositionThread = null;
 				}
 			}
-			setCurrentAudioObjectPlayedTime(0);
+			setCurrentAudioObjectPlayedTime(0, false);
 		}
+	}
+
+	private boolean isFadeAwayInProgress() {
+		return this.currentFadeAwayRunnable != null;
 	}
 
 	/**
@@ -248,7 +252,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 	}
 
 	protected void setTime(final int time) {
-		super.setCurrentAudioObjectPlayedTime(time);
+		super.setCurrentAudioObjectPlayedTime(time, isFadeAwayInProgress());
 	}
 
 	@Override
