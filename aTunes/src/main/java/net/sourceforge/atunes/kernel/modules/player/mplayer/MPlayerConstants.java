@@ -38,7 +38,10 @@ final class MPlayerConstants {
 	static final String CACHE_FILL_SIZE_IN_PERCENT = "7.0";
 	static final String PREFER_IPV4 = "-prefer-ipv4";
 	static final String VOLUME = "-volume";
-	public static final String NOVIDEO = "-novideo";
+
+	// Use -vo null instead of -novideo, seek does not work with -novideo
+	public static final String NOVIDEO1 = "-vo";
+	public static final String NOVIDEO2 = "null";
 
 	private MPlayerConstants() {
 	}
