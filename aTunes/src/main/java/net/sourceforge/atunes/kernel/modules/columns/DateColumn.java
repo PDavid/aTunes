@@ -23,19 +23,31 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IStateCore;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Column to show date
+ * 
  * @author alex
- *
+ * 
  */
 public class DateColumn extends AbstractColumn<String> {
 
 	private static final long serialVersionUID = 6832826017182272636L;
-	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.mediumDateTime();
+
+	private DateTimeFormatter dateFormat;
+
+	private IStateCore stateCore;
+
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(final IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
 
 	/**
 	 * Default constructor
@@ -48,7 +60,8 @@ public class DateColumn extends AbstractColumn<String> {
 	}
 
 	@Override
-	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
+	protected int ascendingCompare(final IAudioObject ao1,
+			final IAudioObject ao2) {
 		if (ao1.getDate() == null) {
 			return 1;
 		} else if (ao2.getDate() == null) {
@@ -59,25 +72,35 @@ public class DateColumn extends AbstractColumn<String> {
 	}
 
 	@Override
-	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return - ascendingCompare(ao1, ao2);
+	protected int descendingCompare(final IAudioObject ao1,
+			final IAudioObject ao2) {
+		return -ascendingCompare(ao1, ao2);
 	}
 
 	@Override
 	public String getValueFor(final IAudioObject audioObject, final int row) {
 		if (audioObject.getDate() != null) {
-			return DATE_FORMAT.print(audioObject.getDate());
+			return getDateFormat().print(audioObject.getDate());
 		} else {
 			return "";
 		}
 	}
 
 	@Override
-	public String getValueForFilter(final IAudioObject audioObject, final int row) {
+	public String getValueForFilter(final IAudioObject audioObject,
+			final int row) {
 		if (audioObject != null) {
-			return DATE_FORMAT.print(audioObject.getDate());
+			return getDateFormat().print(audioObject.getDate());
 		} else {
 			return "";
 		}
+	}
+
+	private DateTimeFormatter getDateFormat() {
+		if (this.dateFormat == null) {
+			this.dateFormat = DateTimeFormat.mediumDate().withLocale(
+					this.stateCore.getLocale().getLocale());
+		}
+		return this.dateFormat;
 	}
 }
