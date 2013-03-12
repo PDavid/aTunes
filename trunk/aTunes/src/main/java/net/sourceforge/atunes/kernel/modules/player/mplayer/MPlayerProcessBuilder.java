@@ -259,7 +259,8 @@ public class MPlayerProcessBuilder {
 		command.add(MPlayerConstants.SLAVE);
 
 		// Disable video output
-		command.add(MPlayerConstants.NOVIDEO);
+		command.add(MPlayerConstants.NOVIDEO1);
+		command.add(MPlayerConstants.NOVIDEO2);
 
 		// PREFER_IPV4 for radios and podcast entries
 		if (isRemoteAudio) {
