@@ -266,18 +266,12 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 	}
 
 	@Override
-	public final Comparator<IAudioObject> getComparator(final boolean changeSort) {
+	public final Comparator<IAudioObject> getComparator() {
 		Logger.debug("Returning comparator for column: ", this.getClass()
 				.getName());
-		if (this.columnSort == null) {
-			this.columnSort = ColumnSort.ASCENDING;
-		} else if (this.columnSort == ColumnSort.ASCENDING && changeSort) {
-			this.columnSort = ColumnSort.DESCENDING;
-		} else if (this.columnSort == ColumnSort.DESCENDING && changeSort) {
-			this.columnSort = ColumnSort.ASCENDING;
-		}
 
-		if (this.columnSort.equals(ColumnSort.ASCENDING)) {
+		if (this.columnSort == null
+				|| this.columnSort.equals(ColumnSort.ASCENDING)) {
 			return new AscendingColumnSortComparator(this);
 		} else {
 			return new DescendingColumnSortComparator(this);

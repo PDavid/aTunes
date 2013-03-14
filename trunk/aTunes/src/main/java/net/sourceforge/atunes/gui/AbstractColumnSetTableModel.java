@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui;
 
 import java.util.Comparator;
 
+import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -71,10 +72,17 @@ public abstract class AbstractColumnSetTableModel extends
 	 */
 	@Override
 	public String getColumnName(final int colIndex) {
-		String text = getColumn(colIndex).getHeaderText();
 		// Use a white space if empty to force to show header if no more columns
 		// are visible
-		return I18nUtils.getString(StringUtils.isEmpty(text) ? " " : text);
+		String text = getColumn(colIndex).getHeaderText();
+		text = I18nUtils.getString(StringUtils.isEmpty(text) ? " " : text);
+		ColumnSort sort = getColumn(colIndex).getColumnSort();
+		if (sort == ColumnSort.ASCENDING) {
+			text = StringUtils.getString(text, " \u2193");
+		} else if (sort == ColumnSort.DESCENDING) {
+			text = StringUtils.getString(text, " \u2191");
+		}
+		return text;
 	}
 
 	/**

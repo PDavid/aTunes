@@ -2,6 +2,7 @@ aTunes 3.0.6
 ------------
 - Updated mplayer binary for Windows
 - Support for playing FLV files (audio only)
+- Improvements in table sort
 - Added basque translation (thanks to Xabier Aramendi)
 - FIX: Window size ignored if window is maximized
 - FIX: Folder filter does not work with child folders
