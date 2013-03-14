@@ -26,12 +26,12 @@ import java.util.Comparator;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-
 /**
  * Represents a column of a table
+ * 
  * @author alex
  * @param <T>
- *
+ * 
  */
 public interface IColumn<T> extends Serializable, Comparable<IColumn<?>> {
 
@@ -101,6 +101,7 @@ public interface IColumn<T> extends Serializable, Comparable<IColumn<?>> {
 
 	/**
 	 * Returns value for a column of an audio object in given row
+	 * 
 	 * @param audioObject
 	 * @param row
 	 * @return
@@ -218,14 +219,13 @@ public interface IColumn<T> extends Serializable, Comparable<IColumn<?>> {
 	public void setWidth(int width);
 
 	/**
-	 * Return a comparator to sort by this column. Comparator order is changed
-	 * or not according to value of <code>changeSort</code> If not sort has been
-	 * done before ascending comparator is returned
+	 * Return a comparator to sort by this column. If no sort has been done
+	 * before ascending comparator is returned
 	 * 
 	 * @param changeSort
 	 * @return
 	 */
-	public Comparator<IAudioObject> getComparator(boolean changeSort);
+	public Comparator<IAudioObject> getComparator();
 
 	/**
 	 * @return the usedForFilter
@@ -241,6 +241,7 @@ public interface IColumn<T> extends Serializable, Comparable<IColumn<?>> {
 	/**
 	 * Returns string used to filter by this column. By default it performs a
 	 * <code>toString</code> over object returned by <code>getValueFor</code>
+	 * 
 	 * @param audioObject
 	 * @param row
 	 * @return

@@ -102,7 +102,7 @@ final class SearchResultsController extends
 
 		IColumn<?> sortedColumn = this.columnSet.getSortedColumn();
 		if (sortedColumn != null) {
-			Collections.sort(resultsList, sortedColumn.getComparator(false));
+			Collections.sort(resultsList, sortedColumn.getComparator());
 		} else {
 			this.audioObjectComparator.sort(resultsList);
 		}

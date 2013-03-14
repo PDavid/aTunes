@@ -26,8 +26,9 @@ import net.sourceforge.atunes.model.IAudioObject;
 
 /**
  * Column to show track number
+ * 
  * @author alex
- *
+ * 
  */
 public class TrackColumn extends AbstractColumn<Integer> {
 
@@ -44,13 +45,16 @@ public class TrackColumn extends AbstractColumn<Integer> {
 	}
 
 	@Override
-	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return ao2.getTrackNumber() - ao1.getTrackNumber();
+	protected int ascendingCompare(final IAudioObject ao1,
+			final IAudioObject ao2) {
+		return Integer.valueOf(ao1.getTrackNumber()).compareTo(
+				ao2.getTrackNumber());
 	}
 
 	@Override
-	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return - ascendingCompare(ao1, ao2);
+	protected int descendingCompare(final IAudioObject ao1,
+			final IAudioObject ao2) {
+		return -ascendingCompare(ao1, ao2);
 	}
 
 	@Override

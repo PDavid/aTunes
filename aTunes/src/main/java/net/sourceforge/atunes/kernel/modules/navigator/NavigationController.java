@@ -353,7 +353,7 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 		if (columnSorted != null) {
 			net.sourceforge.atunes.utils.Timer t = new net.sourceforge.atunes.utils.Timer();
 			t.start();
-			Collections.sort(audioObjects, columnSorted.getComparator(false));
+			Collections.sort(audioObjects, columnSorted.getComparator());
 			Logger.debug("Navigation table sort: ", t.stop(), " seconds");
 		}
 		return audioObjects;

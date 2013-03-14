@@ -30,79 +30,92 @@ import javax.swing.event.TableModelEvent;
 import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
 
 /**
  * Calls sort on column model when user clicks a column header
+ * 
  * @author alex
- *
+ * 
  */
 public final class ColumnSetRowSorter {
 
-    private JTable table;
-    private AbstractColumnSetTableModel model;
-    private AbstractCommonColumnModel columnModel;
+	private final JTable table;
+	private final AbstractColumnSetTableModel model;
+	private final AbstractCommonColumnModel columnModel;
 
-    /**
-     * @param table
-     * @param model
-     * @param columnModel
-     */
-    public ColumnSetRowSorter(JTable table, AbstractColumnSetTableModel model, AbstractCommonColumnModel columnModel) {
-        this.table = table;
-        this.model = model;
-        this.columnModel = columnModel;
-        setListeners();
-    }
+	/**
+	 * @param table
+	 * @param model
+	 * @param columnModel
+	 */
+	public ColumnSetRowSorter(final JTable table,
+			final AbstractColumnSetTableModel model,
+			final AbstractCommonColumnModel columnModel) {
+		this.table = table;
+		this.model = model;
+		this.columnModel = columnModel;
+		setListeners();
+	}
 
-    private void setListeners() {
-        table.getTableHeader().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (GuiUtils.isPrimaryMouseButton(e)) {
-                    int columnClickedIndex = table.getTableHeader().getColumnModel().getColumnIndexAtX(e.getX());
-                    if (columnClickedIndex != -1) {
-                        // Get column
-                        IColumn<?> columnClicked = ColumnSetRowSorter.this.columnModel.getColumnObject(columnClickedIndex);
-                        IColumn<?> lastColumnSorted = getColumnSorted();
-                        if (lastColumnSorted != null && !lastColumnSorted.equals(columnClicked)) {
-                            lastColumnSorted.setColumnSort(null);
-                        }
-                        if (columnClicked.isSortable()) {
-                            sort(columnClicked.getComparator(true));
-                        }
-                    }
-                }
-            }
-        });
-    }
+	private void setListeners() {
+		this.table.getTableHeader().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(final MouseEvent e) {
+				if (GuiUtils.isPrimaryMouseButton(e)) {
+					int columnClickedIndex = ColumnSetRowSorter.this.table
+							.getTableHeader().getColumnModel()
+							.getColumnIndexAtX(e.getX());
+					if (columnClickedIndex != -1) {
+						// Get column clicked
+						IColumn<?> columnClicked = ColumnSetRowSorter.this.columnModel
+								.getColumnObject(columnClickedIndex);
+						// Only if it's sortable...
+						if (columnClicked.isSortable()) {
+							IColumn<?> lastColumnSorted = ColumnSetRowSorter.this.columnModel
+									.getColumnSet().getSortedColumn();
+							// If column changed then sort ascending
+							// otherwise change sort
+							if (lastColumnSorted != null
+									&& !lastColumnSorted.equals(columnClicked)) {
+								lastColumnSorted.setColumnSort(null);
+								columnClicked
+										.setColumnSort(ColumnSort.ASCENDING);
+							} else {
+								changeSort(columnClicked);
+							}
 
-    /**
-     * Returns the column sorted
-     * 
-     * @return
-     */
-    private IColumn<?> getColumnSorted() {
-        for (int i = 0; i < this.columnModel.getColumnCount(); i++) {
-            if (this.columnModel.getColumnObject(i).getColumnSort() != null) {
-                return this.columnModel.getColumnObject(i);
-            }
-        }
-        return null;
-    }
+							// Then sort
+							sort(columnClicked.getComparator());
+						}
+					}
+				}
+			}
+		});
+	}
 
-    /**
-     * Method to sort a column set. It must sort the underlying data
-     * 
-     * @param comparator
-     */
-    protected void sort(Comparator<IAudioObject> comparator) {
+	private void changeSort(final IColumn<?> column) {
+		if (column.getColumnSort() == null
+				|| column.getColumnSort() == ColumnSort.ASCENDING) {
+			column.setColumnSort(ColumnSort.DESCENDING);
+		} else {
+			column.setColumnSort(ColumnSort.ASCENDING);
+		}
+	}
 
-        // Sort model
-        this.model.sort(comparator);
+	/**
+	 * Method to sort a column set. It must sort the underlying data
+	 * 
+	 * @param comparator
+	 */
+	protected void sort(final Comparator<IAudioObject> comparator) {
 
-        // Refresh model
-        model.refresh(TableModelEvent.UPDATE);
-    }
+		// Sort model
+		this.model.sort(comparator);
+
+		// Refresh model
+		this.model.refresh(TableModelEvent.UPDATE);
+	}
 }
