@@ -496,4 +496,11 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 		return null;
 	}
 
+	@Override
+	public boolean isFormatSupported(ILocalAudioObject ao) {
+		return localAudioObjectValidator.isOneOfTheseFormats(ao,
+				LocalAudioObjectFormat.MP3, LocalAudioObjectFormat.MP4_1,
+				LocalAudioObjectFormat.MP4_2, LocalAudioObjectFormat.OGG,
+				LocalAudioObjectFormat.FLAC, LocalAudioObjectFormat.WMA);
+	}
 }

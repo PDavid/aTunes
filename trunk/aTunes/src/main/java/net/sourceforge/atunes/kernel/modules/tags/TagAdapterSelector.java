@@ -20,8 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
+import java.util.List;
+
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITagAdapter;
+import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Selects tag adapter for a specific file type
@@ -31,14 +34,13 @@ import net.sourceforge.atunes.model.ITagAdapter;
  */
 public class TagAdapterSelector {
 
-	private JAudiotaggerTagAdapter jAudiotaggerTagAdapter;
+	private List<ITagAdapter> tagAdapters;
 
 	/**
-	 * @param jAudiotaggerTagAdapter
+	 * @param tagAdapters
 	 */
-	public void setjAudiotaggerTagAdapter(
-			JAudiotaggerTagAdapter jAudiotaggerTagAdapter) {
-		this.jAudiotaggerTagAdapter = jAudiotaggerTagAdapter;
+	public void setTagAdapters(List<ITagAdapter> tagAdapters) {
+		this.tagAdapters = tagAdapters;
 	}
 
 	/**
@@ -48,6 +50,12 @@ public class TagAdapterSelector {
 	 * @return
 	 */
 	ITagAdapter selectAdapter(final ILocalAudioObject audioObject) {
-		return jAudiotaggerTagAdapter;
+		for (ITagAdapter tagAdapter : tagAdapters) {
+			if (tagAdapter.isFormatSupported(audioObject)) {
+				return tagAdapter;
+			}
+		}
+		throw new IllegalStateException(StringUtils.getString(
+				"No tag adapter for audio object: ", audioObject.getUrl()));
 	}
 }

@@ -46,12 +46,24 @@
 
 	<bean id="localAudioObjectFilter" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFilter"/>	
 	
+	<bean id="tagFactory" class="net.sourceforge.atunes.kernel.modules.tags.TagFactory"/>
 	<bean id="tagModifier" class="net.sourceforge.atunes.kernel.modules.tags.TagModifier"/>
-	<bean id="tagAdapterSelector" class="net.sourceforge.atunes.kernel.modules.tags.TagAdapterSelector"/>
+	<bean id="tagAdapterSelector" class="net.sourceforge.atunes.kernel.modules.tags.TagAdapterSelector">
+		<property name="tagAdapters">
+			<list>
+				<ref bean="jAudiotaggerTagAdapter"/>
+				<ref bean="propertiesFileTagAdapter"/>
+			</list>
+		</property>
+	</bean>
+	
 	<bean id="jAudiotaggerTagAdapter" class="net.sourceforge.atunes.kernel.modules.tags.JAudiotaggerTagAdapter"/>
 	<bean id="jAudiotaggerTagCreator" class="net.sourceforge.atunes.kernel.modules.tags.JAudiotaggerTagCreator"/>
 	<bean id="jAudiotaggerFileReader" class="net.sourceforge.atunes.kernel.modules.tags.JAudiotaggerFileReader"/>
 	<bean id="jAudiotaggerAudioPropertiesReader" class="net.sourceforge.atunes.kernel.modules.repository.JAudiotaggerAudioPropertiesReader"/>
+	
+	<bean id="propertiesFileTagAdapter" class="net.sourceforge.atunes.kernel.modules.tags.PropertiesFileTagAdapter"/>
+	
 	<bean class="net.sourceforge.atunes.kernel.modules.tags.RefreshTagAfterModifyRunnable" scope="prototype"/>
 	
 	
