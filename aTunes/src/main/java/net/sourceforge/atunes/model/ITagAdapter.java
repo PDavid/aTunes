@@ -31,6 +31,12 @@ import javax.swing.ImageIcon;
 public interface ITagAdapter {
 
 	/**
+	 * @param ao
+	 * @return true if format of audio object is supported by this adapter
+	 */
+	boolean isFormatSupported(ILocalAudioObject ao);
+
+	/**
 	 * Deletes tags
 	 * 
 	 * @param file

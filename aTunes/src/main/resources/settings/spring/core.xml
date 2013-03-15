@@ -115,7 +115,14 @@
 		<constructor-arg ref="editTagDialog"></constructor-arg>
 	</bean>
 	
-	<bean id="fileManager" class="net.sourceforge.atunes.kernel.modules.repository.FileManager"/>
+	<bean id="fileManager" class="net.sourceforge.atunes.kernel.modules.repository.FileManager">
+		<property name="associatedFiles">
+			<list>
+				<value>properties</value>
+				<value>png</value>
+			</list>
+		</property>
+	</bean>
 
     <!-- EXCEPTION HANDLER WITH ALL KNOWN EXCEPTIONS THAT DON'T WANT TO SHOW TO USER -->
 	<bean class="net.sourceforge.atunes.UncaughtExceptionHandler">

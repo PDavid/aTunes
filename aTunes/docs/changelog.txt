@@ -1,3 +1,7 @@
+aTunes 3.1.0
+------------
+- Store metadata even with files without internal tags (wav for example)
+
 aTunes 3.0.6
 ------------
 - Updated mplayer binary for Windows

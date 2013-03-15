@@ -35,6 +35,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectReader;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITag;
@@ -67,6 +68,25 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	private TagModifier tagModifier;
 
 	private IFileManager fileManager;
+
+	private TagFactory tagFactory;
+
+	private ILocalAudioObjectReader localAudioObjectReader;
+
+	/**
+	 * @param localAudioObjectReader
+	 */
+	public void setLocalAudioObjectReader(
+			final ILocalAudioObjectReader localAudioObjectReader) {
+		this.localAudioObjectReader = localAudioObjectReader;
+	}
+
+	/**
+	 * @param tagFactory
+	 */
+	public void setTagFactory(TagFactory tagFactory) {
+		this.tagFactory = tagFactory;
+	}
 
 	/**
 	 * @param fileManager
@@ -216,13 +236,13 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 
 	@Override
 	public ITag getNewTag() {
-		return new TagFactory().getNewTag();
+		return tagFactory.getNewTag();
 	}
 
 	@Override
 	public ITag getNewTag(final ILocalAudioObject file,
 			final Map<String, Object> tagInformation) {
-		return new TagFactory().getNewTag(file, tagInformation);
+		return tagFactory.getNewTag(file, tagInformation);
 	}
 
 	@Override
@@ -345,6 +365,6 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	@Override
 	public ImageIcon getImage(ILocalAudioObject audioObject, int width,
 			int height) {
-		return null;
+		return localAudioObjectReader.getImage(audioObject, width, height);
 	}
 }

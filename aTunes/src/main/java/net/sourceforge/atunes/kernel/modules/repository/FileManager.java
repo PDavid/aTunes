@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -54,6 +55,19 @@ public class FileManager implements IFileManager {
 	private ILocalAudioObjectFactory localAudioObjectFactory;
 
 	private ITemporalDiskStorage temporalDiskStorage;
+
+	/**
+	 * Extensions of files associated to a local audio object (picture,
+	 * metadata...)
+	 */
+	private List<String> associatedFiles;
+
+	/**
+	 * @param associatedFiles
+	 */
+	public void setAssociatedFiles(List<String> associatedFiles) {
+		this.associatedFiles = associatedFiles;
+	}
 
 	/**
 	 * @param temporalDiskStorage
@@ -122,11 +136,33 @@ public class FileManager implements IFileManager {
 		return getAudioObjectFile(ao).getParentFile().getName();
 	}
 
+	private List<File> getAssociatedFiles(ILocalAudioObject ao) {
+		List<File> associatedFiles = new ArrayList<File>();
+		for (String extension : this.associatedFiles) {
+			File associatedFile = new File(StringUtils.getString(FilenameUtils
+					.removeExtension(getAudioObjectFile(ao).getAbsolutePath()),
+					".", extension));
+			if (associatedFile.exists()) {
+				associatedFiles.add(associatedFile);
+			}
+		}
+		return associatedFiles;
+	}
+
 	@Override
 	public boolean delete(final ILocalAudioObject ao) {
 		boolean deleted = getAudioObjectFile(ao).delete();
 		if (!deleted) {
 			Logger.error(StringUtils.getString(ao, " not deleted"));
+		} else {
+			// Delete associated files
+			for (File associatedFile : getAssociatedFiles(ao)) {
+				boolean associatedFileDeleted = associatedFile.delete();
+				if (!associatedFileDeleted) {
+					Logger.error(StringUtils.getString(
+							associatedFile.getAbsolutePath(), " not deleted"));
+				}
+			}
 		}
 		return deleted;
 	}
@@ -150,6 +186,21 @@ public class FileManager implements IFileManager {
 			throws IOException {
 		org.apache.commons.io.FileUtils.copyFile(getAudioObjectFile(file),
 				destFile);
+		copyAssociatedFiles(file, destFile);
+	}
+
+	private void copyAssociatedFiles(final ILocalAudioObject file,
+			final File destFile) throws IOException {
+		// Copy associated files
+		for (File associatedFile : getAssociatedFiles(file)) {
+			String extension = FilenameUtils.getExtension(associatedFile
+					.getName());
+			String copiedAssociatedFile = StringUtils.getString(
+					FilenameUtils.removeExtension(destFile.getAbsolutePath()),
+					".", extension);
+			org.apache.commons.io.FileUtils.copyFile(associatedFile, new File(
+					copiedAssociatedFile));
+		}
 	}
 
 	@Override
@@ -160,6 +211,7 @@ public class FileManager implements IFileManager {
 				this.osManager.getFileSeparator(), fileName));
 		org.apache.commons.io.FileUtils.copyFile(getAudioObjectFile(source),
 				destFile);
+		copyAssociatedFiles(source, destFile);
 		return this.localAudioObjectFactory.getLocalAudioObject(destFile);
 	}
 
@@ -174,20 +226,32 @@ public class FileManager implements IFileManager {
 		File tempFile = this.temporalDiskStorage
 				.addFile(getAudioObjectFile(audioObject));
 		if (tempFile != null) {
+			// Cache associated files
+			for (File associatedFile : getAssociatedFiles(audioObject)) {
+				this.temporalDiskStorage.addFile(associatedFile);
+			}
 			return this.localAudioObjectFactory.getLocalAudioObject(tempFile);
 		}
 		return null;
 	}
 
 	@Override
-	public void removeCachedAudioObject(final ILocalAudioObject ao) {
-		this.temporalDiskStorage.removeFile(getAudioObjectFile(ao));
+	public void removeCachedAudioObject(final ILocalAudioObject audioObject) {
+		this.temporalDiskStorage.removeFile(getAudioObjectFile(audioObject));
+		// Remove associated files
+		for (File associatedFile : getAssociatedFiles(audioObject)) {
+			this.temporalDiskStorage.removeFile(associatedFile);
+		}
 	}
 
 	@Override
-	public void makeWritable(final ILocalAudioObject file) {
+	public void makeWritable(final ILocalAudioObject audioObject) {
 		try {
-			FileUtils.setWritable(getAudioObjectFile(file));
+			FileUtils.setWritable(getAudioObjectFile(audioObject));
+			// Make also associated files
+			for (File associatedFile : getAssociatedFiles(audioObject)) {
+				FileUtils.setWritable(associatedFile);
+			}
 		} catch (FileNotFoundException e) {
 			Logger.error(e);
 		}
@@ -202,10 +266,11 @@ public class FileManager implements IFileManager {
 	public boolean rename(final ILocalAudioObject audioFile, final String name) {
 		File file = getAudioObjectFile(audioFile);
 		String extension = FilenameUtils.getExtension(getPath(audioFile));
+		String validName = FileNameUtils.getValidFileName(name, this.osManager);
 		File newFile = this.osManager.getFile(getFolderPath(audioFile),
-				StringUtils.getString(
-						FileNameUtils.getValidFileName(name, this.osManager),
-						".", extension));
+				StringUtils.getString(validName, ".", extension));
+		// Get associated files before renaming
+		List<File> associatedFiles = getAssociatedFiles(audioFile);
 		boolean succeeded = file.renameTo(newFile);
 		if (succeeded) {
 			if (audioFile instanceof AudioFile) {
@@ -216,7 +281,15 @@ public class FileManager implements IFileManager {
 						"setFile operation not implemented for ", audioFile
 								.getClass().getName()));
 			}
-
+			// Rename associated files
+			for (File associatedFile : associatedFiles) {
+				String associatedExtension = FilenameUtils
+						.getExtension(associatedFile.getAbsolutePath());
+				File newAssociatedFile = this.osManager.getFile(
+						getFolderPath(audioFile), StringUtils.getString(
+								validName, ".", associatedExtension));
+				associatedFile.renameTo(newAssociatedFile);
+			}
 		}
 		return succeeded;
 	}

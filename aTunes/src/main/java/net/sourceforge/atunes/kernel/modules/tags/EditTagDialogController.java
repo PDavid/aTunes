@@ -56,7 +56,6 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITag;
-import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.model.TextTagAttribute;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -251,10 +250,10 @@ public final class EditTagDialogController extends
 	 */
 	private final boolean supportsInternalPicture(
 			final ILocalAudioObject audioObject) {
-		return this.localAudioObjectValidator.isOneOfTheseFormats(audioObject,
-				LocalAudioObjectFormat.FLAC, LocalAudioObjectFormat.MP3,
-				LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2,
-				LocalAudioObjectFormat.OGG, LocalAudioObjectFormat.WMA);
+
+		// All formats support "internal" picture, even if it's really an
+		// external picture
+		return true;
 	}
 
 	/**

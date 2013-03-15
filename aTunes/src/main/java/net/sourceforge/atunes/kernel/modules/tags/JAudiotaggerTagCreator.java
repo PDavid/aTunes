@@ -38,6 +38,15 @@ public class JAudiotaggerTagCreator {
 
 	private RatingsToStars ratingsToStars;
 
+	private TagFactory tagFactory;
+
+	/**
+	 * @param tagFactory
+	 */
+	public void setTagFactory(TagFactory tagFactory) {
+		this.tagFactory = tagFactory;
+	}
+
 	/**
 	 * @param ratingsToStars
 	 */
@@ -60,7 +69,7 @@ public class JAudiotaggerTagCreator {
 	 * @return
 	 */
 	ITag createTag(final ILocalAudioObject ao, AudioFile file) {
-		ITag iTag = new TagFactory().getNewTag();
+		ITag iTag = tagFactory.getNewTag();
 		if (file != null) {
 			Tag tag = file.getTag();
 			iTag.setAlbum(getFirstTagValue(tag, FieldKey.ALBUM));
