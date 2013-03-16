@@ -39,6 +39,8 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
+import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IListCellRendererCode;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
@@ -62,6 +64,15 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
 	private Font baseFont;
 
 	private IOSManager osManager;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @return
+	 */
+	public IBeanFactory getBeanFactory() {
+		return this.beanFactory;
+	}
 
 	/**
 	 * @return
@@ -104,8 +115,8 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
 
 	@Override
 	public TableCellRenderer getTableHeaderCellRenderer(
-			final ITableCellRendererCode<?, ?> code) {
-		return new LookAndFeelTableHeaderCellRenderer(code);
+			final AbstractCommonColumnModel model) {
+		return new LookAndFeelTableHeaderCellRenderer(model, this.beanFactory);
 	}
 
 	@Override
@@ -296,5 +307,10 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
 	@Override
 	public void setBaseFont(final Font f) {
 		this.baseFont = f;
+	}
+
+	@Override
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 }

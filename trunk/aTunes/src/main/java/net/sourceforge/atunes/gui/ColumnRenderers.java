@@ -86,5 +86,9 @@ public final class ColumnRenderers {
 		jtable.setDefaultRenderer(PlaybackState.class, lookAndFeel
 				.getTableCellRenderer(model
 						.getRendererCodeFor(PlaybackState.class)));
+
+		// Set header renderer
+		jtable.getTableHeader().setDefaultRenderer(
+				lookAndFeel.getTableHeaderCellRenderer(model));
 	}
 }

@@ -11,8 +11,10 @@
 
     <bean id="audioObjectGenericImageFactory" class="net.sourceforge.atunes.gui.images.AudioObjectGenericImage"/>
     
+    <bean id="arrowDownImageIcon" class="net.sourceforge.atunes.gui.images.ArrowDownImageIcon"/>
     <bean id="arrowLeftImageIcon" class="net.sourceforge.atunes.gui.images.ArrowLeftImageIcon"/>
     <bean id="arrowRightImageIcon" class="net.sourceforge.atunes.gui.images.ArrowRightImageIcon"/>
+    <bean id="arrowUpImageIcon" class="net.sourceforge.atunes.gui.images.ArrowUpImageIcon"/>
     
 	<bean id="artistImageIcon" class="net.sourceforge.atunes.gui.images.ArtistImageIcon"/>
 	<bean id="albumFavoriteIcon" class="net.sourceforge.atunes.gui.images.AlbumFavoriteImageIcon"/>

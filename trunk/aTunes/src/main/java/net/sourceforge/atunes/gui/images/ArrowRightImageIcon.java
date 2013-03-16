@@ -33,20 +33,20 @@ import javax.swing.ImageIcon;
  */
 public class ArrowRightImageIcon extends CachedIconFactory {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = -939539268509387704L;
+	private static final long serialVersionUID = -939539268509387704L;
 
-    private static final int SIZE = 14;
+	private static final int SIZE = 14;
 
-    @Override
-    protected ImageIcon createIcon(final Color color) {
-	Polygon shape = new Polygon();
-	shape.addPoint(11, 7);
-	shape.addPoint(3, 11);
-	shape.addPoint(3, 3);
+	@Override
+	protected ImageIcon createIcon(final Color color) {
+		Polygon shape = new Polygon();
+		shape.addPoint(11, 7);
+		shape.addPoint(3, 11);
+		shape.addPoint(3, 3);
 
-	return IconGenerator.generateIcon(color, SIZE, SIZE, shape);
-    }
+		return IconGenerator.generateIcon(color, SIZE, SIZE, shape);
+	}
 }

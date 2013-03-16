@@ -36,6 +36,8 @@ import javax.swing.border.Border;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
+import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
+
 /**
  * A look and feel for the application
  * 
@@ -114,14 +116,13 @@ public interface ILookAndFeel {
 			ITableCellRendererCode<?, ?> code);
 
 	/**
-	 * Returns a new TableCellRenderer executing given code (default
-	 * implementation)
+	 * Returns a new TableHeaderCellRenderer for column model
 	 * 
-	 * @param code
+	 * @param model
 	 * @return
 	 */
 	public TableCellRenderer getTableHeaderCellRenderer(
-			ITableCellRendererCode<?, ?> code);
+			AbstractCommonColumnModel model);
 
 	/**
 	 * Returns a new ListCellRendeder executing given code (default
@@ -339,5 +340,10 @@ public interface ILookAndFeel {
 	 * @param osManager
 	 */
 	public void setOsManager(IOSManager osManager);
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory);
 
 }
