@@ -141,6 +141,7 @@ final class SearchResultsController extends
 						columnModel);
 
 		// Set renderers
+
 		ColumnRenderers.addRenderers(getComponentControlled()
 				.getSearchResultsTable(), columnModel, this.lookAndFeelManager
 				.getCurrentLookAndFeel());

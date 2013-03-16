@@ -24,18 +24,21 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import net.sourceforge.atunes.model.ITableCellRendererCode;
+import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
+import net.sourceforge.atunes.model.IBeanFactory;
 
 final class LookAndFeelTableHeaderCellRenderer extends DefaultTableCellRenderer {
 
-	private final ITableCellRendererCode code;
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4055986141351413215L;
 
-	LookAndFeelTableHeaderCellRenderer(final ITableCellRendererCode code) {
-		this.code = code;
+	private final AbstractCommonColumnModel model;
+
+	private final IBeanFactory beanFactory;
+
+	LookAndFeelTableHeaderCellRenderer(final AbstractCommonColumnModel model,
+			final IBeanFactory beanFactory) {
+		this.model = model;
+		this.beanFactory = beanFactory;
 	}
 
 	@Override
@@ -44,7 +47,9 @@ final class LookAndFeelTableHeaderCellRenderer extends DefaultTableCellRenderer 
 			final boolean hasFocus, final int row, final int column) {
 		JComponent c = (JComponent) super.getTableCellRendererComponent(table,
 				value, isSelected, hasFocus, row, column);
-		return this.code.getComponent(c, table, value, isSelected, hasFocus,
-				row, column);
+
+		this.setIcon(new ColumnSortIconGenerator().getIcon(this.beanFactory,
+				this.model, column));
+		return c;
 	}
 }

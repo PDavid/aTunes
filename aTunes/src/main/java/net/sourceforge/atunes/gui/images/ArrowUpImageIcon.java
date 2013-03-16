@@ -26,12 +26,12 @@ import java.awt.Polygon;
 import javax.swing.ImageIcon;
 
 /**
- * Icon for left arrow
+ * Icon for up arrow
  * 
  * @author alex
  * 
  */
-public class ArrowLeftImageIcon extends CachedIconFactory {
+public class ArrowUpImageIcon extends CachedIconFactory {
 
 	/**
 	 * 
@@ -43,9 +43,9 @@ public class ArrowLeftImageIcon extends CachedIconFactory {
 	@Override
 	protected ImageIcon createIcon(final Color color) {
 		Polygon shape = new Polygon();
-		shape.addPoint(3, 7);
-		shape.addPoint(11, 11);
-		shape.addPoint(11, 3);
+		shape.addPoint(7, 2);
+		shape.addPoint(12, 11);
+		shape.addPoint(2, 11);
 
 		return IconGenerator.generateIcon(color, SIZE, SIZE, shape);
 	}

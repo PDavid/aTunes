@@ -41,6 +41,7 @@ import javax.swing.border.Border;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
+import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.views.controls.MuteButton;
@@ -86,6 +87,8 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 	private Dimension playButtonSize;
 
 	private ComponentOrientation componenteOrientation;
+
+	private IBeanFactory beanFactory;
 
 	/**
 	 * Sets the list of skins.
@@ -175,6 +178,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
 	@Override
 	public void initializeLookAndFeel(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 		this.playButtonSize = beanFactory.getBean("playButtonSize",
 				Dimension.class);
 		this.componenteOrientation = beanFactory
@@ -266,17 +270,11 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 		return new SubstanceLookAndFeelTableCellRenderer(code);
 	}
 
-	/**
-	 * Returns a new TableCellRenderer executing given code (default
-	 * implementation)
-	 * 
-	 * @param code
-	 * @return
-	 */
 	@Override
 	public TableCellRenderer getTableHeaderCellRenderer(
-			final ITableCellRendererCode<?, ?> code) {
-		return new SubstanceLookAndFeelTableHeaderCellRenderer(code);
+			final AbstractCommonColumnModel model) {
+		return new SubstanceLookAndFeelTableHeaderCellRenderer(model,
+				this.beanFactory);
 	}
 
 	@Override

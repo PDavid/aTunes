@@ -184,6 +184,7 @@ public final class LookAndFeelManager implements PluginListener,
 		try {
 			this.currentLookAndFeel = currentLookAndFeelClass.newInstance();
 			this.currentLookAndFeel.setOsManager(osManager);
+			this.currentLookAndFeel.setBeanFactory(this.beanFactory);
 		} catch (InstantiationException e) {
 			Logger.error(e);
 		} catch (IllegalAccessException e) {
