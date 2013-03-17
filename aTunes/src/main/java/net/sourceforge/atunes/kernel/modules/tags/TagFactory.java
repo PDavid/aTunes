@@ -44,14 +44,14 @@ public class TagFactory {
 	static final String LYRICS = "LYRICS";
 	static final String COMPOSER = "COMPOSER";
 	static final String ALBUM_ARTIST = "ALBUM_ARTIST";
-	public static final String RATING = "RATING";
+	static final String RATING = "RATING";
 
 	private RatingsToStars ratingsToStars;
 
 	/**
 	 * @param ratingsToStars
 	 */
-	public void setRatingsToStars(RatingsToStars ratingsToStars) {
+	public void setRatingsToStars(final RatingsToStars ratingsToStars) {
 		this.ratingsToStars = ratingsToStars;
 	}
 
@@ -62,8 +62,8 @@ public class TagFactory {
 	 * @param tagInformation
 	 * @return
 	 */
-	public ITag getNewTag(ILocalAudioObject file,
-			Map<String, Object> tagInformation) {
+	public ITag getNewTag(final ILocalAudioObject file,
+			final Map<String, Object> tagInformation) {
 		return mergeTagWithProperties(file.getTag(), tagInformation);
 	}
 
@@ -73,7 +73,7 @@ public class TagFactory {
 	 * @param tagInformation
 	 * @return
 	 */
-	public ITag getNewTag(Map<String, Object> tagInformation) {
+	public ITag getNewTag(final Map<String, Object> tagInformation) {
 		return mergeTagWithProperties(getNewTag(), tagInformation);
 	}
 
@@ -111,7 +111,7 @@ public class TagFactory {
 	 */
 	private void setAlbumArtistFromProperties(
 			final Map<String, Object> editTagInfo, final ITag oldTag,
-			ITag newTag) {
+			final ITag newTag) {
 		if (editTagInfo.containsKey(ALBUM_ARTIST)) {
 			newTag.setAlbumArtist((String) editTagInfo.get(ALBUM_ARTIST));
 		} else {
@@ -126,10 +126,10 @@ public class TagFactory {
 	 * @param newTag
 	 */
 	private void setRatingFromProperties(final Map<String, Object> editTagInfo,
-			final ITag oldTag, ITag newTag) {
+			final ITag oldTag, final ITag newTag) {
 		if (editTagInfo.containsKey(RATING) && editTagInfo.get(RATING) != null) {
-			newTag.setStars(ratingsToStars.ratingToStars((String) editTagInfo
-					.get(RATING)));
+			newTag.setStars(this.ratingsToStars
+					.ratingToStars((String) editTagInfo.get(RATING)));
 		} else {
 			newTag.setStars(oldTag != null ? oldTag.getStars() : null);
 		}
@@ -142,7 +142,7 @@ public class TagFactory {
 	 */
 	private void setComposerFromProperties(
 			final Map<String, Object> editTagInfo, final ITag oldTag,
-			ITag newTag) {
+			final ITag newTag) {
 		if (editTagInfo.containsKey(COMPOSER)) {
 			newTag.setComposer((String) editTagInfo.get(COMPOSER));
 		} else {
@@ -156,7 +156,7 @@ public class TagFactory {
 	 * @param newTag
 	 */
 	private void setLyricsFromProperties(final Map<String, Object> editTagInfo,
-			final ITag oldTag, ITag newTag) {
+			final ITag oldTag, final ITag newTag) {
 		if (editTagInfo.containsKey(LYRICS)) {
 			newTag.setLyrics((String) editTagInfo.get(LYRICS));
 		} else {
@@ -170,7 +170,7 @@ public class TagFactory {
 	 * @param newTag
 	 */
 	private void setGenreFromProperties(final Map<String, Object> editTagInfo,
-			final ITag oldTag, ITag newTag) {
+			final ITag oldTag, final ITag newTag) {
 		if (editTagInfo.containsKey(GENRE)) {
 			String genreString = (String) editTagInfo.get(GENRE);
 			if (genreString == null) {
@@ -190,7 +190,7 @@ public class TagFactory {
 	 */
 	private void setDiscNumberFromProperties(
 			final Map<String, Object> editTagInfo, final ITag oldTag,
-			ITag newTag) {
+			final ITag newTag) {
 		if (editTagInfo.containsKey(DISC_NUMBER)) {
 			try {
 				newTag.setDiscNumber(Integer.parseInt((String) editTagInfo
@@ -210,7 +210,7 @@ public class TagFactory {
 	 */
 	private void setTrackNumberFromProperties(
 			final Map<String, Object> editTagInfo, final ITag oldTag,
-			ITag newTag) {
+			final ITag newTag) {
 		if (editTagInfo.containsKey(TRACK)) {
 			try {
 				newTag.setTrackNumber(Integer.parseInt((String) editTagInfo
@@ -230,7 +230,7 @@ public class TagFactory {
 	 */
 	private void setCommentFromProperties(
 			final Map<String, Object> editTagInfo, final ITag oldTag,
-			ITag newTag) {
+			final ITag newTag) {
 		if (editTagInfo.containsKey(COMMENT)) {
 			newTag.setComment((String) editTagInfo.get(COMMENT));
 		} else {
@@ -244,7 +244,7 @@ public class TagFactory {
 	 * @param newTag
 	 */
 	private void setYearFromProperties(final Map<String, Object> editTagInfo,
-			final ITag oldTag, ITag newTag) {
+			final ITag oldTag, final ITag newTag) {
 		if (editTagInfo.containsKey(YEAR)) {
 			try {
 				newTag.setYear(Integer.parseInt((String) editTagInfo.get(YEAR)));
@@ -262,7 +262,7 @@ public class TagFactory {
 	 * @param newTag
 	 */
 	private void setAlbumFromProperties(final Map<String, Object> editTagInfo,
-			final ITag oldTag, ITag newTag) {
+			final ITag oldTag, final ITag newTag) {
 		if (editTagInfo.containsKey(ALBUM)) {
 			newTag.setAlbum((String) editTagInfo.get(ALBUM));
 		} else {
@@ -276,7 +276,7 @@ public class TagFactory {
 	 * @param newTag
 	 */
 	private void setArtistFromProperties(final Map<String, Object> editTagInfo,
-			final ITag oldTag, ITag newTag) {
+			final ITag oldTag, final ITag newTag) {
 		if (editTagInfo.containsKey(ARTIST)) {
 			newTag.setArtist((String) editTagInfo.get(ARTIST));
 		} else {
@@ -290,7 +290,7 @@ public class TagFactory {
 	 * @param newTag
 	 */
 	private void setTitleFromProperties(final Map<String, Object> editTagInfo,
-			final ITag oldTag, ITag newTag) {
+			final ITag oldTag, final ITag newTag) {
 		if (editTagInfo.containsKey(TITLE)) {
 			newTag.setTitle((String) editTagInfo.get(TITLE));
 		} else {

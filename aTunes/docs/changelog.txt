@@ -11,6 +11,7 @@ aTunes 3.0.6
 - FIX: Window size ignored if window is maximized
 - FIX: Folder filter does not work with child folders
 - FIX: Hide progress slider when fading away
+- FIX: Validate date of tags and discard invalid ones
 
 aTunes 3.0.5
 ------------
