@@ -24,9 +24,13 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectReader;
+import net.sourceforge.atunes.model.ITag;
+import net.sourceforge.atunes.utils.Logger;
+
+import org.joda.time.base.BaseDateTime;
 
 /**
- * Reads the tag of an audio file
+ * Reads and validates the tag of an audio file
  * 
  * @author fleax
  */
@@ -44,13 +48,46 @@ public final class TagReader implements ILocalAudioObjectReader {
 
 	@Override
 	public void readAudioObject(final ILocalAudioObject ao,
-			boolean readAudioProperties) {
+			final boolean readAudioProperties) {
 		this.tagAdapterSelector.selectAdapter(ao).readTag(ao,
 				readAudioProperties);
+
+		// Validate date to ensure it will be read and written properly in
+		// metadata
+		validateTag(ao.getTag());
+	}
+
+	private void validateTag(final ITag tag) {
+		validateDate(tag);
+	}
+
+	private void validateDate(final ITag tag) {
+		if (tag != null && tag.getDate() != null) {
+			BaseDateTime date = tag.getDate();
+			int year = date.getYear();
+			int month = date.getMonthOfYear();
+			int day = date.getDayOfMonth();
+			boolean valid = true;
+			if (year < 1000 || year > 9999) {
+				valid = false;
+			}
+			if (month < 1 || month > 12) {
+				valid = false;
+			}
+			if (day < 1 || day > 31) {
+				valid = false;
+			}
+			if (!valid) {
+				Logger.error("Detected invalid date: ", date.toString(),
+						" will be ignored");
+				tag.setDate(null);
+			}
+		}
 	}
 
 	@Override
-	public ImageIcon getImage(ILocalAudioObject ao, int width, int height) {
+	public ImageIcon getImage(final ILocalAudioObject ao, final int width,
+			final int height) {
 		return this.tagAdapterSelector.selectAdapter(ao).getImage(ao, width,
 				height);
 	}

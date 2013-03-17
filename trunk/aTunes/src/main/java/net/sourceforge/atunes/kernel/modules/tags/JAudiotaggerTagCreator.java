@@ -32,6 +32,12 @@ import org.jaudiotagger.tag.Tag;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
+/**
+ * Creates tags by reading with JAudiotagger
+ * 
+ * @author alex
+ * 
+ */
 public class JAudiotaggerTagCreator {
 
 	private Genres genresHelper;
@@ -43,21 +49,21 @@ public class JAudiotaggerTagCreator {
 	/**
 	 * @param tagFactory
 	 */
-	public void setTagFactory(TagFactory tagFactory) {
+	public void setTagFactory(final TagFactory tagFactory) {
 		this.tagFactory = tagFactory;
 	}
 
 	/**
 	 * @param ratingsToStars
 	 */
-	public void setRatingsToStars(RatingsToStars ratingsToStars) {
+	public void setRatingsToStars(final RatingsToStars ratingsToStars) {
 		this.ratingsToStars = ratingsToStars;
 	}
 
 	/**
 	 * @param genresHelper
 	 */
-	public void setGenresHelper(Genres genresHelper) {
+	public void setGenresHelper(final Genres genresHelper) {
 		this.genresHelper = genresHelper;
 	}
 
@@ -68,15 +74,15 @@ public class JAudiotaggerTagCreator {
 	 * @param file
 	 * @return
 	 */
-	ITag createTag(final ILocalAudioObject ao, AudioFile file) {
-		ITag iTag = tagFactory.getNewTag();
+	ITag createTag(final ILocalAudioObject ao, final AudioFile file) {
+		ITag iTag = this.tagFactory.getNewTag();
 		if (file != null) {
 			Tag tag = file.getTag();
 			iTag.setAlbum(getFirstTagValue(tag, FieldKey.ALBUM));
 			iTag.setArtist(getFirstTagValue(tag, FieldKey.ARTIST));
 			iTag.setComment(getFirstTagValue(tag, FieldKey.COMMENT));
 			setGenreFromTag(iTag, getFirstTagValue(tag, FieldKey.GENRE),
-					genresHelper);
+					this.genresHelper);
 			iTag.setTitle(getFirstTagValue(tag, FieldKey.TITLE));
 			setTrackNumberFromTag(iTag, getFirstTagValue(tag, FieldKey.TRACK));
 			setYearFromTag(iTag, getFirstTagValue(tag, FieldKey.YEAR));
@@ -98,7 +104,7 @@ public class JAudiotaggerTagCreator {
 	 * @param iTag
 	 * @param tag
 	 */
-	private void setDate(ITag iTag, final org.jaudiotagger.tag.Tag tag) {
+	private void setDate(final ITag iTag, final org.jaudiotagger.tag.Tag tag) {
 		if (tag instanceof org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag
 				|| tag instanceof org.jaudiotagger.tag.flac.FlacTag) {
 			iTag.setDate(DateUtils.parseRFC3339Date(getFirstTagValue(tag,
@@ -167,7 +173,7 @@ public class JAudiotaggerTagCreator {
 	 * @param iTag
 	 * @param track
 	 */
-	private void setTrackNumberFromTag(ITag iTag, final String track) {
+	private void setTrackNumberFromTag(final ITag iTag, final String track) {
 		String result = track;
 		try {
 			if (StringUtils.isEmpty(result)) {
@@ -226,7 +232,7 @@ public class JAudiotaggerTagCreator {
 	 * @param iTag
 	 * @param tag
 	 */
-	private void setDateFromID3v23Tag(ITag iTag,
+	private void setDateFromID3v23Tag(final ITag iTag,
 			final org.jaudiotagger.tag.Tag tag) {
 		// Set date from fields tag TYER and date/month tag TDAT
 		DateMidnight c = null;
@@ -262,7 +268,8 @@ public class JAudiotaggerTagCreator {
 	 * @param iTag
 	 * @param tag
 	 */
-	private void setDiscNumber(ITag iTag, final org.jaudiotagger.tag.Tag tag) {
+	private void setDiscNumber(final ITag iTag,
+			final org.jaudiotagger.tag.Tag tag) {
 		// Disc Number
 		String discNumberStr = getFirstTagValue(tag, FieldKey.DISC_NO);
 		if (discNumberStr != null && !discNumberStr.trim().equals("")) {
