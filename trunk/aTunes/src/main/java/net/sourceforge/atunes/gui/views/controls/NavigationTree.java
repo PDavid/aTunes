@@ -126,7 +126,10 @@ public final class NavigationTree extends JTree implements DragSourceListener,
 	public void setRoot(final String string) {
 		DefaultMutableTreeNode root = getRoot();
 		root.setUserObject(string);
-		root.removeAllChildren();
+		// Check number of children to avoid unexpected errors
+		if (root.getChildCount() > 0) {
+			root.removeAllChildren();
+		}
 	}
 
 	/**
