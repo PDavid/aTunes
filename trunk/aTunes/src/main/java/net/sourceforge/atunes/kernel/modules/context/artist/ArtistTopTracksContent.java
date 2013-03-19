@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationTableFactory;
 import net.sourceforge.atunes.kernel.modules.context.ITracksTableListener;
 import net.sourceforge.atunes.model.IArtistTopTracks;
+import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -39,71 +40,85 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class ArtistTopTracksContent extends AbstractContextPanelContent<ArtistPopularTracksDataSource> {
+public class ArtistTopTracksContent extends
+		AbstractContextPanelContent<ArtistPopularTracksDataSource> {
 
-    private static final long serialVersionUID = -5538266144953409867L;
+	private static final long serialVersionUID = -5538266144953409867L;
 
-    private JTable tracksTable;
-    
-    private ContextInformationTableFactory contextInformationTableFactory;
-    
-    private ITracksTableListener contextTableURLOpener;
-    
-    private CreatePlaylistWithPopularTracksActionListener createPlaylistWithPopularTracksActionListener;
-    
-    /**
-     * @param createPlaylistWithPopularTracksActionListener
-     */
-    public void setCreatePlaylistWithPopularTracksActionListener(CreatePlaylistWithPopularTracksActionListener createPlaylistWithPopularTracksActionListener) {
+	private JTable tracksTable;
+
+	private ContextInformationTableFactory contextInformationTableFactory;
+
+	private ITracksTableListener contextTableURLOpener;
+
+	private JMenuItem createPlayList;
+
+	private CreatePlaylistWithPopularTracksActionListener createPlaylistWithPopularTracksActionListener;
+
+	/**
+	 * @param createPlaylistWithPopularTracksActionListener
+	 */
+	public void setCreatePlaylistWithPopularTracksActionListener(
+			CreatePlaylistWithPopularTracksActionListener createPlaylistWithPopularTracksActionListener) {
 		this.createPlaylistWithPopularTracksActionListener = createPlaylistWithPopularTracksActionListener;
 	}
-    
-    /**
-     * @param contextTableURLOpener
-     */
-    public void setContextTableURLOpener(ITracksTableListener contextTableURLOpener) {
+
+	/**
+	 * @param contextTableURLOpener
+	 */
+	public void setContextTableURLOpener(
+			ITracksTableListener contextTableURLOpener) {
 		this.contextTableURLOpener = contextTableURLOpener;
 	}
-    
-    /**
-     * @param contextInformationTableFactory
-     */
-    public void setContextInformationTableFactory(ContextInformationTableFactory contextInformationTableFactory) {
+
+	/**
+	 * @param contextInformationTableFactory
+	 */
+	public void setContextInformationTableFactory(
+			ContextInformationTableFactory contextInformationTableFactory) {
 		this.contextInformationTableFactory = contextInformationTableFactory;
 	}
 
-    @Override
-    public String getContentName() {
-        return I18nUtils.getString("SONGS");
-    }
+	@Override
+	public String getContentName() {
+		return I18nUtils.getString("SONGS");
+	}
 
-    @Override
-    public void updateContentFromDataSource(ArtistPopularTracksDataSource source) {
-        IArtistTopTracks lastTopTracks = source.getTopTracks();
-        ((ContextArtistTracksTableModel)tracksTable.getModel()).setTopTracks(lastTopTracks);
-        createPlaylistWithPopularTracksActionListener.setLastTopTracks(lastTopTracks);
-    }
+	@Override
+	public void updateContentFromDataSource(ArtistPopularTracksDataSource source) {
+		IArtistTopTracks lastTopTracks = source.getTopTracks();
+		((ContextArtistTracksTableModel) tracksTable.getModel())
+				.setTopTracks(lastTopTracks);
+		createPlayList.setEnabled(lastTopTracks != null
+				&& !CollectionUtils.isEmpty(lastTopTracks.getTracks()));
+		createPlaylistWithPopularTracksActionListener
+				.setLastTopTracks(lastTopTracks);
+	}
 
-    @Override
-    public void clearContextPanelContent() {
-        super.clearContextPanelContent();
-        ((ContextArtistTracksTableModel)tracksTable.getModel()).setTopTracks(null);
-    }
+	@Override
+	public void clearContextPanelContent() {
+		super.clearContextPanelContent();
+		((ContextArtistTracksTableModel) tracksTable.getModel())
+				.setTopTracks(null);
+	}
 
-    @Override
-    public Component getComponent() {
-        // Create components
-    	tracksTable = contextInformationTableFactory.getNewTracksTable(contextTableURLOpener);
-        tracksTable.setModel(new ContextArtistTracksTableModel());
-        return tracksTable;
-    }
-    
-    @Override
-    public List<Component> getOptions() {
-        List<Component> options = new ArrayList<Component>();
-        JMenuItem createPlayList = new JMenuItem(I18nUtils.getString("CREATE_PLAYLIST_WITH_TOP_TRACKS"));
-    	createPlayList.addActionListener(createPlaylistWithPopularTracksActionListener);
-        options.add(createPlayList);
-        return options;
-    }
+	@Override
+	public Component getComponent() {
+		// Create components
+		tracksTable = contextInformationTableFactory
+				.getNewTracksTable(contextTableURLOpener);
+		tracksTable.setModel(new ContextArtistTracksTableModel());
+		return tracksTable;
+	}
+
+	@Override
+	public List<Component> getOptions() {
+		List<Component> options = new ArrayList<Component>();
+		createPlayList = new JMenuItem(
+				I18nUtils.getString("CREATE_PLAYLIST_WITH_TOP_TRACKS"));
+		createPlayList
+				.addActionListener(createPlaylistWithPopularTracksActionListener);
+		options.add(createPlayList);
+		return options;
+	}
 }

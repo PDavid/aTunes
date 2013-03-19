@@ -34,51 +34,60 @@ import net.sourceforge.atunes.utils.CollectionUtils;
 
 /**
  * Action to create playlist with popular tracks of artist
+ * 
  * @author alex
- *
+ * 
  */
-public class CreatePlaylistWithPopularTracksActionListener implements ActionListener {
-	
+public class CreatePlaylistWithPopularTracksActionListener implements
+		ActionListener {
+
 	private IRepositoryHandler repositoryHandler;
-	
+
 	private IPlayListHandler playListHandler;
-	
+
 	private IArtistTopTracks lastTopTracks;
-	
+
 	/**
 	 * @param lastTopTracks
 	 */
 	public void setLastTopTracks(IArtistTopTracks lastTopTracks) {
 		this.lastTopTracks = lastTopTracks;
 	}
-	
+
 	/**
 	 * @param repositoryHandler
 	 */
 	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
-	
+
 	/**
 	 * @param playListHandler
 	 */
 	public void setPlayListHandler(IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-	
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    	// Get titles for top tracks
-    	List<String> artistTopTracks = new ArrayList<String>();
-    	for (ITrackInfo track : lastTopTracks.getTracks()) {
-    		artistTopTracks.add(track.getTitle());
-    	}
-    	
-    	// Find in repository
-    	List<ILocalAudioObject> audioObjectsInRepository = repositoryHandler.getAudioObjectsByTitle(lastTopTracks.getArtist(), artistTopTracks);
-    	if (!CollectionUtils.isEmpty(audioObjectsInRepository)) {
-			// Create a new play list with artist as name and audio objects selected
-			playListHandler.newPlayList(lastTopTracks.getArtist(), audioObjectsInRepository);
-    	}
-    }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (lastTopTracks != null
+				&& !CollectionUtils.isEmpty(lastTopTracks.getTracks())) {
+			// Get titles for top tracks
+			List<String> artistTopTracks = new ArrayList<String>();
+			for (ITrackInfo track : lastTopTracks.getTracks()) {
+				artistTopTracks.add(track.getTitle());
+			}
+
+			// Find in repository
+			List<ILocalAudioObject> audioObjectsInRepository = repositoryHandler
+					.getAudioObjectsByTitle(lastTopTracks.getArtist(),
+							artistTopTracks);
+			if (!CollectionUtils.isEmpty(audioObjectsInRepository)) {
+				// Create a new play list with artist as name and audio objects
+				// selected
+				playListHandler.newPlayList(lastTopTracks.getArtist(),
+						audioObjectsInRepository);
+			}
+		}
+	}
 }
