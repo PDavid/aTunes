@@ -29,12 +29,10 @@ final class IntegerComparator implements Comparator<String>, Serializable {
 
 	@Override
 	public int compare(final String s1, final String s2) {
-		int compare;
 		try {
-			compare = Integer.valueOf(s1).compareTo(Integer.valueOf(s2));
+			return Integer.valueOf(s1).compareTo(Integer.valueOf(s2));
 		} catch (NumberFormatException e) {
-			compare = 0;
+			return s1.compareTo(s2);
 		}
-		return compare;
 	}
 }
