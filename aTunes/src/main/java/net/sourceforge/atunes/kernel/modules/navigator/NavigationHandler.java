@@ -88,9 +88,8 @@ public final class NavigationHandler extends AbstractHandler implements
 
 	@Override
 	public void applicationStarted() {
-		showNavigationTree(this.stateNavigation.isShowNavigationTree());
-		applyNavigationTableVisibility(this.stateNavigation
-				.isShowNavigationTree()
+		showNavigatorTree(this.stateNavigation.isShowNavigator());
+		applyNavigationTableVisibility(this.stateNavigation.isShowNavigator()
 				&& this.stateNavigation.isShowNavigationTable());
 
 		// Navigation Panel View
@@ -274,15 +273,15 @@ public final class NavigationHandler extends AbstractHandler implements
 	}
 
 	@Override
-	public void showNavigationTree(final boolean show) {
-		this.stateNavigation.setShowNavigationTree(show);
+	public void showNavigatorTree(final boolean show) {
+		this.stateNavigation.setShowNavigatorTree(show);
 
 		// Disable or enable actions
 		for (INavigationView navigationView : getNavigationViews()) {
 			navigationView.getActionToShowView().setEnabled(show);
 		}
 
-		getFrame().showNavigationTree(show);
+		getFrame().showNavigator(show);
 
 		applyNavigationTableVisibility(show
 				&& this.stateNavigation.isShowNavigationTable());

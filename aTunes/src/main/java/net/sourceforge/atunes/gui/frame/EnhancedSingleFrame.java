@@ -58,7 +58,7 @@ public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame {
 	}
 
 	@Override
-	public void showNavigationTree(final boolean show) {
+	public void showNavigator(final boolean show) {
 		applyVisibility(show, LEFT_SPLIT_PANE, getNavigationTreePanel()
 				.getSwingComponent(), getLeftSplitPane());
 	}
