@@ -200,7 +200,7 @@ public interface IStateNavigation extends IState {
 	 * 
 	 * @param showNavigator
 	 */
-	public void setShowNavigatorTree(boolean showNavigatorTree);
+	public void setShowNavigator(boolean showNavigatorTree);
 
 	/**
 	 * Custom navigator columns

@@ -210,7 +210,7 @@ public class ApplicationStateNavigation implements IStateNavigation {
 	}
 
 	@Override
-	public void setShowNavigatorTree(final boolean showNavigatorTree) {
+	public void setShowNavigator(final boolean showNavigatorTree) {
 		if (isShowNavigator() != showNavigatorTree) {
 			this.preferenceHelper.setPreference(
 					Preferences.SHOW_NAVIGATION_TREE, showNavigatorTree);
