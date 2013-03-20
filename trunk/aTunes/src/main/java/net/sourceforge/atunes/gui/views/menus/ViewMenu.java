@@ -41,90 +41,89 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ViewMenu extends JMenu {
 
-    private static final long serialVersionUID = -3624790857729577320L;
+	private static final long serialVersionUID = -3624790857729577320L;
 
-    private INavigationHandler navigationHandler;
+	private INavigationHandler navigationHandler;
 
-    private Action showStatusBarAction;
-    private Action showNavigationTreeAction;
-    private Action showContextAction;
-    private Action toggleOSDSettingAction;
-    private Action fullScreenAction;
+	private Action showStatusBarAction;
+	private Action showNavigatorAction;
+	private Action showContextAction;
+	private Action toggleOSDSettingAction;
+	private Action fullScreenAction;
 
-    /**
-     * @param i18nKey
-     */
-    public ViewMenu(final String i18nKey) {
-	super(I18nUtils.getString(i18nKey));
-    }
-
-    /**
-     * @param showStatusBarAction
-     */
-    public void setShowStatusBarAction(final Action showStatusBarAction) {
-	this.showStatusBarAction = showStatusBarAction;
-    }
-
-    /**
-     * @param showNavigationTreeAction
-     */
-    public void setShowNavigationTreeAction(
-	    final Action showNavigationTreeAction) {
-	this.showNavigationTreeAction = showNavigationTreeAction;
-    }
-
-    /**
-     * @param showContextAction
-     */
-    public void setShowContextAction(final Action showContextAction) {
-	this.showContextAction = showContextAction;
-    }
-
-    /**
-     * @param toggleOSDSettingAction
-     */
-    public void setToggleOSDSettingAction(final Action toggleOSDSettingAction) {
-	this.toggleOSDSettingAction = toggleOSDSettingAction;
-    }
-
-    /**
-     * @param fullScreenAction
-     */
-    public void setFullScreenAction(final Action fullScreenAction) {
-	this.fullScreenAction = fullScreenAction;
-    }
-
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(final INavigationHandler navigationHandler) {
-	this.navigationHandler = navigationHandler;
-    }
-
-    /**
-     * Initializes menu
-     */
-    public void initialize() {
-	// Add dinamically actions to show each navigation view loaded
-	int acceleratorIndex = 1;
-	for (INavigationView navigationView : navigationHandler
-		.getNavigationViews()) {
-	    Action action = navigationView.getActionToShowView();
-	    // The first 9 views will have an accelerator key ALT + index
-	    if (acceleratorIndex < 10) {
-		action.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-			KeyEvent.VK_0 + acceleratorIndex, ActionEvent.ALT_MASK));
-	    }
-	    acceleratorIndex++;
-	    add(action);
+	/**
+	 * @param i18nKey
+	 */
+	public ViewMenu(final String i18nKey) {
+		super(I18nUtils.getString(i18nKey));
 	}
 
-	add(new JSeparator());
-	add(new JCheckBoxMenuItem(showStatusBarAction));
-	add(new JCheckBoxMenuItem(showNavigationTreeAction));
-	add(new JCheckBoxMenuItem(showContextAction));
-	add(new JCheckBoxMenuItem(toggleOSDSettingAction));
-	add(new JSeparator());
-	add(fullScreenAction);
-    }
+	/**
+	 * @param showStatusBarAction
+	 */
+	public void setShowStatusBarAction(final Action showStatusBarAction) {
+		this.showStatusBarAction = showStatusBarAction;
+	}
+
+	/**
+	 * @param showNavigatorAction
+	 */
+	public void setShowNavigatorAction(Action showNavigatorAction) {
+		this.showNavigatorAction = showNavigatorAction;
+	}
+
+	/**
+	 * @param showContextAction
+	 */
+	public void setShowContextAction(final Action showContextAction) {
+		this.showContextAction = showContextAction;
+	}
+
+	/**
+	 * @param toggleOSDSettingAction
+	 */
+	public void setToggleOSDSettingAction(final Action toggleOSDSettingAction) {
+		this.toggleOSDSettingAction = toggleOSDSettingAction;
+	}
+
+	/**
+	 * @param fullScreenAction
+	 */
+	public void setFullScreenAction(final Action fullScreenAction) {
+		this.fullScreenAction = fullScreenAction;
+	}
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+
+	/**
+	 * Initializes menu
+	 */
+	public void initialize() {
+		// Add dinamically actions to show each navigation view loaded
+		int acceleratorIndex = 1;
+		for (INavigationView navigationView : navigationHandler
+				.getNavigationViews()) {
+			Action action = navigationView.getActionToShowView();
+			// The first 9 views will have an accelerator key ALT + index
+			if (acceleratorIndex < 10) {
+				action.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+						KeyEvent.VK_0 + acceleratorIndex, ActionEvent.ALT_MASK));
+			}
+			acceleratorIndex++;
+			add(action);
+		}
+
+		add(new JSeparator());
+		add(new JCheckBoxMenuItem(showStatusBarAction));
+		add(new JCheckBoxMenuItem(showNavigatorAction));
+		add(new JCheckBoxMenuItem(showContextAction));
+		add(new JCheckBoxMenuItem(toggleOSDSettingAction));
+		add(new JSeparator());
+		add(fullScreenAction);
+	}
 }

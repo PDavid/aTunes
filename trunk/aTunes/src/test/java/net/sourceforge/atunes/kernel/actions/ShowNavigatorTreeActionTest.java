@@ -29,17 +29,17 @@ import net.sourceforge.atunes.model.INavigationHandler;
 
 import org.junit.Test;
 
-public class ShowNavigationTreeActionTest {
+public class ShowNavigatorTreeActionTest {
 
 	@Test
 	public void test() {
-		ShowNavigationTreeAction sut = new ShowNavigationTreeAction();
+		ShowNavigatorAction sut = new ShowNavigatorAction();
 		INavigationHandler navigationHandler = mock(INavigationHandler.class);
 		sut.setNavigationHandler(navigationHandler);
 		sut.putValue(AbstractAction.SELECTED_KEY, true);
-		
+
 		sut.executeAction();
-		
-		verify(navigationHandler).showNavigationTree(true);
+
+		verify(navigationHandler).showNavigatorTree(true);
 	}
 }

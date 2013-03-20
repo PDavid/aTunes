@@ -189,18 +189,18 @@ public interface IStateNavigation extends IState {
 			List<TextTagAttribute> highlightIncompleteTagFoldersAttributes);
 
 	/**
-	 * Show navigation tree
+	 * Show navigator
 	 * 
 	 * @return
 	 */
-	public boolean isShowNavigationTree();
+	public boolean isShowNavigator();
 
 	/**
-	 * Show navigation tree
+	 * Show navigator
 	 * 
-	 * @param showNavigationTree
+	 * @param showNavigator
 	 */
-	public void setShowNavigationTree(boolean showNavigationTree);
+	public void setShowNavigatorTree(boolean showNavigatorTree);
 
 	/**
 	 * Custom navigator columns

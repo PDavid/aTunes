@@ -30,168 +30,167 @@ import java.util.List;
  */
 public interface INavigationHandler extends IHandler {
 
-    /**
-     * Returns list of all navigation views
-     * 
-     * @return
-     */
-    public List<INavigationView> getNavigationViews();
+	/**
+	 * Returns list of all navigation views
+	 * 
+	 * @return
+	 */
+	public List<INavigationView> getNavigationViews();
 
-    /**
-     * Returns current view
-     * 
-     * @return
-     */
-    public INavigationView getCurrentView();
+	/**
+	 * Returns current view
+	 * 
+	 * @return
+	 */
+	public INavigationView getCurrentView();
 
-    /**
-     * Returns current view mode
-     * 
-     * @return
-     */
-    public ViewMode getCurrentViewMode();
+	/**
+	 * Returns current view mode
+	 * 
+	 * @return
+	 */
+	public ViewMode getCurrentViewMode();
 
-    /**
-     * Returns view by its class
-     * 
-     * @param navigationViewClass
-     * @return
-     */
-    public INavigationView getView(
-	    Class<? extends INavigationView> navigationViewClass);
+	/**
+	 * Returns view by its class
+	 * 
+	 * @param navigationViewClass
+	 * @return
+	 */
+	public INavigationView getView(
+			Class<? extends INavigationView> navigationViewClass);
 
-    /**
-     * Refreshes current view to update data shown
-     */
-    public void refreshCurrentView();
+	/**
+	 * Refreshes current view to update data shown
+	 */
+	public void refreshCurrentView();
 
-    /**
-     * Refreshes given view. To avoid unnecessary actions, given view is only
-     * refreshed if it's the current view
-     * 
-     * @param navigationView
-     */
-    public void refreshView(INavigationView navigationView);
+	/**
+	 * Refreshes given view. To avoid unnecessary actions, given view is only
+	 * refreshed if it's the current view
+	 * 
+	 * @param navigationView
+	 */
+	public void refreshView(INavigationView navigationView);
 
-    /**
-     * Returns view class by name
-     * 
-     * @param className
-     * @return
-     */
-    public Class<? extends INavigationView> getViewByName(String className);
+	/**
+	 * Returns view class by name
+	 * 
+	 * @param className
+	 * @return
+	 */
+	public Class<? extends INavigationView> getViewByName(String className);
 
-    /**
-     * Refreshes navigation table
-     */
-    public void refreshNavigationTable();
+	/**
+	 * Refreshes navigation table
+	 */
+	public void refreshNavigationTable();
 
-    /**
-     * Returns files selected both from tree and table
-     * 
-     * @return
-     */
-    public List<IAudioObject> getFilesSelectedInNavigator();
+	/**
+	 * Returns files selected both from tree and table
+	 * 
+	 * @return
+	 */
+	public List<IAudioObject> getFilesSelectedInNavigator();
 
-    /**
-     * Set given navigation name as the current one
-     * 
-     * @param name
-     */
-    public void setNavigationView(String name);
+	/**
+	 * Set given navigation name as the current one
+	 * 
+	 * @param name
+	 */
+	public void setNavigationView(String name);
 
-    /**
-     * Opens search dialog
-     * 
-     * @param dialog
-     * @param b
-     * @return
-     */
-    public ISearch openSearchDialog(ISearchDialog dialog, boolean b);
+	/**
+	 * Opens search dialog
+	 * 
+	 * @param dialog
+	 * @param b
+	 * @return
+	 */
+	public ISearch openSearchDialog(ISearchDialog dialog, boolean b);
 
-    /**
-     * Updates view table, usually after apply a filter
-     */
-    public void updateViewTable();
+	/**
+	 * Updates view table, usually after apply a filter
+	 */
+	public void updateViewTable();
 
-    /**
-     * Return audio objects for selected treeNode
-     * 
-     * @param class1
-     * @param objectDragged
-     * @return
-     */
-    public List<? extends IAudioObject> getAudioObjectsForTreeNode(
-	    Class<? extends INavigationView> class1, ITreeNode objectDragged);
+	/**
+	 * Return audio objects for selected treeNode
+	 * 
+	 * @param class1
+	 * @param objectDragged
+	 * @return
+	 */
+	public List<? extends IAudioObject> getAudioObjectsForTreeNode(
+			Class<? extends INavigationView> class1, ITreeNode objectDragged);
 
-    /**
-     * Returns selected audio object in navigation table
-     * 
-     * @return
-     */
-    public IAudioObject getSelectedAudioObjectInNavigationTable();
+	/**
+	 * Returns selected audio object in navigation table
+	 * 
+	 * @return
+	 */
+	public IAudioObject getSelectedAudioObjectInNavigationTable();
 
-    /**
-     * Returns selected audio objects in navigation table
-     * 
-     * @return
-     */
-    public List<IAudioObject> getSelectedAudioObjectsInNavigationTable();
+	/**
+	 * Returns selected audio objects in navigation table
+	 * 
+	 * @return
+	 */
+	public List<IAudioObject> getSelectedAudioObjectsInNavigationTable();
 
-    /**
-     * Returns audio object in given table row
-     * 
-     * @param row
-     * @return
-     */
-    public IAudioObject getAudioObjectInNavigationTable(int row);
+	/**
+	 * Returns audio object in given table row
+	 * 
+	 * @param row
+	 * @return
+	 */
+	public IAudioObject getAudioObjectInNavigationTable(int row);
 
-    /**
-     * Called when repository has changed
-     */
-    public void repositoryReloaded();
+	/**
+	 * Called when repository has changed
+	 */
+	public void repositoryReloaded();
 
-    /**
-     * Show navigation tree.
-     * 
-     * @param show
-     *            the show
-     */
-    public void showNavigationTree(boolean show);
+	/**
+	 * Show navigator
+	 * 
+	 * @param show
+	 */
+	public void showNavigatorTree(boolean show);
 
-    /**
-     * Show navigation table.
-     * 
-     * @param show
-     *            the show
-     */
-    public void showNavigationTable(boolean show);
+	/**
+	 * Show navigation table.
+	 * 
+	 * @param show
+	 *            the show
+	 */
+	public void showNavigationTable(boolean show);
 
-    /**
-     * Called to select given artist in navigator
-     * 
-     * @param artist
-     */
-    public void selectArtist(String artist);
+	/**
+	 * Called to select given artist in navigator
+	 * 
+	 * @param artist
+	 */
+	public void selectArtist(String artist);
 
-    /**
-     * Called to select given audio object in navigator
-     * 
-     * @param audioObject
-     */
-    public void selectAudioObject(IAudioObject audioObject);
+	/**
+	 * Called to select given audio object in navigator
+	 * 
+	 * @param audioObject
+	 */
+	public void selectAudioObject(IAudioObject audioObject);
 
-    /**
-     * Returns true if last action has been performed in tree
-     * 
-     * @return
-     */
-    public boolean isActionOverTree();
+	/**
+	 * Returns true if last action has been performed in tree
+	 * 
+	 * @return
+	 */
+	public boolean isActionOverTree();
 
-    /**
-     * Sets navigation views
-     * 
-     * @param navigationViews
-     */
-    public void setNavigationViews(List<INavigationView> navigationViews);
+	/**
+	 * Sets navigation views
+	 * 
+	 * @param navigationViews
+	 */
+	public void setNavigationViews(List<INavigationView> navigationViews);
 }

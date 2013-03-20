@@ -54,7 +54,7 @@ public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame {
 	}
 
 	@Override
-	public void showNavigationTree(final boolean show) {
+	public void showNavigator(final boolean show) {
 		applyVisibility(show, NAVIGATOR_SPLIT_PANE, getNavigationTreePanel()
 				.getSwingComponent(), this.navigatorSplitPane);
 		checkNavigatorSplitPaneVisibility();

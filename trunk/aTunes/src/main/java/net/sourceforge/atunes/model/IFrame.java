@@ -185,12 +185,12 @@ public interface IFrame extends ApplicationContextAware {
 	public void showContextPanel(boolean show);
 
 	/**
-	 * Show navigation tree.
+	 * Show navigator
 	 * 
 	 * @param show
 	 *            the show
 	 */
-	public void showNavigationTree(boolean show);
+	public void showNavigator(boolean show);
 
 	/**
 	 * Show navigation table.

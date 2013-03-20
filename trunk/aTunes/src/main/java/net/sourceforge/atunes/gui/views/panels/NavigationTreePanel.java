@@ -69,6 +69,7 @@ public final class NavigationTreePanel extends JPanel implements
 	private Action showFoldersInNavigatorAction;
 	private Action expandTreesAction;
 	private Action collapseTreesAction;
+
 	private Action showNavigationTableAction;
 
 	private IFilterPanel navigatorFilterPanel;
