@@ -29,7 +29,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 
 import org.junit.Test;
 
-public class ShowNavigatorTreeActionTest {
+public class ShowNavigatorActionTest {
 
 	@Test
 	public void test() {
