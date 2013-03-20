@@ -156,7 +156,7 @@ public interface INavigationHandler extends IHandler {
 	 * 
 	 * @param show
 	 */
-	public void showNavigatorTree(boolean show);
+	public void showNavigator(boolean show);
 
 	/**
 	 * Show navigation table.

@@ -73,6 +73,6 @@ public class ShowNavigatorAction extends CustomAbstractAction {
 
 	@Override
 	protected void executeAction() {
-		navigationHandler.showNavigatorTree((Boolean) getValue(SELECTED_KEY));
+		navigationHandler.showNavigator((Boolean) getValue(SELECTED_KEY));
 	}
 }

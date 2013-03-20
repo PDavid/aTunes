@@ -40,6 +40,6 @@ public class ShowNavigatorTreeActionTest {
 
 		sut.executeAction();
 
-		verify(navigationHandler).showNavigatorTree(true);
+		verify(navigationHandler).showNavigator(true);
 	}
 }
