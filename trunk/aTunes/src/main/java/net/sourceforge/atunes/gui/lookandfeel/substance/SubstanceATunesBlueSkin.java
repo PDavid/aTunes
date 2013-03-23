@@ -31,44 +31,44 @@ import org.pushingpixels.substance.api.SubstanceColorScheme;
  * 
  */
 public final class SubstanceATunesBlueSkin extends
-	net.sourceforge.atunes.gui.lookandfeel.substance.CustomSubstanceSkin {
+		net.sourceforge.atunes.gui.lookandfeel.substance.CustomSubstanceSkin {
 
-    /**
-     * Creates a new skin.
-     */
-    public SubstanceATunesBlueSkin() {
+	/**
+	 * Creates a new skin.
+	 */
+	public SubstanceATunesBlueSkin() {
 
-	SubstanceColorScheme activeScheme = new SubstanceBaseColorScheme(
-		"aTunes Blue", false, new Color(32, 71, 143), new Color(43,
-			100, 177), new Color(50, 111, 180), new Color(58, 132,
-			186), new Color(81, 152, 195),
-		new Color(103, 174, 195), new Color(255, 255, 255));
+		SubstanceColorScheme activeScheme = new SubstanceBaseColorScheme(
+				"aTunes Blue", false, new Color(32, 71, 143), new Color(43,
+						100, 177), new Color(50, 111, 180), new Color(58, 132,
+						186), new Color(81, 152, 195),
+				new Color(103, 174, 195), new Color(255, 255, 255));
 
-	SubstanceColorScheme defaultScheme = new SubstanceBaseColorScheme(
-		"Metallic", false, new Color(90, 91, 92), new Color(125, 126,
-			127), new Color(200, 201, 202),
-		new Color(220, 221, 222), new Color(245, 246, 247), new Color(
-			250, 251, 252), new Color(80, 80, 80));
+		SubstanceColorScheme defaultScheme = new SubstanceBaseColorScheme(
+				"Metallic", false, new Color(90, 91, 92), new Color(125, 126,
+						127), new Color(175, 176, 177),
+				new Color(195, 196, 197), new Color(220, 221, 222), new Color(
+						225, 226, 227), new Color(0, 0, 0));
 
-	SubstanceColorScheme disabledScheme = new SubstanceBaseColorScheme(
-		"Disabled Metallic", false, new Color(100, 106, 112),
-		new Color(180, 185, 190), new Color(210, 214, 218), new Color(
-			225, 228, 231), new Color(240, 242, 244), new Color(
-			250, 251, 252), new Color(120, 125, 130));
+		SubstanceColorScheme disabledScheme = new SubstanceBaseColorScheme(
+				"Disabled Metallic", false, new Color(80, 81, 82), new Color(
+						115, 116, 117), new Color(165, 166, 167), new Color(
+						185, 186, 187), new Color(210, 211, 212), new Color(
+						215, 216, 217), new Color(100, 100, 100));
 
-	Color hightlightColor = new Color(32, 161, 228);
-	SubstanceColorScheme highlightScheme = new SubstanceBaseColorScheme(
-		"Highlight", false, hightlightColor, hightlightColor,
-		hightlightColor, hightlightColor, hightlightColor,
-		hightlightColor, Color.WHITE);
+		Color hightlightColor = new Color(32, 161, 228);
+		SubstanceColorScheme highlightScheme = new SubstanceBaseColorScheme(
+				"Highlight", false, hightlightColor, hightlightColor,
+				hightlightColor, hightlightColor, hightlightColor,
+				hightlightColor, new Color(255, 255, 255));
 
-	initializeSkin(activeScheme, defaultScheme, disabledScheme,
-		highlightScheme);
+		initializeSkin(activeScheme, defaultScheme, disabledScheme,
+				highlightScheme);
 
-    }
+	}
 
-    @Override
-    public String getDisplayName() {
-	return "aTunes Blue skin";
-    }
+	@Override
+	public String getDisplayName() {
+		return "aTunes Blue skin";
+	}
 }
