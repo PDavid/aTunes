@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IRadioHandler;
@@ -58,13 +58,13 @@ public final class PlayListIO implements IPlayListIOService {
 
 	private ILocalAudioObjectFactory localAudioObjectFactory;
 
-	private IOSManager osManager;
+	private IBeanFactory beanFactory;
 
 	/**
-	 * @param osManager
+	 * @param beanFactory
 	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -77,7 +77,8 @@ public final class PlayListIO implements IPlayListIOService {
 	/**
 	 * @param localAudioObjectFactory
 	 */
-	public void setLocalAudioObjectFactory(final ILocalAudioObjectFactory localAudioObjectFactory) {
+	public void setLocalAudioObjectFactory(
+			final ILocalAudioObjectFactory localAudioObjectFactory) {
 		this.localAudioObjectFactory = localAudioObjectFactory;
 	}
 
@@ -93,7 +94,8 @@ public final class PlayListIO implements IPlayListIOService {
 	 * @return
 	 */
 	@Override
-	public List<IAudioObject> getAudioObjectsFromFileNamesList(final List<String> fileNames) {
+	public List<IAudioObject> getAudioObjectsFromFileNamesList(
+			final List<String> fileNames) {
 		List<IAudioObject> result = new ArrayList<IAudioObject>();
 		for (String fileName : fileNames) {
 			result.add(getAudioObjectOrCreate(fileName));
@@ -117,19 +119,24 @@ public final class PlayListIO implements IPlayListIOService {
 
 		// It's an online radio
 		if (resourceName.startsWith(HTTP_PREFIX)) {
-			ao = radioHandler.getRadioIfLoaded(resourceName);
+			ao = this.radioHandler.getRadioIfLoaded(resourceName);
 			if (ao == null) {
-				// If radio is not previously loaded in application then create a new Radio object with resource as name and url and leave label empty
-				ao = radioHandler.createRadio(resourceName, resourceName, null);
+				// If radio is not previously loaded in application then create
+				// a new Radio object with resource as name and url and leave
+				// label empty
+				ao = this.radioHandler.createRadio(resourceName, resourceName,
+						null);
 			}
 			return ao;
 		}
 
 		// It's not an online radio, then it must be an AudioFile
-		ao = repositoryHandler.getFileIfLoaded(resourceName);
+		ao = this.repositoryHandler.getFileIfLoaded(resourceName);
 		if (ao == null) {
-			// If LocalAudioObject is not previously loaded in application then create a new AudioFile
-			ao = localAudioObjectFactory.getLocalAudioObject(new File(resourceName));
+			// If LocalAudioObject is not previously loaded in application then
+			// create a new AudioFile
+			ao = this.localAudioObjectFactory.getLocalAudioObject(new File(
+					resourceName));
 		}
 		return ao;
 	}
@@ -180,19 +187,22 @@ public final class PlayListIO implements IPlayListIOService {
 	 */
 	@Override
 	public boolean isValidPlayList(final File playListFile) {
-		return playListFile.getName().endsWith(PLAYLIST_M3U_FILE_EXTENSION) && playListFile.exists();
+		return playListFile.getName().endsWith(PLAYLIST_M3U_FILE_EXTENSION)
+				&& playListFile.exists();
 	}
 
 	/**
 	 * This function reads the filenames from the playlist file
+	 * 
 	 * @return Returns an List of files of the playlist as String.
 	 */
 	@Override
 	public List<String> read(final File file) {
-		if (FilenameUtils.getExtension(FileUtils.getPath(file)).equalsIgnoreCase(PLAYLIST_FILE_EXTENSION)) {
-			return new PlayListReader(repositoryHandler).read(file);
+		if (FilenameUtils.getExtension(FileUtils.getPath(file))
+				.equalsIgnoreCase(PLAYLIST_FILE_EXTENSION)) {
+			return this.beanFactory.getBean(PlayListReader.class).read(file);
 		}
-		return new M3UPlayListReader(osManager).read(file);
+		return this.beanFactory.getBean(M3UPlayListReader.class).read(file);
 	}
 
 	/**
@@ -204,7 +214,8 @@ public final class PlayListIO implements IPlayListIOService {
 	 */
 	@Override
 	public boolean writeM3U(final IPlayList playlist, final File file) {
-		return new M3UPlayListWriter(osManager).writeM3U(playlist, file);
+		return this.beanFactory.getBean(M3UPlayListWriter.class).writeM3U(
+				playlist, file);
 	}
 
 	@Override
@@ -218,8 +229,10 @@ public final class PlayListIO implements IPlayListIOService {
 	}
 
 	private File checkPlayListExtension(final File file, final String extension) {
-		if (!file.getName().toUpperCase().endsWith("." + extension.toUpperCase())) {
-			return new File(StringUtils.getString(FileUtils.getPath(file), ".", extension));
+		if (!file.getName().toUpperCase()
+				.endsWith("." + extension.toUpperCase())) {
+			return new File(StringUtils.getString(FileUtils.getPath(file), ".",
+					extension));
 		}
 		return file;
 	}
@@ -231,7 +244,8 @@ public final class PlayListIO implements IPlayListIOService {
 
 	@Override
 	public boolean write(final IPlayList playlist, final File file) {
-		return new PlayListWriter(osManager, repositoryHandler).write(playlist, file);
+		return this.beanFactory.getBean(PlayListWriter.class).write(playlist,
+				file);
 	}
 
 	@Override

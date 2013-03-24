@@ -34,20 +34,17 @@ import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-class PlayListWriter {
+/**
+ * Writes play lists using relative paths
+ * 
+ * @author alex
+ * 
+ */
+public class PlayListWriter {
 
-	private final IOSManager osManager;
+	private IOSManager osManager;
 
-	private final IRepositoryHandler repositoryHandler;
-
-	/**
-	 * @param osManager
-	 * @param repositoryHandler
-	 */
-	public PlayListWriter(final IOSManager osManager, final IRepositoryHandler repositoryHandler) {
-		this.osManager = osManager;
-		this.repositoryHandler = repositoryHandler;
-	}
+	private IRepositoryHandler repositoryHandler;
 
 	/**
 	 * Writes a play list to a file using paths relative to repository
@@ -63,10 +60,12 @@ class PlayListWriter {
 				Logger.error(StringUtils.getString(file, " not deleted"));
 			}
 			writer = new FileWriter(file);
-			List<File> repositoryFolders = repositoryHandler.getFolders();
+			List<File> repositoryFolders = this.repositoryHandler.getFolders();
 			for (int i = 0; i < playlist.size(); i++) {
 				IAudioObject f = playlist.get(i);
-				writer.append(StringUtils.getString(getRelativePath(repositoryFolders, f), osManager.getLineTerminator()));
+				writer.append(StringUtils.getString(
+						getRelativePath(repositoryFolders, f),
+						this.osManager.getLineTerminator()));
 			}
 			writer.flush();
 			return true;
@@ -77,10 +76,12 @@ class PlayListWriter {
 		}
 	}
 
-	private String getRelativePath(final List<File> repositoryFolders, final IAudioObject f) {
+	private String getRelativePath(final List<File> repositoryFolders,
+			final IAudioObject f) {
 		String url = f.getUrl();
 		for (File repositoryFolder : repositoryFolders) {
-			url = url.replaceAll(FileUtils.getNormalizedPath(repositoryFolder), "");
+			url = url.replaceAll(FileUtils.getNormalizedPath(repositoryFolder),
+					"");
 		}
 		return url;
 	}

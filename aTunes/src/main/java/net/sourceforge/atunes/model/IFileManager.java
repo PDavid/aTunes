@@ -41,6 +41,12 @@ public interface IFileManager {
 
 	/**
 	 * @param ao
+	 * @return system representation of path of local audio object
+	 */
+	String getSystemPath(ILocalAudioObject ao);
+
+	/**
+	 * @param ao
 	 * @return file of local audio object
 	 */
 	File getFile(ILocalAudioObject ao);

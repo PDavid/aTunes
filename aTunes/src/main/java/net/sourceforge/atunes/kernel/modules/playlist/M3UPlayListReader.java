@@ -34,7 +34,13 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.IOUtils;
 
-class M3UPlayListReader {
+/**
+ * Reads M3U play lists
+ * 
+ * @author alex
+ * 
+ */
+public class M3UPlayListReader {
 
 	private static final String HTTP_PREFIX = "http://";
 
@@ -55,21 +61,26 @@ class M3UPlayListReader {
 	/**
 	 * @param osManager
 	 */
-	M3UPlayListReader(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
-	List<String> read(File file) {
+	List<String> read(final File file) {
 		FileReader fr = null;
 		try {
 			fr = new FileReader(file);
-			List<String> lines = readUntilFirstUncommentedLine(IOUtils.readLines(fr));
+			List<String> lines = readUntilFirstUncommentedLine(IOUtils
+					.readLines(fr));
 
 			if (!lines.isEmpty()) {
 				String firstLine = lines.get(0);
 
 				if (isFormatSupported(firstLine)) {
-					return readLines(lines, file.getParent() + osManager.getFileSeparator(), isRelativePaths(firstLine));
+					return readLines(
+							lines,
+							file.getParent()
+									+ this.osManager.getFileSeparator(),
+							isRelativePaths(firstLine));
 				}
 			}
 		} catch (IOException e) {
@@ -79,8 +90,9 @@ class M3UPlayListReader {
 		}
 		return Collections.emptyList();
 	}
-	
-	private List<String> readLines(List<String> lines, String m3uPath, boolean isRelative) {
+
+	private List<String> readLines(final List<String> lines,
+			final String m3uPath, final boolean isRelative) {
 		List<String> result = new ArrayList<String>();
 		for (String line : lines) {
 			if (!line.startsWith(M3U_START_COMMENT) && !line.isEmpty()) {
@@ -88,12 +100,13 @@ class M3UPlayListReader {
 				if (isRelative) {
 					// The path is relative! We must add it to the filename
 					// But if entries are HTTP URLS then don't add any path
-					lineProcessed = line.startsWith(HTTP_PREFIX) ? line : StringUtils.getString(m3uPath, line);
+					lineProcessed = line.startsWith(HTTP_PREFIX) ? line
+							: StringUtils.getString(m3uPath, line);
 				} else {
 					lineProcessed = line;
 				}
 				result.add(lineProcessed);
-			}							
+			}
 		}
 		return result;
 	}
@@ -102,9 +115,12 @@ class M3UPlayListReader {
 	 * @param firstLine
 	 * @return true if line is valid
 	 */
-	private boolean isFormatSupported(String firstLine) {
-		// Let's check if we are at least using the right OS. Maybe a message should be returned, but for now it doesn't. UNC paths are allowed for all OS
-		if (!isRelativePaths(firstLine) && (isWindowsAndUnixAbsolutePath(firstLine) || isNotWindowsAndWindowsAbsolutePath(firstLine))) {
+	private boolean isFormatSupported(final String firstLine) {
+		// Let's check if we are at least using the right OS. Maybe a message
+		// should be returned, but for now it doesn't. UNC paths are allowed for
+		// all OS
+		if (!isRelativePaths(firstLine)
+				&& (isWindowsAndUnixAbsolutePath(firstLine) || isNotWindowsAndWindowsAbsolutePath(firstLine))) {
 			return false;
 		}
 		return true;
@@ -114,33 +130,36 @@ class M3UPlayListReader {
 	 * @param firstLine
 	 * @return
 	 */
-	private boolean isNotWindowsAndWindowsAbsolutePath(String firstLine) {
-		return (!osManager.isWindows() && firstLine.startsWith(M3U_WINDOWS_ABSOLUTE_PATH, 1));
+	private boolean isNotWindowsAndWindowsAbsolutePath(final String firstLine) {
+		return (!this.osManager.isWindows() && firstLine.startsWith(
+				M3U_WINDOWS_ABSOLUTE_PATH, 1));
 	}
 
 	/**
 	 * @param firstLine
 	 * @return
 	 */
-	private boolean isWindowsAndUnixAbsolutePath(String firstLine) {
-		return (osManager.isWindows() && firstLine.startsWith(M3U_UNIX_ABSOLUTE_PATH));
+	private boolean isWindowsAndUnixAbsolutePath(final String firstLine) {
+		return (this.osManager.isWindows() && firstLine
+				.startsWith(M3U_UNIX_ABSOLUTE_PATH));
 	}
 
 	/**
 	 * @param firstLine
 	 * @return true if line is valid
 	 */
-	private boolean isRelativePaths(String firstLine) {
-		// First absolute path. Windows path detection is very rudimentary, but should work
-		if (firstLine.startsWith(M3U_WINDOWS_ABSOLUTE_PATH, 1) || 
-				firstLine.startsWith(M3U_UNIX_ABSOLUTE_PATH) ||
-				firstLine.startsWith(M3U_UNC_ABSOLUTE_PATH)) {
+	private boolean isRelativePaths(final String firstLine) {
+		// First absolute path. Windows path detection is very rudimentary, but
+		// should work
+		if (firstLine.startsWith(M3U_WINDOWS_ABSOLUTE_PATH, 1)
+				|| firstLine.startsWith(M3U_UNIX_ABSOLUTE_PATH)
+				|| firstLine.startsWith(M3U_UNC_ABSOLUTE_PATH)) {
 			return false;
 		}
 		return true;
 	}
 
-	private List<String> readUntilFirstUncommentedLine(List<String> lines) {
+	private List<String> readUntilFirstUncommentedLine(final List<String> lines) {
 		int i = 0;
 		for (String line : lines) {
 			i++;

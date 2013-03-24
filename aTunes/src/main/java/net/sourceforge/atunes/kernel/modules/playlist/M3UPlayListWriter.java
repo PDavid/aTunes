@@ -25,52 +25,77 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFileManager;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-class M3UPlayListWriter {
-	
-    /** The Constant M3U_HEADER. */
-    private static final String M3U_HEADER = "#EXTM3U";
+/**
+ * Writes M3U play lists
+ * 
+ * @author alex
+ * 
+ */
+public class M3UPlayListWriter {
+
+	/** The Constant M3U_HEADER. */
+	private static final String M3U_HEADER = "#EXTM3U";
 
 	private IOSManager osManager;
-	
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(final IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
+
 	/**
 	 * @param osManager
 	 */
-	public M3UPlayListWriter(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
-    /**
-     * Writes a play list to a file in M3U format
-     * 
-     * @param playlist
-     * @param file
-     * @return
-     */
-	boolean writeM3U(IPlayList playlist, File file) {
-        FileWriter writer = null;
-        try {
-            if (file.exists() && !file.delete()) {
-            	Logger.error(StringUtils.getString(file, " not deleted"));
-            }
-            writer = new FileWriter(file);
-            writer.append(StringUtils.getString(M3U_HEADER, osManager.getLineTerminator()));
-            for (int i = 0; i < playlist.size(); i++) {
-            	IAudioObject f = playlist.get(i);
-                writer.append(StringUtils.getString(f.getUrl(), osManager.getLineTerminator()));
-            }
-            writer.flush();
-            return true;
-        } catch (IOException e) {
-            return false;
-        } finally {
-            ClosingUtils.close(writer);
-        }
-    }
+	/**
+	 * Writes a play list to a file in M3U format
+	 * 
+	 * @param playlist
+	 * @param file
+	 * @return
+	 */
+	boolean writeM3U(final IPlayList playlist, final File file) {
+		FileWriter writer = null;
+		try {
+			if (file.exists() && !file.delete()) {
+				Logger.error(StringUtils.getString(file, " not deleted"));
+			}
+			writer = new FileWriter(file);
+			writer.append(StringUtils.getString(M3U_HEADER,
+					this.osManager.getLineTerminator()));
+			for (int i = 0; i < playlist.size(); i++) {
+				IAudioObject f = playlist.get(i);
+				if (f instanceof ILocalAudioObject) {
+					writer.append(StringUtils.getString(this.fileManager
+							.getSystemPath((ILocalAudioObject) f),
+							this.osManager.getLineTerminator()));
+				} else {
+					writer.append(StringUtils.getString(f.getUrl(),
+							this.osManager.getLineTerminator()));
+				}
+			}
+			writer.flush();
+			return true;
+		} catch (IOException e) {
+			return false;
+		} finally {
+			ClosingUtils.close(writer);
+		}
+	}
 
 }

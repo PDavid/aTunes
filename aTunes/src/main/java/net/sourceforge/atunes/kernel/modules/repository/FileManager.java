@@ -65,7 +65,7 @@ public class FileManager implements IFileManager {
 	/**
 	 * @param associatedFiles
 	 */
-	public void setAssociatedFiles(List<String> associatedFiles) {
+	public void setAssociatedFiles(final List<String> associatedFiles) {
 		this.associatedFiles = associatedFiles;
 	}
 
@@ -95,6 +95,11 @@ public class FileManager implements IFileManager {
 	@Override
 	public String getPath(final ILocalAudioObject ao) {
 		return FileUtils.getPath(getAudioObjectFile(ao));
+	}
+
+	@Override
+	public String getSystemPath(final ILocalAudioObject ao) {
+		return FilenameUtils.separatorsToSystem(getPath(ao));
 	}
 
 	@Override
@@ -136,7 +141,7 @@ public class FileManager implements IFileManager {
 		return getAudioObjectFile(ao).getParentFile().getName();
 	}
 
-	private List<File> getAssociatedFiles(ILocalAudioObject ao) {
+	private List<File> getAssociatedFiles(final ILocalAudioObject ao) {
 		List<File> associatedFiles = new ArrayList<File>();
 		for (String extension : this.associatedFiles) {
 			File associatedFile = new File(StringUtils.getString(FilenameUtils
