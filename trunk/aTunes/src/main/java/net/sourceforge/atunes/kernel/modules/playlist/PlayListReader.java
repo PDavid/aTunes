@@ -35,14 +35,20 @@ import net.sourceforge.atunes.utils.Timer;
 
 import org.apache.commons.io.IOUtils;
 
-class PlayListReader {
+/**
+ * Reads play lists
+ * 
+ * @author alex
+ * 
+ */
+public class PlayListReader {
 
-	private final IRepositoryHandler repositoryHandler;
+	private IRepositoryHandler repositoryHandler;
 
 	/**
 	 * @param repositoryHandler
 	 */
-	PlayListReader(final IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
@@ -60,12 +66,13 @@ class PlayListReader {
 		t.start();
 		FileReader fr = null;
 		try {
-			List<File> repositoryFolders = repositoryHandler.getFolders();
+			List<File> repositoryFolders = this.repositoryHandler.getFolders();
 			fr = new FileReader(file);
 			List<String> fileContent = IOUtils.readLines(fr);
 			List<String> result = new ArrayList<String>();
 			for (String line : fileContent) {
-				String fullPath = getFileIfExistsInRepository(repositoryFolders, line);
+				String fullPath = getFileIfExistsInRepository(
+						repositoryFolders, line);
 				if (fullPath != null) {
 					result.add(fullPath);
 				}
@@ -79,9 +86,11 @@ class PlayListReader {
 		}
 	}
 
-	private String getFileIfExistsInRepository(final List<File> repositoryFolders, final String relativeFile) {
+	private String getFileIfExistsInRepository(
+			final List<File> repositoryFolders, final String relativeFile) {
 		for (File repositoryFolder : repositoryFolders) {
-			String filePath = FileUtils.getPath(repositoryFolder) + relativeFile;
+			String filePath = FileUtils.getPath(repositoryFolder)
+					+ relativeFile;
 			if (new File(filePath).exists()) {
 				return filePath;
 			}
