@@ -23,6 +23,9 @@ package net.sourceforge.atunes.gui.frame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.awt.Dimension;
+
 import net.sourceforge.atunes.model.IFrameSize;
 import net.sourceforge.atunes.model.IStateUI;
 
@@ -32,7 +35,7 @@ import org.junit.Test;
 public class SaveFrameSizeTaskTest {
 
 	@Test
-	public void test() {
+	public void testMaximized() {
 		AbstractSingleFrame frame = mock(AbstractSingleFrame.class);
 		when(frame.getExtendedState())
 				.thenReturn(java.awt.Frame.MAXIMIZED_BOTH);
@@ -42,13 +45,16 @@ public class SaveFrameSizeTaskTest {
 		SaveFrameSizeTask sut = new SaveFrameSizeTask();
 		sut.setFrame(frame);
 		sut.setStateUI(stateUI);
-		sut.setWidth(1);
+
+		// One dimension equals to screen size
+		sut.setWidth(1024);
 		sut.setHeight(2);
+		sut.setScreenSize(new Dimension(1024, 768));
 
 		sut.run();
 
 		verify(stateUI).setFrameSize(frameSize);
-		Assert.assertEquals(1, frameSize.getWindowWidth());
+		Assert.assertEquals(1024, frameSize.getWindowWidth());
 		Assert.assertEquals(2, frameSize.getWindowHeight());
 		Assert.assertTrue(frameSize.isMaximized());
 	}
