@@ -43,6 +43,6 @@
         </Tab>
       </tabs>
     </TabPane>
-    <Button fx:id="okButton" defaultButton="true" layoutX="490.0" layoutY="490.0" mnemonicParsing="false" text="\%OK" />
+    <Button fx:id="okButton" defaultButton="true" layoutX="490.0" layoutY="490.0" mnemonicParsing="false" text="%OK" />
   </children>
 </AnchorPane>
