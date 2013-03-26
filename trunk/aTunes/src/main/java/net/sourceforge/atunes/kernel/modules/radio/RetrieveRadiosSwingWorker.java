@@ -37,15 +37,15 @@ import net.sourceforge.atunes.utils.XMLSerializerService;
 final class RetrieveRadiosSwingWorker extends SwingWorker<List<IRadio>, Void> {
 
 	private RadioHandler radioHandler;
-	
+
 	private INavigationHandler navigationHandler;
-	
+
 	private INetworkHandler networkHandler;
-	
+
 	private INavigationView radioNavigationView;
-	
+
 	private XMLSerializerService xmlSerializerService;
-	
+
 	/**
 	 * @param radioHandler
 	 * @param navigationHandler
@@ -53,33 +53,38 @@ final class RetrieveRadiosSwingWorker extends SwingWorker<List<IRadio>, Void> {
 	 * @param radioNavigationView
 	 * @param xmlSerializerService
 	 */
-	public RetrieveRadiosSwingWorker(RadioHandler radioHandler, INavigationHandler navigationHandler, INetworkHandler networkHandler, INavigationView radioNavigationView, XMLSerializerService xmlSerializerService) {
+	public RetrieveRadiosSwingWorker(RadioHandler radioHandler,
+			INavigationHandler navigationHandler,
+			INetworkHandler networkHandler,
+			INavigationView radioNavigationView,
+			XMLSerializerService xmlSerializerService) {
 		this.radioHandler = radioHandler;
 		this.navigationHandler = navigationHandler;
 		this.networkHandler = networkHandler;
 		this.radioNavigationView = radioNavigationView;
 		this.xmlSerializerService = xmlSerializerService;
 	}
-	
-    @SuppressWarnings("unchecked")
-    @Override
-    protected List<IRadio> doInBackground() throws IOException {
-        String xml = networkHandler.readURL(networkHandler.getConnection(Constants.RADIO_LIST_DOWNLOAD));
-        return (List<IRadio>) xmlSerializerService.readObjectFromString(xml);
-    }
 
-    @Override
-    protected void done() {
-        try {
-            radioHandler.getRetrievedPresetRadios().clear();
-            radioHandler.getRetrievedPresetRadios().addAll(get());
-            radioHandler.getRadioPresets();
-            navigationHandler.refreshView(radioNavigationView);
-        } catch (InterruptedException e) {
-            Logger.error(e);
-        } catch (ExecutionException e) {
-            Logger.error(e);
-        }
+	@SuppressWarnings("unchecked")
+	@Override
+	protected List<IRadio> doInBackground() throws IOException {
+		String xml = networkHandler.readURL(networkHandler
+				.getConnection(Constants.RADIO_LIST_DOWNLOAD));
+		return (List<IRadio>) xmlSerializerService.readObjectFromString(xml);
+	}
 
-    }
+	@Override
+	protected void done() {
+		try {
+			radioHandler.getRetrievedPresetRadios().clear();
+			radioHandler.getRetrievedPresetRadios().addAll(get());
+			radioHandler.getRadioPresets();
+			navigationHandler.refreshView(radioNavigationView);
+		} catch (InterruptedException e) {
+			Logger.error(e);
+		} catch (ExecutionException e) {
+			Logger.error(e);
+		}
+
+	}
 }

@@ -22,6 +22,8 @@ package net.sourceforge.atunes.utils;
 
 import java.lang.management.ManagementFactory;
 
+import net.sourceforge.atunes.model.IJavaVirtualMachineStatistic;
+
 /**
  * Number of classes loaded
  * 

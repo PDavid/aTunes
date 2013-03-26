@@ -62,12 +62,13 @@ import net.sourceforge.atunes.utils.Logger;
 
 import org.jdesktop.swingx.JXStatusBar;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * The standard frame
  */
 abstract class AbstractSingleFrame extends AbstractCustomFrame implements
-		net.sourceforge.atunes.model.IFrame {
+		net.sourceforge.atunes.model.IFrame, ApplicationContextAware {
 
 	private static final long serialVersionUID = 5221630053432272337L;
 

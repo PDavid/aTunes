@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes;
 
-import java.io.File;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.List;
 
@@ -29,14 +28,11 @@ import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Main class to launch aTunes.
  */
 public final class Main {
-
-	private static final String SPRING_BEANS_XML = "/settings/spring/spring_beans.xml";
 
 	private Main() {
 	}
@@ -58,7 +54,9 @@ public final class Main {
 		Thread.setDefaultUncaughtExceptionHandler(new BasicUncaughtExceptionHandler());
 
 		// Initialize Spring
-		ApplicationContext context = initialize();
+		// Use JavaFX. Temporal argument while JavaFX migration
+		boolean javaFx = Boolean.valueOf(System.getProperty("javafx"));
+		ApplicationContext context = ContextInitializer.initialize(javaFx);
 
 		// Enable uncaught exception catching
 		Thread.setDefaultUncaughtExceptionHandler(context
@@ -69,25 +67,5 @@ public final class Main {
 
 		// Now start application
 		context.getBean(ApplicationStarter.class).start(arguments);
-	}
-
-	/**
-	 * Initializes Spring with bean definition files
-	 * 
-	 * @return
-	 */
-	private static ApplicationContext initialize() {
-		ApplicationContext context = null;
-		File springBeans = ResourceLocator.getFile(SPRING_BEANS_XML);
-		if (springBeans != null) {
-			context = new ClassPathXmlApplicationContext(
-					StringUtils.getString("file:"
-							+ net.sourceforge.atunes.utils.FileUtils
-									.getPath(springBeans)));
-		} else {
-			// Use classpath
-			context = new ClassPathXmlApplicationContext(SPRING_BEANS_XML);
-		}
-		return context;
 	}
 }

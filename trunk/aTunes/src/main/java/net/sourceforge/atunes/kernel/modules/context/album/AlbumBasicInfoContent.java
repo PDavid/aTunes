@@ -178,13 +178,13 @@ public class AlbumBasicInfoContent extends
 	public Component getComponent() {
 		// Create components
 		this.albumCoverLabel = new JLabel();
-		this.albumLabel = getControlsBuilder().getUrlLabel();
+		this.albumLabel = (UrlLabel) getControlsBuilder().getUrlLabel();
 		this.albumLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		this.albumLabel.setFont(getLookAndFeelManager().getCurrentLookAndFeel()
 				.getContextInformationBigFont());
-		this.artistLabel = getControlsBuilder().getUrlLabel();
+		this.artistLabel = (UrlLabel) getControlsBuilder().getUrlLabel();
 		this.artistLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		this.yearLabel = getControlsBuilder().getUrlLabel();
+		this.yearLabel = (UrlLabel) getControlsBuilder().getUrlLabel();
 		this.yearLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		this.tracksTable = this.contextInformationTableFactory

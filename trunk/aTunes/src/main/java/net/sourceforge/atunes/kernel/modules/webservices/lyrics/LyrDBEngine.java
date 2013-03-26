@@ -31,75 +31,90 @@ import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * Engine to retrieve lyrics from LyrDB: http://www.lyrdb.com/ by Flavio González Vázquez
+ * Engine to retrieve lyrics from LyrDB: http://www.lyrdb.com/ by Flavio
+ * González Vázquez
+ * 
  * @author fleax
- *
+ * 
  */
 public class LyrDBEngine extends AbstractLyricsEngine {
 
-    private static final String QUERY_WILDCARD = "(%QUERY%)";
-    private static final String LYRICS_ID_WILDCARD = "(%ID%)";
-    private static final String AGENT = Constants.APP_NAME;
-	
-    private static final String FOOTER = "\nLyrics provided by LyrDB (www.lyrdb.com) and Flavio González Vázquez";
-    
-    /** The search url. */
-    private static final String SEARCH_URL = StringUtils.getString("http://www.lyrdb.com/lookup.php?q=", QUERY_WILDCARD, "&for=match&agent=", AGENT);
+	private static final String QUERY_WILDCARD = "(%QUERY%)";
+	private static final String LYRICS_ID_WILDCARD = "(%ID%)";
+	private static final String AGENT = Constants.APP_NAME;
 
-    /** The url to retrieve a lyric */
-    private static final String LYRIC_URL = StringUtils.getString("http://www.lyrdb.com/getlyr.php?q=", LYRICS_ID_WILDCARD);
-    
+	private static final String FOOTER = "\nLyrics provided by LyrDB (www.lyrdb.com) and Flavio González Vázquez";
+
+	/** The search url. */
+	private static final String SEARCH_URL = StringUtils.getString(
+			"http://www.lyrdb.com/lookup.php?q=", QUERY_WILDCARD,
+			"&for=match&agent=", AGENT);
+
+	/** The url to retrieve a lyric */
+	private static final String LYRIC_URL = StringUtils.getString(
+			"http://www.lyrdb.com/getlyr.php?q=", LYRICS_ID_WILDCARD);
+
 	@Override
-	public ILyrics getLyricsFor(String artist, String title, ILyricsRetrieveOperation operation) {
+	public ILyrics getLyricsFor(String artist, String title,
+			ILyricsRetrieveOperation operation) {
 		ILyrics lyrics = null;
-		try { 
+		try {
 			// Build url and search
-			String urlString = SEARCH_URL.replace(QUERY_WILDCARD, StringUtils.getString(encodeString(artist), "|", encodeString(title))); // "|" can't be encoded
-			String searchResult = readURL(getConnection(urlString, operation), "UTF-8");
+			String urlString = SEARCH_URL.replace(QUERY_WILDCARD, StringUtils
+					.getString(encodeString(artist), "|", encodeString(title))); // "|"
+																					// can't
+																					// be
+																					// encoded
+			String searchResult = readURL(getConnection(urlString, operation),
+					"UTF-8");
 
 			// Parse result
-			BufferedReader br = new BufferedReader(new StringReader(searchResult));
+			BufferedReader br = new BufferedReader(new StringReader(
+					searchResult));
 			String line = br.readLine();
 			while (line != null && lyrics == null) {
 				lyrics = retrieveSearchResult(line, operation);
 				line = br.readLine();
 			}
 			br.close();
-			
+
 		} catch (IOException e) {
-            Logger.error(StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
+			Logger.error(StringUtils.getString(e.getClass().getCanonicalName(),
+					" (", e.getMessage(), ")"));
 		}
-        return lyrics;
+		return lyrics;
 	}
-	
+
 	/**
 	 * Retrieves lyric for a search result
+	 * 
 	 * @param searchResult
 	 * @param operation
 	 * @return
 	 * @throws IOException
 	 */
-	private ILyrics retrieveSearchResult(String searchResult, ILyricsRetrieveOperation operation) throws IOException {
+	private ILyrics retrieveSearchResult(String searchResult,
+			ILyricsRetrieveOperation operation) throws IOException {
 		int firstSlash = searchResult.indexOf('\\');
 		if (firstSlash != -1) {
 			String id = searchResult.substring(0, firstSlash);
 			// Build url for ID
 			String urlString = LYRIC_URL.replace(LYRICS_ID_WILDCARD, id);
 			String lyric = readURL(getConnection(urlString, operation), "UTF-8");
-			if (lyric != null) {	
+			if (lyric != null) {
 				// Remove carriage return
 				lyric = lyric.replace("\r\r", "");
-				lyric = appendFooter(lyric);				
+				lyric = appendFooter(lyric);
 				return new Lyrics(lyric, urlString);
-			}			
+			}
 		}
 		return null;
 	}
-	
+
 	private String appendFooter(String lyric) {
 		return StringUtils.getString(lyric, FOOTER);
 	}
-	
+
 	@Override
 	public String getLyricsProviderName() {
 		return "LyrDB";

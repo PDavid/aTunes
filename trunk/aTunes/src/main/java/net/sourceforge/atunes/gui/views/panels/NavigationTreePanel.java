@@ -215,7 +215,7 @@ public final class NavigationTreePanel extends JPanel implements
 	 */
 	private PopUpButton getOptionsPopUpButton(
 			final ILookAndFeelManager lookAndFeelManager) {
-		PopUpButton options = this.controlsBuilder
+		PopUpButton options = (PopUpButton) this.controlsBuilder
 				.createPopUpButton(PopUpButton.BOTTOM_RIGHT);
 		ButtonGroup group = new ButtonGroup();
 		addRadioButtonMenuItem(this.showArtistsInNavigatorAction, group,

@@ -26,7 +26,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.model.IBeanFactory;
-import net.sourceforge.atunes.utils.IJavaVirtualMachineStatistic;
+import net.sourceforge.atunes.model.IJavaVirtualMachineStatistic;
 
 /**
  * The Class AboutDialogTableModel.

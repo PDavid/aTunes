@@ -123,7 +123,7 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	private JPanel getFirstOptionsPanel() {
 		JTextPane instructions = getControlsBuilder().createReadOnlyTextPane(
 				I18nUtils.getString("MAC_PLAYER_ENGINE_INSTRUCTIONS"));
-		UrlLabel appStoreURL = getControlsBuilder().getUrlLabel(
+		UrlLabel appStoreURL = (UrlLabel) getControlsBuilder().getUrlLabel(
 				I18nUtils.getString("MAC_PLAYER_ENGINE_URL"),
 				MPLAYER_APP_STORE_URL);
 		this.automaticSearch = new JRadioButton(

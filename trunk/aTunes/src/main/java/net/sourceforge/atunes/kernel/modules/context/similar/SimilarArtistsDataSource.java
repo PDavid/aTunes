@@ -65,7 +65,8 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
@@ -87,8 +88,11 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
 	 * @param audioObject
 	 */
 	private ISimilarArtistsInfo getSimilarArtists(final IAudioObject audioObject) {
-		if (!unknownObjectChecker.isUnknownArtist(audioObject.getArtist(unknownObjectChecker))) {
-			ISimilarArtistsInfo artists = webServicesHandler.getSimilarArtists(audioObject.getArtist(unknownObjectChecker));
+		if (!unknownObjectChecker.isUnknownArtist(audioObject
+				.getArtist(unknownObjectChecker))) {
+			ISimilarArtistsInfo artists = webServicesHandler
+					.getSimilarArtists(audioObject
+							.getArtist(unknownObjectChecker));
 			if (artists != null) {
 				Set<String> artistNamesSet = new HashSet<String>();
 				for (IArtist a : repositoryHandler.getArtists()) {
@@ -97,8 +101,11 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
 				for (int i = 0; i < artists.getArtists().size(); i++) {
 					IArtistInfo a = artists.getArtists().get(i);
 					ImageIcon img = webServicesHandler.getArtistThumbImage(a);
-					a.setImage(ImageUtils.resize(img, Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
-					a.setAvailable(artistNamesSet.contains(a.getName().toUpperCase()));
+					a.setImage(ImageUtils.resize(img,
+							Constants.THUMB_IMAGE_WIDTH,
+							Constants.THUMB_IMAGE_HEIGHT));
+					a.setAvailable(artistNamesSet.contains(a.getName()
+							.toUpperCase()));
 				}
 			}
 			return artists;
@@ -109,7 +116,8 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
 	/**
 	 * @param webServicesHandler
 	 */
-	public final void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
+	public final void setWebServicesHandler(
+			final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
 

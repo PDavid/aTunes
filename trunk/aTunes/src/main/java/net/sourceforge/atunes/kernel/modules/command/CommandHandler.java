@@ -41,93 +41,102 @@ import org.springframework.context.ApplicationContextAware;
 
 /**
  * Responsible of managing remote commands
+ * 
  * @author alex
- *
+ * 
  */
-public final class CommandHandler extends AbstractHandler implements ICommandHandler, ApplicationContextAware {
+public final class CommandHandler extends AbstractHandler implements
+		ICommandHandler, ApplicationContextAware {
 
-    /**
-     * Map of commands defined to be used
-     */
-    private Map<String, ICommand> commands;
-    
-    private IApplicationArguments applicationArguments;
-    
-    private ApplicationContext context;
-    
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-    	this.context = applicationContext;
-    }
-    
-    /**
-     * @param arguments
-     */
-    public void setApplicationArguments(IApplicationArguments arguments) {
+	/**
+	 * Map of commands defined to be used
+	 */
+	private Map<String, ICommand> commands;
+
+	private IApplicationArguments applicationArguments;
+
+	private ApplicationContext context;
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.context = applicationContext;
+	}
+
+	/**
+	 * @param arguments
+	 */
+	public void setApplicationArguments(IApplicationArguments arguments) {
 		this.applicationArguments = arguments;
 	}
 
-    @Override
-    public void deferredInitialization() {
-    	Map<String, RemoteAction> actions = context.getBeansOfType(RemoteAction.class);
-    	for (Map.Entry<String, RemoteAction> action : actions.entrySet()) {
-    		Logger.debug("Initializing command: ", action.getKey());
-    	}
-        runCommands(applicationArguments.getSavedCommands(this));
-    }
+	@Override
+	public void deferredInitialization() {
+		Map<String, RemoteAction> actions = context
+				.getBeansOfType(RemoteAction.class);
+		for (Map.Entry<String, RemoteAction> action : actions.entrySet()) {
+			Logger.debug("Initializing command: ", action.getKey());
+		}
+		runCommands(applicationArguments.getSavedCommands(this));
+	}
 
-    @Override
+	@Override
 	public void registerCommand(ICommand cmd) {
-        if (commands == null) {
-            commands = new HashMap<String, ICommand>();
-        }
-        commands.put(cmd.getCommandName(), cmd);
-    }
+		if (commands == null) {
+			commands = new HashMap<String, ICommand>();
+		}
+		commands.put(cmd.getCommandName(), cmd);
+	}
 
-    @Override
+	@Override
 	public void unregisterCommand(ICommand cmd) {
-        if (commands != null) {
-            commands.remove(cmd.getCommandName());
-        }
-    }
+		if (commands != null) {
+			commands.remove(cmd.getCommandName());
+		}
+	}
 
-    @Override
+	@Override
 	public void runCommands(String commandline) {
-        if (commands != null) {
-            String[] tokens = commandline.split(" ");
-            for (String token : tokens) {
-                if (isValidCommand(token)) {
-                    processAndRun(token);
-                }
-            }
-        }
-    }
+		if (commands != null) {
+			String[] tokens = commandline.split(" ");
+			for (String token : tokens) {
+				if (isValidCommand(token)) {
+					processAndRun(token);
+				}
+			}
+		}
+	}
 
-    @Override
+	@Override
 	public boolean isValidCommand(String commandName) {
-        return isCommand(commandName) && commands.containsKey(commandName.replaceFirst(Constants.COMMAND_PREFIX, ""));
-    }
+		return isCommand(commandName)
+				&& commands.containsKey(commandName.replaceFirst(
+						Constants.COMMAND_PREFIX, ""));
+	}
 
-    @Override
+	@Override
 	public boolean isCommand(String commandName) {
-        return commandName.startsWith(Constants.COMMAND_PREFIX);
-    }
+		return commandName.startsWith(Constants.COMMAND_PREFIX);
+	}
 
-    @Override
+	@Override
 	public String processAndRun(String commandName) {
-        ICommand cmd = commands.get(commandName.replaceFirst(Constants.COMMAND_PREFIX, "").split(" ")[0]);
-        if (cmd != null) {
-            List<String> parameters = new ArrayList<String>(Arrays.asList(commandName.split(" ")));
-            parameters.remove(0);
+		ICommand cmd = commands.get(commandName.replaceFirst(
+				Constants.COMMAND_PREFIX, "").split(" ")[0]);
+		if (cmd != null) {
+			List<String> parameters = new ArrayList<String>(
+					Arrays.asList(commandName.split(" ")));
+			parameters.remove(0);
 
-            if (!cmd.isSynchronousResponse()) {
-                SwingUtilities.invokeLater(new RunCommandRunnable(cmd, parameters));
-                return "OK"; //the command is async, we dont need do wait for a responce
-            } else {
-                return cmd.runCommand(parameters);
-            }
-        } else {
-            return "Bad command name of format, type \"command:help\" for assistance.";
-        }
-    }
+			if (!cmd.isSynchronousResponse()) {
+				SwingUtilities.invokeLater(new RunCommandRunnable(cmd,
+						parameters));
+				return "OK"; // the command is async, we dont need do wait for a
+								// responce
+			} else {
+				return cmd.runCommand(parameters);
+			}
+		} else {
+			return "Bad command name of format, type \"command:help\" for assistance.";
+		}
+	}
 }

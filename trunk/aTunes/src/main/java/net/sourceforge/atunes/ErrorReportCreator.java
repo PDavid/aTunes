@@ -24,9 +24,9 @@ import net.sourceforge.atunes.model.IApplicationStateGenerator;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IErrorReport;
 import net.sourceforge.atunes.model.IErrorReportCreator;
+import net.sourceforge.atunes.model.IJavaVirtualMachineStatistic;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.IJavaVirtualMachineStatistic;
 
 /**
  * Creates error reports

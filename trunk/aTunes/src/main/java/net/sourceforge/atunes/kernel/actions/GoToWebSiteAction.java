@@ -32,26 +32,26 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class GoToWebSiteAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -2614037760672140565L;
+	private static final long serialVersionUID = -2614037760672140565L;
 
-    private IDesktop desktop;
+	private IDesktop desktop;
 
-    /**
-     * @param desktop
-     */
-    public void setDesktop(final IDesktop desktop) {
-	this.desktop = desktop;
-    }
+	/**
+	 * @param desktop
+	 */
+	public void setDesktop(final IDesktop desktop) {
+		this.desktop = desktop;
+	}
 
-    /**
-     * Default constructor
-     */
-    public GoToWebSiteAction() {
-	super(I18nUtils.getString("GO_TO_WEB_SITE"));
-    }
+	/**
+	 * Default constructor
+	 */
+	public GoToWebSiteAction() {
+		super(I18nUtils.getString("GO_TO_WEB_SITE"));
+	}
 
-    @Override
-    protected void executeAction() {
-	desktop.openURL(Constants.APP_WEB);
-    }
+	@Override
+	protected void executeAction() {
+		desktop.openURL(Constants.APP_WEB);
+	}
 }

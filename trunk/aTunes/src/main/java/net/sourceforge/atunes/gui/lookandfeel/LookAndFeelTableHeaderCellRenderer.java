@@ -24,18 +24,18 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IColumnModel;
 
 final class LookAndFeelTableHeaderCellRenderer extends DefaultTableCellRenderer {
 
 	private static final long serialVersionUID = -4055986141351413215L;
 
-	private final AbstractCommonColumnModel model;
+	private final IColumnModel model;
 
 	private final IBeanFactory beanFactory;
 
-	LookAndFeelTableHeaderCellRenderer(final AbstractCommonColumnModel model,
+	LookAndFeelTableHeaderCellRenderer(final IColumnModel model,
 			final IBeanFactory beanFactory) {
 		this.model = model;
 		this.beanFactory = beanFactory;

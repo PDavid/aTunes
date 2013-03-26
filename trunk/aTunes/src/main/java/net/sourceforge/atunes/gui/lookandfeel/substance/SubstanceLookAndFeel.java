@@ -41,7 +41,6 @@ import javax.swing.border.Border;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.views.controls.MuteButton;
@@ -52,6 +51,7 @@ import net.sourceforge.atunes.gui.views.controls.SecondaryControl;
 import net.sourceforge.atunes.gui.views.controls.SecondaryToggleControl;
 import net.sourceforge.atunes.gui.views.controls.StopButton;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IColumnModel;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IListCellRendererCode;
 import net.sourceforge.atunes.model.ITableCellRendererCode;
@@ -271,8 +271,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 	}
 
 	@Override
-	public TableCellRenderer getTableHeaderCellRenderer(
-			final AbstractCommonColumnModel model) {
+	public TableCellRenderer getTableHeaderCellRenderer(final IColumnModel model) {
 		return new SubstanceLookAndFeelTableHeaderCellRenderer(model,
 				this.beanFactory);
 	}

@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.sourceforge.atunes.model.IErrorReport;
-import net.sourceforge.atunes.utils.IJavaVirtualMachineStatistic;
+import net.sourceforge.atunes.model.IJavaVirtualMachineStatistic;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**

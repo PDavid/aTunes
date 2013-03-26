@@ -28,15 +28,16 @@ import javax.swing.JButton;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.images.PauseImageIcon;
 import net.sourceforge.atunes.gui.images.PlayImageIcon;
+import net.sourceforge.atunes.model.IControlButton;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
- * @author xe01965
+ * @author alex
  * 
  */
 public final class PlayPauseButton extends JButton implements
-		ILookAndFeelChangeListener {
+		ILookAndFeelChangeListener, IControlButton {
 
 	private static final long serialVersionUID = 4348041346542204394L;
 

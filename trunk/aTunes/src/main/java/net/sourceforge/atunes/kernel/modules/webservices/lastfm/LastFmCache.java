@@ -49,8 +49,9 @@ import org.apache.commons.io.FileUtils;
 
 /**
  * A cache of last.fm responses
+ * 
  * @author alex
- *
+ * 
  */
 public class LastFmCache extends AbstractCache {
 
@@ -84,8 +85,10 @@ public class LastFmCache extends AbstractCache {
 	 * @param osManager
 	 * @param xmlSerializerService
 	 */
-	public LastFmCache(final IOSManager osManager, final XMLSerializerService xmlSerializerService) {
-		super(osManager, LastFmCache.class.getResource("/settings/ehcache-lastfm.xml"));
+	public LastFmCache(final IOSManager osManager,
+			final XMLSerializerService xmlSerializerService) {
+		super(osManager, LastFmCache.class
+				.getResource("/settings/ehcache-lastfm.xml"));
 		this.xmlSerializerService = xmlSerializerService;
 		Logger.debug("Initializing LastFmCache");
 	}
@@ -109,6 +112,7 @@ public class LastFmCache extends AbstractCache {
 
 	/**
 	 * Clears a cache, returning true if some error happened
+	 * 
 	 * @param cache
 	 * @return
 	 */
@@ -127,8 +131,12 @@ public class LastFmCache extends AbstractCache {
 
 	private synchronized File getSubmissionDataDir() throws IOException {
 		if (submissionCacheDir == null) {
-			submissionCacheDir = new File(StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(),
-					Constants.CACHE_DIR, osManager.getFileSeparator(), Constants.LAST_FM_CACHE_DIR, osManager.getFileSeparator(), Constants.LAST_FM_SUBMISSION_CACHE_DIR));
+			submissionCacheDir = new File(StringUtils.getString(
+					osManager.getUserConfigFolder(),
+					osManager.getFileSeparator(), Constants.CACHE_DIR,
+					osManager.getFileSeparator(), Constants.LAST_FM_CACHE_DIR,
+					osManager.getFileSeparator(),
+					Constants.LAST_FM_SUBMISSION_CACHE_DIR));
 		}
 		if (!submissionCacheDir.exists()) {
 			FileUtils.forceMkdir(submissionCacheDir);
@@ -137,7 +145,9 @@ public class LastFmCache extends AbstractCache {
 	}
 
 	private String getFileNameForSubmissionCache() throws IOException {
-		return StringUtils.getString(net.sourceforge.atunes.utils.FileUtils.getPath(getSubmissionDataDir()), osManager.getFileSeparator(), "submissionDataCache.xml");
+		return StringUtils.getString(net.sourceforge.atunes.utils.FileUtils
+				.getPath(getSubmissionDataDir()), osManager.getFileSeparator(),
+				"submissionDataCache.xml");
 	}
 
 	/**
@@ -166,7 +176,8 @@ public class LastFmCache extends AbstractCache {
 	 * @return the image
 	 */
 	public synchronized ImageIcon retrieveAlbumCoverThumb(final IAlbumInfo album) {
-		Element element = getCache().get(new CacheKey(ALBUM_COVER_THUMB, album));
+		Element element = getCache()
+				.get(new CacheKey(ALBUM_COVER_THUMB, album));
 		if (element == null) {
 			return null;
 		} else {
@@ -184,8 +195,10 @@ public class LastFmCache extends AbstractCache {
 	 * 
 	 * @return the audio scrobbler album
 	 */
-	public synchronized IAlbumInfo retrieveAlbumInfo(final String artist, final String album) {
-		Element element = getCache().get(new CacheKey(ALBUM_INFO, artist + album));
+	public synchronized IAlbumInfo retrieveAlbumInfo(final String artist,
+			final String album) {
+		Element element = getCache().get(
+				new CacheKey(ALBUM_INFO, artist + album));
 		if (element == null) {
 			return null;
 		} else {
@@ -212,11 +225,14 @@ public class LastFmCache extends AbstractCache {
 
 	/**
 	 * Retrieves a list of top tracks for given artist from cache
+	 * 
 	 * @param artist
 	 * @return
 	 */
-	public synchronized IArtistTopTracks retrieveArtistTopTracks(final String artist) {
-		Element element = getCache().get(new CacheKey(ARTIST_TOP_TRACKS, artist));
+	public synchronized IArtistTopTracks retrieveArtistTopTracks(
+			final String artist) {
+		Element element = getCache().get(
+				new CacheKey(ARTIST_TOP_TRACKS, artist));
 		if (element == null) {
 			return null;
 		} else {
@@ -249,7 +265,8 @@ public class LastFmCache extends AbstractCache {
 	 * 
 	 * @return the audio scrobbler similar artists
 	 */
-	public synchronized ISimilarArtistsInfo retrieveArtistSimilar(final String artist) {
+	public synchronized ISimilarArtistsInfo retrieveArtistSimilar(
+			final String artist) {
 		Element element = getCache().get(new CacheKey(ARTIST_SIMILAR, artist));
 		if (element == null) {
 			return null;
@@ -266,7 +283,8 @@ public class LastFmCache extends AbstractCache {
 	 * 
 	 * @return the image
 	 */
-	public synchronized ImageIcon retrieveArtistThumbImage(final IArtistInfo artist) {
+	public synchronized ImageIcon retrieveArtistThumbImage(
+			final IArtistInfo artist) {
 		Element element = getCache().get(new CacheKey(ARTIST_THUMB, artist));
 		if (element == null) {
 			return null;
@@ -300,7 +318,8 @@ public class LastFmCache extends AbstractCache {
 	 * @param cover
 	 *            the cover
 	 */
-	public synchronized void storeAlbumCover(final IAlbumInfo album, final ImageIcon cover) {
+	public synchronized void storeAlbumCover(final IAlbumInfo album,
+			final ImageIcon cover) {
 		if (cover == null || album == null) {
 			return;
 		}
@@ -318,12 +337,14 @@ public class LastFmCache extends AbstractCache {
 	 * @param cover
 	 *            the cover
 	 */
-	public synchronized void storeAlbumCoverThumb(final IAlbumInfo album, final ImageIcon cover) {
+	public synchronized void storeAlbumCoverThumb(final IAlbumInfo album,
+			final ImageIcon cover) {
 		if (cover == null || album == null) {
 			return;
 		}
 
-		Element element = new Element(new CacheKey(ALBUM_COVER_THUMB, album), cover);
+		Element element = new Element(new CacheKey(ALBUM_COVER_THUMB, album),
+				cover);
 		getCache().put(element);
 		Logger.debug("Stored Album Cover Thumb for album ", album.getTitle());
 	}
@@ -338,12 +359,14 @@ public class LastFmCache extends AbstractCache {
 	 * @param albumObject
 	 *            the album object
 	 */
-	public synchronized void storeAlbumInfo(final String artist, final String album, final IAlbumInfo albumObject) {
+	public synchronized void storeAlbumInfo(final String artist,
+			final String album, final IAlbumInfo albumObject) {
 		if (artist == null || album == null || albumObject == null) {
 			return;
 		}
 
-		Element element = new Element(new CacheKey(ALBUM_INFO, artist + album), albumObject);
+		Element element = new Element(new CacheKey(ALBUM_INFO, artist + album),
+				albumObject);
 		getCache().put(element);
 		Logger.debug("Stored album info for album ", artist, " ", album);
 	}
@@ -356,7 +379,8 @@ public class LastFmCache extends AbstractCache {
 	 * @param image
 	 *            the image
 	 */
-	public synchronized void storeArtistImage(final String artist, final ImageIcon image) {
+	public synchronized void storeArtistImage(final String artist,
+			final ImageIcon image) {
 		if (image == null || artist == null) {
 			return;
 		}
@@ -368,15 +392,18 @@ public class LastFmCache extends AbstractCache {
 
 	/**
 	 * Store an Artist top tracks list at cache
+	 * 
 	 * @param artist
 	 * @param topTracks
 	 */
-	public synchronized void storeArtistTopTracks(final String artist, final IArtistTopTracks topTracks) {
+	public synchronized void storeArtistTopTracks(final String artist,
+			final IArtistTopTracks topTracks) {
 		if (artist == null || topTracks == null) {
 			return;
 		}
 
-		Element element = new Element(new CacheKey(ARTIST_TOP_TRACKS, artist), topTracks);
+		Element element = new Element(new CacheKey(ARTIST_TOP_TRACKS, artist),
+				topTracks);
 		getCache().put(element);
 		Logger.debug("Stored artist top tracks for ", artist);
 	}
@@ -389,7 +416,8 @@ public class LastFmCache extends AbstractCache {
 	 * @param list
 	 *            the list
 	 */
-	public synchronized void storeAlbumList(final String artist, final IAlbumListInfo list) {
+	public synchronized void storeAlbumList(final String artist,
+			final IAlbumListInfo list) {
 		if (artist == null || list == null) {
 			return;
 		}
@@ -407,12 +435,14 @@ public class LastFmCache extends AbstractCache {
 	 * @param similar
 	 *            the similar
 	 */
-	public synchronized void storeArtistSimilar(final String artist, final ISimilarArtistsInfo similar) {
+	public synchronized void storeArtistSimilar(final String artist,
+			final ISimilarArtistsInfo similar) {
 		if (artist == null || similar == null) {
 			return;
 		}
 
-		Element element = new Element(new CacheKey(ARTIST_SIMILAR, artist), similar);
+		Element element = new Element(new CacheKey(ARTIST_SIMILAR, artist),
+				similar);
 		getCache().put(element);
 		Logger.debug("Stored artist similar for ", artist);
 	}
@@ -425,7 +455,8 @@ public class LastFmCache extends AbstractCache {
 	 * @param image
 	 *            the image
 	 */
-	public synchronized void storeArtistThumbImage(final IArtistInfo artist, final ImageIcon image) {
+	public synchronized void storeArtistThumbImage(final IArtistInfo artist,
+			final ImageIcon image) {
 		if (image == null || artist == null) {
 			return;
 		}
@@ -443,28 +474,33 @@ public class LastFmCache extends AbstractCache {
 	 * @param wikiText
 	 *            the wiki text
 	 */
-	public synchronized void storeArtistWiki(final String artist, final String wikiText) {
+	public synchronized void storeArtistWiki(final String artist,
+			final String wikiText) {
 		if (artist == null || wikiText == null) {
 			return;
 		}
 
-		Element element = new Element(new CacheKey(ARTIST_WIKI, artist), wikiText);
+		Element element = new Element(new CacheKey(ARTIST_WIKI, artist),
+				wikiText);
 		getCache().put(element);
 		Logger.debug("Stored artist wiki for ", artist);
 	}
 
 	/**
 	 * Adds submission (scrobbling) data
+	 * 
 	 * @param submissionData
 	 */
-	public synchronized void addSubmissionData(final SubmissionData submissionData) {
+	public synchronized void addSubmissionData(
+			final SubmissionData submissionData) {
 		List<SubmissionData> submissionDataList = getSubmissionData();
 		submissionDataList.add(submissionData);
 		Collections.sort(submissionDataList, new SubmissionDataComparator());
 		try {
 			String path = getFileNameForSubmissionCache();
 			if (path != null) {
-				xmlSerializerService.writeObjectToFile(submissionDataList, path);
+				xmlSerializerService
+						.writeObjectToFile(submissionDataList, path);
 				Logger.debug("Stored submission data: ", submissionData);
 			}
 		} catch (IOException e) {
@@ -475,6 +511,7 @@ public class LastFmCache extends AbstractCache {
 
 	/**
 	 * Returns submission data
+	 * 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -483,7 +520,8 @@ public class LastFmCache extends AbstractCache {
 		try {
 			String path = getFileNameForSubmissionCache();
 			if (path != null && new File(path).exists()) {
-				data = (List<SubmissionData>) xmlSerializerService.readObjectFromFile(path);
+				data = (List<SubmissionData>) xmlSerializerService
+						.readObjectFromFile(path);
 			}
 		} catch (IOException e) {
 			Logger.error(e);
@@ -501,7 +539,8 @@ public class LastFmCache extends AbstractCache {
 		try {
 			String path = getFileNameForSubmissionCache();
 			if (path != null && new File(path).exists()) {
-				xmlSerializerService.writeObjectToFile(new ArrayList<SubmissionData>(), path);
+				xmlSerializerService.writeObjectToFile(
+						new ArrayList<SubmissionData>(), path);
 			}
 		} catch (IOException e) {
 			Logger.error(e);
@@ -515,7 +554,8 @@ public class LastFmCache extends AbstractCache {
 		getCache().dispose();
 	}
 
-	private static class SubmissionDataComparator implements Comparator<SubmissionData>, Serializable {
+	private static class SubmissionDataComparator implements
+			Comparator<SubmissionData>, Serializable {
 		/**
 		 * 
 		 */
@@ -523,7 +563,8 @@ public class LastFmCache extends AbstractCache {
 
 		@Override
 		public int compare(final SubmissionData o1, final SubmissionData o2) {
-			return Integer.valueOf(o1.getStartTime()).compareTo(o2.getStartTime());
+			return Integer.valueOf(o1.getStartTime()).compareTo(
+					o2.getStartTime());
 		}
 	}
 

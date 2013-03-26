@@ -33,80 +33,85 @@ import net.sourceforge.atunes.utils.Logger;
 import org.apache.commons.lang.ArrayUtils;
 
 class PlayerEngineSelector {
-	
-    /**
-     * Names of all engines
-     */
-    private String[] engineNames;
-    
-    private List<AbstractPlayerEngine> engines;
-    
-    private IOSManager osManager;
 
-    private IStatePlayer statePlayer;
+	/**
+	 * Names of all engines
+	 */
+	private String[] engineNames;
 
-    /**
-     * @param statePlayer
-     */
-    public void setStatePlayer(IStatePlayer statePlayer) {
+	private List<AbstractPlayerEngine> engines;
+
+	private IOSManager osManager;
+
+	private IStatePlayer statePlayer;
+
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;
 	}
-    
-    /**
-     * @param osManager
-     */
-    public void setOsManager(IOSManager osManager) {
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
 	}
-    
-    /**
-     * @param engines
-     */
-    public void setEngines(List<AbstractPlayerEngine> engines) {
+
+	/**
+	 * @param engines
+	 */
+	public void setEngines(List<AbstractPlayerEngine> engines) {
 		this.engines = engines;
 	}
-    
-    /**
-     * Selects player engine
-     * @return player engine or null
-     */
-    IPlayerEngine selectPlayerEngine() {
-        List<AbstractPlayerEngine> availableEngines = getAvailableEngines();
-        if (availableEngines.isEmpty()) {
-        	return null;
-        }
 
-        engineNames = getEngineNames(availableEngines);
-        Logger.info("List of availables engines : ", ArrayUtils.toString(engineNames));
+	/**
+	 * Selects player engine
+	 * 
+	 * @return player engine or null
+	 */
+	IPlayerEngine selectPlayerEngine() {
+		List<AbstractPlayerEngine> availableEngines = getAvailableEngines();
+		if (availableEngines.isEmpty()) {
+			return null;
+		}
 
-        // Get engine of application state (default or selected by user)
-        String selectedEngine = statePlayer.getPlayerEngine();
+		engineNames = getEngineNames(availableEngines);
+		Logger.info("List of availables engines : ",
+				ArrayUtils.toString(engineNames));
 
-        // If selected engine is not available then try default engine or another one
-        if (!ArrayUtils.contains(engineNames, selectedEngine)) {
-        	Logger.info(selectedEngine, " is not availaible");
-        	selectedEngine = selectDefaultEngine(availableEngines);
-        }
+		// Get engine of application state (default or selected by user)
+		String selectedEngine = statePlayer.getPlayerEngine();
 
-        for (AbstractPlayerEngine engine : availableEngines) {
-        	if (engine.getEngineName().equals(selectedEngine)) {
-        		return engine;
-        	}
-        }
-        
-        return null;
-    }
+		// If selected engine is not available then try default engine or
+		// another one
+		if (!ArrayUtils.contains(engineNames, selectedEngine)) {
+			Logger.info(selectedEngine, " is not availaible");
+			selectedEngine = selectDefaultEngine(availableEngines);
+		}
+
+		for (AbstractPlayerEngine engine : availableEngines) {
+			if (engine.getEngineName().equals(selectedEngine)) {
+				return engine;
+			}
+		}
+
+		return null;
+	}
 
 	/**
 	 * @param availableEngines
 	 * @return
 	 */
-	private String selectDefaultEngine(List<AbstractPlayerEngine> availableEngines) {
+	private String selectDefaultEngine(
+			List<AbstractPlayerEngine> availableEngines) {
 		String selectedEngine;
 		if (ArrayUtils.contains(engineNames, Constants.DEFAULT_ENGINE)) {
 			selectedEngine = Constants.DEFAULT_ENGINE;
 		} else {
-			// If default engine is not available, then get the first engine of map returned
+			// If default engine is not available, then get the first engine of
+			// map returned
 			selectedEngine = availableEngines.iterator().next().getEngineName();
 		}
 		// Update application state with this engine
@@ -120,10 +125,10 @@ class PlayerEngineSelector {
 	 */
 	private String[] getEngineNames(List<AbstractPlayerEngine> availableEngines) {
 		String[] availableEngineNames = new String[availableEngines.size()];
-        for (int i = 0; i < availableEngines.size(); i++) {
-        	availableEngineNames[i] = availableEngines.get(i).getEngineName();
-        }
-        return availableEngineNames;
+		for (int i = 0; i < availableEngines.size(); i++) {
+			availableEngineNames[i] = availableEngines.get(i).getEngineName();
+		}
+		return availableEngineNames;
 	}
 
 	/**
@@ -131,16 +136,18 @@ class PlayerEngineSelector {
 	 */
 	private List<AbstractPlayerEngine> getAvailableEngines() {
 		// Remove unsupported engines
-    	// To do that create a clone of list to be able to remove from
-    	List<AbstractPlayerEngine> availableEngines = new ArrayList<AbstractPlayerEngine>(engines);
-        Iterator<AbstractPlayerEngine> it = availableEngines.iterator();
-        while (it.hasNext()) {
-        	AbstractPlayerEngine engine = it.next();
-        	// Engines must be supported for given OS and available
-            if (!osManager.isPlayerEngineSupported(engine) || !engine.isEngineAvailable()) {
-                it.remove();
-            }
-        }
+		// To do that create a clone of list to be able to remove from
+		List<AbstractPlayerEngine> availableEngines = new ArrayList<AbstractPlayerEngine>(
+				engines);
+		Iterator<AbstractPlayerEngine> it = availableEngines.iterator();
+		while (it.hasNext()) {
+			AbstractPlayerEngine engine = it.next();
+			// Engines must be supported for given OS and available
+			if (!osManager.isPlayerEngineSupported(engine)
+					|| !engine.isEngineAvailable()) {
+				it.remove();
+			}
+		}
 		return availableEngines;
 	}
 }

@@ -42,7 +42,8 @@ import net.sourceforge.atunes.utils.XMLSerializerService;
  * This class is responsible of read, write and apply application state, and
  * caches.
  */
-public final class ApplicationStateHandler extends AbstractHandler implements IStateHandler {
+public final class ApplicationStateHandler extends AbstractHandler implements
+		IStateHandler {
 
 	private XMLSerializerService xmlSerializerService;
 
@@ -61,49 +62,56 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	/**
 	 * @param podcastObjectDataStore
 	 */
-	public void setPodcastObjectDataStore(final IObjectDataStore<List<IPodcastFeed>> podcastObjectDataStore) {
+	public void setPodcastObjectDataStore(
+			final IObjectDataStore<List<IPodcastFeed>> podcastObjectDataStore) {
 		this.podcastObjectDataStore = podcastObjectDataStore;
 	}
 
 	/**
 	 * @param statisticsObjectDataStore
 	 */
-	public void setStatisticsObjectDataStore(final IObjectDataStore<IStatistics> statisticsObjectDataStore) {
+	public void setStatisticsObjectDataStore(
+			final IObjectDataStore<IStatistics> statisticsObjectDataStore) {
 		this.statisticsObjectDataStore = statisticsObjectDataStore;
 	}
 
 	/**
 	 * @param favoritesObjectDataStore
 	 */
-	public void setFavoritesObjectDataStore(final IObjectDataStore<IFavorites> favoritesObjectDataStore) {
+	public void setFavoritesObjectDataStore(
+			final IObjectDataStore<IFavorites> favoritesObjectDataStore) {
 		this.favoritesObjectDataStore = favoritesObjectDataStore;
 	}
 
 	/**
 	 * @param deviceObjectDataStore
 	 */
-	public void setDeviceObjectDataStore(final IObjectDataStore<IRepository> deviceObjectDataStore) {
+	public void setDeviceObjectDataStore(
+			final IObjectDataStore<IRepository> deviceObjectDataStore) {
 		this.deviceObjectDataStore = deviceObjectDataStore;
 	}
 
 	/**
 	 * @param playListObjectDataStore
 	 */
-	public void setPlayListObjectDataStore(final IObjectDataStore<IListOfPlayLists> playListObjectDataStore) {
+	public void setPlayListObjectDataStore(
+			final IObjectDataStore<IListOfPlayLists> playListObjectDataStore) {
 		this.playListObjectDataStore = playListObjectDataStore;
 	}
 
 	/**
 	 * @param repositoryObjectDataStore
 	 */
-	public void setRepositoryObjectDataStore(final IObjectDataStore<IRepository> repositoryObjectDataStore) {
+	public void setRepositoryObjectDataStore(
+			final IObjectDataStore<IRepository> repositoryObjectDataStore) {
 		this.repositoryObjectDataStore = repositoryObjectDataStore;
 	}
 
 	/**
 	 * @param xmlSerializerService
 	 */
-	public void setXmlSerializerService(final XMLSerializerService xmlSerializerService) {
+	public void setXmlSerializerService(
+			final XMLSerializerService xmlSerializerService) {
 		this.xmlSerializerService = xmlSerializerService;
 	}
 
@@ -130,7 +138,8 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	@Override
 	public void persistRadioCache(final List<IRadio> radios) {
 		try {
-			xmlSerializerService.writeObjectToFile(radios, getOsManager().getFilePath(getUserConfigFolder(), Constants.RADIO_CACHE));
+			xmlSerializerService.writeObjectToFile(radios, getOsManager()
+					.getFilePath(getUserConfigFolder(), Constants.RADIO_CACHE));
 		} catch (IOException e) {
 			Logger.error("Could not persist radios");
 			Logger.debug(e);
@@ -140,7 +149,10 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	@Override
 	public void persistPresetRadioCache(final List<IRadio> radios) {
 		try {
-			xmlSerializerService.writeObjectToFile(radios, getOsManager().getFilePath(getUserConfigFolder(), Constants.PRESET_RADIO_CACHE));
+			xmlSerializerService.writeObjectToFile(
+					radios,
+					getOsManager().getFilePath(getUserConfigFolder(),
+							Constants.PRESET_RADIO_CACHE));
 		} catch (IOException e) {
 			Logger.error("Could not persist radios");
 			Logger.debug(e);
@@ -153,7 +165,8 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	}
 
 	@Override
-	public void persistDeviceCache(final String deviceId, final IRepository deviceRepository) {
+	public void persistDeviceCache(final String deviceId,
+			final IRepository deviceRepository) {
 		deviceObjectDataStore.write(deviceId, deviceRepository);
 	}
 
@@ -181,7 +194,9 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	@Override
 	public List<IRadio> retrieveRadioCache() {
 		try {
-			return (List<IRadio>) xmlSerializerService.readObjectFromFile(getOsManager().getFilePath(getUserConfigFolder(), Constants.RADIO_CACHE));
+			return (List<IRadio>) xmlSerializerService
+					.readObjectFromFile(getOsManager().getFilePath(
+							getUserConfigFolder(), Constants.RADIO_CACHE));
 		} catch (FileNotFoundException e) {
 			Logger.info(e.getMessage());
 		} catch (IOException e) {
@@ -195,11 +210,18 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	public List<IRadio> retrieveRadioPreset() {
 		try {
 			// First try user settings folder
-			return (List<IRadio>) xmlSerializerService.readObjectFromFile(getOsManager().getFilePath(getUserConfigFolder(), Constants.PRESET_RADIO_CACHE));
+			return (List<IRadio>) xmlSerializerService
+					.readObjectFromFile(getOsManager()
+							.getFilePath(getUserConfigFolder(),
+									Constants.PRESET_RADIO_CACHE));
 		} catch (IOException e) {
 			try {
 				// Otherwise use list in application folder
-				return (List<IRadio>) xmlSerializerService.readObjectFromFile(ApplicationStateHandler.class.getResourceAsStream(StringUtils.getString("/settings/", Constants.PRESET_RADIO_CACHE)));
+				return (List<IRadio>) xmlSerializerService
+						.readObjectFromFile(ApplicationStateHandler.class
+								.getResourceAsStream(StringUtils.getString(
+										"/settings/",
+										Constants.PRESET_RADIO_CACHE)));
 			} catch (IOException e2) {
 				Logger.error(e2);
 			}

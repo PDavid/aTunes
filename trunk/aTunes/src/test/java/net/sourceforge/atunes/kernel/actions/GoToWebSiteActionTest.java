@@ -34,9 +34,9 @@ public class GoToWebSiteActionTest {
 		GoToWebSiteAction sut = new GoToWebSiteAction();
 		IDesktop desktop = mock(IDesktop.class);
 		sut.setDesktop(desktop);
-		
+
 		sut.executeAction();
-		
+
 		verify(desktop).openURL(Constants.APP_WEB);
 	}
 }

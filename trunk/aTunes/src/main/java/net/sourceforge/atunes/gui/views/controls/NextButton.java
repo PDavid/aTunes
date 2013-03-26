@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import javax.swing.Action;
 import javax.swing.JButton;
 
+import net.sourceforge.atunes.model.IControlButton;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -36,7 +37,7 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
  * 
  */
 public final class NextButton extends JButton implements
-		ILookAndFeelChangeListener {
+		ILookAndFeelChangeListener, IControlButton {
 
 	private static final long serialVersionUID = -4939372038840047335L;
 

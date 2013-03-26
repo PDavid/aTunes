@@ -92,11 +92,11 @@ public final class UpdateDialog extends AbstractCustomDialog implements
 		JTextPane changes = getControlsBuilder().createReadOnlyTextPane(
 				version.getChanges());
 
-		UrlLabel url = getControlsBuilder().getUrlLabel(
+		UrlLabel url = (UrlLabel) getControlsBuilder().getUrlLabel(
 				I18nUtils.getString("GO_TO_DOWNLOAD_PAGE"),
 				version.getDownloadURL());
 
-		UrlLabel downloadNow = getControlsBuilder().getUrlLabel(
+		UrlLabel downloadNow = (UrlLabel) getControlsBuilder().getUrlLabel(
 				I18nUtils.getString("DOWNLOAD_NOW"),
 				version.getDirectDownloadURL());
 

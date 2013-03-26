@@ -8,8 +8,8 @@
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
 		<config>src/main/resources/settings/spring/spring_beans.xml</config>
-		<config>src/main/resources/settings/spring/patterns.xml</config>
-		<config>src/main/resources/settings/spring/state.xml</config>
+		<config>src/main/resources/settings/spring/javafx_beans.xml</config>
+		<config>src/main/resources/settings/spring/swing_beans.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -18,8 +18,8 @@
 			<incomplete>false</incomplete>
 			<configs>
 				<config>src/main/resources/settings/spring/spring_beans.xml</config>
-				<config>src/main/resources/settings/spring/patterns.xml</config>
-				<config>src/main/resources/settings/spring/state.xml</config>
+				<config>src/main/resources/settings/spring/javafx_beans.xml</config>
+				<config>src/main/resources/settings/spring/swing_beans.xml</config>
 			</configs>
 		</configSet>
 	</configSets>

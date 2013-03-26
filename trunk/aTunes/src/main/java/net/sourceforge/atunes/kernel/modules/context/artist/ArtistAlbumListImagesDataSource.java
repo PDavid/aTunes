@@ -41,7 +41,8 @@ import net.sourceforge.atunes.utils.ImageUtils;
  * @author alex
  * 
  */
-public class ArtistAlbumListImagesDataSource implements IContextInformationSource {
+public class ArtistAlbumListImagesDataSource implements
+		IContextInformationSource {
 
 	private IWebServicesHandler webServicesHandler;
 
@@ -56,7 +57,8 @@ public class ArtistAlbumListImagesDataSource implements IContextInformationSourc
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
@@ -68,7 +70,9 @@ public class ArtistAlbumListImagesDataSource implements IContextInformationSourc
 		if (albumList != null && !albumList.getAlbums().isEmpty()) {
 			for (IAlbumInfo album : albumList.getAlbums()) {
 				ImageIcon albumImage = getAlbumImageData(album);
-				covers.put(album, ImageUtils.resize(albumImage, Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
+				covers.put(album, ImageUtils.resize(albumImage,
+						Constants.THUMB_IMAGE_WIDTH,
+						Constants.THUMB_IMAGE_HEIGHT));
 			}
 		}
 	}
@@ -76,56 +80,59 @@ public class ArtistAlbumListImagesDataSource implements IContextInformationSourc
 	/**
 	 * @return
 	 */
-	 public IAlbumListInfo getAlbumList() {
+	public IAlbumListInfo getAlbumList() {
 		return albumList;
-	 }
+	}
 
-	 /**
-	  * @return
-	  */
-	 public Map<IAlbumInfo, ImageIcon> getCovers() {
-		 return covers;
-	 }
+	/**
+	 * @return
+	 */
+	public Map<IAlbumInfo, ImageIcon> getCovers() {
+		return covers;
+	}
 
-	 /**
-	  * Return album list for artist
-	  * 
-	  * @param audioObject
-	  * @return
-	  */
-	 private IAlbumListInfo getAlbumListData(final IAudioObject audioObject) {
-		 if (!unknownObjectChecker.isUnknownArtist(audioObject.getArtist(unknownObjectChecker))) {
-			 return webServicesHandler.getAlbumList(audioObject.getArtist(unknownObjectChecker));
-		 }
-		 return null;
-	 }
+	/**
+	 * Return album list for artist
+	 * 
+	 * @param audioObject
+	 * @return
+	 */
+	private IAlbumListInfo getAlbumListData(final IAudioObject audioObject) {
+		if (!unknownObjectChecker.isUnknownArtist(audioObject
+				.getArtist(unknownObjectChecker))) {
+			return webServicesHandler.getAlbumList(audioObject
+					.getArtist(unknownObjectChecker));
+		}
+		return null;
+	}
 
-	 /**
-	  * Returns image for album
-	  * 
-	  * @param album
-	  * @return
-	  */
-	 private ImageIcon getAlbumImageData(final IAlbumInfo album) {
-		 return webServicesHandler.getAlbumThumbImage(album);
-	 }
+	/**
+	 * Returns image for album
+	 * 
+	 * @param album
+	 * @return
+	 */
+	private ImageIcon getAlbumImageData(final IAlbumInfo album) {
+		return webServicesHandler.getAlbumThumbImage(album);
+	}
 
-	 /**
-	  * @return
-	  */
-	 public IAudioObject getAudioObject() {
-		 return audioObject;
-	 }
+	/**
+	 * @return
+	 */
+	public IAudioObject getAudioObject() {
+		return audioObject;
+	}
 
-	 /**
-	  * @param webServicesHandler
-	  */
-	 public final void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
-		 this.webServicesHandler = webServicesHandler;
-	 }
+	/**
+	 * @param webServicesHandler
+	 */
+	public final void setWebServicesHandler(
+			final IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
 
-	 @Override
-	 public void cancel() {
-	 }
+	@Override
+	public void cancel() {
+	}
 
 }

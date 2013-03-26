@@ -23,9 +23,9 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.lookandfeel.ColumnSortIconGenerator;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IColumnModel;
 
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
 
@@ -34,13 +34,12 @@ final class SubstanceLookAndFeelTableHeaderCellRenderer extends
 
 	private static final long serialVersionUID = 1L;
 
-	private final AbstractCommonColumnModel model;
+	private final IColumnModel model;
 
 	private final IBeanFactory beanFactory;
 
 	public SubstanceLookAndFeelTableHeaderCellRenderer(
-			final AbstractCommonColumnModel model,
-			final IBeanFactory beanFactory) {
+			final IColumnModel model, final IBeanFactory beanFactory) {
 		this.model = model;
 		this.beanFactory = beanFactory;
 	}

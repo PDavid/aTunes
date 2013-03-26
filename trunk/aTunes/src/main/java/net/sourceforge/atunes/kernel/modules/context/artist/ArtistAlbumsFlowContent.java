@@ -39,10 +39,12 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Shows artist albums in flow
+ * 
  * @author alex
- *
+ * 
  */
-public class ArtistAlbumsFlowContent extends AbstractContextPanelContent<ArtistAlbumListImagesDataSource> {
+public class ArtistAlbumsFlowContent extends
+		AbstractContextPanelContent<ArtistAlbumListImagesDataSource> {
 
 	private ScrollableFlowPanel coversPanel;
 
@@ -60,7 +62,8 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent<ArtistA
 	}
 
 	@Override
-	public void updateContentFromDataSource(ArtistAlbumListImagesDataSource source) {
+	public void updateContentFromDataSource(
+			ArtistAlbumListImagesDataSource source) {
 		IAlbumListInfo albumListInfo = source.getAlbumList();
 		if (albumListInfo != null) {
 			List<IAlbumInfo> albums = albumListInfo.getAlbums();
@@ -86,18 +89,22 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent<ArtistA
 	 * @param album
 	 * @return
 	 */
-	private JLabel getLabelForAlbum(ArtistAlbumListImagesDataSource source, final IAlbumInfo album) {
+	private JLabel getLabelForAlbum(ArtistAlbumListImagesDataSource source,
+			final IAlbumInfo album) {
 		Icon cover = source.getCovers().get(album);
 		final JLabel coverLabel = new JLabel(cover);
 		coverLabel.setToolTipText(album.getTitle());
 		if (cover == null) {
-			coverLabel.setPreferredSize(new Dimension(Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
-			coverLabel.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
+			coverLabel.setPreferredSize(new Dimension(
+					Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
+			coverLabel.setBorder(BorderFactory.createLineBorder(GuiUtils
+					.getBorderColor()));
 		} else {
 			coverLabel.setBorder(null);
 		}
 
-		coverLabel.addMouseListener(new CoverMouseAdapter(album, coverLabel, getDesktop()));
+		coverLabel.addMouseListener(new CoverMouseAdapter(album, coverLabel,
+				getDesktop()));
 
 		return coverLabel;
 	}

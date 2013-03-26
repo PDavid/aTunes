@@ -34,79 +34,84 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Data store for repository
+ * 
  * @author alex
- *
+ * 
  */
 public class RepositoryObjectDataStore implements IObjectDataStore<IRepository> {
-	
+
 	private IOSManager osManager;
-	
+
 	private IStateRepository stateRepository;
-	
+
 	private KryoSerializerService kryoSerializerService;
-	
+
 	/**
 	 * @param osManager
 	 */
 	public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	/**
 	 * @param kryoSerializerService
 	 */
-	public void setKryoSerializerService(KryoSerializerService kryoSerializerService) {
+	public void setKryoSerializerService(
+			KryoSerializerService kryoSerializerService) {
 		this.kryoSerializerService = kryoSerializerService;
 	}
-	
+
 	/**
 	 * @param stateRepository
 	 */
 	public void setStateRepository(IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
 	}
-	
+
 	@Override
 	public IRepository read() {
 		IRepository result = null;
-        try {
-        	Object objectRead = kryoSerializerService.readObjectFromFile(getFileName(), Repository.class);
-        	if (objectRead != null) {
-        		result = (IRepository) objectRead;
-        		result.setStateRepository(stateRepository);
+		try {
+			Object objectRead = kryoSerializerService.readObjectFromFile(
+					getFileName(), Repository.class);
+			if (objectRead != null) {
+				result = (IRepository) objectRead;
+				result.setStateRepository(stateRepository);
 
-        		// Check repository integrity
-        		result.validateRepository();
-        	}
-        } catch (IOException e) {
-        	Logger.error(e);
-        } catch (InconsistentRepositoryException e) {
-        	Logger.error(e);
+				// Check repository integrity
+				result.validateRepository();
+			}
+		} catch (IOException e) {
+			Logger.error(e);
+		} catch (InconsistentRepositoryException e) {
+			Logger.error(e);
 		}
-        return result;
+		return result;
 	}
 
 	/**
 	 * @return file name to store repository
 	 */
 	private String getFileName() {
-        String customRepositoryConfigFolder = osManager.getCustomRepositoryConfigFolder();
-        if (customRepositoryConfigFolder == null) {
-        	customRepositoryConfigFolder = osManager.getUserConfigFolder();
-        }
-		return StringUtils.getString(customRepositoryConfigFolder, osManager.getFileSeparator(), Constants.CACHE_REPOSITORY_NAME);
+		String customRepositoryConfigFolder = osManager
+				.getCustomRepositoryConfigFolder();
+		if (customRepositoryConfigFolder == null) {
+			customRepositoryConfigFolder = osManager.getUserConfigFolder();
+		}
+		return StringUtils.getString(customRepositoryConfigFolder,
+				osManager.getFileSeparator(), Constants.CACHE_REPOSITORY_NAME);
 	}
-	
+
 	@Override
 	public void write(IRepository repository) {
 		kryoSerializerService.writeObjectToFile(getFileName(), repository);
 	}
-	
+
 	@Override
 	public IRepository read(String id) {
 		return read();
 	}
-	
+
 	@Override
 	public void write(String id, IRepository object) {
 		write(object);

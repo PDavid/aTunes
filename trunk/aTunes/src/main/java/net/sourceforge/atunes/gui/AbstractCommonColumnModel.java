@@ -40,6 +40,7 @@ import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumn;
+import net.sourceforge.atunes.model.IColumnModel;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -54,7 +55,8 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author alex
  * 
  */
-public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel {
+public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel
+		implements IColumnModel {
 
 	private static final long serialVersionUID = -8202322203076350708L;
 	/** The table. */
@@ -174,6 +176,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	 * @param reapplyFilter
 	 *            the reapply filter
 	 */
+	@Override
 	public final void arrangeColumns(final boolean reapplyFilter) {
 		setCurrentColumns();
 		this.model.refresh(TableModelEvent.UPDATE);
@@ -397,6 +400,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 	/**
 	 * @return the columnSet
 	 */
+	@Override
 	public IColumnSet getColumnSet() {
 		return this.columnSet;
 	}

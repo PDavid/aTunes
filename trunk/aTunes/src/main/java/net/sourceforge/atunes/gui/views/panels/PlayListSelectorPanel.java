@@ -142,7 +142,7 @@ public final class PlayListSelectorPanel extends JPanel implements
 	 * Adds the content.
 	 */
 	public void initialize() {
-		this.options = this.controlsBuilder
+		this.options = (PopUpButton) this.controlsBuilder
 				.createPopUpButton(PopUpButton.BOTTOM_RIGHT);
 
 		addActions();

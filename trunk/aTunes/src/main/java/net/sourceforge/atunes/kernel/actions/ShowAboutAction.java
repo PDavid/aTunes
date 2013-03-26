@@ -31,27 +31,27 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ShowAboutAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 5969136618082752831L;
+	private static final long serialVersionUID = 5969136618082752831L;
 
-    private IUIHandler uiHandler;
+	private IUIHandler uiHandler;
 
-    /**
-     * @param uiHandler
-     */
-    public void setUiHandler(final IUIHandler uiHandler) {
-	this.uiHandler = uiHandler;
-    }
+	/**
+	 * @param uiHandler
+	 */
+	public void setUiHandler(final IUIHandler uiHandler) {
+		this.uiHandler = uiHandler;
+	}
 
-    /**
-     * Default constructor
-     */
-    public ShowAboutAction() {
-	super(I18nUtils.getString("ABOUT"));
-    }
+	/**
+	 * Default constructor
+	 */
+	public ShowAboutAction() {
+		super(I18nUtils.getString("ABOUT"));
+	}
 
-    @Override
-    protected void executeAction() {
-	uiHandler.showAboutDialog();
-    }
+	@Override
+	protected void executeAction() {
+		uiHandler.showAboutDialog();
+	}
 
 }
