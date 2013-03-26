@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.utils;
 
+import net.sourceforge.atunes.model.IJavaVirtualMachineStatistic;
+
 /**
  * Operating system name
  * 

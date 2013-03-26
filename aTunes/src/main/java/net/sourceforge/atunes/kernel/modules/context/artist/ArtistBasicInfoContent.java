@@ -94,7 +94,7 @@ public class ArtistBasicInfoContent extends
 	public Component getComponent() {
 		// Create components
 		this.artistImageLabel = new JLabel();
-		this.artistNameLabel = getControlsBuilder().getUrlLabel();
+		this.artistNameLabel = (UrlLabel) getControlsBuilder().getUrlLabel();
 		this.artistNameLabel.setFont(getLookAndFeelManager()
 				.getCurrentLookAndFeel().getContextInformationBigFont());
 		this.artistWikiAbstract = getControlsBuilder().createTextPane(
@@ -102,7 +102,7 @@ public class ArtistBasicInfoContent extends
 		this.artistWikiAbstract.setEditable(false);
 		this.artistWikiAbstract.setBorder(BorderFactory.createEmptyBorder());
 		this.artistWikiAbstract.setOpaque(false);
-		this.artistWikiReadMore = getControlsBuilder().getUrlLabel();
+		this.artistWikiReadMore = (UrlLabel) getControlsBuilder().getUrlLabel();
 
 		// Add components
 		JPanel panel = new JPanel(new GridBagLayout());

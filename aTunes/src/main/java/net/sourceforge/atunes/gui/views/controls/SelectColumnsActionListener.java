@@ -23,28 +23,31 @@ package net.sourceforge.atunes.gui.views.controls;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
+import net.sourceforge.atunes.model.IColumnModel;
 import net.sourceforge.atunes.model.IColumnSelectorDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
 
 final class SelectColumnsActionListener implements ActionListener {
-    private final AbstractCommonColumnModel model;
 
-    private final IDialogFactory dialogFactory;
-    
-    SelectColumnsActionListener(AbstractCommonColumnModel model, final IDialogFactory dialogFactory) {
-        this.model = model;
-        this.dialogFactory = dialogFactory;
-    }
+	private final IColumnModel model;
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // Show column selector
-    	IColumnSelectorDialog selector = dialogFactory.newDialog(IColumnSelectorDialog.class);
-        selector.setColumnSetToSelect(model.getColumnSet());
-        selector.showDialog();
+	private final IDialogFactory dialogFactory;
 
-        // Apply changes
-        model.arrangeColumns(true);
-    }
+	SelectColumnsActionListener(IColumnModel model,
+			final IDialogFactory dialogFactory) {
+		this.model = model;
+		this.dialogFactory = dialogFactory;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// Show column selector
+		IColumnSelectorDialog selector = dialogFactory
+				.newDialog(IColumnSelectorDialog.class);
+		selector.setColumnSetToSelect(model.getColumnSet());
+		selector.showDialog();
+
+		// Apply changes
+		model.arrangeColumns(true);
+	}
 }

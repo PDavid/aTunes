@@ -180,7 +180,8 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		final JLabel pluginClassNameLabel = new JLabel();
 		final JLabel pluginLocationLabel = new JLabel();
 		final JLabel pluginAuthorLabel = new JLabel();
-		final UrlLabel pluginUrlLabel = this.controlsBuilder.getUrlLabel();
+		final UrlLabel pluginUrlLabel = (UrlLabel) this.controlsBuilder
+				.getUrlLabel();
 
 		this.pluginsTable.setDefaultRenderer(
 				PluginInfo.class,

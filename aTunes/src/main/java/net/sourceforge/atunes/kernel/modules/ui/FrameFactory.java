@@ -36,79 +36,79 @@ import org.springframework.context.ApplicationContextAware;
  */
 public class FrameFactory implements IFrameFactory, ApplicationContextAware {
 
-    private IStateUI stateUI;
+	private IStateUI stateUI;
 
-    private String defaultFrameClass;
+	private String defaultFrameClass;
 
-    private ApplicationContext context;
+	private ApplicationContext context;
 
-    /**
-     * @param stateUI
-     */
-    public void setStateUI(final IStateUI stateUI) {
-	this.stateUI = stateUI;
-    }
-
-    @Override
-    public void setApplicationContext(
-	    final ApplicationContext applicationContext) {
-	this.context = applicationContext;
-    }
-
-    @Override
-    public void setDefaultFrameClass(final String defaultFrameClass) {
-	this.defaultFrameClass = defaultFrameClass;
-    }
-
-    @Override
-    public IFrame create() {
-	IFrame frame = null;
-	Class<? extends IFrame> clazz = stateUI.getFrameClass();
-	if (clazz != null) {
-	    try {
-		frame = clazz.newInstance();
-	    } catch (InstantiationException e) {
-		Logger.error(e);
-	    } catch (IllegalAccessException e) {
-		Logger.error(e);
-	    }
+	/**
+	 * @param stateUI
+	 */
+	public void setStateUI(final IStateUI stateUI) {
+		this.stateUI = stateUI;
 	}
 
-	if (frame == null) {
-	    frame = constructDefaultFrame();
-	    if (frame != null) {
-		stateUI.setFrameClass(frame.getClass());
-	    }
+	@Override
+	public void setApplicationContext(
+			final ApplicationContext applicationContext) {
+		this.context = applicationContext;
 	}
 
-	if (frame == null) {
-	    throw new IllegalArgumentException("Could not create main frame");
+	@Override
+	public void setDefaultFrameClass(final String defaultFrameClass) {
+		this.defaultFrameClass = defaultFrameClass;
 	}
 
-	frame.setApplicationContext(context);
+	@Override
+	public IFrame create() {
+		IFrame frame = null;
+		Class<? extends IFrame> clazz = stateUI.getFrameClass();
+		if (clazz != null) {
+			try {
+				frame = clazz.newInstance();
+			} catch (InstantiationException e) {
+				Logger.error(e);
+			} catch (IllegalAccessException e) {
+				Logger.error(e);
+			}
+		}
 
-	return frame;
-    }
+		if (frame == null) {
+			frame = constructDefaultFrame();
+			if (frame != null) {
+				stateUI.setFrameClass(frame.getClass());
+			}
+		}
 
-    /**
-     * Creates default frame
-     * 
-     * @throws ClassNotFoundException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     */
-    private IFrame constructDefaultFrame() {
-	IFrame frame = null;
-	try {
-	    frame = (IFrame) Class.forName(defaultFrameClass).newInstance();
-	} catch (InstantiationException e) {
-	    Logger.error(e);
-	} catch (IllegalAccessException e) {
-	    Logger.error(e);
-	} catch (ClassNotFoundException e) {
-	    Logger.error(e);
+		if (frame == null) {
+			throw new IllegalArgumentException("Could not create main frame");
+		}
+
+		frame.setApplicationContext(context);
+
+		return frame;
 	}
-	return frame;
-    }
+
+	/**
+	 * Creates default frame
+	 * 
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 */
+	private IFrame constructDefaultFrame() {
+		IFrame frame = null;
+		try {
+			frame = (IFrame) Class.forName(defaultFrameClass).newInstance();
+		} catch (InstantiationException e) {
+			Logger.error(e);
+		} catch (IllegalAccessException e) {
+			Logger.error(e);
+		} catch (ClassNotFoundException e) {
+			Logger.error(e);
+		}
+		return frame;
+	}
 
 }

@@ -62,252 +62,252 @@ import de.umass.lastfm.Caller;
  */
 public class NetworkHandler extends AbstractHandler implements INetworkHandler {
 
-    private IStateCore stateCore;
+	private IStateCore stateCore;
 
-    private int connectTimeoutInSeconds;
+	private int connectTimeoutInSeconds;
 
-    private int readTimeoutInSeconds;
+	private int readTimeoutInSeconds;
 
-    /**
-     * @param connectTimeoutInSeconds
-     */
-    public void setConnectTimeoutInSeconds(final int connectTimeoutInSeconds) {
-	this.connectTimeoutInSeconds = connectTimeoutInSeconds;
-    }
-
-    /**
-     * @param readTimeoutInSeconds
-     */
-    public void setReadTimeoutInSeconds(final int readTimeoutInSeconds) {
-	this.readTimeoutInSeconds = readTimeoutInSeconds;
-    }
-
-    /**
-     * @param stateCore
-     */
-    public void setStateCore(final IStateCore stateCore) {
-	this.stateCore = stateCore;
-    }
-
-    @Override
-    protected void initHandler() {
-	updateProxy(stateCore.getProxy());
-    }
-
-    /**
-     * @param proxy
-     */
-    @Override
-    public void updateProxy(final IProxyBean proxy) {
-	try {
-	    ExtendedProxy extendedProxy = ExtendedProxy.getProxy(proxy);
-	    initProxy(extendedProxy);
-
-	    // Necessary for last.fm
-	    Caller.getInstance().setProxy(extendedProxy);
-	} catch (UnknownHostException e) {
-	    Logger.error(e);
-	} catch (IOException e) {
-	    Logger.error(e);
-	}
-    }
-
-    /**
-     * Initializes proxy authenticator
-     * 
-     * @param proxy
-     */
-    private void initProxy(final ExtendedProxy proxy) {
-	if (proxy != null) {
-	    Authenticator.setDefault(new ProxyAuthenticator(proxy));
-	} else {
-	    Authenticator.setDefault(null);
-	}
-    }
-
-    /**
-     * Encodes a string in a format suitable to send a http request.
-     * 
-     * @param s
-     *            The String that should be encoded
-     * 
-     * @return A suitable encoded String
-     */
-    @Override
-    public String encodeString(final String s) {
-	try {
-	    return URLEncoder.encode(s, "UTF-8");
-	} catch (UnsupportedEncodingException e) {
-	    return s;
-	}
-    }
-
-    /**
-     * Returns a HttpURLConnection specified by a given URL
-     * 
-     * @param urlString
-     *            A URL as String
-     * 
-     * @return A HttpURLConnection
-     * 
-     * @throws IOException
-     *             If an IO exception occurs
-     */
-    @Override
-    public URLConnection getConnection(final String urlString)
-	    throws IOException {
-	Logger.debug("Opening Connection With: ", urlString);
-
-	URL url = new URL(urlString);
-
-	URLConnection connection;
-
-	ExtendedProxy proxy = ExtendedProxy.getProxy(stateCore.getProxy());
-	if (proxy == null) {
-	    connection = url.openConnection();
-	} else {
-	    connection = url.openConnection(proxy);
-	}
-	connection.setRequestProperty("User-agent", Constants.APP_NAME);
-	connection.setConnectTimeout(connectTimeoutInSeconds * 1000);
-	connection.setReadTimeout(readTimeoutInSeconds * 1000);
-	return connection;
-    }
-
-    /**
-     * Reads a Image from a given URLConnection.
-     * 
-     * @param connection
-     *            A URLConnection
-     * 
-     * @return The Image that was read from the URLConnection
-     * 
-     * @throws IOException
-     *             If an IO exception occurs
-     */
-    @Override
-    public Image getImage(final URLConnection connection) throws IOException {
-	InputStream input = null;
-	try {
-	    input = connection.getInputStream();
-	    return ImageIO.read(input);
-	} finally {
-	    ClosingUtils.close(input);
-	}
-    }
-
-    /**
-     * Reads a String from a given URLConnection.
-     * 
-     * @param connection
-     *            A URLConnection
-     * 
-     * @return A String read from a given URLConnection
-     * 
-     * @throws IOException
-     *             If an IO exception occurs
-     */
-    @Override
-    public String readURL(final URLConnection connection) throws IOException {
-	InputStream input = null;
-	try {
-	    input = connection.getInputStream();
-	    return IOUtils.toString(input);
-	} finally {
-	    ClosingUtils.close(input);
-	}
-    }
-
-    @Override
-    public String readURL(final URLConnection connection, final int bytes)
-	    throws IOException {
-	BufferedInputStream bis = null;
-	try {
-	    InputStream input = connection.getInputStream();
-	    bis = new BufferedInputStream(input);
-	    byte[] array = new byte[bytes];
-	    int read = bis.read(array);
-	    return read != -1 ? new String(array) : null;
-	} finally {
-	    ClosingUtils.close(bis);
-	}
-    }
-
-    /**
-     * Reads a String from a given URLConnection with a given charset encoding.
-     * 
-     * @param connection
-     *            A URLConnection
-     * @param charset
-     *            A charset as String, e.g. "UTF-8"
-     * 
-     * @return A String read from a given URLConnection
-     * 
-     * @throws IOException
-     *             If an IO exception occurs
-     */
-    @Override
-    public String readURL(final URLConnection connection, final String charset)
-	    throws IOException {
-	InputStream input = null;
-	try {
-	    input = connection.getInputStream();
-	    return IOUtils.toString(input, charset);
-	} finally {
-	    ClosingUtils.close(input);
-	}
-    }
-
-    /**
-     * Sends a POST request with given parameters and receives response with
-     * given charset
-     * 
-     * @param requestURL
-     * @param params
-     * @param charset
-     * @return
-     * @throws IOException
-     */
-    @Override
-    public String readURL(final String requestURL,
-	    final Map<String, String> params, final String charset)
-	    throws IOException {
-	URLConnection connection = getConnection(requestURL);
-	connection.setUseCaches(false);
-	connection.setDoInput(true);
-
-	if (params != null && params.size() > 0) {
-	    connection.setDoOutput(true);
-	    OutputStreamWriter writer = new OutputStreamWriter(
-		    connection.getOutputStream());
-	    writer.write(formatPOSTParameters(params));
-	    writer.flush();
+	/**
+	 * @param connectTimeoutInSeconds
+	 */
+	public void setConnectTimeoutInSeconds(final int connectTimeoutInSeconds) {
+		this.connectTimeoutInSeconds = connectTimeoutInSeconds;
 	}
 
-	InputStream input = null;
-	try {
-	    input = connection.getInputStream();
-	    return IOUtils.toString(input, charset);
-	} finally {
-	    ClosingUtils.close(input);
-	}
-    }
-
-    private String formatPOSTParameters(final Map<String, String> parameters)
-	    throws UnsupportedEncodingException {
-	List<String> requestParams = new ArrayList<String>();
-
-	for (Map.Entry<String, String> parameter : parameters.entrySet()) {
-	    requestParams.add(formatPOSTParameter(parameter));
+	/**
+	 * @param readTimeoutInSeconds
+	 */
+	public void setReadTimeoutInSeconds(final int readTimeoutInSeconds) {
+		this.readTimeoutInSeconds = readTimeoutInSeconds;
 	}
 
-	return org.apache.commons.lang.StringUtils.join(requestParams, '&');
-    }
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(final IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
 
-    private String formatPOSTParameter(final Map.Entry<String, String> parameter)
-	    throws UnsupportedEncodingException {
-	return StringUtils.getString(
-		URLEncoder.encode(parameter.getKey(), "UTF-8"), "=",
-		URLEncoder.encode(parameter.getValue(), "UTF-8"));
-    }
+	@Override
+	protected void initHandler() {
+		updateProxy(stateCore.getProxy());
+	}
+
+	/**
+	 * @param proxy
+	 */
+	@Override
+	public void updateProxy(final IProxyBean proxy) {
+		try {
+			ExtendedProxy extendedProxy = ExtendedProxy.getProxy(proxy);
+			initProxy(extendedProxy);
+
+			// Necessary for last.fm
+			Caller.getInstance().setProxy(extendedProxy);
+		} catch (UnknownHostException e) {
+			Logger.error(e);
+		} catch (IOException e) {
+			Logger.error(e);
+		}
+	}
+
+	/**
+	 * Initializes proxy authenticator
+	 * 
+	 * @param proxy
+	 */
+	private void initProxy(final ExtendedProxy proxy) {
+		if (proxy != null) {
+			Authenticator.setDefault(new ProxyAuthenticator(proxy));
+		} else {
+			Authenticator.setDefault(null);
+		}
+	}
+
+	/**
+	 * Encodes a string in a format suitable to send a http request.
+	 * 
+	 * @param s
+	 *            The String that should be encoded
+	 * 
+	 * @return A suitable encoded String
+	 */
+	@Override
+	public String encodeString(final String s) {
+		try {
+			return URLEncoder.encode(s, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			return s;
+		}
+	}
+
+	/**
+	 * Returns a HttpURLConnection specified by a given URL
+	 * 
+	 * @param urlString
+	 *            A URL as String
+	 * 
+	 * @return A HttpURLConnection
+	 * 
+	 * @throws IOException
+	 *             If an IO exception occurs
+	 */
+	@Override
+	public URLConnection getConnection(final String urlString)
+			throws IOException {
+		Logger.debug("Opening Connection With: ", urlString);
+
+		URL url = new URL(urlString);
+
+		URLConnection connection;
+
+		ExtendedProxy proxy = ExtendedProxy.getProxy(stateCore.getProxy());
+		if (proxy == null) {
+			connection = url.openConnection();
+		} else {
+			connection = url.openConnection(proxy);
+		}
+		connection.setRequestProperty("User-agent", Constants.APP_NAME);
+		connection.setConnectTimeout(connectTimeoutInSeconds * 1000);
+		connection.setReadTimeout(readTimeoutInSeconds * 1000);
+		return connection;
+	}
+
+	/**
+	 * Reads a Image from a given URLConnection.
+	 * 
+	 * @param connection
+	 *            A URLConnection
+	 * 
+	 * @return The Image that was read from the URLConnection
+	 * 
+	 * @throws IOException
+	 *             If an IO exception occurs
+	 */
+	@Override
+	public Image getImage(final URLConnection connection) throws IOException {
+		InputStream input = null;
+		try {
+			input = connection.getInputStream();
+			return ImageIO.read(input);
+		} finally {
+			ClosingUtils.close(input);
+		}
+	}
+
+	/**
+	 * Reads a String from a given URLConnection.
+	 * 
+	 * @param connection
+	 *            A URLConnection
+	 * 
+	 * @return A String read from a given URLConnection
+	 * 
+	 * @throws IOException
+	 *             If an IO exception occurs
+	 */
+	@Override
+	public String readURL(final URLConnection connection) throws IOException {
+		InputStream input = null;
+		try {
+			input = connection.getInputStream();
+			return IOUtils.toString(input);
+		} finally {
+			ClosingUtils.close(input);
+		}
+	}
+
+	@Override
+	public String readURL(final URLConnection connection, final int bytes)
+			throws IOException {
+		BufferedInputStream bis = null;
+		try {
+			InputStream input = connection.getInputStream();
+			bis = new BufferedInputStream(input);
+			byte[] array = new byte[bytes];
+			int read = bis.read(array);
+			return read != -1 ? new String(array) : null;
+		} finally {
+			ClosingUtils.close(bis);
+		}
+	}
+
+	/**
+	 * Reads a String from a given URLConnection with a given charset encoding.
+	 * 
+	 * @param connection
+	 *            A URLConnection
+	 * @param charset
+	 *            A charset as String, e.g. "UTF-8"
+	 * 
+	 * @return A String read from a given URLConnection
+	 * 
+	 * @throws IOException
+	 *             If an IO exception occurs
+	 */
+	@Override
+	public String readURL(final URLConnection connection, final String charset)
+			throws IOException {
+		InputStream input = null;
+		try {
+			input = connection.getInputStream();
+			return IOUtils.toString(input, charset);
+		} finally {
+			ClosingUtils.close(input);
+		}
+	}
+
+	/**
+	 * Sends a POST request with given parameters and receives response with
+	 * given charset
+	 * 
+	 * @param requestURL
+	 * @param params
+	 * @param charset
+	 * @return
+	 * @throws IOException
+	 */
+	@Override
+	public String readURL(final String requestURL,
+			final Map<String, String> params, final String charset)
+			throws IOException {
+		URLConnection connection = getConnection(requestURL);
+		connection.setUseCaches(false);
+		connection.setDoInput(true);
+
+		if (params != null && params.size() > 0) {
+			connection.setDoOutput(true);
+			OutputStreamWriter writer = new OutputStreamWriter(
+					connection.getOutputStream());
+			writer.write(formatPOSTParameters(params));
+			writer.flush();
+		}
+
+		InputStream input = null;
+		try {
+			input = connection.getInputStream();
+			return IOUtils.toString(input, charset);
+		} finally {
+			ClosingUtils.close(input);
+		}
+	}
+
+	private String formatPOSTParameters(final Map<String, String> parameters)
+			throws UnsupportedEncodingException {
+		List<String> requestParams = new ArrayList<String>();
+
+		for (Map.Entry<String, String> parameter : parameters.entrySet()) {
+			requestParams.add(formatPOSTParameter(parameter));
+		}
+
+		return org.apache.commons.lang.StringUtils.join(requestParams, '&');
+	}
+
+	private String formatPOSTParameter(final Map.Entry<String, String> parameter)
+			throws UnsupportedEncodingException {
+		return StringUtils.getString(
+				URLEncoder.encode(parameter.getKey(), "UTF-8"), "=",
+				URLEncoder.encode(parameter.getValue(), "UTF-8"));
+	}
 }

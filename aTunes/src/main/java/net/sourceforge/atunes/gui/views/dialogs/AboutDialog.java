@@ -116,7 +116,7 @@ public final class AboutDialog extends AbstractCustomDialog implements
 	 * @return
 	 */
 	private JPanel getContent(final ILookAndFeel lookAndFeel) {
-		UrlLabel title = getControlsBuilder().getUrlLabel(
+		UrlLabel title = (UrlLabel) getControlsBuilder().getUrlLabel(
 				StringUtils.getString(Constants.APP_NAME, " ",
 						Constants.VERSION.toString()), Constants.APP_WEB);
 		title.setFont(lookAndFeel.getAboutBigFont());
@@ -133,7 +133,7 @@ public final class AboutDialog extends AbstractCustomDialog implements
 		license.setOpaque(false);
 		license.setBorder(BorderFactory.createEmptyBorder());
 
-		UrlLabel contributors = getControlsBuilder()
+		UrlLabel contributors = (UrlLabel) getControlsBuilder()
 				.getUrlLabel(I18nUtils.getString("CONTRIBUTORS"),
 						Constants.CONTRIBUTORS_WEB);
 

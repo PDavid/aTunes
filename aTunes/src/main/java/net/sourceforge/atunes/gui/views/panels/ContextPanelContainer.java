@@ -105,7 +105,7 @@ public final class ContextPanelContainer extends JPanel implements
 	public void initialize() {
 		this.contextSelector = this.controlsBuilder.createButtonPanel();
 		this.contextSelector.setIconOnly(true);
-		this.options = this.controlsBuilder
+		this.options = (PopUpButton) this.controlsBuilder
 				.createPopUpButton(PopUpButton.BOTTOM_RIGHT);
 		this.container = new JPanel(new CardLayout());
 		GridBagConstraints c = new GridBagConstraints();

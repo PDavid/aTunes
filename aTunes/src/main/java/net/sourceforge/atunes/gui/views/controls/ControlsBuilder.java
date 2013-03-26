@@ -43,15 +43,17 @@ import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.StyleConstants;
 
-import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IButtonPanel;
+import net.sourceforge.atunes.model.IColumnModel;
+import net.sourceforge.atunes.model.IColumnSetPopupMenu;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPopUpButton;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.ClipboardFacade;
 
@@ -289,7 +291,7 @@ public class ControlsBuilder implements IControlsBuilder {
 	}
 
 	@Override
-	public PopUpButton createPopUpButton(final int menuPosition) {
+	public IPopUpButton createPopUpButton(final int menuPosition) {
 		return new PopUpButton(menuPosition, this.lookAndFeelManager, this);
 	}
 
@@ -305,8 +307,8 @@ public class ControlsBuilder implements IControlsBuilder {
 	}
 
 	@Override
-	public ColumnSetPopupMenu createColumnSetPopupMenu(final JTable table,
-			final AbstractCommonColumnModel columnModel) {
+	public IColumnSetPopupMenu createColumnSetPopupMenu(final JTable table,
+			final IColumnModel columnModel) {
 		return new ColumnSetPopupMenu(table, columnModel, this.dialogFactory,
 				this.osManager);
 	}

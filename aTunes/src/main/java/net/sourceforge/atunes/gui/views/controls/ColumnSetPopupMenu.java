@@ -24,7 +24,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
+import net.sourceforge.atunes.model.IColumnModel;
+import net.sourceforge.atunes.model.IColumnSetPopupMenu;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -35,7 +36,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class ColumnSetPopupMenu {
+public class ColumnSetPopupMenu implements IColumnSetPopupMenu {
 
 	private final JMenuItem arrangeColumns;
 
@@ -47,8 +48,7 @@ public class ColumnSetPopupMenu {
 	 * @param dialogFactory
 	 * @param osManager
 	 */
-	ColumnSetPopupMenu(final JTable table,
-			final AbstractCommonColumnModel model,
+	ColumnSetPopupMenu(final JTable table, final IColumnModel model,
 			final IDialogFactory dialogFactory, final IOSManager osManager) {
 		final JPopupMenu rightMenu = new JPopupMenu();
 		this.arrangeColumns = new JMenuItem(
@@ -61,11 +61,7 @@ public class ColumnSetPopupMenu {
 						osManager));
 	}
 
-	/**
-	 * Allows columns to be arranged
-	 * 
-	 * @param enable
-	 */
+	@Override
 	public void enableArrangeColumns(final boolean enable) {
 		this.arrangeColumns.setEnabled(enable);
 	}

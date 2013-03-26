@@ -23,6 +23,8 @@ package net.sourceforge.atunes.utils;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 
+import net.sourceforge.atunes.model.IJavaVirtualMachineStatistic;
+
 /**
  * Number of garbage collection count
  * 

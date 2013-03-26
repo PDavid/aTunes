@@ -35,10 +35,12 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Renderer for language flags
+ * 
  * @author alex
- *
+ * 
  */
-public class LanguageListCellRendererCode extends AbstractListCellRendererCode<JLabel, Locale> {
+public class LanguageListCellRendererCode extends
+		AbstractListCellRendererCode<JLabel, Locale> {
 
 	private final IStateCore stateCore;
 
@@ -48,18 +50,23 @@ public class LanguageListCellRendererCode extends AbstractListCellRendererCode<J
 	}
 
 	@Override
-	public JComponent getComponent(final JLabel c, final JList list, final Locale displayingLocale, final int index, final boolean isSelected, final boolean cellHasFocus) {
+	public JComponent getComponent(final JLabel c, final JList list,
+			final Locale displayingLocale, final int index,
+			final boolean isSelected, final boolean cellHasFocus) {
 		Locale currentLocale = stateCore.getLocale().getLocale();
 
 		String name = displayingLocale.getDisplayName(currentLocale);
-		name = StringUtils.getString(String.valueOf(name.charAt(0)).toUpperCase(currentLocale), name.substring(1));
+		name = StringUtils.getString(String.valueOf(name.charAt(0))
+				.toUpperCase(currentLocale), name.substring(1));
 		c.setText(name);
 
 		// The name of flag file should be flag_<locale>.png
 		// if the name of bundle is MainBundle_<locale>.properties
-		String flagFile = StringUtils.getString("flag_", displayingLocale.toString(), ".png");
+		String flagFile = StringUtils.getString("flag_",
+				displayingLocale.toString(), ".png");
 
-		URL flagURL = GeneralPanel.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flagFile));
+		URL flagURL = GeneralPanel.class.getResource(StringUtils.getString("/",
+				Constants.TRANSLATIONS_DIR, "/", flagFile));
 		if (flagURL != null) {
 			c.setIcon(new ImageIcon(flagURL));
 		}

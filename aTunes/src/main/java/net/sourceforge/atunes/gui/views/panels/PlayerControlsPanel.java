@@ -240,11 +240,14 @@ public final class PlayerControlsPanel extends JPanel implements
 	}
 
 	private JPanel getMainControlsPanel() {
-		PreviousButton previousButton = this.controlsBuilder
+		PreviousButton previousButton = (PreviousButton) this.controlsBuilder
 				.createPreviousButton();
-		this.playButton = this.controlsBuilder.createPlayPauseButton();
-		StopButton stopButton = this.controlsBuilder.createStopButton();
-		NextButton nextButton = this.controlsBuilder.createNextButton();
+		this.playButton = (PlayPauseButton) this.controlsBuilder
+				.createPlayPauseButton();
+		StopButton stopButton = (StopButton) this.controlsBuilder
+				.createStopButton();
+		NextButton nextButton = (NextButton) this.controlsBuilder
+				.createNextButton();
 		this.volumeButton.setText("");
 		JPanel panel = getPanelWithPlayerControls(stopButton, previousButton,
 				this.playButton, nextButton, this.volumeButton,

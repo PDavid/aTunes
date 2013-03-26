@@ -34,20 +34,20 @@ import org.junit.Test;
 
 public class ShowLogActionTest {
 
-    @Test
-    public void test() {
-	ShowLogAction sut = new ShowLogAction();
-	IOSManager osManager = mock(IOSManager.class);
-	File f = new File("dummy");
-	when(osManager.getFileFromUserConfigFolder(Constants.LOG_FILE))
-		.thenReturn(f);
-	IDesktop desktop = mock(IDesktop.class);
-	sut.setOsManager(osManager);
-	sut.setDesktop(desktop);
+	@Test
+	public void test() {
+		ShowLogAction sut = new ShowLogAction();
+		IOSManager osManager = mock(IOSManager.class);
+		File f = new File("dummy");
+		when(osManager.getFileFromUserConfigFolder(Constants.LOG_FILE))
+				.thenReturn(f);
+		IDesktop desktop = mock(IDesktop.class);
+		sut.setOsManager(osManager);
+		sut.setDesktop(desktop);
 
-	sut.executeAction();
+		sut.executeAction();
 
-	verify(desktop).openFile(f);
+		verify(desktop).openFile(f);
 
-    }
+	}
 }

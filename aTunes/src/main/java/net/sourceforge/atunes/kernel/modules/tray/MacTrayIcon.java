@@ -31,30 +31,33 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Icon builder for windows and linux
+ * 
  * @author alex
- *
+ * 
  */
 public class MacTrayIcon implements ITrayIcon {
-	
+
 	private ITrayIconFiller trayIconFiller;
-	
+
 	/**
 	 * @param trayIconFiller
 	 */
 	public void setTrayIconFiller(ITrayIconFiller trayIconFiller) {
 		this.trayIconFiller = trayIconFiller;
 	}
-	
+
 	@Override
 	public TrayIcon getTrayIcon(Image iconImage, int iconSize) {
-    	TrayIcon trayIcon = new java.awt.TrayIcon(Images.getImage(Images.APP_LOGO_TRAY_ICON_MAC).getImage());
-        trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
-        PopupMenu popupmenu = new PopupMenu();
-        trayIcon.setPopupMenu(popupmenu);
-        trayIconFiller.fillTrayIcon(trayIcon);
-        return trayIcon;
+		TrayIcon trayIcon = new java.awt.TrayIcon(Images.getImage(
+				Images.APP_LOGO_TRAY_ICON_MAC).getImage());
+		trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ",
+				Constants.VERSION.toShortString()));
+		PopupMenu popupmenu = new PopupMenu();
+		trayIcon.setPopupMenu(popupmenu);
+		trayIconFiller.fillTrayIcon(trayIcon);
+		return trayIcon;
 	}
-	
+
 	@Override
 	public void setPlayMenuItemText(String text) {
 		trayIconFiller.setPlayMenuItemText(text);

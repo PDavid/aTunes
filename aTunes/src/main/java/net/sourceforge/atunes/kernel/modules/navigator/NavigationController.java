@@ -219,7 +219,7 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 				this.navigationTableModel, this.navigationTableColumnModel);
 
 		// Bind column set popup menu
-		this.columnSetPopupMenu = this.controlsBuilder
+		this.columnSetPopupMenu = (ColumnSetPopupMenu) this.controlsBuilder
 				.createColumnSetPopupMenu(
 						this.navigationTable.getSwingComponent(),
 						this.navigationTableColumnModel);

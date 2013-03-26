@@ -34,9 +34,9 @@ public class ReportBugOrFeatureRequestActionTest {
 		ReportBugOrFeatureRequestAction sut = new ReportBugOrFeatureRequestAction();
 		IDesktop desktop = mock(IDesktop.class);
 		sut.setDesktop(desktop);
-		
+
 		sut.executeAction();
-		
+
 		verify(desktop).openURL(Constants.REPORT_BUG_OR_REQUEST_FEATURE_URL);
 	}
 }

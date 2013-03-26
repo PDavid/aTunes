@@ -32,57 +32,61 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Data store for statistics
+ * 
  * @author alex
- *
+ * 
  */
 public class StatisticsObjectDataStore implements IObjectDataStore<IStatistics> {
-	
+
 	private IOSManager osManager;
-	
+
 	private KryoSerializerService kryoSerializerService;
-	
+
 	/**
 	 * @param osManager
 	 */
 	public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	/**
 	 * @param kryoSerializerService
 	 */
-	public void setKryoSerializerService(KryoSerializerService kryoSerializerService) {
+	public void setKryoSerializerService(
+			KryoSerializerService kryoSerializerService) {
 		this.kryoSerializerService = kryoSerializerService;
 	}
-	
+
 	@Override
 	public IStatistics read() {
 		IStatistics result = null;
-        try {
-        	result = (IStatistics) kryoSerializerService.readObjectFromFile(getFileName(), Statistics.class);
-        } catch (IOException e) {
-        	Logger.error(e);
+		try {
+			result = (IStatistics) kryoSerializerService.readObjectFromFile(
+					getFileName(), Statistics.class);
+		} catch (IOException e) {
+			Logger.error(e);
 		}
-        return result;
+		return result;
 	}
 
 	/**
 	 * @return file name to store favorites
 	 */
 	private String getFileName() {
-		return StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), Constants.CACHE_STATISTICS_NAME);
+		return StringUtils.getString(osManager.getUserConfigFolder(),
+				osManager.getFileSeparator(), Constants.CACHE_STATISTICS_NAME);
 	}
-	
+
 	@Override
 	public void write(IStatistics statistics) {
 		kryoSerializerService.writeObjectToFile(getFileName(), statistics);
 	}
-	
+
 	@Override
 	public IStatistics read(String id) {
 		return read();
 	}
-	
+
 	@Override
 	public void write(String id, IStatistics object) {
 		write(object);

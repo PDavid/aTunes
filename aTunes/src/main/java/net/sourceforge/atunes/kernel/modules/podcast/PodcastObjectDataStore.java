@@ -34,34 +34,38 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Data store for podcasts
+ * 
  * @author alex
- *
+ * 
  */
-public class PodcastObjectDataStore implements IObjectDataStore<List<IPodcastFeed>> {
-	
+public class PodcastObjectDataStore implements
+		IObjectDataStore<List<IPodcastFeed>> {
+
 	private KryoSerializerService kryoSerializerService;
-	
+
 	private IOSManager osManager;
-	
+
 	/**
 	 * @param osManager
 	 */
 	public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	/**
 	 * @param kryoSerializerService
 	 */
-	public void setKryoSerializerService(KryoSerializerService kryoSerializerService) {
+	public void setKryoSerializerService(
+			KryoSerializerService kryoSerializerService) {
 		this.kryoSerializerService = kryoSerializerService;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<IPodcastFeed> read() {
 		try {
-			return (List<IPodcastFeed>) kryoSerializerService.readObjectFromFile(getFileName(), ArrayList.class);
+			return (List<IPodcastFeed>) kryoSerializerService
+					.readObjectFromFile(getFileName(), ArrayList.class);
 		} catch (IOException e) {
 			Logger.error(e);
 		}
@@ -72,19 +76,20 @@ public class PodcastObjectDataStore implements IObjectDataStore<List<IPodcastFee
 	 * @return file name to store play list definition
 	 */
 	private String getFileName() {
-		return StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), Constants.PODCAST_FEED_CACHE);
+		return StringUtils.getString(osManager.getUserConfigFolder(),
+				osManager.getFileSeparator(), Constants.PODCAST_FEED_CACHE);
 	}
 
 	@Override
 	public void write(List<IPodcastFeed> contents) {
 		kryoSerializerService.writeObjectToFile(getFileName(), contents);
 	}
-	
+
 	@Override
 	public List<IPodcastFeed> read(String id) {
 		return read();
 	}
-	
+
 	@Override
 	public void write(String id, List<IPodcastFeed> object) {
 		write(object);

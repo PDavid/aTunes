@@ -136,7 +136,8 @@ public final class OSDPanel extends AbstractPreferencesPanel {
 
 		this.engineDescription = new JLabel();
 
-		this.engineMoreInformation = this.controlsBuilder.getUrlLabel();
+		this.engineMoreInformation = (UrlLabel) this.controlsBuilder
+				.getUrlLabel();
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(10, 10, 0, 0);

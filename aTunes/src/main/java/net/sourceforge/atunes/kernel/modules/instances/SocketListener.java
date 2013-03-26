@@ -30,7 +30,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ICommandHandler;

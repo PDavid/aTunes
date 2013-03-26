@@ -39,47 +39,51 @@ import org.springframework.context.ApplicationContextAware;
 
 /**
  * Icon builder for windows and linux
+ * 
  * @author alex
- *
+ * 
  */
 public class CommonTrayIcon implements ITrayIcon, ApplicationContextAware {
-	
+
 	private IOSManager osManager;
-	
+
 	private ApplicationContext context;
-	
+
 	private ITrayIconFiller trayIconFiller;
-	
+
 	/**
-	 * @param trayIconFiller
+	 * @param trayIconFillers
 	 */
 	public void setTrayIconFiller(ITrayIconFiller trayIconFiller) {
 		this.trayIconFiller = trayIconFiller;
 	}
-	
+
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.context = applicationContext;
 	}
-	
+
 	/**
 	 * @param osManager
 	 */
 	public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	@Override
 	public TrayIcon getTrayIcon(Image iconImage, int iconSize) {
-    	Image icon = ImageUtils.scaleImageBicubic(iconImage, iconSize, iconSize).getImage();
-        JTrayIcon trayIcon = new JTrayIcon(icon, osManager.isLinux(), context.getBean(ToggleWindowVisibilityAction.class));
-        trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
-        JPopupMenu popupmenu = new JTrayIconPopupMenu(trayIcon);
-        trayIcon.setJTrayIconJPopupMenu(popupmenu);
-        trayIconFiller.fillTrayIcon(trayIcon);
-        return trayIcon;
+		Image icon = ImageUtils
+				.scaleImageBicubic(iconImage, iconSize, iconSize).getImage();
+		JTrayIcon trayIcon = new JTrayIcon(icon, osManager.isLinux(),
+				context.getBean(ToggleWindowVisibilityAction.class));
+		trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ",
+				Constants.VERSION.toShortString()));
+		JPopupMenu popupmenu = new JTrayIconPopupMenu(trayIcon);
+		trayIcon.setJTrayIconJPopupMenu(popupmenu);
+		trayIconFiller.fillTrayIcon(trayIcon);
+		return trayIcon;
 	}
-	
+
 	@Override
 	public void setPlayMenuItemText(String text) {
 		trayIconFiller.setPlayMenuItemText(text);

@@ -22,11 +22,11 @@ package net.sourceforge.atunes.gui.lookandfeel;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.images.ArrowDownImageIcon;
 import net.sourceforge.atunes.gui.images.ArrowUpImageIcon;
 import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IColumnModel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
@@ -44,7 +44,7 @@ public class ColumnSortIconGenerator {
 	 * @return icon
 	 */
 	public ImageIcon getIcon(final IBeanFactory beanFactory,
-			final AbstractCommonColumnModel model, final int column) {
+			final IColumnModel model, final int column) {
 		ColumnSort sort = model.getColumnSet()
 				.getColumn(model.getColumnSet().getColumnId(column))
 				.getColumnSort();

@@ -32,57 +32,61 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Data store for favorites
+ * 
  * @author alex
- *
+ * 
  */
 public class FavoritesObjectDataStore implements IObjectDataStore<IFavorites> {
-	
+
 	private IOSManager osManager;
-	
+
 	private KryoSerializerService kryoSerializerService;
-	
+
 	/**
 	 * @param osManager
 	 */
 	public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
 	}
-	
+
 	/**
 	 * @param kryoSerializerService
 	 */
-	public void setKryoSerializerService(KryoSerializerService kryoSerializerService) {
+	public void setKryoSerializerService(
+			KryoSerializerService kryoSerializerService) {
 		this.kryoSerializerService = kryoSerializerService;
 	}
-	
+
 	@Override
 	public IFavorites read() {
 		IFavorites result = null;
-        try {
-        	result = (IFavorites) kryoSerializerService.readObjectFromFile(getFileName(), Favorites.class);
-        } catch (IOException e) {
-        	Logger.error(e);
+		try {
+			result = (IFavorites) kryoSerializerService.readObjectFromFile(
+					getFileName(), Favorites.class);
+		} catch (IOException e) {
+			Logger.error(e);
 		}
-        return result;
+		return result;
 	}
 
 	/**
 	 * @return file name to store favorites
 	 */
 	private String getFileName() {
-		return StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), Constants.CACHE_FAVORITES_NAME);
+		return StringUtils.getString(osManager.getUserConfigFolder(),
+				osManager.getFileSeparator(), Constants.CACHE_FAVORITES_NAME);
 	}
-	
+
 	@Override
 	public void write(IFavorites favorites) {
 		kryoSerializerService.writeObjectToFile(getFileName(), favorites);
 	}
-	
+
 	@Override
 	public IFavorites read(String id) {
 		return read();
 	}
-	
+
 	@Override
 	public void write(String id, IFavorites object) {
 		write(object);

@@ -25,6 +25,7 @@ import java.awt.Color;
 import javax.swing.UIManager;
 
 import net.sourceforge.atunes.model.IDesktop;
+import net.sourceforge.atunes.model.IUrlLabel;
 
 import org.jdesktop.swingx.JXHyperlink;
 
@@ -34,7 +35,7 @@ import org.jdesktop.swingx.JXHyperlink;
  * @author alex
  * 
  */
-public final class UrlLabel extends JXHyperlink {
+public final class UrlLabel extends JXHyperlink implements IUrlLabel {
 
 	private static final long serialVersionUID = -8368596300673361747L;
 
@@ -63,13 +64,7 @@ public final class UrlLabel extends JXHyperlink {
 		setTextAndColor(text);
 	}
 
-	/**
-	 * Sets the text.
-	 * 
-	 * @param desktop
-	 * @param text
-	 * @param url
-	 */
+	@Override
 	public void setText(final String text, final String url) {
 		setAction(new Link(this.desktop, url));
 		setTextAndColor(text);

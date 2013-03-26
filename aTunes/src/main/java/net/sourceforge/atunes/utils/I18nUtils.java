@@ -125,4 +125,10 @@ public final class I18nUtils {
 		return selectedLocale;
 	}
 
+	/**
+	 * @return language bundle
+	 */
+	public static ResourceBundle getLanguageBundle() {
+		return languageBundle;
+	}
 }

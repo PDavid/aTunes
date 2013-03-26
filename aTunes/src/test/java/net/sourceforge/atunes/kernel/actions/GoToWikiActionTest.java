@@ -34,9 +34,9 @@ public class GoToWikiActionTest {
 		GoToWikiAction sut = new GoToWikiAction();
 		IDesktop desktop = mock(IDesktop.class);
 		sut.setDesktop(desktop);
-		
+
 		sut.executeAction();
-		
+
 		verify(desktop).openURL(Constants.APP_WIKI);
 	}
 }
