@@ -2,47 +2,73 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="net.sourceforge.atunes.gui.javafx.AboutDialogController">
-  <children>
-    <ImageView fx:id="image" fitHeight="150.0" fitWidth="150.0" layoutX="35.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-        <Image url="/images/logo150x150.png" />
-      </image>
-    </ImageView>
-    <Label layoutX="220.0" layoutY="100.0" text="GPL Audio Player and Manager" />
-    <Hyperlink fx:id="version" focusTraversable="false" layoutX="220.0" layoutY="50.0" text="Version" />
-    <Hyperlink fx:id="contributors" layoutX="220.0" layoutY="150.0" text="%CONTRIBUTORS" />
-    <TabPane fx:id="tabPane" layoutX="35.0" layoutY="222.0" prefHeight="264.0" prefWidth="520.0" tabClosingPolicy="UNAVAILABLE">
+<BorderPane id="BorderPane" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="net.sourceforge.atunes.gui.javafx.AboutDialogController">
+  <bottom>
+    <HBox alignment="CENTER_RIGHT" padding="$x1" prefHeight="-1.0" prefWidth="-1.0" spacing="0.0">
+      <children>
+        <Button fx:id="okButton" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="%OK" HBox.hgrow="NEVER">
+          <HBox.margin>
+            <Insets fx:id="x1" />
+          </HBox.margin>
+        </Button>
+      </children>
+    </HBox>
+  </bottom>
+  <center>
+    <TabPane prefHeight="-1.0" prefWidth="-1.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="20.0" tabMinHeight="20.0" BorderPane.alignment="CENTER">
       <tabs>
         <Tab closable="false" text="%LICENSE">
           <content>
-            <HBox id="HBox" alignment="CENTER" spacing="5.0">
-              <children>
-                <ScrollPane fitToHeight="false" fitToWidth="false" prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS">
-                  <content>
-                    <Label fx:id="licenseText" prefHeight="-1.0" prefWidth="-1.0" text="Label" />
-                  </content>
-                </ScrollPane>
-              </children>
-            </HBox>
+            <ScrollPane id="ScrollPane" fitToWidth="true" hbarPolicy="NEVER" prefViewportHeight="16.0" prefViewportWidth="34.0">
+              <content>
+                <Label fx:id="licenseText" alignment="TOP_LEFT" text="" textAlignment="JUSTIFY" wrapText="true" />
+              </content>
+            </ScrollPane>
           </content>
         </Tab>
         <Tab closable="false" text="%PROPERTIES">
           <content>
-            <HBox id="HBox" alignment="CENTER" spacing="5.0">
-              <children>
-                <TableView id="table" fx:id="propertiesTable" prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
-              </children>
-            </HBox>
+            <TableView fx:id="propertiesTable" prefHeight="-1.0" prefWidth="-1.0" />
           </content>
         </Tab>
       </tabs>
+      <BorderPane.margin>
+        <Insets bottom="20.0" top="20.0" />
+      </BorderPane.margin>
     </TabPane>
-    <Button fx:id="okButton" defaultButton="true" layoutX="490.0" layoutY="490.0" mnemonicParsing="false" text="%OK" />
-  </children>
-</AnchorPane>
+  </center>
+  <padding>
+    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+  </padding>
+  <top>
+    <HBox alignment="CENTER" padding="$x1" prefHeight="-1.0" prefWidth="-1.0" BorderPane.alignment="CENTER" BorderPane.margin="$x1">
+      <children>
+        <ImageView fx:id="image" fitHeight="90.0" fitWidth="90.0" focusTraversable="false" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image url="@../images/logo90x90.png" />
+          </image>
+        </ImageView>
+        <VBox alignment="CENTER_LEFT" padding="$x1" prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS">
+          <children>
+            <Hyperlink fx:id="version" focusTraversable="false" text="Version">
+              <VBox.margin>
+                <Insets bottom="10.0" top="10.0" fx:id="x2" />
+              </VBox.margin>
+            </Hyperlink>
+            <Label text="GPL Audio Player and Manager" VBox.margin="$x2" />
+            <Hyperlink fx:id="contributors" text="%CONTRIBUTORS" VBox.margin="$x2" />
+          </children>
+          <HBox.margin>
+            <Insets left="20.0" />
+          </HBox.margin>
+        </VBox>
+      </children>
+    </HBox>
+  </top>
+</BorderPane>
