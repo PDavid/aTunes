@@ -1,6 +1,5 @@
 .root {
-	-fx-background-color:  linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%);
-    -fx-font-size: 12px;
+	-fx-background-color:  rgb(60,70,80);
 }
  
 .button {
@@ -11,10 +10,37 @@
         radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
     -fx-background-radius: 5,4,3,5;
     -fx-background-insets: 0,1,2,0;
-    -fx-text-fill: white;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-    -fx-font-family: "Arial";
-    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-text-fill: #ffffff;
     -fx-font-size: 12px;
+    -fx-font-weight: bold;
     -fx-padding: 10 20 10 20;
 }
+
+.label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-border-width: 0px;
+}
+
+.hyperlink {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+    -fx-text-fill: #ffffff;
+}
+
+.scroll-pane {
+    -fx-background-color: rgb(80,90,100);
+    -fx-border-color: rgb(200,200,200);
+    -fx-border-width: 1px;
+}
+
+.tab-pane *.tab-header-background {
+    -fx-background-color: transparent;
+}
+
+
+

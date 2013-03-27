@@ -22,8 +22,7 @@ package net.sourceforge.atunes.gui.javafx;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.ScheduledFuture;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,6 +40,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IJavaVirtualMachineStatistic;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.joda.time.DateMidnight;
@@ -69,7 +69,16 @@ public class AboutDialogController extends JavaFXDialogController implements
 
 	private ObservableList<Property> properties;
 
-	private Timer timer;
+	private ScheduledFuture<?> future;
+
+	private ITaskService taskService;
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
 
 	/**
 	 * @param beanFactory
@@ -133,7 +142,7 @@ public class AboutDialogController extends JavaFXDialogController implements
 		okButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				timer.cancel();
+				future.cancel(false);
 				getDialog().close();
 			}
 		});
@@ -152,34 +161,46 @@ public class AboutDialogController extends JavaFXDialogController implements
 				.setCellValueFactory(new PropertyValueFactory<Property, String>(
 						"value"));
 
+		propertyColumn.prefWidthProperty().bind(
+				this.propertiesTable.widthProperty().divide(2).add(-20));
+		valueColumn.prefWidthProperty().bind(
+				this.propertiesTable.widthProperty().divide(2).add(-20));
+
 		this.properties = FXCollections.observableArrayList();
 		propertiesTable.setItems(this.properties);
 
 		propertiesTable.getColumns().addAll(propertyColumn, valueColumn);
 
-		updatePropertiesTable();
-
-		this.timer = new Timer();
-		this.timer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				updatePropertiesTable();
-			}
-		}, 0, 2000);
+		future = taskService.submitPeriodically("Get JVM statistics", 0, 4,
+				new Runnable() {
+					@Override
+					public void run() {
+						updatePropertiesTable();
+					}
+				});
 	}
 
 	private void updatePropertiesTable() {
-		properties.clear();
 		for (IJavaVirtualMachineStatistic statistic : beanFactory
 				.getBeans(IJavaVirtualMachineStatistic.class)) {
-			properties.add(new Property(statistic.getDescription(), statistic
-					.getValue()));
+			Property property = new Property(statistic.getDescription(),
+					statistic.getValue());
+			int indexToRemove = -1;
+			for (int i = 0; i < properties.size() && indexToRemove == -1; i++) {
+				if (properties.get(i).getDescription()
+						.equals(property.getDescription())) {
+					indexToRemove = i;
+				}
+			}
+			if (indexToRemove != -1) {
+				properties.remove(indexToRemove);
+			}
+			properties.add(property);
 		}
 	}
 
 	@Override
 	protected void dialogClosed() {
-		timer.cancel();
+		future.cancel(false);
 	}
 }
