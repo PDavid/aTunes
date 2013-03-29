@@ -72,9 +72,19 @@ public final class NavigationTreePanel extends JPanel implements
 
 	private Action showNavigationTableAction;
 
+	private Action showNavigationTableFilterAction;
+
 	private IFilterPanel navigatorFilterPanel;
 
 	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param showNavigationTableFilterAction
+	 */
+	public void setShowNavigationTableFilterAction(
+			Action showNavigationTableFilterAction) {
+		this.showNavigationTableFilterAction = showNavigationTableFilterAction;
+	}
 
 	/**
 	 * @param controlsBuilder
@@ -230,6 +240,7 @@ public final class NavigationTreePanel extends JPanel implements
 		options.add(this.collapseTreesAction);
 		options.addSeparator();
 		options.add(new JCheckBoxMenuItem(this.showNavigationTableAction));
+		options.add(new JCheckBoxMenuItem(this.showNavigationTableFilterAction));
 		return options;
 	}
 

@@ -64,6 +64,19 @@ public class ApplicationStateNavigation implements IStateNavigation {
 	}
 
 	@Override
+	public boolean isShowNavigationTableFilter() {
+		return this.preferenceHelper.getPreference(
+				Preferences.SHOW_NAVIGATION_TABLE_FILTER, Boolean.class, false);
+	}
+
+	@Override
+	public void setShowNavigationTableFilter(boolean showNavigationTableFilter) {
+		this.preferenceHelper.setPreference(
+				Preferences.SHOW_NAVIGATION_TABLE_FILTER,
+				showNavigationTableFilter);
+	}
+
+	@Override
 	public String getNavigationView() {
 		return this.preferenceHelper.getPreference(Preferences.NAVIGATION_VIEW,
 				String.class, RepositoryNavigationView.class.getName());

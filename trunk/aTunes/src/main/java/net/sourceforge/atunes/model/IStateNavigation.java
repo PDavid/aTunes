@@ -36,84 +36,96 @@ public interface IStateNavigation extends IState {
 	 * 
 	 * @return
 	 */
-	public boolean isShowNavigationTable();
+	boolean isShowNavigationTable();
 
 	/**
 	 * Show navigation table
 	 * 
 	 * @param showNavigationTable
 	 */
-	public void setShowNavigationTable(boolean showNavigationTable);
+	void setShowNavigationTable(boolean showNavigationTable);
+
+	/**
+	 * Show navigation table filter
+	 * 
+	 * @return
+	 */
+	boolean isShowNavigationTableFilter();
+
+	/**
+	 * @param showNavigationTableFilter
+	 */
+	void setShowNavigationTableFilter(boolean showNavigationTableFilter);
 
 	/**
 	 * Navigation view
 	 * 
 	 * @return
 	 */
-	public String getNavigationView();
+	String getNavigationView();
 
 	/**
 	 * Navigation view
 	 * 
 	 * @param navigationView
 	 */
-	public void setNavigationView(String navigationView);
+	void setNavigationView(String navigationView);
 
 	/**
 	 * View mode of navigator
 	 * 
 	 * @return
 	 */
-	public ViewMode getViewMode();
+	ViewMode getViewMode();
 
 	/**
 	 * View mode of navigator
 	 * 
 	 * @param viewMode
 	 */
-	public void setViewMode(ViewMode viewMode);
+	void setViewMode(ViewMode viewMode);
 
 	/**
 	 * Show favorites in navigator
 	 * 
 	 * @return
 	 */
-	public boolean isShowFavoritesInNavigator();
+	boolean isShowFavoritesInNavigator();
 
 	/**
 	 * Show favorites in navigator
 	 * 
 	 * @param showFavoritesInNavigator
 	 */
-	public void setShowFavoritesInNavigator(boolean showFavoritesInNavigator);
+	void setShowFavoritesInNavigator(boolean showFavoritesInNavigator);
 
 	/**
 	 * Use smart tag view sorting
 	 * 
 	 * @return
 	 */
-	public boolean isUseSmartTagViewSorting();
+	boolean isUseSmartTagViewSorting();
 
 	/**
 	 * Use smart tag view sorting
 	 * 
 	 * @param useSmartTagViewSorting
 	 */
-	public void setUseSmartTagViewSorting(boolean useSmartTagViewSorting);
+	void setUseSmartTagViewSorting(boolean useSmartTagViewSorting);
 
 	/**
 	 * Use person name artist sorting
 	 * 
 	 * @return
 	 */
-	public boolean isUsePersonNamesArtistTagViewSorting();
+	boolean isUsePersonNamesArtistTagViewSorting();
 
 	/**
 	 * Use person name artist sorting
 	 * 
 	 * @param usePersonNamesArtistTagViewSorting
 	 */
-	public void setUsePersonNamesArtistTagViewSorting(
+	void setUsePersonNamesArtistTagViewSorting(
 			boolean usePersonNamesArtistTagViewSorting);
 
 	/**
@@ -121,56 +133,56 @@ public interface IStateNavigation extends IState {
 	 * 
 	 * @return
 	 */
-	public boolean isShowExtendedTooltip();
+	boolean isShowExtendedTooltip();
 
 	/**
 	 * Show extended tooltip
 	 * 
 	 * @param showExtendedTooltip
 	 */
-	public void setShowExtendedTooltip(boolean showExtendedTooltip);
+	void setShowExtendedTooltip(boolean showExtendedTooltip);
 
 	/**
 	 * Extended tooltip delay
 	 * 
 	 * @return
 	 */
-	public int getExtendedTooltipDelay();
+	int getExtendedTooltipDelay();
 
 	/**
 	 * Extended tooltip delay
 	 * 
 	 * @param extendedTooltipDelay
 	 */
-	public void setExtendedTooltipDelay(int extendedTooltipDelay);
+	void setExtendedTooltipDelay(int extendedTooltipDelay);
 
 	/**
 	 * Navigator columns
 	 * 
 	 * @return
 	 */
-	public Map<String, ColumnBean> getNavigatorColumns();
+	Map<String, ColumnBean> getNavigatorColumns();
 
 	/**
 	 * Navigator columns
 	 * 
 	 * @param navigatorColumns
 	 */
-	public void setNavigatorColumns(Map<String, ColumnBean> navigatorColumns);
+	void setNavigatorColumns(Map<String, ColumnBean> navigatorColumns);
 
 	/**
 	 * Highlight incomplete tag elements
 	 * 
 	 * @return
 	 */
-	public boolean isHighlightIncompleteTagElements();
+	boolean isHighlightIncompleteTagElements();
 
 	/**
 	 * Highlight incomplete tag elements
 	 * 
 	 * @param highlightIncompleteTagElements
 	 */
-	public void setHighlightIncompleteTagElements(
+	void setHighlightIncompleteTagElements(
 			boolean highlightIncompleteTagElements);
 
 	/**
@@ -178,14 +190,14 @@ public interface IStateNavigation extends IState {
 	 * 
 	 * @return
 	 */
-	public List<TextTagAttribute> getHighlightIncompleteTagFoldersAttributes();
+	List<TextTagAttribute> getHighlightIncompleteTagFoldersAttributes();
 
 	/**
 	 * Attributes used to highlight incomplete elements
 	 * 
 	 * @param highlightIncompleteTagFoldersAttributes
 	 */
-	public void setHighlightIncompleteTagFoldersAttributes(
+	void setHighlightIncompleteTagFoldersAttributes(
 			List<TextTagAttribute> highlightIncompleteTagFoldersAttributes);
 
 	/**
@@ -193,28 +205,28 @@ public interface IStateNavigation extends IState {
 	 * 
 	 * @return
 	 */
-	public boolean isShowNavigator();
+	boolean isShowNavigator();
 
 	/**
 	 * Show navigator
 	 * 
 	 * @param showNavigator
 	 */
-	public void setShowNavigator(boolean showNavigatorTree);
+	void setShowNavigator(boolean showNavigatorTree);
 
 	/**
 	 * Custom navigator columns
 	 * 
 	 * @return
 	 */
-	public Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns();
+	Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns();
 
 	/**
 	 * Custom navigator columns
 	 * 
 	 * @param customNavigatorColumns
 	 */
-	public void setCustomNavigatorColumns(
+	void setCustomNavigatorColumns(
 			Map<String, Map<String, ColumnBean>> customNavigatorColumns);
 
 	/**
@@ -222,7 +234,7 @@ public interface IStateNavigation extends IState {
 	 * 
 	 * @return
 	 */
-	public ArtistViewMode getArtistViewMode();
+	ArtistViewMode getArtistViewMode();
 
 	/**
 	 * Artist view mode

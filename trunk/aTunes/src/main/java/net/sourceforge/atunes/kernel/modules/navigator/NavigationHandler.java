@@ -293,6 +293,12 @@ public final class NavigationHandler extends AbstractHandler implements
 		applyNavigationTableVisibility(show);
 	}
 
+	@Override
+	public void showNavigationTableFilter(boolean show) {
+		this.stateNavigation.setShowNavigationTableFilter(show);
+		getFrame().showNavigationTableFilter(show);
+	}
+
 	/**
 	 * Used to show or hide navigation table when changing tree visibility
 	 * 
@@ -300,6 +306,9 @@ public final class NavigationHandler extends AbstractHandler implements
 	 */
 	private void applyNavigationTableVisibility(final boolean show) {
 		getFrame().showNavigationTable(show);
+
+		getFrame().showNavigationTableFilter(
+				this.stateNavigation.isShowNavigationTableFilter());
 
 		updateTableContent(getCurrentView().getTree());
 	}

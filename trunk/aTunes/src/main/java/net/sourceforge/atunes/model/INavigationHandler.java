@@ -162,9 +162,15 @@ public interface INavigationHandler extends IHandler {
 	 * Show navigation table.
 	 * 
 	 * @param show
-	 *            the show
 	 */
 	public void showNavigationTable(boolean show);
+
+	/**
+	 * Show navigation table filter
+	 * 
+	 * @param show
+	 */
+	public void showNavigationTableFilter(boolean show);
 
 	/**
 	 * Called to select given artist in navigator

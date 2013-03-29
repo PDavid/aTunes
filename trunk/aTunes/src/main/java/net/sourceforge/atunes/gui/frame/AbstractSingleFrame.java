@@ -755,4 +755,9 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements
 	public void setAppMenuBar(final IMenuBar appMenuBar) {
 		this.appMenuBar = appMenuBar;
 	}
+
+	@Override
+	public void showNavigationTableFilter(boolean show) {
+		getNavigationTablePanel().showNavigationTableFilter(show);
+	}
 }
