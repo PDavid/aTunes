@@ -22,7 +22,6 @@ package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -60,7 +59,7 @@ public final class NavigationTablePanel extends JPanel implements
 	 * @param navigatorTableFilterPanel
 	 */
 	public void setNavigatorTableFilterPanel(
-			IFilterPanel navigatorTableFilterPanel) {
+			final IFilterPanel navigatorTableFilterPanel) {
 		this.navigatorTableFilterPanel = navigatorTableFilterPanel;
 	}
 
@@ -70,18 +69,16 @@ public final class NavigationTablePanel extends JPanel implements
 	 * @param lookAndFeelManager
 	 */
 	public void initialize() {
-		navigationTable
+		this.navigationTable
 				.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		// Disable autoresize, as we will control it
-		navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		this.navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-		JPanel panel = navigatorTableFilterPanel.getSwingComponent();
-		panel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-
-		add(panel, BorderLayout.NORTH);
-		add(lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(
-				navigationTable.getSwingComponent()), BorderLayout.CENTER);
+		add(this.navigatorTableFilterPanel.getSwingComponent(),
+				BorderLayout.NORTH);
+		add(this.lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(
+				this.navigationTable.getSwingComponent()), BorderLayout.CENTER);
 	}
 
 	/**
@@ -105,7 +102,7 @@ public final class NavigationTablePanel extends JPanel implements
 	 * @return the navigation table
 	 */
 	public ITable getNavigationTable() {
-		return navigationTable;
+		return this.navigationTable;
 	}
 
 	@Override
@@ -114,7 +111,7 @@ public final class NavigationTablePanel extends JPanel implements
 	}
 
 	@Override
-	public void showNavigationTableFilter(boolean show) {
-		navigatorTableFilterPanel.setVisible(show);
+	public void showNavigationTableFilter(final boolean show) {
+		this.navigatorTableFilterPanel.setVisible(show);
 	}
 }
