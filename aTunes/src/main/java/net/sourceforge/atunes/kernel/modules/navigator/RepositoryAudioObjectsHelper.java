@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ITreeObject;
@@ -32,39 +33,45 @@ import net.sourceforge.atunes.model.ViewMode;
 
 class RepositoryAudioObjectsHelper {
 
-    /**
-     * Returns objects from node with view and filter or all objects if
-     * selection is root and no filter
-     * 
-     * @param allObjects
-     * @param node
-     * @param viewMode
-     * @param treeFilter
-     * @return
-     */
-    List<? extends IAudioObject> getAudioObjectForTreeNode(
-	    final Collection<ILocalAudioObject> allObjects,
-	    final ITreeNode node, final ViewMode viewMode,
-	    final String treeFilter) {
-	List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>();
-	if (node.isRoot()) {
-	    if (treeFilter == null) {
-		songs.addAll(allObjects);
-	    } else {
-		for (int i = 0; i < node.getChildCount(); i++) {
-		    @SuppressWarnings("unchecked")
-		    ITreeObject<ILocalAudioObject> obj = (ITreeObject<ILocalAudioObject>) node
-			    .getChildAt(i).getUserObject();
-		    songs.addAll(obj.getAudioObjects());
+	/**
+	 * Returns objects from node with view and filter or all objects if
+	 * selection is root and no filter
+	 * 
+	 * @param allObjects
+	 * @param node
+	 * @param viewMode
+	 * @param treeFilter
+	 * @param tableFilter
+	 * @param navigationTableColumnSet
+	 * @return
+	 */
+	List<? extends IAudioObject> getAudioObjectForTreeNode(
+			final Collection<ILocalAudioObject> allObjects,
+			final ITreeNode node, final ViewMode viewMode,
+			final String treeFilter, String tableFilter, IColumnSet columnSet) {
+		List<IAudioObject> songs = new ArrayList<IAudioObject>();
+		if (node.isRoot()) {
+			if (treeFilter == null) {
+				songs.addAll(allObjects);
+			} else {
+				for (int i = 0; i < node.getChildCount(); i++) {
+					@SuppressWarnings("unchecked")
+					ITreeObject<ILocalAudioObject> obj = (ITreeObject<ILocalAudioObject>) node
+							.getChildAt(i).getUserObject();
+					songs.addAll(obj.getAudioObjects());
+				}
+			}
+		} else {
+			@SuppressWarnings("unchecked")
+			ITreeObject<ILocalAudioObject> obj = (ITreeObject<ILocalAudioObject>) node
+					.getUserObject();
+			songs.addAll(obj.getAudioObjects());
 		}
-	    }
-	} else {
-	    @SuppressWarnings("unchecked")
-	    ITreeObject<ILocalAudioObject> obj = (ITreeObject<ILocalAudioObject>) node
-		    .getUserObject();
-	    songs = obj.getAudioObjects();
-	}
-	return songs;
-    }
 
+		if (tableFilter != null) {
+			songs = columnSet.filterAudioObjects(songs, tableFilter);
+		}
+
+		return songs;
+	}
 }

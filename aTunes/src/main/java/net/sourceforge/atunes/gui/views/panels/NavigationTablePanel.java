@@ -22,10 +22,12 @@ package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.ITable;
@@ -37,62 +39,82 @@ import net.sourceforge.atunes.model.ITable;
  * 
  */
 public final class NavigationTablePanel extends JPanel implements
-	INavigationTablePanel {
+		INavigationTablePanel {
 
-    private static final long serialVersionUID = -2900418193013495812L;
+	private static final long serialVersionUID = -2900418193013495812L;
 
-    private ITable navigationTable;
+	private IFilterPanel navigatorTableFilterPanel;
 
-    private ILookAndFeelManager lookAndFeelManager;
+	private ITable navigationTable;
 
-    /**
-     * Instantiates a new navigation panel.
-     */
-    public NavigationTablePanel() {
-	super(new BorderLayout(), true);
-    }
+	private ILookAndFeelManager lookAndFeelManager;
 
-    /**
-     * Adds the content.
-     * 
-     * @param lookAndFeelManager
-     */
-    public void initialize() {
-	navigationTable
-		.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+	/**
+	 * Instantiates a new navigation panel.
+	 */
+	public NavigationTablePanel() {
+		super(new BorderLayout(), true);
+	}
 
-	// Disable autoresize, as we will control it
-	navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-	add(lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(
-		navigationTable.getSwingComponent()), BorderLayout.CENTER);
-    }
+	/**
+	 * @param navigatorTableFilterPanel
+	 */
+	public void setNavigatorTableFilterPanel(
+			IFilterPanel navigatorTableFilterPanel) {
+		this.navigatorTableFilterPanel = navigatorTableFilterPanel;
+	}
 
-    /**
-     * @param navigationTable
-     */
-    public void setNavigationTable(final ITable navigationTable) {
-	this.navigationTable = navigationTable;
-    }
+	/**
+	 * Adds the content.
+	 * 
+	 * @param lookAndFeelManager
+	 */
+	public void initialize() {
+		navigationTable
+				.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(
-	    final ILookAndFeelManager lookAndFeelManager) {
-	this.lookAndFeelManager = lookAndFeelManager;
-    }
+		// Disable autoresize, as we will control it
+		navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-    /**
-     * Gets the navigation table.
-     * 
-     * @return the navigation table
-     */
-    public ITable getNavigationTable() {
-	return navigationTable;
-    }
+		JPanel panel = navigatorTableFilterPanel.getSwingComponent();
+		panel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
-    @Override
-    public JPanel getSwingComponent() {
-	return this;
-    }
+		add(panel, BorderLayout.NORTH);
+		add(lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(
+				navigationTable.getSwingComponent()), BorderLayout.CENTER);
+	}
+
+	/**
+	 * @param navigationTable
+	 */
+	public void setNavigationTable(final ITable navigationTable) {
+		this.navigationTable = navigationTable;
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
+	 * Gets the navigation table.
+	 * 
+	 * @return the navigation table
+	 */
+	public ITable getNavigationTable() {
+		return navigationTable;
+	}
+
+	@Override
+	public JPanel getSwingComponent() {
+		return this;
+	}
+
+	@Override
+	public void showNavigationTableFilter(boolean show) {
+		navigatorTableFilterPanel.setVisible(show);
+	}
 }

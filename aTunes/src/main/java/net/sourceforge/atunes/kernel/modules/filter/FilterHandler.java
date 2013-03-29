@@ -30,10 +30,12 @@ import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Manages play list and navigator filters
+ * 
  * @author alex
- *
+ * 
  */
-public final class FilterHandler extends AbstractHandler implements IFilterHandler {
+public final class FilterHandler extends AbstractHandler implements
+		IFilterHandler {
 
 	/**
 	 * Text used as filter
@@ -44,9 +46,28 @@ public final class FilterHandler extends AbstractHandler implements IFilterHandl
 
 	private FilterController navigatorFilterPanelController;
 
+	private FilterController navigatorTableFilterPanelController;
+
 	private IFilter navigationTreeFilter;
 
+	private IFilter navigationTableFilter;
+
 	private IFilter playListFilter;
+
+	/**
+	 * @param navigatorTableFilterPanelController
+	 */
+	public void setNavigatorTableFilterPanelController(
+			FilterController navigatorTableFilterPanelController) {
+		this.navigatorTableFilterPanelController = navigatorTableFilterPanelController;
+	}
+
+	/**
+	 * @param navigationTableFilter
+	 */
+	public void setNavigationTableFilter(IFilter navigationTableFilter) {
+		this.navigationTableFilter = navigationTableFilter;
+	}
 
 	/**
 	 * @param playListFilter
@@ -65,14 +86,16 @@ public final class FilterHandler extends AbstractHandler implements IFilterHandl
 	/**
 	 * @param navigatorFilterPanelController
 	 */
-	public void setNavigatorFilterPanelController(final FilterController navigatorFilterPanelController) {
+	public void setNavigatorFilterPanelController(
+			final FilterController navigatorFilterPanelController) {
 		this.navigatorFilterPanelController = navigatorFilterPanelController;
 	}
 
 	/**
 	 * @param playListFilterPanelController
 	 */
-	public void setPlayListFilterPanelController(final FilterController playListFilterPanelController) {
+	public void setPlayListFilterPanelController(
+			final FilterController playListFilterPanelController) {
 		this.playListFilterPanelController = playListFilterPanelController;
 	}
 
@@ -86,7 +109,8 @@ public final class FilterHandler extends AbstractHandler implements IFilterHandl
 	@Override
 	public void applyFilter(final IFilter filter, final String filterText) {
 		this.currentFilterText.put(filter, filterText);
-		Logger.debug("Applying filter: ", filter.getName(), " with text: ", filterText);
+		Logger.debug("Applying filter: ", filter.getName(), " with text: ",
+				filterText);
 		filter.applyFilter(filterText);
 	}
 
@@ -95,6 +119,7 @@ public final class FilterHandler extends AbstractHandler implements IFilterHandl
 		// Set filter for each filter panel
 		playListFilterPanelController.setFilter(playListFilter);
 		navigatorFilterPanelController.setFilter(navigationTreeFilter);
+		navigatorTableFilterPanelController.setFilter(navigationTableFilter);
 	}
 
 	@Override

@@ -201,6 +201,13 @@ public interface IFrame {
 	public void showNavigationTable(boolean show);
 
 	/**
+	 * Show navigation table filter
+	 * 
+	 * @param show
+	 */
+	public void showNavigationTableFilter(boolean show);
+
+	/**
 	 * Show status bar.
 	 * 
 	 * @param show

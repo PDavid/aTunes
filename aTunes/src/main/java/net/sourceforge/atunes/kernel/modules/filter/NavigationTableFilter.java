@@ -18,14 +18,41 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.filter;
+
+import net.sourceforge.atunes.model.IFilter;
+import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * Button to control playback
+ * Filter for navigation table
  * 
  * @author alex
  * 
  */
-public interface IControlButton {
+public final class NavigationTableFilter implements IFilter {
 
+	private INavigationHandler navigationHandler;
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+
+	@Override
+	public String getName() {
+		return "NAVIGATION_TABLE";
+	}
+
+	@Override
+	public String getDescription() {
+		return I18nUtils.getString("NAVIGATION_TABLE");
+	}
+
+	@Override
+	public void applyFilter(final String filter) {
+		navigationHandler.refreshCurrentView();
+	}
 }

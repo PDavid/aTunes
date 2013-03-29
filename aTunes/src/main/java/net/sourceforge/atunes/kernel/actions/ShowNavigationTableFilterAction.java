@@ -30,7 +30,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ShowNavigationTableAction extends CustomAbstractAction {
+public class ShowNavigationTableFilterAction extends CustomAbstractAction {
 
 	private static final long serialVersionUID = -3275592274940501407L;
 
@@ -55,18 +55,19 @@ public class ShowNavigationTableAction extends CustomAbstractAction {
 	/**
 	 * Default constructor
 	 */
-	public ShowNavigationTableAction() {
-		super(I18nUtils.getString("SHOW_NAVIGATION_TABLE"));
+	public ShowNavigationTableFilterAction() {
+		super(I18nUtils.getString("SHOW_NAVIGATION_TABLE_FILTER"));
 	}
 
 	@Override
 	protected void initialize() {
 		super.initialize();
-		putValue(SELECTED_KEY, stateNavigation.isShowNavigationTable());
+		putValue(SELECTED_KEY, stateNavigation.isShowNavigationTableFilter());
 	}
 
 	@Override
 	protected void executeAction() {
-		navigationHandler.showNavigationTable((Boolean) getValue(SELECTED_KEY));
+		navigationHandler
+				.showNavigationTableFilter((Boolean) getValue(SELECTED_KEY));
 	}
 }

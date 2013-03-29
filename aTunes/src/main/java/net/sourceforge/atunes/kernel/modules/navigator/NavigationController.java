@@ -90,6 +90,8 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 
 	private INavigationHandler navigationHandler;
 
+	private IFilter navigationTableFilter;
+
 	private IFilterHandler filterHandler;
 
 	private ITable navigationTable;
@@ -107,6 +109,13 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	private IBeanFactory beanFactory;
 
 	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param navigationTableFilter
+	 */
+	public void setNavigationTableFilter(IFilter navigationTableFilter) {
+		this.navigationTableFilter = navigationTableFilter;
+	}
 
 	/**
 	 * @param controlsBuilder
@@ -336,12 +345,15 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	public List<? extends IAudioObject> getAudioObjectsForTreeNode(
 			final Class<? extends INavigationView> navigationViewClass,
 			final ITreeNode node) {
+		String treeFilter = this.filterHandler
+				.getFilterText(this.navigationTreeFilter);
+		String tableFilter = this.filterHandler
+				.getFilterText(this.navigationTableFilter);
+
 		List<? extends IAudioObject> audioObjects = this.navigationHandler
-				.getView(navigationViewClass).getAudioObjectForTreeNode(
-						node,
-						this.stateNavigation.getViewMode(),
-						this.filterHandler
-								.getFilterText(this.navigationTreeFilter));
+				.getView(navigationViewClass).getAudioObjectForTreeNode(node,
+						this.stateNavigation.getViewMode(), treeFilter,
+						tableFilter);
 
 		IColumnSet columnSet = this.navigationHandler.getCurrentView()
 				.getCustomColumnSet();

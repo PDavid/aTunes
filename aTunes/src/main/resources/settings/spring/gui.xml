@@ -105,6 +105,7 @@
     <!-- Filters -->
 	<bean id="playListFilterPanel" class="net.sourceforge.atunes.gui.views.panels.FilterPanel" init-method="initialize"/>	
 	<bean id="navigatorFilterPanel" class="net.sourceforge.atunes.gui.views.panels.FilterPanel" init-method="initialize"/>
+	<bean id="navigatorTableFilterPanel" class="net.sourceforge.atunes.gui.views.panels.FilterPanel" init-method="initialize"/>
 	
 	<bean id="playListFilterPanelController" class="net.sourceforge.atunes.kernel.modules.filter.FilterController" init-method="initialize">
 		<constructor-arg ref="playListFilterPanel"/>
@@ -113,7 +114,12 @@
 	<bean id="navigatorFilterPanelController" class="net.sourceforge.atunes.kernel.modules.filter.FilterController" init-method="initialize">
 		<constructor-arg ref="navigatorFilterPanel"/>
 	</bean>
+
+	<bean id="navigatorTableFilterPanelController" class="net.sourceforge.atunes.kernel.modules.filter.FilterController" init-method="initialize">
+		<constructor-arg ref="navigatorTableFilterPanel"/>
+	</bean>
 	
+	<bean id="navigationTableFilter" class="net.sourceforge.atunes.kernel.modules.filter.NavigationTableFilter"/>
 	<bean id="navigationTreeFilter" class="net.sourceforge.atunes.kernel.modules.filter.NavigationTreeFilter"/>
 	<bean id="playListFilter" class="net.sourceforge.atunes.kernel.modules.filter.PlayListFilter"/>
 	

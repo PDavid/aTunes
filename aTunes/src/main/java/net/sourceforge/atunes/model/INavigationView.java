@@ -34,137 +34,139 @@ import javax.swing.JScrollPane;
  * 
  */
 public interface INavigationView extends IAudioObjectsSource,
-	ITreeObjectsSource {
+		ITreeObjectsSource {
 
-    /**
-     * @return the title of this view
-     */
-    public String getTitle();
+	/**
+	 * @return the title of this view
+	 */
+	public String getTitle();
 
-    /**
-     * @return the icon of this view
-     */
-    public IColorMutableImageIcon getIcon();
+	/**
+	 * @return the icon of this view
+	 */
+	public IColorMutableImageIcon getIcon();
 
-    /**
-     * @return the tooltip of this view in tabbed pane
-     */
-    public String getTooltip();
+	/**
+	 * @return the tooltip of this view in tabbed pane
+	 */
+	public String getTooltip();
 
-    /**
-     * @return the JTree that contains this view
-     */
-    public INavigationTree getTree();
+	/**
+	 * @return the JTree that contains this view
+	 */
+	public INavigationTree getTree();
 
-    /**
-     * @return the tree popup menu of this view
-     */
-    public JPopupMenu getTreePopupMenu();
+	/**
+	 * @return the tree popup menu of this view
+	 */
+	public JPopupMenu getTreePopupMenu();
 
-    /**
-     * @return factory of tree generators for this view
-     */
-    public ITreeGeneratorFactory getTreeGeneratorFactory();
+	/**
+	 * @return factory of tree generators for this view
+	 */
+	public ITreeGeneratorFactory getTreeGeneratorFactory();
 
-    /**
-     * @return the table popup menu of this view
-     */
-    public JPopupMenu getTablePopupMenu();
+	/**
+	 * @return the table popup menu of this view
+	 */
+	public JPopupMenu getTablePopupMenu();
 
-    /**
-     * Returns scroll pane of tree
-     * 
-     * @return
-     */
-    public JScrollPane getTreeScrollPane();
+	/**
+	 * Returns scroll pane of tree
+	 * 
+	 * @return
+	 */
+	public JScrollPane getTreeScrollPane();
 
-    /**
-     * Refreshes view
-     * 
-     * @param viewMode
-     * @param treeFilter
-     */
-    public void refreshView(ViewMode viewMode, String treeFilter);
+	/**
+	 * Refreshes view
+	 * 
+	 * @param viewMode
+	 * @param treeFilter
+	 */
+	public void refreshView(ViewMode viewMode, String treeFilter);
 
-    /**
-     * Returns a list of audio object associated to a tree node
-     * 
-     * @param node
-     * @param viewMode
-     * @param treeFilter
-     * @return
-     */
-    public List<? extends IAudioObject> getAudioObjectForTreeNode(
-	    ITreeNode node, ViewMode viewMode, String treeFilter);
+	/**
+	 * Returns a list of audio object associated to a tree node
+	 * 
+	 * @param node
+	 * @param viewMode
+	 * @param treeFilter
+	 * @param tableFilter
+	 * @return
+	 */
+	public List<? extends IAudioObject> getAudioObjectForTreeNode(
+			ITreeNode node, ViewMode viewMode, String treeFilter,
+			String tableFilter);
 
-    /**
-     * Returns <code>true</code> if the view supports organize information in
-     * different view modes
-     * 
-     * @return
-     */
-    public boolean isViewModeSupported();
+	/**
+	 * Returns <code>true</code> if the view supports organize information in
+	 * different view modes
+	 * 
+	 * @return
+	 */
+	public boolean isViewModeSupported();
 
-    /**
-     * Returns <code>true</code> if the view uses default navigator columns or
-     * <code>false</code> if defines its own column set
-     * 
-     * @return
-     */
-    public boolean isUseDefaultNavigatorColumnSet();
+	/**
+	 * Returns <code>true</code> if the view uses default navigator columns or
+	 * <code>false</code> if defines its own column set
+	 * 
+	 * @return
+	 */
+	public boolean isUseDefaultNavigatorColumnSet();
 
-    /**
-     * If <code>isUseDefaultNavigatorColumns</code> returns <code>false</code>
-     * then this method must return a column set with columns
-     * 
-     * @return
-     */
-    public IColumnSet getCustomColumnSet();
+	/**
+	 * If <code>isUseDefaultNavigatorColumns</code> returns <code>false</code>
+	 * then this method must return a column set with columns
+	 * 
+	 * @return
+	 */
+	public IColumnSet getCustomColumnSet();
 
-    /**
-     * Enables or disables tree popup menu items of this view
-     * 
-     * @param e
-     */
-    public void updateTreePopupMenuWithTreeSelection(MouseEvent e);
+	/**
+	 * Enables or disables tree popup menu items of this view
+	 * 
+	 * @param e
+	 */
+	public void updateTreePopupMenuWithTreeSelection(MouseEvent e);
 
-    /**
-     * Enables or disables table popup menu items of this view
-     * 
-     * @param table
-     * @param e
-     */
-    public void updateTablePopupMenuWithTableSelection(ITable table,
-	    MouseEvent e);
+	/**
+	 * Enables or disables table popup menu items of this view
+	 * 
+	 * @param table
+	 * @param e
+	 */
+	public void updateTablePopupMenuWithTableSelection(ITable table,
+			MouseEvent e);
 
-    /**
-     * Return current view mode
-     * 
-     * @return
-     */
-    public ViewMode getCurrentViewMode();
+	/**
+	 * Return current view mode
+	 * 
+	 * @return
+	 */
+	public ViewMode getCurrentViewMode();
 
-    /**
-     * Returns an action to show this view
-     * 
-     * @return
-     */
-    public Action getActionToShowView();
+	/**
+	 * Returns an action to show this view
+	 * 
+	 * @return
+	 */
+	public Action getActionToShowView();
 
-    /**
-     * Requests view to select given audio object
-     * 
-     * @param currentViewMode
-     * @param audioObject
-     */
-    public void selectAudioObject(ViewMode currentViewMode,
-	    IAudioObject audioObject);
+	/**
+	 * Requests view to select given audio object
+	 * 
+	 * @param currentViewMode
+	 * @param audioObject
+	 */
+	public void selectAudioObject(ViewMode currentViewMode,
+			IAudioObject audioObject);
 
-    /**
-     * Requests view to select given artist
-     * 
-     * @param currentViewMode
-     * @param artist
-     */
-    public void selectArtist(ViewMode currentViewMode, String artist);
+	/**
+	 * Requests view to select given artist
+	 * 
+	 * @param currentViewMode
+	 * @param artist
+	 */
+	public void selectArtist(ViewMode currentViewMode, String artist);
 }

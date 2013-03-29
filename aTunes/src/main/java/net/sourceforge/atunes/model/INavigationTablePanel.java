@@ -20,13 +20,19 @@
 
 package net.sourceforge.atunes.model;
 
-
-
 /**
  * A part of the interface that shows navigation table
+ * 
  * @author alex
- *
+ * 
  */
 public interface INavigationTablePanel extends IPanel {
+
+	/**
+	 * Shows or hides navigation table filter
+	 * 
+	 * @param show
+	 */
+	void showNavigationTableFilter(boolean show);
 
 }
