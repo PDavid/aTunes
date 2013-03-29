@@ -28,6 +28,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -61,22 +62,22 @@ public class FilterPanel extends JPanel implements IFilterPanel {
 
 		@Override
 		public Dimension getPreferredSize() {
-			return size;
+			return this.size;
 		}
 
 		@Override
 		public Dimension getMinimumSize() {
-			return size;
+			return this.size;
 		}
 
 		@Override
 		public Dimension getMaximumSize() {
-			return size;
+			return this.size;
 		}
 
 		@Override
 		protected void paintComponent(final java.awt.Graphics g) {
-			if (!filterApplied) {
+			if (!FilterPanel.this.filterApplied) {
 				return;
 			}
 			Ellipse2D.Float e = new Ellipse2D.Float(-7, -7, 14, 14);
@@ -98,8 +99,8 @@ public class FilterPanel extends JPanel implements IFilterPanel {
 			g2.translate(getBounds().width / 2, getBounds().height / 2);
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
-			g2.setPaint(lookAndFeelManager.getCurrentLookAndFeel()
-					.getPaintForSpecialControls());
+			g2.setPaint(FilterPanel.this.lookAndFeelManager
+					.getCurrentLookAndFeel().getPaintForSpecialControls());
 			Area a = new Area(e);
 			a.subtract(new Area(p));
 			g2.fill(a);
@@ -123,7 +124,7 @@ public class FilterPanel extends JPanel implements IFilterPanel {
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
@@ -155,18 +156,20 @@ public class FilterPanel extends JPanel implements IFilterPanel {
 	 */
 	public void initialize() {
 		setMinimumSize(new Dimension(120, 0));
-		filterTextField = controlsBuilder.createTextField();
-		filterTextField.setColumns(8);
-		filterTextField.setToolTipText(I18nUtils
+		this.filterTextField = this.controlsBuilder.createTextField();
+		this.filterTextField.setColumns(8);
+		this.filterTextField.setToolTipText(I18nUtils
 				.getString("FILTER_TEXTFIELD_TOOLTIP"));
-		clearButton = new ClearButton(lookAndFeelManager);
+		this.clearButton = new ClearButton(this.lookAndFeelManager);
 
 		LookAndFeelAwareLabel icon = new LookAndFeelAwareLabel(
-				lookAndFeelManager, filterIcon.getColorMutableIcon());
+				this.lookAndFeelManager, this.filterIcon.getColorMutableIcon());
+
+		icon.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
 		add(icon, BorderLayout.WEST);
-		add(filterTextField, BorderLayout.CENTER);
-		add(clearButton, BorderLayout.EAST);
+		add(this.filterTextField, BorderLayout.CENTER);
+		add(this.clearButton, BorderLayout.EAST);
 	}
 
 	/**
@@ -174,7 +177,7 @@ public class FilterPanel extends JPanel implements IFilterPanel {
 	 */
 	@Override
 	public JTextField getFilterTextField() {
-		return filterTextField;
+		return this.filterTextField;
 	}
 
 	/**
@@ -182,7 +185,7 @@ public class FilterPanel extends JPanel implements IFilterPanel {
 	 */
 	@Override
 	public JButton getClearButton() {
-		return clearButton;
+		return this.clearButton;
 	}
 
 	/**
