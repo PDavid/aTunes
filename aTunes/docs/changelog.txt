@@ -2,6 +2,7 @@ aTunes 3.1.0
 ------------
 - Store metadata even with files without internal tags (wav for example)
 - Added new option to show a filter in navigation table
+- Added option to hide navigation tree and use only table
 
 aTunes 3.0.7
 ------------

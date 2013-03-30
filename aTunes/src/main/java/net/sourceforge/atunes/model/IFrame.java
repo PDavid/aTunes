@@ -40,63 +40,63 @@ public interface IFrame {
 	 * 
 	 * @param frameState
 	 */
-	public void create(IFrameState frameState);
+	void create(IFrameState frameState);
 
 	/**
 	 * Gets the app menu bar.
 	 * 
 	 * @return the app menu bar
 	 */
-	public IMenuBar getAppMenuBar();
+	IMenuBar getAppMenuBar();
 
 	/**
 	 * Gets the extended state.
 	 * 
 	 * @return the extended state
 	 */
-	public int getExtendedState();
+	int getExtendedState();
 
 	/**
 	 * Gets the frame.
 	 * 
 	 * @return the frame
 	 */
-	public JFrame getFrame();
+	JFrame getFrame();
 
 	/**
 	 * Returns the state of the frame.
 	 * 
 	 * @return the state of the frame
 	 */
-	public IFrameState getFrameState();
+	IFrameState getFrameState();
 
 	/**
 	 * Gets the location.
 	 * 
 	 * @return the location
 	 */
-	public Point getLocation();
+	Point getLocation();
 
 	/**
 	 * Gets the size.
 	 * 
 	 * @return the size
 	 */
-	public Dimension getSize();
+	Dimension getSize();
 
 	/**
 	 * Gets the progress bar
 	 * 
 	 * @return
 	 */
-	public JProgressBar getProgressBar();
+	JProgressBar getProgressBar();
 
 	/**
 	 * Checks if is visible.
 	 * 
 	 * @return true, if is visible
 	 */
-	public boolean isVisible();
+	boolean isVisible();
 
 	/**
 	 * Sets the text of the center status bar.
@@ -104,41 +104,36 @@ public interface IFrame {
 	 * @param text
 	 *            the text
 	 * @param toolTip
-	 *            the tool tip
 	 */
-	public void setCenterStatusBarText(String text, String toolTip);
+	void setCenterStatusBarText(String text, String toolTip);
 
 	/**
 	 * Sets the default close operation.
 	 * 
 	 * @param op
-	 *            the new default close operation
 	 */
-	public void setDefaultCloseOperation(int op);
+	void setDefaultCloseOperation(int op);
 
 	/**
 	 * Sets the extended state.
 	 * 
 	 * @param state
-	 *            the new extended state
 	 */
-	public void setExtendedState(int state);
+	void setExtendedState(int state);
 
 	/**
 	 * Sets the location.
 	 * 
 	 * @param location
-	 *            the new location
 	 */
-	public void setLocation(Point location);
+	void setLocation(Point location);
 
 	/**
 	 * Sets the location relative to.
 	 * 
 	 * @param c
-	 *            the new location relative to
 	 */
-	public void setLocationRelativeTo(Component c);
+	void setLocationRelativeTo(Component c);
 
 	/**
 	 * Sets the text of the right status bar.
@@ -146,66 +141,65 @@ public interface IFrame {
 	 * @param text
 	 *            the text
 	 * @param toolTip
-	 *            the tool tip
 	 */
-	public void setRightStatusBarText(String text, String toolTip);
+	void setRightStatusBarText(String text, String toolTip);
 
 	/**
 	 * Sets the status bar image label text.
 	 * 
 	 * @param icon
-	 *            the icon
 	 * @param text
-	 *            the text
 	 */
-	public void setStatusBarDeviceLabelText(String text);
+	void setStatusBarDeviceLabelText(String text);
 
 	/**
 	 * Sets the title.
 	 * 
 	 * @param title
-	 *            the new title
 	 */
-	public void setTitle(String title);
+	void setTitle(String title);
 
 	/**
 	 * Sets the visible.
 	 * 
 	 * @param visible
-	 *            the new visible
 	 */
-	public void setVisible(boolean visible);
+	void setVisible(boolean visible);
 
 	/**
 	 * Show audio scrobbler panel.
 	 * 
 	 * @param show
-	 *            the show
 	 */
-	public void showContextPanel(boolean show);
+	void showContextPanel(boolean show);
 
 	/**
 	 * Show navigator
 	 * 
 	 * @param show
-	 *            the show
 	 */
-	public void showNavigator(boolean show);
+	void showNavigator(boolean show);
 
 	/**
 	 * Show navigation table.
 	 * 
 	 * @param show
-	 *            the show
 	 */
-	public void showNavigationTable(boolean show);
+	void showNavigationTable(boolean show);
+
+	/**
+	 * Show navigation tree.
+	 * 
+	 * @param show
+	 */
+	void showNavigationTree(boolean show);
 
 	/**
 	 * Show navigation table filter
 	 * 
 	 * @param show
 	 */
-	public void showNavigationTableFilter(boolean show);
+	void showNavigationTableFilter(boolean show);
 
 	/**
 	 * Show status bar.
@@ -213,22 +207,21 @@ public interface IFrame {
 	 * @param show
 	 *            the show
 	 */
-	public void showStatusBar(boolean show);
+	void showStatusBar(boolean show);
 
 	/**
 	 * Show device info.
 	 * 
 	 * @param show
-	 *            the visible
 	 */
-	public void showDeviceInfo(boolean show);
+	void showDeviceInfo(boolean show);
 
 	/**
 	 * Show new podcast feed entries info.
 	 * 
 	 * @param show
 	 */
-	public void showNewPodcastFeedEntriesInfo(boolean show);
+	void showNewPodcastFeedEntriesInfo(boolean show);
 
 	/**
 	 * Show new version info.
@@ -236,21 +229,21 @@ public interface IFrame {
 	 * @param show
 	 * @param version
 	 */
-	public void showNewVersionInfo(boolean show, ApplicationVersion version);
+	void showNewVersionInfo(boolean show, ApplicationVersion version);
 
 	/**
 	 * Actions to perform when application is started and frame is visible
 	 * 
 	 * @param frameState
 	 */
-	public void applicationStarted(IFrameState frameState);
+	void applicationStarted(IFrameState frameState);
 
 	/**
 	 * Returns split pane default relative positions
 	 * 
 	 * @return
 	 */
-	public Map<String, Double> getDefaultSplitPaneRelativePositions();
+	Map<String, Double> getDefaultSplitPaneRelativePositions();
 
 	/**
 	 * Shows progress bar with given text and determinate or indeterminate
@@ -258,27 +251,30 @@ public interface IFrame {
 	 * @param indeterminate
 	 * @param text
 	 */
-	public void showProgressBar(boolean indeterminate, String text);
+	void showProgressBar(boolean indeterminate, String text);
 
 	/**
 	 * Hides progress bar
 	 */
-	public void hideProgressBar();
+	void hideProgressBar();
 
 	/**
 	 * @param stateUI
 	 */
-	public void setStateUI(IStateUI stateUI);
+	void setStateUI(IStateUI stateUI);
 
 	/**
 	 * @param stateContext
 	 */
-	public void setStateContext(IStateContext stateContext);
+	void setStateContext(IStateContext stateContext);
 
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder);
+	void setControlsBuilder(IControlsBuilder controlsBuilder);
 
-	public void setApplicationContext(ApplicationContext context);
+	/**
+	 * @param context
+	 */
+	void setApplicationContext(ApplicationContext context);
 }

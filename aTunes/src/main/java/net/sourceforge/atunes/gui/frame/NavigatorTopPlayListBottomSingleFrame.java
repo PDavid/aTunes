@@ -27,6 +27,7 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IFrameState;
 
 /**
@@ -62,6 +63,21 @@ public final class NavigatorTopPlayListBottomSingleFrame extends
 	public void showNavigator(final boolean show) {
 		applyVisibility(show, LEFT_SPLIT_PANE, this.navigatorSplitPane,
 				getLeftSplitPane());
+	}
+
+	@Override
+	public void showNavigationTree(final boolean show) {
+		super.showNavigationTree(show);
+		GuiUtils.callInEventDispatchThreadLater(new Runnable() {
+			@Override
+			public void run() {
+				applyVisibility(
+						show,
+						NAVIGATOR_SPLIT_PANE,
+						getNavigationTreePanel().getSwingComponent(),
+						NavigatorTopPlayListBottomSingleFrame.this.navigatorSplitPane);
+			}
+		});
 	}
 
 	@Override

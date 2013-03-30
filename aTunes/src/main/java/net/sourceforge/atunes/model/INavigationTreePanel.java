@@ -30,23 +30,22 @@ import javax.swing.TransferHandler;
  */
 public interface INavigationTreePanel extends IPanel {
 
-    /**
-     * Updates trees
-     */
-    public void updateTrees();
+	/**
+	 * Updates trees
+	 */
+	void updateTrees();
 
-    /**
-     * Shows tree view
-     * 
-     * @param view
-     */
-    public void showNavigationView(INavigationView view);
+	/**
+	 * Shows tree view
+	 * 
+	 * @param view
+	 */
+	void showNavigationView(INavigationView view);
 
-    /**
-     * Prepares component for drag and drop
-     * 
-     * @param transferHandler
-     */
-    public void enableDragAndDrop(TransferHandler transferHandler);
-
+	/**
+	 * Prepares component for drag and drop
+	 * 
+	 * @param transferHandler
+	 */
+	void enableDragAndDrop(TransferHandler transferHandler);
 }

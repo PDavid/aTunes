@@ -54,6 +54,7 @@ import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.INavigationTree;
 import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.INavigationView;
@@ -77,6 +78,8 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 		IController {
 
 	private INavigationTreePanel navigationTreePanel;
+
+	private INavigationTablePanel navigationTablePanel;
 
 	/** The popupmenu caller. */
 	private JComponent popupMenuCaller;
@@ -111,9 +114,17 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	private IControlsBuilder controlsBuilder;
 
 	/**
+	 * @param navigationTablePanel
+	 */
+	public void setNavigationTablePanel(
+			final INavigationTablePanel navigationTablePanel) {
+		this.navigationTablePanel = navigationTablePanel;
+	}
+
+	/**
 	 * @param navigationTableFilter
 	 */
-	public void setNavigationTableFilter(IFilter navigationTableFilter) {
+	public void setNavigationTableFilter(final IFilter navigationTableFilter) {
 		this.navigationTableFilter = navigationTableFilter;
 	}
 
@@ -405,6 +416,8 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 
 		getNavigationTreePanel().showNavigationView(
 				this.navigationHandler.getView(navigationView));
+		this.navigationTablePanel.showNavigationView(this.navigationHandler
+				.getView(navigationView));
 
 		boolean viewModeSupported = this.navigationHandler.getView(
 				navigationView).isViewModeSupported();

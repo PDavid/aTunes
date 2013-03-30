@@ -27,12 +27,12 @@ import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * Show or hide navigation table
+ * Show or hide navigation tree
  * 
  * @author fleax
  * 
  */
-public class ShowNavigationTableAction extends CustomAbstractAction {
+public class ShowNavigationTreeAction extends CustomAbstractAction {
 
 	private static final long serialVersionUID = -3275592274940501407L;
 
@@ -40,14 +40,14 @@ public class ShowNavigationTableAction extends CustomAbstractAction {
 
 	private IStateNavigation stateNavigation;
 
-	private Action showNavigationTreeAction;
+	private Action showNavigationTableAction;
 
 	/**
-	 * @param showNavigationTreeAction
+	 * @param showNavigationTableAction
 	 */
-	public void setShowNavigationTreeAction(
-			final Action showNavigationTreeAction) {
-		this.showNavigationTreeAction = showNavigationTreeAction;
+	public void setShowNavigationTableAction(
+			final Action showNavigationTableAction) {
+		this.showNavigationTableAction = showNavigationTableAction;
 	}
 
 	/**
@@ -67,33 +67,34 @@ public class ShowNavigationTableAction extends CustomAbstractAction {
 	/**
 	 * Default constructor
 	 */
-	public ShowNavigationTableAction() {
-		super(I18nUtils.getString("SHOW_NAVIGATION_TABLE"));
+	public ShowNavigationTreeAction() {
+		super(I18nUtils.getString("SHOW_NAVIGATION_TREE"));
 	}
 
 	@Override
 	protected void initialize() {
 		super.initialize();
-		putValue(SELECTED_KEY, this.stateNavigation.isShowNavigationTable());
-		checkOptionsState(this.stateNavigation.isShowNavigationTable());
+		putValue(SELECTED_KEY, this.stateNavigation.isShowNavigationTree());
+		checkOptionsState(this.stateNavigation.isShowNavigationTree());
 	}
 
 	@Override
 	protected void executeAction() {
 		this.navigationHandler
-				.showNavigationTable((Boolean) getValue(SELECTED_KEY));
-		checkOptionsState((Boolean) getValue(SELECTED_KEY));
+				.showNavigationTree((Boolean) getValue(SELECTED_KEY));
+		checkOptionsState(((Boolean) getValue(SELECTED_KEY)));
 	}
 
 	private void checkOptionsState(final boolean show) {
 		// When one option is not selected, then disable the other one
 		if (!show) {
-			this.showNavigationTreeAction.setEnabled(false);
-		} else if (!this.stateNavigation.isShowNavigationTree()) {
+			this.showNavigationTableAction.setEnabled(false);
+		} else if (!this.stateNavigation.isShowNavigationTable()) {
 			this.setEnabled(false);
 		} else {
-			this.showNavigationTreeAction.setEnabled(true);
+			this.showNavigationTableAction.setEnabled(true);
 			this.setEnabled(true);
 		}
 	}
+
 }

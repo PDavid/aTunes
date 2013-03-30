@@ -30,7 +30,7 @@ import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * This action shows or hides navigation tree.
+ * This action shows or hides navigator.
  * 
  * @author fleax
  */
@@ -60,7 +60,7 @@ public class ShowNavigatorAction extends CustomAbstractAction {
 	 * Default constructor
 	 */
 	public ShowNavigatorAction() {
-		super(I18nUtils.getString("SHOW_NAVIGATION_TREE"));
+		super(I18nUtils.getString("SHOW_NAVIGATOR"));
 		putValue(ACCELERATOR_KEY,
 				KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
 	}
@@ -68,11 +68,11 @@ public class ShowNavigatorAction extends CustomAbstractAction {
 	@Override
 	protected void initialize() {
 		super.initialize();
-		putValue(SELECTED_KEY, stateNavigation.isShowNavigator());
+		putValue(SELECTED_KEY, this.stateNavigation.isShowNavigator());
 	}
 
 	@Override
 	protected void executeAction() {
-		navigationHandler.showNavigator((Boolean) getValue(SELECTED_KEY));
+		this.navigationHandler.showNavigator((Boolean) getValue(SELECTED_KEY));
 	}
 }

@@ -32,6 +32,20 @@ import java.util.Map;
 public interface IStateNavigation extends IState {
 
 	/**
+	 * Show navigation tree
+	 * 
+	 * @return
+	 */
+	boolean isShowNavigationTree();
+
+	/**
+	 * Show navigation ree
+	 * 
+	 * @param showNavigationTree
+	 */
+	void setShowNavigationTree(boolean showNavigationTree);
+
+	/**
 	 * Show navigation table
 	 * 
 	 * @return
@@ -212,7 +226,7 @@ public interface IStateNavigation extends IState {
 	 * 
 	 * @param showNavigator
 	 */
-	void setShowNavigator(boolean showNavigatorTree);
+	void setShowNavigator(boolean showNavigator);
 
 	/**
 	 * Custom navigator columns
