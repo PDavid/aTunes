@@ -34,30 +34,34 @@ import org.junit.Test;
 
 public class ArtistStructureBuilderTest {
 
-    @Test
-    public void testGetArtistsList() {
-	ArtistStructureBuilder sut = new ArtistStructureBuilder();
-	IUnknownObjectChecker unknownObjectChecker = mock(IUnknownObjectChecker.class);
-	sut.setUnknownObjectChecker(unknownObjectChecker);
+	@Test
+	public void testGetArtistsList() {
+		ArtistStructureBuilder sut = new ArtistStructureBuilder();
+		IUnknownObjectChecker unknownObjectChecker = mock(IUnknownObjectChecker.class);
+		sut.setUnknownObjectChecker(unknownObjectChecker);
 
-	List<ILocalAudioObject> aos = new ArrayList<ILocalAudioObject>();
-	ILocalAudioObject ao1 = mock(ILocalAudioObject.class);
-	when(ao1.getArtist(unknownObjectChecker)).thenReturn(
-		"Children of Bodom");
-	when(ao1.getAlbumArtist(unknownObjectChecker)).thenReturn(
-		"Children of Bodom");
-	ILocalAudioObject ao2 = mock(ILocalAudioObject.class);
-	when(ao2.getArtist(unknownObjectChecker)).thenReturn(
-		"Children of Bodom");
-	when(ao2.getAlbumArtist(unknownObjectChecker)).thenReturn(
-		"Children of Bodom");
+		List<ILocalAudioObject> aos = new ArrayList<ILocalAudioObject>();
+		ILocalAudioObject ao1 = mock(ILocalAudioObject.class);
+		when(ao1.getAlbumArtistOrArtist(unknownObjectChecker)).thenReturn(
+				"Children of Bodom");
+		when(ao1.getArtist(unknownObjectChecker)).thenReturn(
+				"Children of Bodom");
+		when(ao1.getAlbumArtist(unknownObjectChecker)).thenReturn(
+				"Children of Bodom");
+		ILocalAudioObject ao2 = mock(ILocalAudioObject.class);
+		when(ao2.getAlbumArtistOrArtist(unknownObjectChecker)).thenReturn(
+				"Children of Bodom");
+		when(ao2.getArtist(unknownObjectChecker)).thenReturn(
+				"Children of Bodom");
+		when(ao2.getAlbumArtist(unknownObjectChecker)).thenReturn(
+				"Children of Bodom");
 
-	aos.add(ao1);
-	aos.add(ao2);
+		aos.add(ao1);
+		aos.add(ao2);
 
-	List<String> artists = new ArrayList<String>(sut.getArtistList(aos));
+		List<String> artists = sut.getArtistList(aos);
 
-	assertEquals(1, artists.size());
-	assertEquals("Children of Bodom", artists.get(0));
-    }
+		assertEquals(1, artists.size());
+		assertEquals("Children of Bodom", artists.get(0));
+	}
 }
