@@ -29,10 +29,10 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IIconFactory;
+import net.sourceforge.atunes.model.IListCellRendererCode;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -45,12 +45,12 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
  */
 public class ScoreColumn extends AbstractColumn<Integer> {
 
-	private final class ScoreColumnCellEditorRenderer extends
-			AbstractListCellRendererCode<JLabel, Integer> {
+	private final class ScoreColumnCellEditorRenderer implements
+			IListCellRendererCode<JLabel, Integer> {
 
 		@Override
 		public JComponent getComponent(final JLabel superComponent,
-				final JList list, final Integer value, final int index,
+				final JList<?> list, final Integer value, final int index,
 				final boolean isSelected, final boolean cellHasFocus) {
 			setLabel(superComponent, value);
 			return superComponent;
