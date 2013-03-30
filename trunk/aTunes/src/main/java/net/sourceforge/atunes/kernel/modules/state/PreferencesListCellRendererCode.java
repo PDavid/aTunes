@@ -24,13 +24,16 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
+import net.sourceforge.atunes.model.IListCellRendererCode;
 
-class PreferencesListCellRendererCode extends AbstractListCellRendererCode<JLabel, AbstractPreferencesPanel> {
-    @Override
-    public JComponent getComponent(JLabel label, JList list, AbstractPreferencesPanel p, int index, boolean isSelected, boolean cellHasFocus) {
-        label.setText(p.getTitle());
-        label.setIcon(p.getIcon());
-        return label;
-    }
+class PreferencesListCellRendererCode implements
+		IListCellRendererCode<JLabel, AbstractPreferencesPanel> {
+	@Override
+	public JComponent getComponent(final JLabel label, final JList<?> list,
+			final AbstractPreferencesPanel p, final int index,
+			final boolean isSelected, final boolean cellHasFocus) {
+		label.setText(p.getTitle());
+		label.setIcon(p.getIcon());
+		return label;
+	}
 }
