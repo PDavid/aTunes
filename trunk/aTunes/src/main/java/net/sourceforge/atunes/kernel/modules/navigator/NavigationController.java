@@ -419,8 +419,12 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 		this.navigationTablePanel.showNavigationView(this.navigationHandler
 				.getView(navigationView));
 
+		// Allow view mode controls if navigation view supports them and tree is
+		// visible
 		boolean viewModeSupported = this.navigationHandler.getView(
-				navigationView).isViewModeSupported();
+				navigationView).isViewModeSupported()
+				&& this.stateNavigation.isShowNavigationTree();
+
 		this.beanFactory.getBean(ShowAlbumsInNavigatorAction.class).setEnabled(
 				viewModeSupported);
 		this.beanFactory.getBean(ShowArtistsInNavigatorAction.class)
