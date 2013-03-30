@@ -36,32 +36,32 @@ import net.sourceforge.atunes.model.IStateNavigation;
  */
 public class AlbumSorter implements INavigationViewSorter {
 
-    private Collator collator;
+	private Collator collator;
 
-    private IStateNavigation stateNavigation;
+	private IStateNavigation stateNavigation;
 
-    /**
-     * @param stateNavigation
-     */
-    public void setStateNavigation(final IStateNavigation stateNavigation) {
-	this.stateNavigation = stateNavigation;
-    }
-
-    /**
-     * @param collator
-     */
-    public void setCollator(final Collator collator) {
-	this.collator = collator;
-    }
-
-    @Override
-    public void sort(final List<String> list) {
-	Comparator<String> comparator = null;
-	if (stateNavigation.isUseSmartTagViewSorting()) {
-	    comparator = new SmartComparator(collator);
-	} else {
-	    comparator = new DefaultComparator(collator);
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
 	}
-	Collections.sort(list, comparator);
-    }
+
+	/**
+	 * @param collator
+	 */
+	public void setCollator(final Collator collator) {
+		this.collator = collator;
+	}
+
+	@Override
+	public void sort(final List<String> list) {
+		Comparator<String> comparator = null;
+		if (this.stateNavigation.isUseSmartTagViewSorting()) {
+			comparator = new SmartComparator(this.collator);
+		} else {
+			comparator = new DefaultComparator(this.collator);
+		}
+		Collections.sort(list, comparator);
+	}
 }

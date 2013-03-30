@@ -6,6 +6,7 @@ aTunes 3.1.0
 
 aTunes 3.0.7
 ------------
+- All navigator views allow filtering subelements
 - FIX: Disable option to create play list with top tracks when no data available
 - FIX: Generate M3U files with system file separator
 
