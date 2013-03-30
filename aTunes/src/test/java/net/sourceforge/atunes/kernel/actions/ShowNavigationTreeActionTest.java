@@ -32,11 +32,11 @@ import net.sourceforge.atunes.model.IStateNavigation;
 
 import org.junit.Test;
 
-public class ShowNavigationTableActionTest {
+public class ShowNavigationTreeActionTest {
 
 	@Test
 	public void test() {
-		ShowNavigationTableAction sut = new ShowNavigationTableAction();
+		ShowNavigationTreeAction sut = new ShowNavigationTreeAction();
 		INavigationHandler navigationHandler = mock(INavigationHandler.class);
 		IStateNavigation stateNavigation = mock(IStateNavigation.class);
 		sut.setNavigationHandler(navigationHandler);
@@ -45,43 +45,43 @@ public class ShowNavigationTableActionTest {
 
 		sut.executeAction();
 
-		verify(navigationHandler).showNavigationTable(true);
+		verify(navigationHandler).showNavigationTree(true);
 	}
 
 	@Test
 	public void testDisableTreeAction() {
-		Action showNavigationTreeAction = mock(Action.class);
-		ShowNavigationTableAction sut = new ShowNavigationTableAction();
+		Action showNavigationTableAction = mock(Action.class);
+		ShowNavigationTreeAction sut = new ShowNavigationTreeAction();
 		INavigationHandler navigationHandler = mock(INavigationHandler.class);
 		IStateNavigation stateNavigation = mock(IStateNavigation.class);
 		sut.setNavigationHandler(navigationHandler);
 		sut.setStateNavigation(stateNavigation);
-		sut.setShowNavigationTreeAction(showNavigationTreeAction);
+		sut.setShowNavigationTableAction(showNavigationTableAction);
 
-		// Not selecting this action must disable showNavigationTree
+		// Not selecting this action must disable showNavigationTable
 		sut.putValue(AbstractAction.SELECTED_KEY, false);
 
 		sut.executeAction();
 
-		verify(showNavigationTreeAction).setEnabled(false);
+		verify(showNavigationTableAction).setEnabled(false);
 	}
 
 	@Test
 	public void testEnableTreeAction() {
-		Action showNavigationTreeAction = mock(Action.class);
-		ShowNavigationTableAction sut = new ShowNavigationTableAction();
+		Action showNavigationTableAction = mock(Action.class);
+		ShowNavigationTreeAction sut = new ShowNavigationTreeAction();
 		INavigationHandler navigationHandler = mock(INavigationHandler.class);
 		IStateNavigation stateNavigation = mock(IStateNavigation.class);
-		when(stateNavigation.isShowNavigationTree()).thenReturn(true);
+		when(stateNavigation.isShowNavigationTable()).thenReturn(true);
 		sut.setNavigationHandler(navigationHandler);
 		sut.setStateNavigation(stateNavigation);
-		sut.setShowNavigationTreeAction(showNavigationTreeAction);
+		sut.setShowNavigationTableAction(showNavigationTableAction);
 
-		// Selecting this action must enable showNavigationTree if selected too
+		// Selecting this action must enable showNavigationTable if selected too
 		sut.putValue(AbstractAction.SELECTED_KEY, true);
 
 		sut.executeAction();
 
-		verify(showNavigationTreeAction).setEnabled(true);
+		verify(showNavigationTableAction).setEnabled(true);
 	}
 }
