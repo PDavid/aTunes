@@ -26,9 +26,9 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationTablePanel;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.ITable;
 
 /**
@@ -42,25 +42,24 @@ public final class NavigationTablePanel extends JPanel implements
 
 	private static final long serialVersionUID = -2900418193013495812L;
 
-	private IFilterPanel navigatorTableFilterPanel;
+	private NavigationControlPanel controlPanel;
 
 	private ITable navigationTable;
 
 	private ILookAndFeelManager lookAndFeelManager;
 
 	/**
+	 * @param controlPanel
+	 */
+	public void setControlPanel(final NavigationControlPanel controlPanel) {
+		this.controlPanel = controlPanel;
+	}
+
+	/**
 	 * Instantiates a new navigation panel.
 	 */
 	public NavigationTablePanel() {
 		super(new BorderLayout(), true);
-	}
-
-	/**
-	 * @param navigatorTableFilterPanel
-	 */
-	public void setNavigatorTableFilterPanel(
-			final IFilterPanel navigatorTableFilterPanel) {
-		this.navigatorTableFilterPanel = navigatorTableFilterPanel;
 	}
 
 	/**
@@ -75,8 +74,7 @@ public final class NavigationTablePanel extends JPanel implements
 		// Disable autoresize, as we will control it
 		this.navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-		add(this.navigatorTableFilterPanel.getSwingComponent(),
-				BorderLayout.NORTH);
+		add(this.controlPanel, BorderLayout.NORTH);
 		add(this.lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(
 				this.navigationTable.getSwingComponent()), BorderLayout.CENTER);
 	}
@@ -112,6 +110,19 @@ public final class NavigationTablePanel extends JPanel implements
 
 	@Override
 	public void showNavigationTableFilter(final boolean show) {
-		this.navigatorTableFilterPanel.setVisible(show);
+		this.controlPanel.showFilter(show);
 	}
+
+	@Override
+	public void showNavigationTree(final boolean show) {
+		// Must show controls if tree not visible
+		this.controlPanel.showControls(!show);
+		this.controlPanel.enableTreeControls(show);
+	}
+
+	@Override
+	public void showNavigationView(final INavigationView view) {
+		this.controlPanel.setSelectedButton(view.getClass().getName());
+	}
+
 }

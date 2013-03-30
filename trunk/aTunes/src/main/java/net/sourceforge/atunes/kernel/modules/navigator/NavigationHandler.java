@@ -88,9 +88,10 @@ public final class NavigationHandler extends AbstractHandler implements
 
 	@Override
 	public void applicationStarted() {
+		getFrame().showNavigationTree(
+				this.stateNavigation.isShowNavigationTree());
+
 		showNavigator(this.stateNavigation.isShowNavigator());
-		applyNavigationTableVisibility(this.stateNavigation.isShowNavigator()
-				&& this.stateNavigation.isShowNavigationTable());
 
 		// Navigation Panel View
 		getNavigationController().setNavigationView(
@@ -283,29 +284,42 @@ public final class NavigationHandler extends AbstractHandler implements
 
 		getFrame().showNavigator(show);
 
-		applyNavigationTableVisibility(show
-				&& this.stateNavigation.isShowNavigationTable());
+		applyNavigationVisibility(show,
+				this.stateNavigation.isShowNavigationTree(),
+				this.stateNavigation.isShowNavigationTable());
+	}
+
+	@Override
+	public void showNavigationTree(final boolean show) {
+		this.stateNavigation.setShowNavigationTree(show);
+		applyNavigationVisibility(this.stateNavigation.isShowNavigator(), show,
+				this.stateNavigation.isShowNavigationTable());
 	}
 
 	@Override
 	public void showNavigationTable(final boolean show) {
 		this.stateNavigation.setShowNavigationTable(show);
-		applyNavigationTableVisibility(show);
+		applyNavigationVisibility(this.stateNavigation.isShowNavigator(),
+				this.stateNavigation.isShowNavigationTree(), show);
 	}
 
 	@Override
-	public void showNavigationTableFilter(boolean show) {
+	public void showNavigationTableFilter(final boolean show) {
 		this.stateNavigation.setShowNavigationTableFilter(show);
 		getFrame().showNavigationTableFilter(show);
 	}
 
 	/**
-	 * Used to show or hide navigation table when changing tree visibility
+	 * Used to show or hide navigation components when changing visibility
 	 * 
-	 * @param show
+	 * @param showNavigator
+	 * @param showTree
+	 * @param showTable
 	 */
-	private void applyNavigationTableVisibility(final boolean show) {
-		getFrame().showNavigationTable(show);
+	private void applyNavigationVisibility(final boolean showNavigator,
+			final boolean showTree, final boolean showTable) {
+		getFrame().showNavigationTree(showNavigator && showTree);
+		getFrame().showNavigationTable(showNavigator && showTable);
 
 		getFrame().showNavigationTableFilter(
 				this.stateNavigation.isShowNavigationTableFilter());

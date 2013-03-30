@@ -25,7 +25,6 @@ import java.awt.event.ItemListener;
 
 import javax.swing.Action;
 
-
 /**
  * A panel holding buttons
  * 
@@ -105,5 +104,12 @@ public interface IButtonPanel {
 	 * @return index of button selected in an action event
 	 */
 	public int getIndexOfButtonSelected(final ActionEvent event);
+
+	/**
+	 * Shows or hides this panel
+	 * 
+	 * @param show
+	 */
+	public void setVisible(boolean show);
 
 }

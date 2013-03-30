@@ -38,6 +38,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.ApplicationVersion;
@@ -743,13 +744,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements
 	}
 
 	/**
-	 * @return
-	 */
-	protected ILookAndFeelManager getLookAndFeelManager() {
-		return this.lookAndFeelManager;
-	}
-
-	/**
 	 * @param appMenuBar
 	 */
 	public void setAppMenuBar(final IMenuBar appMenuBar) {
@@ -757,7 +751,18 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements
 	}
 
 	@Override
-	public void showNavigationTableFilter(boolean show) {
+	public void showNavigationTableFilter(final boolean show) {
 		getNavigationTablePanel().showNavigationTableFilter(show);
+	}
+
+	@Override
+	public void showNavigationTree(final boolean show) {
+		// Call both panels so must hide or show different controls
+		GuiUtils.callInEventDispatchThreadLater(new Runnable() {
+			@Override
+			public void run() {
+				getNavigationTablePanel().showNavigationTree(show);
+			}
+		});
 	}
 }

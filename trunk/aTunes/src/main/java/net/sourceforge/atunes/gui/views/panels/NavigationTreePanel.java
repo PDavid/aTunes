@@ -23,22 +23,11 @@ package net.sourceforge.atunes.gui.views.panels;
 import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 
-import javax.swing.Action;
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JSeparator;
 import javax.swing.TransferHandler;
 
-import net.sourceforge.atunes.gui.views.controls.PopUpButton;
-import net.sourceforge.atunes.model.IButtonPanel;
 import net.sourceforge.atunes.model.IControlsBuilder;
-import net.sourceforge.atunes.model.IFilterPanel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.INavigationView;
@@ -54,36 +43,19 @@ public final class NavigationTreePanel extends JPanel implements
 
 	private static final long serialVersionUID = -2900418193013495812L;
 
-	private IButtonPanel viewButtonsPanel;
-
 	private JPanel treePanel;
-
-	private ILookAndFeelManager lookAndFeelManager;
 
 	private INavigationHandler navigationHandler;
 
-	private Action showArtistsInNavigatorAction;
-	private Action showAlbumsInNavigatorAction;
-	private Action showGenresInNavigatorAction;
-	private Action showYearsInNavigatorAction;
-	private Action showFoldersInNavigatorAction;
-	private Action expandTreesAction;
-	private Action collapseTreesAction;
-
-	private Action showNavigationTableAction;
-
-	private Action showNavigationTableFilterAction;
-
-	private IFilterPanel navigatorFilterPanel;
+	private NavigationControlPanel controlPanel;
 
 	private IControlsBuilder controlsBuilder;
 
 	/**
-	 * @param showNavigationTableFilterAction
+	 * @param controlPanel
 	 */
-	public void setShowNavigationTableFilterAction(
-			Action showNavigationTableFilterAction) {
-		this.showNavigationTableFilterAction = showNavigationTableFilterAction;
+	public void setControlPanel(final NavigationControlPanel controlPanel) {
+		this.controlPanel = controlPanel;
 	}
 
 	/**
@@ -101,83 +73,6 @@ public final class NavigationTreePanel extends JPanel implements
 	}
 
 	/**
-	 * @param navigatorFilterPanel
-	 */
-	public void setNavigatorFilterPanel(final IFilterPanel navigatorFilterPanel) {
-		this.navigatorFilterPanel = navigatorFilterPanel;
-	}
-
-	/**
-	 * @param showArtistsInNavigatorAction
-	 */
-	public void setShowArtistsInNavigatorAction(
-			final Action showArtistsInNavigatorAction) {
-		this.showArtistsInNavigatorAction = showArtistsInNavigatorAction;
-	}
-
-	/**
-	 * @param showAlbumsInNavigatorAction
-	 */
-	public void setShowAlbumsInNavigatorAction(
-			final Action showAlbumsInNavigatorAction) {
-		this.showAlbumsInNavigatorAction = showAlbumsInNavigatorAction;
-	}
-
-	/**
-	 * @param showGenresInNavigatorAction
-	 */
-	public void setShowGenresInNavigatorAction(
-			final Action showGenresInNavigatorAction) {
-		this.showGenresInNavigatorAction = showGenresInNavigatorAction;
-	}
-
-	/**
-	 * @param showYearsInNavigatorAction
-	 */
-	public void setShowYearsInNavigatorAction(
-			final Action showYearsInNavigatorAction) {
-		this.showYearsInNavigatorAction = showYearsInNavigatorAction;
-	}
-
-	/**
-	 * @param showFoldersInNavigatorAction
-	 */
-	public void setShowFoldersInNavigatorAction(
-			final Action showFoldersInNavigatorAction) {
-		this.showFoldersInNavigatorAction = showFoldersInNavigatorAction;
-	}
-
-	/**
-	 * @param expandTreesAction
-	 */
-	public void setExpandTreesAction(final Action expandTreesAction) {
-		this.expandTreesAction = expandTreesAction;
-	}
-
-	/**
-	 * @param collapseTreesAction
-	 */
-	public void setCollapseTreesAction(final Action collapseTreesAction) {
-		this.collapseTreesAction = collapseTreesAction;
-	}
-
-	/**
-	 * @param showNavigationTableAction
-	 */
-	public void setShowNavigationTableAction(
-			final Action showNavigationTableAction) {
-		this.showNavigationTableAction = showNavigationTableAction;
-	}
-
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(
-			final ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-
-	/**
 	 * @param navigationHandler
 	 */
 	public void setNavigationHandler(final INavigationHandler navigationHandler) {
@@ -188,28 +83,13 @@ public final class NavigationTreePanel extends JPanel implements
 	 * Adds the content.
 	 */
 	public void initialize() {
-		this.viewButtonsPanel = this.controlsBuilder.createButtonPanel();
-		this.viewButtonsPanel.setIconOnly(true);
 		this.treePanel = new JPanel(new CardLayout());
 		addTrees();
 		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.fill = GridBagConstraints.BOTH;
-		c.insets = new Insets(1, 1, 0, 0);
-		add(getOptionsPopUpButton(this.lookAndFeelManager), c);
-		c.gridx = 1;
 		c.weightx = 1;
-		c.insets = new Insets(1, 0, 0, 0);
-		add((JComponent) this.viewButtonsPanel, c);
-
-		c.gridx = 2;
-		c.weightx = 0;
-		add(this.navigatorFilterPanel.getSwingComponent(), c);
-
-		c.gridx = 0;
+		c.fill = GridBagConstraints.BOTH;
+		add(this.controlPanel, c);
 		c.gridy = 1;
-		c.gridwidth = 3;
 		c.weighty = 1;
 		add(this.treePanel, c);
 
@@ -221,54 +101,12 @@ public final class NavigationTreePanel extends JPanel implements
 	}
 
 	/**
-	 * @param lookAndFeelManager
-	 */
-	private PopUpButton getOptionsPopUpButton(
-			final ILookAndFeelManager lookAndFeelManager) {
-		PopUpButton options = (PopUpButton) this.controlsBuilder
-				.createPopUpButton(PopUpButton.BOTTOM_RIGHT);
-		ButtonGroup group = new ButtonGroup();
-		addRadioButtonMenuItem(this.showArtistsInNavigatorAction, group,
-				options);
-		addRadioButtonMenuItem(this.showAlbumsInNavigatorAction, group, options);
-		addRadioButtonMenuItem(this.showGenresInNavigatorAction, group, options);
-		addRadioButtonMenuItem(this.showYearsInNavigatorAction, group, options);
-		addRadioButtonMenuItem(this.showFoldersInNavigatorAction, group,
-				options);
-		options.add(new JSeparator());
-		options.add(this.expandTreesAction);
-		options.add(this.collapseTreesAction);
-		options.addSeparator();
-		options.add(new JCheckBoxMenuItem(this.showNavigationTableAction));
-		options.add(new JCheckBoxMenuItem(this.showNavigationTableFilterAction));
-		return options;
-	}
-
-	/**
-	 * Adds a radio button menu item
-	 * 
-	 * @param action
-	 * @param group
-	 * @param options
-	 */
-	private void addRadioButtonMenuItem(final Action action,
-			final ButtonGroup group, final PopUpButton options) {
-		JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(action);
-		group.add(menuItem);
-		options.add(menuItem);
-	}
-
-	/**
 	 * Updates panel to show all trees
 	 */
 	private void addTrees() {
-		this.viewButtonsPanel.clear();
 		this.treePanel.removeAll();
 
 		for (INavigationView view : this.navigationHandler.getNavigationViews()) {
-			this.viewButtonsPanel.addButton(view.getClass().getName(),
-					view.getTitle(), view.getIcon(),
-					view.getActionToShowView(), view);
 			this.treePanel.add(view.getClass().getName(),
 					view.getTreeScrollPane());
 		}
@@ -277,13 +115,14 @@ public final class NavigationTreePanel extends JPanel implements
 	@Override
 	public void updateTrees() {
 		addTrees();
+		this.controlPanel.updateControls();
 	}
 
 	@Override
 	public void showNavigationView(final INavigationView view) {
 		((CardLayout) this.treePanel.getLayout()).show(this.treePanel, view
 				.getClass().getName());
-		this.viewButtonsPanel.setSelectedButton(view.getClass().getName());
+		this.controlPanel.setSelectedButton(view.getClass().getName());
 	}
 
 	@Override

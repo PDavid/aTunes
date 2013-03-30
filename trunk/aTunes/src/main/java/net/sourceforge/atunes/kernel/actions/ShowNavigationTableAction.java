@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import javax.swing.Action;
+
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -37,6 +39,16 @@ public class ShowNavigationTableAction extends CustomAbstractAction {
 	private INavigationHandler navigationHandler;
 
 	private IStateNavigation stateNavigation;
+
+	private Action showNavigationTreeAction;
+
+	/**
+	 * @param showNavigationTreeAction
+	 */
+	public void setShowNavigationTreeAction(
+			final Action showNavigationTreeAction) {
+		this.showNavigationTreeAction = showNavigationTreeAction;
+	}
 
 	/**
 	 * @param stateNavigation
@@ -62,11 +74,26 @@ public class ShowNavigationTableAction extends CustomAbstractAction {
 	@Override
 	protected void initialize() {
 		super.initialize();
-		putValue(SELECTED_KEY, stateNavigation.isShowNavigationTable());
+		putValue(SELECTED_KEY, this.stateNavigation.isShowNavigationTable());
+		checkOptionsState(this.stateNavigation.isShowNavigationTable());
 	}
 
 	@Override
 	protected void executeAction() {
-		navigationHandler.showNavigationTable((Boolean) getValue(SELECTED_KEY));
+		this.navigationHandler
+				.showNavigationTable((Boolean) getValue(SELECTED_KEY));
+		checkOptionsState((Boolean) getValue(SELECTED_KEY));
+	}
+
+	private void checkOptionsState(final boolean show) {
+		// When one option is not selected, then disable the other one
+		if (!show) {
+			this.showNavigationTreeAction.setEnabled(false);
+		} else if (!this.stateNavigation.isShowNavigationTree()) {
+			this.setEnabled(false);
+		} else {
+			this.showNavigationTreeAction.setEnabled(true);
+			this.setEnabled(true);
+		}
 	}
 }

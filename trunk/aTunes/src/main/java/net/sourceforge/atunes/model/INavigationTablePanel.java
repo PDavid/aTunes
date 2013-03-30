@@ -35,4 +35,18 @@ public interface INavigationTablePanel extends IPanel {
 	 */
 	void showNavigationTableFilter(boolean show);
 
+	/**
+	 * Called to notify when navigation tree is shown
+	 * 
+	 * @param show
+	 */
+	void showNavigationTree(boolean show);
+
+	/**
+	 * Called to notify when navigation view changes
+	 * 
+	 * @param view
+	 */
+	void showNavigationView(INavigationView view);
+
 }

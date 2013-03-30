@@ -64,13 +64,26 @@ public class ApplicationStateNavigation implements IStateNavigation {
 	}
 
 	@Override
+	public boolean isShowNavigationTree() {
+		return this.preferenceHelper.getPreference(
+				Preferences.SHOW_NAVIGATION_TREE, Boolean.class, true);
+	}
+
+	@Override
+	public void setShowNavigationTree(final boolean showNavigationTree) {
+		this.preferenceHelper.setPreference(Preferences.SHOW_NAVIGATION_TREE,
+				showNavigationTree);
+	}
+
+	@Override
 	public boolean isShowNavigationTableFilter() {
 		return this.preferenceHelper.getPreference(
 				Preferences.SHOW_NAVIGATION_TABLE_FILTER, Boolean.class, false);
 	}
 
 	@Override
-	public void setShowNavigationTableFilter(boolean showNavigationTableFilter) {
+	public void setShowNavigationTableFilter(
+			final boolean showNavigationTableFilter) {
 		this.preferenceHelper.setPreference(
 				Preferences.SHOW_NAVIGATION_TABLE_FILTER,
 				showNavigationTableFilter);
@@ -218,15 +231,15 @@ public class ApplicationStateNavigation implements IStateNavigation {
 
 	@Override
 	public boolean isShowNavigator() {
-		return this.preferenceHelper.getPreference(
-				Preferences.SHOW_NAVIGATION_TREE, Boolean.class, true);
+		return this.preferenceHelper.getPreference(Preferences.SHOW_NAVIGATOR,
+				Boolean.class, true);
 	}
 
 	@Override
 	public void setShowNavigator(final boolean showNavigatorTree) {
 		if (isShowNavigator() != showNavigatorTree) {
-			this.preferenceHelper.setPreference(
-					Preferences.SHOW_NAVIGATION_TREE, showNavigatorTree);
+			this.preferenceHelper.setPreference(Preferences.SHOW_NAVIGATOR,
+					showNavigatorTree);
 		}
 	}
 
