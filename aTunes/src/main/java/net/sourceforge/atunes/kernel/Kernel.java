@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
@@ -36,6 +37,8 @@ import net.sourceforge.atunes.model.ILocaleBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateCore;
+import net.sourceforge.atunes.model.IStateRetrieveTask;
+import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
@@ -99,9 +102,47 @@ public final class Kernel implements IKernel {
 		new LanguageSelector().setLanguage(this.stateCore,
 				this.localeBeanFactory);
 
+		ITaskService taskService = this.beanFactory.getBean("taskService",
+				ITaskService.class);
+		// Retrieve state in background
+		Collection<IStateRetrieveTask> tasks = this.beanFactory
+				.getBeans(IStateRetrieveTask.class);
+		executePreviousTasks(taskService, tasks);
+
 		initializeUI();
+
 		this.beanFactory.getBean(HandlerInitializer.class).initializeHandlers();
+
 		createUI();
+
+		// Set retrieved state
+		executeAfterTasks(taskService, tasks);
+	}
+
+	private void executePreviousTasks(final ITaskService taskService,
+			final Collection<IStateRetrieveTask> tasks) {
+		for (final IStateRetrieveTask task : tasks) {
+			taskService.submitNow(task.getClass().getName(), new Runnable() {
+				@Override
+				public void run() {
+					task.retrieveData(Kernel.this.beanFactory
+							.getBean(IStateService.class),
+							Kernel.this.beanFactory);
+				}
+			});
+		}
+	}
+
+	private void executeAfterTasks(final ITaskService taskService,
+			final Collection<IStateRetrieveTask> tasks) {
+		for (final IStateRetrieveTask task : tasks) {
+			taskService.submitNow(task.getClass().getName(), new Runnable() {
+				@Override
+				public void run() {
+					task.setData(Kernel.this.beanFactory);
+				}
+			});
+		}
 	}
 
 	/**

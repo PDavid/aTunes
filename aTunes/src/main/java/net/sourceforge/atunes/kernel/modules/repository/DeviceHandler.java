@@ -67,7 +67,7 @@ import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IStateDevice;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.ViewMode;
@@ -473,7 +473,7 @@ public final class DeviceHandler extends AbstractHandler implements
 	@Override
 	public void deviceDisconnected(final String location) {
 		// Persist device metadata
-		this.beanFactory.getBean(IStateHandler.class).persistDeviceCache(
+		this.beanFactory.getBean(IStateService.class).persistDeviceCache(
 				this.deviceId, this.deviceRepository);
 
 		this.deviceRepository = null;
@@ -512,7 +512,7 @@ public final class DeviceHandler extends AbstractHandler implements
 	public void applicationFinish() {
 		if (isDeviceConnected()) {
 			// Persist device metadata
-			this.beanFactory.getBean(IStateHandler.class).persistDeviceCache(
+			this.beanFactory.getBean(IStateService.class).persistDeviceCache(
 					this.deviceId, this.deviceRepository);
 		}
 	}
@@ -675,7 +675,7 @@ public final class DeviceHandler extends AbstractHandler implements
 		// Device has been connected before, try to get data from cache
 		if (this.deviceId != null) {
 			this.deviceRepository = this.beanFactory.getBean(
-					IStateHandler.class).retrieveDeviceCache(this.deviceId);
+					IStateService.class).retrieveDeviceCache(this.deviceId);
 			if (this.deviceRepository != null) {
 				refreshDevice();
 				return;

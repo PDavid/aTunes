@@ -5,6 +5,9 @@
 	default-autowire="byName" default-lazy-init="true">
 
 	<bean id="beanFactory" class="net.sourceforge.atunes.BeanFactory"/>
+	
+	<bean id="stateService"
+		class="net.sourceforge.atunes.kernel.modules.state.ApplicationStateService" />
 
 	<bean class="net.sourceforge.atunes.ApplicationStarter" scope="prototype"/>
 	<bean id="applicationPropertiesLogger" class="net.sourceforge.atunes.ApplicationPropertiesLogger" scope="prototype"/>

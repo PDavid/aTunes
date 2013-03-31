@@ -21,62 +21,69 @@
 package net.sourceforge.atunes.kernel.modules.os;
 
 import net.sourceforge.atunes.model.IKernel;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IUIHandler;
 
 /**
  * Initializes application in Mac OS X environment
+ * 
  * @author alex
- *
+ * 
  */
 public class MacOSXInitializer {
 
 	private IUIHandler uiHandler;
-	
-	private IStateHandler stateHandler;
-	
+
+	private IStateService stateService;
+
 	private IKernel kernel;
-	
+
 	private IMacOSXApplication macOsApplication;
-	
+
 	/**
 	 * @param uiHandler
 	 */
-	public void setUiHandler(IUIHandler uiHandler) {
+	public void setUiHandler(final IUIHandler uiHandler) {
 		this.uiHandler = uiHandler;
 	}
-	
+
 	/**
-	 * @param stateHandler
+	 * @param stateService
 	 */
-	public void setStateHandler(IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
+	public void setStateService(final IStateService stateService) {
+		this.stateService = stateService;
 	}
-	
+
 	/**
 	 * @param kernel
 	 */
-	public void setKernel(IKernel kernel) {
+	public void setKernel(final IKernel kernel) {
 		this.kernel = kernel;
 	}
-	
+
 	/**
 	 * @param macOsApplication
 	 */
-	public void setMacOsApplication(IMacOSXApplication macOsApplication) {
+	public void setMacOsApplication(final IMacOSXApplication macOsApplication) {
 		this.macOsApplication = macOsApplication;
 	}
-	
+
 	/**
 	 * Initializes application in Mac OS X environment
 	 */
 	public void initialize() {
-		if (macOsApplication.initialize()) {
-			macOsApplication.addDockIconMenu();
-			macOsApplication.registerAbout(new MacOSXAboutHandler(uiHandler, "showAboutDialog"));
-			macOsApplication.registerPreferences(new MacOSXPreferencesHandler(stateHandler, "editPreferences"));
-			macOsApplication.registerQuit(new MacOSXQuitHandler(kernel, "finish"));
-			macOsApplication.registerAppReOpenedListener(new MacOSXAppReOpenedListener(uiHandler, "showFullFrame"));
+		if (this.macOsApplication.initialize()) {
+			this.macOsApplication.addDockIconMenu();
+			this.macOsApplication.registerAbout(new MacOSXAboutHandler(
+					this.uiHandler, "showAboutDialog"));
+			this.macOsApplication
+					.registerPreferences(new MacOSXPreferencesHandler(
+							this.stateService, "editPreferences"));
+			this.macOsApplication.registerQuit(new MacOSXQuitHandler(
+					this.kernel, "finish"));
+			this.macOsApplication
+					.registerAppReOpenedListener(new MacOSXAppReOpenedListener(
+							this.uiHandler, "showFullFrame"));
 		}
 	}
 }

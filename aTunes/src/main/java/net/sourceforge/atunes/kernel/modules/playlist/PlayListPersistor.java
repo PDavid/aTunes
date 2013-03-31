@@ -23,51 +23,54 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.concurrent.Future;
 
 import net.sourceforge.atunes.model.IListOfPlayLists;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.ITaskService;
 
 /**
  * Responsible of call to persist methods
+ * 
  * @author alex
- *
+ * 
  */
 public class PlayListPersistor {
-	
+
 	private ITaskService taskService;
-	
-    private Future<?> persistPlayListFuture;
-    
-	private IStateHandler stateHandler;
-	
+
+	private Future<?> persistPlayListFuture;
+
+	private IStateService stateService;
+
 	/**
 	 * @param taskService
 	 */
-	public void setTaskService(ITaskService taskService) {
+	public void setTaskService(final ITaskService taskService) {
 		this.taskService = taskService;
 	}
-	
+
 	/**
-	 * @param stateHandler
+	 * @param stateService
 	 */
-	public void setStateHandler(IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
+	public void setStateService(final IStateService stateService) {
+		this.stateService = stateService;
 	}
-	
-    /**
-     * Called when play lists needs to be persisted
-     */
-    void persistPlayLists(final IListOfPlayLists listOfPlayLists) {
-		// Wait 5 seconds and persist play list 
-		if (persistPlayListFuture != null) {
-			persistPlayListFuture.cancel(false);
+
+	/**
+	 * Called when play lists needs to be persisted
+	 */
+	void persistPlayLists(final IListOfPlayLists listOfPlayLists) {
+		// Wait 5 seconds and persist play list
+		if (this.persistPlayListFuture != null) {
+			this.persistPlayListFuture.cancel(false);
 		}
 
-		persistPlayListFuture = taskService.submitOnce("Persist PlayList", 2, new Runnable() {
-			@Override
-			public void run() {
-				// Store play list definition
-				stateHandler.persistPlayLists(listOfPlayLists);
-			}
-		});
-    }
+		this.persistPlayListFuture = this.taskService.submitOnce(
+				"Persist PlayList", 2, new Runnable() {
+					@Override
+					public void run() {
+						// Store play list definition
+						PlayListPersistor.this.stateService
+								.persistPlayLists(listOfPlayLists);
+					}
+				});
+	}
 }

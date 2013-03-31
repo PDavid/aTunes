@@ -43,7 +43,7 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IStateContext;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.Logger;
@@ -56,7 +56,7 @@ import org.apache.commons.collections.list.SetUniqueList;
 public final class FavoritesHandler extends AbstractHandler implements
 		IAudioFilesRemovedListener, IFavoritesHandler {
 
-	private IStateHandler stateHandler;
+	private IStateService stateService;
 
 	private IRepositoryHandler repositoryHandler;
 
@@ -103,10 +103,10 @@ public final class FavoritesHandler extends AbstractHandler implements
 	}
 
 	/**
-	 * @param stateHandler
+	 * @param stateService
 	 */
-	public void setStateHandler(final IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
+	public void setStateService(final IStateService stateService) {
+		this.stateService = stateService;
 	}
 
 	/**
@@ -249,7 +249,7 @@ public final class FavoritesHandler extends AbstractHandler implements
 	public void applicationFinish() {
 		// Only store repository if it's dirty
 		if (((Favorites) this.favorites).isDirty()) {
-			this.stateHandler.persistFavoritesCache(this.favorites);
+			this.stateService.persistFavoritesCache(this.favorites);
 		} else {
 			Logger.info("Favorites are clean");
 		}

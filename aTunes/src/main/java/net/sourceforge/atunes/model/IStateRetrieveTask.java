@@ -21,22 +21,28 @@
 package net.sourceforge.atunes.model;
 
 /**
- * A task to be performed in background while starting handlers
+ * A task to be performed in background to retrieve state
+ * 
  * @author alex
- *
+ * 
  */
-public interface IHandlerBackgroundInitializationTask {
-	
-    /**
-     * Returns a task to be executed in background while continue starting application
-     * @return runnable task
-     */
-    Runnable getInitializationTask();
-    
-    /**
-     * Task to do after initialization task completed
-     * @return runnable task
-     */
-    Runnable getInitializationCompletedTask();
+public interface IStateRetrieveTask {
+
+	/**
+	 * Retrieves data
+	 * 
+	 * @param stateService
+	 * @param beanFactory
+	 */
+	void retrieveData(IStateService stateService, IBeanFactory beanFactory);
+
+	/**
+	 * Loads retrieved data
+	 * 
+	 * @param beanFactory
+	 * 
+	 * @return runnable task
+	 */
+	void setData(IBeanFactory beanFactory);
 
 }

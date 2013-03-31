@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateService;
 
 import org.junit.Test;
 
@@ -31,11 +31,11 @@ public class EditPreferencesActionTest {
 	@Test
 	public void test() {
 		EditPreferencesAction sut = new EditPreferencesAction();
-		IStateHandler stateHandler = mock(IStateHandler.class);
-		sut.setStateHandler(stateHandler);
-		
+		IStateService stateService = mock(IStateService.class);
+		sut.setStateService(stateService);
+
 		sut.executeAction();
-		
-		verify(stateHandler).editPreferences();
+
+		verify(stateService).editPreferences();
 	}
 }

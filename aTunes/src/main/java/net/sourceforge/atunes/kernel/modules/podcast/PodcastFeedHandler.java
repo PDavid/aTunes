@@ -46,8 +46,8 @@ import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IProgressDialog;
-import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStatePodcast;
+import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
@@ -94,7 +94,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	private INavigationHandler navigationHandler;
 
-	private IStateHandler stateHandler;
+	private IStateService stateService;
 
 	private ITaskService taskService;
 
@@ -153,10 +153,10 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	}
 
 	/**
-	 * @param stateHandler
+	 * @param stateService
 	 */
-	public void setStateHandler(final IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
+	public void setStateService(final IStateService stateService) {
+		this.stateService = stateService;
 	}
 
 	/**
@@ -188,13 +188,13 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	@Override
 	public void addPodcastFeed() {
-		IAddPodcastFeedDialog dialog = dialogFactory
+		IAddPodcastFeedDialog dialog = this.dialogFactory
 				.newDialog(IAddPodcastFeedDialog.class);
 		dialog.showDialog();
 		IPodcastFeed podcastFeed = dialog.getPodcastFeed();
 		if (podcastFeed != null) {
 			addPodcastFeed(podcastFeed);
-			navigationHandler.refreshView(podcastNavigationView);
+			this.navigationHandler.refreshView(this.podcastNavigationView);
 			retrievePodcastFeedEntries();
 			startPodcastFeedEntryDownloadChecker();
 			startPodcastFeedEntryRetriever();
@@ -222,7 +222,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 		if (!added) {
 			getPodcastFeeds().add(podcastFeed);
 		}
-		podcastFeedsDirty = true;
+		this.podcastFeedsDirty = true;
 	}
 
 	/**
@@ -230,9 +230,9 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	 */
 	@Override
 	public void applicationFinish() {
-		synchronized (runningDownloads) {
-			for (int i = 0; i < runningDownloads.size(); i++) {
-				PodcastFeedEntryDownloader podcastFeedEntryDownloader = runningDownloads
+		synchronized (this.runningDownloads) {
+			for (int i = 0; i < this.runningDownloads.size(); i++) {
+				PodcastFeedEntryDownloader podcastFeedEntryDownloader = this.runningDownloads
 						.get(i);
 				podcastFeedEntryDownloader.cancel(true);
 				new File(
@@ -240,8 +240,8 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 								.getPodcastFeedEntry())).deleteOnExit();
 			}
 		}
-		if (podcastFeedsDirty) {
-			stateHandler.persistPodcastFeedCache(getPodcastFeeds());
+		if (this.podcastFeedsDirty) {
+			this.stateService.persistPodcastFeedCache(getPodcastFeeds());
 		} else {
 			Logger.info("Podcast list is clean");
 		}
@@ -250,7 +250,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	@Override
 	public List<IPodcastFeed> getPodcastFeeds() {
-		return podcastFeeds;
+		return this.podcastFeeds;
 	}
 
 	@Override
@@ -266,8 +266,8 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	public void removePodcastFeed(final IPodcastFeed podcastFeed) {
 		Logger.info("Removing podcast feed");
 		getPodcastFeeds().remove(podcastFeed);
-		podcastFeedsDirty = true;
-		navigationHandler.refreshView(podcastNavigationView);
+		this.podcastFeedsDirty = true;
+		this.navigationHandler.refreshView(this.podcastNavigationView);
 		if (CollectionUtils.isEmpty(getPodcastFeeds())) {
 			stopPodcastFeedEntryDownloadChecker();
 			stopPodcastFeedEntryRetriever();
@@ -276,7 +276,8 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	private void startPodcastFeedEntryRetriever() {
 		// When upgrading from a previous version, retrievel interval can be 0
-		long retrieval = statePodcast.getPodcastFeedEntriesRetrievalInterval();
+		long retrieval = this.statePodcast
+				.getPodcastFeedEntriesRetrievalInterval();
 		long retrievalInterval = retrieval > 0 ? retrieval
 				: DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL;
 
@@ -286,7 +287,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	private void startPodcastFeedEntryDownloadChecker() {
 		// Start only if podcast feeds created
 		if (!CollectionUtils.isEmpty(getPodcastFeeds())) {
-			scheduledPodcastFeedEntryDownloadCheckerFuture = taskService
+			this.scheduledPodcastFeedEntryDownloadCheckerFuture = this.taskService
 					.submitPeriodically(
 							"PodcastFeedEntryDownloadChecker",
 							30,
@@ -299,15 +300,15 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	}
 
 	private void stopPodcastFeedEntryRetriever() {
-		if (scheduledPodcastFeedEntryRetrieverFuture != null) {
-			scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
+		if (this.scheduledPodcastFeedEntryRetrieverFuture != null) {
+			this.scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
 			Logger.debug("Stopped PodcastFeedEntryRetrieverChecker");
 		}
 	}
 
 	private void stopPodcastFeedEntryDownloadChecker() {
-		if (scheduledPodcastFeedEntryDownloadCheckerFuture != null) {
-			scheduledPodcastFeedEntryDownloadCheckerFuture.cancel(true);
+		if (this.scheduledPodcastFeedEntryDownloadCheckerFuture != null) {
+			this.scheduledPodcastFeedEntryDownloadCheckerFuture.cancel(true);
 			Logger.debug("Stopped PodcastFeedEntryDownloadChecker");
 		}
 	}
@@ -339,14 +340,16 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 		// Start only if podcast feeds created
 		if (!CollectionUtils.isEmpty(getPodcastFeeds())) {
-			scheduledPodcastFeedEntryRetrieverFuture = taskService
+			this.scheduledPodcastFeedEntryRetrieverFuture = this.taskService
 					.submitPeriodically(
 							"Periodically Retrieve Podcast Feed Entries",
 							newRetrievalInterval, newRetrievalInterval,
 							new PodcastFeedEntryRetriever(getPodcastFeeds(),
-									statePodcast, stateUI, getFrame(),
-									navigationHandler, networkHandler,
-									podcastNavigationView, dialogFactory));
+									this.statePodcast, this.stateUI,
+									getFrame(), this.navigationHandler,
+									this.networkHandler,
+									this.podcastNavigationView,
+									this.dialogFactory));
 		} else {
 			Logger.debug("Not scheduling PodcastFeedEntryRetriever");
 		}
@@ -354,10 +357,11 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	@Override
 	public void retrievePodcastFeedEntries() {
-		taskService.submitNow("Retrieve Podcast Feed Entries",
-				new PodcastFeedEntryRetriever(getPodcastFeeds(), statePodcast,
-						stateUI, getFrame(), navigationHandler, networkHandler,
-						podcastNavigationView, dialogFactory));
+		this.taskService.submitNow("Retrieve Podcast Feed Entries",
+				new PodcastFeedEntryRetriever(getPodcastFeeds(),
+						this.statePodcast, this.stateUI, getFrame(),
+						this.navigationHandler, this.networkHandler,
+						this.podcastNavigationView, this.dialogFactory));
 	}
 
 	@Override
@@ -366,21 +370,21 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 		if (isDownloading(podcastFeedEntry)) {
 			return;
 		}
-		final IProgressDialog d = dialogFactory.newDialog("transferDialog",
-				IProgressDialog.class);
+		final IProgressDialog d = this.dialogFactory.newDialog(
+				"transferDialog", IProgressDialog.class);
 		d.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
-		d.setIcon(rssMediumIcon.getIcon(lookAndFeelManager
+		d.setIcon(this.rssMediumIcon.getIcon(this.lookAndFeelManager
 				.getCurrentLookAndFeel().getPaintForSpecialControls()));
 		final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(
 				podcastFeedEntry, getBean("navigationTable", ITable.class),
-				this, networkHandler);
-		synchronized (runningDownloads) {
-			runningDownloads.add(downloadPodcastFeedEntry);
+				this, this.networkHandler);
+		synchronized (this.runningDownloads) {
+			this.runningDownloads.add(downloadPodcastFeedEntry);
 		}
 		downloadPodcastFeedEntry
 				.addPropertyChangeListener(new DownloadPodcastFeedEntryPropertyChangeListener(
 						this, podcastFeedEntry, d, downloadPodcastFeedEntry,
-						runningDownloads));
+						this.runningDownloads));
 		d.addCancelButtonActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -427,8 +431,9 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 				} catch (InterruptedException e) {
 					// Nothing to do
 				}
-				synchronized (runningDownloads) {
-					runningDownloads.remove(downloadPodcastFeedEntry);
+				synchronized (PodcastFeedHandler.this.runningDownloads) {
+					PodcastFeedHandler.this.runningDownloads
+							.remove(downloadPodcastFeedEntry);
 				}
 				Logger.info("podcast entry download cancelled: "
 						+ podcastFeedEntry.getTitle());
@@ -507,7 +512,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	 * @return
 	 */
 	private File getPodcastFeedsDownloadFolder() {
-		String path = statePodcast.getPodcastFeedEntryDownloadPath();
+		String path = this.statePodcast.getPodcastFeedEntryDownloadPath();
 		if (path == null || path.isEmpty()) {
 			path = StringUtils.getString(getOsManager().getUserConfigFolder(),
 					"/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
@@ -550,9 +555,9 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	 */
 	@Override
 	public boolean isDownloading(final IPodcastFeedEntry podcastFeedEntry) {
-		synchronized (runningDownloads) {
-			for (int i = 0; i < runningDownloads.size(); i++) {
-				if (runningDownloads.get(i).getPodcastFeedEntry()
+		synchronized (this.runningDownloads) {
+			for (int i = 0; i < this.runningDownloads.size(); i++) {
+				if (this.runningDownloads.get(i).getPodcastFeedEntry()
 						.equals(podcastFeedEntry)) {
 					return true;
 				}
@@ -563,7 +568,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	@Override
 	public void applicationStateChanged() {
-		setPodcastFeedEntryRetrievalInterval(statePodcast
+		setPodcastFeedEntryRetrievalInterval(this.statePodcast
 				.getPodcastFeedEntriesRetrievalInterval());
 	}
 
@@ -571,11 +576,11 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	 * @return the podcastFeedEntryDownloaderExecutorService
 	 */
 	private ExecutorService getPodcastFeedEntryDownloaderExecutorService() {
-		if (podcastFeedEntryDownloaderExecutorService == null) {
-			podcastFeedEntryDownloaderExecutorService = Executors
+		if (this.podcastFeedEntryDownloaderExecutorService == null) {
+			this.podcastFeedEntryDownloaderExecutorService = Executors
 					.newCachedThreadPool();
 		}
-		return podcastFeedEntryDownloaderExecutorService;
+		return this.podcastFeedEntryDownloaderExecutorService;
 	}
 
 	/**

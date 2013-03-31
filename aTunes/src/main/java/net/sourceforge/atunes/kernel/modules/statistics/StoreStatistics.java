@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.statistics;
 
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.ITaskService;
 
 /**
@@ -31,35 +31,36 @@ import net.sourceforge.atunes.model.ITaskService;
  */
 class StoreStatistics implements Runnable {
 
-    private final ITaskService taskService;
+	private final ITaskService taskService;
 
-    private final IStateHandler stateHandler;
+	private final IStateService stateService;
 
-    private final StatisticsHandler statisticsHandler;
+	private final StatisticsHandler statisticsHandler;
 
-    /**
-     * @param taskService
-     * @param stateHandler
-     * @param staticticsHandler
-     */
-    public StoreStatistics(final ITaskService taskService,
-	    final IStateHandler stateHandler,
-	    final StatisticsHandler staticticsHandler) {
-	this.taskService = taskService;
-	this.stateHandler = stateHandler;
-	this.statisticsHandler = staticticsHandler;
-    }
+	/**
+	 * @param taskService
+	 * @param stateService
+	 * @param staticticsHandler
+	 */
+	public StoreStatistics(final ITaskService taskService,
+			final IStateService stateService,
+			final StatisticsHandler staticticsHandler) {
+		this.taskService = taskService;
+		this.stateService = stateService;
+		this.statisticsHandler = staticticsHandler;
+	}
 
-    /**
-     * Stores statistics
-     * 
-     */
-    void storeStatistics() {
-	taskService.submitNow("Persist statistics", this);
-    }
+	/**
+	 * Stores statistics
+	 * 
+	 */
+	void storeStatistics() {
+		this.taskService.submitNow("Persist statistics", this);
+	}
 
-    @Override
-    public void run() {
-	stateHandler.persistStatisticsCache(statisticsHandler.getStatistics());
-    }
+	@Override
+	public void run() {
+		this.stateService.persistStatisticsCache(this.statisticsHandler
+				.getStatistics());
+	}
 }

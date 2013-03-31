@@ -20,95 +20,44 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
-import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;
+import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
-import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStateRepository;
+import net.sourceforge.atunes.model.IStateRetrieveTask;
+import net.sourceforge.atunes.model.IStateService;
 
 /**
  * Loads repository
+ * 
  * @author alex
- *
+ * 
  */
-public final class ReadRepositoryInitializationTask implements IHandlerBackgroundInitializationTask {
-	
-	private RepositoryReader repositoryReader;
-	
-	private IStateHandler stateHandler;
-	
-	private IStateRepository stateRepository;
-	
-	private ISearchHandler searchHandler;
-	
-    private RepositoryAutoRefresher repositoryRefresher;
-    
-	private ISearchableObject repositorySearchableObject;
-	
-	/**
-	 * @param repositorySearchableObject
-	 */
-	public void setRepositorySearchableObject(ISearchableObject repositorySearchableObject) {
-		this.repositorySearchableObject = repositorySearchableObject;
-	}
-    
-    /**
-     * @param repositoryRefresher
-     */
-    public void setRepositoryRefresher(RepositoryAutoRefresher repositoryRefresher) {
-		this.repositoryRefresher = repositoryRefresher;
-	}
-	
-	/**
-	 * @param searchHandler
-	 */
-	public void setSearchHandler(ISearchHandler searchHandler) {
-		this.searchHandler = searchHandler;
-	}
-	
-	/**
-	 * @param stateRepository
-	 */
-	public void setStateRepository(IStateRepository stateRepository) {
-		this.stateRepository = stateRepository;
-	}
-	
-	/**
-	 * @param repositoryReader
-	 */
-	public void setRepositoryReader(RepositoryReader repositoryReader) {
-		this.repositoryReader = repositoryReader;
-	}
-	
-	/**
-	 * @param stateHandler
-	 */
-	public void setStateHandler(IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
-	}
-	
+public final class ReadRepositoryInitializationTask implements
+		IStateRetrieveTask {
+
+	private IRepository repository;
+
 	@Override
-	public Runnable getInitializationTask() {
-		return new Runnable() {
-			@Override
-			public void run() {
-			    // This is the first access to repository, so execute the command defined by user
-			    new LoadRepositoryCommandExecutor().execute(stateRepository.getCommandBeforeAccessRepository());
-			    repositoryReader.setRepositoryRetrievedFromCache(stateHandler.retrieveRepositoryCache());
-			}
-		};
+	public void retrieveData(final IStateService stateService,
+			final IBeanFactory beanFactory) {
+		// This is the first access to repository, so execute the
+		// command defined by user
+		new LoadRepositoryCommandExecutor().execute(beanFactory.getBean(
+				IStateRepository.class).getCommandBeforeAccessRepository());
+		this.repository = stateService.retrieveRepositoryCache();
 	}
-	
+
 	@Override
-	public Runnable getInitializationCompletedTask() {
-    	return new Runnable() {
-    		@Override
-    		public void run() {
-    	    	repositoryReader.testRepositoryRetrievedFromCache();
-    	    	repositoryReader.applyRepositoryFromCache();
-    	        searchHandler.registerSearchableObject(repositorySearchableObject);
-    	        repositoryRefresher.start();
-    		}
-    	};
-	}	
+	public void setData(final IBeanFactory beanFactory) {
+		RepositoryReader reader = beanFactory.getBean(RepositoryReader.class);
+		reader.setRepositoryRetrievedFromCache(this.repository);
+		reader.testRepositoryRetrievedFromCache();
+		reader.applyRepositoryFromCache();
+		beanFactory.getBean(ISearchHandler.class).registerSearchableObject(
+				beanFactory.getBean("repositorySearchableObject",
+						ISearchableObject.class));
+		beanFactory.getBean(RepositoryAutoRefresher.class).start();
+	}
 }
