@@ -25,6 +25,12 @@ import java.io.IOException;
 import javafx.scene.Scene;
 import net.sourceforge.atunes.model.IAboutDialog;
 
+/**
+ * About dialog
+ * 
+ * @author alex
+ * 
+ */
 public class AboutDialog extends JavaFXDialog implements IAboutDialog {
 
 	@Override

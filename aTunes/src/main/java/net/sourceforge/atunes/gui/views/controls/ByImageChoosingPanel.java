@@ -88,6 +88,9 @@ public final class ByImageChoosingPanel<T> extends ScrollableFlowPanel {
 
 		private final T object;
 
+		/**
+		 * @param object
+		 */
 		public CustomJRadioButton(final T object) {
 			this.object = object;
 		}

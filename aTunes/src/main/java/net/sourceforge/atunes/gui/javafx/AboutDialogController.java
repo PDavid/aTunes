@@ -45,6 +45,12 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.joda.time.DateMidnight;
 
+/**
+ * Controller for About dialog
+ * 
+ * @author alex
+ * 
+ */
 public class AboutDialogController extends JavaFXDialogController implements
 		Initializable {
 
@@ -76,14 +82,14 @@ public class AboutDialogController extends JavaFXDialogController implements
 	/**
 	 * @param taskService
 	 */
-	public void setTaskService(ITaskService taskService) {
+	public void setTaskService(final ITaskService taskService) {
 		this.taskService = taskService;
 	}
 
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
@@ -114,35 +120,37 @@ public class AboutDialogController extends JavaFXDialogController implements
 	/**
 	 * @param desktop
 	 */
-	public void setDesktop(IDesktop desktop) {
+	public void setDesktop(final IDesktop desktop) {
 		this.desktop = desktop;
 	}
 
 	@Override
-	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-		version.setText(StringUtils.getString(Constants.APP_NAME, " ",
+	public void initialize(final URL fxmlFileLocation,
+			final ResourceBundle resources) {
+		this.version.setText(StringUtils.getString(Constants.APP_NAME, " ",
 				Constants.VERSION.toString()));
-		version.setOnAction(new EventHandler<ActionEvent>() {
+		this.version.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
-			public void handle(ActionEvent ev) {
-				desktop.openURL(Constants.APP_WEB);
+			public void handle(final ActionEvent ev) {
+				AboutDialogController.this.desktop.openURL(Constants.APP_WEB);
 			}
 		});
 
-		contributors.setOnAction(new EventHandler<ActionEvent>() {
+		this.contributors.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent ev) {
-				desktop.openURL(Constants.CONTRIBUTORS_WEB);
+			public void handle(final ActionEvent ev) {
+				AboutDialogController.this.desktop
+						.openURL(Constants.CONTRIBUTORS_WEB);
 			}
 		});
 
-		licenseText.setText(getLicenseText());
+		this.licenseText.setText(getLicenseText());
 
-		okButton.setOnAction(new EventHandler<ActionEvent>() {
+		this.okButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent event) {
-				future.cancel(false);
+			public void handle(final ActionEvent event) {
+				AboutDialogController.this.future.cancel(false);
 				getDialog().close();
 			}
 		});
@@ -167,12 +175,12 @@ public class AboutDialogController extends JavaFXDialogController implements
 				this.propertiesTable.widthProperty().divide(2).add(-20));
 
 		this.properties = FXCollections.observableArrayList();
-		propertiesTable.setItems(this.properties);
+		this.propertiesTable.setItems(this.properties);
 
-		propertiesTable.getColumns().addAll(propertyColumn, valueColumn);
+		this.propertiesTable.getColumns().addAll(propertyColumn, valueColumn);
 
-		future = taskService.submitPeriodically("Get JVM statistics", 0, 4,
-				new Runnable() {
+		this.future = this.taskService.submitPeriodically("Get JVM statistics",
+				0, 4, new Runnable() {
 					@Override
 					public void run() {
 						updatePropertiesTable();
@@ -181,26 +189,26 @@ public class AboutDialogController extends JavaFXDialogController implements
 	}
 
 	private void updatePropertiesTable() {
-		for (IJavaVirtualMachineStatistic statistic : beanFactory
+		for (IJavaVirtualMachineStatistic statistic : this.beanFactory
 				.getBeans(IJavaVirtualMachineStatistic.class)) {
 			Property property = new Property(statistic.getDescription(),
 					statistic.getValue());
 			int indexToRemove = -1;
-			for (int i = 0; i < properties.size() && indexToRemove == -1; i++) {
-				if (properties.get(i).getDescription()
+			for (int i = 0; i < this.properties.size() && indexToRemove == -1; i++) {
+				if (this.properties.get(i).getDescription()
 						.equals(property.getDescription())) {
 					indexToRemove = i;
 				}
 			}
 			if (indexToRemove != -1) {
-				properties.remove(indexToRemove);
+				this.properties.remove(indexToRemove);
 			}
-			properties.add(property);
+			this.properties.add(property);
 		}
 	}
 
 	@Override
 	protected void dialogClosed() {
-		future.cancel(false);
+		this.future.cancel(false);
 	}
 }
