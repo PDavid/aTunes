@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.playlist;
 
 import net.sourceforge.atunes.kernel.AbstractStateRetrieveTask;
-import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.IStatePlayer;
@@ -47,12 +46,14 @@ public class PlayListHandlerInitializationTask extends
 	@Override
 	public void setData(final IBeanFactory beanFactory) {
 		if (this.list == null) {
-			this.list = ListOfPlayLists.getEmptyPlayList(
-					beanFactory.getBean(IStatePlayer.class),
-					beanFactory.getBean(PlayListEventListeners.class));
+			this.list = ListOfPlayLists.getEmptyPlayList(beanFactory
+					.getBean(IStatePlayer.class));
 		}
 		beanFactory.getBean(PlayListHandler.class)
 				.setPlayListsRetrievedFromCache(this.list);
+		// When calling this method it's necessary that repository has been
+		// already loaded
+		// to reuse audio objects
 		beanFactory.getBean(PlayListHandler.class)
 				.initializationTaskCompleted();
 	}

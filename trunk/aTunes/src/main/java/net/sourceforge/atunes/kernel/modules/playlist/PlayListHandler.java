@@ -269,6 +269,13 @@ public final class PlayListHandler extends AbstractHandler implements
 	}
 
 	private void addNewPlayList(final String name, final IPlayList playList) {
+		// Each play list added to container must have its listeners, state
+		// player and mode
+		playList.setStatePlayer(this.statePlayer);
+		playList.setMode(PlayListMode.getPlayListMode((PlayList) playList,
+				this.statePlayer));
+		playList.setPlayListEventListeners(this.playListEventListeners);
+
 		this.playListsContainer.addPlayList(playList);
 		this.playListTabController.newPlayList(name);
 	}
@@ -822,7 +829,9 @@ public final class PlayListHandler extends AbstractHandler implements
 		this.playListsContainer.clear();
 		for (IPlayList playlist : listOfPlayLists.getPlayLists()) {
 			addNewPlayList(this.playListNameCreator.getNameForPlaylist(
-					this.playListsContainer, playlist), playlist);
+					this.playListsContainer, playlist),
+					this.playListCreator
+							.replaceCachedLocalAudioObjects(playlist));
 		}
 		// Initially active play list and visible play list are the same
 		this.playListsContainer.setActivePlayListIndex(selected);

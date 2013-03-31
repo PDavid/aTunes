@@ -93,53 +93,54 @@ public final class ContextHandler extends AbstractHandler implements
 	/**
 	 * @param fileManager
 	 */
-	public void setFileManager(IFileManager fileManager) {
+	public void setFileManager(final IFileManager fileManager) {
 		this.fileManager = fileManager;
 	}
 
 	/**
 	 * @param contextTaskService
 	 */
-	public void setContextTaskService(ITaskService contextTaskService) {
+	public void setContextTaskService(final ITaskService contextTaskService) {
 		this.contextTaskService = contextTaskService;
 	}
 
 	/**
 	 * @param statePlaylist
 	 */
-	public void setStatePlaylist(IStatePlaylist statePlaylist) {
+	public void setStatePlaylist(final IStatePlaylist statePlaylist) {
 		this.statePlaylist = statePlaylist;
 	}
 
 	/**
 	 * @param stateContext
 	 */
-	public void setStateContext(IStateContext stateContext) {
+	public void setStateContext(final IStateContext stateContext) {
 		this.stateContext = stateContext;
 	}
 
 	/**
 	 * @param webServicesHandler
 	 */
-	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+	public void setWebServicesHandler(
+			final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
 
 	/**
 	 * @param taskService
 	 */
-	public void setTaskService(ITaskService taskService) {
+	public void setTaskService(final ITaskService taskService) {
 		this.taskService = taskService;
 	}
 
 	@Override
 	public void applicationStarted() {
-		addContextPanels(contextPanels);
+		addContextPanels(this.contextPanels);
 
 		// Set previous selected tab
-		setContextTab(stateContext.getSelectedContextTab());
+		setContextTab(this.stateContext.getSelectedContextTab());
 
-		getFrame().showContextPanel(stateContext.isUseContext());
+		getFrame().showContextPanel(this.stateContext.isUseContext());
 	}
 
 	/**
@@ -148,12 +149,12 @@ public final class ContextHandler extends AbstractHandler implements
 	@Override
 	public void contextPanelChanged() {
 		// Update selected tab
-		stateContext
+		this.stateContext
 				.setSelectedContextTab(getContextTab() != null ? getContextTab()
 						.getContextPanelName() : null);
 		// Call to fill information: Don't force update since audio object can
 		// be the same
-		retrieveInfo(currentAudioObject, false);
+		retrieveInfo(this.currentAudioObject, false);
 	}
 
 	/**
@@ -162,10 +163,10 @@ public final class ContextHandler extends AbstractHandler implements
 	 */
 	private void clearContextPanels() {
 		clearTabsContent();
-		currentAudioObject = null;
+		this.currentAudioObject = null;
 
 		// Select first tab
-		stateContext.setSelectedContextTab(null);
+		this.stateContext.setSelectedContextTab(null);
 		setContextTab(null);
 	}
 
@@ -174,19 +175,21 @@ public final class ContextHandler extends AbstractHandler implements
 	 */
 	private void clearTabsContent() {
 		// Clear all context panels
-		for (IContextPanel panel : contextPanels) {
+		for (IContextPanel panel : this.contextPanels) {
 			panel.clearContextPanel();
 		}
 	}
 
 	@Override
-	public void retrieveInfoAndShowInPanel(IAudioObject ao) {
+	public void retrieveInfoAndShowInPanel(final IAudioObject ao) {
 		boolean audioObjectModified = false;
 		// Avoid retrieve information about the same audio object twice except
 		// if is an LocalAudioObject and has been recently changed
-		if (currentAudioObject != null && currentAudioObject.equals(ao)) {
+		if (this.currentAudioObject != null
+				&& this.currentAudioObject.equals(ao)) {
 			if (ao instanceof ILocalAudioObject) {
-				if (fileManager.getModificationTime((ILocalAudioObject) ao) != lastAudioObjectModificationTime) {
+				if (this.fileManager
+						.getModificationTime((ILocalAudioObject) ao) != this.lastAudioObjectModificationTime) {
 					audioObjectModified = true;
 				} else {
 					return;
@@ -195,13 +198,13 @@ public final class ContextHandler extends AbstractHandler implements
 				return;
 			}
 		}
-		currentAudioObject = ao;
+		this.currentAudioObject = ao;
 
 		// Update modification time if necessary
 		updateModificationTimeOfLastAudioObject(ao);
 
 		// Call to retrieve and show information
-		if (stateContext.isUseContext()) {
+		if (this.stateContext.isUseContext()) {
 			retrieveInfoAndShowInPanel(ao, audioObjectModified);
 		}
 	}
@@ -209,12 +212,12 @@ public final class ContextHandler extends AbstractHandler implements
 	/**
 	 * @param ao
 	 */
-	private void updateModificationTimeOfLastAudioObject(IAudioObject ao) {
+	private void updateModificationTimeOfLastAudioObject(final IAudioObject ao) {
 		if (ao instanceof ILocalAudioObject) {
-			lastAudioObjectModificationTime = fileManager
+			this.lastAudioObjectModificationTime = this.fileManager
 					.getModificationTime((ILocalAudioObject) ao);
 		} else {
-			lastAudioObjectModificationTime = 0;
+			this.lastAudioObjectModificationTime = 0;
 		}
 	}
 
@@ -222,8 +225,8 @@ public final class ContextHandler extends AbstractHandler implements
 	 * @param ao
 	 * @param audioObjectModified
 	 */
-	private void retrieveInfoAndShowInPanel(IAudioObject ao,
-			boolean audioObjectModified) {
+	private void retrieveInfoAndShowInPanel(final IAudioObject ao,
+			final boolean audioObjectModified) {
 
 		// Enable or disable tabs
 		updateContextTabs();
@@ -252,15 +255,16 @@ public final class ContextHandler extends AbstractHandler implements
 	 *            audio object is the same but has been modified so context data
 	 *            can be different
 	 */
-	private void retrieveInfo(IAudioObject audioObject, boolean forceUpdate) {
+	private void retrieveInfo(final IAudioObject audioObject,
+			final boolean forceUpdate) {
 		if (audioObject == null) {
 			return;
 		}
 
 		// Context panel can be removed so check index
-		String selectedTab = stateContext.getSelectedContextTab();
+		String selectedTab = this.stateContext.getSelectedContextTab();
 		// Update current context panel
-		for (IContextPanel panel : contextPanels) {
+		for (IContextPanel panel : this.contextPanels) {
 			if (panel.getContextPanelName().equals(selectedTab)) {
 				panel.updateContextPanel(audioObject, forceUpdate);
 				break;
@@ -271,7 +275,7 @@ public final class ContextHandler extends AbstractHandler implements
 	@Override
 	public void applicationStateChanged() {
 		// Show or hide context panel
-		showContextPanel(stateContext.isUseContext());
+		showContextPanel(this.stateContext.isUseContext());
 	}
 
 	/*
@@ -282,42 +286,42 @@ public final class ContextHandler extends AbstractHandler implements
 	 */
 	@Override
 	public IAudioObject getCurrentAudioObject() {
-		return currentAudioObject;
+		return this.currentAudioObject;
 	}
 
 	@Override
-	public void pluginActivated(PluginInfo plugin) {
+	public void pluginActivated(final PluginInfo plugin) {
 		try {
 			IContextPanel newPanel = (IContextPanel) getBean(
 					IPluginsHandler.class).getNewInstance(plugin);
-			contextPanels.add(newPanel);
+			this.contextPanels.add(newPanel);
 		} catch (PluginSystemException e) {
 			Logger.error(e);
 		}
 	}
 
 	@Override
-	public void pluginDeactivated(PluginInfo plugin,
-			Collection<Plugin> createdInstances) {
+	public void pluginDeactivated(final PluginInfo plugin,
+			final Collection<Plugin> createdInstances) {
 		for (Plugin instance : createdInstances) {
-			contextPanels.remove(instance);
+			this.contextPanels.remove(instance);
 			removeContextPanel((IContextPanel) instance);
 		}
 	}
 
 	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {
-		if (stateContext.isUseContext()) {
+	public void selectedAudioObjectChanged(final IAudioObject audioObject) {
+		if (this.stateContext.isUseContext()) {
 			retrieveInfoAndShowInPanel(audioObject);
 		}
 	}
 
 	@Override
 	public void playListCleared() {
-		if (stateContext.isUseContext()) {
+		if (this.stateContext.isUseContext()) {
 			retrieveInfoAndShowInPanel(null);
 
-			if (statePlaylist.isStopPlayerOnPlayListClear()) {
+			if (this.statePlaylist.isStopPlayerOnPlayListClear()) {
 				clearContextPanels();
 			}
 		}
@@ -330,11 +334,11 @@ public final class ContextHandler extends AbstractHandler implements
 	 * showContextPanel(boolean)
 	 */
 	@Override
-	public void showContextPanel(boolean show) {
-		stateContext.setUseContext(show);
+	public void showContextPanel(final boolean show) {
+		this.stateContext.setUseContext(show);
 		getFrame().showContextPanel(show);
 		if (show) {
-			retrieveInfoAndShowInPanel(playListHandler
+			retrieveInfoAndShowInPanel(this.playListHandler
 					.getCurrentAudioObjectFromVisiblePlayList());
 		}
 	}
@@ -345,8 +349,8 @@ public final class ContextHandler extends AbstractHandler implements
 	 * @param selectedContextTab
 	 */
 	@Override
-	public void setContextTab(String selectedContextTab) {
-		contextPanelsContainer.setSelectedContextPanel(selectedContextTab);
+	public void setContextTab(final String selectedContextTab) {
+		this.contextPanelsContainer.setSelectedContextPanel(selectedContextTab);
 		contextPanelChanged();
 	}
 
@@ -356,21 +360,22 @@ public final class ContextHandler extends AbstractHandler implements
 	 * @return
 	 */
 	private IContextPanel getContextTab() {
-		return contextPanelsContainer.getSelectedContextPanel();
+		return this.contextPanelsContainer.getSelectedContextPanel();
 	}
 
 	private void updateContextTabs() {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				contextPanelsContainer.updateContextPanels();
+				ContextHandler.this.contextPanelsContainer
+						.updateContextPanels();
 			}
 		});
 	}
 
-	private void removeContextPanel(IContextPanel instance) {
-		contextPanelsContainer.removeContextPanel(instance);
-		contextPanelsContainer.updateContextPanels();
+	private void removeContextPanel(final IContextPanel instance) {
+		this.contextPanelsContainer.removeContextPanel(instance);
+		this.contextPanelsContainer.updateContextPanels();
 	}
 
 	/**
@@ -378,17 +383,17 @@ public final class ContextHandler extends AbstractHandler implements
 	 * 
 	 * @param contextPanels
 	 */
-	private void addContextPanels(List<IContextPanel> contextPanels) {
+	private void addContextPanels(final List<IContextPanel> contextPanels) {
 		for (IContextPanel panel : contextPanels) {
-			contextPanelsContainer.addContextPanel(panel);
+			this.contextPanelsContainer.addContextPanel(panel);
 		}
-		contextPanelsContainer.updateContextPanels();
+		this.contextPanelsContainer.updateContextPanels();
 	}
 
 	/**
 	 * @param contextPanels
 	 */
-	public void setContextPanels(List<IContextPanel> contextPanels) {
+	public void setContextPanels(final List<IContextPanel> contextPanels) {
 		this.contextPanels = contextPanels;
 	}
 
@@ -396,29 +401,29 @@ public final class ContextHandler extends AbstractHandler implements
 	 * @param contextPanelsContainer
 	 */
 	public void setContextPanelsContainer(
-			IContextPanelsContainer contextPanelsContainer) {
+			final IContextPanelsContainer contextPanelsContainer) {
 		this.contextPanelsContainer = contextPanelsContainer;
 	}
 
 	/**
 	 * @param playListHandler
 	 */
-	public void setPlayListHandler(IPlayListHandler playListHandler) {
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
 
 	@Override
 	public void finishedContextPanelUpdate() {
-		taskService.submitNow("Consolidate Web Content", new Runnable() {
+		this.taskService.submitNow("Consolidate Web Content", new Runnable() {
 			@Override
 			public void run() {
-				webServicesHandler.consolidateWebContent();
+				ContextHandler.this.webServicesHandler.consolidateWebContent();
 			}
 		});
 	}
 
 	@Override
 	public void applicationFinish() {
-		contextTaskService.shutdownService();
+		this.contextTaskService.shutdownService();
 	}
 }

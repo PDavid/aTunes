@@ -33,6 +33,7 @@ import net.sourceforge.atunes.kernel.modules.process.SetStarsProcess;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
@@ -714,5 +715,16 @@ public final class RepositoryHandler extends AbstractHandler implements
 		process.setFilesToChange(Collections.singletonList(audioObject));
 		process.setStars(value);
 		process.execute();
+	}
+
+	@Override
+	public IAudioObject getAudioObjectIfLoaded(final IAudioObject ao) {
+		if (ao instanceof ILocalAudioObject) {
+			IAudioObject cachedAO = getFileIfLoaded(ao.getUrl());
+			if (cachedAO != null) {
+				return cachedAO;
+			}
+		}
+		return ao;
 	}
 }
