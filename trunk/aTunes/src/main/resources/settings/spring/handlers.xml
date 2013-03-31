@@ -103,26 +103,29 @@
 		class="net.sourceforge.atunes.kernel.modules.player.AdvancedPlayingModeHandler" />
 
 	<!-- PREVIOUS TASKS -->
-	<bean
-		class="net.sourceforge.atunes.kernel.modules.radio.RadioInitializationTask"
-		scope="prototype" />
-	<bean
-		class="net.sourceforge.atunes.kernel.modules.favorites.FavoritesInitializationTask"
-		scope="prototype" />
-	<bean
-		class="net.sourceforge.atunes.kernel.modules.podcast.PodcastsInitializationTask"
-		scope="prototype" />
-	<bean
-		class="net.sourceforge.atunes.kernel.modules.statistics.StatisticsInitializationTask"
-		scope="prototype" />
-	<bean id="repositoryInitializationTask"
-		class="net.sourceforge.atunes.kernel.modules.repository.ReadRepositoryInitializationTask"
-		scope="prototype" />
-	<bean
-		class="net.sourceforge.atunes.kernel.modules.playlist.PlayListHandlerInitializationTask"
-		scope="prototype" />
+	<bean id="stateToRetrieve" class="java.util.ArrayList" scope="prototype">
+		<constructor-arg>
+			<list>
+				<bean id="repositoryInitializationTask"
+					class="net.sourceforge.atunes.kernel.modules.repository.ReadRepositoryInitializationTask"
+					scope="prototype" />
+				<bean
+					class="net.sourceforge.atunes.kernel.modules.radio.RadioInitializationTask"
+					scope="prototype" />
+				<bean
+					class="net.sourceforge.atunes.kernel.modules.favorites.FavoritesInitializationTask"
+					scope="prototype" />
+				<bean
+					class="net.sourceforge.atunes.kernel.modules.podcast.PodcastsInitializationTask"
+					scope="prototype" />
+				<bean
+					class="net.sourceforge.atunes.kernel.modules.statistics.StatisticsInitializationTask"
+					scope="prototype" />
+				<bean
+					class="net.sourceforge.atunes.kernel.modules.playlist.PlayListHandlerInitializationTask"
+					scope="prototype" />
 
-
-
-
+			</list>
+		</constructor-arg>
+	</bean>
 </beans>

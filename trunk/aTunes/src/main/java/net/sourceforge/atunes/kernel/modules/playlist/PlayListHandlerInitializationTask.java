@@ -20,11 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
+import net.sourceforge.atunes.kernel.AbstractStateRetrieveTask;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.IStatePlayer;
-import net.sourceforge.atunes.model.IStateRetrieveTask;
 import net.sourceforge.atunes.model.IStateService;
 
 /**
@@ -33,7 +33,8 @@ import net.sourceforge.atunes.model.IStateService;
  * @author alex
  * 
  */
-public class PlayListHandlerInitializationTask implements IStateRetrieveTask {
+public class PlayListHandlerInitializationTask extends
+		AbstractStateRetrieveTask {
 
 	private IListOfPlayLists list;
 

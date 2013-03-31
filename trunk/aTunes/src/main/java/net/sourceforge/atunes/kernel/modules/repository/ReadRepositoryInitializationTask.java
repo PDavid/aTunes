@@ -20,12 +20,12 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
+import net.sourceforge.atunes.kernel.AbstractStateRetrieveTask;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IStateRepository;
-import net.sourceforge.atunes.model.IStateRetrieveTask;
 import net.sourceforge.atunes.model.IStateService;
 
 /**
@@ -34,8 +34,8 @@ import net.sourceforge.atunes.model.IStateService;
  * @author alex
  * 
  */
-public final class ReadRepositoryInitializationTask implements
-		IStateRetrieveTask {
+public final class ReadRepositoryInitializationTask extends
+		AbstractStateRetrieveTask {
 
 	private IRepository repository;
 
