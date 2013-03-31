@@ -43,7 +43,7 @@ public class RepositoryActionsHelper {
 	 * @param addFolderToRepositoryAction
 	 */
 	public void setAddFolderToRepositoryAction(
-			Action addFolderToRepositoryAction) {
+			final Action addFolderToRepositoryAction) {
 		this.addFolderToRepositoryAction = addFolderToRepositoryAction;
 	}
 
@@ -51,35 +51,36 @@ public class RepositoryActionsHelper {
 	 * @param refreshFolderFromNavigatorAction
 	 */
 	public void setRefreshFolderFromNavigatorAction(
-			Action refreshFolderFromNavigatorAction) {
+			final Action refreshFolderFromNavigatorAction) {
 		this.refreshFolderFromNavigatorAction = refreshFolderFromNavigatorAction;
 	}
 
 	/**
 	 * @param importToRepositoryAction
 	 */
-	public void setImportToRepositoryAction(Action importToRepositoryAction) {
+	public void setImportToRepositoryAction(
+			final Action importToRepositoryAction) {
 		this.importToRepositoryAction = importToRepositoryAction;
 	}
 
 	/**
 	 * @param connectDeviceAction
 	 */
-	public void setConnectDeviceAction(Action connectDeviceAction) {
+	public void setConnectDeviceAction(final Action connectDeviceAction) {
 		this.connectDeviceAction = connectDeviceAction;
 	}
 
 	/**
 	 * @param ripCDAction
 	 */
-	public void setRipCDAction(Action ripCDAction) {
+	public void setRipCDAction(final Action ripCDAction) {
 		this.ripCDAction = ripCDAction;
 	}
 
 	/**
 	 * @param refreshRepositoryAction
 	 */
-	public void setRefreshRepositoryAction(Action refreshRepositoryAction) {
+	public void setRefreshRepositoryAction(final Action refreshRepositoryAction) {
 		this.refreshRepositoryAction = refreshRepositoryAction;
 	}
 
@@ -87,24 +88,24 @@ public class RepositoryActionsHelper {
 	 * Disables all actions to repository
 	 */
 	public void disableAllRepositoryActions() {
-		addFolderToRepositoryAction.setEnabled(false);
-		refreshFolderFromNavigatorAction.setEnabled(false);
-		importToRepositoryAction.setEnabled(false);
-		connectDeviceAction.setEnabled(false);
-		ripCDAction.setEnabled(false);
-		refreshRepositoryAction.setEnabled(false);
+		this.addFolderToRepositoryAction.setEnabled(false);
+		this.refreshFolderFromNavigatorAction.setEnabled(false);
+		this.importToRepositoryAction.setEnabled(false);
+		this.connectDeviceAction.setEnabled(false);
+		this.ripCDAction.setEnabled(false);
+		this.refreshRepositoryAction.setEnabled(false);
 	}
 
 	/**
 	 * Enables repository actions for current repository
 	 */
 	public void enableRepositoryActions() {
-		addFolderToRepositoryAction.setEnabled(true);
-		refreshFolderFromNavigatorAction.setEnabled(true);
-		importToRepositoryAction.setEnabled(true);
-		connectDeviceAction.setEnabled(true);
-		ripCDAction.setEnabled(true);
-		refreshRepositoryAction.setEnabled(true);
+		this.addFolderToRepositoryAction.setEnabled(true);
+		this.refreshFolderFromNavigatorAction.setEnabled(true);
+		this.importToRepositoryAction.setEnabled(true);
+		this.connectDeviceAction.setEnabled(true);
+		this.ripCDAction.setEnabled(true);
+		this.refreshRepositoryAction.setEnabled(true);
 	}
 
 	/**
@@ -112,19 +113,21 @@ public class RepositoryActionsHelper {
 	 * repository
 	 */
 	public void onlyAllowAddFolderToRepository() {
-		addFolderToRepositoryAction.setEnabled(true);
-		refreshFolderFromNavigatorAction.setEnabled(false);
-		importToRepositoryAction.setEnabled(false);
-		connectDeviceAction.setEnabled(false);
-		ripCDAction.setEnabled(false);
-		refreshRepositoryAction.setEnabled(false);
+		this.addFolderToRepositoryAction.setEnabled(true);
+		this.refreshFolderFromNavigatorAction.setEnabled(false);
+		this.importToRepositoryAction.setEnabled(false);
+		this.connectDeviceAction.setEnabled(false);
+		this.ripCDAction.setEnabled(false);
+		this.refreshRepositoryAction.setEnabled(false);
 	}
 
 	/**
 	 * Enables actions or allow only add folders depending if repository is null
 	 * or void
+	 * 
+	 * @param repository
 	 */
-	public void enableActionsDependingOnRepository(IRepository repository) {
+	public void enableActionsDependingOnRepository(final IRepository repository) {
 		if (repository != null && !(repository instanceof VoidRepository)) {
 			enableRepositoryActions();
 		} else {

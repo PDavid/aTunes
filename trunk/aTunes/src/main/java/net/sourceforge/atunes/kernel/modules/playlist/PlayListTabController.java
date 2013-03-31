@@ -30,153 +30,162 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
 
 class PlayListTabController extends
-	AbstractSimpleController<PlayListSelectorPanel> implements
-	IPlayListTabController {
+		AbstractSimpleController<PlayListSelectorPanel> implements
+		IPlayListTabController {
 
-    private IPlayListHandler playListHandler;
+	private IPlayListHandler playListHandler;
 
-    private IPlayListSelectorPanel playListSelectorPanel;
+	private IPlayListSelectorPanel playListSelectorPanel;
 
-    private PlayListSelectorWrapper playListSelectorWrapper;
+	private PlayListSelectorWrapper playListSelectorWrapper;
 
-    private IBeanFactory beanFactory;
+	private IBeanFactory beanFactory;
 
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
-
-    /**
-     * @param playListSelectorWrapper
-     */
-    public void setPlayListSelectorWrapper(
-	    final PlayListSelectorWrapper playListSelectorWrapper) {
-	this.playListSelectorWrapper = playListSelectorWrapper;
-    }
-
-    /**
-     * @param playListSelectorPanel
-     */
-    public void setPlayListSelectorPanel(
-	    final IPlayListSelectorPanel playListSelectorPanel) {
-	this.playListSelectorPanel = playListSelectorPanel;
-    }
-
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(final IPlayListHandler playListHandler) {
-	this.playListHandler = playListHandler;
-    }
-
-    /**
-     * Initializes controller
-     */
-    public void initialize() {
-	setComponentControlled((PlayListSelectorPanel) playListSelectorPanel);
-	addBindings();
-	addStateBindings();
-
-	playListSelectorWrapper.arrangeComponents(getComponentControlled());
-    }
-
-    @Override
-    public void addBindings() {
-	PlayListTabListener l = new PlayListTabListener(playListHandler,
-		playListSelectorWrapper, beanFactory);
-	getComponentControlled().getOptions().addActionListener(l);
-
-	playListSelectorWrapper.addBindings(l);
-    }
-
-    /**
-     * Delete play list.
-     * 
-     * @param index
-     *            the index
-     */
-    @Override
-    public void deletePlayList(final int index) {
-	int selectedPlaylist = getSelectedPlayListIndex();
-	playListSelectorWrapper.deletePlayList(index);
-	if (index == selectedPlaylist) {
-	    forceSwitchTo(0);
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
-    }
 
-    /**
-     * Force switch to.
-     * 
-     * @param index
-     *            the index
-     */
-    void forceSwitchTo(final int index) {
-	playListSelectorWrapper.forceSwitchTo(index);
-    }
+	/**
+	 * @param playListSelectorWrapper
+	 */
+	public void setPlayListSelectorWrapper(
+			final PlayListSelectorWrapper playListSelectorWrapper) {
+		this.playListSelectorWrapper = playListSelectorWrapper;
+	}
 
-    /**
-     * New play list.
-     * 
-     * @param name
-     *            the name
-     */
-    void newPlayList(final String name) {
-	GuiUtils.callInEventDispatchThread(new Runnable() {
-	    @Override
-	    public void run() {
-		playListSelectorWrapper.newPlayList(name);
-	    }
-	});
-    }
+	/**
+	 * @param playListSelectorPanel
+	 */
+	public void setPlayListSelectorPanel(
+			final IPlayListSelectorPanel playListSelectorPanel) {
+		this.playListSelectorPanel = playListSelectorPanel;
+	}
 
-    /**
-     * Rename play list.
-     * 
-     * @param index
-     *            the index
-     * @param newName
-     *            the new name
-     */
-    void renamePlayList(final int index, final String newName) {
-	playListSelectorWrapper.renamePlayList(index, newName);
-    }
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
 
-    /**
-     * Return names of play lists.
-     * 
-     * @return the names of play lists
-     */
-    List<String> getNamesOfPlayLists() {
-	return playListSelectorWrapper.getNamesOfPlayLists();
-    }
+	/**
+	 * Initializes controller
+	 */
+	public void initialize() {
+		setComponentControlled((PlayListSelectorPanel) this.playListSelectorPanel);
+		addBindings();
+		addStateBindings();
 
-    /**
-     * Returns selected play list index
-     * 
-     * @return
-     */
-    @Override
-    public int getSelectedPlayListIndex() {
-	return playListSelectorWrapper.getSelectedPlayListIndex();
-    }
+		this.playListSelectorWrapper
+				.arrangeComponents(getComponentControlled());
+	}
 
-    /**
-     * Returns name of play list at given position
-     * 
-     * @param index
-     * @return
-     */
-    String getPlayListName(final int index) {
-	return playListSelectorWrapper.getPlayListName(index);
-    }
+	@Override
+	public void addBindings() {
+		PlayListTabListener l = new PlayListTabListener(this.playListHandler,
+				this.playListSelectorWrapper, this.beanFactory);
+		getComponentControlled().getOptions().addActionListener(l);
 
-    /**
-     * Shows combo box to select play lists if necessary
-     */
-    public void showPlayListSelectorComboBox() {
-	getComponentControlled().removeAll();
-	playListSelectorWrapper.arrangeComponents(getComponentControlled());
-    }
+		this.playListSelectorWrapper.addBindings(l);
+	}
+
+	/**
+	 * Delete play list.
+	 * 
+	 * @param index
+	 *            the index
+	 */
+	@Override
+	public void deletePlayList(final int index) {
+		int selectedPlaylist = getSelectedPlayListIndex();
+		this.playListSelectorWrapper.deletePlayList(index);
+		if (index == selectedPlaylist) {
+			forceSwitchTo(0);
+		}
+	}
+
+	/**
+	 * Force switch to.
+	 * 
+	 * @param index
+	 *            the index
+	 */
+	void forceSwitchTo(final int index) {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				PlayListTabController.this.playListSelectorWrapper
+						.forceSwitchTo(index);
+			}
+		});
+	}
+
+	/**
+	 * New play list.
+	 * 
+	 * @param name
+	 *            the name
+	 */
+	void newPlayList(final String name) {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				PlayListTabController.this.playListSelectorWrapper
+						.newPlayList(name);
+			}
+		});
+	}
+
+	/**
+	 * Rename play list.
+	 * 
+	 * @param index
+	 *            the index
+	 * @param newName
+	 *            the new name
+	 */
+	void renamePlayList(final int index, final String newName) {
+		this.playListSelectorWrapper.renamePlayList(index, newName);
+	}
+
+	/**
+	 * Return names of play lists.
+	 * 
+	 * @return the names of play lists
+	 */
+	List<String> getNamesOfPlayLists() {
+		return this.playListSelectorWrapper.getNamesOfPlayLists();
+	}
+
+	/**
+	 * Returns selected play list index
+	 * 
+	 * @return
+	 */
+	@Override
+	public int getSelectedPlayListIndex() {
+		return this.playListSelectorWrapper.getSelectedPlayListIndex();
+	}
+
+	/**
+	 * Returns name of play list at given position
+	 * 
+	 * @param index
+	 * @return
+	 */
+	String getPlayListName(final int index) {
+		return this.playListSelectorWrapper.getPlayListName(index);
+	}
+
+	/**
+	 * Shows combo box to select play lists if necessary
+	 */
+	public void showPlayListSelectorComboBox() {
+		getComponentControlled().removeAll();
+		this.playListSelectorWrapper
+				.arrangeComponents(getComponentControlled());
+	}
 }

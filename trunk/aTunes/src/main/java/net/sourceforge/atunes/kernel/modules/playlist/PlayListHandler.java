@@ -324,25 +324,33 @@ public final class PlayListHandler extends AbstractHandler implements
 	 *            the new play list
 	 */
 	void setPlayList(final IPlayList playList) {
-		// Set selection interval to none
-		this.playListController.clearSelection();
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				// Set selection interval to none
+				PlayListHandler.this.playListController.clearSelection();
 
-		getBean(SavePlayListAction.class).setEnabled(
-				!getVisiblePlayList().isEmpty());
-		getBean(SaveM3UPlayListAction.class).setEnabled(
-				!getVisiblePlayList().isEmpty());
-		getBean(ShufflePlayListAction.class).setEnabled(
-				!getVisiblePlayList().isEmpty());
-		this.playListInformationInStatusBar.showPlayListInformation(playList);
+				getBean(SavePlayListAction.class).setEnabled(
+						!getVisiblePlayList().isEmpty());
+				getBean(SaveM3UPlayListAction.class).setEnabled(
+						!getVisiblePlayList().isEmpty());
+				getBean(ShufflePlayListAction.class).setEnabled(
+						!getVisiblePlayList().isEmpty());
+				PlayListHandler.this.playListInformationInStatusBar
+						.showPlayListInformation(playList);
 
-		// Update table model
-		this.playListController.setVisiblePlayList(getVisiblePlayList());
-		this.playListController.refreshPlayList();
+				// Update table model
+				PlayListHandler.this.playListController
+						.setVisiblePlayList(getVisiblePlayList());
+				PlayListHandler.this.playListController.refreshPlayList();
 
-		// If playlist is active then perform an auto scroll
-		if (isActivePlayListVisible()) {
-			this.playListController.scrollPlayList(false);
-		}
+				// If playlist is active then perform an auto scroll
+				if (isActivePlayListVisible()) {
+					PlayListHandler.this.playListController
+							.scrollPlayList(false);
+				}
+			}
+		});
 	}
 
 	@Override
