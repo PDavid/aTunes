@@ -30,33 +30,36 @@ import com.esotericsoftware.kryo.Kryo;
 
 /**
  * A factory of Kryo objects
+ * 
  * @author alex
- *
+ * 
  */
 public class KryoFactory {
-	
+
 	private List<String> classes;
-	
+
 	/**
 	 * @param classes
 	 */
-	public void setClasses(List<String> classes) {
+	public void setClasses(final List<String> classes) {
 		this.classes = classes;
 	}
-	
+
 	/**
 	 * Returns a kryo instance for serialization
+	 * 
 	 * @return
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
 	 */
 	public Kryo getKryo() throws ClassNotFoundException {
 		// Kryo is not thread safe so return a new instance in each call
 		Kryo kryo = new Kryo();
-		kryo.register(DateMidnight.class, new DateSerializer() );
-		kryo.register(DateTime.class, new DateSerializer() );
+		kryo.register(DateMidnight.class, new DateSerializer());
+		kryo.register(DateTime.class, new DateSerializer());
 		kryo.register(File.class, new FileSerializer());
+		kryo.register(String.class, new StringInternSerializer());
 
-		for (String clazz : classes) {
+		for (String clazz : this.classes) {
 			kryo.register(Class.forName(clazz));
 		}
 
