@@ -597,13 +597,22 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 */
 	private void repositoryReadCompleted() {
 		this.repositoryHandler.setRepository(this.repository);
-		this.repositoryActions
-				.enableActionsDependingOnRepository(this.repository);
-		this.showRepositoryDataHelper.showRepositoryAudioFileNumber(
-				this.repository.getFiles().size(),
-				this.repository.getTotalSizeInBytes(),
-				this.repository.getTotalDurationInSeconds());
-		this.navigationHandler.repositoryReloaded();
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				RepositoryReader.this.repositoryActions
+						.enableActionsDependingOnRepository(RepositoryReader.this.repository);
+				RepositoryReader.this.showRepositoryDataHelper
+						.showRepositoryAudioFileNumber(
+								RepositoryReader.this.repository.getFiles()
+										.size(),
+								RepositoryReader.this.repository
+										.getTotalSizeInBytes(),
+								RepositoryReader.this.repository
+										.getTotalDurationInSeconds());
+				RepositoryReader.this.navigationHandler.repositoryReloaded();
+			}
+		});
 		this.currentLoader = null;
 	}
 

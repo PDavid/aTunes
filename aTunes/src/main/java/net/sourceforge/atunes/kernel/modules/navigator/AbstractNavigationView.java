@@ -36,6 +36,7 @@ import javax.swing.JScrollPane;
 import javax.swing.tree.TreeCellRenderer;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.NavigationTableModel;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.decorators.NavigationViewTreeCellRendererCode;
@@ -66,393 +67,400 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public abstract class AbstractNavigationView implements INavigationView {
 
-    /**
-     * Scroll pane used for tree
-     */
-    private JScrollPane scrollPane;
+	/**
+	 * Scroll pane used for tree
+	 */
+	private JScrollPane scrollPane;
 
-    /**
-     * Action associated to show this navigation view
-     */
-    private ActionWithColorMutableIcon action;
+	/**
+	 * Action associated to show this navigation view
+	 */
+	private ActionWithColorMutableIcon action;
 
-    private INavigationHandler navigationHandler;
+	private INavigationHandler navigationHandler;
 
-    /**
-     * Decorators used in view
-     */
-    private List<AbstractTreeCellDecorator<?, ?>> decorators;
+	/**
+	 * Decorators used in view
+	 */
+	private List<AbstractTreeCellDecorator<?, ?>> decorators;
 
-    private ITreeGeneratorFactory treeGeneratorFactory;
+	private ITreeGeneratorFactory treeGeneratorFactory;
 
-    private ILookAndFeelManager lookAndFeelManager;
+	private ILookAndFeelManager lookAndFeelManager;
 
-    private ITable navigationTable;
+	private ITable navigationTable;
 
-    private IStateNavigation stateNavigation;
+	private IStateNavigation stateNavigation;
 
-    /**
-     * @param stateNavigation
-     */
-    public void setStateNavigation(final IStateNavigation stateNavigation) {
-	this.stateNavigation = stateNavigation;
-    }
-
-    /**
-     * @param navigationTable
-     */
-    public void setNavigationTable(final ITable navigationTable) {
-	this.navigationTable = navigationTable;
-    }
-
-    @Override
-    public abstract String getTitle();
-
-    @Override
-    public abstract IColorMutableImageIcon getIcon();
-
-    @Override
-    public abstract String getTooltip();
-
-    @Override
-    public abstract NavigationTree getTree();
-
-    /**
-     * Return decorators to be used in view
-     * 
-     * @return
-     */
-    protected final List<AbstractTreeCellDecorator<?, ?>> getTreeCellDecorators() {
-	return decorators;
-    }
-
-    /**
-     * @param decorators
-     */
-    public void setDecorators(
-	    final List<AbstractTreeCellDecorator<?, ?>> decorators) {
-	this.decorators = decorators;
-    }
-
-    @Override
-    public abstract JPopupMenu getTreePopupMenu();
-
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(final INavigationHandler navigationHandler) {
-	this.navigationHandler = navigationHandler;
-    }
-
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(
-	    final ILookAndFeelManager lookAndFeelManager) {
-	this.lookAndFeelManager = lookAndFeelManager;
-    }
-
-    /**
-     * @param treeGeneratorFactory
-     */
-    public void setTreeGeneratorFactory(
-	    final ITreeGeneratorFactory treeGeneratorFactory) {
-	this.treeGeneratorFactory = treeGeneratorFactory;
-    }
-
-    @Override
-    public ITreeGeneratorFactory getTreeGeneratorFactory() {
-	return treeGeneratorFactory;
-    }
-
-    @Override
-    public JPopupMenu getTablePopupMenu() {
-	// By default table popup is the same of tree
-	return getTreePopupMenu();
-    }
-
-    @Override
-    public final JScrollPane getTreeScrollPane() {
-	if (scrollPane == null) {
-	    scrollPane = lookAndFeelManager.getCurrentLookAndFeel()
-		    .getTreeScrollPane(getTree());
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
 	}
-	return scrollPane;
-    }
 
-    /**
-     * Returns the data to be shown in the view. It depends on the view mode
-     * 
-     * @param viewMode
-     * @return
-     */
-    protected abstract Map<String, ?> getViewData(ViewMode viewMode);
-
-    @Override
-    public void refreshView(final ViewMode viewMode, final String treeFilter) {
-	// Get selected rows before refresh
-	List<IAudioObject> selectedObjects = ((NavigationTableModel) navigationTable
-		.getModel()).getAudioObjectsAt(navigationTable
-		.getSelectedRows());
-
-	// Call to refresh tree
-	Logger.debug("Refreshing ", this.getClass().getName());
-	refreshTree(viewMode, treeFilter);
-	Logger.debug("Refreshing ", this.getClass().getName(), " done");
-
-	// Set the same selected audio objects as before refreshing
-	for (IAudioObject audioObject : selectedObjects) {
-	    int indexOfAudioObject = ((NavigationTableModel) navigationTable
-		    .getModel()).getAudioObjects().indexOf(audioObject);
-	    if (indexOfAudioObject != -1) {
-		navigationTable.addRowSelectionInterval(indexOfAudioObject,
-			indexOfAudioObject);
-	    }
+	/**
+	 * @param navigationTable
+	 */
+	public void setNavigationTable(final ITable navigationTable) {
+		this.navigationTable = navigationTable;
 	}
-    }
 
-    /**
-     * Refresh tree view
-     * 
-     * @param viewMode
-     * @param treeFilter
-     */
-    protected abstract void refreshTree(ViewMode viewMode, String treeFilter);
+	@Override
+	public abstract String getTitle();
 
-    @Override
-    public abstract boolean isViewModeSupported();
+	@Override
+	public abstract IColorMutableImageIcon getIcon();
 
-    @Override
-    public abstract boolean isUseDefaultNavigatorColumnSet();
+	@Override
+	public abstract String getTooltip();
 
-    @Override
-    public abstract IColumnSet getCustomColumnSet();
+	@Override
+	public abstract NavigationTree getTree();
 
-    @Override
-    public final void updateTreePopupMenuWithTreeSelection(final MouseEvent e) {
-	List<ITreeNode> nodes = getTree().getSelectedNodes();
-	for (Component c : getTreePopupMenu().getComponents()) {
-	    updateMenuComponent(getTree().isRowSelected(0), nodes, c);
+	/**
+	 * Return decorators to be used in view
+	 * 
+	 * @return
+	 */
+	protected final List<AbstractTreeCellDecorator<?, ?>> getTreeCellDecorators() {
+		return this.decorators;
 	}
-    }
 
-    @Override
-    public final void updateTablePopupMenuWithTableSelection(
-	    final ITable table, final MouseEvent e) {
-	List<IAudioObject> selection = ((NavigationTableModel) navigationTable
-		.getModel()).getAudioObjectsAt(table.getSelectedRows());
-	for (Component c : getTablePopupMenu().getComponents()) {
-	    updateTableMenuComponent(getTree().isRowSelected(0), selection, c);
+	/**
+	 * @param decorators
+	 */
+	public void setDecorators(
+			final List<AbstractTreeCellDecorator<?, ?>> decorators) {
+		this.decorators = decorators;
 	}
-    }
 
-    /**
-     * @param rootSelected
-     * @param selection
-     * @param c
-     */
-    private void updateMenuComponent(final boolean rootSelected,
-	    final List<ITreeNode> selection, final Component c) {
-	if (c != null) {
-	    if (c instanceof JMenu) {
-		for (int i = 0; i < ((JMenu) c).getItemCount(); i++) {
-		    updateMenuComponent(rootSelected, selection,
-			    ((JMenu) c).getItem(i));
+	@Override
+	public abstract JPopupMenu getTreePopupMenu();
+
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
+	 * @param treeGeneratorFactory
+	 */
+	public void setTreeGeneratorFactory(
+			final ITreeGeneratorFactory treeGeneratorFactory) {
+		this.treeGeneratorFactory = treeGeneratorFactory;
+	}
+
+	@Override
+	public ITreeGeneratorFactory getTreeGeneratorFactory() {
+		return this.treeGeneratorFactory;
+	}
+
+	@Override
+	public JPopupMenu getTablePopupMenu() {
+		// By default table popup is the same of tree
+		return getTreePopupMenu();
+	}
+
+	@Override
+	public final JScrollPane getTreeScrollPane() {
+		if (this.scrollPane == null) {
+			this.scrollPane = this.lookAndFeelManager.getCurrentLookAndFeel()
+					.getTreeScrollPane(getTree());
 		}
-	    } else if (c instanceof JMenuItem) {
-		updateMenuItem(rootSelected, selection, (JMenuItem) c);
-	    }
-	}
-    }
-
-    /**
-     * @param rootSelected
-     * @param selection
-     * @param c
-     */
-    private void updateTableMenuComponent(final boolean rootSelected,
-	    final List<IAudioObject> selection, final Component c) {
-	if (c != null) {
-	    if (c instanceof JMenu) {
-		for (int i = 0; i < ((JMenu) c).getItemCount(); i++) {
-		    updateTableMenuComponent(rootSelected, selection,
-			    ((JMenu) c).getItem(i));
-		}
-	    } else if (c instanceof JMenuItem) {
-		updateTableMenuItem(rootSelected, selection, (JMenuItem) c);
-	    }
-	}
-    }
-
-    /**
-     * @param rootSelected
-     * @param selection
-     * @param menuItem
-     */
-    private void updateMenuItem(final boolean rootSelected,
-	    final List<ITreeNode> selection, final JMenuItem menuItem) {
-	Action a = menuItem.getAction();
-	if (a instanceof CustomAbstractAction) {
-	    a.setEnabled(((CustomAbstractAction) a)
-		    .isEnabledForNavigationTreeSelection(rootSelected,
-			    selection));
-	}
-    }
-
-    /**
-     * @param rootSelected
-     * @param selection
-     * @param menuItem
-     */
-    private void updateTableMenuItem(final boolean rootSelected,
-	    final List<IAudioObject> selection, final JMenuItem menuItem) {
-	Action a = menuItem.getAction();
-	if (a instanceof CustomAbstractAction) {
-	    a.setEnabled(((CustomAbstractAction) a)
-		    .isEnabledForNavigationTableSelection(selection));
-	}
-    }
-
-    @Override
-    public ViewMode getCurrentViewMode() {
-	return stateNavigation.getViewMode();
-    }
-
-    /**
-     * Return selected objects in this navigation view
-     * 
-     * @return
-     */
-    @Override
-    public List<IAudioObject> getSelectedAudioObjects() {
-	List<IAudioObject> selectedInTable = ((NavigationTableModel) navigationTable
-		.getModel()).getAudioObjectsAt(navigationTable
-		.getSelectedRows());
-	if (selectedInTable.isEmpty()) {
-	    List<ITreeNode> nodes = getTree().getSelectedNodes();
-	    List<IAudioObject> audioObjectsSelected = new ArrayList<IAudioObject>();
-	    if (!CollectionUtils.isEmpty(nodes)) {
-		for (ITreeNode node : nodes) {
-		    audioObjectsSelected.addAll(navigationHandler
-			    .getAudioObjectsForTreeNode(this.getClass(), node));
-		}
-	    }
-	    return audioObjectsSelected;
-	}
-	return selectedInTable;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<ITreeObject<? extends IAudioObject>> getSelectedTreeObjects() {
-	// Get objects selected before refreshing tree
-	List<ITreeObject<? extends IAudioObject>> objectsSelected = new ArrayList<ITreeObject<? extends IAudioObject>>();
-	List<ITreeNode> nodes = getTree().getSelectedNodes();
-
-	// If any node was selected
-	if (!CollectionUtils.isEmpty(nodes)) {
-	    for (ITreeNode node : nodes) {
-		Object obj = node.getUserObject();
-		if (obj instanceof ITreeObject) {
-		    objectsSelected
-			    .add((ITreeObject<? extends IAudioObject>) obj);
-		}
-	    }
+		return this.scrollPane;
 	}
 
-	return objectsSelected;
-    }
+	/**
+	 * Returns the data to be shown in the view. It depends on the view mode
+	 * 
+	 * @param viewMode
+	 * @return
+	 */
+	protected abstract Map<String, ?> getViewData(ViewMode viewMode);
 
-    /**
-     * Returns all TreeObject instances expanded in a tree
-     * 
-     * @param tree
-     * @param root
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    protected final List<ITreeObject<? extends IAudioObject>> getTreeObjectsExpanded(
-	    final INavigationTree tree) {
-	// Get objects expanded before refreshing tree
-	List<ITreeObject<? extends IAudioObject>> objectsExpanded = new ArrayList<ITreeObject<? extends IAudioObject>>();
-	List<?> expandedDescendants = tree.getExpandedDescendants();
-
-	if (!CollectionUtils.isEmpty(expandedDescendants)) {
-	    for (Object obj : expandedDescendants) {
-		if (obj instanceof ITreeObject) {
-		    objectsExpanded
-			    .add((ITreeObject<? extends IAudioObject>) obj);
-		}
-	    }
-	}
-
-	return objectsExpanded;
-    }
-
-    @Override
-    public final ActionWithColorMutableIcon getActionToShowView() {
-	if (action == null) {
-	    action = new ActionWithColorMutableIcon(getTitle()) {
-
-		private static final long serialVersionUID = 2895222205333520899L;
-
-		@Override
-		protected void executeAction() {
-		    navigationHandler
-			    .setNavigationView(AbstractNavigationView.this
-				    .getClass().getName());
-		}
-
-		@Override
-		public IColorMutableImageIcon getIcon(
-			final ILookAndFeel lookAndFeel) {
-		    return new IColorMutableImageIcon() {
-
+	@Override
+	public void refreshView(final ViewMode viewMode, final String treeFilter) {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
-			public ImageIcon getIcon(final Color paint) {
-			    return AbstractNavigationView.this.getIcon()
-				    .getIcon(paint);
+			public void run() {
+				// Get selected rows before refresh
+				List<IAudioObject> selectedObjects = ((NavigationTableModel) AbstractNavigationView.this.navigationTable
+						.getModel())
+						.getAudioObjectsAt(AbstractNavigationView.this.navigationTable
+								.getSelectedRows());
+
+				// Call to refresh tree
+				Logger.debug("Refreshing ", this.getClass().getName());
+				refreshTree(viewMode, treeFilter);
+				Logger.debug("Refreshing ", this.getClass().getName(), " done");
+
+				// Set the same selected audio objects as before refreshing
+				for (IAudioObject audioObject : selectedObjects) {
+					int indexOfAudioObject = ((NavigationTableModel) AbstractNavigationView.this.navigationTable
+							.getModel()).getAudioObjects().indexOf(audioObject);
+					if (indexOfAudioObject != -1) {
+						AbstractNavigationView.this.navigationTable
+								.addRowSelectionInterval(indexOfAudioObject,
+										indexOfAudioObject);
+					}
+				}
 			}
-		    };
-		}
-	    };
-
-	    action.putValue(Action.SHORT_DESCRIPTION, getTitle());
+		});
 	}
-	return action;
-    }
 
-    /**
-     * Returns tree renderer used
-     * 
-     * @return
-     */
-    protected final TreeCellRenderer getTreeRenderer() {
-	return lookAndFeelManager.getCurrentLookAndFeel()
-		.getTreeCellRenderer(
-			new NavigationViewTreeCellRendererCode(
-				getTreeCellDecorators()));
-    }
+	/**
+	 * Refresh tree view
+	 * 
+	 * @param viewMode
+	 * @param treeFilter
+	 */
+	protected abstract void refreshTree(ViewMode viewMode, String treeFilter);
 
-    @Override
-    public String toString() {
-	return getTitle();
-    }
+	@Override
+	public abstract boolean isViewModeSupported();
 
-    @Override
-    public void selectAudioObject(final ViewMode currentViewMode,
-	    final IAudioObject audioObject) {
+	@Override
+	public abstract boolean isUseDefaultNavigatorColumnSet();
 
-    }
+	@Override
+	public abstract IColumnSet getCustomColumnSet();
 
-    @Override
-    public void selectArtist(final ViewMode currentViewMode, final String artist) {
-    }
+	@Override
+	public final void updateTreePopupMenuWithTreeSelection(final MouseEvent e) {
+		List<ITreeNode> nodes = getTree().getSelectedNodes();
+		for (Component c : getTreePopupMenu().getComponents()) {
+			updateMenuComponent(getTree().isRowSelected(0), nodes, c);
+		}
+	}
 
-    /**
-     * @return look and feel manager
-     */
-    protected ILookAndFeelManager getLookAndFeelManager() {
-	return lookAndFeelManager;
-    }
+	@Override
+	public final void updateTablePopupMenuWithTableSelection(
+			final ITable table, final MouseEvent e) {
+		List<IAudioObject> selection = ((NavigationTableModel) this.navigationTable
+				.getModel()).getAudioObjectsAt(table.getSelectedRows());
+		for (Component c : getTablePopupMenu().getComponents()) {
+			updateTableMenuComponent(getTree().isRowSelected(0), selection, c);
+		}
+	}
+
+	/**
+	 * @param rootSelected
+	 * @param selection
+	 * @param c
+	 */
+	private void updateMenuComponent(final boolean rootSelected,
+			final List<ITreeNode> selection, final Component c) {
+		if (c != null) {
+			if (c instanceof JMenu) {
+				for (int i = 0; i < ((JMenu) c).getItemCount(); i++) {
+					updateMenuComponent(rootSelected, selection,
+							((JMenu) c).getItem(i));
+				}
+			} else if (c instanceof JMenuItem) {
+				updateMenuItem(rootSelected, selection, (JMenuItem) c);
+			}
+		}
+	}
+
+	/**
+	 * @param rootSelected
+	 * @param selection
+	 * @param c
+	 */
+	private void updateTableMenuComponent(final boolean rootSelected,
+			final List<IAudioObject> selection, final Component c) {
+		if (c != null) {
+			if (c instanceof JMenu) {
+				for (int i = 0; i < ((JMenu) c).getItemCount(); i++) {
+					updateTableMenuComponent(rootSelected, selection,
+							((JMenu) c).getItem(i));
+				}
+			} else if (c instanceof JMenuItem) {
+				updateTableMenuItem(rootSelected, selection, (JMenuItem) c);
+			}
+		}
+	}
+
+	/**
+	 * @param rootSelected
+	 * @param selection
+	 * @param menuItem
+	 */
+	private void updateMenuItem(final boolean rootSelected,
+			final List<ITreeNode> selection, final JMenuItem menuItem) {
+		Action a = menuItem.getAction();
+		if (a instanceof CustomAbstractAction) {
+			a.setEnabled(((CustomAbstractAction) a)
+					.isEnabledForNavigationTreeSelection(rootSelected,
+							selection));
+		}
+	}
+
+	/**
+	 * @param rootSelected
+	 * @param selection
+	 * @param menuItem
+	 */
+	private void updateTableMenuItem(final boolean rootSelected,
+			final List<IAudioObject> selection, final JMenuItem menuItem) {
+		Action a = menuItem.getAction();
+		if (a instanceof CustomAbstractAction) {
+			a.setEnabled(((CustomAbstractAction) a)
+					.isEnabledForNavigationTableSelection(selection));
+		}
+	}
+
+	@Override
+	public ViewMode getCurrentViewMode() {
+		return this.stateNavigation.getViewMode();
+	}
+
+	/**
+	 * Return selected objects in this navigation view
+	 * 
+	 * @return
+	 */
+	@Override
+	public List<IAudioObject> getSelectedAudioObjects() {
+		List<IAudioObject> selectedInTable = ((NavigationTableModel) this.navigationTable
+				.getModel()).getAudioObjectsAt(this.navigationTable
+				.getSelectedRows());
+		if (selectedInTable.isEmpty()) {
+			List<ITreeNode> nodes = getTree().getSelectedNodes();
+			List<IAudioObject> audioObjectsSelected = new ArrayList<IAudioObject>();
+			if (!CollectionUtils.isEmpty(nodes)) {
+				for (ITreeNode node : nodes) {
+					audioObjectsSelected.addAll(this.navigationHandler
+							.getAudioObjectsForTreeNode(this.getClass(), node));
+				}
+			}
+			return audioObjectsSelected;
+		}
+		return selectedInTable;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ITreeObject<? extends IAudioObject>> getSelectedTreeObjects() {
+		// Get objects selected before refreshing tree
+		List<ITreeObject<? extends IAudioObject>> objectsSelected = new ArrayList<ITreeObject<? extends IAudioObject>>();
+		List<ITreeNode> nodes = getTree().getSelectedNodes();
+
+		// If any node was selected
+		if (!CollectionUtils.isEmpty(nodes)) {
+			for (ITreeNode node : nodes) {
+				Object obj = node.getUserObject();
+				if (obj instanceof ITreeObject) {
+					objectsSelected
+							.add((ITreeObject<? extends IAudioObject>) obj);
+				}
+			}
+		}
+
+		return objectsSelected;
+	}
+
+	/**
+	 * Returns all TreeObject instances expanded in a tree
+	 * 
+	 * @param tree
+	 * @param root
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	protected final List<ITreeObject<? extends IAudioObject>> getTreeObjectsExpanded(
+			final INavigationTree tree) {
+		// Get objects expanded before refreshing tree
+		List<ITreeObject<? extends IAudioObject>> objectsExpanded = new ArrayList<ITreeObject<? extends IAudioObject>>();
+		List<?> expandedDescendants = tree.getExpandedDescendants();
+
+		if (!CollectionUtils.isEmpty(expandedDescendants)) {
+			for (Object obj : expandedDescendants) {
+				if (obj instanceof ITreeObject) {
+					objectsExpanded
+							.add((ITreeObject<? extends IAudioObject>) obj);
+				}
+			}
+		}
+
+		return objectsExpanded;
+	}
+
+	@Override
+	public final ActionWithColorMutableIcon getActionToShowView() {
+		if (this.action == null) {
+			this.action = new ActionWithColorMutableIcon(getTitle()) {
+
+				private static final long serialVersionUID = 2895222205333520899L;
+
+				@Override
+				protected void executeAction() {
+					AbstractNavigationView.this.navigationHandler
+							.setNavigationView(AbstractNavigationView.this
+									.getClass().getName());
+				}
+
+				@Override
+				public IColorMutableImageIcon getIcon(
+						final ILookAndFeel lookAndFeel) {
+					return new IColorMutableImageIcon() {
+
+						@Override
+						public ImageIcon getIcon(final Color paint) {
+							return AbstractNavigationView.this.getIcon()
+									.getIcon(paint);
+						}
+					};
+				}
+			};
+
+			this.action.putValue(Action.SHORT_DESCRIPTION, getTitle());
+		}
+		return this.action;
+	}
+
+	/**
+	 * Returns tree renderer used
+	 * 
+	 * @return
+	 */
+	protected final TreeCellRenderer getTreeRenderer() {
+		return this.lookAndFeelManager.getCurrentLookAndFeel()
+				.getTreeCellRenderer(
+						new NavigationViewTreeCellRendererCode(
+								getTreeCellDecorators()));
+	}
+
+	@Override
+	public String toString() {
+		return getTitle();
+	}
+
+	@Override
+	public void selectAudioObject(final ViewMode currentViewMode,
+			final IAudioObject audioObject) {
+
+	}
+
+	@Override
+	public void selectArtist(final ViewMode currentViewMode, final String artist) {
+	}
+
+	/**
+	 * @return look and feel manager
+	 */
+	protected ILookAndFeelManager getLookAndFeelManager() {
+		return this.lookAndFeelManager;
+	}
 }
