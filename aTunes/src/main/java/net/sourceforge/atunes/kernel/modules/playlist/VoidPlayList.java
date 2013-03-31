@@ -23,13 +23,17 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.Comparator;
 import java.util.List;
 
+import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
+import net.sourceforge.atunes.model.IPlayListMode;
+import net.sourceforge.atunes.model.IStatePlayer;
 
 /**
  * playlist returned when no playlist data loaded yet
+ * 
  * @author alex
- *
+ * 
  */
 class VoidPlayList implements IPlayList {
 
@@ -39,11 +43,11 @@ class VoidPlayList implements IPlayList {
 	private static final long serialVersionUID = 3581989108482549526L;
 
 	@Override
-	public void moveRowTo(int sourceRow, int targetRow) {
+	public void moveRowTo(final int sourceRow, final int targetRow) {
 	}
 
 	@Override
-	public int indexOf(IAudioObject audioObject) {
+	public int indexOf(final IAudioObject audioObject) {
 		return 0;
 	}
 
@@ -58,22 +62,22 @@ class VoidPlayList implements IPlayList {
 	}
 
 	@Override
-	public IAudioObject get(int index) {
+	public IAudioObject get(final int index) {
 		return null;
 	}
 
 	@Override
-	public boolean contains(IAudioObject audioObject) {
+	public boolean contains(final IAudioObject audioObject) {
 		return false;
 	}
 
 	@Override
-	public IAudioObject getNextAudioObject(int index) {
+	public IAudioObject getNextAudioObject(final int index) {
 		return null;
 	}
 
 	@Override
-	public IAudioObject getPreviousAudioObject(int index) {
+	public IAudioObject getPreviousAudioObject(final int index) {
 		return null;
 	}
 
@@ -92,7 +96,7 @@ class VoidPlayList implements IPlayList {
 	}
 
 	@Override
-	public void setName(String newName) {
+	public void setName(final String newName) {
 	}
 
 	@Override
@@ -101,11 +105,12 @@ class VoidPlayList implements IPlayList {
 	}
 
 	@Override
-	public void sort(Comparator<IAudioObject> comparator) {
+	public void sort(final Comparator<IAudioObject> comparator) {
 	}
 
 	@Override
-	public void add(int newLocation, List<? extends IAudioObject> audioObjects) {
+	public void add(final int newLocation,
+			final List<? extends IAudioObject> audioObjects) {
 	}
 
 	@Override
@@ -114,7 +119,7 @@ class VoidPlayList implements IPlayList {
 	}
 
 	@Override
-	public void setCurrentAudioObjectIndex(int selectedAudioObject) {
+	public void setCurrentAudioObjectIndex(final int selectedAudioObject) {
 	}
 
 	@Override
@@ -127,11 +132,11 @@ class VoidPlayList implements IPlayList {
 	}
 
 	@Override
-	public void remove(int i) {
+	public void remove(final int i) {
 	}
 
 	@Override
-	public void add(int newLocation, IAudioObject aux) {
+	public void add(final int newLocation, final IAudioObject aux) {
 	}
 
 	@Override
@@ -154,15 +159,27 @@ class VoidPlayList implements IPlayList {
 	}
 
 	@Override
-	public void addToPlaybackHistory(IAudioObject object) {
+	public void addToPlaybackHistory(final IAudioObject object) {
 	}
 
 	@Override
-	public void remove(List<? extends IAudioObject> audioObjects) {
+	public void remove(final List<? extends IAudioObject> audioObjects) {
 	}
 
 	@Override
 	public List<IAudioObject> getAudioObjectsList() {
 		return null;
+	}
+
+	@Override
+	public void setPlayListEventListeners(final PlayListEventListeners listeners) {
+	}
+
+	@Override
+	public void setMode(final IPlayListMode playListMode) {
+	}
+
+	@Override
+	public void setStatePlayer(final IStatePlayer statePlayer) {
 	}
 }

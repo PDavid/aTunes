@@ -337,4 +337,10 @@ public interface IRepositoryHandler extends IHandler,
 	 */
 	public void addAudioObjectsAndRefresh(List<ILocalAudioObject> result);
 
+	/**
+	 * @param ao
+	 * @return cached audio object or given one
+	 */
+	public IAudioObject getAudioObjectIfLoaded(IAudioObject ao);
+
 }

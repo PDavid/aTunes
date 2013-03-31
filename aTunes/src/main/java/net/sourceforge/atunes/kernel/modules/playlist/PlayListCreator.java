@@ -20,12 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayList;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStatePlayer;
 
 /**
@@ -40,14 +41,13 @@ public class PlayListCreator {
 
 	private IColumnSet playListColumnSet;
 
-	private PlayListEventListeners playListEventListeners;
+	private IRepositoryHandler repositoryHandler;
 
 	/**
-	 * @param playListEventListeners
+	 * @param repositoryHandler
 	 */
-	public void setPlayListEventListeners(
-			final PlayListEventListeners playListEventListeners) {
-		this.playListEventListeners = playListEventListeners;
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class PlayListCreator {
 	}
 
 	/**
-	 * Returns a new play list
+	 * Returns a new play list without listeners bound
 	 * 
 	 * @param nameOfNewPlayList
 	 * @param audioObjects
@@ -73,13 +73,11 @@ public class PlayListCreator {
 	 */
 	IPlayList getNewPlayList(final String nameOfNewPlayList,
 			final List<? extends IAudioObject> audioObjects) {
-		PlayList newPlayList;
+		IPlayList newPlayList;
 		if (audioObjects == null) {
-			newPlayList = new PlayList(this.statePlayer,
-					this.playListEventListeners);
+			newPlayList = new PlayList(this.statePlayer);
 		} else {
-			newPlayList = new PlayList(audioObjects, this.statePlayer,
-					this.playListEventListeners);
+			newPlayList = new PlayList(audioObjects, this.statePlayer);
 		}
 		newPlayList.setName(nameOfNewPlayList);
 		return newPlayList;
@@ -98,5 +96,23 @@ public class PlayListCreator {
 				playList.getName(),
 				this.playListColumnSet.filterAudioObjects(
 						playList.getAudioObjectsList(), filter));
+	}
+
+	/**
+	 * Returns a play list where local audio objects are replaced by cached
+	 * versions in repository
+	 * 
+	 * @param playlist
+	 * @return
+	 */
+	IPlayList replaceCachedLocalAudioObjects(final IPlayList playlist) {
+		List<IAudioObject> list = new ArrayList<IAudioObject>();
+		for (IAudioObject ao : playlist.getAudioObjectsList()) {
+			list.add(this.repositoryHandler.getAudioObjectIfLoaded(ao));
+		}
+		IPlayList newPlayList = getNewPlayList(playlist.getName(), list);
+		newPlayList.setCurrentAudioObjectIndex(playlist
+				.getCurrentAudioObjectIndex());
+		return newPlayList;
 	}
 }

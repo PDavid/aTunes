@@ -26,199 +26,223 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
+import net.sourceforge.atunes.model.IPlayListMode;
 import net.sourceforge.atunes.model.IStatePlayer;
 
-final class PlayListMode {
+final class PlayListMode implements IPlayListMode {
 
-    /**
-     * List with play list positions in random order. This list is updated when
-     * there is a change in play list, even if shuffle is disabled
-     */
-    private ShufflePointedList shufflePlayList;
+	/**
+	 * List with play list positions in random order. This list is updated when
+	 * there is a change in play list, even if shuffle is disabled
+	 */
+	private final ShufflePointedList shufflePlayList;
 
-    /**
-     * Play back history
-     */
-    private PlaybackHistory playbackHistory;
+	/**
+	 * Play back history
+	 */
+	private final PlaybackHistory playbackHistory;
 
-    /**
-     * Play list bound to this mode
-     */
-    private PlayList playList;
-    
-    private IStatePlayer statePlayer;
+	/**
+	 * Play list bound to this mode
+	 */
+	private final PlayList playList;
 
-    /**
-     * @param playList
-     * @param statePlayer
-     * @return
-     */
-    protected static PlayListMode getPlayListMode(PlayList playList, IStatePlayer statePlayer) {
-        return new PlayListMode(playList, statePlayer);
-    }
+	private final IStatePlayer statePlayer;
 
-    private PlayListMode(PlayList playList, IStatePlayer statePlayer) {
-        // Initialize shuffle list
-        this.shufflePlayList = new ShufflePointedList(statePlayer);
-        this.statePlayer = statePlayer;
-        this.playbackHistory = new PlaybackHistory();
-        this.playList = playList;
-        if (playList != null && playList.getAudioObjects() != null && !playList.getAudioObjects().isEmpty()) {
-            audioObjectsAdded(PlayListAudioObject.getList(0, playList.getAudioObjects()));
-            // Set shuffle pointer
-            int currentIndex = playList.getCurrentAudioObjectIndex();
-            int indexInShuffle = shufflePlayList.indexOf(currentIndex);
-            if (indexInShuffle != -1) {
-                Collections.swap(shufflePlayList.getList(), 0, indexInShuffle);
-            }
-        }
-    }
+	/**
+	 * @param playList
+	 * @param statePlayer
+	 * @return
+	 */
+	protected static IPlayListMode getPlayListMode(final PlayList playList,
+			final IStatePlayer statePlayer) {
+		return new PlayListMode(playList, statePlayer);
+	}
 
-    IAudioObject moveToPreviousAudioObject() {
-        if (this.playList.isEmpty()) {
-            return null;
-        }
+	private PlayListMode(final PlayList playList, final IStatePlayer statePlayer) {
+		// Initialize shuffle list
+		this.shufflePlayList = new ShufflePointedList(statePlayer);
+		this.statePlayer = statePlayer;
+		this.playbackHistory = new PlaybackHistory();
+		this.playList = playList;
+		if (playList != null && playList.getAudioObjects() != null
+				&& !playList.getAudioObjects().isEmpty()) {
+			audioObjectsAdded(PlayListAudioObject.getList(0,
+					playList.getAudioObjects()));
+			// Set shuffle pointer
+			int currentIndex = playList.getCurrentAudioObjectIndex();
+			int indexInShuffle = this.shufflePlayList.indexOf(currentIndex);
+			if (indexInShuffle != -1) {
+				Collections.swap(this.shufflePlayList.getList(), 0,
+						indexInShuffle);
+			}
+		}
+	}
 
-        IAudioObject previosulyPlayedObject = playbackHistory.moveToPreviousInHistory();
-        if (previosulyPlayedObject != null) {
-            int index = this.playList.indexOf(previosulyPlayedObject);
-            // Update pointed object
-            this.playList.getPointedList().setPointer(index);
-            return previosulyPlayedObject;
-        }
+	@Override
+	public IAudioObject moveToPreviousAudioObject() {
+		if (this.playList.isEmpty()) {
+			return null;
+		}
 
-        // No previous object
-        if (isShuffle()) {
-            Integer previousIndex = shufflePlayList.moveToPreviousObject();
-            if (previousIndex == null) {
-                return null;
-            }
-            // Update current index and return object
-            this.playList.setCurrentAudioObjectIndex(previousIndex);
-            return this.playList.get(previousIndex);
-        }
+		IAudioObject previosulyPlayedObject = this.playbackHistory
+				.moveToPreviousInHistory();
+		if (previosulyPlayedObject != null) {
+			int index = this.playList.indexOf(previosulyPlayedObject);
+			// Update pointed object
+			this.playList.getPointedList().setPointer(index);
+			return previosulyPlayedObject;
+		}
 
-        return playList.getPointedList().moveToPreviousObject();
-    }
+		// No previous object
+		if (isShuffle()) {
+			Integer previousIndex = this.shufflePlayList.moveToPreviousObject();
+			if (previousIndex == null) {
+				return null;
+			}
+			// Update current index and return object
+			this.playList.setCurrentAudioObjectIndex(previousIndex);
+			return this.playList.get(previousIndex);
+		}
 
-    IAudioObject moveToNextAudioObject() {
-        if (this.playList.isEmpty()) {
-            return null;
-        }
+		return this.playList.getPointedList().moveToPreviousObject();
+	}
 
-        IAudioObject nextPreviouslyPlayedObject = playbackHistory.moveToNextInHistory();
-        if (nextPreviouslyPlayedObject != null) {
-            int index = this.playList.indexOf(nextPreviouslyPlayedObject);
-            // Update pointed object
-            this.playList.getPointedList().setPointer(index);
-            return nextPreviouslyPlayedObject;
-        }
+	@Override
+	public IAudioObject moveToNextAudioObject() {
+		if (this.playList.isEmpty()) {
+			return null;
+		}
 
-        // No next previously object
-        if (isShuffle()) {
-            Integer nextIndex = shufflePlayList.moveToNextObject();
-            if (nextIndex == null) {
-                return null;
-            }
-            // Update current index of play list and return object
-            this.playList.setCurrentAudioObjectIndex(nextIndex);
-            return this.playList.get(nextIndex);
-        }
+		IAudioObject nextPreviouslyPlayedObject = this.playbackHistory
+				.moveToNextInHistory();
+		if (nextPreviouslyPlayedObject != null) {
+			int index = this.playList.indexOf(nextPreviouslyPlayedObject);
+			// Update pointed object
+			this.playList.getPointedList().setPointer(index);
+			return nextPreviouslyPlayedObject;
+		}
 
-        return playList.getPointedList().moveToNextObject();
-    }
+		// No next previously object
+		if (isShuffle()) {
+			Integer nextIndex = this.shufflePlayList.moveToNextObject();
+			if (nextIndex == null) {
+				return null;
+			}
+			// Update current index of play list and return object
+			this.playList.setCurrentAudioObjectIndex(nextIndex);
+			return this.playList.get(nextIndex);
+		}
 
-    IAudioObject getPreviousAudioObject(int index) {
-        if (this.playList.isEmpty()) {
-            return null;
-        }
+		return this.playList.getPointedList().moveToNextObject();
+	}
 
-        IAudioObject previosulyPlayedObject = playbackHistory.getPreviousInHistory(index);
-        if (previosulyPlayedObject != null) {
-            return previosulyPlayedObject;
-        }
+	@Override
+	public IAudioObject getPreviousAudioObject(final int index) {
+		if (this.playList.isEmpty()) {
+			return null;
+		}
 
-        // No previous object
-        if (isShuffle()) {
-            Integer previousIndex = shufflePlayList.getPreviousObject(index);
-            if (previousIndex == null) {
-                return null;
-            }
-            return this.playList.get(previousIndex);
-        }
+		IAudioObject previosulyPlayedObject = this.playbackHistory
+				.getPreviousInHistory(index);
+		if (previosulyPlayedObject != null) {
+			return previosulyPlayedObject;
+		}
 
-        return playList.getPointedList().getPreviousObject(index);
-    }
+		// No previous object
+		if (isShuffle()) {
+			Integer previousIndex = this.shufflePlayList
+					.getPreviousObject(index);
+			if (previousIndex == null) {
+				return null;
+			}
+			return this.playList.get(previousIndex);
+		}
 
-    IAudioObject getNextAudioObject(int index) {
-        if (this.playList.isEmpty()) {
-            return null;
-        }
+		return this.playList.getPointedList().getPreviousObject(index);
+	}
 
-        IAudioObject nextPreviouslyPlayedObject = playbackHistory.getNextInHistory(index);
-        if (nextPreviouslyPlayedObject != null) {
-            return nextPreviouslyPlayedObject;
-        }
+	@Override
+	public IAudioObject getNextAudioObject(final int index) {
+		if (this.playList.isEmpty()) {
+			return null;
+		}
 
-        // No next previously object
-        if (isShuffle()) {
-            Integer nextIndex = shufflePlayList.getNextObject(index);
-            if (nextIndex == null) {
-                return null;
-            }
-            return this.playList.get(nextIndex);
-        }
+		IAudioObject nextPreviouslyPlayedObject = this.playbackHistory
+				.getNextInHistory(index);
+		if (nextPreviouslyPlayedObject != null) {
+			return nextPreviouslyPlayedObject;
+		}
 
-        return playList.getPointedList().getNextObject(index);
-    }
+		// No next previously object
+		if (isShuffle()) {
+			Integer nextIndex = this.shufflePlayList.getNextObject(index);
+			if (nextIndex == null) {
+				return null;
+			}
+			return this.playList.get(nextIndex);
+		}
 
-    void audioObjectsAdded(List<IPlayListAudioObject> audioObjectsAdded) {
-        if (audioObjectsAdded == null || audioObjectsAdded.isEmpty()) {
-            return;
-        }
+		return this.playList.getPointedList().getNextObject(index);
+	}
 
-        // Update shuffle play list 
-        this.shufflePlayList.add(audioObjectsAdded);
-    }
+	@Override
+	public void audioObjectsAdded(
+			final List<IPlayListAudioObject> audioObjectsAdded) {
+		if (audioObjectsAdded == null || audioObjectsAdded.isEmpty()) {
+			return;
+		}
 
-    void audioObjectsRemoved(List<IPlayListAudioObject> audioObjectsRemoved) {
-        if (audioObjectsRemoved == null || audioObjectsRemoved.isEmpty()) {
-            return;
-        }
+		// Update shuffle play list
+		this.shufflePlayList.add(audioObjectsAdded);
+	}
 
-        // Update shuffle list
-        for (IPlayListAudioObject plao : audioObjectsRemoved) {
-            int indexToRemove = shufflePlayList.indexOf(plao.getPosition());
-            shufflePlayList.remove(indexToRemove);
-        }
+	@Override
+	public void audioObjectsRemoved(
+			final List<IPlayListAudioObject> audioObjectsRemoved) {
+		if (audioObjectsRemoved == null || audioObjectsRemoved.isEmpty()) {
+			return;
+		}
 
-        // Update history
-        // Only remove from history audio objects removed from play list
-        // If an audio object is duplicated in play list and is in history, if one of its occurrences is removed, history is not updated
-        List<IAudioObject> audioObjectsToRemoveFromHistory = new ArrayList<IAudioObject>();
-        for (IPlayListAudioObject plao : audioObjectsRemoved) {
-            if (!playList.contains(plao.getAudioObject())) {
-                // If audio object is no more present in play list then remove from history
-                audioObjectsToRemoveFromHistory.add(plao.getAudioObject());
-            }
-        }
-        playbackHistory.remove(audioObjectsToRemoveFromHistory);
-    }
+		// Update shuffle list
+		for (IPlayListAudioObject plao : audioObjectsRemoved) {
+			int indexToRemove = this.shufflePlayList
+					.indexOf(plao.getPosition());
+			this.shufflePlayList.remove(indexToRemove);
+		}
 
-    void audioObjectsRemovedAll() {
-        shufflePlayList.clear();
-        playbackHistory.clear();
-    }
+		// Update history
+		// Only remove from history audio objects removed from play list
+		// If an audio object is duplicated in play list and is in history, if
+		// one of its occurrences is removed, history is not updated
+		List<IAudioObject> audioObjectsToRemoveFromHistory = new ArrayList<IAudioObject>();
+		for (IPlayListAudioObject plao : audioObjectsRemoved) {
+			if (!this.playList.contains(plao.getAudioObject())) {
+				// If audio object is no more present in play list then remove
+				// from history
+				audioObjectsToRemoveFromHistory.add(plao.getAudioObject());
+			}
+		}
+		this.playbackHistory.remove(audioObjectsToRemoveFromHistory);
+	}
 
-    private boolean isShuffle() {
-        return statePlayer.isShuffle();
-    }
+	@Override
+	public void audioObjectsRemovedAll() {
+		this.shufflePlayList.clear();
+		this.playbackHistory.clear();
+	}
 
-    void addToPlaybackHistory(IAudioObject object) {
-        this.playbackHistory.addToHistory(object);
-    }    
-    
-    void reset() {
-    	shufflePlayList.setPointer(0);
-    }
+	private boolean isShuffle() {
+		return this.statePlayer.isShuffle();
+	}
+
+	@Override
+	public void addToPlaybackHistory(final IAudioObject object) {
+		this.playbackHistory.addToHistory(object);
+	}
+
+	@Override
+	public void reset() {
+		this.shufflePlayList.setPointer(0);
+	}
 }

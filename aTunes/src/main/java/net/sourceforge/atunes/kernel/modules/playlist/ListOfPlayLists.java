@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IStatePlayer;
@@ -51,14 +50,12 @@ public class ListOfPlayLists implements IListOfPlayLists {
 	 * Returns a list of playlists with an empty playlist.
 	 * 
 	 * @param statePlayer
-	 * @param listeners
 	 * @return
 	 */
-	static ListOfPlayLists getEmptyPlayList(final IStatePlayer statePlayer,
-			final PlayListEventListeners listeners) {
+	static ListOfPlayLists getEmptyPlayList(final IStatePlayer statePlayer) {
 		ListOfPlayLists l = new ListOfPlayLists();
 		List<IPlayList> playLists = new ArrayList<IPlayList>();
-		playLists.add(new PlayList(statePlayer, listeners));
+		playLists.add(new PlayList(statePlayer));
 		l.setPlayLists(playLists);
 		l.setSelectedPlayList(0);
 		return l;
@@ -103,28 +100,5 @@ public class ListOfPlayLists implements IListOfPlayLists {
 	@Override
 	public void setSelectedPlayList(final int selectedPlayList) {
 		this.selectedPlayListIndex = selectedPlayList;
-	}
-
-	/**
-	 * @param statePlayer
-	 */
-	void setStatePlayer(final IStatePlayer statePlayer) {
-		for (IPlayList pl : this.playLists) {
-			PlayList playList = (PlayList) pl;
-			playList.setStatePlayer(statePlayer);
-			playList.setMode(PlayListMode
-					.getPlayListMode(playList, statePlayer));
-		}
-	}
-
-	/**
-	 * @param playListEventListeners
-	 */
-	void setPlayListEventListeners(
-			final PlayListEventListeners playListEventListeners) {
-		for (IPlayList pl : this.playLists) {
-			PlayList playList = (PlayList) pl;
-			playList.setPlayListEventListeners(playListEventListeners);
-		}
 	}
 }

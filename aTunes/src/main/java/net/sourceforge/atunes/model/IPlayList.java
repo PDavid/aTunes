@@ -24,11 +24,13 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 
+import net.sourceforge.atunes.kernel.PlayListEventListeners;
 
 /**
  * A list of audio objects
+ * 
  * @author alex
- *
+ * 
  */
 public interface IPlayList extends Serializable, Cloneable {
 
@@ -80,14 +82,18 @@ public interface IPlayList extends Serializable, Cloneable {
 
 	/**
 	 * Returns next audio object
-	 * @param index 1 for next, 2 for next of next'...
+	 * 
+	 * @param index
+	 *            1 for next, 2 for next of next'...
 	 * @return
 	 */
 	IAudioObject getNextAudioObject(int index);
 
 	/**
 	 * Returns previous audio object
-	 * @param index 1 for previous, 2 for previous of previous'...
+	 * 
+	 * @param index
+	 *            1 for previous, 2 for previous of previous'...
 	 * @return
 	 */
 	IAudioObject getPreviousAudioObject(int index);
@@ -106,30 +112,35 @@ public interface IPlayList extends Serializable, Cloneable {
 
 	/**
 	 * Returns name of play list
+	 * 
 	 * @return
 	 */
 	String getName();
 
 	/**
 	 * Sets name to play list
+	 * 
 	 * @param newName
 	 */
 	void setName(String newName);
 
 	/**
 	 * Returns currently selected audio object in this play list
+	 * 
 	 * @return
 	 */
 	IAudioObject getCurrentAudioObject();
 
 	/**
 	 * Sorts play list with given comparator
+	 * 
 	 * @param comparator
 	 */
 	void sort(Comparator<IAudioObject> comparator);
 
 	/**
 	 * Adds a list of audio objects in a location of play list
+	 * 
 	 * @param newLocation
 	 * @param audioObjects
 	 */
@@ -137,18 +148,21 @@ public interface IPlayList extends Serializable, Cloneable {
 
 	/**
 	 * Returns a random position of play list
+	 * 
 	 * @return
 	 */
 	int getRandomPosition();
 
 	/**
 	 * Changes current audio object
+	 * 
 	 * @param selectedAudioObject
 	 */
 	void setCurrentAudioObjectIndex(int selectedAudioObject);
 
 	/**
 	 * Returns current audio object index
+	 * 
 	 * @return
 	 */
 	int getCurrentAudioObjectIndex();
@@ -160,12 +174,14 @@ public interface IPlayList extends Serializable, Cloneable {
 
 	/**
 	 * Removes audio object by given index
+	 * 
 	 * @param i
 	 */
 	void remove(int i);
 
 	/**
 	 * Adds an object at given location
+	 * 
 	 * @param newLocation
 	 * @param aux
 	 */
@@ -178,38 +194,61 @@ public interface IPlayList extends Serializable, Cloneable {
 
 	/**
 	 * Creates a copy
+	 * 
 	 * @return
 	 */
 	IPlayList copyPlayList();
 
 	/**
 	 * Moves to next audio object
+	 * 
 	 * @return
 	 */
 	IAudioObject moveToNextAudioObject();
 
 	/**
 	 * Moves to previous audio object
+	 * 
 	 * @return
 	 */
 	IAudioObject moveToPreviousAudioObject();
 
 	/**
 	 * Adds an audio object to playback history
+	 * 
 	 * @param object
 	 */
 	void addToPlaybackHistory(IAudioObject object);
 
 	/**
 	 * Removes a list of audio objects
+	 * 
 	 * @param audioObjects
 	 */
 	void remove(List<? extends IAudioObject> audioObjects);
 
 	/**
 	 * Returns a list with audio object contents
+	 * 
 	 * @return
 	 */
 	List<IAudioObject> getAudioObjectsList();
+
+	/**
+	 * Sets listeners to be notified when this play list changes
+	 * 
+	 * @param listeners
+	 */
+	void setPlayListEventListeners(final PlayListEventListeners listeners);
+
+	/**
+	 * @param statePlayer
+	 */
+	void setStatePlayer(IStatePlayer statePlayer);
+
+	/**
+	 * @param playListMode
+	 */
+	void setMode(IPlayListMode playListMode);
 
 }

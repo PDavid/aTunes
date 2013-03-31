@@ -30,6 +30,7 @@ import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
+import net.sourceforge.atunes.model.IPlayListMode;
 import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.PointedList;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -51,7 +52,7 @@ public class PlayList implements IPlayList {
 	/**
 	 * Play list mode to select audio objects
 	 */
-	private transient PlayListMode mode;
+	private transient IPlayListMode mode;
 
 	/**
 	 * Name of play list as shown on play list tabs.
@@ -79,9 +80,8 @@ public class PlayList implements IPlayList {
 	 * @param statePlayer
 	 * @param listeners
 	 */
-	protected PlayList(final IStatePlayer statePlayer,
-			final PlayListEventListeners listeners) {
-		this((List<IAudioObject>) null, statePlayer, listeners);
+	protected PlayList(final IStatePlayer statePlayer) {
+		this((List<IAudioObject>) null, statePlayer);
 	}
 
 	/**
@@ -89,15 +89,12 @@ public class PlayList implements IPlayList {
 	 * 
 	 * @param audioObjectsList
 	 * @param statePlayer
-	 * @param listeners
 	 */
 	protected PlayList(final List<? extends IAudioObject> audioObjectsList,
-			final IStatePlayer statePlayer,
-			final PlayListEventListeners listeners) {
+			final IStatePlayer statePlayer) {
 		this.audioObjects = new PlayListPointedList(statePlayer);
 		this.mode = PlayListMode.getPlayListMode(this, statePlayer);
 		this.statePlayer = statePlayer;
-		this.listeners = listeners;
 		if (audioObjectsList != null) {
 			add(audioObjectsList);
 		}
@@ -120,18 +117,14 @@ public class PlayList implements IPlayList {
 		this.listeners = listeners;
 	}
 
-	/**
-	 * @param statePlayer
-	 */
-	void setStatePlayer(final IStatePlayer statePlayer) {
+	@Override
+	public void setStatePlayer(final IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;
 		((PlayListPointedList) this.audioObjects).setStatePlayer(statePlayer);
 	}
 
-	/**
-	 * @param listeners
-	 */
-	void setPlayListEventListeners(final PlayListEventListeners listeners) {
+	@Override
+	public void setPlayListEventListeners(final PlayListEventListeners listeners) {
 		this.listeners = listeners;
 	}
 
@@ -408,7 +401,7 @@ public class PlayList implements IPlayList {
 	}
 
 	@Override
-	public PlayList copyPlayList() {
+	public IPlayList copyPlayList() {
 		return new PlayList(this, this.statePlayer, this.listeners);
 	}
 
@@ -546,15 +539,12 @@ public class PlayList implements IPlayList {
 	/**
 	 * @return the mode
 	 */
-	protected PlayListMode getMode() {
+	protected IPlayListMode getMode() {
 		return this.mode;
 	}
 
-	/**
-	 * @param mode
-	 *            the mode to set
-	 */
-	protected void setMode(final PlayListMode mode) {
+	@Override
+	public void setMode(final IPlayListMode mode) {
 		this.mode = mode;
 	}
 

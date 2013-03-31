@@ -23,12 +23,9 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.io.IOException;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.PlayListEventListeners;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IObjectDataStore;
-import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.KryoSerializerService;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -45,24 +42,6 @@ public class PlayListObjectDataStore implements
 	private KryoSerializerService kryoSerializerService;
 
 	private IOSManager osManager;
-
-	private IStatePlayer statePlayer;
-
-	private IBeanFactory beanFactory;
-
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
-
-	/**
-	 * @param statePlayer
-	 */
-	public void setStatePlayer(final IStatePlayer statePlayer) {
-		this.statePlayer = statePlayer;
-	}
 
 	/**
 	 * @param osManager
@@ -82,15 +61,8 @@ public class PlayListObjectDataStore implements
 	@Override
 	public IListOfPlayLists read() {
 		try {
-			ListOfPlayLists listOfPlayLists = (ListOfPlayLists) this.kryoSerializerService
+			return (ListOfPlayLists) this.kryoSerializerService
 					.readObjectFromFile(getFileName(), ListOfPlayLists.class);
-			if (listOfPlayLists != null) {
-				// Put here all transient fields of play lists
-				listOfPlayLists.setStatePlayer(this.statePlayer);
-				listOfPlayLists.setPlayListEventListeners(this.beanFactory
-						.getBean(PlayListEventListeners.class));
-			}
-			return listOfPlayLists;
 		} catch (IOException e) {
 			Logger.error(e);
 		}
