@@ -116,10 +116,9 @@ public class Repository implements Serializable, IRepository {
 	}
 
 	/**
-	 * This constructor can't be used
+	 * Default constructor for serialization
 	 */
-	@SuppressWarnings("unused")
-	private Repository() {
+	Repository() {
 	}
 
 	@Override
