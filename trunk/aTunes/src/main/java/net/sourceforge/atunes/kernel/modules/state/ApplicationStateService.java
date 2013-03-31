@@ -25,14 +25,15 @@ import java.io.IOException;
 import java.util.List;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.IListOfPlayLists;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IObjectDataStore;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRepository;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IStatistics;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -42,8 +43,7 @@ import net.sourceforge.atunes.utils.XMLSerializerService;
  * This class is responsible of read, write and apply application state, and
  * caches.
  */
-public final class ApplicationStateHandler extends AbstractHandler implements
-		IStateHandler {
+public final class ApplicationStateService implements IStateService {
 
 	private XMLSerializerService xmlSerializerService;
 
@@ -58,6 +58,24 @@ public final class ApplicationStateHandler extends AbstractHandler implements
 	private IObjectDataStore<IStatistics> statisticsObjectDataStore;
 
 	private IObjectDataStore<List<IPodcastFeed>> podcastObjectDataStore;
+
+	private IOSManager osManager;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
 	/**
 	 * @param podcastObjectDataStore
@@ -117,28 +135,28 @@ public final class ApplicationStateHandler extends AbstractHandler implements
 
 	@Override
 	public void persistFavoritesCache(final IFavorites favorites) {
-		favoritesObjectDataStore.write(favorites);
+		this.favoritesObjectDataStore.write(favorites);
 	}
 
 	@Override
 	public void persistStatisticsCache(final IStatistics statistics) {
-		statisticsObjectDataStore.write(statistics);
+		this.statisticsObjectDataStore.write(statistics);
 	}
 
 	@Override
 	public void persistPlayLists(final IListOfPlayLists listOfPlayLists) {
-		playListObjectDataStore.write(listOfPlayLists);
+		this.playListObjectDataStore.write(listOfPlayLists);
 	}
 
 	@Override
 	public void persistPodcastFeedCache(final List<IPodcastFeed> podcastFeeds) {
-		podcastObjectDataStore.write(podcastFeeds);
+		this.podcastObjectDataStore.write(podcastFeeds);
 	}
 
 	@Override
 	public void persistRadioCache(final List<IRadio> radios) {
 		try {
-			xmlSerializerService.writeObjectToFile(radios, getOsManager()
+			this.xmlSerializerService.writeObjectToFile(radios, this.osManager
 					.getFilePath(getUserConfigFolder(), Constants.RADIO_CACHE));
 		} catch (IOException e) {
 			Logger.error("Could not persist radios");
@@ -149,9 +167,8 @@ public final class ApplicationStateHandler extends AbstractHandler implements
 	@Override
 	public void persistPresetRadioCache(final List<IRadio> radios) {
 		try {
-			xmlSerializerService.writeObjectToFile(
-					radios,
-					getOsManager().getFilePath(getUserConfigFolder(),
+			this.xmlSerializerService.writeObjectToFile(radios, this.osManager
+					.getFilePath(getUserConfigFolder(),
 							Constants.PRESET_RADIO_CACHE));
 		} catch (IOException e) {
 			Logger.error("Could not persist radios");
@@ -161,41 +178,41 @@ public final class ApplicationStateHandler extends AbstractHandler implements
 
 	@Override
 	public void persistRepositoryCache(final IRepository repository) {
-		repositoryObjectDataStore.write(repository);
+		this.repositoryObjectDataStore.write(repository);
 	}
 
 	@Override
 	public void persistDeviceCache(final String deviceId,
 			final IRepository deviceRepository) {
-		deviceObjectDataStore.write(deviceId, deviceRepository);
+		this.deviceObjectDataStore.write(deviceId, deviceRepository);
 	}
 
 	@Override
 	public IFavorites retrieveFavoritesCache() {
-		return favoritesObjectDataStore.read();
+		return this.favoritesObjectDataStore.read();
 	}
 
 	@Override
 	public IStatistics retrieveStatisticsCache() {
-		return statisticsObjectDataStore.read();
+		return this.statisticsObjectDataStore.read();
 	}
 
 	@Override
 	public IListOfPlayLists retrievePlayListsCache() {
-		return playListObjectDataStore.read();
+		return this.playListObjectDataStore.read();
 	}
 
 	@Override
 	public List<IPodcastFeed> retrievePodcastFeedCache() {
-		return podcastObjectDataStore.read();
+		return this.podcastObjectDataStore.read();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<IRadio> retrieveRadioCache() {
 		try {
-			return (List<IRadio>) xmlSerializerService
-					.readObjectFromFile(getOsManager().getFilePath(
+			return (List<IRadio>) this.xmlSerializerService
+					.readObjectFromFile(this.osManager.getFilePath(
 							getUserConfigFolder(), Constants.RADIO_CACHE));
 		} catch (FileNotFoundException e) {
 			Logger.info(e.getMessage());
@@ -210,15 +227,15 @@ public final class ApplicationStateHandler extends AbstractHandler implements
 	public List<IRadio> retrieveRadioPreset() {
 		try {
 			// First try user settings folder
-			return (List<IRadio>) xmlSerializerService
-					.readObjectFromFile(getOsManager()
+			return (List<IRadio>) this.xmlSerializerService
+					.readObjectFromFile(this.osManager
 							.getFilePath(getUserConfigFolder(),
 									Constants.PRESET_RADIO_CACHE));
 		} catch (IOException e) {
 			try {
 				// Otherwise use list in application folder
-				return (List<IRadio>) xmlSerializerService
-						.readObjectFromFile(ApplicationStateHandler.class
+				return (List<IRadio>) this.xmlSerializerService
+						.readObjectFromFile(ApplicationStateService.class
 								.getResourceAsStream(StringUtils.getString(
 										"/settings/",
 										Constants.PRESET_RADIO_CACHE)));
@@ -231,20 +248,20 @@ public final class ApplicationStateHandler extends AbstractHandler implements
 
 	@Override
 	public IRepository retrieveRepositoryCache() {
-		return repositoryObjectDataStore.read();
+		return this.repositoryObjectDataStore.read();
 	}
 
 	@Override
 	public IRepository retrieveDeviceCache(final String deviceId) {
-		return deviceObjectDataStore.read(deviceId);
+		return this.deviceObjectDataStore.read(deviceId);
 	}
 
 	private String getUserConfigFolder() {
-		return getOsManager().getUserConfigFolder();
+		return this.osManager.getUserConfigFolder();
 	}
 
 	@Override
 	public void editPreferences() {
-		getBean(EditPreferencesDialogController.class).start();
+		this.beanFactory.getBean(EditPreferencesDialogController.class).start();
 	}
 }

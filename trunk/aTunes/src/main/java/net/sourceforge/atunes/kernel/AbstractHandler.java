@@ -26,23 +26,21 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IHandler;
-import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.PlaybackState;
 
 /**
  * An abstract handler
+ * 
  * @author alex
- *
+ * 
  */
 public abstract class AbstractHandler implements IHandler {
 
 	private IFrame frame;
 
 	private IOSManager osManager;
-
-	private IHandlerBackgroundInitializationTask initializationTask;
 
 	private IBeanFactory beanFactory;
 
@@ -57,14 +55,7 @@ public abstract class AbstractHandler implements IHandler {
 	 * @return
 	 */
 	protected final IBeanFactory getBeanFactory() {
-		return beanFactory;
-	}
-
-	/**
-	 * @param initializationTask
-	 */
-	public void setInitializationTask(final IHandlerBackgroundInitializationTask initializationTask) {
-		this.initializationTask = initializationTask;
+		return this.beanFactory;
 	}
 
 	/**
@@ -78,14 +69,14 @@ public abstract class AbstractHandler implements IHandler {
 	 * @return os manager
 	 */
 	protected IOSManager getOsManager() {
-		return osManager;
+		return this.osManager;
 	}
 
 	/**
 	 * @return the frame
 	 */
 	protected IFrame getFrame() {
-		return frame;
+		return this.frame;
 	}
 
 	/**
@@ -96,81 +87,98 @@ public abstract class AbstractHandler implements IHandler {
 	}
 
 	@Override
-	public final IHandlerBackgroundInitializationTask getInitializationTask() {
-		return initializationTask;
+	public void deferredInitialization() {
 	}
 
 	@Override
-	public void deferredInitialization() {}
+	public void allHandlersInitialized() {
+	}
 
 	@Override
-	public void allHandlersInitialized() {}
+	public void favoritesChanged() {
+	}
 
 	@Override
-	public void favoritesChanged() {}
+	public void deviceConnected(final String location) {
+	}
 
 	@Override
-	public void deviceConnected(final String location) {}
+	public void deviceReady(final String location) {
+	}
 
 	@Override
-	public void deviceReady(final String location) {}
+	public void deviceDisconnected(final String location) {
+	}
 
 	@Override
-	public void deviceDisconnected(final String location) {}
+	public void playbackStateChanged(final PlaybackState newState,
+			final IAudioObject currentAudioObject) {
+	}
 
 	@Override
-	public void playbackStateChanged(final PlaybackState newState, final IAudioObject currentAudioObject) {}
+	public void audioObjectsAdded(
+			final List<IPlayListAudioObject> audioObjectsAdded) {
+	}
 
 	@Override
-	public void audioObjectsAdded(final List<IPlayListAudioObject> audioObjectsAdded) {}
+	public void audioObjectsRemoved(
+			final List<IPlayListAudioObject> audioObjectsRemoved) {
+	}
 
 	@Override
-	public void audioObjectsRemoved(final List<IPlayListAudioObject> audioObjectsRemoved) {}
+	public void applicationFinish() {
+	}
 
 	@Override
-	public void applicationFinish() {}
+	public void applicationStateChanged() {
+	}
 
 	@Override
-	public void applicationStateChanged() {}
+	public void applicationStarted() {
+	}
 
 	@Override
-	public void applicationStarted() {}
+	public void playListCleared() {
+	}
 
 	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(final IAudioObject audioObject) {}
+	public void selectedAudioObjectChanged(final IAudioObject audioObject) {
+	}
 
 	/**
 	 * Initializes handler
 	 */
-	 protected void initHandler() {}
+	protected void initHandler() {
+	}
 
 	@Override
-	public void windowIconified() {}
+	public void windowIconified() {
+	}
 
 	@Override
-	public void windowDeiconified() {}
+	public void windowDeiconified() {
+	}
 
 	/**
 	 * Delegate method to get beans
+	 * 
 	 * @param <T>
 	 * @param beanType
 	 * @return
 	 */
 	protected <T> T getBean(final Class<T> beanType) {
-		return beanFactory.getBean(beanType);
+		return this.beanFactory.getBean(beanType);
 	}
 
 	/**
 	 * Returns bean with given name and type
+	 * 
 	 * @param <T>
 	 * @param name
 	 * @param clazz
 	 * @return
 	 */
 	protected <T> T getBean(final String name, final Class<T> clazz) {
-		return beanFactory.getBean(name, clazz);
+		return this.beanFactory.getBean(name, clazz);
 	}
 }

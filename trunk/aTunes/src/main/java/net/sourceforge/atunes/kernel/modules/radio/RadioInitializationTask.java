@@ -22,84 +22,47 @@ package net.sourceforge.atunes.kernel.modules.radio;
 
 import java.util.List;
 
-import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateRetrieveTask;
+import net.sourceforge.atunes.model.IStateService;
 
 /**
  * Reads radios
+ * 
  * @author alex
- *
+ * 
  */
-public class RadioInitializationTask implements IHandlerBackgroundInitializationTask {
+public class RadioInitializationTask implements IStateRetrieveTask {
 
-	private IStateHandler stateHandler;
-	
-	private RadioHandler radioHandler;
-	
-	private INavigationHandler navigationHandler;
-	
-	private INavigationView radioNavigationView;
-	
-	/**
-	 * @param radioNavigationView
-	 */
-	public void setRadioNavigationView(INavigationView radioNavigationView) {
-		this.radioNavigationView = radioNavigationView;
-	}
-	
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-	
-	/**
-	 * @param radioHandler
-	 */
-	public void setRadioHandler(RadioHandler radioHandler) {
-		this.radioHandler = radioHandler;
-	}
-	
-	/**
-	 * @param stateHandler
-	 */
-	public void setStateHandler(IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
-	}
-	
+	private List<IRadio> radios;
+	private List<IRadio> presetRadios;
+
 	@Override
-	public Runnable getInitializationTask() {
-        return new Runnable() {
-            /**
-             * Read radio stations lists. We use different files, one for
-             * presets which is not modified by the user and a second one for
-             * all the user modifications.
-             */
-            @Override
-            public void run() {
-            	List<IRadio> radios = stateHandler.retrieveRadioCache();
-            	if (radios != null) {
-            		radioHandler.setRadios(radios);
-            	}
-            	List<IRadio> presetRadios = stateHandler.retrieveRadioPreset();
-            	if (presetRadios != null) {
-            		radioHandler.setPresetRadios(presetRadios);
-            	}
-            }
-        };
+	public void retrieveData(final IStateService stateService,
+			final IBeanFactory beanFactory) {
+		/*
+		 * Read radio stations lists. We use different files, one for presets
+		 * which is not modified by the user and a second one for all the user
+		 * modifications.
+		 */
+		this.radios = stateService.retrieveRadioCache();
+		this.presetRadios = stateService.retrieveRadioPreset();
 	}
-	
+
 	@Override
-	public Runnable getInitializationCompletedTask() {
-		return new Runnable() {
-			@Override
-			public void run() {
-				navigationHandler.refreshView(radioNavigationView);
-			}
-		};
+	public void setData(final IBeanFactory beanFactory) {
+		if (this.radios != null) {
+			beanFactory.getBean(RadioHandler.class).setRadios(this.radios);
+		}
+		if (this.presetRadios != null) {
+			beanFactory.getBean(RadioHandler.class).setPresetRadios(
+					this.presetRadios);
+		}
+		beanFactory.getBean(INavigationHandler.class).refreshView(
+				beanFactory.getBean("radioNavigationView",
+						INavigationView.class));
 	}
 }

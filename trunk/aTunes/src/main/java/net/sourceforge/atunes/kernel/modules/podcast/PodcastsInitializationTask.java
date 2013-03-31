@@ -23,77 +23,40 @@ package net.sourceforge.atunes.kernel.modules.podcast;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPodcastFeed;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateRetrieveTask;
+import net.sourceforge.atunes.model.IStateService;
 
 /**
  * Reads podcasts
+ * 
  * @author alex
- *
+ * 
  */
-public class PodcastsInitializationTask implements IHandlerBackgroundInitializationTask {
+public class PodcastsInitializationTask implements IStateRetrieveTask {
 
-	private PodcastFeedHandler podcastFeedHandler;
-	
-	private IStateHandler stateHandler;
-	
-	private INavigationHandler navigationHandler;
-	
-	private INavigationView podcastNavigationView;
+	private List<IPodcastFeed> podcastFeeds;
 
-	/**
-	 * @param podcastNavigationView
-	 */
-	public void setPodcastNavigationView(INavigationView podcastNavigationView) {
-		this.podcastNavigationView = podcastNavigationView;
-	}
-	
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-
-	/**
-	 * @param podcastFeedHandler
-	 */
-	public void setPodcastFeedHandler(PodcastFeedHandler podcastFeedHandler) {
-		this.podcastFeedHandler = podcastFeedHandler;
-	}
-	
-	/**
-	 * @param stateHandler
-	 */
-	public void setStateHandler(IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
-	}
-	
 	@Override
-	public Runnable getInitializationTask() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                List<IPodcastFeed> podcastFeeds = stateHandler.retrievePodcastFeedCache();
-            	/*
-                 * java.util.concurrent.CopyOnWriteArrayList instead of e.g.
-                 * java.util.ArrayList to avoid ConcurrentModificationException
-                 */
-                podcastFeedHandler.setPodcastFeeds(podcastFeeds != null ? podcastFeeds : new CopyOnWriteArrayList<IPodcastFeed>());
-            }
-        };
+	public void retrieveData(final IStateService stateService,
+			final IBeanFactory beanFactory) {
+		this.podcastFeeds = stateService.retrievePodcastFeedCache();
 	}
-	
+
 	@Override
-	public Runnable getInitializationCompletedTask() {
-		return new Runnable() {
-			@Override
-			public void run() {
-				navigationHandler.refreshView(podcastNavigationView);
-			}
-		};
+	public void setData(final IBeanFactory beanFactory) {
+		/*
+		 * java.util.concurrent.CopyOnWriteArrayList instead of e.g.
+		 * java.util.ArrayList to avoid ConcurrentModificationException
+		 */
+		beanFactory.getBean(PodcastFeedHandler.class).setPodcastFeeds(
+				this.podcastFeeds != null ? this.podcastFeeds
+						: new CopyOnWriteArrayList<IPodcastFeed>());
+		beanFactory.getBean(INavigationHandler.class).refreshView(
+				beanFactory.getBean("podcastNavigationView",
+						INavigationView.class));
 	}
 }

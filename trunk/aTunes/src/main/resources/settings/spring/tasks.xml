@@ -6,7 +6,7 @@
 	default-autowire="byName" default-lazy-init="true">
 	
 	<bean id="taskService" class="net.sourceforge.atunes.kernel.TaskService">
-		<property name="poolSize" value="2"/>
+		<property name="poolSize" value="3"/>
 		<property name="threadSuffix" value="TaskService-"/>
 	</bean>
 

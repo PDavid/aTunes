@@ -26,7 +26,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import net.sourceforge.atunes.model.IKernel;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IUIHandler;
 
 import org.junit.Before;
@@ -36,42 +36,46 @@ public class MacOSXInitializerTest {
 
 	private MacOSXInitializer sut;
 	private IMacOSXApplication app;
-	
+
 	@Before
 	public void init() {
-		sut = new MacOSXInitializer();
-		sut.setKernel(mock(IKernel.class));
-		sut.setStateHandler(mock(IStateHandler.class));
-		sut.setUiHandler(mock(IUIHandler.class));
+		this.sut = new MacOSXInitializer();
+		this.sut.setKernel(mock(IKernel.class));
+		this.sut.setStateService(mock(IStateService.class));
+		this.sut.setUiHandler(mock(IUIHandler.class));
 	}
-	
+
 	@Test
 	public void testNotInitialized() {
-		app = mock(IMacOSXApplication.class);
-		when(app.initialize()).thenReturn(false);
-		sut.setMacOsApplication(app);
-		
-		sut.initialize();
-		
-		verify(app, never()).addDockIconMenu();
-		verify(app, never()).registerAbout(any(MacOSXAboutHandler.class));
-		verify(app, never()).registerAppReOpenedListener(any(MacOSXAppReOpenedListener.class));
-		verify(app, never()).registerPreferences(any(MacOSXPreferencesHandler.class));
-		verify(app, never()).registerQuit(any(MacOSXQuitHandler.class));
+		this.app = mock(IMacOSXApplication.class);
+		when(this.app.initialize()).thenReturn(false);
+		this.sut.setMacOsApplication(this.app);
+
+		this.sut.initialize();
+
+		verify(this.app, never()).addDockIconMenu();
+		verify(this.app, never()).registerAbout(any(MacOSXAboutHandler.class));
+		verify(this.app, never()).registerAppReOpenedListener(
+				any(MacOSXAppReOpenedListener.class));
+		verify(this.app, never()).registerPreferences(
+				any(MacOSXPreferencesHandler.class));
+		verify(this.app, never()).registerQuit(any(MacOSXQuitHandler.class));
 	}
 
 	@Test
 	public void testInitialized() {
-		app = mock(IMacOSXApplication.class);
-		when(app.initialize()).thenReturn(true);
-		sut.setMacOsApplication(app);
-		
-		sut.initialize();
-		
-		verify(app).addDockIconMenu();
-		verify(app).registerAbout(any(MacOSXAboutHandler.class));
-		verify(app).registerAppReOpenedListener(any(MacOSXAppReOpenedListener.class));
-		verify(app).registerPreferences(any(MacOSXPreferencesHandler.class));
-		verify(app).registerQuit(any(MacOSXQuitHandler.class));
+		this.app = mock(IMacOSXApplication.class);
+		when(this.app.initialize()).thenReturn(true);
+		this.sut.setMacOsApplication(this.app);
+
+		this.sut.initialize();
+
+		verify(this.app).addDockIconMenu();
+		verify(this.app).registerAbout(any(MacOSXAboutHandler.class));
+		verify(this.app).registerAppReOpenedListener(
+				any(MacOSXAppReOpenedListener.class));
+		verify(this.app).registerPreferences(
+				any(MacOSXPreferencesHandler.class));
+		verify(this.app).registerQuit(any(MacOSXQuitHandler.class));
 	}
 }

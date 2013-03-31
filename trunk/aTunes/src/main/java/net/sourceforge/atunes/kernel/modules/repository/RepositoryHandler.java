@@ -47,8 +47,8 @@ import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRepositoryTransaction;
-import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStateRepository;
+import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
@@ -73,7 +73,7 @@ public final class RepositoryHandler extends AbstractHandler implements
 
 	private INavigationHandler navigationHandler;
 
-	private IStateHandler stateHandler;
+	private IStateService stateService;
 
 	private IRepository repository;
 
@@ -224,10 +224,10 @@ public final class RepositoryHandler extends AbstractHandler implements
 	}
 
 	/**
-	 * @param stateHandler
+	 * @param stateService
 	 */
-	public void setStateHandler(final IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
+	public void setStateService(final IStateService stateService) {
+		this.stateService = stateService;
 	}
 
 	/**
@@ -295,7 +295,7 @@ public final class RepositoryHandler extends AbstractHandler implements
 		if (!isRepositoryVoid()) {
 			// Only store repository if it's dirty
 			if (transactionPending()) {
-				this.stateHandler.persistRepositoryCache(this.repository);
+				this.stateService.persistRepositoryCache(this.repository);
 			} else {
 				Logger.info("Repository is clean");
 			}
@@ -502,15 +502,15 @@ public final class RepositoryHandler extends AbstractHandler implements
 
 	@Override
 	public void rename(final ILocalAudioObject audioFile, final String name) {
-		String oldName = fileManager.getPath(audioFile);
-		if (fileManager.rename(audioFile, name)) {
+		String oldName = this.fileManager.getPath(audioFile);
+		if (this.fileManager.rename(audioFile, name)) {
 			startTransaction();
 			this.repository.removeFile(oldName);
 			this.repository.putFile(audioFile);
 			endTransaction();
 			this.navigationHandler.repositoryReloaded();
 			this.statisticsHandler.updateFileName(audioFile, oldName,
-					fileManager.getPath(audioFile));
+					this.fileManager.getPath(audioFile));
 		}
 	}
 

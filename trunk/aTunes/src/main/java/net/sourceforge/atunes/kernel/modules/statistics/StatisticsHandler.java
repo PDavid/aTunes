@@ -30,7 +30,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IStatistics;
 import net.sourceforge.atunes.model.IStatisticsAlbum;
 import net.sourceforge.atunes.model.IStatisticsHandler;
@@ -51,7 +51,7 @@ public final class StatisticsHandler extends AbstractHandler implements
 
 	private StatsDialogController controller;
 
-	private IStateHandler stateHandler;
+	private IStateService stateService;
 
 	private IRepositoryHandler repositoryHandler;
 
@@ -82,10 +82,10 @@ public final class StatisticsHandler extends AbstractHandler implements
 	}
 
 	/**
-	 * @param stateHandler
+	 * @param stateService
 	 */
-	public void setStateHandler(final IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
+	public void setStateService(final IStateService stateService) {
+		this.stateService = stateService;
 	}
 
 	/**
@@ -373,7 +373,7 @@ public final class StatisticsHandler extends AbstractHandler implements
 	 * Stores statistics
 	 */
 	private void storeStatistics() {
-		new StoreStatistics(this.taskService, this.stateHandler, this)
+		new StoreStatistics(this.taskService, this.stateService, this)
 				.storeStatistics();
 	}
 }

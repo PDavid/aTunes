@@ -20,89 +20,41 @@
 
 package net.sourceforge.atunes.kernel.modules.favorites;
 
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavorites;
-import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateRetrieveTask;
+import net.sourceforge.atunes.model.IStateService;
 
 /**
  * Reads favorites
+ * 
  * @author alex
- *
+ * 
  */
-public class FavoritesInitializationTask implements IHandlerBackgroundInitializationTask {
-	
-	private FavoritesHandler favoritesHandler;
-	
-	private IStateHandler stateHandler;
-	
-	private INavigationHandler navigationHandler;
-	
-	private IPlayListHandler playListHandler;
-	
-	private INavigationView favoritesNavigationView;
-	
-	/**
-	 * @param favoritesNavigationView
-	 */
-	public void setFavoritesNavigationView(INavigationView favoritesNavigationView) {
-		this.favoritesNavigationView = favoritesNavigationView;
-	}
-	
-	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-	
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-	
-	/**
-	 * @param favoritesHandler
-	 */
-	public void setFavoritesHandler(FavoritesHandler favoritesHandler) {
-		this.favoritesHandler = favoritesHandler;
-	}
-	
-	/**
-	 * @param stateHandler
-	 */
-	public void setStateHandler(IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
-	}
-	
-	@Override
-	public Runnable getInitializationTask() {
-		return new Runnable() {
+public class FavoritesInitializationTask implements IStateRetrieveTask {
 
-			@Override
-			public void run() {
-				IFavorites favorites = stateHandler.retrieveFavoritesCache();
-				if (favorites != null) {
-					favoritesHandler.setFavorites(favorites);
-				}
-			}
-		};
-	}
-	
+	private IFavorites favorites;
+
 	@Override
-	public Runnable getInitializationCompletedTask() {
-		return new Runnable() {
-			@Override
-			public void run() {
-				// Update navigator
-				navigationHandler.refreshView(favoritesNavigationView);
-				// Update playlist
-				playListHandler.refreshPlayList();
-			}
-		};
+	public void retrieveData(final IStateService stateService,
+			final IBeanFactory beanFactory) {
+		this.favorites = stateService.retrieveFavoritesCache();
+	}
+
+	@Override
+	public void setData(final IBeanFactory beanFactory) {
+		if (this.favorites != null) {
+			beanFactory.getBean(FavoritesHandler.class).setFavorites(
+					this.favorites);
+			// Update navigator
+			beanFactory.getBean(INavigationHandler.class).refreshView(
+					beanFactory.getBean("favoritesNavigationView",
+							INavigationView.class));
+			// Update playlist
+			beanFactory.getBean(IPlayListHandler.class).refreshPlayList();
+		}
 	}
 }

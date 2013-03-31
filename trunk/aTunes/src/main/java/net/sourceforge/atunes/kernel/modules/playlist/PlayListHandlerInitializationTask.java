@@ -21,10 +21,11 @@
 package net.sourceforge.atunes.kernel.modules.playlist;
 
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
-import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IListOfPlayLists;
-import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStatePlayer;
+import net.sourceforge.atunes.model.IStateRetrieveTask;
+import net.sourceforge.atunes.model.IStateService;
 
 /**
  * Reads playlists
@@ -32,74 +33,26 @@ import net.sourceforge.atunes.model.IStatePlayer;
  * @author alex
  * 
  */
-public class PlayListHandlerInitializationTask implements
-		IHandlerBackgroundInitializationTask {
+public class PlayListHandlerInitializationTask implements IStateRetrieveTask {
 
-	private PlayListHandler playListHandler;
+	private IListOfPlayLists list;
 
-	private IStateHandler stateHandler;
-
-	private IStatePlayer statePlayer;
-
-	private PlayListEventListeners playListEventListeners;
-
-	/**
-	 * @param playListEventListeners
-	 */
-	public void setPlayListEventListeners(
-			final PlayListEventListeners playListEventListeners) {
-		this.playListEventListeners = playListEventListeners;
-	}
-
-	/**
-	 * @param statePlayer
-	 */
-	public void setStatePlayer(final IStatePlayer statePlayer) {
-		this.statePlayer = statePlayer;
-	}
-
-	/**
-	 * @param stateHandler
-	 */
-	public void setStateHandler(final IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
-	}
-
-	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(final PlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
+	@Override
+	public void retrieveData(final IStateService stateService,
+			final IBeanFactory beanFactory) {
+		this.list = stateService.retrievePlayListsCache();
 	}
 
 	@Override
-	public Runnable getInitializationTask() {
-		return new Runnable() {
-			@Override
-			public void run() {
-				IListOfPlayLists list = PlayListHandlerInitializationTask.this.stateHandler
-						.retrievePlayListsCache();
-				if (list == null) {
-					list = ListOfPlayLists
-							.getEmptyPlayList(
-									PlayListHandlerInitializationTask.this.statePlayer,
-									PlayListHandlerInitializationTask.this.playListEventListeners);
-				}
-				PlayListHandlerInitializationTask.this.playListHandler
-						.setPlayListsRetrievedFromCache(list);
-			}
-		};
+	public void setData(final IBeanFactory beanFactory) {
+		if (this.list == null) {
+			this.list = ListOfPlayLists.getEmptyPlayList(
+					beanFactory.getBean(IStatePlayer.class),
+					beanFactory.getBean(PlayListEventListeners.class));
+		}
+		beanFactory.getBean(PlayListHandler.class)
+				.setPlayListsRetrievedFromCache(this.list);
+		beanFactory.getBean(PlayListHandler.class)
+				.initializationTaskCompleted();
 	}
-
-	@Override
-	public Runnable getInitializationCompletedTask() {
-		return new Runnable() {
-			@Override
-			public void run() {
-				PlayListHandlerInitializationTask.this.playListHandler
-						.initializationTaskCompleted();
-			}
-		};
-	}
-
 }

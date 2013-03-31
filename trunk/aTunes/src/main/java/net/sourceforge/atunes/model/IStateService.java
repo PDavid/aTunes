@@ -24,10 +24,11 @@ import java.util.List;
 
 /**
  * Responsible of managing application state
+ * 
  * @author alex
- *
+ * 
  */
-public interface IStateHandler extends IHandler {
+public interface IStateService {
 
 	/**
 	 * Stores favorites cache.
@@ -47,6 +48,7 @@ public interface IStateHandler extends IHandler {
 
 	/**
 	 * Stores play lists
+	 * 
 	 * @param listOfPlayLists
 	 */
 	public void persistPlayLists(IListOfPlayLists listOfPlayLists);
@@ -85,6 +87,7 @@ public interface IStateHandler extends IHandler {
 
 	/**
 	 * Stores device cache for a device ID
+	 * 
 	 * @param deviceId
 	 * @param deviceRepository
 	 */
@@ -142,6 +145,7 @@ public interface IStateHandler extends IHandler {
 
 	/**
 	 * Reads device cache.
+	 * 
 	 * @param deviceId
 	 * @return The retrieved device
 	 */
@@ -150,7 +154,8 @@ public interface IStateHandler extends IHandler {
 	/**
 	 * Opens preferences dialog
 	 * 
-	 * NOTE: This method is called from MacOSXAdapter using reflection. Refactoring will break code!
+	 * NOTE: This method is called from MacOSXAdapter using reflection.
+	 * Refactoring will break code!
 	 */
 	public void editPreferences();
 

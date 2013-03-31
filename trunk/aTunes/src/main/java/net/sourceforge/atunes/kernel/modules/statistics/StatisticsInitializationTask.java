@@ -20,50 +20,32 @@
 
 package net.sourceforge.atunes.kernel.modules.statistics;
 
-import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IStateRetrieveTask;
+import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IStatistics;
 
 /**
  * Reads statistics
+ * 
  * @author alex
- *
+ * 
  */
-public final class StatisticsInitializationTask implements IHandlerBackgroundInitializationTask {
-	
-	private StatisticsHandler statisticsHandler;
-	
-	private IStateHandler stateHandler;
-	
-	/**
-	 * @param statisticsHandler
-	 */
-	public void setStatisticsHandler(StatisticsHandler statisticsHandler) {
-		this.statisticsHandler = statisticsHandler;
-	}
-	
-	/**
-	 * @param stateHandler
-	 */
-	public void setStateHandler(IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
-	}
-	
+public final class StatisticsInitializationTask implements IStateRetrieveTask {
+
+	private IStatistics statistics;
+
 	@Override
-	public Runnable getInitializationTask() {
-		return new Runnable() {
-			@Override
-			public void run() {
-			    IStatistics statistics = stateHandler.retrieveStatisticsCache();
-			    if (statistics != null) {
-			    	statisticsHandler.setStatistics(statistics);
-			    }
-			}
-		};
+	public void retrieveData(final IStateService stateService,
+			final IBeanFactory beanFactory) {
+		this.statistics = stateService.retrieveStatisticsCache();
 	}
-	
+
 	@Override
-	public Runnable getInitializationCompletedTask() {
-		return null;
+	public void setData(final IBeanFactory beanFactory) {
+		if (this.statistics != null) {
+			beanFactory.getBean(StatisticsHandler.class).setStatistics(
+					this.statistics);
+		}
 	}
 }

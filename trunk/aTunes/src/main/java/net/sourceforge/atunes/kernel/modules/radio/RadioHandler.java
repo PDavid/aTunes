@@ -34,7 +34,7 @@ import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioDialog;
 import net.sourceforge.atunes.model.IRadioHandler;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.XMLSerializerService;
 
@@ -141,10 +141,10 @@ public final class RadioHandler extends AbstractHandler implements
 	@Override
 	public void applicationFinish() {
 		if (radioListDirty) {
-			getBean(IStateHandler.class).persistRadioCache(getRadios());
+			getBean(IStateService.class).persistRadioCache(getRadios());
 			// Only write preset list if new stations were added
 			if (!noNewStations) {
-				getBean(IStateHandler.class).persistPresetRadioCache(
+				getBean(IStateService.class).persistPresetRadioCache(
 						presetRadios);
 			}
 		} else {

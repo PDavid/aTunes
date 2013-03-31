@@ -23,9 +23,6 @@ package net.sourceforge.atunes.kernel;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IHandlerBackgroundInitializationTask;
-import net.sourceforge.atunes.model.ITaskService;
-import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Initializes handlers
@@ -35,36 +32,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class HandlerInitializer {
 
-	private static final class CallInitializationTaskRunnable implements
-			Runnable {
-		private final Runnable afterTask;
-		private final Runnable initializationTask;
-
-		private CallInitializationTaskRunnable(final Runnable afterTask,
-				final Runnable initializationTask) {
-			this.afterTask = afterTask;
-			this.initializationTask = initializationTask;
-		}
-
-		@Override
-		public void run() {
-			this.initializationTask.run();
-			if (this.afterTask != null) {
-				this.afterTask.run();
-			}
-		}
-	}
-
 	private List<AbstractHandler> handlers;
-
-	private ITaskService taskService;
-
-	/**
-	 * @param taskService
-	 */
-	public void setTaskService(final ITaskService taskService) {
-		this.taskService = taskService;
-	}
 
 	/**
 	 * initializes all defined handlers
@@ -72,23 +40,6 @@ public class HandlerInitializer {
 	 * @param state
 	 */
 	void initializeHandlers() {
-		for (AbstractHandler handler : this.handlers) {
-			IHandlerBackgroundInitializationTask task = handler
-					.getInitializationTask();
-			if (task != null) {
-				final Runnable initializationTask = task
-						.getInitializationTask();
-				if (initializationTask != null) {
-					final Runnable afterTask = task
-							.getInitializationCompletedTask();
-					this.taskService.submitNow(StringUtils.getString(handler
-							.getClass().getName(), ".InitializationTask"),
-							new CallInitializationTaskRunnable(afterTask,
-									initializationTask));
-				}
-			}
-		}
-
 		// Initialize handlers
 		for (final AbstractHandler handler : this.handlers) {
 			handler.initHandler();

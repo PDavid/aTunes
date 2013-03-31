@@ -21,19 +21,20 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import net.sourceforge.atunes.model.IRepository;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.ITaskService;
 
 /**
  * Executed to save repository cache
+ * 
  * @author alex
- *
+ * 
  */
 public class PersistRepositoryTask implements Runnable {
 
 	private IRepository repository;
 
-	private IStateHandler stateHandler;
+	private IStateService stateService;
 
 	private ITaskService taskService;
 
@@ -45,23 +46,24 @@ public class PersistRepositoryTask implements Runnable {
 	}
 
 	/**
-	 * @param stateHandler
+	 * @param stateService
 	 */
-	public void setStateHandler(final IStateHandler stateHandler) {
-		this.stateHandler = stateHandler;
+	public void setStateService(final IStateService stateService) {
+		this.stateService = stateService;
 	}
 
 	/**
 	 * Persists repository
+	 * 
 	 * @param repository
 	 */
 	public void persist(final IRepository repository) {
 		this.repository = repository;
-		taskService.submitNow("Persist Repository Cache", this);
+		this.taskService.submitNow("Persist Repository Cache", this);
 	}
 
 	@Override
 	public void run() {
-		stateHandler.persistRepositoryCache(repository);
+		this.stateService.persistRepositoryCache(this.repository);
 	}
 }

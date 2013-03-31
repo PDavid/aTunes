@@ -33,32 +33,32 @@ import net.sourceforge.atunes.kernel.modules.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IStateContext;
-import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateService;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class FavoritesHandlerTest {
 
-	private IStateHandler stateHandler = mock(IStateHandler.class);
-	
+	private final IStateService stateService = mock(IStateService.class);
+
 	private FavoritesHandler sut;
-	
+
 	@Before
 	public void init() {
-		sut = new FavoritesHandler();
-		sut.setStateContext(mock(IStateContext.class));
-		sut.setStateHandler(stateHandler);
+		this.sut = new FavoritesHandler();
+		this.sut.setStateContext(mock(IStateContext.class));
+		this.sut.setStateService(this.stateService);
 	}
-	
+
 	@Test
 	public void testInitialization() {
 		// Verify
-		assertTrue(sut.getFavoriteAlbumsInfo().isEmpty());
-		assertTrue(sut.getFavoriteArtistsInfo().isEmpty());
-		assertTrue(sut.getFavoriteSongs().isEmpty());
-		assertTrue(sut.getFavoriteSongsInfo().isEmpty());
-		assertTrue(sut.getFavoriteSongsMap().isEmpty());
+		assertTrue(this.sut.getFavoriteAlbumsInfo().isEmpty());
+		assertTrue(this.sut.getFavoriteArtistsInfo().isEmpty());
+		assertTrue(this.sut.getFavoriteSongs().isEmpty());
+		assertTrue(this.sut.getFavoriteSongsInfo().isEmpty());
+		assertTrue(this.sut.getFavoriteSongsMap().isEmpty());
 	}
 
 	@Test
@@ -68,37 +68,38 @@ public class FavoritesHandlerTest {
 		when(ao1.getUrl()).thenReturn(UUID.randomUUID().toString());
 		ILocalAudioObject ao2 = mock(ILocalAudioObject.class);
 		when(ao2.getUrl()).thenReturn(UUID.randomUUID().toString());
-		
+
 		List<ILocalAudioObject> list = new ArrayList<ILocalAudioObject>();
 		list.add(ao1);
 		list.add(ao2);
 		list.add(ao2); // Added two times
-		
+
 		// Act
-		sut.toggleFavoriteSongs(list);
-		
+		this.sut.toggleFavoriteSongs(list);
+
 		// Verify
-		assertTrue(sut.getFavoriteSongs().contains(ao1));
-		assertTrue(sut.getFavoriteSongs().contains(ao2));
+		assertTrue(this.sut.getFavoriteSongs().contains(ao1));
+		assertTrue(this.sut.getFavoriteSongs().contains(ao2));
 	}
-	
+
 	@Test
 	public void testToggleFavoriteSongsTwice() {
 		// Prepare
 		ILocalAudioObject ao1 = mock(ILocalAudioObject.class);
 		when(ao1.getUrl()).thenReturn(UUID.randomUUID().toString());
-		
+
 		List<ILocalAudioObject> list = new ArrayList<ILocalAudioObject>();
 		list.add(ao1);
-		
+
 		// Act
-		sut.toggleFavoriteSongs(list);
-		sut.toggleFavoriteSongs(list); // Toggle twice -> added and removed from favorite
-		
+		this.sut.toggleFavoriteSongs(list);
+		this.sut.toggleFavoriteSongs(list); // Toggle twice -> added and removed
+											// from favorite
+
 		// Verify
-		assertFalse(sut.getFavoriteSongs().contains(ao1));
+		assertFalse(this.sut.getFavoriteSongs().contains(ao1));
 	}
-	
+
 	@Test
 	public void testAddFavoriteSongs() {
 		// Prepare
@@ -106,7 +107,7 @@ public class FavoritesHandlerTest {
 		when(ao1.getUrl()).thenReturn(UUID.randomUUID().toString());
 		ILocalAudioObject ao2 = mock(ILocalAudioObject.class);
 		when(ao2.getUrl()).thenReturn(UUID.randomUUID().toString());
-		
+
 		List<ILocalAudioObject> list1 = new ArrayList<ILocalAudioObject>();
 		list1.add(ao1);
 
@@ -115,12 +116,12 @@ public class FavoritesHandlerTest {
 		list1.add(ao2);
 
 		// Act
-		sut.toggleFavoriteSongs(list1); // With this call ao1 is favorite
-		sut.addFavoriteSongs(list2, false); // Now ao1 is added again
-		
+		this.sut.toggleFavoriteSongs(list1); // With this call ao1 is favorite
+		this.sut.addFavoriteSongs(list2, false); // Now ao1 is added again
+
 		// Verify
-		assertTrue(sut.getFavoriteSongs().contains(ao1));
-		assertTrue(sut.getFavoriteSongs().contains(ao2));
+		assertTrue(this.sut.getFavoriteSongs().contains(ao1));
+		assertTrue(this.sut.getFavoriteSongs().contains(ao2));
 	}
 
 	@Test
@@ -133,18 +134,18 @@ public class FavoritesHandlerTest {
 		when(ao1.getUrl()).thenReturn(UUID.randomUUID().toString());
 		when(repository.getFiles()).thenReturn(list);
 		list.add(ao1);
-		list.add(ao2);		
-		sut.toggleFavoriteSongs(list);
-		
+		list.add(ao2);
+		this.sut.toggleFavoriteSongs(list);
+
 		// A favorite song is removed from repository
 		list.remove(ao2);
-		sut.updateFavorites(repository);
-		
+		this.sut.updateFavorites(repository);
+
 		// Should be removed from favorites
-		assertFalse(sut.getFavoriteSongs().contains(ao2));
+		assertFalse(this.sut.getFavoriteSongs().contains(ao2));
 	}
-	
-	
-	// TODO: Add test for toggle favorite artists and albums, as need to refactor all handlers before
+
+	// TODO: Add test for toggle favorite artists and albums, as need to
+	// refactor all handlers before
 
 }
