@@ -26,11 +26,18 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioHeader;
 
+/**
+ * Properties reader based on JAudiotagger
+ * 
+ * @author alex
+ * 
+ */
 public class JAudiotaggerAudioPropertiesReader implements
 		IAudioPropertiesReader {
 
 	@Override
-	public void readAudioProperties(ILocalAudioObject ao, AudioFile file) {
+	public void readAudioProperties(final ILocalAudioObject ao,
+			final AudioFile file) {
 		if (file != null) {
 			AudioHeader header = file.getAudioHeader();
 			if (header != null) {

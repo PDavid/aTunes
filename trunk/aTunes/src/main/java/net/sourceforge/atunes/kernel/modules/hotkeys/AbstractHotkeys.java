@@ -55,12 +55,26 @@ abstract class AbstractHotkeys {
 	 */
 	public abstract boolean registerHotkey(IHotkey hotkey);
 
+	/**
+	 * Unregisters a hotkey in the system
+	 * 
+	 * @param hotkey
+	 */
 	public abstract void unregisterHotkey(IHotkey hotkey);
 
+	/**
+	 * Deactivates hotkeys
+	 */
 	public abstract void deactivate();
 
+	/**
+	 * Activates hotkeys
+	 */
 	public abstract void activate();
 
+	/**
+	 * Frees any resource needed by hotkeys
+	 */
 	public abstract void cleanUp();
 
 	/**

@@ -608,6 +608,9 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 		private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
+		/**
+		 * @param plugins
+		 */
 		public PluginsTableModel(final List<PluginInfo> plugins) {
 			super();
 			this.plugins = plugins;
@@ -704,6 +707,10 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 			}
 		}
 
+		/**
+		 * @param row
+		 * @return
+		 */
 		public PluginConfiguration getPluginConfigurationAt(final int row) {
 			try {
 				return PluginsPanel.this.pluginsHandler
@@ -714,6 +721,10 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 			}
 		}
 
+		/**
+		 * @param row
+		 * @return
+		 */
 		public PluginInfo getPluginAt(final int row) {
 			return this.plugins.get(row);
 		}

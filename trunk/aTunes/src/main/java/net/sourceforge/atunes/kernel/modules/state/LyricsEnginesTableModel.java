@@ -33,116 +33,127 @@ import net.sourceforge.atunes.model.ILyricsEngineInfo;
 
 class LyricsEnginesTableModel implements TableModel {
 
-    private final JTable enginesTable;
+	private final JTable enginesTable;
 
-    /** The lyrics engines info. */
-    private List<ILyricsEngineInfo> lyricsEnginesInfo;
+	/** The lyrics engines info. */
+	private List<ILyricsEngineInfo> lyricsEnginesInfo;
 
-    /** The listeners. */
-    private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+	/** The listeners. */
+	private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-    /**
-     * Instantiates a new lyrics engines info model.
-     * 
-     * @param enginesTable
-     */
-    LyricsEnginesTableModel(final JTable enginesTable) {
-        this.enginesTable = enginesTable;
-    }
+	/**
+	 * Instantiates a new lyrics engines info model.
+	 * 
+	 * @param enginesTable
+	 */
+	LyricsEnginesTableModel(final JTable enginesTable) {
+		this.enginesTable = enginesTable;
+	}
 
-    @Override
-    public void addTableModelListener(final TableModelListener l) {
-        listeners.add(l);
-    }
+	@Override
+	public void addTableModelListener(final TableModelListener l) {
+		this.listeners.add(l);
+	}
 
-    @Override
-    public Class<?> getColumnClass(final int columnIndex) {
-        return columnIndex == 0 ? Boolean.class : String.class;
-    }
+	@Override
+	public Class<?> getColumnClass(final int columnIndex) {
+		return columnIndex == 0 ? Boolean.class : String.class;
+	}
 
-    @Override
-    public int getColumnCount() {
-        return 2;
-    }
+	@Override
+	public int getColumnCount() {
+		return 2;
+	}
 
-    @Override
-    public String getColumnName(final int column) {
-        return "";
-    }
+	@Override
+	public String getColumnName(final int column) {
+		return "";
+	}
 
-    @Override
-    public int getRowCount() {
-        if (this.lyricsEnginesInfo != null) {
-    	return this.lyricsEnginesInfo.size();
-        }
-        return 0;
-    }
+	@Override
+	public int getRowCount() {
+		if (this.lyricsEnginesInfo != null) {
+			return this.lyricsEnginesInfo.size();
+		}
+		return 0;
+	}
 
-    @Override
-    public Object getValueAt(final int rowIndex, final int columnIndex) {
-        if (columnIndex == 0) {
-    	return lyricsEnginesInfo.get(rowIndex).isEnabled();
-        }
-        return lyricsEnginesInfo.get(rowIndex).getName();
-    }
+	@Override
+	public Object getValueAt(final int rowIndex, final int columnIndex) {
+		if (columnIndex == 0) {
+			return this.lyricsEnginesInfo.get(rowIndex).isEnabled();
+		}
+		return this.lyricsEnginesInfo.get(rowIndex).getName();
+	}
 
-    @Override
-    public boolean isCellEditable(final int rowIndex, final int columnIndex) {
-        return columnIndex == 0;
-    }
+	@Override
+	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
+		return columnIndex == 0;
+	}
 
-    public void moveDown(final int columnPos) {
+	/**
+	 * @param columnPos
+	 */
+	public void moveDown(final int columnPos) {
+		Collections.swap(this.lyricsEnginesInfo, columnPos, columnPos + 1);
 
-        Collections.swap(lyricsEnginesInfo, columnPos, columnPos + 1);
+		TableModelEvent event;
+		event = new TableModelEvent(this, TableModelEvent.ALL_COLUMNS,
+				TableModelEvent.UPDATE);
+		for (int i = 0; i < this.listeners.size(); i++) {
+			this.listeners.get(i).tableChanged(event);
+		}
+		this.enginesTable.getColumnModel().getColumn(0).setMaxWidth(20);
+		this.enginesTable.getSelectionModel().setSelectionInterval(
+				columnPos + 1, columnPos + 1);
 
-        TableModelEvent event;
-        event = new TableModelEvent(this, TableModelEvent.ALL_COLUMNS,
-    	    TableModelEvent.UPDATE);
-        for (int i = 0; i < listeners.size(); i++) {
-    	listeners.get(i).tableChanged(event);
-        }
-        enginesTable.getColumnModel().getColumn(0).setMaxWidth(20);
-        enginesTable.getSelectionModel().setSelectionInterval(
-    	    columnPos + 1, columnPos + 1);
+	}
 
-    }
+	/**
+	 * @param columnPos
+	 */
+	public void moveUp(final int columnPos) {
 
-    public void moveUp(final int columnPos) {
+		Collections.swap(this.lyricsEnginesInfo, columnPos, columnPos - 1);
 
-        Collections.swap(lyricsEnginesInfo, columnPos, columnPos - 1);
+		TableModelEvent event;
+		event = new TableModelEvent(this, TableModelEvent.ALL_COLUMNS,
+				TableModelEvent.UPDATE);
+		for (int i = 0; i < this.listeners.size(); i++) {
+			this.listeners.get(i).tableChanged(event);
+		}
+		this.enginesTable.getColumnModel().getColumn(0).setMaxWidth(20);
+		this.enginesTable.getSelectionModel().setSelectionInterval(
+				columnPos - 1, columnPos - 1);
+	}
 
-        TableModelEvent event;
-        event = new TableModelEvent(this, TableModelEvent.ALL_COLUMNS,
-    	    TableModelEvent.UPDATE);
-        for (int i = 0; i < listeners.size(); i++) {
-    	listeners.get(i).tableChanged(event);
-        }
-        enginesTable.getColumnModel().getColumn(0).setMaxWidth(20);
-        enginesTable.getSelectionModel().setSelectionInterval(
-    	    columnPos - 1, columnPos - 1);
-    }
+	@Override
+	public void removeTableModelListener(final TableModelListener l) {
+		this.listeners.remove(l);
+	}
 
-    @Override
-    public void removeTableModelListener(final TableModelListener l) {
-        listeners.remove(l);
-    }
+	/**
+	 * @param lyricsEnginesInfo
+	 */
+	public void setLyricsEnginesInfo(
+			final List<ILyricsEngineInfo> lyricsEnginesInfo) {
+		this.lyricsEnginesInfo = new ArrayList<ILyricsEngineInfo>(
+				lyricsEnginesInfo);
+	}
 
-    public void setLyricsEnginesInfo(
-    	final List<ILyricsEngineInfo> lyricsEnginesInfo) {
-        this.lyricsEnginesInfo = new ArrayList<ILyricsEngineInfo>(
-    	    lyricsEnginesInfo);
-    }
+	/**
+	 * @return
+	 */
+	public List<ILyricsEngineInfo> getLyricsEnginesInfo() {
+		return this.lyricsEnginesInfo;
+	}
 
-    public List<ILyricsEngineInfo> getLyricsEnginesInfo() {
-        return lyricsEnginesInfo;
-    }
-
-    @Override
-    public void setValueAt(final Object aValue, final int rowIndex,
-    	final int columnIndex) {
-        if (columnIndex == 0) {
-    	lyricsEnginesInfo.get(rowIndex).setEnabled((Boolean) aValue);
-        }
-    }
+	@Override
+	public void setValueAt(final Object aValue, final int rowIndex,
+			final int columnIndex) {
+		if (columnIndex == 0) {
+			this.lyricsEnginesInfo.get(rowIndex).setEnabled((Boolean) aValue);
+		}
+	}
 
 }

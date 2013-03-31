@@ -52,40 +52,41 @@ public class CommonTrayIcon implements ITrayIcon, ApplicationContextAware {
 	private ITrayIconFiller trayIconFiller;
 
 	/**
-	 * @param trayIconFillers
+	 * @param trayIconFiller
 	 */
-	public void setTrayIconFiller(ITrayIconFiller trayIconFiller) {
+	public void setTrayIconFiller(final ITrayIconFiller trayIconFiller) {
 		this.trayIconFiller = trayIconFiller;
 	}
 
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
+	public void setApplicationContext(
+			final ApplicationContext applicationContext) {
 		this.context = applicationContext;
 	}
 
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
 	@Override
-	public TrayIcon getTrayIcon(Image iconImage, int iconSize) {
+	public TrayIcon getTrayIcon(final Image iconImage, final int iconSize) {
 		Image icon = ImageUtils
 				.scaleImageBicubic(iconImage, iconSize, iconSize).getImage();
-		JTrayIcon trayIcon = new JTrayIcon(icon, osManager.isLinux(),
-				context.getBean(ToggleWindowVisibilityAction.class));
+		JTrayIcon trayIcon = new JTrayIcon(icon, this.osManager.isLinux(),
+				this.context.getBean(ToggleWindowVisibilityAction.class));
 		trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ",
 				Constants.VERSION.toShortString()));
 		JPopupMenu popupmenu = new JTrayIconPopupMenu(trayIcon);
 		trayIcon.setJTrayIconJPopupMenu(popupmenu);
-		trayIconFiller.fillTrayIcon(trayIcon);
+		this.trayIconFiller.fillTrayIcon(trayIcon);
 		return trayIcon;
 	}
 
 	@Override
-	public void setPlayMenuItemText(String text) {
-		trayIconFiller.setPlayMenuItemText(text);
+	public void setPlayMenuItemText(final String text) {
+		this.trayIconFiller.setPlayMenuItemText(text);
 	}
 }
