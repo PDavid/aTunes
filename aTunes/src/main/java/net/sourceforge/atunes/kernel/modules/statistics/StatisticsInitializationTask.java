@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.statistics;
 
+import net.sourceforge.atunes.kernel.AbstractStateRetrieveTask;
 import net.sourceforge.atunes.model.IBeanFactory;
-import net.sourceforge.atunes.model.IStateRetrieveTask;
 import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IStatistics;
 
@@ -31,7 +31,8 @@ import net.sourceforge.atunes.model.IStatistics;
  * @author alex
  * 
  */
-public final class StatisticsInitializationTask implements IStateRetrieveTask {
+public final class StatisticsInitializationTask extends
+		AbstractStateRetrieveTask {
 
 	private IStatistics statistics;
 

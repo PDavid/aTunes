@@ -20,12 +20,12 @@
 
 package net.sourceforge.atunes.kernel.modules.favorites;
 
+import net.sourceforge.atunes.kernel.AbstractStateRetrieveTask;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IStateRetrieveTask;
 import net.sourceforge.atunes.model.IStateService;
 
 /**
@@ -34,7 +34,7 @@ import net.sourceforge.atunes.model.IStateService;
  * @author alex
  * 
  */
-public class FavoritesInitializationTask implements IStateRetrieveTask {
+public class FavoritesInitializationTask extends AbstractStateRetrieveTask {
 
 	private IFavorites favorites;
 

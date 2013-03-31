@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -37,8 +38,6 @@ import net.sourceforge.atunes.model.ILocaleBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateCore;
-import net.sourceforge.atunes.model.IStateRetrieveTask;
-import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
@@ -105,8 +104,9 @@ public final class Kernel implements IKernel {
 		ITaskService taskService = this.beanFactory.getBean("taskService",
 				ITaskService.class);
 		// Retrieve state in background
-		Collection<IStateRetrieveTask> tasks = this.beanFactory
-				.getBeans(IStateRetrieveTask.class);
+		@SuppressWarnings("unchecked")
+		List<AbstractStateRetrieveTask> tasks = this.beanFactory.getBean(
+				"stateToRetrieve", ArrayList.class);
 		executePreviousTasks(taskService, tasks);
 
 		initializeUI();
@@ -120,28 +120,16 @@ public final class Kernel implements IKernel {
 	}
 
 	private void executePreviousTasks(final ITaskService taskService,
-			final Collection<IStateRetrieveTask> tasks) {
-		for (final IStateRetrieveTask task : tasks) {
-			taskService.submitNow(task.getClass().getName(), new Runnable() {
-				@Override
-				public void run() {
-					task.retrieveData(Kernel.this.beanFactory
-							.getBean(IStateService.class),
-							Kernel.this.beanFactory);
-				}
-			});
+			final Collection<AbstractStateRetrieveTask> tasks) {
+		for (final AbstractStateRetrieveTask task : tasks) {
+			taskService.submitNow(task.getClass().getName(), task);
 		}
 	}
 
 	private void executeAfterTasks(final ITaskService taskService,
-			final Collection<IStateRetrieveTask> tasks) {
-		for (final IStateRetrieveTask task : tasks) {
-			taskService.submitNow(task.getClass().getName(), new Runnable() {
-				@Override
-				public void run() {
-					task.setData(Kernel.this.beanFactory);
-				}
-			});
+			final Collection<AbstractStateRetrieveTask> tasks) {
+		for (final AbstractStateRetrieveTask task : tasks) {
+			taskService.submitNow(task.getClass().getName(), task.setData());
 		}
 	}
 

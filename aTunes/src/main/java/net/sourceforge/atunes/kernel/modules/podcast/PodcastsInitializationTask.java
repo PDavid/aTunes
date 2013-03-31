@@ -23,11 +23,11 @@ package net.sourceforge.atunes.kernel.modules.podcast;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import net.sourceforge.atunes.kernel.AbstractStateRetrieveTask;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPodcastFeed;
-import net.sourceforge.atunes.model.IStateRetrieveTask;
 import net.sourceforge.atunes.model.IStateService;
 
 /**
@@ -36,7 +36,7 @@ import net.sourceforge.atunes.model.IStateService;
  * @author alex
  * 
  */
-public class PodcastsInitializationTask implements IStateRetrieveTask {
+public class PodcastsInitializationTask extends AbstractStateRetrieveTask {
 
 	private List<IPodcastFeed> podcastFeeds;
 
