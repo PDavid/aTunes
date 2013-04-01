@@ -320,27 +320,19 @@ public interface IRepositoryHandler extends IHandler,
 	 * @param sourceFolder
 	 * @param destination
 	 */
-	public void folderMoved(IFolder sourceFolder, File destination);
-
-	/**
-	 * Sets stars of an audio object
-	 * 
-	 * @param audioObject
-	 * @param value
-	 */
-	public void setStars(ILocalAudioObject audioObject, Integer value);
+	void folderMoved(IFolder sourceFolder, File destination);
 
 	/**
 	 * Adds the given audio objects to repository and refresh.
 	 * 
 	 * @param result
 	 */
-	public void addAudioObjectsAndRefresh(List<ILocalAudioObject> result);
+	void addAudioObjectsAndRefresh(List<ILocalAudioObject> result);
 
 	/**
 	 * @param ao
 	 * @return cached audio object or given one
 	 */
-	public IAudioObject getAudioObjectIfLoaded(IAudioObject ao);
+	IAudioObject getAudioObjectIfLoaded(IAudioObject ao);
 
 }

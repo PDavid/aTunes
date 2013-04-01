@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -41,6 +42,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFolderSelectorDialog;
@@ -93,6 +95,17 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 	private IOSManager osManager;
 
 	private IControlsBuilder controlsBuilder;
+
+	private JCheckBox useRatingsStoredInTag;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param controlsBuilder
@@ -192,6 +205,8 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 				repositoryFoldersList.setListData(repositoryFolders.toArray());
 			}
 		});
+		useRatingsStoredInTag = new JCheckBox(
+				I18nUtils.getString("USE_RATINGS_STORED_IN_TAG"));
 		setupPanel();
 	}
 
@@ -239,10 +254,13 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 		addRemovePanel.add(addFolderButton);
 		addRemovePanel.add(removeFolderButton);
 		c.gridy = 4;
-		c.weighty = 1;
-		c.anchor = GridBagConstraints.NORTHWEST;
 		c.insets = new Insets(10, 10, 0, 0);
 		add(addRemovePanel, c);
+		c.gridx = 0;
+		c.gridy = 5;
+		c.weighty = 1;
+		c.anchor = GridBagConstraints.NORTHWEST;
+		add(useRatingsStoredInTag, c);
 	}
 
 	@Override
@@ -259,6 +277,16 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 				repositoryHandler.getFolders())) {
 			repositoryHandler.setRepositoryFolders(repositoryFolders);
 		}
+
+		boolean newUseRatingsStoredInTag = useRatingsStoredInTag.isSelected();
+		if (newUseRatingsStoredInTag != this.stateRepository
+				.isStoreRatingInFile()) {
+			this.stateRepository.setStoreRatingInFile(newUseRatingsStoredInTag);
+			refreshRepository(this.beanFactory);
+		}
+
+		stateRepository
+				.setStoreRatingInFile(useRatingsStoredInTag.isSelected());
 		return false;
 	}
 
@@ -296,6 +324,10 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 		commandAfterAccessRepository.setText(command);
 	}
 
+	private void setUseRatingsStoredInTag(boolean storeRatingInFile) {
+		useRatingsStoredInTag.setSelected(storeRatingInFile);
+	}
+
 	@Override
 	public void updatePanel() {
 		setRefreshTime(stateRepository.getAutoRepositoryRefreshTime());
@@ -304,6 +336,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 		setCommandAfterAccessRepository(stateRepository
 				.getCommandAfterAccessRepository());
 		setRepositoryFolders();
+		setUseRatingsStoredInTag(stateRepository.isStoreRatingInFile());
 	}
 
 	private void setRepositoryFolders() {

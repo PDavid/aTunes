@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.tags;
 import java.util.List;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.ITagAdapter;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -34,7 +35,16 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class TagAdapterSelector {
 
+	private IStateRepository stateRepository;
+
 	private List<ITagAdapter> tagAdapters;
+
+	/**
+	 * @param stateRepository
+	 */
+	public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
+	}
 
 	/**
 	 * @param tagAdapters
@@ -57,5 +67,32 @@ public class TagAdapterSelector {
 		}
 		throw new IllegalStateException(StringUtils.getString(
 				"No tag adapter for audio object: ", audioObject.getUrl()));
+	}
+
+	/**
+	 * Selects adapter for rating read or write
+	 * 
+	 * @param audioObject
+	 * @return
+	 */
+	ITagAdapter selectAdapterForRating(final ILocalAudioObject audioObject) {
+		for (ITagAdapter tagAdapter : tagAdapters) {
+			if (tagAdapter.isFormatSupported(audioObject)
+					&& isAdapterSuitableForRatingRead(tagAdapter)) {
+				return tagAdapter;
+			}
+		}
+		throw new IllegalStateException(StringUtils.getString(
+				"No tag adapter for rating, audio object: ",
+				audioObject.getUrl()));
+	}
+
+	/**
+	 * @param adapter
+	 * @return true if adapter supports rating read with current settings
+	 */
+	boolean isAdapterSuitableForRatingRead(ITagAdapter adapter) {
+		return adapter.isStoreRatingInFile() == stateRepository
+				.isStoreRatingInFile();
 	}
 }

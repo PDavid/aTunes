@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
+import java.util.Collections;
+
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -30,12 +32,13 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.kernel.modules.process.SetStarsProcess;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IListCellRendererCode;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 
 /**
  * Column showing score
@@ -69,15 +72,15 @@ public class ScoreColumn extends AbstractColumn<Integer> {
 
 	private static final Integer[] STARS = new Integer[] { 0, 1, 2, 3, 4, 5 };
 
-	private IRepositoryHandler repositoryHandler;
+	private IProcessFactory processFactory;
 
 	private final transient ScoreColumnCellEditorRenderer editor = new ScoreColumnCellEditorRenderer();
 
 	/**
-	 * @param repositoryHandler
+	 * @param processFactory
 	 */
-	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
+	public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
 	}
 
 	/**
@@ -179,8 +182,7 @@ public class ScoreColumn extends AbstractColumn<Integer> {
 
 	@Override
 	public void setValueFor(final IAudioObject audioObject, final Object value) {
-		this.repositoryHandler.setStars((ILocalAudioObject) audioObject,
-				(Integer) value);
+		setStars(audioObject, (Integer) value);
 	}
 
 	/**
@@ -218,5 +220,16 @@ public class ScoreColumn extends AbstractColumn<Integer> {
 			return this.star5Icon;
 		}
 		return null;
+	}
+
+	private void setStars(final IAudioObject audioObject, final Integer value) {
+		if (audioObject instanceof ILocalAudioObject) {
+			SetStarsProcess process = (SetStarsProcess) this.processFactory
+					.getProcessByName("setStarsProcess");
+			process.setFilesToChange(Collections
+					.singletonList((ILocalAudioObject) audioObject));
+			process.setStars(value);
+			process.execute();
+		}
 	}
 }

@@ -47,10 +47,7 @@ import net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
-import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IMessageDialog;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.TextTagAttribute;
@@ -308,8 +305,6 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	@Override
 	public boolean applyPreferences() {
 
-		boolean refresh = false;
-
 		this.stateNavigation.setShowFavoritesInNavigator(this.showFavorites
 				.isSelected());
 		this.stateNavigation.setShowExtendedTooltip(this.showExtendedToolTip
@@ -345,17 +340,10 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		if (!newArtistViewState
 				.equals(this.stateNavigation.getArtistViewMode())) {
 			this.stateNavigation.setArtistViewMode(newArtistViewState);
-			this.beanFactory
-					.getBean(IDialogFactory.class)
-					.newDialog(IMessageDialog.class)
-					.showMessage(
-							I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"),
-							this);
-			this.beanFactory.getBean(IRepositoryHandler.class)
-					.refreshRepository();
+			refreshRepository(this.beanFactory);
 		}
 
-		return refresh;
+		return false;
 	}
 
 	/**

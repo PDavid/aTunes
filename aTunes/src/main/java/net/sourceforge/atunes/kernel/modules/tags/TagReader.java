@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectReader;
 import net.sourceforge.atunes.model.ITag;
+import net.sourceforge.atunes.model.ITagAdapter;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.joda.time.base.BaseDateTime;
@@ -49,8 +50,17 @@ public final class TagReader implements ILocalAudioObjectReader {
 	@Override
 	public void readAudioObject(final ILocalAudioObject ao,
 			final boolean readAudioProperties) {
-		this.tagAdapterSelector.selectAdapter(ao).readTag(ao,
-				readAudioProperties);
+		// Try to read all data from one adapter
+		ITagAdapter adapter = this.tagAdapterSelector.selectAdapter(ao);
+		boolean adapterSuitableForRatingRead = this.tagAdapterSelector
+				.isAdapterSuitableForRatingRead(adapter);
+		adapter.readData(ao, adapterSuitableForRatingRead, readAudioProperties);
+
+		// If adapter does not support current rating read/write preference
+		// choose another
+		if (!adapterSuitableForRatingRead) {
+			this.tagAdapterSelector.selectAdapterForRating(ao).readRating(ao);
+		}
 
 		// Validate date to ensure it will be read and written properly in
 		// metadata

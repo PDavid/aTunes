@@ -8,14 +8,14 @@
  * http://sourceforge.net/projects/atunes
  *
  * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
+ * modify it under the terms of the GNU General License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU General License for more details.
  */
 
 package net.sourceforge.atunes.model;
@@ -35,7 +35,7 @@ public interface IStateRepository extends IState {
 	 * @return true if case structures genre and artist handled sensitive,
 	 *         default = false for convenience
 	 */
-	public boolean isKeyAlwaysCaseSensitiveInRepositoryStructure();
+	boolean isKeyAlwaysCaseSensitiveInRepositoryStructure();
 
 	/**
 	 * enable case sensitive tree structure of artist and genre or merge keys
@@ -43,7 +43,7 @@ public interface IStateRepository extends IState {
 	 * 
 	 * @param caseSensitiveRepositoryStructureKeys
 	 */
-	public void setKeyAlwaysCaseSensitiveInRepositoryStructure(
+	void setKeyAlwaysCaseSensitiveInRepositoryStructure(
 			boolean caseSensitiveRepositoryStructureKeys);
 
 	/**
@@ -51,112 +51,112 @@ public interface IStateRepository extends IState {
 	 * 
 	 * @return
 	 */
-	public int getAutoRepositoryRefreshTime();
+	int getAutoRepositoryRefreshTime();
 
 	/**
 	 * Refresh repository automatically
 	 * 
 	 * @param autoRepositoryRefreshTime
 	 */
-	public void setAutoRepositoryRefreshTime(int autoRepositoryRefreshTime);
+	void setAutoRepositoryRefreshTime(int autoRepositoryRefreshTime);
 
 	/**
 	 * last repository folders
 	 * 
 	 * @return
 	 */
-	public List<String> getLastRepositoryFolders();
+	List<String> getLastRepositoryFolders();
 
 	/**
 	 * last repository folders
 	 * 
 	 * @param lastRepositoryFolders
 	 */
-	public void setLastRepositoryFolders(List<String> lastRepositoryFolders);
+	void setLastRepositoryFolders(List<String> lastRepositoryFolders);
 
 	/**
 	 * File name pattern in import
 	 * 
 	 * @return
 	 */
-	public String getImportFileNamePattern();
+	String getImportFileNamePattern();
 
 	/**
 	 * File name pattern in export
 	 * 
 	 * @return
 	 */
-	public String getExportFileNamePattern();
+	String getExportFileNamePattern();
 
 	/**
 	 * File name pattern in import
 	 * 
 	 * @param importFileNamePattern
 	 */
-	public void setImportFileNamePattern(String importFileNamePattern);
+	void setImportFileNamePattern(String importFileNamePattern);
 
 	/**
 	 * File name pattern in export
 	 * 
 	 * @param exportFileNamePattern
 	 */
-	public void setExportFileNamePattern(String exportFileNamePattern);
+	void setExportFileNamePattern(String exportFileNamePattern);
 
 	/**
 	 * Folder path pattern in import
 	 * 
 	 * @return
 	 */
-	public String getImportFolderPathPattern();
+	String getImportFolderPathPattern();
 
 	/**
 	 * Folder path pattern in export
 	 * 
 	 * @return
 	 */
-	public String getExportFolderPathPattern();
+	String getExportFolderPathPattern();
 
 	/**
 	 * Folder path pattern in import
 	 * 
 	 * @param importFolderPathPattern
 	 */
-	public void setImportFolderPathPattern(String importFolderPathPattern);
+	void setImportFolderPathPattern(String importFolderPathPattern);
 
 	/**
 	 * Folder path pattern in export
 	 * 
 	 * @param exportFolderPathPattern
 	 */
-	public void setExportFolderPathPattern(String exportFolderPathPattern);
+	void setExportFolderPathPattern(String exportFolderPathPattern);
 
 	/**
 	 * Review tags before start import
 	 * 
 	 * @return
 	 */
-	public boolean isReviewTagsBeforeImport();
+	boolean isReviewTagsBeforeImport();
 
 	/**
 	 * Review tags before start import
 	 * 
 	 * @param reviewTagsBeforeImport
 	 */
-	public void setReviewTagsBeforeImport(boolean reviewTagsBeforeImport);
+	void setReviewTagsBeforeImport(boolean reviewTagsBeforeImport);
 
 	/**
 	 * Change tags to original files before import
 	 * 
 	 * @return
 	 */
-	public boolean isApplyChangesToSourceFilesBeforeImport();
+	boolean isApplyChangesToSourceFilesBeforeImport();
 
 	/**
 	 * Change tags to original files before import
 	 * 
 	 * @param applyChangesToSourceFilesBeforeImport
 	 */
-	public void setApplyChangesToSourceFilesBeforeImport(
+	void setApplyChangesToSourceFilesBeforeImport(
 			boolean applyChangesToSourceFilesBeforeImport);
 
 	/**
@@ -164,86 +164,95 @@ public interface IStateRepository extends IState {
 	 * 
 	 * @return
 	 */
-	public boolean isSetTrackNumbersWhenImporting();
+	boolean isSetTrackNumbersWhenImporting();
 
 	/**
 	 * Set track numbers when importing
 	 * 
 	 * @param setTrackNumbersWhenImporting
 	 */
-	public void setSetTrackNumbersWhenImporting(
-			boolean setTrackNumbersWhenImporting);
+	void setSetTrackNumbersWhenImporting(boolean setTrackNumbersWhenImporting);
 
 	/**
 	 * Set titles when importing
 	 * 
 	 * @return
 	 */
-	public boolean isSetTitlesWhenImporting();
+	boolean isSetTitlesWhenImporting();
 
 	/**
 	 * Set titles when importing
 	 * 
 	 * @param setTitlesWhenImporting
 	 */
-	public void setSetTitlesWhenImporting(boolean setTitlesWhenImporting);
+	void setSetTitlesWhenImporting(boolean setTitlesWhenImporting);
 
 	/**
 	 * List of patterns
 	 * 
 	 * @return
 	 */
-	public List<String> getRecognitionPatterns();
+	List<String> getRecognitionPatterns();
 
 	/**
 	 * List of patterns
 	 * 
 	 * @param recognitionPatterns
 	 */
-	public void setRecognitionPatterns(List<String> recognitionPatterns);
+	void setRecognitionPatterns(List<String> recognitionPatterns);
 
 	/**
 	 * List of massive patterns
 	 * 
 	 * @return
 	 */
-	public List<String> getMassiveRecognitionPatterns();
+	List<String> getMassiveRecognitionPatterns();
 
 	/**
 	 * List of massive patterns
 	 * 
 	 * @param massiveRecognitionPatterns
 	 */
-	public void setMassiveRecognitionPatterns(
-			List<String> massiveRecognitionPatterns);
+	void setMassiveRecognitionPatterns(List<String> massiveRecognitionPatterns);
 
 	/**
 	 * Command to execute before access repository
 	 * 
 	 * @return
 	 */
-	public String getCommandBeforeAccessRepository();
+	String getCommandBeforeAccessRepository();
 
 	/**
 	 * Command to execute before access repository
 	 * 
 	 * @param commandBeforeAccessRepository
 	 */
-	public void setCommandBeforeAccessRepository(
-			String commandBeforeAccessRepository);
+	void setCommandBeforeAccessRepository(String commandBeforeAccessRepository);
 
 	/**
 	 * Command to execute after finish access to repository
 	 * 
 	 * @return
 	 */
-	public String getCommandAfterAccessRepository();
+	String getCommandAfterAccessRepository();
 
 	/**
 	 * Command to execute after finish access to repository
 	 * 
 	 * @param commandAfterAccessRepository
 	 */
-	public void setCommandAfterAccessRepository(
-			String commandAfterAccessRepository);
+	void setCommandAfterAccessRepository(String commandAfterAccessRepository);
+
+	/**
+	 * @return if ratings must be stored in file (tag) or not
+	 */
+	boolean isStoreRatingInFile();
+
+	/**
+	 * if ratings must be stored in file (tag) or not
+	 * 
+	 * @param storeRatingInFile
+	 */
+	void setStoreRatingInFile(boolean storeRatingInFile);
+
 }

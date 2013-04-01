@@ -27,102 +27,111 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IMessageDialog;
+import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.utils.I18nUtils;
+
 abstract class AbstractPreferencesPanel extends JPanel {
 
-    private static final long serialVersionUID = -6163144955354757264L;
+	private static final long serialVersionUID = -6163144955354757264L;
 
-    /**
-     * Title of this panel
-     */
-    private String title;
-    
-    /**
-     * True if panel has been shown to user (so it could have been modified)
-     */
-    private boolean dirty;
-    
-    private EditPreferencesDialog dialog;
-    
-    /**
-     * Instantiates a new preferences panel.
-     * @param title 
-     */
-    public AbstractPreferencesPanel(String title) {
-        super(new GridBagLayout());
-        this.title = title;
-    }
-    
-    /**
-     * @return dialog
-     */
-    EditPreferencesDialog getDialog() {
+	/**
+	 * Title of this panel
+	 */
+	private String title;
+
+	/**
+	 * True if panel has been shown to user (so it could have been modified)
+	 */
+	private boolean dirty;
+
+	private EditPreferencesDialog dialog;
+
+	/**
+	 * Instantiates a new preferences panel.
+	 * 
+	 * @param title
+	 */
+	public AbstractPreferencesPanel(String title) {
+		super(new GridBagLayout());
+		this.title = title;
+	}
+
+	/**
+	 * @return dialog
+	 */
+	EditPreferencesDialog getDialog() {
 		return dialog;
 	}
-    
-    /**
-     * @param dialog
-     */
-    public void setDialog(EditPreferencesDialog dialog) {
+
+	/**
+	 * @param dialog
+	 */
+	public void setDialog(EditPreferencesDialog dialog) {
 		this.dialog = dialog;
 	}
-    
-    /**
-     * @return window
-     */
-    public Window getPreferenceDialog(){
-    	return (Window) SwingUtilities.getWindowAncestor(this);
-    }
 
-    /**
-     * @return the title
-     */
-    public String getTitle() {
-        return title;
-    }
+	/**
+	 * @return window
+	 */
+	public Window getPreferenceDialog() {
+		return (Window) SwingUtilities.getWindowAncestor(this);
+	}
 
-    /**
-     * Icon of panel
-     * @return
-     */
-    public ImageIcon getIcon() {
-    	return null;
-    }
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
 
-    /**
-     * Called to update preferences values
-     */
-    public abstract void updatePanel();
+	/**
+	 * Icon of panel
+	 * 
+	 * @return
+	 */
+	public ImageIcon getIcon() {
+		return null;
+	}
 
-    /**
-     * Validates data of this panel
-     * @throws PreferencesValidationException
-     */
-    public abstract void validatePanel() throws PreferencesValidationException;
+	/**
+	 * Called to update preferences values
+	 */
+	public abstract void updatePanel();
 
-    /**
-     * Called to apply preferences selected by user to an ApplicationState
-     * object
-     * 
-     * @return <code>true</code>if it's necessary to restart application to
-     *         apply the change
-     */
-    public abstract boolean applyPreferences();
+	/**
+	 * Validates data of this panel
+	 * 
+	 * @throws PreferencesValidationException
+	 */
+	public abstract void validatePanel() throws PreferencesValidationException;
 
-    /**
-     * Called if user cancels preference dialog. This method should reset
-     * changes that were made immediately without waiting if user cancels dialog
-     * or not.
-     */
-    public abstract void resetImmediateChanges();
+	/**
+	 * Called to apply preferences selected by user to an ApplicationState
+	 * object
+	 * 
+	 * @return <code>true</code>if it's necessary to restart application to
+	 *         apply the change
+	 */
+	public abstract boolean applyPreferences();
 
-    /**
-     * Called when preferences dialog is shown or hidden Useful to execute code
-     * to initialize or disable settings when dialog is shown / hidden
-     * 
-     * @param visible
-     */
-    public abstract void dialogVisibilityChanged(boolean visible);
-    
+	/**
+	 * Called if user cancels preference dialog. This method should reset
+	 * changes that were made immediately without waiting if user cancels dialog
+	 * or not.
+	 */
+	public abstract void resetImmediateChanges();
+
+	/**
+	 * Called when preferences dialog is shown or hidden Useful to execute code
+	 * to initialize or disable settings when dialog is shown / hidden
+	 * 
+	 * @param visible
+	 */
+	public abstract void dialogVisibilityChanged(boolean visible);
+
 	/**
 	 * @return if panel is dirty (some preference has changed)
 	 */
@@ -131,9 +140,25 @@ abstract class AbstractPreferencesPanel extends JPanel {
 	}
 
 	/**
-	 * @param dirty sets a panel as dirty
+	 * @param dirty
+	 *            sets a panel as dirty
 	 */
 	public final void setDirty(boolean dirty) {
 		this.dirty = dirty;
 	}
+
+	/**
+	 * Call to refresh repository
+	 * 
+	 * @param beanFactory
+	 */
+	protected final void refreshRepository(IBeanFactory beanFactory) {
+		beanFactory
+				.getBean(IDialogFactory.class)
+				.newDialog(IMessageDialog.class)
+				.showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"),
+						this);
+		beanFactory.getBean(IRepositoryHandler.class).refreshRepository();
+	}
+
 }
