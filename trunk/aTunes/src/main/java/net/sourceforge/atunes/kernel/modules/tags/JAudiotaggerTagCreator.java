@@ -72,9 +72,11 @@ public class JAudiotaggerTagCreator {
 	 * 
 	 * @param ao
 	 * @param file
+	 * @param readRating
 	 * @return
 	 */
-	ITag createTag(final ILocalAudioObject ao, final AudioFile file) {
+	ITag createTag(final ILocalAudioObject ao, final AudioFile file,
+			boolean readRating) {
 		ITag iTag = this.tagFactory.getNewTag();
 		if (file != null) {
 			Tag tag = file.getTag();
@@ -92,10 +94,28 @@ public class JAudiotaggerTagCreator {
 			setInternalImage(iTag, tag);
 			setDate(iTag, tag);
 			setDiscNumber(iTag, tag);
-			iTag.setStars(this.ratingsToStars.ratingToStars(getFirstTagValue(
-					tag, FieldKey.RATING)));
+			if (readRating) {
+				iTag.setStars(this.ratingsToStars
+						.ratingToStars(getFirstTagValue(tag, FieldKey.RATING)));
+			}
 		}
 		return iTag;
+	}
+
+	/**
+	 * Sets tag in given audio object
+	 * 
+	 * @param ao
+	 * @param file
+	 * @return
+	 */
+	public void setRatingInTag(ILocalAudioObject ao, AudioFile file) {
+		if (ao != null && ao.getTag() != null && file != null) {
+			Tag tag = file.getTag();
+			ao.getTag().setStars(
+					this.ratingsToStars.ratingToStars(getFirstTagValue(tag,
+							FieldKey.RATING)));
+		}
 	}
 
 	/**

@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.process.SetStarsProcess;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
@@ -44,7 +43,6 @@ import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRepositoryTransaction;
@@ -109,8 +107,6 @@ public final class RepositoryHandler extends AbstractHandler implements
 
 	private IUnknownObjectChecker unknownObjectChecker;
 
-	private IProcessFactory processFactory;
-
 	private IFileManager fileManager;
 
 	/**
@@ -118,13 +114,6 @@ public final class RepositoryHandler extends AbstractHandler implements
 	 */
 	public void setFileManager(final IFileManager fileManager) {
 		this.fileManager = fileManager;
-	}
-
-	/**
-	 * @param processFactory
-	 */
-	public void setProcessFactory(final IProcessFactory processFactory) {
-		this.processFactory = processFactory;
 	}
 
 	/**
@@ -705,16 +694,6 @@ public final class RepositoryHandler extends AbstractHandler implements
 				this.repository.getTotalSizeInBytes(),
 				this.repository.getTotalDurationInSeconds());
 		endTransaction();
-	}
-
-	@Override
-	public void setStars(final ILocalAudioObject audioObject,
-			final Integer value) {
-		SetStarsProcess process = (SetStarsProcess) this.processFactory
-				.getProcessByName("setStarsProcess");
-		process.setFilesToChange(Collections.singletonList(audioObject));
-		process.setStars(value);
-		process.execute();
 	}
 
 	@Override

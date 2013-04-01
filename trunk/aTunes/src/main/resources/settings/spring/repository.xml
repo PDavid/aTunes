@@ -56,12 +56,17 @@
 		</property>
 	</bean>
 	
-	<bean id="jAudiotaggerTagAdapter" class="net.sourceforge.atunes.kernel.modules.tags.JAudiotaggerTagAdapter"/>
+	<bean id="jAudiotaggerTagAdapter" class="net.sourceforge.atunes.kernel.modules.tags.JAudiotaggerTagAdapter">
+		<property name="storeRatingInFile" value="true"/>
+	</bean>
+	
 	<bean id="jAudiotaggerTagCreator" class="net.sourceforge.atunes.kernel.modules.tags.JAudiotaggerTagCreator"/>
 	<bean id="jAudiotaggerFileReader" class="net.sourceforge.atunes.kernel.modules.tags.JAudiotaggerFileReader"/>
 	<bean id="jAudiotaggerAudioPropertiesReader" class="net.sourceforge.atunes.kernel.modules.repository.JAudiotaggerAudioPropertiesReader"/>
 	
-	<bean id="propertiesFileTagAdapter" class="net.sourceforge.atunes.kernel.modules.tags.PropertiesFileTagAdapter"/>
+	<bean id="propertiesFileTagAdapter" class="net.sourceforge.atunes.kernel.modules.tags.PropertiesFileTagAdapter">
+		<property name="storeRatingInFile" value="false"/>
+	</bean>
 	
 	<bean class="net.sourceforge.atunes.kernel.modules.tags.RefreshTagAfterModifyRunnable" scope="prototype"/>
 	

@@ -71,6 +71,20 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 
 	private IFileManager fileManager;
 
+	private boolean storeRatingInFile;
+
+	/**
+	 * @param storeRatingInFile
+	 */
+	public void setStoreRatingInFile(boolean storeRatingInFile) {
+		this.storeRatingInFile = storeRatingInFile;
+	}
+
+	@Override
+	public boolean isStoreRatingInFile() {
+		return storeRatingInFile;
+	}
+
 	/**
 	 * @param fileManager
 	 */
@@ -136,8 +150,9 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 	}
 
 	@Override
-	public void modifyStars(final ILocalAudioObject audioObject,
+	public void modifyRating(final ILocalAudioObject audioObject,
 			final String starsToRating) {
+		Logger.debug("Writting ratings with JAudiotaggerTagAdapter");
 		modifyTag(audioObject, new JAudiotaggerRatingTagModification(
 				starsToRating));
 	}
@@ -430,11 +445,20 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 	}
 
 	@Override
-	public void readTag(final ILocalAudioObject ao,
+	public void readData(final ILocalAudioObject ao, boolean readRating,
 			final boolean readAudioProperties) {
 		AudioFile file = readFile(ao);
-		ao.setTag(this.jAudiotaggerTagCreator.createTag(ao, file));
+		if (readRating) {
+			Logger.debug("Reading rating with JAudiotaggerTagAdapter");
+		}
+		ao.setTag(this.jAudiotaggerTagCreator.createTag(ao, file, readRating));
 		this.jAudiotaggerAudioPropertiesReader.readAudioProperties(ao, file);
+	}
+
+	@Override
+	public void readRating(ILocalAudioObject ao) {
+		Logger.debug("Reading rating with JAudiotaggerTagAdapter");
+		this.jAudiotaggerTagCreator.setRatingInTag(ao, readFile(ao));
 	}
 
 	@Override

@@ -197,7 +197,8 @@ public final class TagModifier {
 	 */
 	public void setStars(final ILocalAudioObject audioObject,
 			final Integer value) {
-		this.tagAdapterSelector.selectAdapter(audioObject).modifyStars(
-				audioObject, this.ratingsToStars.starsToRating(value));
+		this.tagAdapterSelector.selectAdapterForRating(audioObject)
+				.modifyRating(audioObject,
+						this.ratingsToStars.starsToRating(value));
 	}
 }

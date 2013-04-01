@@ -56,6 +56,20 @@ public class PropertiesFileTagAdapter implements ITagAdapter {
 
 	private TagFactory tagFactory;
 
+	private boolean storeRatingInFile;
+
+	/**
+	 * @param storeRatingInFile
+	 */
+	public void setStoreRatingInFile(boolean storeRatingInFile) {
+		this.storeRatingInFile = storeRatingInFile;
+	}
+
+	@Override
+	public boolean isStoreRatingInFile() {
+		return storeRatingInFile;
+	}
+
 	/**
 	 * @param tagFactory
 	 */
@@ -142,7 +156,8 @@ public class PropertiesFileTagAdapter implements ITagAdapter {
 	}
 
 	@Override
-	public void modifyStars(ILocalAudioObject file, String starsToRating) {
+	public void modifyRating(ILocalAudioObject file, String starsToRating) {
+		Logger.debug("Writting ratings with PropertiesFileTagAdapter");
 		modifyField(file, TagFactory.RATING, starsToRating);
 	}
 
@@ -157,12 +172,36 @@ public class PropertiesFileTagAdapter implements ITagAdapter {
 	}
 
 	@Override
-	public void readTag(ILocalAudioObject ao, boolean readAudioProperties) {
+	public void readData(ILocalAudioObject ao, boolean readRating,
+			boolean readAudioProperties) {
+		if (readRating) {
+			Logger.debug("Reading rating with PropertiesFileTagAdapter");
+		}
 		Map<String, Object> values = new HashMap<String, Object>();
 		for (Entry<Object, Object> entry : getProperties(ao).entrySet()) {
-			values.put((String) entry.getKey(), entry.getValue());
+			String key = (String) entry.getKey();
+			// Read rating only if requested
+			if (!key.equals(TagFactory.RATING) || readRating) {
+				values.put(key, entry.getValue());
+			}
 		}
 		ao.setTag(tagFactory.getNewTag(values));
+	}
+
+	@Override
+	public void readRating(ILocalAudioObject ao) {
+		if (ao != null && ao.getTag() != null) {
+			Logger.debug("Reading rating with PropertiesFileTagAdapter");
+			Map<String, Object> values = new HashMap<String, Object>();
+			for (Entry<Object, Object> entry : getProperties(ao).entrySet()) {
+				String key = (String) entry.getKey();
+				if (key.equals(TagFactory.RATING)) {
+					values.put(key, entry.getValue());
+				}
+			}
+			ao.getTag().setStars(tagFactory.getNewTag(values).getStars());
+		}
+
 	}
 
 	private Properties getProperties(ILocalAudioObject ao) {

@@ -4,6 +4,7 @@ aTunes 3.1.0
 - Added new option to show a filter in navigation table
 - Added option to hide navigation tree and use only table
 - Memory optimization when reading play lists
+- Option to store ratings in tags (by default will use custom metadata store)
 
 aTunes 3.0.7
 ------------

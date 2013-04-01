@@ -249,6 +249,18 @@ public class ApplicationStateRepository implements IStateRepository {
 	}
 
 	@Override
+	public boolean isStoreRatingInFile() {
+		return this.preferenceHelper.getPreference(
+				Preferences.STORE_RATING_IN_FILE, Boolean.class, false);
+	}
+
+	@Override
+	public void setStoreRatingInFile(boolean storeRatingInFile) {
+		this.preferenceHelper.setPreference(Preferences.STORE_RATING_IN_FILE,
+				storeRatingInFile);
+	}
+
+	@Override
 	public Map<String, String> describeState() {
 		return ReflectionUtils.describe(this);
 	}

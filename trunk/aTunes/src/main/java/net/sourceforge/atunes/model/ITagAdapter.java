@@ -37,6 +37,11 @@ public interface ITagAdapter {
 	boolean isFormatSupported(ILocalAudioObject ao);
 
 	/**
+	 * @return true if this adapter stores ratings in file
+	 */
+	boolean isStoreRatingInFile();
+
+	/**
 	 * Deletes tags
 	 * 
 	 * @param file
@@ -107,20 +112,29 @@ public interface ITagAdapter {
 	void modifyTrack(ILocalAudioObject file, Integer track);
 
 	/**
-	 * Changes stars
+	 * Changes rating
 	 * 
 	 * @param audioObject
 	 * @param starsToRating
 	 */
-	void modifyStars(ILocalAudioObject audioObject, String starsToRating);
+	void modifyRating(ILocalAudioObject audioObject, String starsToRating);
 
 	/**
-	 * Reads tag
+	 * Reads data, optionally rating and audio properties
 	 * 
 	 * @param ao
+	 * @param readRating
 	 * @param readAudioProperties
 	 */
-	void readTag(ILocalAudioObject ao, boolean readAudioProperties);
+	void readData(ILocalAudioObject ao, boolean readRating,
+			boolean readAudioProperties);
+
+	/**
+	 * Reads rating
+	 * 
+	 * @param ao
+	 */
+	void readRating(ILocalAudioObject ao);
 
 	/**
 	 * @param ao
@@ -129,4 +143,5 @@ public interface ITagAdapter {
 	 * @return image from audio object
 	 */
 	ImageIcon getImage(ILocalAudioObject ao, int width, int height);
+
 }
