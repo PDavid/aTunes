@@ -27,12 +27,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.model.IBeanFactory;
-import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IMessageDialog;
-import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
-
 abstract class AbstractPreferencesPanel extends JPanel {
 
 	private static final long serialVersionUID = -6163144955354757264L;
@@ -146,19 +140,4 @@ abstract class AbstractPreferencesPanel extends JPanel {
 	public final void setDirty(boolean dirty) {
 		this.dirty = dirty;
 	}
-
-	/**
-	 * Call to refresh repository
-	 * 
-	 * @param beanFactory
-	 */
-	protected final void refreshRepository(IBeanFactory beanFactory) {
-		beanFactory
-				.getBean(IDialogFactory.class)
-				.newDialog(IMessageDialog.class)
-				.showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"),
-						this);
-		beanFactory.getBean(IRepositoryHandler.class).refreshRepository();
-	}
-
 }

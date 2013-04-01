@@ -197,6 +197,12 @@ public interface IRepositoryHandler extends IHandler,
 	public void refreshRepository();
 
 	/**
+	 * Reloads repository (used after a change in settings that may need read
+	 * ALL information again)
+	 */
+	public void reloadRepository();
+
+	/**
 	 * Removes a list of folders from repository.
 	 * 
 	 * @param foldersToRemove

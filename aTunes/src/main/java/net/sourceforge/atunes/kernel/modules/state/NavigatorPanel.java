@@ -337,11 +337,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 			newArtistViewState = ArtistViewMode.BOTH;
 		}
 
-		if (!newArtistViewState
-				.equals(this.stateNavigation.getArtistViewMode())) {
-			this.stateNavigation.setArtistViewMode(newArtistViewState);
-			refreshRepository(this.beanFactory);
-		}
+		this.stateNavigation.setArtistViewMode(newArtistViewState);
 
 		return false;
 	}

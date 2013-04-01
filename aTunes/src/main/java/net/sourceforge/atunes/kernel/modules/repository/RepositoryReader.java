@@ -298,7 +298,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 			}
 			this.dialogFactory.newDialog(IMessageDialog.class).showMessage(
 					I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
-			retrieve(foldersToRead);
+			retrieve(foldersToRead, true);
 		} else {
 			RepositorySelectionInfoDialog dialog = this.dialogFactory
 					.newDialog(RepositorySelectionInfoDialog.class);
@@ -327,13 +327,13 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 			folders.add(folder);
 			// Add previous folders
 			folders.addAll(this.repositoryHandler.getFolders());
-			retrieve(folders);
+			retrieve(folders, false);
 			return true;
 		}
 		return false;
 	}
 
-	private boolean retrieve(final List<File> folders) {
+	private boolean retrieve(final List<File> folders, boolean reload) {
 		this.repositoryActions.disableAllRepositoryActions();
 		// Start with indeterminate dialog
 		this.repositoryProgressDialog.showDialog();
@@ -345,7 +345,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 				this.repository = null;
 				return false;
 			}
-			readRepository(folders);
+			readRepository(folders, reload);
 			return true;
 		} catch (Exception e) {
 			this.repository = null;
@@ -358,9 +358,9 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 * Read repository.
 	 * 
 	 * @param folders
-	 *            the folders
+	 * @param reload
 	 */
-	private void readRepository(final List<File> folders) {
+	private void readRepository(final List<File> folders, boolean reload) {
 		this.backgroundLoad = false;
 		IRepository oldRepository = this.repository;
 		this.repository = new Repository(folders, this.stateRepository);
@@ -370,8 +370,8 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 				.getBean(RepositoryReadLoader.class);
 		this.currentLoader.setRepositoryLoaderListener(this);
 		this.currentLoader.start(new RepositoryTransaction(this.repository,
-				this.repositoryHandler), folders, oldRepository,
-				this.repository);
+				this.repositoryHandler), folders,
+				reload ? null : oldRepository, this.repository);
 	}
 
 	@Override
@@ -634,11 +634,21 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	}
 
 	/**
-	 * Creates new repository with given folders
+	 * Creates new repository with given folders Don't reload folders already
+	 * read
 	 * 
 	 * @param folders
 	 */
 	protected void newRepositoryWithFolders(final List<File> folders) {
-		retrieve(folders);
+		retrieve(folders, false);
+	}
+
+	/**
+	 * Creates new repository with given folders Reloads all folders
+	 * 
+	 * @param folders
+	 */
+	protected void newRepositoryWithFoldersReloaded(final List<File> folders) {
+		retrieve(folders, true);
 	}
 }

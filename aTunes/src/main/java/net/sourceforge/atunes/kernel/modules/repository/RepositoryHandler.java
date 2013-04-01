@@ -42,6 +42,7 @@ import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -67,6 +68,8 @@ public final class RepositoryHandler extends AbstractHandler implements
 	private RepositoryReader repositoryReader;
 
 	private boolean caseSensitiveTrees;
+
+	private boolean storeRatingInFile;
 
 	private IStatisticsHandler statisticsHandler;
 
@@ -249,11 +252,8 @@ public final class RepositoryHandler extends AbstractHandler implements
 			this.repositoryReader
 					.newRepositoryWithFolders(this.foldersSelectedFromPreferences);
 			this.foldersSelectedFromPreferences = null;
-		} else if (this.caseSensitiveTrees != this.stateRepository
-				.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-			this.caseSensitiveTrees = this.stateRepository
-					.isKeyAlwaysCaseSensitiveInRepositoryStructure();
-			refreshRepository();
+		} else if (checkPropertiesToTrackForReload()) {
+			reloadRepository();
 		}
 		// Reschedule repository refresher
 		this.repositoryRefresher.start();
@@ -264,10 +264,36 @@ public final class RepositoryHandler extends AbstractHandler implements
 		// Initially use void repository until one is loaded or selected
 		this.repository = this.voidRepository;
 
+		setPropertiesToTrackForReload();
+
 		// Add itself as listener
+		addAudioFilesRemovedListener(this);
+	}
+
+	private void setPropertiesToTrackForReload() {
+		// A change in these properties needs a repository reload
 		this.caseSensitiveTrees = this.stateRepository
 				.isKeyAlwaysCaseSensitiveInRepositoryStructure();
-		addAudioFilesRemovedListener(this);
+		this.storeRatingInFile = this.stateRepository.isStoreRatingInFile();
+	}
+
+	private boolean checkPropertiesToTrackForReload() {
+		boolean reload = false;
+		// Check properties and return true if needs to reload repository
+		// Update properties to keep track or further changes
+		if (this.caseSensitiveTrees != this.stateRepository
+				.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+			reload = true;
+			this.caseSensitiveTrees = this.stateRepository
+					.isKeyAlwaysCaseSensitiveInRepositoryStructure();
+		}
+		if (this.storeRatingInFile != this.stateRepository
+				.isStoreRatingInFile()) {
+			reload = true;
+			this.storeRatingInFile = this.stateRepository.isStoreRatingInFile();
+		}
+
+		return reload;
 	}
 
 	@Override
@@ -439,6 +465,17 @@ public final class RepositoryHandler extends AbstractHandler implements
 	public void refreshRepository() {
 		if (!isRepositoryVoid()) {
 			this.repositoryReader.refresh();
+		}
+	}
+
+	@Override
+	public void reloadRepository() {
+		if (!isRepositoryVoid()) {
+			dialogFactory.newDialog(IMessageDialog.class).showMessage(
+					I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
+			this.repositoryReader
+					.newRepositoryWithFoldersReloaded(this.repository
+							.getRepositoryFolders());
 		}
 	}
 
