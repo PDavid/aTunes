@@ -27,6 +27,7 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.TreeNavigationTransferHandler;
+import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
@@ -34,6 +35,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTree;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPluginsHandler;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IStateNavigation;
@@ -64,6 +66,8 @@ public final class NavigationHandler extends AbstractHandler implements
 	private IFilter navigationTreeFilter;
 
 	private IStateNavigation stateNavigation;
+
+	private ArtistViewMode artistViewMode;
 
 	/**
 	 * @param filterHandler
@@ -197,6 +201,33 @@ public final class NavigationHandler extends AbstractHandler implements
 	@Override
 	public void applicationStateChanged() {
 		refreshCurrentView();
+
+		if (checkPropertiesToTrackForReload()) {
+			getBean(IRepositoryHandler.class).reloadRepository();
+		}
+	}
+
+	@Override
+	protected void initHandler() {
+		setPropertiesToTrackForReload();
+	}
+
+	private void setPropertiesToTrackForReload() {
+		// A change in these properties needs a repository reload
+		this.artistViewMode = this.stateNavigation.getArtistViewMode();
+	}
+
+	private boolean checkPropertiesToTrackForReload() {
+		boolean reload = false;
+		// Check properties and return true if needs to reload repository
+		// Update properties to keep track or further changes
+		if (!this.artistViewMode.equals(this.stateNavigation
+				.getArtistViewMode())) {
+			reload = true;
+			this.artistViewMode = this.stateNavigation.getArtistViewMode();
+		}
+
+		return reload;
 	}
 
 	/**

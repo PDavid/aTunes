@@ -42,7 +42,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFolderSelectorDialog;
@@ -97,15 +96,6 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 	private IControlsBuilder controlsBuilder;
 
 	private JCheckBox useRatingsStoredInTag;
-
-	private IBeanFactory beanFactory;
-
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
 
 	/**
 	 * @param controlsBuilder
@@ -276,13 +266,6 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 		if (repositoryFoldersHaveChanged(repositoryFolders,
 				repositoryHandler.getFolders())) {
 			repositoryHandler.setRepositoryFolders(repositoryFolders);
-		}
-
-		boolean newUseRatingsStoredInTag = useRatingsStoredInTag.isSelected();
-		if (newUseRatingsStoredInTag != this.stateRepository
-				.isStoreRatingInFile()) {
-			this.stateRepository.setStoreRatingInFile(newUseRatingsStoredInTag);
-			refreshRepository(this.beanFactory);
 		}
 
 		stateRepository
