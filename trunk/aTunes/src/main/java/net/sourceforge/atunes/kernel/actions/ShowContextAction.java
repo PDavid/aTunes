@@ -20,12 +20,13 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -37,43 +38,54 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ShowContextAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 5939730387818346294L;
+	private static final long serialVersionUID = 5939730387818346294L;
 
-    private IContextHandler contextHandler;
+	private IContextHandler contextHandler;
 
-    private IStateContext stateContext;
+	private IStateContext stateContext;
 
-    /**
-     * @param stateContext
-     */
-    public void setStateContext(final IStateContext stateContext) {
-	this.stateContext = stateContext;
-    }
+	private IOSManager osManager;
 
-    /**
-     * @param contextHandler
-     */
-    public void setContextHandler(final IContextHandler contextHandler) {
-	this.contextHandler = contextHandler;
-    }
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
-    /**
-     * Default constructor
-     */
-    public ShowContextAction() {
-	super(I18nUtils.getString("SHOW_CONTEXT_INFORMATION"));
-	putValue(ACCELERATOR_KEY,
-		KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_MASK));
-    }
+	/**
+	 * @param stateContext
+	 */
+	public void setStateContext(final IStateContext stateContext) {
+		this.stateContext = stateContext;
+	}
 
-    @Override
-    protected void initialize() {
-	super.initialize();
-	putValue(SELECTED_KEY, stateContext.isUseContext());
-    }
+	/**
+	 * @param contextHandler
+	 */
+	public void setContextHandler(final IContextHandler contextHandler) {
+		this.contextHandler = contextHandler;
+	}
 
-    @Override
-    protected void executeAction() {
-	contextHandler.showContextPanel((Boolean) getValue(SELECTED_KEY));
-    }
+	/**
+	 * Default constructor
+	 */
+	public ShowContextAction() {
+		super(I18nUtils.getString("SHOW_CONTEXT_INFORMATION"));
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_I,
+						GuiUtils.getCtrlOrMetaActionEventMask(this.osManager)));
+		putValue(SELECTED_KEY, stateContext.isUseContext());
+	}
+
+	@Override
+	protected void executeAction() {
+		contextHandler.showContextPanel((Boolean) getValue(SELECTED_KEY));
+	}
 }
