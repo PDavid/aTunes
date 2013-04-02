@@ -20,12 +20,13 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -41,6 +42,15 @@ public class ShowNavigatorAction extends CustomAbstractAction {
 	private INavigationHandler navigationHandler;
 
 	private IStateNavigation stateNavigation;
+
+	private IOSManager osManager;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
 	/**
 	 * @param stateNavigation
@@ -61,13 +71,15 @@ public class ShowNavigatorAction extends CustomAbstractAction {
 	 */
 	public ShowNavigatorAction() {
 		super(I18nUtils.getString("SHOW_NAVIGATOR"));
-		putValue(ACCELERATOR_KEY,
-				KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
 	}
 
 	@Override
 	protected void initialize() {
 		super.initialize();
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_N,
+						GuiUtils.getCtrlOrMetaActionEventMask(this.osManager)));
 		putValue(SELECTED_KEY, this.stateNavigation.isShowNavigator());
 	}
 
