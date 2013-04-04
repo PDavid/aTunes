@@ -26,7 +26,9 @@ import net.sourceforge.atunes.gui.images.ArrowDownImageIcon;
 import net.sourceforge.atunes.gui.images.ArrowUpImageIcon;
 import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnModel;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
@@ -45,28 +47,39 @@ public class ColumnSortIconGenerator {
 	 */
 	public ImageIcon getIcon(final IBeanFactory beanFactory,
 			final IColumnModel model, final int column) {
-		ColumnSort sort = model.getColumnSet()
-				.getColumn(model.getColumnSet().getColumnId(column))
-				.getColumnSort();
-
-		if (sort == null) {
-			return null;
-		} else if (sort == ColumnSort.ASCENDING) {
-			return beanFactory
-					.getBean(ArrowUpImageIcon.class)
-					.getColorMutableIcon()
-					.getIcon(
-							beanFactory.getBean(ILookAndFeelManager.class)
-									.getCurrentLookAndFeel()
-									.getPaintForSpecialControls());
-		} else {
-			return beanFactory
-					.getBean(ArrowDownImageIcon.class)
-					.getColorMutableIcon()
-					.getIcon(
-							beanFactory.getBean(ILookAndFeelManager.class)
-									.getCurrentLookAndFeel()
-									.getPaintForSpecialControls());
+		IColumnSet cs = model.getColumnSet();
+		if (cs != null) {
+			Class<? extends IColumn<?>> colId = cs.getColumnId(column);
+			if (colId != null) {
+				IColumn<?> col = cs.getColumn(colId);
+				if (col != null) {
+					ColumnSort sort = col.getColumnSort();
+					if (sort != null) {
+						if (sort == ColumnSort.ASCENDING) {
+							return beanFactory
+									.getBean(ArrowUpImageIcon.class)
+									.getColorMutableIcon()
+									.getIcon(
+											beanFactory
+													.getBean(
+															ILookAndFeelManager.class)
+													.getCurrentLookAndFeel()
+													.getPaintForSpecialControls());
+						} else {
+							return beanFactory
+									.getBean(ArrowDownImageIcon.class)
+									.getColorMutableIcon()
+									.getIcon(
+											beanFactory
+													.getBean(
+															ILookAndFeelManager.class)
+													.getCurrentLookAndFeel()
+													.getPaintForSpecialControls());
+						}
+					}
+				}
+			}
 		}
+		return null;
 	}
 }
