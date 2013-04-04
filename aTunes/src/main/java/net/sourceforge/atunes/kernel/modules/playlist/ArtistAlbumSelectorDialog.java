@@ -140,8 +140,11 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog
 			@Override
 			public void mouseClicked(final MouseEvent e) {
 				int row = albumTable.getSelectedRow();
-				ArtistAlbumSelectorDialog.this.album = model.getAlbumAt(row);
-				setVisible(false);
+				if (row != -1) {
+					ArtistAlbumSelectorDialog.this.album = model
+							.getAlbumAt(row);
+					setVisible(false);
+				}
 			}
 		});
 
