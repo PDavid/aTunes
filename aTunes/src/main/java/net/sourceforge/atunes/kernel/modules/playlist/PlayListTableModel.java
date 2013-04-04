@@ -24,6 +24,7 @@ import java.util.Comparator;
 
 import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 
@@ -77,7 +78,8 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
 		if (this.visiblePlayList != null) {
 			IAudioObject ao = this.visiblePlayList.get(rowIndex);
 			if (ao != null) {
-				return getColumn(colIndex).getValueFor(ao, rowIndex);
+				IColumn<?> c = getColumn(colIndex);
+				return c != null ? c.getValueFor(ao, rowIndex) : null;
 			}
 		}
 		return null;
@@ -95,7 +97,8 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
 	 */
 	@Override
 	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
-		return getColumn(columnIndex).isEditable();
+		IColumn<?> c = getColumn(columnIndex);
+		return c != null ? c.isEditable() : false;
 	}
 
 	/**
@@ -115,7 +118,10 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
 		IAudioObject audioObject = this.visiblePlayList.get(rowIndex);
 
 		// Call column set value
-		getColumn(columnIndex).setValueFor(audioObject, aValue);
+		IColumn<?> c = getColumn(columnIndex);
+		if (c != null) {
+			c.setValueFor(audioObject, aValue);
+		}
 
 		// After changing audio object refresh playlist, as the same object can
 		// be duplicated

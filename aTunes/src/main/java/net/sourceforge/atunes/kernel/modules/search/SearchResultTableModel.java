@@ -26,6 +26,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumn;
 
 /**
  * The table model for search results.
@@ -56,7 +57,12 @@ public class SearchResultTableModel extends AbstractColumnSetTableModel {
 	 */
 	@Override
 	public Object getValueAt(final int rowIndex, final int colIndex) {
-		return results != null ? getColumn(colIndex).getValueFor(results.get(rowIndex), rowIndex) : null;
+		if (results != null) {
+			IColumn<?> c = getColumn(colIndex);
+			return c != null ? c.getValueFor(results.get(rowIndex), rowIndex)
+					: null;
+		}
+		return null;
 	}
 
 	/**
@@ -85,7 +91,8 @@ public class SearchResultTableModel extends AbstractColumnSetTableModel {
 	 *            the column index
 	 */
 	@Override
-	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
+	public void setValueAt(final Object aValue, final int rowIndex,
+			final int columnIndex) {
 		// Nothing to do
 	}
 

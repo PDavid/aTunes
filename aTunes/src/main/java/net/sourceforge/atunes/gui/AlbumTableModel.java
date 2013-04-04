@@ -28,6 +28,7 @@ import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumn;
 
 /**
  * The Class AlbumTableModel.
@@ -35,7 +36,6 @@ import net.sourceforge.atunes.model.IAudioObject;
  * @author encestre
  */
 public final class AlbumTableModel extends AbstractColumnSetTableModel {
-
 
 	/** The albums. */
 	private List<IAlbum> albums;
@@ -99,7 +99,9 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
 		if (album == null) {
 			return null;
 		}
-		return getColumn(columnIndex).getValueFor(album.getAudioObjects().get(0), rowIndex);
+		IColumn<?> c = getColumn(columnIndex);
+		return c != null ? c.getValueFor(album.getAudioObjects().get(0),
+				rowIndex) : null;
 	}
 
 	/*
@@ -129,7 +131,8 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
 	 * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
 	 */
 	@Override
-	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
+	public void setValueAt(final Object aValue, final int rowIndex,
+			final int columnIndex) {
 	}
 
 	@Override
