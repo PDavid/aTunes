@@ -80,17 +80,19 @@ public class SimilarArtistsDragAndDrop implements DragSourceListener,
 	@Override
 	public void dragGestureRecognized(final DragGestureEvent dge) {
 		int row = this.table.getSelectedRow();
+		if (row != -1) {
 
-		IArtistInfo artistInfo = ((SimilarArtistsTableModel) this.table
-				.getModel()).getArtist(row);
-		if (artistInfo.isAvailable()) {
-			List<Object> itemsToDrag = new ArrayList<Object>();
-			itemsToDrag.add(new DragableArtist(artistInfo));
-			TransferableList<Object> items = new TransferableList<Object>(
-					itemsToDrag);
+			IArtistInfo artistInfo = ((SimilarArtistsTableModel) this.table
+					.getModel()).getArtist(row);
+			if (artistInfo.isAvailable()) {
+				List<Object> itemsToDrag = new ArrayList<Object>();
+				itemsToDrag.add(new DragableArtist(artistInfo));
+				TransferableList<Object> items = new TransferableList<Object>(
+						itemsToDrag);
 
-			this.dragSource.startDrag(dge, DragSource.DefaultCopyDrop, items,
-					this);
+				this.dragSource.startDrag(dge, DragSource.DefaultCopyDrop,
+						items, this);
+			}
 		}
 	}
 
