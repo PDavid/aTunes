@@ -23,10 +23,13 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 import net.sourceforge.atunes.model.CDMetadata;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Pattern for first artist char
+ * 
  * @author alex
- *
+ * 
  */
 public final class ArtistFirstCharPattern extends AbstractPattern {
 
@@ -36,8 +39,9 @@ public final class ArtistFirstCharPattern extends AbstractPattern {
 	}
 
 	@Override
-	public String getCDMetadataStringValue(final CDMetadata metadata, final int trackNumber) {
+	public String getCDMetadataStringValue(final CDMetadata metadata,
+			final int trackNumber) {
 		String artist = metadata.getArtist(trackNumber);
-		return artist != null ? artist.substring(0, 1) : null;
+		return StringUtils.length(artist) >= 1 ? artist.substring(0, 1) : null;
 	}
 }
