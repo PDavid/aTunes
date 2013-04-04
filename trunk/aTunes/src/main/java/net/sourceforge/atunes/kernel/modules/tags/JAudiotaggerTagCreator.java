@@ -159,17 +159,6 @@ public class JAudiotaggerTagCreator {
 		iTag.setInternalImage(hasImage);
 	}
 
-	private String getFirstTagValue(final Tag tag, final FieldKey field) {
-		if (tag != null && field != null) {
-			try {
-				return tag.getFirst(field);
-			} catch (UnsupportedOperationException e) {
-				Logger.info(e.getMessage());
-			}
-		}
-		return null;
-	}
-
 	/**
 	 * Sets year from tag
 	 * 
@@ -318,6 +307,23 @@ public class JAudiotaggerTagCreator {
 				return tag.getFirst(field);
 			} catch (UnsupportedOperationException e) {
 				Logger.info(e.getMessage());
+			} catch (Exception e) {
+				// Avoid any error caused by underlying tag reader
+				Logger.error(e.getMessage());
+			}
+		}
+		return null;
+	}
+
+	private String getFirstTagValue(final Tag tag, final FieldKey field) {
+		if (tag != null && field != null) {
+			try {
+				return tag.getFirst(field);
+			} catch (UnsupportedOperationException e) {
+				Logger.info(e.getMessage());
+			} catch (Exception e) {
+				// Avoid any error caused by underlying tag reader
+				Logger.error(e.getMessage());
 			}
 		}
 		return null;
