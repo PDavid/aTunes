@@ -47,7 +47,8 @@ public abstract class AbstractColumnSetTableModel extends
 	 */
 	@Override
 	public Class<?> getColumnClass(final int colIndex) {
-		return getColumn(colIndex).getColumnClass();
+		IColumn<?> c = getColumn(colIndex);
+		return c != null ? c.getColumnClass() : null;
 	}
 
 	/**
@@ -73,7 +74,8 @@ public abstract class AbstractColumnSetTableModel extends
 	public String getColumnName(final int colIndex) {
 		// Use a white space if empty to force to show header if no more columns
 		// are visible
-		String text = getColumn(colIndex).getHeaderText();
+		IColumn<?> c = getColumn(colIndex);
+		String text = c != null ? c.getHeaderText() : null;
 		return I18nUtils.getString(StringUtils.isEmpty(text) ? " " : text);
 	}
 

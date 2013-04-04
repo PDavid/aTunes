@@ -28,6 +28,7 @@ import java.util.List;
 import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -98,7 +99,8 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
 		if (audioObject == null) {
 			return null;
 		}
-		return getColumn(columnIndex).getValueFor(audioObject, rowIndex);
+		IColumn<?> c = getColumn(columnIndex);
+		return c != null ? c.getValueFor(audioObject, rowIndex) : null;
 	}
 
 	@Override
@@ -118,7 +120,8 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
 	}
 
 	@Override
-	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
+	public void setValueAt(final Object aValue, final int rowIndex,
+			final int columnIndex) {
 		// Nothing to do
 	}
 
