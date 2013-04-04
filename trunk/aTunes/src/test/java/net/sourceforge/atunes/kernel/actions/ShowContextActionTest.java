@@ -24,6 +24,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateContext;
 
 import org.junit.Test;
@@ -36,12 +37,14 @@ public class ShowContextActionTest {
 		IStateContext state = mock(IStateContext.class);
 		when(state.isUseContext()).thenReturn(true);
 		IContextHandler contextHandler = mock(IContextHandler.class);
+		IOSManager osManager = mock(IOSManager.class);
+		sut.setOsManager(osManager);
 		sut.setContextHandler(contextHandler);
 		sut.setStateContext(state);
 		sut.initialize();
-		
+
 		sut.executeAction();
-		
+
 		verify(contextHandler).showContextPanel(true);
 	}
 
@@ -51,12 +54,14 @@ public class ShowContextActionTest {
 		IStateContext state = mock(IStateContext.class);
 		when(state.isUseContext()).thenReturn(false);
 		IContextHandler contextHandler = mock(IContextHandler.class);
+		IOSManager osManager = mock(IOSManager.class);
+		sut.setOsManager(osManager);
 		sut.setContextHandler(contextHandler);
 		sut.setStateContext(state);
 		sut.initialize();
-		
+
 		sut.executeAction();
-		
+
 		verify(contextHandler).showContextPanel(false);
 	}
 }
