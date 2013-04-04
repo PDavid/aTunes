@@ -59,7 +59,6 @@ public final class NavigationTable extends JTable implements
 		super();
 		lookAndFeelManager.getCurrentLookAndFeel().decorateTable(this);
 		setDragSource();
-		setDragEnabled(true);
 		setTransferHandler(new CopyTransferHandler());
 	}
 
