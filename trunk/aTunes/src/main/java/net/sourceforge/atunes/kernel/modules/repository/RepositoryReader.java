@@ -213,7 +213,12 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	void testRepositoryRetrievedFromCache() {
 		IRepository rep = this.repositoryRetrievedFromCache;
 		if (rep == null) {
-			reloadExistingRepository();
+			GuiUtils.callInEventDispatchThreadAndWait(new Runnable() {
+				@Override
+				public void run() {
+					reloadExistingRepository();
+				}
+			});
 		}
 	}
 
