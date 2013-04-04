@@ -141,6 +141,11 @@
 					<property name="exceptionClass" value="java.lang.ClassCastException"/>
 					<property name="message" value="net.sourceforge.atunes.gui.views.controls.JTrayIcon cannot be cast to java.awt.Component"/>
 				</bean>
+				<bean class="net.sourceforge.atunes.KnownException">
+				    <!-- Support for Tray Icon in Linux discontinued -->
+					<property name="exceptionClass" value="java.lang.UnsupportedOperationException"/>
+					<property name="message" value="The system tray is not supported on the current platform"/>
+				</bean>
 			</list>
 		</property>
 	</bean>
