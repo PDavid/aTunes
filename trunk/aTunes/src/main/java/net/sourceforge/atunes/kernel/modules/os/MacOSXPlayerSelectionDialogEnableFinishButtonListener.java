@@ -26,12 +26,13 @@ import javax.swing.event.ListSelectionListener;
 
 /**
  * Called when enabling finish button
+ * 
  * @author alex
- *
+ * 
  */
-final class MacOSXPlayerSelectionDialogEnableFinishButtonListener implements ListSelectionListener {
-	
-	
+final class MacOSXPlayerSelectionDialogEnableFinishButtonListener implements
+		ListSelectionListener {
+
 	private final JButton finishButton;
 
 	/**
@@ -43,6 +44,7 @@ final class MacOSXPlayerSelectionDialogEnableFinishButtonListener implements Lis
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		finishButton.setEnabled(true);
+		finishButton
+				.setEnabled(e.getFirstIndex() >= 0 && e.getLastIndex() >= 0);
 	}
 }
