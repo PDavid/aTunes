@@ -40,10 +40,19 @@ public class DateSerializer extends Serializer<BaseDateTime> {
 	private final DateTimeFormatter fmt = DateTimeFormat
 			.forPattern("yyyyMMddHHmm");
 
+	private final DateTimeFormatter secondaryFmt = DateTimeFormat
+			.forPattern("yyyyMMdd");
+
 	@Override
 	public BaseDateTime read(final Kryo kryo, final Input input,
 			final Class<BaseDateTime> dateClass) {
-		return this.fmt.parseDateTime(input.readString());
+		String dateAndTime = input.readString();
+		try {
+			return this.fmt.parseDateTime(dateAndTime);
+		} catch (IllegalArgumentException e) {
+			// Try a second read for backward compatibility
+			return this.secondaryFmt.parseDateTime(dateAndTime);
+		}
 	}
 
 	@Override
