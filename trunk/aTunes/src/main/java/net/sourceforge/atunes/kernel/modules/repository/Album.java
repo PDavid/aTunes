@@ -51,6 +51,8 @@ public class Album implements IAlbum {
 	/** List of songs of this album. */
 	private transient Set<ILocalAudioObject> synchronizedAudioFiles;
 
+	private static TrackNumberComparator comparator = new TrackNumberComparator();
+
 	/**
 	 * Default constructor for serialization
 	 */
@@ -77,16 +79,17 @@ public class Album implements IAlbum {
 		// Need to use a synchronized set to avoid concurrency problems
 		// However as kryo serialization is tricky with synchronized collections
 		// use a non-synchronized collection with kryo
-		if (audioFiles == null) {
+		if (this.audioFiles == null) {
 			TreeSet<ILocalAudioObject> treeSet = new TreeSet<ILocalAudioObject>(
-					new TrackNumberComparator());
-			audioFiles = treeSet;
-			synchronizedAudioFiles = Collections.synchronizedSortedSet(treeSet);
-		} else if (synchronizedAudioFiles == null) {
-			synchronizedAudioFiles = Collections
-					.synchronizedSortedSet((TreeSet<ILocalAudioObject>) audioFiles);
+					comparator);
+			this.audioFiles = treeSet;
+			this.synchronizedAudioFiles = Collections
+					.synchronizedSortedSet(treeSet);
+		} else if (this.synchronizedAudioFiles == null) {
+			this.synchronizedAudioFiles = Collections
+					.synchronizedSortedSet((TreeSet<ILocalAudioObject>) this.audioFiles);
 		}
-		return synchronizedAudioFiles;
+		return this.synchronizedAudioFiles;
 	}
 
 	/**
@@ -110,12 +113,12 @@ public class Album implements IAlbum {
 	 */
 	@Override
 	public int compareTo(final IAlbum o) {
-		if (o == null || name == null || artist == null) {
+		if (o == null || this.name == null || this.artist == null) {
 			return 1;
 		} else {
-			int artistCompare = artist.compareTo(o.getArtist());
+			int artistCompare = this.artist.compareTo(o.getArtist());
 			if (artistCompare == 0) {
-				return name.compareToIgnoreCase(o.getName());
+				return this.name.compareToIgnoreCase(o.getName());
 			} else {
 				return artistCompare;
 			}
@@ -129,7 +132,7 @@ public class Album implements IAlbum {
 	 */
 	@Override
 	public IArtist getArtist() {
-		return artist;
+		return this.artist;
 	}
 
 	/**
@@ -149,7 +152,7 @@ public class Album implements IAlbum {
 	 */
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -177,8 +180,10 @@ public class Album implements IAlbum {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((this.artist == null) ? 0 : this.artist.hashCode());
+		result = prime * result
+				+ ((this.name == null) ? 0 : this.name.hashCode());
 		return result;
 	}
 
@@ -194,18 +199,18 @@ public class Album implements IAlbum {
 			return false;
 		}
 		Album other = (Album) obj;
-		if (artist == null) {
+		if (this.artist == null) {
 			if (other.artist != null) {
 				return false;
 			}
-		} else if (!artist.equals(other.artist)) {
+		} else if (!this.artist.equals(other.artist)) {
 			return false;
 		}
-		if (name == null) {
+		if (this.name == null) {
 			if (other.name != null) {
 				return false;
 			}
-		} else if (!name.equalsIgnoreCase(other.name)) {
+		} else if (!this.name.equalsIgnoreCase(other.name)) {
 			return false;
 		}
 		return true;
