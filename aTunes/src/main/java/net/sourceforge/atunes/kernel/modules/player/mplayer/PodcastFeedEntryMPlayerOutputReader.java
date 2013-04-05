@@ -24,41 +24,42 @@ import net.sourceforge.atunes.model.IPodcastFeedEntry;
 
 class PodcastFeedEntryMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
-    /** The podcast feed entry. */
-    private IPodcastFeedEntry podcastFeedEntry;
+	/** The podcast feed entry. */
+	private IPodcastFeedEntry podcastFeedEntry;
 
-    private boolean started;
-    
-    /**
-     * Instantiates a new podcast feed entry mplayer output reader.
-     * 
-     * @param engine
-     *            the engine
-     * @param process
-     *            the process
-     * @param podcastFeedEntry
-     *            the podcast feed entry
-     */
-    PodcastFeedEntryMPlayerOutputReader(MPlayerEngine engine, Process process, IPodcastFeedEntry podcastFeedEntry) {
-        super(engine, process);
-        this.podcastFeedEntry = podcastFeedEntry;
-    }
-    
-    @Override
-    protected void init() {
-    }
+	private boolean started;
 
-    @Override
-    protected void read(String line) {
-        super.read(line);
+	/**
+	 * Instantiates a new podcast feed entry mplayer output reader.
+	 * 
+	 * @param engine
+	 *            the engine
+	 * @param process
+	 *            the process
+	 * @param podcastFeedEntry
+	 *            the podcast feed entry
+	 */
+	PodcastFeedEntryMPlayerOutputReader(MPlayerEngine engine,
+			MPlayerProcess process, IPodcastFeedEntry podcastFeedEntry) {
+		super(engine, process);
+		this.podcastFeedEntry = podcastFeedEntry;
+	}
 
-        readAndApplyLength(podcastFeedEntry, line, false);
+	@Override
+	protected void init() {
+	}
 
-        // When starting playback, update status bar
-        if (!started && line.startsWith("Starting playback")) {
-        	getEngine().notifyRadioOrPodcastFeedEntry();
-        	started = true;
-        }
-    }
+	@Override
+	protected void read(String line) {
+		super.read(line);
+
+		readAndApplyLength(podcastFeedEntry, line, false);
+
+		// When starting playback, update status bar
+		if (!started && line.startsWith("Starting playback")) {
+			getEngine().notifyRadioOrPodcastFeedEntry();
+			started = true;
+		}
+	}
 
 }

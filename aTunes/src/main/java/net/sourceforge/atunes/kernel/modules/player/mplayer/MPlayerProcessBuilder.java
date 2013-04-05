@@ -149,7 +149,7 @@ public class MPlayerProcessBuilder {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public Process getProcess(final IAudioObject audioObject)
+	public MPlayerProcess getProcess(final IAudioObject audioObject)
 			throws IOException {
 		boolean isRemoteAudio = isRemoteAudio(audioObject);
 
@@ -163,7 +163,7 @@ public class MPlayerProcessBuilder {
 			List<String> command = prepareCommand(audioObject, isRemoteAudio,
 					url);
 			Logger.debug((Object[]) command.toArray(new String[command.size()]));
-			return new ProcessBuilder().command(command).start();
+			return new MPlayerProcess(command);
 		}
 	}
 

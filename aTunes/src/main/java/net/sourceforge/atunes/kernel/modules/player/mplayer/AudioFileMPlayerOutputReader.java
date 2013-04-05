@@ -40,7 +40,7 @@ class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
 	 * @param localAudioObjectValidator
 	 */
 	AudioFileMPlayerOutputReader(final MPlayerEngine engine,
-			final Process process, final ILocalAudioObject audioFile,
+			final MPlayerProcess process, final ILocalAudioObject audioFile,
 			final ILocalAudioObjectValidator localAudioObjectValidator) {
 		super(engine, process);
 		this.audioFile = audioFile;

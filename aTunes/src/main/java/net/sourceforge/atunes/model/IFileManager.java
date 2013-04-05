@@ -172,4 +172,12 @@ public interface IFileManager {
 	 * @return true, if is up to date
 	 */
 	boolean isUpToDate(ILocalAudioObject audioFile);
+
+	/**
+	 * OS-dependent name
+	 * 
+	 * @param audioObject
+	 * @return
+	 */
+	String getSystemName(ILocalAudioObject audioObject);
 }

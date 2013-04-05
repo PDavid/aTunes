@@ -30,7 +30,6 @@ import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateRadio;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -45,8 +44,8 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
 	private MPlayerProcessBuilder processBuilder;
 
-	private Process process;
-	private MPlayerCommandWriter commandWriter;
+	private MPlayerProcess process;
+	private MPlayerCommandWriter commandWriter = new MPlayerCommandWriter(null);
 	private AbstractMPlayerOutputReader mPlayerOutputReader;
 	private MPlayerErrorReader mPlayerErrorReader;
 	private MPlayerPositionThread mPlayerPositionThread;
@@ -79,13 +78,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 	public void setLocalAudioObjectValidator(
 			final ILocalAudioObjectValidator localAudioObjectValidator) {
 		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
-
-	@Override
-	public void setOsManager(final IOSManager osManager) {
-		super.setOsManager(osManager);
-		this.commandWriter = MPlayerCommandWriter.newCommandWriter(null,
-				osManager);
 	}
 
 	/**
@@ -157,8 +149,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 			this.process = this.processBuilder.getProcess(audioObjectToPlay);
 
 			if (this.process != null) {
-				this.commandWriter = MPlayerCommandWriter.newCommandWriter(
-						this.process, getOsManager());
+				this.commandWriter = process.newCommandWriter(getOsManager());
 				// Output reader needs original audio object, specially when
 				// cacheFilesBeforePlaying is true, as
 				// statistics must be applied over original audio object, not
@@ -171,7 +162,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 								this.contextHandler);
 				this.mPlayerErrorReader = new MPlayerErrorReader(this,
 						this.process, this.mPlayerOutputReader,
-						audioObjectToPlay);
+						audioObjectToPlay, getFileManager(), getOsManager());
 				this.mPlayerOutputReader.start();
 				this.mPlayerErrorReader.start();
 				this.mPlayerPositionThread = new MPlayerPositionThread(this);

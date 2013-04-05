@@ -50,12 +50,11 @@ class FadeAwayRunnable implements Runnable {
 	 * @param handler
 	 * @param osManager
 	 */
-	FadeAwayRunnable(final Process process, final int initialVolume,
+	FadeAwayRunnable(final MPlayerProcess process, final int initialVolume,
 			final MPlayerEngine handler, final IOSManager osManager) {
 		this.initialVolume = initialVolume;
 		this.handler = handler;
-		this.commandWriter = MPlayerCommandWriter.newCommandWriter(process,
-				osManager);
+		this.commandWriter = process.newCommandWriter(osManager);
 	}
 
 	@Override

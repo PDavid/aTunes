@@ -124,6 +124,10 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 		this.fileManager = fileManager;
 	}
 
+	protected final IFileManager getFileManager() {
+		return fileManager;
+	}
+
 	/**
 	 * @param webServicesHandler
 	 */
