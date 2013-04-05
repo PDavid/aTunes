@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 import java.io.PrintStream;
 
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -40,21 +39,6 @@ class MPlayerCommandWriter {
 	 * Indicates if process must send more commands or not
 	 */
 	private volatile boolean stopSendingCommands;
-
-	/**
-	 * Returns new command writer for mplayer instance
-	 * 
-	 * @param process
-	 * @param osManager
-	 * @return
-	 */
-	static MPlayerCommandWriter newCommandWriter(final Process process,
-			final IOSManager osManager) {
-		if (osManager.isMacOsX()) {
-			return new MPlayerXCommandWriter(process);
-		}
-		return new MPlayerCommandWriter(process);
-	}
 
 	/**
 	 * Instantiates a new m player command writer.

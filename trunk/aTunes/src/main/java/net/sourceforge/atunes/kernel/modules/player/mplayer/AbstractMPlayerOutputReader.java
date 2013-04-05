@@ -46,7 +46,7 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	private int length;
 	private int time;
 
-	private final Process process;
+	private final MPlayerProcess process;
 
 	private volatile boolean readStopped = false;
 
@@ -59,7 +59,7 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	 *            the process
 	 */
 	protected AbstractMPlayerOutputReader(final MPlayerEngine engine,
-			final Process process) {
+			final MPlayerProcess process) {
 		this.engine = engine;
 		this.process = process;
 	}
@@ -76,7 +76,7 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	 * @return
 	 */
 	static AbstractMPlayerOutputReader newInstance(final MPlayerEngine engine,
-			final Process process, final IAudioObject ao,
+			final MPlayerProcess process, final IAudioObject ao,
 			final IStateRadio stateRadio, final IFrame frame,
 			final IPlayListHandler playListHandler,
 			final ILocalAudioObjectValidator localAudioObjectValidator,

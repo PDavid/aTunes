@@ -304,4 +304,14 @@ public class FileManager implements IFileManager {
 		return audioFile.getReadTime() > getAudioObjectFile(audioFile)
 				.lastModified();
 	}
+
+	@Override
+	public String getSystemName(ILocalAudioObject audioObject) {
+		try {
+			return getAudioObjectFile(audioObject).getCanonicalPath();
+		} catch (IOException e) {
+			Logger.error(e);
+			return "ERROR: Could not get canonical path";
+		}
+	}
 }
