@@ -5,6 +5,8 @@
 	
 	default-autowire="byName" default-lazy-init="true">
 
+	<bean id="dateFormatter" class="net.sourceforge.atunes.utils.DateFormatter"/>
+
 	<bean id="temporalDiskStorage" class="net.sourceforge.atunes.utils.TempFolder"/>
 	<bean id="clipboard" class="net.sourceforge.atunes.utils.ClipboardFacade"/>
 	<bean id="desktop" class="net.sourceforge.atunes.utils.DesktopUtils"/>
