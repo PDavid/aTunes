@@ -23,10 +23,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IStateCore;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import net.sourceforge.atunes.model.IDateFormatter;
 
 /**
  * Column to show date
@@ -38,15 +35,13 @@ public class DateColumn extends AbstractColumn<String> {
 
 	private static final long serialVersionUID = 6832826017182272636L;
 
-	private DateTimeFormatter dateFormat;
-
-	private IStateCore stateCore;
+	private IDateFormatter dateFormatter;
 
 	/**
-	 * @param stateCore
+	 * @param dateFormatter
 	 */
-	public void setStateCore(final IStateCore stateCore) {
-		this.stateCore = stateCore;
+	public void setDateFormatter(final IDateFormatter dateFormatter) {
+		this.dateFormatter = dateFormatter;
 	}
 
 	/**
@@ -80,7 +75,7 @@ public class DateColumn extends AbstractColumn<String> {
 	@Override
 	public String getValueFor(final IAudioObject audioObject, final int row) {
 		if (audioObject.getDate() != null) {
-			return getDateFormat().print(audioObject.getDate());
+			return this.dateFormatter.toString(audioObject.getDate());
 		} else {
 			return "";
 		}
@@ -90,17 +85,9 @@ public class DateColumn extends AbstractColumn<String> {
 	public String getValueForFilter(final IAudioObject audioObject,
 			final int row) {
 		if (audioObject != null) {
-			return getDateFormat().print(audioObject.getDate());
+			return this.dateFormatter.toString(audioObject.getDate());
 		} else {
 			return "";
 		}
-	}
-
-	private DateTimeFormatter getDateFormat() {
-		if (this.dateFormat == null) {
-			this.dateFormat = DateTimeFormat.mediumDate().withLocale(
-					this.stateCore.getLocale().getLocale());
-		}
-		return this.dateFormat;
 	}
 }

@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.utils;
 
-
 import java.util.Locale;
 
 import org.joda.time.DateTime;
@@ -81,10 +80,15 @@ public final class DateUtils {
 		return new DateTime().getYear();
 	}
 
-	private static final DateTimeFormatter RFC3339_1 = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withLocale(Locale.US);
-	private static final DateTimeFormatter RFC3339_2 = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'").withLocale(Locale.US);
-	private static final DateTimeFormatter RFC3339_3 = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ").withLocale(Locale.US);
-	private static final DateTimeFormatter RFC3339_4 = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ").withLocale(Locale.US);
+	private static final DateTimeFormatter RFC3339_1 = DateTimeFormat
+			.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withLocale(Locale.US);
+	private static final DateTimeFormatter RFC3339_2 = DateTimeFormat
+			.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
+			.withLocale(Locale.US);
+	private static final DateTimeFormatter RFC3339_3 = DateTimeFormat
+			.forPattern("yyyy-MM-dd'T'HH:mm:ssZ").withLocale(Locale.US);
+	private static final DateTimeFormatter RFC3339_4 = DateTimeFormat
+			.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ").withLocale(Locale.US);
 
 	/*
 	 * -> http://hatori42.com/RFC3339Date.txt
@@ -111,12 +115,13 @@ public final class DateUtils {
 	 * @param dateStr
 	 *            A RFC 3339 date as string
 	 * 
-	 * @return The accordant Date object or <code>null</code> if the
-	 *         date couldn't be parsed
+	 * @return The accordant Date object or <code>null</code> if the date
+	 *         couldn't be parsed
 	 */
-	public static DateTime parseRFC3339Date(String dateStr) {
+	public static DateTime parseRFC3339Date(final String dateStr) {
 		if (!StringUtils.isEmpty(dateStr)) {
-			//if there is no time zone, we don't need to do any special parsing.
+			// if there is no time zone, we don't need to do any special
+			// parsing.
 			if (dateStr.endsWith("Z")) {
 				try {
 					return RFC3339_1.parseDateTime(dateStr);
@@ -126,16 +131,20 @@ public final class DateUtils {
 					} catch (IllegalArgumentException e2) {
 						return null;
 					}
-				}            	
+				}
 			} else if (dateStr.indexOf('-') != -1) {
-				//step one, split off the timezone. 
-				String firstpart = dateStr.substring(0, dateStr.lastIndexOf('-'));
+				// step one, split off the timezone.
+				String firstpart = dateStr.substring(0,
+						dateStr.lastIndexOf('-'));
 				String secondpart = dateStr.substring(dateStr.lastIndexOf('-'));
 
 				if (secondpart.indexOf(':') != -1) {
-					//step two, remove the colon from the timezone offset
-					secondpart = StringUtils.getString(secondpart.substring(0, secondpart.indexOf(':')), secondpart.substring(secondpart.indexOf(':') + 1));
-					String dateString = StringUtils.getString(firstpart, secondpart);
+					// step two, remove the colon from the timezone offset
+					secondpart = StringUtils.getString(
+							secondpart.substring(0, secondpart.indexOf(':')),
+							secondpart.substring(secondpart.indexOf(':') + 1));
+					String dateString = StringUtils.getString(firstpart,
+							secondpart);
 
 					try {
 						return RFC3339_3.parseDateTime(dateString);
@@ -145,7 +154,7 @@ public final class DateUtils {
 						} catch (IllegalArgumentException e2) {
 							return null;
 						}
-					}            	
+					}
 				}
 
 			}
@@ -159,12 +168,13 @@ public final class DateUtils {
 	 * @param dateString
 	 *            A RFC 822 date as string
 	 * 
-	 * @return The accordant Date object or <code>null</code> if the
-	 *         date couldn't be parsed
+	 * @return The accordant Date object or <code>null</code> if the date
+	 *         couldn't be parsed
 	 */
-	public static DateTime parseRFC822Date(String dateString) {
+	public static DateTime parseRFC822Date(final String dateString) {
 		try {
-			return DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss ZZ").withLocale(Locale.US).parseDateTime(dateString);
+			return DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss ZZ")
+					.withLocale(Locale.US).parseDateTime(dateString);
 		} catch (IllegalArgumentException e) {
 			return null;
 		}
@@ -178,8 +188,8 @@ public final class DateUtils {
 	 * 
 	 * @return the string
 	 */
-	public static String toPathString(DateTime objDate) {
-		return DateTimeFormat.shortDateTime().print(objDate).replaceAll("/", "-");
+	public static String toPathString(final DateTime objDate) {
+		return DateTimeFormat.shortDateTime().print(objDate)
+				.replaceAll("/", "-");
 	}
-
 }

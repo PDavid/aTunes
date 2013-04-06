@@ -24,7 +24,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.text.DateFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -36,15 +35,17 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IControlsBuilder;
+import net.sourceforge.atunes.model.IDateFormatter;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.TimeUtils;
+
+import org.joda.time.base.BaseDateTime;
 
 /**
  * The properties dialog for podcast feed entries.
@@ -66,11 +67,27 @@ public final class PodcastFeedEntryPropertiesDialog extends
 	private JTextArea descriptionTextArea;
 	private IPodcastFeedEntry entry;
 
-	private IStateCore stateCore;
-
 	private IUnknownObjectChecker unknownObjectChecker;
 
 	private IIconFactory rssMediumIcon;
+
+	private IDateFormatter dateFormatter;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
+	/**
+	 * @param dateFormatter
+	 */
+	public void setDateFormatter(final IDateFormatter dateFormatter) {
+		this.dateFormatter = dateFormatter;
+	}
 
 	/**
 	 * @param rssMediumIcon
@@ -104,13 +121,6 @@ public final class PodcastFeedEntryPropertiesDialog extends
 	public void setEntry(final IPodcastFeedEntry entry) {
 		this.entry = entry;
 		setTitle(getTitleText(entry));
-	}
-
-	/**
-	 * @param stateCore
-	 */
-	public void setStateCore(final IStateCore stateCore) {
-		this.stateCore = stateCore;
 	}
 
 	@Override
@@ -163,15 +173,15 @@ public final class PodcastFeedEntryPropertiesDialog extends
 		this.podcastFeedLabel = new JLabel();
 		this.downloadedLabel = new JLabel();
 		this.descriptionLabel = new JLabel();
-		JScrollPane descriptionScrollPane = iLookAndFeel.getScrollPane(null);
-		descriptionScrollPane.setMinimumSize(new Dimension(400, 100));
 		this.descriptionTextArea = getControlsBuilder().createTextArea();
 		this.descriptionTextArea.setEditable(false);
 		this.descriptionTextArea.setLineWrap(true);
 		this.descriptionTextArea.setWrapStyleWord(true);
 		this.descriptionTextArea.setOpaque(false);
 		this.descriptionTextArea.setBorder(BorderFactory.createEmptyBorder());
-		descriptionScrollPane.setViewportView(this.descriptionTextArea);
+		JScrollPane descriptionScrollPane = this.controlsBuilder
+				.getScrollPane(this.descriptionTextArea);
+		descriptionScrollPane.setMinimumSize(new Dimension(400, 100));
 
 		arrangePanel(panel, descriptionScrollPane);
 
@@ -188,7 +198,7 @@ public final class PodcastFeedEntryPropertiesDialog extends
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridheight = 3;
-		c.insets = new Insets(5, 10, 5, 10);
+		c.insets = new Insets(20, 10, 5, 10);
 		c.anchor = GridBagConstraints.NORTH;
 		c.fill = GridBagConstraints.VERTICAL;
 		panel.add(this.pictureLabel, c);
@@ -231,7 +241,9 @@ public final class PodcastFeedEntryPropertiesDialog extends
 
 		c.gridx = 1;
 		c.gridy = 8;
-		c.insets = new Insets(0, 10, 5, 10);
+		c.insets = new Insets(0, 10, 20, 10);
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
 		panel.add(descriptionScrollPane, c);
 	}
 
@@ -271,14 +283,7 @@ public final class PodcastFeedEntryPropertiesDialog extends
 					I18nUtils.getString("DURATION"), "-"));
 		}
 		if (this.entry.getDate() != null) {
-			this.dateLabel.setText(getHtmlFormatted(
-					I18nUtils.getString("DATE"), StringUtils.getString(
-							DateFormat.getDateInstance(DateFormat.LONG,
-									this.stateCore.getLocale().getLocale())
-									.format(this.entry.getDate()),
-							", ",
-							DateFormat.getTimeInstance().format(
-									this.entry.getDate()))));
+			setDate(this.entry.getDate());
 		} else {
 			this.dateLabel.setText(getHtmlFormatted(
 					I18nUtils.getString("DATE"), "-"));
@@ -301,7 +306,13 @@ public final class PodcastFeedEntryPropertiesDialog extends
 						.setCaretPosition(0);
 			}
 		});
-
 	}
 
+	/**
+	 * @param date
+	 */
+	private void setDate(final BaseDateTime date) {
+		this.dateLabel.setText(getHtmlFormatted(I18nUtils.getString("DATE"),
+				this.dateFormatter.toString(date)));
+	}
 }
