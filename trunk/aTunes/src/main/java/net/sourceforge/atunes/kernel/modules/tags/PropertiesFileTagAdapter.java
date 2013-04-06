@@ -61,37 +61,37 @@ public class PropertiesFileTagAdapter implements ITagAdapter {
 	/**
 	 * @param storeRatingInFile
 	 */
-	public void setStoreRatingInFile(boolean storeRatingInFile) {
+	public void setStoreRatingInFile(final boolean storeRatingInFile) {
 		this.storeRatingInFile = storeRatingInFile;
 	}
 
 	@Override
 	public boolean isStoreRatingInFile() {
-		return storeRatingInFile;
+		return this.storeRatingInFile;
 	}
 
 	/**
 	 * @param tagFactory
 	 */
-	public void setTagFactory(TagFactory tagFactory) {
+	public void setTagFactory(final TagFactory tagFactory) {
 		this.tagFactory = tagFactory;
 	}
 
 	/**
 	 * @param ratingsToStars
 	 */
-	public void setRatingsToStars(RatingsToStars ratingsToStars) {
+	public void setRatingsToStars(final RatingsToStars ratingsToStars) {
 		this.ratingsToStars = ratingsToStars;
 	}
 
 	@Override
-	public boolean isFormatSupported(ILocalAudioObject ao) {
+	public boolean isFormatSupported(final ILocalAudioObject ao) {
 		// All formats are supported by this adapter
 		return true;
 	}
 
 	@Override
-	public void deleteTags(ILocalAudioObject file) {
+	public void deleteTags(final ILocalAudioObject file) {
 		File propertiesFile = new File(getPropertiesFile(file));
 		boolean deleted = propertiesFile.delete();
 		if (!deleted) {
@@ -101,8 +101,8 @@ public class PropertiesFileTagAdapter implements ITagAdapter {
 	}
 
 	@Override
-	public ImageIcon getImage(ILocalAudioObject audioObject, int width,
-			int height) {
+	public ImageIcon getImage(final ILocalAudioObject audioObject,
+			final int width, final int height) {
 		String coverFileName = getFileNameForCover(audioObject);
 		ImageIcon image = null;
 		if (coverFileName != null && new File(coverFileName).exists()) {
@@ -134,49 +134,48 @@ public class PropertiesFileTagAdapter implements ITagAdapter {
 				ImageUtils.FILES_EXTENSION);
 	}
 
-	private void modifyField(ILocalAudioObject file, String field, Object value) {
+	private void modifyField(final ILocalAudioObject file, final String field,
+			final Object value) {
 		Properties properties = getProperties(file);
 		properties.put(field, value);
 		setProperties(file, properties);
 	}
 
 	@Override
-	public void modifyAlbum(ILocalAudioObject file, String album) {
+	public void modifyAlbum(final ILocalAudioObject file, final String album) {
 		modifyField(file, TagFactory.ALBUM, album);
 	}
 
 	@Override
-	public void modifyGenre(ILocalAudioObject file, String genre) {
+	public void modifyGenre(final ILocalAudioObject file, final String genre) {
 		modifyField(file, TagFactory.GENRE, genre);
 	}
 
 	@Override
-	public void modifyLyrics(ILocalAudioObject file, String lyrics) {
+	public void modifyLyrics(final ILocalAudioObject file, final String lyrics) {
 		modifyField(file, TagFactory.LYRICS, lyrics);
 	}
 
 	@Override
-	public void modifyRating(ILocalAudioObject file, String starsToRating) {
+	public void modifyRating(final ILocalAudioObject file,
+			final String starsToRating) {
 		Logger.debug("Writting ratings with PropertiesFileTagAdapter");
 		modifyField(file, TagFactory.RATING, starsToRating);
 	}
 
 	@Override
-	public void modifyTitle(ILocalAudioObject file, String newTitle) {
+	public void modifyTitle(final ILocalAudioObject file, final String newTitle) {
 		modifyField(file, TagFactory.TITLE, newTitle);
 	}
 
 	@Override
-	public void modifyTrack(ILocalAudioObject file, Integer track) {
+	public void modifyTrack(final ILocalAudioObject file, final Integer track) {
 		modifyField(file, TagFactory.TRACK, track);
 	}
 
 	@Override
-	public void readData(ILocalAudioObject ao, boolean readRating,
-			boolean readAudioProperties) {
-		if (readRating) {
-			Logger.debug("Reading rating with PropertiesFileTagAdapter");
-		}
+	public void readData(final ILocalAudioObject ao, final boolean readRating,
+			final boolean readAudioProperties) {
 		Map<String, Object> values = new HashMap<String, Object>();
 		for (Entry<Object, Object> entry : getProperties(ao).entrySet()) {
 			String key = (String) entry.getKey();
@@ -185,13 +184,12 @@ public class PropertiesFileTagAdapter implements ITagAdapter {
 				values.put(key, entry.getValue());
 			}
 		}
-		ao.setTag(tagFactory.getNewTag(values));
+		ao.setTag(this.tagFactory.getNewTag(values));
 	}
 
 	@Override
-	public void readRating(ILocalAudioObject ao) {
+	public void readRating(final ILocalAudioObject ao) {
 		if (ao != null && ao.getTag() != null) {
-			Logger.debug("Reading rating with PropertiesFileTagAdapter");
 			Map<String, Object> values = new HashMap<String, Object>();
 			for (Entry<Object, Object> entry : getProperties(ao).entrySet()) {
 				String key = (String) entry.getKey();
@@ -199,12 +197,12 @@ public class PropertiesFileTagAdapter implements ITagAdapter {
 					values.put(key, entry.getValue());
 				}
 			}
-			ao.getTag().setStars(tagFactory.getNewTag(values).getStars());
+			ao.getTag().setStars(this.tagFactory.getNewTag(values).getStars());
 		}
 
 	}
 
-	private Properties getProperties(ILocalAudioObject ao) {
+	private Properties getProperties(final ILocalAudioObject ao) {
 		Properties properties = new Properties();
 		try {
 			properties.load(new FileInputStream(getPropertiesFile(ao)));
@@ -217,10 +215,12 @@ public class PropertiesFileTagAdapter implements ITagAdapter {
 	}
 
 	@Override
-	public void writeTag(ILocalAudioObject file, boolean shouldEditCover,
-			byte[] cover, String title, String album, String artist, int year,
-			String comment, String genre, String lyrics, String composer,
-			int track, int discNumber, String albumArtist) {
+	public void writeTag(final ILocalAudioObject file,
+			final boolean shouldEditCover, final byte[] cover,
+			final String title, final String album, final String artist,
+			final int year, final String comment, final String genre,
+			final String lyrics, final String composer, final int track,
+			final int discNumber, final String albumArtist) {
 		Properties properties = new Properties();
 		properties.put(TagFactory.TITLE, title);
 		properties.put(TagFactory.ALBUM, album);
@@ -251,7 +251,8 @@ public class PropertiesFileTagAdapter implements ITagAdapter {
 		}
 	}
 
-	private void setProperties(ILocalAudioObject file, Properties properties) {
+	private void setProperties(final ILocalAudioObject file,
+			final Properties properties) {
 		try {
 			properties.store(new FileOutputStream(getPropertiesFile(file)),
 					"Metadata generated with aTunes");
@@ -262,7 +263,7 @@ public class PropertiesFileTagAdapter implements ITagAdapter {
 		}
 	}
 
-	private String getPropertiesFile(ILocalAudioObject file) {
+	private String getPropertiesFile(final ILocalAudioObject file) {
 		return StringUtils.getString(
 				FilenameUtils.removeExtension(file.getUrl()), ".properties");
 	}

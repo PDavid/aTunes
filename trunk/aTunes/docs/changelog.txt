@@ -5,6 +5,7 @@ aTunes 3.1.0
 - Added option to hide navigation tree and use only table
 - Memory optimization when reading play lists
 - Option to store ratings in tags (by default will use custom metadata store)
+- Save podcast information immediately after add/remove/update podcasts
 
 aTunes 3.0.7
 ------------

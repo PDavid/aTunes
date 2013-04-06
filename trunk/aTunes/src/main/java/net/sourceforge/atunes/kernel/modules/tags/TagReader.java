@@ -26,7 +26,6 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectReader;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ITagAdapter;
-import net.sourceforge.atunes.utils.Logger;
 
 import org.joda.time.base.BaseDateTime;
 
@@ -88,8 +87,6 @@ public final class TagReader implements ILocalAudioObjectReader {
 				valid = false;
 			}
 			if (!valid) {
-				Logger.error("Detected invalid date: ", date.toString(),
-						" will be ignored");
 				tag.setDate(null);
 			}
 		}
