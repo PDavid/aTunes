@@ -128,4 +128,6 @@
 			</list>
 		</constructor-arg>
 	</bean>
+	
+	<bean id="podcastFeedEntryRetriever" class="net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntryRetriever" scope="prototype"/>
 </beans>

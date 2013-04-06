@@ -48,7 +48,6 @@ import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IStatePodcast;
 import net.sourceforge.atunes.model.IStateService;
-import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.CollectionUtils;
@@ -69,11 +68,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180;
 
 	private List<IPodcastFeed> podcastFeeds = new ArrayList<IPodcastFeed>();
-
-	/**
-	 * Flag indicating if podcast list needs to be written to disk
-	 */
-	private boolean podcastFeedsDirty;
 
 	/**
 	 * Podcast Feed Entry downloading
@@ -102,8 +96,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	private INavigationView podcastNavigationView;
 
-	private IStateUI stateUI;
-
 	private IStatePodcast statePodcast;
 
 	private IDialogFactory dialogFactory;
@@ -120,13 +112,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	 */
 	public void setStatePodcast(final IStatePodcast statePodcast) {
 		this.statePodcast = statePodcast;
-	}
-
-	/**
-	 * @param stateUI
-	 */
-	public void setStateUI(final IStateUI stateUI) {
-		this.stateUI = stateUI;
 	}
 
 	/**
@@ -222,7 +207,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 		if (!added) {
 			getPodcastFeeds().add(podcastFeed);
 		}
-		this.podcastFeedsDirty = true;
+		this.stateService.persistPodcastFeedCache(getPodcastFeeds());
 	}
 
 	/**
@@ -240,12 +225,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 								.getPodcastFeedEntry())).deleteOnExit();
 			}
 		}
-		if (this.podcastFeedsDirty) {
-			this.stateService.persistPodcastFeedCache(getPodcastFeeds());
-		} else {
-			Logger.info("Podcast list is clean");
-		}
-
 	}
 
 	@Override
@@ -266,12 +245,12 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	public void removePodcastFeed(final IPodcastFeed podcastFeed) {
 		Logger.info("Removing podcast feed");
 		getPodcastFeeds().remove(podcastFeed);
-		this.podcastFeedsDirty = true;
 		this.navigationHandler.refreshView(this.podcastNavigationView);
 		if (CollectionUtils.isEmpty(getPodcastFeeds())) {
 			stopPodcastFeedEntryDownloadChecker();
 			stopPodcastFeedEntryRetriever();
 		}
+		this.stateService.persistPodcastFeedCache(getPodcastFeeds());
 	}
 
 	private void startPodcastFeedEntryRetriever() {
@@ -340,16 +319,13 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 		// Start only if podcast feeds created
 		if (!CollectionUtils.isEmpty(getPodcastFeeds())) {
+			PodcastFeedEntryRetriever retriever = getBean(PodcastFeedEntryRetriever.class);
+			retriever.setPodcastFeeds(getPodcastFeeds());
 			this.scheduledPodcastFeedEntryRetrieverFuture = this.taskService
 					.submitPeriodically(
 							"Periodically Retrieve Podcast Feed Entries",
 							newRetrievalInterval, newRetrievalInterval,
-							new PodcastFeedEntryRetriever(getPodcastFeeds(),
-									this.statePodcast, this.stateUI,
-									getFrame(), this.navigationHandler,
-									this.networkHandler,
-									this.podcastNavigationView,
-									this.dialogFactory));
+							retriever);
 		} else {
 			Logger.debug("Not scheduling PodcastFeedEntryRetriever");
 		}
@@ -357,11 +333,9 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	@Override
 	public void retrievePodcastFeedEntries() {
-		this.taskService.submitNow("Retrieve Podcast Feed Entries",
-				new PodcastFeedEntryRetriever(getPodcastFeeds(),
-						this.statePodcast, this.stateUI, getFrame(),
-						this.navigationHandler, this.networkHandler,
-						this.podcastNavigationView, this.dialogFactory));
+		PodcastFeedEntryRetriever retriever = getBean(PodcastFeedEntryRetriever.class);
+		retriever.setPodcastFeeds(getPodcastFeeds());
+		this.taskService.submitNow("Retrieve Podcast Feed Entries", retriever);
 	}
 
 	@Override

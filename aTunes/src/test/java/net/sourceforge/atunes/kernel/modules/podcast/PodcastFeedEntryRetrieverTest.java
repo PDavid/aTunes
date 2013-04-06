@@ -35,29 +35,31 @@ import org.junit.Test;
 
 public class PodcastFeedEntryRetrieverTest {
 
-    private IPodcastFeed testedObject;
+	private IPodcastFeed testedObject;
 
-    @Before
-    public void init() {
-	testedObject = new PodcastFeed("", PodcastFeedEntryRetrieverTest.class
-		.getResource("/podcast/feed.rss").toString());
-	testedObject.setRetrieveNameFromFeed(true);
-    }
+	@Before
+	public void init() {
+		this.testedObject = new PodcastFeed("",
+				PodcastFeedEntryRetrieverTest.class.getResource(
+						"/podcast/feed.rss").toString());
+		this.testedObject.setRetrieveNameFromFeed(true);
+	}
 
-    @Test
-    public void testRetrievePodcastFeedEntries() {
-	NetworkHandler networkHandler = new NetworkHandler();
-	networkHandler.setStateCore(mock(IStateCore.class));
+	@Test
+	public void testRetrievePodcastFeedEntries() {
+		NetworkHandler networkHandler = new NetworkHandler();
+		networkHandler.setStateCore(mock(IStateCore.class));
 
-	PodcastFeedEntryRetriever podcastFeedEntryRetriever = new PodcastFeedEntryRetriever(
-		Arrays.asList(testedObject), null, null, null, null,
-		networkHandler, null, null);
-	List<IPodcastFeed> podcastFeedsWithNewEntries = podcastFeedEntryRetriever
-		.retrievePodcastFeedEntries(true);
+		PodcastFeedEntryRetriever podcastFeedEntryRetriever = new PodcastFeedEntryRetriever();
+		podcastFeedEntryRetriever.setNetworkHandler(networkHandler);
+		podcastFeedEntryRetriever.setPodcastFeeds(Arrays
+				.asList(this.testedObject));
+		List<IPodcastFeed> podcastFeedsWithNewEntries = podcastFeedEntryRetriever
+				.retrievePodcastFeedEntries(true);
 
-	Assert.assertEquals("RadioTux GNU/Linux", testedObject.getName());
-	Assert.assertEquals(1, podcastFeedsWithNewEntries.size());
-	// TODO more checks
-    }
+		Assert.assertEquals("RadioTux GNU/Linux", this.testedObject.getName());
+		Assert.assertEquals(1, podcastFeedsWithNewEntries.size());
+		// TODO more checks
+	}
 
 }

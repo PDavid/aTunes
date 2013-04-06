@@ -76,13 +76,13 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 	/**
 	 * @param storeRatingInFile
 	 */
-	public void setStoreRatingInFile(boolean storeRatingInFile) {
+	public void setStoreRatingInFile(final boolean storeRatingInFile) {
 		this.storeRatingInFile = storeRatingInFile;
 	}
 
 	@Override
 	public boolean isStoreRatingInFile() {
-		return storeRatingInFile;
+		return this.storeRatingInFile;
 	}
 
 	/**
@@ -445,19 +445,15 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 	}
 
 	@Override
-	public void readData(final ILocalAudioObject ao, boolean readRating,
+	public void readData(final ILocalAudioObject ao, final boolean readRating,
 			final boolean readAudioProperties) {
 		AudioFile file = readFile(ao);
-		if (readRating) {
-			Logger.debug("Reading rating with JAudiotaggerTagAdapter");
-		}
 		ao.setTag(this.jAudiotaggerTagCreator.createTag(ao, file, readRating));
 		this.jAudiotaggerAudioPropertiesReader.readAudioProperties(ao, file);
 	}
 
 	@Override
-	public void readRating(ILocalAudioObject ao) {
-		Logger.debug("Reading rating with JAudiotaggerTagAdapter");
+	public void readRating(final ILocalAudioObject ao) {
 		this.jAudiotaggerTagCreator.setRatingInTag(ao, readFile(ao));
 	}
 
@@ -521,8 +517,8 @@ public class JAudiotaggerTagAdapter implements ITagAdapter {
 	}
 
 	@Override
-	public boolean isFormatSupported(ILocalAudioObject ao) {
-		return localAudioObjectValidator.isOneOfTheseFormats(ao,
+	public boolean isFormatSupported(final ILocalAudioObject ao) {
+		return this.localAudioObjectValidator.isOneOfTheseFormats(ao,
 				LocalAudioObjectFormat.MP3, LocalAudioObjectFormat.MP4_1,
 				LocalAudioObjectFormat.MP4_2, LocalAudioObjectFormat.OGG,
 				LocalAudioObjectFormat.FLAC, LocalAudioObjectFormat.WMA);
