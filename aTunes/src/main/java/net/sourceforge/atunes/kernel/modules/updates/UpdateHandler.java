@@ -87,7 +87,7 @@ public final class UpdateHandler extends AbstractHandler implements
 			this.taskService.submitNow("Check updates", new Runnable() {
 				@Override
 				public void run() {
-					checkUpdates(false, false);
+					checkUpdates(true, false);
 				}
 			});
 		}
