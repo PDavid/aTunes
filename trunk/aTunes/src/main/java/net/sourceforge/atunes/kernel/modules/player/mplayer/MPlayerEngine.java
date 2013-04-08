@@ -162,7 +162,8 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 								this.contextHandler);
 				this.mPlayerErrorReader = new MPlayerErrorReader(this,
 						this.process, this.mPlayerOutputReader,
-						audioObjectToPlay, getFileManager(), getOsManager());
+						audioObjectToPlay, getFileManager(), getOsManager(),
+						getStatePlayer().isCacheFilesBeforePlaying());
 				this.mPlayerOutputReader.start();
 				this.mPlayerErrorReader.start();
 				this.mPlayerPositionThread = new MPlayerPositionThread(this);
@@ -361,5 +362,19 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
 	@Override
 	public void initializePlayerEngine() {
+	}
+
+	/**
+	 * MPlayer has problems with filenames too long and filenames with
+	 * non-english chars. To avoid both problems when this problem is detected a
+	 * workaround is applied to activate cache of files and restart playback
+	 */
+	void applyMPlayerFilenamesWorkaround(IAudioObject audioObject) {
+		Logger.info("Applying mplayer workaround for filenames");
+		// Force a stop to finish all player engine processes
+		stopCurrentAudioObject(false);
+		getStatePlayer().setCacheFilesBeforePlaying(true);
+		// Play again
+		playAudioObject(audioObject);
 	}
 }
