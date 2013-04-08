@@ -25,8 +25,9 @@ import java.io.File;
 
 /**
  * A temporal storage of files
+ * 
  * @author alex
- *
+ * 
  */
 public interface ITemporalDiskStorage {
 
@@ -36,26 +37,37 @@ public interface ITemporalDiskStorage {
 	 * @param srcFile
 	 * @return File object to copied file in temporal folder
 	 */
-	public File addFile(File srcFile);
+	File addFile(File srcFile);
+
+	/**
+	 * Copies a file to temporal folder with given name
+	 * 
+	 * @param srcFile
+	 * @param name
+	 * @return File object to copied file in temporal folder
+	 */
+	File addFile(File srcFile, String name);
 
 	/**
 	 * Writes an image to a file in temporal folder
+	 * 
 	 * @param image
 	 * @param fileName
 	 * @return
 	 */
-	public File addImage(RenderedImage image, String fileName);
+	File addImage(RenderedImage image, String fileName);
 
 	/**
 	 * Removes a file from temporal folder.
+	 * 
 	 * @param tempFile
 	 * @return true, if removes the file
 	 */
-	public boolean removeFile(File tempFile);
+	boolean removeFile(File tempFile);
 
 	/**
 	 * Removes all files from temporal folder.
 	 */
-	public void removeAll();
+	void removeAll();
 
 }

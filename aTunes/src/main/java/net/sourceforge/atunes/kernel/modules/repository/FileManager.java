@@ -228,12 +228,14 @@ public class FileManager implements IFileManager {
 	@Override
 	public ILocalAudioObject cacheAudioObject(
 			final ILocalAudioObject audioObject) {
-		File tempFile = this.temporalDiskStorage
-				.addFile(getAudioObjectFile(audioObject));
+		String name = Integer.toString(getAudioObjectFile(audioObject)
+				.getAbsolutePath().hashCode());
+		File tempFile = this.temporalDiskStorage.addFile(
+				getAudioObjectFile(audioObject), name);
 		if (tempFile != null) {
 			// Cache associated files
 			for (File associatedFile : getAssociatedFiles(audioObject)) {
-				this.temporalDiskStorage.addFile(associatedFile);
+				this.temporalDiskStorage.addFile(associatedFile, name);
 			}
 			return this.localAudioObjectFactory.getLocalAudioObject(tempFile);
 		}
