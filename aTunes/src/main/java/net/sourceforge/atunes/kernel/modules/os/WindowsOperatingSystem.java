@@ -30,9 +30,9 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.tray.CommonPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
-import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -101,7 +101,8 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 	@Override
 	public void setFullScreen(final Window window, final boolean fullscreen,
 			final IFrame frame) {
-		if (OperatingSystem.WINDOWS.isOldWindows() && fullscreen) {
+		if (getBeanFactory().getBean(IOSManager.class).isOldWindows()
+				&& fullscreen) {
 			window.setSize(this.screenSize.width, this.screenSize.height);
 		}
 	}
