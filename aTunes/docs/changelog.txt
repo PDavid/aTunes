@@ -10,6 +10,7 @@ aTunes 3.1.0
 aTunes 3.0.8
 ------------
 - FIX: Control visible context panels
+- FIX: Improvements in process to delete files
 
 aTunes 3.0.7
 ------------

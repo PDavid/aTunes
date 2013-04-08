@@ -29,6 +29,7 @@
 	<bean id="repositoryRemover" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryRemover"/>
 
 	<bean id="addFilesTask" class="net.sourceforge.atunes.kernel.modules.repository.AddFilesToRepositoryTask" scope="prototype"/>
+	<bean id="deleteFilesTask" class="net.sourceforge.atunes.kernel.modules.repository.DeleteFilesTask" scope="prototype"/>
 	<bean id="refreshFoldersTask" class="net.sourceforge.atunes.kernel.modules.repository.RefreshFoldersTask" scope="prototype"/>	
 	
 	<bean id="abstractRepositoryLoader" class="net.sourceforge.atunes.kernel.modules.repository.AbstractRepositoryLoader" abstract="true"/>
