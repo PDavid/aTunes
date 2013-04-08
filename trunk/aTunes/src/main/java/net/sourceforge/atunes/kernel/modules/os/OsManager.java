@@ -295,46 +295,58 @@ public class OsManager implements IOSManager {
 		return this.adapter.isRipSupported();
 	}
 
-	@Override
-	public boolean isWindowsVista() {
+	/**
+	 * @param os
+	 * @param name
+	 * @return if OS and name (optional) match
+	 */
+	private boolean checkOS(OperatingSystem os, String name) {
 		return this.beanFactory.getBean("osType", OperatingSystem.class)
-				.isWindowsVista();
+				.equals(os)
+				&& (name == null || System.getProperty("os.name").toLowerCase()
+						.contains(name.toLowerCase()));
 	}
 
-	@Override
-	public boolean isWindows7() {
-		return this.beanFactory.getBean("osType", OperatingSystem.class)
-				.isWindows7();
+	private boolean isWindowsVista() {
+		return checkOS(OperatingSystem.WINDOWS, "Vista");
+	}
+
+	private boolean isWindows7() {
+		return checkOS(OperatingSystem.WINDOWS, "Windows 7");
+	}
+
+	private boolean isWindows8() {
+		return checkOS(OperatingSystem.WINDOWS, "Windows 8");
 	}
 
 	@Override
 	public boolean isOldWindows() {
-		return this.beanFactory.getBean("osType", OperatingSystem.class)
-				.isOldWindows();
+		return !isNewWindows();
+	}
+
+	@Override
+	public boolean isNewWindows() {
+		return isWindowsVista() || isWindows7() || !isWindows8();
 	}
 
 	@Override
 	public boolean isLinux() {
-		return this.beanFactory.getBean("osType", OperatingSystem.class)
-				.isLinux();
+		return checkOS(OperatingSystem.LINUX, null);
 	}
 
 	@Override
 	public boolean isMacOsX() {
-		return this.beanFactory.getBean("osType", OperatingSystem.class)
-				.isMacOsX();
+		return checkOS(OperatingSystem.MACOSX, null);
 	}
 
 	@Override
 	public boolean isSolaris() {
-		return this.beanFactory.getBean("osType", OperatingSystem.class)
-				.isSolaris();
+		return checkOS(OperatingSystem.SOLARIS, null);
 	}
 
 	@Override
 	public boolean isWindows() {
-		return this.beanFactory.getBean("osType", OperatingSystem.class)
-				.isWindows();
+		return checkOS(OperatingSystem.WINDOWS, null);
 	}
 
 	@Override
