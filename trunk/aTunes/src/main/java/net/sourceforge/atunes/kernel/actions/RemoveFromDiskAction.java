@@ -27,11 +27,11 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.kernel.modules.repository.DeleteFilesWorker;
+import net.sourceforge.atunes.kernel.modules.repository.DeleteFilesTask;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
@@ -83,13 +83,13 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 
 	private ILocalAudioObjectFilter localAudioObjectFilter;
 
-	private IFileManager fileManager;
+	private IBeanFactory beanFactory;
 
 	/**
-	 * @param fileManager
+	 * @param beanFactory
 	 */
-	public void setFileManager(IFileManager fileManager) {
-		this.fileManager = fileManager;
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -166,11 +166,9 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 	}
 
 	private void fromOtherViews(final IRepositoryHandler repositoryHandler) {
-		final List<IAudioObject> files = navigationHandler
-				.getFilesSelectedInNavigator();
-		new DeleteFilesWorker(dialogFactory, repositoryHandler,
-				localAudioObjectFilter.getLocalAudioObjects(files), fileManager)
-				.execute();
+		beanFactory.getBean(DeleteFilesTask.class).execute(
+				localAudioObjectFilter.getLocalAudioObjects(navigationHandler
+						.getFilesSelectedInNavigator()));
 	}
 
 	private void fromRepositoryOrDeviceView(
