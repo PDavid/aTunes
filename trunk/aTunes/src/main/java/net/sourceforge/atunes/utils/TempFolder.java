@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  * A temporal folder where store files removed when application finishes
@@ -39,54 +40,67 @@ import org.apache.commons.io.FileUtils;
  */
 public class TempFolder implements ITemporalDiskStorage {
 
-    private IOSManager osManager;
+	private IOSManager osManager;
 
-    @Override
-    public File addFile(final File srcFile) {
-	File destFile = new File(StringUtils.getString(
-		osManager.getTempFolder(), osManager.getFileSeparator(),
-		srcFile.getName()));
-	try {
-	    FileUtils.copyFile(srcFile, destFile);
-	} catch (IOException e) {
-	    return null;
+	@Override
+	public File addFile(final File srcFile) {
+		File destFile = new File(StringUtils.getString(
+				osManager.getTempFolder(), osManager.getFileSeparator(),
+				srcFile.getAbsolutePath().hashCode()));
+		try {
+			FileUtils.copyFile(srcFile, destFile);
+		} catch (IOException e) {
+			return null;
+		}
+		return destFile;
 	}
-	return destFile;
-    }
 
-    @Override
-    public File addImage(final RenderedImage image, final String fileName) {
-	try {
-	    File file = new File(osManager.getTempFolder(), fileName);
-	    ImageIO.write(image, "png", file);
-	    return file;
-	} catch (IOException e) {
-	    return null;
+	@Override
+	public File addFile(final File srcFile, String name) {
+		File destFile = new File(StringUtils.getString(
+				osManager.getTempFolder(), osManager.getFileSeparator(), name,
+				".", FilenameUtils.getExtension(srcFile.getName())));
+		try {
+			FileUtils.copyFile(srcFile, destFile);
+		} catch (IOException e) {
+			return null;
+		}
+		return destFile;
 	}
-    }
 
-    @Override
-    public boolean removeFile(final File tempFile) {
-	return tempFile.delete();
-    }
-
-    @Override
-    public void removeAll() {
-	File tempFolder = new File(osManager.getTempFolder());
-	File[] files = tempFolder.listFiles();
-	for (File f : files) {
-	    if (f.delete()) {
-		Logger.info(f, " deleted");
-	    } else {
-		Logger.error(StringUtils.getString(f, " not deleted"));
-	    }
+	@Override
+	public File addImage(final RenderedImage image, final String fileName) {
+		try {
+			File file = new File(osManager.getTempFolder(), fileName);
+			ImageIO.write(image, "png", file);
+			return file;
+		} catch (IOException e) {
+			return null;
+		}
 	}
-    }
 
-    /**
-     * @param osManager
-     */
-    public void setOsManager(final IOSManager osManager) {
-	this.osManager = osManager;
-    }
+	@Override
+	public boolean removeFile(final File tempFile) {
+		return tempFile.delete();
+	}
+
+	@Override
+	public void removeAll() {
+		File tempFolder = new File(osManager.getTempFolder());
+		File[] files = tempFolder.listFiles();
+		for (File f : files) {
+			if (f.delete()) {
+				Logger.info(f, " deleted");
+			} else {
+				Logger.error(StringUtils.getString(f, " not deleted"));
+			}
+		}
+	}
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 }
