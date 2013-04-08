@@ -158,6 +158,9 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 		this.statePlayer = statePlayer;
 	}
 
+	/**
+	 * @return statePlayer
+	 */
 	protected IStatePlayer getStatePlayer() {
 		return this.statePlayer;
 	}
@@ -511,7 +514,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	 * 
 	 * @param audioObject
 	 */
-	private void playAudioObject(final IAudioObject audioObject) {
+	protected void playAudioObject(final IAudioObject audioObject) {
 		// First check audio object exists to avoid playing a non-existing file
 		if (exists(audioObject)) {
 			Logger.info(StringUtils.getString("Started play of file ",

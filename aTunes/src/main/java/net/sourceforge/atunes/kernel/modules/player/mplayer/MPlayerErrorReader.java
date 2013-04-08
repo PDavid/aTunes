@@ -45,20 +45,22 @@ class MPlayerErrorReader extends Thread {
 	private final IFileManager fileManager;
 	private final IOSManager osManager;
 	private MPlayerProcess process;
+	private final boolean workaroundApplied;
 
 	/**
-	 * Instantiates a new m player error reader.
+	 * Instantiates a new mplayer error reader.
 	 * 
 	 * @param engine
 	 * @param process
 	 * @param audioObject
 	 * @param fileManager
+	 * @param workaroundApplied
 	 */
 	MPlayerErrorReader(final MPlayerEngine engine,
 			final MPlayerProcess process,
 			final AbstractMPlayerOutputReader outputReader,
 			final IAudioObject audioObject, IFileManager fileManager,
-			IOSManager osManager) {
+			IOSManager osManager, boolean workaroundApplied) {
 		this.engine = engine;
 		this.process = process;
 		this.in = new BufferedReader(new InputStreamReader(
@@ -67,20 +69,26 @@ class MPlayerErrorReader extends Thread {
 		this.outputReader = outputReader;
 		this.fileManager = fileManager;
 		this.osManager = osManager;
+		this.workaroundApplied = workaroundApplied;
 	}
 
 	@Override
 	public void run() {
 		String line = null;
+		boolean applyWorkaround = false;
 		try {
 			line = in.readLine();
-			while (line != null && !isInterrupted()) {
+			while (!applyWorkaround && line != null && !isInterrupted()) {
 				this.process.saveErrorLine(line);
 				if (line.startsWith("File not found")) {
 					// Stop output reader
 					outputReader.stopRead();
-					// Playback finished with error
-					engine.currentAudioObjectFinishedWithError(generateError());
+					if (!workaroundApplied) {
+						applyWorkaround = true;
+						continue;
+					} else {
+						engine.currentAudioObjectFinishedWithError(generateError());
+					}
 				}
 				line = in.readLine();
 			}
@@ -89,6 +97,9 @@ class MPlayerErrorReader extends Thread {
 			engine.handlePlayerEngineError(e);
 		} finally {
 			ClosingUtils.close(in);
+		}
+		if (applyWorkaround) {
+			engine.applyMPlayerFilenamesWorkaround(audioObject);
 		}
 	}
 
