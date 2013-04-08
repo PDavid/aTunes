@@ -39,61 +39,68 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class AudioObjectContextPanel extends AbstractContextPanel {
 
-    private static final long serialVersionUID = -7910261492394049289L;
+	private static final long serialVersionUID = -7910261492394049289L;
 
-    private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
-    
-    private IIconFactory audioFileSmallIcon;
-    
-    /**
-     * @param audioFileSmallIcon
-     */
-    public void setAudioFileSmallIcon(IIconFactory audioFileSmallIcon) {
+	private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
+
+	private IIconFactory audioFileSmallIcon;
+
+	/**
+	 * @param audioFileSmallIcon
+	 */
+	public void setAudioFileSmallIcon(IIconFactory audioFileSmallIcon) {
 		this.audioFileSmallIcon = audioFileSmallIcon;
 	}
-    
-    /**
-     * @param audioObjectGenericImageFactory
-     */
-    public void setAudioObjectGenericImageFactory(IAudioObjectGenericImageFactory audioObjectGenericImageFactory) {
+
+	/**
+	 * @param audioObjectGenericImageFactory
+	 */
+	public void setAudioObjectGenericImageFactory(
+			IAudioObjectGenericImageFactory audioObjectGenericImageFactory) {
 		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
 	}
-    
-    @Override
-    public IColorMutableImageIcon getContextPanelIcon(final IAudioObject audioObject) {
-        if (audioObject != null) {
-            return audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.SMALL);
-        } else {
-        	return audioFileSmallIcon.getColorMutableIcon();
-        }
-    }
 
-    @Override
-    public String getContextPanelName() {
-        return "AUDIOOBJECT";
-    }
+	@Override
+	public IColorMutableImageIcon getContextPanelIcon(
+			final IAudioObject audioObject) {
+		if (audioObject != null) {
+			return audioObjectGenericImageFactory.getGenericImage(audioObject,
+					GenericImageSize.SMALL);
+		} else {
+			return audioFileSmallIcon.getColorMutableIcon();
+		}
+	}
 
-    @Override
-    public String getContextPanelTitle(IAudioObject audioObject) {
-        if (audioObject instanceof ILocalAudioObject || (audioObject instanceof IRadio && ((IRadio) audioObject).isSongInfoAvailable())) {
-            return I18nUtils.getString("SONG");
-        } else if (audioObject instanceof IRadio) {
-            return I18nUtils.getString("RADIO");
-        } else if (audioObject instanceof IPodcastFeedEntry) {
-            return I18nUtils.getString("PODCAST_FEED");
-        }
+	@Override
+	public String getContextPanelName() {
+		return "AUDIOOBJECT";
+	}
 
-        return I18nUtils.getString("SONG");
-    }
+	@Override
+	public String getContextPanelTitle(IAudioObject audioObject) {
+		if (audioObject instanceof ILocalAudioObject
+				|| (audioObject instanceof IRadio && ((IRadio) audioObject)
+						.isSongInfoAvailable())) {
+			return I18nUtils.getString("SONG");
+		} else if (audioObject instanceof IRadio) {
+			return I18nUtils.getString("RADIO");
+		} else if (audioObject instanceof IPodcastFeedEntry) {
+			return I18nUtils.getString("PODCAST_FEED");
+		}
 
-    @Override
-    public boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
-        return audioObject != null;
-    }
-    
-    @Override
-    public boolean panelNeedsToBeUpdated(IAudioObject previousAudioObject, IAudioObject newAudioObject) {
-    	return true;
-    }
+		return I18nUtils.getString("SONG");
+	}
+
+	@Override
+	public boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
+		// This panel must be always visible
+		return true;
+	}
+
+	@Override
+	public boolean panelNeedsToBeUpdated(IAudioObject previousAudioObject,
+			IAudioObject newAudioObject) {
+		return true;
+	}
 
 }

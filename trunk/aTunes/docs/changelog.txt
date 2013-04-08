@@ -7,6 +7,10 @@ aTunes 3.1.0
 - Option to store ratings in tags (by default will use custom metadata store)
 - Save podcast information immediately after add/remove/update podcasts
 
+aTunes 3.0.8
+------------
+- FIX: Control visible context panels
+
 aTunes 3.0.7
 ------------
 - Reduce memory consumption by interning strings read using Kryo

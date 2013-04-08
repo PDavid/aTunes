@@ -39,6 +39,7 @@ import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -161,18 +162,21 @@ public final class ContextPanelContainer extends JPanel implements
 						panel);
 			}
 		}
-		IContextPanel newSelectedPanel = selectedPanel != null
-				&& selectedPanel.isVisible() ? selectedPanel
-				: this.visiblePanels.get(0);
-		Logger.debug("Selected context panel: ",
-				newSelectedPanel.getContextPanelName());
-		this.contextSelector.setSelectedButton(newSelectedPanel
-				.getContextPanelName());
-		((CardLayout) this.container.getLayout()).show(this.container,
-				newSelectedPanel.getContextPanelName());
-		if (selectedPanel != null && !newSelectedPanel.equals(selectedPanel)) {
-			this.contextHandler.setContextTab(newSelectedPanel
+		if (!CollectionUtils.isEmpty(visiblePanels)) {
+			IContextPanel newSelectedPanel = selectedPanel != null
+					&& selectedPanel.isVisible() ? selectedPanel
+					: this.visiblePanels.get(0);
+			Logger.debug("Selected context panel: ",
+					newSelectedPanel.getContextPanelName());
+			this.contextSelector.setSelectedButton(newSelectedPanel
 					.getContextPanelName());
+			((CardLayout) this.container.getLayout()).show(this.container,
+					newSelectedPanel.getContextPanelName());
+			if (selectedPanel != null
+					&& !newSelectedPanel.equals(selectedPanel)) {
+				this.contextHandler.setContextTab(newSelectedPanel
+						.getContextPanelName());
+			}
 		}
 		this.invalidate();
 		this.revalidate();
