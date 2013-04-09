@@ -8,6 +8,7 @@ aTunes 3.1.0
 - Save podcast information immediately after add/remove/update podcasts
 - Ask before removing objects from play list when not exist
 - Option to ignore when repository does not exist
+- Added preference to disable Last.fm cache
 
 aTunes 3.0.8
 ------------
