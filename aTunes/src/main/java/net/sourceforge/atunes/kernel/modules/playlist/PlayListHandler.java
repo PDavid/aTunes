@@ -784,14 +784,11 @@ public final class PlayListHandler extends AbstractHandler implements
 	 */
 	@Override
 	public void checkPlayListsItems() {
-		List<ILocalAudioObject> audioObjectsNotFound = getBean(
+		final List<ILocalAudioObject> audioObjectsNotFound = getBean(
 				PlayListsChecker.class).checkPlayLists();
 		Logger.info(audioObjectsNotFound.size(),
 				" audio objects of play lists not found");
 		if (!audioObjectsNotFound.isEmpty()) {
-			getBean(PlayListRemover.class).removeAudioFiles(
-					audioObjectsNotFound);
-			this.playListController.refreshPlayList();
 			final List<String> items = new ArrayList<String>();
 			for (ILocalAudioObject ao : audioObjectsNotFound) {
 				items.add(ao.getUrl());
@@ -799,12 +796,17 @@ public final class PlayListHandler extends AbstractHandler implements
 			GuiUtils.callInEventDispatchThread(new Runnable() {
 				@Override
 				public void run() {
-					PlayListHandler.this.dialogFactory
+					if (PlayListHandler.this.dialogFactory
 							.newDialog(IListMessageDialog.class)
-							.showMessage(
+							.showMessageConfirmation(
 									I18nUtils
-											.getString("ITEMS_REMOVED_AUTOMATICALLY_FROM_PLAYLIST"),
-									items);
+											.getString("ITEMS_FROM_PLAYLIST_CAN_BE_REMOVED"),
+									items)) {
+						getBean(PlayListRemover.class).removeAudioFiles(
+								audioObjectsNotFound);
+						PlayListHandler.this.playListController
+								.refreshPlayList();
+					}
 				}
 			});
 		}

@@ -104,6 +104,8 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 
 	private IBeanFactory beanFactory;
 
+	private String userResponse;
+
 	/**
 	 * @param beanFactory
 	 */
@@ -228,20 +230,12 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 * @param askUser
 	 */
 	private void applyRepository() {
-		IRepository rep = this.repositoryRetrievedFromCache;
+		final IRepository rep = this.repositoryRetrievedFromCache;
 		// Try to read repository cache. If fails or not exists, should be
 		// selected again
 		if (rep != null) {
 			if (!rep.exists()) {
-				askUserForRepository(rep);
-				if (!rep.exists() && !addFolderToRepository()) {
-					// select "old" repository if repository was not found and
-					// no new repository was selected
-					this.repository = rep;
-				} else if (rep.exists()) {
-					// repository exists
-					applyExistingRepository(rep);
-				}
+				askUser(rep);
 			} else {
 				// repository exists
 				applyExistingRepository(rep);
@@ -249,40 +243,52 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 		}
 	}
 
+	private void askUser(final IRepository rep) {
+		do {
+			GuiUtils.callInEventDispatchThreadAndWait(new Runnable() {
+				@Override
+				public void run() {
+					userResponse = showDialog(rep);
+				}
+			});
+			if (userResponse != null
+					&& userResponse.equals(I18nUtils.getString("EXIT"))) {
+				RepositoryReader.this.beanFactory.getBean(IKernel.class)
+						.finish();
+			} else if (userResponse == null
+					|| userResponse.equals(I18nUtils.getString("IGNORE"))) {
+				applyExistingRepository(rep);
+			} else if (userResponse != null
+					&& userResponse.equals(I18nUtils
+							.getString("SELECT_REPOSITORY"))) {
+				if (!addFolderToRepository()) {
+					// select "old" repository if repository was not
+					// found and
+					// no new repository was selected
+					this.repository = rep;
+				}
+			}
+		} while (userResponse != null
+				&& userResponse.equals(I18nUtils.getString("RETRY")));
+	}
+
 	/**
-	 * Test if repository exists and show message until repository exists or
-	 * user doesn't press "RETRY"
+	 * Ask user when repository is not available
 	 * 
 	 * @param rep
 	 */
-	private void askUserForRepository(final IRepository rep) {
-		Object selection;
-		do {
-			selection = this.dialogFactory
-					.newDialog(IMessageDialog.class)
-					.showMessage(
-							StringUtils.getString(
-									I18nUtils.getString("REPOSITORY_NOT_FOUND"),
-									": ", rep.getRepositoryFolders().get(0)),
-							I18nUtils.getString("REPOSITORY_NOT_FOUND"),
-							JOptionPane.WARNING_MESSAGE,
-							new String[] { I18nUtils.getString("RETRY"),
-									I18nUtils.getString("SELECT_REPOSITORY"),
-									I18nUtils.getString("EXIT") });
-
-			if (selection != null
-					&& selection.equals(I18nUtils.getString("EXIT"))) {
-				GuiUtils.callInEventDispatchThread(new Runnable() {
-					@Override
-					public void run() {
-						RepositoryReader.this.beanFactory
-								.getBean(IKernel.class).finish();
-					}
-
-				});
-			}
-		} while (I18nUtils.getString("RETRY").equals(selection)
-				&& !rep.exists());
+	private String showDialog(final IRepository rep) {
+		return (String) this.dialogFactory.newDialog(IMessageDialog.class)
+				.showMessage(
+						StringUtils.getString(
+								I18nUtils.getString("REPOSITORY_NOT_FOUND"),
+								": ", rep.getRepositoryFolders().get(0)),
+						I18nUtils.getString("REPOSITORY_NOT_FOUND"),
+						JOptionPane.WARNING_MESSAGE,
+						new String[] { I18nUtils.getString("RETRY"),
+								I18nUtils.getString("IGNORE"),
+								I18nUtils.getString("SELECT_REPOSITORY"),
+								I18nUtils.getString("EXIT") });
 	}
 
 	private void applyExistingRepository(final IRepository rep) {
@@ -339,11 +345,19 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	}
 
 	private boolean retrieve(final List<File> folders, boolean reload) {
-		this.repositoryActions.disableAllRepositoryActions();
-		// Start with indeterminate dialog
-		this.repositoryProgressDialog.showDialog();
-		this.repositoryProgressDialog.setProgressBarIndeterminate(true);
-		this.frame.getProgressBar().setIndeterminate(true);
+		GuiUtils.callInEventDispatchThreadAndWait(new Runnable() {
+			@Override
+			public void run() {
+				RepositoryReader.this.repositoryActions
+						.disableAllRepositoryActions();
+				// Start with indeterminate dialog
+				RepositoryReader.this.repositoryProgressDialog.showDialog();
+				RepositoryReader.this.repositoryProgressDialog
+						.setProgressBarIndeterminate(true);
+				RepositoryReader.this.frame.getProgressBar().setIndeterminate(
+						true);
+			}
+		});
 		this.filesLoaded = 0;
 		try {
 			if (folders == null || folders.isEmpty()) {
