@@ -33,6 +33,7 @@ import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
+import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.AbstractCache;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -64,6 +65,8 @@ public class LastFmCache extends AbstractCache {
 
 	private static final String COULD_NOT_DELETE_ALL_FILES_FROM_CACHE = "Could not delete all files from cache: ";
 
+	private IStateContext stateContext;
+
 	/**
 	 * @param osManager
 	 */
@@ -71,6 +74,13 @@ public class LastFmCache extends AbstractCache {
 		super(osManager, LastFmCache.class
 				.getResource("/settings/ehcache-lastfm.xml"));
 		Logger.debug("Initializing LastFmCache");
+	}
+
+	/**
+	 * @param stateContext
+	 */
+	public void setStateContext(final IStateContext stateContext) {
+		this.stateContext = stateContext;
 	}
 
 	private Cache getCache() {
@@ -111,6 +121,10 @@ public class LastFmCache extends AbstractCache {
 
 	@SuppressWarnings("unchecked")
 	private <T> T getObject(final String cacheId, final Serializable key) {
+		if (!this.stateContext.isCacheLastFmContent()) {
+			Logger.debug("Last.fm cache is disabled");
+			return null;
+		}
 		Element element = getCache().get(new CacheKey(cacheId, key));
 		if (element == null) {
 			return null;
@@ -121,6 +135,11 @@ public class LastFmCache extends AbstractCache {
 
 	private void storeObject(final String cacheId, final Serializable key,
 			final Serializable value) {
+		if (!this.stateContext.isCacheLastFmContent()) {
+			Logger.debug("Last.fm cache is disabled");
+			return;
+		}
+
 		if (cacheId == null || key == null || value == null) {
 			return;
 		}

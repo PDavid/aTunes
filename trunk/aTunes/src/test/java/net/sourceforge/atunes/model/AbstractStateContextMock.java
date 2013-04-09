@@ -114,4 +114,13 @@ public abstract class AbstractStateContextMock implements IStateContext {
 	public String getSimilarArtistSearchQuery() {
 		return null;
 	}
+
+	@Override
+	public boolean isCacheLastFmContent() {
+		return false;
+	}
+
+	@Override
+	public void setCacheLastFmContent(final boolean cache) {
+	}
 }

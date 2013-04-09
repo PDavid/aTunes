@@ -181,6 +181,18 @@ public class ApplicationStateContext implements IStateContext {
 	}
 
 	@Override
+	public boolean isCacheLastFmContent() {
+		return this.preferenceHelper.getPreference(
+				Preferences.CACHE_LASTFM_CONTENT, Boolean.class, true);
+	}
+
+	@Override
+	public void setCacheLastFmContent(final boolean cache) {
+		this.preferenceHelper.setPreference(Preferences.CACHE_LASTFM_CONTENT,
+				cache);
+	}
+
+	@Override
 	public Map<String, String> describeState() {
 		// EXPLICITLY REMOVE USER AND PASSWORD FROM DESCRIPTION
 		Map<String, String> state = ReflectionUtils.describe(this);

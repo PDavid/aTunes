@@ -57,6 +57,8 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 
 	private IControlsBuilder controlsBuilder;
 
+	private JCheckBox cacheContent;
+
 	/**
 	 * Checkbox to select if application must send a love request when user adds
 	 * a favorite song
@@ -132,6 +134,9 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 			}
 		});
 
+		this.cacheContent = new JCheckBox(
+				I18nUtils.getString("CACHE_LASTFM_CONTENT"));
+
 		arrangePanel(lastFmLabel, userLabel, passwordLabel);
 	}
 
@@ -176,10 +181,12 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 		add(this.testLogin, c);
 		c.gridx = 0;
 		c.gridy = 5;
-		c.weighty = 1;
 		c.gridwidth = 2;
-		c.anchor = GridBagConstraints.FIRST_LINE_START;
 		add(this.autoLoveFavoriteSongs, c);
+		c.gridy = 6;
+		c.weighty = 1;
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		add(this.cacheContent, c);
 	}
 
 	@Override
@@ -196,6 +203,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 				this.stateContext.isLastFmEnabled());
 		this.beanFactory.getBean(ImportLovedTracksFromLastFMAction.class)
 				.setEnabled(this.stateContext.isLastFmEnabled());
+		this.stateContext.setCacheLastFmContent(this.cacheContent.isSelected());
 		return false;
 	}
 
@@ -238,12 +246,22 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 		this.autoLoveFavoriteSongs.setSelected(enabled);
 	}
 
+	/**
+	 * Sets if app must cache last.fm contents
+	 * 
+	 * @param cache
+	 */
+	private void setCacheContent(final boolean cache) {
+		this.cacheContent.setSelected(cache);
+	}
+
 	@Override
 	public void updatePanel() {
 		setLastFmUser(this.stateContext.getLastFmUser());
 		setLastFmPassword(this.stateContext.getLastFmPassword());
 		setLastFmEnabled(this.stateContext.isLastFmEnabled());
 		setAutoLoveFavoriteSong(this.stateContext.isAutoLoveFavoriteSong());
+		setCacheContent(this.stateContext.isCacheLastFmContent());
 		enableControls();
 	}
 
