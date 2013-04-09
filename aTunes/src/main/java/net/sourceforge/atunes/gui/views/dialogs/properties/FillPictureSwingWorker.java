@@ -28,29 +28,33 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.Logger;
 
 final class FillPictureSwingWorker extends SwingWorker<ImageIcon, Void> {
-	
-	private IAudioObjectImageLocator audioObjectImageLocator;
-	private JLabel pictureLabel;
-	private ILocalAudioObject file;
-	
+
+	private final IBeanFactory beanFactory;
+
+	private final JLabel pictureLabel;
+	private final ILocalAudioObject file;
+
 	/**
-	 * @param audioObjectImageLocator
+	 * @param beanFactort
 	 * @param pictureLabel
 	 * @param file
 	 */
-	FillPictureSwingWorker(IAudioObjectImageLocator audioObjectImageLocator, JLabel pictureLabel, ILocalAudioObject file) {
-		this.audioObjectImageLocator = audioObjectImageLocator;
+	FillPictureSwingWorker(final IBeanFactory beanFactory,
+			final JLabel pictureLabel, final ILocalAudioObject file) {
 		this.pictureLabel = pictureLabel;
 		this.file = file;
+		this.beanFactory = beanFactory;
 	}
-	
+
 	@Override
 	protected ImageIcon doInBackground() {
-		return audioObjectImageLocator.getImage(file, Constants.DIALOG_IMAGE_SIZE);
+		return this.beanFactory.getBean(IAudioObjectImageLocator.class)
+				.getImage(this.file, Constants.DIALOG_IMAGE_SIZE);
 	}
 
 	@Override
@@ -58,8 +62,8 @@ final class FillPictureSwingWorker extends SwingWorker<ImageIcon, Void> {
 		ImageIcon cover;
 		try {
 			cover = get();
-			pictureLabel.setIcon(cover);
-			pictureLabel.setVisible(cover != null);
+			this.pictureLabel.setIcon(cover);
+			this.pictureLabel.setVisible(cover != null);
 		} catch (InterruptedException e) {
 			Logger.error(e);
 		} catch (ExecutionException e) {

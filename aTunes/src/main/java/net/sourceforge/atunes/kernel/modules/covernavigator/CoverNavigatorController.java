@@ -29,7 +29,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IArtist;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IProcessFactory;
 
@@ -51,23 +51,22 @@ public final class CoverNavigatorController extends
 
 	private IControlsBuilder controlsBuilder;
 
-	private IAudioObjectImageLocator audioObjectImageLocator;
-
 	private CoverNavigationListSelectionListener coverNavigationListSelectionListener;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param controlsBuilder
 	 */
 	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
-	}
-
-	/**
-	 * @param audioObjectImageLocator
-	 */
-	public void setAudioObjectImageLocator(
-			final IAudioObjectImageLocator audioObjectImageLocator) {
-		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
 
 	/**
@@ -138,7 +137,7 @@ public final class CoverNavigatorController extends
 				Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 		SwingWorker<Void, IntermediateResult> generateAndShowAlbumPanels = new GenerateAndShowAlbumPanelsSwingWorker(
-				this.getComponentControlled(), this.audioObjectImageLocator,
+				this.getComponentControlled(), this.beanFactory,
 				artistSelected, this.controlsBuilder);
 		generateAndShowAlbumPanels.execute();
 	}

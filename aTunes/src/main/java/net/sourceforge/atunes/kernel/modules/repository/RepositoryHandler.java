@@ -77,8 +77,6 @@ public final class RepositoryHandler extends AbstractHandler implements
 
 	private IRepository repository;
 
-	private VoidRepository voidRepository;
-
 	private RepositoryAutoRefresher repositoryRefresher;
 
 	/** Listeners notified when an audio file is removed */
@@ -87,14 +85,6 @@ public final class RepositoryHandler extends AbstractHandler implements
 	private IFavoritesHandler favoritesHandler;
 
 	private IRepositoryTransaction transaction;
-
-	private ShowRepositoryDataHelper showRepositoryDataHelper;
-
-	private PersistRepositoryTask persistRepositoryTask;
-
-	private LocalAudioObjectRefresher localAudioObjectRefresher;
-
-	private RepositoryRemover repositoryRemover;
 
 	private IStateRepository stateRepository;
 
@@ -148,44 +138,6 @@ public final class RepositoryHandler extends AbstractHandler implements
 	}
 
 	/**
-	 * @param repositoryRemover
-	 */
-	public void setRepositoryRemover(final RepositoryRemover repositoryRemover) {
-		this.repositoryRemover = repositoryRemover;
-	}
-
-	/**
-	 * @param localAudioObjectRefresher
-	 */
-	public void setLocalAudioObjectRefresher(
-			final LocalAudioObjectRefresher localAudioObjectRefresher) {
-		this.localAudioObjectRefresher = localAudioObjectRefresher;
-	}
-
-	/**
-	 * @param persistRepositoryTask
-	 */
-	public void setPersistRepositoryTask(
-			final PersistRepositoryTask persistRepositoryTask) {
-		this.persistRepositoryTask = persistRepositoryTask;
-	}
-
-	/**
-	 * @param voidRepository
-	 */
-	public void setVoidRepository(final VoidRepository voidRepository) {
-		this.voidRepository = voidRepository;
-	}
-
-	/**
-	 * @param showRepositoryDataHelper
-	 */
-	public void setShowRepositoryDataHelper(
-			final ShowRepositoryDataHelper showRepositoryDataHelper) {
-		this.showRepositoryDataHelper = showRepositoryDataHelper;
-	}
-
-	/**
 	 * @param repository
 	 */
 	void setRepository(final IRepository repository) {
@@ -232,8 +184,8 @@ public final class RepositoryHandler extends AbstractHandler implements
 	public void applicationStateChanged() {
 		// User changed repository folders
 		if (this.foldersSelectedFromPreferences != null) {
-			currentRepositoryReader = getBean(RepositoryReader.class);
-			currentRepositoryReader
+			this.currentRepositoryReader = getBean(RepositoryReader.class);
+			this.currentRepositoryReader
 					.newRepositoryWithFolders(this.foldersSelectedFromPreferences);
 			this.foldersSelectedFromPreferences = null;
 		} else if (checkPropertiesToTrackForReload()) {
@@ -246,7 +198,7 @@ public final class RepositoryHandler extends AbstractHandler implements
 	@Override
 	protected void initHandler() {
 		// Initially use void repository until one is loaded or selected
-		this.repository = this.voidRepository;
+		this.repository = getBean(VoidRepository.class);
 
 		setPropertiesToTrackForReload();
 
@@ -428,17 +380,18 @@ public final class RepositoryHandler extends AbstractHandler implements
 
 	@Override
 	public void notifyCancel() {
-		if (currentRepositoryReader != null) {
-			currentRepositoryReader.notifyCancel();
+		if (this.currentRepositoryReader != null) {
+			this.currentRepositoryReader.notifyCancel();
 		}
-		currentRepositoryReader = null;
+		this.currentRepositoryReader = null;
 	}
 
 	@Override
 	public void refreshFiles(final List<ILocalAudioObject> files) {
 		startTransaction();
+		LocalAudioObjectRefresher refresher = getBean(LocalAudioObjectRefresher.class);
 		for (ILocalAudioObject file : files) {
-			this.localAudioObjectRefresher.refreshFile(this.repository, file);
+			refresher.refreshFile(this.repository, file);
 		}
 		endTransaction();
 	}
@@ -451,7 +404,7 @@ public final class RepositoryHandler extends AbstractHandler implements
 	@Override
 	public void refreshRepository() {
 		if (!isRepositoryVoid()) {
-			currentRepositoryReader = getBean(RepositoryReader.class);
+			this.currentRepositoryReader = getBean(RepositoryReader.class);
 			this.currentRepositoryReader.refresh(this.repository);
 		}
 	}
@@ -459,9 +412,9 @@ public final class RepositoryHandler extends AbstractHandler implements
 	@Override
 	public void reloadRepository() {
 		if (!isRepositoryVoid()) {
-			dialogFactory.newDialog(IMessageDialog.class).showMessage(
+			this.dialogFactory.newDialog(IMessageDialog.class).showMessage(
 					I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
-			currentRepositoryReader = getBean(RepositoryReader.class);
+			this.currentRepositoryReader = getBean(RepositoryReader.class);
 			this.currentRepositoryReader
 					.newRepositoryWithFoldersReloaded(this.repository
 							.getRepositoryFolders());
@@ -506,8 +459,9 @@ public final class RepositoryHandler extends AbstractHandler implements
 
 	private void removeInsideTransaction(
 			final List<ILocalAudioObject> filesToRemove) {
+		RepositoryRemover remover = getBean(RepositoryRemover.class);
 		for (ILocalAudioObject fileToRemove : filesToRemove) {
-			this.repositoryRemover.deleteFile(fileToRemove);
+			remover.deleteFile(fileToRemove);
 		}
 
 		// Notify listeners
@@ -541,7 +495,7 @@ public final class RepositoryHandler extends AbstractHandler implements
 
 	@Override
 	public boolean addFolderToRepository() {
-		currentRepositoryReader = getBean(RepositoryReader.class);
+		this.currentRepositoryReader = getBean(RepositoryReader.class);
 		return this.currentRepositoryReader.addFolderToRepository();
 	}
 
@@ -554,15 +508,15 @@ public final class RepositoryHandler extends AbstractHandler implements
 	@Override
 	public void audioFilesRemoved(final List<ILocalAudioObject> audioFiles) {
 		// Update status bar
-		this.showRepositoryDataHelper.showRepositoryAudioFileNumber(
+		getBean(ShowRepositoryDataHelper.class).showRepositoryAudioFileNumber(
 				getAudioFilesList().size(), getRepositoryTotalSize(),
 				this.repository.getTotalDurationInSeconds());
 	}
 
 	@Override
 	public void doInBackground() {
-		if (currentRepositoryReader != null) {
-			currentRepositoryReader.doInBackground();
+		if (this.currentRepositoryReader != null) {
+			this.currentRepositoryReader.doInBackground();
 		}
 	}
 
@@ -573,13 +527,13 @@ public final class RepositoryHandler extends AbstractHandler implements
 	 * @return
 	 */
 	protected boolean isLoaderWorking() {
-		return currentRepositoryReader != null
-				&& currentRepositoryReader.isWorking();
+		return this.currentRepositoryReader != null
+				&& this.currentRepositoryReader.isWorking();
 	}
 
 	@Override
 	public void repositoryChanged(final IRepository repository) {
-		this.persistRepositoryTask.persist(repository);
+		getBean(PersistRepositoryTask.class).persist(repository);
 		this.favoritesHandler.updateFavorites(repository);
 	}
 
@@ -720,7 +674,7 @@ public final class RepositoryHandler extends AbstractHandler implements
 		getBean(RepositoryAddService.class)
 				.addFoldersToRepositoryInsideTransaction(this.repository,
 						Collections.singletonList(destination));
-		this.showRepositoryDataHelper.showRepositoryAudioFileNumber(
+		getBean(ShowRepositoryDataHelper.class).showRepositoryAudioFileNumber(
 				this.repository.getFiles().size(),
 				this.repository.getTotalSizeInBytes(),
 				this.repository.getTotalDurationInSeconds());

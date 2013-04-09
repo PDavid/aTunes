@@ -32,7 +32,6 @@ import javax.swing.JPanel;
 
 import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFileManager;
@@ -68,8 +67,6 @@ public final class LocalAudioObjectPropertiesDialog extends
 	private JLabel bitrateLabel;
 	private JLabel frequencyLabel;
 	private ILocalAudioObject file;
-
-	private IAudioObjectImageLocator audioObjectImageLocator;
 
 	private IUnknownObjectChecker unknownObjectChecker;
 
@@ -120,14 +117,6 @@ public final class LocalAudioObjectPropertiesDialog extends
 		} else {
 			throw new IllegalArgumentException("Not a ILocalAudioObject");
 		}
-	}
-
-	/**
-	 * @param audioObjectImageLocator
-	 */
-	public void setAudioObjectImageLocator(
-			final IAudioObjectImageLocator audioObjectImageLocator) {
-		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
 
 	/**
@@ -276,8 +265,8 @@ public final class LocalAudioObjectPropertiesDialog extends
 	 * Fill picture.
 	 */
 	private void fillPicture() {
-		new FillPictureSwingWorker(this.audioObjectImageLocator,
-				this.pictureLabel, this.file).execute();
+		new FillPictureSwingWorker(this.beanFactory, this.pictureLabel,
+				this.file).execute();
 	}
 
 	/**

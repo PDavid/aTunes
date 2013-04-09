@@ -26,6 +26,7 @@ import java.util.List;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -39,7 +40,8 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class SetPlayListSelectionAsFavoriteSongAction extends CustomAbstractAction {
+public class SetPlayListSelectionAsFavoriteSongAction extends
+		CustomAbstractAction {
 
 	private static final long serialVersionUID = 1185876110005394694L;
 
@@ -47,14 +49,13 @@ public class SetPlayListSelectionAsFavoriteSongAction extends CustomAbstractActi
 
 	private IPlayListHandler playListHandler;
 
-	private ILocalAudioObjectFilter localAudioObjectFilter;
+	private IBeanFactory beanFactory;
 
 	/**
-	 * @param localAudioObjectFilter
+	 * @param beanFactory
 	 */
-	public void setLocalAudioObjectFilter(
-			final ILocalAudioObjectFilter localAudioObjectFilter) {
-		this.localAudioObjectFilter = localAudioObjectFilter;
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -82,12 +83,14 @@ public class SetPlayListSelectionAsFavoriteSongAction extends CustomAbstractActi
 
 	@Override
 	protected void executeAction() {
-		favoritesHandler.toggleFavoriteSongs(
-				localAudioObjectFilter.getLocalAudioObjects(playListHandler.getSelectedAudioObjects()));
+		this.favoritesHandler.toggleFavoriteSongs(this.beanFactory.getBean(
+				ILocalAudioObjectFilter.class).getLocalAudioObjects(
+				this.playListHandler.getSelectedAudioObjects()));
 	}
 
 	@Override
-	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
 		if (selection.isEmpty()) {
 			return false;
 		}

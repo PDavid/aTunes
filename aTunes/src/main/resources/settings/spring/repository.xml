@@ -7,17 +7,29 @@
 	<bean id="repositoryFromCacheProcessor" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryFromCacheProcessor" scope="prototype"/>
 	<bean id="repositoryLoadedActions" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryLoadedActions" scope="prototype"/>
 	<bean id="repositoryReader" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryReader" scope="prototype"/>
+	<bean id="repositoryRemover" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryRemover" scope="prototype"/>
 	<bean id="repositoryActions" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryActionsHelper" scope="prototype"/>
 	<bean id="repositoryAddService" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryAddService" scope="prototype"/>
 	
 	<bean id="audioObjectComparator" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator" scope="prototype"/>
+	<bean id="audioObjectDuplicateFinder" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectDuplicateFinder" scope="prototype"/>
+	<bean id="audioObjectImageLocator" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectImageLocator" scope="prototype"/>
 	
+	<bean id="localAudioObjectFilter" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFilter" scope="prototype"/>	
+	<bean id="localAudioObjectRefresher" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectRefresher" scope="prototype"/>
 	
-	<bean id="showRepositoryDataHelper" class="net.sourceforge.atunes.kernel.modules.repository.ShowRepositoryDataHelper"/>
+	<bean id="persistRepositoryTask" class="net.sourceforge.atunes.kernel.modules.repository.PersistRepositoryTask" scope="prototype"/>
+	
+	<bean id="showRepositoryDataHelper" class="net.sourceforge.atunes.kernel.modules.repository.ShowRepositoryDataHelper" scope="prototype"/>
+	
 	<bean id="voidRepository" class="net.sourceforge.atunes.kernel.modules.repository.VoidRepository" scope="prototype"/>
+	
+	
+	
+	
+	
 	<bean id="repositorySearchableObject" class="net.sourceforge.atunes.kernel.modules.search.RepositorySearchableObject"/>
 	<bean id="repositoryRefresher" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryAutoRefresher"/>
-	<bean id="persistRepositoryTask" class="net.sourceforge.atunes.kernel.modules.repository.PersistRepositoryTask"/>
 	
 	<bean id="localAudioObjectFactory" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFactory"/>
 	<bean id="localAudioObjectReader" class="net.sourceforge.atunes.kernel.modules.tags.TagReader"/>
@@ -25,13 +37,9 @@
 	<bean id="localAudioObjectLocator" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectLocator"/>
 	<bean id="validLocalAudioObjectFileFilter" class="net.sourceforge.atunes.kernel.modules.repository.ValidLocalAudioObjectFileFilter"/>
 	
-	<bean id="audioObjectImageLocator" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectImageLocator"/>
-	<bean id="audioObjectDuplicateFinder" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectDuplicateFinder"/>
 	
 	<bean id="folderRefresher" class="net.sourceforge.atunes.kernel.modules.repository.FolderRefresher"/>
-	<bean id="localAudioObjectRefresher" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectRefresher"/>
 	
-	<bean id="repositoryRemover" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryRemover"/>
 
 	<bean id="addFilesTask" class="net.sourceforge.atunes.kernel.modules.repository.AddFilesToRepositoryTask" scope="prototype"/>
 	<bean id="deleteFilesTask" class="net.sourceforge.atunes.kernel.modules.repository.DeleteFilesTask" scope="prototype"/>
@@ -49,8 +57,6 @@
 	
 	<bean id="favoritesSearchableObject" class="net.sourceforge.atunes.kernel.modules.search.FavoritesSearchableObject"/>
 
-	<bean id="localAudioObjectFilter" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFilter"/>	
-	
 	<bean id="tagFactory" class="net.sourceforge.atunes.kernel.modules.tags.TagFactory"/>
 	<bean id="tagModifier" class="net.sourceforge.atunes.kernel.modules.tags.TagModifier"/>
 	<bean id="tagAdapterSelector" class="net.sourceforge.atunes.kernel.modules.tags.TagAdapterSelector">

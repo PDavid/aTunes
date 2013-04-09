@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectDuplicateFinder;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IPlayList;
@@ -45,120 +46,122 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
 
-    private final class RemoveDuplicatesCallable implements
-	    Callable<List<Integer>> {
-	@Override
-	public List<Integer> call() {
-	    IPlayList playList = playListHandler.getVisiblePlayList();
-	    List<IAudioObject> audioObjectsToCheck = new ArrayList<IAudioObject>();
-	    for (int i = 0; i < playList.size(); i++) {
-		audioObjectsToCheck.add(playList.get(i));
-	    }
-	    List<IAudioObject> duplicated = audioObjectDuplicateFinder
-		    .findDuplicates(audioObjectsToCheck);
-	    List<Integer> rows = new ArrayList<Integer>();
-	    for (IAudioObject ao : duplicated) {
-		rows.add(playList.indexOf(ao));
-	    }
-	    // List of rows must be sorted in order to remove from play list to
-	    // work
-	    Collections.sort(rows, new Comparator<Integer>() {
-
+	private final class RemoveDuplicatesCallable implements
+			Callable<List<Integer>> {
 		@Override
-		public int compare(final Integer o1, final Integer o2) {
-		    return o1.compareTo(o2);
-		}
-	    });
+		public List<Integer> call() {
+			IPlayList playList = RemoveDuplicatesFromPlayListAction.this.playListHandler
+					.getVisiblePlayList();
+			List<IAudioObject> audioObjectsToCheck = new ArrayList<IAudioObject>();
+			for (int i = 0; i < playList.size(); i++) {
+				audioObjectsToCheck.add(playList.get(i));
+			}
+			List<IAudioObject> duplicated = RemoveDuplicatesFromPlayListAction.this.beanFactory
+					.getBean(IAudioObjectDuplicateFinder.class).findDuplicates(
+							audioObjectsToCheck);
+			List<Integer> rows = new ArrayList<Integer>();
+			for (IAudioObject ao : duplicated) {
+				rows.add(playList.indexOf(ao));
+			}
+			// List of rows must be sorted in order to remove from play list to
+			// work
+			Collections.sort(rows, new Comparator<Integer>() {
 
-	    Logger.info(StringUtils.getString(duplicated.size(),
-		    " items duplicated"));
-	    return rows;
+				@Override
+				public int compare(final Integer o1, final Integer o2) {
+					return o1.compareTo(o2);
+				}
+			});
+
+			Logger.info(StringUtils.getString(duplicated.size(),
+					" items duplicated"));
+			return rows;
+		}
 	}
-    }
 
-    private static final long serialVersionUID = 7784228526804232608L;
+	private static final long serialVersionUID = 7784228526804232608L;
 
-    private IPlayListHandler playListHandler;
+	private IPlayListHandler playListHandler;
 
-    private IBackgroundWorkerFactory backgroundWorkerFactory;
+	private IBackgroundWorkerFactory backgroundWorkerFactory;
 
-    private IIndeterminateProgressDialog dialog;
+	private IIndeterminateProgressDialog dialog;
 
-    private IAudioObjectDuplicateFinder audioObjectDuplicateFinder;
+	private IDialogFactory dialogFactory;
 
-    private IDialogFactory dialogFactory;
+	private IBeanFactory beanFactory;
 
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(final IDialogFactory dialogFactory) {
-	this.dialogFactory = dialogFactory;
-    }
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
-    /**
-     * @param audioObjectDuplicateFinder
-     */
-    public void setAudioObjectDuplicateFinder(
-	    final IAudioObjectDuplicateFinder audioObjectDuplicateFinder) {
-	this.audioObjectDuplicateFinder = audioObjectDuplicateFinder;
-    }
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
-    /**
-     * @param backgroundWorkerFactory
-     */
-    public void setBackgroundWorkerFactory(
-	    final IBackgroundWorkerFactory backgroundWorkerFactory) {
-	this.backgroundWorkerFactory = backgroundWorkerFactory;
-    }
+	/**
+	 * @param backgroundWorkerFactory
+	 */
+	public void setBackgroundWorkerFactory(
+			final IBackgroundWorkerFactory backgroundWorkerFactory) {
+		this.backgroundWorkerFactory = backgroundWorkerFactory;
+	}
 
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(final IPlayListHandler playListHandler) {
-	this.playListHandler = playListHandler;
-    }
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
 
-    /**
-     * Default constructor
-     */
-    public RemoveDuplicatesFromPlayListAction() {
-	super(I18nUtils.getString("REMOVE_DUPLICATES"));
-    }
+	/**
+	 * Default constructor
+	 */
+	public RemoveDuplicatesFromPlayListAction() {
+		super(I18nUtils.getString("REMOVE_DUPLICATES"));
+	}
 
-    @Override
-    protected void executeAction() {
-	IBackgroundWorker<List<Integer>> worker = backgroundWorkerFactory
-		.getWorker();
-	worker.setActionsBeforeBackgroundStarts(new Runnable() {
-	    @Override
-	    public void run() {
-		dialog = dialogFactory
-			.newDialog(IIndeterminateProgressDialog.class);
-		dialog.showDialog();
-	    }
-	});
+	@Override
+	protected void executeAction() {
+		IBackgroundWorker<List<Integer>> worker = this.backgroundWorkerFactory
+				.getWorker();
+		worker.setActionsBeforeBackgroundStarts(new Runnable() {
+			@Override
+			public void run() {
+				RemoveDuplicatesFromPlayListAction.this.dialog = RemoveDuplicatesFromPlayListAction.this.dialogFactory
+						.newDialog(IIndeterminateProgressDialog.class);
+				RemoveDuplicatesFromPlayListAction.this.dialog.showDialog();
+			}
+		});
 
-	worker.setBackgroundActions(new RemoveDuplicatesCallable());
+		worker.setBackgroundActions(new RemoveDuplicatesCallable());
 
-	worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<List<Integer>>() {
-	    @Override
-	    public void call(final List<Integer> duplicated) {
-		int[] rowsArray = new int[duplicated.size()];
-		int i = 0;
-		for (Integer row : duplicated) {
-		    rowsArray[i++] = row;
-		}
-		playListHandler.removeAudioObjects(rowsArray);
-		dialog.hideDialog();
-	    }
-	});
+		worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<List<Integer>>() {
+			@Override
+			public void call(final List<Integer> duplicated) {
+				int[] rowsArray = new int[duplicated.size()];
+				int i = 0;
+				for (Integer row : duplicated) {
+					rowsArray[i++] = row;
+				}
+				RemoveDuplicatesFromPlayListAction.this.playListHandler
+						.removeAudioObjects(rowsArray);
+				RemoveDuplicatesFromPlayListAction.this.dialog.hideDialog();
+			}
+		});
 
-	worker.execute();
-    }
+		worker.execute();
+	}
 
-    @Override
-    public boolean isEnabledForPlayListSelection(
-	    final List<IAudioObject> selection) {
-	return true;
-    }
+	@Override
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
+		return true;
+	}
 }

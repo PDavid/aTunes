@@ -29,6 +29,7 @@ import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.IOSManager;
@@ -40,8 +41,9 @@ import org.apache.commons.io.FileUtils;
 
 /**
  * Common code for notifications
+ * 
  * @author alex
- *
+ * 
  */
 public abstract class CommonNotificationEngine implements INotificationEngine {
 
@@ -53,7 +55,14 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 
 	private ILookAndFeelManager lookAndFeelManager;
 
-	private IAudioObjectImageLocator audioObjectImageLocator;
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param audioObjectGenericImageFactory
@@ -66,23 +75,17 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 	/**
 	 * @param temporalDiskStorage
 	 */
-	public void setTemporalDiskStorage(final ITemporalDiskStorage temporalDiskStorage) {
+	public void setTemporalDiskStorage(
+			final ITemporalDiskStorage temporalDiskStorage) {
 		this.temporalDiskStorage = temporalDiskStorage;
 	}
 
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
-	}
-
-	/**
-	 * @param audioObjectImageLocator
-	 */
-	public void setAudioObjectImageLocator(
-			final IAudioObjectImageLocator audioObjectImageLocator) {
-		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
 
 	/**
@@ -90,36 +93,49 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 	 */
 	@Override
 	public final boolean isEngineAvailable() {
-		if (available == null) {
-			available = testEngineAvailable();
+		if (this.available == null) {
+			this.available = testEngineAvailable();
 		}
-		return available;
+		return this.available;
 	}
 
 	/**
-	 * Stores audio object in a temporal folder so it can be used from third-party notification engines
+	 * Stores audio object in a temporal folder so it can be used from
+	 * third-party notification engines
+	 * 
 	 * @param audioObject
 	 * @param osManager
 	 * @return
 	 */
-	protected final String getTemporalImage(final IAudioObject audioObject, final IOSManager osManager) {
-		ImageIcon imageForAudioObject = audioObjectImageLocator.getImage(audioObject, ImageSize.SIZE_200);
+	protected final String getTemporalImage(final IAudioObject audioObject,
+			final IOSManager osManager) {
+		ImageIcon imageForAudioObject = this.beanFactory.getBean(
+				IAudioObjectImageLocator.class).getImage(audioObject,
+				ImageSize.SIZE_200);
 		if (imageForAudioObject == null) {
-			imageForAudioObject = audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.MEDIUM).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
+			imageForAudioObject = this.audioObjectGenericImageFactory
+					.getGenericImage(audioObject, GenericImageSize.MEDIUM)
+					.getIcon(
+							this.lookAndFeelManager.getCurrentLookAndFeel()
+									.getPaintForSpecialControls());
 		}
-		return net.sourceforge.atunes.utils.FileUtils.getPath(temporalDiskStorage.addImage(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()));
+		return net.sourceforge.atunes.utils.FileUtils
+				.getPath(this.temporalDiskStorage.addImage(ImageUtils
+						.toBufferedImage(imageForAudioObject.getImage()), UUID
+						.randomUUID().toString()));
 	}
 
 	protected final ILookAndFeelManager getLookAndFeelManager() {
-		return lookAndFeelManager;
+		return this.lookAndFeelManager;
 	}
 
-	protected final IAudioObjectImageLocator getAudioObjectImageLocator() {
-		return audioObjectImageLocator;
+	protected IBeanFactory getBeanFactory() {
+		return this.beanFactory;
 	}
 
 	/**
 	 * Removes temporal image
+	 * 
 	 * @param path
 	 */
 	protected final void removeTemporalImage(final String path) {
@@ -130,11 +146,12 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 	 * @return audio object generic image factory
 	 */
 	protected final IAudioObjectGenericImageFactory getAudioObjectGenericImageFactory() {
-		return audioObjectGenericImageFactory;
+		return this.audioObjectGenericImageFactory;
 	}
 
 	/**
 	 * Test if engine is available
+	 * 
 	 * @return
 	 */
 	protected abstract boolean testEngineAvailable();

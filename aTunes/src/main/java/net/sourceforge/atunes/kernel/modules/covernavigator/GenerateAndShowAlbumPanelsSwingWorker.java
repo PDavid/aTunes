@@ -40,6 +40,7 @@ import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
 
 final class GenerateAndShowAlbumPanelsSwingWorker extends
@@ -47,7 +48,7 @@ final class GenerateAndShowAlbumPanelsSwingWorker extends
 
 	private final CoverNavigatorDialog dialog;
 
-	private final IAudioObjectImageLocator audioObjectImageLocator;
+	private final IBeanFactory beanFactory;
 
 	private final IArtist artistSelected;
 
@@ -55,15 +56,15 @@ final class GenerateAndShowAlbumPanelsSwingWorker extends
 
 	/**
 	 * @param dialog
-	 * @param audioObjectImageLocator
+	 * @param beanFactory
 	 * @param artistSelected
 	 * @param controlsBuilder
 	 */
 	GenerateAndShowAlbumPanelsSwingWorker(final CoverNavigatorDialog dialog,
-			final IAudioObjectImageLocator audioObjectImageLocator,
-			final IArtist artistSelected, final IControlsBuilder controlsBuilder) {
+			final IBeanFactory beanFactory, final IArtist artistSelected,
+			final IControlsBuilder controlsBuilder) {
 		this.dialog = dialog;
-		this.audioObjectImageLocator = audioObjectImageLocator;
+		this.beanFactory = beanFactory;
 		this.artistSelected = artistSelected;
 		this.controlsBuilder = controlsBuilder;
 	}
@@ -75,7 +76,8 @@ final class GenerateAndShowAlbumPanelsSwingWorker extends
 		Collections.sort(albums);
 
 		for (IAlbum album : albums) {
-			ImageIcon cover = this.audioObjectImageLocator.getImage(album,
+			ImageIcon cover = this.beanFactory.getBean(
+					IAudioObjectImageLocator.class).getImage(album,
 					Constants.COVER_NAVIGATOR_IMAGE_SIZE);
 			publish(new IntermediateResult(album, cover));
 		}

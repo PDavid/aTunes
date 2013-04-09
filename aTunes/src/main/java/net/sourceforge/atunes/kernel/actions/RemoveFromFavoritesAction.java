@@ -25,6 +25,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -50,14 +51,13 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
 
 	private INavigationView favoritesNavigationView;
 
-	private ILocalAudioObjectFilter localAudioObjectFilter;
+	private IBeanFactory beanFactory;
 
 	/**
-	 * @param localAudioObjectFilter
+	 * @param beanFactory
 	 */
-	public void setLocalAudioObjectFilter(
-			final ILocalAudioObjectFilter localAudioObjectFilter) {
-		this.localAudioObjectFilter = localAudioObjectFilter;
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -92,10 +92,10 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void executeAction() {
-		if (navigationHandler.isActionOverTree()
-				&& navigationHandler.getCurrentView().equals(
-						favoritesNavigationView)) {
-			List<ITreeNode> nodes = favoritesNavigationView.getTree()
+		if (this.navigationHandler.isActionOverTree()
+				&& this.navigationHandler.getCurrentView().equals(
+						this.favoritesNavigationView)) {
+			List<ITreeNode> nodes = this.favoritesNavigationView.getTree()
 					.getSelectedNodes();
 			if (!CollectionUtils.isEmpty(nodes)) {
 				List<ITreeObject<?>> objects = new ArrayList<ITreeObject<?>>();
@@ -103,13 +103,13 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
 					objects.add((ITreeObject<? extends IAudioObject>) node
 							.getUserObject());
 				}
-				favoritesHandler.removeFromFavorites(objects);
+				this.favoritesHandler.removeFromFavorites(objects);
 			}
 		} else {
-			List<IAudioObject> audioObjects = navigationHandler
+			List<IAudioObject> audioObjects = this.navigationHandler
 					.getSelectedAudioObjectsInNavigationTable();
 			if (!audioObjects.isEmpty()) {
-				favoritesHandler.removeSongsFromFavorites(audioObjects);
+				this.favoritesHandler.removeSongsFromFavorites(audioObjects);
 			}
 		}
 	}
@@ -126,7 +126,7 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
 			// Only allow to remove album if does not belong to a favorite
 			// artist
 			if (node.getUserObject() instanceof IAlbum) {
-				if (favoritesHandler.getFavoriteArtistsInfo().containsKey(
+				if (this.favoritesHandler.getFavoriteArtistsInfo().containsKey(
 						((IAlbum) node.getUserObject()).getArtist().getName())) {
 					return false;
 				}
@@ -140,10 +140,11 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
 			final List<IAudioObject> selection) {
 		// Enabled if all selected items are favorite songs (not belong to
 		// favorite artist nor album)
-		return favoritesHandler
+		return this.favoritesHandler
 				.getFavoriteSongsInfo()
 				.values()
 				.containsAll(
-						localAudioObjectFilter.getLocalAudioObjects(selection));
+						this.beanFactory.getBean(ILocalAudioObjectFilter.class)
+								.getLocalAudioObjects(selection));
 	}
 }

@@ -81,23 +81,13 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 
 	private IDialogFactory dialogFactory;
 
-	private ILocalAudioObjectFilter localAudioObjectFilter;
-
 	private IBeanFactory beanFactory;
 
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
-	}
-
-	/**
-	 * @param localAudioObjectFilter
-	 */
-	public void setLocalAudioObjectFilter(
-			final ILocalAudioObjectFilter localAudioObjectFilter) {
-		this.localAudioObjectFilter = localAudioObjectFilter;
 	}
 
 	/**
@@ -141,40 +131,42 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 	@Override
 	protected void executeAction() {
 		// Show confirmation
-		IConfirmationDialog confirmationDialog = dialogFactory
+		IConfirmationDialog confirmationDialog = this.dialogFactory
 				.newDialog(IConfirmationDialog.class);
 		confirmationDialog.setMessage(I18nUtils
 				.getString("REMOVE_CONFIRMATION"));
 		confirmationDialog.showDialog();
 		if (confirmationDialog.userAccepted()) {
 			// Podcast view
-			if (navigationHandler.getCurrentView()
-					.equals(podcastNavigationView)) {
+			if (this.navigationHandler.getCurrentView().equals(
+					this.podcastNavigationView)) {
 				fromPodcastView();
 				// Repository or device view with folder view mode, folder
 				// selected: delete folders instead of content
-			} else if ((navigationHandler.getCurrentView().equals(
-					repositoryNavigationView) || navigationHandler
-					.getCurrentView().equals(deviceNavigationView))
-					&& navigationHandler.getCurrentViewMode() == ViewMode.FOLDER
-					&& navigationHandler.isActionOverTree()) {
-				fromRepositoryOrDeviceView(repositoryHandler);
+			} else if ((this.navigationHandler.getCurrentView().equals(
+					this.repositoryNavigationView) || this.navigationHandler
+					.getCurrentView().equals(this.deviceNavigationView))
+					&& this.navigationHandler.getCurrentViewMode() == ViewMode.FOLDER
+					&& this.navigationHandler.isActionOverTree()) {
+				fromRepositoryOrDeviceView(this.repositoryHandler);
 			} else {
-				fromOtherViews(repositoryHandler);
+				fromOtherViews(this.repositoryHandler);
 			}
 		}
 	}
 
 	private void fromOtherViews(final IRepositoryHandler repositoryHandler) {
-		beanFactory.getBean(DeleteFilesTask.class).execute(
-				localAudioObjectFilter.getLocalAudioObjects(navigationHandler
-						.getFilesSelectedInNavigator()));
+		this.beanFactory.getBean(DeleteFilesTask.class).execute(
+				this.beanFactory.getBean(ILocalAudioObjectFilter.class)
+						.getLocalAudioObjects(
+								this.navigationHandler
+										.getFilesSelectedInNavigator()));
 	}
 
 	private void fromRepositoryOrDeviceView(
 			final IRepositoryHandler repositoryHandler) {
-		List<ITreeNode> nodes = navigationHandler.getCurrentView().getTree()
-				.getSelectedNodes();
+		List<ITreeNode> nodes = this.navigationHandler.getCurrentView()
+				.getTree().getSelectedNodes();
 		final List<IFolder> foldersToRemove = new ArrayList<IFolder>();
 		if (!CollectionUtils.isEmpty(nodes)) {
 			for (ITreeNode node : nodes) {
@@ -188,10 +180,11 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				dialog = dialogFactory
+				RemoveFromDiskAction.this.dialog = RemoveFromDiskAction.this.dialogFactory
 						.newDialog(IIndeterminateProgressDialog.class);
-				dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
-				dialog.showDialog();
+				RemoveFromDiskAction.this.dialog.setTitle(I18nUtils
+						.getString("PLEASE_WAIT"));
+				RemoveFromDiskAction.this.dialog.showDialog();
 			}
 		});
 		new SwingWorker<Void, Void>() {
@@ -199,8 +192,9 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 			protected Void doInBackground() {
 				for (IFolder folder : foldersToRemove) {
 					try {
-						FileUtils.deleteDirectory(folder
-								.getFolderPath(osManager));
+						FileUtils
+								.deleteDirectory(folder
+										.getFolderPath(RemoveFromDiskAction.this.osManager));
 						Logger.info(StringUtils.getString("Removed folder ",
 								folder));
 					} catch (IOException e) {
@@ -214,17 +208,17 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 
 			@Override
 			protected void done() {
-				dialog.hideDialog();
+				RemoveFromDiskAction.this.dialog.hideDialog();
 			}
 		}.execute();
 	}
 
 	private void fromPodcastView() {
-		List<IAudioObject> songsAudioObjects = navigationHandler
+		List<IAudioObject> songsAudioObjects = this.navigationHandler
 				.getSelectedAudioObjectsInNavigationTable();
 		if (!songsAudioObjects.isEmpty()) {
 			for (IAudioObject ao : songsAudioObjects) {
-				podcastFeedHandler
+				this.podcastFeedHandler
 						.deleteDownloadedPodcastFeedEntry((IPodcastFeedEntry) ao);
 			}
 		}
@@ -239,7 +233,8 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 	@Override
 	public boolean isEnabledForNavigationTableSelection(
 			final List<IAudioObject> selection) {
-		if (navigationHandler.getCurrentView().equals(podcastNavigationView)) {
+		if (this.navigationHandler.getCurrentView().equals(
+				this.podcastNavigationView)) {
 			for (IAudioObject ao : selection) {
 				if (ao instanceof IPodcastFeedEntry) {
 					if (!((IPodcastFeedEntry) ao).isDownloaded()) {

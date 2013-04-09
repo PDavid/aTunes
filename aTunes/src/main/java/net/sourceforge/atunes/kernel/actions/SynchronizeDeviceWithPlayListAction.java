@@ -28,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFileManager;
@@ -67,23 +68,22 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 
 	private IDialogFactory dialogFactory;
 
-	private ILocalAudioObjectFilter localAudioObjectFilter;
-
 	private IFileManager fileManager;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param fileManager
 	 */
 	public void setFileManager(final IFileManager fileManager) {
 		this.fileManager = fileManager;
-	}
-
-	/**
-	 * @param localAudioObjectFilter
-	 */
-	public void setLocalAudioObjectFilter(
-			final ILocalAudioObjectFilter localAudioObjectFilter) {
-		this.localAudioObjectFilter = localAudioObjectFilter;
 	}
 
 	/**
@@ -189,17 +189,21 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 					.isAllowRepeatedSongsInDevice()) {
 				// Repeated songs allowed, filter only if have same artist and
 				// album
-				playListObjects = SynchronizeDeviceWithPlayListAction.this.localAudioObjectFilter
-						.filterRepeatedObjectsWithAlbums(SynchronizeDeviceWithPlayListAction.this.playListLocalAudioObjectFilter
-								.getObjects(SynchronizeDeviceWithPlayListAction.this.playListHandler
-										.getVisiblePlayList()));
+				playListObjects = SynchronizeDeviceWithPlayListAction.this.beanFactory
+						.getBean(ILocalAudioObjectFilter.class)
+						.filterRepeatedObjectsWithAlbums(
+								SynchronizeDeviceWithPlayListAction.this.playListLocalAudioObjectFilter
+										.getObjects(SynchronizeDeviceWithPlayListAction.this.playListHandler
+												.getVisiblePlayList()));
 			} else {
 				// Repeated songs not allows, filter even if have different
 				// album
-				playListObjects = SynchronizeDeviceWithPlayListAction.this.localAudioObjectFilter
-						.filterRepeatedObjects(SynchronizeDeviceWithPlayListAction.this.playListLocalAudioObjectFilter
-								.getObjects(SynchronizeDeviceWithPlayListAction.this.playListHandler
-										.getVisiblePlayList()));
+				playListObjects = SynchronizeDeviceWithPlayListAction.this.beanFactory
+						.getBean(ILocalAudioObjectFilter.class)
+						.filterRepeatedObjects(
+								SynchronizeDeviceWithPlayListAction.this.playListLocalAudioObjectFilter
+										.getObjects(SynchronizeDeviceWithPlayListAction.this.playListHandler
+												.getVisiblePlayList()));
 			}
 
 			// Get elements present in play list and not in device -> objects to

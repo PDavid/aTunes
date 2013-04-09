@@ -84,8 +84,6 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 
 	private IWebServicesHandler webServicesHandler;
 
-	private ShowRepositoryDataHelper showRepositoryDataHelper;
-
 	private IStateRepository stateRepository;
 
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
@@ -117,10 +115,10 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 
 	private IRepositoryProgressDialog getRepositoryProgressDialog() {
 		if (this.repositoryProgressDialog == null) {
-			this.repositoryProgressDialog = dialogFactory
+			this.repositoryProgressDialog = this.dialogFactory
 					.newDialog(IRepositoryProgressDialog.class);
 		}
-		return repositoryProgressDialog;
+		return this.repositoryProgressDialog;
 	}
 
 	/**
@@ -136,14 +134,6 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 */
 	public void setStateRepository(final IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
-	}
-
-	/**
-	 * @param showRepositoryDataHelper
-	 */
-	public void setShowRepositoryDataHelper(
-			final ShowRepositoryDataHelper showRepositoryDataHelper) {
-		this.showRepositoryDataHelper = showRepositoryDataHelper;
 	}
 
 	/**
@@ -199,11 +189,12 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 		return false;
 	}
 
-	private boolean retrieve(final List<File> folders, boolean reload) {
+	private boolean retrieve(final List<File> folders, final boolean reload) {
 		GuiUtils.callInEventDispatchThreadAndWait(new Runnable() {
 			@Override
 			public void run() {
-				beanFactory.getBean(RepositoryActionsHelper.class)
+				RepositoryReader.this.beanFactory.getBean(
+						RepositoryActionsHelper.class)
 						.disableAllRepositoryActions();
 				// Start with indeterminate dialog
 				getRepositoryProgressDialog().showDialog();
@@ -233,7 +224,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 * @param folders
 	 * @param reload
 	 */
-	private void readRepository(final List<File> folders, boolean reload) {
+	private void readRepository(final List<File> folders, final boolean reload) {
 		IRepository oldRepository = this.repository;
 		this.repository = new Repository(folders, this.stateRepository);
 		// Change repository to allow user start listening objects while loading
@@ -305,7 +296,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 
 		getRepositoryProgressDialog().hideDialog();
 
-		beanFactory.getBean(RepositoryLoadedActions.class)
+		this.beanFactory.getBean(RepositoryLoadedActions.class)
 				.repositoryReadCompleted(this.repository);
 		this.currentLoader = null;
 	}
@@ -313,7 +304,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	@Override
 	public void notifyFinishRefresh(final IRepositoryLoader loader) {
 		Logger.info("Repository refresh done");
-		beanFactory.getBean(RepositoryLoadedActions.class)
+		this.beanFactory.getBean(RepositoryLoadedActions.class)
 				.repositoryReadCompleted(this.repository);
 		this.currentLoader = null;
 	}
@@ -348,7 +339,8 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 				public void run() {
 					RepositoryReader.this.navigationHandler
 							.repositoryReloaded();
-					RepositoryReader.this.showRepositoryDataHelper
+					RepositoryReader.this.beanFactory.getBean(
+							ShowRepositoryDataHelper.class)
 							.showRepositoryAudioFileNumber(
 									RepositoryReader.this.repository.getFiles()
 											.size(),
@@ -368,7 +360,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	/**
 	 * Refreshes oldRepository
 	 */
-	void refresh(IRepository oldRepository) {
+	void refresh(final IRepository oldRepository) {
 		Logger.info("Refreshing repository");
 		this.filesLoaded = 0;
 		this.repository = new Repository(oldRepository.getRepositoryFolders(),
@@ -461,7 +453,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 				this.repository = new VoidRepository();
 			}
 			getRepositoryProgressDialog().hideDialog();
-			beanFactory.getBean(RepositoryLoadedActions.class)
+			this.beanFactory.getBean(RepositoryLoadedActions.class)
 					.repositoryReadCompleted(this.repository);
 			this.currentLoader = null;
 		}

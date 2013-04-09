@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
@@ -39,23 +40,22 @@ public class PlayListsChecker {
 
 	private PlayListsContainer playListsContainer;
 
-	private ILocalAudioObjectFilter localAudioObjectFilter;
-
 	private IFileManager fileManager;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param fileManager
 	 */
-	public void setFileManager(IFileManager fileManager) {
+	public void setFileManager(final IFileManager fileManager) {
 		this.fileManager = fileManager;
-	}
-
-	/**
-	 * @param localAudioObjectFilter
-	 */
-	public void setLocalAudioObjectFilter(
-			final ILocalAudioObjectFilter localAudioObjectFilter) {
-		this.localAudioObjectFilter = localAudioObjectFilter;
 	}
 
 	/**
@@ -71,9 +71,11 @@ public class PlayListsChecker {
 	 */
 	public List<ILocalAudioObject> checkPlayLists() {
 		List<ILocalAudioObject> audioObjectsNotFound = new ArrayList<ILocalAudioObject>();
-		for (int i = 0; i < playListsContainer.getPlayListsCount(); i++) {
-			IPlayList playList = playListsContainer.getPlayListAt(i);
-			for (ILocalAudioObject audioObject : localAudioObjectFilter
+		ILocalAudioObjectFilter filter = this.beanFactory
+				.getBean(ILocalAudioObjectFilter.class);
+		for (int i = 0; i < this.playListsContainer.getPlayListsCount(); i++) {
+			IPlayList playList = this.playListsContainer.getPlayListAt(i);
+			for (ILocalAudioObject audioObject : filter
 					.getLocalAudioObjects(playList.getAudioObjectsList())) {
 				if (!exists(audioObject)) {
 					audioObjectsNotFound.add(audioObject);
@@ -86,7 +88,7 @@ public class PlayListsChecker {
 	private boolean exists(final IAudioObject audioObject) {
 		// Currently only checks for local audio objects
 		if (audioObject instanceof ILocalAudioObject) {
-			return fileManager.fileExists((ILocalAudioObject) audioObject);
+			return this.fileManager.fileExists((ILocalAudioObject) audioObject);
 		}
 		return true;
 	}

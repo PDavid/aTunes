@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -43,23 +44,22 @@ public class OpenFolderFromNavigatorTableAction extends
 
 	private IDesktop desktop;
 
-	private ILocalAudioObjectFilter localAudioObjectFilter;
-
 	private IFileManager fileManager;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param fileManager
 	 */
-	public void setFileManager(IFileManager fileManager) {
+	public void setFileManager(final IFileManager fileManager) {
 		this.fileManager = fileManager;
-	}
-
-	/**
-	 * @param localAudioObjectFilter
-	 */
-	public void setLocalAudioObjectFilter(
-			final ILocalAudioObjectFilter localAudioObjectFilter) {
-		this.localAudioObjectFilter = localAudioObjectFilter;
 	}
 
 	/**
@@ -79,8 +79,8 @@ public class OpenFolderFromNavigatorTableAction extends
 	@Override
 	public boolean isEnabledForNavigationTableSelection(
 			final List<IAudioObject> selection) {
-		return sameParentFile(localAudioObjectFilter
-				.getLocalAudioObjects(selection));
+		return sameParentFile(this.beanFactory.getBean(
+				ILocalAudioObjectFilter.class).getLocalAudioObjects(selection));
 	}
 
 	/**
@@ -91,13 +91,13 @@ public class OpenFolderFromNavigatorTableAction extends
 	 * @return if a collection of files have the same parent file
 	 */
 	private boolean sameParentFile(final List<ILocalAudioObject> c) {
-		return fileManager.getFolders(c).size() == 1;
+		return this.fileManager.getFolders(c).size() == 1;
 	}
 
 	@Override
 	protected void executeAction(final List<ILocalAudioObject> objects) {
-		for (File folder : fileManager.getFolders(objects)) {
-			desktop.openFile(folder);
+		for (File folder : this.fileManager.getFolders(objects)) {
+			this.desktop.openFile(folder);
 		}
 	}
 }
