@@ -36,7 +36,6 @@ import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -113,8 +112,6 @@ public final class SearchHandler extends AbstractHandler implements
 
 	private SearchResultsController searchResultsController;
 
-	private IAudioObjectComparator audioObjectComparator;
-
 	private IStateCore stateCore;
 
 	private DeviceSearchableObject deviceSearchableObject;
@@ -162,14 +159,6 @@ public final class SearchHandler extends AbstractHandler implements
 	}
 
 	/**
-	 * @param audioObjectComparator
-	 */
-	public void setAudioObjectComparator(
-			final IAudioObjectComparator audioObjectComparator) {
-		this.audioObjectComparator = audioObjectComparator;
-	}
-
-	/**
 	 * Gets the custom search controller.
 	 * 
 	 * @return the custom search controller
@@ -195,8 +184,7 @@ public final class SearchHandler extends AbstractHandler implements
 					getBeanFactory(),
 					this.dialogFactory.newDialog(SearchResultsDialog.class),
 					getBean(IPlayListHandler.class),
-					getBean(ILookAndFeelManager.class),
-					this.audioObjectComparator);
+					getBean(ILookAndFeelManager.class));
 		}
 		return this.searchResultsController;
 	}

@@ -35,6 +35,7 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -58,11 +59,18 @@ public class InternalImportProcessor {
 
 	private IPlayListHandler playListHandler;
 
-	private IAudioObjectComparator audioObjectComparator;
-
 	private IDialogFactory dialogFactory;
 
 	private IRepositoryHandler repositoryHandler;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param navigationHandler
@@ -83,14 +91,6 @@ public class InternalImportProcessor {
 	 */
 	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
-	}
-
-	/**
-	 * @param audioObjectComparator
-	 */
-	public void setAudioObjectComparator(
-			final IAudioObjectComparator audioObjectComparator) {
-		this.audioObjectComparator = audioObjectComparator;
 	}
 
 	/**
@@ -167,7 +167,8 @@ public class InternalImportProcessor {
 				.getDropPoint());
 
 		if (!audioObjectsToAdd.isEmpty()) {
-			audioObjectComparator.sort(audioObjectsToAdd);
+			beanFactory.getBean(IAudioObjectComparator.class).sort(
+					audioObjectsToAdd);
 			playListHandler.addToVisiblePlayList(dropRow, audioObjectsToAdd);
 			// Keep selected rows: if drop row is the bottom of play list (-1)
 			// then select last row

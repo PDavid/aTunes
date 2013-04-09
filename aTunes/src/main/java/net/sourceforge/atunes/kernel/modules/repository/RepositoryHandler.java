@@ -65,8 +65,6 @@ import net.sourceforge.atunes.utils.StringUtils;
 public final class RepositoryHandler extends AbstractHandler implements
 		IRepositoryHandler {
 
-	private RepositoryReader repositoryReader;
-
 	private boolean caseSensitiveTrees;
 
 	private boolean storeRatingInFile;
@@ -106,11 +104,11 @@ public final class RepositoryHandler extends AbstractHandler implements
 
 	private List<File> foldersSelectedFromPreferences;
 
-	private RepositoryAddService repositoryAddService;
-
 	private IUnknownObjectChecker unknownObjectChecker;
 
 	private IFileManager fileManager;
+
+	private RepositoryReader currentRepositoryReader;
 
 	/**
 	 * @param fileManager
@@ -125,14 +123,6 @@ public final class RepositoryHandler extends AbstractHandler implements
 	public void setUnknownObjectChecker(
 			final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
-	}
-
-	/**
-	 * @param repositoryAddService
-	 */
-	public void setRepositoryAddService(
-			final RepositoryAddService repositoryAddService) {
-		this.repositoryAddService = repositoryAddService;
 	}
 
 	/**
@@ -203,13 +193,6 @@ public final class RepositoryHandler extends AbstractHandler implements
 	}
 
 	/**
-	 * @param repositoryReader
-	 */
-	public void setRepositoryReader(final RepositoryReader repositoryReader) {
-		this.repositoryReader = repositoryReader;
-	}
-
-	/**
 	 * @param favoritesHandler
 	 */
 	public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
@@ -249,7 +232,8 @@ public final class RepositoryHandler extends AbstractHandler implements
 	public void applicationStateChanged() {
 		// User changed repository folders
 		if (this.foldersSelectedFromPreferences != null) {
-			this.repositoryReader
+			currentRepositoryReader = getBean(RepositoryReader.class);
+			currentRepositoryReader
 					.newRepositoryWithFolders(this.foldersSelectedFromPreferences);
 			this.foldersSelectedFromPreferences = null;
 		} else if (checkPropertiesToTrackForReload()) {
@@ -444,7 +428,10 @@ public final class RepositoryHandler extends AbstractHandler implements
 
 	@Override
 	public void notifyCancel() {
-		this.repositoryReader.notifyCancel();
+		if (currentRepositoryReader != null) {
+			currentRepositoryReader.notifyCancel();
+		}
+		currentRepositoryReader = null;
 	}
 
 	@Override
@@ -464,7 +451,8 @@ public final class RepositoryHandler extends AbstractHandler implements
 	@Override
 	public void refreshRepository() {
 		if (!isRepositoryVoid()) {
-			this.repositoryReader.refresh();
+			currentRepositoryReader = getBean(RepositoryReader.class);
+			this.currentRepositoryReader.refresh(this.repository);
 		}
 	}
 
@@ -473,7 +461,8 @@ public final class RepositoryHandler extends AbstractHandler implements
 		if (!isRepositoryVoid()) {
 			dialogFactory.newDialog(IMessageDialog.class).showMessage(
 					I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
-			this.repositoryReader
+			currentRepositoryReader = getBean(RepositoryReader.class);
+			this.currentRepositoryReader
 					.newRepositoryWithFoldersReloaded(this.repository
 							.getRepositoryFolders());
 		}
@@ -552,7 +541,8 @@ public final class RepositoryHandler extends AbstractHandler implements
 
 	@Override
 	public boolean addFolderToRepository() {
-		return this.repositoryReader.addFolderToRepository();
+		currentRepositoryReader = getBean(RepositoryReader.class);
+		return this.currentRepositoryReader.addFolderToRepository();
 	}
 
 	@Override
@@ -571,7 +561,9 @@ public final class RepositoryHandler extends AbstractHandler implements
 
 	@Override
 	public void doInBackground() {
-		this.repositoryReader.doInBackground();
+		if (currentRepositoryReader != null) {
+			currentRepositoryReader.doInBackground();
+		}
 	}
 
 	/**
@@ -581,7 +573,8 @@ public final class RepositoryHandler extends AbstractHandler implements
 	 * @return
 	 */
 	protected boolean isLoaderWorking() {
-		return this.repositoryReader.isWorking();
+		return currentRepositoryReader != null
+				&& currentRepositoryReader.isWorking();
 	}
 
 	@Override
@@ -724,8 +717,9 @@ public final class RepositoryHandler extends AbstractHandler implements
 	public void folderMoved(final IFolder sourceFolder, final File destination) {
 		startTransaction();
 		removeFoldersInsideTransaction(Collections.singletonList(sourceFolder));
-		this.repositoryAddService.addFoldersToRepositoryInsideTransaction(
-				this.repository, Collections.singletonList(destination));
+		getBean(RepositoryAddService.class)
+				.addFoldersToRepositoryInsideTransaction(this.repository,
+						Collections.singletonList(destination));
 		this.showRepositoryDataHelper.showRepositoryAudioFileNumber(
 				this.repository.getFiles().size(),
 				this.repository.getTotalSizeInBytes(),
@@ -742,5 +736,12 @@ public final class RepositoryHandler extends AbstractHandler implements
 			}
 		}
 		return ao;
+	}
+
+	/**
+	 * Called when repository read
+	 */
+	void notifyRepositoryRead() {
+		this.currentRepositoryReader = null;
 	}
 }

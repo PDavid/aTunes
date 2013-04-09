@@ -27,6 +27,7 @@ import java.util.List;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -42,7 +43,8 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverSelectedObjects<IAudioObject> {
+public class CreatePlayListWithSelectedArtistsAction extends
+		AbstractActionOverSelectedObjects<IAudioObject> {
 
 	private static final long serialVersionUID = 242525309967706255L;
 
@@ -50,9 +52,16 @@ public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverS
 
 	private IPlayListHandler playListHandler;
 
-	private IAudioObjectComparator audioObjectComparator;
-
 	private IUnknownObjectChecker unknownObjectChecker;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param unknownObjectChecker
@@ -60,13 +69,6 @@ public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverS
 	public void setUnknownObjectChecker(
 			final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
-	}
-
-	/**
-	 * @param audioObjectComparator
-	 */
-	public void setAudioObjectComparator(final IAudioObjectComparator audioObjectComparator) {
-		this.audioObjectComparator = audioObjectComparator;
 	}
 
 	/**
@@ -88,7 +90,8 @@ public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverS
 	 */
 	public CreatePlayListWithSelectedArtistsAction() {
 		super(I18nUtils.getString("SET_ARTIST_AS_PLAYLIST"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("ARTIST_BUTTON_TOOLTIP"));
+		putValue(SHORT_DESCRIPTION,
+				I18nUtils.getString("ARTIST_BUTTON_TOOLTIP"));
 		setEnabled(false);
 	}
 
@@ -113,10 +116,14 @@ public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverS
 	 */
 	private void createPlayLists(final List<IArtist> selectedArtists) {
 		for (IArtist artist : selectedArtists) {
-			List<ILocalAudioObject> audioObjects = repositoryHandler.getAudioFilesForArtists(Collections.singletonMap(artist.getName(), artist));
-			audioObjectComparator.sort(audioObjects);
+			List<ILocalAudioObject> audioObjects = repositoryHandler
+					.getAudioFilesForArtists(Collections.singletonMap(
+							artist.getName(), artist));
+			beanFactory.getBean(IAudioObjectComparator.class)
+					.sort(audioObjects);
 
-			// Create a new play list with artist as name and audio objects selected
+			// Create a new play list with artist as name and audio objects
+			// selected
 			playListHandler.newPlayList(artist.getName(), audioObjects);
 		}
 	}

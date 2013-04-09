@@ -27,6 +27,7 @@ import java.util.concurrent.Callable;
 
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -54,11 +55,18 @@ public class AddFilesToRepositoryTask {
 
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
 
-	private RepositoryAddService repositoryAddService;
-
 	private IPlayListHandler playListHandler;
 
 	private INavigationHandler navigationHandler;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param navigationHandler
@@ -72,14 +80,6 @@ public class AddFilesToRepositoryTask {
 	 */
 	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
-	}
-
-	/**
-	 * @param repositoryAddService
-	 */
-	public void setRepositoryAddService(
-			final RepositoryAddService repositoryAddService) {
-		this.repositoryAddService = repositoryAddService;
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class AddFilesToRepositoryTask {
 
 			@Override
 			public Void call() {
-				AddFilesToRepositoryTask.this.repositoryAddService
+				beanFactory.getBean(RepositoryAddService.class)
 						.addFilesToRepository(repository, files);
 				return null;
 			}

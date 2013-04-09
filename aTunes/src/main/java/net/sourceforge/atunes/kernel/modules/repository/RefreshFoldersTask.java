@@ -25,6 +25,7 @@ import java.util.concurrent.Callable;
 
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IRepository;
@@ -39,15 +40,20 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class RefreshFoldersTask {
 
-	private RepositoryReader repositoryReader;
-
 	private FolderRefresher folderRefresher;
 
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
 
 	private IFrame frame;
 
-	private RepositoryActionsHelper repositoryActions;
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param frame
@@ -57,26 +63,11 @@ public final class RefreshFoldersTask {
 	}
 
 	/**
-	 * @param repositoryActions
-	 */
-	public void setRepositoryActions(
-			final RepositoryActionsHelper repositoryActions) {
-		this.repositoryActions = repositoryActions;
-	}
-
-	/**
 	 * @param backgroundWorkerFactory
 	 */
 	public void setBackgroundWorkerFactory(
 			final IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
-	}
-
-	/**
-	 * @param repositoryReader
-	 */
-	public void setRepositoryReader(final RepositoryReader repositoryReader) {
-		this.repositoryReader = repositoryReader;
 	}
 
 	/**
@@ -100,7 +91,8 @@ public final class RefreshFoldersTask {
 			public void run() {
 				frame.showProgressBar(true, StringUtils.getString(
 						I18nUtils.getString("REFRESHING"), "..."));
-				repositoryActions.disableAllRepositoryActions();
+				beanFactory.getBean(RepositoryActionsHelper.class)
+						.disableAllRepositoryActions();
 			}
 		});
 		worker.setBackgroundActions(new Callable<Void>() {
@@ -115,7 +107,8 @@ public final class RefreshFoldersTask {
 
 			@Override
 			public void call(final Void result) {
-				repositoryReader.notifyFinishRefresh(null);
+				beanFactory.getBean(RepositoryLoadedActions.class)
+						.repositoryReadCompleted(repository);
 			}
 		});
 		worker.execute();

@@ -49,8 +49,6 @@ public final class SmartPlayListHandler extends AbstractHandler implements
 	private IStatisticsHandler statisticsHandler;
 	private IPlayListHandler playListHandler;
 
-	private IAudioObjectComparator audioObjectComparator;
-
 	private IRepositoryHandler repositoryHandler;
 
 	/**
@@ -58,14 +56,6 @@ public final class SmartPlayListHandler extends AbstractHandler implements
 	 */
 	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
-	}
-
-	/**
-	 * @param audioObjectComparator
-	 */
-	public void setAudioObjectComparator(
-			final IAudioObjectComparator audioObjectComparator) {
-		this.audioObjectComparator = audioObjectComparator;
 	}
 
 	/**
@@ -98,7 +88,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements
 		}
 
 		// Sort
-		audioObjectComparator.sort(songsSelected);
+		getBean(IAudioObjectComparator.class).sort(songsSelected);
 
 		// Add to playlist
 		playListHandler.addToVisiblePlayList(songsSelected);
@@ -118,7 +108,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements
 		}
 
 		// Sort
-		audioObjectComparator.sort(songsSelected);
+		getBean(IAudioObjectComparator.class).sort(songsSelected);
 
 		// Add to playlist
 		playListHandler.addToVisiblePlayList(songsSelected);
@@ -153,7 +143,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements
 		}
 
 		// Sort
-		audioObjectComparator.sort(songsSelected);
+		getBean(IAudioObjectComparator.class).sort(songsSelected);
 
 		// Add to playlist
 		playListHandler.addToVisiblePlayList(songsSelected);
@@ -166,7 +156,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements
 				.getMostPlayedAudioObjects(n);
 
 		// Sort
-		audioObjectComparator.sort(songsSelected);
+		getBean(IAudioObjectComparator.class).sort(songsSelected);
 
 		// Add to playlist
 		playListHandler.addToVisiblePlayList(songsSelected);
@@ -184,7 +174,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements
 		if (count > 0) {
 			List<IAudioObject> audioObjects = new ArrayList<IAudioObject>(
 					unplayedSongs.subList(0, count));
-			audioObjectComparator.sort(audioObjects);
+			getBean(IAudioObjectComparator.class).sort(audioObjects);
 			playListHandler.addToVisiblePlayList(audioObjects);
 		}
 	}

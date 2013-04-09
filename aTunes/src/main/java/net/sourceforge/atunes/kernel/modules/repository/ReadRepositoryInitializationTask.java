@@ -51,10 +51,8 @@ public final class ReadRepositoryInitializationTask extends
 
 	@Override
 	public void setData(final IBeanFactory beanFactory) {
-		RepositoryReader reader = beanFactory.getBean(RepositoryReader.class);
-		reader.setRepositoryRetrievedFromCache(this.repository);
-		reader.testRepositoryRetrievedFromCache();
-		reader.applyRepositoryFromCache();
+		beanFactory.getBean(RepositoryFromCacheProcessor.class).setRepository(
+				this.repository);
 		beanFactory.getBean(ISearchHandler.class).registerSearchableObject(
 				beanFactory.getBean("repositorySearchableObject",
 						ISearchableObject.class));

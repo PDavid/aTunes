@@ -4,8 +4,15 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	default-autowire="byName" default-lazy-init="true">
 	
-	<bean id="repositoryReader" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryReader"/>
-	<bean id="repositoryActions" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryActionsHelper"/>
+	<bean id="repositoryFromCacheProcessor" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryFromCacheProcessor" scope="prototype"/>
+	<bean id="repositoryLoadedActions" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryLoadedActions" scope="prototype"/>
+	<bean id="repositoryReader" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryReader" scope="prototype"/>
+	<bean id="repositoryActions" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryActionsHelper" scope="prototype"/>
+	<bean id="repositoryAddService" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryAddService" scope="prototype"/>
+	
+	<bean id="audioObjectComparator" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator" scope="prototype"/>
+	
+	
 	<bean id="showRepositoryDataHelper" class="net.sourceforge.atunes.kernel.modules.repository.ShowRepositoryDataHelper"/>
 	<bean id="voidRepository" class="net.sourceforge.atunes.kernel.modules.repository.VoidRepository" scope="prototype"/>
 	<bean id="repositorySearchableObject" class="net.sourceforge.atunes.kernel.modules.search.RepositorySearchableObject"/>
@@ -19,13 +26,11 @@
 	<bean id="validLocalAudioObjectFileFilter" class="net.sourceforge.atunes.kernel.modules.repository.ValidLocalAudioObjectFileFilter"/>
 	
 	<bean id="audioObjectImageLocator" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectImageLocator"/>
-	<bean id="audioObjectComparator" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator"/>
 	<bean id="audioObjectDuplicateFinder" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectDuplicateFinder"/>
 	
 	<bean id="folderRefresher" class="net.sourceforge.atunes.kernel.modules.repository.FolderRefresher"/>
 	<bean id="localAudioObjectRefresher" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectRefresher"/>
 	
-	<bean id="repositoryAddService" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryAddService"/>
 	<bean id="repositoryRemover" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryRemover"/>
 
 	<bean id="addFilesTask" class="net.sourceforge.atunes.kernel.modules.repository.AddFilesToRepositoryTask" scope="prototype"/>

@@ -25,6 +25,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryTestMockUtils;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -54,7 +55,11 @@ public class SmartPlayListHandlerTest {
 
 		sut.setRepositoryHandler(repositoryHandler);
 
-		sut.setAudioObjectComparator(Mockito.mock(IAudioObjectComparator.class));
+		IBeanFactory beanFactory = Mockito.mock(IBeanFactory.class);
+		Mockito.when(beanFactory.getBean(IAudioObjectComparator.class))
+				.thenReturn(Mockito.mock(IAudioObjectComparator.class));
+		sut.setBeanFactory(beanFactory);
+
 		playListHandler = Mockito.mock(IPlayListHandler.class);
 		sut.setPlayListHandler(playListHandler);
 	}

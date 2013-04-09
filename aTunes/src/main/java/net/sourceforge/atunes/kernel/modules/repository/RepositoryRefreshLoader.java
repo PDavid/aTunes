@@ -25,6 +25,7 @@ import java.util.concurrent.Callable;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -41,14 +42,13 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 
 	private IFrame frame;
 
-	private RepositoryActionsHelper repositoryActions;
+	private IBeanFactory beanFactory;
 
 	/**
-	 * @param repositoryActions
+	 * @param beanFactory
 	 */
-	public void setRepositoryActions(
-			final RepositoryActionsHelper repositoryActions) {
-		this.repositoryActions = repositoryActions;
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -76,7 +76,8 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 				String text = StringUtils.getString(
 						I18nUtils.getString("REFRESHING"), "...");
 				frame.showProgressBar(true, text);
-				repositoryActions.disableAllRepositoryActions();
+				beanFactory.getBean(RepositoryActionsHelper.class)
+						.disableAllRepositoryActions();
 			}
 		});
 		worker.setBackgroundActions(new Callable<Void>() {
