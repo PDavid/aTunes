@@ -46,8 +46,9 @@ import de.umass.lastfm.scrobble.ScrobbleResult;
 
 /**
  * Last.fm services related to user
+ * 
  * @author alex
- *
+ * 
  */
 public class LastFmUserServices implements ApplicationContextAware {
 
@@ -60,29 +61,32 @@ public class LastFmUserServices implements ApplicationContextAware {
 
 	private IStateContext stateContext;
 
-	private LastFmCache lastFmCache;
-
 	private IUnknownObjectChecker unknownObjectChecker;
 
 	private ApplicationContext context;
 
+	private LastFmSubmissionData lastFmSubmissionData;
+
+	/**
+	 * @param lastFmSubmissionData
+	 */
+	public void setLastFmSubmissionData(
+			final LastFmSubmissionData lastFmSubmissionData) {
+		this.lastFmSubmissionData = lastFmSubmissionData;
+	}
+
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	@Override
-	public void setApplicationContext(final ApplicationContext applicationContext) {
+	public void setApplicationContext(
+			final ApplicationContext applicationContext) {
 		this.context = applicationContext;
-	}
-
-	/**
-	 * @param lastFmCache
-	 */
-	public void setLastFmCache(final LastFmCache lastFmCache) {
-		this.lastFmCache = lastFmCache;
 	}
 
 	/**
@@ -113,16 +117,22 @@ public class LastFmUserServices implements ApplicationContextAware {
 	 */
 	void addBannedSong(final IAudioObject song) {
 		// Check all necessary conditions to submit request to Last.fm
-		if (!lastFmLogin.checkCredentials() || !checkAudioFile(song) || !checkArtist(song)) {
+		if (!this.lastFmLogin.checkCredentials() || !checkAudioFile(song)
+				|| !checkArtist(song)) {
 			return;
 		}
 
-		Logger.info(StringUtils.getString("Trying to submit banned song to Last.fm: ", song.getArtist(unknownObjectChecker), " - ", song.getTitle()));
-		Result r = Track.ban(song.getArtist(unknownObjectChecker), song.getTitle(), lastFmLogin.getSession());
+		Logger.info(StringUtils.getString(
+				"Trying to submit banned song to Last.fm: ",
+				song.getArtist(this.unknownObjectChecker), " - ",
+				song.getTitle()));
+		Result r = Track.ban(song.getArtist(this.unknownObjectChecker),
+				song.getTitle(), this.lastFmLogin.getSession());
 		if (r.getStatus().equals(Status.OK)) {
 			Logger.info(StringUtils.getString("Banned song submitted OK"));
 		} else {
-			Logger.error(StringUtils.getString("Error while submitting banned song"));
+			Logger.error(StringUtils
+					.getString("Error while submitting banned song"));
 			// TODO: Add a cache to submit
 		}
 	}
@@ -134,16 +144,22 @@ public class LastFmUserServices implements ApplicationContextAware {
 	 */
 	void addLovedSong(final IAudioObject song) {
 		// Check all necessary conditions to submit request to Last.fm
-		if (!lastFmLogin.checkCredentials() || !checkAudioFile(song) || !checkArtist(song)) {
+		if (!this.lastFmLogin.checkCredentials() || !checkAudioFile(song)
+				|| !checkArtist(song)) {
 			return;
 		}
 
-		Logger.info(StringUtils.getString("Trying to submit loved song to Last.fm: ", song.getArtist(unknownObjectChecker), " - ", song.getTitle()));
-		Result r = Track.love(song.getArtist(unknownObjectChecker), song.getTitle(), lastFmLogin.getSession());
+		Logger.info(StringUtils.getString(
+				"Trying to submit loved song to Last.fm: ",
+				song.getArtist(this.unknownObjectChecker), " - ",
+				song.getTitle()));
+		Result r = Track.love(song.getArtist(this.unknownObjectChecker),
+				song.getTitle(), this.lastFmLogin.getSession());
 		if (r.getStatus().equals(Status.OK)) {
 			Logger.info(StringUtils.getString("Loved song submitted OK"));
 		} else {
-			Logger.error(StringUtils.getString("Error while submitting loved song"));
+			Logger.error(StringUtils
+					.getString("Error while submitting loved song"));
 			// TODO: Add a cache to submit
 		}
 	}
@@ -155,12 +171,16 @@ public class LastFmUserServices implements ApplicationContextAware {
 	 */
 	void removeLovedSong(final IAudioObject song) {
 		// Check all necessary conditions to submit request to Last.fm
-		if (!lastFmLogin.checkCredentials() || !checkAudioFile(song) || !checkArtist(song)) {
+		if (!this.lastFmLogin.checkCredentials() || !checkAudioFile(song)
+				|| !checkArtist(song)) {
 			return;
 		}
 
-		Logger.info(StringUtils.getString("Trying to unlove song to Last.fm: ", song.getArtist(unknownObjectChecker), " - ", song.getTitle()));
-		Result r = Track.unlove(song.getArtist(unknownObjectChecker), song.getTitle(), lastFmLogin.getSession());
+		Logger.info(StringUtils.getString("Trying to unlove song to Last.fm: ",
+				song.getArtist(this.unknownObjectChecker), " - ",
+				song.getTitle()));
+		Result r = Track.unlove(song.getArtist(this.unknownObjectChecker),
+				song.getTitle(), this.lastFmLogin.getSession());
 		if (r.getStatus().equals(Status.OK)) {
 			Logger.info(StringUtils.getString("Successfully unloved song"));
 		} else {
@@ -179,9 +199,11 @@ public class LastFmUserServices implements ApplicationContextAware {
 	 *            seconds the audio file has already played
 	 * @throws ScrobblerException
 	 */
-	void submit(final IAudioObject file, final long secondsPlayed) throws ScrobblerException {
+	void submit(final IAudioObject file, final long secondsPlayed)
+			throws ScrobblerException {
 		// Do all necessary checks
-		if (!lastFmLogin.checkCredentials() || !checkArtist(file) || !checkTitle(file) || !checkDuration(file)) {
+		if (!this.lastFmLogin.checkCredentials() || !checkArtist(file)
+				|| !checkTitle(file) || !checkDuration(file)) {
 			return;
 		}
 
@@ -189,12 +211,17 @@ public class LastFmUserServices implements ApplicationContextAware {
 		long startedToPlay = System.currentTimeMillis() / 1000 - secondsPlayed;
 
 		Logger.info("Trying to submit song to Last.fm");
-		ScrobbleResult result = Track.scrobble(file.getArtist(unknownObjectChecker), file.getTitle(), (int) startedToPlay, lastFmLogin.getSession());
+		ScrobbleResult result = Track.scrobble(
+				file.getArtist(this.unknownObjectChecker), file.getTitle(),
+				(int) startedToPlay, this.lastFmLogin.getSession());
 
 		if (result.isSuccessful() && !result.isIgnored()) {
 			Logger.info("Song submitted to Last.fm");
 		} else {
-			lastFmCache.addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(file.getArtist(unknownObjectChecker), file.getTitle(), (int) startedToPlay));
+			this.lastFmSubmissionData
+					.addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(
+							file.getArtist(this.unknownObjectChecker), file
+									.getTitle(), (int) startedToPlay));
 			throw new ScrobblerException(result.getStatus().toString());
 		}
 	}
@@ -219,14 +246,18 @@ public class LastFmUserServices implements ApplicationContextAware {
 	 *            audio file
 	 * @throws ScrobblerException
 	 */
-	void submitNowPlayingInfo(final ILocalAudioObject file) throws ScrobblerException {
+	void submitNowPlayingInfo(final ILocalAudioObject file)
+			throws ScrobblerException {
 		// Do all necessary checks
-		if (!lastFmLogin.checkCredentials() || !checkArtist(file) || !checkTitle(file)) {
+		if (!this.lastFmLogin.checkCredentials() || !checkArtist(file)
+				|| !checkTitle(file)) {
 			return;
 		}
 
 		Logger.info("Trying to submit now playing info to Last.fm");
-		ScrobbleResult status = Track.updateNowPlaying(file.getArtist(unknownObjectChecker), file.getTitle(), lastFmLogin.getSession());
+		ScrobbleResult status = Track.updateNowPlaying(
+				file.getArtist(this.unknownObjectChecker), file.getTitle(),
+				this.lastFmLogin.getSession());
 		if (status.isSuccessful() && !status.isIgnored()) {
 			Logger.info("Now playing info submitted to Last.fm");
 		} else {
@@ -240,22 +271,28 @@ public class LastFmUserServices implements ApplicationContextAware {
 	 * @return a list of loved tracks from user profile
 	 */
 	List<ILovedTrack> getLovedTracks() {
-		if (!StringUtils.isEmpty(stateContext.getLastFmUser())) {
+		if (!StringUtils.isEmpty(this.stateContext.getLastFmUser())) {
 			List<ILovedTrack> lovedTracks = new ArrayList<ILovedTrack>();
 
 			int page = 1;
 			PaginatedResult<Track> paginatedResult = null;
 			do {
-				paginatedResult = User.getLovedTracks(stateContext.getLastFmUser(), page, lastFmAPIKey.getApiKey());
-				if (paginatedResult != null && paginatedResult.getPageResults() != null) {
+				paginatedResult = User.getLovedTracks(
+						this.stateContext.getLastFmUser(), page,
+						this.lastFmAPIKey.getApiKey());
+				if (paginatedResult != null
+						&& paginatedResult.getPageResults() != null) {
 					for (Track t : paginatedResult.getPageResults()) {
-						lovedTracks.add(new LastFmLovedTrack(t.getArtist(), t.getName()));
+						lovedTracks.add(new LastFmLovedTrack(t.getArtist(), t
+								.getName()));
 					}
 				}
 				page++;
-			} while (paginatedResult != null && page <= paginatedResult.getTotalPages());
+			} while (paginatedResult != null
+					&& page <= paginatedResult.getTotalPages());
 
-			Logger.info("Returned ", lovedTracks.size(), " loved tracks from last.fm");
+			Logger.info("Returned ", lovedTracks.size(),
+					" loved tracks from last.fm");
 			return lovedTracks;
 		}
 		return Collections.emptyList();
@@ -268,7 +305,8 @@ public class LastFmUserServices implements ApplicationContextAware {
 	 * @return
 	 */
 	private boolean checkArtist(final IAudioObject ao) {
-		if (unknownObjectChecker.isUnknownArtist(ao.getArtist(unknownObjectChecker))) {
+		if (this.unknownObjectChecker.isUnknownArtist(ao
+				.getArtist(this.unknownObjectChecker))) {
 			Logger.debug("Don't submit to Last.fm: Unknown artist");
 			return false;
 		}
@@ -297,7 +335,8 @@ public class LastFmUserServices implements ApplicationContextAware {
 	 */
 	private boolean checkDuration(final IAudioObject ao) {
 		if (ao.getDuration() < MIN_DURATION_TO_SUBMIT) {
-			Logger.debug("Don't submit to Last.fm: Lenght < ", MIN_DURATION_TO_SUBMIT);
+			Logger.debug("Don't submit to Last.fm: Lenght < ",
+					MIN_DURATION_TO_SUBMIT);
 			return false;
 		}
 		return true;
@@ -305,10 +344,11 @@ public class LastFmUserServices implements ApplicationContextAware {
 
 	/**
 	 * Submits Last.fm cache
+	 * 
 	 * @param service
 	 */
 	void submitCacheToLastFm(final ITaskService service) {
-		if (stateContext.isLastFmEnabled()) {
+		if (this.stateContext.isLastFmEnabled()) {
 			service.submitNow("Submit Cache to Last.fm", new Runnable() {
 
 				@Override
@@ -334,28 +374,33 @@ public class LastFmUserServices implements ApplicationContextAware {
 	 */
 	private void submitCache() throws ScrobblerException {
 		// Do all necessary checks
-		if (!lastFmLogin.checkCredentials()) {
+		if (!this.lastFmLogin.checkCredentials()) {
 			return;
 		}
 
-		List<net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData> collectionWithSubmissionData = lastFmCache.getSubmissionData();
+		List<net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData> collectionWithSubmissionData = this.lastFmSubmissionData
+				.getSubmissionData();
 		if (!collectionWithSubmissionData.isEmpty()) {
 			// More than MAX_SUBMISSIONS submissions at once are not allowed
 			int size = collectionWithSubmissionData.size();
 			if (size > MAX_SUBMISSIONS) {
-				collectionWithSubmissionData = collectionWithSubmissionData.subList(size - MAX_SUBMISSIONS, size);
+				collectionWithSubmissionData = collectionWithSubmissionData
+						.subList(size - MAX_SUBMISSIONS, size);
 			}
 
 			Logger.info("Trying to submit cache to Last.fm");
 			ScrobbleResult result = null;
 			boolean ok = true;
 			for (net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData submissionData : collectionWithSubmissionData) {
-				result = Track.scrobble(submissionData.getArtist(), submissionData.getTitle(), submissionData.getStartTime(), lastFmLogin.getSession());
+				result = Track.scrobble(submissionData.getArtist(),
+						submissionData.getTitle(),
+						submissionData.getStartTime(),
+						this.lastFmLogin.getSession());
 				ok = ok || result.isSuccessful();
 			}
 
 			if (ok) {
-				lastFmCache.removeSubmissionData();
+				this.lastFmSubmissionData.removeSubmissionData();
 				Logger.info("Cache submitted to Last.fm");
 			} else {
 				throw new ScrobblerException(result.getStatus().toString());
@@ -371,9 +416,11 @@ public class LastFmUserServices implements ApplicationContextAware {
 	 * @param secondsPlayed
 	 * @param taskService
 	 */
-	void submitToLastFm(final IAudioObject audioFile, final long secondsPlayed, final ITaskService taskService) {
-		if (stateContext.isLastFmEnabled()) {
-			SubmitToLastFmRunnable runnable = context.getBean(SubmitToLastFmRunnable.class);
+	void submitToLastFm(final IAudioObject audioFile, final long secondsPlayed,
+			final ITaskService taskService) {
+		if (this.stateContext.isLastFmEnabled()) {
+			SubmitToLastFmRunnable runnable = this.context
+					.getBean(SubmitToLastFmRunnable.class);
 			runnable.setSecondsPlayed(secondsPlayed);
 			runnable.setAudioFile(audioFile);
 			taskService.submitNow("Submit to Last.fm", runnable);
@@ -386,9 +433,11 @@ public class LastFmUserServices implements ApplicationContextAware {
 	 * @param audioFile
 	 *            the file
 	 */
-	void submitNowPlayingInfoToLastFm(final ILocalAudioObject audioFile, final ITaskService taskService) {
-		if (stateContext.isLastFmEnabled()) {
-			SubmitNowPlayingInfoRunnable runnable = context.getBean(SubmitNowPlayingInfoRunnable.class);
+	void submitNowPlayingInfoToLastFm(final ILocalAudioObject audioFile,
+			final ITaskService taskService) {
+		if (this.stateContext.isLastFmEnabled()) {
+			SubmitNowPlayingInfoRunnable runnable = this.context
+					.getBean(SubmitNowPlayingInfoRunnable.class);
 			runnable.setAudioFile(audioFile);
 			taskService.submitNow("Submit Now Playing to Last.fm", runnable);
 		}

@@ -7,7 +7,6 @@
 
 	<bean id="lastFmCache" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmCache">
 		<constructor-arg ref="osManager"/>
-		<constructor-arg ref="xmlSerializerService"/>
 	</bean>
 	<bean id="lastFmService" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService" init-method="initialize"/>
 	<bean id="lastFmAPIKey" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmAPIKey"/>
@@ -18,6 +17,7 @@
 	<bean id="lastFmSongServices" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmSongServices"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmitNowPlayingInfoRunnable" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmitToLastFmRunnable" scope="prototype"/>
+	<bean id="lastFmSubmissionData" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmSubmissionData"/>
 
 	<bean id="lyricsService"
 		class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService">
