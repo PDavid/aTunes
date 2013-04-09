@@ -21,81 +21,120 @@
 package net.sourceforge.atunes.kernel.modules.os;
 
 import java.awt.PopupMenu;
+import java.awt.Window;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
- * This class encapsulates com.apple.eawt.Application using reflection
- * as this class is only available in Mac OS environments
+ * This class encapsulates com.apple.eawt.Application using reflection as this
+ * class is only available in Mac OS environments
+ * 
  * @author alex
  */
 public class MacOSXApplication implements IMacOSXApplication {
 
 	private Object application;
-	
+
 	private MacOSXDockMenu macOsDockMenu;
-	
+
 	/**
 	 * @param dockMenu
 	 */
 	public void setMacOsDockMenu(MacOSXDockMenu dockMenu) {
 		this.macOsDockMenu = dockMenu;
 	}
-	
+
 	@Override
-	public boolean initialize()  {
+	public boolean initialize() {
 		application = ReflectionUtils.newInstance("com.apple.eawt.Application");
 		return application != null;
 	}
-	
+
 	@Override
 	public void registerAbout(MacOSXAboutHandler aboutHandler) {
 		setHandler(aboutHandler);
-		ReflectionUtils.invoke(application, ReflectionUtils.getMethod(application.getClass(), "setEnabledAboutMenu", boolean.class), true);
+		ReflectionUtils.invoke(application, ReflectionUtils.getMethod(
+				application.getClass(), "setEnabledAboutMenu", boolean.class),
+				true);
 	}
-	
+
 	@Override
 	public void registerQuit(MacOSXQuitHandler quitHandler) {
-    	setHandler(quitHandler);
-    }
+		setHandler(quitHandler);
+	}
 
 	@Override
 	public void registerPreferences(MacOSXPreferencesHandler prefsHandler) {
-        setHandler(prefsHandler);
-		ReflectionUtils.invoke(application, ReflectionUtils.getMethod(application.getClass(), "setEnabledPreferencesMenu", boolean.class), true);
-    }
-    
+		setHandler(prefsHandler);
+		ReflectionUtils.invoke(application, ReflectionUtils.getMethod(
+				application.getClass(), "setEnabledPreferencesMenu",
+				boolean.class), true);
+	}
+
 	@Override
 	public void registerAppReOpenedListener(MacOSXAppReOpenedListener adapter) {
-        Class<?> appEventListenerClass = ReflectionUtils.getClass("com.apple.eawt.AppEventListener");
-        Class<?> appReOpenedListenerClass = ReflectionUtils.getClass("com.apple.eawt.AppReOpenedListener");
-        if (appEventListenerClass != null && appReOpenedListenerClass != null) {
-            Method addListenerMethod = ReflectionUtils.getMethod(application.getClass(), "addAppEventListener", appEventListenerClass);
-            // Create a proxy object around this handler that can be reflectively added as an Apple AppReOpenedListener
-            Object osxAdapterProxy = Proxy.newProxyInstance(MacOSXAppReOpenedListener.class.getClassLoader(), new Class[] { appReOpenedListenerClass }, adapter);
-            ReflectionUtils.invoke(application, addListenerMethod, osxAdapterProxy);
-        }
-    }
+		Class<?> appEventListenerClass = ReflectionUtils
+				.getClass("com.apple.eawt.AppEventListener");
+		Class<?> appReOpenedListenerClass = ReflectionUtils
+				.getClass("com.apple.eawt.AppReOpenedListener");
+		if (appEventListenerClass != null && appReOpenedListenerClass != null) {
+			Method addListenerMethod = ReflectionUtils.getMethod(
+					application.getClass(), "addAppEventListener",
+					appEventListenerClass);
+			// Create a proxy object around this handler that can be
+			// reflectively added as an Apple AppReOpenedListener
+			Object osxAdapterProxy = Proxy.newProxyInstance(
+					MacOSXAppReOpenedListener.class.getClassLoader(),
+					new Class[] { appReOpenedListenerClass }, adapter);
+			ReflectionUtils.invoke(application, addListenerMethod,
+					osxAdapterProxy);
+		}
+	}
 
 	@Override
 	public void addDockIconMenu() {
-    	ReflectionUtils.invoke(application, ReflectionUtils.getMethod(application.getClass(), "setDockMenu", PopupMenu.class), macOsDockMenu.getDockMenu());
-    }
-    
-    /**
-     * creates a Proxy object from the passed adapter and adds it to application
-     * @param adapter
-     */
-    private void setHandler(InvocationHandler adapter) {
-        Class<?> applicationListenerClass = ReflectionUtils.getClass("com.apple.eawt.ApplicationListener");
-    	if (applicationListenerClass != null) {
-    		Method method = ReflectionUtils.getMethod(application.getClass(), "addApplicationListener", applicationListenerClass);
-            // Create a proxy object around this handler that can be reflectively added as an Apple ApplicationListener
-            Object osxAdapterProxy = Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] { applicationListenerClass }, adapter);
-            ReflectionUtils.invoke(application, method, osxAdapterProxy);
-    	}
-    }
+		ReflectionUtils.invoke(application, ReflectionUtils.getMethod(
+				application.getClass(), "setDockMenu", PopupMenu.class),
+				macOsDockMenu.getDockMenu());
+	}
+
+	/**
+	 * creates a Proxy object from the passed adapter and adds it to application
+	 * 
+	 * @param adapter
+	 */
+	private void setHandler(InvocationHandler adapter) {
+		Class<?> applicationListenerClass = ReflectionUtils
+				.getClass("com.apple.eawt.ApplicationListener");
+		if (applicationListenerClass != null) {
+			Method method = ReflectionUtils.getMethod(application.getClass(),
+					"addApplicationListener", applicationListenerClass);
+			// Create a proxy object around this handler that can be
+			// reflectively added as an Apple ApplicationListener
+			Object osxAdapterProxy = Proxy.newProxyInstance(getClass()
+					.getClassLoader(),
+					new Class[] { applicationListenerClass }, adapter);
+			ReflectionUtils.invoke(application, method, osxAdapterProxy);
+		}
+	}
+
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void enableFullscreen(IFrame frame) {
+		try {
+			Class util = Class.forName("com.apple.eawt.FullScreenUtilities");
+			Class params[] = new Class[] { Window.class, Boolean.TYPE };
+			Method method = util.getMethod("setWindowCanFullScreen", params);
+			method.invoke(util, frame.getFrame(), true);
+		} catch (ClassNotFoundException e1) {
+		} catch (Throwable e) {
+			Logger.error("OS X Fullscreen FAIL: ", e.getMessage());
+		}
+	}
+
 }

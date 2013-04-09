@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.os;
 
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IUIHandler;
@@ -70,8 +71,10 @@ public class MacOSXInitializer {
 
 	/**
 	 * Initializes application in Mac OS X environment
+	 * 
+	 * @param frame
 	 */
-	public void initialize() {
+	public void initialize(IFrame frame) {
 		if (this.macOsApplication.initialize()) {
 			this.macOsApplication.addDockIconMenu();
 			this.macOsApplication.registerAbout(new MacOSXAboutHandler(
@@ -84,6 +87,7 @@ public class MacOSXInitializer {
 			this.macOsApplication
 					.registerAppReOpenedListener(new MacOSXAppReOpenedListener(
 							this.uiHandler, "showFullFrame"));
+			this.macOsApplication.enableFullscreen(frame);
 		}
 	}
 }
