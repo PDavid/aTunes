@@ -30,6 +30,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IControlsBuilder;
@@ -48,6 +49,8 @@ public class ListMessageDialog extends AbstractCustomDialog implements
 
 	private static final long serialVersionUID = 2917633207992285783L;
 
+	private boolean userAccepted;
+
 	/**
 	 * @param frame
 	 * @param controlsBuilder
@@ -59,13 +62,6 @@ public class ListMessageDialog extends AbstractCustomDialog implements
 
 	@Override
 	public void showMessage(final String message, final List<String> items) {
-		setResizable(false);
-		setTitle(I18nUtils.getString("INFO"));
-		setLayout(new GridBagLayout());
-
-		JLabel messageLabel = new JLabel(message);
-		JList list = getLookAndFeel().getList();
-		list.setListData(items.toArray(new String[items.size()]));
 		JButton ok = new JButton(I18nUtils.getString("OK"));
 		ok.addActionListener(new ActionListener() {
 
@@ -74,6 +70,19 @@ public class ListMessageDialog extends AbstractCustomDialog implements
 				ListMessageDialog.this.setVisible(false);
 			}
 		});
+		showDialog(message, items, ok);
+	}
+
+	private void showDialog(final String message, final List<String> items,
+			JButton... buttons) {
+		setResizable(false);
+		setTitle(I18nUtils.getString("INFO"));
+		setLayout(new GridBagLayout());
+
+		JLabel messageLabel = new JLabel(message);
+		@SuppressWarnings("unchecked")
+		JList<String> list = getLookAndFeel().getList();
+		list.setListData(items.toArray(new String[items.size()]));
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
@@ -84,13 +93,45 @@ public class ListMessageDialog extends AbstractCustomDialog implements
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		add(getLookAndFeel().getScrollPane(list), c);
+		add(getControlsBuilder().getScrollPane(list), c);
 		c.gridy = 2;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.NONE;
-		add(ok, c);
+		JPanel buttonsPanel = new JPanel();
+		for (JButton button : buttons) {
+			buttonsPanel.add(button);
+		}
+		add(buttonsPanel, c);
 
 		setVisible(true);
+	}
+
+	@Override
+	public boolean showMessageConfirmation(final String message,
+			final List<String> items) {
+		JButton yes = new JButton(I18nUtils.getString("YES"));
+		yes.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent arg0) {
+				userAccepted = true;
+				ListMessageDialog.this.setVisible(false);
+			}
+		});
+
+		JButton no = new JButton(I18nUtils.getString("NO"));
+		no.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent arg0) {
+				userAccepted = false;
+				ListMessageDialog.this.setVisible(false);
+			}
+		});
+
+		showDialog(message, items, yes, no);
+
+		return userAccepted;
 	}
 
 	@Override

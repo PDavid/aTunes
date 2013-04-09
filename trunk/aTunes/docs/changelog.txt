@@ -6,6 +6,8 @@ aTunes 3.1.0
 - Memory optimization when reading play lists
 - Option to store ratings in tags (by default will use custom metadata store)
 - Save podcast information immediately after add/remove/update podcasts
+- Ask before removing objects from play list when not exist
+- Option to ignore when repository does not exist
 
 aTunes 3.0.8
 ------------

@@ -22,18 +22,29 @@ package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-
 /**
  * A dialog to show a message with a list of items
+ * 
  * @author alex
- *
+ * 
  */
 public interface IListMessageDialog extends IDialog {
 
 	/**
 	 * Show message for principal frame
+	 * 
 	 * @param message
 	 * @param items
 	 */
 	void showMessage(String message, List<String> items);
+
+	/**
+	 * Show message for principal frame
+	 * 
+	 * @param message
+	 * @param items
+	 * @return true if user accepts
+	 */
+	boolean showMessageConfirmation(String message, List<String> items);
+
 }
