@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.util.Collections;
 import java.util.List;
 
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -45,11 +46,18 @@ public class FolderRefresher {
 
 	private LocalAudioObjectRefresher localAudioObjectRefresher;
 
-	private RepositoryAddService repositoryAddService;
-
 	private ILocalAudioObjectLocator localAudioObjectLocator;
 
 	private IFileManager fileManager;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param fileManager
@@ -64,14 +72,6 @@ public class FolderRefresher {
 	public void setLocalAudioObjectLocator(
 			final ILocalAudioObjectLocator localAudioObjectLocator) {
 		this.localAudioObjectLocator = localAudioObjectLocator;
-	}
-
-	/**
-	 * @param repositoryAddService
-	 */
-	public void setRepositoryAddService(
-			final RepositoryAddService repositoryAddService) {
-		this.repositoryAddService = repositoryAddService;
 	}
 
 	/**
@@ -134,8 +134,9 @@ public class FolderRefresher {
 			String path = this.fileManager.getPath(ao);
 			if (repository.getFile(path) == null) {
 				Logger.debug("Adding file: ", path);
-				this.repositoryAddService.addFilesToRepository(repository,
-						Collections.singletonList(ao));
+				beanFactory.getBean(RepositoryAddService.class)
+						.addFilesToRepository(repository,
+								Collections.singletonList(ao));
 			}
 		}
 	}

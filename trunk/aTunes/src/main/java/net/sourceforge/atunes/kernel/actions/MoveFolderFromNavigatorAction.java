@@ -28,6 +28,7 @@ import java.util.concurrent.Callable;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryActionsHelper;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFolder;
@@ -69,14 +70,13 @@ public class MoveFolderFromNavigatorAction extends
 
 	private IIndeterminateProgressDialog indeterminateDialog;
 
-	private RepositoryActionsHelper repositoryActions;
+	private IBeanFactory beanFactory;
 
 	/**
-	 * @param repositoryActions
+	 * @param beanFactory
 	 */
-	public void setRepositoryActions(
-			final RepositoryActionsHelper repositoryActions) {
-		this.repositoryActions = repositoryActions;
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -124,7 +124,8 @@ public class MoveFolderFromNavigatorAction extends
 
 	@Override
 	protected void executeAction(final List<IFolder> folders) {
-		repositoryActions.disableAllRepositoryActions();
+		beanFactory.getBean(RepositoryActionsHelper.class)
+				.disableAllRepositoryActions();
 		final IFolder sourceFolder = folders.get(0);
 		final File sourceFile = sourceFolder.getFolderPath(osManager);
 		IFolderSelectorDialog dialog = dialogFactory
@@ -163,7 +164,8 @@ public class MoveFolderFromNavigatorAction extends
 
 					@Override
 					public void call(final Boolean result) {
-						repositoryActions.enableRepositoryActions();
+						beanFactory.getBean(RepositoryActionsHelper.class)
+								.enableRepositoryActions();
 						if (result) {
 							repositoryHandler.folderMoved(
 									sourceFolder,

@@ -59,8 +59,6 @@ final class SearchResultsController extends
 
 	private final ILookAndFeelManager lookAndFeelManager;
 
-	private final IAudioObjectComparator audioObjectComparator;
-
 	private final IBeanFactory beanFactory;
 
 	/**
@@ -68,20 +66,17 @@ final class SearchResultsController extends
 	 * @param dialog
 	 * @param playListHandler
 	 * @param lookAndFeelManager
-	 * @param audioObjectComparator
 	 */
 	SearchResultsController(final IBeanFactory beanFactory,
 			final SearchResultsDialog dialog,
 			final IPlayListHandler playListHandler,
-			final ILookAndFeelManager lookAndFeelManager,
-			final IAudioObjectComparator audioObjectComparator) {
+			final ILookAndFeelManager lookAndFeelManager) {
 		super(dialog);
 		this.beanFactory = beanFactory;
 		this.columnSet = beanFactory.getBean("searchResultsColumnSet",
 				IColumnSet.class);
 		this.playListHandler = playListHandler;
 		this.lookAndFeelManager = lookAndFeelManager;
-		this.audioObjectComparator = audioObjectComparator;
 		addBindings();
 	}
 
@@ -104,7 +99,7 @@ final class SearchResultsController extends
 		if (sortedColumn != null) {
 			Collections.sort(resultsList, sortedColumn.getComparator());
 		} else {
-			this.audioObjectComparator.sort(resultsList);
+			beanFactory.getBean(IAudioObjectComparator.class).sort(resultsList);
 		}
 
 		tableModel.setResults(resultsList);

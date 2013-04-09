@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -43,7 +44,8 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class CreatePlayListWithSelectedAlbumsAction extends AbstractActionOverSelectedObjects<IAudioObject> {
+public class CreatePlayListWithSelectedAlbumsAction extends
+		AbstractActionOverSelectedObjects<IAudioObject> {
 
 	private static final long serialVersionUID = -2917908051161952409L;
 
@@ -51,9 +53,16 @@ public class CreatePlayListWithSelectedAlbumsAction extends AbstractActionOverSe
 
 	private IPlayListHandler playListHandler;
 
-	private IAudioObjectComparator audioObjectComparator;
-
 	private IUnknownObjectChecker unknownObjectChecker;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param unknownObjectChecker
@@ -61,13 +70,6 @@ public class CreatePlayListWithSelectedAlbumsAction extends AbstractActionOverSe
 	public void setUnknownObjectChecker(
 			final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
-	}
-
-	/**
-	 * @param audioObjectComparator
-	 */
-	public void setAudioObjectComparator(final IAudioObjectComparator audioObjectComparator) {
-		this.audioObjectComparator = audioObjectComparator;
 	}
 
 	/**
@@ -118,8 +120,11 @@ public class CreatePlayListWithSelectedAlbumsAction extends AbstractActionOverSe
 	 */
 	private void createPlayLists(final List<IAlbum> selectedAlbums) {
 		for (IAlbum album : selectedAlbums) {
-			List<ILocalAudioObject> audioObjects = repositoryHandler.getAudioFilesForAlbums(Collections.singletonMap(album.getName(), album));
-			audioObjectComparator.sort(audioObjects);
+			List<ILocalAudioObject> audioObjects = repositoryHandler
+					.getAudioFilesForAlbums(Collections.singletonMap(
+							album.getName(), album));
+			beanFactory.getBean(IAudioObjectComparator.class)
+					.sort(audioObjects);
 
 			// Create a new play list with album as name and audio objects
 			playListHandler.newPlayList(album.getName(), audioObjects);
