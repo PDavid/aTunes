@@ -114,7 +114,7 @@
 	<bean id="connectDeviceAction" class="net.sourceforge.atunes.kernel.actions.ConnectDeviceAction"/>
 	<bean id="copyPlayListToDeviceAction" class="net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction">
 		<property name="playListObjectFilter">
-			<bean class="net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter" scope="prototype"/>
+			<ref bean="playListLocalAudioObjectFilter"/>
 		</property>
 	</bean>
 	
