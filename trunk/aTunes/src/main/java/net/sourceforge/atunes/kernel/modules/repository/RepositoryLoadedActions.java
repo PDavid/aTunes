@@ -38,41 +38,33 @@ public class RepositoryLoadedActions {
 
 	private INavigationHandler navigationHandler;
 
-	private ShowRepositoryDataHelper showRepositoryDataHelper;
-
 	private IBeanFactory beanFactory;
 
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
-	}
-
-	/**
-	 * @param showRepositoryDataHelper
-	 */
-	public void setShowRepositoryDataHelper(
-			ShowRepositoryDataHelper showRepositoryDataHelper) {
-		this.showRepositoryDataHelper = showRepositoryDataHelper;
 	}
 
 	/**
 	 * @param navigationHandler
 	 */
-	public void setNavigationHandler(INavigationHandler navigationHandler) {
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
 
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(RepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final RepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
 	/**
 	 * Notify finish repository read.
+	 * 
+	 * @param repository
 	 */
 	public void repositoryReadCompleted(final IRepository repository) {
 		this.repositoryHandler.setRepository(repository);
@@ -80,14 +72,19 @@ public class RepositoryLoadedActions {
 		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
 			public void run() {
-				beanFactory.getBean(IFrame.class).hideProgressBar();
-				beanFactory.getBean(RepositoryActionsHelper.class)
+				RepositoryLoadedActions.this.beanFactory.getBean(IFrame.class)
+						.hideProgressBar();
+				RepositoryLoadedActions.this.beanFactory.getBean(
+						RepositoryActionsHelper.class)
 						.enableActionsDependingOnRepository(repository);
-				showRepositoryDataHelper.showRepositoryAudioFileNumber(
-						repository.getFiles().size(),
-						repository.getTotalSizeInBytes(),
-						repository.getTotalDurationInSeconds());
-				navigationHandler.repositoryReloaded();
+				RepositoryLoadedActions.this.beanFactory.getBean(
+						ShowRepositoryDataHelper.class)
+						.showRepositoryAudioFileNumber(
+								repository.getFiles().size(),
+								repository.getTotalSizeInBytes(),
+								repository.getTotalDurationInSeconds());
+				RepositoryLoadedActions.this.navigationHandler
+						.repositoryReloaded();
 			}
 		});
 	}

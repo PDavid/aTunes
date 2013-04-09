@@ -91,7 +91,7 @@ public class DefaultNotifications extends CommonNotificationEngine {
 					.getCurrentLookAndFeel().isDialogUndecorated());
 			this.osdDialogController = new OSDDialogController(this.osdDialog,
 					this.stateUI, getAudioObjectGenericImageFactory(),
-					getLookAndFeelManager(), getAudioObjectImageLocator(),
+					getLookAndFeelManager(), getBeanFactory(),
 					this.unknownObjectChecker);
 		}
 		return this.osdDialogController;

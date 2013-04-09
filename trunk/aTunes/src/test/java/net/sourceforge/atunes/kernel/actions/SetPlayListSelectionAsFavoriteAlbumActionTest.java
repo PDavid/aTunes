@@ -30,6 +30,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFilter;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
@@ -52,22 +53,28 @@ public class SetPlayListSelectionAsFavoriteAlbumActionTest {
 		IAudioObject ao = mock(IAudioObject.class);
 		selectedObjects.add(lao1);
 		selectedObjects.add(ao);
-		when(playListHandler.getSelectedAudioObjects()).thenReturn(selectedObjects);
+		when(playListHandler.getSelectedAudioObjects()).thenReturn(
+				selectedObjects);
 		sut.setFavoritesHandler(favoritesHandler);
 		sut.setPlayListHandler(playListHandler);
-		ILocalAudioObjectFilter filter = new LocalAudioObjectFilter();
-		sut.setLocalAudioObjectFilter(filter);
+
+		IBeanFactory beanFactory = mock(IBeanFactory.class);
+		when(beanFactory.getBean(ILocalAudioObjectFilter.class)).thenReturn(
+				new LocalAudioObjectFilter());
+		sut.setBeanFactory(beanFactory);
 
 		sut.executeAction();
 
-		verify(favoritesHandler).toggleFavoriteAlbums(Collections.singletonList(lao1));
+		verify(favoritesHandler).toggleFavoriteAlbums(
+				Collections.singletonList(lao1));
 	}
 
 	@Test
 	public void testDisabled() {
 		SetPlayListSelectionAsFavoriteAlbumAction sut = new SetPlayListSelectionAsFavoriteAlbumAction();
 		Assert.assertFalse(sut.isEnabledForPlayListSelection(null));
-		Assert.assertFalse(sut.isEnabledForPlayListSelection(new ArrayList<IAudioObject>()));
+		Assert.assertFalse(sut
+				.isEnabledForPlayListSelection(new ArrayList<IAudioObject>()));
 		List<IAudioObject> list = new ArrayList<IAudioObject>();
 		list.add(mock(IRadio.class));
 		Assert.assertFalse(sut.isEnabledForPlayListSelection(list));

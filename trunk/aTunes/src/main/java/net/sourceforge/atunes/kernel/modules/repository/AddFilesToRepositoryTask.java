@@ -51,8 +51,6 @@ public class AddFilesToRepositoryTask {
 
 	private IRepositoryHandler repositoryHandler;
 
-	private ShowRepositoryDataHelper showRepositoryDataHelper;
-
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
 
 	private IPlayListHandler playListHandler;
@@ -64,7 +62,7 @@ public class AddFilesToRepositoryTask {
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
@@ -88,14 +86,6 @@ public class AddFilesToRepositoryTask {
 	public void setBackgroundWorkerFactory(
 			final IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
-	}
-
-	/**
-	 * @param showRepositoryDataHelper
-	 */
-	public void setShowRepositoryDataHelper(
-			final ShowRepositoryDataHelper showRepositoryDataHelper) {
-		this.showRepositoryDataHelper = showRepositoryDataHelper;
 	}
 
 	/**
@@ -133,8 +123,9 @@ public class AddFilesToRepositoryTask {
 
 			@Override
 			public Void call() {
-				beanFactory.getBean(RepositoryAddService.class)
-						.addFilesToRepository(repository, files);
+				AddFilesToRepositoryTask.this.beanFactory.getBean(
+						RepositoryAddService.class).addFilesToRepository(
+						repository, files);
 				return null;
 			}
 		});
@@ -155,10 +146,11 @@ public class AddFilesToRepositoryTask {
 	private void processResult(final IRepository repository,
 			final List<ILocalAudioObject> files) {
 		this.frame.hideProgressBar();
-		this.showRepositoryDataHelper.showRepositoryAudioFileNumber(
-				this.repositoryHandler.getAudioFilesList().size(),
-				this.repositoryHandler.getRepositoryTotalSize(),
-				repository.getTotalDurationInSeconds());
+		this.beanFactory.getBean(ShowRepositoryDataHelper.class)
+				.showRepositoryAudioFileNumber(
+						this.repositoryHandler.getAudioFilesList().size(),
+						this.repositoryHandler.getRepositoryTotalSize(),
+						repository.getTotalDurationInSeconds());
 		Logger.info("Repository refresh done");
 		this.navigationHandler.repositoryReloaded();
 		createPlayListWithImportedObjects(files);

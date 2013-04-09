@@ -44,8 +44,6 @@ public class FolderRefresher {
 
 	private RepositoryHandler repositoryHandler;
 
-	private LocalAudioObjectRefresher localAudioObjectRefresher;
-
 	private ILocalAudioObjectLocator localAudioObjectLocator;
 
 	private IFileManager fileManager;
@@ -55,7 +53,7 @@ public class FolderRefresher {
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
@@ -86,14 +84,6 @@ public class FolderRefresher {
 	 */
 	public void setRepositoryHandler(final RepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
-	}
-
-	/**
-	 * @param localAudioObjectRefresher
-	 */
-	public void setLocalAudioObjectRefresher(
-			final LocalAudioObjectRefresher localAudioObjectRefresher) {
-		this.localAudioObjectRefresher = localAudioObjectRefresher;
 	}
 
 	/**
@@ -134,7 +124,7 @@ public class FolderRefresher {
 			String path = this.fileManager.getPath(ao);
 			if (repository.getFile(path) == null) {
 				Logger.debug("Adding file: ", path);
-				beanFactory.getBean(RepositoryAddService.class)
+				this.beanFactory.getBean(RepositoryAddService.class)
 						.addFilesToRepository(repository,
 								Collections.singletonList(ao));
 			}
@@ -149,10 +139,12 @@ public class FolderRefresher {
 			final IFolder folder) {
 		// Remove o refresh previous files
 		List<ILocalAudioObject> aos = folder.getAudioObjects();
+		LocalAudioObjectRefresher refresher = this.beanFactory
+				.getBean(LocalAudioObjectRefresher.class);
 		for (ILocalAudioObject ao : aos) {
 			if (this.fileManager.fileExists(ao)) {
 				Logger.debug("Refreshing file: ", this.fileManager.getPath(ao));
-				this.localAudioObjectRefresher.refreshFile(repository, ao);
+				refresher.refreshFile(repository, ao);
 			} else {
 				Logger.debug("Removing file: ", this.fileManager.getPath(ao));
 				this.repositoryHandler.remove(Collections.singletonList(ao));

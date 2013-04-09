@@ -38,6 +38,7 @@ import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
@@ -49,7 +50,7 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
 	private Timer timer;
 	private final IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
 	private final ILookAndFeelManager lookAndFeelManager;
-	private final IAudioObjectImageLocator audioObjectImageLocator;
+	private final IBeanFactory beanFactory;
 
 	private final IStateUI stateUI;
 
@@ -57,27 +58,35 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
 
 	/**
 	 * Instantiates a new oSD dialog controller.
+	 * 
 	 * @param dialogControlled
 	 * @param stateUI
 	 * @param audioObjectGenericImageFactory
 	 * @param lookAndFeelManager
-	 * @param audioObjectImageLocator
+	 * @param beanFactory
 	 * @param unknownObjectChecker
 	 */
-	OSDDialogController(final OSDDialog dialogControlled, final IStateUI stateUI, final IAudioObjectGenericImageFactory audioObjectGenericImageFactory, final ILookAndFeelManager lookAndFeelManager, final IAudioObjectImageLocator audioObjectImageLocator, final IUnknownObjectChecker unknownObjectChecker) {
+	OSDDialogController(
+			final OSDDialog dialogControlled,
+			final IStateUI stateUI,
+			final IAudioObjectGenericImageFactory audioObjectGenericImageFactory,
+			final ILookAndFeelManager lookAndFeelManager,
+			final IBeanFactory beanFactory,
+			final IUnknownObjectChecker unknownObjectChecker) {
 		super(dialogControlled);
 		this.stateUI = stateUI;
 		addBindings();
 		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
 		this.windowFader = new WindowFader(dialogControlled, 50);
 		this.lookAndFeelManager = lookAndFeelManager;
-		this.audioObjectImageLocator = audioObjectImageLocator;
+		this.beanFactory = beanFactory;
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	@Override
 	public void addBindings() {
-		MouseListener listener = new OSDDialogMouseListener(getComponentControlled(), this);
+		MouseListener listener = new OSDDialogMouseListener(
+				getComponentControlled(), this);
 		getComponentControlled().addMouseListener(listener);
 	}
 
@@ -85,11 +94,11 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
 	 * Stops animation and disposes osd dialog
 	 */
 	void stopAnimation() {
-		if (timer != null) {
-			timer.stop();
-			timer = null;
+		if (this.timer != null) {
+			this.timer.stop();
+			this.timer = null;
 		}
-		windowFader.clear();
+		this.windowFader.clear();
 	}
 
 	/**
@@ -106,37 +115,47 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
 		// If the OSD is already visible stop animation
 		stopAnimation();
 
-		windowFader = new WindowFader(getComponentControlled(), 50);
+		this.windowFader = new WindowFader(getComponentControlled(), 50);
 
 		int x = 0;
-		if (stateUI.getOsdHorizontalAlignment() == SwingConstants.CENTER) {
-			x = Toolkit.getDefaultToolkit().getScreenSize().width / 2 - stateUI.getOsdWidth() / 2;
-		} else if (stateUI.getOsdHorizontalAlignment() == SwingConstants.LEFT) {
+		if (this.stateUI.getOsdHorizontalAlignment() == SwingConstants.CENTER) {
+			x = Toolkit.getDefaultToolkit().getScreenSize().width / 2
+					- this.stateUI.getOsdWidth() / 2;
+		} else if (this.stateUI.getOsdHorizontalAlignment() == SwingConstants.LEFT) {
 			x = 50;
 		} else {
-			x = Toolkit.getDefaultToolkit().getScreenSize().width - stateUI.getOsdWidth() - 50;
+			x = Toolkit.getDefaultToolkit().getScreenSize().width
+					- this.stateUI.getOsdWidth() - 50;
 		}
 		x = Math.max(x, 0);
 
 		int y = 0;
-		if (stateUI.getOsdVerticalAlignment() == SwingConstants.CENTER) {
-			y = Toolkit.getDefaultToolkit().getScreenSize().height / 2 - getComponentControlled().getHeight() / 2;
-		} else if (stateUI.getOsdVerticalAlignment() == SwingConstants.TOP) {
+		if (this.stateUI.getOsdVerticalAlignment() == SwingConstants.CENTER) {
+			y = Toolkit.getDefaultToolkit().getScreenSize().height / 2
+					- getComponentControlled().getHeight() / 2;
+		} else if (this.stateUI.getOsdVerticalAlignment() == SwingConstants.TOP) {
 			y = 20;
 		} else {
-			y = Toolkit.getDefaultToolkit().getScreenSize().height - 20 - getComponentControlled().getHeight();
+			y = Toolkit.getDefaultToolkit().getScreenSize().height - 20
+					- getComponentControlled().getHeight();
 		}
 
 		Point location = new Point(x, y);
 
-		ImageIcon i = audioObjectImageLocator.getImage(audioObject, ImageSize.SIZE_MAX);
+		ImageIcon i = this.beanFactory.getBean(IAudioObjectImageLocator.class)
+				.getImage(audioObject, ImageSize.SIZE_MAX);
 		if (i == null) {
-			i = audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.MEDIUM).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
+			i = this.audioObjectGenericImageFactory.getGenericImage(
+					audioObject, GenericImageSize.MEDIUM).getIcon(
+					this.lookAndFeelManager.getCurrentLookAndFeel()
+							.getPaintForSpecialControls());
 		}
 		getComponentControlled().setImage(i);
 		getComponentControlled().setLine1(audioObject.getTitleOrFileName());
-		getComponentControlled().setLine2(audioObject.getAlbum(unknownObjectChecker));
-		getComponentControlled().setLine3(audioObject.getArtist(unknownObjectChecker));
+		getComponentControlled().setLine2(
+				audioObject.getAlbum(this.unknownObjectChecker));
+		getComponentControlled().setLine3(
+				audioObject.getArtist(this.unknownObjectChecker));
 
 		getComponentControlled().setLocation(location);
 		GuiUtils.setWindowOpacity(getComponentControlled(), 0);
@@ -146,14 +165,15 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
 		// see bug 1864517
 		getComponentControlled().repaint();
 
-		windowFader.fadeIn();
-		timer = new Timer(stateUI.getOsdDuration() * 1000, new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				windowFader.fadeOut();
-			}
-		});
-		timer.setRepeats(false);
-		timer.start();
+		this.windowFader.fadeIn();
+		this.timer = new Timer(this.stateUI.getOsdDuration() * 1000,
+				new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						OSDDialogController.this.windowFader.fadeOut();
+					}
+				});
+		this.timer.setRepeats(false);
+		this.timer.start();
 	}
 }

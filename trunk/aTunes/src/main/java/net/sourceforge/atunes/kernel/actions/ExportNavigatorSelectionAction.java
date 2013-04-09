@@ -24,6 +24,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectExporter;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -35,52 +36,51 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public class ExportNavigatorSelectionAction extends
-	AbstractActionOverSelectedObjects<IAudioObject> {
+		AbstractActionOverSelectedObjects<IAudioObject> {
 
-    private static final long serialVersionUID = 1625697867534974341L;
+	private static final long serialVersionUID = 1625697867534974341L;
 
-    private IAudioObjectExporter audioObjectExporter;
+	private IAudioObjectExporter audioObjectExporter;
 
-    private ILocalAudioObjectFilter localAudioObjectFilter;
+	private IBeanFactory beanFactory;
 
-    /**
-     * @param localAudioObjectFilter
-     */
-    public void setLocalAudioObjectFilter(
-	    final ILocalAudioObjectFilter localAudioObjectFilter) {
-	this.localAudioObjectFilter = localAudioObjectFilter;
-    }
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
-    /**
-     * @param audioObjectExporter
-     */
-    public void setAudioObjectExporter(
-	    final IAudioObjectExporter audioObjectExporter) {
-	this.audioObjectExporter = audioObjectExporter;
-    }
+	/**
+	 * @param audioObjectExporter
+	 */
+	public void setAudioObjectExporter(
+			final IAudioObjectExporter audioObjectExporter) {
+		this.audioObjectExporter = audioObjectExporter;
+	}
 
-    /**
-     * Default constructor
-     */
-    public ExportNavigatorSelectionAction() {
-	super(I18nUtils.getString("EXPORT"));
-    }
+	/**
+	 * Default constructor
+	 */
+	public ExportNavigatorSelectionAction() {
+		super(I18nUtils.getString("EXPORT"));
+	}
 
-    @Override
-    protected void executeAction(final List<IAudioObject> objects) {
-	audioObjectExporter.exportAudioObject(localAudioObjectFilter
-		.getLocalAudioObjects(objects));
-    }
+	@Override
+	protected void executeAction(final List<IAudioObject> objects) {
+		this.audioObjectExporter.exportAudioObject(this.beanFactory.getBean(
+				ILocalAudioObjectFilter.class).getLocalAudioObjects(objects));
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(
-	    final boolean rootSelected, final List<ITreeNode> selection) {
-	return !selection.isEmpty();
-    }
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(
+			final boolean rootSelected, final List<ITreeNode> selection) {
+		return !selection.isEmpty();
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(
-	    final List<IAudioObject> selection) {
-	return !selection.isEmpty();
-    }
+	@Override
+	public boolean isEnabledForNavigationTableSelection(
+			final List<IAudioObject> selection) {
+		return !selection.isEmpty();
+	}
 }

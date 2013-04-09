@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
@@ -57,8 +58,6 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 
 	private IWebServicesHandler webServicesHandler;
 
-	private IAudioObjectImageLocator audioObjectImageLocator;
-
 	private IAlbumInfo albumInfo;
 
 	private ImageIcon image;
@@ -71,11 +70,20 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 
 	private ILocalAudioObjectImageHandler localAudioObjectImageHandler;
 
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+
 	/**
 	 * @param localAudioObjectImageHandler
 	 */
 	public void setLocalAudioObjectImageHandler(
-			ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
+			final ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
 		this.localAudioObjectImageHandler = localAudioObjectImageHandler;
 	}
 
@@ -98,31 +106,31 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 	public void getData(final IAudioObject audioObject) {
 		this.audioObject = audioObject;
 		this.albumInfo = getAlbumInfoData(audioObject);
-		repositoryHandler.checkAvailability(
-				audioObject.getArtist(unknownObjectChecker),
+		this.repositoryHandler.checkAvailability(
+				audioObject.getArtist(this.unknownObjectChecker),
 				this.albumInfo.getTracks());
-		this.image = getImageData(albumInfo, audioObject);
+		this.image = getImageData(this.albumInfo, audioObject);
 	}
 
 	/**
 	 * @return
 	 */
 	public IAudioObject getAudioObject() {
-		return audioObject;
+		return this.audioObject;
 	}
 
 	/**
 	 * @return
 	 */
 	public IAlbumInfo getAlbumInfo() {
-		return albumInfo;
+		return this.albumInfo;
 	}
 
 	/**
 	 * @return
 	 */
 	public ImageIcon getImage() {
-		return image;
+		return this.image;
 	}
 
 	/**
@@ -133,9 +141,9 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 	 */
 	private IAlbumInfo getAlbumInfoData(final IAudioObject audioObject) {
 		// Get album info
-		IAlbumInfo album = webServicesHandler.getAlbum(
-				audioObject.getAlbumArtistOrArtist(unknownObjectChecker),
-				audioObject.getAlbum(unknownObjectChecker));
+		IAlbumInfo album = this.webServicesHandler.getAlbum(
+				audioObject.getAlbumArtistOrArtist(this.unknownObjectChecker),
+				audioObject.getAlbum(this.unknownObjectChecker));
 
 		// If album was not found try to get an album from the same artist that
 		// match
@@ -160,11 +168,11 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 		}
 
 		List<IAlbumInfo> albums = null;
-		if (!unknownObjectChecker.isUnknownArtist(audioObject
-				.getAlbumArtistOrArtist(unknownObjectChecker))) {
+		if (!this.unknownObjectChecker.isUnknownArtist(audioObject
+				.getAlbumArtistOrArtist(this.unknownObjectChecker))) {
 			// Get album list
 			albums = getAlbumList(audioObject
-					.getAlbumArtistOrArtist(unknownObjectChecker));
+					.getAlbumArtistOrArtist(this.unknownObjectChecker));
 		}
 
 		if (albums != null) {
@@ -172,7 +180,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 			IAlbumInfo matchingAlbum = analyseAlbums(audioObject, albums);
 			if (matchingAlbum != null) {
 				// Get full information for album
-				matchingAlbum = webServicesHandler.getAlbum(
+				matchingAlbum = this.webServicesHandler.getAlbum(
 						matchingAlbum.getArtist(), matchingAlbum.getTitle());
 				if (matchingAlbum != null) {
 					return matchingAlbum;
@@ -222,7 +230,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 					continue;
 				}
 			}
-			if (!audioObject.getAlbum(unknownObjectChecker).toLowerCase()
+			if (!audioObject.getAlbum(this.unknownObjectChecker).toLowerCase()
 					.contains(t.toLowerCase())) {
 				matches = false;
 			}
@@ -239,7 +247,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 	 * @return
 	 */
 	private List<IAlbumInfo> getAlbumList(final String artist) {
-		IAlbumListInfo albumList = webServicesHandler.getAlbumList(artist);
+		IAlbumListInfo albumList = this.webServicesHandler.getAlbumList(artist);
 		if (albumList != null) {
 			return albumList.getAlbums();
 		}
@@ -257,15 +265,16 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 			final IAudioObject audioObject) {
 		ImageIcon imageIcon = null;
 		if (albumInfo != null) {
-			imageIcon = webServicesHandler.getAlbumImage(albumInfo);
+			imageIcon = this.webServicesHandler.getAlbumImage(albumInfo);
 			// This data source should only be used with audio files but anyway
 			// check if audioObject is an LocalAudioObject before save picture
 			if (audioObject instanceof ILocalAudioObject) {
 				savePicture(imageIcon, (ILocalAudioObject) audioObject);
 			}
 		} else {
-			imageIcon = audioObjectImageLocator.getImage(audioObject,
-					ImageSize.SIZE_MAX);
+			imageIcon = this.beanFactory
+					.getBean(IAudioObjectImageLocator.class).getImage(
+							audioObject, ImageSize.SIZE_MAX);
 		}
 
 		return imageIcon;
@@ -279,10 +288,13 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 	 * @param file
 	 */
 	private void savePicture(final ImageIcon img, final ILocalAudioObject file) {
-		if (img != null && stateContext.isSaveContextPicture()) { // save image
-																	// in folder
-																	// of file
-			String imageFileName = localAudioObjectImageHandler
+		if (img != null && this.stateContext.isSaveContextPicture()) { // save
+																		// image
+																		// in
+																		// folder
+																		// of
+																		// file
+			String imageFileName = this.localAudioObjectImageHandler
 					.getFileNameForCover(file);
 
 			File imageFile = new File(imageFileName);
@@ -339,16 +351,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 		this.stateContext = stateContext;
 	}
 
-	/**
-	 * @param audioObjectImageLocator
-	 */
-	public void setAudioObjectImageLocator(
-			final IAudioObjectImageLocator audioObjectImageLocator) {
-		this.audioObjectImageLocator = audioObjectImageLocator;
-	}
-
 	@Override
 	public void cancel() {
 	}
-
 }

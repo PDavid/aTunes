@@ -28,6 +28,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.ImageSize;
@@ -42,13 +43,20 @@ import net.sourceforge.atunes.utils.Logger;
 public final class ExtendedToolTipGetAndSetImageSwingWorker extends
 		SwingWorker<ImageIcon, Void> {
 
-	private IAudioObjectImageLocator audioObjectImageLocator;
-
 	private IWebServicesHandler webServicesHandler;
 
 	private Object currentObject;
 
 	private ExtendedTooltipContent extendedTooltipContent;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param extendedTooltipContent
@@ -73,14 +81,6 @@ public final class ExtendedToolTipGetAndSetImageSwingWorker extends
 		this.currentObject = currentObject;
 	}
 
-	/**
-	 * @param audioObjectImageLocator
-	 */
-	public void setAudioObjectImageLocator(
-			final IAudioObjectImageLocator audioObjectImageLocator) {
-		this.audioObjectImageLocator = audioObjectImageLocator;
-	}
-
 	@Override
 	protected ImageIcon doInBackground() {
 		// Get image for albums
@@ -89,8 +89,9 @@ public final class ExtendedToolTipGetAndSetImageSwingWorker extends
 				IArtist a = (IArtist) this.currentObject;
 				return this.webServicesHandler.getArtistImage(a.getName());
 			} else if (this.currentObject instanceof IAlbum) {
-				return this.audioObjectImageLocator.getImage(
-						(IAlbum) this.currentObject, ImageSize.SIZE_MAX);
+				return this.beanFactory.getBean(IAudioObjectImageLocator.class)
+						.getImage((IAlbum) this.currentObject,
+								ImageSize.SIZE_MAX);
 			}
 		}
 		return null;

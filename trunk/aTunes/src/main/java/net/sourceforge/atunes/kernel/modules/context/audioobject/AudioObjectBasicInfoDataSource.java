@@ -26,6 +26,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -59,8 +60,6 @@ public class AudioObjectBasicInfoDataSource implements
 
 	private IIconFactory radioMediumIcon;
 
-	private IAudioObjectImageLocator audioObjectImageLocator;
-
 	private IAudioObject audioObject;
 
 	private ImageIcon image;
@@ -75,6 +74,15 @@ public class AudioObjectBasicInfoDataSource implements
 
 	private IStatisticsHandler statisticsHandler;
 
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+
 	/**
 	 * @param statisticsHandler
 	 */
@@ -88,14 +96,6 @@ public class AudioObjectBasicInfoDataSource implements
 	public void setUnknownObjectChecker(
 			final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
-	}
-
-	/**
-	 * @param audioObjectImageLocator
-	 */
-	public void setAudioObjectImageLocator(
-			final IAudioObjectImageLocator audioObjectImageLocator) {
-		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class AudioObjectBasicInfoDataSource implements
 		this.image = getImageData(audioObject);
 		if (audioObject instanceof ILocalAudioObject) {
 			this.title = audioObject.getTitleOrFileName();
-			this.artist = audioObject.getArtist(unknownObjectChecker);
+			this.artist = audioObject.getArtist(this.unknownObjectChecker);
 			this.lastPlayDate = getLastPlayDateData(audioObject);
 		} else if (audioObject instanceof IRadio) {
 			this.title = ((IRadio) audioObject).getName();
@@ -132,35 +132,35 @@ public class AudioObjectBasicInfoDataSource implements
 	 * @return
 	 */
 	public IAudioObject getAudioObject() {
-		return audioObject;
+		return this.audioObject;
 	}
 
 	/**
 	 * @return
 	 */
 	public ImageIcon getImage() {
-		return image;
+		return this.image;
 	}
 
 	/**
 	 * @return
 	 */
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	/**
 	 * @return
 	 */
 	public String getArtist() {
-		return artist;
+		return this.artist;
 	}
 
 	/**
 	 * @return
 	 */
 	public String getLastPlayDate() {
-		return lastPlayDate;
+		return this.lastPlayDate;
 	}
 
 	/**
@@ -171,12 +171,13 @@ public class AudioObjectBasicInfoDataSource implements
 	 */
 	private ImageIcon getImageData(final IAudioObject audioObject) {
 		if (audioObject instanceof ILocalAudioObject) {
-			ImageIcon localImage = audioObjectImageLocator.getImage(
-					audioObject, Constants.ALBUM_IMAGE_SIZE);
+			ImageIcon localImage = this.beanFactory.getBean(
+					IAudioObjectImageLocator.class).getImage(audioObject,
+					Constants.ALBUM_IMAGE_SIZE);
 			if (localImage == null) {
-				ImageIcon albumImage = webServicesHandler.getAlbumImage(
-						audioObject.getArtist(unknownObjectChecker),
-						audioObject.getAlbum(unknownObjectChecker));
+				ImageIcon albumImage = this.webServicesHandler.getAlbumImage(
+						audioObject.getArtist(this.unknownObjectChecker),
+						audioObject.getAlbum(this.unknownObjectChecker));
 				if (albumImage != null) {
 					localImage = ImageUtils.resize(albumImage,
 							Constants.ALBUM_IMAGE_SIZE.getSize(),
@@ -185,10 +186,10 @@ public class AudioObjectBasicInfoDataSource implements
 			}
 			return localImage;
 		} else if (audioObject instanceof IRadio) {
-			return radioMediumIcon.getIcon(lookAndFeelManager
+			return this.radioMediumIcon.getIcon(this.lookAndFeelManager
 					.getCurrentLookAndFeel().getPaintForSpecialControls());
 		} else if (audioObject instanceof IPodcastFeedEntry) {
-			return rssMediumIcon.getIcon(lookAndFeelManager
+			return this.rssMediumIcon.getIcon(this.lookAndFeelManager
 					.getCurrentLookAndFeel().getPaintForSpecialControls());
 		}
 		return null;
@@ -202,7 +203,7 @@ public class AudioObjectBasicInfoDataSource implements
 	 */
 	private String getLastPlayDateData(final IAudioObject audioObject) {
 		// Get last date played
-		IAudioObjectStatistics stats = statisticsHandler
+		IAudioObjectStatistics stats = this.statisticsHandler
 				.getAudioObjectStatistics(audioObject);
 		if (stats == null) {
 			return I18nUtils.getString("SONG_NEVER_PLAYED");
