@@ -23,7 +23,7 @@
 		<property name="massiveRecognitionPattern" value="true"/>
 	</bean>
 
-	<bean id="anyPattern" class="net.sourceforge.atunes.kernel.modules.pattern.AnyPattern" parent="abstractPattern" scope="prototype">
+	<bean id="anyPattern" class="net.sourceforge.atunes.kernel.modules.pattern.AnyPattern" parent="abstractPattern">
 		<property name="patternChar" value="?"/>
 		<property name="name" value="ANY"/>
 		<property name="recognitionPattern" value="true"/>
@@ -87,10 +87,10 @@
 	</bean>
 	
 	
-	<bean id="patterns" class="net.sourceforge.atunes.kernel.modules.pattern.Patterns" scope="prototype"/>
-	<bean id="patternMatcher" class="net.sourceforge.atunes.kernel.modules.pattern.PatternMatcher" scope="prototype"/>
+	<bean id="patterns" class="net.sourceforge.atunes.kernel.modules.pattern.Patterns"/>
+	<bean id="patternMatcher" class="net.sourceforge.atunes.kernel.modules.pattern.PatternMatcher"/>
 	
-	<bean id="patternsList" class="java.util.ArrayList" scope="prototype">
+	<bean id="patternsList" class="java.util.ArrayList">
 		<constructor-arg>
 			<list>
 				<ref bean="albumArtistPattern"/>

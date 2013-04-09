@@ -74,15 +74,15 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 
 	private boolean backgroundLoad = false;
 
-	private IRepository repositoryRetrievedFromCache = null;
+	private IRepository repositoryRetrievedFromCache;
+
+	private IRepository repository;
 
 	private IDialogFactory dialogFactory;
 
 	private IRepositoryProgressDialog repositoryProgressDialog;
 
 	private IRepositoryLoader currentLoader;
-
-	private IRepository repository;
 
 	private IFrame frame;
 
