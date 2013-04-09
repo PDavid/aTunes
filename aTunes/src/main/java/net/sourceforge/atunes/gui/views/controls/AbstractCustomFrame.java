@@ -71,5 +71,4 @@ public abstract class AbstractCustomFrame extends JFrame {
 		this.controlsBuilder.applyComponentOrientation(this);
 		return c;
 	}
-
 }

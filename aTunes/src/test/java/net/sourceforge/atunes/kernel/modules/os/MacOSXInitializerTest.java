@@ -25,6 +25,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IUIHandler;
@@ -51,7 +52,8 @@ public class MacOSXInitializerTest {
 		when(this.app.initialize()).thenReturn(false);
 		this.sut.setMacOsApplication(this.app);
 
-		this.sut.initialize();
+		IFrame frame = mock(IFrame.class);
+		this.sut.initialize(frame);
 
 		verify(this.app, never()).addDockIconMenu();
 		verify(this.app, never()).registerAbout(any(MacOSXAboutHandler.class));
@@ -68,7 +70,8 @@ public class MacOSXInitializerTest {
 		when(this.app.initialize()).thenReturn(true);
 		this.sut.setMacOsApplication(this.app);
 
-		this.sut.initialize();
+		IFrame frame = mock(IFrame.class);
+		this.sut.initialize(frame);
 
 		verify(this.app).addDockIconMenu();
 		verify(this.app).registerAbout(any(MacOSXAboutHandler.class));

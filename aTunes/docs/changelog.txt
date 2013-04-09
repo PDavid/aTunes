@@ -14,6 +14,7 @@ aTunes 3.0.8
 - FIX: Control visible context panels
 - FIX: Improvements in process to delete files
 - FIX: Workaround for mplayer problem with long filenames or including non-english chars
+- Added support for OS X full screen
 
 aTunes 3.0.7
 ------------

@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.os;
 
+import net.sourceforge.atunes.model.IFrame;
+
 /**
  * An interface for Mac OS X applications
  * 
@@ -28,44 +30,51 @@ package net.sourceforge.atunes.kernel.modules.os;
  */
 public interface IMacOSXApplication {
 
-    /**
-     * Initializes application object
-     * 
-     * @return if initialization is successful
-     */
-    public boolean initialize();
+	/**
+	 * Initializes application object
+	 * 
+	 * @return if initialization is successful
+	 */
+	public boolean initialize();
 
-    /**
-     * Register a handler for about menu
-     * 
-     * @param aboutHandler
-     */
-    public void registerAbout(MacOSXAboutHandler aboutHandler);
+	/**
+	 * Register a handler for about menu
+	 * 
+	 * @param aboutHandler
+	 */
+	public void registerAbout(MacOSXAboutHandler aboutHandler);
 
-    /**
-     * Register a handler for quit
-     * 
-     * @param quitHandler
-     */
-    public void registerQuit(MacOSXQuitHandler quitHandler);
+	/**
+	 * Register a handler for quit
+	 * 
+	 * @param quitHandler
+	 */
+	public void registerQuit(MacOSXQuitHandler quitHandler);
 
-    /**
-     * Register a handler for preferences
-     * 
-     * @param prefsHandler
-     */
-    public void registerPreferences(MacOSXPreferencesHandler prefsHandler);
+	/**
+	 * Register a handler for preferences
+	 * 
+	 * @param prefsHandler
+	 */
+	public void registerPreferences(MacOSXPreferencesHandler prefsHandler);
 
-    /**
-     * Register listener to be fired when apps is reopened
-     * 
-     * @param adapter
-     */
-    public void registerAppReOpenedListener(MacOSXAppReOpenedListener adapter);
+	/**
+	 * Register listener to be fired when apps is reopened
+	 * 
+	 * @param adapter
+	 */
+	public void registerAppReOpenedListener(MacOSXAppReOpenedListener adapter);
 
-    /**
-     * Adds dock icon menu
-     */
-    public void addDockIconMenu();
+	/**
+	 * Adds dock icon menu
+	 */
+	public void addDockIconMenu();
+
+	/**
+	 * Enables Full Screen mode available from OS X Lion
+	 * 
+	 * @param frame
+	 */
+	void enableFullscreen(IFrame frame);
 
 }

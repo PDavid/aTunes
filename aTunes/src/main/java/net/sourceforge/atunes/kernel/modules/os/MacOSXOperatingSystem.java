@@ -87,7 +87,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	@Override
 	public void setupFrame(final IFrame frame) {
 		// Can't be created when creating this object
-		getBeanFactory().getBean(MacOSXInitializer.class).initialize();
+		getBeanFactory().getBean(MacOSXInitializer.class).initialize(frame);
 	}
 
 	@Override
