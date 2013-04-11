@@ -233,6 +233,7 @@ public final class Kernel implements IKernel {
 								.deferredInitialization();
 					}
 				});
+		this.beanFactory.getBean(StartCounter.class).addOne();
 		this.beanFactory.getBean(StartCounter.class).checkCounter();
 	}
 

@@ -20,66 +20,64 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.util.Collection;
-
 import net.sourceforge.atunes.model.IApplicationLifeCycleListener;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import net.sourceforge.atunes.model.IBeanFactory;
 
 /**
  * Calls to ApplicationLifeCycleListener instances
  * 
  * @author fleax
- *
+ * 
  */
-public class ApplicationLifeCycleListeners implements ApplicationContextAware {
+public class ApplicationLifeCycleListeners {
 
-	private Collection<IApplicationLifeCycleListener> listeners;
+	private IBeanFactory beanFactory;
 
-	protected void setListeners(Collection<IApplicationLifeCycleListener> listeners) {
-		this.listeners = listeners;
-	}
-	
-	@Override
-	public void setApplicationContext(ApplicationContext context) {
-		listeners = context.getBeansOfType(IApplicationLifeCycleListener.class).values();
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
-    /**
-     * Call after application started
-     */
-    void applicationStarted() {
-        for (IApplicationLifeCycleListener listener : listeners) {
-       		listener.applicationStarted();
-        }
-    }
-    
-    /**
-     * Called after all handlers initialized
-     */
-    void allHandlersInitialized() {
-        for (IApplicationLifeCycleListener listener : listeners) {
-       		listener.allHandlersInitialized();
-        }
-    }
-    
-    /**
-     * Called of deferred initialization
-     */
-    void deferredInitialization() {
-    	for (IApplicationLifeCycleListener listener : listeners) {
-    		listener.deferredInitialization();
-    	}
-    }
-    
-    /**
-     * Executes actions needed before closing application, finished all
-     * necessary modules and writes configuration.
-     */
-    void applicationFinish() {
-        for (IApplicationLifeCycleListener listener : listeners) {
-       		listener.applicationFinish();
-        }
-    }
+	/**
+	 * Call after application started
+	 */
+	void applicationStarted() {
+		for (IApplicationLifeCycleListener listener : this.beanFactory
+				.getBeans(IApplicationLifeCycleListener.class)) {
+			listener.applicationStarted();
+		}
+	}
+
+	/**
+	 * Called after all handlers initialized
+	 */
+	void allHandlersInitialized() {
+		for (IApplicationLifeCycleListener listener : this.beanFactory
+				.getBeans(IApplicationLifeCycleListener.class)) {
+			listener.allHandlersInitialized();
+		}
+	}
+
+	/**
+	 * Called of deferred initialization
+	 */
+	void deferredInitialization() {
+		for (IApplicationLifeCycleListener listener : this.beanFactory
+				.getBeans(IApplicationLifeCycleListener.class)) {
+			listener.deferredInitialization();
+		}
+	}
+
+	/**
+	 * Executes actions needed before closing application, finished all
+	 * necessary modules and writes configuration.
+	 */
+	void applicationFinish() {
+		for (IApplicationLifeCycleListener listener : this.beanFactory
+				.getBeans(IApplicationLifeCycleListener.class)) {
+			listener.applicationFinish();
+		}
+	}
 }

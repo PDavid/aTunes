@@ -47,8 +47,6 @@ public final class StartCounter {
 
 	private String counterProperty;
 
-	private int counter;
-
 	private int counterLevelNeededToFireAction;
 
 	private String dontFireActionProperty;
@@ -101,11 +99,17 @@ public final class StartCounter {
 	/**
 	 * Initializes counter and adds 1
 	 */
-	public void initialize() {
+	public void addOne() {
 		Properties properties = getProperties();
-		this.counter = addOneToCounter(properties);
-		Logger.info("Start count: ", this.counter);
+		Logger.info("Start count: ", addOneToCounter(properties));
 		writeProperties(properties);
+	}
+
+	/**
+	 * @return value of counter
+	 */
+	public int getCounter() {
+		return readCounter(getProperties());
 	}
 
 	/**
@@ -129,6 +133,17 @@ public final class StartCounter {
 	 * @return
 	 */
 	private int addOneToCounter(final Properties properties) {
+		int counter = readCounter(properties);
+		counter++;
+		properties.put(this.counterProperty, String.valueOf(counter));
+		return counter;
+	}
+
+	/**
+	 * @param properties
+	 * @return
+	 */
+	private int readCounter(final Properties properties) {
 		int counter = 0;
 		try {
 			String valueString = properties.getProperty(this.counterProperty);
@@ -138,8 +153,6 @@ public final class StartCounter {
 		} catch (NumberFormatException e) {
 			Logger.error(e);
 		}
-		counter++;
-		properties.put(this.counterProperty, String.valueOf(counter));
 		return counter;
 	}
 
@@ -183,7 +196,7 @@ public final class StartCounter {
 	 */
 	public void checkCounter() {
 		if (!isDontFireActionAgain()) {
-			if (this.counter >= this.counterLevelNeededToFireAction) {
+			if (getCounter() >= this.counterLevelNeededToFireAction) {
 				this.actionToFire.actionPerformed(null);
 			}
 		}
@@ -193,7 +206,7 @@ public final class StartCounter {
 	 * @return if it's the first time the action must be fired
 	 */
 	public boolean isFirstTimeActionFired() {
-		return this.counter == this.counterLevelNeededToFireAction;
+		return getCounter() == this.counterLevelNeededToFireAction;
 	}
 
 	/**

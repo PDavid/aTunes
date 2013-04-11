@@ -20,37 +20,33 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.util.Collection;
-
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavoritesListener;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 /**
  * Calls to FavoritesListener instances
+ * 
  * @author fleax
- *
+ * 
  */
-public class FavoritesListeners implements ApplicationContextAware {
+public class FavoritesListeners {
 
-	private Collection<IFavoritesListener> listeners;
-	
-	@Override
-	public void setApplicationContext(ApplicationContext ctx) {
-		listeners = ctx.getBeansOfType(IFavoritesListener.class).values();
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
-	
-	protected void setListeners(Collection<IFavoritesListener> listeners) {
-		this.listeners = listeners;
+
+	/**
+	 * Called when favorites changed
+	 */
+	public void favoritesChanged() {
+		for (IFavoritesListener listener : this.beanFactory
+				.getBeans(IFavoritesListener.class)) {
+			listener.favoritesChanged();
+		}
 	}
-	
-    /**
-     * Called when favorites changed
-     */
-    public void favoritesChanged() {
-    	for (IFavoritesListener listener : listeners) {
-    		listener.favoritesChanged();
-    	}
-    }
 }
