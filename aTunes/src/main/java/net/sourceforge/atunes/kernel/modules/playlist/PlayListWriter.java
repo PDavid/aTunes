@@ -47,6 +47,20 @@ public class PlayListWriter {
 	private IRepositoryHandler repositoryHandler;
 
 	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+
+	/**
 	 * Writes a play list to a file using paths relative to repository
 	 * 
 	 * @param playlist
@@ -85,5 +99,4 @@ public class PlayListWriter {
 		}
 		return url;
 	}
-
 }
