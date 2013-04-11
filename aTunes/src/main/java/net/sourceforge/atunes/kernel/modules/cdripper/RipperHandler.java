@@ -106,8 +106,6 @@ public final class RipperHandler extends AbstractHandler implements
 
 	private RepositoryAutoRefresher repositoryRefresher;
 
-	private CdRipperFolderNameCreator cdRipperFolderNameCreator;
-
 	private Genres genresHelper;
 
 	private ILocalAudioObjectFactory localAudioObjectFactory;
@@ -125,14 +123,6 @@ public final class RipperHandler extends AbstractHandler implements
 	 */
 	public void setGenresHelper(final Genres genresHelper) {
 		this.genresHelper = genresHelper;
-	}
-
-	/**
-	 * @param cdRipperFolderNameCreator
-	 */
-	public void setCdRipperFolderNameCreator(
-			final CdRipperFolderNameCreator cdRipperFolderNameCreator) {
-		this.cdRipperFolderNameCreator = cdRipperFolderNameCreator;
 	}
 
 	/**
@@ -394,7 +384,8 @@ public final class RipperHandler extends AbstractHandler implements
 	@Override
 	public void importSongs(final CDMetadata metadata, final String format,
 			final String quality1, final boolean useParanoia) {
-		final File folder = this.cdRipperFolderNameCreator.getFolder(metadata);
+		final File folder = getBean(CdRipperFolderNameCreator.class).getFolder(
+				metadata);
 		if (folder == null) {
 			Logger.error("Could not create folder to import cd");
 			return;
