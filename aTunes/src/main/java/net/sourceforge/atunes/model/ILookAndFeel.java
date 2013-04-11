@@ -128,7 +128,7 @@ public interface ILookAndFeel {
 	 * @param code
 	 * @return
 	 */
-	public ListCellRenderer<?> getListCellRenderer(
+	public ListCellRenderer getListCellRenderer(
 			final IListCellRendererCode<?, ?> code);
 
 	/**
@@ -311,7 +311,7 @@ public interface ILookAndFeel {
 	 * @param list
 	 * @return
 	 */
-	public JScrollPane getListScrollPane(JList<?> list);
+	public JScrollPane getListScrollPane(JList list);
 
 	/**
 	 * Returns scroll pane with special look and feel settings

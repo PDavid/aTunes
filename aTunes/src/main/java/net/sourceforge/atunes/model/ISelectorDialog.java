@@ -33,7 +33,7 @@ public interface ISelectorDialog extends IDialog {
 	/**
 	 * @param cellRenderer
 	 */
-	public void setCellRenderer(ListCellRenderer<?> cellRenderer);
+	public void setCellRenderer(ListCellRenderer cellRenderer);
 
 	/**
 	 * @param options

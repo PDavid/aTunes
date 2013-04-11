@@ -50,7 +50,7 @@ public class LanguageListCellRendererCode implements
 	}
 
 	@Override
-	public JComponent getComponent(final JLabel c, final JList<?> list,
+	public JComponent getComponent(final JLabel c, final JList list,
 			final Locale displayingLocale, final int index,
 			final boolean isSelected, final boolean cellHasFocus) {
 		Locale currentLocale = this.stateCore.getLocale().getLocale();

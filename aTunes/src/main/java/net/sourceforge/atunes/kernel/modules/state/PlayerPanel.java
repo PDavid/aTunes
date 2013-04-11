@@ -246,7 +246,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
 	/** The cache files before playing. */
 	private JCheckBox cacheFilesBeforePlaying;
 
-	private JComboBox<?> engineCombo;
+	private JComboBox engineCombo;
 
 	private IOSManager osManager;
 
@@ -340,7 +340,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
 		}
 		String[] engineNames = enginesNamesList
 				.toArray(new String[enginesNamesList.size()]);
-		this.engineCombo = new JComboBox<String>(engineNames);
+		this.engineCombo = new JComboBox(engineNames);
 		// Disable combo if no player engine available
 		this.engineCombo.setEnabled(engineNames.length > 0);
 		engineBox.add(this.engineCombo);
