@@ -44,7 +44,7 @@ public interface IListCellRendererCode<T extends Component, U> {
 	 * @param cellHasFocus
 	 * @return
 	 */
-	public JComponent getComponent(T superComponent, JList<?> list, U value,
+	public JComponent getComponent(T superComponent, JList list, U value,
 			int index, boolean isSelected, boolean cellHasFocus);
 
 }

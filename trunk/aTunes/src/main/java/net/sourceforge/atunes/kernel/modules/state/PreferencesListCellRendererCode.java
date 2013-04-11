@@ -29,7 +29,7 @@ import net.sourceforge.atunes.model.IListCellRendererCode;
 class PreferencesListCellRendererCode implements
 		IListCellRendererCode<JLabel, AbstractPreferencesPanel> {
 	@Override
-	public JComponent getComponent(final JLabel label, final JList<?> list,
+	public JComponent getComponent(final JLabel label, final JList list,
 			final AbstractPreferencesPanel p, final int index,
 			final boolean isSelected, final boolean cellHasFocus) {
 		label.setText(p.getTitle());

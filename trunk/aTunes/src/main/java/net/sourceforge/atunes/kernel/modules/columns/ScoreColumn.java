@@ -53,7 +53,7 @@ public class ScoreColumn extends AbstractColumn<Integer> {
 
 		@Override
 		public JComponent getComponent(final JLabel superComponent,
-				final JList<?> list, final Integer value, final int index,
+				final JList list, final Integer value, final int index,
 				final boolean isSelected, final boolean cellHasFocus) {
 			setLabel(superComponent, value);
 			return superComponent;

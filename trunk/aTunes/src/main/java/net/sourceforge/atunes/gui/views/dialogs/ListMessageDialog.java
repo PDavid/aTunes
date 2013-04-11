@@ -80,8 +80,7 @@ public class ListMessageDialog extends AbstractCustomDialog implements
 		setLayout(new GridBagLayout());
 
 		JLabel messageLabel = new JLabel(message);
-		@SuppressWarnings("unchecked")
-		JList<String> list = getLookAndFeel().getList();
+		JList list = getLookAndFeel().getList();
 		list.setListData(items.toArray(new String[items.size()]));
 
 		GridBagConstraints c = new GridBagConstraints();
