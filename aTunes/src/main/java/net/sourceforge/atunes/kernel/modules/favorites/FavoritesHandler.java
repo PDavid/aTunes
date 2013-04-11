@@ -60,8 +60,6 @@ public final class FavoritesHandler extends AbstractHandler implements
 
 	private IRepositoryHandler repositoryHandler;
 
-	private FavoritesListeners favoritesListeners;
-
 	/** The favorites. */
 	private IFavorites favorites = new Favorites();
 
@@ -92,14 +90,6 @@ public final class FavoritesHandler extends AbstractHandler implements
 	 */
 	public void setStateContext(final IStateContext stateContext) {
 		this.stateContext = stateContext;
-	}
-
-	/**
-	 * @param favoritesListeners
-	 */
-	public void setFavoritesListeners(
-			final FavoritesListeners favoritesListeners) {
-		this.favoritesListeners = favoritesListeners;
 	}
 
 	/**
@@ -312,14 +302,13 @@ public final class FavoritesHandler extends AbstractHandler implements
 	 * Actions to do after a favorite change (add, remove)
 	 */
 	private void callActionsAfterFavoritesChange() {
-		if (this.favoritesListeners != null) {
-			GuiUtils.callInEventDispatchThread(new Runnable() {
-				@Override
-				public void run() {
-					FavoritesHandler.this.favoritesListeners.favoritesChanged();
-				}
-			});
-		}
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				getBeanFactory().getBean(FavoritesListeners.class)
+						.favoritesChanged();
+			}
+		});
 	}
 
 	@Override

@@ -20,58 +20,59 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.util.Collection;
-
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDeviceListener;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 /**
  * Calls to to DeviceListener instances
+ * 
  * @author fleax
- *
+ * 
  */
-public class DeviceListeners implements ApplicationContextAware {
+public class DeviceListeners {
 
-	private Collection<IDeviceListener> listeners;
-	
-	protected void setListeners(Collection<IDeviceListener> listeners) {
-		this.listeners = listeners;
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
-	
-	@Override
-	public void setApplicationContext(ApplicationContext ctx) {
-		listeners = ctx.getBeansOfType(IDeviceListener.class).values();
-	}
-	
+
 	/**
 	 * Called when device connected
+	 * 
 	 * @param path
 	 */
-	public void deviceConnected(String path) {
-        for (IDeviceListener l : listeners) {
-        	l.deviceConnected(path);
-        }
+	public void deviceConnected(final String path) {
+		for (IDeviceListener l : this.beanFactory
+				.getBeans(IDeviceListener.class)) {
+			l.deviceConnected(path);
+		}
 	}
 
 	/**
 	 * Called when device is ready
+	 * 
 	 * @param path
 	 */
-	public void deviceReady(String path) {
-        for (IDeviceListener l : listeners) {
-        	l.deviceReady(path);
-        }
+	public void deviceReady(final String path) {
+		for (IDeviceListener l : this.beanFactory
+				.getBeans(IDeviceListener.class)) {
+			l.deviceReady(path);
+		}
 	}
 
 	/**
 	 * Called when device disconnected
+	 * 
 	 * @param location
 	 */
-	public void deviceDisconnected(String location) {
-        for (IDeviceListener l : listeners) {
-        	l.deviceDisconnected(location);
-        }
+	public void deviceDisconnected(final String location) {
+		for (IDeviceListener l : this.beanFactory
+				.getBeans(IDeviceListener.class)) {
+			l.deviceDisconnected(location);
+		}
 	}
 }

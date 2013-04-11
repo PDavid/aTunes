@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import net.sourceforge.atunes.kernel.DeviceListeners;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -32,37 +33,38 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class DisconnectDeviceAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 1782027529649014492L;
+	private static final long serialVersionUID = 1782027529649014492L;
 
-    private IDeviceHandler deviceHandler;
+	private IDeviceHandler deviceHandler;
 
-    private DeviceListeners deviceListeners;
+	private IBeanFactory beanFactory;
 
-    /**
-     * @param deviceHandler
-     */
-    public void setDeviceHandler(final IDeviceHandler deviceHandler) {
-	this.deviceHandler = deviceHandler;
-    }
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
-    /**
-     * @param deviceListeners
-     */
-    public void setDeviceListeners(final DeviceListeners deviceListeners) {
-	this.deviceListeners = deviceListeners;
-    }
+	/**
+	 * @param deviceHandler
+	 */
+	public void setDeviceHandler(final IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
 
-    /**
-     * Default constructor
-     */
-    public DisconnectDeviceAction() {
-	super(I18nUtils.getString("DISCONNECT"));
-	setEnabled(false);
-    }
+	/**
+	 * Default constructor
+	 */
+	public DisconnectDeviceAction() {
+		super(I18nUtils.getString("DISCONNECT"));
+		setEnabled(false);
+	}
 
-    @Override
-    protected void executeAction() {
-	// Launch a device disconnected event
-	deviceListeners.deviceDisconnected(deviceHandler.getDeviceLocation());
-    }
+	@Override
+	protected void executeAction() {
+		// Launch a device disconnected event
+		this.beanFactory.getBean(DeviceListeners.class).deviceDisconnected(
+				this.deviceHandler.getDeviceLocation());
+	}
 }

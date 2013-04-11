@@ -5,7 +5,7 @@
 
 	default-autowire="byName" default-lazy-init="true" default-init-method="registerHandler">
 
-	<bean class="net.sourceforge.atunes.kernel.HandlerInitializer">
+	<bean id="handlerInitializer" class="net.sourceforge.atunes.kernel.HandlerInitializer" scope="prototype">
 		<property name="handlers">
 			<list>
 				<!-- Put here handlers in desired initialization order -->

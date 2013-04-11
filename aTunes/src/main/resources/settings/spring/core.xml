@@ -48,9 +48,9 @@
 
 
 
-	<bean id="applicationLifeCycleListeners" class="net.sourceforge.atunes.kernel.ApplicationLifeCycleListeners"/>
-	<bean id="deviceListeners" class="net.sourceforge.atunes.kernel.DeviceListeners"/>
-	<bean id="favoritesListeners" class="net.sourceforge.atunes.kernel.FavoritesListeners"/>
+	<bean id="applicationLifeCycleListeners" class="net.sourceforge.atunes.kernel.ApplicationLifeCycleListeners" scope="prototype"/>
+	<bean id="deviceListeners" class="net.sourceforge.atunes.kernel.DeviceListeners" scope="prototype"/>
+	<bean id="favoritesListeners" class="net.sourceforge.atunes.kernel.FavoritesListeners" scope="prototype"/>
 	<bean id="playbackStateListeners" class="net.sourceforge.atunes.kernel.PlaybackStateListeners" init-method="initialize"/>
 	<bean id="playListEventListeners" class="net.sourceforge.atunes.kernel.PlayListEventListeners"/>
 	<bean id="stateChangeListeners" class="net.sourceforge.atunes.kernel.StateChangeListeners"/>
@@ -97,7 +97,7 @@
 	</bean>
 	
 	
-	<bean class="net.sourceforge.atunes.kernel.StartCounter" init-method="initialize">
+	<bean id="startCounter" class="net.sourceforge.atunes.kernel.StartCounter" scope="prototype">
 		<property name="counterFile" value="counter.properties"/>
 		<property name="counterProperty" value="counter"/>
 		<property name="counterLevelNeededToFireAction" value="2"/>
