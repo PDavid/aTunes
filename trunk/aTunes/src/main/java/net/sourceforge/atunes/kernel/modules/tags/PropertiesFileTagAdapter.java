@@ -179,9 +179,12 @@ public class PropertiesFileTagAdapter implements ITagAdapter {
 		Map<String, Object> values = new HashMap<String, Object>();
 		for (Entry<Object, Object> entry : getProperties(ao).entrySet()) {
 			String key = (String) entry.getKey();
-			// Read rating only if requested
-			if (!key.equals(TagFactory.RATING) || readRating) {
-				values.put(key, entry.getValue());
+			Object value = entry.getValue();
+			if (key != null && value != null) {
+				// Read rating only if requested
+				if (!key.equals(TagFactory.RATING) || readRating) {
+					values.put(key, entry.getValue());
+				}
 			}
 		}
 		ao.setTag(this.tagFactory.getNewTag(values));
