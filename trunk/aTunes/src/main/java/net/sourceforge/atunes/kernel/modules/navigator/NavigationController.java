@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -67,6 +68,7 @@ import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Controller to manage
@@ -376,7 +378,25 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 		if (columnSorted != null) {
 			net.sourceforge.atunes.utils.Timer t = new net.sourceforge.atunes.utils.Timer();
 			t.start();
-			Collections.sort(audioObjects, columnSorted.getComparator());
+			try {
+				Collections.sort(audioObjects, columnSorted.getComparator());
+			} catch (IllegalArgumentException e) {
+				// Try to find column causing
+				// "java.lang.IllegalArgumentException: Comparison method violates its general contract!"
+				// with Java 7
+				List<String> values = new ArrayList<String>();
+				for (IAudioObject audioObject : audioObjects) {
+					Object value = columnSorted.getValueFor(audioObject, 0);
+					if (value != null) {
+						values.add(value.toString());
+					} else {
+						values.add("null");
+					}
+				}
+				throw new IllegalArgumentException(StringUtils.getString(
+						"Column: ", columnSorted.getColumnName(), " Values: ",
+						Arrays.toString(values.toArray())), e);
+			}
 			Logger.debug("Navigation table sort: ", t.stop(), " seconds");
 		}
 		return audioObjects;
