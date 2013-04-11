@@ -5,27 +5,27 @@
 	
 	default-autowire="byName" default-lazy-init="true">
 	
-	
-	
-	<bean id="osType" class="net.sourceforge.atunes.kernel.OperatingSystemDetector" factory-method="getOperatingSystem"/>
+	<bean id="osType" class="net.sourceforge.atunes.kernel.OperatingSystemDetector" factory-method="getOperatingSystem" scope="prototype"/>
 	
 	<bean id="linux" class="net.sourceforge.atunes.model.OperatingSystem" factory-method="getLinux"/>
 	<bean id="windows" class="net.sourceforge.atunes.model.OperatingSystem" factory-method="getWindows"/>
 	<bean id="macosx" class="net.sourceforge.atunes.model.OperatingSystem" factory-method="getMacOSX"/>
 	<bean id="solaris" class="net.sourceforge.atunes.model.OperatingSystem" factory-method="getSolaris"/>
+
+	<bean id="operatingSystemAdapterFactory" class="net.sourceforge.atunes.kernel.modules.os.OperatingSystemAdapterFactory" scope="prototype"/>
 	
-	<bean id="operatingSystems" class="java.util.HashMap">
+	<bean id="operatingSystems" class="java.util.HashMap" scope="prototype">
 		<constructor-arg>
 			<map>
-				<entry key-ref="linux" value-ref="linuxAdapter"/>
-				<entry key-ref="windows" value-ref="windowsAdapter"/>
-				<entry key-ref="macosx" value-ref="macosxAdapter"/>
-				<entry key-ref="solaris" value-ref="solarisAdapter"/>
+				<entry key-ref="linux" value="linuxAdapter"/>
+				<entry key-ref="windows" value="windowsAdapter"/>
+				<entry key-ref="macosx" value="macosxAdapter"/>
+				<entry key-ref="solaris" value="solarisAdapter"/>
 			</map>
 		</constructor-arg>
 	</bean>
 	
-	<bean id="operatingSystemAdapter" factory-bean="operatingSystems" factory-method="get">
+	<bean id="operatingSystemAdapter" factory-bean="operatingSystemAdapterFactory" factory-method="get" scope="prototype">
 		<constructor-arg ref="osType"/>
 	</bean>
 	
@@ -54,8 +54,6 @@
 	<bean id="trayIcon" factory-bean="trayIcons" factory-method="get">
 		<constructor-arg ref="osType"/>
 	</bean>
-
-
 
 	<bean id="macOsApplication" class="net.sourceforge.atunes.kernel.modules.os.MacOSXApplication" scope="prototype"/>
 	<bean id="macOsDockMenu" class="net.sourceforge.atunes.kernel.modules.os.MacOSXDockMenu" scope="prototype"/>
