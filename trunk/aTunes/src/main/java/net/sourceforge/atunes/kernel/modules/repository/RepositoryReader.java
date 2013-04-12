@@ -45,6 +45,7 @@ import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
 import net.sourceforge.atunes.model.IStateRepository;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -91,6 +92,15 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	private IOSManager osManager;
 
 	private IBeanFactory beanFactory;
+
+	private ITaskService taskService;
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
+		this.taskService = taskService;
+	}
 
 	/**
 	 * @param beanFactory
@@ -400,7 +410,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 												: null);
 							}
 						});
-				this.coverWorker.execute();
+				this.coverWorker.execute(this.taskService);
 			}
 		}
 	}

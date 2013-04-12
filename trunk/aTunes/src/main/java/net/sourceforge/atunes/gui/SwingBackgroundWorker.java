@@ -23,9 +23,11 @@ package net.sourceforge.atunes.gui;
 import java.util.concurrent.Callable;
 
 import net.sourceforge.atunes.model.IBackgroundWorker;
+import net.sourceforge.atunes.model.ITaskService;
 
 /**
  * Implementation of a IBackgroundWorker using Swing
+ * 
  * @author alex
  * @param <T>
  */
@@ -45,23 +47,29 @@ public class SwingBackgroundWorker<T> implements IBackgroundWorker<T> {
 	}
 
 	@Override
-	public void setActionsBeforeBackgroundStarts(final Runnable afterStartActions) {
+	public void setActionsBeforeBackgroundStarts(
+			final Runnable afterStartActions) {
 		this.graphicalActionsBeforeStart = afterStartActions;
 	}
 
 	@Override
-	public void setActionsWhenDone(final IActionsWithBackgroundResult<T> graphicalActionsWhenDone) {
+	public void setActionsWhenDone(
+			final IActionsWithBackgroundResult<T> graphicalActionsWhenDone) {
 		this.graphicalActionsWhenDone = graphicalActionsWhenDone;
 	}
 
 	@Override
-	public void execute() {
-		backgroundSwingWorker = new BackgroundSwingWorker<T>(graphicalActionsBeforeStart, backgroundActions, graphicalActionsWhenDone);
-		backgroundSwingWorker.execute();
+	public void execute(final ITaskService taskService) {
+		this.backgroundSwingWorker = new BackgroundSwingWorker<T>(
+				this.graphicalActionsBeforeStart, this.backgroundActions,
+				this.graphicalActionsWhenDone);
+		taskService.submitNow("Swing Background Task",
+				this.backgroundSwingWorker);
 	}
 
 	@Override
 	public boolean isDone() {
-		return backgroundSwingWorker != null ? backgroundSwingWorker.isDone() : false;
+		return this.backgroundSwingWorker != null ? this.backgroundSwingWorker
+				.isDone() : false;
 	}
 }

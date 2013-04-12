@@ -27,6 +27,7 @@ import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IStateContext;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -36,92 +37,103 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class RemoveLovedSongInLastFmAction extends CustomAbstractAction {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = -7812867146385945853L;
+	private static final long serialVersionUID = -7812867146385945853L;
 
-    private IWebServicesHandler webServicesHandler;
+	private IWebServicesHandler webServicesHandler;
 
-    private IContextHandler contextHandler;
+	private IContextHandler contextHandler;
 
-    private IBackgroundWorkerFactory backgroundWorkerFactory;
+	private IBackgroundWorkerFactory backgroundWorkerFactory;
 
-    private IStateContext stateContext;
+	private IStateContext stateContext;
 
-    /**
-     * @param stateContext
-     */
-    public void setStateContext(final IStateContext stateContext) {
-	this.stateContext = stateContext;
-    }
+	private ITaskService taskService;
 
-    /**
-     * @param webServicesHandler
-     */
-    public void setWebServicesHandler(
-	    final IWebServicesHandler webServicesHandler) {
-	this.webServicesHandler = webServicesHandler;
-    }
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
+		this.taskService = taskService;
+	}
 
-    /**
-     * @param contextHandler
-     */
-    public void setContextHandler(final IContextHandler contextHandler) {
-	this.contextHandler = contextHandler;
-    }
+	/**
+	 * @param stateContext
+	 */
+	public void setStateContext(final IStateContext stateContext) {
+		this.stateContext = stateContext;
+	}
 
-    /**
-     * @param backgroundWorkerFactory
-     */
-    public void setBackgroundWorkerFactory(
-	    final IBackgroundWorkerFactory backgroundWorkerFactory) {
-	this.backgroundWorkerFactory = backgroundWorkerFactory;
-    }
+	/**
+	 * @param webServicesHandler
+	 */
+	public void setWebServicesHandler(
+			final IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
 
-    /**
-     * Default constructor
-     */
-    public RemoveLovedSongInLastFmAction() {
-	super(I18nUtils.getString("UNLOVE_SONG_IN_LASTFM"));
-    }
+	/**
+	 * @param contextHandler
+	 */
+	public void setContextHandler(final IContextHandler contextHandler) {
+		this.contextHandler = contextHandler;
+	}
 
-    @Override
-    protected void initialize() {
-	super.initialize();
-	setEnabled(stateContext.isLastFmEnabled());
-    }
+	/**
+	 * @param backgroundWorkerFactory
+	 */
+	public void setBackgroundWorkerFactory(
+			final IBackgroundWorkerFactory backgroundWorkerFactory) {
+		this.backgroundWorkerFactory = backgroundWorkerFactory;
+	}
 
-    @Override
-    protected void executeAction() {
-	removeFromLovedSongs(contextHandler.getCurrentAudioObject());
-    }
+	/**
+	 * Default constructor
+	 */
+	public RemoveLovedSongInLastFmAction() {
+		super(I18nUtils.getString("UNLOVE_SONG_IN_LASTFM"));
+	}
 
-    /**
-     * Removes from loved song
-     * 
-     * @param song
-     */
-    public void removeFromLovedSongs(final IAudioObject song) {
-	setEnabled(false);
+	@Override
+	protected void initialize() {
+		super.initialize();
+		setEnabled(this.stateContext.isLastFmEnabled());
+	}
 
-	IBackgroundWorker<Void> worker = backgroundWorkerFactory.getWorker();
-	worker.setBackgroundActions(new Callable<Void>() {
+	@Override
+	protected void executeAction() {
+		removeFromLovedSongs(this.contextHandler.getCurrentAudioObject());
+	}
 
-	    @Override
-	    public Void call() {
-		webServicesHandler.removeLovedSong(song);
-		return null;
-	    }
-	});
+	/**
+	 * Removes from loved song
+	 * 
+	 * @param song
+	 */
+	public void removeFromLovedSongs(final IAudioObject song) {
+		setEnabled(false);
 
-	worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
-	    @Override
-	    public void call(final Void result) {
-		setEnabled(true);
-	    }
-	});
+		IBackgroundWorker<Void> worker = this.backgroundWorkerFactory
+				.getWorker();
+		worker.setBackgroundActions(new Callable<Void>() {
 
-	worker.execute();
-    }
+			@Override
+			public Void call() {
+				RemoveLovedSongInLastFmAction.this.webServicesHandler
+						.removeLovedSong(song);
+				return null;
+			}
+		});
+
+		worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
+			@Override
+			public void call(final Void result) {
+				setEnabled(true);
+			}
+		});
+
+		worker.execute(this.taskService);
+	}
 }

@@ -24,19 +24,20 @@ import java.util.concurrent.Callable;
 
 /**
  * Basic implementation for tests
+ * 
  * @author alex
- *
+ * @param <T>
  */
 public class BackgroundWorkerMock<T> implements IBackgroundWorker<T> {
 
 	private Callable<T> backgroundActions;
 
 	private Runnable afterStartActions;
-	
+
 	private IActionsWithBackgroundResult<T> graphicalActions;
-	
+
 	@Override
-	public void execute() {
+	public void execute(final ITaskService taskService) {
 		T result = null;
 		if (this.backgroundActions != null) {
 			try {
@@ -54,20 +55,22 @@ public class BackgroundWorkerMock<T> implements IBackgroundWorker<T> {
 	}
 
 	@Override
-	public void setBackgroundActions(Callable<T> backgroundActions) {
+	public void setBackgroundActions(final Callable<T> backgroundActions) {
 		this.backgroundActions = backgroundActions;
 	}
-	
+
 	@Override
-	public void setActionsBeforeBackgroundStarts(Runnable afterStartActions) {
+	public void setActionsBeforeBackgroundStarts(
+			final Runnable afterStartActions) {
 		this.afterStartActions = afterStartActions;
 	}
 
 	@Override
-	public void setActionsWhenDone(IActionsWithBackgroundResult<T> graphicalActions) {
+	public void setActionsWhenDone(
+			final IActionsWithBackgroundResult<T> graphicalActions) {
 		this.graphicalActions = graphicalActions;
 	}
-	
+
 	@Override
 	public boolean isDone() {
 		return false;

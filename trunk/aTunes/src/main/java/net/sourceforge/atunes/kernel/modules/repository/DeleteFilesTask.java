@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -51,24 +52,33 @@ public final class DeleteFilesTask {
 
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
 
+	private ITaskService taskService;
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
+		this.taskService = taskService;
+	}
+
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
 
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
 	/**
 	 * @param fileManager
 	 */
-	public void setFileManager(IFileManager fileManager) {
+	public void setFileManager(final IFileManager fileManager) {
 		this.fileManager = fileManager;
 	}
 
@@ -76,7 +86,7 @@ public final class DeleteFilesTask {
 	 * @param backgroundWorkerFactory
 	 */
 	public void setBackgroundWorkerFactory(
-			IBackgroundWorkerFactory backgroundWorkerFactory) {
+			final IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
 
@@ -101,11 +111,11 @@ public final class DeleteFilesTask {
 			public Void call() {
 				List<ILocalAudioObject> filesDeleted = new ArrayList<ILocalAudioObject>();
 				for (ILocalAudioObject audioFile : files) {
-					if (fileManager.delete(audioFile)) {
+					if (DeleteFilesTask.this.fileManager.delete(audioFile)) {
 						filesDeleted.add(audioFile);
 					}
 				}
-				repositoryHandler.remove(filesDeleted);
+				DeleteFilesTask.this.repositoryHandler.remove(filesDeleted);
 				return null;
 			}
 		});
@@ -113,16 +123,16 @@ public final class DeleteFilesTask {
 
 			@Override
 			public void call(final Void result) {
-				dialog.hideDialog();
+				DeleteFilesTask.this.dialog.hideDialog();
 			}
 		});
-		worker.execute();
+		worker.execute(this.taskService);
 	}
 
 	private void showDialog() {
-		this.dialog = dialogFactory
+		this.dialog = this.dialogFactory
 				.newDialog(IIndeterminateProgressDialog.class);
-		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
-		dialog.showDialog();
+		this.dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
+		this.dialog.showDialog();
 	}
 }

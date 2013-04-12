@@ -34,6 +34,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -58,6 +59,15 @@ public class AddFilesToRepositoryTask {
 	private INavigationHandler navigationHandler;
 
 	private IBeanFactory beanFactory;
+
+	private ITaskService taskService;
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
+		this.taskService = taskService;
+	}
 
 	/**
 	 * @param beanFactory
@@ -136,7 +146,7 @@ public class AddFilesToRepositoryTask {
 				processResult(repository, files);
 			}
 		});
-		worker.execute();
+		worker.execute(this.taskService);
 	}
 
 	/**
