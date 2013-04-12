@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -48,17 +49,28 @@ public class ClearCachesAction extends CustomAbstractAction {
 
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
 
+	private ITaskService taskService;
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
+		this.taskService = taskService;
+	}
+
 	/**
 	 * @param webServicesHandler
 	 */
-	public void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
+	public void setWebServicesHandler(
+			final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
 
 	/**
 	 * @param backgroundWorkerFactory
 	 */
-	public void setBackgroundWorkerFactory(final IBackgroundWorkerFactory backgroundWorkerFactory) {
+	public void setBackgroundWorkerFactory(
+			final IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
 
@@ -72,24 +84,28 @@ public class ClearCachesAction extends CustomAbstractAction {
 	@Override
 	protected void executeAction() {
 		setEnabled(false);
-		((JPanel)((JButton)getSource()).getParent()).setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		IBackgroundWorker<Void> backgroundWorker = backgroundWorkerFactory.getWorker();
+		((JPanel) ((JButton) getSource()).getParent()).setCursor(Cursor
+				.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		IBackgroundWorker<Void> backgroundWorker = this.backgroundWorkerFactory
+				.getWorker();
 		backgroundWorker.setBackgroundActions(new Callable<Void>() {
 
 			@Override
 			public Void call() {
-				webServicesHandler.clearCache();
+				ClearCachesAction.this.webServicesHandler.clearCache();
 				return null;
 			}
 		});
-		backgroundWorker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
-			@Override
-			public void call(final Void result) {
-				((JPanel)((JButton)getSource()).getParent()).setCursor(Cursor.getDefaultCursor());
-				setEnabled(true);
-			}
-		});
-		backgroundWorker.execute();
+		backgroundWorker
+				.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
+					@Override
+					public void call(final Void result) {
+						((JPanel) ((JButton) getSource()).getParent())
+								.setCursor(Cursor.getDefaultCursor());
+						setEnabled(true);
+					}
+				});
+		backgroundWorker.execute(this.taskService);
 	}
 
 }

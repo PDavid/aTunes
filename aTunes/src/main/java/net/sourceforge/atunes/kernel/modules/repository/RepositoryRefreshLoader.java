@@ -27,6 +27,7 @@ import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -44,10 +45,19 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 
 	private IBeanFactory beanFactory;
 
+	private ITaskService taskService;
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
+		this.taskService = taskService;
+	}
+
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
@@ -68,15 +78,17 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 
 	@Override
 	protected void execute() {
-		IBackgroundWorker<Void> worker = backgroundWorkerFactory.getWorker();
+		IBackgroundWorker<Void> worker = this.backgroundWorkerFactory
+				.getWorker();
 		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 
 			@Override
 			public void run() {
 				String text = StringUtils.getString(
 						I18nUtils.getString("REFRESHING"), "...");
-				frame.showProgressBar(true, text);
-				beanFactory.getBean(RepositoryActionsHelper.class)
+				RepositoryRefreshLoader.this.frame.showProgressBar(true, text);
+				RepositoryRefreshLoader.this.beanFactory.getBean(
+						RepositoryActionsHelper.class)
 						.disableAllRepositoryActions();
 			}
 		});
@@ -88,7 +100,7 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 				return null;
 			}
 		});
-		worker.execute();
+		worker.execute(this.taskService);
 	}
 
 	@Override

@@ -29,6 +29,7 @@ import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IRepository;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -48,10 +49,19 @@ public final class RefreshFoldersTask {
 
 	private IBeanFactory beanFactory;
 
+	private ITaskService taskService;
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
+		this.taskService = taskService;
+	}
+
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
@@ -85,13 +95,15 @@ public final class RefreshFoldersTask {
 	 */
 	public void execute(final IRepository repository,
 			final List<IFolder> folders) {
-		IBackgroundWorker<Void> worker = backgroundWorkerFactory.getWorker();
+		IBackgroundWorker<Void> worker = this.backgroundWorkerFactory
+				.getWorker();
 		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 			@Override
 			public void run() {
-				frame.showProgressBar(true, StringUtils.getString(
-						I18nUtils.getString("REFRESHING"), "..."));
-				beanFactory.getBean(RepositoryActionsHelper.class)
+				RefreshFoldersTask.this.frame.showProgressBar(true, StringUtils
+						.getString(I18nUtils.getString("REFRESHING"), "..."));
+				RefreshFoldersTask.this.beanFactory.getBean(
+						RepositoryActionsHelper.class)
 						.disableAllRepositoryActions();
 			}
 		});
@@ -99,7 +111,8 @@ public final class RefreshFoldersTask {
 
 			@Override
 			public Void call() {
-				folderRefresher.refreshFolders(repository, folders);
+				RefreshFoldersTask.this.folderRefresher.refreshFolders(
+						repository, folders);
 				return null;
 			}
 		});
@@ -107,10 +120,11 @@ public final class RefreshFoldersTask {
 
 			@Override
 			public void call(final Void result) {
-				beanFactory.getBean(RepositoryLoadedActions.class)
-						.repositoryReadCompleted(repository);
+				RefreshFoldersTask.this.beanFactory.getBean(
+						RepositoryLoadedActions.class).repositoryReadCompleted(
+						repository);
 			}
 		});
-		worker.execute();
+		worker.execute(this.taskService);
 	}
 }

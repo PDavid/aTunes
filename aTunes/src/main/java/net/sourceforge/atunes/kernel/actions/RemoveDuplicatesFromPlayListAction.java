@@ -35,6 +35,7 @@ import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -90,6 +91,15 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
 	private IDialogFactory dialogFactory;
 
 	private IBeanFactory beanFactory;
+
+	private ITaskService taskService;
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
+		this.taskService = taskService;
+	}
 
 	/**
 	 * @param beanFactory
@@ -156,7 +166,7 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
 			}
 		});
 
-		worker.execute();
+		worker.execute(this.taskService);
 	}
 
 	@Override

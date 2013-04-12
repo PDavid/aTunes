@@ -37,6 +37,7 @@ import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateNavigation;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.FileUtils;
@@ -72,10 +73,19 @@ public class MoveFolderFromNavigatorAction extends
 
 	private IBeanFactory beanFactory;
 
+	private ITaskService taskService;
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
+		this.taskService = taskService;
+	}
+
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
@@ -124,25 +134,26 @@ public class MoveFolderFromNavigatorAction extends
 
 	@Override
 	protected void executeAction(final List<IFolder> folders) {
-		beanFactory.getBean(RepositoryActionsHelper.class)
+		this.beanFactory.getBean(RepositoryActionsHelper.class)
 				.disableAllRepositoryActions();
 		final IFolder sourceFolder = folders.get(0);
-		final File sourceFile = sourceFolder.getFolderPath(osManager);
-		IFolderSelectorDialog dialog = dialogFactory
+		final File sourceFile = sourceFolder.getFolderPath(this.osManager);
+		IFolderSelectorDialog dialog = this.dialogFactory
 				.newDialog(IFolderSelectorDialog.class);
 		dialog.setTitle(I18nUtils.getString("MOVE_FOLDER_TO"));
 		final File destination = dialog
 				.selectFolder(sourceFile.getParentFile());
 		if (destination != null) {
 			if (isValidDestination(sourceFolder, destination)) {
-				indeterminateDialog = dialogFactory
+				this.indeterminateDialog = this.dialogFactory
 						.newDialog(IIndeterminateProgressDialog.class);
-				IBackgroundWorker<Boolean> worker = backgroundWorkerFactory
+				IBackgroundWorker<Boolean> worker = this.backgroundWorkerFactory
 						.getWorker();
 				worker.setActionsBeforeBackgroundStarts(new Runnable() {
 					@Override
 					public void run() {
-						indeterminateDialog.showDialog();
+						MoveFolderFromNavigatorAction.this.indeterminateDialog
+								.showDialog();
 					}
 				});
 				worker.setBackgroundActions(new Callable<Boolean>() {
@@ -164,19 +175,27 @@ public class MoveFolderFromNavigatorAction extends
 
 					@Override
 					public void call(final Boolean result) {
-						beanFactory.getBean(RepositoryActionsHelper.class)
+						MoveFolderFromNavigatorAction.this.beanFactory.getBean(
+								RepositoryActionsHelper.class)
 								.enableRepositoryActions();
 						if (result) {
-							repositoryHandler.folderMoved(
-									sourceFolder,
-									new File(StringUtils.getString(
-											FileUtils.getPath(destination),
-											osManager.getFileSeparator(),
-											sourceFile.getName())));
-							indeterminateDialog.hideDialog();
+							MoveFolderFromNavigatorAction.this.repositoryHandler
+									.folderMoved(
+											sourceFolder,
+											new File(
+													StringUtils.getString(
+															FileUtils
+																	.getPath(destination),
+															MoveFolderFromNavigatorAction.this.osManager
+																	.getFileSeparator(),
+															sourceFile
+																	.getName())));
+							MoveFolderFromNavigatorAction.this.indeterminateDialog
+									.hideDialog();
 						} else {
-							indeterminateDialog.hideDialog();
-							dialogFactory
+							MoveFolderFromNavigatorAction.this.indeterminateDialog
+									.hideDialog();
+							MoveFolderFromNavigatorAction.this.dialogFactory
 									.newDialog(IErrorDialog.class)
 									.showErrorDialog(
 											I18nUtils
@@ -184,9 +203,9 @@ public class MoveFolderFromNavigatorAction extends
 						}
 					}
 				});
-				worker.execute();
+				worker.execute(this.taskService);
 			} else {
-				IErrorDialog errorDialog = dialogFactory
+				IErrorDialog errorDialog = this.dialogFactory
 						.newDialog(IErrorDialog.class);
 				errorDialog.showErrorDialog(I18nUtils
 						.getString("WRONG_MOVE_DESTINATION"));
@@ -204,7 +223,7 @@ public class MoveFolderFromNavigatorAction extends
 		// Check destination is not parent folder (so we are moving to the same
 		// place)
 		// and destination is not the folder itself
-		File source = sourceFolder.getFolderPath(osManager);
+		File source = sourceFolder.getFolderPath(this.osManager);
 		File sourceParent = source.getParentFile();
 		return !FileUtils.getPath(source)
 				.equals(FileUtils.getPath(destination))
@@ -219,7 +238,7 @@ public class MoveFolderFromNavigatorAction extends
 			return false;
 		}
 
-		if (stateNavigation.getViewMode() != ViewMode.FOLDER) {
+		if (this.stateNavigation.getViewMode() != ViewMode.FOLDER) {
 			return false;
 		}
 

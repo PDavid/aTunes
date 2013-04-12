@@ -50,6 +50,7 @@ import net.sourceforge.atunes.model.IRepositoryTransaction;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IStatisticsHandler;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IYear;
@@ -99,6 +100,15 @@ public final class RepositoryHandler extends AbstractHandler implements
 	private IFileManager fileManager;
 
 	private RepositoryReader currentRepositoryReader;
+
+	private ITaskService taskService;
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
+		this.taskService = taskService;
+	}
 
 	/**
 	 * @param fileManager
@@ -659,7 +669,7 @@ public final class RepositoryHandler extends AbstractHandler implements
 		actionsWhenDone.setPath(path);
 		actionsWhenDone.setIndeterminateDialog(indeterminateDialog);
 		worker.setActionsWhenDone(actionsWhenDone);
-		worker.execute();
+		worker.execute(this.taskService);
 	}
 
 	@Override

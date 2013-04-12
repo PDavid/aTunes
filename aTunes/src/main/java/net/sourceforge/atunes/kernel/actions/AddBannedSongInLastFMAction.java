@@ -26,6 +26,7 @@ import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IStateContext;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -37,80 +38,90 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class AddBannedSongInLastFMAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -2687851398606488392L;
+	private static final long serialVersionUID = -2687851398606488392L;
 
-    private IBackgroundWorkerFactory backgroundWorkerFactory;
+	private IBackgroundWorkerFactory backgroundWorkerFactory;
 
-    private IWebServicesHandler webServicesHandler;
+	private IWebServicesHandler webServicesHandler;
 
-    private IContextHandler contextHandler;
+	private IContextHandler contextHandler;
 
-    private IStateContext stateContext;
+	private IStateContext stateContext;
 
-    /**
-     * @param stateContext
-     */
-    public void setStateContext(final IStateContext stateContext) {
-	this.stateContext = stateContext;
-    }
+	private ITaskService taskService;
 
-    /**
-     * @param backgroundWorkerFactory
-     */
-    public void setBackgroundWorkerFactory(
-	    final IBackgroundWorkerFactory backgroundWorkerFactory) {
-	this.backgroundWorkerFactory = backgroundWorkerFactory;
-    }
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
+		this.taskService = taskService;
+	}
 
-    /**
-     * @param webServicesHandler
-     */
-    public void setWebServicesHandler(
-	    final IWebServicesHandler webServicesHandler) {
-	this.webServicesHandler = webServicesHandler;
-    }
+	/**
+	 * @param stateContext
+	 */
+	public void setStateContext(final IStateContext stateContext) {
+		this.stateContext = stateContext;
+	}
 
-    /**
-     * @param contextHandler
-     */
-    public void setContextHandler(final IContextHandler contextHandler) {
-	this.contextHandler = contextHandler;
-    }
+	/**
+	 * @param backgroundWorkerFactory
+	 */
+	public void setBackgroundWorkerFactory(
+			final IBackgroundWorkerFactory backgroundWorkerFactory) {
+		this.backgroundWorkerFactory = backgroundWorkerFactory;
+	}
 
-    /**
+	/**
+	 * @param webServicesHandler
+	 */
+	public void setWebServicesHandler(
+			final IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
+
+	/**
+	 * @param contextHandler
+	 */
+	public void setContextHandler(final IContextHandler contextHandler) {
+		this.contextHandler = contextHandler;
+	}
+
+	/**
      * 
      */
-    public AddBannedSongInLastFMAction() {
-	super(I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
-    }
+	public AddBannedSongInLastFMAction() {
+		super(I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
+	}
 
-    @Override
-    protected void initialize() {
-	super.initialize();
-	setEnabled(stateContext.isLastFmEnabled());
-    }
+	@Override
+	protected void initialize() {
+		super.initialize();
+		setEnabled(this.stateContext.isLastFmEnabled());
+	}
 
-    @Override
-    protected void executeAction() {
-	setEnabled(false);
-	IBackgroundWorker<Void> backgroundWorker = backgroundWorkerFactory
-		.getWorker();
-	backgroundWorker.setBackgroundActions(new Callable<Void>() {
-	    @Override
-	    public Void call() {
-		webServicesHandler.addBannedSong(contextHandler
-			.getCurrentAudioObject());
-		return null;
-	    }
-	});
-	backgroundWorker
-		.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
-
-		    @Override
-		    public void call(final Void result) {
-			setEnabled(true);
-		    }
+	@Override
+	protected void executeAction() {
+		setEnabled(false);
+		IBackgroundWorker<Void> backgroundWorker = this.backgroundWorkerFactory
+				.getWorker();
+		backgroundWorker.setBackgroundActions(new Callable<Void>() {
+			@Override
+			public Void call() {
+				AddBannedSongInLastFMAction.this.webServicesHandler
+						.addBannedSong(AddBannedSongInLastFMAction.this.contextHandler
+								.getCurrentAudioObject());
+				return null;
+			}
 		});
-	backgroundWorker.execute();
-    }
+		backgroundWorker
+				.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
+
+					@Override
+					public void call(final Void result) {
+						setEnabled(true);
+					}
+				});
+		backgroundWorker.execute(this.taskService);
+	}
 }
