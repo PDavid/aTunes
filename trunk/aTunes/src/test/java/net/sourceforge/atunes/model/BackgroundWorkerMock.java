@@ -36,6 +36,8 @@ public class BackgroundWorkerMock<T> implements IBackgroundWorker<T> {
 
 	private IActionsWithBackgroundResult<T> graphicalActions;
 
+	private IBackgroundWorkerCallback<T> callback;
+
 	@Override
 	public void execute(final ITaskService taskService) {
 		T result = null;
@@ -51,6 +53,9 @@ public class BackgroundWorkerMock<T> implements IBackgroundWorker<T> {
 		}
 		if (this.graphicalActions != null) {
 			this.graphicalActions.call(result);
+		}
+		if (this.callback != null) {
+			this.callback.workerFinished(result);
 		}
 	}
 
@@ -69,6 +74,11 @@ public class BackgroundWorkerMock<T> implements IBackgroundWorker<T> {
 	public void setActionsWhenDone(
 			final IActionsWithBackgroundResult<T> graphicalActions) {
 		this.graphicalActions = graphicalActions;
+	}
+
+	@Override
+	public void setCallback(final IBackgroundWorkerCallback<T> callback) {
+		this.callback = callback;
 	}
 
 	@Override

@@ -20,54 +20,54 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-import java.util.concurrent.ExecutionException;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.BackgroundWorker;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.utils.Logger;
 
-final class FillPictureSwingWorker extends SwingWorker<ImageIcon, Void> {
+/**
+ * Fetches image to show in properties dialog
+ * 
+ * @author alex
+ * 
+ */
+public final class FillPictureBackgroundWorker extends
+		BackgroundWorker<ImageIcon> {
 
-	private final IBeanFactory beanFactory;
-
-	private final JLabel pictureLabel;
-	private final ILocalAudioObject file;
+	private JLabel pictureLabel;
+	private ILocalAudioObject file;
 
 	/**
-	 * @param beanFactort
 	 * @param pictureLabel
+	 */
+	public void setPictureLabel(final JLabel pictureLabel) {
+		this.pictureLabel = pictureLabel;
+	}
+
+	/**
 	 * @param file
 	 */
-	FillPictureSwingWorker(final IBeanFactory beanFactory,
-			final JLabel pictureLabel, final ILocalAudioObject file) {
-		this.pictureLabel = pictureLabel;
+	public void setFile(final ILocalAudioObject file) {
 		this.file = file;
-		this.beanFactory = beanFactory;
+	}
+
+	@Override
+	protected void before() {
 	}
 
 	@Override
 	protected ImageIcon doInBackground() {
-		return this.beanFactory.getBean(IAudioObjectImageLocator.class)
-				.getImage(this.file, Constants.DIALOG_IMAGE_SIZE);
+		return getBeanFactory().getBean(IAudioObjectImageLocator.class)
+				.getImage(FillPictureBackgroundWorker.this.file,
+						Constants.DIALOG_IMAGE_SIZE);
 	}
 
 	@Override
-	protected void done() {
-		ImageIcon cover;
-		try {
-			cover = get();
-			this.pictureLabel.setIcon(cover);
-			this.pictureLabel.setVisible(cover != null);
-		} catch (InterruptedException e) {
-			Logger.error(e);
-		} catch (ExecutionException e) {
-			Logger.error(e);
-		}
+	protected void done(final ImageIcon result) {
+		this.pictureLabel.setIcon(result);
+		this.pictureLabel.setVisible(result != null);
 	}
 }
