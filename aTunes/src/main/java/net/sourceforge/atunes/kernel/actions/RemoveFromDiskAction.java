@@ -20,24 +20,19 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-
 import net.sourceforge.atunes.kernel.modules.repository.DeleteFilesTask;
+import net.sourceforge.atunes.kernel.modules.repository.RemoveFoldersFromDiskBackgroundWorker;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFolder;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -45,10 +40,6 @@ import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.StringUtils;
-
-import org.apache.commons.io.FileUtils;
 
 /**
  * Removes elements from disk
@@ -63,13 +54,9 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 
 	private static final long serialVersionUID = -6958409532399604195L;
 
-	private IIndeterminateProgressDialog dialog;
-
 	private INavigationHandler navigationHandler;
 
 	private IRepositoryHandler repositoryHandler;
-
-	private IOSManager osManager;
 
 	private IPodcastFeedHandler podcastFeedHandler;
 
@@ -177,40 +164,10 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 			}
 		}
 		repositoryHandler.removeFolders(foldersToRemove);
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				RemoveFromDiskAction.this.dialog = RemoveFromDiskAction.this.dialogFactory
-						.newDialog(IIndeterminateProgressDialog.class);
-				RemoveFromDiskAction.this.dialog.setTitle(I18nUtils
-						.getString("PLEASE_WAIT"));
-				RemoveFromDiskAction.this.dialog.showDialog();
-			}
-		});
-		new SwingWorker<Void, Void>() {
-			@Override
-			protected Void doInBackground() {
-				for (IFolder folder : foldersToRemove) {
-					try {
-						FileUtils
-								.deleteDirectory(folder
-										.getFolderPath(RemoveFromDiskAction.this.osManager));
-						Logger.info(StringUtils.getString("Removed folder ",
-								folder));
-					} catch (IOException e) {
-						Logger.info(StringUtils.getString(
-								"Could not remove folder ", folder,
-								e.getMessage()));
-					}
-				}
-				return null;
-			}
-
-			@Override
-			protected void done() {
-				RemoveFromDiskAction.this.dialog.hideDialog();
-			}
-		}.execute();
+		RemoveFoldersFromDiskBackgroundWorker worker = this.beanFactory
+				.getBean(RemoveFoldersFromDiskBackgroundWorker.class);
+		worker.setFoldersToRemove(foldersToRemove);
+		worker.execute();
 	}
 
 	private void fromPodcastView() {
@@ -259,13 +216,6 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 	 */
 	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
-	}
-
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
 	}
 
 	/**

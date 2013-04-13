@@ -265,8 +265,11 @@ public final class LocalAudioObjectPropertiesDialog extends
 	 * Fill picture.
 	 */
 	private void fillPicture() {
-		new FillPictureSwingWorker(this.beanFactory, this.pictureLabel,
-				this.file).execute();
+		FillPictureBackgroundWorker worker = this.beanFactory
+				.getBean(FillPictureBackgroundWorker.class);
+		worker.setPictureLabel(this.pictureLabel);
+		worker.setFile(this.file);
+		worker.execute();
 	}
 
 	/**

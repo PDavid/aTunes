@@ -26,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.model.IBackgroundWorker.IActionsWithBackgroundResult;
+import net.sourceforge.atunes.model.IBackgroundWorkerCallback;
 import net.sourceforge.atunes.utils.Logger;
 
 final class BackgroundSwingWorker<T> extends SwingWorker<T, Void> {
@@ -36,24 +37,31 @@ final class BackgroundSwingWorker<T> extends SwingWorker<T, Void> {
 
 	private final IActionsWithBackgroundResult<T> graphicalActionsWhenDone;
 
+	private final IBackgroundWorkerCallback<T> callback;
+
 	/**
 	 * @param graphicalActionsBeforeStart
 	 * @param backgroundActions
 	 * @param graphicalActionsWhenDone
+	 * @param callback
 	 */
-	public BackgroundSwingWorker(final Runnable graphicalActionsBeforeStart, final Callable<T> backgroundActions, final IActionsWithBackgroundResult<T> graphicalActionsWhenDone) {
+	public BackgroundSwingWorker(final Runnable graphicalActionsBeforeStart,
+			final Callable<T> backgroundActions,
+			final IActionsWithBackgroundResult<T> graphicalActionsWhenDone,
+			final IBackgroundWorkerCallback<T> callback) {
 		this.graphicalActionsBeforeStart = graphicalActionsBeforeStart;
 		this.backgroundActions = backgroundActions;
 		this.graphicalActionsWhenDone = graphicalActionsWhenDone;
+		this.callback = callback;
 	}
 
 	@Override
 	protected T doInBackground() {
-		if (graphicalActionsBeforeStart != null) {
-			GuiUtils.callInEventDispatchThread(graphicalActionsBeforeStart);
+		if (this.graphicalActionsBeforeStart != null) {
+			GuiUtils.callInEventDispatchThread(this.graphicalActionsBeforeStart);
 		}
 		try {
-			return backgroundActions.call();
+			return this.backgroundActions.call();
 		} catch (Exception e) {
 			Logger.error(e);
 		}
@@ -70,8 +78,11 @@ final class BackgroundSwingWorker<T> extends SwingWorker<T, Void> {
 		} catch (ExecutionException e) {
 			Logger.error(e);
 		}
-		if (graphicalActionsWhenDone != null) {
-			graphicalActionsWhenDone.call(backgroundResult);
+		if (this.graphicalActionsWhenDone != null) {
+			this.graphicalActionsWhenDone.call(backgroundResult);
+		}
+		if (this.callback != null) {
+			this.callback.workerFinished(backgroundResult);
 		}
 	}
 }

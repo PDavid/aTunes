@@ -55,6 +55,13 @@ public interface IBackgroundWorker<T> {
 			IActionsWithBackgroundResult<T> graphicalActions);
 
 	/**
+	 * Callback when finished
+	 * 
+	 * @param callback
+	 */
+	public void setCallback(IBackgroundWorkerCallback<T> callback);
+
+	/**
 	 * Execute actions in task service
 	 * 
 	 * @param taskService

@@ -17,5 +17,11 @@
 	
 	<bean id="backgroundWorkerFactory" class="net.sourceforge.atunes.gui.SwingBackgroundWorkerFactory"/>
 
+	
+	
+	<bean id="fillPictureBackgroundWorker" class="net.sourceforge.atunes.gui.views.dialogs.properties.FillPictureBackgroundWorker" scope="prototype"/>
+	<bean id="removeFromDiskBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.repository.RemoveFoldersFromDiskBackgroundWorker" scope="prototype"/>
+	<bean id="calculateSynchronizationBetweenDeviceAndPlaylistBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.repository.CalculateSynchronizationBetweenDeviceAndPlayListBackgroundWorker" scope="prototype"/>
+	<bean id="applySynchronizationBetweenDeviceAndPlayListBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.repository.ApplySynchronizationBetweenDeviceAndPlayListBackgroundWorker" scope="prototype"/>
 
 </beans>
