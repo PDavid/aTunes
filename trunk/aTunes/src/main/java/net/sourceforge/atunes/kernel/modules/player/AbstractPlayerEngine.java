@@ -125,7 +125,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	}
 
 	protected final IFileManager getFileManager() {
-		return fileManager;
+		return this.fileManager;
 	}
 
 	/**
@@ -525,14 +525,6 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 				PlayAudioObjectRunnable r = new PlayAudioObjectRunnable(this,
 						audioObject, this.frame);
 
-				// NOTE: This thread was initially a SwingWorker but as number
-				// of
-				// concurrent SwingWorkers is limited if context panel
-				// SwingWorker
-				// were working
-				// this one was blocked so use a Thread to avoid blocking no
-				// matters
-				// if a SwingWorker is active or not
 				this.playAudioObjectThread = new Thread(r);
 				this.playAudioObjectThread.start();
 			} else {
