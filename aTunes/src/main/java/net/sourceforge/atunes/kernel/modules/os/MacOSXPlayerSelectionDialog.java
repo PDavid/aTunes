@@ -198,8 +198,10 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	void searchPlayerEngine() {
 		((CardLayout) this.panelContainer.getLayout()).show(
 				this.panelContainer, SEARCH_PANEL);
-		new MacOSXPlayerEngineSelectionDialogSearchPlayerEngineWorker(this)
-				.execute();
+		MacOSXPlayerEngineSelectionDialogSearchPlayerEngineBackgroundWorker worker = this.beanFactory
+				.getBean(MacOSXPlayerEngineSelectionDialogSearchPlayerEngineBackgroundWorker.class);
+		worker.setDialog(this);
+		worker.execute();
 	}
 
 	/**
