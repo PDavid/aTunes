@@ -159,7 +159,7 @@
     
     <bean class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenController" scope="prototype" init-method="initialize"/>
     <bean id="fullScreenImageSizeCalculator" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenImageSizeCalculator"/>
-    <bean class="net.sourceforge.atunes.kernel.modules.fullscreen.PaintCoversSwingWorker" scope="prototype"/>
+    <bean id="paintCoversBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.fullscreen.PaintCoversBackgroundWorker" scope="prototype"/>
     
     <bean id="covers" class="net.sourceforge.atunes.kernel.modules.fullscreen.CoverFlow" scope="prototype" init-method="initialize"/>
     <bean id="fullScreenCoverImageRetriever" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenCoverImageRetriever"/>
