@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.model;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ScheduledFuture;
 
 /**
  * Interface implemented by tasks done in background that perform some graphical
@@ -65,8 +66,9 @@ public interface IBackgroundWorker<T> {
 	 * Execute actions in task service
 	 * 
 	 * @param taskService
+	 * @return
 	 */
-	public void execute(ITaskService taskService);
+	public ScheduledFuture<?> execute(ITaskService taskService);
 
 	/**
 	 * @return true if worker finished

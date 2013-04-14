@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ScheduledFuture;
 
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerCallback;
@@ -41,6 +42,8 @@ public abstract class BackgroundWorker<T> {
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
 
 	private ITaskService taskService;
+
+	private ScheduledFuture<?> future;
 
 	/**
 	 * @param taskService
@@ -108,7 +111,21 @@ public abstract class BackgroundWorker<T> {
 				}
 			}
 		});
-		worker.execute(this.taskService);
+		this.future = worker.execute(this.taskService);
+	}
+
+	/**
+	 * @return if cancelled
+	 */
+	public final boolean isCancelled() {
+		return this.future.isCancelled();
+	}
+
+	/**
+	 * @param interrupt
+	 */
+	public final void cancel(final boolean interrupt) {
+		this.future.cancel(interrupt);
 	}
 
 	/**

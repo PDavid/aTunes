@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.model;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ScheduledFuture;
 
 /**
  * Basic implementation for tests
@@ -39,7 +40,7 @@ public class BackgroundWorkerMock<T> implements IBackgroundWorker<T> {
 	private IBackgroundWorkerCallback<T> callback;
 
 	@Override
-	public void execute(final ITaskService taskService) {
+	public ScheduledFuture<?> execute(final ITaskService taskService) {
 		T result = null;
 		if (this.backgroundActions != null) {
 			try {
@@ -57,6 +58,7 @@ public class BackgroundWorkerMock<T> implements IBackgroundWorker<T> {
 		if (this.callback != null) {
 			this.callback.workerFinished(result);
 		}
+		return null;
 	}
 
 	@Override
