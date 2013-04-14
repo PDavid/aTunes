@@ -20,19 +20,15 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.util.concurrent.ExecutionException;
-
 import javax.swing.ImageIcon;
-import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.kernel.BackgroundWorker;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Retrieves image to show in tooltip
@@ -40,23 +36,14 @@ import net.sourceforge.atunes.utils.Logger;
  * @author alex
  * 
  */
-public final class ExtendedToolTipGetAndSetImageSwingWorker extends
-		SwingWorker<ImageIcon, Void> {
+public final class ExtendedToolTipGetAndSetImageBackgroundWorker extends
+		BackgroundWorker<ImageIcon> {
 
 	private IWebServicesHandler webServicesHandler;
 
 	private Object currentObject;
 
 	private ExtendedTooltipContent extendedTooltipContent;
-
-	private IBeanFactory beanFactory;
-
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
 
 	/**
 	 * @param extendedTooltipContent
@@ -82,6 +69,10 @@ public final class ExtendedToolTipGetAndSetImageSwingWorker extends
 	}
 
 	@Override
+	protected void before() {
+	}
+
+	@Override
 	protected ImageIcon doInBackground() {
 		// Get image for albums
 		if (this.currentObject instanceof ITreeObject) {
@@ -89,7 +80,7 @@ public final class ExtendedToolTipGetAndSetImageSwingWorker extends
 				IArtist a = (IArtist) this.currentObject;
 				return this.webServicesHandler.getArtistImage(a.getName());
 			} else if (this.currentObject instanceof IAlbum) {
-				return this.beanFactory.getBean(IAudioObjectImageLocator.class)
+				return getBeanFactory().getBean(IAudioObjectImageLocator.class)
 						.getImage((IAlbum) this.currentObject,
 								ImageSize.SIZE_MAX);
 			}
@@ -98,19 +89,13 @@ public final class ExtendedToolTipGetAndSetImageSwingWorker extends
 	}
 
 	@Override
-	protected void done() {
-		try {
-			// Set image in tooltip when done (tooltip can be not visible then)
-			if (this.extendedTooltipContent.getCurrentExtendedToolTipContent() != null
-					&& this.extendedTooltipContent
-							.getCurrentExtendedToolTipContent().equals(
-									this.currentObject)) {
-				this.extendedTooltipContent.setImage(get());
-			}
-		} catch (InterruptedException e) {
-			Logger.error(e);
-		} catch (ExecutionException e) {
-			Logger.error(e);
+	protected void done(final ImageIcon result) {
+		// Set image in tooltip when done (tooltip can be not visible then)
+		if (this.extendedTooltipContent.getCurrentExtendedToolTipContent() != null
+				&& this.extendedTooltipContent
+						.getCurrentExtendedToolTipContent().equals(
+								this.currentObject)) {
+			this.extendedTooltipContent.setImage(result);
 		}
 	}
 }

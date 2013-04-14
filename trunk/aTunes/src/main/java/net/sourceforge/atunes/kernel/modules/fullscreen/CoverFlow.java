@@ -147,7 +147,7 @@ public final class CoverFlow extends JPanel implements ApplicationContextAware {
 	 */
 	private void fetchCover(final Cover cover, final IAudioObject audioObject) {
 		// Fetch cover and show
-		context.getBean(PaintCoversSwingWorker.class).getCover(cover, audioObject, cover.getImageSize());
+		context.getBean(PaintCoversBackgroundWorker.class).getCover(cover, audioObject, cover.getImageSize());
 	}
 
 	private boolean coverNeedsUpdate(final Cover cover, final IAudioObject audioObject) {

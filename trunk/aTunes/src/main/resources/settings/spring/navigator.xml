@@ -16,7 +16,7 @@
 	</bean>
 	
 	<bean id="extendedToolTipActionListener" class="net.sourceforge.atunes.kernel.modules.navigator.ExtendedToolTipActionListener"/>
-	<bean id="extendedToolTipGetAndSetImage" class="net.sourceforge.atunes.kernel.modules.navigator.ExtendedToolTipGetAndSetImageSwingWorker" scope="prototype"/>
+	<bean id="extendedToolTipGetAndSetImage" class="net.sourceforge.atunes.kernel.modules.navigator.ExtendedToolTipGetAndSetImageBackgroundWorker" scope="prototype"/>
 	
 	
 	

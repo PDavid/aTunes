@@ -55,8 +55,8 @@ public final class ExtendedToolTipActionListener implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent arg0) {
 		this.extendedTooltipContent.setVisible(true);
-		ExtendedToolTipGetAndSetImageSwingWorker worker = this.beanFactory
-				.getBean(ExtendedToolTipGetAndSetImageSwingWorker.class);
+		ExtendedToolTipGetAndSetImageBackgroundWorker worker = this.beanFactory
+				.getBean(ExtendedToolTipGetAndSetImageBackgroundWorker.class);
 		worker.setCurrentObject(this.extendedTooltipContent
 				.getCurrentExtendedToolTipContent());
 		worker.execute();
