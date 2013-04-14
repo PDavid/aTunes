@@ -28,7 +28,6 @@ import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.model.IArtistInfo;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -40,15 +39,6 @@ public class SimilarArtistsContent extends
 
 	private static final long serialVersionUID = 5041098100868186051L;
 	private ContextTable similarArtistsTable;
-
-	private IBeanFactory beanFactory;
-
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
 
 	@Override
 	public String getContentName() {
@@ -77,19 +67,19 @@ public class SimilarArtistsContent extends
 	@Override
 	public Component getComponent() {
 		// Create components
-		this.similarArtistsTable = this.beanFactory.getBean(ContextTable.class);
+		this.similarArtistsTable = getBeanFactory().getBean(ContextTable.class);
 		new SimilarArtistsDragAndDrop(this.similarArtistsTable);
-		this.similarArtistsTable.addContextRowPanel(this.beanFactory
-				.getBean(SimilarArtistTableCellRendererCode.class));
+		this.similarArtistsTable.addContextRowPanel(getBeanFactory().getBean(
+				SimilarArtistTableCellRendererCode.class));
 		this.similarArtistsTable.setModel(new SimilarArtistsTableModel());
 
 		List<ContextTableAction<?>> actions = new ArrayList<ContextTableAction<?>>();
-		ContextTableAction<IArtistInfo> readMore = this.beanFactory
-				.getBean(ReadMoreContextTableAction.class);
-		ContextTableAction<IArtistInfo> search = this.beanFactory
-				.getBean(SearchArtistContextTableAction.class);
-		ContextTableAction<IArtistInfo> addAlbum = this.beanFactory
-				.getBean(AddAlbumArtistToPlayListContextTableAction.class);
+		ContextTableAction<IArtistInfo> readMore = getBeanFactory().getBean(
+				ReadMoreContextTableAction.class);
+		ContextTableAction<IArtistInfo> search = getBeanFactory().getBean(
+				SearchArtistContextTableAction.class);
+		ContextTableAction<IArtistInfo> addAlbum = getBeanFactory().getBean(
+				AddAlbumArtistToPlayListContextTableAction.class);
 		actions.add(readMore);
 		actions.add(search);
 		actions.add(addAlbum);

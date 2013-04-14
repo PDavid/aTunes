@@ -84,6 +84,13 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
 	}
 
 	/**
+	 * @return bean factory
+	 */
+	protected final IBeanFactory getBeanFactory() {
+		return this.beanFactory;
+	}
+
+	/**
 	 * @param controlsBuilder
 	 */
 	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {

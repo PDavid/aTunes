@@ -33,7 +33,6 @@ import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IVideoEntry;
@@ -60,8 +59,6 @@ public class YoutubeContent extends
 
 	private IContextHandler contextHandler;
 
-	private IBeanFactory beanFactory;
-
 	private IUnknownObjectChecker unknownObjectChecker;
 
 	/**
@@ -70,13 +67,6 @@ public class YoutubeContent extends
 	public void setUnknownObjectChecker(
 			final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
-	}
-
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -127,13 +117,13 @@ public class YoutubeContent extends
 	@Override
 	public Component getComponent() {
 		// Create components
-		this.youtubeResultTable = this.beanFactory.getBean(ContextTable.class);
+		this.youtubeResultTable = getBeanFactory().getBean(ContextTable.class);
 		this.youtubeResultTable.setModel(new YoutubeResultTableModel());
-		this.youtubeResultTable.addContextRowPanel(this.beanFactory
-				.getBean(YoutubeResultsTableCellRendererCode.class));
+		this.youtubeResultTable.addContextRowPanel(getBeanFactory().getBean(
+				YoutubeResultsTableCellRendererCode.class));
 
-		ContextTableAction<IVideoEntry> action = this.beanFactory
-				.getBean(OpenYoutubeVideoAction.class);
+		ContextTableAction<IVideoEntry> action = getBeanFactory().getBean(
+				OpenYoutubeVideoAction.class);
 		List<ContextTableAction<?>> list = new ArrayList<ContextTableAction<?>>();
 		list.add(action);
 

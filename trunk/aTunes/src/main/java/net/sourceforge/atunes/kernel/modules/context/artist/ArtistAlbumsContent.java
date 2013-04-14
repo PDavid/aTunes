@@ -28,7 +28,6 @@ import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.model.IAlbumInfo;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -42,15 +41,6 @@ public class ArtistAlbumsContent extends
 
 	private static final long serialVersionUID = -5538266144953409867L;
 	private ContextTable albumsTable;
-
-	private IBeanFactory beanFactory;
-
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
 
 	@Override
 	public String getContentName() {
@@ -73,14 +63,14 @@ public class ArtistAlbumsContent extends
 	@Override
 	public Component getComponent() {
 		// Create components
-		this.albumsTable = this.beanFactory.getBean(ContextTable.class);
-		AlbumsTableCellRendererCode renderer = this.beanFactory
-				.getBean(AlbumsTableCellRendererCode.class);
+		this.albumsTable = getBeanFactory().getBean(ContextTable.class);
+		AlbumsTableCellRendererCode renderer = getBeanFactory().getBean(
+				AlbumsTableCellRendererCode.class);
 		renderer.setSource((ArtistAlbumListImagesDataSource) getDataSource());
 		this.albumsTable.addContextRowPanel(renderer);
 		this.albumsTable.setModel(new ContextAlbumsTableModel());
-		ContextTableAction<IAlbumInfo> action = this.beanFactory
-				.getBean(OpenAlbumUrlAction.class);
+		ContextTableAction<IAlbumInfo> action = getBeanFactory().getBean(
+				OpenAlbumUrlAction.class);
 		List<ContextTableAction<?>> list = new ArrayList<ContextTableAction<?>>();
 		list.add(action);
 		this.albumsTable.setRowActions(list);
