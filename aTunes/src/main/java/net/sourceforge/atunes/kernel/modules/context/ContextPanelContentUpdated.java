@@ -20,34 +20,39 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
+import net.sourceforge.atunes.model.IBackgroundWorkerCallback;
+
 /**
  * Class to control when a content finishes its update
+ * 
  * @author alex
- *
+ * 
  */
-public class ContextPanelContentUpdated implements Runnable {
+public class ContextPanelContentUpdated implements
+		IBackgroundWorkerCallback<Void> {
 
-	private int totalContents;
-	
+	private final int totalContents;
+
 	private int contentsUpdated;
-	
-	private Runnable allContentsUpdatedCallback;
-	
+
+	private final Runnable allContentsUpdatedCallback;
+
 	/**
 	 * @param totalContents
 	 * @param allContentsUpdatedCallback
 	 */
-	public ContextPanelContentUpdated(int totalContents, Runnable allContentsUpdatedCallback) {
+	public ContextPanelContentUpdated(final int totalContents,
+			final Runnable allContentsUpdatedCallback) {
 		this.totalContents = totalContents;
 		this.allContentsUpdatedCallback = allContentsUpdatedCallback;
 	}
-	
+
 	@Override
-	public synchronized void run() {
-		contentsUpdated++;
-		if (contentsUpdated == totalContents) {
+	public void workerFinished(final Void result) {
+		this.contentsUpdated++;
+		if (this.contentsUpdated == this.totalContents) {
 			// all contents updated -> callback
-			allContentsUpdatedCallback.run();
+			this.allContentsUpdatedCallback.run();
 		}
 	}
 

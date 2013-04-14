@@ -22,17 +22,17 @@ package net.sourceforge.atunes.kernel.modules.context;
 
 import java.awt.Component;
 import java.util.List;
-import java.util.concurrent.ScheduledFuture;
 
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBackgroundWorkerCallback;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.IContextPanelContent;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.ITaskService;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -58,12 +58,7 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
 	/**
 	 * Worker used to retrieve data
 	 */
-	private ContextInformationSwingWorker worker;
-
-	/**
-	 * Future to access worker once submitted
-	 */
-	private ScheduledFuture<?> future;
+	private ContextInformationBackgroundWorker worker;
 
 	/**
 	 * panel that handles this content
@@ -79,10 +74,14 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
 
 	private IControlsBuilder controlsBuilder;
 
+	private IBeanFactory beanFactory;
+
 	/**
-	 * Task Service
+	 * @param beanFactory
 	 */
-	private ITaskService contextTaskService;
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param controlsBuilder
@@ -98,16 +97,9 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
 		return this.controlsBuilder;
 	}
 
-	/**
-	 * @param contextTaskService
-	 */
-	public void setContextTaskService(final ITaskService contextTaskService) {
-		this.contextTaskService = contextTaskService;
-	}
-
 	@Override
 	public final void updateContextPanelContent(final IAudioObject audioObject,
-			final Runnable updateCallback) {
+			final IBackgroundWorkerCallback<Void> updateCallback) {
 		callDataSource(audioObject, updateCallback);
 	}
 
@@ -119,13 +111,15 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
 	 */
 	@SuppressWarnings("unchecked")
 	private void callDataSource(final IAudioObject audioObject,
-			final Runnable updateCallback) {
+			final IBackgroundWorkerCallback<Void> updateCallback) {
 		// Create a new worker and call it
-		this.worker = new ContextInformationSwingWorker(
-				(IContextPanelContent<IContextInformationSource>) this,
-				this.dataSource, audioObject, updateCallback);
-		this.future = this.contextTaskService.submitNow(this.getClass()
-				.getName(), this.worker);
+		this.worker = this.beanFactory
+				.getBean(ContextInformationBackgroundWorker.class);
+		this.worker.setAudioObject(audioObject);
+		this.worker.setDataSource(this.dataSource);
+		this.worker
+				.setContent((IContextPanelContent<IContextInformationSource>) this);
+		this.worker.execute(updateCallback);
 	}
 
 	/*
@@ -144,9 +138,6 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
 	}
 
 	private void cancelWorker() {
-		if (this.future != null) {
-			this.future.cancel(true);
-		}
 		if (this.worker != null) {
 			this.worker.cancel();
 		}

@@ -10,11 +10,6 @@
 		<property name="threadSuffix" value="TaskService-"/>
 	</bean>
 
-	<bean id="contextTaskService" class="net.sourceforge.atunes.kernel.TaskService">
-		<property name="poolSize" value="2"/>
-		<property name="threadSuffix" value="ContextTaskService-"/>
-	</bean>
-	
 	<bean id="backgroundWorkerFactory" class="net.sourceforge.atunes.gui.SwingBackgroundWorkerFactory"/>
 
 	
@@ -23,5 +18,6 @@
 	<bean id="removeFromDiskBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.repository.RemoveFoldersFromDiskBackgroundWorker" scope="prototype"/>
 	<bean id="calculateSynchronizationBetweenDeviceAndPlaylistBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.repository.CalculateSynchronizationBetweenDeviceAndPlayListBackgroundWorker" scope="prototype"/>
 	<bean id="applySynchronizationBetweenDeviceAndPlayListBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.repository.ApplySynchronizationBetweenDeviceAndPlayListBackgroundWorker" scope="prototype"/>
+	<bean id="contextInformationBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.context.ContextInformationBackgroundWorker" scope="prototype"/>
 
 </beans>
