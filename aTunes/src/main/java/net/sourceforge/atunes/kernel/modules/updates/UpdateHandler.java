@@ -102,7 +102,7 @@ public final class UpdateHandler extends AbstractHandler implements
 	@Override
 	public void checkUpdates(final boolean alwaysInDialog,
 			final boolean showNoNewVersion) {
-		CheckUpdatesSwingWorker worker = getBean(CheckUpdatesSwingWorker.class);
+		CheckUpdatesBackgroundWorker worker = getBean(CheckUpdatesBackgroundWorker.class);
 		worker.setShowNoNewVersion(showNoNewVersion);
 		worker.setAlwaysInDialog(alwaysInDialog);
 		worker.execute();
