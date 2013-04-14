@@ -117,12 +117,12 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				LastFmPanel.this.testLogin.setEnabled(false);
-				new TestLastFmLoginSwingWorker(LastFmPanel.this.lastFmUser
-						.getText(),
+				LastFmPanel.this.beanFactory.getBean(
+						TestLastFmLoginBackgroundWorker.class).test(
+						LastFmPanel.this.lastFmUser.getText(),
 						String.valueOf(LastFmPanel.this.lastFmPassword
 								.getPassword()), LastFmPanel.this.testLogin,
-						getPreferenceDialog(), LastFmPanel.this.beanFactory)
-						.execute();
+						getPreferenceDialog());
 			}
 		});
 

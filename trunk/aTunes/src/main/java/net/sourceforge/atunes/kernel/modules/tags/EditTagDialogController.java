@@ -28,24 +28,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import javax.swing.text.JTextComponent;
 
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.process.EditTagsProcess;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -57,7 +54,6 @@ import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.TextTagAttribute;
-import net.sourceforge.atunes.utils.Logger;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
@@ -70,44 +66,8 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
 public final class EditTagDialogController extends
 		AbstractSimpleController<EditTagDialog> {
 
-	private final class GetInsidePictureSwingWorker extends
-			SwingWorker<ImageIcon, Void> {
-		private final List<ILocalAudioObject> audioFiles;
-
-		private GetInsidePictureSwingWorker(
-				final List<ILocalAudioObject> audioFiles) {
-			this.audioFiles = audioFiles;
-		}
-
-		@Override
-		protected ImageIcon doInBackground() {
-			return localAudioObjectImageHandler.getInsidePicture(
-					this.audioFiles.get(0), Constants.DIALOG_LARGE_IMAGE_WIDTH,
-					Constants.DIALOG_LARGE_IMAGE_HEIGHT);
-		}
-
-		@Override
-		protected void done() {
-			try {
-				// Check if it's the right dialog
-				if (EditTagDialogController.this.audioFilesEditing
-						.equals(this.audioFiles)) {
-					ImageIcon cover = get();
-					getEditTagDialog().getCover().setIcon(cover);
-					getEditTagDialog().getCoverButton().setEnabled(true);
-					getEditTagDialog().getRemoveCoverButton().setEnabled(true);
-					getEditTagDialog().getOkButton().setEnabled(true);
-				}
-			} catch (InterruptedException e) {
-				Logger.error(e);
-			} catch (ExecutionException e) {
-				Logger.error(e);
-			}
-		}
-	}
-
 	/** The audio files editing. */
-	private List<ILocalAudioObject> audioFilesEditing;
+	List<ILocalAudioObject> audioFilesEditing;
 	private byte[] newCover;
 	private boolean coverEdited;
 
@@ -127,13 +87,22 @@ public final class EditTagDialogController extends
 
 	private IFileManager fileManager;
 
-	private ILocalAudioObjectImageHandler localAudioObjectImageHandler;
+	ILocalAudioObjectImageHandler localAudioObjectImageHandler;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param localAudioObjectImageHandler
 	 */
 	public void setLocalAudioObjectImageHandler(
-			ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
+			final ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
 		this.localAudioObjectImageHandler = localAudioObjectImageHandler;
 	}
 
@@ -426,7 +395,11 @@ public final class EditTagDialogController extends
 		if (audioFiles.size() == 1 && supportsInternalPicture) {
 			getEditTagDialog().getOkButton().setEnabled(false);
 			getComponentControlled().getCoverCheckBox().setSelected(true);
-			new GetInsidePictureSwingWorker(audioFiles).execute();
+			GetInsidePictureBackgroundWorker worker = this.beanFactory
+					.getBean(GetInsidePictureBackgroundWorker.class);
+			worker.setAudioFiles(audioFiles);
+			worker.setController(this);
+			worker.execute();
 		}
 	}
 

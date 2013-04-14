@@ -20,5 +20,7 @@
 	<bean id="applySynchronizationBetweenDeviceAndPlayListBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.repository.ApplySynchronizationBetweenDeviceAndPlayListBackgroundWorker" scope="prototype"/>
 	<bean id="contextInformationBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.context.ContextInformationBackgroundWorker" scope="prototype"/>
 	<bean id="macOSXPlayerEngineSelectionDialogSearchPlayerEngineBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.os.MacOSXPlayerEngineSelectionDialogSearchPlayerEngineBackgroundWorker" scope="prototype"/>
+	<bean id="testLastFmLoginBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.state.TestLastFmLoginBackgroundWorker" scope="prototype"/>
+	<bean id="getInsidePictureBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.tags.GetInsidePictureBackgroundWorker" scope="prototype"/>
 
 </beans>
