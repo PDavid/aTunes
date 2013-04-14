@@ -20,11 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.updates;
 
-import java.util.concurrent.ExecutionException;
-
-import javax.swing.SwingWorker;
-
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.BackgroundWorker;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
@@ -33,7 +30,6 @@ import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.IUpdateDialog;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Checks for updates
@@ -41,8 +37,8 @@ import net.sourceforge.atunes.utils.Logger;
  * @author alex
  * 
  */
-public final class CheckUpdatesSwingWorker extends
-		SwingWorker<ApplicationVersion, Void> {
+public final class CheckUpdatesBackgroundWorker extends
+		BackgroundWorker<ApplicationVersion> {
 
 	private IUpdateHandler updateHandler;
 	private boolean showNoNewVersion;
@@ -94,31 +90,28 @@ public final class CheckUpdatesSwingWorker extends
 	}
 
 	@Override
+	protected void before() {
+	}
+
+	@Override
 	protected ApplicationVersion doInBackground() {
 		return this.updateHandler.getLastVersion();
 	}
 
 	@Override
-	protected void done() {
-		try {
-			ApplicationVersion version = get();
-			if (version != null && version.compareTo(Constants.VERSION) == 1) {
-				if (this.alwaysInDialog || !this.stateUI.isShowStatusBar()) {
-					IUpdateDialog dialog = this.dialogFactory
-							.newDialog(IUpdateDialog.class);
-					dialog.initialize(version);
-					dialog.showDialog();
-				} else {
-					this.frame.showNewVersionInfo(true, version);
-				}
-			} else if (this.showNoNewVersion) {
-				this.dialogFactory.newDialog(IMessageDialog.class).showMessage(
-						I18nUtils.getString("NOT_NEW_VERSION"));
+	protected void done(final ApplicationVersion version) {
+		if (version != null && version.compareTo(Constants.VERSION) == 1) {
+			if (this.alwaysInDialog || !this.stateUI.isShowStatusBar()) {
+				IUpdateDialog dialog = this.dialogFactory
+						.newDialog(IUpdateDialog.class);
+				dialog.initialize(version);
+				dialog.showDialog();
+			} else {
+				this.frame.showNewVersionInfo(true, version);
 			}
-		} catch (InterruptedException e) {
-			Logger.error(e);
-		} catch (ExecutionException e) {
-			Logger.error(e);
+		} else if (this.showNoNewVersion) {
+			this.dialogFactory.newDialog(IMessageDialog.class).showMessage(
+					I18nUtils.getString("NOT_NEW_VERSION"));
 		}
 	}
 }
