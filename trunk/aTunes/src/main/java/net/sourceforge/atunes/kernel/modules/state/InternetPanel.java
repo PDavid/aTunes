@@ -262,28 +262,28 @@ public final class InternetPanel extends AbstractPreferencesPanel {
 
 	@Override
 	public void validatePanel() throws PreferencesValidationException {
-		try {
-			if (!noProxyRadioButton.isSelected()) {
-				Integer.parseInt(proxyPort.getText());
+		if (!noProxyRadioButton.isSelected()) {
+			int port = 0;
+			try {
+				port = Integer.parseInt(proxyPort.getText());
+			} catch (NumberFormatException e) {
+				throw new PreferencesValidationException(
+						I18nUtils.getString("INCORRECT_PORT"), e);
 			}
-		} catch (NumberFormatException e) {
-			throw new PreferencesValidationException(
-					I18nUtils.getString("INCORRECT_PORT"), e);
-		}
 
-		Socket s = null;
-		try {
-			// Test proxy
-			s = new Socket(proxyURL.getText(), Integer.parseInt(proxyPort
-					.getText()));
-		} catch (UnknownHostException e) {
-			throw new PreferencesValidationException(
-					I18nUtils.getString("INCORRECT_PROXY"), e);
-		} catch (IOException e) {
-			throw new PreferencesValidationException(
-					I18nUtils.getString("INCORRECT_PROXY"), e);
-		} finally {
-			ClosingUtils.close(s);
+			Socket s = null;
+			try {
+				// Test proxy
+				s = new Socket(proxyURL.getText(), port);
+			} catch (UnknownHostException e) {
+				throw new PreferencesValidationException(
+						I18nUtils.getString("INCORRECT_PROXY"), e);
+			} catch (IOException e) {
+				throw new PreferencesValidationException(
+						I18nUtils.getString("INCORRECT_PROXY"), e);
+			} finally {
+				ClosingUtils.close(s);
+			}
 		}
 	}
 
