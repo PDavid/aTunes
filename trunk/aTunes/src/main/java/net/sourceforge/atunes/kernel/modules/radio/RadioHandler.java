@@ -48,7 +48,7 @@ public final class RadioHandler extends AbstractHandler implements
 
 	private List<IRadio> radios = new ArrayList<IRadio>();
 	private List<IRadio> presetRadios = new ArrayList<IRadio>();
-	private List<IRadio> retrievedPresetRadios = new ArrayList<IRadio>();
+	private final List<IRadio> retrievedPresetRadios = new ArrayList<IRadio>();
 	private boolean noNewStations = true;
 
 	/**
@@ -60,8 +60,6 @@ public final class RadioHandler extends AbstractHandler implements
 
 	private INavigationView radioNavigationView;
 
-	private INavigationHandler navigationHandler;
-
 	private XMLSerializerService xmlSerializerService;
 
 	private IDialogFactory dialogFactory;
@@ -69,7 +67,7 @@ public final class RadioHandler extends AbstractHandler implements
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
 
@@ -77,46 +75,40 @@ public final class RadioHandler extends AbstractHandler implements
 	 * @param xmlSerializerService
 	 */
 	public void setXmlSerializerService(
-			XMLSerializerService xmlSerializerService) {
+			final XMLSerializerService xmlSerializerService) {
 		this.xmlSerializerService = xmlSerializerService;
-	}
-
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
 	}
 
 	/**
 	 * @return
 	 */
 	protected List<IRadio> getRetrievedPresetRadios() {
-		return retrievedPresetRadios;
+		return this.retrievedPresetRadios;
 	}
 
 	/**
 	 * @param radioNavigationView
 	 */
-	public void setRadioNavigationView(INavigationView radioNavigationView) {
+	public void setRadioNavigationView(final INavigationView radioNavigationView) {
 		this.radioNavigationView = radioNavigationView;
 	}
 
 	/**
 	 * @param networkHandler
 	 */
-	public void setNetworkHandler(INetworkHandler networkHandler) {
+	public void setNetworkHandler(final INetworkHandler networkHandler) {
 		this.networkHandler = networkHandler;
 	}
 
 	@Override
-	public IRadio createRadio(String name, String url, String label) {
+	public IRadio createRadio(final String name, final String url,
+			final String label) {
 		return new Radio(name, url, label);
 	}
 
 	@Override
 	public void addRadio() {
-		IRadioDialog dialog = dialogFactory.newDialog(IRadioDialog.class);
+		IRadioDialog dialog = this.dialogFactory.newDialog(IRadioDialog.class);
 		dialog.showDialog();
 		IRadio radio = dialog.getRadio();
 		if (radio != null) {
@@ -125,14 +117,14 @@ public final class RadioHandler extends AbstractHandler implements
 	}
 
 	@Override
-	public void addRadio(IRadio radio) {
+	public void addRadio(final IRadio radio) {
 		Logger.info("Adding radio");
 		if (radio != null && !getRadios().contains(radio)) {
 			getRadios().add(radio);
-			radioListDirty = true;
+			this.radioListDirty = true;
 		}
 		Collections.sort(getRadios(), new RadioComparator());
-		getBean(INavigationHandler.class).refreshView(radioNavigationView);
+		getBean(INavigationHandler.class).refreshView(this.radioNavigationView);
 	}
 
 	/**
@@ -140,12 +132,12 @@ public final class RadioHandler extends AbstractHandler implements
 	 */
 	@Override
 	public void applicationFinish() {
-		if (radioListDirty) {
+		if (this.radioListDirty) {
 			getBean(IStateService.class).persistRadioCache(getRadios());
 			// Only write preset list if new stations were added
-			if (!noNewStations) {
+			if (!this.noNewStations) {
 				getBean(IStateService.class).persistPresetRadioCache(
-						presetRadios);
+						this.presetRadios);
 			}
 		} else {
 			Logger.info("Radio list is clean");
@@ -154,26 +146,27 @@ public final class RadioHandler extends AbstractHandler implements
 
 	@Override
 	public List<IRadio> getRadios() {
-		return radios;
+		return this.radios;
 	}
 
 	@Override
 	public List<IRadio> getRadioPresets() {
 		// Check if new stations were added and set false if yes
-		if (noNewStations) {
-			noNewStations = presetRadios.containsAll(retrievedPresetRadios);
-			retrievedPresetRadios.removeAll(presetRadios);
+		if (this.noNewStations) {
+			this.noNewStations = this.presetRadios
+					.containsAll(this.retrievedPresetRadios);
+			this.retrievedPresetRadios.removeAll(this.presetRadios);
 		} else {
 			// New stations were already found, so leave noNewStations as false
-			retrievedPresetRadios.removeAll(presetRadios);
+			this.retrievedPresetRadios.removeAll(this.presetRadios);
 		}
-		presetRadios.addAll(retrievedPresetRadios);
-		presetRadios.removeAll(getRadios());
-		return new ArrayList<IRadio>(presetRadios);
+		this.presetRadios.addAll(this.retrievedPresetRadios);
+		this.presetRadios.removeAll(getRadios());
+		return new ArrayList<IRadio>(this.presetRadios);
 	}
 
 	@Override
-	public List<IRadio> getRadios(String label) {
+	public List<IRadio> getRadios(final String label) {
 		return new ArrayList<IRadio>(getRadios());
 	}
 
@@ -188,7 +181,7 @@ public final class RadioHandler extends AbstractHandler implements
 			}
 		}
 		// Read labels from preset radios
-		for (IRadio radio : presetRadios) {
+		for (IRadio radio : this.presetRadios) {
 			String label = radio.getLabel();
 			if (!result.contains(label)) {
 				result.add(label);
@@ -200,28 +193,28 @@ public final class RadioHandler extends AbstractHandler implements
 	}
 
 	@Override
-	public void removeRadios(List<IRadio> radios) {
+	public void removeRadios(final List<IRadio> radios) {
 		Logger.info("Removing radios");
 		for (IRadio radio : radios) {
-			if (!presetRadios.contains(radio)) {
+			if (!this.presetRadios.contains(radio)) {
 				getRadios().remove(radio);
 			}
 			// Preset radio station, we can not delete from preset file directly
 			// but must mark it as removed.
 			else {
-				presetRadios.remove(radio);
+				this.presetRadios.remove(radio);
 				final IRadio newRadio = createRadio(radio.getName(),
 						radio.getUrl(), radio.getLabel());
 				newRadio.setRemoved(true);
 				getRadios().add(newRadio);
 			}
 		}
-		radioListDirty = true;
-		getBean(INavigationHandler.class).refreshView(radioNavigationView);
+		this.radioListDirty = true;
+		getBean(INavigationHandler.class).refreshView(this.radioNavigationView);
 	}
 
 	@Override
-	public void removeRadio(IRadio radio) {
+	public void removeRadio(final IRadio radio) {
 		removeRadios(Collections.singletonList(radio));
 	}
 
@@ -229,15 +222,15 @@ public final class RadioHandler extends AbstractHandler implements
 	@Override
 	public List<IRadio> retrieveRadiosForBrowser() throws IOException {
 		try {
-			String xml = networkHandler
-					.readURL(networkHandler
+			String xml = this.networkHandler
+					.readURL(this.networkHandler
 							.getConnection(Constants.RADIO_LIST_DOWNLOAD_COMMON_JUKEBOX));
-			return (List<IRadio>) xmlSerializerService
+			return (List<IRadio>) this.xmlSerializerService
 					.readObjectFromString(xml);
 		} catch (IOException e) {
-			String xml = networkHandler.readURL(networkHandler
+			String xml = this.networkHandler.readURL(this.networkHandler
 					.getConnection(Constants.RADIO_LIST_DOWNLOAD));
-			return (List<IRadio>) xmlSerializerService
+			return (List<IRadio>) this.xmlSerializerService
 					.readObjectFromString(xml);
 		}
 	}
@@ -247,31 +240,30 @@ public final class RadioHandler extends AbstractHandler implements
 	 */
 	@Override
 	public void retrieveRadios() {
-		new RetrieveRadiosSwingWorker(this, navigationHandler, networkHandler,
-				radioNavigationView, xmlSerializerService).execute();
+		getBean(RetrieveRadiosBackgroundWorker.class).execute();
 	}
 
 	@Override
-	public void setLabel(List<IRadio> radioList, String label) {
+	public void setLabel(final List<IRadio> radioList, final String label) {
 		for (IRadio r : radioList) {
 			// Write preset stations to user list in order to modify label
-			if (presetRadios.contains(r)) {
+			if (this.presetRadios.contains(r)) {
 				addRadio(r);
 			}
 			r.setLabel(label);
 		}
-		radioListDirty = true;
+		this.radioListDirty = true;
 	}
 
 	@Override
-	public void replace(IRadio radio, IRadio newRadio) {
+	public void replace(final IRadio radio, final IRadio newRadio) {
 		removeRadio(radio);
 		addRadio(newRadio);
-		radioListDirty = true;
+		this.radioListDirty = true;
 	}
 
 	@Override
-	public IRadio getRadioIfLoaded(String url) {
+	public IRadio getRadioIfLoaded(final String url) {
 		// Check in user radios
 		for (IRadio radio : getRadios()) {
 			if (radio.getUrl().equalsIgnoreCase(url)) {
@@ -279,7 +271,7 @@ public final class RadioHandler extends AbstractHandler implements
 			}
 		}
 		// Check in preset radios
-		for (IRadio radio : presetRadios) {
+		for (IRadio radio : this.presetRadios) {
 			if (radio.getUrl().equalsIgnoreCase(url)) {
 				return radio;
 			}
@@ -290,13 +282,13 @@ public final class RadioHandler extends AbstractHandler implements
 	@Override
 	public void showRadioBrowser() {
 		new RadioBrowserDialogController(
-				dialogFactory.newDialog(RadioBrowserDialog.class), this)
-				.showRadioBrowser();
+				this.dialogFactory.newDialog(RadioBrowserDialog.class), this,
+				getBeanFactory()).showRadioBrowser();
 	}
 
 	@Override
-	public IRadio editRadio(IRadio radio) {
-		IRadioDialog dialog = dialogFactory.newDialog(IRadioDialog.class);
+	public IRadio editRadio(final IRadio radio) {
+		IRadioDialog dialog = this.dialogFactory.newDialog(IRadioDialog.class);
 		dialog.setRadio(radio);
 		dialog.showDialog();
 		return dialog.getRadio();
@@ -305,14 +297,14 @@ public final class RadioHandler extends AbstractHandler implements
 	/**
 	 * @param radios
 	 */
-	void setRadios(List<IRadio> radios) {
+	void setRadios(final List<IRadio> radios) {
 		this.radios = radios;
 	}
 
 	/**
 	 * @param presetRadios
 	 */
-	void setPresetRadios(List<IRadio> presetRadios) {
+	void setPresetRadios(final List<IRadio> presetRadios) {
 		this.presetRadios = presetRadios;
 	}
 }
