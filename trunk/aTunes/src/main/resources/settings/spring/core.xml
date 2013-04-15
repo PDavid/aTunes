@@ -106,7 +106,7 @@
 	</bean>
 
 	<bean id="searchAttributesList" class="net.sourceforge.atunes.kernel.modules.search.AttributesList"/>	
-	<bean id="audioObjectIndexCreator" class="net.sourceforge.atunes.kernel.modules.search.AudioObjectIndexCreator"/>
+	<bean id="audioObjectIndexCreator" class="net.sourceforge.atunes.kernel.modules.search.AudioObjectIndexCreator" scope="prototype"/>
 
 
 	<bean id="notificationEngine" class="net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine" abstract="true"/>

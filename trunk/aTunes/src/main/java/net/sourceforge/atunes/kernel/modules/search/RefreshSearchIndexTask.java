@@ -25,10 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 
-import javax.swing.SwingWorker;
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ISearchableObject;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -41,37 +40,58 @@ import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.store.LockObtainFailedException;
 
-final class RefreshSearchIndexSwingWorker extends SwingWorker<Void, Void> {
+/**
+ * Refreshes index
+ * 
+ * @author alex
+ * 
+ */
+public final class RefreshSearchIndexTask implements Runnable {
 
-	private final Map<ISearchableObject, Boolean> currentIndexingWorks;
+	private Map<ISearchableObject, Boolean> currentIndexingWorks;
 
-	private final Map<ISearchableObject, ReadWriteLock> indexLocks;
+	private Map<ISearchableObject, ReadWriteLock> indexLocks;
 
-	private final ISearchableObject searchableObject;
+	private ISearchableObject searchableObject;
 	private IndexWriter indexWriter;
-	private final AudioObjectIndexCreator audioObjectIndexCreator;
+	private AudioObjectIndexCreator audioObjectIndexCreator;
+
+	private ITaskService taskService;
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
+
+	/**
+	 * @param audioObjectIndexCreator
+	 */
+	public void setAudioObjectIndexCreator(
+			AudioObjectIndexCreator audioObjectIndexCreator) {
+		this.audioObjectIndexCreator = audioObjectIndexCreator;
+	}
 
 	/**
 	 * @param currentIndexingWorks
 	 * @param indexLocks
 	 * @param searchableObject
-	 * @param audioObjectIndexCreator
 	 */
-	RefreshSearchIndexSwingWorker(
+	void refreshIndex(
 			final Map<ISearchableObject, Boolean> currentIndexingWorks,
 			final Map<ISearchableObject, ReadWriteLock> indexLocks,
-			final ISearchableObject searchableObject,
-			final AudioObjectIndexCreator audioObjectIndexCreator) {
+			final ISearchableObject searchableObject) {
 		this.currentIndexingWorks = currentIndexingWorks;
 		this.indexLocks = indexLocks;
 		this.searchableObject = searchableObject;
-		this.audioObjectIndexCreator = audioObjectIndexCreator;
-		Logger.debug(this.getClass().getName(), " for searchable object: ",
-				searchableObject.getClass().getName());
+		taskService.submitNow(StringUtils.getString(this.getClass().getName(),
+				" for searchable object: ", searchableObject.getClass()
+						.getName()), this);
 	}
 
 	@Override
-	protected Void doInBackground() {
+	public void run() {
 		ReadWriteLock searchIndexLock = this.indexLocks
 				.get(this.searchableObject);
 		try {
@@ -79,17 +99,11 @@ final class RefreshSearchIndexSwingWorker extends SwingWorker<Void, Void> {
 			initSearchIndex();
 			updateSearchIndex(this.searchableObject.getElementsToIndex());
 			finishSearchIndex();
-			return null;
 		} finally {
 			searchIndexLock.writeLock().unlock();
 			ClosingUtils.close(this.indexWriter);
 			this.currentIndexingWorks.put(this.searchableObject, Boolean.FALSE);
 		}
-	}
-
-	@Override
-	protected void done() {
-		// Nothing to do
 	}
 
 	private void initSearchIndex() {

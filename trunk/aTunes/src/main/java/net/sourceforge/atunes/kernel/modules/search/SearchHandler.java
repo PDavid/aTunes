@@ -29,8 +29,6 @@ import java.util.StringTokenizer;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import javax.swing.SwingWorker;
-
 import net.sourceforge.atunes.gui.SearchResultColumnModel;
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
@@ -118,22 +116,12 @@ public final class SearchHandler extends AbstractHandler implements
 
 	private AttributesList searchAttributesList;
 
-	private AudioObjectIndexCreator audioObjectIndexCreator;
-
 	/**
 	 * @param searchAttributesList
 	 */
 	public void setSearchAttributesList(
 			final AttributesList searchAttributesList) {
 		this.searchAttributesList = searchAttributesList;
-	}
-
-	/**
-	 * @param audioObjectIndexCreator
-	 */
-	public void setAudioObjectIndexCreator(
-			final AudioObjectIndexCreator audioObjectIndexCreator) {
-		this.audioObjectIndexCreator = audioObjectIndexCreator;
 	}
 
 	/**
@@ -306,10 +294,9 @@ public final class SearchHandler extends AbstractHandler implements
 		if (this.currentIndexingWorks.get(searchableObject) == null
 				|| !this.currentIndexingWorks.get(searchableObject)) {
 			this.currentIndexingWorks.put(searchableObject, Boolean.TRUE);
-			SwingWorker<Void, Void> refreshSearchIndex = new RefreshSearchIndexSwingWorker(
+			getBean(RefreshSearchIndexTask.class).refreshIndex(
 					this.currentIndexingWorks, this.indexLocks,
-					searchableObject, this.audioObjectIndexCreator);
-			refreshSearchIndex.execute();
+					searchableObject);
 		}
 	}
 
