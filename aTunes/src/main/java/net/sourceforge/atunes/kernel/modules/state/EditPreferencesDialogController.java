@@ -23,17 +23,11 @@ package net.sourceforge.atunes.kernel.modules.state;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.DefaultListModel;
-import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IBeanFactory;
-import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
-import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Controller for edit preferences dialog
@@ -42,194 +36,122 @@ import net.sourceforge.atunes.utils.Logger;
  * 
  */
 public final class EditPreferencesDialogController extends
-	AbstractSimpleController<EditPreferencesDialog> {
+		AbstractSimpleController<EditPreferencesDialog> {
 
-    /** The panels of the edit preferences dialog */
-    private List<AbstractPreferencesPanel> preferencesPanels;
+	/** The panels of the edit preferences dialog */
+	private List<AbstractPreferencesPanel> preferencesPanels;
 
-    private IDialogFactory dialogFactory;
+	private IBeanFactory beanFactory;
 
-    private IBeanFactory beanFactory;
-
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
-
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(final IDialogFactory dialogFactory) {
-	this.dialogFactory = dialogFactory;
-    }
-
-    /**
-     * @param preferencesPanels
-     */
-    public void setPreferencesPanels(
-	    final List<AbstractPreferencesPanel> preferencesPanels) {
-	this.preferencesPanels = preferencesPanels;
-    }
-
-    /**
-     * Instantiates a new edits the preferences dialog controller.
-     * 
-     * @param dialog
-     */
-    public EditPreferencesDialogController(final EditPreferencesDialog dialog) {
-	super(dialog);
-    }
-
-    /**
-     * Initializes controller
-     */
-    public void initialize() {
-	getComponentControlled().setPanels(preferencesPanels);
-	buildList();
-	addBindings();
-	getComponentControlled().pack();
-    }
-
-    @Override
-    public void addBindings() {
-	EditPreferencesDialogListener listener = new EditPreferencesDialogListener(
-		getComponentControlled(), this, beanFactory);
-	getComponentControlled().getList().addListSelectionListener(listener);
-	getComponentControlled().getCancel().addActionListener(listener);
-	getComponentControlled().getOk().addActionListener(listener);
-	getComponentControlled().addComponentListener(new ComponentAdapter() {
-	    @Override
-	    public void componentShown(final ComponentEvent e) {
-		// Call dialogVisibilityChanged
-		for (AbstractPreferencesPanel panel : preferencesPanels) {
-		    panel.dialogVisibilityChanged(true);
-		}
-	    }
-
-	    @Override
-	    public void componentHidden(final ComponentEvent e) {
-		// Call dialogVisibilityChanged
-		for (AbstractPreferencesPanel panel : preferencesPanels) {
-		    panel.dialogVisibilityChanged(false);
-		}
-	    }
-	});
-    }
-
-    /**
-     * Builds the list.
-     */
-    private void buildList() {
-	DefaultListModel listModel = new DefaultListModel();
-
-	for (AbstractPreferencesPanel p : preferencesPanels) {
-	    listModel.addElement(p);
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
-	getComponentControlled().setListModel(listModel);
-    }
+	/**
+	 * @param preferencesPanels
+	 */
+	public void setPreferencesPanels(
+			final List<AbstractPreferencesPanel> preferencesPanels) {
+		this.preferencesPanels = preferencesPanels;
+	}
 
-    /**
-     * Checks if preferences of all panels are valid
-     * 
-     * @return
-     */
-    void validatePreferences() throws PreferencesValidationException {
-	final IIndeterminateProgressDialog dialog = dialogFactory
-		.newDialog(IIndeterminateProgressDialog.class);
+	/**
+	 * Instantiates a new edits the preferences dialog controller.
+	 * 
+	 * @param dialog
+	 */
+	public EditPreferencesDialogController(final EditPreferencesDialog dialog) {
+		super(dialog);
+	}
 
-	final SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+	/**
+	 * Initializes controller
+	 */
+	public void initialize() {
+		getComponentControlled().setPanels(preferencesPanels);
+		buildList();
+		addBindings();
+		getComponentControlled().pack();
+	}
 
-	    @Override
-	    protected Void doInBackground()
-		    throws PreferencesValidationException {
+	@Override
+	public void addBindings() {
+		EditPreferencesDialogListener listener = new EditPreferencesDialogListener(
+				getComponentControlled(), this);
+		getComponentControlled().getList().addListSelectionListener(listener);
+		getComponentControlled().getCancel().addActionListener(listener);
+		getComponentControlled().getOk().addActionListener(listener);
+		getComponentControlled().addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(final ComponentEvent e) {
+				// Call dialogVisibilityChanged
+				for (AbstractPreferencesPanel panel : preferencesPanels) {
+					panel.dialogVisibilityChanged(true);
+				}
+			}
+
+			@Override
+			public void componentHidden(final ComponentEvent e) {
+				// Call dialogVisibilityChanged
+				for (AbstractPreferencesPanel panel : preferencesPanels) {
+					panel.dialogVisibilityChanged(false);
+				}
+			}
+		});
+	}
+
+	/**
+	 * Builds the list.
+	 */
+	private void buildList() {
+		DefaultListModel listModel = new DefaultListModel();
+
 		for (AbstractPreferencesPanel p : preferencesPanels) {
-		    p.validatePanel();
+			listModel.addElement(p);
 		}
-		return null;
-	    }
 
-	    @Override
-	    protected void done() {
-		super.done();
-		dialog.hideDialog();
-	    }
-	};
-
-	try {
-	    worker.execute();
-	    dialog.setTitle(I18nUtils.getString("VALIDATING_PREFERENCES"));
-	    dialog.showDialog();
-	    worker.get();
-	} catch (InterruptedException e) {
-	    Logger.error(e);
-	} catch (ExecutionException e) {
-	    if (e.getCause() instanceof PreferencesValidationException) {
-		throw (PreferencesValidationException) e.getCause();
-	    }
-	} finally {
-	    dialog.hideDialog();
-	}
-    }
-
-    /**
-     * Process preferences.
-     * 
-     * @return true if application needs to be restarted to apply some changes
-     */
-    boolean processPreferences() {
-	boolean needRestart = false;
-	// Apply preferences from panels
-	for (AbstractPreferencesPanel p : preferencesPanels) {
-	    if (p.isDirty()) {
-		Logger.debug("Panel ", p.getTitle(), " is dirty");
-		// WARNING: There was a bug when call to applyPreferences was
-		// made as second operand of OR due to shortcut
-		// So call method and after do OR (method call as first operand
-		// is also valid)
-		// See bug
-		// https://sourceforge.net/tracker/?func=detail&aid=2999531&group_id=161929&atid=821812
-		// for more information
-		boolean panelNeedRestart = p.applyPreferences();
-		needRestart = needRestart || panelNeedRestart;
-	    } else {
-		Logger.debug("Panel ", p.getTitle(), " is clean");
-	    }
-	}
-	return needRestart;
-    }
-
-    /**
-     * reset immediate changes of panels
-     */
-    void resetImmediateChanges() {
-	for (AbstractPreferencesPanel p : preferencesPanels) {
-	    p.resetImmediateChanges();
-	}
-    }
-
-    /**
-     * Start.
-     */
-    public void start() {
-	// Update panels
-	for (AbstractPreferencesPanel panel : preferencesPanels) {
-	    panel.updatePanel();
+		getComponentControlled().setListModel(listModel);
 	}
 
-	// Call dialogVisibilityChanged
-	for (AbstractPreferencesPanel panel : preferencesPanels) {
-	    panel.dialogVisibilityChanged(true);
+	/**
+	 * reset immediate changes of panels
+	 */
+	void resetImmediateChanges() {
+		for (AbstractPreferencesPanel p : preferencesPanels) {
+			p.resetImmediateChanges();
+		}
 	}
 
-	getComponentControlled().resetPanels();
+	/**
+	 * Start.
+	 */
+	public void start() {
+		// Update panels
+		for (AbstractPreferencesPanel panel : preferencesPanels) {
+			panel.updatePanel();
+		}
 
-	// Set first panel (selected) dirty
-	preferencesPanels.get(0).setDirty(true);
-	getComponentControlled().getList().setSelectedIndex(0);
+		// Call dialogVisibilityChanged
+		for (AbstractPreferencesPanel panel : preferencesPanels) {
+			panel.dialogVisibilityChanged(true);
+		}
 
-	getComponentControlled().setVisible(true);
-    }
+		getComponentControlled().resetPanels();
+
+		// Set first panel (selected) dirty
+		preferencesPanels.get(0).setDirty(true);
+		getComponentControlled().getList().setSelectedIndex(0);
+
+		getComponentControlled().setVisible(true);
+	}
+
+	void validateAndProcessPreferences(EditPreferencesDialog preferencesDialog) {
+		beanFactory
+				.getBean(ValidateAndProcessPreferencesBackgroundWorker.class)
+				.validateAndProcessPreferences(preferencesDialog,
+						preferencesPanels);
+	}
 }

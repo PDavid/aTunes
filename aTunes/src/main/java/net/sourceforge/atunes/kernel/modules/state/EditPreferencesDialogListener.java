@@ -26,80 +26,45 @@ import java.awt.event.ActionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.sourceforge.atunes.kernel.StateChangeListeners;
-import net.sourceforge.atunes.model.IBeanFactory;
-import net.sourceforge.atunes.model.IConfirmationDialog;
-import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IErrorDialog;
-import net.sourceforge.atunes.model.IKernel;
-import net.sourceforge.atunes.utils.I18nUtils;
-
 /**
  * The listener interface for receiving editPreferencesDialog events.
  */
 public final class EditPreferencesDialogListener implements
-	ListSelectionListener, ActionListener {
+		ListSelectionListener, ActionListener {
 
-    private final EditPreferencesDialog editPreferencesDialog;
-    private final EditPreferencesDialogController editPreferencesDialogController;
-    private final IBeanFactory beanFactory;
+	private final EditPreferencesDialog editPreferencesDialog;
+	private final EditPreferencesDialogController editPreferencesDialogController;
 
-    /**
-     * Instantiates a new edits the preferences dialog listener.
-     * 
-     * @param editPreferencesDialog
-     * @param editPreferencesDialogController
-     * @param beanFactory
-     */
-    public EditPreferencesDialogListener(
-	    final EditPreferencesDialog editPreferencesDialog,
-	    final EditPreferencesDialogController editPreferencesDialogController,
-	    final IBeanFactory beanFactory) {
-	this.editPreferencesDialog = editPreferencesDialog;
-	this.editPreferencesDialogController = editPreferencesDialogController;
-	this.beanFactory = beanFactory;
-    }
+	/**
+	 * Instantiates a new edits the preferences dialog listener.
+	 * 
+	 * @param editPreferencesDialog
+	 * @param editPreferencesDialogController
+	 */
+	public EditPreferencesDialogListener(
+			final EditPreferencesDialog editPreferencesDialog,
+			final EditPreferencesDialogController editPreferencesDialogController) {
+		this.editPreferencesDialog = editPreferencesDialog;
+		this.editPreferencesDialogController = editPreferencesDialogController;
+	}
 
-    @Override
-    public void actionPerformed(final ActionEvent e) {
-	if (e.getSource() == editPreferencesDialog.getOk()) {
-	    try {
-		editPreferencesDialogController.validatePreferences();
-		boolean needRestart = editPreferencesDialogController
-			.processPreferences();
-		editPreferencesDialog.setVisible(false);
-		beanFactory.getBean(StateChangeListeners.class)
-			.notifyApplicationStateChanged();
-		// Let user decide if want to restart
-		if (needRestart) {
-		    IConfirmationDialog dialog = beanFactory.getBean(
-			    IDialogFactory.class).newDialog(
-			    IConfirmationDialog.class);
-		    dialog.setMessage(I18nUtils
-			    .getString("APPLICATION_NEEDS_RESTART"));
-		    dialog.showDialog();
-		    if (dialog.userAccepted()) {
-			beanFactory.getBean(IKernel.class).restart();
-		    }
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+		if (e.getSource() == editPreferencesDialog.getOk()) {
+			editPreferencesDialogController
+					.validateAndProcessPreferences(editPreferencesDialog);
+		} else if (e.getSource() == editPreferencesDialog.getCancel()) {
+			editPreferencesDialogController.resetImmediateChanges();
+			editPreferencesDialog.setVisible(false);
 		}
-	    } catch (PreferencesValidationException e1) {
-		beanFactory
-			.getBean(IDialogFactory.class)
-			.newDialog(IErrorDialog.class)
-			.showErrorDialog(e1.getMessage(), editPreferencesDialog);
-	    }
-	} else if (e.getSource() == editPreferencesDialog.getCancel()) {
-	    editPreferencesDialogController.resetImmediateChanges();
-	    editPreferencesDialog.setVisible(false);
 	}
-    }
 
-    @Override
-    public void valueChanged(final ListSelectionEvent e) {
-	if (e.getSource() == editPreferencesDialog.getList()
-		&& !e.getValueIsAdjusting()) {
-	    editPreferencesDialog.showPanel(editPreferencesDialog.getList()
-		    .getSelectedIndex());
+	@Override
+	public void valueChanged(final ListSelectionEvent e) {
+		if (e.getSource() == editPreferencesDialog.getList()
+				&& !e.getValueIsAdjusting()) {
+			editPreferencesDialog.showPanel(editPreferencesDialog.getList()
+					.getSelectedIndex());
+		}
 	}
-    }
 }
