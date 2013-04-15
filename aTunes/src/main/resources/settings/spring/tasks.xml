@@ -24,4 +24,6 @@
 	<bean id="getInsidePictureBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.tags.GetInsidePictureBackgroundWorker" scope="prototype"/>
 	<bean id="validateAndProcessPreferencesBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.state.ValidateAndProcessPreferencesBackgroundWorker" scope="prototype"/>
 	<bean id="refreshSearchIndexTask" class="net.sourceforge.atunes.kernel.modules.search.RefreshSearchIndexTask" scope="prototype"/>
+	<bean id="retrieveRadioBrowserDataBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.radio.RetrieveRadioBrowserDataBackgroundWorker" scope="prototype"/>
+	<bean id="retrieveRadiosBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.radio.RetrieveRadiosBackgroundWorker" scope="prototype"/>
 </beans>

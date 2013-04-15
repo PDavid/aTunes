@@ -21,12 +21,11 @@
 package net.sourceforge.atunes.kernel.modules.radio;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.BackgroundWorker;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INetworkHandler;
@@ -34,7 +33,14 @@ import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.XMLSerializerService;
 
-final class RetrieveRadiosSwingWorker extends SwingWorker<List<IRadio>, Void> {
+/**
+ * Updates radios
+ * 
+ * @author alex
+ * 
+ */
+public final class RetrieveRadiosBackgroundWorker extends
+		BackgroundWorker<List<IRadio>> {
 
 	private RadioHandler radioHandler;
 
@@ -48,43 +54,64 @@ final class RetrieveRadiosSwingWorker extends SwingWorker<List<IRadio>, Void> {
 
 	/**
 	 * @param radioHandler
+	 */
+	public void setRadioHandler(final RadioHandler radioHandler) {
+		this.radioHandler = radioHandler;
+	}
+
+	/**
 	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+
+	/**
 	 * @param networkHandler
+	 */
+	public void setNetworkHandler(final INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
+
+	/**
 	 * @param radioNavigationView
+	 */
+	public void setRadioNavigationView(final INavigationView radioNavigationView) {
+		this.radioNavigationView = radioNavigationView;
+	}
+
+	/**
 	 * @param xmlSerializerService
 	 */
-	public RetrieveRadiosSwingWorker(RadioHandler radioHandler,
-			INavigationHandler navigationHandler,
-			INetworkHandler networkHandler,
-			INavigationView radioNavigationView,
-			XMLSerializerService xmlSerializerService) {
-		this.radioHandler = radioHandler;
-		this.navigationHandler = navigationHandler;
-		this.networkHandler = networkHandler;
-		this.radioNavigationView = radioNavigationView;
+	public void setXmlSerializerService(
+			final XMLSerializerService xmlSerializerService) {
 		this.xmlSerializerService = xmlSerializerService;
+	}
+
+	@Override
+	protected void before() {
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected List<IRadio> doInBackground() throws IOException {
-		String xml = networkHandler.readURL(networkHandler
-				.getConnection(Constants.RADIO_LIST_DOWNLOAD));
-		return (List<IRadio>) xmlSerializerService.readObjectFromString(xml);
+	protected List<IRadio> doInBackground() {
+		String xml;
+		try {
+			xml = this.networkHandler.readURL(this.networkHandler
+					.getConnection(Constants.RADIO_LIST_DOWNLOAD));
+			return (List<IRadio>) this.xmlSerializerService
+					.readObjectFromString(xml);
+		} catch (IOException e) {
+			Logger.error(e);
+		}
+		return new ArrayList<IRadio>();
 	}
 
 	@Override
-	protected void done() {
-		try {
-			radioHandler.getRetrievedPresetRadios().clear();
-			radioHandler.getRetrievedPresetRadios().addAll(get());
-			radioHandler.getRadioPresets();
-			navigationHandler.refreshView(radioNavigationView);
-		} catch (InterruptedException e) {
-			Logger.error(e);
-		} catch (ExecutionException e) {
-			Logger.error(e);
-		}
-
+	protected void done(final List<IRadio> result) {
+		this.radioHandler.getRetrievedPresetRadios().clear();
+		this.radioHandler.getRetrievedPresetRadios().addAll(result);
+		this.radioHandler.getRadioPresets();
+		this.navigationHandler.refreshView(this.radioNavigationView);
 	}
 }

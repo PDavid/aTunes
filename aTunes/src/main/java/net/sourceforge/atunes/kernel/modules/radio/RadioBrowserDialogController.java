@@ -20,46 +20,53 @@
 
 package net.sourceforge.atunes.kernel.modules.radio;
 
-
-
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IRadioHandler;
 
-final class RadioBrowserDialogController extends AbstractSimpleController<RadioBrowserDialog> {
+final class RadioBrowserDialogController extends
+		AbstractSimpleController<RadioBrowserDialog> {
 
-    private IRadioHandler radioHandler;
-    
+	private final IRadioHandler radioHandler;
+
+	private final IBeanFactory beanFactory;
+
 	/**
-     * Instantiates a new radio browser dialog controller.
-     * 
-     * @param frameControlled
-     * @param radioHandler
-     */
-    RadioBrowserDialogController(RadioBrowserDialog frameControlled, IRadioHandler radioHandler) {
-        super(frameControlled);
-        this.radioHandler = radioHandler;
-        addBindings();
-        addStateBindings();
-    }
+	 * Instantiates a new radio browser dialog controller.
+	 * 
+	 * @param frameControlled
+	 * @param radioHandler
+	 * @param beanFactory
+	 */
+	RadioBrowserDialogController(final RadioBrowserDialog frameControlled,
+			final IRadioHandler radioHandler, final IBeanFactory beanFactory) {
+		super(frameControlled);
+		this.radioHandler = radioHandler;
+		this.beanFactory = beanFactory;
+		addBindings();
+		addStateBindings();
+	}
 
-    /**
-     * Show radio browser.
-     */
-    void showRadioBrowser() {
-        retrieveData();
-        getComponentControlled().setVisible(true);
-    }
+	/**
+	 * Show radio browser.
+	 */
+	void showRadioBrowser() {
+		retrieveData();
+	}
 
-    /**
-     * Retrieve data.
-     */
-    void retrieveData() {
-        new RetrieveDataSwingWorker(radioHandler, getComponentControlled()).execute();
-    }
+	/**
+	 * Retrieve data.
+	 */
+	private void retrieveData() {
+		this.beanFactory
+				.getBean(RetrieveRadioBrowserDataBackgroundWorker.class)
+				.retrieve(getComponentControlled());
+	}
 
-    @Override
+	@Override
 	public void addBindings() {
-        RadioBrowserDialogListener listener = new RadioBrowserDialogListener(getComponentControlled(), radioHandler);
-        getComponentControlled().getTreeTable().addMouseListener(listener);
-    }
+		RadioBrowserDialogListener listener = new RadioBrowserDialogListener(
+				getComponentControlled(), this.radioHandler);
+		getComponentControlled().getTreeTable().addMouseListener(listener);
+	}
 }

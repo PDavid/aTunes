@@ -21,45 +21,61 @@
 package net.sourceforge.atunes.kernel.modules.radio;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.RadioBrowserTreeTableModel;
+import net.sourceforge.atunes.kernel.BackgroundWorker;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.utils.Logger;
 
-final class RetrieveDataSwingWorker extends SwingWorker<List<IRadio>, Void> {
-	
+/**
+ * Retrieves radios to show in browser
+ * 
+ * @author alex
+ * 
+ */
+public final class RetrieveRadioBrowserDataBackgroundWorker extends
+		BackgroundWorker<List<IRadio>> {
+
 	private IRadioHandler radioHandler;
-	
+
 	private RadioBrowserDialog radioBrowserDialog;
-	
+
 	/**
 	 * @param radioHandler
-	 * @param radioBrowserDialog
 	 */
-	public RetrieveDataSwingWorker(IRadioHandler radioHandler, RadioBrowserDialog radioBrowserDialog) {
+	public void setRadioHandler(final IRadioHandler radioHandler) {
 		this.radioHandler = radioHandler;
-		this.radioBrowserDialog = radioBrowserDialog;
 	}
-	
-	@Override
-	protected List<IRadio> doInBackground() throws IOException {
-	    return radioHandler.retrieveRadiosForBrowser();
+
+	/**
+	 * @param dialog
+	 */
+	void retrieve(final RadioBrowserDialog dialog) {
+		this.radioBrowserDialog = dialog;
+		execute();
 	}
 
 	@Override
-	protected void done() {
-	    try {
-	        List<IRadio> radios = get();
-	        radioBrowserDialog.getTreeTable().setTreeTableModel(new RadioBrowserTreeTableModel(radios));
-	    } catch (InterruptedException e) {
-	        Logger.error(e);
-	    } catch (ExecutionException e) {
-	        Logger.error(e);
-	    }
+	protected void before() {
+	}
+
+	@Override
+	protected List<IRadio> doInBackground() {
+		try {
+			return this.radioHandler.retrieveRadiosForBrowser();
+		} catch (IOException e) {
+			Logger.error(e);
+		}
+		return new ArrayList<IRadio>();
+	}
+
+	@Override
+	protected void done(final List<IRadio> result) {
+		this.radioBrowserDialog.getTreeTable().setTreeTableModel(
+				new RadioBrowserTreeTableModel(result));
+		this.radioBrowserDialog.setVisible(true);
 	}
 }
