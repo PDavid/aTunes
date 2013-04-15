@@ -29,7 +29,8 @@
 	<bean class="net.sourceforge.atunes.kernel.modules.cdripper.FakeEncoder" parent="abstractEncoder" scope="prototype"/>
 	
 	
-	<bean class="net.sourceforge.atunes.kernel.modules.cdripper.GetCdInfoAndStartRippingSwingWorker" scope="prototype"/>
+	<bean id="getCdInfoBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.cdripper.GetCdInfoAndStartRippingBackgroundWorker" scope="prototype"/>
+	<bean id="fillSongTitlesBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.cdripper.FillSongTitlesBackgroundWorker" scope="prototype"/>
 
 	<bean class="net.sourceforge.atunes.kernel.modules.cdripper.CdRipper" scope="prototype"/>
 	<bean id="cdToWavConverterFactory" class="net.sourceforge.atunes.kernel.modules.cdripper.CdToWavConverterFactory" scope="prototype"/>
