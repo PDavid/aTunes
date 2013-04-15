@@ -23,4 +23,5 @@
 	<bean id="testLastFmLoginBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.state.TestLastFmLoginBackgroundWorker" scope="prototype"/>
 	<bean id="getInsidePictureBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.tags.GetInsidePictureBackgroundWorker" scope="prototype"/>
 	<bean id="validateAndProcessPreferencesBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.state.ValidateAndProcessPreferencesBackgroundWorker" scope="prototype"/>
+	<bean id="refreshSearchIndexTask" class="net.sourceforge.atunes.kernel.modules.search.RefreshSearchIndexTask" scope="prototype"/>
 </beans>
