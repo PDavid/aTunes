@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
-import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -244,30 +243,12 @@ public final class RipperHandler extends AbstractHandler implements
 		this.repositoryRefresher.start();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#fillSongTitles
-	 * (java.lang.String, java.lang.String)
-	 */
 	@Override
 	public void fillSongTitles(final String artist, final String album) {
-		getRipCdDialogController().getComponentControlled().setCursor(
-				Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		getRipCdDialogController().getComponentControlled().getTitlesButton()
-				.setEnabled(false);
-		new FillSongTitlesSwingWorker(this, artist, album,
-				getBean(IWebServicesHandler.class)).execute();
+		getBean(FillSongTitlesBackgroundWorker.class).retrieveTitles(artist,
+				album);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#getEncoderName
-	 * ()
-	 */
 	@Override
 	public String getEncoderName() {
 		String encoderFormat = this.stateRipper.getEncoder();
@@ -528,13 +509,6 @@ public final class RipperHandler extends AbstractHandler implements
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#startCdRipper
-	 * ()
-	 */
 	@Override
 	public void startCdRipper() {
 		this.interrupted = false;
@@ -551,9 +525,9 @@ public final class RipperHandler extends AbstractHandler implements
 			}
 		});
 
-		GetCdInfoAndStartRippingSwingWorker cdInfoAndStartRippingSwingWorker = getBean(GetCdInfoAndStartRippingSwingWorker.class);
-		cdInfoAndStartRippingSwingWorker.setDialog(dialog);
-		cdInfoAndStartRippingSwingWorker.execute();
+		GetCdInfoAndStartRippingBackgroundWorker worker = getBean(GetCdInfoAndStartRippingBackgroundWorker.class);
+		worker.setDialog(dialog);
+		worker.execute();
 	}
 
 	/**
