@@ -32,7 +32,6 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.AbstractHandler;
@@ -418,23 +417,8 @@ public final class RipperHandler extends AbstractHandler implements
 		this.ripper.setTotalProgressListener(new TotalProgressListener(dialog,
 				filesImported));
 
-		new SwingWorker<Boolean, Void>() {
-			@Override
-			protected Boolean doInBackground() {
-				return RipperHandler.this.ripper.ripTracks(folder, useParanoia);
-			}
-
-			@Override
-			protected void done() {
-				dialog.hideDialog();
-				notifyFinishImport(filesImported, folder);
-				// Enable import cd option in menu
-				getBean(RipCDAction.class).setEnabled(true);
-				RipperHandler.this.repositoryRefresher.start();
-			}
-		}.execute();
-
-		dialog.showDialog();
+		getBean(RipTracksBackgroundWorker.class).ripTracks(ripper, dialog,
+				folder, useParanoia, filesImported);
 	}
 
 	/**
@@ -445,8 +429,7 @@ public final class RipperHandler extends AbstractHandler implements
 	 * @param folder
 	 *            the folder
 	 */
-	private void notifyFinishImport(final List<File> filesImported,
-			final File folder) {
+	void notifyFinishImport(final List<File> filesImported, final File folder) {
 		if (this.interrupted) { // If process is interrupted delete all imported
 			// files
 			Runnable deleter = new Runnable() {
