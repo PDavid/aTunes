@@ -517,8 +517,8 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	public void deleteDownloadedPodcastFeedEntry(
 			final IPodcastFeedEntry podcastFeedEntry) {
 		File f = new File(getDownloadPath(podcastFeedEntry));
-		new DeleteDownloadedPodcastFeedEntryWorker(f, podcastFeedEntry,
-				getBean("navigationTable", ITable.class)).execute();
+		getBean(DeleteDownloadedPodcastFeedBackgroundWorker.class).delete(f,
+				podcastFeedEntry);
 	}
 
 	/*

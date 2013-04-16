@@ -26,4 +26,5 @@
 	<bean id="refreshSearchIndexTask" class="net.sourceforge.atunes.kernel.modules.search.RefreshSearchIndexTask" scope="prototype"/>
 	<bean id="retrieveRadioBrowserDataBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.radio.RetrieveRadioBrowserDataBackgroundWorker" scope="prototype"/>
 	<bean id="retrieveRadiosBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.radio.RetrieveRadiosBackgroundWorker" scope="prototype"/>
+	<bean id="DeleteDownloadedPodcastFeedBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.podcast.DeleteDownloadedPodcastFeedBackgroundWorker" scope="prototype"/>
 </beans>
