@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.podcast;
 
 import java.io.File;
+import java.util.List;
 
 import net.sourceforge.atunes.kernel.BackgroundWorker;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -33,7 +34,7 @@ import net.sourceforge.atunes.model.ITable;
  * 
  */
 public final class DeleteDownloadedPodcastFeedBackgroundWorker extends
-		BackgroundWorker<Boolean> {
+		BackgroundWorker<Boolean, Void> {
 
 	private File f;
 	private IPodcastFeedEntry podcastFeedEntry;
@@ -54,6 +55,10 @@ public final class DeleteDownloadedPodcastFeedBackgroundWorker extends
 
 	@Override
 	protected void before() {
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

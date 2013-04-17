@@ -29,7 +29,7 @@ import java.util.concurrent.ScheduledFuture;
  * @author alex
  * @param <T>
  */
-public class BackgroundWorkerMock<T> implements IBackgroundWorker<T> {
+public class BackgroundWorkerMock<T, I> implements IBackgroundWorker<T, I> {
 
 	private Callable<T> backgroundActions;
 
@@ -38,6 +38,10 @@ public class BackgroundWorkerMock<T> implements IBackgroundWorker<T> {
 	private IActionsWithBackgroundResult<T> graphicalActions;
 
 	private IBackgroundWorkerCallback<T> callback;
+
+	@Override
+	public void publish(I chunk) {
+	};
 
 	@Override
 	public ScheduledFuture<?> execute(final ITaskService taskService) {
@@ -81,6 +85,11 @@ public class BackgroundWorkerMock<T> implements IBackgroundWorker<T> {
 	@Override
 	public void setCallback(final IBackgroundWorkerCallback<T> callback) {
 		this.callback = callback;
+	}
+
+	@Override
+	public void setActionsWithIntermediateResult(
+			net.sourceforge.atunes.model.IBackgroundWorker.IActionsWithIntermediateResult<I> actionsWithIntermediateResult) {
 	}
 
 	@Override

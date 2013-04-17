@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.util.List;
+
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.kernel.BackgroundWorker;
@@ -37,7 +39,7 @@ import net.sourceforge.atunes.model.ImageSize;
  * 
  */
 public final class ExtendedToolTipGetAndSetImageBackgroundWorker extends
-		BackgroundWorker<ImageIcon> {
+		BackgroundWorker<ImageIcon, Void> {
 
 	private IWebServicesHandler webServicesHandler;
 
@@ -70,6 +72,10 @@ public final class ExtendedToolTipGetAndSetImageBackgroundWorker extends
 
 	@Override
 	protected void before() {
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

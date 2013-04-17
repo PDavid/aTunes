@@ -657,7 +657,7 @@ public final class RepositoryHandler extends AbstractHandler implements
 		indeterminateDialog.setTitle(StringUtils.getString(
 				I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
 
-		IBackgroundWorker<List<ILocalAudioObject>> worker = this.backgroundWorkerFactory
+		IBackgroundWorker<List<ILocalAudioObject>, Void> worker = this.backgroundWorkerFactory
 				.getWorker();
 		worker.setActionsBeforeBackgroundStarts(new ShowIndeterminateDialogRunnable(
 				indeterminateDialog));

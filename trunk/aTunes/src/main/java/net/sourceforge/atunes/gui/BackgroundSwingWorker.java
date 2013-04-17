@@ -20,22 +20,26 @@
 
 package net.sourceforge.atunes.gui;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.model.IBackgroundWorker.IActionsWithBackgroundResult;
+import net.sourceforge.atunes.model.IBackgroundWorker.IActionsWithIntermediateResult;
 import net.sourceforge.atunes.model.IBackgroundWorkerCallback;
 import net.sourceforge.atunes.utils.Logger;
 
-final class BackgroundSwingWorker<T> extends SwingWorker<T, Void> {
+final class BackgroundSwingWorker<T, I> extends SwingWorker<T, I> {
 
 	private final Runnable graphicalActionsBeforeStart;
 
 	private final Callable<T> backgroundActions;
 
 	private final IActionsWithBackgroundResult<T> graphicalActionsWhenDone;
+
+	private final IActionsWithIntermediateResult<I> intermediateActions;
 
 	private final IBackgroundWorkerCallback<T> callback;
 
@@ -44,15 +48,18 @@ final class BackgroundSwingWorker<T> extends SwingWorker<T, Void> {
 	 * @param backgroundActions
 	 * @param graphicalActionsWhenDone
 	 * @param callback
+	 * @param intermediateActions
 	 */
 	public BackgroundSwingWorker(final Runnable graphicalActionsBeforeStart,
 			final Callable<T> backgroundActions,
 			final IActionsWithBackgroundResult<T> graphicalActionsWhenDone,
-			final IBackgroundWorkerCallback<T> callback) {
+			final IBackgroundWorkerCallback<T> callback,
+			IActionsWithIntermediateResult<I> intermediateActions) {
 		this.graphicalActionsBeforeStart = graphicalActionsBeforeStart;
 		this.backgroundActions = backgroundActions;
 		this.graphicalActionsWhenDone = graphicalActionsWhenDone;
 		this.callback = callback;
+		this.intermediateActions = intermediateActions;
 	}
 
 	@Override
@@ -66,6 +73,14 @@ final class BackgroundSwingWorker<T> extends SwingWorker<T, Void> {
 			Logger.error(e);
 		}
 		return null;
+	}
+
+	@Override
+	protected void process(List<I> chunks) {
+		super.process(chunks);
+		if (this.intermediateActions != null) {
+			this.intermediateActions.intermediateResult(chunks);
+		}
 	}
 
 	@Override
@@ -84,5 +99,10 @@ final class BackgroundSwingWorker<T> extends SwingWorker<T, Void> {
 		if (this.callback != null) {
 			this.callback.workerFinished(backgroundResult);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void publish(I chunk) {
+		super.publish(chunk);
 	}
 }

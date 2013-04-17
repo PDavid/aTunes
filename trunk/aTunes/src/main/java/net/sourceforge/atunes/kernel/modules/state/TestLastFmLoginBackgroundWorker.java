@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.state;
 
 import java.awt.Window;
+import java.util.List;
 
 import javax.swing.JButton;
 
@@ -38,7 +39,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public final class TestLastFmLoginBackgroundWorker extends
-		BackgroundWorker<Boolean> {
+		BackgroundWorker<Boolean, Void> {
 
 	private String user;
 
@@ -84,6 +85,10 @@ public final class TestLastFmLoginBackgroundWorker extends
 
 	@Override
 	protected void before() {
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

@@ -34,7 +34,7 @@ import net.sourceforge.atunes.model.IRipperProgressDialog;
  * @author alex
  * 
  */
-public class RipTracksBackgroundWorker extends BackgroundWorker<Boolean> {
+public class RipTracksBackgroundWorker extends BackgroundWorker<Boolean, Void> {
 
 	private CdRipper ripper;
 
@@ -78,6 +78,10 @@ public class RipTracksBackgroundWorker extends BackgroundWorker<Boolean> {
 	@Override
 	protected void before() {
 		dialog.showDialog();
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

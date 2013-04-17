@@ -33,7 +33,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 public class ValidateAndProcessPreferencesBackgroundWorker extends
-		BackgroundWorker<PreferencesValidationResult> {
+		BackgroundWorker<PreferencesValidationResult, Void> {
 
 	private IDialogFactory dialogFactory;
 
@@ -69,6 +69,10 @@ public class ValidateAndProcessPreferencesBackgroundWorker extends
 				.newDialog(IIndeterminateProgressDialog.class);
 		this.dialog.setTitle(I18nUtils.getString("VALIDATING_PREFERENCES"));
 		this.dialog.showDialog();
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

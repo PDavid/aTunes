@@ -32,8 +32,9 @@ import net.sourceforge.atunes.model.ITaskService;
  * 
  * @author alex
  * @param <T>
+ * @param <I>
  */
-public class SwingBackgroundWorker<T> implements IBackgroundWorker<T> {
+public class SwingBackgroundWorker<T, I> implements IBackgroundWorker<T, I> {
 
 	private Callable<T> backgroundActions;
 
@@ -41,7 +42,9 @@ public class SwingBackgroundWorker<T> implements IBackgroundWorker<T> {
 
 	private IActionsWithBackgroundResult<T> graphicalActionsWhenDone;
 
-	private BackgroundSwingWorker<T> backgroundSwingWorker;
+	private IActionsWithIntermediateResult<I> intermediateActions;
+
+	private BackgroundSwingWorker<T, I> backgroundSwingWorker;
 
 	private IBackgroundWorkerCallback<T> callback;
 
@@ -68,10 +71,17 @@ public class SwingBackgroundWorker<T> implements IBackgroundWorker<T> {
 	}
 
 	@Override
+	public void setActionsWithIntermediateResult(
+			net.sourceforge.atunes.model.IBackgroundWorker.IActionsWithIntermediateResult<I> actionsWithIntermediateResult) {
+		this.intermediateActions = actionsWithIntermediateResult;
+	}
+
+	@Override
 	public ScheduledFuture<?> execute(final ITaskService taskService) {
-		this.backgroundSwingWorker = new BackgroundSwingWorker<T>(
+		this.backgroundSwingWorker = new BackgroundSwingWorker<T, I>(
 				this.graphicalActionsBeforeStart, this.backgroundActions,
-				this.graphicalActionsWhenDone, this.callback);
+				this.graphicalActionsWhenDone, this.callback,
+				this.intermediateActions);
 		return taskService.submitNow("Swing Background Task",
 				this.backgroundSwingWorker);
 	}
@@ -80,5 +90,10 @@ public class SwingBackgroundWorker<T> implements IBackgroundWorker<T> {
 	public boolean isDone() {
 		return this.backgroundSwingWorker != null ? this.backgroundSwingWorker
 				.isDone() : false;
+	}
+
+	@Override
+	public void publish(I chunk) {
+		this.backgroundSwingWorker.publish(chunk);
 	}
 }

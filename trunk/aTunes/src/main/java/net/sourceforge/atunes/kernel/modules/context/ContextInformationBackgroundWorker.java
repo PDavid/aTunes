@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
+import java.util.List;
 import java.util.concurrent.CancellationException;
 
 import net.sourceforge.atunes.kernel.BackgroundWorker;
@@ -35,7 +36,8 @@ import net.sourceforge.atunes.utils.Logger;
  * @author alex
  * 
  */
-public class ContextInformationBackgroundWorker extends BackgroundWorker<Void> {
+public class ContextInformationBackgroundWorker extends
+		BackgroundWorker<Void, Void> {
 
 	/**
 	 * The context panel content where information must be shown after
@@ -77,6 +79,10 @@ public class ContextInformationBackgroundWorker extends BackgroundWorker<Void> {
 
 	@Override
 	protected void before() {
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

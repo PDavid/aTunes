@@ -37,7 +37,7 @@ import net.sourceforge.atunes.utils.Logger;
  * 
  */
 public final class RetrieveRadioBrowserDataBackgroundWorker extends
-		BackgroundWorker<List<IRadio>> {
+		BackgroundWorker<List<IRadio>, Void> {
 
 	private IRadioHandler radioHandler;
 
@@ -60,6 +60,10 @@ public final class RetrieveRadioBrowserDataBackgroundWorker extends
 
 	@Override
 	protected void before() {
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

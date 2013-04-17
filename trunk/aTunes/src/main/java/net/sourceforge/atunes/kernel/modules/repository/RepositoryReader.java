@@ -65,7 +65,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 
 	private String lastAlbumRead;
 
-	private IBackgroundWorker<ImageIcon> coverWorker;
+	private IBackgroundWorker<ImageIcon, Void> coverWorker;
 
 	private int filesLoaded;
 

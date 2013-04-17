@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -35,7 +37,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
  * 
  */
 public final class FillPictureBackgroundWorker extends
-		BackgroundWorker<ImageIcon> {
+		BackgroundWorker<ImageIcon, Void> {
 
 	private JLabel pictureLabel;
 	private ILocalAudioObject file;
@@ -56,6 +58,10 @@ public final class FillPictureBackgroundWorker extends
 
 	@Override
 	protected void before() {
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

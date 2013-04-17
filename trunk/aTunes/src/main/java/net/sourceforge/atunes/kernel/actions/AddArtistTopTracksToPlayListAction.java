@@ -132,7 +132,7 @@ public class AddArtistTopTracksToPlayListAction extends
 
 	@Override
 	protected void executeAction(final List<IArtist> objects) {
-		IBackgroundWorker<Map<String, List<ILocalAudioObject>>> worker = this.backgroundWorkerFactory
+		IBackgroundWorker<Map<String, List<ILocalAudioObject>>, Void> worker = this.backgroundWorkerFactory
 				.getWorker();
 		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 			@Override

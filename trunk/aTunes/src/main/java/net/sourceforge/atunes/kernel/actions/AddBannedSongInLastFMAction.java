@@ -103,7 +103,7 @@ public class AddBannedSongInLastFMAction extends CustomAbstractAction {
 	@Override
 	protected void executeAction() {
 		setEnabled(false);
-		IBackgroundWorker<Void> backgroundWorker = this.backgroundWorkerFactory
+		IBackgroundWorker<Void, Void> backgroundWorker = this.backgroundWorkerFactory
 				.getWorker();
 		backgroundWorker.setBackgroundActions(new Callable<Void>() {
 			@Override

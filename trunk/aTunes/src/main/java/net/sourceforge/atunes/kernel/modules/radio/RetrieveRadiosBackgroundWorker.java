@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.XMLSerializerService;
  * 
  */
 public final class RetrieveRadiosBackgroundWorker extends
-		BackgroundWorker<List<IRadio>> {
+		BackgroundWorker<List<IRadio>, Void> {
 
 	private RadioHandler radioHandler;
 
@@ -90,6 +90,10 @@ public final class RetrieveRadiosBackgroundWorker extends
 
 	@Override
 	protected void before() {
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@SuppressWarnings("unchecked")

@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ScheduledFuture;
 
@@ -34,8 +35,9 @@ import net.sourceforge.atunes.model.ITaskService;
  * 
  * @author alex
  * @param <T>
+ * @param <I>
  */
-public abstract class BackgroundWorker<T> {
+public abstract class BackgroundWorker<T, I> {
 
 	private IBeanFactory beanFactory;
 
@@ -44,6 +46,8 @@ public abstract class BackgroundWorker<T> {
 	private ITaskService taskService;
 
 	private ScheduledFuture<?> future;
+
+	private IBackgroundWorker<T, I> worker;
 
 	/**
 	 * @param taskService
@@ -87,7 +91,7 @@ public abstract class BackgroundWorker<T> {
 	 * @param callback
 	 */
 	public final void execute(final IBackgroundWorkerCallback<T> callback) {
-		IBackgroundWorker<T> worker = this.backgroundWorkerFactory.getWorker();
+		worker = this.backgroundWorkerFactory.getWorker();
 		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 			@Override
 			public void run() {
@@ -111,6 +115,11 @@ public abstract class BackgroundWorker<T> {
 				}
 			}
 		});
+		worker.setActionsWithIntermediateResult(new IBackgroundWorker.IActionsWithIntermediateResult<I>() {
+			public void intermediateResult(List<I> result) {
+				whileWorking(result);
+			};
+		});
 		this.future = worker.execute(this.taskService);
 	}
 
@@ -129,6 +138,15 @@ public abstract class BackgroundWorker<T> {
 	}
 
 	/**
+	 * Publishes a chunk of work
+	 * 
+	 * @param chunk
+	 */
+	public final void publish(final I chunk) {
+		this.worker.publish(chunk);
+	}
+
+	/**
 	 * Actions before background starts
 	 */
 	protected abstract void before();
@@ -137,6 +155,13 @@ public abstract class BackgroundWorker<T> {
 	 * @return result of background
 	 */
 	protected abstract T doInBackground();
+
+	/**
+	 * actions to do while background task is running
+	 * 
+	 * @param chunks
+	 */
+	protected abstract void whileWorking(List<I> chunks);
 
 	/**
 	 * Called with result
