@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.podcast;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -29,19 +27,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
+import net.sourceforge.atunes.model.IBackgroundWorkerCallback;
 import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IIconFactory;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
@@ -52,7 +46,6 @@ import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
-import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -69,11 +62,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	private List<IPodcastFeed> podcastFeeds = new ArrayList<IPodcastFeed>();
 
-	/**
-	 * Podcast Feed Entry downloading
-	 */
-	private ExecutorService podcastFeedEntryDownloaderExecutorService;
-
 	/** The running downloads. */
 	private volatile List<PodcastFeedEntryDownloader> runningDownloads = Collections
 			.synchronizedList(new ArrayList<PodcastFeedEntryDownloader>());
@@ -82,17 +70,11 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	private ScheduledFuture<?> scheduledPodcastFeedEntryDownloadCheckerFuture;
 
-	private IIconFactory rssMediumIcon;
-
-	private INetworkHandler networkHandler;
-
 	private INavigationHandler navigationHandler;
 
 	private IStateService stateService;
 
 	private ITaskService taskService;
-
-	private ILookAndFeelManager lookAndFeelManager;
 
 	private INavigationView podcastNavigationView;
 
@@ -123,14 +105,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	}
 
 	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(
-			final ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-
-	/**
 	 * @param taskService
 	 */
 	public void setTaskService(final ITaskService taskService) {
@@ -149,20 +123,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	 */
 	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
-	}
-
-	/**
-	 * @param networkHandler
-	 */
-	public void setNetworkHandler(final INetworkHandler networkHandler) {
-		this.networkHandler = networkHandler;
-	}
-
-	/**
-	 * @param rssMediumIcon
-	 */
-	public void setRssMediumIcon(final IIconFactory rssMediumIcon) {
-		this.rssMediumIcon = rssMediumIcon;
 	}
 
 	@Override
@@ -344,31 +304,20 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 		if (isDownloading(podcastFeedEntry)) {
 			return;
 		}
-		final IProgressDialog d = this.dialogFactory.newDialog(
-				"transferDialog", IProgressDialog.class);
-		d.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
-		d.setIcon(this.rssMediumIcon.getIcon(this.lookAndFeelManager
-				.getCurrentLookAndFeel().getPaintForSpecialControls()));
-		final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(
-				podcastFeedEntry, getBean("navigationTable", ITable.class),
-				this, this.networkHandler);
+		final PodcastFeedEntryDownloader downloadPodcastFeedEntry = getBean(PodcastFeedEntryDownloader.class);
 		synchronized (this.runningDownloads) {
 			this.runningDownloads.add(downloadPodcastFeedEntry);
 		}
-		downloadPodcastFeedEntry
-				.addPropertyChangeListener(new DownloadPodcastFeedEntryPropertyChangeListener(
-						this, podcastFeedEntry, d, downloadPodcastFeedEntry,
-						this.runningDownloads));
-		d.addCancelButtonActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				cancelDownloading(podcastFeedEntry, d, downloadPodcastFeedEntry);
-			}
-		});
-		d.setInfoText(podcastFeedEntry.getTitle());
-		getPodcastFeedEntryDownloaderExecutorService().execute(
-				downloadPodcastFeedEntry);
-		d.showDialog();
+		downloadPodcastFeedEntry.download(podcastFeedEntry,
+				new IBackgroundWorkerCallback<Boolean>() {
+
+					@Override
+					public void workerFinished(Boolean result) {
+						synchronized (runningDownloads) {
+							runningDownloads.remove(downloadPodcastFeedEntry);
+						}
+					}
+				});
 	}
 
 	/**
@@ -544,17 +493,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 	public void applicationStateChanged() {
 		setPodcastFeedEntryRetrievalInterval(this.statePodcast
 				.getPodcastFeedEntriesRetrievalInterval());
-	}
-
-	/**
-	 * @return the podcastFeedEntryDownloaderExecutorService
-	 */
-	private ExecutorService getPodcastFeedEntryDownloaderExecutorService() {
-		if (this.podcastFeedEntryDownloaderExecutorService == null) {
-			this.podcastFeedEntryDownloaderExecutorService = Executors
-					.newCachedThreadPool();
-		}
-		return this.podcastFeedEntryDownloaderExecutorService;
 	}
 
 	/**

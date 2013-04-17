@@ -20,192 +20,269 @@
 
 package net.sourceforge.atunes.kernel.modules.podcast;
 
-import java.io.BufferedOutputStream;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URLConnection;
-import java.util.concurrent.ExecutionException;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
+import java.util.List;
 
-import javax.swing.SwingWorker;
-
+import net.sourceforge.atunes.kernel.BackgroundWorker;
+import net.sourceforge.atunes.model.IBackgroundWorkerCallback;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IIconFactory;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IPodcastFeedHandler;
+import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.utils.ClosingUtils;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
  * The podcast feed entry downloader downloads podcast feed entries from the
  * internet to a local file.
  */
-public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
+public class PodcastFeedEntryDownloader extends
+		BackgroundWorker<Boolean, DownloadPodcastFeedEntryIntermediateResult> {
 
-    private IPodcastFeedEntry podcastFeedEntry;
-    /*
-     * Additional Bean properties
-     */
-    private volatile long totalBytes;
-    private volatile long byteProgress;
-    private volatile boolean failed;
-    
-    private ITable navigationTable;
-    
-    private IPodcastFeedHandler podcastFeedHandler;
-    
-    private INetworkHandler networkHandler;
+	private IPodcastFeedEntry podcastFeedEntry;
+	/*
+	 * Additional Bean properties
+	 */
+	private volatile long totalBytes;
+	private volatile long byteProgress;
+	private volatile int percentage;
+	private volatile boolean failed;
 
-    /**
-     * Instantiates a new podcast feed entry downloader.
-     * 
-     * @param podcastFeedEntry
-     * @param navigationTable
-     * @param podcastFeedHandler
-     * @param networkHandler
-     */
-    public PodcastFeedEntryDownloader(IPodcastFeedEntry podcastFeedEntry, ITable navigationTable, IPodcastFeedHandler podcastFeedHandler, INetworkHandler networkHandler) {
-        this.podcastFeedEntry = podcastFeedEntry;
-        this.navigationTable = navigationTable;
-        this.podcastFeedHandler = podcastFeedHandler;
-        this.networkHandler = networkHandler;
-    }
+	private ITable navigationTable;
 
-    @Override
-    protected Boolean doInBackground() {
-        Logger.info("Downloading PodcastEntry: ", podcastFeedEntry.getUrl());
+	private PodcastFeedHandler podcastFeedHandler;
 
-        OutputStream out = null;
-        InputStream in = null;
+	private INetworkHandler networkHandler;
 
-        String podcastFeedEntryFileName = podcastFeedHandler.getDownloadPath(podcastFeedEntry);
-        Logger.info("Downloading to: ", podcastFeedEntryFileName);
-        File localFile = new File(podcastFeedEntryFileName);
+	private IDialogFactory dialogFactory;
 
-        try {
-            out = new BufferedOutputStream(new FileOutputStream(localFile));
-            URLConnection conn = networkHandler.getConnection(podcastFeedEntry.getUrl());
-            in = conn.getInputStream();
-            setTotalBytes(conn.getContentLength());
+	private IIconFactory rssMediumIcon;
 
-            byte[] buffer = new byte[1024];
-            long numWritten = 0;
-            int bytesRead = 0;
+	private ILookAndFeelManager lookAndFeelManager;
 
-            int numRead = in.read(buffer);
-            while (numRead != -1 && !isCancelled()) {
-                bytesRead = numRead + bytesRead;
-                out.write(buffer, 0, numRead);
-                numWritten += numRead;
-                setByteProgress(bytesRead);
-                out.flush();
-                numRead = in.read(buffer);
-            }
-            return !isCancelled();
-        } catch (FileNotFoundException e) {
-            Logger.info("file not found");
-            setFailed(true);
-            return false;
-        } catch (IOException e) {
-            Logger.info("Connection to ", podcastFeedEntry.getUrl(), " failed");
-            setFailed(true);
-            return false;
-        } finally {
-            ClosingUtils.close(out);
-            ClosingUtils.close(in);
-        }
-    }
+	private IProgressDialog dialog;
 
-    /**
-     * Sets the total bytes.
-     * 
-     * @param totalBytes
-     *            the new total bytes
-     */
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
 
-    private void setTotalBytes(long totalBytes) {
-        if (totalBytes == this.totalBytes) {
-            return;
-        }
-        long oldTotalBytes = this.byteProgress;
-        this.totalBytes = totalBytes;
-        if (getPropertyChangeSupport().hasListeners("totalBytes")) {
-            firePropertyChange("totalBytes", oldTotalBytes, this.totalBytes);
-        }
-    }
+	/**
+	 * @param rssMediumIcon
+	 */
+	public void setRssMediumIcon(IIconFactory rssMediumIcon) {
+		this.rssMediumIcon = rssMediumIcon;
+	}
 
-    /**
-     * Sets the byte progress.
-     * 
-     * @param byteProgress
-     *            the new byte progress
-     */
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
-    private void setByteProgress(long byteProgress) {
-        if (byteProgress == this.byteProgress) {
-            return;
-        }
-        long oldByteProgress = this.byteProgress;
-        this.byteProgress = byteProgress;
-        if (getPropertyChangeSupport().hasListeners("byteProgress")) {
-            firePropertyChange("byteProgress", oldByteProgress, this.byteProgress);
-        }
-        // we want to update progress on byteProgress change
-        int progress = (int) (((double) byteProgress / (double) totalBytes) * 100);
-        setProgress(progress);
-    }
+	/**
+	 * @param navigationTable
+	 */
+	public void setNavigationTable(ITable navigationTable) {
+		this.navigationTable = navigationTable;
+	}
 
-    /**
-     * Sets the failed.
-     * 
-     * @param failed
-     *            the new failed
-     */
+	/**
+	 * @param podcastFeedHandler
+	 */
+	public void setPodcastFeedHandler(PodcastFeedHandler podcastFeedHandler) {
+		this.podcastFeedHandler = podcastFeedHandler;
+	}
 
-    private void setFailed(boolean failed) {
-        if (failed == this.failed) {
-            return;
-        }
-        boolean oldFailed = this.failed;
-        this.failed = failed;
-        if (getPropertyChangeSupport().hasListeners("failed")) {
-            firePropertyChange("failed", oldFailed, this.failed);
-        }
-    }
+	/**
+	 * @param networkHandler
+	 */
+	public void setNetworkHandler(INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
 
-    /**
-     * Gets the total bytes.
-     * 
-     * @return the total bytes
-     */
-    public long getTotalBytes() {
-        return totalBytes;
-    }
+	/**
+	 * Downloads entry
+	 * 
+	 * @param podcastFeedEntry
+	 * @param callback
+	 */
+	public void download(IPodcastFeedEntry podcastFeedEntry,
+			IBackgroundWorkerCallback<Boolean> callback) {
+		this.podcastFeedEntry = podcastFeedEntry;
+		execute(callback);
+	}
 
-    @Override
-    protected void done() {
-        try {
-            if (!isCancelled() && get()) {
-                Logger.info("Download of " + podcastFeedEntry.getUrl() + " finished.");
-                podcastFeedEntry.setDownloaded(true);
-                navigationTable.repaint();
-            }
-        } catch (InterruptedException e) {
-            Logger.error(e);
-        } catch (ExecutionException e) {
-            Logger.error(e);
-        }
-    }
+	@Override
+	protected void before() {
+		dialog = this.dialogFactory.newDialog("transferDialog",
+				IProgressDialog.class);
+		dialog.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
+		dialog.setIcon(this.rssMediumIcon.getIcon(this.lookAndFeelManager
+				.getCurrentLookAndFeel().getPaintForSpecialControls()));
+		dialog.addCancelButtonActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				podcastFeedHandler.cancelDownloading(podcastFeedEntry, dialog,
+						PodcastFeedEntryDownloader.this);
+			}
+		});
+		dialog.setInfoText(podcastFeedEntry.getTitle());
+		dialog.showDialog();
+	}
 
-    /**
-     * Gets the podcast feed entry.
-     * 
-     * @return the podcast feed entry
-     */
-    public IPodcastFeedEntry getPodcastFeedEntry() {
-        return podcastFeedEntry;
-    }
+	@Override
+	protected Boolean doInBackground() {
+		Logger.info("Downloading PodcastEntry: ", podcastFeedEntry.getUrl());
+
+		InputStream in = null;
+
+		String podcastFeedEntryFileName = podcastFeedHandler
+				.getDownloadPath(podcastFeedEntry);
+		Logger.info("Downloading to: ", podcastFeedEntryFileName);
+		File localFile = new File(podcastFeedEntryFileName);
+
+		ReadableByteChannel readChannel = null;
+		FileChannel writeChannel = null;
+		try {
+			writeChannel = new FileOutputStream(localFile).getChannel();
+			URLConnection conn = networkHandler.getConnection(podcastFeedEntry
+					.getUrl());
+			in = new BufferedInputStream(conn.getInputStream());
+			setTotalBytes(conn.getContentLength());
+
+			readChannel = Channels.newChannel(in);
+
+			int iterations = 0;
+			long totalTransferred = 0;
+			while (readChannel.isOpen()) {
+				long transferred = writeChannel.transferFrom(readChannel,
+						totalTransferred, 4 * 4096);
+				totalTransferred += transferred;
+				if (iterations % 50 == 0) {
+					setByteProgress(totalTransferred);
+				}
+			}
+
+			return !isCancelled();
+		} catch (FileNotFoundException e) {
+			Logger.info("file not found");
+			setFailed(true);
+			return false;
+		} catch (IOException e) {
+			Logger.info("Connection to ", podcastFeedEntry.getUrl(), " failed");
+			setFailed(true);
+			return false;
+		} finally {
+			ClosingUtils.close(readChannel);
+			ClosingUtils.close(writeChannel);
+			ClosingUtils.close(in);
+		}
+	}
+
+	@Override
+	protected void whileWorking(
+			List<DownloadPodcastFeedEntryIntermediateResult> chunks) {
+		for (DownloadPodcastFeedEntryIntermediateResult chunk : chunks) {
+			if (chunk.isFailed()) {
+				podcastFeedHandler.cancelDownloading(podcastFeedEntry, dialog,
+						this);
+			} else if (chunk.getPercentage() == 100) {
+				dialog.hideDialog();
+			} else {
+				dialog.setCurrentProgress(chunk.getByteProgress());
+				dialog.setProgressBarValue(chunk.getPercentage());
+				dialog.setTotalProgress(chunk.getTotalBytes());
+			}
+		}
+	}
+
+	/**
+	 * Sets the total bytes.
+	 * 
+	 * @param totalBytes
+	 *            the new total bytes
+	 */
+
+	private void setTotalBytes(long totalBytes) {
+		this.totalBytes = totalBytes;
+		publish();
+	}
+
+	/**
+	 * Sets the byte progress.
+	 * 
+	 * @param byteProgress
+	 *            the new byte progress
+	 */
+
+	private void setByteProgress(long byteProgress) {
+		this.byteProgress = byteProgress;
+		// we want to update progress on byteProgress change
+		this.percentage = (int) (((double) byteProgress / (double) totalBytes) * 100);
+		publish();
+	}
+
+	/**
+	 * Sets the failed.
+	 * 
+	 * @param failed
+	 *            the new failed
+	 */
+
+	private void setFailed(boolean failed) {
+		this.failed = failed;
+		publish();
+	}
+
+	private void publish() {
+		publish(new DownloadPodcastFeedEntryIntermediateResult(this.percentage,
+				this.byteProgress, this.totalBytes, this.failed));
+	}
+
+	/**
+	 * Gets the total bytes.
+	 * 
+	 * @return the total bytes
+	 */
+	public long getTotalBytes() {
+		return totalBytes;
+	}
+
+	@Override
+	protected void done(final Boolean result) {
+		if (!isCancelled() && result) {
+			Logger.info("Download of " + podcastFeedEntry.getUrl()
+					+ " finished.");
+			podcastFeedEntry.setDownloaded(true);
+			navigationTable.repaint();
+		}
+	}
+
+	/**
+	 * Gets the podcast feed entry.
+	 * 
+	 * @return the podcast feed entry
+	 */
+	public IPodcastFeedEntry getPodcastFeedEntry() {
+		return podcastFeedEntry;
+	}
 }

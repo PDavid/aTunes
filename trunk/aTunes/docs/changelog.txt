@@ -9,6 +9,7 @@ aTunes 3.1.0
 - Ask before removing objects from play list when not exist
 - Option to ignore when repository does not exist
 - Added preference to disable Last.fm cache
+- Use NIO to download podcasts faster
 
 aTunes 3.0.8
 ------------
