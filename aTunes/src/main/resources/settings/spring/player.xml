@@ -39,6 +39,6 @@
 	<bean id="volumeSliderChangeListener" class="net.sourceforge.atunes.kernel.modules.player.VolumeSliderChangeListener"/>
 	
 	<bean id="similarArtistMode" class="net.sourceforge.atunes.kernel.modules.player.SimilarArtistMode" init-method="initialize"/>
-	<bean class="net.sourceforge.atunes.kernel.modules.player.GetSimilarArtistAudioObjectsCallable" scope="prototype"/>
+	<bean id="getSimilarArtistObjectsBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.player.GetSimilarArtistAudioObjectsBackgroundWorker" scope="prototype"/>
 
 </beans>
