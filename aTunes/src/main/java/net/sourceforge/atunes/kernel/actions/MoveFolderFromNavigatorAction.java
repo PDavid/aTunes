@@ -147,7 +147,7 @@ public class MoveFolderFromNavigatorAction extends
 			if (isValidDestination(sourceFolder, destination)) {
 				this.indeterminateDialog = this.dialogFactory
 						.newDialog(IIndeterminateProgressDialog.class);
-				IBackgroundWorker<Boolean> worker = this.backgroundWorkerFactory
+				IBackgroundWorker<Boolean, Void> worker = this.backgroundWorkerFactory
 						.getWorker();
 				worker.setActionsBeforeBackgroundStarts(new Runnable() {
 					@Override

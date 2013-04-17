@@ -86,7 +86,7 @@ public class ClearCachesAction extends CustomAbstractAction {
 		setEnabled(false);
 		((JPanel) ((JButton) getSource()).getParent()).setCursor(Cursor
 				.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		IBackgroundWorker<Void> backgroundWorker = this.backgroundWorkerFactory
+		IBackgroundWorker<Void, Void> backgroundWorker = this.backgroundWorkerFactory
 				.getWorker();
 		backgroundWorker.setBackgroundActions(new Callable<Void>() {
 

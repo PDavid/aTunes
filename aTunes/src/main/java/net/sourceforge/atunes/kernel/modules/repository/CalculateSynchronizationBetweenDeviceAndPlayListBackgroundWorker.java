@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public class CalculateSynchronizationBetweenDeviceAndPlayListBackgroundWorker
-		extends BackgroundWorker<Map<String, List<ILocalAudioObject>>> {
+		extends BackgroundWorker<Map<String, List<ILocalAudioObject>>, Void> {
 
 	private IStateDevice stateDevice;
 
@@ -98,6 +98,10 @@ public class CalculateSynchronizationBetweenDeviceAndPlayListBackgroundWorker
 				.newDialog(IIndeterminateProgressDialog.class);
 		this.dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
 		this.dialog.showDialog();
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

@@ -95,7 +95,7 @@ public final class RefreshFoldersTask {
 	 */
 	public void execute(final IRepository repository,
 			final List<IFolder> folders) {
-		IBackgroundWorker<Void> worker = this.backgroundWorkerFactory
+		IBackgroundWorker<Void, Void> worker = this.backgroundWorkerFactory
 				.getWorker();
 		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 			@Override

@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
+import java.util.List;
+
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.BackgroundWorker;
@@ -38,7 +40,7 @@ import net.sourceforge.atunes.utils.Logger;
  * 
  */
 public final class GetCdInfoAndStartRippingBackgroundWorker extends
-		BackgroundWorker<CDInfo> {
+		BackgroundWorker<CDInfo, Void> {
 
 	private RipperHandler ripperHandler;
 	private RipCdDialog dialog;
@@ -76,6 +78,10 @@ public final class GetCdInfoAndStartRippingBackgroundWorker extends
 
 	@Override
 	protected void before() {
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

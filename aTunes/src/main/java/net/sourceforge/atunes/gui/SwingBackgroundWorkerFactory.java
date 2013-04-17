@@ -31,8 +31,8 @@ import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
  */
 public class SwingBackgroundWorkerFactory implements IBackgroundWorkerFactory {
 
-    @Override
-    public <T> IBackgroundWorker<T> getWorker() {
-	return new SwingBackgroundWorker<T>();
-    }
+	@Override
+	public <T, I> IBackgroundWorker<T, I> getWorker() {
+		return new SwingBackgroundWorker<T, I>();
+	}
 }

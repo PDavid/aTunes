@@ -115,7 +115,7 @@ public class RemoveLovedSongInLastFmAction extends CustomAbstractAction {
 	public void removeFromLovedSongs(final IAudioObject song) {
 		setEnabled(false);
 
-		IBackgroundWorker<Void> worker = this.backgroundWorkerFactory
+		IBackgroundWorker<Void, Void> worker = this.backgroundWorkerFactory
 				.getWorker();
 		worker.setBackgroundActions(new Callable<Void>() {
 

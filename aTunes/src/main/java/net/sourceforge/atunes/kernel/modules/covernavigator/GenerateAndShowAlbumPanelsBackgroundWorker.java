@@ -32,41 +32,61 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
+import net.sourceforge.atunes.kernel.BackgroundWorker;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
 
-final class GenerateAndShowAlbumPanelsSwingWorker extends
-		SwingWorker<Void, IntermediateResult> {
+/**
+ * Retrieve covers to show in cover navigator
+ * 
+ * @author alex
+ * 
+ */
+public final class GenerateAndShowAlbumPanelsBackgroundWorker extends
+		BackgroundWorker<Void, IntermediateResult> {
 
-	private final CoverNavigatorDialog dialog;
+	private CoverNavigatorDialog dialog;
 
-	private final IBeanFactory beanFactory;
+	private IArtist artistSelected;
 
-	private final IArtist artistSelected;
+	private IControlsBuilder controlsBuilder;
 
-	private final IControlsBuilder controlsBuilder;
+	private IAudioObjectImageLocator audioObjectImageLocator;
+
+	/**
+	 * @param audioObjectImageLocator
+	 */
+	public void setAudioObjectImageLocator(
+			IAudioObjectImageLocator audioObjectImageLocator) {
+		this.audioObjectImageLocator = audioObjectImageLocator;
+	}
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	/**
 	 * @param dialog
-	 * @param beanFactory
 	 * @param artistSelected
-	 * @param controlsBuilder
 	 */
-	GenerateAndShowAlbumPanelsSwingWorker(final CoverNavigatorDialog dialog,
-			final IBeanFactory beanFactory, final IArtist artistSelected,
-			final IControlsBuilder controlsBuilder) {
+	void showCovers(final CoverNavigatorDialog dialog,
+			final IArtist artistSelected) {
 		this.dialog = dialog;
-		this.beanFactory = beanFactory;
 		this.artistSelected = artistSelected;
-		this.controlsBuilder = controlsBuilder;
+		execute();
+	}
+
+	@Override
+	protected void before() {
 	}
 
 	@Override
@@ -76,8 +96,7 @@ final class GenerateAndShowAlbumPanelsSwingWorker extends
 		Collections.sort(albums);
 
 		for (IAlbum album : albums) {
-			ImageIcon cover = this.beanFactory.getBean(
-					IAudioObjectImageLocator.class).getImage(album,
+			ImageIcon cover = audioObjectImageLocator.getImage(album,
 					Constants.COVER_NAVIGATOR_IMAGE_SIZE);
 			publish(new IntermediateResult(album, cover));
 		}
@@ -85,15 +104,15 @@ final class GenerateAndShowAlbumPanelsSwingWorker extends
 	}
 
 	@Override
-	protected void done() {
+	protected void done(final Void result) {
 		this.dialog.setCursor(Cursor.getDefaultCursor());
 		this.dialog.getList().setEnabled(true);
 		this.dialog.getCoversButton().setEnabled(true);
 	}
 
 	@Override
-	protected void process(final List<IntermediateResult> intermediateResults) {
-		for (IntermediateResult intermediateResult : intermediateResults) {
+	protected void whileWorking(List<IntermediateResult> chunks) {
+		for (IntermediateResult intermediateResult : chunks) {
 			this.dialog.getCoversPanel().add(
 					getPanelForAlbum(intermediateResult.getAlbum(),
 							intermediateResult.getCover()));

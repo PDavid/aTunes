@@ -111,7 +111,7 @@ public final class DesktopUtils implements IDesktop {
 			} else {
 				fileToOpen = file;
 			}
-			IBackgroundWorker<Void> backgroundWorker = this.backgroundWorkerFactory
+			IBackgroundWorker<Void, Void> backgroundWorker = this.backgroundWorkerFactory
 					.getWorker();
 			backgroundWorker.setBackgroundActions(new OpenFile(fileToOpen));
 			backgroundWorker.execute(this.taskService);
@@ -144,7 +144,7 @@ public final class DesktopUtils implements IDesktop {
 	 */
 	private void browse(final URI uri) {
 		if (isDesktopSupported()) {
-			IBackgroundWorker<Void> backgroundWorker = this.backgroundWorkerFactory
+			IBackgroundWorker<Void, Void> backgroundWorker = this.backgroundWorkerFactory
 					.getWorker();
 			backgroundWorker.setBackgroundActions(new OpenBrowser(uri));
 			backgroundWorker.execute(this.taskService);

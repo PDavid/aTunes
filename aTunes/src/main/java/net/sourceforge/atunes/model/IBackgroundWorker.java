@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ScheduledFuture;
 
@@ -30,8 +31,11 @@ import java.util.concurrent.ScheduledFuture;
  * @author alex
  * 
  * @param <T>
+ *            Final result
+ * @param <I>
+ *            Intermediate result
  */
-public interface IBackgroundWorker<T> {
+public interface IBackgroundWorker<T, I> {
 
 	/**
 	 * Set background actions
@@ -63,6 +67,14 @@ public interface IBackgroundWorker<T> {
 	public void setCallback(IBackgroundWorkerCallback<T> callback);
 
 	/**
+	 * Callback with intermediate result
+	 * 
+	 * @param actionsWithIntermediateResult
+	 */
+	public void setActionsWithIntermediateResult(
+			IActionsWithIntermediateResult<I> actionsWithIntermediateResult);
+
+	/**
 	 * Execute actions in task service
 	 * 
 	 * @param taskService
@@ -74,6 +86,13 @@ public interface IBackgroundWorker<T> {
 	 * @return true if worker finished
 	 */
 	public boolean isDone();
+
+	/**
+	 * Publish a chunk of work
+	 * 
+	 * @param chunk
+	 */
+	public void publish(final I chunk);
 
 	/**
 	 * Result of a background work
@@ -88,5 +107,20 @@ public interface IBackgroundWorker<T> {
 		 * @param result
 		 */
 		void call(T result);
+	}
+
+	/**
+	 * Called with an intermediate result
+	 * 
+	 * @author alex
+	 * 
+	 * @param <T>
+	 */
+	public interface IActionsWithIntermediateResult<I> {
+
+		/**
+		 * @param result
+		 */
+		void intermediateResult(List<I> result);
 	}
 }

@@ -102,7 +102,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
 
 	@Override
 	protected void executeAction() {
-		IBackgroundWorker<List<ILocalAudioObject>> worker = this.backgroundWorkerFactory
+		IBackgroundWorker<List<ILocalAudioObject>, Void> worker = this.backgroundWorkerFactory
 				.getWorker();
 		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 			@Override

@@ -139,7 +139,7 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
 
 	@Override
 	protected void executeAction() {
-		IBackgroundWorker<List<Integer>> worker = this.backgroundWorkerFactory
+		IBackgroundWorker<List<Integer>, Void> worker = this.backgroundWorkerFactory
 				.getWorker();
 		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 			@Override

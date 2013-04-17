@@ -113,7 +113,7 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
 	 */
 	public void loveSong(final IAudioObject song) {
 		setEnabled(false);
-		IBackgroundWorker<Void> backgroundWorker = this.backgroundWorkerFactory
+		IBackgroundWorker<Void, Void> backgroundWorker = this.backgroundWorkerFactory
 				.getWorker();
 		backgroundWorker.setBackgroundActions(new Callable<Void>() {
 			@Override

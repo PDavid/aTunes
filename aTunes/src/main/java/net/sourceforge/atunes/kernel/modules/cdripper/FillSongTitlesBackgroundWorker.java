@@ -36,7 +36,7 @@ import net.sourceforge.atunes.model.IWebServicesHandler;
  * 
  */
 public final class FillSongTitlesBackgroundWorker extends
-		BackgroundWorker<IAlbumInfo> {
+		BackgroundWorker<IAlbumInfo, Void> {
 
 	private RipperHandler ripperHandler;
 	private String artist;
@@ -73,6 +73,10 @@ public final class FillSongTitlesBackgroundWorker extends
 				.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		this.ripperHandler.getRipCdDialogController().getComponentControlled()
 				.getTitlesButton().setEnabled(false);
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

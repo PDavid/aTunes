@@ -23,7 +23,7 @@ package net.sourceforge.atunes.model;
 public class BackgroundWorkerFactoryMock implements IBackgroundWorkerFactory {
 
 	@Override
-	public <T> IBackgroundWorker<T> getWorker() {
-		return new BackgroundWorkerMock<T>();
+	public <T, I> IBackgroundWorker<T, I> getWorker() {
+		return new BackgroundWorkerMock<T, I>();
 	}
 }

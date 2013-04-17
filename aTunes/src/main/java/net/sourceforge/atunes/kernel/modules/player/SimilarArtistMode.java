@@ -138,7 +138,7 @@ public class SimilarArtistMode implements ApplicationContextAware {
 					.getActivePlayList();
 			if (currentPlayList.get(currentPlayList.size() - 1).equals(
 					currentAudioObject)) {
-				IBackgroundWorker<List<IAudioObject>> worker = this.backgroundWorkerFactory
+				IBackgroundWorker<List<IAudioObject>, Void> worker = this.backgroundWorkerFactory
 						.getWorker();
 				GetSimilarArtistAudioObjectsCallable callable = this.context
 						.getBean(GetSimilarArtistAudioObjectsCallable.class);

@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.updates;
 
+import java.util.List;
+
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.BackgroundWorker;
 import net.sourceforge.atunes.model.ApplicationVersion;
@@ -38,7 +40,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public final class CheckUpdatesBackgroundWorker extends
-		BackgroundWorker<ApplicationVersion> {
+		BackgroundWorker<ApplicationVersion, Void> {
 
 	private IUpdateHandler updateHandler;
 	private boolean showNoNewVersion;
@@ -91,6 +93,10 @@ public final class CheckUpdatesBackgroundWorker extends
 
 	@Override
 	protected void before() {
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

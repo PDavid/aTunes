@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.fullscreen;
 
+import java.util.List;
+
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.Images;
@@ -32,7 +34,8 @@ import net.sourceforge.atunes.model.IAudioObject;
  * @author alex
  * 
  */
-public final class PaintCoversBackgroundWorker extends BackgroundWorker<Void> {
+public final class PaintCoversBackgroundWorker extends
+		BackgroundWorker<Void, Void> {
 
 	private Cover cover;
 	private IAudioObject audioObject;
@@ -65,6 +68,10 @@ public final class PaintCoversBackgroundWorker extends BackgroundWorker<Void> {
 
 	@Override
 	protected void before() {
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

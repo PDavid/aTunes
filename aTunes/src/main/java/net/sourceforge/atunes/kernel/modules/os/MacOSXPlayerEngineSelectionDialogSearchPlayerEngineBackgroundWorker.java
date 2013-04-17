@@ -36,7 +36,7 @@ import net.sourceforge.atunes.utils.Logger;
  * 
  */
 public final class MacOSXPlayerEngineSelectionDialogSearchPlayerEngineBackgroundWorker
-		extends BackgroundWorker<List<String>> {
+		extends BackgroundWorker<List<String>, Void> {
 
 	private MacOSXPlayerSelectionDialog dialog;
 
@@ -49,6 +49,10 @@ public final class MacOSXPlayerEngineSelectionDialogSearchPlayerEngineBackground
 
 	@Override
 	protected void before() {
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

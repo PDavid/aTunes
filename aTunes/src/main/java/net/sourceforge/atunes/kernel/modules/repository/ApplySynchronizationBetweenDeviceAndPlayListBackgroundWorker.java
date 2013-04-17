@@ -48,7 +48,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  */
 public class ApplySynchronizationBetweenDeviceAndPlayListBackgroundWorker
-		extends BackgroundWorker<Void> {
+		extends BackgroundWorker<Void, Void> {
 
 	private IDeviceHandler deviceHandler;
 
@@ -110,6 +110,10 @@ public class ApplySynchronizationBetweenDeviceAndPlayListBackgroundWorker
 	@Override
 	protected void before() {
 		this.syncDeviceWithPlayListAction.setEnabled(false);
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

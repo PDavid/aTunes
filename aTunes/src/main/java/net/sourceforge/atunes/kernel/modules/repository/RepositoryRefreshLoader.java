@@ -78,7 +78,7 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 
 	@Override
 	protected void execute() {
-		IBackgroundWorker<Void> worker = this.backgroundWorkerFactory
+		IBackgroundWorker<Void, Void> worker = this.backgroundWorkerFactory
 				.getWorker();
 		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 

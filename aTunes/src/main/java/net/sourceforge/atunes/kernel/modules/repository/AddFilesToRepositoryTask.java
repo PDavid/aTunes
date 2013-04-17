@@ -120,7 +120,7 @@ public class AddFilesToRepositoryTask {
 	 */
 	public void execute(final IRepository repository,
 			final List<ILocalAudioObject> files) {
-		IBackgroundWorker<Void> worker = this.backgroundWorkerFactory
+		IBackgroundWorker<Void, Void> worker = this.backgroundWorkerFactory
 				.getWorker();
 		worker.setActionsBeforeBackgroundStarts(new Runnable() {
 

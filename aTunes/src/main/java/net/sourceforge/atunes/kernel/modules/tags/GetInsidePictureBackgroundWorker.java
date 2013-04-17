@@ -36,7 +36,7 @@ import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
  * 
  */
 public final class GetInsidePictureBackgroundWorker extends
-		BackgroundWorker<ImageIcon> {
+		BackgroundWorker<ImageIcon, Void> {
 
 	private List<ILocalAudioObject> audioFiles;
 
@@ -68,6 +68,10 @@ public final class GetInsidePictureBackgroundWorker extends
 
 	@Override
 	protected void before() {
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

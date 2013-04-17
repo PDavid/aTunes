@@ -41,7 +41,7 @@ import org.apache.commons.io.FileUtils;
  * 
  */
 public class RemoveFoldersFromDiskBackgroundWorker extends
-		BackgroundWorker<Void> {
+		BackgroundWorker<Void, Void> {
 
 	private IOSManager osManager;
 
@@ -78,6 +78,10 @@ public class RemoveFoldersFromDiskBackgroundWorker extends
 				.newDialog(IIndeterminateProgressDialog.class);
 		this.dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
 		this.dialog.showDialog();
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
 	}
 
 	@Override

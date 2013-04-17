@@ -23,14 +23,11 @@ package net.sourceforge.atunes.kernel.modules.covernavigator;
 import java.awt.Cursor;
 import java.util.List;
 
-import javax.swing.SwingWorker;
-
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IBeanFactory;
-import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IProcessFactory;
 
 /**
@@ -49,8 +46,6 @@ public final class CoverNavigatorController extends
 
 	private IProcessFactory processFactory;
 
-	private IControlsBuilder controlsBuilder;
-
 	private CoverNavigationListSelectionListener coverNavigationListSelectionListener;
 
 	private IBeanFactory beanFactory;
@@ -60,13 +55,6 @@ public final class CoverNavigatorController extends
 	 */
 	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
-	}
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
 	}
 
 	/**
@@ -136,10 +124,9 @@ public final class CoverNavigatorController extends
 		this.getComponentControlled().setCursor(
 				Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-		SwingWorker<Void, IntermediateResult> generateAndShowAlbumPanels = new GenerateAndShowAlbumPanelsSwingWorker(
-				this.getComponentControlled(), this.beanFactory,
-				artistSelected, this.controlsBuilder);
-		generateAndShowAlbumPanels.execute();
+		this.beanFactory.getBean(
+				GenerateAndShowAlbumPanelsBackgroundWorker.class).showCovers(
+				getComponentControlled(), artistSelected);
 	}
 
 }
