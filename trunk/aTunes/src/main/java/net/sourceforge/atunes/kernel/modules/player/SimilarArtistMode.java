@@ -25,18 +25,11 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IBackgroundWorker;
-import net.sourceforge.atunes.model.IBackgroundWorker.IActionsWithBackgroundResult;
-import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.ITaskService;
-import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.PlaybackState;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 /**
  * Manages similar artist mode
@@ -44,47 +37,19 @@ import org.springframework.context.ApplicationContextAware;
  * @author Laurent Cathala
  * 
  */
-public class SimilarArtistMode implements ApplicationContextAware {
+public class SimilarArtistMode {
 
 	private Map<String, List<ILocalAudioObject>> notAlreadySelectedSongsForArtist;
 
 	private IPlayListHandler playListHandler;
 
-	private IBackgroundWorkerFactory backgroundWorkerFactory;
-
-	private ApplicationContext context;
-
-	private IUnknownObjectChecker unknownObjectChecker;
-
-	private ITaskService taskService;
+	private IBeanFactory beanFactory;
 
 	/**
-	 * @param taskService
+	 * @param beanFactory
 	 */
-	public void setTaskService(final ITaskService taskService) {
-		this.taskService = taskService;
-	}
-
-	/**
-	 * @param unknownObjectChecker
-	 */
-	public void setUnknownObjectChecker(
-			final IUnknownObjectChecker unknownObjectChecker) {
-		this.unknownObjectChecker = unknownObjectChecker;
-	}
-
-	@Override
-	public void setApplicationContext(
-			final ApplicationContext applicationContext) {
-		this.context = applicationContext;
-	}
-
-	/**
-	 * @param backgroundWorkerFactory
-	 */
-	public void setBackgroundWorkerFactory(
-			final IBackgroundWorkerFactory backgroundWorkerFactory) {
-		this.backgroundWorkerFactory = backgroundWorkerFactory;
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -138,23 +103,10 @@ public class SimilarArtistMode implements ApplicationContextAware {
 					.getActivePlayList();
 			if (currentPlayList.get(currentPlayList.size() - 1).equals(
 					currentAudioObject)) {
-				IBackgroundWorker<List<IAudioObject>, Void> worker = this.backgroundWorkerFactory
-						.getWorker();
-				GetSimilarArtistAudioObjectsCallable callable = this.context
-						.getBean(GetSimilarArtistAudioObjectsCallable.class);
-				callable.setArtistName(currentAudioObject
-						.getArtist(this.unknownObjectChecker));
-				callable.setNotAlreadySelectedSongsForArtist(this.notAlreadySelectedSongsForArtist);
-				worker.setBackgroundActions(callable);
-				worker.setActionsWhenDone(new IActionsWithBackgroundResult<List<IAudioObject>>() {
-
-					@Override
-					public void call(final List<IAudioObject> result) {
-						SimilarArtistMode.this.playListHandler
-								.addToVisiblePlayList(result);
-					}
-				});
-				worker.execute(this.taskService);
+				this.beanFactory.getBean(
+						GetSimilarArtistAudioObjectsBackgroundWorker.class)
+						.getSimilarArtists(currentAudioObject,
+								this.notAlreadySelectedSongsForArtist);
 			}
 		}
 	}
