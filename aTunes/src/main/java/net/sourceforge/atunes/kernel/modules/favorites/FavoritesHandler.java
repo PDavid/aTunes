@@ -30,7 +30,7 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.FavoritesListeners;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
-import net.sourceforge.atunes.kernel.actions.RemoveLovedSongInLastFmAction;
+import net.sourceforge.atunes.kernel.modules.webservices.RemoveLovedSongBackgroundWorker;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
@@ -291,8 +291,7 @@ public final class FavoritesHandler extends AbstractHandler implements
 			if (this.stateContext.isLastFmEnabled()
 					&& this.stateContext.isAutoLoveFavoriteSong()) {
 				// TODO: do this with a listener interface
-				getBean(RemoveLovedSongInLastFmAction.class)
-						.removeFromLovedSongs(file);
+				getBean(RemoveLovedSongBackgroundWorker.class).remove(file);
 			}
 		}
 		callActionsAfterFavoritesChange();

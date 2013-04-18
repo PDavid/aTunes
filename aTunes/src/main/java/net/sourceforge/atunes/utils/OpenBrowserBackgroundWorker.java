@@ -21,30 +21,47 @@
 package net.sourceforge.atunes.utils;
 
 import java.awt.Desktop;
-import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.Callable;
+import java.net.URI;
+import java.util.List;
+
+import net.sourceforge.atunes.kernel.BackgroundWorker;
 
 /**
- * Calls desktop to open a file
+ * Calls desktop to open a browser
  * 
  * @author alex
  * 
  */
-final class OpenFile implements Callable<Void> {
-    private final File fileToOpen;
+public final class OpenBrowserBackgroundWorker extends
+		BackgroundWorker<Void, Void> {
 
-    OpenFile(final File fileToOpen) {
-        this.fileToOpen = fileToOpen;
-    }
+	private URI uri;
 
-    @Override
-    public Void call() {
-        try {
-    	Desktop.getDesktop().open(fileToOpen);
-        } catch (IOException e) {
-    	Logger.error(e);
-        }
-        return null;
-    }
+	public void open(final URI uri) {
+		this.uri = uri;
+		execute();
+	}
+
+	@Override
+	protected void before() {
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
+	}
+
+	@Override
+	protected Void doInBackground() {
+		try {
+			Desktop.getDesktop().browse(uri);
+		} catch (IOException e) {
+			Logger.error(e);
+		}
+		return null;
+	}
+
+	@Override
+	protected void done(Void result) {
+	}
 }
