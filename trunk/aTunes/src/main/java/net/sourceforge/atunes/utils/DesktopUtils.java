@@ -27,12 +27,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import net.sourceforge.atunes.model.IBackgroundWorker;
-import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearch;
-import net.sourceforge.atunes.model.ITaskService;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -42,17 +40,15 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public final class DesktopUtils implements IDesktop {
 
-	private IBackgroundWorkerFactory backgroundWorkerFactory;
-
 	private IOSManager osManager;
 
-	private ITaskService taskService;
+	private IBeanFactory beanFactory;
 
 	/**
-	 * @param taskService
+	 * @param beanFactory
 	 */
-	public void setTaskService(final ITaskService taskService) {
-		this.taskService = taskService;
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -60,14 +56,6 @@ public final class DesktopUtils implements IDesktop {
 	 */
 	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
-	}
-
-	/**
-	 * @param backgroundWorkerFactory
-	 */
-	public void setBackgroundWorkerFactory(
-			final IBackgroundWorkerFactory backgroundWorkerFactory) {
-		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
 
 	@Override
@@ -111,10 +99,8 @@ public final class DesktopUtils implements IDesktop {
 			} else {
 				fileToOpen = file;
 			}
-			IBackgroundWorker<Void, Void> backgroundWorker = this.backgroundWorkerFactory
-					.getWorker();
-			backgroundWorker.setBackgroundActions(new OpenFile(fileToOpen));
-			backgroundWorker.execute(this.taskService);
+			this.beanFactory.getBean(OpenFileBackgroundWorker.class).open(
+					fileToOpen);
 		}
 	}
 
@@ -144,10 +130,8 @@ public final class DesktopUtils implements IDesktop {
 	 */
 	private void browse(final URI uri) {
 		if (isDesktopSupported()) {
-			IBackgroundWorker<Void, Void> backgroundWorker = this.backgroundWorkerFactory
-					.getWorker();
-			backgroundWorker.setBackgroundActions(new OpenBrowser(uri));
-			backgroundWorker.execute(this.taskService);
+			this.beanFactory.getBean(OpenBrowserBackgroundWorker.class).open(
+					uri);
 		}
 	}
 }

@@ -20,15 +20,10 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.util.concurrent.Callable;
-
-import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IBackgroundWorker;
-import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.kernel.modules.webservices.RemoveLovedSongBackgroundWorker;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IStateContext;
-import net.sourceforge.atunes.model.ITaskService;
-import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -42,21 +37,17 @@ public class RemoveLovedSongInLastFmAction extends CustomAbstractAction {
 	 */
 	private static final long serialVersionUID = -7812867146385945853L;
 
-	private IWebServicesHandler webServicesHandler;
-
 	private IContextHandler contextHandler;
-
-	private IBackgroundWorkerFactory backgroundWorkerFactory;
 
 	private IStateContext stateContext;
 
-	private ITaskService taskService;
+	private IBeanFactory beanFactory;
 
 	/**
-	 * @param taskService
+	 * @param beanFactory
 	 */
-	public void setTaskService(final ITaskService taskService) {
-		this.taskService = taskService;
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -67,26 +58,10 @@ public class RemoveLovedSongInLastFmAction extends CustomAbstractAction {
 	}
 
 	/**
-	 * @param webServicesHandler
-	 */
-	public void setWebServicesHandler(
-			final IWebServicesHandler webServicesHandler) {
-		this.webServicesHandler = webServicesHandler;
-	}
-
-	/**
 	 * @param contextHandler
 	 */
 	public void setContextHandler(final IContextHandler contextHandler) {
 		this.contextHandler = contextHandler;
-	}
-
-	/**
-	 * @param backgroundWorkerFactory
-	 */
-	public void setBackgroundWorkerFactory(
-			final IBackgroundWorkerFactory backgroundWorkerFactory) {
-		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
 
 	/**
@@ -104,36 +79,7 @@ public class RemoveLovedSongInLastFmAction extends CustomAbstractAction {
 
 	@Override
 	protected void executeAction() {
-		removeFromLovedSongs(this.contextHandler.getCurrentAudioObject());
-	}
-
-	/**
-	 * Removes from loved song
-	 * 
-	 * @param song
-	 */
-	public void removeFromLovedSongs(final IAudioObject song) {
-		setEnabled(false);
-
-		IBackgroundWorker<Void, Void> worker = this.backgroundWorkerFactory
-				.getWorker();
-		worker.setBackgroundActions(new Callable<Void>() {
-
-			@Override
-			public Void call() {
-				RemoveLovedSongInLastFmAction.this.webServicesHandler
-						.removeLovedSong(song);
-				return null;
-			}
-		});
-
-		worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
-			@Override
-			public void call(final Void result) {
-				setEnabled(true);
-			}
-		});
-
-		worker.execute(this.taskService);
+		this.beanFactory.getBean(RemoveLovedSongBackgroundWorker.class).remove(
+				this.contextHandler.getCurrentAudioObject());
 	}
 }
