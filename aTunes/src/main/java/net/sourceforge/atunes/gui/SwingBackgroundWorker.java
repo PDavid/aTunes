@@ -21,7 +21,7 @@
 package net.sourceforge.atunes.gui;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.Future;
 
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerCallback;
@@ -77,7 +77,7 @@ public class SwingBackgroundWorker<T, I> implements IBackgroundWorker<T, I> {
 	}
 
 	@Override
-	public ScheduledFuture<?> execute(final ITaskService taskService) {
+	public Future<?> execute(final ITaskService taskService) {
 		this.backgroundSwingWorker = new BackgroundSwingWorker<T, I>(
 				this.graphicalActionsBeforeStart, this.backgroundActions,
 				this.graphicalActionsWhenDone, this.callback,

@@ -6,8 +6,11 @@
 	default-autowire="byName" default-lazy-init="true">
 	
 	<bean id="taskService" class="net.sourceforge.atunes.kernel.TaskService">
-		<property name="poolSize" value="3"/>
-		<property name="threadSuffix" value="TaskService-"/>
+		<property name="scheduledThreadPoolSize" value="1"/>
+		<property name="scheduledThreadPoolSuffix" value="ScheduledThreadPool-"/>
+		<property name="threadPoolCoreSize" value="0"/>
+		<property name="threadPoolMaximumSize" value="5"/>
+		<property name="threadPoolSuffix" value="ThreadPool-"/>
 	</bean>
 
 	<bean id="backgroundWorkerFactory" class="net.sourceforge.atunes.gui.SwingBackgroundWorkerFactory"/>

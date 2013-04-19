@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel;
 
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.Future;
 
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerCallback;
@@ -45,7 +45,7 @@ public abstract class BackgroundWorker<T, I> {
 
 	private ITaskService taskService;
 
-	private ScheduledFuture<?> future;
+	private Future<?> future;
 
 	private IBackgroundWorker<T, I> worker;
 
