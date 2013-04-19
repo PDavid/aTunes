@@ -22,9 +22,9 @@ package net.sourceforge.atunes.kernel;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -157,7 +157,7 @@ public class TaskService implements ITaskService {
 		if (poolService == null) {
 			poolService = new ThreadPoolExecutor(threadPoolCoreSize,
 					threadPoolMaximumSize, 5, TimeUnit.SECONDS,
-					new SynchronousQueue<Runnable>(),
+					new LinkedBlockingDeque<Runnable>(),
 					new CustomizableThreadFactory(threadPoolSuffix));
 		}
 		return poolService;
