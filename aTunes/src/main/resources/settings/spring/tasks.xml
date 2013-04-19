@@ -9,7 +9,7 @@
 		<property name="scheduledThreadPoolSize" value="1"/>
 		<property name="scheduledThreadPoolSuffix" value="ScheduledThreadPool-"/>
 		<property name="threadPoolCoreSize" value="0"/>
-		<property name="threadPoolMaximumSize" value="5"/>
+		<property name="threadPoolMaximumSize" value="3"/>
 		<property name="threadPoolSuffix" value="ThreadPool-"/>
 	</bean>
 
