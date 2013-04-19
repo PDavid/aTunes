@@ -475,12 +475,12 @@
 			<artifactId>commons-beanutils</artifactId>
 			<version>1.8.3</version>
 		</dependency>
-		<!-- dependencies that are in aTunes repo -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>1.5-custom</version>
+			<version>2.4</version>
 		</dependency>
+		<!-- dependencies that are in aTunes repo -->
 		<dependency>
 			<groupId>com.github.insubstantial</groupId>
 			<artifactId>substance</artifactId>
