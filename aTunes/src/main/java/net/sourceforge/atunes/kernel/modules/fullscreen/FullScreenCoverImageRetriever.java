@@ -33,6 +33,7 @@ import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
+import net.sourceforge.atunes.model.ImageSize;
 
 /**
  * Gets covers for full screen mode
@@ -56,7 +57,7 @@ public class FullScreenCoverImageRetriever {
 	 * @param localAudioObjectImageHandler
 	 */
 	public void setLocalAudioObjectImageHandler(
-			ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
+			final ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
 		this.localAudioObjectImageHandler = localAudioObjectImageHandler;
 	}
 
@@ -100,9 +101,9 @@ public class FullScreenCoverImageRetriever {
 	ImageIcon getPicture(final IAudioObject audioObject) {
 		ImageIcon image = null;
 		if (audioObject instanceof IRadio) {
-			image = radioBigIcon.getIcon(Color.WHITE);
+			image = this.radioBigIcon.getIcon(Color.WHITE);
 		} else if (audioObject instanceof IPodcastFeedEntry) {
-			image = rssBigIcon.getIcon(Color.WHITE);
+			image = this.rssBigIcon.getIcon(Color.WHITE);
 		} else if (audioObject instanceof ILocalAudioObject) {
 			image = getPictureForLocalAudioObject(audioObject);
 		}
@@ -116,18 +117,12 @@ public class FullScreenCoverImageRetriever {
 	 */
 	private ImageIcon getPictureForLocalAudioObject(
 			final IAudioObject audioObject) {
-		ImageIcon image = webServicesHandler.getAlbumImage(
-				audioObject.getArtist(unknownObjectChecker),
-				audioObject.getAlbum(unknownObjectChecker));
+		ImageIcon image = this.webServicesHandler.getAlbumImage(
+				audioObject.getArtist(this.unknownObjectChecker),
+				audioObject.getAlbum(this.unknownObjectChecker));
 		if (image == null) {
-			// Get inside picture
-			image = localAudioObjectImageHandler.getInsidePicture(audioObject,
-					-1, -1);
-		}
-		if (image == null) {
-			// Get external picture
-			image = localAudioObjectImageHandler.getExternalPicture(
-					audioObject, -1, -1);
+			image = this.localAudioObjectImageHandler.getImage(audioObject,
+					ImageSize.SIZE_MAX);
 		}
 		if (image == null) {
 			image = Images.getImage(Images.APP_LOGO_300);

@@ -25,6 +25,7 @@ import java.io.IOException;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -32,12 +33,13 @@ import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
+import net.sourceforge.atunes.model.ImageSize;
 
 import org.apache.sanselan.ImageWriteException;
 
 /**
  * This class gets images associated to audio files Images can be internal (like
- * in ID3v2) or external (in the same folder than audio file).
+ * in ID3v2) or external (in the same folder than audio file or other).
  * 
  * @author fleax
  */
@@ -55,14 +57,14 @@ public final class LocalAudioObjectImageHandler implements
 	/**
 	 * @param tagHandler
 	 */
-	public void setTagHandler(ITagHandler tagHandler) {
+	public void setTagHandler(final ITagHandler tagHandler) {
 		this.tagHandler = tagHandler;
 	}
 
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
@@ -70,14 +72,14 @@ public final class LocalAudioObjectImageHandler implements
 	 * @param unknownObjectChecker
 	 */
 	public void setUnknownObjectChecker(
-			IUnknownObjectChecker unknownObjectChecker) {
+			final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	/**
 	 * @param fileManager
 	 */
-	public void setFileManager(IFileManager fileManager) {
+	public void setFileManager(final IFileManager fileManager) {
 		this.fileManager = fileManager;
 	}
 
@@ -89,8 +91,7 @@ public final class LocalAudioObjectImageHandler implements
 	 * @param height
 	 * @return
 	 */
-	@Override
-	public ImageIcon getExternalPicture(final IAudioObject audioObject,
+	private ImageIcon getExternalPicture(final IAudioObject audioObject,
 			final int width, final int height) {
 		if (!(audioObject instanceof ILocalAudioObject)) {
 			return null;
@@ -127,20 +128,19 @@ public final class LocalAudioObjectImageHandler implements
 	 * @param file
 	 * @return
 	 */
-	@Override
-	public String getFileNameForCover(final ILocalAudioObject file) {
+	private String getFileNameForCover(final ILocalAudioObject file) {
 		if (file == null) {
 			return null;
 		}
 		// Validate artist and album names to avoid using forbidden chars in
 		// file system
 		String artist = FileNameUtils.getValidFileName(
-				file.getArtist(unknownObjectChecker), osManager);
+				file.getArtist(this.unknownObjectChecker), this.osManager);
 		String album = FileNameUtils.getValidFileName(
-				file.getAlbum(unknownObjectChecker), osManager);
-		return StringUtils.getString(fileManager.getFolderPath(file),
-				osManager.getFileSeparator(), artist, '_', album, "_Cover.",
-				ImageUtils.FILES_EXTENSION);
+				file.getAlbum(this.unknownObjectChecker), this.osManager);
+		return StringUtils.getString(this.fileManager.getFolderPath(file),
+				this.osManager.getFileSeparator(), artist, '_', album,
+				"_Cover.", ImageUtils.FILES_EXTENSION);
 	}
 
 	/**
@@ -162,7 +162,7 @@ public final class LocalAudioObjectImageHandler implements
 			return null;
 		}
 
-		return tagHandler.getImage((ILocalAudioObject) audioObject, width,
+		return this.tagHandler.getImage((ILocalAudioObject) audioObject, width,
 				height);
 	}
 
@@ -185,4 +185,77 @@ public final class LocalAudioObjectImageHandler implements
 		ImageUtils.writeImageToFile(image.getImage(),
 				net.sourceforge.atunes.utils.FileUtils.getPath(file));
 	}
+
+	/**
+	 * Returns true if application has saved cover image for given album
+	 * 
+	 * @param album
+	 * 
+	 * @return true, if checks for cover downloaded
+	 */
+	@Override
+	public boolean hasCoverDownloaded(final IAlbum album) {
+		return new File(getFileNameForCover((album.getAudioObjects().get(0))))
+				.exists();
+	}
+
+	/**
+	 * Saves cover for this album
+	 * 
+	 * @param album
+	 * @param albumImage
+	 * @throws IOException
+	 * @throws ImageWriteException
+	 */
+	@Override
+	public void writeCover(final IAlbum album, final ImageIcon albumImage)
+			throws IOException, ImageWriteException {
+		if (album != null && !CollectionUtils.isEmpty(album.getAudioObjects())) {
+			writeCover(album.getAudioObjects().get(0), albumImage);
+		}
+	}
+
+	/**
+	 * Saves cover for this file
+	 * 
+	 * @param file
+	 * @param albumImage
+	 * @throws IOException
+	 * @throws ImageWriteException
+	 */
+	@Override
+	public void writeCover(final ILocalAudioObject file,
+			final ImageIcon albumImage) throws IOException, ImageWriteException {
+		if (file != null && albumImage != null) {
+			ImageUtils.writeImageToFile(albumImage.getImage(),
+					getFileNameForCover(file));
+		}
+	}
+
+	@Override
+	public ImageIcon getImage(final IAudioObject audioObject,
+			final ImageSize imageSize) {
+		if (audioObject instanceof ILocalAudioObject) {
+			ILocalAudioObject localAudioObject = (ILocalAudioObject) audioObject;
+
+			ImageIcon result = getInsidePicture(localAudioObject,
+					imageSize.getSize(), imageSize.getSize());
+			if (result == null) {
+				result = getExternalPicture(localAudioObject,
+						imageSize.getSize(), imageSize.getSize());
+			}
+
+			return result;
+		}
+		return null;
+	}
+
+	@Override
+	public ImageIcon getImage(final IAlbum album, final ImageSize imageSize) {
+		if (album == null || album.getAudioObjects().isEmpty()) {
+			return null;
+		}
+		return getImage(album.getAudioObjects().get(0), imageSize);
+	}
+
 }

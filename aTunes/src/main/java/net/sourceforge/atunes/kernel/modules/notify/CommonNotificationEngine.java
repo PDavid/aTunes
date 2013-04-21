@@ -28,8 +28,8 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.IOSManager;
@@ -110,7 +110,7 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 	protected final String getTemporalImage(final IAudioObject audioObject,
 			final IOSManager osManager) {
 		ImageIcon imageForAudioObject = this.beanFactory.getBean(
-				IAudioObjectImageLocator.class).getImage(audioObject,
+				ILocalAudioObjectImageHandler.class).getImage(audioObject,
 				ImageSize.SIZE_200);
 		if (imageForAudioObject == null) {
 			imageForAudioObject = this.audioObjectGenericImageFactory

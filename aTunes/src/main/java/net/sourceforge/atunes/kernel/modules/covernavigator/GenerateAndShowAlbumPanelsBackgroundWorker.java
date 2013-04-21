@@ -39,8 +39,8 @@ import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
 import net.sourceforge.atunes.kernel.BackgroundWorker;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IControlsBuilder;
+import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 
 /**
  * Retrieve covers to show in cover navigator
@@ -57,20 +57,20 @@ public final class GenerateAndShowAlbumPanelsBackgroundWorker extends
 
 	private IControlsBuilder controlsBuilder;
 
-	private IAudioObjectImageLocator audioObjectImageLocator;
+	private ILocalAudioObjectImageHandler localAudioObjectImageHandler;
 
 	/**
-	 * @param audioObjectImageLocator
+	 * @param localAudioObjectImageHandler
 	 */
-	public void setAudioObjectImageLocator(
-			IAudioObjectImageLocator audioObjectImageLocator) {
-		this.audioObjectImageLocator = audioObjectImageLocator;
+	public void setLocalAudioObjectImageHandler(
+			final ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
+		this.localAudioObjectImageHandler = localAudioObjectImageHandler;
 	}
 
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
@@ -96,7 +96,7 @@ public final class GenerateAndShowAlbumPanelsBackgroundWorker extends
 		Collections.sort(albums);
 
 		for (IAlbum album : albums) {
-			ImageIcon cover = audioObjectImageLocator.getImage(album,
+			ImageIcon cover = this.localAudioObjectImageHandler.getImage(album,
 					Constants.COVER_NAVIGATOR_IMAGE_SIZE);
 			publish(new IntermediateResult(album, cover));
 		}
@@ -111,7 +111,7 @@ public final class GenerateAndShowAlbumPanelsBackgroundWorker extends
 	}
 
 	@Override
-	protected void whileWorking(List<IntermediateResult> chunks) {
+	protected void whileWorking(final List<IntermediateResult> chunks) {
 		for (IntermediateResult intermediateResult : chunks) {
 			this.dialog.getCoversPanel().add(
 					getPanelForAlbum(intermediateResult.getAlbum(),

@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.context.album;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -30,8 +29,6 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
@@ -40,7 +37,6 @@ import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.apache.sanselan.ImageWriteException;
@@ -69,15 +65,6 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 	private IRepositoryHandler repositoryHandler;
 
 	private ILocalAudioObjectImageHandler localAudioObjectImageHandler;
-
-	private IBeanFactory beanFactory;
-
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
 
 	/**
 	 * @param localAudioObjectImageHandler
@@ -272,41 +259,28 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 				savePicture(imageIcon, (ILocalAudioObject) audioObject);
 			}
 		} else {
-			imageIcon = this.beanFactory
-					.getBean(IAudioObjectImageLocator.class).getImage(
-							audioObject, ImageSize.SIZE_MAX);
+			imageIcon = this.localAudioObjectImageHandler.getImage(audioObject,
+					ImageSize.SIZE_MAX);
 		}
 
 		return imageIcon;
 	}
 
 	/**
-	 * Saves an image related to an audio file from a web service in the folder
-	 * where audio file is
+	 * Saves an image related to an audio file from a web service
 	 * 
 	 * @param img
 	 * @param file
 	 */
 	private void savePicture(final ImageIcon img, final ILocalAudioObject file) {
-		if (img != null && this.stateContext.isSaveContextPicture()) { // save
-																		// image
-																		// in
-																		// folder
-																		// of
-																		// file
-			String imageFileName = this.localAudioObjectImageHandler
-					.getFileNameForCover(file);
-
-			File imageFile = new File(imageFileName);
-			if (!imageFile.exists()) {
-				// Save picture
-				try {
-					ImageUtils.writeImageToFile(img.getImage(), imageFileName);
-				} catch (IOException e) {
-					Logger.error(e);
-				} catch (ImageWriteException e) {
-					Logger.error(e);
-				}
+		if (img != null && this.stateContext.isSaveContextPicture()) {
+			// Save picture
+			try {
+				this.localAudioObjectImageHandler.writeCover(file, img);
+			} catch (IOException e) {
+				Logger.error(e);
+			} catch (ImageWriteException e) {
+				Logger.error(e);
 			}
 		}
 	}

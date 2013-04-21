@@ -37,8 +37,8 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
@@ -142,8 +142,9 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
 
 		Point location = new Point(x, y);
 
-		ImageIcon i = this.beanFactory.getBean(IAudioObjectImageLocator.class)
-				.getImage(audioObject, ImageSize.SIZE_MAX);
+		ImageIcon i = this.beanFactory.getBean(
+				ILocalAudioObjectImageHandler.class).getImage(audioObject,
+				ImageSize.SIZE_MAX);
 		if (i == null) {
 			i = this.audioObjectGenericImageFactory.getGenericImage(
 					audioObject, GenericImageSize.MEDIUM).getIcon(

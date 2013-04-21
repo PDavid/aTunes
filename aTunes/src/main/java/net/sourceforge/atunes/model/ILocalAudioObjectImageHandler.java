@@ -36,26 +36,6 @@ import org.apache.sanselan.ImageWriteException;
 public interface ILocalAudioObjectImageHandler {
 
 	/**
-	 * Gets the external picture.
-	 * 
-	 * @param audioObject
-	 * @param width
-	 * @param height
-	 * @return
-	 */
-	ImageIcon getExternalPicture(final IAudioObject audioObject,
-			final int width, final int height);
-
-	/**
-	 * Returns a file name to save an external image associated to an audio
-	 * file.
-	 * 
-	 * @param file
-	 * @return
-	 */
-	String getFileNameForCover(final ILocalAudioObject file);
-
-	/**
 	 * Returns image stored into audio file, if exists.
 	 * 
 	 * @param audioObject
@@ -80,4 +60,54 @@ public interface ILocalAudioObjectImageHandler {
 	 */
 	void savePictureToFile(final ILocalAudioObject song, final File file)
 			throws IOException, ImageWriteException;
+
+	/**
+	 * Returns true if application has saved cover image for given album
+	 * 
+	 * @param album
+	 * 
+	 * @return true, if checks for cover downloaded
+	 */
+	boolean hasCoverDownloaded(final IAlbum album);
+
+	/**
+	 * Saves cover for this album
+	 * 
+	 * @param album
+	 * @param albumImage
+	 * @throws IOException
+	 * @throws ImageWriteException
+	 */
+	void writeCover(final IAlbum album, final ImageIcon albumImage)
+			throws IOException, ImageWriteException;
+
+	/**
+	 * Saves cover for this file
+	 * 
+	 * @param file
+	 * @param albumImage
+	 * @throws IOException
+	 * @throws ImageWriteException
+	 */
+	void writeCover(ILocalAudioObject file, ImageIcon albumImage)
+			throws IOException, ImageWriteException;
+
+	/**
+	 * Returns image for audio object and given size
+	 * 
+	 * @param localAudioObject
+	 * @param imageSize
+	 * @return
+	 */
+	ImageIcon getImage(IAudioObject localAudioObject, ImageSize imageSize);
+
+	/**
+	 * Returns image for album and given size
+	 * 
+	 * @param album
+	 * @param imageSize
+	 * @return
+	 */
+	ImageIcon getImage(IAlbum album, ImageSize imageSize);
+
 }
