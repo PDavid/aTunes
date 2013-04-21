@@ -26,8 +26,9 @@ import java.io.IOException;
 
 /**
  * File utilities
+ * 
  * @author alex
- *
+ * 
  */
 public final class FileUtils {
 
@@ -40,14 +41,17 @@ public final class FileUtils {
 	/** Gigabyte 1024 Megabytes. */
 	public static final long GIGABYTE = MEGABYTE * 1024;
 
-	private FileUtils() {}
+	private FileUtils() {
+	}
 
 	/**
 	 * Sets write permissions if is not writable.
+	 * 
 	 * @param file
 	 * @throws FileNotFoundException
 	 */
-	public static void setWritable(final File file) throws FileNotFoundException {
+	public static void setWritable(final File file)
+			throws FileNotFoundException {
 		if (file == null) {
 			throw new IllegalArgumentException("File is null");
 		} else if (!file.exists()) {
@@ -64,7 +68,9 @@ public final class FileUtils {
 	}
 
 	/**
-	 * Returns path of a file. This is a utility method to use the same way to retrieve path
+	 * Returns path of a file. This is a utility method to use the same way to
+	 * retrieve path
+	 * 
 	 * @param file
 	 * @return
 	 */
@@ -84,7 +90,9 @@ public final class FileUtils {
 	}
 
 	/**
-	 * Returns path of a file. This is a utility method to use the same way to retrieve path
+	 * Returns path of a file. This is a utility method to use the same way to
+	 * retrieve path
+	 * 
 	 * @param file
 	 * @return
 	 */
@@ -96,5 +104,30 @@ public final class FileUtils {
 			path = path.substring(0, path.length() - 2);
 		}
 		return path;
+	}
+
+	/**
+	 * This method is needed as File.canWrite seems to fail with network shares,
+	 * returning always true
+	 * 
+	 * @param file
+	 * @return true if this folder can be written
+	 */
+	public static boolean canWriteFolder(final File file) {
+		if (file == null || !file.exists() || !file.isDirectory()) {
+			return false;
+		}
+		File dummy = new File(file, "/dummy");
+		try {
+			/*
+			 * Create and delete a dummy file in order to check file
+			 * permissions. Maybe there is a safer way for this check.
+			 */
+			dummy.createNewFile();
+			dummy.delete();
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
 	}
 }
