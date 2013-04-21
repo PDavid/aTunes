@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.process;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,6 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -54,7 +52,7 @@ public class GetCoversProcess extends AbstractProcess<Void> {
 	 * @param localAudioObjectImageHandler
 	 */
 	public void setLocalAudioObjectImageHandler(
-			ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
+			final ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
 		this.localAudioObjectImageHandler = localAudioObjectImageHandler;
 	}
 
@@ -75,34 +73,33 @@ public class GetCoversProcess extends AbstractProcess<Void> {
 
 	@Override
 	protected long getProcessSize() {
-		return artist.getAlbums().size();
+		return this.artist.getAlbums().size();
 	}
 
 	@Override
 	protected boolean runProcess() {
 		long coversRetrieved = 0;
-		List<IAlbum> albums = new ArrayList<IAlbum>(artist.getAlbums().values());
+		List<IAlbum> albums = new ArrayList<IAlbum>(this.artist.getAlbums()
+				.values());
 		for (int i = 0; i < albums.size() && !isCanceled(); i++) {
 			IAlbum album = albums.get(i);
-			if (!hasCoverDownloaded(album)) {
-				ImageIcon albumImage = webServicesHandler.getAlbumImage(
-						artist.getName(), album.getName());
+			if (!this.localAudioObjectImageHandler.hasCoverDownloaded(album)) {
+				ImageIcon albumImage = this.webServicesHandler.getAlbumImage(
+						this.artist.getName(), album.getName());
 				if (albumImage != null) {
 					try {
-						ImageUtils.writeImageToFile(albumImage.getImage(),
-								localAudioObjectImageHandler
-										.getFileNameForCover(album
-												.getAudioObjects().get(0)));
+						this.localAudioObjectImageHandler.writeCover(album,
+								albumImage);
 					} catch (IOException e1) {
 						Logger.error(StringUtils.getString(
 								"Error writing image for artist: ",
-								artist.getName(), " album: ", album.getName(),
-								" Error: ", e1.getMessage()));
+								this.artist.getName(), " album: ",
+								album.getName(), " Error: ", e1.getMessage()));
 					} catch (ImageWriteException e) {
 						Logger.error(StringUtils.getString(
 								"Error writing image for artist: ",
-								artist.getName(), " album: ", album.getName(),
-								" Error: ", e.getMessage()));
+								this.artist.getName(), " album: ",
+								album.getName(), " Error: ", e.getMessage()));
 					}
 				}
 			}
@@ -121,18 +118,6 @@ public class GetCoversProcess extends AbstractProcess<Void> {
 	@Override
 	protected void runCancel() {
 		// Nothing to do
-	}
-
-	/**
-	 * Returns true if aTunes has saved cover image.
-	 * 
-	 * @param album
-	 * 
-	 * @return true, if checks for cover downloaded
-	 */
-	private boolean hasCoverDownloaded(final IAlbum album) {
-		return new File(localAudioObjectImageHandler.getFileNameForCover((album
-				.getAudioObjects().get(0)))).exists();
 	}
 
 	@Override

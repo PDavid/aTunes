@@ -24,12 +24,12 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
@@ -172,7 +172,7 @@ public class AudioObjectBasicInfoDataSource implements
 	private ImageIcon getImageData(final IAudioObject audioObject) {
 		if (audioObject instanceof ILocalAudioObject) {
 			ImageIcon localImage = this.beanFactory.getBean(
-					IAudioObjectImageLocator.class).getImage(audioObject,
+					ILocalAudioObjectImageHandler.class).getImage(audioObject,
 					Constants.ALBUM_IMAGE_SIZE);
 			if (localImage == null) {
 				ImageIcon albumImage = this.webServicesHandler.getAlbumImage(

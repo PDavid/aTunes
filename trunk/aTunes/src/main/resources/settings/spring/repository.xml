@@ -13,7 +13,6 @@
 	
 	<bean id="audioObjectComparator" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator" scope="prototype"/>
 	<bean id="audioObjectDuplicateFinder" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectDuplicateFinder" scope="prototype"/>
-	<bean id="audioObjectImageLocator" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectImageLocator" scope="prototype"/>
 	
 	<bean id="localAudioObjectFilter" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFilter" scope="prototype"/>	
 	<bean id="localAudioObjectRefresher" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectRefresher" scope="prototype"/>

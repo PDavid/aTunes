@@ -27,7 +27,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.kernel.BackgroundWorker;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
+import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.ImageSize;
@@ -75,7 +75,7 @@ public final class ExtendedToolTipGetAndSetImageBackgroundWorker extends
 	}
 
 	@Override
-	protected void whileWorking(List<Void> chunks) {
+	protected void whileWorking(final List<Void> chunks) {
 	}
 
 	@Override
@@ -86,9 +86,9 @@ public final class ExtendedToolTipGetAndSetImageBackgroundWorker extends
 				IArtist a = (IArtist) this.currentObject;
 				return this.webServicesHandler.getArtistImage(a.getName());
 			} else if (this.currentObject instanceof IAlbum) {
-				return getBeanFactory().getBean(IAudioObjectImageLocator.class)
-						.getImage((IAlbum) this.currentObject,
-								ImageSize.SIZE_MAX);
+				return getBeanFactory().getBean(
+						ILocalAudioObjectImageHandler.class).getImage(
+						(IAlbum) this.currentObject, ImageSize.SIZE_MAX);
 			}
 		}
 		return null;

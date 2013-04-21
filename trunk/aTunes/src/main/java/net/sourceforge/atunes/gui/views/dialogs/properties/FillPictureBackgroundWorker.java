@@ -27,8 +27,8 @@ import javax.swing.JLabel;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.BackgroundWorker;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
 
 /**
  * Fetches image to show in properties dialog
@@ -61,12 +61,12 @@ public final class FillPictureBackgroundWorker extends
 	}
 
 	@Override
-	protected void whileWorking(List<Void> chunks) {
+	protected void whileWorking(final List<Void> chunks) {
 	}
 
 	@Override
 	protected ImageIcon doInBackground() {
-		return getBeanFactory().getBean(IAudioObjectImageLocator.class)
+		return getBeanFactory().getBean(ILocalAudioObjectImageHandler.class)
 				.getImage(FillPictureBackgroundWorker.this.file,
 						Constants.DIALOG_IMAGE_SIZE);
 	}
