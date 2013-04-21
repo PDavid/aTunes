@@ -338,7 +338,8 @@ public final class LocalAudioObjectImageHandler implements
 		String fileNameForCoverInFileFolder = getFileNameForCoverInFileFolder(
 				file, artist, album);
 
-		if (new File(this.fileManager.getFolderPath(file)).canWrite()) {
+		if (FileUtils.canWriteFolder(new File(this.fileManager
+				.getFolderPath(file)))) {
 			return fileNameForCoverInFileFolder;
 		} else {
 			// Try option in special covers folder
