@@ -110,7 +110,7 @@ public class ExtractPictureAction extends
 
 		// Export only first picture
 		try {
-			localAudioObjectImageHandler.savePictureToFile(objects.get(0),
+			localAudioObjectImageHandler.saveInternalPictureToFile(objects.get(0),
 					selectedFile);
 		} catch (ImageWriteException e) {
 			Logger.error(e);

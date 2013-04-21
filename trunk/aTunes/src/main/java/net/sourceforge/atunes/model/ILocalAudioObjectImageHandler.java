@@ -58,7 +58,7 @@ public interface ILocalAudioObjectImageHandler {
 	 * @throws IOException
 	 * @throws ImageWriteException
 	 */
-	void savePictureToFile(final ILocalAudioObject song, final File file)
+	void saveInternalPictureToFile(final ILocalAudioObject song, final File file)
 			throws IOException, ImageWriteException;
 
 	/**

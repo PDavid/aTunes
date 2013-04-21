@@ -10,6 +10,7 @@ aTunes 3.1.0
 - Option to ignore when repository does not exist
 - Added preference to disable Last.fm cache
 - Use NIO to download podcasts faster
+- Store covers in special folder when repository is not writable
 
 aTunes 3.0.8
 ------------
