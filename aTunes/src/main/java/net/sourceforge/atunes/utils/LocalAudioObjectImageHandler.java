@@ -100,7 +100,7 @@ public final class LocalAudioObjectImageHandler implements
 		ILocalAudioObject file = (ILocalAudioObject) audioObject;
 
 		// Try first to get picture with file name "ARTIST_ALBUM_COVER" pattern
-		String coverFileName = getFileNameForCover(file);
+		String coverFileName = getFileNameForCoverRead(file);
 		ImageIcon image = null;
 		if (coverFileName != null && new File(coverFileName).exists()) {
 			image = new ImageIcon(coverFileName);
@@ -119,28 +119,6 @@ public final class LocalAudioObjectImageHandler implements
 					newHeight);
 		}
 		return image;
-	}
-
-	/**
-	 * Returns a file name to save an external image associated to an audio
-	 * file.
-	 * 
-	 * @param file
-	 * @return
-	 */
-	private String getFileNameForCover(final ILocalAudioObject file) {
-		if (file == null) {
-			return null;
-		}
-		// Validate artist and album names to avoid using forbidden chars in
-		// file system
-		String artist = FileNameUtils.getValidFileName(
-				file.getArtist(this.unknownObjectChecker), this.osManager);
-		String album = FileNameUtils.getValidFileName(
-				file.getAlbum(this.unknownObjectChecker), this.osManager);
-		return StringUtils.getString(this.fileManager.getFolderPath(file),
-				this.osManager.getFileSeparator(), artist, '_', album,
-				"_Cover.", ImageUtils.FILES_EXTENSION);
 	}
 
 	/**
@@ -179,8 +157,8 @@ public final class LocalAudioObjectImageHandler implements
 	 * @throws ImageWriteException
 	 */
 	@Override
-	public void savePictureToFile(final ILocalAudioObject song, final File file)
-			throws IOException, ImageWriteException {
+	public void saveInternalPictureToFile(final ILocalAudioObject song,
+			final File file) throws IOException, ImageWriteException {
 		ImageIcon image = getInsidePicture(song, -1, -1);
 		ImageUtils.writeImageToFile(image.getImage(),
 				net.sourceforge.atunes.utils.FileUtils.getPath(file));
@@ -195,7 +173,8 @@ public final class LocalAudioObjectImageHandler implements
 	 */
 	@Override
 	public boolean hasCoverDownloaded(final IAlbum album) {
-		return new File(getFileNameForCover((album.getAudioObjects().get(0))))
+		return new File(
+				getFileNameForCoverRead((album.getAudioObjects().get(0))))
 				.exists();
 	}
 
@@ -228,7 +207,7 @@ public final class LocalAudioObjectImageHandler implements
 			final ImageIcon albumImage) throws IOException, ImageWriteException {
 		if (file != null && albumImage != null) {
 			ImageUtils.writeImageToFile(albumImage.getImage(),
-					getFileNameForCover(file));
+					getFileNameForCoverWrite(file));
 		}
 	}
 
@@ -258,4 +237,117 @@ public final class LocalAudioObjectImageHandler implements
 		return getImage(album.getAudioObjects().get(0), imageSize);
 	}
 
+	/**
+	 * Returns a file name to read an external image associated to an audio
+	 * file.
+	 * 
+	 * @param file
+	 * @return
+	 */
+	private String getFileNameForCoverRead(final ILocalAudioObject file) {
+		if (file == null) {
+			return null;
+		}
+		// Normalize artist and album names to avoid using forbidden chars in
+		// file system
+		String artist = normalizeArtistName(file);
+		String album = normalizeAlbumName(file);
+		String fileNameForCoverInFileFolder = getFileNameForCoverInFileFolder(
+				file, artist, album);
+
+		if (new File(fileNameForCoverInFileFolder).exists()) {
+			return fileNameForCoverInFileFolder;
+		} else {
+			// Try option in special covers folder
+			return getFileNameForCoverInCoversFolder(file, artist, album);
+		}
+	}
+
+	/**
+	 * @param file
+	 * @param normalizedArtist
+	 * @param normalizedAlbum
+	 * @return cover file name when is stored in covers folder
+	 */
+	private String getFileNameForCoverInCoversFolder(
+			final ILocalAudioObject file, final String normalizedArtist,
+			final String normalizedAlbum) {
+		return StringUtils.getString(getCoversFolder(),
+				this.osManager.getFileSeparator(),
+				getCoverFileName(normalizedArtist, normalizedAlbum));
+	}
+
+	private String getCoversFolder() {
+		return StringUtils.getString(this.osManager.getUserConfigFolder(),
+				this.osManager.getFileSeparator(), "covers");
+	}
+
+	private String getCoverFileName(final String normalizedArtist,
+			final String normalizedAlbum) {
+		return StringUtils.getString(normalizedArtist, '_', normalizedAlbum,
+				"_Cover.", ImageUtils.FILES_EXTENSION);
+	}
+
+	/**
+	 * @param file
+	 * @param normalizedArtist
+	 * @param normalizedAlbum
+	 * @return cover file name when is stored in the same folder than audio file
+	 */
+	private String getFileNameForCoverInFileFolder(
+			final ILocalAudioObject file, final String normalizedArtist,
+			final String normalizedAlbum) {
+		return StringUtils.getString(this.fileManager.getFolderPath(file),
+				this.osManager.getFileSeparator(),
+				getCoverFileName(normalizedArtist, normalizedAlbum));
+	}
+
+	/**
+	 * @param file
+	 * @return
+	 */
+	private String normalizeAlbumName(final ILocalAudioObject file) {
+		return FileNameUtils.getValidFileName(
+				file.getAlbum(this.unknownObjectChecker), this.osManager);
+	}
+
+	/**
+	 * @param file
+	 * @return
+	 */
+	private String normalizeArtistName(final ILocalAudioObject file) {
+		return FileNameUtils.getValidFileName(
+				file.getArtist(this.unknownObjectChecker), this.osManager);
+	}
+
+	/**
+	 * Returns a file name to save an external image associated to an audio
+	 * file.
+	 * 
+	 * @param file
+	 * @return
+	 */
+	private String getFileNameForCoverWrite(final ILocalAudioObject file) {
+		if (file == null) {
+			return null;
+		}
+		// Validate artist and album names to avoid using forbidden chars in
+		// file system
+		String artist = normalizeArtistName(file);
+		String album = normalizeAlbumName(file);
+		String fileNameForCoverInFileFolder = getFileNameForCoverInFileFolder(
+				file, artist, album);
+
+		if (new File(this.fileManager.getFolderPath(file)).canWrite()) {
+			return fileNameForCoverInFileFolder;
+		} else {
+			// Try option in special covers folder
+			// Create folder if not exists
+			File coversFolder = new File(getCoversFolder());
+			if (!coversFolder.exists()) {
+				coversFolder.mkdir();
+			}
+			return getFileNameForCoverInCoversFolder(file, artist, album);
+		}
+	}
 }
