@@ -151,11 +151,20 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 			while (!this.applyWorkaround && line != null && !isInterrupted()) {
 				this.process.saveErrorLine(line);
 				read(line);
-				sendCommand();
-				line = in.readLine();
+				if (in.ready()) {
+					// There is something to read
+					line = in.readLine();
+				} else {
+					// Otherwise wait and send a command to update position
+					Thread.sleep(200);
+					sendCommand();
+				}
 			}
 		} catch (final IOException e) {
 			getEngine().handlePlayerEngineError(e);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} finally {
 			ClosingUtils.close(in);
 		}
