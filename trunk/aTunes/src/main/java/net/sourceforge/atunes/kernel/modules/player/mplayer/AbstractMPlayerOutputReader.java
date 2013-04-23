@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 abstract class AbstractMPlayerOutputReader extends Thread {
@@ -145,11 +146,12 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 				this.process.getInputStream()));
 		try {
 			init();
+			sendCommand();
 			line = in.readLine();
-			while (!this.applyWorkaround && line != null
-					&& getEngine().isEnginePlaying() && !isInterrupted()) {
+			while (!this.applyWorkaround && line != null && !isInterrupted()) {
 				this.process.saveErrorLine(line);
 				read(line);
+				sendCommand();
 				line = in.readLine();
 			}
 		} catch (final IOException e) {
@@ -160,6 +162,17 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 
 		if (this.applyWorkaround) {
 			this.engine.applyMPlayerFilenamesWorkaround(this.audioObject);
+		}
+	}
+
+	private void sendCommand() {
+		if (!this.engine.isPlaybackPaused()) {
+			this.engine.getCommandWriter().sendGetPositionCommand();
+			if (this.engine.getCurrentAudioObjectLength() == 0
+					&& this.engine.getAudioObject().isSeekable()) {
+				Logger.debug("Duration still unknown: sending get_duration_command");
+				this.engine.getCommandWriter().sendGetDurationCommand();
+			}
 		}
 	}
 

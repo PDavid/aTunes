@@ -45,7 +45,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 	private MPlayerProcess process;
 	private MPlayerCommandWriter commandWriter = new MPlayerCommandWriter(null);
 	private AbstractMPlayerOutputReader mPlayerOutputReader;
-	private MPlayerPositionThread mPlayerPositionThread;
 	/** The current fade away process running */
 	private FadeAwayRunnable currentFadeAwayRunnable = null;
 
@@ -140,8 +139,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 				this.mPlayerOutputReader.setWorkaroundApplied(getStatePlayer()
 						.isCacheFilesBeforePlaying());
 				this.mPlayerOutputReader.start();
-				this.mPlayerPositionThread = new MPlayerPositionThread(this);
-				this.mPlayerPositionThread.start();
 				this.commandWriter.sendGetDurationCommand();
 			}
 
@@ -179,10 +176,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 				this.process = null;
 				this.mPlayerOutputReader = null;
 				this.commandWriter.finishProcess();
-				if (this.mPlayerPositionThread != null) {
-					this.mPlayerPositionThread.interrupt();
-					this.mPlayerPositionThread = null;
-				}
 			}
 			setCurrentAudioObjectPlayedTime(0, false);
 		}
@@ -201,8 +194,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 		this.mPlayerOutputReader.interrupt();
 		this.process = null;
 		this.mPlayerOutputReader = null;
-		this.mPlayerPositionThread.interrupt();
-		this.mPlayerPositionThread = null;
 		this.commandWriter.finishProcess();
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
