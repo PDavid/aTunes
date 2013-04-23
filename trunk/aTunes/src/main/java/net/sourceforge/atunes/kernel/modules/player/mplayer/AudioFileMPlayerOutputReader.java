@@ -25,33 +25,41 @@ import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.utils.Logger;
 
-class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
+/**
+ * Reads output of mplayer for audio files
+ * 
+ * @author alex
+ * 
+ */
+public class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
-	private final ILocalAudioObject audioFile;
+	private ILocalAudioObject audioFile;
 
-	private final boolean isMp3File;
+	private boolean isMp3File;
+
+	private ILocalAudioObjectValidator localAudioObjectValidator;
 
 	/**
-	 * Instantiates a new audio file m player output reader.
-	 * 
-	 * @param engine
-	 * @param process
-	 * @param audioFile
 	 * @param localAudioObjectValidator
 	 */
-	AudioFileMPlayerOutputReader(final MPlayerEngine engine,
-			final MPlayerProcess process, final ILocalAudioObject audioFile,
+	public void setLocalAudioObjectValidator(
 			final ILocalAudioObjectValidator localAudioObjectValidator) {
-		super(engine, process);
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
+
+	/**
+	 * @param audioFile
+	 */
+	public void setAudioFile(final ILocalAudioObject audioFile) {
 		this.audioFile = audioFile;
-		// Check audio file type only once and use calculated value in read
-		// method
-		this.isMp3File = localAudioObjectValidator.isOneOfTheseFormats(
-				audioFile, LocalAudioObjectFormat.MP3);
 	}
 
 	@Override
 	protected void init() {
+		// Check audio file type only once and use calculated value in read
+		// method
+		this.isMp3File = this.localAudioObjectValidator.isOneOfTheseFormats(
+				this.audioFile, LocalAudioObjectFormat.MP3);
 	}
 
 	@Override

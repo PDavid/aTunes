@@ -22,7 +22,14 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 
-class PodcastFeedEntryMPlayerOutputReader extends AbstractMPlayerOutputReader {
+/**
+ * Output reader for podcasts
+ * 
+ * @author alex
+ * 
+ */
+public class PodcastFeedEntryMPlayerOutputReader extends
+		AbstractMPlayerOutputReader {
 
 	/** The podcast feed entry. */
 	private IPodcastFeedEntry podcastFeedEntry;
@@ -30,18 +37,9 @@ class PodcastFeedEntryMPlayerOutputReader extends AbstractMPlayerOutputReader {
 	private boolean started;
 
 	/**
-	 * Instantiates a new podcast feed entry mplayer output reader.
-	 * 
-	 * @param engine
-	 *            the engine
-	 * @param process
-	 *            the process
 	 * @param podcastFeedEntry
-	 *            the podcast feed entry
 	 */
-	PodcastFeedEntryMPlayerOutputReader(MPlayerEngine engine,
-			MPlayerProcess process, IPodcastFeedEntry podcastFeedEntry) {
-		super(engine, process);
+	public void setPodcastFeedEntry(final IPodcastFeedEntry podcastFeedEntry) {
 		this.podcastFeedEntry = podcastFeedEntry;
 	}
 
@@ -50,15 +48,15 @@ class PodcastFeedEntryMPlayerOutputReader extends AbstractMPlayerOutputReader {
 	}
 
 	@Override
-	protected void read(String line) {
+	protected void read(final String line) {
 		super.read(line);
 
-		readAndApplyLength(podcastFeedEntry, line, false);
+		readAndApplyLength(this.podcastFeedEntry, line, false);
 
 		// When starting playback, update status bar
-		if (!started && line.startsWith("Starting playback")) {
+		if (!this.started && line.startsWith("Starting playback")) {
 			getEngine().notifyRadioOrPodcastFeedEntry();
-			started = true;
+			this.started = true;
 		}
 	}
 
