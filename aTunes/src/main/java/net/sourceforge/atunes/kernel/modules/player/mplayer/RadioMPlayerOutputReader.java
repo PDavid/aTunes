@@ -28,45 +28,57 @@ import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IStateRadio;
 import net.sourceforge.atunes.utils.Logger;
 
-class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
+/**
+ * Output reader for radios
+ * 
+ * @author alex
+ * 
+ */
+public class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
 	/** Pattern of end of play back */
 	private static final Pattern END_PATTERN = Pattern
 			.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\).*");
 
-	private final IRadio radio;
+	private IRadio radio;
 	private String lastArtist = "";
 	private String lastTitle = "";
 	private boolean started;
-	private final IStateRadio stateRadio;
-	private final IPlayListHandler playListHandler;
-	private final IContextHandler contextHandler;
+	private IStateRadio stateRadio;
+	private IPlayListHandler playListHandler;
+	private IContextHandler contextHandler;
 
 	/**
-	 * Instantiates a new radio m player output reader.
-	 * 
-	 * @param engine
-	 * @param process
 	 * @param radio
+	 */
+	public void setRadio(final IRadio radio) {
+		this.radio = radio;
+	}
+
+	/**
 	 * @param stateRadio
+	 */
+	public void setStateRadio(final IStateRadio stateRadio) {
+		this.stateRadio = stateRadio;
+	}
+
+	/**
 	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
+	/**
 	 * @param contextHandler
 	 */
-	RadioMPlayerOutputReader(final MPlayerEngine engine,
-			final MPlayerProcess process, final IRadio radio,
-			final IStateRadio stateRadio,
-			final IPlayListHandler playListHandler,
-			final IContextHandler contextHandler) {
-		super(engine, process);
-		this.radio = radio;
-		this.stateRadio = stateRadio;
-		this.playListHandler = playListHandler;
+	public void setContextHandler(final IContextHandler contextHandler) {
 		this.contextHandler = contextHandler;
 	}
 
 	@Override
 	protected void init() {
-		getEngine().setCurrentLength(radio.getDuration() * 1000L);
+		getEngine().setCurrentLength(this.radio.getDuration() * 1000L);
 	}
 
 	@Override
@@ -74,9 +86,9 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
 		super.read(line);
 
 		// When starting playback, update status bar
-		if (!started && line.startsWith("Starting playback")) {
+		if (!this.started && line.startsWith("Starting playback")) {
 			getEngine().notifyRadioOrPodcastFeedEntry();
-			started = true;
+			this.started = true;
 		}
 
 		// Read bitrate and frequency of radios
@@ -85,15 +97,15 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
 		}
 
 		// Read song info from radio stream
-		if (stateRadio.isReadInfoFromRadioStream()
+		if (this.stateRadio.isReadInfoFromRadioStream()
 				&& line.startsWith("ICY Info:")) {
 			readInfoFromRadioStream(line);
 		}
 
 		// End (Quit)
 		if (END_PATTERN.matcher(line).matches()) {
-			radio.deleteSongInfo();
-			playListHandler.refreshPlayList();
+			this.radio.deleteSongInfo();
+			this.playListHandler.refreshPlayList();
 		}
 	}
 
@@ -104,19 +116,19 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
 		final String[] s = line.split(" ");
 		if (s.length >= 2) {
 			try {
-				radio.setFrequency(Integer.parseInt(s[1]));
+				this.radio.setFrequency(Integer.parseInt(s[1]));
 			} catch (NumberFormatException e) {
 				Logger.info("Could not read radio frequency");
 			}
 		}
 		if (s.length >= 7) {
 			try {
-				radio.setBitrate((long) Double.parseDouble(s[6]));
+				this.radio.setBitrate((long) Double.parseDouble(s[6]));
 			} catch (NumberFormatException e) {
 				Logger.info("Could not read radio bitrate");
 			}
 		}
-		playListHandler.refreshPlayList();
+		this.playListHandler.refreshPlayList();
 	}
 
 	/**
@@ -129,18 +141,19 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
 			String info = line.substring(i + 13, j - 1);
 			int k = info.indexOf('-');
 			String artist = info.substring(0, k).trim();
-			radio.setArtist(artist);
+			this.radio.setArtist(artist);
 			String title = info.substring(k + 1, info.length()).trim();
-			radio.setTitle(title);
-			radio.setSongInfoAvailable(true);
-			playListHandler.refreshPlayList();
-			if ((!title.equals(lastTitle) || !artist.equals(lastArtist))
-					&& radio.equals(playListHandler
+			this.radio.setTitle(title);
+			this.radio.setSongInfoAvailable(true);
+			this.playListHandler.refreshPlayList();
+			if ((!title.equals(this.lastTitle) || !artist
+					.equals(this.lastArtist))
+					&& this.radio.equals(this.playListHandler
 							.getCurrentAudioObjectFromCurrentPlayList())) {
-				contextHandler.retrieveInfoAndShowInPanel(radio);
+				this.contextHandler.retrieveInfoAndShowInPanel(this.radio);
 			}
-			lastArtist = artist;
-			lastTitle = title;
+			this.lastArtist = artist;
+			this.lastTitle = title;
 		} catch (IndexOutOfBoundsException e) {
 			Logger.info("Could not read song info from radio");
 		}

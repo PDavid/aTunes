@@ -34,25 +34,25 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	private static final Pattern END_PATTERN = Pattern
 			.compile(".*\\x2e\\x2e\\x2e\\x20\\(.*\\x20.*\\).*");
 
-	private final MPlayerEngine engine;
 	private int length;
 	private int time;
 
-	private final MPlayerProcess process;
+	private MPlayerEngine engine;
+	private MPlayerProcess process;
 
 	private volatile boolean readStopped = false;
 
 	/**
-	 * Instantiates a new mplayer output reader.
-	 * 
 	 * @param engine
-	 *            the engine
-	 * @param process
-	 *            the process
 	 */
-	protected AbstractMPlayerOutputReader(final MPlayerEngine engine,
-			final MPlayerProcess process) {
+	public void setEngine(final MPlayerEngine engine) {
 		this.engine = engine;
+	}
+
+	/**
+	 * @param process
+	 */
+	public void setProcess(final MPlayerProcess process) {
 		this.process = process;
 	}
 

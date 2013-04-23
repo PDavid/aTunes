@@ -31,6 +31,10 @@
 		</constructor-arg>
 	</bean>
 	
+	<bean id="audioFileMPlayerOutputReader" class="net.sourceforge.atunes.kernel.modules.player.mplayer.AudioFileMPlayerOutputReader" scope="prototype"/>
+	<bean id="radioMPlayerOutputReader" class="net.sourceforge.atunes.kernel.modules.player.mplayer.RadioMPlayerOutputReader" scope="prototype"/>
+	<bean id="podcastFeedEntryMPlayerOutputReader" class="net.sourceforge.atunes.kernel.modules.player.mplayer.PodcastFeedEntryMPlayerOutputReader" scope="prototype"/>
+	
 	<bean id="volumeController" class="net.sourceforge.atunes.kernel.modules.player.Volume"/>
 	
 	<bean id="playerEngineInitializer" class="net.sourceforge.atunes.kernel.modules.player.PlayerEngineSelector" scope="prototype"/>

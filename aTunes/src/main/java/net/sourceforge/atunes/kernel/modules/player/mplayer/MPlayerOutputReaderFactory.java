@@ -21,16 +21,13 @@
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IStateRadio;
 
 /**
- * Selectes which output reader use depending on type audio object
+ * Selects which output reader use depending on type audio object
  * 
  * @author alex
  * 
@@ -39,13 +36,14 @@ public class MPlayerOutputReaderFactory {
 
 	private MPlayerEngine mplayerEngine;
 
-	private IStateRadio stateRadio;
+	private IBeanFactory beanFactory;
 
-	private IPlayListHandler playListHandler;
-
-	private ILocalAudioObjectValidator localAudioObjectValidator;
-
-	private IContextHandler contextHandler;
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param mplayerEngine
@@ -54,51 +52,28 @@ public class MPlayerOutputReaderFactory {
 		this.mplayerEngine = mplayerEngine;
 	}
 
-	/**
-	 * @param stateRadio
-	 */
-	public void setStateRadio(final IStateRadio stateRadio) {
-		this.stateRadio = stateRadio;
-	}
-
-	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(final IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-
-	/**
-	 * @param localAudioObjectValidator
-	 */
-	public void setLocalAudioObjectValidator(
-			final ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
-
-	/**
-	 * @param contextHandler
-	 */
-	public void setContextHandler(final IContextHandler contextHandler) {
-		this.contextHandler = contextHandler;
-	}
-
 	AbstractMPlayerOutputReader newInstance(final MPlayerProcess process,
 			final IAudioObject ao) {
+		AbstractMPlayerOutputReader reader = null;
 		if (ao instanceof ILocalAudioObject) {
-			return new AudioFileMPlayerOutputReader(this.mplayerEngine,
-					process, (ILocalAudioObject) ao,
-					this.localAudioObjectValidator);
+			reader = this.beanFactory
+					.getBean(AudioFileMPlayerOutputReader.class);
+			((AudioFileMPlayerOutputReader) reader)
+					.setAudioFile((ILocalAudioObject) ao);
 		} else if (ao instanceof IRadio) {
-			return new RadioMPlayerOutputReader(this.mplayerEngine, process,
-					(IRadio) ao, this.stateRadio, this.playListHandler,
-					this.contextHandler);
+			reader = this.beanFactory.getBean(RadioMPlayerOutputReader.class);
+			((RadioMPlayerOutputReader) reader).setRadio((IRadio) ao);
 		} else if (ao instanceof IPodcastFeedEntry) {
-			return new PodcastFeedEntryMPlayerOutputReader(this.mplayerEngine,
-					process, (IPodcastFeedEntry) ao);
+			reader = this.beanFactory
+					.getBean(PodcastFeedEntryMPlayerOutputReader.class);
+			((PodcastFeedEntryMPlayerOutputReader) reader)
+					.setPodcastFeedEntry((IPodcastFeedEntry) ao);
 		} else {
 			throw new IllegalArgumentException(
 					"audio object is not from type AudioFile, Radio or PodcastFeedEntry");
 		}
+		reader.setProcess(process);
+		reader.setEngine(this.mplayerEngine);
+		return reader;
 	}
 }
