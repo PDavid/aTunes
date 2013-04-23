@@ -45,7 +45,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 	private MPlayerProcess process;
 	private MPlayerCommandWriter commandWriter = new MPlayerCommandWriter(null);
 	private AbstractMPlayerOutputReader mPlayerOutputReader;
-	private MPlayerErrorReader mPlayerErrorReader;
 	private MPlayerPositionThread mPlayerPositionThread;
 	/** The current fade away process running */
 	private FadeAwayRunnable currentFadeAwayRunnable = null;
@@ -137,12 +136,10 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 				this.mPlayerOutputReader = this.beanFactory.getBean(
 						MPlayerOutputReaderFactory.class).newInstance(
 						this.process, audioObject);
-				this.mPlayerErrorReader = new MPlayerErrorReader(this,
-						this.process, this.mPlayerOutputReader,
-						audioObjectToPlay, getFileManager(), getOsManager(),
-						getStatePlayer().isCacheFilesBeforePlaying());
+				this.mPlayerOutputReader.setAudioObject(audioObjectToPlay);
+				this.mPlayerOutputReader.setWorkaroundApplied(getStatePlayer()
+						.isCacheFilesBeforePlaying());
 				this.mPlayerOutputReader.start();
-				this.mPlayerErrorReader.start();
 				this.mPlayerPositionThread = new MPlayerPositionThread(this);
 				this.mPlayerPositionThread.start();
 				this.commandWriter.sendGetDurationCommand();
@@ -167,7 +164,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 			if (isFadeAwayInProgress()) {
 				return;
 			}
-			this.mPlayerErrorReader.interrupt();
 			this.currentFadeAwayRunnable = new FadeAwayRunnable(this.process,
 					getStatePlayer().getVolume(), this, getOsManager());
 			Thread t = new Thread(this.currentFadeAwayRunnable);
@@ -181,7 +177,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 			} else {
 				// This is already called from fade away runnable when finishing
 				this.process = null;
-				this.mPlayerErrorReader = null;
 				this.mPlayerOutputReader = null;
 				this.commandWriter.finishProcess();
 				if (this.mPlayerPositionThread != null) {
@@ -205,7 +200,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 		// of mplayer process, so process is finished
 		this.mPlayerOutputReader.interrupt();
 		this.process = null;
-		this.mPlayerErrorReader = null;
 		this.mPlayerOutputReader = null;
 		this.mPlayerPositionThread.interrupt();
 		this.mPlayerPositionThread = null;
