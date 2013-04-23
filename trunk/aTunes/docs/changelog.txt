@@ -12,6 +12,10 @@ aTunes 3.1.0
 - Use NIO to download podcasts faster
 - Store covers in special folder when repository is not writable
 
+aTunes 3.0.9
+------------
+- FIX: Combo box selection fails with OS X and System Look And Feel
+
 aTunes 3.0.8
 ------------
 - FIX: Control visible context panels
