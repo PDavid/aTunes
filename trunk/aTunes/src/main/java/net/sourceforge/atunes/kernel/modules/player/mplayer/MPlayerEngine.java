@@ -28,9 +28,7 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IContextHandler;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IStateRadio;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -52,32 +50,13 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 	/** The current fade away process running */
 	private FadeAwayRunnable currentFadeAwayRunnable = null;
 
-	private ILocalAudioObjectValidator localAudioObjectValidator;
-
-	private IStateRadio stateRadio;
-
-	private IContextHandler contextHandler;
+	private IBeanFactory beanFactory;
 
 	/**
-	 * @param contextHandler
+	 * @param beanFactory
 	 */
-	public void setContextHandler(final IContextHandler contextHandler) {
-		this.contextHandler = contextHandler;
-	}
-
-	/**
-	 * @param stateRadio
-	 */
-	public void setStateRadio(final IStateRadio stateRadio) {
-		this.stateRadio = stateRadio;
-	}
-
-	/**
-	 * @param localAudioObjectValidator
-	 */
-	public void setLocalAudioObjectValidator(
-			final ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -149,17 +128,15 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 			this.process = this.processBuilder.getProcess(audioObjectToPlay);
 
 			if (this.process != null) {
-				this.commandWriter = process.newCommandWriter(getOsManager());
+				this.commandWriter = this.process
+						.newCommandWriter(getOsManager());
 				// Output reader needs original audio object, specially when
 				// cacheFilesBeforePlaying is true, as
 				// statistics must be applied over original audio object, not
 				// the cached one
-				this.mPlayerOutputReader = AbstractMPlayerOutputReader
-						.newInstance(this, this.process, audioObject,
-								this.stateRadio, getFrame(),
-								getPlayListHandler(),
-								this.localAudioObjectValidator,
-								this.contextHandler);
+				this.mPlayerOutputReader = this.beanFactory.getBean(
+						MPlayerOutputReaderFactory.class).newInstance(
+						this.process, audioObject);
 				this.mPlayerErrorReader = new MPlayerErrorReader(this,
 						this.process, this.mPlayerOutputReader,
 						audioObjectToPlay, getFileManager(), getOsManager(),
@@ -369,7 +346,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 	 * non-english chars. To avoid both problems when this problem is detected a
 	 * workaround is applied to activate cache of files and restart playback
 	 */
-	void applyMPlayerFilenamesWorkaround(IAudioObject audioObject) {
+	void applyMPlayerFilenamesWorkaround(final IAudioObject audioObject) {
 		Logger.info("Applying mplayer workaround for filenames");
 		// Force a stop to finish all player engine processes
 		stopCurrentAudioObject(false);

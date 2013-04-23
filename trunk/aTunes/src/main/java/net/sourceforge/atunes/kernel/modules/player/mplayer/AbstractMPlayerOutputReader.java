@@ -26,14 +26,6 @@ import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IContextHandler;
-import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IStateRadio;
 import net.sourceforge.atunes.utils.ClosingUtils;
 
 abstract class AbstractMPlayerOutputReader extends Thread {
@@ -62,38 +54,6 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 			final MPlayerProcess process) {
 		this.engine = engine;
 		this.process = process;
-	}
-
-	/**
-	 * @param engine
-	 * @param process
-	 * @param ao
-	 * @param stateRadio
-	 * @param frame
-	 * @param playListHandler
-	 * @param localAudioObjectValidator
-	 * @param contextHandler
-	 * @return
-	 */
-	static AbstractMPlayerOutputReader newInstance(final MPlayerEngine engine,
-			final MPlayerProcess process, final IAudioObject ao,
-			final IStateRadio stateRadio, final IFrame frame,
-			final IPlayListHandler playListHandler,
-			final ILocalAudioObjectValidator localAudioObjectValidator,
-			final IContextHandler contextHandler) {
-		if (ao instanceof ILocalAudioObject) {
-			return new AudioFileMPlayerOutputReader(engine, process,
-					(ILocalAudioObject) ao, localAudioObjectValidator);
-		} else if (ao instanceof IRadio) {
-			return new RadioMPlayerOutputReader(engine, process, (IRadio) ao,
-					stateRadio, playListHandler, contextHandler);
-		} else if (ao instanceof IPodcastFeedEntry) {
-			return new PodcastFeedEntryMPlayerOutputReader(engine, process,
-					(IPodcastFeedEntry) ao);
-		} else {
-			throw new IllegalArgumentException(
-					"audio object is not from type AudioFile, Radio or PodcastFeedEntry");
-		}
 	}
 
 	/**
