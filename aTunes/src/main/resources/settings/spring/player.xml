@@ -14,6 +14,8 @@
 	
 	<bean id="abstractPlayerEngine" class="net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine" abstract="true"/>
 	
+	<bean id="mplayerOutputReaderFactory" class="net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerOutputReaderFactory" scope="prototype"/>
+	
 	<bean id="mplayerEngine" class="net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine" parent="abstractPlayerEngine">
 		<property name="processBuilder" ref="mplayerProcessBuilder"/>
 	</bean>
