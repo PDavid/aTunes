@@ -36,16 +36,17 @@ import net.sourceforge.atunes.model.IOSManager;
  */
 class MPlayerProcess {
 
-	private Process process;
+	private final Process process;
 
-	private List<String> command;
+	private final List<String> command;
 
-	private List<String> errorLines;
+	private final List<String> errorLines;
 
-	MPlayerProcess(List<String> command) throws IOException {
+	MPlayerProcess(final List<String> command) throws IOException {
 		this.command = command;
 		this.errorLines = new ArrayList<String>();
-		this.process = new ProcessBuilder().command(command).start();
+		this.process = new ProcessBuilder().redirectErrorStream(true)
+				.command(command).start();
 	}
 
 	/**
@@ -56,17 +57,17 @@ class MPlayerProcess {
 	 */
 	MPlayerCommandWriter newCommandWriter(final IOSManager osManager) {
 		if (osManager.isMacOsX()) {
-			return new MPlayerXCommandWriter(process);
+			return new MPlayerXCommandWriter(this.process);
 		}
-		return new MPlayerCommandWriter(process);
+		return new MPlayerCommandWriter(this.process);
 	}
 
 	/**
 	 * @return input stream
 	 */
 	InputStream getInputStream() {
-		if (process != null) {
-			return process.getInputStream();
+		if (this.process != null) {
+			return this.process.getInputStream();
 		}
 		return null;
 	}
@@ -75,8 +76,8 @@ class MPlayerProcess {
 	 * @return error stream
 	 */
 	InputStream getErrorStream() {
-		if (process != null) {
-			return process.getErrorStream();
+		if (this.process != null) {
+			return this.process.getErrorStream();
 		}
 		return null;
 	}
@@ -86,21 +87,21 @@ class MPlayerProcess {
 	 * 
 	 * @param line
 	 */
-	void saveErrorLine(String line) {
-		errorLines.add(line);
+	void saveErrorLine(final String line) {
+		this.errorLines.add(line);
 	}
 
 	/**
 	 * @return error lines of this process
 	 */
 	List<String> getErrorLines() {
-		return errorLines;
+		return this.errorLines;
 	}
 
 	/**
 	 * @return command used to create process
 	 */
 	String getCommand() {
-		return Arrays.toString(command.toArray());
+		return Arrays.toString(this.command.toArray());
 	}
 }

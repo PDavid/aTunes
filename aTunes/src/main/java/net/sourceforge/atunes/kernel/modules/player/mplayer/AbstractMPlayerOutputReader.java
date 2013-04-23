@@ -26,7 +26,12 @@ import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFileManager;
+import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
+import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 abstract class AbstractMPlayerOutputReader extends Thread {
 
@@ -37,10 +42,40 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	private int length;
 	private int time;
 
+	private boolean applyWorkaround = false;
+	private boolean workaroundApplied;
+
+	private IAudioObject audioObject;
+
 	private MPlayerEngine engine;
 	private MPlayerProcess process;
 
 	private volatile boolean readStopped = false;
+
+	private IOSManager osManager;
+
+	private IFileManager fileManager;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
+
+	/**
+	 * @param fileManager
+	 */
+	public void setFileManager(final IFileManager fileManager) {
+		this.fileManager = fileManager;
+	}
+
+	/**
+	 * @param audioObject
+	 */
+	public void setAudioObject(final IAudioObject audioObject) {
+		this.audioObject = audioObject;
+	}
 
 	/**
 	 * @param engine
@@ -54,6 +89,13 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	 */
 	public void setProcess(final MPlayerProcess process) {
 		this.process = process;
+	}
+
+	/**
+	 * @param workaroundApplied
+	 */
+	public void setWorkaroundApplied(final boolean workaroundApplied) {
+		this.workaroundApplied = workaroundApplied;
 	}
 
 	/**
@@ -73,9 +115,20 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 		}
 
 		// End
-		if (END_PATTERN.matcher(line).matches() && !this.readStopped) {
+		else if (END_PATTERN.matcher(line).matches() && !this.readStopped) {
 			// Playback finished
 			getEngine().currentAudioObjectFinished();
+		}
+
+		else if (line.startsWith("File not found")) {
+			// Stop output reader
+			stopRead();
+			if (!this.workaroundApplied) {
+				this.applyWorkaround = true;
+			} else {
+				this.engine
+						.currentAudioObjectFinishedWithError(generateError());
+			}
 		}
 	}
 
@@ -93,8 +146,9 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 		try {
 			init();
 			line = in.readLine();
-			while (line != null && getEngine().isEnginePlaying()
-					&& !isInterrupted()) {
+			while (!this.applyWorkaround && line != null
+					&& getEngine().isEnginePlaying() && !isInterrupted()) {
+				this.process.saveErrorLine(line);
 				read(line);
 				line = in.readLine();
 			}
@@ -102,6 +156,10 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 			getEngine().handlePlayerEngineError(e);
 		} finally {
 			ClosingUtils.close(in);
+		}
+
+		if (this.applyWorkaround) {
+			this.engine.applyMPlayerFilenamesWorkaround(this.audioObject);
 		}
 	}
 
@@ -145,4 +203,33 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	protected final MPlayerEngine getEngine() {
 		return this.engine;
 	}
+
+	private Exception generateError() {
+		StringBuilder errorMessage = new StringBuilder(StringUtils.getString(
+				I18nUtils.getString("FILE_NOT_FOUND"), ": ",
+				this.audioObject.getUrl()));
+
+		if (this.audioObject instanceof ILocalAudioObject) {
+			errorMessage.append(this.osManager.getLineTerminator());
+			errorMessage.append("Exists: ");
+			errorMessage.append(this.fileManager
+					.exists((ILocalAudioObject) this.audioObject));
+			errorMessage.append(this.osManager.getLineTerminator());
+			errorMessage.append("OS file name: ");
+			errorMessage.append(this.fileManager
+					.getSystemName((ILocalAudioObject) this.audioObject));
+			errorMessage.append(this.osManager.getLineTerminator());
+			errorMessage.append("Process command: ");
+			errorMessage.append(this.process.getCommand());
+			errorMessage.append(this.osManager.getLineTerminator());
+			errorMessage.append("Process error ouput");
+			errorMessage.append(this.osManager.getLineTerminator());
+			for (String errorLine : this.process.getErrorLines()) {
+				errorMessage.append(errorLine);
+				errorMessage.append(this.osManager.getLineTerminator());
+			}
+		}
+		return new Exception(errorMessage.toString());
+	}
+
 }
