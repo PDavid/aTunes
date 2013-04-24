@@ -83,29 +83,30 @@ public class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
 	@Override
 	protected void read(final String line) {
-		super.read(line);
+		if (!isReadStopped()) {
+			super.read(line);
+			// When starting playback, update status bar
+			if (!this.started && line.startsWith("Starting playback")) {
+				getEngine().notifyRadioOrPodcastFeedEntry();
+				this.started = true;
+			}
 
-		// When starting playback, update status bar
-		if (!this.started && line.startsWith("Starting playback")) {
-			getEngine().notifyRadioOrPodcastFeedEntry();
-			this.started = true;
-		}
+			// Read bitrate and frequency of radios
+			if (line.startsWith("AUDIO:")) {
+				readBitrateAndFrequencyOfRadio(line);
+			}
 
-		// Read bitrate and frequency of radios
-		if (line.startsWith("AUDIO:")) {
-			readBitrateAndFrequencyOfRadio(line);
-		}
+			// Read song info from radio stream
+			if (this.stateRadio.isReadInfoFromRadioStream()
+					&& line.startsWith("ICY Info:")) {
+				readInfoFromRadioStream(line);
+			}
 
-		// Read song info from radio stream
-		if (this.stateRadio.isReadInfoFromRadioStream()
-				&& line.startsWith("ICY Info:")) {
-			readInfoFromRadioStream(line);
-		}
-
-		// End (Quit)
-		if (END_PATTERN.matcher(line).matches()) {
-			this.radio.deleteSongInfo();
-			this.playListHandler.refreshPlayList();
+			// End (Quit)
+			if (END_PATTERN.matcher(line).matches()) {
+				this.radio.deleteSongInfo();
+				this.playListHandler.refreshPlayList();
+			}
 		}
 	}
 

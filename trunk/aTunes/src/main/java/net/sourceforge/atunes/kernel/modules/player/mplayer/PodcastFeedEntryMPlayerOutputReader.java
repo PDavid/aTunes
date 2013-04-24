@@ -51,12 +51,14 @@ public class PodcastFeedEntryMPlayerOutputReader extends
 	protected void read(final String line) {
 		super.read(line);
 
-		readAndApplyLength(this.podcastFeedEntry, line, false);
+		if (!isReadStopped()) {
+			readAndApplyLength(this.podcastFeedEntry, line, false);
 
-		// When starting playback, update status bar
-		if (!this.started && line.startsWith("Starting playback")) {
-			getEngine().notifyRadioOrPodcastFeedEntry();
-			this.started = true;
+			// When starting playback, update status bar
+			if (!this.started && line.startsWith("Starting playback")) {
+				getEngine().notifyRadioOrPodcastFeedEntry();
+				this.started = true;
+			}
 		}
 	}
 
