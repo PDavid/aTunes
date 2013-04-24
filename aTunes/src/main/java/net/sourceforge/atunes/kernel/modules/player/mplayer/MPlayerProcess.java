@@ -87,7 +87,7 @@ class MPlayerProcess {
 	 * 
 	 * @param line
 	 */
-	void saveErrorLine(final String line) {
+	void saveOutputLine(final String line) {
 		this.errorLines.add(line);
 	}
 

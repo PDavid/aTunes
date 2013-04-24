@@ -23,6 +23,8 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.model.IAudioObject;
@@ -35,6 +37,8 @@ import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 abstract class AbstractMPlayerOutputReader extends Thread {
+
+	private static final String ANS_TIME_POSITION = "ANS_TIME_POSITION";
 
 	/** Pattern of end of play back */
 	private static final Pattern END_PATTERN = Pattern
@@ -56,6 +60,10 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	private IOSManager osManager;
 
 	private IFileManager fileManager;
+
+	boolean isReadStopped() {
+		return readStopped;
+	}
 
 	/**
 	 * @param osManager
@@ -109,7 +117,7 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 		// Read progress
 		// MPlayer bug: Duration still inaccurate with mp3 VBR files! Flac
 		// duration bug
-		if (line.contains("ANS_TIME_POSITION")) {
+		if (line.contains(ANS_TIME_POSITION) && !this.readStopped) {
 			setTime((int) (Float
 					.parseFloat(line.substring(line.indexOf('=') + 1)) * 1000.0));
 			getEngine().setTime(getTime());
@@ -118,7 +126,13 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 		// End
 		else if (END_PATTERN.matcher(line).matches() && !this.readStopped) {
 			// Playback finished
+			stopRead();
 			getEngine().currentAudioObjectFinished();
+		}
+
+		else if (line.contains("Exiting... (Quit)") && !this.readStopped) {
+			// Playback stopped
+			stopRead();
 		}
 
 		else if (line.startsWith("File not found")) {
@@ -133,7 +147,8 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 		}
 	}
 
-	protected void stopRead() {
+	private void stopRead() {
+		getEngine().setTime(0);
 		this.readStopped = true;
 	}
 
@@ -141,30 +156,15 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 
 	@Override
 	public final void run() {
-		String line = null;
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				this.process.getInputStream()));
 		try {
 			init();
-			sendCommand();
-			line = in.readLine();
-			while (!this.applyWorkaround && line != null && !isInterrupted()) {
-				this.process.saveErrorLine(line);
-				read(line);
-				if (in.ready()) {
-					// There is something to read
-					line = in.readLine();
-				} else {
-					// Otherwise wait and send a command to update position
-					Thread.sleep(200);
-					sendCommand();
-				}
-			}
+			controlAndProcess(in);
 		} catch (final IOException e) {
 			getEngine().handlePlayerEngineError(e);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// Process can be interrupted and it's controlled
 		} finally {
 			ClosingUtils.close(in);
 		}
@@ -172,6 +172,39 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 		if (this.applyWorkaround) {
 			this.engine.applyMPlayerFilenamesWorkaround(this.audioObject);
 		}
+	}
+
+	private void controlAndProcess(BufferedReader in) throws IOException,
+			InterruptedException {
+		while (!readStopped && !this.applyWorkaround && !isInterrupted()) {
+			sendCommand();
+			waitForResponse(in);
+			List<String> response = getResponse(in);
+			for (String line : response) {
+				if (!line.contains(ANS_TIME_POSITION)) {
+					// Ignore position output as it generates a lot of output
+					// that is not necessary for debugging purposes
+					this.process.saveOutputLine(line);
+				}
+				read(line);
+			}
+		}
+	}
+
+	private void waitForResponse(BufferedReader in) throws IOException,
+			InterruptedException {
+		while (!isInterrupted() && !in.ready()) {
+			Thread.sleep(400);
+		}
+	}
+
+	private List<String> getResponse(BufferedReader in) throws IOException {
+		List<String> response = new ArrayList<String>();
+		while (in.ready()) {
+			String line = in.readLine();
+			response.add(line);
+		}
+		return response;
 	}
 
 	private void sendCommand() {

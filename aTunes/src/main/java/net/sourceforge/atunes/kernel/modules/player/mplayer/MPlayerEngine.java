@@ -24,8 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumSet;
 
-import javax.swing.SwingUtilities;
-
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
@@ -177,7 +175,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 				this.mPlayerOutputReader = null;
 				this.commandWriter.finishProcess();
 			}
-			setCurrentAudioObjectPlayedTime(0, false);
 		}
 	}
 
@@ -189,18 +186,10 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 	 * Called when finished fade away
 	 */
 	protected void finishedFadeAway() {
-		// NOTE: interrupting output reader means closing standard input
-		// of mplayer process, so process is finished
-		this.mPlayerOutputReader.interrupt();
+		this.commandWriter.sendStopCommand();
 		this.process = null;
 		this.mPlayerOutputReader = null;
 		this.commandWriter.finishProcess();
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				setTime(0);
-			}
-		});
 		// No fade away process working
 		this.currentFadeAwayRunnable = null;
 	}
