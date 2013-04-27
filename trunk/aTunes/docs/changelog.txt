@@ -15,6 +15,7 @@ aTunes 3.1.0
 aTunes 3.0.9
 ------------
 - FIX: Combo box selection fails with OS X and System Look And Feel
+- FIX: Save playlist sets its name as file name by default
 
 aTunes 3.0.8
 ------------

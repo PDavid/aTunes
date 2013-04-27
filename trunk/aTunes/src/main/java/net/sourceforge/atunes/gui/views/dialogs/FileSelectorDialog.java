@@ -98,7 +98,7 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 	 */
 	@Override
 	public File loadFile(final String path) {
-		return getFile(path, I18nUtils.getString("LOAD"), FileDialog.LOAD);
+		return getFile(path, null, I18nUtils.getString("LOAD"), FileDialog.LOAD);
 	}
 
 	/**
@@ -116,23 +116,25 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 	}
 
 	@Override
-	public File saveFile(final File path) {
+	public File saveFile(final File path, final String suggestedName) {
 		if (path == null) {
 			throw new IllegalArgumentException("Null path");
 		}
-		return saveFile(FileUtils.getPath(path));
+		return saveFile(FileUtils.getPath(path), suggestedName);
 	}
 
 	@Override
-	public File saveFile(final String path) {
-		return getFile(path, I18nUtils.getString("SAVE"), FileDialog.SAVE);
+	public File saveFile(final String path, final String suggestedName) {
+		return getFile(path, suggestedName, I18nUtils.getString("SAVE"),
+				FileDialog.SAVE);
 	}
 
-	private File getFile(final String path, final String title, final int mode) {
+	private File getFile(final String path, final String name,
+			final String title, final int mode) {
 		if (this.osManager.isMacOsX()) {
-			return getFileWithFileDialog(path, title, mode);
+			return getFileWithFileDialog(path, name, title, mode);
 		} else {
-			return getFileWithJFileChooser(path, title, mode);
+			return getFileWithJFileChooser(path, name, title, mode);
 		}
 	}
 
@@ -140,14 +142,16 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 	 * Opens file dialog to get file
 	 * 
 	 * @param path
+	 * @param name
 	 * @param title
 	 * @param mode
 	 * @return
 	 */
-	private File getFileWithFileDialog(final String path, final String title,
-			final int mode) {
+	private File getFileWithFileDialog(final String path, final String name,
+			final String title, final int mode) {
 		FileDialog dialog = new FileDialog(this.frame.getFrame(), title, mode);
 		dialog.setDirectory(path);
+		dialog.setFile(name);
 		if (this.fileFilter != null) {
 			dialog.setFilenameFilter(this.fileFilter);
 		}
@@ -165,13 +169,14 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 	 * Opens file dialog to get file
 	 * 
 	 * @param path
+	 * @param name
 	 * @param title
 	 * @param mode
 	 * @return
 	 */
-	private File getFileWithJFileChooser(final String path, final String title,
-			final int mode) {
-		JFileChooser dialog = this.controlsBuilder.getFileChooser(path);
+	private File getFileWithJFileChooser(final String path, final String name,
+			final String title, final int mode) {
+		JFileChooser dialog = this.controlsBuilder.getFileChooser(path, name);
 		if (this.fileFilter != null) {
 			dialog.setFileFilter(new FileFilter() {
 
@@ -209,7 +214,7 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 				if (!canWrite) {
 					// User rejected to overwrite file so ask again to select a
 					// file
-					file = getFileWithJFileChooser(path, title, mode);
+					file = getFileWithJFileChooser(path, name, title, mode);
 				}
 			}
 			return file;

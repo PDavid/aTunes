@@ -146,9 +146,10 @@ public interface IControlsBuilder {
 
 	/**
 	 * @param path
+	 * @param name
 	 * @return file chooser
 	 */
-	JFileChooser getFileChooser(String path);
+	JFileChooser getFileChooser(String path, String name);
 
 	/**
 	 * Returns scroll pane with special look and feel settings
