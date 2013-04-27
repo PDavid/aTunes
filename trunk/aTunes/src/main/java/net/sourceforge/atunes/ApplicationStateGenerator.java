@@ -28,8 +28,9 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Generates state of application
+ * 
  * @author alex
- *
+ * 
  */
 public class ApplicationStateGenerator implements IApplicationStateGenerator {
 
@@ -38,7 +39,8 @@ public class ApplicationStateGenerator implements IApplicationStateGenerator {
 	/**
 	 * @param applicationPropertiesLogger
 	 */
-	public void setApplicationPropertiesLogger(final ApplicationPropertiesLogger applicationPropertiesLogger) {
+	public void setApplicationPropertiesLogger(
+			final ApplicationPropertiesLogger applicationPropertiesLogger) {
 		this.applicationPropertiesLogger = applicationPropertiesLogger;
 	}
 
@@ -48,7 +50,9 @@ public class ApplicationStateGenerator implements IApplicationStateGenerator {
 	@Override
 	public Map<String, String> generateState() {
 		Map<String, String> state = new HashMap<String, String>();
-		state.putAll(applicationPropertiesLogger.getApplicationProperties());
+		state.putAll(this.applicationPropertiesLogger
+				.getApplicationProperties());
+		state.putAll(this.applicationPropertiesLogger.getAllSystemProperties());
 		state.put("Locale", I18nUtils.getSelectedLocale().toString());
 		return state;
 	}
