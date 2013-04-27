@@ -31,41 +31,43 @@ import java.io.FilenameFilter;
  */
 public interface IFileSelectorDialog extends IDialog {
 
-    /**
-     * @param fileFilter
-     */
-    void setFileFilter(FilenameFilter fileFilter);
+	/**
+	 * @param fileFilter
+	 */
+	void setFileFilter(FilenameFilter fileFilter);
 
-    /**
-     * Selects a file to load
-     * 
-     * @param path
-     * @return
-     */
-    File loadFile(String path);
+	/**
+	 * Selects a file to load
+	 * 
+	 * @param path
+	 * @return
+	 */
+	File loadFile(String path);
 
-    /**
-     * Selects a file to load
-     * 
-     * @param path
-     * @return
-     */
-    File loadFile(File path);
+	/**
+	 * Selects a file to load
+	 * 
+	 * @param path
+	 * @return
+	 */
+	File loadFile(File path);
 
-    /**
-     * Selects a file to save
-     * 
-     * @param path
-     * @return
-     */
-    File saveFile(String path);
+	/**
+	 * Selects a file to save
+	 * 
+	 * @param path
+	 * @param suggestedName
+	 * @return
+	 */
+	File saveFile(String path, String suggestedName);
 
-    /**
-     * Selects a file to save
-     * 
-     * @param path
-     * @return
-     */
-    File saveFile(File path);
+	/**
+	 * Selects a file to save
+	 * 
+	 * @param path
+	 * @param suggestedName
+	 * @return
+	 */
+	File saveFile(File path, String suggestedName);
 
 }

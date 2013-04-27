@@ -59,7 +59,7 @@ public class ExtractPictureAction extends
 	 * @param localAudioObjectImageHandler
 	 */
 	public void setLocalAudioObjectImageHandler(
-			ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
+			final ILocalAudioObjectImageHandler localAudioObjectImageHandler) {
 		this.localAudioObjectImageHandler = localAudioObjectImageHandler;
 	}
 
@@ -86,7 +86,7 @@ public class ExtractPictureAction extends
 
 	@Override
 	protected void executeAction(final List<ILocalAudioObject> objects) {
-		IFileSelectorDialog dialog = dialogFactory
+		IFileSelectorDialog dialog = this.dialogFactory
 				.newDialog(IFileSelectorDialog.class);
 		FilenameFilter filter = new FilenameFilter() {
 
@@ -102,7 +102,7 @@ public class ExtractPictureAction extends
 		};
 		dialog.setFileFilter(filter);
 
-		File selectedFile = dialog.saveFile(osManager.getUserHome());
+		File selectedFile = dialog.saveFile(this.osManager.getUserHome(), null);
 		if (!selectedFile.getName().toUpperCase().endsWith("PNG")) {
 			selectedFile = new File(StringUtils.getString(
 					FileUtils.getPath(selectedFile), ".png"));
@@ -110,8 +110,8 @@ public class ExtractPictureAction extends
 
 		// Export only first picture
 		try {
-			localAudioObjectImageHandler.saveInternalPictureToFile(objects.get(0),
-					selectedFile);
+			this.localAudioObjectImageHandler.saveInternalPictureToFile(
+					objects.get(0), selectedFile);
 		} catch (ImageWriteException e) {
 			Logger.error(e);
 		} catch (IOException e) {

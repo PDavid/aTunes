@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFileSelectorDialog;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IStatePlaylist;
@@ -112,10 +113,12 @@ public class SavePlayListAction extends CustomAbstractAction {
 
 	@Override
 	protected void executeAction() {
+		IPlayList playListToSave = this.playListHandler.getVisiblePlayList();
 		IFileSelectorDialog dialog = this.dialogFactory
 				.newDialog(IFileSelectorDialog.class);
 		dialog.setFileFilter(this.playListIOService.getPlaylistFileFilter());
-		File file = dialog.saveFile(this.statePlaylist.getSavePlaylistPath());
+		File file = dialog.saveFile(this.statePlaylist.getSavePlaylistPath(),
+				playListToSave.getName());
 		if (file != null) {
 
 			this.statePlaylist.setSavePlaylistPath(FileUtils.getPath(file
@@ -124,8 +127,7 @@ public class SavePlayListAction extends CustomAbstractAction {
 			// If filename have incorrect extension, add it
 			file = this.playListIOService.checkPlayListFileName(file);
 
-			this.playListIOService.write(
-					this.playListHandler.getVisiblePlayList(), file);
+			this.playListIOService.write(playListToSave, file);
 		}
 	}
 

@@ -116,7 +116,7 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
 	 * @return
 	 */
 	private File selectFolderWithJFileChooser(final String path) {
-		JFileChooser dialog = this.controlsBuilder.getFileChooser(path);
+		JFileChooser dialog = this.controlsBuilder.getFileChooser(path, null);
 		dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		dialog.showOpenDialog(this.frame.getFrame());
 		return dialog.getSelectedFile();

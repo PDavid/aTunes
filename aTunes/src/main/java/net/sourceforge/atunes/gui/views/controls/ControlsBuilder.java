@@ -27,6 +27,7 @@ import java.awt.Dialog.ModalityType;
 import java.awt.HeadlessException;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
@@ -327,8 +328,8 @@ public class ControlsBuilder implements IControlsBuilder {
 	}
 
 	@Override
-	public JFileChooser getFileChooser(final String path) {
-		return new CustomFileChooser(path);
+	public JFileChooser getFileChooser(final String path, final String name) {
+		return new CustomFileChooser(path, name);
 	}
 
 	@Override
@@ -347,7 +348,7 @@ public class ControlsBuilder implements IControlsBuilder {
 		return new UrlLabel(this.desktop);
 	}
 
-	private class CustomFileChooser extends JFileChooser {
+	private static class CustomFileChooser extends JFileChooser {
 		/**
 		 * 
 		 */
@@ -355,9 +356,13 @@ public class ControlsBuilder implements IControlsBuilder {
 
 		/**
 		 * @param path
+		 * @param name
 		 */
-		public CustomFileChooser(final String path) {
+		public CustomFileChooser(final String path, final String name) {
 			super(path);
+			if (name != null) {
+				setSelectedFile(new File(name));
+			}
 		}
 
 		/**
