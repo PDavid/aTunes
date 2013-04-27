@@ -49,6 +49,15 @@ public final class CheckUpdatesBackgroundWorker extends
 	private IFrame frame;
 	private IDialogFactory dialogFactory;
 
+	private String downloadURLStart;
+
+	/**
+	 * @param downloadURLStart
+	 */
+	public void setDownloadURLStart(final String downloadURLStart) {
+		this.downloadURLStart = downloadURLStart;
+	}
+
 	/**
 	 * @param updateHandler
 	 */
@@ -96,7 +105,7 @@ public final class CheckUpdatesBackgroundWorker extends
 	}
 
 	@Override
-	protected void whileWorking(List<Void> chunks) {
+	protected void whileWorking(final List<Void> chunks) {
 	}
 
 	@Override
@@ -106,7 +115,7 @@ public final class CheckUpdatesBackgroundWorker extends
 
 	@Override
 	protected void done(final ApplicationVersion version) {
-		if (version != null && version.compareTo(Constants.VERSION) == 1) {
+		if (isNewVersion(version)) {
 			if (this.alwaysInDialog || !this.stateUI.isShowStatusBar()) {
 				IUpdateDialog dialog = this.dialogFactory
 						.newDialog(IUpdateDialog.class);
@@ -119,5 +128,18 @@ public final class CheckUpdatesBackgroundWorker extends
 			this.dialogFactory.newDialog(IMessageDialog.class).showMessage(
 					I18nUtils.getString("NOT_NEW_VERSION"));
 		}
+	}
+
+	/**
+	 * @param version
+	 * @return if version is valid
+	 */
+	private boolean isNewVersion(final ApplicationVersion version) {
+		return version != null && version.compareTo(Constants.VERSION) == 1
+				&& downloadURLIsValid(version);
+	}
+
+	private boolean downloadURLIsValid(final ApplicationVersion version) {
+		return version.getDownloadURL().startsWith(this.downloadURLStart);
 	}
 }
