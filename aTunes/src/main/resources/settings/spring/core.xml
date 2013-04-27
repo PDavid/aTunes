@@ -170,7 +170,9 @@
 	<bean class="net.sourceforge.atunes.utils.JavaUsedNonHeapSpaceStatistic"/>
 	
 
-    <bean id="checkUpdatesBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.updates.CheckUpdatesBackgroundWorker" scope="prototype"/>
+    <bean id="checkUpdatesBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.updates.CheckUpdatesBackgroundWorker" scope="prototype">
+    	<property name="downloadURLStart" value="http://sourceforge.net/projects/atunes"/>
+    </bean>
     <bean class="net.sourceforge.atunes.kernel.modules.updates.VersionXmlParser" scope="prototype"/>
     
     <bean id="availableLanguages" class="java.util.ArrayList">
