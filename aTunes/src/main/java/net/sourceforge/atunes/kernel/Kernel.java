@@ -224,7 +224,7 @@ public final class Kernel implements IKernel {
 				.applicationStarted();
 		this.beanFactory.getBean(ApplicationLifeCycleListeners.class)
 				.allHandlersInitialized();
-		this.beanFactory.getBean("taskService", ITaskService.class).submitOnce(
+		this.beanFactory.getBean(ITaskService.class).submitOnce(
 				"Deferred handler initialization", 3, new Runnable() {
 					@Override
 					public void run() {
@@ -234,7 +234,14 @@ public final class Kernel implements IKernel {
 					}
 				});
 		this.beanFactory.getBean(StartCounter.class).addOne();
-		this.beanFactory.getBean(StartCounter.class).checkCounter();
+		this.beanFactory.getBean(ITaskService.class).submitOnce(
+				"Check start counter", 30, new Runnable() {
+					@Override
+					public void run() {
+						Kernel.this.beanFactory.getBean(StartCounter.class)
+								.checkCounter();
+					}
+				});
 	}
 
 	/**
