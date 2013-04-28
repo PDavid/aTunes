@@ -40,6 +40,7 @@ import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
+import net.sourceforge.atunes.gui.views.controls.CustomStatusBar;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
@@ -62,7 +63,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.jdesktop.swingx.JXStatusBar;
-import org.jdesktop.swingx.plaf.basic.BasicStatusBarUI;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -336,7 +336,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements
 	 */
 	protected final JXStatusBar getStatusBar() {
 		if (this.statusBar == null) {
-			this.statusBar = new JXStatusBar();
+			this.statusBar = new CustomStatusBar(this.lookAndFeelManager);
 			JXStatusBar.Constraint c = new JXStatusBar.Constraint(
 					JXStatusBar.Constraint.ResizeBehavior.FILL);
 			this.statusBar.add(getCenterStatusBar(), c);
@@ -344,9 +344,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements
 			c = new JXStatusBar.Constraint(
 					JXStatusBar.Constraint.ResizeBehavior.FIXED);
 			this.statusBar.add(getProgressBar(), c);
-			// Use BasicStatusBarUI to avoid border added by
-			// SubstanceStatusBarUI
-			this.statusBar.setUI(new BasicStatusBarUI());
 		}
 		return this.statusBar;
 	}

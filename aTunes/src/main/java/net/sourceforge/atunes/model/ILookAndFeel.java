@@ -29,12 +29,15 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.Border;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
+
+import net.sourceforge.atunes.gui.views.controls.CustomStatusBar;
 
 /**
  * A look and feel for the application
@@ -349,5 +352,19 @@ public interface ILookAndFeel {
 	 * @param beanFactory
 	 */
 	public void setBeanFactory(IBeanFactory beanFactory);
+
+	/**
+	 * Customize split pane
+	 * 
+	 * @param customSplitPane
+	 */
+	public void customizeSplitPane(JSplitPane customSplitPane);
+
+	/**
+	 * Customize status bar
+	 * 
+	 * @param customStatusBar
+	 */
+	public void customizeStatusBar(CustomStatusBar customStatusBar);
 
 }

@@ -31,22 +31,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
+import net.sourceforge.atunes.gui.views.controls.CustomStatusBar;
 import net.sourceforge.atunes.gui.views.controls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.PlayPauseButton;
@@ -62,6 +66,7 @@ import net.sourceforge.atunes.model.ITableCellRendererCode;
 import net.sourceforge.atunes.model.ITreeCellRendererCode;
 import net.sourceforge.atunes.utils.Logger;
 
+import org.jdesktop.swingx.plaf.basic.BasicStatusBarUI;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.utils.ShadowPopupBorder;
 import org.pushingpixels.substance.api.DecorationAreaType;
@@ -413,5 +418,19 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 	private JScrollPane customizeScrollPane(final JScrollPane scrollPane) {
 		// scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		return scrollPane;
+	}
+
+	@Override
+	public void customizeSplitPane(final JSplitPane splitPane) {
+		splitPane.setDividerSize(3);
+		splitPane.setBorder(BorderFactory.createEmptyBorder());
+		splitPane.setUI(new BasicSplitPaneUI());
+	}
+
+	@Override
+	public void customizeStatusBar(final CustomStatusBar customStatusBar) {
+		// Use BasicStatusBarUI to avoid border added by
+		// SubstanceStatusBarUI
+		customStatusBar.setUI(new BasicStatusBarUI());
 	}
 }
