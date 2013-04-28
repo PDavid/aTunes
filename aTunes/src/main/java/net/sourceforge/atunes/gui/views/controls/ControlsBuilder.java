@@ -334,6 +334,7 @@ public class ControlsBuilder implements IControlsBuilder {
 		return new CustomFileChooser(path, name);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public JScrollPane createScrollPane(final Component component) {
 		if (component instanceof JTable) {

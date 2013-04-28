@@ -62,6 +62,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.jdesktop.swingx.JXStatusBar;
+import org.jdesktop.swingx.plaf.basic.BasicStatusBarUI;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -343,6 +344,9 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements
 			c = new JXStatusBar.Constraint(
 					JXStatusBar.Constraint.ResizeBehavior.FIXED);
 			this.statusBar.add(getProgressBar(), c);
+			// Use BasicStatusBarUI to avoid border added by
+			// SubstanceStatusBarUI
+			this.statusBar.setUI(new BasicStatusBarUI());
 		}
 		return this.statusBar;
 	}
