@@ -36,7 +36,6 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.JXTreeTable;
@@ -74,7 +73,7 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
 	@Override
 	public void initialize() {
 		setTitle(I18nUtils.getString("RADIO_BROWSER"));
-		setContent(getLookAndFeel());
+		setContent();
 	}
 
 	@Override
@@ -89,10 +88,8 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
 
 	/**
 	 * Sets the content.
-	 * 
-	 * @param iLookAndFeel
 	 */
-	private void setContent(final ILookAndFeel iLookAndFeel) {
+	private void setContent() {
 		JPanel panel = new JPanel(new GridBagLayout());
 		this.treeTable = new JXTreeTable();
 		this.treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -121,7 +118,7 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		panel.add(iLookAndFeel.getScrollPane(this.treeTable), c);
+		panel.add(getControlsBuilder().createScrollPane(this.treeTable), c);
 		c.gridy = 2;
 		c.weightx = 0;
 		c.weighty = 0;

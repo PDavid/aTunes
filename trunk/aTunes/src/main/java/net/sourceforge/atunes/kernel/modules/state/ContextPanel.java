@@ -197,8 +197,8 @@ public final class ContextPanel extends AbstractPreferencesPanel {
 				}
 			}
 		});
-		JScrollPane enginesScrollPane = this.lookAndFeelManager
-				.getCurrentLookAndFeel().getTableScrollPane(this.enginesTable);
+		JScrollPane enginesScrollPane = this.controlsBuilder
+				.createScrollPane(this.enginesTable);
 		enginesScrollPane.setMinimumSize(new Dimension(200, 100));
 
 		this.similarArtistsQueryTextField = this.controlsBuilder

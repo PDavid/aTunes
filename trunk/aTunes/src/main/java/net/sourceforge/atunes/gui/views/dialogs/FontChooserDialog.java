@@ -62,7 +62,9 @@ public final class FontChooserDialog extends AbstractCustomDialog {
 	private static final Integer[] FONT_SIZES = new Integer[] { 6, 7, 8, 9, 10,
 			11, 12, 13, 14, 15, 16 };
 
+	@SuppressWarnings("rawtypes")
 	private JList fontList;
+	@SuppressWarnings("rawtypes")
 	private JList fontSizeList;
 	private JCheckBox useFontSmoothingCheckbox;
 	private JCheckBox useFontSmoothingSettingsFromOsCheckbox;
@@ -110,6 +112,7 @@ public final class FontChooserDialog extends AbstractCustomDialog {
 		add(getContent(getLookAndFeel()));
 	}
 
+	@SuppressWarnings("unchecked")
 	private JPanel getContent(final ILookAndFeel iLookAndFeel) {
 		String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment()
 				.getAvailableFontFamilyNames(this.locale);
@@ -214,17 +217,16 @@ public final class FontChooserDialog extends AbstractCustomDialog {
 		});
 		cancelButton.setText(I18nUtils.getString("CANCEL"));
 
-		return createPanel(iLookAndFeel, okButton, cancelButton);
+		return createPanel(okButton, cancelButton);
 	}
 
 	/**
-	 * @param iLookAndFeel
 	 * @param okButton
 	 * @param cancelButton
 	 * @return
 	 */
-	private JPanel createPanel(final ILookAndFeel iLookAndFeel,
-			final JButton okButton, final JButton cancelButton) {
+	private JPanel createPanel(final JButton okButton,
+			final JButton cancelButton) {
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
@@ -235,7 +237,7 @@ public final class FontChooserDialog extends AbstractCustomDialog {
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.CENTER;
 		c.insets = new Insets(5, 5, 5, 5);
-		panel.add(iLookAndFeel.getListScrollPane(this.fontList), c);
+		panel.add(getControlsBuilder().createScrollPane(this.fontList), c);
 		c.gridx = 1;
 		c.gridy = 0;
 		c.gridwidth = 1;
@@ -243,7 +245,7 @@ public final class FontChooserDialog extends AbstractCustomDialog {
 		c.weighty = 0.7;
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.CENTER;
-		panel.add(iLookAndFeel.getListScrollPane(this.fontSizeList), c);
+		panel.add(getControlsBuilder().createScrollPane(this.fontSizeList), c);
 		c.gridx = 0;
 		c.gridy = 1;
 		c.gridwidth = 2;

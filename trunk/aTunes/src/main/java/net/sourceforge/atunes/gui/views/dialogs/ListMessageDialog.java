@@ -92,7 +92,7 @@ public class ListMessageDialog extends AbstractCustomDialog implements
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		add(getControlsBuilder().getScrollPane(list), c);
+		add(getControlsBuilder().createScrollPane(list), c);
 		c.gridy = 2;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.NONE;

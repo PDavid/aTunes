@@ -144,8 +144,8 @@ public final class AboutDialog extends AbstractCustomDialog implements
 						Object.class,
 						lookAndFeel.getTableCellRenderer(this.beanFactory
 								.getBean(ComponentOrientationTableCellRendererCode.class)));
-		JScrollPane propertiesScrollPane = lookAndFeel
-				.getTableScrollPane(propertiesTable);
+		JScrollPane propertiesScrollPane = getControlsBuilder()
+				.createScrollPane(propertiesTable);
 
 		JButton close = new JButton(I18nUtils.getString("CLOSE"));
 		close.addActionListener(new ActionListener() {

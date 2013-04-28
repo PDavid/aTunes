@@ -32,12 +32,14 @@ import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.text.DefaultEditorKit;
@@ -333,9 +335,20 @@ public class ControlsBuilder implements IControlsBuilder {
 	}
 
 	@Override
-	public JScrollPane getScrollPane(final Component component) {
-		return this.lookAndFeelManager.getCurrentLookAndFeel().getScrollPane(
-				component);
+	public JScrollPane createScrollPane(final Component component) {
+		if (component instanceof JTable) {
+			return this.lookAndFeelManager.getCurrentLookAndFeel()
+					.getTableScrollPane((JTable) component);
+		} else if (component instanceof JTree) {
+			return this.lookAndFeelManager.getCurrentLookAndFeel()
+					.getTreeScrollPane((JTree) component);
+		} else if (component instanceof JList) {
+			return this.lookAndFeelManager.getCurrentLookAndFeel()
+					.getListScrollPane((JList) component);
+		} else {
+			return this.lookAndFeelManager.getCurrentLookAndFeel()
+					.getScrollPane(component);
+		}
 	}
 
 	@Override

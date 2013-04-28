@@ -138,11 +138,12 @@ public final class CoverNavigatorDialog extends AbstractCustomDialog {
 		this.list = iLookAndFeel.getList();
 		this.list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		JScrollPane listScrollPane = iLookAndFeel.getListScrollPane(this.list);
+		JScrollPane listScrollPane = getControlsBuilder().createScrollPane(
+				this.list);
 		listScrollPane.setMinimumSize(new Dimension(200, 0));
 
-		JScrollPane coversScrollPane = iLookAndFeel
-				.getScrollPane(this.coversPanel);
+		JScrollPane coversScrollPane = getControlsBuilder().createScrollPane(
+				this.coversPanel);
 		coversScrollPane.setBorder(BorderFactory.createLineBorder(GuiUtils
 				.getBorderColor()));
 		coversScrollPane

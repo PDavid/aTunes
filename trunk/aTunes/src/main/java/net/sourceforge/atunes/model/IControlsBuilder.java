@@ -157,7 +157,7 @@ public interface IControlsBuilder {
 	 * @param component
 	 * @return
 	 */
-	JScrollPane getScrollPane(Component component);
+	JScrollPane createScrollPane(Component component);
 
 	/**
 	 * @param text

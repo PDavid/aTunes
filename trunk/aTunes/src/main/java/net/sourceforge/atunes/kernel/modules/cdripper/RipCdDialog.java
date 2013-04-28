@@ -297,7 +297,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
 		this.tableModel = new CdInfoTableModel();
 
 		JTable table = getTable(iLookAndFeel);
-		JScrollPane scrollPane = iLookAndFeel.getTableScrollPane(table);
+		JScrollPane scrollPane = getControlsBuilder().createScrollPane(table);
 
 		// Here we define the cd ripper dialog display layout
 		GridBagConstraints c = new GridBagConstraints();

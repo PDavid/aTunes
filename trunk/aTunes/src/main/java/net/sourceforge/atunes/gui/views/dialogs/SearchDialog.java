@@ -111,7 +111,7 @@ public final class SearchDialog extends AbstractCustomDialog implements
 				.deriveFont(Font.PLAIN));
 		this.setAsDefaultCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
 
-		JScrollPane scrollPane = lookAndFeel.getListScrollPane(list);
+		JScrollPane scrollPane = getControlsBuilder().createScrollPane(list);
 		JButton okButton = new JButton(I18nUtils.getString("OK"));
 		okButton.addActionListener(new ActionListener() {
 			@Override

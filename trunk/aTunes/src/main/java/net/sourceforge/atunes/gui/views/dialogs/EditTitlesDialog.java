@@ -102,7 +102,8 @@ public final class EditTitlesDialog extends AbstractCustomDialog {
 
 		this.table = iLookAndFeel.getTable();
 		this.table.setOpaque(false);
-		JScrollPane scrollPane = iLookAndFeel.getTableScrollPane(this.table);
+		JScrollPane scrollPane = getControlsBuilder().createScrollPane(
+				this.table);
 		this.retrieveTitles = new JButton(I18nUtils.getString("GET_TITLES"));
 		this.okButton = new JButton(I18nUtils.getString("OK"));
 		this.cancelButton = new JButton(I18nUtils.getString("CANCEL"));

@@ -213,9 +213,8 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		this.tagAttributesTableModel = new TagAttributesTableModel();
 		this.highlighTagAttributesTable = getHighlighTagAttributesTable();
 
-		this.highlightTagAttributesScrollPane = this.lookAndFeelManager
-				.getCurrentLookAndFeel().getTableScrollPane(
-						this.highlighTagAttributesTable);
+		this.highlightTagAttributesScrollPane = this.controlsBuilder
+				.createScrollPane(this.highlighTagAttributesTable);
 		this.highlightTagAttributesScrollPane.setMinimumSize(new Dimension(300,
 				150));
 

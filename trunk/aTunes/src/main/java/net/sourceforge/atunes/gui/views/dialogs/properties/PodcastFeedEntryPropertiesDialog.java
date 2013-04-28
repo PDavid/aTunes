@@ -180,7 +180,7 @@ public final class PodcastFeedEntryPropertiesDialog extends
 		this.descriptionTextArea.setOpaque(false);
 		this.descriptionTextArea.setBorder(BorderFactory.createEmptyBorder());
 		JScrollPane descriptionScrollPane = this.controlsBuilder
-				.getScrollPane(this.descriptionTextArea);
+				.createScrollPane(this.descriptionTextArea);
 		descriptionScrollPane.setMinimumSize(new Dimension(400, 100));
 
 		arrangePanel(panel, descriptionScrollPane);

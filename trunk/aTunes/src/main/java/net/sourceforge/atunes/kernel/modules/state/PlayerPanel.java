@@ -370,8 +370,8 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
 			}
 		});
 
-		this.hotkeyScrollPane = this.lookAndFeelManager.getCurrentLookAndFeel()
-				.getTableScrollPane(hotkeyTable);
+		this.hotkeyScrollPane = this.controlsBuilder
+				.createScrollPane(hotkeyTable);
 		this.hotkeyScrollPane.setMinimumSize(new Dimension(400, 200));
 		this.cacheFilesBeforePlaying = new JCheckBox(
 				I18nUtils.getString("CACHE_FILES_BEFORE_PLAYING"));

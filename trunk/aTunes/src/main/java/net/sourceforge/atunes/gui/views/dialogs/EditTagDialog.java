@@ -48,7 +48,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.TextTagAttribute;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -94,8 +93,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 		setLayout(new BorderLayout());
 
 		add(this.tabbedPane, BorderLayout.CENTER);
-		this.tabbedPane.addTab(I18nUtils.getString("TAGS"),
-				getTagEditTab(getLookAndFeel()));
+		this.tabbedPane.addTab(I18nUtils.getString("TAGS"), getTagEditTab());
 		this.tabbedPane.addTab(I18nUtils.getString("COVER"), getCoverTab());
 	}
 
@@ -249,11 +247,9 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	/**
 	 * Gets the content.
 	 * 
-	 * @param lookAndFeel
-	 * 
 	 * @return the content
 	 */
-	private JPanel getTagEditTab(final ILookAndFeel lookAndFeel) {
+	private JPanel getTagEditTab() {
 		JPanel panel = new JPanel(new GridBagLayout());
 
 		createCustomTextFieldControl(TextTagAttribute.TITLE);
@@ -273,7 +269,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 		this.nextButton = new JButton(I18nUtils.getString("NEXT"));
 		this.prevButton = new JButton(I18nUtils.getString("PREVIOUS"));
 
-		arrangePanel(panel, lookAndFeel);
+		arrangePanel(panel);
 
 		return panel;
 	}
@@ -311,21 +307,20 @@ public final class EditTagDialog extends AbstractCustomDialog {
 
 	/**
 	 * @param panel
-	 * @param lookAndFeel
 	 */
-	private void arrangePanel(final JPanel panel, final ILookAndFeel lookAndFeel) {
+	private void arrangePanel(final JPanel panel) {
 		GridBagConstraints c = new GridBagConstraints();
-		addControl(TextTagAttribute.TITLE, panel, c, 0, lookAndFeel);
-		addControl(TextTagAttribute.ALBUM_ARTIST, panel, c, 1, lookAndFeel);
-		addControl(TextTagAttribute.ARTIST, panel, c, 2, lookAndFeel);
-		addControl(TextTagAttribute.ALBUM, panel, c, 3, lookAndFeel);
-		addControl(TextTagAttribute.YEAR, panel, c, 4, lookAndFeel);
-		addControl(TextTagAttribute.TRACK, panel, c, 5, lookAndFeel);
-		addControl(TextTagAttribute.DISC_NUMBER, panel, c, 6, lookAndFeel);
-		addControl(TextTagAttribute.GENRE, panel, c, 7, lookAndFeel);
-		addControl(TextTagAttribute.COMPOSER, panel, c, 8, lookAndFeel);
-		addControl(TextTagAttribute.COMMENT, panel, c, 9, lookAndFeel);
-		addControl(TextTagAttribute.LYRICS, panel, c, 10, lookAndFeel);
+		addControl(TextTagAttribute.TITLE, panel, c, 0);
+		addControl(TextTagAttribute.ALBUM_ARTIST, panel, c, 1);
+		addControl(TextTagAttribute.ARTIST, panel, c, 2);
+		addControl(TextTagAttribute.ALBUM, panel, c, 3);
+		addControl(TextTagAttribute.YEAR, panel, c, 4);
+		addControl(TextTagAttribute.TRACK, panel, c, 5);
+		addControl(TextTagAttribute.DISC_NUMBER, panel, c, 6);
+		addControl(TextTagAttribute.GENRE, panel, c, 7);
+		addControl(TextTagAttribute.COMPOSER, panel, c, 8);
+		addControl(TextTagAttribute.COMMENT, panel, c, 9);
+		addControl(TextTagAttribute.LYRICS, panel, c, 10);
 	}
 
 	/**
@@ -336,8 +331,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 * @param row
 	 */
 	private void addControl(final TextTagAttribute attribute,
-			final JPanel panel, final GridBagConstraints c, final int row,
-			final ILookAndFeel lookAndFeel) {
+			final JPanel panel, final GridBagConstraints c, final int row) {
 		c.insets = new Insets(2, 10, 2, 2);
 		c.gridx = 0;
 		c.gridy = row;
@@ -363,7 +357,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
 		if (editor instanceof JTextArea) {
 			c.fill = GridBagConstraints.BOTH;
 			c.weighty = 1;
-			panel.add(lookAndFeel.getScrollPane(editor), c);
+			panel.add(getControlsBuilder().createScrollPane(editor), c);
 		} else {
 			panel.add(editor, c);
 		}

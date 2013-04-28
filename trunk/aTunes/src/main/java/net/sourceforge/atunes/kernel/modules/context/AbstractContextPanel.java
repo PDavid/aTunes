@@ -34,12 +34,9 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTree;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.FadeInPanel;
@@ -48,6 +45,7 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.IContextPanelContent;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -80,10 +78,22 @@ public abstract class AbstractContextPanel implements IContextPanel {
 
 	private JProgressBar indeterminateProgressBar;
 
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
 	@Override
-	public final void updateContextPanel(final IAudioObject newAudioObject, final boolean forceUpdate) {
-		// If the AudioObject is the same as used before to update panel then do nothing if forceUpdate is false
-		if (!forceUpdate && this.audioObject != null && this.audioObject.equals(newAudioObject)) {
+	public final void updateContextPanel(final IAudioObject newAudioObject,
+			final boolean forceUpdate) {
+		// If the AudioObject is the same as used before to update panel then do
+		// nothing if forceUpdate is false
+		if (!forceUpdate && this.audioObject != null
+				&& this.audioObject.equals(newAudioObject)) {
 			return;
 		}
 
@@ -91,25 +101,30 @@ public abstract class AbstractContextPanel implements IContextPanel {
 			GuiUtils.callInEventDispatchThreadAndWait(new Runnable() {
 				@Override
 				public void run() {
-					indeterminateProgressBar.setVisible(true);
+					AbstractContextPanel.this.indeterminateProgressBar
+							.setVisible(true);
 				}
 			});
 			Logger.debug("Updating panel: ", getContextPanelName());
-			ContextPanelContentUpdated updatesController = new ContextPanelContentUpdated(getContents().size(), new Runnable() {
-				@Override
-				public void run() {
-					GuiUtils.callInEventDispatchThreadAndWait(new Runnable() {
+			ContextPanelContentUpdated updatesController = new ContextPanelContentUpdated(
+					getContents().size(), new Runnable() {
 						@Override
 						public void run() {
-							indeterminateProgressBar.setVisible(false);
+							GuiUtils.callInEventDispatchThreadAndWait(new Runnable() {
+								@Override
+								public void run() {
+									AbstractContextPanel.this.indeterminateProgressBar
+											.setVisible(false);
+								}
+							});
+							AbstractContextPanel.this.contextHandler
+									.finishedContextPanelUpdate();
 						}
 					});
-					contextHandler.finishedContextPanelUpdate();
-				}
-			});
 			for (IContextPanelContent<?> content : getContents()) {
 				clearContextPanelContent(content);
-				content.updateContextPanelContent(newAudioObject, updatesController);
+				content.updateContextPanelContent(newAudioObject,
+						updatesController);
 			}
 		}
 
@@ -117,7 +132,8 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	}
 
 	private void clearContextPanelContent(final IContextPanelContent<?> content) {
-		GuiUtils.callInEventDispatchThreadAndWait(new ClearContextPanelContent(content));
+		GuiUtils.callInEventDispatchThreadAndWait(new ClearContextPanelContent(
+				content));
 	}
 
 	@Override
@@ -126,17 +142,18 @@ public abstract class AbstractContextPanel implements IContextPanel {
 		for (IContextPanelContent<?> content : getContents()) {
 			clearContextPanelContent(content);
 		}
-		audioObject = null;
+		this.audioObject = null;
 	}
 
 	@Override
 	public final Component getUIComponent(final ILookAndFeel lookAndFeel) {
-		if (component == null) {
+		if (this.component == null) {
 			JPanel panel = new ContextPanelContainer(new GridBagLayout());
-			indeterminateProgressBar = new JProgressBar();
-			indeterminateProgressBar.setIndeterminate(true);
-			indeterminateProgressBar.setVisible(false);
-			indeterminateProgressBar.setBorder(BorderFactory.createEmptyBorder());
+			this.indeterminateProgressBar = new JProgressBar();
+			this.indeterminateProgressBar.setIndeterminate(true);
+			this.indeterminateProgressBar.setVisible(false);
+			this.indeterminateProgressBar.setBorder(BorderFactory
+					.createEmptyBorder());
 			panel.setOpaque(false);
 			GridBagConstraints c = new GridBagConstraints();
 			c.weightx = 1;
@@ -148,7 +165,7 @@ public abstract class AbstractContextPanel implements IContextPanel {
 			}
 
 			c.insets = new Insets(20, 30, 20, 30);
-			panel.add(indeterminateProgressBar, c);
+			panel.add(this.indeterminateProgressBar, c);
 
 			// Add a dummy panel at the end
 			c.weighty = 1;
@@ -156,11 +173,12 @@ public abstract class AbstractContextPanel implements IContextPanel {
 			c.gridy++;
 			panel.add(new JPanel(), c);
 
-			JScrollPane scrollPane = lookAndFeel.getScrollPane(panel);
+			JScrollPane scrollPane = this.controlsBuilder
+					.createScrollPane(panel);
 			scrollPane.getVerticalScrollBar().setUnitIncrement(50);
-			component = scrollPane;
+			this.component = scrollPane;
 		}
-		return component;
+		return this.component;
 	}
 
 	/**
@@ -169,7 +187,9 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	 * @param c
 	 * @param content
 	 */
-	private void addContextPanelContent(final ILookAndFeel lookAndFeel, final JPanel panel, final GridBagConstraints c, final IContextPanelContent<?> content) {
+	private void addContextPanelContent(final ILookAndFeel lookAndFeel,
+			final JPanel panel, final GridBagConstraints c,
+			final IContextPanelContent<?> content) {
 		Component componentToAdd = content.getComponent();
 		if (componentToAdd instanceof JComponent) {
 			((JComponent) componentToAdd).setOpaque(false);
@@ -192,17 +212,10 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	 * @param componentToAdd
 	 * @return
 	 */
-	private JScrollPane getContentWithScroll(final ILookAndFeel lookAndFeel, final Component componentToAdd) {
-		JScrollPane scroll = null;
-		if (componentToAdd instanceof JTable) {
-			scroll = lookAndFeel.getTableScrollPane((JTable)componentToAdd);
-		} else if (componentToAdd instanceof JTree) {
-			scroll = lookAndFeel.getTreeScrollPane((JTree)componentToAdd);
-		} else if (componentToAdd instanceof JList) {
-			scroll = lookAndFeel.getListScrollPane((JList)componentToAdd);
-		} else {
-			scroll = lookAndFeel.getScrollPane(componentToAdd);
-		}
+	private JScrollPane getContentWithScroll(final ILookAndFeel lookAndFeel,
+			final Component componentToAdd) {
+		JScrollPane scroll = this.controlsBuilder
+				.createScrollPane(componentToAdd);
 		// Set a minimum height
 		scroll.setMinimumSize(new Dimension(0, 200));
 		return scroll;
@@ -210,17 +223,17 @@ public abstract class AbstractContextPanel implements IContextPanel {
 
 	@Override
 	public final String getTitle() {
-		return getContextPanelTitle(contextHandler.getCurrentAudioObject());
+		return getContextPanelTitle(this.contextHandler.getCurrentAudioObject());
 	}
 
 	@Override
 	public final IColorMutableImageIcon getIcon() {
-		return getContextPanelIcon(contextHandler.getCurrentAudioObject());
+		return getContextPanelIcon(this.contextHandler.getCurrentAudioObject());
 	}
 
 	@Override
 	public final boolean isEnabled() {
-		if (contextHandler.getCurrentAudioObject() == null) {
+		if (this.contextHandler.getCurrentAudioObject() == null) {
 			return false;
 		}
 		return true;
@@ -228,10 +241,11 @@ public abstract class AbstractContextPanel implements IContextPanel {
 
 	@Override
 	public final boolean isVisible() {
-		if (contextHandler.getCurrentAudioObject() == null) {
+		if (this.contextHandler.getCurrentAudioObject() == null) {
 			return true;
 		}
-		return isPanelVisibleForAudioObject(contextHandler.getCurrentAudioObject());
+		return isPanelVisibleForAudioObject(this.contextHandler
+				.getCurrentAudioObject());
 	}
 
 	@Override
@@ -254,7 +268,8 @@ public abstract class AbstractContextPanel implements IContextPanel {
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				contextHandler.setContextTab(getContextPanelName());
+				AbstractContextPanel.this.contextHandler
+						.setContextTab(getContextPanelName());
 			}
 		};
 	}
@@ -263,7 +278,10 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result	+ ((getContextPanelName() == null) ? 0 : getContextPanelName().hashCode());
+		result = prime
+				* result
+				+ ((getContextPanelName() == null) ? 0 : getContextPanelName()
+						.hashCode());
 		return result;
 	}
 
@@ -295,7 +313,7 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	}
 
 	final List<IContextPanelContent<?>> getContents() {
-		return contents;
+		return this.contents;
 	}
 
 	@Override
@@ -321,6 +339,6 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	 * @return
 	 */
 	protected ILookAndFeel getLookAndFeel() {
-		return lookAndFeel;
+		return this.lookAndFeel;
 	}
 }

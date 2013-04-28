@@ -82,7 +82,7 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
 	public JScrollPane getTableScrollPane(final JTable table) {
 		table.setOpaque(false);
 		table.setBorder(BorderFactory.createEmptyBorder());
-		JScrollPane scrollPane = getScrollPane(table);
+		JScrollPane scrollPane = createScrollPane(table);
 		scrollPane.setViewport(new StripedTableViewport(table));
 		scrollPane.getViewport().setView(table);
 		scrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER,
@@ -94,17 +94,18 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
 	public JScrollPane getTreeScrollPane(final JTree tree) {
 		tree.setOpaque(false);
 		tree.setBorder(BorderFactory.createEmptyBorder());
-		JScrollPane scrollPane = getScrollPane(tree);
+		JScrollPane scrollPane = createScrollPane(tree);
 		scrollPane.setViewport(new StripedTreeViewport(tree));
 		scrollPane.getViewport().setView(tree);
 		return scrollPane;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public JScrollPane getListScrollPane(final JList list) {
 		list.setOpaque(false);
 		list.setBorder(BorderFactory.createEmptyBorder());
-		JScrollPane scrollPane = getScrollPane(list);
+		JScrollPane scrollPane = createScrollPane(list);
 		scrollPane.setViewport(new StripedListViewport(list));
 		scrollPane.getViewport().setView(list);
 		return scrollPane;
@@ -112,6 +113,10 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
 
 	@Override
 	public JScrollPane getScrollPane(final Component component) {
+		return createScrollPane(component);
+	}
+
+	private JScrollPane createScrollPane(final Component component) {
 		JScrollPane scrollPane = new JScrollPane(component);
 		scrollPane.setBorder(BorderFactory
 				.createLineBorder(MacOSColors.SEPARATOR_COLOR));

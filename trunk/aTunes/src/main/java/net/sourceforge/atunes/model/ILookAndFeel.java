@@ -285,6 +285,8 @@ public interface ILookAndFeel {
 	/**
 	 * Returns scroll pane to show a table with special look and feel settings
 	 * 
+	 * Only call this method from ControlsBuilder
+	 * 
 	 * @param table
 	 * @return
 	 */
@@ -293,36 +295,41 @@ public interface ILookAndFeel {
 	/**
 	 * Returns scroll pane to show a tree with special look and feel settings
 	 * 
+	 * Only call this method from ControlsBuilder
+	 * 
 	 * @param tree
 	 * @return
 	 */
 	public JScrollPane getTreeScrollPane(JTree tree);
 
 	/**
-	 * Returns instance of list with special look and feel settings
-	 * 
-	 * @return
-	 */
-	public JList getList();
-
-	/**
 	 * Returns scroll pane to show a list with special look and feel settings
+	 * 
+	 * Only call this method from ControlsBuilder
 	 * 
 	 * @param list
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	public JScrollPane getListScrollPane(JList list);
 
 	/**
 	 * Returns scroll pane with special look and feel settings
 	 * 
-	 * @deprecated only call this method from ControlsBuilder
+	 * Only call this method from ControlsBuilder
 	 * 
 	 * @param component
 	 * @return
 	 */
-	@Deprecated
 	public JScrollPane getScrollPane(Component component);
+
+	/**
+	 * Returns instance of list with special look and feel settings
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public JList getList();
 
 	/**
 	 * Sets base font
