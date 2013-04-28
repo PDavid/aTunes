@@ -106,7 +106,7 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog
 		// Disable autoresize, as we will control it
 		albumTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-		panel.add(getLookAndFeel().getTableScrollPane(albumTable),
+		panel.add(getControlsBuilder().createScrollPane(albumTable),
 				BorderLayout.CENTER);
 
 		List<IAlbum> albumList = new ArrayList<IAlbum>(this.artist.getAlbums()

@@ -149,32 +149,32 @@ public final class StatsDialog extends AbstractCustomDialog {
 		// General stats
 		JPanel generalPanel = new JPanel(new GridBagLayout());
 		this.generalTable = iLookAndFeel.getTable();
-		JScrollPane generalScrollPane = iLookAndFeel
-				.getTableScrollPane(this.generalTable);
+		JScrollPane generalScrollPane = getControlsBuilder().createScrollPane(
+				this.generalTable);
 		this.generalChart = new JLabel();
 		this.generalChart.setHorizontalAlignment(SwingConstants.CENTER);
 
 		// Songs stats
 		JPanel songPanel = new JPanel(new GridBagLayout());
 		this.songsTable = iLookAndFeel.getTable();
-		JScrollPane songsScrollPane = iLookAndFeel
-				.getTableScrollPane(this.songsTable);
+		JScrollPane songsScrollPane = getControlsBuilder().createScrollPane(
+				this.songsTable);
 		this.songsChart = new JLabel();
 		this.songsChart.setHorizontalAlignment(SwingConstants.CENTER);
 
 		// Albums stats
 		JPanel albumPanel = new JPanel(new GridBagLayout());
 		this.albumsTable = iLookAndFeel.getTable();
-		JScrollPane albumsScrollPane = iLookAndFeel
-				.getTableScrollPane(this.albumsTable);
+		JScrollPane albumsScrollPane = getControlsBuilder().createScrollPane(
+				this.albumsTable);
 		this.albumsChart = new JLabel();
 		this.albumsChart.setHorizontalAlignment(SwingConstants.CENTER);
 
 		// Artists stats
 		JPanel artistPanel = new JPanel(new GridBagLayout());
 		this.artistsTable = iLookAndFeel.getTable();
-		JScrollPane artistsScrollPane = iLookAndFeel
-				.getTableScrollPane(this.artistsTable);
+		JScrollPane artistsScrollPane = getControlsBuilder().createScrollPane(
+				this.artistsTable);
 		this.artistsChart = new JLabel();
 		this.artistsChart.setHorizontalAlignment(SwingConstants.CENTER);
 

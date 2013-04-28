@@ -271,22 +271,24 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
 
 	@Override
 	public JScrollPane getTableScrollPane(final JTable table) {
-		return getScrollPane(table);
+		return new JScrollPane(table);
 	}
 
 	@Override
 	public JScrollPane getTreeScrollPane(final JTree tree) {
-		return getScrollPane(tree);
+		return new JScrollPane(tree);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public JList getList() {
 		return new JList();
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public JScrollPane getListScrollPane(final JList list) {
-		return getScrollPane(list);
+		return new JScrollPane(list);
 	}
 
 	@Override

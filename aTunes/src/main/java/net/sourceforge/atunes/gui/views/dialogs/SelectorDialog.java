@@ -92,8 +92,8 @@ public final class SelectorDialog extends AbstractCustomDialog implements
 		this.list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.list.setBorder(BorderFactory.createLineBorder(GuiUtils
 				.getBorderColor()));
-		JScrollPane scrollPane = getLookAndFeelManager()
-				.getCurrentLookAndFeel().getListScrollPane(this.list);
+		JScrollPane scrollPane = getControlsBuilder().createScrollPane(
+				this.list);
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;

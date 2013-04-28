@@ -125,8 +125,8 @@ public class ExceptionDialog extends AbstractCustomDialog implements
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
 		final JTextArea textArea = getControlsBuilder().createTextArea();
 		textArea.setEditable(false);
-		JScrollPane scrollPane = getLookAndFeelManager()
-				.getCurrentLookAndFeel().getScrollPane(textArea);
+		JScrollPane scrollPane = getControlsBuilder()
+				.createScrollPane(textArea);
 
 		JPanel buttonsPanel = new JPanel(new GridLayout(1, 2, BORDER, BORDER));
 		buttonsPanel.add(sendButton);

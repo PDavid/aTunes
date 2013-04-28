@@ -45,6 +45,7 @@ import net.sourceforge.atunes.kernel.actions.CustomAbstractAction;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -91,6 +92,15 @@ public abstract class AbstractNavigationView implements INavigationView {
 	private ITable navigationTable;
 
 	private IStateNavigation stateNavigation;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	/**
 	 * @param stateNavigation
@@ -175,8 +185,7 @@ public abstract class AbstractNavigationView implements INavigationView {
 	@Override
 	public final JScrollPane getTreeScrollPane() {
 		if (this.scrollPane == null) {
-			this.scrollPane = this.lookAndFeelManager.getCurrentLookAndFeel()
-					.getTreeScrollPane(getTree());
+			this.scrollPane = this.controlsBuilder.createScrollPane(getTree());
 		}
 		return this.scrollPane;
 	}

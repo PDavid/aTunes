@@ -88,7 +88,8 @@ public class PluginEditorDialog extends AbstractCustomDialog {
 		JPanel panel = new JPanel(new BorderLayout());
 		PluginConfigurationPanel configPanel = new PluginConfigurationPanel(
 				this.configuration, getControlsBuilder());
-		panel.add(iLookAndFeel.getScrollPane(configPanel), BorderLayout.CENTER);
+		panel.add(getControlsBuilder().createScrollPane(configPanel),
+				BorderLayout.CENTER);
 		JButton okButton = new JButton(I18nUtils.getString("OK"));
 		okButton.addActionListener(new ActionListener() {
 			@Override

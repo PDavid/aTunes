@@ -118,7 +118,7 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 		text.setWrapStyleWord(true);
 		text.setLineWrap(true);
 		text.setBorder(BorderFactory.createEmptyBorder());
-		JScrollPane scrollPane = getControlsBuilder().getScrollPane(text);
+		JScrollPane scrollPane = getControlsBuilder().createScrollPane(text);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		JButton donateButton = new JButton(I18nUtils.getString("MAKE_DONATION"));
 		donateButton.addActionListener(new ActionListener() {

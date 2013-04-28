@@ -123,7 +123,7 @@ public final class UpdateDialog extends AbstractCustomDialog implements
 		c.gridy = 2;
 		c.fill = GridBagConstraints.BOTH;
 		c.weighty = 0.5;
-		panel.add(getControlsBuilder().getScrollPane(changes), c);
+		panel.add(getControlsBuilder().createScrollPane(changes), c);
 		c.gridy = 3;
 		c.insets = new Insets(10, 0, 10, 0);
 		c.weighty = 0;

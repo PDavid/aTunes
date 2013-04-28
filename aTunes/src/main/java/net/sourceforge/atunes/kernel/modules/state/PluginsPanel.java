@@ -171,8 +171,8 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		this.pluginsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.pluginsTable
 				.setColumnModel(new PluginsTableDefaultTableColumnModel());
-		JScrollPane scrollPane = this.lookAndFeelManager
-				.getCurrentLookAndFeel().getTableScrollPane(this.pluginsTable);
+		JScrollPane scrollPane = this.controlsBuilder
+				.createScrollPane(this.pluginsTable);
 
 		JPanel pluginDetailPanel = new JPanel(new GridBagLayout());
 		final JLabel pluginNameLabel = new JLabel();

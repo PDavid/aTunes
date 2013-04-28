@@ -124,8 +124,8 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog
 					}
 				});
 
-		JScrollPane scrollPane = lookAndFeel
-				.getTableScrollPane(this.columnsList);
+		JScrollPane scrollPane = getControlsBuilder().createScrollPane(
+				this.columnsList);
 		JLabel label = new JLabel(I18nUtils.getString("SELECT_COLUMNS"));
 		this.okButton = new JButton(I18nUtils.getString("OK"));
 		this.okButton.addActionListener(new ActionListener() {

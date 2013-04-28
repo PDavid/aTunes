@@ -35,7 +35,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.gui.views.controls.FadeInPanel;
 import net.sourceforge.atunes.model.IControlsBuilder;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.ImageUtils;
 
 /**
@@ -55,14 +54,12 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 	/**
 	 * Instantiates a new extended tool tip.
 	 * 
-	 * @param lookAndFeel
 	 * @param controlsBuilder
 	 * @param width
 	 * @param height
 	 */
-	public ExtendedToolTip(final ILookAndFeel lookAndFeel,
-			final IControlsBuilder controlsBuilder, final int width,
-			final int height) {
+	public ExtendedToolTip(final IControlsBuilder controlsBuilder,
+			final int width, final int height) {
 		super(null, width, height, controlsBuilder);
 
 		setFocusableWindowState(false);
@@ -100,7 +97,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 		c.insets = new Insets(0, 10, 0, 10);
 		container.add(this.line3, c);
 		// Use scroll pane to draw a border consistent with look and feel
-		JScrollPane scrollPane = lookAndFeel.getScrollPane(container);
+		JScrollPane scrollPane = controlsBuilder.createScrollPane(container);
 		scrollPane
 				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane

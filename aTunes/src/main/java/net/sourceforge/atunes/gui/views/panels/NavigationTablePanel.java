@@ -26,7 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.ITable;
@@ -46,7 +46,14 @@ public final class NavigationTablePanel extends JPanel implements
 
 	private ITable navigationTable;
 
-	private ILookAndFeelManager lookAndFeelManager;
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	/**
 	 * @param controlPanel
@@ -75,8 +82,8 @@ public final class NavigationTablePanel extends JPanel implements
 		this.navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		add(this.controlPanel, BorderLayout.NORTH);
-		add(this.lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(
-				this.navigationTable.getSwingComponent()), BorderLayout.CENTER);
+		add(this.controlsBuilder.createScrollPane(this.navigationTable
+				.getSwingComponent()), BorderLayout.CENTER);
 	}
 
 	/**
@@ -84,14 +91,6 @@ public final class NavigationTablePanel extends JPanel implements
 	 */
 	public void setNavigationTable(final ITable navigationTable) {
 		this.navigationTable = navigationTable;
-	}
-
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(
-			final ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
 	/**

@@ -105,42 +105,43 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
 	/**
 	 * @param patterns
 	 */
-	public void setPatterns(Patterns patterns) {
+	public void setPatterns(final Patterns patterns) {
 		this.patterns = patterns;
 	}
 
 	/**
 	 * @param stateDevice
 	 */
-	public void setStateDevice(IStateDevice stateDevice) {
+	public void setStateDevice(final IStateDevice stateDevice) {
 		this.stateDevice = stateDevice;
 	}
 
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
@@ -157,78 +158,87 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 	public void initialize() {
 		JLabel label = new JLabel(
 				I18nUtils.getString("DEVICE_DEFAULT_LOCATION"));
-		locationFileChooser = new CustomFileChooser(
+		this.locationFileChooser = new CustomFileChooser(
 				I18nUtils.getString("DEVICE_DEFAULT_LOCATION"), this, 20,
-				JFileChooser.DIRECTORIES_ONLY, osManager, beanFactory,
-				controlsBuilder);
+				JFileChooser.DIRECTORIES_ONLY, this.osManager,
+				this.beanFactory, this.controlsBuilder);
 
 		JPanel fileNamePanel = new JPanel(new GridBagLayout());
 		fileNamePanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createEmptyBorder(0, 0, 10, 0),
 				I18nUtils.getString("FILE_NAME")));
-		fileNameNoChangeRadioButton = new JRadioButton(
+		this.fileNameNoChangeRadioButton = new JRadioButton(
 				I18nUtils.getString("NO_CHANGE"));
-		fileNameNoChangeRadioButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				fileNamePatternTextField.setEnabled(false);
-			}
-		});
-		fileNameCustomizedRadioButton = new JRadioButton(
+		this.fileNameNoChangeRadioButton
+				.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						DevicePanel.this.fileNamePatternTextField
+								.setEnabled(false);
+					}
+				});
+		this.fileNameCustomizedRadioButton = new JRadioButton(
 				I18nUtils.getString("CUSTOM"));
-		fileNameCustomizedRadioButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				fileNamePatternTextField.setEnabled(true);
-			}
-		});
-		fileNamePatternTextField = controlsBuilder.createTextField();
-		fileNamePatternTextField.setColumns(10);
+		this.fileNameCustomizedRadioButton
+				.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						DevicePanel.this.fileNamePatternTextField
+								.setEnabled(true);
+					}
+				});
+		this.fileNamePatternTextField = this.controlsBuilder.createTextField();
+		this.fileNamePatternTextField.setColumns(10);
 		ButtonGroup group = new ButtonGroup();
-		group.add(fileNameNoChangeRadioButton);
-		group.add(fileNameCustomizedRadioButton);
+		group.add(this.fileNameNoChangeRadioButton);
+		group.add(this.fileNameCustomizedRadioButton);
 
 		JPanel folderPathPanel = new JPanel(new GridBagLayout());
 		folderPathPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createEmptyBorder(0, 0, 10, 0),
 				I18nUtils.getString("FOLDER")));
-		folderPathNoChangeRadioButton = new JRadioButton(
+		this.folderPathNoChangeRadioButton = new JRadioButton(
 				I18nUtils.getString("FLAT"));
-		folderPathNoChangeRadioButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				folderPathPatternTextField.setEnabled(false);
-			}
-		});
-		folderPathCustomizedRadioButton = new JRadioButton(
+		this.folderPathNoChangeRadioButton
+				.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						DevicePanel.this.folderPathPatternTextField
+								.setEnabled(false);
+					}
+				});
+		this.folderPathCustomizedRadioButton = new JRadioButton(
 				I18nUtils.getString("CUSTOM"));
-		folderPathCustomizedRadioButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				folderPathPatternTextField.setEnabled(true);
-			}
-		});
-		folderPathPatternTextField = controlsBuilder.createTextField();
-		folderPathPatternTextField.setColumns(10);
+		this.folderPathCustomizedRadioButton
+				.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						DevicePanel.this.folderPathPatternTextField
+								.setEnabled(true);
+					}
+				});
+		this.folderPathPatternTextField = this.controlsBuilder
+				.createTextField();
+		this.folderPathPatternTextField.setColumns(10);
 		ButtonGroup group2 = new ButtonGroup();
-		group2.add(folderPathNoChangeRadioButton);
-		group2.add(folderPathCustomizedRadioButton);
+		group2.add(this.folderPathNoChangeRadioButton);
+		group2.add(this.folderPathCustomizedRadioButton);
 
-		JTable availablePatternsTable = lookAndFeelManager
+		JTable availablePatternsTable = this.lookAndFeelManager
 				.getCurrentLookAndFeel().getTable();
 		availablePatternsTable.setModel(new AvailablePatternsTableModel(
-				patterns.getPatternsList()));
+				this.patterns.getPatternsList()));
 
 		JPanel patternsPanel = new JPanel(new BorderLayout());
 		patternsPanel.setPreferredSize(new Dimension(250, 200));
 		patternsPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createEmptyBorder(0, 0, 0, 0),
 				I18nUtils.getString("AVAILABLE_PATTERNS")));
-		patternsPanel.add(lookAndFeelManager.getCurrentLookAndFeel()
-				.getTableScrollPane(availablePatternsTable),
+		patternsPanel.add(
+				this.controlsBuilder.createScrollPane(availablePatternsTable),
 				BorderLayout.CENTER);
 
-		copySameSongForDifferentAlbums = new JCheckBox(
+		this.copySameSongForDifferentAlbums = new JCheckBox(
 				I18nUtils
 						.getString("ALLOW_COPY_TO_DEVICE_SAME_SONG_FOR_DIFFERENT_ALBUMS"));
 
@@ -241,8 +251,8 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 	 * @param folderPathPanel
 	 * @param patternsPanel
 	 */
-	private void arrangePanel(JLabel label, JPanel fileNamePanel,
-			JPanel folderPathPanel, JPanel patternsPanel) {
+	private void arrangePanel(final JLabel label, final JPanel fileNamePanel,
+			final JPanel folderPathPanel, final JPanel patternsPanel) {
 
 		GridBagConstraints c;
 		arrangeFileNamePanel(fileNamePanel);
@@ -255,7 +265,7 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		add(label, c);
 		c.gridx = 1;
-		add(locationFileChooser, c);
+		add(this.locationFileChooser, c);
 
 		c.gridx = 0;
 		c.gridy = 1;
@@ -281,63 +291,64 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 
 		c.gridy = 3;
 		c.weighty = 1;
-		add(copySameSongForDifferentAlbums, c);
+		add(this.copySameSongForDifferentAlbums, c);
 	}
 
 	/**
 	 * @param folderPathPanel
 	 */
-	private void arrangeFolderPathPanel(JPanel folderPathPanel) {
+	private void arrangeFolderPathPanel(final JPanel folderPathPanel) {
 		GridBagConstraints c;
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.WEST;
-		folderPathPanel.add(folderPathNoChangeRadioButton, c);
+		folderPathPanel.add(this.folderPathNoChangeRadioButton, c);
 		c.gridx = 0;
 		c.gridy = 1;
-		folderPathPanel.add(folderPathCustomizedRadioButton, c);
+		folderPathPanel.add(this.folderPathCustomizedRadioButton, c);
 		c.gridx = 2;
 		c.gridy = 1;
 		c.weightx = 1;
 		c.insets = new Insets(0, 20, 0, 20);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		folderPathPanel.add(folderPathPatternTextField, c);
+		folderPathPanel.add(this.folderPathPatternTextField, c);
 	}
 
 	/**
 	 * @param fileNamePanel
 	 */
-	private void arrangeFileNamePanel(JPanel fileNamePanel) {
+	private void arrangeFileNamePanel(final JPanel fileNamePanel) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.WEST;
-		fileNamePanel.add(fileNameNoChangeRadioButton, c);
+		fileNamePanel.add(this.fileNameNoChangeRadioButton, c);
 		c.gridx = 0;
 		c.gridy = 1;
-		fileNamePanel.add(fileNameCustomizedRadioButton, c);
+		fileNamePanel.add(this.fileNameCustomizedRadioButton, c);
 		c.gridx = 2;
 		c.gridy = 1;
 		c.weightx = 1;
 		c.insets = new Insets(0, 20, 0, 20);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		fileNamePanel.add(fileNamePatternTextField, c);
+		fileNamePanel.add(this.fileNamePatternTextField, c);
 	}
 
 	@Override
 	public boolean applyPreferences() {
-		stateDevice.setDefaultDeviceLocation(locationFileChooser.getResult());
-		String fileNamePattern = fileNameNoChangeRadioButton.isSelected() ? ""
-				: fileNamePatternTextField.getText();
-		stateDevice.setDeviceFileNamePattern(fileNamePattern == null
+		this.stateDevice.setDefaultDeviceLocation(this.locationFileChooser
+				.getResult());
+		String fileNamePattern = this.fileNameNoChangeRadioButton.isSelected() ? ""
+				: this.fileNamePatternTextField.getText();
+		this.stateDevice.setDeviceFileNamePattern(fileNamePattern == null
 				|| fileNamePattern.trim().equals("") ? null : fileNamePattern);
-		String folderPathPattern = folderPathNoChangeRadioButton.isSelected() ? ""
-				: folderPathPatternTextField.getText();
-		stateDevice.setDeviceFolderPathPattern(folderPathPattern == null
+		String folderPathPattern = this.folderPathNoChangeRadioButton
+				.isSelected() ? "" : this.folderPathPatternTextField.getText();
+		this.stateDevice.setDeviceFolderPathPattern(folderPathPattern == null
 				|| folderPathPattern.equals("") ? null : folderPathPattern);
-		stateDevice
-				.setAllowRepeatedSongsInDevice(copySameSongForDifferentAlbums
+		this.stateDevice
+				.setAllowRepeatedSongsInDevice(this.copySameSongForDifferentAlbums
 						.isSelected());
 		return false;
 	}
@@ -348,34 +359,36 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 	 * @param location
 	 *            the new default device location
 	 */
-	private void setDefaultDeviceLocation(String location) {
-		locationFileChooser.setText(location);
+	private void setDefaultDeviceLocation(final String location) {
+		this.locationFileChooser.setText(location);
 	}
 
 	@Override
 	public void updatePanel() {
-		setDefaultDeviceLocation(stateDevice.getDefaultDeviceLocation());
-		if (stateDevice.getDeviceFileNamePattern() == null
-				|| stateDevice.getDeviceFileNamePattern().trim().equals("")) {
-			fileNameNoChangeRadioButton.setSelected(true);
-			fileNamePatternTextField.setEnabled(false);
+		setDefaultDeviceLocation(this.stateDevice.getDefaultDeviceLocation());
+		if (this.stateDevice.getDeviceFileNamePattern() == null
+				|| this.stateDevice.getDeviceFileNamePattern().trim()
+						.equals("")) {
+			this.fileNameNoChangeRadioButton.setSelected(true);
+			this.fileNamePatternTextField.setEnabled(false);
 		} else {
-			fileNameCustomizedRadioButton.setSelected(true);
-			fileNamePatternTextField.setEnabled(true);
-			fileNamePatternTextField.setText(stateDevice
+			this.fileNameCustomizedRadioButton.setSelected(true);
+			this.fileNamePatternTextField.setEnabled(true);
+			this.fileNamePatternTextField.setText(this.stateDevice
 					.getDeviceFileNamePattern());
 		}
-		if (stateDevice.getDeviceFolderPathPattern() == null
-				|| stateDevice.getDeviceFolderPathPattern().trim().equals("")) {
-			folderPathNoChangeRadioButton.setSelected(true);
-			folderPathPatternTextField.setEnabled(false);
+		if (this.stateDevice.getDeviceFolderPathPattern() == null
+				|| this.stateDevice.getDeviceFolderPathPattern().trim()
+						.equals("")) {
+			this.folderPathNoChangeRadioButton.setSelected(true);
+			this.folderPathPatternTextField.setEnabled(false);
 		} else {
-			folderPathCustomizedRadioButton.setSelected(true);
-			folderPathPatternTextField.setEnabled(true);
-			folderPathPatternTextField.setText(stateDevice
+			this.folderPathCustomizedRadioButton.setSelected(true);
+			this.folderPathPatternTextField.setEnabled(true);
+			this.folderPathPatternTextField.setText(this.stateDevice
 					.getDeviceFolderPathPattern());
 		}
-		copySameSongForDifferentAlbums.setSelected(stateDevice
+		this.copySameSongForDifferentAlbums.setSelected(this.stateDevice
 				.isAllowRepeatedSongsInDevice());
 	}
 
@@ -389,7 +402,7 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 	}
 
 	@Override
-	public void dialogVisibilityChanged(boolean visible) {
+	public void dialogVisibilityChanged(final boolean visible) {
 		// Do nothing
 	}
 

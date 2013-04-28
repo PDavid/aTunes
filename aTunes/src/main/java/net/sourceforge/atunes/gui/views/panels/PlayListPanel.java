@@ -28,6 +28,7 @@ import javax.swing.JScrollPane;
 
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
@@ -40,86 +41,103 @@ import net.sourceforge.atunes.model.IPlayListTable;
  */
 public final class PlayListPanel extends JPanel implements IPlayListPanel {
 
-    private static final long serialVersionUID = -1886323054505118303L;
+	private static final long serialVersionUID = -1886323054505118303L;
 
-    /** The play list tab panel. */
-    private IPlayListSelectorPanel playListSelectorPanel;
+	/** The play list tab panel. */
+	private IPlayListSelectorPanel playListSelectorPanel;
 
-    /** The play list table. */
-    private IPlayListTable playListTable;
+	/** The play list table. */
+	private IPlayListTable playListTable;
 
-    /** The play list table scroll. */
-    private JScrollPane playListTableScroll;
-    
+	/** The play list table scroll. */
+	private JScrollPane playListTableScroll;
+
 	private ILookAndFeelManager lookAndFeelManager;
-	
+
 	private PlayListTableTransferHandler playListTableTransferHandler;
-	
+
 	private PlayListToDeviceDragAndDropListener playListToDeviceDragAndDropListener;
-	
-    /**
-     * Instantiates a new play list panel.
-     */
-    public PlayListPanel() {
-        super(new BorderLayout());
-    }
-    
-    /**
-     * @param playListToDeviceDragAndDropListener
-     */
-    public void setPlayListToDeviceDragAndDropListener(PlayListToDeviceDragAndDropListener playListToDeviceDragAndDropListener) {
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * Instantiates a new play list panel.
+	 */
+	public PlayListPanel() {
+		super(new BorderLayout());
+	}
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
+	/**
+	 * @param playListToDeviceDragAndDropListener
+	 */
+	public void setPlayListToDeviceDragAndDropListener(
+			final PlayListToDeviceDragAndDropListener playListToDeviceDragAndDropListener) {
 		this.playListToDeviceDragAndDropListener = playListToDeviceDragAndDropListener;
 	}
-    
-    /**
-     * @param playListTableTransferHandler
-     */
-    public void setPlayListTableTransferHandler(PlayListTableTransferHandler playListTableTransferHandler) {
+
+	/**
+	 * @param playListTableTransferHandler
+	 */
+	public void setPlayListTableTransferHandler(
+			final PlayListTableTransferHandler playListTableTransferHandler) {
 		this.playListTableTransferHandler = playListTableTransferHandler;
 	}
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
-    /**
-     * Adds the content.
-     * @param lookAndFeelManager 
-     */
-    public void initialize() {
-        playListTableScroll = lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(playListTable.getSwingComponent());
+	/**
+	 * Adds the content.
+	 * 
+	 * @param lookAndFeelManager
+	 */
+	public void initialize() {
+		this.playListTableScroll = this.controlsBuilder
+				.createScrollPane(this.playListTable.getSwingComponent());
 
-        add(playListSelectorPanel.getSwingComponent(), BorderLayout.NORTH);
-        add(playListTableScroll, BorderLayout.CENTER);
-    }
+		add(this.playListSelectorPanel.getSwingComponent(), BorderLayout.NORTH);
+		add(this.playListTableScroll, BorderLayout.CENTER);
+	}
 
 	/**
 	 * @param playListSelectorPanel
 	 */
-	public void setPlayListSelectorPanel(IPlayListSelectorPanel playListSelectorPanel) {
+	public void setPlayListSelectorPanel(
+			final IPlayListSelectorPanel playListSelectorPanel) {
 		this.playListSelectorPanel = playListSelectorPanel;
 	}
-    
-    @Override
+
+	@Override
 	public void enableDragAndDrop() {
-    	playListToDeviceDragAndDropListener.initialize();
-    	
-        playListTable.setTransferHandler(playListTableTransferHandler);
-        playListTableScroll.setTransferHandler(playListTableTransferHandler);
-    }
-    
-    @Override
-    public JComponent getSwingComponent() {
-    	return this;
-    }
-    
-    /**
-     * @param playListTable
-     */
-    public void setPlayListTable(IPlayListTable playListTable) {
+		this.playListToDeviceDragAndDropListener.initialize();
+
+		this.playListTable
+				.setTransferHandler(this.playListTableTransferHandler);
+		this.playListTableScroll
+				.setTransferHandler(this.playListTableTransferHandler);
+	}
+
+	@Override
+	public JComponent getSwingComponent() {
+		return this;
+	}
+
+	/**
+	 * @param playListTable
+	 */
+	public void setPlayListTable(final IPlayListTable playListTable) {
 		this.playListTable = playListTable;
 	}
 }

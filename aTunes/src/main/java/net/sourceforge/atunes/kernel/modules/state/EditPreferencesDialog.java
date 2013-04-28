@@ -95,13 +95,15 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
 	 * 
 	 * @return the content
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private JPanel getContent(final ILookAndFeel lookAndFeel) {
 		JPanel container = new JPanel(new GridBagLayout());
 		container.setOpaque(false);
 		this.list = new JList();
 		this.list.setCellRenderer(lookAndFeel
 				.getListCellRenderer(new PreferencesListCellRendererCode()));
-		JScrollPane scrollPane = lookAndFeel.getListScrollPane(this.list);
+		JScrollPane scrollPane = getControlsBuilder().createScrollPane(
+				this.list);
 		scrollPane.setMinimumSize(new Dimension(200, 0));
 		this.options = new JPanel();
 		this.ok = new JButton(I18nUtils.getString("OK"));

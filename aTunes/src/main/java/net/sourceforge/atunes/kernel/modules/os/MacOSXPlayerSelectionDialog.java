@@ -267,7 +267,7 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 		panel.add(instructions, c);
 		c.gridy = 1;
 		c.weighty = 0.8;
-		panel.add(getLookAndFeel().getListScrollPane(this.matchesList), c);
+		panel.add(getControlsBuilder().createScrollPane(this.matchesList), c);
 		c.gridy = 2;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;

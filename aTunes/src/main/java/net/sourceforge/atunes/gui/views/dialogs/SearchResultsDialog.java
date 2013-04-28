@@ -91,7 +91,8 @@ public final class SearchResultsDialog extends AbstractCustomDialog {
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		panel.add(iLookAndFeel.getTableScrollPane(this.searchResultsTable), c);
+		panel.add(getControlsBuilder()
+				.createScrollPane(this.searchResultsTable), c);
 
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;

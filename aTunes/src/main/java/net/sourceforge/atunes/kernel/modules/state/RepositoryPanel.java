@@ -100,7 +100,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
@@ -151,51 +151,60 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 	 * Initializes panel
 	 */
 	public void initialize() {
-		refreshTime = new JComboBox(new Integer[] { 0, 5, 10, 15, 30, 60 });
-		commandBeforeAccessRepository = controlsBuilder.createTextField();
-		commandBeforeAccessRepository.setColumns(20);
-		commandAfterAccessRepository = controlsBuilder.createTextField();
-		commandAfterAccessRepository.setColumns(20);
-		repositoryFoldersList = lookAndFeelManager.getCurrentLookAndFeel()
-				.getList();
-		repositoryFoldersList
+		this.refreshTime = new JComboBox(new Integer[] { 0, 5, 10, 15, 30, 60 });
+		this.commandBeforeAccessRepository = this.controlsBuilder
+				.createTextField();
+		this.commandBeforeAccessRepository.setColumns(20);
+		this.commandAfterAccessRepository = this.controlsBuilder
+				.createTextField();
+		this.commandAfterAccessRepository.setColumns(20);
+		this.repositoryFoldersList = this.lookAndFeelManager
+				.getCurrentLookAndFeel().getList();
+		this.repositoryFoldersList
 				.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		addFolderButton = new JButton(I18nUtils.getString("ADD"));
-		removeFolderButton = new JButton(I18nUtils.getString("REMOVE"));
-		repositoryFoldersList
+		this.addFolderButton = new JButton(I18nUtils.getString("ADD"));
+		this.removeFolderButton = new JButton(I18nUtils.getString("REMOVE"));
+		this.repositoryFoldersList
 				.addListSelectionListener(new ListSelectionListener() {
 
 					@Override
 					public void valueChanged(final ListSelectionEvent event) {
-						removeFolderButton.setEnabled(repositoryFoldersList
-								.getSelectedIndex() != -1);
+						RepositoryPanel.this.removeFolderButton
+								.setEnabled(RepositoryPanel.this.repositoryFoldersList
+										.getSelectedIndex() != -1);
 					}
 				});
-		addFolderButton.addActionListener(new ActionListener() {
+		this.addFolderButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				IFolderSelectorDialog dialog = dialogFactory
+				IFolderSelectorDialog dialog = RepositoryPanel.this.dialogFactory
 						.newDialog(IFolderSelectorDialog.class);
 				dialog.setTitle(I18nUtils.getString("ADD_FOLDER_TO_REPOSITORY"));
-				File folder = dialog.selectFolder(osManager.getUserHome());
+				File folder = dialog
+						.selectFolder(RepositoryPanel.this.osManager
+								.getUserHome());
 				if (folder != null) {
-					repositoryFolders.add(folder);
-					repositoryFoldersList.setListData(repositoryFolders
-							.toArray());
+					RepositoryPanel.this.repositoryFolders.add(folder);
+					RepositoryPanel.this.repositoryFoldersList
+							.setListData(RepositoryPanel.this.repositoryFolders
+									.toArray());
 				}
 			}
 		});
-		removeFolderButton.addActionListener(new ActionListener() {
+		this.removeFolderButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(final ActionEvent event) {
-				repositoryFolders.remove(repositoryFoldersList
-						.getSelectedIndex());
-				repositoryFoldersList.setListData(repositoryFolders.toArray());
+				RepositoryPanel.this.repositoryFolders
+						.remove(RepositoryPanel.this.repositoryFoldersList
+								.getSelectedIndex());
+				RepositoryPanel.this.repositoryFoldersList
+						.setListData(RepositoryPanel.this.repositoryFolders
+								.toArray());
 			}
 		});
-		useRatingsStoredInTag = new JCheckBox(
+		this.useRatingsStoredInTag = new JCheckBox(
 				I18nUtils.getString("USE_RATINGS_STORED_IN_TAG"));
 		setupPanel();
 	}
@@ -214,7 +223,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 		c.gridx = 1;
 		c.weightx = 1;
 		c.insets = new Insets(0, 10, 0, 0);
-		add(refreshTime, c);
+		add(this.refreshTime, c);
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weightx = 1;
@@ -223,7 +232,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 				c);
 		c.gridx = 1;
 		c.weightx = 1;
-		add(commandBeforeAccessRepository, c);
+		add(this.commandBeforeAccessRepository, c);
 		c.gridx = 0;
 		c.gridy = 2;
 		c.weightx = 0;
@@ -231,18 +240,18 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 				c);
 		c.gridx = 1;
 		c.weightx = 1;
-		add(commandAfterAccessRepository, c);
+		add(this.commandAfterAccessRepository, c);
 		c.gridx = 0;
 		c.gridy = 3;
 		c.insets = new Insets(20, 10, 0, 0);
-		JScrollPane scrollPane = lookAndFeelManager.getCurrentLookAndFeel()
-				.getScrollPane(repositoryFoldersList);
+		JScrollPane scrollPane = this.controlsBuilder
+				.createScrollPane(this.repositoryFoldersList);
 		scrollPane.setMinimumSize(new Dimension(400, 300));
 		scrollPane.setPreferredSize(new Dimension(400, 300));
 		add(scrollPane, c);
 		JPanel addRemovePanel = new JPanel(new GridLayout(1, 2, 5, 0));
-		addRemovePanel.add(addFolderButton);
-		addRemovePanel.add(removeFolderButton);
+		addRemovePanel.add(this.addFolderButton);
+		addRemovePanel.add(this.removeFolderButton);
 		c.gridy = 4;
 		c.insets = new Insets(10, 10, 0, 0);
 		add(addRemovePanel, c);
@@ -250,26 +259,27 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 		c.gridy = 5;
 		c.weighty = 1;
 		c.anchor = GridBagConstraints.NORTHWEST;
-		add(useRatingsStoredInTag, c);
+		add(this.useRatingsStoredInTag, c);
 	}
 
 	@Override
 	public boolean applyPreferences() {
-		stateRepository.setAutoRepositoryRefreshTime((Integer) refreshTime
-				.getSelectedItem());
-		stateRepository
-				.setCommandBeforeAccessRepository(commandBeforeAccessRepository
+		this.stateRepository
+				.setAutoRepositoryRefreshTime((Integer) this.refreshTime
+						.getSelectedItem());
+		this.stateRepository
+				.setCommandBeforeAccessRepository(this.commandBeforeAccessRepository
 						.getText());
-		stateRepository
-				.setCommandAfterAccessRepository(commandAfterAccessRepository
+		this.stateRepository
+				.setCommandAfterAccessRepository(this.commandAfterAccessRepository
 						.getText());
-		if (repositoryFoldersHaveChanged(repositoryFolders,
-				repositoryHandler.getFolders())) {
-			repositoryHandler.setRepositoryFolders(repositoryFolders);
+		if (repositoryFoldersHaveChanged(this.repositoryFolders,
+				this.repositoryHandler.getFolders())) {
+			this.repositoryHandler.setRepositoryFolders(this.repositoryFolders);
 		}
 
-		stateRepository
-				.setStoreRatingInFile(useRatingsStoredInTag.isSelected());
+		this.stateRepository.setStoreRatingInFile(this.useRatingsStoredInTag
+				.isSelected());
 		return false;
 	}
 
@@ -286,7 +296,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 	 *            the new refresh time
 	 */
 	private void setRefreshTime(final int time) {
-		refreshTime.setSelectedItem(time);
+		this.refreshTime.setSelectedItem(time);
 	}
 
 	/**
@@ -295,7 +305,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 	 * @param command
 	 */
 	private void setCommandBeforeAccessRepository(final String command) {
-		commandBeforeAccessRepository.setText(command);
+		this.commandBeforeAccessRepository.setText(command);
 	}
 
 	/**
@@ -304,33 +314,35 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 	 * @param command
 	 */
 	private void setCommandAfterAccessRepository(final String command) {
-		commandAfterAccessRepository.setText(command);
+		this.commandAfterAccessRepository.setText(command);
 	}
 
-	private void setUseRatingsStoredInTag(boolean storeRatingInFile) {
-		useRatingsStoredInTag.setSelected(storeRatingInFile);
+	private void setUseRatingsStoredInTag(final boolean storeRatingInFile) {
+		this.useRatingsStoredInTag.setSelected(storeRatingInFile);
 	}
 
 	@Override
 	public void updatePanel() {
-		setRefreshTime(stateRepository.getAutoRepositoryRefreshTime());
-		setCommandBeforeAccessRepository(stateRepository
+		setRefreshTime(this.stateRepository.getAutoRepositoryRefreshTime());
+		setCommandBeforeAccessRepository(this.stateRepository
 				.getCommandBeforeAccessRepository());
-		setCommandAfterAccessRepository(stateRepository
+		setCommandAfterAccessRepository(this.stateRepository
 				.getCommandAfterAccessRepository());
 		setRepositoryFolders();
-		setUseRatingsStoredInTag(stateRepository.isStoreRatingInFile());
+		setUseRatingsStoredInTag(this.stateRepository.isStoreRatingInFile());
 	}
 
 	private void setRepositoryFolders() {
-		repositoryFolders = new ArrayList<File>(repositoryHandler.getFolders());
-		repositoryFoldersList.setListData(repositoryFolders.toArray());
-		removeFolderButton.setEnabled(false);
+		this.repositoryFolders = new ArrayList<File>(
+				this.repositoryHandler.getFolders());
+		this.repositoryFoldersList
+				.setListData(this.repositoryFolders.toArray());
+		this.removeFolderButton.setEnabled(false);
 	}
 
 	@Override
 	public void validatePanel() throws PreferencesValidationException {
-		if (CollectionUtils.isEmpty(repositoryFolders)) {
+		if (CollectionUtils.isEmpty(this.repositoryFolders)) {
 			throw new PreferencesValidationException(
 					I18nUtils
 							.getString("REPOSITORY_MUST_CONTAIN_AT_LEAST_ONE_FOLDER"),

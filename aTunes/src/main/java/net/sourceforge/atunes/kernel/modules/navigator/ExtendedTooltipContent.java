@@ -319,10 +319,8 @@ public class ExtendedTooltipContent {
 	private ExtendedToolTip getExtendedToolTip() {
 		if (this.extendedTooltip == null) {
 			JDialog.setDefaultLookAndFeelDecorated(false);
-			this.extendedTooltip = new ExtendedToolTip(
-					this.lookAndFeelManager.getCurrentLookAndFeel(),
-					this.controlsBuilder, IMAGE_DIMENSION.width,
-					IMAGE_DIMENSION.height);
+			this.extendedTooltip = new ExtendedToolTip(this.controlsBuilder,
+					IMAGE_DIMENSION.width, IMAGE_DIMENSION.height);
 			JDialog.setDefaultLookAndFeelDecorated(this.lookAndFeelManager
 					.getCurrentLookAndFeel().isDialogUndecorated());
 		}

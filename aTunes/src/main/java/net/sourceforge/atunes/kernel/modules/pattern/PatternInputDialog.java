@@ -219,8 +219,8 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 
 		JPanel patternPreviewPanel = new JPanel(new BorderLayout());
 		this.patternPreviewTable = getLookAndFeel().getTable();
-		JScrollPane patternPreviewTableScrollPane = getLookAndFeel()
-				.getTableScrollPane(this.patternPreviewTable);
+		JScrollPane patternPreviewTableScrollPane = getControlsBuilder()
+				.createScrollPane(this.patternPreviewTable);
 		patternPreviewPanel.add(patternPreviewTableScrollPane,
 				BorderLayout.CENTER);
 		patternPreviewPanel.setBorder(BorderFactory.createTitledBorder(
@@ -252,8 +252,8 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 				}
 			}
 		});
-		JScrollPane availablePatternsScrollPane = getLookAndFeel()
-				.getTableScrollPane(this.availablePatternsTable);
+		JScrollPane availablePatternsScrollPane = getControlsBuilder()
+				.createScrollPane(this.availablePatternsTable);
 		availablePatternsPanel.add(availablePatternsScrollPane,
 				BorderLayout.CENTER);
 		availablePatternsPanel.setBorder(BorderFactory.createTitledBorder(

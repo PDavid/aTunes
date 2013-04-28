@@ -208,13 +208,14 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	 * 
 	 * @return the simple rules panel
 	 */
+	@SuppressWarnings("rawtypes")
 	public JPanel getSimpleRulesPanel() {
 		if (this.simpleRulesPanel == null) {
 			this.simpleRulesPanel = new JPanel(new GridBagLayout());
 			this.simpleRulesList = getLookAndFeel().getList();
 			this.simpleRulesList
 					.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			this.simpleRulesScrollPane = getLookAndFeel().getListScrollPane(
+			this.simpleRulesScrollPane = getControlsBuilder().createScrollPane(
 					this.simpleRulesList);
 			this.simpleRulesComboBox = new JComboBox();
 			this.simpleRulesTextField = getControlsBuilder().createTextField();
@@ -264,8 +265,8 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 			this.complexRulesPanel = new JPanel(new GridBagLayout());
 			this.complexRulesTree = new JTree();
 
-			this.complexRulesScrollPane = getLookAndFeel().getTreeScrollPane(
-					this.complexRulesTree);
+			this.complexRulesScrollPane = getControlsBuilder()
+					.createScrollPane(this.complexRulesTree);
 			this.complexRulesAndButton = new JButton(I18nUtils.getString("AND"));
 			this.complexRulesOrButton = new JButton(I18nUtils.getString("OR"));
 			this.complexRulesNotButton = new JButton(I18nUtils.getString("NOT"));

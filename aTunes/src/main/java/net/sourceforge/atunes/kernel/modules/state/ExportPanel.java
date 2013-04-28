@@ -88,28 +88,29 @@ public final class ExportPanel extends AbstractPreferencesPanel {
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
 	/**
 	 * @param patterns
 	 */
-	public void setPatterns(Patterns patterns) {
+	public void setPatterns(final Patterns patterns) {
 		this.patterns = patterns;
 	}
 
 	/**
 	 * @param stateRepository
 	 */
-	public void setStateRepository(IStateRepository stateRepository) {
+	public void setStateRepository(final IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
 	}
 
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
@@ -128,58 +129,67 @@ public final class ExportPanel extends AbstractPreferencesPanel {
 		fileNamePanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createEmptyBorder(0, 0, 10, 0),
 				I18nUtils.getString("FILE_NAME")));
-		fileNameNoChangeRadioButton = new JRadioButton(
+		this.fileNameNoChangeRadioButton = new JRadioButton(
 				I18nUtils.getString("NO_CHANGE"));
-		fileNameNoChangeRadioButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				fileNamePatternTextField.setEnabled(false);
-			}
-		});
-		fileNameCustomizedRadioButton = new JRadioButton(
+		this.fileNameNoChangeRadioButton
+				.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						ExportPanel.this.fileNamePatternTextField
+								.setEnabled(false);
+					}
+				});
+		this.fileNameCustomizedRadioButton = new JRadioButton(
 				I18nUtils.getString("CUSTOM"));
-		fileNameCustomizedRadioButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				fileNamePatternTextField.setEnabled(true);
-			}
-		});
-		fileNamePatternTextField = controlsBuilder.createTextField();
-		fileNamePatternTextField.setColumns(10);
+		this.fileNameCustomizedRadioButton
+				.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						ExportPanel.this.fileNamePatternTextField
+								.setEnabled(true);
+					}
+				});
+		this.fileNamePatternTextField = this.controlsBuilder.createTextField();
+		this.fileNamePatternTextField.setColumns(10);
 		ButtonGroup group = new ButtonGroup();
-		group.add(fileNameNoChangeRadioButton);
-		group.add(fileNameCustomizedRadioButton);
+		group.add(this.fileNameNoChangeRadioButton);
+		group.add(this.fileNameCustomizedRadioButton);
 
 		JPanel folderPathPanel = new JPanel(new GridBagLayout());
 		folderPathPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createEmptyBorder(0, 0, 10, 0),
 				I18nUtils.getString("FOLDER")));
-		folderPathNoChangeRadioButton = new JRadioButton(
+		this.folderPathNoChangeRadioButton = new JRadioButton(
 				I18nUtils.getString("NO_CHANGE"));
-		folderPathNoChangeRadioButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				folderPathPatternTextField.setEnabled(false);
-			}
-		});
-		folderPathCustomizedRadioButton = new JRadioButton(
+		this.folderPathNoChangeRadioButton
+				.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						ExportPanel.this.folderPathPatternTextField
+								.setEnabled(false);
+					}
+				});
+		this.folderPathCustomizedRadioButton = new JRadioButton(
 				I18nUtils.getString("CUSTOM"));
-		folderPathCustomizedRadioButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				folderPathPatternTextField.setEnabled(true);
-			}
-		});
-		folderPathPatternTextField = controlsBuilder.createTextField();
-		folderPathPatternTextField.setColumns(10);
+		this.folderPathCustomizedRadioButton
+				.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						ExportPanel.this.folderPathPatternTextField
+								.setEnabled(true);
+					}
+				});
+		this.folderPathPatternTextField = this.controlsBuilder
+				.createTextField();
+		this.folderPathPatternTextField.setColumns(10);
 		ButtonGroup group2 = new ButtonGroup();
-		group2.add(folderPathNoChangeRadioButton);
-		group2.add(folderPathCustomizedRadioButton);
+		group2.add(this.folderPathNoChangeRadioButton);
+		group2.add(this.folderPathCustomizedRadioButton);
 
-		JTable availablePatternsTable = lookAndFeelManager
+		JTable availablePatternsTable = this.lookAndFeelManager
 				.getCurrentLookAndFeel().getTable();
 		availablePatternsTable.setModel(new AvailablePatternsTableModel(
-				patterns.getPatternsList()));
+				this.patterns.getPatternsList()));
 
 		JPanel patternsPanel = getPatternsPanel(availablePatternsTable);
 
@@ -190,14 +200,14 @@ public final class ExportPanel extends AbstractPreferencesPanel {
 	 * @param availablePatternsTable
 	 * @return
 	 */
-	private JPanel getPatternsPanel(JTable availablePatternsTable) {
+	private JPanel getPatternsPanel(final JTable availablePatternsTable) {
 		JPanel patternsPanel = new JPanel(new BorderLayout());
 		patternsPanel.setPreferredSize(new Dimension(250, 200));
 		patternsPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createEmptyBorder(0, 0, 0, 0),
 				I18nUtils.getString("AVAILABLE_PATTERNS")));
-		patternsPanel.add(lookAndFeelManager.getCurrentLookAndFeel()
-				.getTableScrollPane(availablePatternsTable),
+		patternsPanel.add(
+				this.controlsBuilder.createScrollPane(availablePatternsTable),
 				BorderLayout.CENTER);
 		return patternsPanel;
 	}
@@ -207,37 +217,37 @@ public final class ExportPanel extends AbstractPreferencesPanel {
 	 * @param folderPathPanel
 	 * @param patternsPanel
 	 */
-	private void arrangePanel(JPanel fileNamePanel, JPanel folderPathPanel,
-			JPanel patternsPanel) {
+	private void arrangePanel(final JPanel fileNamePanel,
+			final JPanel folderPathPanel, final JPanel patternsPanel) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.WEST;
-		fileNamePanel.add(fileNameNoChangeRadioButton, c);
+		fileNamePanel.add(this.fileNameNoChangeRadioButton, c);
 		c.gridx = 0;
 		c.gridy = 1;
-		fileNamePanel.add(fileNameCustomizedRadioButton, c);
+		fileNamePanel.add(this.fileNameCustomizedRadioButton, c);
 		c.gridx = 2;
 		c.gridy = 1;
 		c.weightx = 1;
 		c.insets = new Insets(0, 20, 0, 20);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		fileNamePanel.add(fileNamePatternTextField, c);
+		fileNamePanel.add(this.fileNamePatternTextField, c);
 
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.WEST;
-		folderPathPanel.add(folderPathNoChangeRadioButton, c);
+		folderPathPanel.add(this.folderPathNoChangeRadioButton, c);
 		c.gridx = 0;
 		c.gridy = 1;
-		folderPathPanel.add(folderPathCustomizedRadioButton, c);
+		folderPathPanel.add(this.folderPathCustomizedRadioButton, c);
 		c.gridx = 2;
 		c.gridy = 1;
 		c.weightx = 1;
 		c.insets = new Insets(0, 20, 0, 20);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		folderPathPanel.add(folderPathPatternTextField, c);
+		folderPathPanel.add(this.folderPathPatternTextField, c);
 
 		c = new GridBagConstraints();
 		c.gridx = 0;
@@ -263,38 +273,41 @@ public final class ExportPanel extends AbstractPreferencesPanel {
 
 	@Override
 	public boolean applyPreferences() {
-		String fileNamePattern = fileNameNoChangeRadioButton.isSelected() ? ""
-				: fileNamePatternTextField.getText();
-		stateRepository.setExportFileNamePattern(fileNamePattern == null
+		String fileNamePattern = this.fileNameNoChangeRadioButton.isSelected() ? ""
+				: this.fileNamePatternTextField.getText();
+		this.stateRepository.setExportFileNamePattern(fileNamePattern == null
 				|| fileNamePattern.trim().equals("") ? null : fileNamePattern);
-		String folderPathPattern = folderPathNoChangeRadioButton.isSelected() ? ""
-				: folderPathPatternTextField.getText();
-		stateRepository.setExportFolderPathPattern(folderPathPattern == null
-				|| folderPathPattern.equals("") ? null : folderPathPattern);
+		String folderPathPattern = this.folderPathNoChangeRadioButton
+				.isSelected() ? "" : this.folderPathPatternTextField.getText();
+		this.stateRepository
+				.setExportFolderPathPattern(folderPathPattern == null
+						|| folderPathPattern.equals("") ? null
+						: folderPathPattern);
 		return false;
 	}
 
 	@Override
 	public void updatePanel() {
-		if (stateRepository.getExportFileNamePattern() == null
-				|| stateRepository.getExportFileNamePattern().trim().equals("")) {
-			fileNameNoChangeRadioButton.setSelected(true);
-			fileNamePatternTextField.setEnabled(false);
+		if (this.stateRepository.getExportFileNamePattern() == null
+				|| this.stateRepository.getExportFileNamePattern().trim()
+						.equals("")) {
+			this.fileNameNoChangeRadioButton.setSelected(true);
+			this.fileNamePatternTextField.setEnabled(false);
 		} else {
-			fileNameCustomizedRadioButton.setSelected(true);
-			fileNamePatternTextField.setEnabled(true);
-			fileNamePatternTextField.setText(stateRepository
+			this.fileNameCustomizedRadioButton.setSelected(true);
+			this.fileNamePatternTextField.setEnabled(true);
+			this.fileNamePatternTextField.setText(this.stateRepository
 					.getExportFileNamePattern());
 		}
-		if (stateRepository.getExportFolderPathPattern() == null
-				|| stateRepository.getExportFolderPathPattern().trim()
+		if (this.stateRepository.getExportFolderPathPattern() == null
+				|| this.stateRepository.getExportFolderPathPattern().trim()
 						.equals("")) {
-			folderPathNoChangeRadioButton.setSelected(true);
-			folderPathPatternTextField.setEnabled(false);
+			this.folderPathNoChangeRadioButton.setSelected(true);
+			this.folderPathPatternTextField.setEnabled(false);
 		} else {
-			folderPathCustomizedRadioButton.setSelected(true);
-			folderPathPatternTextField.setEnabled(true);
-			folderPathPatternTextField.setText(stateRepository
+			this.folderPathCustomizedRadioButton.setSelected(true);
+			this.folderPathPatternTextField.setEnabled(true);
+			this.folderPathPatternTextField.setText(this.stateRepository
 					.getExportFolderPathPattern());
 		}
 	}
@@ -309,7 +322,7 @@ public final class ExportPanel extends AbstractPreferencesPanel {
 	}
 
 	@Override
-	public void dialogVisibilityChanged(boolean visible) {
+	public void dialogVisibilityChanged(final boolean visible) {
 		// Do nothing
 	}
 }

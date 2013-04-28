@@ -244,7 +244,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements
 		panel.add(topPanel, c);
 		c.gridy = 1;
 		c.weighty = 1;
-		panel.add(getControlsBuilder().getScrollPane(this.treeTable), c);
+		panel.add(getControlsBuilder().createScrollPane(this.treeTable), c);
 		c.gridy = 2;
 		c.weightx = 0;
 		c.weighty = 0;

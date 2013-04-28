@@ -50,6 +50,7 @@ import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel.ImageEntry
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
 import net.sourceforge.atunes.model.FontSettings;
 import net.sourceforge.atunes.model.IColorBeanFactory;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocaleBean;
@@ -102,6 +103,15 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 	private String skinApplied;
 
 	private List<Locale> availableLanguages;
+
+	private IControlsBuilder controlsBuilder;
+
+	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
 
 	/**
 	 * @param availableLanguages
@@ -239,8 +249,8 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 		this.windowTypeChoosingPanel = new ByImageChoosingPanel<Class<? extends IFrame>>(
 				data);
 
-		JScrollPane sp = this.lookAndFeelManager.getCurrentLookAndFeel()
-				.getScrollPane(this.windowTypeChoosingPanel);
+		JScrollPane sp = this.controlsBuilder
+				.createScrollPane(this.windowTypeChoosingPanel);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getVerticalScrollBar().setUnitIncrement(20);
 
