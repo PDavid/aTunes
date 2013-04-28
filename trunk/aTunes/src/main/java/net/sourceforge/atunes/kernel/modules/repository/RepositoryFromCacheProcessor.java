@@ -59,34 +59,34 @@ public class RepositoryFromCacheProcessor {
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
 
 	/**
 	 * @param stateRepository
 	 */
-	public void setStateRepository(IStateRepository stateRepository) {
+	public void setStateRepository(final IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
 	}
 
-	void setRepository(IRepository repository) {
+	void setRepository(final IRepository repository) {
 		if (repository == null) {
-			GuiUtils.callInEventDispatchThreadAndWait(new Runnable() {
+			GuiUtils.callInEventDispatchThread(new Runnable() {
 				@Override
 				public void run() {
 					reloadExistingRepository();
@@ -94,7 +94,7 @@ public class RepositoryFromCacheProcessor {
 			});
 		} else {
 			if (repository.exists()) {
-				beanFactory.getBean(RepositoryLoadedActions.class)
+				this.beanFactory.getBean(RepositoryLoadedActions.class)
 						.repositoryReadCompleted(repository);
 			} else {
 				askUser(repository);
@@ -115,7 +115,7 @@ public class RepositoryFromCacheProcessor {
 			}
 			this.dialogFactory.newDialog(IMessageDialog.class).showMessage(
 					I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
-			beanFactory.getBean(RepositoryReader.class)
+			this.beanFactory.getBean(RepositoryReader.class)
 					.newRepositoryWithFoldersReloaded(foldersToRead);
 		} else {
 			RepositorySelectionInfoDialog dialog = this.dialogFactory
@@ -132,23 +132,23 @@ public class RepositoryFromCacheProcessor {
 			GuiUtils.callInEventDispatchThreadAndWait(new Runnable() {
 				@Override
 				public void run() {
-					userResponse = showDialog(rep);
+					RepositoryFromCacheProcessor.this.userResponse = showDialog(rep);
 				}
 			});
-			if (userResponse != null
-					&& userResponse.equals(I18nUtils.getString("EXIT"))) {
+			if (this.userResponse != null
+					&& this.userResponse.equals(I18nUtils.getString("EXIT"))) {
 				this.beanFactory.getBean(IKernel.class).finish();
-			} else if (userResponse == null
-					|| userResponse.equals(I18nUtils.getString("IGNORE"))) {
-				beanFactory.getBean(RepositoryLoadedActions.class)
+			} else if (this.userResponse == null
+					|| this.userResponse.equals(I18nUtils.getString("IGNORE"))) {
+				this.beanFactory.getBean(RepositoryLoadedActions.class)
 						.repositoryReadCompleted(rep);
-			} else if (userResponse != null
-					&& userResponse.equals(I18nUtils
+			} else if (this.userResponse != null
+					&& this.userResponse.equals(I18nUtils
 							.getString("SELECT_REPOSITORY"))) {
-				repositoryHandler.addFolderToRepository();
+				this.repositoryHandler.addFolderToRepository();
 			}
-		} while (userResponse != null
-				&& userResponse.equals(I18nUtils.getString("RETRY")));
+		} while (this.userResponse != null
+				&& this.userResponse.equals(I18nUtils.getString("RETRY")));
 	}
 
 	/**
