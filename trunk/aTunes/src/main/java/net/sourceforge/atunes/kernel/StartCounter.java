@@ -28,6 +28,7 @@ import java.util.Properties;
 
 import javax.swing.Action;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -197,7 +198,12 @@ public final class StartCounter {
 	public void checkCounter() {
 		if (!isDontFireActionAgain()) {
 			if (getCounter() >= this.counterLevelNeededToFireAction) {
-				this.actionToFire.actionPerformed(null);
+				GuiUtils.callInEventDispatchThread(new Runnable() {
+					@Override
+					public void run() {
+						StartCounter.this.actionToFire.actionPerformed(null);
+					}
+				});
 			}
 		}
 	}

@@ -20,16 +20,16 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -120,16 +120,25 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 		text.setBorder(BorderFactory.createEmptyBorder());
 		JScrollPane scrollPane = getControlsBuilder().getScrollPane(text);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		JLabel donateButton = new JLabel(
-				Images.getImage(Images.PROJECT_SUPPORT));
-		donateButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		donateButton.addMouseListener(new MouseAdapter() {
+		JButton donateButton = new JButton(I18nUtils.getString("MAKE_DONATION"));
+		donateButton.addActionListener(new ActionListener() {
+
 			@Override
-			public void mouseClicked(final MouseEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				MakeDonationDialog.this.desktop
 						.openURL(MakeDonationDialog.this.donationUrl);
+				MakeDonationDialog.this.hideDialog();
 			}
 		});
+		JButton notNowButton = new JButton(I18nUtils.getString("NOT_NOW"));
+		notNowButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				MakeDonationDialog.this.hideDialog();
+			}
+		});
+
 		final JCheckBox dontShowAgain = new JCheckBox(
 				I18nUtils.getString("DONT_SHOW_AGAIN"));
 		dontShowAgain.addItemListener(new ItemListener() {
@@ -140,6 +149,11 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 						.isSelected();
 			}
 		});
+
+		JPanel buttons = new JPanel();
+		buttons.add(donateButton);
+		buttons.add(notNowButton);
+
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -159,7 +173,8 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 		c.insets = !this.showOptionToNotShowAgain ? new Insets(0, 0, 40, 0)
 				: new Insets(0, 0, 0, 0);
 		c.weighty = 0;
-		panel.add(donateButton, c);
+		c.insets = new Insets(10, 0, 10, 0);
+		panel.add(buttons, c);
 		c.gridy = 3;
 		c.weightx = 0;
 		c.fill = GridBagConstraints.NONE;
