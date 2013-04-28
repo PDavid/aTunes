@@ -300,13 +300,13 @@ public class ControlsBuilder implements IControlsBuilder {
 
 	@Override
 	public JSplitPane createSplitPane(final int type) {
-		return new CustomSplitPane(type, this);
+		return new CustomSplitPane(type, this, this.lookAndFeelManager);
 	}
 
 	@Override
 	public int getSplitPaneDividerSize() {
-		return new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT, this)
-				.getDividerSize();
+		return new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT, this,
+				this.lookAndFeelManager).getDividerSize();
 	}
 
 	@Override

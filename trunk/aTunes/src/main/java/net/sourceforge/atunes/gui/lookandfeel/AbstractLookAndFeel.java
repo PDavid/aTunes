@@ -30,6 +30,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
@@ -39,6 +40,7 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
+import net.sourceforge.atunes.gui.views.controls.CustomStatusBar;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColumnModel;
 import net.sourceforge.atunes.model.IListCellRendererCode;
@@ -313,5 +315,13 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
 	@Override
 	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
+	}
+
+	@Override
+	public void customizeSplitPane(final JSplitPane splitPane) {
+	}
+
+	@Override
+	public void customizeStatusBar(final CustomStatusBar customStatusBar) {
 	}
 }

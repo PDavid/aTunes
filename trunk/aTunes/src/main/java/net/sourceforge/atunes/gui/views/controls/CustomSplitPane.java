@@ -22,10 +22,11 @@ package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.Component;
 
-import javax.swing.BorderFactory;
 import javax.swing.JSplitPane;
 
 import net.sourceforge.atunes.model.IControlsBuilder;
+import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
  * @author alex
@@ -34,18 +35,24 @@ import net.sourceforge.atunes.model.IControlsBuilder;
  *         manually http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4265389
  * 
  */
-public class CustomSplitPane extends JSplitPane {
+public class CustomSplitPane extends JSplitPane implements
+		ILookAndFeelChangeListener {
 
 	private static final long serialVersionUID = 7760369696865269164L;
 
 	private final IControlsBuilder controlsBuilder;
 
+	private final ILookAndFeelManager lookAndFeelManager;
+
 	CustomSplitPane(final int newOrientation,
-			final IControlsBuilder controlsBuilder) {
+			final IControlsBuilder controlsBuilder,
+			final ILookAndFeelManager lookAndFeelManager) {
 		super(newOrientation);
 		this.controlsBuilder = controlsBuilder;
-		setDividerSize(7);
-		setBorder(BorderFactory.createEmptyBorder());
+		this.lookAndFeelManager = lookAndFeelManager;
+		this.lookAndFeelManager.addLookAndFeelChangeListener(this);
+		this.lookAndFeelManager.getCurrentLookAndFeel()
+				.customizeSplitPane(this);
 	}
 
 	@Override
@@ -68,4 +75,9 @@ public class CustomSplitPane extends JSplitPane {
 		}
 	}
 
+	@Override
+	public void lookAndFeelChanged() {
+		this.lookAndFeelManager.getCurrentLookAndFeel()
+				.customizeSplitPane(this);
+	}
 }
