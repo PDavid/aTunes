@@ -34,6 +34,10 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -227,7 +231,6 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 					.getCurrentSkin()
 					.getActiveColorScheme(DecorationAreaType.GENERAL)
 					.getMidColor());
-
 		} catch (ClassNotFoundException e) {
 			Logger.error(e);
 		} catch (InstantiationException e) {
@@ -384,5 +387,31 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 	@Override
 	public boolean supportsCustomFontSettings() {
 		return true;
+	}
+
+	@Override
+	public JScrollPane getTableScrollPane(final JTable table) {
+		return customizeScrollPane(super.getTableScrollPane(table));
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public JScrollPane getListScrollPane(final JList list) {
+		return customizeScrollPane(super.getListScrollPane(list));
+	}
+
+	@Override
+	public JScrollPane getTreeScrollPane(final JTree tree) {
+		return customizeScrollPane(super.getTreeScrollPane(tree));
+	}
+
+	@Override
+	public JScrollPane getScrollPane(final Component component) {
+		return customizeScrollPane(super.getScrollPane(component));
+	}
+
+	private JScrollPane customizeScrollPane(final JScrollPane scrollPane) {
+		// scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		return scrollPane;
 	}
 }

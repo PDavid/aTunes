@@ -39,63 +39,63 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class SystemLookAndFeel extends AbstractLookAndFeel {
 
-    /**
-     * Name of look and feel
-     */
-    public static final String SYSTEM = "System";
+	/**
+	 * Name of look and feel
+	 */
+	public static final String SYSTEM = "System";
 
-    @Override
-    public String getName() {
-	return SYSTEM;
-    }
-
-    @Override
-    public String getDescription() {
-	return "System Look And Feel";
-    }
-
-    @Override
-    public List<String> getSkins() {
-	return null;
-    }
-
-    @Override
-    public void initializeLookAndFeel(final IBeanFactory beanFactory) {
-	JFrame.setDefaultLookAndFeelDecorated(true);
-	JDialog.setDefaultLookAndFeelDecorated(true);
-
-	// There is a problem with GTKLookAndFeel which shows slider values so
-	// we disable it
-	UIManager.put("Slider.paintValue", false);
-    }
-
-    @Override
-    public String getDefaultSkin() {
-	return null;
-    }
-
-    @Override
-    public boolean customComboBoxRenderersSupported() {
-	return false;
-    }
-
-    @Override
-    public void setLookAndFeel(final String skin) {
-	try {
-	    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	} catch (ClassNotFoundException e) {
-	    Logger.error(e);
-	} catch (InstantiationException e) {
-	    Logger.error(e);
-	} catch (IllegalAccessException e) {
-	    Logger.error(e);
-	} catch (UnsupportedLookAndFeelException e) {
-	    Logger.error(e);
+	@Override
+	public String getName() {
+		return SYSTEM;
 	}
-    }
 
-    @Override
-    public boolean supportsCustomFontSettings() {
-	return false;
-    }
+	@Override
+	public String getDescription() {
+		return "System Look And Feel";
+	}
+
+	@Override
+	public List<String> getSkins() {
+		return null;
+	}
+
+	@Override
+	public void initializeLookAndFeel(final IBeanFactory beanFactory) {
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		JDialog.setDefaultLookAndFeelDecorated(true);
+
+		// There is a problem with GTKLookAndFeel which shows slider values so
+		// we disable it
+		UIManager.put("Slider.paintValue", false);
+	}
+
+	@Override
+	public String getDefaultSkin() {
+		return null;
+	}
+
+	@Override
+	public boolean customComboBoxRenderersSupported() {
+		return false;
+	}
+
+	@Override
+	public void setLookAndFeel(final String skin) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e) {
+			Logger.error(e);
+		} catch (InstantiationException e) {
+			Logger.error(e);
+		} catch (IllegalAccessException e) {
+			Logger.error(e);
+		} catch (UnsupportedLookAndFeelException e) {
+			Logger.error(e);
+		}
+	}
+
+	@Override
+	public boolean supportsCustomFontSettings() {
+		return false;
+	}
 }
