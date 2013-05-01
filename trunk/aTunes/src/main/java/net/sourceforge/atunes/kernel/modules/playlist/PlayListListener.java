@@ -28,6 +28,7 @@ import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.menus.PlayListMenuFiller;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListTable;
 
@@ -41,9 +42,16 @@ public final class PlayListListener extends MouseAdapter implements
 
 	private PlayListController playListController;
 
-	private PlayListMenuFiller playListMenuFiller;
-
 	private IOSManager osManager;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param playListTable
@@ -58,14 +66,6 @@ public final class PlayListListener extends MouseAdapter implements
 	public void setPlayListController(
 			final PlayListController playListController) {
 		this.playListController = playListController;
-	}
-
-	/**
-	 * @param playListMenuFiller
-	 */
-	public void setPlayListMenuFiller(
-			final PlayListMenuFiller playListMenuFiller) {
-		this.playListMenuFiller = playListMenuFiller;
 	}
 
 	/**
@@ -105,6 +105,7 @@ public final class PlayListListener extends MouseAdapter implements
 
 	@Override
 	public void valueChanged(final ListSelectionEvent e) {
-		this.playListMenuFiller.updatePlayListMenuItems();
+		this.beanFactory.getBean(PlayListMenuFiller.class)
+				.updatePlayListMenuItems();
 	}
 }

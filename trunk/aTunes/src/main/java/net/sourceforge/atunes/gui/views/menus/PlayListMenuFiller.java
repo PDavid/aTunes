@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -55,6 +56,7 @@ import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteArtis
 import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteSongAction;
 import net.sourceforge.atunes.kernel.actions.ShowPlayListItemInfoAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
+import net.sourceforge.atunes.kernel.actions.StopAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -136,6 +138,10 @@ public final class PlayListMenuFiller {
 				.getBean(OpenFolderAction.class);
 		openFolderAction.setAudioObjectsSource(table);
 		objects.add(openFolderAction);
+
+		objects.add(new JSeparator());
+		objects.add(new JCheckBoxMenuItem(this.beanFactory
+				.getBean(StopAfterCurrentAudioObjectAction.class)));
 
 		objects.add(new JSeparator());
 		objects.add(new EditTagMenu(true, table, this.beanFactory));

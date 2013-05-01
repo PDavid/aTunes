@@ -360,8 +360,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 		callPlaybackStateListeners(PlaybackState.PLAY_FINISHED);
 		Logger.info("Playback finished");
 
-		// Move to the next audio object
-		playNextAudioObject(true);
+		this.playerHandler.requestToPlayNextAudioObject();
 	}
 
 	@Override
