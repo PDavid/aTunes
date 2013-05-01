@@ -193,4 +193,17 @@ public interface IPlayerHandler extends IHandler {
 	 */
 	public void startPlayingAudioObjectInActivePlayList();
 
+	/**
+	 * Asks handler to play next audio object. Handler will start playing if
+	 * necessary
+	 */
+	public void requestToPlayNextAudioObject();
+
+	/**
+	 * Sets property to stop after current track
+	 * 
+	 * @param stopAfterCurrentTrack
+	 */
+	public void setStopAfterCurrentTrack(boolean stopAfterCurrentTrack);
+
 }

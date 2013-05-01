@@ -25,6 +25,7 @@ import java.util.Collection;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
+import net.sourceforge.atunes.kernel.actions.StopAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -77,6 +78,8 @@ public final class PlayerHandler extends AbstractHandler implements
 	private IStatePlayer statePlayer;
 
 	private IPlayListHandler playListHandler;
+
+	private boolean stopAfterCurrentTrack;
 
 	/**
 	 * @param playListHandler
@@ -447,5 +450,23 @@ public final class PlayerHandler extends AbstractHandler implements
 		if (this.playerEngine instanceof VoidPlayerEngine) {
 			manageNoPlayerEngine(getOsManager(), getFrame());
 		}
+	}
+
+	@Override
+	public void requestToPlayNextAudioObject() {
+		if (!this.stopAfterCurrentTrack) {
+			this.playerEngine.playNextAudioObject(true);
+		} else {
+			Logger.debug("Stopping playback as user selected to stop after current audio object");
+			this.playerEngine.stopCurrentAudioObject(true);
+			this.stopAfterCurrentTrack = false;
+			getBean(StopAfterCurrentAudioObjectAction.class)
+					.setStopAfterCurrentAudioObject(false);
+		}
+	}
+
+	@Override
+	public void setStopAfterCurrentTrack(final boolean stopAfterCurrentTrack) {
+		this.stopAfterCurrentTrack = stopAfterCurrentTrack;
 	}
 }

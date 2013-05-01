@@ -11,6 +11,7 @@ aTunes 3.1.0
 - Added preference to disable Last.fm cache
 - Use NIO to download podcasts faster
 - Store covers in special folder when repository is not writable
+- Added option to stop playback after current track
 
 aTunes 3.0.9
 ------------
