@@ -31,6 +31,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.tree.TreeCellRenderer;
 
 /**
  * Interface to build UI components
@@ -170,4 +171,14 @@ public interface IControlsBuilder {
 	 * @return new url label
 	 */
 	IUrlLabel getUrlLabel();
+
+	/**
+	 * Returns a new TreeCellRenderer executing given code (default
+	 * implementation)
+	 * 
+	 * @param code
+	 * @return
+	 */
+	TreeCellRenderer getTreeCellRenderer(final ITreeCellRendererCode<?, ?> code);
+
 }

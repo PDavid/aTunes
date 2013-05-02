@@ -45,6 +45,7 @@ import javax.swing.SwingConstants;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.StyleConstants;
+import javax.swing.tree.TreeCellRenderer;
 
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IButtonPanel;
@@ -58,6 +59,7 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPopUpButton;
 import net.sourceforge.atunes.model.IStateCore;
+import net.sourceforge.atunes.model.ITreeCellRendererCode;
 import net.sourceforge.atunes.utils.ClipboardFacade;
 
 /**
@@ -360,6 +362,13 @@ public class ControlsBuilder implements IControlsBuilder {
 	@Override
 	public UrlLabel getUrlLabel() {
 		return new UrlLabel(this.desktop);
+	}
+
+	@Override
+	public TreeCellRenderer getTreeCellRenderer(
+			final ITreeCellRendererCode<?, ?> code) {
+		return this.lookAndFeelManager.getCurrentLookAndFeel()
+				.getTreeCellRenderer(code);
 	}
 
 	private static class CustomFileChooser extends JFileChooser {

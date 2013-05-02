@@ -48,7 +48,6 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTree;
 import net.sourceforge.atunes.model.INavigationView;
@@ -85,8 +84,6 @@ public abstract class AbstractNavigationView implements INavigationView {
 	 * Decorators used in view
 	 */
 	private List<AbstractTreeCellDecorator<?, ?>> decorators;
-
-	private ILookAndFeelManager lookAndFeelManager;
 
 	private ITable navigationTable;
 
@@ -161,14 +158,6 @@ public abstract class AbstractNavigationView implements INavigationView {
 	 */
 	public void setNavigationHandler(final INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
-	}
-
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(
-			final ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
 	@Override
@@ -445,10 +434,9 @@ public abstract class AbstractNavigationView implements INavigationView {
 	 * @return
 	 */
 	protected final TreeCellRenderer getTreeRenderer() {
-		return this.lookAndFeelManager.getCurrentLookAndFeel()
-				.getTreeCellRenderer(
-						new NavigationViewTreeCellRendererCode(
-								getTreeCellDecorators()));
+		return this.controlsBuilder
+				.getTreeCellRenderer(new NavigationViewTreeCellRendererCode(
+						getTreeCellDecorators()));
 	}
 
 	@Override
@@ -464,12 +452,5 @@ public abstract class AbstractNavigationView implements INavigationView {
 
 	@Override
 	public void selectArtist(final ViewMode currentViewMode, final String artist) {
-	}
-
-	/**
-	 * @return look and feel manager
-	 */
-	protected ILookAndFeelManager getLookAndFeelManager() {
-		return this.lookAndFeelManager;
 	}
 }
