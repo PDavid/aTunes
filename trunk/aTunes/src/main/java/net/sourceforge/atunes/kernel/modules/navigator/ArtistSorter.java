@@ -36,35 +36,35 @@ import net.sourceforge.atunes.model.IStateNavigation;
  */
 public class ArtistSorter implements INavigationViewSorter {
 
-    private Collator collator;
+	private Collator collator;
 
-    private IStateNavigation stateNavigation;
+	private IStateNavigation stateNavigation;
 
-    /**
-     * @param stateNavigation
-     */
-    public void setStateNavigation(final IStateNavigation stateNavigation) {
-	this.stateNavigation = stateNavigation;
-    }
-
-    /**
-     * @param collator
-     */
-    public void setCollator(final Collator collator) {
-	this.collator = collator;
-    }
-
-    @Override
-    public void sort(final List<String> list) {
-	Comparator<String> comparator = null;
-	if (stateNavigation.isUseSmartTagViewSorting()
-		&& !stateNavigation.isUsePersonNamesArtistTagViewSorting()) {
-	    comparator = new SmartComparator(collator);
-	} else if (stateNavigation.isUsePersonNamesArtistTagViewSorting()) {
-	    comparator = new ArtistNamesComparator(collator);
-	} else {
-	    comparator = new DefaultComparator(collator);
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
 	}
-	Collections.sort(list, comparator);
-    }
+
+	/**
+	 * @param collator
+	 */
+	public void setCollator(final Collator collator) {
+		this.collator = collator;
+	}
+
+	@Override
+	public void sort(final List<String> list) {
+		Comparator<String> comparator = null;
+		if (this.stateNavigation.isUseSmartTagViewSorting()
+				&& !this.stateNavigation.isUsePersonNamesArtistTagViewSorting()) {
+			comparator = new SmartComparator(this.collator);
+		} else if (this.stateNavigation.isUsePersonNamesArtistTagViewSorting()) {
+			comparator = new ArtistNamesComparator(this.collator);
+		} else {
+			comparator = new DefaultComparator(this.collator);
+		}
+		Collections.sort(list, comparator);
+	}
 }

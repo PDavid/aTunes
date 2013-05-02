@@ -26,7 +26,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
@@ -48,6 +50,8 @@ public class ArtistStructureBuilderTest {
 				"Children of Bodom");
 		when(ao1.getAlbumArtist(unknownObjectChecker)).thenReturn(
 				"Children of Bodom");
+		when(ao1.getAlbum(unknownObjectChecker))
+				.thenReturn("Children of Bodom");
 		ILocalAudioObject ao2 = mock(ILocalAudioObject.class);
 		when(ao2.getAlbumArtistOrArtist(unknownObjectChecker)).thenReturn(
 				"Children of Bodom");
@@ -55,13 +59,16 @@ public class ArtistStructureBuilderTest {
 				"Children of Bodom");
 		when(ao2.getAlbumArtist(unknownObjectChecker)).thenReturn(
 				"Children of Bodom");
+		when(ao2.getAlbum(unknownObjectChecker))
+				.thenReturn("Children of Bodom");
 
 		aos.add(ao1);
 		aos.add(ao2);
 
-		List<String> artists = sut.getArtistList(aos);
+		Map<String, IArtist> artists = sut.getArtistObjects(aos);
 
-		assertEquals(1, artists.size());
-		assertEquals("Children of Bodom", artists.get(0));
+		List<String> names = new ArrayList<String>(artists.keySet());
+		assertEquals(1, names.size());
+		assertEquals("Children of Bodom", names.get(0));
 	}
 }

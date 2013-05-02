@@ -21,25 +21,13 @@
 package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import net.sourceforge.atunes.model.IAlbum;
-import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IGenre;
-import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationTree;
-import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.model.INavigationViewSorter;
-import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.ITreeNode;
-import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
-import net.sourceforge.atunes.utils.Collator;
-import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.CollectionUtils;
 
 /**
  * Builds a Genre ViewMode for a view. Several views can use this code
@@ -48,23 +36,9 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class GenreTreeGenerator implements ITreeGenerator {
-
-	private INavigationViewSorter artistSorter;
-
-	private INavigationViewSorter albumSorter;
+public class GenreTreeGenerator extends AbstractTreeGenerator {
 
 	private IUnknownObjectChecker unknownObjectChecker;
-
-	private ArtistStructureBuilder artistStructureBuilder;
-
-	/**
-	 * @param artistStructureBuilder
-	 */
-	public void setArtistStructureBuilder(
-			final ArtistStructureBuilder artistStructureBuilder) {
-		this.artistStructureBuilder = artistStructureBuilder;
-	}
 
 	/**
 	 * @param unknownObjectChecker
@@ -74,188 +48,13 @@ public class GenreTreeGenerator implements ITreeGenerator {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
-	/**
-	 * @param artistSorter
-	 */
-	public void setArtistSorter(final INavigationViewSorter artistSorter) {
-		this.artistSorter = artistSorter;
-	}
-
-	/**
-	 * @param albumSorter
-	 */
-	public void setAlbumSorter(final INavigationViewSorter albumSorter) {
-		this.albumSorter = albumSorter;
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
-	public void buildTree(final INavigationTree tree, final String rootTextKey,
-			final INavigationView view, final Map<String, ?> structure,
-			final String currentFilter,
-			final List<ITreeObject<? extends IAudioObject>> objectsSelected,
-			final List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
-		// Nodes to be selected after refresh
-		List<ITreeNode> nodesToSelect = new ArrayList<ITreeNode>();
-		// Nodes to be expanded after refresh
-		List<ITreeNode> nodesToExpand = new ArrayList<ITreeNode>();
-
-		// Refresh nodes
-		tree.setRoot(I18nUtils.getString(rootTextKey));
-
-		List<String> genreNamesList = new ArrayList<String>(structure.keySet());
-		Collections.sort(genreNamesList,
-				new DefaultComparator(new Collator().getCollator()));
-
-		for (String genreName : genreNamesList) {
-			buildGenreNode(tree, structure, currentFilter, objectsSelected,
-					objectsExpanded, nodesToSelect, nodesToExpand, genreName);
-		}
-
-		// Reload the tree to refresh content
-		tree.reload();
-
-		// Expand nodes
-		tree.expandNodes(nodesToExpand);
-
-		// Once tree has been refreshed, select previously selected nodes
-		tree.selectNodes(nodesToSelect);
-	}
-
-	/**
-	 * @param tree
-	 * @param structure
-	 * @param currentFilter
-	 * @param root
-	 * @param objectsSelected
-	 * @param objectsExpanded
-	 * @param nodesToSelect
-	 * @param nodesToExpand
-	 * @param genreName
-	 */
-	private void buildGenreNode(final INavigationTree tree,
-			final Map<String, ?> structure, final String currentFilter,
-			final List<ITreeObject<? extends IAudioObject>> objectsSelected,
-			final List<ITreeObject<? extends IAudioObject>> objectsExpanded,
-			final List<ITreeNode> nodesToSelect,
-			final List<ITreeNode> nodesToExpand, final String genreName) {
-
-		IGenre genre = (IGenre) structure.get(genreName);
-		if (genreOrArtistsOrAlbumsMatchFilter(currentFilter, genre)) {
-			ITreeNode genreNode = tree.createNode(genre);
-			// If node was selected before refreshing...
-			if (objectsSelected.contains(genreNode.getUserObject())) {
-				nodesToSelect.add(genreNode);
-			}
-			// If node was expanded before refreshing...
-			if (objectsExpanded.contains(genreNode.getUserObject())) {
-				nodesToExpand.add(genreNode);
-			}
-
-			List<ILocalAudioObject> audioObjects = genre.getAudioObjects();
-			// Returns all artists of this genre matching filter for artist OR
-			// album
-			Map<String, IArtist> genreArtists = this.artistStructureBuilder
-					.getArtistObjectsMatchingFilterArtistOrAlbum(audioObjects,
-							currentFilter, currentFilter);
-			List<String> artistNamesList = new ArrayList<String>(
-					genreArtists.keySet());
-			this.artistSorter.sort(artistNamesList);
-
-			for (String artistName : artistNamesList) {
-				buildArtistNode(tree, objectsSelected, objectsExpanded,
-						nodesToSelect, nodesToExpand, genreNode, genreArtists,
-						artistName);
-			}
-			tree.addNode(genreNode);
-		}
-	}
-
-	private boolean genreOrArtistsOrAlbumsMatchFilter(final String filter,
-			final IGenre genre) {
-		if (StringUtils.isEmpty(filter)) {
-			return true;
-		} else {
-			if (genre.getName().toUpperCase().contains(filter.toUpperCase())) {
-				return true;
-			} else {
-				if (!this.artistStructureBuilder.getArtistList(
-						genre.getAudioObjects(), filter).isEmpty()) {
-					return true;
-				} else {
-					if (!this.artistStructureBuilder.getAlbumsList(
-							genre.getAudioObjects(), filter).isEmpty()) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * @param tree
-	 * @param objectsSelected
-	 * @param objectsExpanded
-	 * @param nodesToSelect
-	 * @param nodesToExpand
-	 * @param node
-	 * @param artists
-	 * @param artistName
-	 */
-	private void buildArtistNode(final INavigationTree tree,
-			final List<ITreeObject<? extends IAudioObject>> objectsSelected,
-			final List<ITreeObject<? extends IAudioObject>> objectsExpanded,
-			final List<ITreeNode> nodesToSelect,
-			final List<ITreeNode> nodesToExpand, final ITreeNode node,
-			final Map<String, IArtist> artists, final String artistName) {
-		IArtist artist = artists.get(artistName);
-		ITreeNode artistNode = tree.createNode(artist);
-		List<String> albumNamesList = new ArrayList<String>(artist.getAlbums()
-				.keySet());
-		this.albumSorter.sort(albumNamesList);
-		for (String albumName : albumNamesList) {
-			buildAlbumNode(tree, objectsSelected, objectsExpanded,
-					nodesToSelect, nodesToExpand, node, artist,
-					artistNode, albumName);
-		}
-	}
-
-	/**
-	 * @param tree
-	 * @param objectsSelected
-	 * @param objectsExpanded
-	 * @param nodesToSelect
-	 * @param nodesToExpand
-	 * @param node
-	 * @param artist
-	 * @param artistNode
-	 * @param albumName
-	 */
-	private void buildAlbumNode(final INavigationTree tree,
-			final List<ITreeObject<? extends IAudioObject>> objectsSelected,
-			final List<ITreeObject<? extends IAudioObject>> objectsExpanded,
-			final List<ITreeNode> nodesToSelect,
-			final List<ITreeNode> nodesToExpand, final ITreeNode node,
-			final IArtist artist, final ITreeNode artistNode,
-			final String albumName) {
-		IAlbum album = artist.getAlbum(albumName);
-		ITreeNode albumNode = tree.createNode(album);
-		artistNode.add(albumNode);
-		node.add(artistNode);
-		// If node was selected before refreshing...
-		if (objectsSelected.contains(artistNode.getUserObject())) {
-			nodesToSelect.add(artistNode);
-		}
-		// If node was selected before refreshing...
-		if (objectsSelected.contains(albumNode.getUserObject())) {
-			nodesToSelect.add(albumNode);
-		}
-		// If node was expanded before refreshing...
-		if (objectsExpanded.contains(artistNode.getUserObject())
-				&& objectsExpanded.contains(artistNode.getParent()
-						.getUserObject())) {
-			nodesToExpand.add(artistNode);
-		}
+	List<Class<? extends TreeLevel<?>>> getTreeLevels() {
+		return CollectionUtils.fillCollectionWithElements(
+				new ArrayList<Class<? extends TreeLevel<?>>>(),
+				TreeLevelGenre.class, TreeLevelArtist.class,
+				TreeLevelAlbum.class);
 	}
 
 	@Override

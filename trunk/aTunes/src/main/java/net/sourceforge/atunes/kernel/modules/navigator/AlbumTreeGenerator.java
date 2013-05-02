@@ -22,18 +22,12 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationTree;
-import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.model.INavigationViewSorter;
-import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.ITreeNode;
-import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
-import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.CollectionUtils;
 
 /**
  * Builds an Album ViewMode for a view. Several views can use this code
@@ -42,101 +36,46 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class AlbumTreeGenerator implements ITreeGenerator {
+public class AlbumTreeGenerator extends AbstractTreeGenerator {
 
-    private INavigationViewSorter albumSorter;
+	private IUnknownObjectChecker unknownObjectChecker;
 
-    private IUnknownObjectChecker unknownObjectChecker;
-
-    /**
-     * @param unknownObjectChecker
-     */
-    public void setUnknownObjectChecker(
-	    final IUnknownObjectChecker unknownObjectChecker) {
-	this.unknownObjectChecker = unknownObjectChecker;
-    }
-
-    /**
-     * @param albumSorter
-     */
-    public void setAlbumSorter(final INavigationViewSorter albumSorter) {
-	this.albumSorter = albumSorter;
-    }
-
-    @Override
-    public void buildTree(final INavigationTree tree, final String rootTextKey,
-	    final INavigationView view, final Map<String, ?> structure,
-	    final String currentFilter,
-	    final List<ITreeObject<? extends IAudioObject>> objectsSelected,
-	    final List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
-
-	// Set root
-	tree.setRoot(I18nUtils.getString(rootTextKey));
-
-	List<String> albumsNamesList = new ArrayList<String>(structure.keySet());
-	albumSorter.sort(albumsNamesList);
-
-	// Nodes to be selected after refresh
-	List<ITreeNode> nodesToSelect = new ArrayList<ITreeNode>();
-
-	for (String albumName : albumsNamesList) {
-	    buildAlbumNode(tree, structure, currentFilter, objectsSelected,
-		    nodesToSelect, albumName);
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
-	// Reload the tree to refresh content
-	tree.reload();
-
-	// Once tree has been refreshed, select previously selected nodes
-	tree.selectNodes(nodesToSelect);
-    }
-
-    /**
-     * @param tree
-     * @param structure
-     * @param currentFilter
-     * @param objectsSelected
-     * @param nodesToSelect
-     * @param albumName
-     */
-    private void buildAlbumNode(final INavigationTree tree,
-	    final Map<String, ?> structure, final String currentFilter,
-	    final List<ITreeObject<? extends IAudioObject>> objectsSelected,
-	    final List<ITreeNode> nodesToSelect, final String albumName) {
-
-	IAlbum album = (IAlbum) structure.get(albumName);
-	if (currentFilter == null
-		|| album.getName().toUpperCase()
-			.contains(currentFilter.toUpperCase())) {
-	    // Special album node that shows artist name too
-	    ITreeNode albumNode = tree.createNode(album);
-	    tree.addNode(albumNode);
-	    // If node was selected before refreshing...
-	    if (objectsSelected.contains(albumNode.getUserObject())) {
-		nodesToSelect.add(albumNode);
-	    }
+	@SuppressWarnings("unchecked")
+	@Override
+	List<Class<? extends TreeLevel<?>>> getTreeLevels() {
+		return CollectionUtils.fillCollectionWithElements(
+				new ArrayList<Class<? extends TreeLevel<?>>>(),
+				TreeLevelAlbum.class);
 	}
-    }
 
-    @Override
-    public void selectAudioObject(final INavigationTree tree,
-	    final IAudioObject audioObject) {
-	ITreeNode albumNode = new AlbumAudioObjectSelector(unknownObjectChecker)
-		.getNodeRepresentingAudioObject(tree, audioObject);
-	if (albumNode != null) {
-	    tree.selectNode(albumNode);
-	    tree.scrollToNode(albumNode);
+	@Override
+	public void selectAudioObject(final INavigationTree tree,
+			final IAudioObject audioObject) {
+		ITreeNode albumNode = new AlbumAudioObjectSelector(
+				this.unknownObjectChecker).getNodeRepresentingAudioObject(tree,
+				audioObject);
+		if (albumNode != null) {
+			tree.selectNode(albumNode);
+			tree.scrollToNode(albumNode);
+		}
 	}
-    }
 
-    @Override
-    public void selectArtist(final INavigationTree tree, final String artist) {
-	List<ITreeNode> albumsNodes = new AlbumWithArtistAudioObjectSelector()
-		.getNodesRepresentingAudioObject(tree, artist);
-	if (!albumsNodes.isEmpty()) {
-	    tree.expandNodes(albumsNodes);
-	    tree.selectNodes(albumsNodes);
-	    tree.scrollToNode(albumsNodes.get(0));
+	@Override
+	public void selectArtist(final INavigationTree tree, final String artist) {
+		List<ITreeNode> albumsNodes = new AlbumWithArtistAudioObjectSelector()
+				.getNodesRepresentingAudioObject(tree, artist);
+		if (!albumsNodes.isEmpty()) {
+			tree.expandNodes(albumsNodes);
+			tree.selectNodes(albumsNodes);
+			tree.scrollToNode(albumsNodes.get(0));
+		}
 	}
-    }
 }
