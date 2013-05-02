@@ -5,38 +5,21 @@
 	default-autowire="byName" default-lazy-init="true">
 
 	<bean id="treeGeneratorFactory"
-		class="net.sourceforge.atunes.kernel.modules.navigator.TreeGeneratorFactory">
-		<property name="generators">
-			<map>
-				<entry key-ref="artistViewMode" value-ref="artistTreeGenerator"/>
-				<entry key-ref="albumViewMode" value-ref="albumTreeGenerator"/>
-				<entry key-ref="genreViewMode" value-ref="genreTreeGenerator"/>
-				<entry key-ref="folderViewMode" value-ref="folderTreeGenerator"/>
-				<entry key-ref="yearViewMode" value-ref="yearTreeGenerator"/>
-			</map>
-		</property>
-	</bean>
-
+		class="net.sourceforge.atunes.kernel.modules.navigator.TreeGeneratorFactory" scope="prototype"/>
 
 
 	<bean id="artistTreeGenerator"
-		class="net.sourceforge.atunes.kernel.modules.navigator.ArtistTreeGenerator">
-	</bean>
+		class="net.sourceforge.atunes.kernel.modules.navigator.ArtistTreeGenerator" scope="prototype"/>
 	<bean id="albumTreeGenerator"
-		class="net.sourceforge.atunes.kernel.modules.navigator.AlbumTreeGenerator">
-	</bean>
+		class="net.sourceforge.atunes.kernel.modules.navigator.AlbumTreeGenerator"  scope="prototype"/>
 	<bean id="genreTreeGenerator"
-		class="net.sourceforge.atunes.kernel.modules.navigator.GenreTreeGenerator">
-	</bean>
+		class="net.sourceforge.atunes.kernel.modules.navigator.GenreTreeGenerator"  scope="prototype"/>
 	<bean id="folderTreeGenerator"
-		class="net.sourceforge.atunes.kernel.modules.navigator.FolderTreeGenerator">
-	</bean>
+		class="net.sourceforge.atunes.kernel.modules.navigator.FolderTreeGenerator"  scope="prototype"/>
 	<bean id="yearTreeGenerator"
-		class="net.sourceforge.atunes.kernel.modules.navigator.YearTreeGenerator">
-	</bean>
+		class="net.sourceforge.atunes.kernel.modules.navigator.YearTreeGenerator"  scope="prototype"/>
 	
-	<bean id="artistStructureBuilder" class="net.sourceforge.atunes.kernel.modules.navigator.ArtistStructureBuilder"/>
-	
+	<bean id="artistStructureBuilder" class="net.sourceforge.atunes.kernel.modules.navigator.ArtistStructureBuilder"  scope="prototype"/>
 	
 	<bean id="artistViewMode" class="net.sourceforge.atunes.model.ViewMode" factory-method="valueOf">
 		<constructor-arg value="ARTIST"/>
