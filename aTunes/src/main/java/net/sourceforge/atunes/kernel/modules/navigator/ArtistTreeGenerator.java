@@ -52,6 +52,15 @@ public class ArtistTreeGenerator implements ITreeGenerator {
 	private IUnknownObjectChecker unknownObjectChecker;
 
 	/**
+	 * Possible filter matches in this tree
+	 * 
+	 * @author fleax
+	 */
+	enum FilterMatch {
+		ALL, ARTIST, ALBUM, NONE;
+	}
+
+	/**
 	 * @param unknownObjectChecker
 	 */
 	public void setUnknownObjectChecker(
@@ -123,9 +132,11 @@ public class ArtistTreeGenerator implements ITreeGenerator {
 			final List<ITreeNode> nodesToExpand, final String artistName) {
 
 		IArtist artist = (IArtist) structure.get(artistName);
-		if (artistOrAlbumMatchesFilter(currentFilter, artist)) {
+		FilterMatch match = getFilterMatch(currentFilter, artist);
+		if (match != FilterMatch.NONE) {
 			ITreeNode artistNode = tree.createNode(artist);
-			List<String> albums = filterAndSortAlbums(currentFilter, artist);
+			List<String> albums = filterAndSortAlbumsBasedOnFilterMatch(artist,
+					match, currentFilter);
 			for (String albumName : albums) {
 				ITreeNode albumNode = tree.createNode(artist
 						.getAlbum(albumName));
@@ -151,13 +162,15 @@ public class ArtistTreeGenerator implements ITreeGenerator {
 		}
 	}
 
-	private List<String> filterAndSortAlbums(final String filter,
-			final IArtist artist) {
-		List<String> result = null;
-		if (StringUtils.isEmpty(filter)) {
-			result = new ArrayList<String>(artist.getAlbums().keySet());
+	private List<String> filterAndSortAlbumsBasedOnFilterMatch(
+			final IArtist artist, final FilterMatch match, final String filter) {
+		List<String> result = new ArrayList<String>();
+		if (match == FilterMatch.ALL || match == FilterMatch.ARTIST) {
+			// Add all albums since match applies to all elements or to artist
+			// name
+			result.addAll(artist.getAlbums().keySet());
 		} else {
-			result = new ArrayList<String>();
+			// Match applies to album, so find which is
 			for (String album : artist.getAlbums().keySet()) {
 				if (albumMatchesFilter(filter, album)) {
 					result.add(album);
@@ -168,24 +181,23 @@ public class ArtistTreeGenerator implements ITreeGenerator {
 		return result;
 	}
 
-	private boolean artistOrAlbumMatchesFilter(final String filter,
-			final IArtist artist) {
+	private FilterMatch getFilterMatch(final String filter, final IArtist artist) {
 		if (StringUtils.isEmpty(filter)) {
-			return true;
+			return FilterMatch.ALL;
 		}
 
 		// Artist name matches
 		if (artist.getName().toUpperCase().contains(filter.toUpperCase())) {
-			return true;
+			return FilterMatch.ARTIST;
 		} else {
 			// Find in albums
 			for (String album : artist.getAlbums().keySet()) {
 				if (albumMatchesFilter(filter, album)) {
-					return true;
+					return FilterMatch.ALBUM;
 				}
 			}
 		}
-		return false;
+		return FilterMatch.NONE;
 	}
 
 	/**
