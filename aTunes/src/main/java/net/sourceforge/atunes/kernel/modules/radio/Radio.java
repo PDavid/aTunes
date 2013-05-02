@@ -167,7 +167,7 @@ public final class Radio implements IRadio {
 	}
 
 	@Override
-	public String getYear() {
+	public String getYear(final IUnknownObjectChecker unknownObjectChecker) {
 		return "";
 	}
 

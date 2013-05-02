@@ -84,7 +84,7 @@ public class AudioObjectIndexCreator {
 							audioFile.getAlbumArtist(this.unknownObjectChecker),
 							" ", audioFile.getAlbum(this.unknownObjectChecker),
 							" ", audioFile.getComposer(), " ",
-							audioFile.getYear(), " ",
+							audioFile.getYear(this.unknownObjectChecker), " ",
 							audioFile.getGenre(this.unknownObjectChecker)),
 					Field.Store.YES, Field.Index.ANALYZED));
 

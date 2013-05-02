@@ -24,23 +24,24 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
 
 final class YearTagAttributeReviewed extends AbstractTagAttributeReviewed {
-	
-    YearTagAttributeReviewed(String name) {
-        super(name);
-    }
 
-    @Override
-    String getValue(ILocalAudioObject audioFile) {
-        return audioFile.getYear();
-    }
+	YearTagAttributeReviewed(final String name) {
+		super(name);
+	}
 
-    @Override
-    ITag changeTag(ITag tag, String value) {
-        try {
-            tag.setYear(Integer.parseInt(value));
-        } catch (NumberFormatException e) {
-            tag.setYear(0);
-        }
-        return tag;
-    }
+	@Override
+	String getValue(final ILocalAudioObject audioFile) {
+		// we use getTag().getYear() to avoid returning unknown genre
+		return Integer.toString(audioFile.getTag().getYear());
+	}
+
+	@Override
+	ITag changeTag(final ITag tag, final String value) {
+		try {
+			tag.setYear(Integer.parseInt(value));
+		} catch (NumberFormatException e) {
+			tag.setYear(0);
+		}
+		return tag;
+	}
 }

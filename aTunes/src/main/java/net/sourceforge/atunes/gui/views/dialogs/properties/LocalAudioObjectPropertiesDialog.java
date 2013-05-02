@@ -301,11 +301,11 @@ public final class LocalAudioObjectPropertiesDialog extends
 				StringUtils.isEmpty(this.file
 						.getGenre(this.unknownObjectChecker)) ? "-" : this.file
 						.getGenre(this.unknownObjectChecker)));
-		this.yearLabel
-				.setText(getHtmlFormatted(
-						I18nUtils.getString("YEAR"),
-						StringUtils.getNumberOrZero(this.file.getYear()) > 0 ? this.file
-								.getYear() : "-"));
+		this.yearLabel.setText(getHtmlFormatted(
+				I18nUtils.getString("YEAR"),
+				StringUtils.getNumberOrZero(this.file
+						.getYear(this.unknownObjectChecker)) > 0 ? this.file
+						.getYear(this.unknownObjectChecker) : "-"));
 		this.composerLabel.setText(getHtmlFormatted(I18nUtils
 				.getString("COMPOSER"), StringUtils.isEmpty(this.file
 				.getComposer()) ? "-" : this.file.getComposer()));

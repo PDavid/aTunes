@@ -215,7 +215,8 @@ public class AttributesList {
 	 * @param audioFile
 	 */
 	private void indexYear(final Document d, final ILocalAudioObject audioFile) {
-		d.add(new Field(INDEX_FIELD_YEAR, audioFile.getYear(), Field.Store.YES,
+		d.add(new Field(INDEX_FIELD_YEAR, audioFile
+				.getYear(this.unknownObjectChecker), Field.Store.YES,
 				Field.Index.NOT_ANALYZED));
 	}
 

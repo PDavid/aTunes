@@ -31,7 +31,7 @@ import net.sourceforge.atunes.utils.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
- *
+ * 
  * This action by default returns the current song info and with a parameter
  * exists prints out the info of the file specified.
  */
@@ -74,13 +74,14 @@ public class PrintSongInfoRemoteAction extends RemoteAction {
 		String errorResponse = null;
 		IAudioObject object = null;
 		if (CollectionUtils.isEmpty(parameters)) {
-			object = playListHandler.getCurrentAudioObjectFromCurrentPlayList();
+			object = this.playListHandler
+					.getCurrentAudioObjectFromCurrentPlayList();
 			if (object == null) {
 				errorResponse = "Nothing is playing";
 			}
 		} else {
 			String name = StringUtils.join(parameters, ' ');
-			object = repositoryHandler.getFile(name);
+			object = this.repositoryHandler.getFile(name);
 			if (object == null) {
 				errorResponse = "File not found";
 			}
@@ -99,12 +100,12 @@ public class PrintSongInfoRemoteAction extends RemoteAction {
 	private String returnInformation(final IAudioObject object) {
 		int mins = object.getDuration() / 60;
 		int sec = object.getDuration() % 60;
-		return net.sourceforge.atunes.utils.StringUtils.getString(
-				"Name: ", object.getTitleOrFileName(), SEPARATOR,
-				"Artist: ", object.getArtist(unknownObjectChecker), SEPARATOR,
-				"Album: ", object.getAlbum(unknownObjectChecker), SEPARATOR,
-				"Year: ", object.getYear(), SEPARATOR,
-				"Duration: ", mins, ":", sec);
+		return net.sourceforge.atunes.utils.StringUtils.getString("Name: ",
+				object.getTitleOrFileName(), SEPARATOR, "Artist: ",
+				object.getArtist(this.unknownObjectChecker), SEPARATOR,
+				"Album: ", object.getAlbum(this.unknownObjectChecker),
+				SEPARATOR, "Year: ", object.getYear(this.unknownObjectChecker),
+				SEPARATOR, "Duration: ", mins, ":", sec);
 	}
 
 	@Override

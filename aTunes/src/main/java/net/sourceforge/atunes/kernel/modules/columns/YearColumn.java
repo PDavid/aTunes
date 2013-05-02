@@ -23,15 +23,27 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 /**
  * Column to show year
+ * 
  * @author alex
- *
+ * 
  */
 public class YearColumn extends AbstractColumn<String> {
 
 	private static final long serialVersionUID = -8016584284036796639L;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	/**
 	 * Constructor
@@ -45,23 +57,27 @@ public class YearColumn extends AbstractColumn<String> {
 	}
 
 	@Override
-	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return compare(ao1.getYear(), ao2.getYear());
+	protected int ascendingCompare(final IAudioObject ao1,
+			final IAudioObject ao2) {
+		return compare(ao1.getYear(this.unknownObjectChecker),
+				ao2.getYear(this.unknownObjectChecker));
 	}
 
 	@Override
-	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		return - ascendingCompare(ao1, ao2);
+	protected int descendingCompare(final IAudioObject ao1,
+			final IAudioObject ao2) {
+		return -ascendingCompare(ao1, ao2);
 	}
 
 	@Override
 	public String getValueFor(final IAudioObject audioObject, final int row) {
 		// Return year
-		return audioObject.getYear();
+		return audioObject.getYear(this.unknownObjectChecker);
 	}
 
 	@Override
-	public String getValueForFilter(final IAudioObject audioObject, final int row) {
-		return audioObject.getYear();
+	public String getValueForFilter(final IAudioObject audioObject,
+			final int row) {
+		return audioObject.getYear(this.unknownObjectChecker);
 	}
 }

@@ -217,11 +217,12 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 	}
 
 	@Override
-	public String getYear() {
+	public String getYear(final IUnknownObjectChecker unknownObjectChecker) {
 		if (this.date != null) {
 			this.date.getYear();
 		}
-		return "";
+		return unknownObjectChecker != null ? unknownObjectChecker
+				.getUnknownYear() : "";
 	}
 
 	@Override

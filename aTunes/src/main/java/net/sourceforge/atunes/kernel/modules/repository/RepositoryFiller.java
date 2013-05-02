@@ -64,7 +64,7 @@ final class RepositoryFiller {
 	RepositoryFiller(final IRepository repository,
 			final IStateNavigation stateNavigation,
 			final IUnknownObjectChecker unknownObjectChecker,
-			IFileManager fileManager) {
+			final IFileManager fileManager) {
 		if (repository == null) {
 			throw new IllegalArgumentException("Repository is null");
 		}
@@ -129,9 +129,9 @@ final class RepositoryFiller {
 	 * @param audioFile
 	 */
 	private void addToRepository(final ILocalAudioObject audioFile) {
-		repository.putFile(audioFile);
-		repository.addSizeInBytes(fileManager.getFileSize(audioFile));
-		repository.addDurationInSeconds(audioFile.getDuration());
+		this.repository.putFile(audioFile);
+		this.repository.addSizeInBytes(this.fileManager.getFileSize(audioFile));
+		this.repository.addDurationInSeconds(audioFile.getDuration());
 	}
 
 	/**
@@ -141,21 +141,23 @@ final class RepositoryFiller {
 	 */
 	private void addToArtistStructure(final ILocalAudioObject audioFile) {
 		String artist = null;
-		if (ArtistViewMode.ARTIST.equals(stateNavigation.getArtistViewMode())) {
-			artist = audioFile.getArtist(unknownObjectChecker);
-		} else if (ArtistViewMode.ARTIST_OF_ALBUM.equals(stateNavigation
+		if (ArtistViewMode.ARTIST.equals(this.stateNavigation
 				.getArtistViewMode())) {
-			artist = audioFile.getAlbumArtist(unknownObjectChecker);
+			artist = audioFile.getArtist(this.unknownObjectChecker);
+		} else if (ArtistViewMode.ARTIST_OF_ALBUM.equals(this.stateNavigation
+				.getArtistViewMode())) {
+			artist = audioFile.getAlbumArtist(this.unknownObjectChecker);
 		} else {
-			artist = audioFile.getAlbumArtistOrArtist(unknownObjectChecker);
+			artist = audioFile
+					.getAlbumArtistOrArtist(this.unknownObjectChecker);
 		}
 
-		String album = audioFile.getAlbum(unknownObjectChecker);
+		String album = audioFile.getAlbum(this.unknownObjectChecker);
 
 		// Create artist object if needed
-		IArtist artistObject = repository.getArtist(artist);
+		IArtist artistObject = this.repository.getArtist(artist);
 		if (artistObject == null) {
-			artistObject = repository.putArtist(new Artist(artist));
+			artistObject = this.repository.putArtist(new Artist(artist));
 		}
 
 		// Create album object if needed
@@ -176,10 +178,10 @@ final class RepositoryFiller {
 	 *            the audio file
 	 */
 	private void addToGenreStructure(final ILocalAudioObject audioFile) {
-		String genre = audioFile.getGenre(unknownObjectChecker);
-		IGenre genreObject = repository.getGenre(genre);
+		String genre = audioFile.getGenre(this.unknownObjectChecker);
+		IGenre genreObject = this.repository.getGenre(genre);
 		if (genreObject == null) {
-			genreObject = repository.putGenre(new Genre(genre));
+			genreObject = this.repository.putGenre(new Genre(genre));
 		}
 		genreObject.addAudioObject(audioFile);
 	}
@@ -191,12 +193,12 @@ final class RepositoryFiller {
 	 *            the audio file
 	 */
 	private void addToYearStructure(final ILocalAudioObject audioFile) {
-		String year = audioFile.getYear();
+		String year = audioFile.getYear(this.unknownObjectChecker);
 
-		IYear yearObject = repository.getYear(year);
+		IYear yearObject = this.repository.getYear(year);
 		if (yearObject == null) {
 			yearObject = new Year(year);
-			repository.putYear(yearObject, unknownObjectChecker);
+			this.repository.putYear(yearObject, this.unknownObjectChecker);
 		}
 
 		yearObject.addAudioObject(audioFile);
@@ -214,13 +216,13 @@ final class RepositoryFiller {
 	 */
 	private void addToFolderStructure(final File relativeTo,
 			final String relativePath, final ILocalAudioObject file) {
-		IFolder relativeFolder = repository
+		IFolder relativeFolder = this.repository
 				.getFolder(net.sourceforge.atunes.utils.FileUtils
 						.getPath(relativeTo));
 		if (relativeFolder == null) {
 			relativeFolder = new Folder(
 					net.sourceforge.atunes.utils.FileUtils.getPath(relativeTo));
-			repository.putFolder(relativeFolder);
+			this.repository.putFolder(relativeFolder);
 		}
 
 		String[] foldersInPath = relativePath.split("/");
@@ -249,9 +251,9 @@ final class RepositoryFiller {
 		String album = getAlbum(oldTag);
 
 		boolean albumArtistPresent = true;
-		IArtist a = repository.getArtist(albumArtist);
+		IArtist a = this.repository.getArtist(albumArtist);
 		if (a == null) {
-			a = repository.getArtist(artist);
+			a = this.repository.getArtist(artist);
 			albumArtistPresent = false;
 		}
 		if (a != null) {
@@ -279,13 +281,13 @@ final class RepositoryFiller {
 			}
 
 			if (artistObject.size() <= 0) {
-				repository.removeArtist(artistObject);
+				this.repository.removeArtist(artistObject);
 			}
 		}
 		// If album artist field is present, audio file might still be
 		// present under artist name so check
 		if (albumArtistPresent) {
-			artistObject = repository.getArtist(artist);
+			artistObject = this.repository.getArtist(artist);
 			if (artistObject != null) {
 				alb = artistObject.getAlbum(album);
 				if (alb != null) {
@@ -297,7 +299,7 @@ final class RepositoryFiller {
 					// Maybe needs to be set to 0 in case node gets
 					// deleted
 					if (artistObject.size() <= 1) {
-						repository.removeArtist(artistObject);
+						this.repository.removeArtist(artistObject);
 					}
 				}
 			}
@@ -311,7 +313,7 @@ final class RepositoryFiller {
 	private String getArtist(final ITag tag) {
 		String artist = tag != null ? tag.getArtist() : null;
 		if (StringUtils.isBlank(artist)) {
-			artist = unknownObjectChecker.getUnknownArtist();
+			artist = this.unknownObjectChecker.getUnknownArtist();
 		}
 		return artist;
 	}
@@ -319,7 +321,7 @@ final class RepositoryFiller {
 	private String getAlbum(final ITag tag) {
 		String album = tag != null ? tag.getAlbum() : null;
 		if (StringUtils.isBlank(album)) {
-			album = unknownObjectChecker.getUnknownAlbum();
+			album = this.unknownObjectChecker.getUnknownAlbum();
 		}
 		return album;
 	}
@@ -337,15 +339,15 @@ final class RepositoryFiller {
 			genre = oldTag.getGenre();
 		}
 		if (genre == null || genre.equals("")) {
-			genre = unknownObjectChecker.getUnknownGenre();
+			genre = this.unknownObjectChecker.getUnknownGenre();
 		}
 
-		IGenre g = repository.getGenre(genre);
+		IGenre g = this.repository.getGenre(genre);
 		if (g != null) {
 			g.removeAudioObject(file);
 
 			if (g.size() <= 1) {
-				repository.removeGenre(g);
+				this.repository.removeGenre(g);
 			}
 		}
 	}
@@ -364,16 +366,16 @@ final class RepositoryFiller {
 					: "";
 		}
 		if (year == null || year.equals("")) {
-			year = unknownObjectChecker.getUnknownYear();
+			year = this.unknownObjectChecker.getUnknownYear();
 		}
 
 		// Remove from year structure if necessary
-		IYear y = repository.getYear(year);
+		IYear y = this.repository.getYear(year);
 		if (y != null) {
 			y.removeAudioObject(file);
 
 			if (y.size() <= 1) {
-				repository.removeYear(y, unknownObjectChecker);
+				this.repository.removeYear(y, this.unknownObjectChecker);
 			}
 		}
 	}

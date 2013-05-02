@@ -136,7 +136,7 @@ public class RepositoryRemover {
 	 * @param file
 	 */
 	void removeFromYearStructure(final ILocalAudioObject file) {
-		String year = file.getYear();
+		String year = file.getYear(this.unknownObjectChecker);
 
 		IYear y = this.repositoryHandler.getYear(year);
 		if (y != null) {
