@@ -13,7 +13,6 @@
 				<entry key-ref="genreViewMode" value-ref="genreTreeGenerator"/>
 				<entry key-ref="folderViewMode" value-ref="folderTreeGenerator"/>
 				<entry key-ref="yearViewMode" value-ref="yearTreeGenerator"/>
-				<entry key-ref="artistViewMode" value-ref="artistTreeGenerator"/>
 			</map>
 		</property>
 	</bean>
@@ -39,7 +38,6 @@
 	<bean id="artistStructureBuilder" class="net.sourceforge.atunes.kernel.modules.navigator.ArtistStructureBuilder"/>
 	
 	
-	
 	<bean id="artistViewMode" class="net.sourceforge.atunes.model.ViewMode" factory-method="valueOf">
 		<constructor-arg value="ARTIST"/>
 	</bean>
@@ -58,4 +56,12 @@
 	<bean id="artistAlbumViewMode" class="net.sourceforge.atunes.model.ViewMode" factory-method="valueOf">
 		<constructor-arg value="ARTIST_ALBUM"/>
 	</bean>
+	
+	
+	<bean id="treeLevelsBuilder" class="net.sourceforge.atunes.kernel.modules.navigator.TreeLevelsBuilder" scope="prototype"/>
+	
+	<bean id="treeLevelGenre" class="net.sourceforge.atunes.kernel.modules.navigator.TreeLevelGenre" scope="prototype"/>
+	<bean id="treeLevelYear" class="net.sourceforge.atunes.kernel.modules.navigator.TreeLevelYear" scope="prototype"/>
+	<bean id="treeLevelArtist" class="net.sourceforge.atunes.kernel.modules.navigator.TreeLevelArtist" scope="prototype"/>
+	<bean id="treeLevelAlbum" class="net.sourceforge.atunes.kernel.modules.navigator.TreeLevelAlbum" scope="prototype"/>
 </beans>

@@ -58,4 +58,18 @@ public final class CollectionUtils {
 		}
 		return null;
 	}
+
+	/**
+	 * @param <T>
+	 * @param list
+	 * @param elements
+	 * @return list with all these elements
+	 */
+	public static <T> List<T> fillCollectionWithElements(final List<T> list,
+			final T... elements) {
+		for (T element : elements) {
+			list.add(element);
+		}
+		return list;
+	}
 }

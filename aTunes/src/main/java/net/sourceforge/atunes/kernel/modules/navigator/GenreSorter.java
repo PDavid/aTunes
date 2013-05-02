@@ -22,30 +22,19 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.text.Collator;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import net.sourceforge.atunes.model.INavigationViewSorter;
-import net.sourceforge.atunes.model.IStateNavigation;
 
 /**
- * Sorts navigation table by artist
+ * Sorts navigation tree by genre
  * 
  * @author alex
  * 
  */
-public class ArtistSorter implements INavigationViewSorter {
+public class GenreSorter implements INavigationViewSorter {
 
 	private Collator collator;
-
-	private IStateNavigation stateNavigation;
-
-	/**
-	 * @param stateNavigation
-	 */
-	public void setStateNavigation(final IStateNavigation stateNavigation) {
-		this.stateNavigation = stateNavigation;
-	}
 
 	/**
 	 * @param collator
@@ -56,15 +45,6 @@ public class ArtistSorter implements INavigationViewSorter {
 
 	@Override
 	public void sort(final List<String> list) {
-		Comparator<String> comparator = null;
-		if (this.stateNavigation.isUseSmartTagViewSorting()
-				&& !this.stateNavigation.isUsePersonNamesArtistTagViewSorting()) {
-			comparator = new SmartComparator(this.collator);
-		} else if (this.stateNavigation.isUsePersonNamesArtistTagViewSorting()) {
-			comparator = new ArtistNamesComparator(this.collator);
-		} else {
-			comparator = new DefaultComparator(this.collator);
-		}
-		Collections.sort(list, comparator);
+		Collections.sort(list, new DefaultComparator(this.collator));
 	}
 }

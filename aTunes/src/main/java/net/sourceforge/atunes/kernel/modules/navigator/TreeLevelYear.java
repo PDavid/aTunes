@@ -20,25 +20,33 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.Album;
-import net.sourceforge.atunes.kernel.modules.repository.Artist;
-import net.sourceforge.atunes.model.IArtist;
-import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.INavigationViewSorter;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
+import net.sourceforge.atunes.model.IYear;
 
 /**
- * Organizes audio objects in structures of artists for trees
+ * A level of a tree where year objects are shown
  * 
  * @author alex
  * 
  */
-public class ArtistStructureBuilder {
+public class TreeLevelYear extends TreeLevel<IYear> {
+
+	private INavigationViewSorter yearSorter;
+
+	private ArtistStructureBuilder artistStructureBuilder;
 
 	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * Default constructor
+	 */
+	public TreeLevelYear() {
+		super();
+		setMatch(TreeFilterMatch.YEAR);
+	}
 
 	/**
 	 * @param unknownObjectChecker
@@ -49,27 +57,34 @@ public class ArtistStructureBuilder {
 	}
 
 	/**
-	 * Returns an structure of artists and albums containing songs from a list
-	 * 
-	 * @param audioFiles
-	 * @return
+	 * @param artistStructureBuilder
 	 */
-	Map<String, IArtist> getArtistObjects(
-			final List<ILocalAudioObject> audioFiles) {
-		Map<String, IArtist> structure = new HashMap<String, IArtist>();
-		for (ILocalAudioObject song : audioFiles) {
-			String artist = song
-					.getAlbumArtistOrArtist(this.unknownObjectChecker);
-			if (!structure.containsKey(artist)) {
-				structure.put(artist, new Artist(artist));
-			}
-			String albumName = song.getAlbum(this.unknownObjectChecker);
-			if (!structure.get(artist).getAlbums().containsKey(albumName)) {
-				structure.get(artist).addAlbum(
-						new Album(structure.get(artist), albumName));
-			}
-			structure.get(artist).getAlbum(albumName).addAudioFile(song);
-		}
-		return structure;
+	public void setArtistStructureBuilder(
+			final ArtistStructureBuilder artistStructureBuilder) {
+		this.artistStructureBuilder = artistStructureBuilder;
+	}
+
+	/**
+	 * @param yearSorter
+	 */
+	public void setYearSorter(final INavigationViewSorter yearSorter) {
+		this.yearSorter = yearSorter;
+	}
+
+	@Override
+	boolean matches(final IYear object, final String filter) {
+		return object.getName(this.unknownObjectChecker).toUpperCase()
+				.contains(filter.toUpperCase());
+	}
+
+	@Override
+	Map<String, ?> getChildObjects(final IYear object) {
+		return this.artistStructureBuilder.getArtistObjects(object
+				.getAudioObjects());
+	}
+
+	@Override
+	INavigationViewSorter getSorter() {
+		return this.yearSorter;
 	}
 }
