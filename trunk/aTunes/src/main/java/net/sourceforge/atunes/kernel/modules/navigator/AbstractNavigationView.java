@@ -43,6 +43,7 @@ import net.sourceforge.atunes.gui.views.decorators.NavigationViewTreeCellRendere
 import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
 import net.sourceforge.atunes.kernel.actions.CustomAbstractAction;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IControlsBuilder;
@@ -85,8 +86,6 @@ public abstract class AbstractNavigationView implements INavigationView {
 	 */
 	private List<AbstractTreeCellDecorator<?, ?>> decorators;
 
-	private ITreeGeneratorFactory treeGeneratorFactory;
-
 	private ILookAndFeelManager lookAndFeelManager;
 
 	private ITable navigationTable;
@@ -94,6 +93,15 @@ public abstract class AbstractNavigationView implements INavigationView {
 	private IStateNavigation stateNavigation;
 
 	private IControlsBuilder controlsBuilder;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param controlsBuilder
@@ -163,17 +171,9 @@ public abstract class AbstractNavigationView implements INavigationView {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
-	/**
-	 * @param treeGeneratorFactory
-	 */
-	public void setTreeGeneratorFactory(
-			final ITreeGeneratorFactory treeGeneratorFactory) {
-		this.treeGeneratorFactory = treeGeneratorFactory;
-	}
-
 	@Override
 	public ITreeGeneratorFactory getTreeGeneratorFactory() {
-		return this.treeGeneratorFactory;
+		return this.beanFactory.getBean(ITreeGeneratorFactory.class);
 	}
 
 	@Override

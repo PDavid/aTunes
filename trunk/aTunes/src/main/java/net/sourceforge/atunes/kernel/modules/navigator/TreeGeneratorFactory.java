@@ -20,8 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.ITreeGeneratorFactory;
 import net.sourceforge.atunes.model.ViewMode;
@@ -34,20 +36,31 @@ import net.sourceforge.atunes.model.ViewMode;
  */
 public class TreeGeneratorFactory implements ITreeGeneratorFactory {
 
-    private Map<ViewMode, ITreeGenerator> generators;
+	private IBeanFactory beanFactory;
 
-    @Override
-    public void setGenerators(final Map<ViewMode, ITreeGenerator> generators) {
-	this.generators = generators;
-    }
+	private final Map<ViewMode, Class<? extends ITreeGenerator>> generators;
 
-    @Override
-    public ITreeGenerator getTreeGenerator(final ViewMode viewMode) {
-	ITreeGenerator generator = null;
-	if (generators != null) {
-	    generator = generators.get(viewMode);
+	/**
+	 * Default constructor
+	 */
+	public TreeGeneratorFactory() {
+		this.generators = new HashMap<ViewMode, Class<? extends ITreeGenerator>>();
+		this.generators.put(ViewMode.ARTIST, ArtistTreeGenerator.class);
+		this.generators.put(ViewMode.ALBUM, AlbumTreeGenerator.class);
+		this.generators.put(ViewMode.GENRE, GenreTreeGenerator.class);
+		this.generators.put(ViewMode.YEAR, YearTreeGenerator.class);
+		this.generators.put(ViewMode.FOLDER, FolderTreeGenerator.class);
 	}
-	return generator;
-    }
 
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+
+	@Override
+	public ITreeGenerator getTreeGenerator(final ViewMode viewMode) {
+		return this.beanFactory.getBean(this.generators.get(viewMode));
+	}
 }
