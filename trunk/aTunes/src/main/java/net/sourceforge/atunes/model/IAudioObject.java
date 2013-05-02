@@ -99,6 +99,14 @@ public interface IAudioObject {
 	public String getGenre(IUnknownObjectChecker checker);
 
 	/**
+	 * Gets the year.
+	 * 
+	 * @param checker
+	 * @return the year or null or unknown year text if checker is not null
+	 */
+	public String getYear(IUnknownObjectChecker checker);
+
+	/**
 	 * Gets the lyrics.
 	 * 
 	 * @return the lyrics
@@ -139,13 +147,6 @@ public interface IAudioObject {
 	 * @return the url
 	 */
 	public String getUrl();
-
-	/**
-	 * Gets the year.
-	 * 
-	 * @return the year
-	 */
-	public String getYear();
 
 	/**
 	 * Gets the date.

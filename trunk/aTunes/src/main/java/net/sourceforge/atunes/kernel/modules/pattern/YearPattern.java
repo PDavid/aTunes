@@ -25,18 +25,20 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 
 /**
  * Pattern for year
+ * 
  * @author alex
- *
+ * 
  */
 public final class YearPattern extends AbstractPattern {
-	
+
 	@Override
-	public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-	    return audioFile.getYear();
+	public String getAudioFileStringValue(final ILocalAudioObject audioFile) {
+		return audioFile.getYear(getUnknownObjectChecker());
 	}
-	
+
 	@Override
-	public String getCDMetadataStringValue(CDMetadata metadata, int trackNumber) {
+	public String getCDMetadataStringValue(final CDMetadata metadata,
+			final int trackNumber) {
 		int year = metadata.getYear();
 		return year > 0 ? String.valueOf(year) : null;
 	}

@@ -84,7 +84,7 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	/**
 	 * @param tagFactory
 	 */
-	public void setTagFactory(TagFactory tagFactory) {
+	public void setTagFactory(final TagFactory tagFactory) {
 		this.tagFactory = tagFactory;
 	}
 
@@ -236,13 +236,13 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 
 	@Override
 	public ITag getNewTag() {
-		return tagFactory.getNewTag();
+		return this.tagFactory.getNewTag();
 	}
 
 	@Override
 	public ITag getNewTag(final ILocalAudioObject file,
 			final Map<String, Object> tagInformation) {
-		return tagFactory.getNewTag(file, tagInformation);
+		return this.tagFactory.getNewTag(file, tagInformation);
 	}
 
 	@Override
@@ -357,14 +357,15 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 			this.checkers.put(TextTagAttribute.LYRICS, new LyricsTagChecker());
 			this.checkers.put(TextTagAttribute.TITLE, new TitleTagChecker());
 			this.checkers.put(TextTagAttribute.TRACK, new TrackTagChecker());
-			this.checkers.put(TextTagAttribute.YEAR, new YearTagChecker());
+			this.checkers.put(TextTagAttribute.YEAR, new YearTagChecker(
+					this.unknownObjectChecker));
 		}
 		return this.checkers.get(attribute);
 	}
 
 	@Override
-	public ImageIcon getImage(ILocalAudioObject audioObject, int width,
-			int height) {
-		return localAudioObjectReader.getImage(audioObject, width, height);
+	public ImageIcon getImage(final ILocalAudioObject audioObject,
+			final int width, final int height) {
+		return this.localAudioObjectReader.getImage(audioObject, width, height);
 	}
 }

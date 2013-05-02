@@ -38,7 +38,8 @@ class YearAudioObjectSelector extends AudioObjectSelector<IYear, IAudioObject> {
 
 	@Override
 	boolean equals(final IYear year, final IAudioObject audioObject) {
-		return year.getName(unknownObjectChecker).equals(audioObject.getYear());
+		return year.getName(this.unknownObjectChecker).equals(
+				audioObject.getYear(this.unknownObjectChecker));
 	}
 
 }

@@ -237,11 +237,11 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	}
 
 	@Override
-	public String getYear() {
+	public String getYear(final IUnknownObjectChecker checker) {
 		if (this.tag != null && this.tag.getYear() > 0) {
 			return Integer.toString(this.tag.getYear());
 		}
-		return "";
+		return checker != null ? checker.getUnknownYear() : null;
 	}
 
 	@Override
