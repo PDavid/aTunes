@@ -254,7 +254,9 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 			selectedRows = null;
 		}
 
-		getTree().setRoot(I18nUtils.getString("PODCAST_FEEDS"));
+		getTree().setRoot(
+				new NavigationTreeRoot(I18nUtils.getString("PODCAST_FEEDS"),
+						getIcon()));
 
 		addPodcastFeedNodes((List<PodcastFeed>) data.get("PODCASTS"),
 				getTree(), treeFilter);

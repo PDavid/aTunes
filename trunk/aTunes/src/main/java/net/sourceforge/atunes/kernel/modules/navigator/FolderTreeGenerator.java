@@ -71,7 +71,8 @@ public class FolderTreeGenerator implements ITreeGenerator {
 			final List<ITreeObject<? extends IAudioObject>> objectsSelected,
 			final List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
 		// Refresh nodes
-		tree.setRoot(I18nUtils.getString(rootTextKey));
+		tree.setRoot(new NavigationTreeRoot(I18nUtils.getString(rootTextKey),
+				view.getIcon()));
 
 		addFolderNodes(tree, structure, currentFilter, this.folderSorter);
 

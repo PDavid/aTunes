@@ -42,6 +42,7 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.TransferableList;
 import net.sourceforge.atunes.model.INavigationTree;
+import net.sourceforge.atunes.model.INavigationTreeRoot;
 import net.sourceforge.atunes.model.ITreeNode;
 
 /**
@@ -123,9 +124,9 @@ public final class NavigationTree extends JTree implements DragSourceListener,
 	}
 
 	@Override
-	public void setRoot(final String string) {
+	public void setRoot(INavigationTreeRoot rootObject) {
 		DefaultMutableTreeNode root = getRoot();
-		root.setUserObject(string);
+		root.setUserObject(rootObject);
 		// Check number of children to avoid unexpected errors
 		if (root.getChildCount() > 0) {
 			root.removeAllChildren();

@@ -27,5 +27,6 @@
 		class="net.sourceforge.atunes.gui.views.decorators.UnknownElementTreeCellDecorator" />
 	<bean id="yearTreeCellDecorator"
 		class="net.sourceforge.atunes.gui.views.decorators.YearTreeCellDecorator" />
+	<bean id="navigationTreeRootCellDecorator" class="net.sourceforge.atunes.gui.views.decorators.NavigationTreeRootTreeCellDecorator"/>
 
 </beans>

@@ -248,7 +248,10 @@ public final class RadioNavigationView extends AbstractNavigationView {
 		// Nodes to be expanded after refresh
 		List<ITreeNode> nodesToExpand = new ArrayList<ITreeNode>();
 
-		getTree().setRoot(I18nUtils.getString("RADIO"));
+		getTree()
+				.setRoot(
+						new NavigationTreeRoot(I18nUtils.getString("RADIO"),
+								getIcon()));
 
 		addRadioNodes((List<IRadio>) data.get("RADIOS"),
 				(List<IRadio>) data.get("PRESET_RADIOS"), getTree(),
