@@ -154,7 +154,9 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 
 		Map<String, ?> data = getViewData(viewMode);
 
-		getTree().setRoot(I18nUtils.getString("FAVORITES"));
+		getTree().setRoot(
+				new NavigationTreeRoot(I18nUtils.getString("FAVORITES"),
+						getIcon()));
 
 		ITreeNode artistsNode = getTree().createNode(
 				I18nUtils.getString(ARTISTS));

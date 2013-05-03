@@ -33,10 +33,12 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Tree cell decorator for strings
+ * 
  * @author alex
- *
+ * 
  */
-public class StringTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, String> {
+public class StringTreeCellDecorator extends
+		AbstractTreeCellDecorator<JLabel, String> {
 
 	private IIconFactory artistImageIcon;
 
@@ -44,51 +46,15 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, S
 
 	private IIconFactory audioFileSmallIcon;
 
-	private IIconFactory deviceIcon;
-
-	private IIconFactory favoriteIcon;
-
 	private IIconFactory folderIcon;
 
-	private IIconFactory rssSmallIcon;
-
-	private IIconFactory radioSmallIcon;
-
 	private Map<String, IIconFactory> iconsByString;
-
-	/**
-	 * @param radioSmallIcon
-	 */
-	public void setRadioSmallIcon(final IIconFactory radioSmallIcon) {
-		this.radioSmallIcon = radioSmallIcon;
-	}
-
-	/**
-	 * @param rssSmallIcon
-	 */
-	public void setRssSmallIcon(final IIconFactory rssSmallIcon) {
-		this.rssSmallIcon = rssSmallIcon;
-	}
 
 	/**
 	 * @param folderIcon
 	 */
 	public void setFolderIcon(final IIconFactory folderIcon) {
 		this.folderIcon = folderIcon;
-	}
-
-	/**
-	 * @param favoriteIcon
-	 */
-	public void setFavoriteIcon(final IIconFactory favoriteIcon) {
-		this.favoriteIcon = favoriteIcon;
-	}
-
-	/**
-	 * @param deviceIcon
-	 */
-	public void setDeviceIcon(final IIconFactory deviceIcon) {
-		this.deviceIcon = deviceIcon;
 	}
 
 	/**
@@ -113,8 +79,10 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, S
 	}
 
 	@Override
-	public Component decorateTreeCellComponent(final JLabel component, final String userObject, final boolean isSelected) {
-		Color color = getLookAndFeel().getPaintForColorMutableIcon(component, isSelected);
+	public Component decorateTreeCellComponent(final JLabel component,
+			final String userObject, final boolean isSelected) {
+		Color color = getLookAndFeel().getPaintForColorMutableIcon(component,
+				isSelected);
 		component.setIcon(getIcon(userObject).getIcon(color));
 		component.setToolTipText(null);
 		return component;
@@ -122,6 +90,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, S
 
 	/**
 	 * Returns icon to use depending on text
+	 * 
 	 * @param text
 	 * @return
 	 */
@@ -133,14 +102,9 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, S
 	private Map<String, IIconFactory> getIconsByString() {
 		if (iconsByString == null) {
 			iconsByString = new HashMap<String, IIconFactory>();
-			iconsByString.put(I18nUtils.getString("REPOSITORY"), audioFileSmallIcon);
-			iconsByString.put(I18nUtils.getString("DEVICE"), deviceIcon);
 			iconsByString.put(I18nUtils.getString("ARTISTS"), artistImageIcon);
 			iconsByString.put(I18nUtils.getString("ALBUMS"), albumSmallIcon);
 			iconsByString.put(I18nUtils.getString("SONGS"), audioFileSmallIcon);
-			iconsByString.put(I18nUtils.getString("FAVORITES"), favoriteIcon);
-			iconsByString.put(I18nUtils.getString("PODCAST_FEEDS"), rssSmallIcon);
-			iconsByString.put(I18nUtils.getString("RADIO"), radioSmallIcon);
 		}
 		return iconsByString;
 	}

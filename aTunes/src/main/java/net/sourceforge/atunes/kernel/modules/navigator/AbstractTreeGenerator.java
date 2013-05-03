@@ -59,7 +59,8 @@ public abstract class AbstractTreeGenerator implements ITreeGenerator {
 			final List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
 
 		// Set root
-		tree.setRoot(I18nUtils.getString(rootTextKey));
+		tree.setRoot(new NavigationTreeRoot(I18nUtils.getString(rootTextKey),
+				view.getIcon()));
 
 		// Nodes to be selected after refresh
 		List<ITreeNode> nodesToSelect = new ArrayList<ITreeNode>();

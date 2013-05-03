@@ -51,10 +51,10 @@
 				<ref bean="genreTreeCellDecorator" />
 				<ref bean="yearTreeCellDecorator" />
 				<ref bean="folderTreeCellDecorator" />
-				<ref bean="stringTreeCellDecorator" />
 				<ref bean="tooltipTreeCellDecorator" />
 				<ref bean="unknownElementTreeCellDecorator" />
 				<ref bean="incompleteTagsTreeCellDecorator" />
+				<ref bean="navigationTreeRootCellDecorator"/>
 			</list>
 		</property>
 	</bean>
@@ -72,6 +72,7 @@
 				<ref bean="stringTreeCellDecorator" />
 				<ref bean="unknownElementTreeCellDecorator" />
 				<ref bean="incompleteTagsTreeCellDecorator" />
+				<ref bean="navigationTreeRootCellDecorator"/>
 			</list>
 		</property>
 	</bean>
@@ -88,9 +89,9 @@
 				<ref bean="genreTreeCellDecorator" />
 				<ref bean="yearTreeCellDecorator" />
 				<ref bean="folderTreeCellDecorator" />
-				<ref bean="stringTreeCellDecorator" />
 				<ref bean="unknownElementTreeCellDecorator" />
 				<ref bean="incompleteTagsTreeCellDecorator" />
+				<ref bean="navigationTreeRootCellDecorator"/>				
 			</list>
 		</property>
 	</bean>
@@ -102,6 +103,7 @@
 			<list>
 				<ref bean="stringTreeCellDecorator" />
 				<ref bean="radioTreeCellDecorator" />
+				<ref bean="navigationTreeRootCellDecorator"/>
 			</list>
 		</property>
 	</bean>
@@ -113,6 +115,7 @@
 			<list>
 				<ref bean="stringTreeCellDecorator" />
 				<ref bean="podcastFeedTreeCellDecorator" />
+				<ref bean="navigationTreeRootCellDecorator"/>
 			</list>
 		</property>
 	</bean>
