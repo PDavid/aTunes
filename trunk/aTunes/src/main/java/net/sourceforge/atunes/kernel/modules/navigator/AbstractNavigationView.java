@@ -101,6 +101,13 @@ public abstract class AbstractNavigationView implements INavigationView {
 	}
 
 	/**
+	 * @return bean factory
+	 */
+	protected IBeanFactory getBeanFactory() {
+		return beanFactory;
+	}
+
+	/**
 	 * @param controlsBuilder
 	 */
 	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
