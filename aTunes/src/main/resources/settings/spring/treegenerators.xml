@@ -18,6 +18,10 @@
 		class="net.sourceforge.atunes.kernel.modules.navigator.FolderTreeGenerator"  scope="prototype"/>
 	<bean id="yearTreeGenerator"
 		class="net.sourceforge.atunes.kernel.modules.navigator.YearTreeGenerator"  scope="prototype"/>
+		
+	
+	<bean id="favoritesTreeGenerator" class="net.sourceforge.atunes.kernel.modules.navigator.FavoritesTreeGenerator" scope="prototype"/>
+	
 	
 	<bean id="artistStructureBuilder" class="net.sourceforge.atunes.kernel.modules.navigator.ArtistStructureBuilder"  scope="prototype"/>
 	

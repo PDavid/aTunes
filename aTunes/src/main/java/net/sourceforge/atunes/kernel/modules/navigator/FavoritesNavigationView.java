@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +28,6 @@ import java.util.Map;
 import javax.swing.JPopupMenu;
 
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
-import net.sourceforge.atunes.model.IAlbum;
-import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -140,51 +137,17 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected void refreshTree(final ViewMode viewMode, final String treeFilter) {
 		// Get objects selected before refreshing tree
 		List<ITreeObject<? extends IAudioObject>> objectsSelected = getSelectedTreeObjects();
 		// Get objects expanded before refreshing tree
 		List<ITreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(getTree());
 
-		// Nodes to be selected after refresh
-		List<ITreeNode> nodesToSelect = new ArrayList<ITreeNode>();
-		// Nodes to be expanded after refresh
-		List<ITreeNode> nodesToExpand = new ArrayList<ITreeNode>();
+		getBeanFactory().getBean(FavoritesTreeGenerator.class).buildTree(
+				getTree(), "FAVORITES", this, getViewData(viewMode),
+				treeFilter, objectsSelected, objectsExpanded);
 
-		Map<String, ?> data = getViewData(viewMode);
-
-		getTree().setRoot(
-				new NavigationTreeRoot(I18nUtils.getString("FAVORITES"),
-						getIcon()));
-
-		ITreeNode artistsNode = getTree().createNode(
-				I18nUtils.getString(ARTISTS));
-		nodesToExpand.add(artistsNode);
-		addArtistNodes(artistsNode, treeFilter,
-				(Map<String, IArtist>) data.get(ARTISTS), objectsSelected,
-				objectsExpanded, nodesToSelect, nodesToExpand);
-		getTree().addNode(artistsNode);
-
-		ITreeNode albumsNode = getTree()
-				.createNode(I18nUtils.getString(ALBUMS));
-		nodesToExpand.add(albumsNode);
-		addAlbumNodes(albumsNode, treeFilter,
-				(Map<String, IAlbum>) data.get(ALBUMS), objectsSelected,
-				objectsExpanded, nodesToSelect, nodesToExpand);
-		getTree().addNode(albumsNode);
-
-		ITreeNode songsNode = getTree()
-				.createNode(I18nUtils.getString("SONGS"));
-		getTree().addNode(songsNode);
-
-		getTree().reload();
-
-		// Expand nodes
-		getTree().expandNodes(nodesToExpand);
-
-		// Once tree has been refreshed, select previously selected nodes
-		getTree().selectNodes(nodesToSelect);
+		getTree().expandRow(0);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -226,94 +189,6 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 			}
 		}
 		return songs;
-	}
-
-	/**
-	 * Adds the album nodes.
-	 * 
-	 * @param root
-	 * @param currentFilter
-	 * @param albums
-	 * @param objectsSelected
-	 * @param objectsExpanded
-	 * @param nodesToSelect
-	 * @param nodesToExpand
-	 */
-	private void addAlbumNodes(final ITreeNode root,
-			final String currentFilter, final Map<String, IAlbum> albums,
-			final List<ITreeObject<? extends IAudioObject>> objectsSelected,
-			final List<ITreeObject<? extends IAudioObject>> objectsExpanded,
-			final List<ITreeNode> nodesToSelect,
-			final List<ITreeNode> nodesToExpand) {
-		List<String> albumsNamesList = new ArrayList<String>(albums.keySet());
-		Collections.sort(albumsNamesList);
-
-		for (int i = 0; i < albumsNamesList.size(); i++) {
-			IAlbum album = albums.get(albumsNamesList.get(i));
-			if (currentFilter == null
-					|| album.getName().toUpperCase()
-							.contains(currentFilter.toUpperCase())) {
-				ITreeNode albumNode = getTree().createNode(album);
-
-				// If node was selected before refreshing...
-				if (objectsSelected.contains(albumNode.getUserObject())) {
-					nodesToSelect.add(albumNode);
-				}
-				// If node was expanded before refreshing...
-				if (objectsExpanded.contains(albumNode.getUserObject())) {
-					nodesToExpand.add(albumNode);
-				}
-
-				root.add(albumNode);
-			}
-		}
-	}
-
-	/**
-	 * Adds the artist nodes.
-	 * 
-	 * @param root
-	 * @param currentFilter
-	 * @param artists
-	 * @param objectsSelected
-	 * @param objectsExpanded
-	 * @param nodesToSelect
-	 * @param nodesToExpand
-	 */
-	private void addArtistNodes(final ITreeNode root,
-			final String currentFilter, final Map<String, IArtist> artists,
-			final List<ITreeObject<? extends IAudioObject>> objectsSelected,
-			final List<ITreeObject<? extends IAudioObject>> objectsExpanded,
-			final List<ITreeNode> nodesToSelect,
-			final List<ITreeNode> nodesToExpand) {
-		List<String> artistNamesList = new ArrayList<String>(artists.keySet());
-		Collections.sort(artistNamesList);
-
-		for (int i = 0; i < artistNamesList.size(); i++) {
-			IArtist artist = artists.get(artistNamesList.get(i));
-			if (currentFilter == null
-					|| artist.getName().toUpperCase()
-							.contains(currentFilter.toUpperCase())) {
-				ITreeNode artistNode = getTree().createNode(artist);
-
-				// If node was selected before refreshing...
-				if (objectsSelected.contains(artistNode.getUserObject())) {
-					nodesToSelect.add(artistNode);
-				}
-				// If node was expanded before refreshing...
-				if (objectsExpanded.contains(artistNode.getUserObject())) {
-					nodesToExpand.add(artistNode);
-				}
-
-				// If an artist fits current filter we want to show all albums
-				// so put filter to null
-				addAlbumNodes(artistNode, null, artist.getAlbums(),
-						objectsSelected, objectsExpanded, nodesToSelect,
-						nodesToExpand);
-
-				root.add(artistNode);
-			}
-		}
 	}
 
 	@Override
