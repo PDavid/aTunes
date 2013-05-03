@@ -149,7 +149,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 		// Get objects expanded before refreshing tree
 		List<ITreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(tree);
 
-		// Build treeN
+		// Build tree
 		getTreeGeneratorFactory().getTreeGenerator(viewMode).buildTree(
 				getTree(), REPOSITORY, this, getViewData(viewMode), treeFilter,
 				objectsSelected, objectsExpanded);
