@@ -75,29 +75,28 @@ public final class SmartPlayListHandler extends AbstractHandler implements
 	@Override
 	public void addAlbumsMostPlayed(final int n) {
 		// Get n most played albums
-		List<IAlbum> albums = statisticsHandler.getMostPlayedAlbums(n);
+		List<IAlbum> albums = this.statisticsHandler.getMostPlayedAlbums(n);
 
 		// Songs selected
 		List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
 
 		// Add album songs
 		for (IAlbum a : albums) {
-			songsSelected.addAll(repositoryHandler
-					.getAudioFilesForAlbums(Collections.singletonMap(
-							a.getName(), a)));
+			songsSelected.addAll(this.repositoryHandler
+					.getAudioFilesForAlbums(Collections.singletonList(a)));
 		}
 
 		// Sort
 		getBean(IAudioObjectComparator.class).sort(songsSelected);
 
 		// Add to playlist
-		playListHandler.addToVisiblePlayList(songsSelected);
+		this.playListHandler.addToVisiblePlayList(songsSelected);
 	}
 
 	@Override
 	public void addArtistsMostPlayed(final int n) {
 		// Get n most played albums
-		List<IArtist> artists = statisticsHandler.getMostPlayedArtists(n);
+		List<IArtist> artists = this.statisticsHandler.getMostPlayedArtists(n);
 
 		// Songs selected
 		List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
@@ -111,16 +110,16 @@ public final class SmartPlayListHandler extends AbstractHandler implements
 		getBean(IAudioObjectComparator.class).sort(songsSelected);
 
 		// Add to playlist
-		playListHandler.addToVisiblePlayList(songsSelected);
+		this.playListHandler.addToVisiblePlayList(songsSelected);
 	}
 
 	@Override
 	public void addRandomSongs(final int n) {
 		// Get reference to Repository songs
 		List<ILocalAudioObject> songs = null;
-		if (repositoryHandler.getAudioFilesList() != null) {
+		if (this.repositoryHandler.getAudioFilesList() != null) {
 			songs = new ArrayList<ILocalAudioObject>(
-					repositoryHandler.getAudioFilesList());
+					this.repositoryHandler.getAudioFilesList());
 		} else {
 			songs = new ArrayList<ILocalAudioObject>();
 		}
@@ -146,26 +145,26 @@ public final class SmartPlayListHandler extends AbstractHandler implements
 		getBean(IAudioObjectComparator.class).sort(songsSelected);
 
 		// Add to playlist
-		playListHandler.addToVisiblePlayList(songsSelected);
+		this.playListHandler.addToVisiblePlayList(songsSelected);
 	}
 
 	@Override
 	public void addSongsMostPlayed(final int n) {
 		// Get songs
-		List<IAudioObject> songsSelected = statisticsHandler
+		List<IAudioObject> songsSelected = this.statisticsHandler
 				.getMostPlayedAudioObjects(n);
 
 		// Sort
 		getBean(IAudioObjectComparator.class).sort(songsSelected);
 
 		// Add to playlist
-		playListHandler.addToVisiblePlayList(songsSelected);
+		this.playListHandler.addToVisiblePlayList(songsSelected);
 	}
 
 	@Override
 	public void addUnplayedSongs(final int n) {
 		// Get unplayed files
-		List<IAudioObject> unplayedSongs = statisticsHandler
+		List<IAudioObject> unplayedSongs = this.statisticsHandler
 				.getUnplayedAudioObjects();
 		Collections.shuffle(unplayedSongs);
 
@@ -175,7 +174,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements
 			List<IAudioObject> audioObjects = new ArrayList<IAudioObject>(
 					unplayedSongs.subList(0, count));
 			getBean(IAudioObjectComparator.class).sort(audioObjects);
-			playListHandler.addToVisiblePlayList(audioObjects);
+			this.playListHandler.addToVisiblePlayList(audioObjects);
 		}
 	}
 }

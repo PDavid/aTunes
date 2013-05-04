@@ -38,67 +38,67 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public class SetFavoriteArtistFromNavigatorAction extends
-	AbstractActionOverSelectedObjects<ILocalAudioObject> {
+		AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    private static final long serialVersionUID = -3551889307264609825L;
+	private static final long serialVersionUID = -3551889307264609825L;
 
-    private IFavoritesHandler favoritesHandler;
+	private IFavoritesHandler favoritesHandler;
 
-    private INavigationHandler navigationHandler;
+	private INavigationHandler navigationHandler;
 
-    private IStateNavigation stateNavigation;
+	private IStateNavigation stateNavigation;
 
-    /**
-     * @param stateNavigation
-     */
-    public void setStateNavigation(final IStateNavigation stateNavigation) {
-	this.stateNavigation = stateNavigation;
-    }
-
-    /**
-     * @param favoritesHandler
-     */
-    public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
-	this.favoritesHandler = favoritesHandler;
-    }
-
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(final INavigationHandler navigationHandler) {
-	this.navigationHandler = navigationHandler;
-    }
-
-    /**
-     * Default constructor
-     */
-    public SetFavoriteArtistFromNavigatorAction() {
-	super(I18nUtils.getString("SET_FAVORITE_ARTIST"));
-    }
-
-    @Override
-    protected void executeAction(final List<ILocalAudioObject> objects) {
-	favoritesHandler.toggleFavoriteArtists(objects);
-	navigationHandler.refreshNavigationTable();
-    }
-
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(
-	    final boolean rootSelected, final List<ITreeNode> selection) {
-	if (selection.isEmpty()) {
-	    return false;
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(final IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
 	}
 
-	if (stateNavigation.getViewMode() == ViewMode.FOLDER) {
-	    return false;
+	/**
+	 * @param favoritesHandler
+	 */
+	public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
+		this.favoritesHandler = favoritesHandler;
 	}
 
-	for (ITreeNode node : selection) {
-	    if (!(node.getUserObject() instanceof IArtist)) {
-		return false;
-	    }
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(final INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
 	}
 
-	return true;
-    }
+	/**
+	 * Default constructor
+	 */
+	public SetFavoriteArtistFromNavigatorAction() {
+		super(I18nUtils.getString("SET_FAVORITE_ARTIST"));
+	}
+
+	@Override
+	protected void executeAction(final List<ILocalAudioObject> objects) {
+		this.favoritesHandler.toggleFavoriteArtists(objects);
+		this.navigationHandler.refreshNavigationTable();
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(
+			final boolean rootSelected, final List<ITreeNode> selection) {
+		if (selection.isEmpty()) {
+			return false;
+		}
+
+		if (this.stateNavigation.getViewMode() == ViewMode.FOLDER) {
+			return false;
+		}
+
+		for (ITreeNode node : selection) {
+			if (!(node.getUserObject() instanceof IArtist)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

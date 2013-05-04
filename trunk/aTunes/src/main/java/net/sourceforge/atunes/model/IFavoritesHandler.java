@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.model;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Responsible of manage favorites
@@ -31,98 +30,114 @@ import java.util.Map;
  */
 public interface IFavoritesHandler extends IHandler {
 
-    /**
-     * Adds or removes the favorite albums.
-     * 
-     * @param songs
-     *            the songs
-     */
-    public void toggleFavoriteAlbums(List<ILocalAudioObject> songs);
+	/**
+	 * Adds or removes the favorite albums.
+	 * 
+	 * @param songs
+	 *            the songs
+	 */
+	public void toggleFavoriteAlbums(List<ILocalAudioObject> songs);
 
-    /**
-     * Adds or removes the favorite artists.
-     * 
-     * @param songs
-     *            the songs
-     */
-    public void toggleFavoriteArtists(List<ILocalAudioObject> songs);
+	/**
+	 * Adds or removes the favorite artists.
+	 * 
+	 * @param songs
+	 *            the songs
+	 */
+	public void toggleFavoriteArtists(List<ILocalAudioObject> songs);
 
-    /**
-     * Adds or remvoves the favorite songs.
-     * 
-     * @param songs
-     *            the songs
-     */
-    public void toggleFavoriteSongs(List<ILocalAudioObject> songs);
+	/**
+	 * Adds or remvoves the favorite songs.
+	 * 
+	 * @param songs
+	 *            the songs
+	 */
+	public void toggleFavoriteSongs(List<ILocalAudioObject> songs);
 
-    /**
-     * Adds the favorite songs, even if already added. Optionally can be
-     * automatically marked as loved in web services
-     * 
-     * @param songs
-     * @param automaticallyLoveInWebService
-     */
-    public void addFavoriteSongs(List<ILocalAudioObject> songs,
-	    boolean automaticallyLoveInWebService);
+	/**
+	 * Adds the favorite songs, even if already added. Optionally can be
+	 * automatically marked as loved in web services
+	 * 
+	 * @param songs
+	 * @param automaticallyLoveInWebService
+	 */
+	public void addFavoriteSongs(List<ILocalAudioObject> songs,
+			boolean automaticallyLoveInWebService);
 
-    /**
-     * Gets the favorite albums info.
-     * 
-     * @return the favorite albums info
-     */
-    public Map<String, IAlbum> getFavoriteAlbumsInfo();
+	/**
+	 * Removes the objects from favorites.
+	 * 
+	 * @param objects
+	 *            list of objects of type TreeObject
+	 */
+	public void removeFromFavorites(List<ITreeObject<?>> objects);
 
-    /**
-     * Gets the favorite artists info.
-     * 
-     * @return the favorite artists info
-     */
-    public Map<String, IArtist> getFavoriteArtistsInfo();
+	/**
+	 * Removes the songs from favorites.
+	 * 
+	 * @param files
+	 *            the files
+	 */
+	public void removeSongsFromFavorites(List<ILocalAudioObject> files);
 
-    /**
-     * Gets the favorite songs.
-     * 
-     * @return the favorite songs
-     */
-    public List<ILocalAudioObject> getFavoriteSongs();
+	/**
+	 * Updates favorites against given repository Each favorite song must be
+	 * repository. If not, will search for an alternative or remove from
+	 * favorites
+	 * 
+	 * @param repository
+	 */
+	public void updateFavorites(IRepository repository);
 
-    /**
-     * Gets the favorite songs map
-     * 
-     * @return
-     */
-    public Map<String, ILocalAudioObject> getFavoriteSongsMap();
+	/**
+	 * @param userObject
+	 * @return true if artist is favorite
+	 */
+	public boolean isArtistFavorite(IArtist userObject);
 
-    /**
-     * Gets the favorite songs info.
-     * 
-     * @return the favorite songs info
-     */
-    public Map<String, ILocalAudioObject> getFavoriteSongsInfo();
+	/**
+	 * @param artist
+	 * @return true if artist is favorite
+	 */
+	public boolean isArtistFavorite(String artist);
 
-    /**
-     * Removes the objects from favorites.
-     * 
-     * @param objects
-     *            list of objects of type TreeObject
-     */
-    public void removeFromFavorites(List<ITreeObject<?>> objects);
+	/**
+	 * @return list of favorite artists
+	 */
+	public List<IArtist> getFavoriteArtists();
 
-    /**
-     * Removes the songs from favorites.
-     * 
-     * @param files
-     *            the files
-     */
-    public void removeSongsFromFavorites(List<IAudioObject> files);
+	/**
+	 * @param userObject
+	 * @return true if album is favorite
+	 */
+	public boolean isAlbumFavorite(IAlbum userObject);
 
-    /**
-     * Updates favorites against given repository Each favorite song must be
-     * repository. If not, will search for an alternative or remove from
-     * favorites
-     * 
-     * @param repository
-     */
-    public void updateFavorites(IRepository repository);
+	/**
+	 * @param album
+	 * @return true if album is favorite
+	 */
+	public boolean isAlbumFavorite(String album);
+
+	/**
+	 * @return list of favorite albums
+	 */
+	public List<IAlbum> getFavoriteAlbums();
+
+	/**
+	 * @return list of favorite songs
+	 */
+	public List<ILocalAudioObject> getFavoriteSongs();
+
+	/**
+	 * @param audioObject
+	 * @return true if song is favorite
+	 */
+	public boolean isSongFavorite(ILocalAudioObject audioObject);
+
+	/**
+	 * @return list of audio objects of all favorite artists, favorite albums
+	 *         and songs
+	 */
+	public List<ILocalAudioObject> getAllFavoriteSongs();
 
 }

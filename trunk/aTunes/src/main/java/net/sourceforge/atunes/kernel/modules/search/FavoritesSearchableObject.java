@@ -22,12 +22,15 @@ package net.sourceforge.atunes.kernel.modules.search;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearchResult;
 import net.sourceforge.atunes.model.ISearchableObject;
@@ -49,6 +52,16 @@ public final class FavoritesSearchableObject implements ISearchableObject {
 	private IOSManager osManager;
 
 	private IFavoritesHandler favoritesHandler;
+
+	private ILocalAudioObjectFilter localAudioObjectFilter;
+
+	/**
+	 * @param localAudioObjectFilter
+	 */
+	public void setLocalAudioObjectFilter(
+			final ILocalAudioObjectFilter localAudioObjectFilter) {
+		this.localAudioObjectFilter = localAudioObjectFilter;
+	}
 
 	/**
 	 * @param osManager
@@ -83,10 +96,14 @@ public final class FavoritesSearchableObject implements ISearchableObject {
 	public List<IAudioObject> getSearchResult(
 			final List<ISearchResult> rawSearchResults) {
 		List<IAudioObject> result = new ArrayList<IAudioObject>();
+		Map<String, ILocalAudioObject> favorites = new HashMap<String, ILocalAudioObject>();
+		for (ILocalAudioObject audioFile : this.favoritesHandler
+				.getFavoriteSongs()) {
+			favorites.put(audioFile.getUrl(), audioFile);
+		}
 		for (ISearchResult rawSearchResult : rawSearchResults) {
-			ILocalAudioObject audioFile = this.favoritesHandler
-					.getFavoriteSongsMap().get(
-							rawSearchResult.getObject().get("url"));
+			ILocalAudioObject audioFile = favorites.get(rawSearchResult
+					.getObject().get("url"));
 			if (audioFile != null) {
 				result.add(audioFile);
 			}
@@ -96,7 +113,7 @@ public final class FavoritesSearchableObject implements ISearchableObject {
 
 	@Override
 	public List<IAudioObject> getElementsToIndex() {
-		return new ArrayList<IAudioObject>(this.favoritesHandler
-				.getFavoriteSongsMap().values());
+		return this.localAudioObjectFilter
+				.getAudioObjects(this.favoritesHandler.getAllFavoriteSongs());
 	}
 }

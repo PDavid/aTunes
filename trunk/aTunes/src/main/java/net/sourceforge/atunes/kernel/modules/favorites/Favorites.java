@@ -35,119 +35,159 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
  */
 public class Favorites implements IFavorites {
 
-    private static final long serialVersionUID = 4783402394156393291L;
+	private static final long serialVersionUID = 4783402394156393291L;
 
-    /** The favorite songs. */
-    private Map<String, ILocalAudioObject> favoriteSongs;
+	/** The favorite songs. */
+	private final Map<String, ILocalAudioObject> favoriteSongs;
 
-    /** The favorite albums. */
-    private Map<String, IAlbum> favoriteAlbums;
+	/** The favorite albums. */
+	private final Map<String, IAlbum> favoriteAlbums;
 
-    /** The favorite artists. */
-    private Map<String, IArtist> favoriteArtists;
+	/** The favorite artists. */
+	private final Map<String, IArtist> favoriteArtists;
 
-    /**
-     * Flag indicating if favorites information needs to be written to disk
-     */
-    private transient boolean dirty;
-
-    /**
-     * Instantiates a new favorites.
-     */
-    protected Favorites() {
-        favoriteSongs = new HashMap<String, ILocalAudioObject>();
-        favoriteAlbums = new HashMap<String, IAlbum>();
-        favoriteArtists = new HashMap<String, IArtist>();
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#getAllFavoriteSongs()
+	/**
+	 * Flag indicating if favorites information needs to be written to disk
 	 */
-    @Override
+	private transient boolean dirty;
+
+	/**
+	 * Instantiates a new favorites.
+	 */
+	protected Favorites() {
+		this.favoriteSongs = new HashMap<String, ILocalAudioObject>();
+		this.favoriteAlbums = new HashMap<String, IAlbum>();
+		this.favoriteArtists = new HashMap<String, IArtist>();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites
+	 * #getAllFavoriteSongs()
+	 */
+	@Override
 	public List<ILocalAudioObject> getAllFavoriteSongs() {
-        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
-        for (IArtist artist : favoriteArtists.values()) {
-            result.addAll(artist.getAudioObjects());
-        }
-        for (IAlbum album : favoriteAlbums.values()) {
-            result.addAll(album.getAudioObjects());
-        }
-        result.addAll(favoriteSongs.values());
-        return result;
-    }
+		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
+		for (IArtist artist : this.favoriteArtists.values()) {
+			result.addAll(artist.getAudioObjects());
+		}
+		for (IAlbum album : this.favoriteAlbums.values()) {
+			result.addAll(album.getAudioObjects());
+		}
+		result.addAll(this.favoriteSongs.values());
+		return result;
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#getAllFavoriteSongsMap()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites
+	 * #getAllFavoriteSongsMap()
 	 */
-    @Override
+	@Override
 	public Map<String, ILocalAudioObject> getAllFavoriteSongsMap() {
-        Map<String, ILocalAudioObject> result = new HashMap<String, ILocalAudioObject>();
-        for (ILocalAudioObject af : getAllFavoriteSongs()) {
-            result.put(af.getUrl(), af);
-        }
-        return result;
-    }
+		Map<String, ILocalAudioObject> result = new HashMap<String, ILocalAudioObject>();
+		for (ILocalAudioObject af : getAllFavoriteSongs()) {
+			result.put(af.getUrl(), af);
+		}
+		return result;
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#getFavoriteAlbums()
+	/**
+	 * @return the dirty
 	 */
-    @Override
-	public Map<String, IAlbum> getFavoriteAlbums() {
-        return favoriteAlbums;
-    }
+	protected boolean isDirty() {
+		return this.dirty;
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#getFavoriteArtists()
+	/**
+	 * @param dirty
+	 *            the dirty to set
 	 */
-    @Override
-	public Map<String, IArtist> getFavoriteArtists() {
-        return favoriteArtists;
-    }
+	protected void setDirty(final boolean dirty) {
+		this.dirty = dirty;
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#getFavoriteAudioFiles()
-	 */
-    @Override
-	public Map<String, ILocalAudioObject> getFavoriteAudioFiles() {
-        return favoriteSongs;
-    }
+	@Override
+	public void addArtist(final IArtist artist) {
+		this.favoriteArtists.put(artist.getName(), artist);
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#setFavoriteAlbums(java.util.Map)
-	 */
-    @Override
-	public void setFavoriteAlbums(Map<String, IAlbum> favoriteAlbums) {
-        this.favoriteAlbums = favoriteAlbums;
-    }
+	@Override
+	public boolean containsArtist(final IArtist artist) {
+		return this.favoriteArtists.containsKey(artist.getName());
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#setFavoriteArtists(java.util.Map)
-	 */
-    @Override
-	public void setFavoriteArtists(Map<String, IArtist> favoriteArtists) {
-        this.favoriteArtists = favoriteArtists;
-    }
+	@Override
+	public boolean containsArtist(final String artist) {
+		return this.favoriteArtists.containsKey(artist);
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#setFavoriteSongs(java.util.Map)
-	 */
-    @Override
-	public void setFavoriteSongs(Map<String, ILocalAudioObject> favoriteSongs) {
-        this.favoriteSongs = favoriteSongs;
-    }
+	@Override
+	public void removeArtist(final IArtist artist) {
+		this.favoriteArtists.remove(artist.getName());
+	}
 
-    /**
-     * @return the dirty
-     */
-    protected boolean isDirty() {
-        return dirty;
-    }
+	@Override
+	public void removeArtistByName(final String artist) {
+		this.favoriteArtists.remove(artist);
+	}
 
-    /**
-     * @param dirty
-     *            the dirty to set
-     */
-    protected void setDirty(boolean dirty) {
-        this.dirty = dirty;
-    }
+	@Override
+	public List<IArtist> getFavoriteArtists() {
+		return new ArrayList<IArtist>(this.favoriteArtists.values());
+	}
+
+	@Override
+	public boolean containsAlbum(final IAlbum album) {
+		return this.favoriteAlbums.containsKey(album.getName());
+	}
+
+	@Override
+	public boolean containsAlbum(final String album) {
+		return this.favoriteAlbums.containsKey(album);
+	}
+
+	@Override
+	public void addAlbum(final IAlbum album) {
+		this.favoriteAlbums.put(album.getName(), album);
+	}
+
+	@Override
+	public void removeAlbum(final IAlbum album) {
+		this.favoriteAlbums.remove(album.getName());
+	}
+
+	@Override
+	public void removeAlbumByName(final String album) {
+		this.favoriteAlbums.remove(album);
+	}
+
+	@Override
+	public List<IAlbum> getFavoriteAlbums() {
+		return new ArrayList<IAlbum>(this.favoriteAlbums.values());
+	}
+
+	@Override
+	public boolean containsSong(final ILocalAudioObject song) {
+		return this.favoriteSongs.containsKey(song.getUrl());
+	}
+
+	@Override
+	public void addSong(final ILocalAudioObject song) {
+		this.favoriteSongs.put(song.getUrl(), song);
+	}
+
+	@Override
+	public void removeSong(final ILocalAudioObject file) {
+		this.favoriteSongs.remove(file.getUrl());
+	}
+
+	@Override
+	public List<ILocalAudioObject> getFavoriteSongs() {
+		return new ArrayList<ILocalAudioObject>(this.favoriteSongs.values());
+	}
 }

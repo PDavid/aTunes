@@ -53,6 +53,16 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
 
 	private IBeanFactory beanFactory;
 
+	private ILocalAudioObjectFilter localAudioObjectFilter;
+
+	/**
+	 * @param localAudioObjectFilter
+	 */
+	public void setLocalAudioObjectFilter(
+			final ILocalAudioObjectFilter localAudioObjectFilter) {
+		this.localAudioObjectFilter = localAudioObjectFilter;
+	}
+
 	/**
 	 * @param beanFactory
 	 */
@@ -109,7 +119,9 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
 			List<IAudioObject> audioObjects = this.navigationHandler
 					.getSelectedAudioObjectsInNavigationTable();
 			if (!audioObjects.isEmpty()) {
-				this.favoritesHandler.removeSongsFromFavorites(audioObjects);
+				this.favoritesHandler
+						.removeSongsFromFavorites(this.localAudioObjectFilter
+								.getLocalAudioObjects(audioObjects));
 			}
 		}
 	}
@@ -126,8 +138,8 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
 			// Only allow to remove album if does not belong to a favorite
 			// artist
 			if (node.getUserObject() instanceof IAlbum) {
-				if (this.favoritesHandler.getFavoriteArtistsInfo().containsKey(
-						((IAlbum) node.getUserObject()).getArtist().getName())) {
+				if (this.favoritesHandler.isArtistFavorite(((IAlbum) node
+						.getUserObject()).getArtist())) {
 					return false;
 				}
 			}
@@ -140,11 +152,8 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
 			final List<IAudioObject> selection) {
 		// Enabled if all selected items are favorite songs (not belong to
 		// favorite artist nor album)
-		return this.favoritesHandler
-				.getFavoriteSongsInfo()
-				.values()
-				.containsAll(
-						this.beanFactory.getBean(ILocalAudioObjectFilter.class)
-								.getLocalAudioObjects(selection));
+		return this.favoritesHandler.getFavoriteSongs().containsAll(
+				this.beanFactory.getBean(ILocalAudioObjectFilter.class)
+						.getLocalAudioObjects(selection));
 	}
 }

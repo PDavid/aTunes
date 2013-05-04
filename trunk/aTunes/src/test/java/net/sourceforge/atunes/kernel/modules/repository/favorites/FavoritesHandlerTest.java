@@ -54,11 +54,10 @@ public class FavoritesHandlerTest {
 	@Test
 	public void testInitialization() {
 		// Verify
-		assertTrue(this.sut.getFavoriteAlbumsInfo().isEmpty());
-		assertTrue(this.sut.getFavoriteArtistsInfo().isEmpty());
+		assertTrue(this.sut.getFavoriteAlbums().isEmpty());
+		assertTrue(this.sut.getFavoriteArtists().isEmpty());
 		assertTrue(this.sut.getFavoriteSongs().isEmpty());
-		assertTrue(this.sut.getFavoriteSongsInfo().isEmpty());
-		assertTrue(this.sut.getFavoriteSongsMap().isEmpty());
+		assertTrue(this.sut.getAllFavoriteSongs().isEmpty());
 	}
 
 	@Test

@@ -20,15 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import java.util.Map;
-
 import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IRadio;
 
 /**
  * Column to show favorite
@@ -40,9 +35,7 @@ public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> {
 
 	private static final long serialVersionUID = -4652512586792166062L;
 
-	private transient IBeanFactory beanFactory;
-
-	private transient Map<String, ILocalAudioObject> favoriteObjects;
+	private transient IFavoritesHandler favoritesHandler;
 
 	/**
 	 * Default constructor
@@ -52,6 +45,13 @@ public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> {
 		setResizable(false);
 		setWidth(20);
 		setVisible(true);
+	}
+
+	/**
+	 * @param favoritesHandler
+	 */
+	public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
+		this.favoritesHandler = favoritesHandler;
 	}
 
 	@Override
@@ -75,34 +75,16 @@ public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> {
 	public AudioObjectProperty getValueFor(final IAudioObject audioObject,
 			final int row) {
 		// Return image
-		if (audioObject instanceof IRadio) {
-			return null;
+		if (audioObject instanceof ILocalAudioObject
+				&& this.favoritesHandler
+						.isSongFavorite((ILocalAudioObject) audioObject)) {
+			return AudioObjectProperty.FAVORITE;
 		}
-		if (audioObject instanceof IPodcastFeedEntry) {
-			return null;
-		}
-		return getFavoriteObjects().containsValue(audioObject) ? AudioObjectProperty.FAVORITE
-				: null;
+		return null;
 	}
 
 	@Override
 	public String getHeaderText() {
 		return null;
-	}
-
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
-
-	private Map<String, ILocalAudioObject> getFavoriteObjects() {
-		if (this.favoriteObjects == null) {
-			// Access directly to favorites
-			this.favoriteObjects = this.beanFactory.getBean(
-					IFavoritesHandler.class).getFavoriteSongsInfo();
-		}
-		return this.favoriteObjects;
 	}
 }

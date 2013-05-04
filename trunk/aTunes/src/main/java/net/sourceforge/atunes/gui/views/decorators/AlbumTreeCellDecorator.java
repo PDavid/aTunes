@@ -32,10 +32,12 @@ import net.sourceforge.atunes.model.IStateNavigation;
 
 /**
  * Tree cell decorator for albums
+ * 
  * @author alex
- *
+ * 
  */
-public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IAlbum> {
+public class AlbumTreeCellDecorator extends
+		AbstractTreeCellDecorator<JLabel, IAlbum> {
 
 	private IFavoritesHandler favoritesHandler;
 
@@ -67,11 +69,15 @@ public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IA
 	}
 
 	@Override
-	public Component decorateTreeCellComponent(final JLabel component, final IAlbum userObject, final boolean isSelected) {
-		if (!stateNavigation.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteAlbumsInfo().containsValue(userObject)) {
-			component.setIcon(albumSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+	public Component decorateTreeCellComponent(final JLabel component,
+			final IAlbum userObject, final boolean isSelected) {
+		if (!this.stateNavigation.isShowFavoritesInNavigator()
+				|| !this.favoritesHandler.isAlbumFavorite(userObject)) {
+			component.setIcon(this.albumSmallIcon.getIcon(getLookAndFeel()
+					.getPaintForColorMutableIcon(component, isSelected)));
 		} else {
-			component.setIcon(albumFavoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+			component.setIcon(this.albumFavoriteIcon.getIcon(getLookAndFeel()
+					.getPaintForColorMutableIcon(component, isSelected)));
 		}
 		return component;
 	}

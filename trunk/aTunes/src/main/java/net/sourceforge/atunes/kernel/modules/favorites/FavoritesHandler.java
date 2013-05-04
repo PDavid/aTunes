@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.favorites;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import net.sourceforge.atunes.gui.GuiUtils;
@@ -46,7 +45,6 @@ import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
-import net.sourceforge.atunes.utils.Logger;
 
 import org.apache.commons.collections.list.SetUniqueList;
 
@@ -127,7 +125,6 @@ public final class FavoritesHandler extends AbstractHandler implements
 		Set<ILocalAudioObject> set = SetUniqueList.decorate(songs).asSet();
 
 		List<ITreeObject<?>> toRemove = new ArrayList<ITreeObject<?>>();
-		Map<String, IAlbum> favAlbums = this.favorites.getFavoriteAlbums();
 		for (ILocalAudioObject f : set) {
 			IArtist artist = this.repositoryHandler.getArtist(f
 					.getArtist(this.unknownObjectChecker));
@@ -139,10 +136,10 @@ public final class FavoritesHandler extends AbstractHandler implements
 				IAlbum album = artist.getAlbum(f
 						.getAlbum(this.unknownObjectChecker));
 				if (album != null) {
-					if (favAlbums.containsValue(album)) {
+					if (this.favorites.containsAlbum(album)) {
 						toRemove.add(album);
 					} else {
-						favAlbums.put(album.getName(), album);
+						this.favorites.addAlbum(album);
 					}
 				}
 			}
@@ -154,32 +151,10 @@ public final class FavoritesHandler extends AbstractHandler implements
 
 	@Override
 	public void toggleFavoriteArtists(final List<ILocalAudioObject> songs) {
-		if (songs == null || songs.isEmpty()) {
-			return;
+		if (getBean(FavoritesArtistsManager.class).toggleFavoriteArtists(
+				this.favorites, songs)) {
+			callActionsAfterFavoritesChange();
 		}
-
-		@SuppressWarnings("unchecked")
-		Set<ILocalAudioObject> set = SetUniqueList.decorate(songs).asSet();
-
-		List<ITreeObject<?>> toRemove = new ArrayList<ITreeObject<?>>();
-		Map<String, IArtist> favArtists = this.favorites.getFavoriteArtists();
-		for (ILocalAudioObject f : set) {
-			IArtist artist = this.repositoryHandler.getArtist(f
-					.getArtist(this.unknownObjectChecker));
-			if (artist == null) {
-				artist = this.repositoryHandler.getArtist(f
-						.getAlbumArtist(this.unknownObjectChecker));
-			}
-			if (artist != null) {
-				if (favArtists.containsValue(artist)) {
-					toRemove.add(artist);
-				} else {
-					favArtists.put(artist.getName(), artist);
-				}
-			}
-		}
-		removeFromFavorites(toRemove);
-		callActionsAfterFavoritesChange();
 	}
 
 	@Override
@@ -191,15 +166,13 @@ public final class FavoritesHandler extends AbstractHandler implements
 		@SuppressWarnings("unchecked")
 		Set<ILocalAudioObject> set = SetUniqueList.decorate(songs).asSet();
 
-		Map<String, ILocalAudioObject> favSongs = this.favorites
-				.getFavoriteAudioFiles();
-		List<IAudioObject> toRemove = new LinkedList<IAudioObject>();
+		List<ILocalAudioObject> toRemove = new LinkedList<ILocalAudioObject>();
 		for (ILocalAudioObject song : set) {
 			// Toggle favorite songs
-			if (favSongs.containsKey(song.getUrl())) {
+			if (this.favorites.containsSong(song)) {
 				toRemove.add(song);
 			} else {
-				favSongs.put(song.getUrl(), song);
+				this.favorites.addSong(song);
 
 				// Add to LastFM if necessary
 				if (this.stateContext.isLastFmEnabled()
@@ -220,10 +193,8 @@ public final class FavoritesHandler extends AbstractHandler implements
 			return;
 		}
 
-		Map<String, ILocalAudioObject> favSongs = this.favorites
-				.getFavoriteAudioFiles();
 		for (ILocalAudioObject song : songs) {
-			favSongs.put(song.getUrl(), song);
+			this.favorites.addSong(song);
 
 			// Add to web service if necessary
 			if (automcaticallyLove && this.stateContext.isLastFmEnabled()
@@ -236,47 +207,12 @@ public final class FavoritesHandler extends AbstractHandler implements
 	}
 
 	@Override
-	public void applicationFinish() {
-		// Only store repository if it's dirty
-		if (((Favorites) this.favorites).isDirty()) {
-			this.stateService.persistFavoritesCache(this.favorites);
-		} else {
-			Logger.info("Favorites are clean");
-		}
-	}
-
-	@Override
-	public Map<String, IAlbum> getFavoriteAlbumsInfo() {
-		return this.favorites.getFavoriteAlbums();
-	}
-
-	@Override
-	public Map<String, IArtist> getFavoriteArtistsInfo() {
-		return this.favorites.getFavoriteArtists();
-	}
-
-	@Override
-	public List<ILocalAudioObject> getFavoriteSongs() {
-		return this.favorites.getAllFavoriteSongs();
-	}
-
-	@Override
-	public Map<String, ILocalAudioObject> getFavoriteSongsMap() {
-		return this.favorites.getAllFavoriteSongsMap();
-	}
-
-	@Override
-	public Map<String, ILocalAudioObject> getFavoriteSongsInfo() {
-		return this.favorites.getFavoriteAudioFiles();
-	}
-
-	@Override
 	public void removeFromFavorites(final List<ITreeObject<?>> objects) {
 		for (ITreeObject<? extends IAudioObject> obj : objects) {
 			if (obj instanceof IArtist) {
-				this.favorites.getFavoriteArtists().remove(obj.toString());
+				this.favorites.removeArtist((IArtist) obj);
 			} else {
-				this.favorites.getFavoriteAlbums().remove(obj.toString());
+				this.favorites.removeAlbum((IAlbum) obj);
 			}
 		}
 
@@ -284,9 +220,9 @@ public final class FavoritesHandler extends AbstractHandler implements
 	}
 
 	@Override
-	public void removeSongsFromFavorites(final List<IAudioObject> files) {
-		for (IAudioObject file : files) {
-			this.favorites.getFavoriteAudioFiles().remove(file.getUrl());
+	public void removeSongsFromFavorites(final List<ILocalAudioObject> files) {
+		for (ILocalAudioObject file : files) {
+			this.favorites.removeSong(file);
 			// Unlove on LastFM if necessary
 			if (this.stateContext.isLastFmEnabled()
 					&& this.stateContext.isAutoLoveFavoriteSong()) {
@@ -312,28 +248,27 @@ public final class FavoritesHandler extends AbstractHandler implements
 
 	@Override
 	public void favoritesChanged() {
-		// Mark favorites information as dirty
-		((Favorites) this.favorites).setDirty(true);
+		this.stateService.persistFavoritesCache(this.favorites);
 	}
 
 	@Override
 	public void audioFilesRemoved(final List<ILocalAudioObject> audioFiles) {
 		for (ILocalAudioObject file : audioFiles) {
 			// Remove from favorite audio files
-			this.favorites.getFavoriteAudioFiles().remove(file.getUrl());
+			this.favorites.removeSong(file);
 
 			// If artist has been removed then remove it from favorites too
 			if (this.repositoryHandler.getArtist(file
 					.getArtist(this.unknownObjectChecker)) == null) {
-				this.favorites.getFavoriteArtists().remove(
-						file.getArtist(this.unknownObjectChecker));
+				this.favorites.removeArtistByName(file
+						.getArtist(this.unknownObjectChecker));
 			} else {
 				// If album has been removed then remove it from favorites too
 				if (this.repositoryHandler.getArtist(
 						file.getArtist(this.unknownObjectChecker)).getAlbum(
 						file.getAlbum(this.unknownObjectChecker)) == null) {
-					this.favorites.getFavoriteAlbums().remove(
-							file.getAlbum(this.unknownObjectChecker));
+					this.favorites.removeAlbumByName(file
+							.getAlbum(this.unknownObjectChecker));
 				}
 			}
 		}
@@ -342,9 +277,8 @@ public final class FavoritesHandler extends AbstractHandler implements
 
 	@Override
 	public void updateFavorites(final IRepository repository) {
-		List<IAudioObject> toRemove = new ArrayList<IAudioObject>();
-		for (ILocalAudioObject favorite : this.favorites
-				.getFavoriteAudioFiles().values()) {
+		List<ILocalAudioObject> toRemove = new ArrayList<ILocalAudioObject>();
+		for (ILocalAudioObject favorite : this.favorites.getFavoriteSongs()) {
 			if (!repository.getFiles().contains(favorite)) {
 				toRemove.add(favorite);
 			}
@@ -359,5 +293,50 @@ public final class FavoritesHandler extends AbstractHandler implements
 	 */
 	void setFavorites(final IFavorites favorites) {
 		this.favorites = favorites;
+	}
+
+	@Override
+	public boolean isArtistFavorite(final IArtist artist) {
+		return this.favorites.containsArtist(artist);
+	}
+
+	@Override
+	public boolean isArtistFavorite(final String artist) {
+		return this.favorites.containsArtist(artist);
+	}
+
+	@Override
+	public List<IArtist> getFavoriteArtists() {
+		return this.favorites.getFavoriteArtists();
+	}
+
+	@Override
+	public boolean isAlbumFavorite(final IAlbum album) {
+		return this.favorites.containsAlbum(album);
+	}
+
+	@Override
+	public boolean isAlbumFavorite(final String album) {
+		return this.favorites.containsAlbum(album);
+	}
+
+	@Override
+	public List<IAlbum> getFavoriteAlbums() {
+		return this.favorites.getFavoriteAlbums();
+	}
+
+	@Override
+	public List<ILocalAudioObject> getFavoriteSongs() {
+		return this.favorites.getFavoriteSongs();
+	}
+
+	@Override
+	public boolean isSongFavorite(final ILocalAudioObject audioObject) {
+		return this.favorites.containsSong(audioObject);
+	}
+
+	@Override
+	public List<ILocalAudioObject> getAllFavoriteSongs() {
+		return this.favorites.getAllFavoriteSongs();
 	}
 }
