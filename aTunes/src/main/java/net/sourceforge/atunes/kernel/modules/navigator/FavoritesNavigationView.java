@@ -28,6 +28,8 @@ import java.util.Map;
 import javax.swing.JPopupMenu;
 
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -96,7 +98,7 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 
 	@Override
 	public IColorMutableImageIcon getIcon() {
-		return favoriteIcon.getColorMutableIcon();
+		return this.favoriteIcon.getColorMutableIcon();
 	}
 
 	@Override
@@ -111,28 +113,36 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 
 	@Override
 	public NavigationTree getTree() {
-		if (favoritesTree == null) {
-			favoritesTree = new NavigationTree(
+		if (this.favoritesTree == null) {
+			this.favoritesTree = new NavigationTree(
 					I18nUtils.getString("FAVORITES"), getTreeRenderer());
 		}
-		return favoritesTree;
+		return this.favoritesTree;
 	}
 
 	@Override
 	public JPopupMenu getTreePopupMenu() {
-		return favoritesNavigationViewTreePopupMenu;
+		return this.favoritesNavigationViewTreePopupMenu;
 	}
 
 	@Override
 	public JPopupMenu getTablePopupMenu() {
-		return favoritesNavigationViewTablePopupMenu;
+		return this.favoritesNavigationViewTablePopupMenu;
 	}
 
 	@Override
 	public Map<String, ?> getViewData(final ViewMode viewMode) {
 		Map<String, Map<?, ?>> data = new HashMap<String, Map<?, ?>>();
-		data.put(ARTISTS, favoritesHandler.getFavoriteArtistsInfo());
-		data.put(ALBUMS, favoritesHandler.getFavoriteAlbumsInfo());
+		Map<String, IArtist> artistMap = new HashMap<String, IArtist>();
+		for (IArtist artist : this.favoritesHandler.getFavoriteArtists()) {
+			artistMap.put(artist.getName(), artist);
+		}
+		Map<String, IAlbum> albumMap = new HashMap<String, IAlbum>();
+		for (IAlbum album : this.favoritesHandler.getFavoriteAlbums()) {
+			albumMap.put(album.getName(), album);
+		}
+		data.put(ARTISTS, artistMap);
+		data.put(ALBUMS, albumMap);
 		return data;
 	}
 
@@ -154,18 +164,18 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 	@Override
 	public List<ILocalAudioObject> getAudioObjectForTreeNode(
 			final ITreeNode node, final ViewMode viewMode,
-			final String treeFilter, String tableFilter) {
+			final String treeFilter, final String tableFilter) {
 		List<ILocalAudioObject> songs = null;
 
 		if (node.isRoot()) {
 			songs = new ArrayList<ILocalAudioObject>();
-			songs.addAll(repositoryHandler
-					.getAudioFilesForArtists(favoritesHandler
-							.getFavoriteArtistsInfo()));
-			songs.addAll(repositoryHandler
-					.getAudioFilesForAlbums(favoritesHandler
-							.getFavoriteAlbumsInfo()));
-			songs.addAll(favoritesHandler.getFavoriteSongsInfo().values());
+			songs.addAll(this.repositoryHandler
+					.getAudioFilesForArtists(this.favoritesHandler
+							.getFavoriteArtists()));
+			songs.addAll(this.repositoryHandler
+					.getAudioFilesForAlbums(this.favoritesHandler
+							.getFavoriteAlbums()));
+			songs.addAll(this.favoritesHandler.getFavoriteSongs());
 		} else {
 			if (node.getUserObject() instanceof ITreeObject) {
 				songs = ((ITreeObject<ILocalAudioObject>) node.getUserObject())
@@ -174,17 +184,16 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 				songs = new ArrayList<ILocalAudioObject>();
 				if (node.getUserObject().toString()
 						.equals(I18nUtils.getString(ARTISTS))) {
-					songs.addAll(repositoryHandler
-							.getAudioFilesForArtists(favoritesHandler
-									.getFavoriteArtistsInfo()));
+					songs.addAll(this.repositoryHandler
+							.getAudioFilesForArtists(this.favoritesHandler
+									.getFavoriteArtists()));
 				} else if (node.getUserObject().toString()
 						.equals(I18nUtils.getString(ALBUMS))) {
-					songs.addAll(repositoryHandler
-							.getAudioFilesForAlbums(favoritesHandler
-									.getFavoriteAlbumsInfo()));
+					songs.addAll(this.repositoryHandler
+							.getAudioFilesForAlbums(this.favoritesHandler
+									.getFavoriteAlbums()));
 				} else {
-					songs.addAll(new ArrayList<ILocalAudioObject>(
-							favoritesHandler.getFavoriteSongsInfo().values()));
+					songs.addAll(this.favoritesHandler.getFavoriteSongs());
 				}
 			}
 		}

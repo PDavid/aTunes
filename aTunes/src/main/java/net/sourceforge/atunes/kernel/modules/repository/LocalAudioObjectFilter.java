@@ -32,9 +32,10 @@ import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 /**
- * Filters for of audio objects
+ * Filters and utils for audio objects
+ * 
  * @author alex
- *
+ * 
  */
 public class LocalAudioObjectFilter implements ILocalAudioObjectFilter {
 
@@ -55,7 +56,8 @@ public class LocalAudioObjectFilter implements ILocalAudioObjectFilter {
 	 * @return
 	 */
 	@Override
-	public List<ILocalAudioObject> getLocalAudioObjects(final List<IAudioObject> audioObjects) {
+	public List<ILocalAudioObject> getLocalAudioObjects(
+			final List<IAudioObject> audioObjects) {
 		if (audioObjects == null || audioObjects.isEmpty()) {
 			return Collections.emptyList();
 		}
@@ -68,39 +70,63 @@ public class LocalAudioObjectFilter implements ILocalAudioObjectFilter {
 		return result;
 	}
 
+	@Override
+	public List<IAudioObject> getAudioObjects(
+			final List<ILocalAudioObject> audioObjects) {
+		if (audioObjects == null || audioObjects.isEmpty()) {
+			return Collections.emptyList();
+		}
+		List<IAudioObject> result = new ArrayList<IAudioObject>();
+		for (ILocalAudioObject audioObject : audioObjects) {
+			result.add(audioObject);
+		}
+		return result;
+	}
+
 	/**
-	 * Returns a list where there are no repeated audio objects (same title and artist)
+	 * Returns a list where there are no repeated audio objects (same title and
+	 * artist)
 	 * 
 	 * @param list
 	 * @return
 	 */
 	@Override
-	public List<ILocalAudioObject> filterRepeatedObjects(final List<ILocalAudioObject> list) {
-		return filterWithHash(list, new RepeatedObjectsHashCalculator(unknownObjectChecker));
+	public List<ILocalAudioObject> filterRepeatedObjects(
+			final List<ILocalAudioObject> list) {
+		return filterWithHash(list, new RepeatedObjectsHashCalculator(
+				this.unknownObjectChecker));
 	}
 
 	/**
-	 * Returns a list where there are no repeated audio objects (same title and album and artist)
+	 * Returns a list where there are no repeated audio objects (same title and
+	 * album and artist)
 	 * 
 	 * @param list
 	 * @return
 	 */
 	@Override
-	public List<ILocalAudioObject> filterRepeatedObjectsWithAlbums(final List<ILocalAudioObject> list) {
-		return filterWithHash(list, new RepeatedObjectsWithAlbumsHashCalculator(unknownObjectChecker));
+	public List<ILocalAudioObject> filterRepeatedObjectsWithAlbums(
+			final List<ILocalAudioObject> list) {
+		return filterWithHash(list,
+				new RepeatedObjectsWithAlbumsHashCalculator(
+						this.unknownObjectChecker));
 	}
 
 	/**
-	 * Returns a list where there are no repeated audio objects (same title and album and artist)
+	 * Returns a list where there are no repeated audio objects (same title and
+	 * album and artist)
 	 * 
 	 * @param list
 	 * @return
 	 */
-	private List<ILocalAudioObject> filterWithHash(final List<ILocalAudioObject> list, final IHashCalculator hashCalculator) {
+	private List<ILocalAudioObject> filterWithHash(
+			final List<ILocalAudioObject> list,
+			final IHashCalculator hashCalculator) {
 		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>(list);
 		Set<Integer> artistAndTitles = new HashSet<Integer>();
 		for (ILocalAudioObject af : list) {
-			// Build a set of strings of type artist_hash * album_hash * title_hash
+			// Build a set of strings of type artist_hash * album_hash *
+			// title_hash
 			Integer hash = hashCalculator.getHash(af);
 			if (artistAndTitles.contains(hash)) {
 				// Repeated artist + album + title, remove from result list

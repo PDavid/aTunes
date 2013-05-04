@@ -32,63 +32,119 @@ import java.util.Map;
  */
 public interface IFavorites extends Serializable {
 
-    /**
-     * Gets the all favorite songs.
-     * 
-     * @return the all favorite songs
-     */
-    public List<ILocalAudioObject> getAllFavoriteSongs();
+	/**
+	 * Gets the all favorite songs.
+	 * 
+	 * @return the all favorite songs
+	 */
+	public List<ILocalAudioObject> getAllFavoriteSongs();
 
-    /**
-     * Gets a map with all favorite songs, with url as key
-     * 
-     * @return
-     */
-    public Map<String, ILocalAudioObject> getAllFavoriteSongsMap();
+	/**
+	 * Gets a map with all favorite songs, with url as key
+	 * 
+	 * @return
+	 */
+	public Map<String, ILocalAudioObject> getAllFavoriteSongsMap();
 
-    /**
-     * Gets the favorite albums.
-     * 
-     * @return the favorite albums
-     */
-    public Map<String, IAlbum> getFavoriteAlbums();
+	/**
+	 * @param artist
+	 * @return true if artist is favorite
+	 */
+	boolean containsArtist(final IArtist artist);
 
-    /**
-     * Gets the favorite artists.
-     * 
-     * @return the favorite artists
-     */
-    public Map<String, IArtist> getFavoriteArtists();
+	/**
+	 * @param artist
+	 * @return true if artist is favorite
+	 */
+	boolean containsArtist(String artist);
 
-    /**
-     * Gets the favorite songs.
-     * 
-     * @return the favorite songs
-     */
-    public Map<String, ILocalAudioObject> getFavoriteAudioFiles();
+	/**
+	 * Adds artist as favorite
+	 * 
+	 * @param artist
+	 */
+	void addArtist(IArtist artist);
 
-    /**
-     * Sets the favorite albums.
-     * 
-     * @param favoriteAlbums
-     *            the favorite albums
-     */
-    public void setFavoriteAlbums(Map<String, IAlbum> favoriteAlbums);
+	/**
+	 * Removes artist from favorites
+	 * 
+	 * @param artist
+	 */
+	public void removeArtist(IArtist artist);
 
-    /**
-     * Sets the favorite artists.
-     * 
-     * @param favoriteArtists
-     *            the favorite artists
-     */
-    public void setFavoriteArtists(Map<String, IArtist> favoriteArtists);
+	/**
+	 * Removes artist from favorites by name
+	 * 
+	 * @param artist
+	 */
+	public void removeArtistByName(String artist);
 
-    /**
-     * Sets the favorite songs.
-     * 
-     * @param favoriteSongs
-     *            the favorite songs
-     */
-    public void setFavoriteSongs(Map<String, ILocalAudioObject> favoriteSongs);
+	/**
+	 * @return list of favorite artists
+	 */
+	public List<IArtist> getFavoriteArtists();
+
+	/**
+	 * @param album
+	 * @return true if album is favorite
+	 */
+	public boolean containsAlbum(IAlbum album);
+
+	/**
+	 * @param album
+	 * @return true if album is favorite
+	 */
+	public boolean containsAlbum(String album);
+
+	/**
+	 * Adds album to favorites
+	 * 
+	 * @param album
+	 */
+	public void addAlbum(IAlbum album);
+
+	/**
+	 * Removes album from favorites
+	 * 
+	 * @param album
+	 */
+	public void removeAlbum(IAlbum album);
+
+	/**
+	 * Removes album by name
+	 * 
+	 * @param album
+	 */
+	public void removeAlbumByName(String album);
+
+	/**
+	 * @return list of favorite albums
+	 */
+	public List<IAlbum> getFavoriteAlbums();
+
+	/**
+	 * @param song
+	 * @return true if song is favorite
+	 */
+	public boolean containsSong(ILocalAudioObject song);
+
+	/**
+	 * Add song to favorites
+	 * 
+	 * @param song
+	 */
+	public void addSong(ILocalAudioObject song);
+
+	/**
+	 * Removes song from favorites
+	 * 
+	 * @param file
+	 */
+	public void removeSong(ILocalAudioObject file);
+
+	/**
+	 * @return favorite songs
+	 */
+	public List<ILocalAudioObject> getFavoriteSongs();
 
 }

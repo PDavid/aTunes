@@ -32,10 +32,12 @@ import net.sourceforge.atunes.model.IStateNavigation;
 
 /**
  * Tree cell decorator for artists
+ * 
  * @author alex
- *
+ * 
  */
-public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IArtist> {
+public class ArtistTreeCellDecorator extends
+		AbstractTreeCellDecorator<JLabel, IArtist> {
 
 	private IFavoritesHandler favoritesHandler;
 
@@ -53,11 +55,15 @@ public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, I
 	}
 
 	@Override
-	public Component decorateTreeCellComponent(final JLabel component, final IArtist userObject, final boolean isSelected) {
-		if (!stateNavigation.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteArtistsInfo().containsKey(userObject.getName())) {
-			component.setIcon(artistImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+	public Component decorateTreeCellComponent(final JLabel component,
+			final IArtist userObject, final boolean isSelected) {
+		if (!this.stateNavigation.isShowFavoritesInNavigator()
+				|| !this.favoritesHandler.isArtistFavorite(userObject)) {
+			component.setIcon(this.artistImageIcon.getIcon(getLookAndFeel()
+					.getPaintForColorMutableIcon(component, isSelected)));
 		} else {
-			component.setIcon(artistFavoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+			component.setIcon(this.artistFavoriteIcon.getIcon(getLookAndFeel()
+					.getPaintForColorMutableIcon(component, isSelected)));
 		}
 		return component;
 	}

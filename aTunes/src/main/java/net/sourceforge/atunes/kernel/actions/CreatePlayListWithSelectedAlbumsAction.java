@@ -60,7 +60,7 @@ public class CreatePlayListWithSelectedAlbumsAction extends
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
@@ -100,9 +100,9 @@ public class CreatePlayListWithSelectedAlbumsAction extends
 		// Get selected albums from play list
 		List<IAlbum> selectedAlbums = new ArrayList<IAlbum>();
 		for (IAudioObject ao : objects) {
-			String artistName = ao.getArtist(unknownObjectChecker);
-			String album = ao.getAlbum(unknownObjectChecker);
-			IArtist a = repositoryHandler.getArtist(artistName);
+			String artistName = ao.getArtist(this.unknownObjectChecker);
+			String album = ao.getAlbum(this.unknownObjectChecker);
+			IArtist a = this.repositoryHandler.getArtist(artistName);
 			if (a != null) {
 				IAlbum alb = a.getAlbum(album);
 				if (alb != null && !selectedAlbums.contains(alb)) {
@@ -120,14 +120,13 @@ public class CreatePlayListWithSelectedAlbumsAction extends
 	 */
 	private void createPlayLists(final List<IAlbum> selectedAlbums) {
 		for (IAlbum album : selectedAlbums) {
-			List<ILocalAudioObject> audioObjects = repositoryHandler
-					.getAudioFilesForAlbums(Collections.singletonMap(
-							album.getName(), album));
-			beanFactory.getBean(IAudioObjectComparator.class)
-					.sort(audioObjects);
+			List<ILocalAudioObject> audioObjects = this.repositoryHandler
+					.getAudioFilesForAlbums(Collections.singletonList(album));
+			this.beanFactory.getBean(IAudioObjectComparator.class).sort(
+					audioObjects);
 
 			// Create a new play list with album as name and audio objects
-			playListHandler.newPlayList(album.getName(), audioObjects);
+			this.playListHandler.newPlayList(album.getName(), audioObjects);
 		}
 	}
 }

@@ -148,8 +148,7 @@ public interface IRepositoryHandler extends IHandler,
 	 * 
 	 * @return the audio files for albums
 	 */
-	public List<ILocalAudioObject> getAudioFilesForAlbums(
-			Map<String, IAlbum> albums);
+	public List<ILocalAudioObject> getAudioFilesForAlbums(List<IAlbum> albums);
 
 	/**
 	 * Gets the audio files for artists.
@@ -159,8 +158,7 @@ public interface IRepositoryHandler extends IHandler,
 	 * 
 	 * @return the audio files for artists
 	 */
-	public List<ILocalAudioObject> getAudioFilesForArtists(
-			Map<String, IArtist> artists);
+	public List<ILocalAudioObject> getAudioFilesForArtists(List<IArtist> artists);
 
 	/**
 	 * Returns true if folder is in repository.

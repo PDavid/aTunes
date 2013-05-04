@@ -358,20 +358,20 @@ public final class RepositoryHandler extends AbstractHandler implements
 
 	@Override
 	public List<ILocalAudioObject> getAudioFilesForAlbums(
-			final Map<String, IAlbum> albums) {
+			final List<IAlbum> albums) {
 		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
-		for (Map.Entry<String, IAlbum> entry : albums.entrySet()) {
-			result.addAll(entry.getValue().getAudioObjects());
+		for (IAlbum album : albums) {
+			result.addAll(album.getAudioObjects());
 		}
 		return result;
 	}
 
 	@Override
 	public List<ILocalAudioObject> getAudioFilesForArtists(
-			final Map<String, IArtist> artists) {
+			final List<IArtist> artists) {
 		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
-		for (Map.Entry<String, IArtist> entry : artists.entrySet()) {
-			result.addAll(entry.getValue().getAudioObjects());
+		for (IArtist artist : artists) {
+			result.addAll(artist.getAudioObjects());
 		}
 		return result;
 	}

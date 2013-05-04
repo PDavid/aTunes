@@ -23,9 +23,10 @@ package net.sourceforge.atunes.model;
 import java.util.List;
 
 /**
- * Filters for local audio objects
+ * Filters and utils for local audio objects
+ * 
  * @author alex
- *
+ * 
  */
 public interface ILocalAudioObjectFilter {
 
@@ -38,7 +39,16 @@ public interface ILocalAudioObjectFilter {
 	List<ILocalAudioObject> getLocalAudioObjects(List<IAudioObject> audioObjects);
 
 	/**
-	 * Returns a list where there are no repeated audio objects (same title and artist)
+	 * Gets an audio objects list from a list of local audio objects
+	 * 
+	 * @param audioObjects
+	 * @return
+	 */
+	List<IAudioObject> getAudioObjects(List<ILocalAudioObject> audioObjects);
+
+	/**
+	 * Returns a list where there are no repeated audio objects (same title and
+	 * artist)
 	 * 
 	 * @param list
 	 * @return
@@ -46,10 +56,12 @@ public interface ILocalAudioObjectFilter {
 	List<ILocalAudioObject> filterRepeatedObjects(List<ILocalAudioObject> list);
 
 	/**
-	 * Returns a list where there are no repeated audio objects (same title and album and artist)
+	 * Returns a list where there are no repeated audio objects (same title and
+	 * album and artist)
 	 * 
 	 * @param list
 	 * @return
 	 */
-	List<ILocalAudioObject> filterRepeatedObjectsWithAlbums(List<ILocalAudioObject> list);
+	List<ILocalAudioObject> filterRepeatedObjectsWithAlbums(
+			List<ILocalAudioObject> list);
 }

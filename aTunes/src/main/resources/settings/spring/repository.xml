@@ -92,4 +92,7 @@
 
 	<bean id="localAudioObjectImageHandler" class="net.sourceforge.atunes.utils.LocalAudioObjectImageHandler"/>
 	
+	
+	<bean id="favoritesArtistsManager" class="net.sourceforge.atunes.kernel.modules.favorites.FavoritesArtistsManager" scope="prototype"/>
+	
 </beans>

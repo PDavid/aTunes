@@ -31,8 +31,9 @@ import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 /**
  * Column to show album
+ * 
  * @author alex
- *
+ * 
  */
 public class AlbumColumn extends AbstractColumn<TextAndIcon> {
 
@@ -71,51 +72,67 @@ public class AlbumColumn extends AbstractColumn<TextAndIcon> {
 	}
 
 	@Override
-	protected int ascendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		int album = compare(ao1.getAlbum(unknownObjectChecker), ao2.getAlbum(unknownObjectChecker));
+	protected int ascendingCompare(final IAudioObject ao1,
+			final IAudioObject ao2) {
+		int album = compare(ao1.getAlbum(this.unknownObjectChecker),
+				ao2.getAlbum(this.unknownObjectChecker));
 		if (album == 0) {
 			if (ao1.getDiscNumber() == ao2.getDiscNumber()) {
-				return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
+				return Integer.valueOf(ao1.getTrackNumber()).compareTo(
+						ao2.getTrackNumber());
 			}
-			return Integer.valueOf(ao1.getDiscNumber()).compareTo(ao2.getDiscNumber());
+			return Integer.valueOf(ao1.getDiscNumber()).compareTo(
+					ao2.getDiscNumber());
 		}
 		return album;
 	}
 
 	@Override
-	protected int descendingCompare(final IAudioObject ao1, final IAudioObject ao2) {
-		int album = compare(ao2.getAlbum(unknownObjectChecker), ao1.getAlbum(unknownObjectChecker));
+	protected int descendingCompare(final IAudioObject ao1,
+			final IAudioObject ao2) {
+		int album = compare(ao2.getAlbum(this.unknownObjectChecker),
+				ao1.getAlbum(this.unknownObjectChecker));
 		if (album == 0) {
 			if (ao1.getDiscNumber() == ao2.getDiscNumber()) {
-				return Integer.valueOf(ao1.getTrackNumber()).compareTo(ao2.getTrackNumber());
+				return Integer.valueOf(ao1.getTrackNumber()).compareTo(
+						ao2.getTrackNumber());
 			}
-			return Integer.valueOf(ao1.getDiscNumber()).compareTo(ao2.getDiscNumber());
+			return Integer.valueOf(ao1.getDiscNumber()).compareTo(
+					ao2.getDiscNumber());
 		}
 		return album;
 	}
 
 	@Override
 	public TextAndIcon getValueFor(final IAudioObject audioObject, final int row) {
-		if (getFavoritesHandler().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum(unknownObjectChecker))) {
-			return new TextAndIcon(audioObject.getAlbum(unknownObjectChecker), albumFavoriteIcon.getColorMutableIcon(), SwingConstants.LEFT);
+		if (getFavoritesHandler().isAlbumFavorite(
+				audioObject.getAlbum(this.unknownObjectChecker))) {
+			return new TextAndIcon(
+					audioObject.getAlbum(this.unknownObjectChecker),
+					this.albumFavoriteIcon.getColorMutableIcon(),
+					SwingConstants.LEFT);
 		} else {
-			return new TextAndIcon(audioObject.getAlbum(unknownObjectChecker), null, SwingConstants.LEFT);
+			return new TextAndIcon(
+					audioObject.getAlbum(this.unknownObjectChecker), null,
+					SwingConstants.LEFT);
 		}
 	}
 
 	@Override
-	public String getValueForFilter(final IAudioObject audioObject, final int row) {
-		return audioObject.getAlbum(unknownObjectChecker);
+	public String getValueForFilter(final IAudioObject audioObject,
+			final int row) {
+		return audioObject.getAlbum(this.unknownObjectChecker);
 	}
 
 	/**
 	 * @return favorites handler
 	 */
 	private IFavoritesHandler getFavoritesHandler() {
-		if (favoritesHandler == null) {
-			favoritesHandler = beanFactory.getBean(IFavoritesHandler.class);
+		if (this.favoritesHandler == null) {
+			this.favoritesHandler = this.beanFactory
+					.getBean(IFavoritesHandler.class);
 		}
-		return favoritesHandler;
+		return this.favoritesHandler;
 	}
 
 	/**
