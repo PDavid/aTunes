@@ -77,7 +77,7 @@ public interface IFavorites extends Serializable {
 	 * 
 	 * @param artist
 	 */
-	public void removeArtistByName(String artist);
+	public void removeArtist(String artist);
 
 	/**
 	 * @return list of favorite artists
@@ -115,7 +115,7 @@ public interface IFavorites extends Serializable {
 	 * 
 	 * @param album
 	 */
-	public void removeAlbumByName(String album);
+	public void removeAlbum(String album);
 
 	/**
 	 * @return list of favorite albums

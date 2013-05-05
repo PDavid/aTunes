@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.util.Collections;
+
 import net.sourceforge.atunes.kernel.modules.webservices.RemoveLovedSongBackgroundWorker;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IContextHandler;
@@ -46,7 +48,7 @@ public class RemoveLovedSongInLastFmAction extends CustomAbstractAction {
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
@@ -80,6 +82,7 @@ public class RemoveLovedSongInLastFmAction extends CustomAbstractAction {
 	@Override
 	protected void executeAction() {
 		this.beanFactory.getBean(RemoveLovedSongBackgroundWorker.class).remove(
-				this.contextHandler.getCurrentAudioObject());
+				Collections.singletonList(this.contextHandler
+						.getCurrentAudioObject()));
 	}
 }

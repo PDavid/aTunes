@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.favorites;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,7 +62,7 @@ public class FavoritesArtistsManager {
 	}
 
 	/**
-	 * Takes artists from a list os audio objects and add or remove artists from
+	 * Takes artists from a list of audio objects and add or remove artists from
 	 * favorites
 	 * 
 	 * @param favorites
@@ -95,14 +96,65 @@ public class FavoritesArtistsManager {
 			}
 		}
 
-		for (IArtist artistToAdd : toAdd) {
+		addArtists(favorites, toAdd);
+		removeArtists(favorites, toRemove);
+
+		return !toRemove.isEmpty() || !toAdd.isEmpty();
+	}
+
+	/**
+	 * Adds artists
+	 * 
+	 * @param favorites
+	 * @param artists
+	 * @return if favorites have changed
+	 */
+	public boolean addArtists(final IFavorites favorites,
+			final Collection<IArtist> artists) {
+		if (CollectionUtils.isEmpty(artists)) {
+			return false;
+		}
+
+		for (IArtist artistToAdd : artists) {
 			favorites.addArtist(artistToAdd);
 		}
 
-		for (IArtist artistToRemove : toRemove) {
+		return true;
+	}
+
+	/**
+	 * Removes artists
+	 * 
+	 * @param favorites
+	 * @param artists
+	 * @return if favorites have changed
+	 */
+	public boolean removeArtists(final IFavorites favorites,
+			final Collection<IArtist> artists) {
+		if (CollectionUtils.isEmpty(artists)) {
+			return false;
+		}
+
+		for (IArtist artistToRemove : artists) {
 			favorites.removeArtist(artistToRemove);
 		}
 
-		return !toRemove.isEmpty() || !toAdd.isEmpty();
+		return true;
+	}
+
+	/**
+	 * Removes artist from favorites
+	 * 
+	 * @param favorites
+	 * @param artistName
+	 * @return true if favorites changed
+	 */
+	public boolean removeArtist(final IFavorites favorites,
+			final String artistName) {
+		if (favorites.containsArtist(artistName)) {
+			favorites.removeArtist(artistName);
+			return true;
+		}
+		return false;
 	}
 }

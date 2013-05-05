@@ -49,7 +49,7 @@ public class ImportLovedTracksFromLastFMActionTest {
 	public void test() {
 		ImportLovedTracksFromLastFMAction sut = new ImportLovedTracksFromLastFMAction();
 		sut.setBackgroundWorkerFactory(new BackgroundWorkerFactoryMock());
-		
+
 		IWebServicesHandler webServicesHandler = mock(IWebServicesHandler.class);
 		List<ILovedTrack> list = new ArrayList<ILovedTrack>();
 		ILovedTrack l1 = new LastFmLovedTrack("artist1", "title1");
@@ -59,7 +59,7 @@ public class ImportLovedTracksFromLastFMActionTest {
 		list.add(l2);
 		list.add(l3);
 		when(webServicesHandler.getLovedTracks()).thenReturn(list);
-		
+
 		IRepositoryHandler repositoryHandler = mock(IRepositoryHandler.class);
 		Artist artist1 = new Artist("artist1");
 		Artist artist2 = new Artist("artist2");
@@ -79,25 +79,28 @@ public class ImportLovedTracksFromLastFMActionTest {
 		artist1.addAlbum(album1);
 		artist2.addAlbum(album2);
 		artist3.addAlbum(album3);
-		
+
 		when(repositoryHandler.getArtist("artist1")).thenReturn(artist1);
 		when(repositoryHandler.getArtist("artist2")).thenReturn(artist2);
 		when(repositoryHandler.getArtist("artist3")).thenReturn(artist3);
-		
+
 		IFavoritesHandler favoritesHandler = mock(IFavoritesHandler.class);
-		
+
 		IDialogFactory dialogFactory = mock(IDialogFactory.class);
-		when(dialogFactory.newDialog(IMessageDialog.class)).thenReturn(mock(IMessageDialog.class));
-		when(dialogFactory.newDialog(IIndeterminateProgressDialog.class)).thenReturn(mock(IIndeterminateProgressDialog.class));
-		
+		when(dialogFactory.newDialog(IMessageDialog.class)).thenReturn(
+				mock(IMessageDialog.class));
+		when(dialogFactory.newDialog(IIndeterminateProgressDialog.class))
+				.thenReturn(mock(IIndeterminateProgressDialog.class));
+
 		sut.setWebServicesHandler(webServicesHandler);
 		sut.setRepositoryHandler(repositoryHandler);
 		sut.setFavoritesHandler(favoritesHandler);
 		sut.setDialogFactory(dialogFactory);
-		
+
 		sut.executeAction();
-		
-		verify(favoritesHandler).addFavoriteSongs(Collections.singletonList(lao1), false);
+
+		verify(favoritesHandler).importFavoriteSongsFromLastFm(
+				Collections.singletonList(lao1));
 
 	}
 }

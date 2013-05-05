@@ -35,4 +35,5 @@
 	<bean id="removeLovedSongBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.webservices.RemoveLovedSongBackgroundWorker" scope="prototype"/>
 	<bean id="openBrowserBackgroundWorker" class="net.sourceforge.atunes.utils.OpenBrowserBackgroundWorker" scope="prototype"/>
 	<bean id="openFileBackgroundWorker" class="net.sourceforge.atunes.utils.OpenFileBackgroundWorker" scope="prototype"/>
+	<bean id="addLovedSongBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.webservices.AddLovedSongBackgroundWorker" scope="prototype"/>
 </beans>

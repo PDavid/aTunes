@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices;
 
+import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.BackgroundWorker;
@@ -28,7 +29,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
 /**
- * Worker to remove song from last.fm
+ * Worker to remove loved song from last.fm
  * 
  * @author alex
  * 
@@ -38,20 +39,21 @@ public class RemoveLovedSongBackgroundWorker extends
 
 	private IWebServicesHandler webServicesHandler;
 
-	private IAudioObject audioObject;
+	private Collection<IAudioObject> audioObjects;
 
 	/**
 	 * @param webServicesHandler
 	 */
-	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+	public void setWebServicesHandler(
+			final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
 
 	/**
-	 * @param audioObject
+	 * @param audioObjects
 	 */
-	public void remove(IAudioObject audioObject) {
-		this.audioObject = audioObject;
+	public void remove(final Collection<IAudioObject> audioObjects) {
+		this.audioObjects = audioObjects;
 		execute();
 	}
 
@@ -63,16 +65,18 @@ public class RemoveLovedSongBackgroundWorker extends
 
 	@Override
 	protected Void doInBackground() {
-		this.webServicesHandler.removeLovedSong(audioObject);
+		for (IAudioObject audioObject : this.audioObjects) {
+			this.webServicesHandler.removeLovedSong(audioObject);
+		}
 		return null;
 	}
 
 	@Override
-	protected void whileWorking(List<Void> chunks) {
+	protected void whileWorking(final List<Void> chunks) {
 	}
 
 	@Override
-	protected void done(Void result) {
+	protected void done(final Void result) {
 		getBeanFactory().getBean(RemoveLovedSongInLastFmAction.class)
 				.setEnabled(true);
 	}
