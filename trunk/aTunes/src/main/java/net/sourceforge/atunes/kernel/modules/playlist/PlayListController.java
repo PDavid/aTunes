@@ -28,6 +28,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -338,7 +339,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel>
 	 */
 	@Override
 	public void refreshPlayList() {
-		SwingUtilities.invokeLater(new Runnable() {
+		GuiUtils.callInEventDispatchThreadLater(new Runnable() {
 			@Override
 			public void run() {
 				int[] selectedRows = PlayListController.this.playListTable
