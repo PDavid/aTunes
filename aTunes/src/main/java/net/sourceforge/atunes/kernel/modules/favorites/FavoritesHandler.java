@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.favorites;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.FavoritesListeners;
 import net.sourceforge.atunes.model.IAlbum;
@@ -263,12 +262,6 @@ public final class FavoritesHandler extends AbstractHandler implements
 	 * Actions to do after a favorite change (add, remove)
 	 */
 	private void callActionsAfterFavoritesChange() {
-		GuiUtils.callInEventDispatchThread(new Runnable() {
-			@Override
-			public void run() {
-				getBeanFactory().getBean(FavoritesListeners.class)
-						.favoritesChanged();
-			}
-		});
+		getBean(FavoritesListeners.class).favoritesChanged();
 	}
 }
