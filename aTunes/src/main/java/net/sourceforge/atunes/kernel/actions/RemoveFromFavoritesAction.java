@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
@@ -99,7 +100,6 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
 		super(I18nUtils.getString("REMOVE_FROM_FAVORITES"));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void executeAction() {
 		if (this.navigationHandler.isActionOverTree()
@@ -108,19 +108,24 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
 			List<ITreeNode> nodes = this.favoritesNavigationView.getTree()
 					.getSelectedNodes();
 			if (!CollectionUtils.isEmpty(nodes)) {
-				List<ITreeObject<?>> objects = new ArrayList<ITreeObject<?>>();
+				List<IArtist> artists = new ArrayList<IArtist>();
+				List<IAlbum> albums = new ArrayList<IAlbum>();
 				for (ITreeNode node : nodes) {
-					objects.add((ITreeObject<? extends IAudioObject>) node
-							.getUserObject());
+					if (node.getUserObject() instanceof IArtist) {
+						artists.add((IArtist) node.getUserObject());
+					} else if (node.getUserObject() instanceof IAlbum) {
+						albums.add((IAlbum) node.getUserObject());
+					}
 				}
-				this.favoritesHandler.removeFromFavorites(objects);
+				this.favoritesHandler.removeArtists(artists);
+				this.favoritesHandler.removeAlbums(albums);
 			}
 		} else {
 			List<IAudioObject> audioObjects = this.navigationHandler
 					.getSelectedAudioObjectsInNavigationTable();
 			if (!audioObjects.isEmpty()) {
 				this.favoritesHandler
-						.removeSongsFromFavorites(this.localAudioObjectFilter
+						.removeSongs(this.localAudioObjectFilter
 								.getLocalAudioObjects(audioObjects));
 			}
 		}

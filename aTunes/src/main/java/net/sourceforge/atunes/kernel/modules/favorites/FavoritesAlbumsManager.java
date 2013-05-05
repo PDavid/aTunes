@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -35,12 +36,12 @@ import net.sourceforge.atunes.utils.CollectionUtils;
 import org.apache.commons.collections.list.SetUniqueList;
 
 /**
- * Manages favorite artists
+ * Manages favorite albums
  * 
  * @author alex
  * 
  */
-public class FavoritesArtistsManager {
+public class FavoritesAlbumsManager {
 
 	private IRepositoryHandler repositoryHandler;
 
@@ -62,14 +63,14 @@ public class FavoritesArtistsManager {
 	}
 
 	/**
-	 * Takes artists from a list of audio objects and add or remove artists from
+	 * Takes albums from a list of audio objects and add or remove albums from
 	 * favorites
 	 * 
 	 * @param favorites
 	 * @param songs
 	 * @return if favorites have changed
 	 */
-	public boolean toggleFavoriteArtists(final IFavorites favorites,
+	public boolean toggleFavoriteAlbums(final IFavorites favorites,
 			final List<ILocalAudioObject> songs) {
 		if (CollectionUtils.isEmpty(songs)) {
 			return false;
@@ -78,8 +79,8 @@ public class FavoritesArtistsManager {
 		@SuppressWarnings("unchecked")
 		Set<ILocalAudioObject> set = SetUniqueList.decorate(songs).asSet();
 
-		Set<IArtist> toRemove = new HashSet<IArtist>();
-		Set<IArtist> toAdd = new HashSet<IArtist>();
+		Set<IAlbum> toAdd = new HashSet<IAlbum>();
+		Set<IAlbum> toRemove = new HashSet<IAlbum>();
 		for (ILocalAudioObject f : set) {
 			IArtist artist = this.repositoryHandler.getArtist(f
 					.getArtist(this.unknownObjectChecker));
@@ -88,71 +89,75 @@ public class FavoritesArtistsManager {
 						.getAlbumArtist(this.unknownObjectChecker));
 			}
 			if (artist != null) {
-				if (favorites.containsArtist(artist)) {
-					toRemove.add(artist);
-				} else {
-					toAdd.add(artist);
+				IAlbum album = artist.getAlbum(f
+						.getAlbum(this.unknownObjectChecker));
+				if (album != null) {
+					if (favorites.containsAlbum(album)) {
+						toRemove.add(album);
+					} else {
+						toAdd.add(album);
+					}
 				}
 			}
 		}
 
-		addArtists(favorites, toAdd);
-		removeArtists(favorites, toRemove);
+		addAlbums(favorites, toAdd);
+		removeAlbums(favorites, toRemove);
 
 		return !toRemove.isEmpty() || !toAdd.isEmpty();
 	}
 
 	/**
-	 * Adds artists
+	 * Adds albums
 	 * 
 	 * @param favorites
-	 * @param artists
+	 * @param albums
 	 * @return if favorites have changed
 	 */
-	public boolean addArtists(final IFavorites favorites,
-			final Collection<IArtist> artists) {
-		if (CollectionUtils.isEmpty(artists)) {
+	public boolean addAlbums(final IFavorites favorites,
+			final Collection<IAlbum> albums) {
+		if (CollectionUtils.isEmpty(albums)) {
 			return false;
 		}
 
-		for (IArtist artistToAdd : artists) {
-			favorites.addArtist(artistToAdd);
+		for (IAlbum albumToAdd : albums) {
+			favorites.addAlbum(albumToAdd);
 		}
 
 		return true;
 	}
 
 	/**
-	 * Removes artists
+	 * Removes albums
 	 * 
 	 * @param favorites
-	 * @param artists
+	 * @param albums
 	 * @return if favorites have changed
 	 */
-	public boolean removeArtists(final IFavorites favorites,
-			final Collection<IArtist> artists) {
-		if (CollectionUtils.isEmpty(artists)) {
+	public boolean removeAlbums(final IFavorites favorites,
+			final Collection<IAlbum> albums) {
+		if (CollectionUtils.isEmpty(albums)) {
 			return false;
 		}
 
-		for (IArtist artistToRemove : artists) {
-			favorites.removeArtist(artistToRemove);
+		for (IAlbum albumToRemove : albums) {
+			favorites.removeAlbum(albumToRemove);
 		}
 
 		return true;
 	}
 
 	/**
-	 * Removes artist from favorites
+	 * Removes album
 	 * 
 	 * @param favorites
-	 * @param artistName
+	 * @param albumName
 	 * @return true if favorites changed
 	 */
-	public boolean removeArtist(final IFavorites favorites,
-			final String artistName) {
-		if (favorites.containsArtist(artistName)) {
-			favorites.removeArtist(artistName);
+	public boolean removeAlbum(final IFavorites favorites,
+			final String albumName) {
+		if (favorites.containsAlbum(albumName)) {
+			favorites.removeAlbum(albumName);
 			return true;
 		}
 		return false;

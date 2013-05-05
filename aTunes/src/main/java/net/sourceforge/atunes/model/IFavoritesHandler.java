@@ -55,22 +55,25 @@ public interface IFavoritesHandler extends IHandler {
 	public void toggleFavoriteSongs(List<ILocalAudioObject> songs);
 
 	/**
-	 * Adds the favorite songs, even if already added. Optionally can be
-	 * automatically marked as loved in web services
+	 * Adds the favorite songs, even if already added.
 	 * 
 	 * @param songs
-	 * @param automaticallyLoveInWebService
 	 */
-	public void addFavoriteSongs(List<ILocalAudioObject> songs,
-			boolean automaticallyLoveInWebService);
+	public void importFavoriteSongsFromLastFm(List<ILocalAudioObject> songs);
 
 	/**
-	 * Removes the objects from favorites.
+	 * Removes the artists from favorites.
 	 * 
-	 * @param objects
-	 *            list of objects of type TreeObject
+	 * @param artists
 	 */
-	public void removeFromFavorites(List<ITreeObject<?>> objects);
+	public void removeArtists(List<IArtist> artists);
+
+	/**
+	 * Removes the albums from favorites.
+	 * 
+	 * @param albums
+	 */
+	public void removeAlbums(List<IAlbum> albums);
 
 	/**
 	 * Removes the songs from favorites.
@@ -78,7 +81,7 @@ public interface IFavoritesHandler extends IHandler {
 	 * @param files
 	 *            the files
 	 */
-	public void removeSongsFromFavorites(List<ILocalAudioObject> files);
+	public void removeSongs(List<ILocalAudioObject> files);
 
 	/**
 	 * Updates favorites against given repository Each favorite song must be

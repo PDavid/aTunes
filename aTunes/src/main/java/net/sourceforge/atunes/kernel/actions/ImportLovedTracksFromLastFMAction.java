@@ -168,8 +168,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
 	 */
 	private void finishAction(final List<ILocalAudioObject> lovedTracks) {
 		this.dialog.hideDialog();
-		// Set favorites, but not in last.fm again
-		this.favoritesHandler.addFavoriteSongs(lovedTracks, false);
+		this.favoritesHandler.importFavoriteSongsFromLastFm(lovedTracks);
 		this.dialogFactory.newDialog(IMessageDialog.class).showMessage(
 				StringUtils.getString(
 						I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ",

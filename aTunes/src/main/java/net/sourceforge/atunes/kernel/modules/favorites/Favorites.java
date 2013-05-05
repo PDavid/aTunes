@@ -132,7 +132,7 @@ public class Favorites implements IFavorites {
 	}
 
 	@Override
-	public void removeArtistByName(final String artist) {
+	public void removeArtist(final String artist) {
 		this.favoriteArtists.remove(artist);
 	}
 
@@ -162,7 +162,7 @@ public class Favorites implements IFavorites {
 	}
 
 	@Override
-	public void removeAlbumByName(final String album) {
+	public void removeAlbum(final String album) {
 		this.favoriteAlbums.remove(album);
 	}
 
