@@ -120,4 +120,22 @@ public class FavoritesArtistsManagerTest {
 		verify(favorites, times(1)).addArtist(artist1);
 		verify(favorites, never()).removeArtist(any(IArtist.class));
 	}
+
+	@Test
+	public void testCheckFavoriteArtists() {
+		IArtist artist1 = RepositoryTestMockUtils.createMockArtist("Artist 1");
+		IArtist artist2 = RepositoryTestMockUtils.createMockArtist("Artist 2");
+		IFavorites favorites = mock(IFavorites.class);
+		when(favorites.getFavoriteArtists()).thenReturn(
+				CollectionUtils.fillCollectionWithElements(
+						new ArrayList<IArtist>(), artist1, artist2));
+
+		when(this.repositoryHandler.existsArtist(artist1)).thenReturn(true);
+		when(this.repositoryHandler.existsArtist(artist2)).thenReturn(false);
+
+		assertTrue(this.sut.checkFavoriteArtists(favorites));
+
+		verify(favorites, never()).removeArtist(artist1);
+		verify(favorites, times(1)).removeArtist(artist2);
+	}
 }

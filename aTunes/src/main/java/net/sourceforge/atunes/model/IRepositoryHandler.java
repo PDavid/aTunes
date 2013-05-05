@@ -339,4 +339,35 @@ public interface IRepositoryHandler extends IHandler,
 	 */
 	IAudioObject getAudioObjectIfLoaded(IAudioObject ao);
 
+	/**
+	 * @param artist
+	 * @return true if given artist exists
+	 */
+	boolean existsArtist(IArtist artist);
+
+	/**
+	 * @param artist
+	 * @return true if given artist exists
+	 */
+	boolean existsArtist(String artist);
+
+	/**
+	 * @param album
+	 * @return true if given album exists
+	 */
+	public boolean existsAlbum(IAlbum album);
+
+	/**
+	 * @param artist
+	 * @param album
+	 * @return true if given album exists
+	 */
+	public boolean existsAlbum(String artist, String album);
+
+	/**
+	 * @param ao
+	 * @return true if audio object exists
+	 */
+	public boolean existsFile(ILocalAudioObject ao);
+
 }

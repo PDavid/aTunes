@@ -162,4 +162,22 @@ public class FavoritesAlbumsManager {
 		}
 		return false;
 	}
+
+	/**
+	 * Checks all favorite albums exist in repository, removing them if
+	 * necessary
+	 * 
+	 * @param favorites
+	 * @return true if favorites changed
+	 */
+	public boolean checkFavoriteAlbums(final IFavorites favorites) {
+		Set<IAlbum> toRemove = new HashSet<IAlbum>();
+		for (IAlbum album : favorites.getFavoriteAlbums()) {
+			if (!this.repositoryHandler.existsAlbum(album)) {
+				toRemove.add(album);
+			}
+		}
+		return removeAlbums(favorites, toRemove);
+	}
+
 }

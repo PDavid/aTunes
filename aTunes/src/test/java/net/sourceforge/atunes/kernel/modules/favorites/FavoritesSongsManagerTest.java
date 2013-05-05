@@ -39,6 +39,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.CollectionUtils;
 
@@ -58,6 +59,8 @@ public class FavoritesSongsManagerTest {
 
 	private RemoveLovedSongBackgroundWorker removeWorker;
 
+	private IRepositoryHandler repositoryHandler;
+
 	@Before
 	public void init() {
 		this.sut = new FavoritesSongsManager();
@@ -71,6 +74,8 @@ public class FavoritesSongsManagerTest {
 		when(beanFactory.getBean(RemoveLovedSongBackgroundWorker.class))
 				.thenReturn(this.removeWorker);
 		this.sut.setBeanFactory(beanFactory);
+		this.repositoryHandler = mock(IRepositoryHandler.class);
+		this.sut.setRepositoryHandler(this.repositoryHandler);
 	}
 
 	@Test
@@ -209,5 +214,27 @@ public class FavoritesSongsManagerTest {
 					}
 
 				}));
+	}
+
+	@Test
+	public void testCheckFavoriteSongs() {
+		ILocalAudioObject ao1 = RepositoryTestMockUtils
+				.createMockLocalAudioObject(null, "Artist 1", "Album 1",
+						"Title 1");
+		ILocalAudioObject ao2 = RepositoryTestMockUtils
+				.createMockLocalAudioObject(null, "Artist 1", "Album 1",
+						"Title 2");
+		IFavorites favorites = mock(IFavorites.class);
+		when(favorites.getFavoriteSongs()).thenReturn(
+				CollectionUtils.fillCollectionWithElements(
+						new ArrayList<ILocalAudioObject>(), ao1, ao2));
+
+		when(this.repositoryHandler.existsFile(ao1)).thenReturn(true);
+		when(this.repositoryHandler.existsFile(ao2)).thenReturn(false);
+
+		assertTrue(this.sut.checkFavoriteSongs(favorites));
+
+		verify(favorites, never()).removeSong(ao1);
+		verify(favorites, times(1)).removeSong(ao2);
 	}
 }

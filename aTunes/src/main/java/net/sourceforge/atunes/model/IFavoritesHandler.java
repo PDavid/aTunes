@@ -90,7 +90,7 @@ public interface IFavoritesHandler extends IHandler {
 	 * 
 	 * @param repository
 	 */
-	public void updateFavorites(IRepository repository);
+	public void updateFavoritesAfterRepositoryChange(IRepository repository);
 
 	/**
 	 * @param userObject
