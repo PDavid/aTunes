@@ -32,6 +32,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.CollectionUtils;
 
@@ -48,6 +49,15 @@ public class FavoritesSongsManager {
 	private IStateContext stateContext;
 
 	private IBeanFactory beanFactory;
+
+	private IRepositoryHandler repositoryHandler;
+
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
 
 	/**
 	 * @param beanFactory
@@ -151,5 +161,22 @@ public class FavoritesSongsManager {
 		removeSongs(favorites, toRemove, true);
 
 		return !toAdd.isEmpty() || !toRemove.isEmpty();
+	}
+
+	/**
+	 * Checks all songs to see if exists in repository, removing if does not
+	 * exist
+	 * 
+	 * @param favorites
+	 * @return true if favorites changed
+	 */
+	public boolean checkFavoriteSongs(final IFavorites favorites) {
+		List<ILocalAudioObject> toRemove = new ArrayList<ILocalAudioObject>();
+		for (ILocalAudioObject favorite : favorites.getFavoriteSongs()) {
+			if (!this.repositoryHandler.existsFile(favorite)) {
+				toRemove.add(favorite);
+			}
+		}
+		return removeSongs(favorites, toRemove, false);
 	}
 }

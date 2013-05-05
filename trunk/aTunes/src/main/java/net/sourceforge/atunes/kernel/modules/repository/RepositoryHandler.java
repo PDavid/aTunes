@@ -544,7 +544,7 @@ public final class RepositoryHandler extends AbstractHandler implements
 	@Override
 	public void repositoryChanged(final IRepository repository) {
 		getBean(PersistRepositoryTask.class).persist(repository);
-		this.favoritesHandler.updateFavorites(repository);
+		this.favoritesHandler.updateFavoritesAfterRepositoryChange(repository);
 	}
 
 	protected final void startTransaction() {
@@ -707,5 +707,48 @@ public final class RepositoryHandler extends AbstractHandler implements
 	 */
 	void notifyRepositoryRead() {
 		this.currentRepositoryReader = null;
+	}
+
+	@Override
+	public boolean existsArtist(final IArtist artist) {
+		if (artist != null) {
+			return this.repository.getArtist(artist.getName()) != null;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean existsArtist(final String artist) {
+		return this.repository.getArtist(artist) != null;
+	}
+
+	@Override
+	public boolean existsAlbum(final IAlbum album) {
+		if (album != null) {
+			IArtist artist = this.repository.getArtist(album.getArtist()
+					.getName());
+			if (artist != null) {
+				if (artist.getAlbum(album.getName()) != null) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean existsAlbum(final String artistName, final String album) {
+		IArtist artist = this.repository.getArtist(artistName);
+		if (artist != null) {
+			if (artist.getAlbum(album) != null) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean existsFile(final ILocalAudioObject ao) {
+		return getFileIfLoaded(ao.getUrl()) != null;
 	}
 }

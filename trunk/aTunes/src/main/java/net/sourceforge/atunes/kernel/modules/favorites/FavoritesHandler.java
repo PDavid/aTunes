@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.favorites;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
@@ -196,14 +195,22 @@ public final class FavoritesHandler extends AbstractHandler implements
 	}
 
 	@Override
-	public void updateFavorites(final IRepository repository) {
-		List<ILocalAudioObject> toRemove = new ArrayList<ILocalAudioObject>();
-		for (ILocalAudioObject favorite : this.favorites.getFavoriteSongs()) {
-			if (!repository.getFiles().contains(favorite)) {
-				toRemove.add(favorite);
-			}
+	public void updateFavoritesAfterRepositoryChange(
+			final IRepository repository) {
+		boolean change = false;
+		change = getBean(FavoritesArtistsManager.class).checkFavoriteArtists(
+				this.favorites)
+				|| change;
+		change = getBean(FavoritesAlbumsManager.class).checkFavoriteAlbums(
+				this.favorites)
+				|| change;
+		change = getBean(FavoritesSongsManager.class).checkFavoriteSongs(
+				this.favorites)
+				|| change;
+
+		if (change) {
+			callActionsAfterFavoritesChange();
 		}
-		removeSongs(toRemove);
 	}
 
 	/**

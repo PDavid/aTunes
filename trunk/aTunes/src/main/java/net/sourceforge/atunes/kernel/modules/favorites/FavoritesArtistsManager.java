@@ -157,4 +157,21 @@ public class FavoritesArtistsManager {
 		}
 		return false;
 	}
+
+	/**
+	 * Checks all favorite artists exist in repository, removing them if
+	 * necessary
+	 * 
+	 * @param favorites
+	 * @return true if favorites changed
+	 */
+	public boolean checkFavoriteArtists(final IFavorites favorites) {
+		Set<IArtist> toRemove = new HashSet<IArtist>();
+		for (IArtist artist : favorites.getFavoriteArtists()) {
+			if (!this.repositoryHandler.existsArtist(artist)) {
+				toRemove.add(artist);
+			}
+		}
+		return removeArtists(favorites, toRemove);
+	}
 }
