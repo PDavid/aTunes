@@ -34,53 +34,53 @@ import net.sourceforge.atunes.model.IIconFactory;
  * 
  */
 public class PropertyTableCellRendererCode extends
-	AbstractTableCellRendererCode<JLabel, AudioObjectProperty> {
+		AbstractTableCellRendererCode<JLabel, AudioObjectProperty> {
 
-    private IIconFactory favoriteIcon;
+	private IIconFactory favoriteIcon;
 
-    private IIconFactory newIcon;
+	private IIconFactory newIcon;
 
-    private IIconFactory downloadIcon;
+	private IIconFactory downloadIcon;
 
-    /**
-     * @param favoriteIcon
-     */
-    public void setFavoriteIcon(final IIconFactory favoriteIcon) {
-	this.favoriteIcon = favoriteIcon;
-    }
-
-    /**
-     * @param newIcon
-     */
-    public void setNewIcon(final IIconFactory newIcon) {
-	this.newIcon = newIcon;
-    }
-
-    /**
-     * @param downloadIcon
-     */
-    public void setDownloadIcon(final IIconFactory downloadIcon) {
-	this.downloadIcon = downloadIcon;
-    }
-
-    @Override
-    public JLabel getComponent(final JLabel comp, final JTable table,
-	    final AudioObjectProperty val, final boolean isSelected,
-	    final boolean hasFocus, final int row, final int column) {
-	ImageIcon icon = null;
-	if (val == AudioObjectProperty.FAVORITE) {
-	    icon = favoriteIcon.getIcon(getLookAndFeel()
-		    .getPaintForColorMutableIcon(comp, isSelected));
-	} else if (val == AudioObjectProperty.NOT_LISTENED_ENTRY) {
-	    icon = newIcon.getIcon(getLookAndFeel()
-		    .getPaintForColorMutableIcon(comp, isSelected));
-	} else if (val == AudioObjectProperty.DOWNLOADED_ENTRY) {
-	    icon = downloadIcon.getIcon(getLookAndFeel()
-		    .getPaintForColorMutableIcon(comp, isSelected));
+	/**
+	 * @param favoriteIcon
+	 */
+	public void setFavoriteIcon(final IIconFactory favoriteIcon) {
+		this.favoriteIcon = favoriteIcon;
 	}
-	comp.setIcon(icon);
-	comp.setText(null);
-	return comp;
-    }
+
+	/**
+	 * @param newIcon
+	 */
+	public void setNewIcon(final IIconFactory newIcon) {
+		this.newIcon = newIcon;
+	}
+
+	/**
+	 * @param downloadIcon
+	 */
+	public void setDownloadIcon(final IIconFactory downloadIcon) {
+		this.downloadIcon = downloadIcon;
+	}
+
+	@Override
+	public JLabel getComponent(final JLabel comp, final JTable table,
+			final AudioObjectProperty val, final boolean isSelected,
+			final boolean hasFocus, final int row, final int column) {
+		ImageIcon icon = null;
+		if (val == AudioObjectProperty.FAVORITE) {
+			icon = this.favoriteIcon.getIcon(getLookAndFeel()
+					.getPaintForColorMutableIcon(comp, isSelected));
+		} else if (val == AudioObjectProperty.NOT_LISTENED_ENTRY) {
+			icon = this.newIcon.getIcon(getLookAndFeel()
+					.getPaintForColorMutableIcon(comp, isSelected));
+		} else if (val == AudioObjectProperty.DOWNLOADED_ENTRY) {
+			icon = this.downloadIcon.getIcon(getLookAndFeel()
+					.getPaintForColorMutableIcon(comp, isSelected));
+		}
+		comp.setIcon(icon);
+		comp.setText(null);
+		return comp;
+	}
 
 }

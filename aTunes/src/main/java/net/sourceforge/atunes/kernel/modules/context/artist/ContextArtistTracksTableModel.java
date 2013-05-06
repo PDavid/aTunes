@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.context.artist;
 import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.kernel.modules.context.ITrackTableModel;
-import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -54,15 +53,7 @@ public class ContextArtistTracksTableModel extends DefaultTableModel implements
 
 	@Override
 	public Class<?> getColumnClass(final int columnIndex) {
-		switch (columnIndex) {
-		case 0:
-			return AudioObjectProperty.class;
-		case 1:
-			return ITrackInfo.class;
-		case 2:
-			return String.class;
-		}
-		return null;
+		return ITrackInfo.class;
 	}
 
 	@Override
@@ -97,15 +88,8 @@ public class ContextArtistTracksTableModel extends DefaultTableModel implements
 	@Override
 	public Object getValueAt(final int rowIndex, final int columnIndex) {
 		if (this.topTracks != null) {
-			switch (columnIndex) {
-			case 0:
-				return this.topTracks.getTracks().get(rowIndex).isFavorite() ? AudioObjectProperty.FAVORITE
-						: null;
-			case 1:
-				return this.topTracks.getTracks().get(rowIndex);
-			case 2:
-				return this.topTracks.getTracks().get(rowIndex).getAlbum();
-			}
+			// Specific information is retrieved in renderer
+			return this.topTracks.getTracks().get(rowIndex);
 		}
 		return "";
 	}
