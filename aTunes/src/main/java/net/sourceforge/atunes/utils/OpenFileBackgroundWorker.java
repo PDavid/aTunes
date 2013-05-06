@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.BackgroundWorker;
+import net.sourceforge.atunes.model.IOSManager;
 
 /**
  * Calls desktop to open a file
@@ -38,8 +39,20 @@ public final class OpenFileBackgroundWorker extends
 
 	private File fileToOpen;
 
+	private IOSManager osManager;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+
+	/**
+	 * @param fileToOpen
+	 */
 	public void open(final File fileToOpen) {
-		this.fileToOpen = fileToOpen;
+		this.fileToOpen = this.osManager.getFileNormalized(fileToOpen);
 		execute();
 	}
 

@@ -34,7 +34,12 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.utils.FileUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import com.sun.jna.Memory;
+import com.sun.jna.Native;
+import com.sun.jna.WString;
 
 /**
  * Windows operating system adapter
@@ -65,6 +70,12 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 
 	private Dimension screenSize;
 
+	private static final int CHAR_BYTE_WIDTH = 2;
+
+	private Kernel32 kernel32;
+
+	private boolean kernel32error;
+
 	/**
 	 * @param screenSize
 	 */
@@ -90,11 +101,6 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 
 	@Override
 	public boolean areShadowBordersForToolTipsSupported() {
-		return true;
-	}
-
-	@Override
-	public boolean usesShortPathNames() {
 		return true;
 	}
 
@@ -167,5 +173,80 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 	@Override
 	public IPlayerTrayIconsHandler getPlayerTrayIcons() {
 		return getBeanFactory().getBean(CommonPlayerTrayIconsHandler.class);
+	}
+
+	@Override
+	public boolean usesShortPathNames() {
+		// Only 32-bit Windows support short path names
+		return !is64Bit();
+	}
+
+	@Override
+	public String getShortPathName(String filePathAndName) {
+		if (initializeKernel32()) {
+			try {
+				return getShortPathNameW(filePathAndName);
+			} catch (NoClassDefFoundError error) {
+				// Avoid errors when using JNA
+				Logger.error(error);
+				kernel32error = true;
+				return filePathAndName;
+			}
+		} else {
+			// If there is a problem using Kernel32 return the same file path
+			// and name
+			return filePathAndName;
+		}
+	}
+
+	/*
+	 * Thanks to Paul Loy from the JNA mailing list ->
+	 * https://jna.dev.java.net/servlets/ReadMsg?list=users&msgNo=928
+	 * 
+	 * Requires: JNA https://jna.dev.java.net/#getting_started
+	 */
+	/**
+	 * Returns the 8.3 (DOS) file-/pathname for a given file. Only available for
+	 * 32-bit Windows. The filename must include the path as whole and be passed
+	 * as String.
+	 * 
+	 * @param longPathName
+	 *            the long path name
+	 * @param osManager
+	 * 
+	 * @return File/Path in 8.3 format
+	 */
+	private String getShortPathNameW(final String longPathName) {
+		WString pathname = new WString(longPathName);
+		int bufferSize = (pathname.length() * CHAR_BYTE_WIDTH)
+				+ CHAR_BYTE_WIDTH;
+		Memory buffer = new Memory(bufferSize);
+
+		if (kernel32.GetShortPathNameW(pathname, buffer, bufferSize) == 0) {
+			return "";
+		}
+		return buffer.getString(0, true);
+	}
+
+	/**
+	 * Tries to initialize Kernel32
+	 * 
+	 * @return if initialization has been successful and kernel32 can be used
+	 */
+	private boolean initializeKernel32() {
+		if (kernel32error) {
+			return false;
+		}
+		if (kernel32 == null) {
+			try {
+				Native.setProtected(true);
+				kernel32 = (Kernel32) Native.loadLibrary("Kernel32",
+						Kernel32.class);
+			} catch (UnsatisfiedLinkError e) {
+				Logger.debug("kernel32 not found");
+				kernel32error = true;
+			}
+		}
+		return kernel32 != null && !kernel32error;
 	}
 }

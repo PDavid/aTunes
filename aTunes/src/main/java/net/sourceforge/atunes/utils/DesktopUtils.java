@@ -29,7 +29,6 @@ import java.net.URL;
 
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDesktop;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearch;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -40,8 +39,6 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public final class DesktopUtils implements IDesktop {
 
-	private IOSManager osManager;
-
 	private IBeanFactory beanFactory;
 
 	/**
@@ -49,13 +46,6 @@ public final class DesktopUtils implements IDesktop {
 	 */
 	public void setBeanFactory(IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
-	}
-
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
 	}
 
 	@Override
@@ -87,20 +77,7 @@ public final class DesktopUtils implements IDesktop {
 	@Override
 	public void openFile(final File file) {
 		if (isDesktopSupported()) {
-			final File fileToOpen;
-			/*
-			 * Needed for UNC filenames with spaces ->
-			 * http://bugs.sun.com/view_bug.do?bug_id=6550588
-			 */
-			if (this.osManager.usesShortPathNames()) {
-				fileToOpen = new File(FileNameUtils.getShortPathNameW(
-						net.sourceforge.atunes.utils.FileUtils.getPath(file),
-						this.osManager));
-			} else {
-				fileToOpen = file;
-			}
-			this.beanFactory.getBean(OpenFileBackgroundWorker.class).open(
-					fileToOpen);
+			this.beanFactory.getBean(OpenFileBackgroundWorker.class).open(file);
 		}
 	}
 
