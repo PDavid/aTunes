@@ -22,10 +22,6 @@ package net.sourceforge.atunes.utils;
 
 import net.sourceforge.atunes.model.IOSManager;
 
-import com.sun.jna.Library;
-import com.sun.jna.Memory;
-import com.sun.jna.Native;
-import com.sun.jna.WString;
 
 /**
  * <p>
@@ -51,238 +47,158 @@ import com.sun.jna.WString;
  */
 public final class FileNameUtils {
 
-    private static final int CHAR_BYTE_WIDTH = 2;
-
-    private static Kernel32 kernel32;
-
-    private FileNameUtils() {
-    }
-
-    static {
-	try {
-	    Native.setProtected(true);
-	    kernel32 = (Kernel32) Native
-		    .loadLibrary("Kernel32", Kernel32.class);
-	} catch (UnsatisfiedLinkError e) {
-	    Logger.debug("kernel32 not found");
+	private FileNameUtils() {
 	}
-    }
 
-    /**
-     * @author alex
-     * 
-     */
-    public interface Kernel32 extends Library {
+	/**
+	 * Checks for valid filenames. Only pass the filename without path! The
+	 * filename is not checked for maximum filename length of 255 characters
+	 * (including path!). To check for valid folder names please use
+	 * getValidFolderName(String folderName)
+	 * 
+	 * @param fileName
+	 *            The filename to be checked. Please make sure to check for
+	 *            escape sequences (\, $) and add a \ before them before calling
+	 *            this method.
+	 * @param osManager
+	 * 
+	 * @return Returns the filename with known illegal characters substituted.
+	 */
+	public static String getValidFileName(final String fileName,
+			final IOSManager osManager) {
+		return getValidFileName(fileName, false, osManager);
+	}
+
+	/**
+	 * Checks for valid filenames. Only pass the filename without path! The
+	 * filename is not checked for maximum filename lenght of 255 characters
+	 * (including path!). To check for valid folder names please use
+	 * getValidFolderName(String folderName)
+	 * 
+	 * @param fileNameStr
+	 *            The filename to be checked. Please make sure to check for
+	 *            escape sequences (\, $) and add a \ before them before calling
+	 *            this method.
+	 * @param isMp3Device
+	 *            if valid file name for Mp3 device (->FAT/FAT32)
+	 * @param osManager
+	 * 
+	 * @return Returns the filename with known illegal characters substituted.
+	 */
+	public static String getValidFileName(final String fileNameStr,
+			final boolean isMp3Device, final IOSManager osManager) {
+		// First call generic function
+		String fileName = getValidName(fileNameStr, isMp3Device, osManager);
+
+		// Most OS do not like a slash, so replace it by default.
+		fileName = fileName.replaceAll("/", "-");
+		// Do the same with double quotes...
+		fileName = fileName.replaceAll("\"", "'");
+		// ...question mark ?
+		fileName = fileName.replaceAll("\\?", "");
+		// ... asterisk
+		fileName = fileName.replaceAll("\\*", "");
+		// ... colon
+		fileName = fileName.replaceAll(":", "");
+
+		// This list is probably incomplete. Windows is quite picky.
+		if (osManager.isWindows() || isMp3Device) {
+			fileName = fileName.replace("\\", "-");
+		}
+		return fileName;
+	}
+
+	/**
+	 * Checks for valid folder names. Do pass the path WITHOUT the filename. The
+	 * folder name is not checked for maximum length of 255 characters
+	 * (including filename!). To check for valid filenames please use
+	 * getValidFileName(String fileName)
+	 * 
+	 * @param folderName
+	 *            The folder name to be checked.
+	 * @param osManager
+	 * 
+	 * @return Returns the path name with known illegal characters substituted.
+	 */
+	public static String getValidFolderName(final String folderName,
+			final IOSManager osManager) {
+		return getValidFolderName(folderName, false, osManager);
+	}
+
+	/**
+	 * Checks for valid folder names. Do pass the path WITHOUT the filename. The
+	 * folder name is not checked for maximum length of 255 characters
+	 * (including filename!). To check for valid filenames please use
+	 * getValidFileName(String fileName)
+	 * 
+	 * @param folderNameStr
+	 *            The folder name to be checked.
+	 * @param isMp3Device
+	 *            if valid folder name for Mp3 device (->FAT/FAT32)
+	 * @param osManager
+	 * 
+	 * @return Returns the path name with known illegal characters substituted.
+	 */
+	public static String getValidFolderName(final String folderNameStr,
+			final boolean isMp3Device, final IOSManager osManager) {
+		// First call generic function
+		String folderName = getValidName(folderNameStr, isMp3Device, osManager);
+
+		// This list is probably incomplete. Windows is quite picky.
+		if (osManager.isWindows() || isMp3Device) {
+			folderName = folderName.replace("\\.", "\\_");
+			if (osManager.isWindows()) {
+				folderName = folderName + "\\";
+			}
+			folderName = folderName.replace(".\\", "_\\");
+			if (osManager.isWindows()) {
+				folderName = folderName.replace("/", "-");
+			}
+		}
+
+		return folderName;
+	}
 
 	/*
-	 * http://msdn2.microsoft.com/en-us/library/aa364989(VS.85).aspx
+	 * Generic method that does the substitution for folder- and filenames. Do
+	 * not call directly but call either getValidFileName or getValidFolderName
+	 * to verify file/folder names
 	 */
 	/**
-	 * <p>
-	 * Unicode (wchar_t*) version of GetShortPathName()
-	 * </p>
-	 * <code>
-	 * DWORD WINAPI GetShortPathNameW( __in LPCTSTR lpszLongPath,
-	 * __out LPTSTR lpdzShortPath,
-	 * __in DWORD cchBuffer );
-	 * </code>.
+	 * Gets the valid name.
 	 * 
-	 * @param inPath
-	 *            the in path
-	 * @param outPathBuffer
-	 *            the out path buffer
-	 * @param outPathBufferSize
-	 *            the out path buffer size
+	 * @param fileNameStr
+	 *            the file name
+	 * @param isMp3Device
+	 *            the is mp3 device
 	 * 
-	 * @return the int
+	 * @return the valid name
 	 */
-	public int GetShortPathNameW(WString inPath, Memory outPathBuffer,
-		int outPathBufferSize);
+	private static String getValidName(final String fileNameStr,
+			final boolean isMp3Device, final IOSManager osManager) {
+		/*
+		 * This list is probably incomplete. Windows is quite picky. We do not
+		 * check for maximum length.
+		 */
+		String fileName = fileNameStr;
+		if (osManager.isWindows() || isMp3Device) {
+			fileName = fileName.replace("\"", "'");
+			fileName = fileName.replace("?", "_");
+			// Replace all ":" except at the drive letter
+			if (fileName.length() > 2) {
+				fileName = fileName.substring(0, 2)
+						+ fileName.substring(2).replace(":", "-");
+			}
+			fileName = fileName.replace("<", "-");
+			fileName = fileName.replace(">", "-");
+			fileName = fileName.replace("|", "-");
+			fileName = fileName.replace("*", "-");
+		}
 
-    }
-
-    /**
-     * Checks for valid filenames. Only pass the filename without path! The
-     * filename is not checked for maximum filename length of 255 characters
-     * (including path!). To check for valid folder names please use
-     * getValidFolderName(String folderName)
-     * 
-     * @param fileName
-     *            The filename to be checked. Please make sure to check for
-     *            escape sequences (\, $) and add a \ before them before calling
-     *            this method.
-     * @param osManager
-     * 
-     * @return Returns the filename with known illegal characters substituted.
-     */
-    public static String getValidFileName(final String fileName,
-	    final IOSManager osManager) {
-	return getValidFileName(fileName, false, osManager);
-    }
-
-    /**
-     * Checks for valid filenames. Only pass the filename without path! The
-     * filename is not checked for maximum filename lenght of 255 characters
-     * (including path!). To check for valid folder names please use
-     * getValidFolderName(String folderName)
-     * 
-     * @param fileNameStr
-     *            The filename to be checked. Please make sure to check for
-     *            escape sequences (\, $) and add a \ before them before calling
-     *            this method.
-     * @param isMp3Device
-     *            if valid file name for Mp3 device (->FAT/FAT32)
-     * @param osManager
-     * 
-     * @return Returns the filename with known illegal characters substituted.
-     */
-    public static String getValidFileName(final String fileNameStr,
-	    final boolean isMp3Device, final IOSManager osManager) {
-	// First call generic function
-	String fileName = getValidName(fileNameStr, isMp3Device, osManager);
-
-	// Most OS do not like a slash, so replace it by default.
-	fileName = fileName.replaceAll("/", "-");
-	// Do the same with double quotes...
-	fileName = fileName.replaceAll("\"", "'");
-	// ...question mark ?
-	fileName = fileName.replaceAll("\\?", "");
-	// ... asterisk
-	fileName = fileName.replaceAll("\\*", "");
-	// ... colon
-	fileName = fileName.replaceAll(":", "");
-
-	// This list is probably incomplete. Windows is quite picky.
-	if (osManager.isWindows() || isMp3Device) {
-	    fileName = fileName.replace("\\", "-");
+		// Unconfirmed, as no Mac available for testing.
+		if (osManager.isMacOsX()) {
+			fileName = fileName.replace("|", "-");
+		}
+		return fileName;
 	}
-	return fileName;
-    }
-
-    /**
-     * Checks for valid folder names. Do pass the path WITHOUT the filename. The
-     * folder name is not checked for maximum length of 255 characters
-     * (including filename!). To check for valid filenames please use
-     * getValidFileName(String fileName)
-     * 
-     * @param folderName
-     *            The folder name to be checked.
-     * @param osManager
-     * 
-     * @return Returns the path name with known illegal characters substituted.
-     */
-    public static String getValidFolderName(final String folderName,
-	    final IOSManager osManager) {
-	return getValidFolderName(folderName, false, osManager);
-    }
-
-    /**
-     * Checks for valid folder names. Do pass the path WITHOUT the filename. The
-     * folder name is not checked for maximum length of 255 characters
-     * (including filename!). To check for valid filenames please use
-     * getValidFileName(String fileName)
-     * 
-     * @param folderNameStr
-     *            The folder name to be checked.
-     * @param isMp3Device
-     *            if valid folder name for Mp3 device (->FAT/FAT32)
-     * @param osManager
-     * 
-     * @return Returns the path name with known illegal characters substituted.
-     */
-    public static String getValidFolderName(final String folderNameStr,
-	    final boolean isMp3Device, final IOSManager osManager) {
-	// First call generic function
-	String folderName = getValidName(folderNameStr, isMp3Device, osManager);
-
-	// This list is probably incomplete. Windows is quite picky.
-	if (osManager.isWindows() || isMp3Device) {
-	    folderName = folderName.replace("\\.", "\\_");
-	    if (osManager.isWindows()) {
-		folderName = folderName + "\\";
-	    }
-	    folderName = folderName.replace(".\\", "_\\");
-	    if (osManager.isWindows()) {
-		folderName = folderName.replace("/", "-");
-	    }
-	}
-
-	return folderName;
-    }
-
-    /*
-     * Generic method that does the substitution for folder- and filenames. Do
-     * not call directly but call either getValidFileName or getValidFolderName
-     * to verify file/folder names
-     */
-    /**
-     * Gets the valid name.
-     * 
-     * @param fileNameStr
-     *            the file name
-     * @param isMp3Device
-     *            the is mp3 device
-     * 
-     * @return the valid name
-     */
-    private static String getValidName(final String fileNameStr,
-	    final boolean isMp3Device, final IOSManager osManager) {
-	/*
-	 * This list is probably incomplete. Windows is quite picky. We do not
-	 * check for maximum length.
-	 */
-	String fileName = fileNameStr;
-	if (osManager.isWindows() || isMp3Device) {
-	    fileName = fileName.replace("\"", "'");
-	    fileName = fileName.replace("?", "_");
-	    // Replace all ":" except at the drive letter
-	    if (fileName.length() > 2) {
-		fileName = fileName.substring(0, 2)
-			+ fileName.substring(2).replace(":", "-");
-	    }
-	    fileName = fileName.replace("<", "-");
-	    fileName = fileName.replace(">", "-");
-	    fileName = fileName.replace("|", "-");
-	    fileName = fileName.replace("*", "-");
-	}
-
-	// Unconfirmed, as no Mac available for testing.
-	if (osManager.isMacOsX()) {
-	    fileName = fileName.replace("|", "-");
-	}
-	return fileName;
-    }
-
-    /*
-     * Thanks to Paul Loy from the JNA mailing list ->
-     * https://jna.dev.java.net/servlets/ReadMsg?list=users&msgNo=928
-     * 
-     * Requires: JNA https://jna.dev.java.net/#getting_started
-     */
-    /**
-     * Returns the 8.3 (DOS) file-/pathname for a given file. Only avaible for
-     * 32-bit Windows, so check if this operating system is used before calling.
-     * The filename must include the path as whole and be passed as String.
-     * 
-     * @param longPathName
-     *            the long path name
-     * @param osManager
-     * 
-     * @return File/Path in 8.3 format
-     */
-    public static String getShortPathNameW(final String longPathName,
-	    final IOSManager osManager) {
-	if (!osManager.usesShortPathNames()) {
-	    return longPathName;
-	}
-	WString pathname = new WString(longPathName);
-	int bufferSize = (pathname.length() * CHAR_BYTE_WIDTH)
-		+ CHAR_BYTE_WIDTH;
-	Memory buffer = new Memory(bufferSize);
-
-	if (kernel32.GetShortPathNameW(pathname, buffer, bufferSize) == 0) {
-	    return "";
-	}
-	return buffer.getString(0, true);
-    }
 }

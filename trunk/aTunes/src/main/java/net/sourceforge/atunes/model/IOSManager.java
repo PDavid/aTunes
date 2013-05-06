@@ -311,4 +311,26 @@ public interface IOSManager {
 	 */
 	String getFilePath(String folder, String name);
 
+	/**
+	 * Normalizes file path and name if necessary
+	 * 
+	 * Needed for UNC filenames with spaces ->
+	 * http://bugs.sun.com/view_bug.do?bug_id=6550588
+	 * 
+	 * @param filePathAndName
+	 * @return
+	 */
+	String getFileNormalized(String filePathAndName);
+
+	/**
+	 * Normalizes file path and name if necessary
+	 * 
+	 * Needed for UNC filenames with spaces ->
+	 * http://bugs.sun.com/view_bug.do?bug_id=6550588
+	 * 
+	 * @param file
+	 * @return
+	 */
+	File getFileNormalized(File file);
+
 }

@@ -37,6 +37,7 @@ import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.ITrayIcon;
 import net.sourceforge.atunes.model.OperatingSystem;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -377,5 +378,18 @@ public class OsManager implements IOSManager {
 	@Override
 	public String getFilePath(final String folder, final String name) {
 		return StringUtils.getString(folder, getFileSeparator(), name);
+	}
+
+	@Override
+	public String getFileNormalized(String filePathAndName) {
+		if (this.adapter.usesShortPathNames()) {
+			return this.adapter.getShortPathName(filePathAndName);
+		}
+		return filePathAndName;
+	}
+
+	@Override
+	public File getFileNormalized(File file) {
+		return new File(getFileNormalized(FileUtils.getPath(file)));
 	}
 }

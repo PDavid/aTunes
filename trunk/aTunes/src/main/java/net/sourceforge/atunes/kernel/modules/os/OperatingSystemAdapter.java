@@ -157,6 +157,18 @@ public abstract class OperatingSystemAdapter {
 	}
 
 	/**
+	 * Returns short path name file if OS supports it. Default implementation
+	 * returns the same file
+	 * 
+	 * @param filePathAndName
+	 * @return
+	 */
+	public String getShortPathName(String filePathAndName) {
+		return filePathAndName; // default implementation returns the same file
+								// path and name
+	}
+
+	/**
 	 * Sets full screen
 	 * 
 	 * @param window

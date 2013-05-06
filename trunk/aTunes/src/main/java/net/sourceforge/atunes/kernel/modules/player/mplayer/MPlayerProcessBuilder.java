@@ -38,7 +38,6 @@ import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.model.IStatePodcast;
-import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -180,8 +179,7 @@ public class MPlayerProcessBuilder {
 		prepareBasicCommand(audioObject, command, isRemoteAudio);
 
 		if (needsShortPathName(audioObject, isRemoteAudio)) {
-			String shortPath = FileNameUtils.getShortPathNameW(url,
-					this.osManager);
+			String shortPath = this.osManager.getFileNormalized(url);
 			command.add(shortPath != null && !shortPath.isEmpty() ? shortPath
 					: url);
 		} else {
