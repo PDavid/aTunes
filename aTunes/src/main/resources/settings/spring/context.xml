@@ -165,7 +165,7 @@
 		<property name="dataSource" ref="youtubeDataSource" />
 	</bean>
 	
-	
+	<bean id="contextArtistTracksTableModel" class="net.sourceforge.atunes.kernel.modules.context.artist.ContextArtistTracksTableModel" scope="prototype"/>
 	
 	<!-- ACTIONS -->
 	<bean id="contextTableAction" class="net.sourceforge.atunes.kernel.modules.context.ContextTableAction" abstract="true"/>

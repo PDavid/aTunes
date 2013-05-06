@@ -237,4 +237,25 @@ public class FavoritesSongsManagerTest {
 		verify(favorites, never()).removeSong(ao1);
 		verify(favorites, times(1)).removeSong(ao2);
 	}
+
+	@Test
+	public void testIsSongFavorite() {
+		ILocalAudioObject ao1 = RepositoryTestMockUtils
+				.createMockLocalAudioObject(null, "Artist 1", "Album 1",
+						"Title 1");
+		ILocalAudioObject ao2 = RepositoryTestMockUtils
+				.createMockLocalAudioObject(null, "Artist 2", "Album 1",
+						"Title 2");
+		ILocalAudioObject ao3 = RepositoryTestMockUtils
+				.createMockLocalAudioObject(null, "Artist 2", "Album 1", null); // Null
+																				// title
+		IFavorites favorites = mock(IFavorites.class);
+		when(favorites.getFavoriteSongs()).thenReturn(
+				CollectionUtils.fillCollectionWithElements(
+						new ArrayList<ILocalAudioObject>(), ao1, ao2, ao3));
+
+		assertTrue(this.sut.isSongFavorite(favorites, "Artist 1", "Title 1"));
+		assertTrue(this.sut.isSongFavorite(favorites, "ARTIST 2", "Title 2"));
+		assertFalse(this.sut.isSongFavorite(favorites, "Artist 1", "Title 2"));
+	}
 }

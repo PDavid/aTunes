@@ -24,8 +24,9 @@ import java.io.Serializable;
 
 /**
  * Represents information about an albums' track, retrieved from a web service
+ * 
  * @author alex
- *
+ * 
  */
 public interface ITrackInfo extends Serializable {
 
@@ -38,12 +39,14 @@ public interface ITrackInfo extends Serializable {
 
 	/**
 	 * Gets the artist
+	 * 
 	 * @return
 	 */
 	String getArtist();
 
 	/**
 	 * Gets the album
+	 * 
 	 * @return
 	 */
 	String getAlbum();
@@ -73,12 +76,14 @@ public interface ITrackInfo extends Serializable {
 
 	/**
 	 * Sets the artist
+	 * 
 	 * @param artist
 	 */
 	void setArtist(String artist);
 
 	/**
 	 * Sets the album
+	 * 
 	 * @param album
 	 */
 	void setAlbum(String album);
@@ -92,4 +97,14 @@ public interface ITrackInfo extends Serializable {
 	 * @param available
 	 */
 	void setAvailable(boolean available);
+
+	/**
+	 * @return if track is favorite
+	 */
+	boolean isFavorite();
+
+	/**
+	 * @param favorite
+	 */
+	void setFavorite(boolean favorite);
 }

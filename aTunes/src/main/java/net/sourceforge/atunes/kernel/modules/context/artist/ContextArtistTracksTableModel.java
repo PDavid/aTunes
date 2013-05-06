@@ -23,86 +23,95 @@ package net.sourceforge.atunes.kernel.modules.context.artist;
 import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.kernel.modules.context.ITrackTableModel;
+import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
-class ContextArtistTracksTableModel extends DefaultTableModel implements
-	ITrackTableModel {
+/**
+ * Table model fot artist tracks
+ * 
+ * @author alex
+ * 
+ */
+public class ContextArtistTracksTableModel extends DefaultTableModel implements
+		ITrackTableModel {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 2018166595041397084L;
+	private static final long serialVersionUID = 2018166595041397084L;
 
-    private IArtistTopTracks topTracks;
+	private IArtistTopTracks topTracks;
 
-    /**
-     * @param topTracks
-     */
-    public void setTopTracks(final IArtistTopTracks topTracks) {
-	this.topTracks = topTracks;
-	fireTableDataChanged();
-    }
-
-    @Override
-    public Class<?> getColumnClass(final int columnIndex) {
-	switch (columnIndex) {
-	case 0:
-	    return Integer.class;
-	case 1:
-	    return ITrackInfo.class;
-	case 2:
-	    return String.class;
+	/**
+	 * @param topTracks
+	 */
+	public void setTopTracks(final IArtistTopTracks topTracks) {
+		this.topTracks = topTracks;
+		fireTableDataChanged();
 	}
-	return null;
-    }
 
-    @Override
-    public int getColumnCount() {
-	return 3;
-    }
-
-    @Override
-    public String getColumnName(final int columnIndex) {
-	return columnIndex != 0 ? I18nUtils.getString("SONGS") : "";
-    }
-
-    @Override
-    public int getRowCount() {
-	return topTracks != null ? topTracks.getTracks().size() : 0;
-    }
-
-    /**
-     * Gets the track.
-     * 
-     * @param index
-     *            the index
-     * 
-     * @return the track
-     */
-    @Override
-    public ITrackInfo getTrack(final int index) {
-	return topTracks != null ? topTracks.getTracks().get(index) : null;
-    }
-
-    @Override
-    public Object getValueAt(final int rowIndex, final int columnIndex) {
-	switch (columnIndex) {
-	case 0:
-	    return StringUtils.getString(rowIndex + 1, ".");
-	case 1:
-	    return topTracks != null ? topTracks.getTracks().get(rowIndex) : "";
-	case 2:
-	    return topTracks != null ? topTracks.getTracks().get(rowIndex)
-		    .getAlbum() : "";
+	@Override
+	public Class<?> getColumnClass(final int columnIndex) {
+		switch (columnIndex) {
+		case 0:
+			return AudioObjectProperty.class;
+		case 1:
+			return ITrackInfo.class;
+		case 2:
+			return String.class;
+		}
+		return null;
 	}
-	return null;
-    }
 
-    @Override
-    public boolean isCellEditable(final int rowIndex, final int columnIndex) {
-	return false;
-    }
+	@Override
+	public int getColumnCount() {
+		return 3;
+	}
+
+	@Override
+	public String getColumnName(final int columnIndex) {
+		return columnIndex != 0 ? I18nUtils.getString("SONGS") : "";
+	}
+
+	@Override
+	public int getRowCount() {
+		return this.topTracks != null ? this.topTracks.getTracks().size() : 0;
+	}
+
+	/**
+	 * Gets the track.
+	 * 
+	 * @param index
+	 *            the index
+	 * 
+	 * @return the track
+	 */
+	@Override
+	public ITrackInfo getTrack(final int index) {
+		return this.topTracks != null ? this.topTracks.getTracks().get(index)
+				: null;
+	}
+
+	@Override
+	public Object getValueAt(final int rowIndex, final int columnIndex) {
+		if (this.topTracks != null) {
+			switch (columnIndex) {
+			case 0:
+				return this.topTracks.getTracks().get(rowIndex).isFavorite() ? AudioObjectProperty.FAVORITE
+						: null;
+			case 1:
+				return this.topTracks.getTracks().get(rowIndex);
+			case 2:
+				return this.topTracks.getTracks().get(rowIndex).getAlbum();
+			}
+		}
+		return "";
+	}
+
+	@Override
+	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
+		return false;
+	}
 }

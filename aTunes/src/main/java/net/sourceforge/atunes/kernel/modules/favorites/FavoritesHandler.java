@@ -35,7 +35,9 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IStateService;
+import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
+import net.sourceforge.atunes.utils.CollectionUtils;
 
 /**
  * The Class FavoritesHandler.
@@ -270,5 +272,17 @@ public final class FavoritesHandler extends AbstractHandler implements
 	 */
 	private void callActionsAfterFavoritesChange() {
 		getBean(FavoritesListeners.class).favoritesChanged();
+	}
+
+	@Override
+	public void checkFavorites(final List<ITrackInfo> tracks) {
+		if (!CollectionUtils.isEmpty(tracks)) {
+			for (ITrackInfo track : tracks) {
+				if (getBean(FavoritesSongsManager.class).isSongFavorite(
+						this.favorites, track.getArtist(), track.getTitle())) {
+					track.setFavorite(true);
+				}
+			}
+		}
 	}
 }

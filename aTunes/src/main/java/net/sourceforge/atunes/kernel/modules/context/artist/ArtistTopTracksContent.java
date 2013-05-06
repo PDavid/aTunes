@@ -59,7 +59,7 @@ public class ArtistTopTracksContent extends
 	 * @param createPlaylistWithPopularTracksActionListener
 	 */
 	public void setCreatePlaylistWithPopularTracksActionListener(
-			CreatePlaylistWithPopularTracksActionListener createPlaylistWithPopularTracksActionListener) {
+			final CreatePlaylistWithPopularTracksActionListener createPlaylistWithPopularTracksActionListener) {
 		this.createPlaylistWithPopularTracksActionListener = createPlaylistWithPopularTracksActionListener;
 	}
 
@@ -67,7 +67,7 @@ public class ArtistTopTracksContent extends
 	 * @param contextTableURLOpener
 	 */
 	public void setContextTableURLOpener(
-			ITracksTableListener contextTableURLOpener) {
+			final ITracksTableListener contextTableURLOpener) {
 		this.contextTableURLOpener = contextTableURLOpener;
 	}
 
@@ -75,7 +75,7 @@ public class ArtistTopTracksContent extends
 	 * @param contextInformationTableFactory
 	 */
 	public void setContextInformationTableFactory(
-			ContextInformationTableFactory contextInformationTableFactory) {
+			final ContextInformationTableFactory contextInformationTableFactory) {
 		this.contextInformationTableFactory = contextInformationTableFactory;
 	}
 
@@ -85,40 +85,42 @@ public class ArtistTopTracksContent extends
 	}
 
 	@Override
-	public void updateContentFromDataSource(ArtistPopularTracksDataSource source) {
+	public void updateContentFromDataSource(
+			final ArtistPopularTracksDataSource source) {
 		IArtistTopTracks lastTopTracks = source.getTopTracks();
-		((ContextArtistTracksTableModel) tracksTable.getModel())
+		((ContextArtistTracksTableModel) this.tracksTable.getModel())
 				.setTopTracks(lastTopTracks);
-		createPlayList.setEnabled(lastTopTracks != null
+		this.createPlayList.setEnabled(lastTopTracks != null
 				&& !CollectionUtils.isEmpty(lastTopTracks.getTracks()));
-		createPlaylistWithPopularTracksActionListener
+		this.createPlaylistWithPopularTracksActionListener
 				.setLastTopTracks(lastTopTracks);
 	}
 
 	@Override
 	public void clearContextPanelContent() {
 		super.clearContextPanelContent();
-		((ContextArtistTracksTableModel) tracksTable.getModel())
+		((ContextArtistTracksTableModel) this.tracksTable.getModel())
 				.setTopTracks(null);
 	}
 
 	@Override
 	public Component getComponent() {
 		// Create components
-		tracksTable = contextInformationTableFactory
-				.getNewTracksTable(contextTableURLOpener);
-		tracksTable.setModel(new ContextArtistTracksTableModel());
-		return tracksTable;
+		this.tracksTable = this.contextInformationTableFactory
+				.getNewTracksTable(this.contextTableURLOpener);
+		this.tracksTable.setModel(getBeanFactory().getBean(
+				ContextArtistTracksTableModel.class));
+		return this.tracksTable;
 	}
 
 	@Override
 	public List<Component> getOptions() {
 		List<Component> options = new ArrayList<Component>();
-		createPlayList = new JMenuItem(
+		this.createPlayList = new JMenuItem(
 				I18nUtils.getString("CREATE_PLAYLIST_WITH_TOP_TRACKS"));
-		createPlayList
-				.addActionListener(createPlaylistWithPopularTracksActionListener);
-		options.add(createPlayList);
+		this.createPlayList
+				.addActionListener(this.createPlaylistWithPopularTracksActionListener);
+		options.add(this.createPlayList);
 		return options;
 	}
 }

@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.context.artist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
+import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -43,6 +44,15 @@ public class ArtistPopularTracksDataSource implements IContextInformationSource 
 
 	private IRepositoryHandler repositoryHandler;
 
+	private IFavoritesHandler favoritesHandler;
+
+	/**
+	 * @param favoritesHandler
+	 */
+	public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
+		this.favoritesHandler = favoritesHandler;
+	}
+
 	/**
 	 * @param repositoryHandler
 	 */
@@ -53,26 +63,34 @@ public class ArtistPopularTracksDataSource implements IContextInformationSource 
 	/**
 	 * @param unknownObjectChecker
 	 */
-	public void setUnknownObjectChecker(final IUnknownObjectChecker unknownObjectChecker) {
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	@Override
 	public void getData(final IAudioObject audioObject) {
 		this.topTracks = getTopTracksData(audioObject);
-		repositoryHandler.checkAvailability(audioObject.getArtist(unknownObjectChecker), this.topTracks.getTracks());
+		if (this.topTracks != null) {
+			this.repositoryHandler.checkAvailability(
+					audioObject.getArtist(this.unknownObjectChecker),
+					this.topTracks.getTracks());
+			this.favoritesHandler.checkFavorites(this.topTracks.getTracks());
+		}
 	}
 
 	/**
 	 * @return
 	 */
 	public IArtistTopTracks getTopTracks() {
-		return topTracks;
+		return this.topTracks;
 	}
 
 	private IArtistTopTracks getTopTracksData(final IAudioObject audioObject) {
-		if (!unknownObjectChecker.isUnknownArtist(audioObject.getArtist(unknownObjectChecker))) {
-			return webServicesHandler.getTopTracks(audioObject.getArtist(unknownObjectChecker));
+		if (!this.unknownObjectChecker.isUnknownArtist(audioObject
+				.getArtist(this.unknownObjectChecker))) {
+			return this.webServicesHandler.getTopTracks(audioObject
+					.getArtist(this.unknownObjectChecker));
 		}
 		return null;
 	}
@@ -80,7 +98,8 @@ public class ArtistPopularTracksDataSource implements IContextInformationSource 
 	/**
 	 * @param webServicesHandler
 	 */
-	public final void setWebServicesHandler(final IWebServicesHandler webServicesHandler) {
+	public final void setWebServicesHandler(
+			final IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
 

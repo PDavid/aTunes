@@ -143,4 +143,11 @@ public interface IFavoritesHandler extends IHandler {
 	 */
 	public List<ILocalAudioObject> getAllFavoriteSongs();
 
+	/**
+	 * Checks if given tracks are favorite
+	 * 
+	 * @param tracks
+	 */
+	public void checkFavorites(List<ITrackInfo> tracks);
+
 }
