@@ -291,7 +291,8 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
 	@Override
 	public String getValueForFilter(final IAudioObject audioObject,
 			final int row) {
-		return getValueFor(audioObject, row).toString();
+		T value = getValueFor(audioObject, row);
+		return value != null ? value.toString() : null;
 	}
 
 	@Override
