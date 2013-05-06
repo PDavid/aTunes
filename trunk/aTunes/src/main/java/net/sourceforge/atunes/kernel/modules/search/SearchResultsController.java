@@ -43,7 +43,6 @@ import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
-import net.sourceforge.atunes.model.ITaskService;
 
 /**
  * Controller for the search result dialog.
@@ -119,8 +118,6 @@ final class SearchResultsController extends
 		columnModel.setTable(table);
 		columnModel.setModel(tableModel);
 		columnModel.setBeanFactory(this.beanFactory);
-		columnModel.setTaskService(this.beanFactory.getBean("taskService",
-				ITaskService.class));
 		columnModel.setColumnSet(this.beanFactory
 				.getBean(SearchResultsColumnSet.class));
 		columnModel.initialize();

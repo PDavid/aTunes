@@ -20,16 +20,8 @@
 
 package net.sourceforge.atunes.gui;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.concurrent.Future;
-
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.TableColumnModelEvent;
-import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableCellEditor;
@@ -45,7 +37,6 @@ import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ITableCellRendererCode;
-import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -72,8 +63,6 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel
 	private ColumnMoveListener columnMoveListener;
 	private ColumnModelListener columnModelListener;
 
-	private ITaskService taskService;
-
 	private ILookAndFeelManager lookAndFeelManager;
 
 	private IBeanFactory beanFactory;
@@ -87,13 +76,6 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel
 	 */
 	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
-	}
-
-	/**
-	 * @param taskService
-	 */
-	public void setTaskService(final ITaskService taskService) {
-		this.taskService = taskService;
 	}
 
 	/**
@@ -235,111 +217,17 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel
 		this.columnSet.setCurrentColumns();
 	}
 
-	private class ColumnMoveListener extends MouseAdapter {
-
-		@Override
-		public void mouseReleased(final MouseEvent e) {
-			if (AbstractCommonColumnModel.this.columnBeingMoved != -1
-					&& AbstractCommonColumnModel.this.columnBeingMoved != AbstractCommonColumnModel.this.columnMovedTo) {
-				// Swap order in model
-				// Column moved to right
-				if (AbstractCommonColumnModel.this.columnBeingMoved < AbstractCommonColumnModel.this.columnMovedTo) {
-					int columnDestinyOrder = getColumnObject(
-							AbstractCommonColumnModel.this.columnMovedTo)
-							.getOrder();
-					for (int i = AbstractCommonColumnModel.this.columnBeingMoved + 1; i <= AbstractCommonColumnModel.this.columnMovedTo; i++) {
-						int order = getColumnObject(i).getOrder();
-						getColumnObject(i).setOrder(order - 1);
-					}
-					getColumnObject(
-							AbstractCommonColumnModel.this.columnBeingMoved)
-							.setOrder(columnDestinyOrder);
-				} // Column moved to left
-				else if (AbstractCommonColumnModel.this.columnBeingMoved > AbstractCommonColumnModel.this.columnMovedTo) {
-					int columnDestinyOrder = getColumnObject(
-							AbstractCommonColumnModel.this.columnMovedTo)
-							.getOrder();
-					for (int i = AbstractCommonColumnModel.this.columnBeingMoved - 1; i >= AbstractCommonColumnModel.this.columnMovedTo; i--) {
-						int order = getColumnObject(i).getOrder();
-						getColumnObject(i).setOrder(order + 1);
-					}
-					getColumnObject(
-							AbstractCommonColumnModel.this.columnBeingMoved)
-							.setOrder(columnDestinyOrder);
-				}
-
-				arrangeColumns(false);
-			}
-			AbstractCommonColumnModel.this.columnBeingMoved = -1;
-			AbstractCommonColumnModel.this.columnMovedTo = -1;
-		}
-	};
-
-	private class ColumnModelListener implements TableColumnModelListener {
-
-		private Future<?> future;
-
-		private void saveColumnSet() {
-			if (this.future != null) {
-				this.future.cancel(false);
-			}
-			this.future = AbstractCommonColumnModel.this.taskService
-					.submitOnce("Save Column Model", 1, new Runnable() {
-
-						@Override
-						public void run() {
-							// One second after last column width change save
-							// column set
-							// This is to avoid saving column set after each
-							// column change event
-							AbstractCommonColumnModel.this.columnSet
-									.saveColumnSet();
-						}
-					});
-		}
-
-		@Override
-		public void columnAdded(final TableColumnModelEvent e) {
-			saveColumnSet();
-		}
-
-		@Override
-		public void columnMarginChanged(final ChangeEvent e) {
-			updateColumnWidth();
-			saveColumnSet();
-		}
-
-		@Override
-		public void columnMoved(final TableColumnModelEvent e) {
-			if (AbstractCommonColumnModel.this.columnBeingMoved == -1) {
-				AbstractCommonColumnModel.this.columnBeingMoved = e
-						.getFromIndex();
-			}
-			AbstractCommonColumnModel.this.columnMovedTo = e.getToIndex();
-			saveColumnSet();
-		}
-
-		@Override
-		public void columnRemoved(final TableColumnModelEvent e) {
-			saveColumnSet();
-		}
-
-		@Override
-		public void columnSelectionChanged(final ListSelectionEvent e) {
-			// Nothing to do
-		}
-	};
-
 	private ColumnMoveListener getColumnMoveListener() {
 		if (this.columnMoveListener == null) {
-			this.columnMoveListener = new ColumnMoveListener();
+			this.columnMoveListener = new ColumnMoveListener(this);
 		}
 		return this.columnMoveListener;
 	}
 
 	private ColumnModelListener getColumnModelListener() {
 		if (this.columnModelListener == null) {
-			this.columnModelListener = new ColumnModelListener();
+			this.columnModelListener = new ColumnModelListener(this,
+					this.beanFactory);
 		}
 		return this.columnModelListener;
 	}
@@ -455,4 +343,33 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel
 	protected JTable getTable() {
 		return this.table;
 	}
+
+	/**
+	 * @param columnBeingMoved
+	 */
+	protected void setColumnBeingMoved(int columnBeingMoved) {
+		this.columnBeingMoved = columnBeingMoved;
+	}
+
+	/**
+	 * @param columnMovedTo
+	 */
+	protected void setColumnMovedTo(int columnMovedTo) {
+		this.columnMovedTo = columnMovedTo;
+	}
+
+	/**
+	 * @return
+	 */
+	protected int getColumnBeingMoved() {
+		return columnBeingMoved;
+	}
+
+	/**
+	 * @return
+	 */
+	protected int getColumnMovedTo() {
+		return columnMovedTo;
+	}
+
 }
