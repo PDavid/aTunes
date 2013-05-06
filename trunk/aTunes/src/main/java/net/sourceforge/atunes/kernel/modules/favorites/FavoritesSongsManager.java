@@ -34,6 +34,7 @@ import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateContext;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.CollectionUtils;
 
 import org.apache.commons.collections.list.SetUniqueList;
@@ -51,6 +52,16 @@ public class FavoritesSongsManager {
 	private IBeanFactory beanFactory;
 
 	private IRepositoryHandler repositoryHandler;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	/**
 	 * @param repositoryHandler
@@ -178,5 +189,25 @@ public class FavoritesSongsManager {
 			}
 		}
 		return removeSongs(favorites, toRemove, false);
+	}
+
+	/**
+	 * @param favorites
+	 * @param artist
+	 * @param title
+	 * @return true if a song with given artist and title is favorite
+	 */
+	public boolean isSongFavorite(final IFavorites favorites,
+			final String artist, final String title) {
+		// TODO: This method checks all favorite songs to find one matching
+		// With favorites stored by metadata this would not be necessary
+		for (ILocalAudioObject ao : favorites.getFavoriteSongs()) {
+			if (ao.getArtist(this.unknownObjectChecker)
+					.equalsIgnoreCase(artist)
+					&& title.equalsIgnoreCase(ao.getTitle())) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

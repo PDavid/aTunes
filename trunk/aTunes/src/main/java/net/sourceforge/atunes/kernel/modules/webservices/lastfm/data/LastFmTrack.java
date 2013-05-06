@@ -25,8 +25,9 @@ import de.umass.lastfm.Track;
 
 /**
  * Information about a track retrieved from last.fm
+ * 
  * @author alex
- *
+ * 
  */
 public class LastFmTrack implements ITrackInfo {
 
@@ -38,7 +39,7 @@ public class LastFmTrack implements ITrackInfo {
 	private String album;
 
 	private transient boolean available;
-
+	private transient boolean favorite;
 
 	/**
 	 * Gets the track.
@@ -63,7 +64,7 @@ public class LastFmTrack implements ITrackInfo {
 	 */
 	@Override
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	/**
@@ -73,7 +74,7 @@ public class LastFmTrack implements ITrackInfo {
 	 */
 	@Override
 	public String getUrl() {
-		return url;
+		return this.url;
 	}
 
 	/**
@@ -100,12 +101,12 @@ public class LastFmTrack implements ITrackInfo {
 
 	@Override
 	public String getArtist() {
-		return artist;
+		return this.artist;
 	}
 
 	@Override
 	public String getAlbum() {
-		return album;
+		return this.album;
 	}
 
 	@Override
@@ -120,11 +121,21 @@ public class LastFmTrack implements ITrackInfo {
 
 	@Override
 	public boolean isAvailable() {
-		return available;
+		return this.available;
 	}
 
 	@Override
 	public void setAvailable(final boolean available) {
 		this.available = available;
+	}
+
+	@Override
+	public void setFavorite(final boolean favorite) {
+		this.favorite = favorite;
+	}
+
+	@Override
+	public boolean isFavorite() {
+		return this.favorite;
 	}
 }

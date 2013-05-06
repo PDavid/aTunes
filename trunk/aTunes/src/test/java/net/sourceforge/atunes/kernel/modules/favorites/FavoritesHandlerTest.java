@@ -28,6 +28,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,6 +40,8 @@ import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateService;
+import net.sourceforge.atunes.model.ITrackInfo;
+import net.sourceforge.atunes.utils.CollectionUtils;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -130,7 +133,6 @@ public class FavoritesHandlerTest {
 				.createMockLocalAudioObject(null, "Artist 1", "Album 1",
 						"Title 1");
 
-		IAlbum album1 = RepositoryTestMockUtils.createMockAlbum("Album 1", ao1);
 		IArtist artist1 = RepositoryTestMockUtils.createMockArtist("Artist 1");
 
 		when(this.repositoryHandler.getArtist("Artist 1")).thenReturn(artist1);
@@ -183,5 +185,29 @@ public class FavoritesHandlerTest {
 				Matchers.eq("Album 1"));
 		verify(this.artistsManager, times(1)).removeArtist(
 				any(IFavorites.class), Matchers.eq("Artist 1"));
+	}
+
+	@Test
+	public void testCheckFavorites() {
+		ITrackInfo track1 = mock(ITrackInfo.class);
+		when(track1.getArtist()).thenReturn("Artist");
+		when(track1.getTitle()).thenReturn("Title");
+		ITrackInfo track2 = mock(ITrackInfo.class);
+		when(track2.getArtist()).thenReturn("Artist 2");
+		when(track2.getTitle()).thenReturn("Title");
+		when(
+				this.songsManager.isSongFavorite(
+						Matchers.any(IFavorites.class), Matchers.eq("Artist"),
+						Matchers.eq("Title"))).thenReturn(true);
+		when(
+				this.songsManager.isSongFavorite(
+						Matchers.any(IFavorites.class),
+						Matchers.eq("Artist 2"), Matchers.eq("Title")))
+				.thenReturn(false);
+		this.sut.checkFavorites(CollectionUtils.fillCollectionWithElements(
+				new ArrayList<ITrackInfo>(), track1, track2));
+		verify(track1, times(1)).setFavorite(true);
+		verify(track2, never()).setFavorite(Matchers.anyBoolean());
+
 	}
 }

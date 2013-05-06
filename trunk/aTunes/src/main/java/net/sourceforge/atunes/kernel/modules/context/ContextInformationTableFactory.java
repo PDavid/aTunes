@@ -24,14 +24,17 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode;
+import net.sourceforge.atunes.gui.PropertyTableCellRendererCode;
+import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ITrackInfo;
 
 /**
  * Creates a table to show context information
+ * 
  * @author alex
- *
+ * 
  */
 public class ContextInformationTableFactory {
 
@@ -49,29 +52,54 @@ public class ContextInformationTableFactory {
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(final ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
 	/**
 	 * Returns a new table to show tracks information from context
+	 * 
 	 * @param listener
 	 * @return
 	 */
 	public JTable getNewTracksTable(final ITracksTableListener listener) {
-		final JTable tracksTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
+		final JTable tracksTable = this.lookAndFeelManager
+				.getCurrentLookAndFeel().getTable();
 		tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tracksTable.setDefaultRenderer(ITrackInfo.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
-				beanFactory.getBean(TrackInfoTableCellRendererCode.class)));
+		tracksTable
+				.setDefaultRenderer(
+						ITrackInfo.class,
+						this.lookAndFeelManager
+								.getCurrentLookAndFeel()
+								.getTableCellRenderer(
+										this.beanFactory
+												.getBean(TrackInfoTableCellRendererCode.class)));
 
-		tracksTable.setDefaultRenderer(Integer.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
-				beanFactory.getBean(ComponentOrientationTableCellRendererCode.class)));
+		tracksTable
+				.setDefaultRenderer(
+						Integer.class,
+						this.lookAndFeelManager
+								.getCurrentLookAndFeel()
+								.getTableCellRenderer(
+										this.beanFactory
+												.getBean(ComponentOrientationTableCellRendererCode.class)));
+
+		tracksTable
+				.setDefaultRenderer(
+						AudioObjectProperty.class,
+						this.lookAndFeelManager
+								.getCurrentLookAndFeel()
+								.getTableCellRenderer(
+										this.beanFactory
+												.getBean(PropertyTableCellRendererCode.class)));
 
 		tracksTable.getTableHeader().setReorderingAllowed(true);
 		tracksTable.getTableHeader().setResizingAllowed(false);
 		tracksTable.setColumnModel(new TracksDefaultTableColumnModel());
 
-		tracksTable.getSelectionModel().addListSelectionListener(new TracksTableListSelectionListener(listener, tracksTable));
+		tracksTable.getSelectionModel().addListSelectionListener(
+				new TracksTableListSelectionListener(listener, tracksTable));
 
 		return tracksTable;
 	}
