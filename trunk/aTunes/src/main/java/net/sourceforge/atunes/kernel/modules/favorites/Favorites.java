@@ -47,11 +47,6 @@ public class Favorites implements IFavorites {
 	private final Map<String, IArtist> favoriteArtists;
 
 	/**
-	 * Flag indicating if favorites information needs to be written to disk
-	 */
-	private transient boolean dirty;
-
-	/**
 	 * Instantiates a new favorites.
 	 */
 	protected Favorites() {
@@ -60,13 +55,6 @@ public class Favorites implements IFavorites {
 		this.favoriteArtists = new HashMap<String, IArtist>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites
-	 * #getAllFavoriteSongs()
-	 */
 	@Override
 	public List<ILocalAudioObject> getAllFavoriteSongs() {
 		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
@@ -78,37 +66,6 @@ public class Favorites implements IFavorites {
 		}
 		result.addAll(this.favoriteSongs.values());
 		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites
-	 * #getAllFavoriteSongsMap()
-	 */
-	@Override
-	public Map<String, ILocalAudioObject> getAllFavoriteSongsMap() {
-		Map<String, ILocalAudioObject> result = new HashMap<String, ILocalAudioObject>();
-		for (ILocalAudioObject af : getAllFavoriteSongs()) {
-			result.put(af.getUrl(), af);
-		}
-		return result;
-	}
-
-	/**
-	 * @return the dirty
-	 */
-	protected boolean isDirty() {
-		return this.dirty;
-	}
-
-	/**
-	 * @param dirty
-	 *            the dirty to set
-	 */
-	protected void setDirty(final boolean dirty) {
-		this.dirty = dirty;
 	}
 
 	@Override
