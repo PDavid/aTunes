@@ -26,8 +26,12 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IControlsBuilder;
+import net.sourceforge.atunes.model.IIconFactory;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.ITrackInfo;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 /**
  * Cell renderer for ITrackInfo
@@ -41,6 +45,34 @@ public class TrackInfoTableCellRendererCode extends
 	private Color unknownElementForegroundColor;
 
 	private IControlsBuilder controlsBuilder;
+
+	private IIconFactory favoriteIcon;
+
+	private IPlayerHandler playerHandler;
+
+	private IUnknownObjectChecker unknownObjectChecker;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(
+			final IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+
+	/**
+	 * @param favoriteIcon
+	 */
+	public void setFavoriteIcon(final IIconFactory favoriteIcon) {
+		this.favoriteIcon = favoriteIcon;
+	}
 
 	/**
 	 * @param controlsBuilder
@@ -62,12 +94,36 @@ public class TrackInfoTableCellRendererCode extends
 			final ITrackInfo value, final boolean isSelected,
 			final boolean hasFocus, final int row, final int column) {
 		if (value != null) {
-			superComponent.setText(value.getTitle());
+			if (column == 0) {
+				superComponent.setText(null);
+				if (value.isFavorite()) {
+					superComponent.setIcon(this.favoriteIcon
+							.getIcon(getLookAndFeel()
+									.getPaintForColorMutableIcon(
+											superComponent, isSelected)));
+				} else {
+					superComponent.setIcon(null);
+				}
+			} else if (column == 1) {
+				superComponent.setText(value.getTitle());
+				superComponent.setIcon(null);
+			} else if (column == 2) {
+				superComponent.setText(value.getAlbum());
+				superComponent.setIcon(null);
+			}
 			this.controlsBuilder.applyComponentOrientation(superComponent);
 			if (!value.isAvailable()) {
 				superComponent
 						.setForeground(this.unknownElementForegroundColor);
 			}
+		}
+		IAudioObject audioObject = this.playerHandler.getAudioObject();
+		if (audioObject != null
+				&& audioObject.getArtist(this.unknownObjectChecker)
+						.equalsIgnoreCase(value.getArtist())
+				&& audioObject.getTitle().equalsIgnoreCase(value.getTitle())) {
+			superComponent.setFont(getLookAndFeel()
+					.getPlayListSelectedItemFont());
 		}
 		return superComponent;
 	}

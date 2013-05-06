@@ -23,9 +23,6 @@ package net.sourceforge.atunes.kernel.modules.context;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.gui.ComponentOrientationTableCellRendererCode;
-import net.sourceforge.atunes.gui.PropertyTableCellRendererCode;
-import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ITrackInfo;
@@ -75,24 +72,6 @@ public class ContextInformationTableFactory {
 								.getTableCellRenderer(
 										this.beanFactory
 												.getBean(TrackInfoTableCellRendererCode.class)));
-
-		tracksTable
-				.setDefaultRenderer(
-						Integer.class,
-						this.lookAndFeelManager
-								.getCurrentLookAndFeel()
-								.getTableCellRenderer(
-										this.beanFactory
-												.getBean(ComponentOrientationTableCellRendererCode.class)));
-
-		tracksTable
-				.setDefaultRenderer(
-						AudioObjectProperty.class,
-						this.lookAndFeelManager
-								.getCurrentLookAndFeel()
-								.getTableCellRenderer(
-										this.beanFactory
-												.getBean(PropertyTableCellRendererCode.class)));
 
 		tracksTable.getTableHeader().setReorderingAllowed(true);
 		tracksTable.getTableHeader().setResizingAllowed(false);
