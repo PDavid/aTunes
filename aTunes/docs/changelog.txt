@@ -12,6 +12,7 @@ aTunes 3.1.0
 - Use NIO to download podcasts faster
 - Store covers in special folder when repository is not writable
 - Added option to stop playback after current track
+- FIX: LyricsDirectoryEngine review when no lyric found
 
 aTunes 3.0.9
 ------------
