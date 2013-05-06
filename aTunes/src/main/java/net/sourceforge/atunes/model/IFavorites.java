@@ -22,7 +22,6 @@ package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 /**
  * An object containing information about favorites
@@ -38,13 +37,6 @@ public interface IFavorites extends Serializable {
 	 * @return the all favorite songs
 	 */
 	public List<ILocalAudioObject> getAllFavoriteSongs();
-
-	/**
-	 * Gets a map with all favorite songs, with url as key
-	 * 
-	 * @return
-	 */
-	public Map<String, ILocalAudioObject> getAllFavoriteSongsMap();
 
 	/**
 	 * @param artist
