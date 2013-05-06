@@ -30,42 +30,47 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
  */
 public class TextAndIcon {
 
-    private final String text;
+	private final String text;
 
-    private final IColorMutableImageIcon icon;
+	private final IColorMutableImageIcon icon;
 
-    private final int horizontalTextPosition;
+	private final int horizontalTextPosition;
 
-    /**
-     * @param text
-     * @param icon
-     * @param horizontalAlignment
-     */
-    public TextAndIcon(final String text, final IColorMutableImageIcon icon,
-	    final int horizontalAlignment) {
-	this.text = text;
-	this.icon = icon;
-	this.horizontalTextPosition = horizontalAlignment;
-    }
+	/**
+	 * @param text
+	 * @param icon
+	 * @param horizontalAlignment
+	 */
+	public TextAndIcon(final String text, final IColorMutableImageIcon icon,
+			final int horizontalAlignment) {
+		this.text = text;
+		this.icon = icon;
+		this.horizontalTextPosition = horizontalAlignment;
+	}
 
-    /**
-     * @return the text
-     */
-    public String getText() {
-	return text;
-    }
+	/**
+	 * @return the text
+	 */
+	public String getText() {
+		return text;
+	}
 
-    /**
-     * @return the icon
-     */
-    public IColorMutableImageIcon getIcon() {
-	return icon;
-    }
+	/**
+	 * @return the icon
+	 */
+	public IColorMutableImageIcon getIcon() {
+		return icon;
+	}
 
-    /**
-     * @return the horizontalAlignment
-     */
-    public int getHorizontalTextPosition() {
-	return horizontalTextPosition;
-    }
+	/**
+	 * @return the horizontalAlignment
+	 */
+	public int getHorizontalTextPosition() {
+		return horizontalTextPosition;
+	}
+
+	@Override
+	public String toString() {
+		return getText();
+	}
 }
