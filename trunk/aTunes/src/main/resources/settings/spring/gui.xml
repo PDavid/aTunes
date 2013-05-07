@@ -195,8 +195,9 @@
 	<bean class="net.sourceforge.atunes.gui.PlayListColumnModel" parent="abstractCommonColumnModel" scope="prototype" init-method="initialize"/>
 	
 	<!-- DRAG AND DROP PROCESSORS -->
-	<bean class="net.sourceforge.atunes.kernel.modules.draganddrop.InternalImportProcessor" scope="prototype"/>
-	<bean class="net.sourceforge.atunes.kernel.modules.draganddrop.ExternalImportProcessor" scope="prototype"/>
+	<bean id="internalImportProcessor" class="net.sourceforge.atunes.kernel.modules.draganddrop.InternalImportProcessor" scope="prototype"/>
+	<bean id="externalImportProcessor" class="net.sourceforge.atunes.kernel.modules.draganddrop.ExternalImportProcessor" scope="prototype"/>
+	<bean id="navigatorToPlayListDragAndDropProcessor" class="net.sourceforge.atunes.kernel.modules.draganddrop.NavigatorToPlayListDragAndDropProcessor" scope="prototype"/>
 
 	<!-- COLORS -->
 	<bean id="unknownElementForegroundColor" class="java.awt.Color">

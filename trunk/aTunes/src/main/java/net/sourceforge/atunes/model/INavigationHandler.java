@@ -121,8 +121,16 @@ public interface INavigationHandler extends IHandler {
 	 * @param objectDragged
 	 * @return
 	 */
-	public List<? extends IAudioObject> getAudioObjectsForTreeNode(
+	public List<IAudioObject> getAudioObjectsForTreeNode(
 			Class<? extends INavigationView> class1, ITreeNode objectDragged);
+
+	/**
+	 * Return audio objects for selected treeNode in current view
+	 * 
+	 * @param objectDragged
+	 * @return
+	 */
+	public List<IAudioObject> getAudioObjectsForTreeNode(ITreeNode objectDragged);
 
 	/**
 	 * Returns selected audio object in navigation table

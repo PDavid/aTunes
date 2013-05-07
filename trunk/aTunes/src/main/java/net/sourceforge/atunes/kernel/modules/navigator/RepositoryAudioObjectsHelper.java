@@ -45,7 +45,7 @@ class RepositoryAudioObjectsHelper {
 	 * @param navigationTableColumnSet
 	 * @return
 	 */
-	List<? extends IAudioObject> getAudioObjectForTreeNode(
+	List<IAudioObject> getAudioObjectForTreeNode(
 			final Collection<ILocalAudioObject> allObjects,
 			final ITreeNode node, final ViewMode viewMode,
 			final String treeFilter, String tableFilter, IColumnSet columnSet) {

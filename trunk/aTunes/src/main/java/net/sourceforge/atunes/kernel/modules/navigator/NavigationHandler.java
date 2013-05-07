@@ -272,9 +272,15 @@ public final class NavigationHandler extends AbstractHandler implements
 	}
 
 	@Override
-	public List<? extends IAudioObject> getAudioObjectsForTreeNode(
+	public List<IAudioObject> getAudioObjectsForTreeNode(
 			final Class<? extends INavigationView> view, final ITreeNode node) {
 		return getNavigationController().getAudioObjectsForTreeNode(view, node);
+	}
+
+	@Override
+	public List<IAudioObject> getAudioObjectsForTreeNode(final ITreeNode node) {
+		return getNavigationController().getAudioObjectsForTreeNode(
+				getCurrentView().getClass(), node);
 	}
 
 	@Override

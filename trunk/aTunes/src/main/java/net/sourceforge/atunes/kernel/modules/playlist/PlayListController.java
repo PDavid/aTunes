@@ -339,7 +339,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel>
 	 */
 	@Override
 	public void refreshPlayList() {
-		GuiUtils.callInEventDispatchThreadLater(new Runnable() {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
 			public void run() {
 				int[] selectedRows = PlayListController.this.playListTable

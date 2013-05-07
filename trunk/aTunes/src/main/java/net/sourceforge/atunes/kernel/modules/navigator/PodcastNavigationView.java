@@ -273,10 +273,9 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 	}
 
 	@Override
-	public List<IPodcastFeedEntry> getAudioObjectForTreeNode(
-			final ITreeNode node, final ViewMode viewMode,
-			final String treeFilter, String tableFilter) {
-		List<IPodcastFeedEntry> songs = new ArrayList<IPodcastFeedEntry>();
+	public List<IAudioObject> getAudioObjectForTreeNode(final ITreeNode node,
+			final ViewMode viewMode, final String treeFilter, String tableFilter) {
+		List<IAudioObject> songs = new ArrayList<IAudioObject>();
 		if (node.isRoot()) {
 			if (treeFilter == null) {
 				List<IPodcastFeed> podcastFeeds = podcastFeedHandler
@@ -293,7 +292,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 			}
 		} else {
 			PodcastFeed obj = (PodcastFeed) node.getUserObject();
-			songs = obj.getAudioObjects();
+			songs.addAll(obj.getAudioObjects());
 		}
 		return songs;
 	}
