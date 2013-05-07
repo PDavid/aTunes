@@ -22,7 +22,6 @@ package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Comparator;
 
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
@@ -31,7 +30,6 @@ import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.ColumnSort;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
 
 /**
@@ -76,7 +74,7 @@ public final class ColumnSetRowSorter extends MouseAdapter {
 			}
 
 			// Then sort
-			sort(columnClicked.getComparator());
+			sort(columnClicked);
 		}
 	}
 
@@ -119,14 +117,14 @@ public final class ColumnSetRowSorter extends MouseAdapter {
 	}
 
 	/**
-	 * Method to sort a column set. It must sort the underlying data
+	 * Method to sort a column set by a given column It must sort the underlying
+	 * data
 	 * 
-	 * @param comparator
+	 * @param column
 	 */
-	private void sort(final Comparator<IAudioObject> comparator) {
-
+	private void sort(final IColumn<?> column) {
 		// Sort model
-		this.model.sort(comparator);
+		this.model.sort(column);
 
 		// Refresh model
 		this.model.refresh(TableModelEvent.UPDATE);

@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.search;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
@@ -105,7 +104,7 @@ public class SearchResultTableModel extends AbstractColumnSetTableModel {
 	}
 
 	@Override
-	public void sort(final Comparator<IAudioObject> comparator) {
-		Collections.sort(this.results, comparator);
+	public void sort(IColumn<?> column) {
+		Collections.sort(this.results, column.getComparator());
 	}
 }

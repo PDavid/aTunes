@@ -20,9 +20,6 @@
 
 package net.sourceforge.atunes.gui;
 
-import java.util.Comparator;
-
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -91,11 +88,11 @@ public abstract class AbstractColumnSetTableModel extends
 	}
 
 	/**
-	 * Abstract method to sort by the given comparator
+	 * Abstract method to sort by the given column
 	 * 
-	 * @param comparator
+	 * @param column
 	 */
-	public abstract void sort(Comparator<IAudioObject> comparator);
+	public abstract void sort(IColumn<?> column);
 
 	/**
 	 * @param columnSet

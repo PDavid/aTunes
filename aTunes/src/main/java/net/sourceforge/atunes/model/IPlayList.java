@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
-import java.util.Comparator;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
@@ -132,11 +131,11 @@ public interface IPlayList extends Serializable, Cloneable {
 	IAudioObject getCurrentAudioObject();
 
 	/**
-	 * Sorts play list with given comparator
+	 * Sorts play list with given column
 	 * 
 	 * @param comparator
 	 */
-	void sort(Comparator<IAudioObject> comparator);
+	void sortByColumn(IColumn<?> column);
 
 	/**
 	 * Adds a list of audio objects in a location of play list

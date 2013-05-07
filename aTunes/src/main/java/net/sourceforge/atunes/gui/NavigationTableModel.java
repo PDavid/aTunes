@@ -22,7 +22,6 @@ package net.sourceforge.atunes.gui;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.event.TableModelEvent;
@@ -126,10 +125,10 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
 	}
 
 	@Override
-	public void sort(final Comparator<IAudioObject> comparator) {
+	public void sort(IColumn<?> column) {
 		net.sourceforge.atunes.utils.Timer t = new net.sourceforge.atunes.utils.Timer();
 		t.start();
-		Collections.sort(this.audioObjects, comparator);
+		Collections.sort(this.audioObjects, column.getComparator());
 		Logger.debug("Navigation table sort: ", t.stop(), " seconds");
 		refresh(TableModelEvent.UPDATE);
 	}
