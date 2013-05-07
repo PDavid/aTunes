@@ -20,14 +20,11 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.util.List;
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IHandler;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.PlaybackState;
 
 /**
@@ -116,16 +113,6 @@ public abstract class AbstractHandler implements IHandler {
 	}
 
 	@Override
-	public void audioObjectsAdded(
-			final List<IPlayListAudioObject> audioObjectsAdded) {
-	}
-
-	@Override
-	public void audioObjectsRemoved(
-			final List<IPlayListAudioObject> audioObjectsRemoved) {
-	}
-
-	@Override
 	public void applicationFinish() {
 	}
 
@@ -135,14 +122,6 @@ public abstract class AbstractHandler implements IHandler {
 
 	@Override
 	public void applicationStarted() {
-	}
-
-	@Override
-	public void playListCleared() {
-	}
-
-	@Override
-	public void selectedAudioObjectChanged(final IAudioObject audioObject) {
 	}
 
 	/**

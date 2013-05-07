@@ -26,6 +26,8 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
+import net.sourceforge.atunes.model.IPlayListAudioObject;
+import net.sourceforge.atunes.model.IPlayListEventListener;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.model.PlaybackState;
@@ -37,7 +39,7 @@ import net.sourceforge.atunes.model.PlaybackState;
  * 
  */
 public class FullScreenHandler extends AbstractHandler implements
-		IFullScreenHandler {
+		IFullScreenHandler, IPlayListEventListener {
 
 	private FullScreenController controller;
 
@@ -72,6 +74,15 @@ public class FullScreenHandler extends AbstractHandler implements
 	@Override
 	public void selectedAudioObjectChanged(final IAudioObject audioObject) {
 		updateAudioObjectsToShow(audioObject);
+	}
+
+	@Override
+	public void audioObjectsAdded(
+			List<IPlayListAudioObject> playListAudioObjects) {
+	}
+
+	@Override
+	public void audioObjectsRemoved(List<IPlayListAudioObject> audioObjectList) {
 	}
 
 	/**
