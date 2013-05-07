@@ -42,6 +42,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
+import net.sourceforge.atunes.model.IPlayListEventListener;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -57,7 +58,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * The Class PlayListHandler.
  */
 public final class PlayListHandler extends AbstractHandler implements
-		IPlayListHandler {
+		IPlayListHandler, IPlayListEventListener {
 
 	/** Play lists stored */
 	private IListOfPlayLists playListsRetrievedFromCache = new ListOfPlayLists();

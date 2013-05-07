@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.player;
 
 import java.util.Collection;
+import java.util.List;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.AbstractHandler;
@@ -30,6 +31,8 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayListAudioObject;
+import net.sourceforge.atunes.model.IPlayListEventListener;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IPlayerEngine;
@@ -54,7 +57,7 @@ import org.commonjukebox.plugins.model.PluginListener;
  * This class is responsible for handling the player engine.
  */
 public final class PlayerHandler extends AbstractHandler implements
-		PluginListener, IPlayerHandler {
+		PluginListener, IPlayerHandler, IPlayListEventListener {
 
 	/**
 	 * The player engine
@@ -468,5 +471,18 @@ public final class PlayerHandler extends AbstractHandler implements
 	@Override
 	public void setStopAfterCurrentTrack(final boolean stopAfterCurrentTrack) {
 		this.stopAfterCurrentTrack = stopAfterCurrentTrack;
+	}
+
+	@Override
+	public void audioObjectsAdded(
+			List<IPlayListAudioObject> playListAudioObjects) {
+	}
+
+	@Override
+	public void audioObjectsRemoved(List<IPlayListAudioObject> audioObjectList) {
+	}
+
+	@Override
+	public void playListCleared() {
 	}
 }

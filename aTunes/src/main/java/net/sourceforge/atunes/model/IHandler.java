@@ -27,7 +27,7 @@ package net.sourceforge.atunes.model;
  * 
  */
 public interface IHandler extends IApplicationLifeCycleListener,
-		IStateChangeListener, IPlayListEventListener, IFavoritesListener,
-		IDeviceListener, IPlaybackStateListener, IWindowListener {
+		IStateChangeListener, IFavoritesListener, IDeviceListener,
+		IPlaybackStateListener, IWindowListener {
 
 }

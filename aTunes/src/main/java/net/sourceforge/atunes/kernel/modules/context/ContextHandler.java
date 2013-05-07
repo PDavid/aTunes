@@ -32,6 +32,8 @@ import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayListAudioObject;
+import net.sourceforge.atunes.model.IPlayListEventListener;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IRadio;
@@ -53,7 +55,7 @@ import org.commonjukebox.plugins.model.PluginListener;
  * 
  */
 public final class ContextHandler extends AbstractHandler implements
-		PluginListener, IContextHandler {
+		PluginListener, IContextHandler, IPlayListEventListener {
 
 	/**
 	 * The current audio object used to retrieve information
@@ -325,6 +327,15 @@ public final class ContextHandler extends AbstractHandler implements
 				clearContextPanels();
 			}
 		}
+	}
+
+	@Override
+	public void audioObjectsAdded(
+			List<IPlayListAudioObject> playListAudioObjects) {
+	}
+
+	@Override
+	public void audioObjectsRemoved(List<IPlayListAudioObject> audioObjectList) {
 	}
 
 	/*
