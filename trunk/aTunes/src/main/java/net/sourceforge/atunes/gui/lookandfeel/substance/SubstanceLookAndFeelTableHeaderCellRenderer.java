@@ -24,24 +24,38 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.lookandfeel.ColumnSortIconGenerator;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColumnModel;
 
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
 
-final class SubstanceLookAndFeelTableHeaderCellRenderer extends
+/**
+ * Table header cell renderer
+ * 
+ * @author alex
+ * 
+ */
+public final class SubstanceLookAndFeelTableHeaderCellRenderer extends
 		SubstanceDefaultTableHeaderCellRenderer {
 
 	private static final long serialVersionUID = 1L;
 
-	private final IColumnModel model;
+	private IColumnModel model;
 
-	private final IBeanFactory beanFactory;
+	private ColumnSortIconGenerator columnSortIconGenerator;
 
-	public SubstanceLookAndFeelTableHeaderCellRenderer(
-			final IColumnModel model, final IBeanFactory beanFactory) {
+	/**
+	 * @param columnSortIconGenerator
+	 */
+	public void setColumnSortIconGenerator(
+			ColumnSortIconGenerator columnSortIconGenerator) {
+		this.columnSortIconGenerator = columnSortIconGenerator;
+	}
+
+	/**
+	 * @param model
+	 */
+	public void bindToModel(IColumnModel model) {
 		this.model = model;
-		this.beanFactory = beanFactory;
 	}
 
 	@Override
@@ -51,8 +65,7 @@ final class SubstanceLookAndFeelTableHeaderCellRenderer extends
 		JComponent c = (JComponent) super.getTableCellRendererComponent(table,
 				value, isSelected, hasFocus, row, column);
 
-		this.setIcon(new ColumnSortIconGenerator().getIcon(this.beanFactory,
-				this.model, column));
+		this.setIcon(columnSortIconGenerator.getIcon(this.model, column));
 		return c;
 	}
 }

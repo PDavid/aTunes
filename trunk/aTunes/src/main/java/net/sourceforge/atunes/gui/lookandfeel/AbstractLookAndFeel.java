@@ -117,7 +117,10 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
 
 	@Override
 	public TableCellRenderer getTableHeaderCellRenderer(final IColumnModel model) {
-		return new LookAndFeelTableHeaderCellRenderer(model, this.beanFactory);
+		LookAndFeelTableHeaderCellRenderer renderer = this.beanFactory
+				.getBean(LookAndFeelTableHeaderCellRenderer.class);
+		renderer.bindToModel(model);
+		return renderer;
 	}
 
 	@Override

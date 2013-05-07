@@ -280,8 +280,10 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
 	@Override
 	public TableCellRenderer getTableHeaderCellRenderer(final IColumnModel model) {
-		return new SubstanceLookAndFeelTableHeaderCellRenderer(model,
-				this.beanFactory);
+		SubstanceLookAndFeelTableHeaderCellRenderer renderer = this.beanFactory
+				.getBean(SubstanceLookAndFeelTableHeaderCellRenderer.class);
+		renderer.bindToModel(model);
+		return renderer;
 	}
 
 	@Override
