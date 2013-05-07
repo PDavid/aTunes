@@ -27,6 +27,7 @@ import javax.swing.TransferHandler;
 
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.Timer;
 
 /**
  * Some methods of this class about how to drag and drop from Gnome/KDE file
@@ -38,74 +39,80 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class PlayListTableTransferHandler extends TransferHandler {
 
-    private static final long serialVersionUID = 4366983690375897364L;
+	private static final long serialVersionUID = 4366983690375897364L;
 
-    private IBeanFactory beanFactory;
+	private IBeanFactory beanFactory;
 
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
-    @Override
-    public boolean canImport(final TransferSupport support) {
-	// Check if internal data flavor is supported
-	if (support.getTransferable().isDataFlavorSupported(
-		DragAndDropHelper.getInternalDataFlavor())) {
-	    try {
-		List<?> listOfObjectsDragged = (List<?>) support
-			.getTransferable().getTransferData(
-				DragAndDropHelper.getInternalDataFlavor());
-		if (listOfObjectsDragged == null
-			|| listOfObjectsDragged.isEmpty()) {
-		    return false;
+	@Override
+	public boolean canImport(final TransferSupport support) {
+		// Check if internal data flavor is supported
+		if (support.getTransferable().isDataFlavorSupported(
+				DragAndDropHelper.getInternalDataFlavor())) {
+			try {
+				List<?> listOfObjectsDragged = (List<?>) support
+						.getTransferable().getTransferData(
+								DragAndDropHelper.getInternalDataFlavor());
+				if (listOfObjectsDragged == null
+						|| listOfObjectsDragged.isEmpty()) {
+					return false;
+				}
+
+				// Drag is made from another component...
+				if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
+					try {
+						((JTable.DropLocation) support.getDropLocation())
+								.getRow();
+					} catch (ClassCastException e) {
+						// Drop is made at the top or bottom of JTable -> This
+						// is only allowed when dragging from another component
+						return false;
+					}
+				}
+
+				return true;
+			} catch (Exception e) {
+				Logger.error(e);
+			}
+
+			support.setShowDropLocation(true);
+			return true;
 		}
 
-		// Drag is made from another component...
-		if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
-		    try {
-			((JTable.DropLocation) support.getDropLocation())
-				.getRow();
-		    } catch (ClassCastException e) {
-			// Drop is made at the top or bottom of JTable -> This
-			// is only allowed when dragging from another component
+		if (DragAndDropHelper.hasFileFlavor(support.getDataFlavors())) {
+			return true;
+		}
+		if (DragAndDropHelper.hasStringFlavor(support.getDataFlavors())) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean importData(final TransferSupport support) {
+		if (!canImport(support)) {
 			return false;
-		    }
 		}
 
-		return true;
-	    } catch (Exception e) {
-		Logger.error(e);
-	    }
-
-	    support.setShowDropLocation(true);
-	    return true;
+		if (support.getTransferable().isDataFlavorSupported(
+				DragAndDropHelper.getInternalDataFlavor())) {
+			Timer t = new Timer();
+			t.start();
+			boolean accepted = beanFactory.getBean(
+					InternalImportProcessor.class).processInternalImport(
+					support);
+			Logger.debug("Internal drag and drop to table took ", t.stop(),
+					" seconds");
+			return accepted;
+		} else {
+			return beanFactory.getBean(ExternalImportProcessor.class)
+					.processExternalImport(support);
+		}
 	}
-
-	if (DragAndDropHelper.hasFileFlavor(support.getDataFlavors())) {
-	    return true;
-	}
-	if (DragAndDropHelper.hasStringFlavor(support.getDataFlavors())) {
-	    return true;
-	}
-	return false;
-    }
-
-    @Override
-    public boolean importData(final TransferSupport support) {
-	if (!canImport(support)) {
-	    return false;
-	}
-
-	if (support.getTransferable().isDataFlavorSupported(
-		DragAndDropHelper.getInternalDataFlavor())) {
-	    return beanFactory.getBean(InternalImportProcessor.class)
-		    .processInternalImport(support);
-	}
-
-	return beanFactory.getBean(ExternalImportProcessor.class)
-		.processExternalImport(support);
-    }
 }

@@ -158,9 +158,8 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 	}
 
 	@Override
-	public List<? extends IAudioObject> getAudioObjectForTreeNode(
-			final ITreeNode node, final ViewMode viewMode,
-			final String treeFilter, String tableFilter) {
+	public List<IAudioObject> getAudioObjectForTreeNode(final ITreeNode node,
+			final ViewMode viewMode, final String treeFilter, String tableFilter) {
 		return new RepositoryAudioObjectsHelper().getAudioObjectForTreeNode(
 				repositoryHandler.getAudioFilesList(), node, viewMode,
 				treeFilter, tableFilter, navigatorColumnSet);

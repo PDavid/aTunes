@@ -162,13 +162,12 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ILocalAudioObject> getAudioObjectForTreeNode(
-			final ITreeNode node, final ViewMode viewMode,
-			final String treeFilter, final String tableFilter) {
-		List<ILocalAudioObject> songs = null;
+	public List<IAudioObject> getAudioObjectForTreeNode(final ITreeNode node,
+			final ViewMode viewMode, final String treeFilter,
+			final String tableFilter) {
+		List<IAudioObject> songs = new ArrayList<IAudioObject>();
 
 		if (node.isRoot()) {
-			songs = new ArrayList<ILocalAudioObject>();
 			songs.addAll(this.repositoryHandler
 					.getAudioFilesForArtists(this.favoritesHandler
 							.getFavoriteArtists()));
@@ -178,10 +177,9 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 			songs.addAll(this.favoritesHandler.getFavoriteSongs());
 		} else {
 			if (node.getUserObject() instanceof ITreeObject) {
-				songs = ((ITreeObject<ILocalAudioObject>) node.getUserObject())
-						.getAudioObjects();
+				songs.addAll(((ITreeObject<ILocalAudioObject>) node
+						.getUserObject()).getAudioObjects());
 			} else {
-				songs = new ArrayList<ILocalAudioObject>();
 				if (node.getUserObject().toString()
 						.equals(I18nUtils.getString(ARTISTS))) {
 					songs.addAll(this.repositoryHandler

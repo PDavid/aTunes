@@ -355,7 +355,7 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	 * @param node
 	 * @return
 	 */
-	public List<? extends IAudioObject> getAudioObjectsForTreeNode(
+	public List<IAudioObject> getAudioObjectsForTreeNode(
 			final Class<? extends INavigationView> navigationViewClass,
 			final ITreeNode node) {
 		String treeFilter = this.filterHandler
@@ -363,10 +363,9 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 		String tableFilter = this.filterHandler
 				.getFilterText(this.navigationTableFilter);
 
-		List<? extends IAudioObject> audioObjects = this.navigationHandler
-				.getView(navigationViewClass).getAudioObjectForTreeNode(node,
-						this.stateNavigation.getViewMode(), treeFilter,
-						tableFilter);
+		List<IAudioObject> audioObjects = this.navigationHandler.getView(
+				navigationViewClass).getAudioObjectForTreeNode(node,
+				this.stateNavigation.getViewMode(), treeFilter, tableFilter);
 
 		IColumnSet columnSet = this.navigationHandler.getCurrentView()
 				.getCustomColumnSet();

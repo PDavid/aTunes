@@ -29,15 +29,11 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.TransferHandler.TransferSupport;
 
-import net.sourceforge.atunes.gui.views.controls.NavigatorTreeNode;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
-import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -52,8 +48,6 @@ import net.sourceforge.atunes.utils.Logger;
  * 
  */
 public class InternalImportProcessor {
-
-	private INavigationHandler navigationHandler;
 
 	private IPlayListTable playListTable;
 
@@ -70,13 +64,6 @@ public class InternalImportProcessor {
 	 */
 	public void setBeanFactory(IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
-	}
-
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(final INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
 	}
 
 	/**
@@ -118,8 +105,9 @@ public class InternalImportProcessor {
 	public boolean processInternalImport(final TransferSupport support) {
 		List<?> listOfObjectsDragged = getObjectsDragged(support);
 		if (!CollectionUtils.isEmpty(listOfObjectsDragged)) {
+			Object object = listOfObjectsDragged.get(0);
 			// DRAG AND DROP FROM PLAY LIST -> MOVE
-			if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
+			if (object instanceof PlayListDragableRow) {
 				return moveRowsInPlayList(
 						(List<PlayListDragableRow>) listOfObjectsDragged,
 						((JTable.DropLocation) support.getDropLocation())
@@ -127,58 +115,31 @@ public class InternalImportProcessor {
 			}
 
 			// DRAG AND DROP OF AN ARTIST -> add songs from this artist
-			if (listOfObjectsDragged.get(0) instanceof DragableArtist) {
+			else if (object instanceof DragableArtist) {
 				return getArtistSongs((List<DragableArtist>) listOfObjectsDragged);
 			}
 
-			dragFromNavigator(support, listOfObjectsDragged);
+			// DRAG AND DROP FROM NAVIGATOR TREE
+			else if (object instanceof ITreeNode) {
+				return this.beanFactory.getBean(
+						NavigatorToPlayListDragAndDropProcessor.class)
+						.dragFromNavigatorTree(
+								playListTable.rowAtPoint(support
+										.getDropLocation().getDropPoint()),
+								(List<ITreeNode>) listOfObjectsDragged);
+
+			} else if (object instanceof Integer) {
+				return this.beanFactory.getBean(
+						NavigatorToPlayListDragAndDropProcessor.class)
+						.dragFromNavigatorTable(
+								playListTable.rowAtPoint(support
+										.getDropLocation().getDropPoint()),
+								(List<Integer>) listOfObjectsDragged);
+
+			}
 		}
 
 		return false;
-	}
-
-	/**
-	 * @param support
-	 * @param listOfObjectsDragged
-	 */
-	private void dragFromNavigator(final TransferSupport support,
-			final List<?> listOfObjectsDragged) {
-		List<IAudioObject> audioObjectsToAdd = new ArrayList<IAudioObject>();
-		for (int i = 0; i < listOfObjectsDragged.size(); i++) {
-			Object objectDragged = listOfObjectsDragged.get(i);
-			// DRAG AND DROP FROM TREE
-			if (objectDragged instanceof NavigatorTreeNode) {
-				List<? extends IAudioObject> objectsToImport = navigationHandler
-						.getAudioObjectsForTreeNode(navigationHandler
-								.getCurrentView().getClass(),
-								(ITreeNode) objectDragged);
-				if (objectsToImport != null) {
-					audioObjectsToAdd.addAll(objectsToImport);
-				}
-			} else if (objectDragged instanceof Integer) {
-				// DRAG AND DROP FROM TABLE
-				Integer row = (Integer) objectDragged;
-				audioObjectsToAdd.add(navigationHandler
-						.getAudioObjectInNavigationTable(row));
-			}
-		}
-
-		int dropRow = playListTable.rowAtPoint(support.getDropLocation()
-				.getDropPoint());
-
-		if (!audioObjectsToAdd.isEmpty()) {
-			beanFactory.getBean(IAudioObjectComparator.class).sort(
-					audioObjectsToAdd);
-			playListHandler.addToVisiblePlayList(dropRow, audioObjectsToAdd);
-			// Keep selected rows: if drop row is the bottom of play list (-1)
-			// then select last row
-			if (dropRow == -1) {
-				dropRow = playListHandler.getVisiblePlayList().size()
-						- audioObjectsToAdd.size();
-			}
-			playListTable.getSelectionModel().addSelectionInterval(dropRow,
-					dropRow + audioObjectsToAdd.size() - 1);
-		}
 	}
 
 	/**

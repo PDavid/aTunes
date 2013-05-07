@@ -95,9 +95,8 @@ public interface INavigationView extends IAudioObjectsSource,
 	 * @param tableFilter
 	 * @return
 	 */
-	public List<? extends IAudioObject> getAudioObjectForTreeNode(
-			ITreeNode node, ViewMode viewMode, String treeFilter,
-			String tableFilter);
+	public List<IAudioObject> getAudioObjectForTreeNode(ITreeNode node,
+			ViewMode viewMode, String treeFilter, String tableFilter);
 
 	/**
 	 * Returns <code>true</code> if the view supports organize information in
