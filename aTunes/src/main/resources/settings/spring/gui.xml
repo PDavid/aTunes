@@ -221,5 +221,11 @@
 	</bean>
 	<bean id="coverNavigationListSelectionListener" class="net.sourceforge.atunes.kernel.modules.covernavigator.CoverNavigationListSelectionListener" scope="prototype"/>
 
+
+
+	<bean id="columnSortIconGenerator" class="net.sourceforge.atunes.gui.lookandfeel.ColumnSortIconGenerator" scope="prototype"/>
+
+	<bean id="lookAndFeelTableHeaderCellRenderer" class="net.sourceforge.atunes.gui.lookandfeel.LookAndFeelTableHeaderCellRenderer" scope="prototype"/>
+	<bean id="substanceLookAndFeelTableHeaderCellRenderer" class="net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeelTableHeaderCellRenderer" scope="prototype"/>
 	
 </beans>

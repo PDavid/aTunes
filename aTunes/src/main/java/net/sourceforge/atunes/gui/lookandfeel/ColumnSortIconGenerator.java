@@ -20,15 +20,15 @@
 
 package net.sourceforge.atunes.gui.lookandfeel;
 
+import java.awt.Color;
+
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.ArrowDownImageIcon;
-import net.sourceforge.atunes.gui.images.ArrowUpImageIcon;
 import net.sourceforge.atunes.model.ColumnSort;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnModel;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
@@ -39,45 +39,61 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
  */
 public class ColumnSortIconGenerator {
 
+	private IIconFactory arrowUpImageIcon;
+
+	private IIconFactory arrowDownImageIcon;
+
+	private ILookAndFeelManager lookAndFeelManager;
+
 	/**
-	 * @param beanFactory
+	 * @param arrowDownImageIcon
+	 */
+	public void setArrowDownImageIcon(IIconFactory arrowDownImageIcon) {
+		this.arrowDownImageIcon = arrowDownImageIcon;
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
+	 * @param arrowUpImageIcon
+	 */
+	public void setArrowUpImageIcon(IIconFactory arrowUpImageIcon) {
+		this.arrowUpImageIcon = arrowUpImageIcon;
+	}
+
+	/**
 	 * @param model
 	 * @param column
 	 * @return icon
 	 */
-	public ImageIcon getIcon(final IBeanFactory beanFactory,
-			final IColumnModel model, final int column) {
+	public ImageIcon getIcon(final IColumnModel model, final int column) {
 		IColumnSet cs = model.getColumnSet();
 		if (cs != null) {
 			Class<? extends IColumn<?>> colId = cs.getColumnId(column);
 			if (colId != null) {
 				IColumn<?> col = cs.getColumn(colId);
 				if (col != null) {
-					ColumnSort sort = col.getColumnSort();
-					if (sort != null) {
-						if (sort == ColumnSort.ASCENDING) {
-							return beanFactory
-									.getBean(ArrowUpImageIcon.class)
-									.getColorMutableIcon()
-									.getIcon(
-											beanFactory
-													.getBean(
-															ILookAndFeelManager.class)
-													.getCurrentLookAndFeel()
-													.getPaintForSpecialControls());
-						} else {
-							return beanFactory
-									.getBean(ArrowDownImageIcon.class)
-									.getColorMutableIcon()
-									.getIcon(
-											beanFactory
-													.getBean(
-															ILookAndFeelManager.class)
-													.getCurrentLookAndFeel()
-													.getPaintForSpecialControls());
-						}
-					}
+					return getIconForSort(col);
 				}
+			}
+		}
+		return null;
+	}
+
+	private ImageIcon getIconForSort(IColumn<?> col) {
+		ColumnSort sort = col.getColumnSort();
+		if (sort != null) {
+			Color color = lookAndFeelManager.getCurrentLookAndFeel()
+					.getPaintForSpecialControls();
+			if (sort == ColumnSort.ASCENDING) {
+				return arrowUpImageIcon.getColorMutableIcon().getIcon(color);
+			} else {
+				return arrowDownImageIcon.getColorMutableIcon().getIcon(color);
 			}
 		}
 		return null;

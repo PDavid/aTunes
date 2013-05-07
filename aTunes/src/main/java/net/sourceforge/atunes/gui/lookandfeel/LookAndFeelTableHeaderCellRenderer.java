@@ -24,21 +24,36 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColumnModel;
 
-final class LookAndFeelTableHeaderCellRenderer extends DefaultTableCellRenderer {
+/**
+ * Header cell renderer for tables
+ * 
+ * @author alex
+ * 
+ */
+public final class LookAndFeelTableHeaderCellRenderer extends
+		DefaultTableCellRenderer {
 
 	private static final long serialVersionUID = -4055986141351413215L;
 
-	private final IColumnModel model;
+	private IColumnModel model;
 
-	private final IBeanFactory beanFactory;
+	private ColumnSortIconGenerator columnSortIconGenerator;
 
-	LookAndFeelTableHeaderCellRenderer(final IColumnModel model,
-			final IBeanFactory beanFactory) {
+	/**
+	 * @param columnSortIconGenerator
+	 */
+	public void setColumnSortIconGenerator(
+			ColumnSortIconGenerator columnSortIconGenerator) {
+		this.columnSortIconGenerator = columnSortIconGenerator;
+	}
+
+	/**
+	 * @param model
+	 */
+	public void bindToModel(IColumnModel model) {
 		this.model = model;
-		this.beanFactory = beanFactory;
 	}
 
 	@Override
@@ -47,9 +62,7 @@ final class LookAndFeelTableHeaderCellRenderer extends DefaultTableCellRenderer 
 			final boolean hasFocus, final int row, final int column) {
 		JComponent c = (JComponent) super.getTableCellRendererComponent(table,
 				value, isSelected, hasFocus, row, column);
-
-		this.setIcon(new ColumnSortIconGenerator().getIcon(this.beanFactory,
-				this.model, column));
+		this.setIcon(this.columnSortIconGenerator.getIcon(this.model, column));
 		return c;
 	}
 }
