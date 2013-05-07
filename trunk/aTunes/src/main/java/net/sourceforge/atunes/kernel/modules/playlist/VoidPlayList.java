@@ -20,11 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.util.Comparator;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListMode;
 import net.sourceforge.atunes.model.IStatePlayer;
@@ -105,7 +105,7 @@ class VoidPlayList implements IPlayList {
 	}
 
 	@Override
-	public void sort(final Comparator<IAudioObject> comparator) {
+	public void sortByColumn(final IColumn<?> column) {
 	}
 
 	@Override

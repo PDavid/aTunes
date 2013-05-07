@@ -21,13 +21,11 @@
 package net.sourceforge.atunes.gui;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.model.IAlbum;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
 
 /**
@@ -136,6 +134,6 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
 	}
 
 	@Override
-	public void sort(final Comparator<IAudioObject> comparator) {
+	public void sort(IColumn<?> column) {
 	}
 }

@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.util.Comparator;
-
 import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
@@ -137,17 +135,11 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
 	}
 
 	@Override
-	public void sort(final Comparator<IAudioObject> comparator) {
-		// If comparator is null, do nothing
-		if (comparator == null) {
+	public void sort(final IColumn<?> column) {
+		if (this.visiblePlayList == null) {
 			return;
 		}
 
-		// If current play list is empty, don't sort
-		if (this.visiblePlayList == null || this.visiblePlayList.isEmpty()) {
-			return;
-		}
-
-		this.visiblePlayList.sort(comparator);
+		this.visiblePlayList.sortByColumn(column);
 	}
 }

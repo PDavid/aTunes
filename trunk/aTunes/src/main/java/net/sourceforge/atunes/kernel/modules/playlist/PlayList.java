@@ -22,12 +22,12 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IPlayListMode;
@@ -285,14 +285,9 @@ public class PlayList implements IPlayList {
 		}
 	}
 
-	/**
-	 * Sorts this play list with given comparator
-	 * 
-	 * @param c
-	 */
 	@Override
-	public void sort(final Comparator<IAudioObject> c) {
-		this.audioObjects.sort(c);
+	public void sortByColumn(IColumn<?> column) {
+		this.audioObjects.sort(column.getComparator());
 		notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
 	}
 
