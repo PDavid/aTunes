@@ -125,11 +125,10 @@ public final class NavigationTableModel extends AbstractColumnSetTableModel {
 	}
 
 	@Override
-	public void sort(IColumn<?> column) {
+	public void sortByColumn(IColumn<?> column) {
 		net.sourceforge.atunes.utils.Timer t = new net.sourceforge.atunes.utils.Timer();
 		t.start();
 		Collections.sort(this.audioObjects, column.getComparator());
 		Logger.debug("Navigation table sort: ", t.stop(), " seconds");
-		refresh(TableModelEvent.UPDATE);
 	}
 }

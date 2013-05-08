@@ -249,6 +249,8 @@
 	<bean id="showYearsInNavigatorAction" class="net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction"/>
 	<bean id="shuffleModeAction" class="net.sourceforge.atunes.kernel.actions.ShuffleModeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShufflePlayListAction"/>
+	<bean id="sortPlayListAscendingAction" class="net.sourceforge.atunes.kernel.actions.SortPlayListColumnAscendingAction"/>
+	<bean id="sortPlayListDescendingAction" class="net.sourceforge.atunes.kernel.actions.SortPlayListColumnDescendingAction"/>
 	<bean id="stopAfterCurrentTrack" class="net.sourceforge.atunes.kernel.actions.StopAfterCurrentAudioObjectAction"/>
 	<bean id="stopAction" class="net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction"/>
 	<bean id="syncDeviceWithPlayListAction" class="net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction"/>

@@ -51,9 +51,9 @@ import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IButtonPanel;
 import net.sourceforge.atunes.model.IColumnModel;
 import net.sourceforge.atunes.model.IColumnSetPopupMenu;
+import net.sourceforge.atunes.model.IColumnSetTableModel;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDesktop;
-import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
@@ -113,8 +113,6 @@ public class ControlsBuilder implements IControlsBuilder {
 
 	private IBeanFactory beanFactory;
 
-	private IDialogFactory dialogFactory;
-
 	/** The component orientation. */
 	private ComponentOrientation componentOrientation;
 
@@ -125,13 +123,6 @@ public class ControlsBuilder implements IControlsBuilder {
 	 */
 	public void setDesktop(final IDesktop desktop) {
 		this.desktop = desktop;
-	}
-
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(final IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
 	}
 
 	/**
@@ -313,9 +304,11 @@ public class ControlsBuilder implements IControlsBuilder {
 
 	@Override
 	public IColumnSetPopupMenu createColumnSetPopupMenu(final JTable table,
-			final IColumnModel columnModel) {
-		return new ColumnSetPopupMenu(table, columnModel, this.dialogFactory,
-				this.osManager);
+			final IColumnModel columnModel, IColumnSetTableModel tableModel) {
+		ColumnSetPopupMenu popup = this.beanFactory
+				.getBean(ColumnSetPopupMenu.class);
+		popup.bindTo(table, columnModel, tableModel);
+		return popup;
 	}
 
 	@Override

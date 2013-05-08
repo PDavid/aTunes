@@ -134,6 +134,6 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
 	}
 
 	@Override
-	public void sort(IColumn<?> column) {
+	public void sortByColumn(IColumn<?> column) {
 	}
 }

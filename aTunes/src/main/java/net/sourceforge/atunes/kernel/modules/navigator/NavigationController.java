@@ -244,7 +244,8 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 		this.columnSetPopupMenu = (ColumnSetPopupMenu) this.controlsBuilder
 				.createColumnSetPopupMenu(
 						this.navigationTable.getSwingComponent(),
-						this.navigationTableColumnModel);
+						this.navigationTableColumnModel,
+						this.navigationTableModel);
 
 		// Add tree selection listeners to all views
 		for (INavigationView view : this.navigationHandler.getNavigationViews()) {

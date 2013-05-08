@@ -125,10 +125,11 @@ public interface IControlsBuilder {
 	 * 
 	 * @param table
 	 * @param columnModel
+	 * @param tableModel
 	 * @return
 	 */
 	IColumnSetPopupMenu createColumnSetPopupMenu(JTable table,
-			IColumnModel columnModel);
+			IColumnModel columnModel, IColumnSetTableModel tableModel);
 
 	/**
 	 * @return component orientation as swing constant

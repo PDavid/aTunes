@@ -24,7 +24,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
@@ -74,7 +73,7 @@ public final class ColumnSetRowSorter extends MouseAdapter {
 			}
 
 			// Then sort
-			sort(columnClicked);
+			this.model.sort(columnClicked);
 		}
 	}
 
@@ -114,19 +113,5 @@ public final class ColumnSetRowSorter extends MouseAdapter {
 		} else {
 			column.setColumnSort(ColumnSort.ASCENDING);
 		}
-	}
-
-	/**
-	 * Method to sort a column set by a given column It must sort the underlying
-	 * data
-	 * 
-	 * @param column
-	 */
-	private void sort(final IColumn<?> column) {
-		// Sort model
-		this.model.sort(column);
-
-		// Refresh model
-		this.model.refresh(TableModelEvent.UPDATE);
 	}
 }

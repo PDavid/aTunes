@@ -50,7 +50,6 @@ import net.sourceforge.atunes.gui.TransferableList;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
-import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -78,8 +77,6 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 
 	private IBeanFactory beanFactory;
 
-	private IControlsBuilder controlsBuilder;
-
 	private ListSelectionListener playListListener;
 
 	private KeyAdapter playListKeyListener;
@@ -96,13 +93,6 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 	 */
 	public void setPlayListListener(final ListSelectionListener playListListener) {
 		this.playListListener = playListListener;
-	}
-
-	/**
-	 * @param controlsBuilder
-	 */
-	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
-		this.controlsBuilder = controlsBuilder;
 	}
 
 	/**
@@ -158,9 +148,6 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 				.getBean(PlayListColumnModel.class);
 		columnModel.setModel(this.playListTableModel);
 		setColumnModel(columnModel);
-
-		// Bind column set popup menu
-		this.controlsBuilder.createColumnSetPopupMenu(this, columnModel);
 
 		// Disable autoresize, as we will control it
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);

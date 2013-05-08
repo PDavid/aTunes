@@ -130,7 +130,7 @@ final class SearchResultsController extends
 		this.beanFactory.getBean(IControlsBuilder.class)
 				.createColumnSetPopupMenu(
 						getComponentControlled().getSearchResultsTable(),
-						columnModel);
+						columnModel, tableModel);
 
 		// Set renderers
 

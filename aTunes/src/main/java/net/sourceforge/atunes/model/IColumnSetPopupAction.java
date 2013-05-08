@@ -20,33 +20,27 @@
 
 package net.sourceforge.atunes.model;
 
+
 /**
- * Popup menu for column sets
+ * Action to perform with a selected column of a table
  * 
  * @author alex
  * 
  */
-public interface IColumnSetPopupMenu {
+public interface IColumnSetPopupAction {
 
 	/**
-	 * Allows columns to be arranged
-	 * 
-	 * @param enable
+	 * @return text of action
 	 */
-	void enableArrangeColumns(final boolean enable);
+	String getText();
 
 	/**
-	 * Adds an additional action to popup
+	 * Executes when action fired over given column, column model and table
 	 * 
-	 * @param action
+	 * @param column
+	 * @param columnModel
+	 * @param tableModel
 	 */
-	void addAction(final IColumnSetPopupAction action);
-
-	/**
-	 * Shows menu in given coordinates
-	 * 
-	 * @param x
-	 * @param y
-	 */
-	void show(int x, int y);
+	void executeAction(IColumn<?> column, IColumnModel columnModel,
+			IColumnSetTableModel tableModel);
 }
