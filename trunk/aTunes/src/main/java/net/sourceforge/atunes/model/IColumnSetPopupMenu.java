@@ -34,4 +34,19 @@ public interface IColumnSetPopupMenu {
 	 * @param enable
 	 */
 	void enableArrangeColumns(final boolean enable);
+
+	/**
+	 * Adds an additional action to popup
+	 * 
+	 * @param action
+	 */
+	void addAction(final IColumnSetPopupAction action);
+
+	/**
+	 * Shows menu in given coordinates
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	void show(int x, int y);
 }

@@ -131,7 +131,8 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog
 		ColumnRenderers.addRenderers(albumTable, columnModel, getLookAndFeel());
 
 		// Bind column set popup menu to select columns to display
-		getControlsBuilder().createColumnSetPopupMenu(albumTable, columnModel);
+		getControlsBuilder().createColumnSetPopupMenu(albumTable, columnModel,
+				model);
 
 		model.setAlbums(albumList);
 

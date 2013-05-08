@@ -20,8 +20,11 @@
 
 package net.sourceforge.atunes.gui;
 
+import javax.swing.event.TableModelEvent;
+
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IColumnSetTableModel;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -30,7 +33,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  */
 public abstract class AbstractColumnSetTableModel extends
-		AbstractCommonTableModel {
+		AbstractCommonTableModel implements IColumnSetTableModel {
 
 	private IColumnSet columnSet;
 
@@ -87,18 +90,16 @@ public abstract class AbstractColumnSetTableModel extends
 				.getColumnId(colIndex)) : null;
 	}
 
-	/**
-	 * Abstract method to sort by the given column
-	 * 
-	 * @param column
-	 */
-	public abstract void sort(IColumn<?> column);
-
-	/**
-	 * @param columnSet
-	 *            the columnSet to set
-	 */
-	public void setColumnSet(final IColumnSet columnSet) {
+	@Override
+	public final void setColumnSet(final IColumnSet columnSet) {
 		this.columnSet = columnSet;
 	}
+
+	@Override
+	public final void sort(IColumn<?> column) {
+		sortByColumn(column);
+		refresh(TableModelEvent.UPDATE);
+	}
+
+	public abstract void sortByColumn(IColumn<?> column);
 }

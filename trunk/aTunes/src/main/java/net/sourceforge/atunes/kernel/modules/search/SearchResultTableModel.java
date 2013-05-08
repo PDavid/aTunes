@@ -104,7 +104,7 @@ public class SearchResultTableModel extends AbstractColumnSetTableModel {
 	}
 
 	@Override
-	public void sort(IColumn<?> column) {
+	public void sortByColumn(IColumn<?> column) {
 		Collections.sort(this.results, column.getComparator());
 	}
 }

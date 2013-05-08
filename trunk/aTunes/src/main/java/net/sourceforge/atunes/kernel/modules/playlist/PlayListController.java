@@ -30,10 +30,15 @@ import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.gui.ColumnDecorator;
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.gui.PlayListColumnModel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.actions.SortPlayListColumnAscendingAction;
+import net.sourceforge.atunes.kernel.actions.SortPlayListColumnDescendingAction;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IColumnSetPopupMenu;
+import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListPanel;
@@ -56,6 +61,8 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel>
 	private IStatePlaylist statePlaylist;
 
 	private IBeanFactory beanFactory;
+
+	private IControlsBuilder controlsBuilder;
 
 	/**
 	 * @param beanFactory
@@ -100,6 +107,13 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel>
 	}
 
 	/**
+	 * @param controlsBuilder
+	 */
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
+	/**
 	 * Initializes controller
 	 */
 	public void initialize() {
@@ -108,6 +122,16 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel>
 
 		this.beanFactory.getBean("playlistTableColumnDecorator",
 				ColumnDecorator.class).decorate(false);
+
+		// Bind column set popup menu
+		IColumnSetPopupMenu popup = this.controlsBuilder
+				.createColumnSetPopupMenu(playListTable.getSwingComponent(),
+						this.beanFactory.getBean(PlayListColumnModel.class),
+						this.beanFactory.getBean(PlayListTableModel.class));
+		popup.addAction(this.beanFactory
+				.getBean(SortPlayListColumnAscendingAction.class));
+		popup.addAction(this.beanFactory
+				.getBean(SortPlayListColumnDescendingAction.class));
 	}
 
 	private static int arrMin(final int[] array) {

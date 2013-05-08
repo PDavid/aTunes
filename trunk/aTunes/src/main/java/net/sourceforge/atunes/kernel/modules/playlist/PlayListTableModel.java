@@ -135,7 +135,7 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
 	}
 
 	@Override
-	public void sort(final IColumn<?> column) {
+	public void sortByColumn(final IColumn<?> column) {
 		if (this.visiblePlayList == null) {
 			return;
 		}

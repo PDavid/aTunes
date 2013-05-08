@@ -20,12 +20,18 @@
 
 package net.sourceforge.atunes.gui.views.controls;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
+import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnModel;
+import net.sourceforge.atunes.model.IColumnSetPopupAction;
 import net.sourceforge.atunes.model.IColumnSetPopupMenu;
+import net.sourceforge.atunes.model.IColumnSetTableModel;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -38,31 +44,85 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ColumnSetPopupMenu implements IColumnSetPopupMenu {
 
-	private final JMenuItem arrangeColumns;
+	private JMenuItem arrangeColumns;
+
+	private JPopupMenu menu;
+
+	private JTable table;
+
+	private IColumnModel model;
+
+	private IColumn<?> columnSelected;
+
+	private IColumnSetTableModel tableModel;
+
+	private IOSManager osManager;
+
+	private IDialogFactory dialogFactory;
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
 	/**
 	 * Adds a right-button popup menu to column set tables
 	 * 
 	 * @param table
 	 * @param model
-	 * @param dialogFactory
-	 * @param osManager
+	 * @param tableModel
 	 */
-	ColumnSetPopupMenu(final JTable table, final IColumnModel model,
-			final IDialogFactory dialogFactory, final IOSManager osManager) {
-		final JPopupMenu rightMenu = new JPopupMenu();
+	void bindTo(final JTable table, final IColumnModel model,
+			final IColumnSetTableModel tableModel) {
+		this.table = table;
+		this.model = model;
+		this.tableModel = tableModel;
+		this.menu = new JPopupMenu();
 		this.arrangeColumns = new JMenuItem(
 				I18nUtils.getString("ARRANGE_COLUMNS"));
-		rightMenu.add(this.arrangeColumns);
+		menu.add(this.arrangeColumns);
 		this.arrangeColumns.addActionListener(new SelectColumnsActionListener(
 				model, dialogFactory));
 		table.getTableHeader().addMouseListener(
-				new ColumnSetTableHeaderMouseAdapter(rightMenu, table,
-						osManager));
+				new ColumnSetTableHeaderMouseAdapter(this, osManager));
 	}
 
 	@Override
 	public void enableArrangeColumns(final boolean enable) {
 		this.arrangeColumns.setEnabled(enable);
+	}
+
+	@Override
+	public void show(int x, int y) {
+		int columnIndex = this.table.getColumnModel().getColumnIndexAtX(x);
+		if (columnIndex != -1) {
+			this.columnSelected = this.model.getColumnSet().getColumn(
+					this.model.getColumnSet().getColumnId(columnIndex));
+			this.menu.show(this.table.getTableHeader(), x, y);
+		}
+	}
+
+	@Override
+	public void addAction(final IColumnSetPopupAction action) {
+		JMenuItem item = new JMenuItem(action.getText());
+		item.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (ColumnSetPopupMenu.this.columnSelected != null) {
+					action.executeAction(columnSelected, model, tableModel);
+				}
+			}
+		});
+		menu.add(item);
 	}
 }
