@@ -47,10 +47,6 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	private int length;
 	private int time;
 
-	private int previousTime = -1;
-
-	private int sameTimeCounter = 0;
-
 	private boolean applyWorkaround = false;
 	private boolean workaroundApplied;
 
@@ -66,7 +62,7 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	private IFileManager fileManager;
 
 	boolean isReadStopped() {
-		return this.readStopped;
+		return readStopped;
 	}
 
 	/**
@@ -122,20 +118,9 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 		// MPlayer bug: Duration still inaccurate with mp3 VBR files! Flac
 		// duration bug
 		if (line.contains(ANS_TIME_POSITION) && !this.readStopped) {
-			int time = calculateTime(line);
-			if (timeIsTheSame(time)) {
-				// Playback finished
-				// This is a workaround for MPlayer2 process where instead of an
-				// EOF pattern
-				// time does not change with different calls to retrieve
-				// position
-				Logger.info("MPlayer2 workaround to stop process");
-				stopRead();
-				getEngine().currentAudioObjectFinished();
-			} else {
-				setTime(time);
-				getEngine().setTime(getTime());
-			}
+			setTime((int) (Float
+					.parseFloat(line.substring(line.indexOf('=') + 1)) * 1000.0));
+			getEngine().setTime(getTime());
 		}
 
 		// End
@@ -160,19 +145,6 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 						.currentAudioObjectFinishedWithError(generateError());
 			}
 		}
-	}
-
-	private boolean timeIsTheSame(final int time) {
-		boolean same = this.length > 0 && time == this.previousTime;
-		// Check time 10 times before assuming is the same
-		if (same) {
-			this.sameTimeCounter++;
-		}
-		return same && this.sameTimeCounter >= 10;
-	}
-
-	private int calculateTime(final String line) {
-		return (int) (Float.parseFloat(line.substring(line.indexOf('=') + 1)) * 1000.0);
 	}
 
 	private void stopRead() {
@@ -202,9 +174,9 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 		}
 	}
 
-	private void controlAndProcess(final BufferedReader in) throws IOException,
+	private void controlAndProcess(BufferedReader in) throws IOException,
 			InterruptedException {
-		while (!this.readStopped && !this.applyWorkaround && !isInterrupted()) {
+		while (!readStopped && !this.applyWorkaround && !isInterrupted()) {
 			sendCommand();
 			waitForResponse(in);
 			List<String> response = getResponse(in);
@@ -219,15 +191,14 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 		}
 	}
 
-	private void waitForResponse(final BufferedReader in) throws IOException,
+	private void waitForResponse(BufferedReader in) throws IOException,
 			InterruptedException {
 		while (!isInterrupted() && !in.ready()) {
 			Thread.sleep(400);
 		}
 	}
 
-	private List<String> getResponse(final BufferedReader in)
-			throws IOException {
+	private List<String> getResponse(BufferedReader in) throws IOException {
 		List<String> response = new ArrayList<String>();
 		while (in.ready()) {
 			String line = in.readLine();
@@ -269,11 +240,6 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	}
 
 	protected final void setTime(final int time) {
-		// Don't update previous time until mplayer returns lenght and starts
-		// returning position
-		if (this.length > 0 && this.time > 0) {
-			this.previousTime = this.time;
-		}
 		this.time = time;
 	}
 
