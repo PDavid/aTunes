@@ -235,7 +235,7 @@ public final class NavigationController implements IAudioFilesRemovedListener,
 	@Override
 	public void addBindings() {
 		this.beanFactory.getBean("navigatorTableColumnDecorator",
-				ColumnDecorator.class).decorate();
+				ColumnDecorator.class).decorate(true);
 
 		new ColumnSetRowSorter(this.navigationTable.getSwingComponent(),
 				this.navigationTableModel, this.navigationTableColumnModel);

@@ -68,10 +68,17 @@ public class ColumnDecorator {
 
 	/**
 	 * Apply decorator
+	 * 
+	 * @param decorateHeader
 	 */
-	public void decorate() {
+	public void decorate(boolean decorateHeader) {
 		addRenderers(this.table.getSwingComponent(), this.columnModel,
 				this.lookAndFeelManager.getCurrentLookAndFeel());
+		if (decorateHeader) {
+			addHeaderRenderers(this.table.getSwingComponent(),
+					this.columnModel,
+					this.lookAndFeelManager.getCurrentLookAndFeel());
+		}
 	}
 
 	/**
@@ -117,10 +124,18 @@ public class ColumnDecorator {
 		jtable.setDefaultRenderer(PlaybackState.class, lookAndFeel
 				.getTableCellRenderer(model
 						.getRendererCodeFor(PlaybackState.class)));
+	}
 
+	/**
+	 * @param jtable
+	 * @param model
+	 * @param lookAndFeel
+	 */
+	private void addHeaderRenderers(final JTable jtable,
+			final AbstractCommonColumnModel model,
+			final ILookAndFeel lookAndFeel) {
 		// Set header renderer
 		jtable.getTableHeader().setDefaultRenderer(
 				lookAndFeel.getTableHeaderCellRenderer(model));
 	}
-
 }

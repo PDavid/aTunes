@@ -44,7 +44,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
-import net.sourceforge.atunes.gui.ColumnRenderers;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.PlayListColumnModel;
 import net.sourceforge.atunes.gui.TransferableList;
@@ -160,18 +159,11 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 		columnModel.setModel(this.playListTableModel);
 		setColumnModel(columnModel);
 
-		// Set sorter
-		new ColumnSetRowSorter(this, this.playListTableModel, columnModel);
-
 		// Bind column set popup menu
 		this.controlsBuilder.createColumnSetPopupMenu(this, columnModel);
 
 		// Disable autoresize, as we will control it
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-		// Set renderers
-		ColumnRenderers.addRenderers(this, columnModel,
-				this.lookAndFeelManager.getCurrentLookAndFeel());
 
 		// Remove enter key event, which moves selection down
 		getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(

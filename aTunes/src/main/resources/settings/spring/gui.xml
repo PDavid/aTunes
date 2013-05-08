@@ -192,7 +192,12 @@
 		<property name="model" ref="navigationTableModel"/>
 		<property name="columnSet" ref="navigatorColumnSet"/>
 	</bean>
-	<bean class="net.sourceforge.atunes.gui.PlayListColumnModel" parent="abstractCommonColumnModel" scope="prototype" init-method="initialize"/>
+	<bean id="playlistColumnModel" class="net.sourceforge.atunes.gui.PlayListColumnModel" parent="abstractCommonColumnModel" scope="prototype" init-method="initialize"/>
+	
+	<bean id="playlistTableColumnDecorator" class="net.sourceforge.atunes.gui.ColumnDecorator" scope="prototype">
+		<property name="columnModel" ref="playlistColumnModel"/>
+		<property name="table" ref="playListTable"/>
+	</bean>
 	
 	<!-- DRAG AND DROP PROCESSORS -->
 	<bean id="internalImportProcessor" class="net.sourceforge.atunes.kernel.modules.draganddrop.InternalImportProcessor" scope="prototype"/>
