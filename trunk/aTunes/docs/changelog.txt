@@ -14,6 +14,7 @@ aTunes 3.1.0
 - Added option to stop playback after current track
 - Show favorite songs and current song in artist top tracks
 - FIX: LyricsDirectoryEngine review when no lyric found
+- FIX: Support for MPlayer2
 
 aTunes 3.0.9
 ------------
