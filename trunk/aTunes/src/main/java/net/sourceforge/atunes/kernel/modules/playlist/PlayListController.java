@@ -28,10 +28,12 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 
+import net.sourceforge.atunes.gui.ColumnDecorator;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListPanel;
@@ -52,6 +54,15 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel>
 	private IPlayListPanel playListPanel;
 
 	private IStatePlaylist statePlaylist;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param statePlaylist
@@ -94,6 +105,9 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel>
 	public void initialize() {
 		setComponentControlled((PlayListPanel) this.playListPanel
 				.getSwingComponent());
+
+		this.beanFactory.getBean("playlistTableColumnDecorator",
+				ColumnDecorator.class).decorate(false);
 	}
 
 	private static int arrMin(final int[] array) {
