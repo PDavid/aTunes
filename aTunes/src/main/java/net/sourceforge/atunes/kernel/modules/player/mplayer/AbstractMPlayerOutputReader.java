@@ -49,6 +49,8 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 
 	private int previousTime = -1;
 
+	private int sameTimeCounter = 0;
+
 	private boolean applyWorkaround = false;
 	private boolean workaroundApplied;
 
@@ -161,7 +163,12 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	}
 
 	private boolean timeIsTheSame(final int time) {
-		return time == this.previousTime;
+		boolean same = this.length > 0 && time == this.previousTime;
+		// Check time 10 times before assuming is the same
+		if (same) {
+			this.sameTimeCounter++;
+		}
+		return same && this.sameTimeCounter >= 10;
 	}
 
 	private int calculateTime(final String line) {
@@ -262,7 +269,11 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	}
 
 	protected final void setTime(final int time) {
-		this.previousTime = this.time;
+		// Don't update previous time until mplayer returns lenght and starts
+		// returning position
+		if (this.length > 0 && this.time > 0) {
+			this.previousTime = this.time;
+		}
 		this.time = time;
 	}
 
