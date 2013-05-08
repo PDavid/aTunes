@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListObjectFilter;
+import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Removes device audio objects from play list
@@ -83,21 +84,23 @@ public class PlayListRemoverFromDevice {
 	 */
 	void removeAudioObjectsOfDevice(final IPlayList playList,
 			final String location) {
-		List<Integer> songsToRemove = new ArrayList<Integer>();
-		for (ILocalAudioObject audioFile : this.playListLocalAudioObjectFilter
-				.getObjects(playList)) {
-			if (this.fileManager.getPath(audioFile).startsWith(location)) {
-				songsToRemove.add(playList.indexOf(audioFile));
+		if (!StringUtils.isEmpty(location)) {
+			List<Integer> songsToRemove = new ArrayList<Integer>();
+			for (ILocalAudioObject audioFile : this.playListLocalAudioObjectFilter
+					.getObjects(playList)) {
+				if (this.fileManager.getPath(audioFile).startsWith(location)) {
+					songsToRemove.add(playList.indexOf(audioFile));
+				}
 			}
-		}
-		int[] indexes = new int[songsToRemove.size()];
-		for (int i = 0; i < songsToRemove.size(); i++) {
-			indexes[i] = songsToRemove.get(i);
-		}
+			int[] indexes = new int[songsToRemove.size()];
+			for (int i = 0; i < songsToRemove.size(); i++) {
+				indexes[i] = songsToRemove.get(i);
+			}
 
-		if (indexes.length > 0) {
-			this.playListController.clearSelection();
-			this.playListHandler.removeAudioObjects(indexes);
+			if (indexes.length > 0) {
+				this.playListController.clearSelection();
+				this.playListHandler.removeAudioObjects(indexes);
+			}
 		}
 	}
 }
