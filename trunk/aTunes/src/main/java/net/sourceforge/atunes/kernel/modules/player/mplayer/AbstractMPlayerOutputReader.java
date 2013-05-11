@@ -61,6 +61,8 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 
 	private IFileManager fileManager;
 
+	private volatile boolean seekInProgress;
+
 	boolean isReadStopped() {
 		return this.readStopped;
 	}
@@ -117,7 +119,10 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 		// Read progress
 		// MPlayer bug: Duration still inaccurate with mp3 VBR files! Flac
 		// duration bug
-		if (line.contains(ANS_TIME_POSITION) && !this.readStopped) {
+		// If seek has started ignore position until seek ends to avoid progress
+		// bar to move which makes a strange effect
+		if (!this.seekInProgress && line.contains(ANS_TIME_POSITION)
+				&& !this.readStopped) {
 			setTime((int) (Float
 					.parseFloat(line.substring(line.indexOf('=') + 1)) * 1000.0));
 			getEngine().setTime(getTime());
@@ -144,6 +149,9 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 				this.engine
 						.currentAudioObjectFinishedWithError(generateError());
 			}
+		} else if (line.contains("Position:")) {
+			// mplayer returns new position after seek
+			this.seekInProgress = false;
 		}
 	}
 
@@ -284,6 +292,10 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 			}
 		}
 		return new Exception(errorMessage.toString());
+	}
+
+	public void seekStarted() {
+		this.seekInProgress = true;
 	}
 
 }
