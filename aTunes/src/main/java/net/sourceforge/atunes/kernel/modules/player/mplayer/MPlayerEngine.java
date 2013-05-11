@@ -199,9 +199,9 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 	}
 
 	@Override
-	public void seekTo(final long position, final int perCent) {
+	public void seekTo(final int percentage) {
 		this.mPlayerOutputReader.seekStarted();
-		this.commandWriter.sendSeekCommandPerCent(perCent);
+		this.commandWriter.sendSeekCommandPerCent(percentage);
 	}
 
 	@Override

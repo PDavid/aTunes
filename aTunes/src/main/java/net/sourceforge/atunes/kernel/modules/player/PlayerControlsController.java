@@ -20,15 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
-import javax.swing.SwingUtilities;
-
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IStatePodcast;
 
@@ -37,37 +35,24 @@ final class PlayerControlsController extends
 
 	private IPlayerControlsPanel playerControls;
 
-	private IPlayerHandler playerHandler;
-
 	private VolumeSlider volumeSlider;
 
-	private VolumeSliderMouseWheelListener volumeSliderMouseWheelListener;
-
-	private VolumeSliderChangeListener volumeSliderChangeListener;
-
 	private IStatePodcast statePodcast;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param statePodcast
 	 */
 	public void setStatePodcast(final IStatePodcast statePodcast) {
 		this.statePodcast = statePodcast;
-	}
-
-	/**
-	 * @param volumeSliderChangeListener
-	 */
-	public void setVolumeSliderChangeListener(
-			final VolumeSliderChangeListener volumeSliderChangeListener) {
-		this.volumeSliderChangeListener = volumeSliderChangeListener;
-	}
-
-	/**
-	 * @param volumeSliderMouseWheelListener
-	 */
-	public void setVolumeSliderMouseWheelListener(
-			final VolumeSliderMouseWheelListener volumeSliderMouseWheelListener) {
-		this.volumeSliderMouseWheelListener = volumeSliderMouseWheelListener;
 	}
 
 	/**
@@ -82,13 +67,6 @@ final class PlayerControlsController extends
 	 */
 	public void setPlayerControls(final IPlayerControlsPanel playerControls) {
 		this.playerControls = playerControls;
-	}
-
-	/**
-	 * @param playerHandler
-	 */
-	public void setPlayerHandler(final IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
 	}
 
 	/**
@@ -107,15 +85,17 @@ final class PlayerControlsController extends
 
 	@Override
 	public void addBindings() {
-		ProgressBarSeekListener seekListener = new ProgressBarSeekListener(
-				getComponentControlled().getProgressSlider(),
-				this.playerHandler);
+		ProgressBarSeekListener seekListener = this.beanFactory
+				.getBean(ProgressBarSeekListener.class);
+		seekListener.bindToProgressBar(getComponentControlled()
+				.getProgressSlider());
 		getComponentControlled().getProgressSlider().addMouseListener(
 				seekListener);
 		// Add volume behavior
-		this.volumeSlider
-				.addMouseWheelListener(this.volumeSliderMouseWheelListener);
-		this.volumeSlider.addChangeListener(this.volumeSliderChangeListener);
+		this.volumeSlider.addMouseWheelListener(this.beanFactory
+				.getBean(VolumeSliderMouseWheelListener.class));
+		this.volumeSlider.addChangeListener(this.beanFactory
+				.getBean(VolumeSliderChangeListener.class));
 	}
 
 	/**
@@ -125,7 +105,7 @@ final class PlayerControlsController extends
 	 *            the new length
 	 */
 	void setAudioObjectLength(final long length) {
-		SwingUtilities.invokeLater(new Runnable() {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
 			public void run() {
 				getComponentControlled().getProgressSlider().setMaximum(
@@ -193,22 +173,6 @@ final class PlayerControlsController extends
 				getComponentControlled().setVolume(value);
 			}
 		});
-	}
-
-	/**
-	 * Gets the position in percent.
-	 */
-	float getPostionInPercent() {
-		int max = getComponentControlled().getProgressSlider().getMaximum();
-		int pos = getComponentControlled().getProgressSlider().getValue();
-
-		float floatPercent = 0;
-
-		if (max > 0 && pos >= 0) {
-			int intPercent = pos * 100 / max;
-			floatPercent = intPercent / 100f;
-		}
-		return floatPercent;
 	}
 
 	/**

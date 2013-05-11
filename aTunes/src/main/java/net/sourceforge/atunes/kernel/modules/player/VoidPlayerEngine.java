@@ -25,8 +25,9 @@ import net.sourceforge.atunes.model.PlayerEngineCapability;
 
 /**
  * Player engine used when no player engine selected
+ * 
  * @author alex
- *
+ * 
  */
 class VoidPlayerEngine extends AbstractPlayerEngine {
 
@@ -41,7 +42,8 @@ class VoidPlayerEngine extends AbstractPlayerEngine {
 	}
 
 	@Override
-	public void startPlayback(final IAudioObject audioObjectToPlay, final IAudioObject audioObject) {
+	public void startPlayback(final IAudioObject audioObjectToPlay,
+			final IAudioObject audioObject) {
 	}
 
 	@Override
@@ -53,11 +55,12 @@ class VoidPlayerEngine extends AbstractPlayerEngine {
 	}
 
 	@Override
-	public void stopPlayback(final boolean userStopped, final boolean useFadeAway) {
+	public void stopPlayback(final boolean userStopped,
+			final boolean useFadeAway) {
 	}
 
 	@Override
-	public void seekTo(final long milliseconds, final int perCent) {
+	public void seekTo(final int perCent) {
 	}
 
 	@Override

@@ -234,9 +234,8 @@ public final class PlayerHandler extends AbstractHandler implements
 	}
 
 	@Override
-	public final void seekCurrentAudioObject(final long milliseconds,
-			final int perCent) {
-		this.playerEngine.seekCurrentAudioObject(milliseconds, perCent);
+	public final void seekCurrentAudioObject(final int perCent) {
+		this.playerEngine.seekCurrentAudioObject(perCent);
 	}
 
 	@Override
@@ -475,11 +474,12 @@ public final class PlayerHandler extends AbstractHandler implements
 
 	@Override
 	public void audioObjectsAdded(
-			List<IPlayListAudioObject> playListAudioObjects) {
+			final List<IPlayListAudioObject> playListAudioObjects) {
 	}
 
 	@Override
-	public void audioObjectsRemoved(List<IPlayListAudioObject> audioObjectList) {
+	public void audioObjectsRemoved(
+			final List<IPlayListAudioObject> audioObjectList) {
 	}
 
 	@Override

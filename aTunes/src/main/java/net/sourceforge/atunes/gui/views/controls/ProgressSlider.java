@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
+import javax.swing.plaf.basic.BasicSliderUI;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.IProgressSlider;
@@ -86,7 +87,37 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 		// Need enough space to show time for long audio objects
 		this.time.setPreferredSize(new Dimension(100, 0));
 
-		this.progressBar = new JSlider();
+		this.progressBar = new JSlider() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -1159531192746462016L;
+
+			// Remove listeners that make slider to move across major ticks so
+			// knob is positioned immediately
+			// Code from
+			// http://stackoverflow.com/questions/518471/jslider-question-position-after-leftclick
+			{
+				for (MouseListener l : getMouseListeners()) {
+					removeMouseListener(l); // remove UI-installed TrackListener
+				}
+				final BasicSliderUI ui = (BasicSliderUI) getUI();
+				BasicSliderUI.TrackListener tl = ui.new TrackListener() {
+					// this is where we jump to absolute value of click
+					@Override
+					public void mouseClicked(final java.awt.event.MouseEvent e) {
+						setValue(ui.valueForXPosition(e.getPoint().x));
+					}
+
+					// disable check that will invoke scrollDueToClickInTrack
+					@Override
+					public boolean shouldScroll(final int dir) {
+						return false;
+					}
+				};
+				addMouseListener(tl);
+			}
+		};
 		this.progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
 		this.progressBar.setMinimum(0);
 		this.progressBar.setValue(0);
