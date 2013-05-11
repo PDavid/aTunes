@@ -62,7 +62,7 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	private IFileManager fileManager;
 
 	boolean isReadStopped() {
-		return readStopped;
+		return this.readStopped;
 	}
 
 	/**
@@ -174,31 +174,27 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 		}
 	}
 
-	private void controlAndProcess(BufferedReader in) throws IOException,
+	private void controlAndProcess(final BufferedReader in) throws IOException,
 			InterruptedException {
-		while (!readStopped && !this.applyWorkaround && !isInterrupted()) {
-			sendCommand();
-			waitForResponse(in);
-			List<String> response = getResponse(in);
-			for (String line : response) {
-				if (!line.contains(ANS_TIME_POSITION)) {
-					// Ignore position output as it generates a lot of output
-					// that is not necessary for debugging purposes
-					this.process.saveOutputLine(line);
+		while (!this.readStopped && !this.applyWorkaround && !isInterrupted()) {
+			if (sendCommand()) {
+				List<String> response = getResponse(in);
+				for (String line : response) {
+					if (!line.contains(ANS_TIME_POSITION)) {
+						// Ignore position output as it generates a lot of
+						// output
+						// that is not necessary for debugging purposes
+						this.process.saveOutputLine(line);
+					}
+					read(line);
 				}
-				read(line);
 			}
-		}
-	}
-
-	private void waitForResponse(BufferedReader in) throws IOException,
-			InterruptedException {
-		while (!isInterrupted() && !in.ready()) {
 			Thread.sleep(400);
 		}
 	}
 
-	private List<String> getResponse(BufferedReader in) throws IOException {
+	private List<String> getResponse(final BufferedReader in)
+			throws IOException {
 		List<String> response = new ArrayList<String>();
 		while (in.ready()) {
 			String line = in.readLine();
@@ -207,7 +203,7 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 		return response;
 	}
 
-	private void sendCommand() {
+	private boolean sendCommand() {
 		if (!this.engine.isPlaybackPaused()) {
 			this.engine.getCommandWriter().sendGetPositionCommand();
 			if (this.engine.getCurrentAudioObjectLength() == 0
@@ -215,6 +211,9 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 				Logger.debug("Duration still unknown: sending get_duration_command");
 				this.engine.getCommandWriter().sendGetDurationCommand();
 			}
+			return true;
+		} else {
+			return false;
 		}
 	}
 
