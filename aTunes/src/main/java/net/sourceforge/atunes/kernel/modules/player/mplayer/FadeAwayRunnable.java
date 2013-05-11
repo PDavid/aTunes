@@ -67,9 +67,11 @@ class FadeAwayRunnable implements Runnable {
 			// or object is interrupted
 			while (!this.interrupted && fadeStep < 100 && fadeVolume > 0) {
 				fadeVolume = fadeVolume - 1;
-				this.commandWriter.sendVolumeCommand(fadeVolume);
+				if (!this.handler.isMute()) {
+					this.commandWriter.sendVolumeCommand(fadeVolume);
+				}
 				try {
-					Thread.sleep(25);
+					Thread.sleep(50);
 				} catch (InterruptedException e) {
 					Logger.error(e);
 				}

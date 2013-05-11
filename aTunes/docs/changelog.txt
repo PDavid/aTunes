@@ -15,6 +15,7 @@ aTunes 3.1.0
 - Show favorite songs and current song in artist top tracks
 - Improvements in seek function
 - FIX: LyricsDirectoryEngine review when no lyric found
+- FIX: Mute not working while fade away
 
 aTunes 3.0.9
 ------------
