@@ -373,8 +373,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	}
 
 	@Override
-	public final void seekCurrentAudioObject(final long milliseconds,
-			final int perCent) {
+	public final void seekCurrentAudioObject(final int percentage) {
 		// If paused first resume and then seek
 		if (this.paused) {
 			this.paused = false;
@@ -384,7 +383,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 			}
 		}
 
-		seekTo(milliseconds, perCent);
+		seekTo(percentage);
 	}
 
 	/**
@@ -663,7 +662,6 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	 * (normalization, equalization)
 	 */
 	protected void restartPlayback() {
-		long position = getCurrentAudioObjectPlayedTime();
 		// Disable playback state listeners while restarting playback
 		setCallToPlaybackStateListenersDisabled(true);
 
@@ -672,7 +670,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 		float perCent = (((float) this.playerHandler
 				.getCurrentAudioObjectPlayedTime()) / this.playerHandler
 				.getCurrentAudioObjectLength()) * 100.0f;
-		seekCurrentAudioObject(position, Math.round(perCent));
+		seekCurrentAudioObject((int) Math.ceil(perCent));
 
 		// Enable playback state listeners again
 		setCallToPlaybackStateListenersDisabled(false);

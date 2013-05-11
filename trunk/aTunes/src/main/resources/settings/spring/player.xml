@@ -46,5 +46,7 @@
 	
 	<bean id="similarArtistMode" class="net.sourceforge.atunes.kernel.modules.player.SimilarArtistMode" init-method="initialize"/>
 	<bean id="getSimilarArtistObjectsBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.player.GetSimilarArtistAudioObjectsBackgroundWorker" scope="prototype"/>
+	
+	<bean id="progressBarSeekListener" class="net.sourceforge.atunes.kernel.modules.player.ProgressBarSeekListener" scope="prototype"/>
 
 </beans>

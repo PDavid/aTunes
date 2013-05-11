@@ -118,13 +118,12 @@ public interface IPlayerEngine {
 	void currentAudioObjectFinishedWithError(Exception exception);
 
 	/**
-	 * Seek function: play current audio object from milliseconds or percent
-	 * defined by parameter
+	 * Seek function: play current audio object from percentage defined by
+	 * parameter
 	 * 
-	 * @param milliseconds
-	 * @param perCent
+	 * @param percentage
 	 */
-	void seekCurrentAudioObject(long milliseconds, int perCent);
+	void seekCurrentAudioObject(int percentage);
 
 	/**
 	 * Lower volume
@@ -291,12 +290,11 @@ public interface IPlayerEngine {
 
 	/**
 	 * This method must be implemented by player engines. Applies a seek
-	 * operation in player engine. Engine can use milliseconds or perCent
+	 * operation in player engine.
 	 * 
-	 * @param milliseconds
-	 * @param perCent
+	 * @param percentage
 	 */
-	void seekTo(long milliseconds, int perCent);
+	void seekTo(int percentage);
 
 	/**
 	 * Returns the name of this engine

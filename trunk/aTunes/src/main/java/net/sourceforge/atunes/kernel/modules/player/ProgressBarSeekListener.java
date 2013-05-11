@@ -34,37 +34,31 @@ import net.sourceforge.atunes.model.IProgressSlider;
  */
 public class ProgressBarSeekListener extends MouseAdapter {
 
-	private final IProgressSlider progressBar;
+	private IProgressSlider progressBar;
 
-	private final IPlayerHandler playerHandler;
+	private IPlayerHandler playerHandler;
 
 	/**
-	 * @param progressBar
 	 * @param playerHandler
 	 */
-	public ProgressBarSeekListener(final IProgressSlider progressBar,
-			final IPlayerHandler playerHandler) {
-		super();
-		this.progressBar = progressBar;
+	public void setPlayerHandler(final IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
 
+	/**
+	 * @param progressBar
+	 */
+	public void bindToProgressBar(final IProgressSlider progressBar) {
+		this.progressBar = progressBar;
+	}
+
 	@Override
-	public void mouseReleased(final MouseEvent e) {
+	public void mouseClicked(final MouseEvent e) {
 		if (this.progressBar.isEnabled()) {
-
-			// Progress bar width is greater than real slider width so calculate
-			// value assuming 5 pixels in both left and right of track
-			long temp = (long) this.progressBar.getMaximum() * (e.getX() - 5);
-			int value = (int) (temp / (this.progressBar.getProgressBarWidth() - 10));
-
-			float perCent = (((float) value) / this.playerHandler
-					.getCurrentAudioObjectLength()) * 100.0f;
-
-			// Force new value to avoid jump to next major tick
-			this.progressBar.setValue(value);
-			this.playerHandler.seekCurrentAudioObject(value,
-					Math.round(perCent));
+			// Round to next integer
+			this.playerHandler.seekCurrentAudioObject((int) Math
+					.ceil((float) this.progressBar.getValue()
+							/ this.progressBar.getMaximum() * 100));
 		}
 	}
 }

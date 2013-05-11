@@ -118,12 +118,11 @@ public interface IPlayerHandler extends IHandler {
 
 	/**
 	 * Seek function: play current audio object from position defined by
-	 * parameter milliseconds or perCent
+	 * percentage
 	 * 
-	 * @param milliseconds
-	 * @param perCent
+	 * @param percentage
 	 */
-	public void seekCurrentAudioObject(long milliseconds, int perCent);
+	public void seekCurrentAudioObject(int percentage);
 
 	/**
 	 * Lower volume

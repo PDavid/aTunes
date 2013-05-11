@@ -27,7 +27,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * This action enables a user to seek from telnet in percentages.
- *
+ * 
  */
 public class SkipToRemoteAction extends RemoteAction {
 
@@ -53,10 +53,11 @@ public class SkipToRemoteAction extends RemoteAction {
 				if (perc < 0 || perc > 100) {
 					throw new NumberFormatException();
 				}
-				playerHandler.seekCurrentAudioObject((long) ((perc/100.0) * playerHandler.getCurrentAudioObjectLength()), perc);
+				this.playerHandler.seekCurrentAudioObject(perc);
 				return OK;
 			} catch (NumberFormatException ex) {
-				return StringUtils.getString("Bad number format: ", parameters.get(0));
+				return StringUtils.getString("Bad number format: ",
+						parameters.get(0));
 			}
 		}
 		return "Missing parameter";
