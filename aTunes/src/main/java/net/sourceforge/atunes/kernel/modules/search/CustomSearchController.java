@@ -396,7 +396,7 @@ final class CustomSearchController extends
 		String translatedQuery = query;
 		// Replace translated attributes to internal
 		for (String translatedAttr : translatedAttributesList) {
-			translatedQuery = translatedQuery.replaceAll(translatedAttr,
+			translatedQuery = translatedQuery.replace(translatedAttr,
 					this.translatedAttributes.get(translatedAttr));
 		}
 

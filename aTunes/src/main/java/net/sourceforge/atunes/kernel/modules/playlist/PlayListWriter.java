@@ -49,14 +49,14 @@ public class PlayListWriter {
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
@@ -94,8 +94,8 @@ public class PlayListWriter {
 			final IAudioObject f) {
 		String url = f.getUrl();
 		for (File repositoryFolder : repositoryFolders) {
-			url = url.replaceAll(FileUtils.getNormalizedPath(repositoryFolder),
-					"");
+			url = url
+					.replace(FileUtils.getNormalizedPath(repositoryFolder), "");
 		}
 		return url;
 	}

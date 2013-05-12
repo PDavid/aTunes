@@ -263,9 +263,8 @@ public final class SearchHandler extends AbstractHandler implements
 		String tempQuery;
 
 		// Replace "NOT xx" by Lucene syntax: "dummy:dummy NOT xx"
-		tempQuery = query.replaceAll(LogicalOperator.NOT.toString(),
-				StringUtils.getString(INDEX_FIELD_DUMMY, ":",
-						INDEX_FIELD_DUMMY, " NOT"));
+		tempQuery = query.replace(LogicalOperator.NOT.toString(), StringUtils
+				.getString(INDEX_FIELD_DUMMY, ":", INDEX_FIELD_DUMMY, " NOT"));
 
 		// Find numeric values and replace to Lucene numeric ranges:
 		// year: 2000 ---> year: [2000 TO 2000]

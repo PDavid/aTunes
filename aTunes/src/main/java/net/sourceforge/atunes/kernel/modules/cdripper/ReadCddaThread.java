@@ -67,7 +67,7 @@ final class ReadCddaThread extends Thread {
 	public void run() {
 		BufferedReader stdInput = null;
 		try {
-			stdInput = new BufferedReader(new InputStreamReader(cdda2wav
+			stdInput = new BufferedReader(new InputStreamReader(this.cdda2wav
 					.getProcess().getErrorStream(), "ISO8859_1"));
 			Logger.info("Trying to read cdda2wav stream");
 
@@ -80,13 +80,15 @@ final class ReadCddaThread extends Thread {
 			}
 
 			// Write data to variable cd
-			if (!cddbError) {
-				artist = artist != null ? artist.replace("\\", "\'") : null;
-				album = album != null ? album.replace("\\", "\'") : null;
+			if (!this.cddbError) {
+				this.artist = this.artist != null ? this.artist.replace("\\",
+						"\'") : null;
+				this.album = this.album != null ? this.album
+						.replace("\\", "\'") : null;
 			}
 
-			artist = artist != null ? artist.trim() : null;
-			album = album != null ? album.trim() : null;
+			this.artist = this.artist != null ? this.artist.trim() : null;
+			this.album = this.album != null ? this.album.trim() : null;
 
 			fillCdInfo();
 		} catch (IOException e) {
@@ -100,22 +102,22 @@ final class ReadCddaThread extends Thread {
 	 * Fills cd info object
 	 */
 	private void fillCdInfo() {
-		CDInfo info = cdda2wav.getCDInfo();
-		info.setTracks(tracks);
-		info.setDurations(durations);
-		info.setDuration(totalDuration);
-		info.setID(id);
-		if (album != null && !album.equals("")) {
-			info.setAlbum(album);
+		CDInfo info = this.cdda2wav.getCDInfo();
+		info.setTracks(this.tracks);
+		info.setDurations(this.durations);
+		info.setDuration(this.totalDuration);
+		info.setID(this.id);
+		if (this.album != null && !this.album.equals("")) {
+			info.setAlbum(this.album);
 		}
 
-		if (artist != null && !artist.equals("")) {
-			info.setArtist(artist);
+		if (this.artist != null && !this.artist.equals("")) {
+			info.setArtist(this.artist);
 		}
 
-		info.setTitles(titles);
-		info.setArtists(artists);
-		info.setComposers(composers);
+		info.setTitles(this.titles);
+		info.setArtists(this.artists);
+		info.setComposers(this.composers);
 	}
 
 	/**
@@ -139,7 +141,7 @@ final class ReadCddaThread extends Thread {
 	private void analyzeDataTrack(final String outputLine) {
 		// If there is a data track do remove one track.
 		if (outputLine.matches("......................data.*")) {
-			tracks = tracks - 1;
+			this.tracks = this.tracks - 1;
 		}
 	}
 
@@ -148,16 +150,16 @@ final class ReadCddaThread extends Thread {
 	 */
 	private void analyzeAlbumAndTrackInformation(final String outputLine) {
 		// Get album info (only if connection to cddb could be established)
-		if (outputLine.matches("Album title:.*") && !cddbError) {
-			cdda2wav.setCdLoaded(true);
+		if (outputLine.matches("Album title:.*") && !this.cddbError) {
+			this.cdda2wav.setCdLoaded(true);
 			readAlbumAndArtist(outputLine);
 		}
 
 		// Get track info (track number, title name) - Data tracks get ignored.
 		else if (outputLine.matches("T..:.*")
 				&& !outputLine.matches("......................data.*")
-				&& !cddbError) {
-			cdda2wav.setCdLoaded(true);
+				&& !this.cddbError) {
+			this.cdda2wav.setCdLoaded(true);
 			readTrackInfo(outputLine);
 		}
 	}
@@ -170,7 +172,7 @@ final class ReadCddaThread extends Thread {
 		// exception
 		// In this case aTunes will behave as previously (no Artist/Album info).
 		if (outputLine.matches(".cddb connect failed.*")) {
-			cddbError = true;
+			this.cddbError = true;
 		}
 	}
 
@@ -179,8 +181,8 @@ final class ReadCddaThread extends Thread {
 	 */
 	private void analyzeCDDBId(final String outputLine) {
 		if (outputLine.matches("CDDB discid.*")) {
-			cdda2wav.setCdLoaded(true);
-			id = outputLine.substring(outputLine.indexOf('0'));
+			this.cdda2wav.setCdLoaded(true);
+			this.id = outputLine.substring(outputLine.indexOf('0'));
 		}
 	}
 
@@ -189,10 +191,11 @@ final class ReadCddaThread extends Thread {
 	 */
 	private void analyzeTracks(final String outputLine) {
 		if (outputLine.matches("Tracks:.*")) {
-			cdda2wav.setCdLoaded(true);
-			tracks = Integer.parseInt(outputLine.substring(
+			this.cdda2wav.setCdLoaded(true);
+			this.tracks = Integer.parseInt(outputLine.substring(
 					outputLine.indexOf(':') + 1, outputLine.indexOf(' ')));
-			totalDuration = outputLine.substring(outputLine.indexOf(' ') + 1);
+			this.totalDuration = outputLine
+					.substring(outputLine.indexOf(' ') + 1);
 		}
 	}
 
@@ -208,7 +211,7 @@ final class ReadCddaThread extends Thread {
 		// This
 		// means we can give the "no CD" error much faster!
 		if (outputLine.contains("bytes buffer memory requested")) {
-			cdda2wav.setCdLoaded(true);
+			this.cdda2wav.setCdLoaded(true);
 		}
 	}
 
@@ -219,7 +222,7 @@ final class ReadCddaThread extends Thread {
 		// Sometimes cdda2wav gives an error message
 		// when a data CD is inserted
 		if (outputLine.contains("This disk has no audio tracks")) {
-			cdda2wav.setCdLoaded(false);
+			this.cdda2wav.setCdLoaded(false);
 		}
 	}
 
@@ -232,7 +235,7 @@ final class ReadCddaThread extends Thread {
 		String line = lineOutput.trim();
 
 		// Avoid '' sequences
-		line = line.replaceAll("''", "' '");
+		line = line.replace("''", "' '");
 
 		StringTokenizer albumInfoTokenizer = new java.util.StringTokenizer(
 				line, "'");
@@ -242,30 +245,30 @@ final class ReadCddaThread extends Thread {
 			albumInfoTokenizer.nextToken();
 		}
 		if (albumInfoTokenizer.hasMoreTokens()) {
-			album = albumInfoTokenizer.nextToken();
+			this.album = albumInfoTokenizer.nextToken();
 		}
 		String token = null;
 		if (albumInfoTokenizer.hasMoreElements()) {
 			token = albumInfoTokenizer.nextToken();
 		}
 		// Album names can contain "'" so check if there is something left
-		StringBuilder sb = new StringBuilder(album);
+		StringBuilder sb = new StringBuilder(this.album);
 		while (albumInfoTokenizer.hasMoreElements() && token != null
 				&& !token.matches(" from ")) {
 			sb.append(token);
 			token = albumInfoTokenizer.nextToken();
 		}
-		album = sb.toString();
+		this.album = sb.toString();
 		if (albumInfoTokenizer.hasMoreTokens()) {
-			artist = albumInfoTokenizer.nextToken();
+			this.artist = albumInfoTokenizer.nextToken();
 		}
 		// Artist names can contain "'" so check if there is something left
-		sb = new StringBuilder(artist);
+		sb = new StringBuilder(this.artist);
 		while (albumInfoTokenizer.hasMoreTokens()) {
 			token = albumInfoTokenizer.nextToken();
 			sb.append(token);
 		}
-		artist = sb.toString();
+		this.artist = sb.toString();
 	}
 
 	/**
@@ -275,13 +278,13 @@ final class ReadCddaThread extends Thread {
 	 */
 	private void readTrackInfo(final String s) {
 		String duration = s.substring(12, 18).trim();
-		durations.add(duration);
+		this.durations.add(duration);
 		// If connection to cddb could be established do
-		if (!cddbError) {
+		if (!this.cddbError) {
 			String line = s.trim();
 
 			// Avoid '' sequences
-			line = line.replaceAll("''", "' '");
+			line = line.replace("''", "' '");
 
 			StringTokenizer titleInfoTokenizer = new StringTokenizer(line, "'");
 			// The first part is not interesting, we look for the second token,
@@ -310,11 +313,11 @@ final class ReadCddaThread extends Thread {
 				title = sb.toString();
 				title = title.trim();
 				title = !title.equals("") ? title.replace("\\", "\'") : null;
-				titles.add(title);
+				this.titles.add(title);
 			}
 			// TODO add Song artist
-			artists.add("");
-			composers.add("");
+			this.artists.add("");
+			this.composers.add("");
 		}
 	}
 }

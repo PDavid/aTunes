@@ -29,110 +29,121 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Operation to retrieve lyrics
+ * 
  * @author alex
- *
+ * 
  */
 public class LyricsRetrieveOperation implements ILyricsRetrieveOperation {
 
 	private LyricsCache lyricsCache;
-	
-    private List<AbstractLyricsEngine> lyricsEngines;
-	
+
+	private List<AbstractLyricsEngine> lyricsEngines;
+
 	private String artist;
-	
+
 	private String song;
-	
+
 	private boolean canceled;
 
 	/**
 	 * @param lyricsCache
 	 */
-	public void setLyricsCache(LyricsCache lyricsCache) {
+	public void setLyricsCache(final LyricsCache lyricsCache) {
 		this.lyricsCache = lyricsCache;
 	}
-	
+
 	/**
 	 * @param artist
 	 */
-	public void setArtist(String artist) {
+	public void setArtist(final String artist) {
 		this.artist = artist;
 	}
-	
+
 	/**
 	 * @param song
 	 */
-	public void setSong(String song) {
+	public void setSong(final String song) {
 		this.song = song;
 	}
-	
+
 	/**
 	 * @param lyricsEngines
 	 */
-	public void setLyricsEngines(List<AbstractLyricsEngine> lyricsEngines) {
+	public void setLyricsEngines(final List<AbstractLyricsEngine> lyricsEngines) {
 		this.lyricsEngines = lyricsEngines;
 	}
-	
+
 	@Override
 	public void cancelRetrieve() {
 		Logger.debug("Canceling lyrics retrieve operation");
-		canceled = true;
+		this.canceled = true;
 	}
-	
+
 	@Override
 	public ILyrics getLyrics() {
-        ILyrics lyric = getLyricFromCache();
-        
-        if (lyric == null) {
-            // If any engine is loaded
-            if (lyricsEngines != null) {
-                // Ask for lyrics until a lyric is found in some engine
-                int i = 0;
-                while (!canceled && i < lyricsEngines.size() && (lyric == null || lyric.getLyrics().trim().isEmpty())) {
-                    lyric = lyricsEngines.get(i).getLyricsFor(artist, song, this);
-                    if (lyric == null) {
-                    	Logger.info(StringUtils.getString("Lyrics for: ", artist, "/", song, " not found with engine: ", lyricsEngines.get(i).getLyricsProviderName()));
-                    } else {
-                    	Logger.debug("Engine: ", lyricsEngines.get(i).getLyricsProviderName(), " returned lyrics for: ", artist, "/", song);
-                    }
-                    
-                    i++;
-                }
-            }
-            
-            if (!canceled) {
-            	fixLyrics(lyric);            
-            	lyricsCache.storeLyric(artist, song, lyric);
-            }
-        }
-        // Return lyric
-        return lyric;
+		ILyrics lyric = getLyricFromCache();
+
+		if (lyric == null) {
+			// If any engine is loaded
+			if (this.lyricsEngines != null) {
+				// Ask for lyrics until a lyric is found in some engine
+				int i = 0;
+				while (!this.canceled
+						&& i < this.lyricsEngines.size()
+						&& (lyric == null || lyric.getLyrics().trim().isEmpty())) {
+					lyric = this.lyricsEngines.get(i).getLyricsFor(this.artist,
+							this.song, this);
+					if (lyric == null) {
+						Logger.info(StringUtils.getString("Lyrics for: ",
+								this.artist, "/", this.song,
+								" not found with engine: ", this.lyricsEngines
+										.get(i).getLyricsProviderName()));
+					} else {
+						Logger.debug("Engine: ", this.lyricsEngines.get(i)
+								.getLyricsProviderName(),
+								" returned lyrics for: ", this.artist, "/",
+								this.song);
+					}
+
+					i++;
+				}
+			}
+
+			if (!this.canceled) {
+				fixLyrics(lyric);
+				this.lyricsCache.storeLyric(this.artist, this.song, lyric);
+			}
+		}
+		// Return lyric
+		return lyric;
 	}
 
 	private ILyrics getLyricFromCache() {
 		// Try to get from cache
-        ILyrics lyric = lyricsCache.retrieveLyric(artist, song);
-        
-        // Discard stored lyrics containing HTML
-        if (lyric != null && lyric.getLyrics().contains("<") && lyric.getLyrics().contains(">")) {
-        	Logger.debug("Discarding lyrics. Seems to contain some HTML code: ");
-        	Logger.debug(lyric.getLyrics());
-        	lyric = null;
-        }
+		ILyrics lyric = this.lyricsCache.retrieveLyric(this.artist, this.song);
+
+		// Discard stored lyrics containing HTML
+		if (lyric != null && lyric.getLyrics().contains("<")
+				&& lyric.getLyrics().contains(">")) {
+			Logger.debug("Discarding lyrics. Seems to contain some HTML code: ");
+			Logger.debug(lyric.getLyrics());
+			lyric = null;
+		}
 		return lyric;
 	}
-	
-    /**
-     * Applies several common string manipulation to improve lyrics
-     * @param lyrics
-     */
-    private void fixLyrics(ILyrics lyrics) {
-        if (lyrics != null) {
-        	String lyricsString = lyrics.getLyrics()
-            						.replaceAll("'", "\'")
-            						.replaceAll("\n\n", "\n") // Remove duplicate \n            	
-            						.replaceAll("<.*>", "")   // Remove HTML
-            						.trim();
-            lyrics.setLyrics(lyricsString);
-        }
-    }
+
+	/**
+	 * Applies several common string manipulation to improve lyrics
+	 * 
+	 * @param lyrics
+	 */
+	private void fixLyrics(final ILyrics lyrics) {
+		if (lyrics != null) {
+			String lyricsString = lyrics.getLyrics().replace("'", "\'")
+					.replace("\n\n", "\n") // Remove duplicate \n
+					.replaceAll("<.*>", "") // Remove HTML
+					.trim();
+			lyrics.setLyrics(lyricsString);
+		}
+	}
 }

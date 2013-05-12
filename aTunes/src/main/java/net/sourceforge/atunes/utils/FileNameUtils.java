@@ -22,7 +22,6 @@ package net.sourceforge.atunes.utils;
 
 import net.sourceforge.atunes.model.IOSManager;
 
-
 /**
  * <p>
  * Utility methods for replacing illegal characters in filenames
