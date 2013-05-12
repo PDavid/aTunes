@@ -189,7 +189,6 @@ public final class DateUtils {
 	 * @return the string
 	 */
 	public static String toPathString(final DateTime objDate) {
-		return DateTimeFormat.shortDateTime().print(objDate)
-				.replaceAll("/", "-");
+		return DateTimeFormat.shortDateTime().print(objDate).replace("/", "-");
 	}
 }
