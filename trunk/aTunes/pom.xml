@@ -103,8 +103,8 @@
 				<configuration>
 					<parallel>classes</parallel>
 					<systemPropertyVariables>
-          				<java.awt.headless>true</java.awt.headless>
-      				</systemPropertyVariables>     
+						<java.awt.headless>true</java.awt.headless>
+					</systemPropertyVariables>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -238,7 +238,7 @@
 								<property name="scp_classpath" refid="maven.plugin.classpath" />
 								<property name="user" value="{user}" />
 								<property name="password" value="{password}" />
-								<property name="folder" value="{folder}"/>
+								<property name="folder" value="{folder}" />
 								<ant antfile="${basedir}/mvn-ant-run.xml">
 									<target name="upload" />
 								</ant>
@@ -460,11 +460,11 @@
 			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
-	    <dependency>
-	        <groupId>org.swinglabs.swingx</groupId>
-	        <artifactId>swingx-all</artifactId>
-	        <version>1.6.3</version>
-        </dependency>    
+		<dependency>
+			<groupId>org.swinglabs.swingx</groupId>
+			<artifactId>swingx-all</artifactId>
+			<version>1.6.5</version>
+		</dependency>
 		<dependency>
 			<groupId>org</groupId>
 			<artifactId>jaudiotagger</artifactId>
@@ -480,7 +480,6 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
-		<!-- dependencies that are in aTunes repo -->
 		<dependency>
 			<groupId>com.github.insubstantial</groupId>
 			<artifactId>substance</artifactId>
@@ -490,11 +489,17 @@
 			<groupId>com.github.insubstantial</groupId>
 			<artifactId>substance-swingx</artifactId>
 			<version>7.2.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.swinglabs.swingx</groupId>
+					<artifactId>swingx-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>last.fm</groupId>
-			<artifactId>last.fm-bindings</artifactId>
-			<version>0.1.0-SVN-20110814</version>
+			<groupId>de.u-mass</groupId>
+			<artifactId>lastfm-java</artifactId>
+			<version>0.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>jxgrabkey</groupId>
@@ -548,13 +553,13 @@
 			<version>2.19</version>
 		</dependency>
 		<dependency>
-        	<groupId>com.oracle</groupId>
-        	<artifactId>javafx</artifactId>
-        	<version>2.2</version>
-        	<!-- DEFINE A PROPERTY POINTING TO jfxrt.jar in JRE or JDK -->
-        	<systemPath>${javafx.rt.jar}</systemPath>
-        	<scope>system</scope>
-    	</dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>javafx</artifactId>
+			<version>2.2</version>
+			<!-- DEFINE A PROPERTY POINTING TO jfxrt.jar in JRE or JDK -->
+			<systemPath>${javafx.rt.jar}</systemPath>
+			<scope>system</scope>
+		</dependency>
 	</dependencies>
 
 	<reporting>
@@ -629,12 +634,6 @@
 	</reporting>
 
 	<repositories>
-		<repository>
-			<id>atunes-dependencies-not-in-central-repo</id>
-			<name>atunes-dependencies-not-in-central-repo</name>
-			<url>http://gimlet.is.inf.uni-due.de:8081/nexus/content/repositories/atunes-dependencies/
-			</url>
-		</repository>
 		<repository>
 			<id>ehcache-core</id>
 			<name>ehcache-core</name>

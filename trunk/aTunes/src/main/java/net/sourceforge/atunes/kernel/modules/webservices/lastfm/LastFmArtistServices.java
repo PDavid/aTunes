@@ -110,7 +110,7 @@ public class LastFmArtistServices {
 	String getArtistTopTag(final String artist) {
 		try {
 			Collection<Tag> topTags = Artist.getTopTags(artist,
-					lastFmAPIKey.getApiKey());
+					this.lastFmAPIKey.getApiKey());
 			List<String> tags = new ArrayList<String>();
 			for (Tag t : topTags) {
 				tags.add(t.getName());
@@ -133,7 +133,7 @@ public class LastFmArtistServices {
 	ImageIcon getArtistThumbImage(final IArtistInfo artist) {
 		try {
 			// Try to retrieve from cache
-			ImageIcon img = lastFmCache.retrieveArtistThumbImage(artist);
+			ImageIcon img = this.lastFmCache.retrieveArtistThumbImage(artist);
 			if (img == null && artist.getImageUrl() != null
 					&& !artist.getImageUrl().isEmpty()) {
 				// Try to get from Artist.getImages() method
@@ -142,8 +142,9 @@ public class LastFmArtistServices {
 
 				// if not then get from artist info
 				if (img == null) {
-					img = new ImageIcon(networkHandler.getImage(networkHandler
-							.getConnection(artist.getImageUrl())));
+					img = new ImageIcon(
+							this.networkHandler.getImage(this.networkHandler
+									.getConnection(artist.getImageUrl())));
 				}
 
 				if (img != null) {
@@ -151,7 +152,7 @@ public class LastFmArtistServices {
 					img = new ImageIcon(ImageUtils.scaleBufferedImageBicubic(
 							img.getImage(), Constants.THUMB_IMAGE_WIDTH,
 							Constants.THUMB_IMAGE_HEIGHT));
-					lastFmCache.storeArtistThumbImage(artist, img);
+					this.lastFmCache.storeArtistThumbImage(artist, img);
 				}
 			}
 			return img;
@@ -172,7 +173,7 @@ public class LastFmArtistServices {
 	ImageIcon getArtistImage(final String artistName) {
 		try {
 			// Try to retrieve from cache
-			ImageIcon img = lastFmCache.retrieveArtistImage(artistName);
+			ImageIcon img = this.lastFmCache.retrieveArtistImage(artistName);
 
 			if (img != null) {
 				return img;
@@ -191,7 +192,7 @@ public class LastFmArtistServices {
 				img = new ImageIcon(ImageUtils.scaleBufferedImageBicubic(
 						img.getImage(), Constants.ARTIST_IMAGE_SIZE,
 						Constants.ARTIST_IMAGE_SIZE));
-				lastFmCache.storeArtistImage(artistName, img);
+				this.lastFmCache.storeArtistImage(artistName, img);
 			}
 
 			return img;
@@ -212,8 +213,9 @@ public class LastFmArtistServices {
 		if (similarArtist != null) {
 			String similarUrl = similarArtist.getPicture();
 			if (!similarUrl.trim().isEmpty()) {
-				return new ImageIcon(networkHandler.getImage(networkHandler
-						.getConnection(similarUrl)));
+				return new ImageIcon(
+						this.networkHandler.getImage(this.networkHandler
+								.getConnection(similarUrl)));
 			}
 		}
 		return null;
@@ -227,7 +229,7 @@ public class LastFmArtistServices {
 	 */
 	IArtistTopTracks getTopTracks(final String artistName) {
 		// Try to retrieve from cache
-		IArtistTopTracks topTracks = lastFmCache
+		IArtistTopTracks topTracks = this.lastFmCache
 				.retrieveArtistTopTracks(artistName);
 
 		if (topTracks != null) {
@@ -236,19 +238,19 @@ public class LastFmArtistServices {
 
 		// Try to get from LastFM
 		topTracks = LastFmArtistTopTracks.getTopTracks(artistName,
-				Artist.getTopTracks(artistName, lastFmAPIKey.getApiKey()));
+				Artist.getTopTracks(artistName, this.lastFmAPIKey.getApiKey()));
 
 		// Complete album requesting each track
 		for (ITrackInfo trackInfo : topTracks.getTracks()) {
 			Track fullTrack = Track.getInfo(artistName, trackInfo.getTitle(),
-					lastFmAPIKey.getApiKey());
+					this.lastFmAPIKey.getApiKey());
 			if (fullTrack != null) {
 				trackInfo.setAlbum(fullTrack.getAlbum());
 			}
 		}
 
 		if (topTracks != null) {
-			lastFmCache.storeArtistTopTracks(artistName, topTracks);
+			this.lastFmCache.storeArtistTopTracks(artistName, topTracks);
 		}
 
 		return topTracks;
@@ -266,14 +268,15 @@ public class LastFmArtistServices {
 		try {
 			// Try to get from Artist.getImages() method
 			PaginatedResult<de.umass.lastfm.Image> images = Artist.getImages(
-					artistName, 1, 1, lastFmAPIKey.getApiKey());
+					artistName, 1, 1, this.lastFmAPIKey.getApiKey());
 			List<de.umass.lastfm.Image> imageList = new ArrayList<de.umass.lastfm.Image>(
 					images.getPageResults());
 			if (!imageList.isEmpty()) {
 				String url = getSmallestURL(imageList.get(0), size);
 				if (url != null) {
-					return new ImageIcon(networkHandler.getImage(networkHandler
-							.getConnection(url)));
+					return new ImageIcon(
+							this.networkHandler.getImage(this.networkHandler
+									.getConnection(url)));
 				}
 			}
 		} catch (IOException e) {
@@ -321,7 +324,7 @@ public class LastFmArtistServices {
 	ISimilarArtistsInfo getSimilarArtists(final String artist) {
 		try {
 			// Try to get from cache
-			ISimilarArtistsInfo similar = lastFmCache
+			ISimilarArtistsInfo similar = this.lastFmCache
 					.retrieveArtistSimilar(artist);
 
 			// Check cache content. Since "match" value changed in last.fm api
@@ -350,12 +353,13 @@ public class LastFmArtistServices {
 
 			if (similar == null) {
 				Collection<Artist> as = Artist.getSimilar(artist,
-						lastFmAPIKey.getApiKey());
-				Artist a = Artist.getInfo(artist, lastFmAPIKey.getApiKey());
+						this.lastFmAPIKey.getApiKey());
+				Artist a = Artist
+						.getInfo(artist, this.lastFmAPIKey.getApiKey());
 				if (a != null) {
 					similar = LastFmSimilarArtists.getSimilarArtists(as, a,
 							MAX_SIMILAR_ARTISTS);
-					lastFmCache.storeArtistSimilar(artist, similar);
+					this.lastFmCache.storeArtistSimilar(artist, similar);
 				}
 			}
 			return similar;
@@ -376,16 +380,16 @@ public class LastFmArtistServices {
 	String getWikiText(final String artist) {
 		try {
 			// Try to get from cache
-			String wikiText = lastFmCache.retrieveArtistWiki(artist);
+			String wikiText = this.lastFmCache.retrieveArtistWiki(artist);
 			if (wikiText == null) {
 
-				Artist a = Artist.getInfo(artist, stateCore.getLocale()
-						.getLocale(), null, lastFmAPIKey.getApiKey());
+				Artist a = Artist.getInfo(artist, this.stateCore.getLocale()
+						.getLocale(), null, this.lastFmAPIKey.getApiKey());
 				wikiText = a != null ? a.getWikiSummary() : "";
 				wikiText = wikiText.replaceAll("<.*?>", "");
 				wikiText = StringUtils.unescapeHTML(wikiText, 0);
 
-				lastFmCache.storeArtistWiki(artist, wikiText);
+				this.lastFmCache.storeArtistWiki(artist, wikiText);
 			}
 			return wikiText;
 		} catch (Exception e) {
@@ -404,8 +408,9 @@ public class LastFmArtistServices {
 	 */
 	String getWikiURL(final String artist) {
 		return ARTIST_WIKI_URL.replace(ARTIST_WILDCARD,
-				networkHandler.encodeString(artist)).replace(LANGUAGE_WILDCARD,
-				stateCore.getLocale().getLocale().getLanguage());
+				this.networkHandler.encodeString(artist)).replace(
+				LANGUAGE_WILDCARD,
+				this.stateCore.getLocale().getLocale().getLanguage());
 	}
 
 	/**
@@ -417,7 +422,8 @@ public class LastFmArtistServices {
 	 * @return
 	 */
 	Collection<Event> getArtistEvents(final String artist) {
-		return Artist.getEvents(artist, lastFmAPIKey.getApiKey());
+		return Artist.getEvents(artist, this.lastFmAPIKey.getApiKey())
+				.getPageResults();
 	}
 
 }
