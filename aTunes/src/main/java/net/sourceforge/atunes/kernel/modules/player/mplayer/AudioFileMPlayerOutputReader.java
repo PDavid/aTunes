@@ -21,8 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -35,18 +33,6 @@ public class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
 	private ILocalAudioObject audioFile;
 
-	private boolean isMp3File;
-
-	private ILocalAudioObjectValidator localAudioObjectValidator;
-
-	/**
-	 * @param localAudioObjectValidator
-	 */
-	public void setLocalAudioObjectValidator(
-			final ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
-
 	/**
 	 * @param audioFile
 	 */
@@ -56,17 +42,18 @@ public class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
 	@Override
 	protected void init() {
-		// Check audio file type only once and use calculated value in read
-		// method
-		this.isMp3File = this.localAudioObjectValidator.isOneOfTheseFormats(
-				this.audioFile, LocalAudioObjectFormat.MP3);
 	}
 
 	@Override
 	protected void read(final String line) {
 		super.read(line);
 
-		readAndApplyLength(this.audioFile, line, this.isMp3File);
+		// Get length from mplayer where bitrate is variable
+		// This is opposite to previous workaround, but let's see if mplayer
+		// length detection
+		// has been fixed
+		readAndApplyLength(this.audioFile, line,
+				!this.audioFile.isVariableBitrate());
 
 		// MPlayer bug: Workaround (for audio files) for "mute bug" [1868482]
 		if (getEngine().isMute() && getLength() > 0

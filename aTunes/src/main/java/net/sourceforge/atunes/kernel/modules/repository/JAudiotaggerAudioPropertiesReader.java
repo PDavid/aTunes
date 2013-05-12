@@ -44,6 +44,7 @@ public class JAudiotaggerAudioPropertiesReader implements
 				ao.setDuration(header.getTrackLength());
 				ao.setBitrate(header.getBitRateAsNumber());
 				ao.setFrequency(header.getSampleRateAsNumber());
+				ao.setVariableBitrate(header.isVariableBitRate());
 			}
 		}
 	}

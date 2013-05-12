@@ -75,6 +75,17 @@ public interface ILocalAudioObject extends IAudioObject,
 	void setBitrate(long bitRateAsNumber);
 
 	/**
+	 * @param variable
+	 *            bitrate
+	 */
+	void setVariableBitrate(boolean variable);
+
+	/**
+	 * @return if bitrate is variable
+	 */
+	boolean isVariableBitrate();
+
+	/**
 	 * Set frequency
 	 * 
 	 * @param sampleRateAsNumber

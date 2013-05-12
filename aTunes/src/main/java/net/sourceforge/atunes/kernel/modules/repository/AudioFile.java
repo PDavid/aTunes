@@ -50,6 +50,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	long bitrate;
 	int frequency;
 	long readTime;
+	boolean variableBitrate;
 
 	private transient long fileSize;
 
@@ -371,5 +372,15 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 			this.fileSize = getFile() != null ? getFile().length() : 0;
 		}
 		return this.fileSize;
+	}
+
+	@Override
+	public boolean isVariableBitrate() {
+		return this.variableBitrate;
+	}
+
+	@Override
+	public void setVariableBitrate(final boolean variable) {
+		this.variableBitrate = variable;
 	}
 }
