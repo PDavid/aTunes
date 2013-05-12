@@ -28,6 +28,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 
+import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.gui.ColumnDecorator;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.PlayListColumnModel;
@@ -64,10 +65,20 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel>
 
 	private IControlsBuilder controlsBuilder;
 
+	private AbstractColumnSetTableModel playListTableModel;
+
+	/**
+	 * @param playListTableModel
+	 */
+	public void setPlayListTableModel(
+			final AbstractColumnSetTableModel playListTableModel) {
+		this.playListTableModel = playListTableModel;
+	}
+
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
@@ -123,11 +134,17 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel>
 		this.beanFactory.getBean("playlistTableColumnDecorator",
 				ColumnDecorator.class).decorate(false);
 
+		// Set column model
+		PlayListColumnModel columnModel = this.beanFactory
+				.getBean(PlayListColumnModel.class);
+		columnModel.setModel(this.playListTableModel);
+		this.playListTable.setColumnModel(columnModel);
+
 		// Bind column set popup menu
 		IColumnSetPopupMenu popup = this.controlsBuilder
-				.createColumnSetPopupMenu(playListTable.getSwingComponent(),
-						this.beanFactory.getBean(PlayListColumnModel.class),
-						this.beanFactory.getBean(PlayListTableModel.class));
+				.createColumnSetPopupMenu(
+						this.playListTable.getSwingComponent(), columnModel,
+						this.playListTableModel);
 		popup.addAction(this.beanFactory
 				.getBean(SortPlayListColumnAscendingAction.class));
 		popup.addAction(this.beanFactory

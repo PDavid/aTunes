@@ -45,11 +45,9 @@ import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.gui.GuiUtils;
-import net.sourceforge.atunes.gui.PlayListColumnModel;
 import net.sourceforge.atunes.gui.TransferableList;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -75,8 +73,6 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 
 	private AbstractColumnSetTableModel playListTableModel;
 
-	private IBeanFactory beanFactory;
-
 	private ListSelectionListener playListListener;
 
 	private KeyAdapter playListKeyListener;
@@ -93,13 +89,6 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 	 */
 	public void setPlayListListener(final ListSelectionListener playListListener) {
 		this.playListListener = playListListener;
-	}
-
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -142,12 +131,6 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 
 		// Set table model
 		setModel(this.playListTableModel);
-
-		// Set column model
-		PlayListColumnModel columnModel = this.beanFactory
-				.getBean(PlayListColumnModel.class);
-		columnModel.setModel(this.playListTableModel);
-		setColumnModel(columnModel);
 
 		// Disable autoresize, as we will control it
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
