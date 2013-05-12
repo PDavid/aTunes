@@ -228,9 +228,6 @@ abstract class AbstractMPlayerOutputReader extends Thread {
 	protected final void readAndApplyLength(final IAudioObject audioObject,
 			final String line, final boolean readOnlyFromTags) {
 		if (line.contains("ANS_LENGTH")) {
-			// Length still inaccurate with mp3 VBR files!
-			// Apply workaround to get length from audio file properties (read
-			// by jaudiotagger) instead of mplayer
 			if (readOnlyFromTags) {
 				setLength((audioObject.getDuration() * 1000));
 			} else {
