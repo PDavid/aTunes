@@ -46,7 +46,7 @@ public abstract class AbstractColumnSetTableModel extends
 	 * @return the column class
 	 */
 	@Override
-	public Class<?> getColumnClass(final int colIndex) {
+	public final Class<?> getColumnClass(final int colIndex) {
 		IColumn<?> c = getColumn(colIndex);
 		return c != null ? c.getColumnClass() : null;
 	}
@@ -57,7 +57,7 @@ public abstract class AbstractColumnSetTableModel extends
 	 * @return the column count
 	 */
 	@Override
-	public int getColumnCount() {
+	public final int getColumnCount() {
 		return this.columnSet != null ? this.columnSet.getVisibleColumnCount()
 				: 0;
 	}
@@ -71,7 +71,7 @@ public abstract class AbstractColumnSetTableModel extends
 	 * @return the column name
 	 */
 	@Override
-	public String getColumnName(final int colIndex) {
+	public final String getColumnName(final int colIndex) {
 		// Use a white space if empty to force to show header if no more columns
 		// are visible
 		IColumn<?> c = getColumn(colIndex);
@@ -85,7 +85,7 @@ public abstract class AbstractColumnSetTableModel extends
 	 * @param colIndex
 	 * @return
 	 */
-	protected IColumn<?> getColumn(final int colIndex) {
+	protected final IColumn<?> getColumn(final int colIndex) {
 		return this.columnSet != null ? this.columnSet.getColumn(this.columnSet
 				.getColumnId(colIndex)) : null;
 	}
@@ -96,10 +96,15 @@ public abstract class AbstractColumnSetTableModel extends
 	}
 
 	@Override
-	public final void sort(IColumn<?> column) {
+	public final void sort(final IColumn<?> column) {
 		sortByColumn(column);
 		refresh(TableModelEvent.UPDATE);
 	}
 
+	/**
+	 * Calls to sort table by given column
+	 * 
+	 * @param column
+	 */
 	public abstract void sortByColumn(IColumn<?> column);
 }
