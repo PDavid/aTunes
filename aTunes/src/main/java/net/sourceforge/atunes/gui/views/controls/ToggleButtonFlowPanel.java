@@ -23,6 +23,7 @@ package net.sourceforge.atunes.gui.views.controls;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -326,6 +327,7 @@ public class ToggleButtonFlowPanel extends JPanel implements
 		this.buttonContainer.removeAll();
 		GridBagConstraints c = new GridBagConstraints();
 		c.weighty = 1;
+		c.insets = new Insets(0, 1, 0, 0);
 		c.fill = GridBagConstraints.VERTICAL;
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
 		for (int i = 0; i < this.buttons.size(); i++) {
