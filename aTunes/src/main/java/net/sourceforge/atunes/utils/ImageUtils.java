@@ -32,7 +32,7 @@ import javax.swing.ImageIcon;
 
 import org.apache.sanselan.ImageWriteException;
 import org.commonjukebox.plugins.model.PluginApi;
-import org.jdesktop.swingx.graphics.GraphicsUtilities;
+import org.jdesktop.swingx.util.GraphicsUtilities;
 
 /**
  * The Class ImageUtils.

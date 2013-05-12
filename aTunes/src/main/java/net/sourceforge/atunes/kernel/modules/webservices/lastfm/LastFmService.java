@@ -47,383 +47,384 @@ import de.umass.lastfm.Event;
 @PluginApi
 public final class LastFmService {
 
-    private LastFmCache lastFmCache;
+	private LastFmCache lastFmCache;
 
-    private LastFmAPIKey lastFmAPIKey;
+	private LastFmAPIKey lastFmAPIKey;
 
-    private LastFmLogin lastFmLogin;
+	private LastFmLogin lastFmLogin;
 
-    private LastFmUserServices lastFmUserServices;
+	private LastFmUserServices lastFmUserServices;
 
-    private LastFmAlbumServices lastFmAlbumServices;
+	private LastFmAlbumServices lastFmAlbumServices;
 
-    private LastFmArtistServices lastFmArtistServices;
+	private LastFmArtistServices lastFmArtistServices;
 
-    private LastFmSongServices lastFmSongServices;
+	private LastFmSongServices lastFmSongServices;
 
-    /**
-     * @param lastFmSongServices
-     */
-    public void setLastFmSongServices(
-	    final LastFmSongServices lastFmSongServices) {
-	this.lastFmSongServices = lastFmSongServices;
-    }
+	/**
+	 * @param lastFmSongServices
+	 */
+	public void setLastFmSongServices(
+			final LastFmSongServices lastFmSongServices) {
+		this.lastFmSongServices = lastFmSongServices;
+	}
 
-    /**
-     * @param lastFmArtistServices
-     */
-    public void setLastFmArtistServices(
-	    final LastFmArtistServices lastFmArtistServices) {
-	this.lastFmArtistServices = lastFmArtistServices;
-    }
+	/**
+	 * @param lastFmArtistServices
+	 */
+	public void setLastFmArtistServices(
+			final LastFmArtistServices lastFmArtistServices) {
+		this.lastFmArtistServices = lastFmArtistServices;
+	}
 
-    /**
-     * @param lastFmAlbumServices
-     */
-    public void setLastFmAlbumServices(
-	    final LastFmAlbumServices lastFmAlbumServices) {
-	this.lastFmAlbumServices = lastFmAlbumServices;
-    }
+	/**
+	 * @param lastFmAlbumServices
+	 */
+	public void setLastFmAlbumServices(
+			final LastFmAlbumServices lastFmAlbumServices) {
+		this.lastFmAlbumServices = lastFmAlbumServices;
+	}
 
-    /**
-     * @param lastFmCache
-     */
-    public void setLastFmCache(final LastFmCache lastFmCache) {
-	this.lastFmCache = lastFmCache;
-    }
+	/**
+	 * @param lastFmCache
+	 */
+	public void setLastFmCache(final LastFmCache lastFmCache) {
+		this.lastFmCache = lastFmCache;
+	}
 
-    /**
-     * @param lastFmUserServices
-     */
-    public void setLastFmUserServices(
-	    final LastFmUserServices lastFmUserServices) {
-	this.lastFmUserServices = lastFmUserServices;
-    }
+	/**
+	 * @param lastFmUserServices
+	 */
+	public void setLastFmUserServices(
+			final LastFmUserServices lastFmUserServices) {
+		this.lastFmUserServices = lastFmUserServices;
+	}
 
-    /**
-     * @param lastFmLogin
-     */
-    public void setLastFmLogin(final LastFmLogin lastFmLogin) {
-	this.lastFmLogin = lastFmLogin;
-    }
+	/**
+	 * @param lastFmLogin
+	 */
+	public void setLastFmLogin(final LastFmLogin lastFmLogin) {
+		this.lastFmLogin = lastFmLogin;
+	}
 
-    /**
-     * @param lastFmAPIKey
-     */
-    public void setLastFmAPIKey(final LastFmAPIKey lastFmAPIKey) {
-	this.lastFmAPIKey = lastFmAPIKey;
-    }
+	/**
+	 * @param lastFmAPIKey
+	 */
+	public void setLastFmAPIKey(final LastFmAPIKey lastFmAPIKey) {
+		this.lastFmAPIKey = lastFmAPIKey;
+	}
 
-    /**
-     * Initializes service
-     */
-    public void initialize() {
-	Caller.getInstance().setCache(null);
-	Caller.getInstance().setUserAgent(lastFmAPIKey.getClientId());
-    }
+	/**
+	 * Initializes service
+	 */
+	public void initialize() {
+		Caller.getInstance().setCache(null);
+		Caller.getInstance().setUserAgent(this.lastFmAPIKey.getClientId());
+	}
 
-    /**
-     * Finishes service
-     */
-    public void finishService() {
-	Logger.debug("Finalizing LastFmCache");
-	lastFmCache.shutdown();
-    }
+	/**
+	 * Finishes service
+	 */
+	public void finishService() {
+		Logger.debug("Finalizing LastFmCache");
+		this.lastFmCache.shutdown();
+	}
 
-    /**
-     * Gets the album.
-     * 
-     * @param artist
-     *            the artist
-     * @param album
-     *            the album
-     * 
-     * @return the album
-     */
-    public IAlbumInfo getAlbum(final String artist, final String album) {
-	return lastFmAlbumServices.getAlbum(artist, album);
-    }
+	/**
+	 * Gets the album.
+	 * 
+	 * @param artist
+	 *            the artist
+	 * @param album
+	 *            the album
+	 * 
+	 * @return the album
+	 */
+	public IAlbumInfo getAlbum(final String artist, final String album) {
+		return this.lastFmAlbumServices.getAlbum(artist, album);
+	}
 
-    /**
-     * Gets the image of the album
-     * 
-     * @param artist
-     * @param album
-     * @return
-     */
-    public ImageIcon getAlbumImage(final String artist, final String album) {
-	return lastFmAlbumServices.getAlbumImage(artist, album);
-    }
+	/**
+	 * Gets the image of the album
+	 * 
+	 * @param artist
+	 * @param album
+	 * @return
+	 */
+	public ImageIcon getAlbumImage(final String artist, final String album) {
+		return this.lastFmAlbumServices.getAlbumImage(artist, album);
+	}
 
-    /**
-     * Gets the album list.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the album list
-     */
-    public IAlbumListInfo getAlbumList(final String artist) {
-	return lastFmAlbumServices.getAlbumList(artist);
-    }
+	/**
+	 * Gets the album list.
+	 * 
+	 * @param artist
+	 *            the artist
+	 * 
+	 * @return the album list
+	 */
+	public IAlbumListInfo getAlbumList(final String artist) {
+		return this.lastFmAlbumServices.getAlbumList(artist);
+	}
 
-    /**
-     * Gets the artist top tag.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the artist top tag
-     */
-    public String getArtistTopTag(final String artist) {
-	return lastFmArtistServices.getArtistTopTag(artist);
-    }
+	/**
+	 * Gets the artist top tag.
+	 * 
+	 * @param artist
+	 *            the artist
+	 * 
+	 * @return the artist top tag
+	 */
+	public String getArtistTopTag(final String artist) {
+		return this.lastFmArtistServices.getArtistTopTag(artist);
+	}
 
-    /**
-     * Gets the image.
-     * 
-     * @param album
-     *            the album
-     * 
-     * @return the image
-     */
-    public ImageIcon getAlbumImage(final IAlbumInfo album) {
-	return lastFmAlbumServices.getAlbumImage(album);
-    }
+	/**
+	 * Gets the image.
+	 * 
+	 * @param album
+	 *            the album
+	 * 
+	 * @return the image
+	 */
+	public ImageIcon getAlbumImage(final IAlbumInfo album) {
+		return this.lastFmAlbumServices.getAlbumImage(album);
+	}
 
-    /**
-     * Gets the thumbnail image of album
-     * 
-     * @param album
-     *            the album
-     * 
-     * @return the image
-     */
-    public ImageIcon getAlbumThumbImage(final IAlbumInfo album) {
-	return lastFmAlbumServices.getAlbumThumbImage(album);
-    }
+	/**
+	 * Gets the thumbnail image of album
+	 * 
+	 * @param album
+	 *            the album
+	 * 
+	 * @return the image
+	 */
+	public ImageIcon getAlbumThumbImage(final IAlbumInfo album) {
+		return this.lastFmAlbumServices.getAlbumThumbImage(album);
+	}
 
-    /**
-     * Gets the image of an artist
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the image
-     */
-    public ImageIcon getArtistThumbImage(final IArtistInfo artist) {
-	return lastFmArtistServices.getArtistThumbImage(artist);
-    }
+	/**
+	 * Gets the image of an artist
+	 * 
+	 * @param artist
+	 *            the artist
+	 * 
+	 * @return the image
+	 */
+	public ImageIcon getArtistThumbImage(final IArtistInfo artist) {
+		return this.lastFmArtistServices.getArtistThumbImage(artist);
+	}
 
-    /**
-     * Gets the image of the artist
-     * 
-     * @param artistName
-     *            the similar
-     * 
-     * @return the image
-     */
-    public ImageIcon getArtistImage(final String artistName) {
-	return lastFmArtistServices.getArtistImage(artistName);
-    }
+	/**
+	 * Gets the image of the artist
+	 * 
+	 * @param artistName
+	 *            the similar
+	 * 
+	 * @return the image
+	 */
+	public ImageIcon getArtistImage(final String artistName) {
+		return this.lastFmArtistServices.getArtistImage(artistName);
+	}
 
-    /**
-     * Returns top tracks for given artist name
-     * 
-     * @param artistName
-     * @return
-     */
-    public IArtistTopTracks getTopTracks(final String artistName) {
-	return lastFmArtistServices.getTopTracks(artistName);
-    }
+	/**
+	 * Returns top tracks for given artist name
+	 * 
+	 * @param artistName
+	 * @return
+	 */
+	public IArtistTopTracks getTopTracks(final String artistName) {
+		return this.lastFmArtistServices.getTopTracks(artistName);
+	}
 
-    /**
-     * Gets the similar artists.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the similar artists
-     */
-    public ISimilarArtistsInfo getSimilarArtists(final String artist) {
-	return lastFmArtistServices.getSimilarArtists(artist);
-    }
+	/**
+	 * Gets the similar artists.
+	 * 
+	 * @param artist
+	 *            the artist
+	 * 
+	 * @return the similar artists
+	 */
+	public ISimilarArtistsInfo getSimilarArtists(final String artist) {
+		return this.lastFmArtistServices.getSimilarArtists(artist);
+	}
 
-    /**
-     * Gets the wiki text.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the wiki text
-     */
-    public String getWikiText(final String artist) {
-	return lastFmArtistServices.getWikiText(artist);
-    }
+	/**
+	 * Gets the wiki text.
+	 * 
+	 * @param artist
+	 *            the artist
+	 * 
+	 * @return the wiki text
+	 */
+	public String getWikiText(final String artist) {
+		return this.lastFmArtistServices.getWikiText(artist);
+	}
 
-    /**
-     * Gets the wiki url.
-     * 
-     * @param artist
-     *            the artist
-     * 
-     * @return the wiki url
-     */
-    public String getWikiURL(final String artist) {
-	return lastFmArtistServices.getWikiURL(artist);
-    }
+	/**
+	 * Gets the wiki url.
+	 * 
+	 * @param artist
+	 *            the artist
+	 * 
+	 * @return the wiki url
+	 */
+	public String getWikiURL(final String artist) {
+		return this.lastFmArtistServices.getWikiURL(artist);
+	}
 
-    /**
-     * Submits song to Last.fm
-     * 
-     * @param file
-     *            audio file
-     * @param secondsPlayed
-     *            seconds the audio file has already played
-     * @throws ScrobblerException
-     */
-    void submit(final IAudioObject file, final long secondsPlayed)
-	    throws ScrobblerException {
-	lastFmUserServices.submit(file, secondsPlayed);
-    }
+	/**
+	 * Submits song to Last.fm
+	 * 
+	 * @param file
+	 *            audio file
+	 * @param secondsPlayed
+	 *            seconds the audio file has already played
+	 * @throws ScrobblerException
+	 */
+	void submit(final IAudioObject file, final long secondsPlayed)
+			throws ScrobblerException {
+		this.lastFmUserServices.submit(file, secondsPlayed);
+	}
 
-    /**
-     * Adds a song to the list of loved tracks in Last.fm
-     * 
-     * @param song
-     */
-    public void addLovedSong(final IAudioObject song) {
-	lastFmUserServices.addLovedSong(song);
-    }
+	/**
+	 * Adds a song to the list of loved tracks in Last.fm
+	 * 
+	 * @param song
+	 */
+	public void addLovedSong(final IAudioObject song) {
+		this.lastFmUserServices.addLovedSong(song);
+	}
 
-    /**
-     * Removes a song from the list of loved tracks in Last.fm
-     * 
-     * @param song
-     */
-    public void removeLovedSong(final IAudioObject song) {
-	lastFmUserServices.removeLovedSong(song);
-    }
+	/**
+	 * Removes a song from the list of loved tracks in Last.fm
+	 * 
+	 * @param song
+	 */
+	public void removeLovedSong(final IAudioObject song) {
+		this.lastFmUserServices.removeLovedSong(song);
+	}
 
-    /**
-     * Adds a song to the list of banned tracks in Last.fm
-     * 
-     * @param song
-     */
-    public void addBannedSong(final IAudioObject song) {
-	lastFmUserServices.addBannedSong(song);
-    }
+	/**
+	 * Adds a song to the list of banned tracks in Last.fm
+	 * 
+	 * @param song
+	 */
+	public void addBannedSong(final IAudioObject song) {
+		this.lastFmUserServices.addBannedSong(song);
+	}
 
-    /**
-     * Submits now playing info to Last.fm
-     * 
-     * @param file
-     *            audio file
-     * @throws ScrobblerException
-     */
-    void submitNowPlayingInfo(final ILocalAudioObject file)
-	    throws ScrobblerException {
-	lastFmUserServices.submitNowPlayingInfo(file);
-    }
+	/**
+	 * Submits now playing info to Last.fm
+	 * 
+	 * @param file
+	 *            audio file
+	 * @throws ScrobblerException
+	 */
+	void submitNowPlayingInfo(final ILocalAudioObject file)
+			throws ScrobblerException {
+		this.lastFmUserServices.submitNowPlayingInfo(file);
+	}
 
-    /**
-     * Returns a list of loved tracks from user profile
-     * 
-     * @return a list of loved tracks from user profile
-     */
-    public List<ILovedTrack> getLovedTracks() {
-	return lastFmUserServices.getLovedTracks();
-    }
+	/**
+	 * Returns a list of loved tracks from user profile
+	 * 
+	 * @return a list of loved tracks from user profile
+	 */
+	public List<ILovedTrack> getLovedTracks() {
+		return this.lastFmUserServices.getLovedTracks();
+	}
 
-    /**
-     * Delegate method to clear cache
-     * 
-     * @return
-     */
-    public boolean clearCache() {
-	return lastFmCache.clearCache();
-    }
+	/**
+	 * Delegate method to clear cache
+	 * 
+	 * @return
+	 */
+	public boolean clearCache() {
+		return this.lastFmCache.clearCache();
+	}
 
-    /**
-     * Return title of an LocalAudioObject known its artist and album
-     * 
-     * @param f
-     * @return
-     */
-    public String getTitleForFile(final ILocalAudioObject f) {
-	return lastFmSongServices.getTitleForFile(f);
-    }
+	/**
+	 * Return title of an LocalAudioObject known its artist and album
+	 * 
+	 * @param f
+	 * @return
+	 */
+	public String getTitleForFile(final ILocalAudioObject f) {
+		return this.lastFmSongServices.getTitleForFile(f);
+	}
 
-    /**
-     * Return track number of an LocalAudioObject known its artist and album
-     * 
-     * @param f
-     * @return
-     */
-    public int getTrackNumberForFile(final ILocalAudioObject f) {
-	return lastFmSongServices.getTrackNumberForFile(f);
-    }
+	/**
+	 * Return track number of an LocalAudioObject known its artist and album
+	 * 
+	 * @param f
+	 * @return
+	 */
+	public int getTrackNumberForFile(final ILocalAudioObject f) {
+		return this.lastFmSongServices.getTrackNumberForFile(f);
+	}
 
-    /**
-     * Submit song to Last.fm
-     * 
-     * @param audioFile
-     * @param secondsPlayed
-     * @param taskService
-     */
-    public void submitToLastFm(final IAudioObject audioFile,
-	    final long secondsPlayed, final ITaskService taskService) {
-	lastFmUserServices
-		.submitToLastFm(audioFile, secondsPlayed, taskService);
-    }
+	/**
+	 * Submit song to Last.fm
+	 * 
+	 * @param audioFile
+	 * @param secondsPlayed
+	 * @param taskService
+	 */
+	public void submitToLastFm(final IAudioObject audioFile,
+			final long secondsPlayed, final ITaskService taskService) {
+		this.lastFmUserServices.submitToLastFm(audioFile, secondsPlayed,
+				taskService);
+	}
 
-    /**
-     * Submits Last.fm cache
-     * 
-     * @param service
-     */
-    public void submitCacheToLastFm(final ITaskService service) {
-	lastFmUserServices.submitCacheToLastFm(service);
-    }
+	/**
+	 * Submits Last.fm cache
+	 * 
+	 * @param service
+	 */
+	public void submitCacheToLastFm(final ITaskService service) {
+		this.lastFmUserServices.submitCacheToLastFm(service);
+	}
 
-    /**
-     * Submit now playing info to Last.fm
-     * 
-     * @param audioFile
-     * @param taskService
-     */
-    public void submitNowPlayingInfoToLastFm(final ILocalAudioObject audioFile,
-	    final ITaskService taskService) {
-	lastFmUserServices.submitNowPlayingInfoToLastFm(audioFile, taskService);
-    }
+	/**
+	 * Submit now playing info to Last.fm
+	 * 
+	 * @param audioFile
+	 * @param taskService
+	 */
+	public void submitNowPlayingInfoToLastFm(final ILocalAudioObject audioFile,
+			final ITaskService taskService) {
+		this.lastFmUserServices.submitNowPlayingInfoToLastFm(audioFile,
+				taskService);
+	}
 
-    /**
-     * Returns events of an artist. This is a convenience method to allow
-     * plugins access last fm services without opening access to api key outside
-     * this class
-     * 
-     * @param artist
-     * @return
-     */
-    public Collection<Event> getArtistEvents(final String artist) {
-	return lastFmArtistServices.getArtistEvents(artist);
-    }
+	/**
+	 * Returns events of an artist. This is a convenience method to allow
+	 * plugins access last fm services without opening access to api key outside
+	 * this class
+	 * 
+	 * @param artist
+	 * @return
+	 */
+	public Collection<Event> getArtistEvents(final String artist) {
+		return this.lastFmArtistServices.getArtistEvents(artist);
+	}
 
-    /**
-     * Flush cache
-     */
-    public void flush() {
-	lastFmCache.flush();
-    }
+	/**
+	 * Flush cache
+	 */
+	public void flush() {
+		this.lastFmCache.flush();
+	}
 
-    /**
-     * Test if given user and password are correct to login at last.fm
-     * 
-     * @param user
-     * @param password
-     * @return
-     */
-    public boolean testLogin(final String user, final String password) {
-	return lastFmLogin.testLogin(user, password);
-    }
+	/**
+	 * Test if given user and password are correct to login at last.fm
+	 * 
+	 * @param user
+	 * @param password
+	 * @return
+	 */
+	public boolean testLogin(final String user, final String password) {
+		return this.lastFmLogin.testLogin(user, password);
+	}
 }
