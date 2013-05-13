@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.lookandfeel.system;
 
+import java.awt.Font;
 import java.util.List;
 
 import javax.swing.JDialog;
@@ -97,5 +98,10 @@ public class SystemLookAndFeel extends AbstractLookAndFeel {
 	@Override
 	public boolean supportsCustomFontSettings() {
 		return false;
+	}
+
+	@Override
+	public Font getSuggestedFont() {
+		return UIManager.getFont("Label.font");
 	}
 }

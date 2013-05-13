@@ -131,6 +131,7 @@ public interface ILookAndFeel {
 	 * @param code
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	public ListCellRenderer getListCellRenderer(
 			final IListCellRendererCode<?, ?> code);
 
@@ -366,5 +367,10 @@ public interface ILookAndFeel {
 	 * @param customStatusBar
 	 */
 	public void customizeStatusBar(CustomStatusBar customStatusBar);
+
+	/**
+	 * @return font suggested by look and feel
+	 */
+	public Font getSuggestedFont();
 
 }

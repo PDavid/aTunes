@@ -190,8 +190,8 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 		this.beanFactory = beanFactory;
 		this.playButtonSize = beanFactory.getBean("playButtonSize",
 				Dimension.class);
-		this.componentOrientation = beanFactory
-				.getBean(IControlsBuilder.class).getComponentOrientation();
+		this.componentOrientation = beanFactory.getBean(IControlsBuilder.class)
+				.getComponentOrientation();
 		AnimationConfigurationManager.getInstance().setTimelineDuration(0);
 		UIManager
 				.put(org.pushingpixels.substance.api.SubstanceLookAndFeel.TABBED_PANE_CONTENT_BORDER_KIND,
@@ -286,6 +286,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 		return renderer;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public ListCellRenderer getListCellRenderer(
 			final IListCellRendererCode<?, ?> code) {
@@ -434,5 +435,10 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 		// Use BasicStatusBarUI to avoid border added by
 		// SubstanceStatusBarUI
 		customStatusBar.setUI(new BasicStatusBarUI());
+	}
+
+	@Override
+	public Font getSuggestedFont() {
+		return new Font("Lucida Grande", Font.PLAIN, 11);
 	}
 }

@@ -216,7 +216,8 @@ public final class LookAndFeelManager implements PluginListener,
 			if (fontSettings != null) {
 				font = fontSettings.getFont().toFont();
 			} else {
-				font = getFontToUse(stateCore.getLocale().getLanguage());
+				font = getFontToUse(lookAndFeel, stateCore.getLocale()
+						.getLanguage());
 				stateUI.setFontSettings(new FontSettings(this.beanFactory
 						.getBean(IFontBeanFactory.class).getFontBean(font),
 						USE_FONT_SMOOTHING_DEFAULT_VALUE,
@@ -227,7 +228,7 @@ public final class LookAndFeelManager implements PluginListener,
 		lookAndFeel.initializeFonts(font);
 	}
 
-	private Font getFontToUse(String language) {
+	private Font getFontToUse(final ILookAndFeel lookAndFeel, String language) {
 		/*
 		 * Get appropriate font for the currently selected language. For Chinese
 		 * or Japanese we should use default font.
@@ -235,7 +236,7 @@ public final class LookAndFeelManager implements PluginListener,
 		if ("zh".equals(language) || "ja".equals(language)) {
 			return new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 		} else {
-			return UIManager.getFont("Label.font");
+			return lookAndFeel.getSuggestedFont();
 		}
 	}
 
