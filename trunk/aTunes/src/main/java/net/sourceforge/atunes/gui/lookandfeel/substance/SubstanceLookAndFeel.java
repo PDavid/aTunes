@@ -95,7 +95,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
 	private Dimension playButtonSize;
 
-	private ComponentOrientation componenteOrientation;
+	private ComponentOrientation componentOrientation;
 
 	private IBeanFactory beanFactory;
 
@@ -190,7 +190,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 		this.beanFactory = beanFactory;
 		this.playButtonSize = beanFactory.getBean("playButtonSize",
 				Dimension.class);
-		this.componenteOrientation = beanFactory
+		this.componentOrientation = beanFactory
 				.getBean(IControlsBuilder.class).getComponentOrientation();
 		AnimationConfigurationManager.getInstance().setTimelineDuration(0);
 		UIManager
@@ -308,7 +308,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 		} else if (c instanceof NextButton) {
 			c.putClientProperty(
 					org.pushingpixels.substance.api.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
-					this.componenteOrientation.isLeftToRight() ? new LeftConcaveButtonShaper(
+					this.componentOrientation.isLeftToRight() ? new LeftConcaveButtonShaper(
 							this.playButtonSize.height)
 							: new RightConcaveButtonShaper(
 									this.playButtonSize.height));
@@ -319,7 +319,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 		} else if (c instanceof PreviousButton) {
 			c.putClientProperty(
 					org.pushingpixels.substance.api.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
-					this.componenteOrientation.isLeftToRight() ? new RightConcaveButtonShaper(
+					this.componentOrientation.isLeftToRight() ? new RightConcaveButtonShaper(
 							this.playButtonSize.height)
 							: new LeftConcaveButtonShaper(
 									this.playButtonSize.height));

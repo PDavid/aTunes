@@ -85,8 +85,6 @@ public final class LookAndFeelManager implements PluginListener,
 	 */
 	private List<ILookAndFeelChangeListener> changeListeners;
 
-	private IFontBeanFactory fontBeanFactory;
-
 	private IApplicationArguments applicationArguments;
 
 	private IBeanFactory beanFactory;
@@ -121,13 +119,6 @@ public final class LookAndFeelManager implements PluginListener,
 	public void setApplicationArguments(
 			final IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
-	}
-
-	/**
-	 * @param fontBeanFactory
-	 */
-	public void setFontBeanFactory(final IFontBeanFactory fontBeanFactory) {
-		this.fontBeanFactory = fontBeanFactory;
 	}
 
 	@Override
@@ -217,6 +208,39 @@ public final class LookAndFeelManager implements PluginListener,
 	private void initializeFonts(final ILookAndFeel lookAndFeel,
 			final IStateCore stateCore, final IStateUI stateUI) {
 		FontSettings fontSettings = stateUI.getFontSettings();
+
+		setAntialiasingProperties(lookAndFeel, fontSettings);
+
+		Font font = UIManager.getFont("Label.font");
+		if (lookAndFeel.supportsCustomFontSettings()) {
+			if (fontSettings != null) {
+				font = fontSettings.getFont().toFont();
+			} else {
+				font = getFontToUse(stateCore.getLocale().getLanguage());
+				stateUI.setFontSettings(new FontSettings(this.beanFactory
+						.getBean(IFontBeanFactory.class).getFontBean(font),
+						USE_FONT_SMOOTHING_DEFAULT_VALUE,
+						USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE));
+			}
+		}
+		lookAndFeel.setBaseFont(font);
+		lookAndFeel.initializeFonts(font);
+	}
+
+	private Font getFontToUse(String language) {
+		/*
+		 * Get appropriate font for the currently selected language. For Chinese
+		 * or Japanese we should use default font.
+		 */
+		if ("zh".equals(language) || "ja".equals(language)) {
+			return new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+		} else {
+			return UIManager.getFont("Label.font");
+		}
+	}
+
+	private void setAntialiasingProperties(final ILookAndFeel lookAndFeel,
+			FontSettings fontSettings) {
 		if (lookAndFeel.supportsCustomFontSettings() && fontSettings != null
 				&& !fontSettings.isUseFontSmoothingSettingsFromOs()) {
 			if (fontSettings.isUseFontSmoothing()) {
@@ -227,49 +251,13 @@ public final class LookAndFeelManager implements PluginListener,
 		} else {
 			System.setProperty("awt.useSystemAAFontSettings", "lcd");
 		}
-
-		Font font = UIManager.getFont("Label.font");
-		if (lookAndFeel.supportsCustomFontSettings()) {
-			if (fontSettings != null) {
-				font = fontSettings.getFont().toFont();
-			} else {
-				/*
-				 * Get appropriate font for the currently selected language. For
-				 * Chinese or Japanese we should use default font.
-				 */
-				if ("zh".equals(stateCore.getLocale().getLanguage())
-						|| "ja".equals(stateCore.getLocale().getLanguage())) {
-					font = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-				} else {
-					font = UIManager.getFont("Label.font");
-				}
-				stateUI.setFontSettings(new FontSettings(this.fontBeanFactory
-						.getFontBean(font), USE_FONT_SMOOTHING_DEFAULT_VALUE,
-						USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE));
-			}
-		}
-		lookAndFeel.setBaseFont(font);
-		lookAndFeel.initializeFonts(font);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#
-	 * getAvailableLookAndFeels()
-	 */
 	@Override
 	public List<String> getAvailableLookAndFeels() {
 		return new ArrayList<String>(this.lookAndFeels.keySet());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#getAvailableSkins
-	 * (java.lang.String)
-	 */
 	@Override
 	public List<String> getAvailableSkins(final String lookAndFeelName) {
 		Class<? extends ILookAndFeel> clazz = this.lookAndFeels
@@ -291,12 +279,6 @@ public final class LookAndFeelManager implements PluginListener,
 		return new ArrayList<String>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#
-	 * getCurrentLookAndFeelName()
-	 */
 	@Override
 	public String getCurrentLookAndFeelName() {
 		return this.currentLookAndFeel.getName();
@@ -324,24 +306,11 @@ public final class LookAndFeelManager implements PluginListener,
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#
-	 * getCurrentLookAndFeel()
-	 */
 	@Override
 	public ILookAndFeel getCurrentLookAndFeel() {
 		return this.currentLookAndFeel;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#getDefaultSkin
-	 * (java.lang.String)
-	 */
 	@Override
 	public String getDefaultSkin(final String lookAndFeelName) {
 		Class<? extends ILookAndFeel> clazz = this.lookAndFeels
@@ -362,12 +331,6 @@ public final class LookAndFeelManager implements PluginListener,
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#
-	 * getDefaultLookAndFeel()
-	 */
 	@Override
 	public ILookAndFeel getDefaultLookAndFeel() {
 		try {
@@ -390,26 +353,12 @@ public final class LookAndFeelManager implements PluginListener,
 		return this.changeListeners;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#
-	 * addLookAndFeelChangeListener
-	 * (net.sourceforge.atunes.model.ILookAndFeelChangeListener)
-	 */
 	@Override
 	public void addLookAndFeelChangeListener(
 			final ILookAndFeelChangeListener listener) {
 		getChangeListeners().add(listener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#
-	 * removeLookAndFeelChangeListener
-	 * (net.sourceforge.atunes.model.ILookAndFeelChangeListener)
-	 */
 	@Override
 	public void removeLookAndFeelChangeListener(
 			final ILookAndFeelChangeListener listener) {
