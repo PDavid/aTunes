@@ -138,7 +138,7 @@
 	<!-- End filters -->
 	
 	<bean id="colorBeanFactory" class="net.sourceforge.atunes.kernel.modules.state.ColorBeanFactory"/>
-	<bean id="fontBeanFactory" class="net.sourceforge.atunes.kernel.modules.state.FontBeanFactory"/>
+	<bean id="fontBeanFactory" class="net.sourceforge.atunes.kernel.modules.state.FontBeanFactory" scope="prototype"/>
 
 	<bean id="commonTrayIcon" class="net.sourceforge.atunes.kernel.modules.tray.CommonTrayIcon" scope="prototype">
 		<property name="trayIconFiller">

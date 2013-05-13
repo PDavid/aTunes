@@ -33,8 +33,8 @@ import net.sourceforge.atunes.model.IFontBeanFactory;
  */
 public class FontBeanFactory implements IFontBeanFactory {
 
-    @Override
-    public IFontBean getFontBean(final Font font) {
-	return new FontBean(font);
-    }
+	@Override
+	public IFontBean getFontBean(final Font font) {
+		return new FontBean(font);
+	}
 }
