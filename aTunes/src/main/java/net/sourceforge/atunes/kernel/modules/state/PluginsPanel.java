@@ -48,12 +48,12 @@ import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableModel;
 
+import net.sourceforge.atunes.ExceptionHandler;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
-import net.sourceforge.atunes.model.IExceptionDialog;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IStateCore;
@@ -112,6 +112,15 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	private IDialogFactory dialogFactory;
 
 	private IControlsBuilder controlsBuilder;
+
+	private ExceptionHandler exceptionHandler;
+
+	/**
+	 * @param exceptionHandler
+	 */
+	public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+		this.exceptionHandler = exceptionHandler;
+	}
 
 	/**
 	 * @param controlsBuilder
@@ -365,8 +374,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 					sb.append(I18nUtils.getString("PLUGIN_CONFIGURATION_ERROR"));
 					sb.append(" ");
 					sb.append(plugin.getName());
-					this.dialogFactory.newDialog(IExceptionDialog.class)
-							.showExceptionDialog(sb.toString(), t);
+					exceptionHandler.showErrorReport(sb.toString(), t);
 				}
 
 				restart = restart
@@ -448,12 +456,9 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 				if (problemsFound != null) {
 					for (Map.Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound
 							.entrySet()) {
-						PluginsPanel.this.dialogFactory
-								.newDialog(IExceptionDialog.class)
-								.showExceptionDialog(
-										I18nUtils
-												.getString("PLUGIN_UNINSTALLATION_ERROR"),
-										pluginFolderEntry.getValue());
+						exceptionHandler.showErrorReport(I18nUtils
+								.getString("PLUGIN_UNINSTALLATION_ERROR"),
+								pluginFolderEntry.getValue());
 					}
 				}
 			} catch (Exception e1) {
@@ -583,18 +588,14 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 					if (problemsFound != null) {
 						for (Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound
 								.entrySet()) {
-							PluginsPanel.this.dialogFactory
-									.newDialog(IExceptionDialog.class)
-									.showExceptionDialog(
-											I18nUtils
-													.getString("PLUGIN_INSTALLATION_ERROR"),
-											pluginFolderEntry.getValue());
+							exceptionHandler.showErrorReport(I18nUtils
+									.getString("PLUGIN_INSTALLATION_ERROR"),
+									pluginFolderEntry.getValue());
 						}
 					}
 
 				} catch (Exception e1) {
-					PluginsPanel.this.dialogFactory.newDialog(
-							IExceptionDialog.class).showExceptionDialog(
+					exceptionHandler.showErrorReport(
 							I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"),
 							e1);
 				}

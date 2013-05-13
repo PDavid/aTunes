@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.ExceptionHandler;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
@@ -40,7 +41,6 @@ import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IExceptionDialog;
 import net.sourceforge.atunes.model.IGeneralPurposePluginsHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -84,6 +84,15 @@ public class PluginsHandler extends AbstractHandler implements PluginListener,
 	private IDialogFactory dialogFactory;
 
 	private ColumnSetsPluginListener columnSetsPluginListener;
+
+	private ExceptionHandler exceptionHandler;
+
+	/**
+	 * @param exceptionHandler
+	 */
+	public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+		this.exceptionHandler = exceptionHandler;
+	}
 
 	/**
 	 * @param columnSetsPluginListener
@@ -172,10 +181,9 @@ public class PluginsHandler extends AbstractHandler implements PluginListener,
 			for (Map.Entry<PluginFolder, PluginSystemException> pluginFolder : problemsLoadingPlugins
 					.entrySet()) {
 				// Show a message with detailed information about the error
-				dialogFactory.newDialog(IExceptionDialog.class)
-						.showExceptionDialog(
-								I18nUtils.getString("PLUGIN_LOAD_ERROR"),
-								pluginFolder.getValue());
+				exceptionHandler.showErrorReport(
+						I18nUtils.getString("PLUGIN_LOAD_ERROR"),
+						pluginFolder.getValue());
 
 				// Ask user to remove plugin folder
 				IConfirmationDialog dialog = dialogFactory
@@ -187,12 +195,8 @@ public class PluginsHandler extends AbstractHandler implements PluginListener,
 					try {
 						FileUtils.deleteDirectory(pluginFolder.getKey());
 					} catch (IOException e) {
-						dialogFactory
-								.newDialog(IExceptionDialog.class)
-								.showExceptionDialog(
-										I18nUtils
-												.getString("PLUGIN_UNINSTALLATION_ERROR"),
-										e);
+						exceptionHandler.showErrorReport(I18nUtils
+								.getString("PLUGIN_UNINSTALLATION_ERROR"), e);
 					}
 				}
 			}

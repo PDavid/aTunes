@@ -38,51 +38,51 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class MailErrorReporter implements IErrorReporter, Runnable {
 
-    private INetworkHandler networkHandler;
+	private INetworkHandler networkHandler;
 
-    private ITaskService taskService;
+	private ITaskService taskService;
 
-    private IErrorReport report;
+	private IErrorReport report;
 
-    private String url;
+	private String url;
 
-    /**
-     * @param url
-     */
-    public void setUrl(final String url) {
-	this.url = url;
-    }
-
-    /**
-     * @param taskService
-     */
-    public void setTaskService(final ITaskService taskService) {
-	this.taskService = taskService;
-    }
-
-    /**
-     * @param networkHandler
-     */
-    public void setNetworkHandler(final INetworkHandler networkHandler) {
-	this.networkHandler = networkHandler;
-    }
-
-    @Override
-    public void reportError(final IErrorReport errorReport) {
-	this.report = errorReport;
-	taskService.submitNow("Report Error", this);
-    }
-
-    @Override
-    public void run() {
-	try {
-	    Map<String, String> map = new HashMap<String, String>();
-	    map.put("report", report.toString());
-	    map.put("build", Integer.toString(BuildNumber.getBuildNumber()));
-	    map.put("version", Constants.VERSION.toString());
-	    networkHandler.readURL(url, map, "UTF-8");
-	} catch (IOException e) {
-	    Logger.error(e);
+	/**
+	 * @param url
+	 */
+	public void setUrl(final String url) {
+		this.url = url;
 	}
-    }
+
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(final ITaskService taskService) {
+		this.taskService = taskService;
+	}
+
+	/**
+	 * @param networkHandler
+	 */
+	public void setNetworkHandler(final INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
+
+	@Override
+	public void reportError(final IErrorReport errorReport) {
+		this.report = errorReport;
+		taskService.submitNow("Report Error", this);
+	}
+
+	@Override
+	public void run() {
+		try {
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("report", report.toString());
+			map.put("build", Integer.toString(BuildNumber.getBuildNumber()));
+			map.put("version", Constants.VERSION.toString());
+			networkHandler.readURL(url, map, "UTF-8");
+		} catch (IOException e) {
+			Logger.error(e);
+		}
+	}
 }

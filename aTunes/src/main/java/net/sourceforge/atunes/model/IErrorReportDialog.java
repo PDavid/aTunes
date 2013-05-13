@@ -22,21 +22,18 @@ package net.sourceforge.atunes.model;
 
 /**
  * A dialog to show exceptions
+ * 
  * @author alex
- *
+ * 
  */
-public interface IExceptionDialog extends IDialog {
+public interface IErrorReportDialog extends IDialog {
 
 	/**
-	 * Shows a exception report dialog
-	 * @param t
+	 * Shows an error report to user
+	 * 
+	 * @param report
+	 * @param errorReporter
 	 */
-	public void showExceptionDialog(Throwable t);
-
-	/**
-	 * Shows a exception report dialog
-	 * @param descriptionError
-	 * @param t
-	 */
-	public void showExceptionDialog(String descriptionError, Throwable t);
+	public void showErrorReport(IErrorReport report,
+			IErrorReporter errorReporter);
 }

@@ -36,18 +36,7 @@ import net.sourceforge.atunes.model.IState;
  */
 public class ErrorReportCreator implements IErrorReportCreator {
 
-	private IApplicationStateGenerator applicationStateGenerator;
-
-	private IRepositoryHandler repositoryHandler;
-
 	private IBeanFactory beanFactory;
-
-	/**
-	 * @param repositoryHandler
-	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
 
 	/**
 	 * @param beanFactory
@@ -56,20 +45,12 @@ public class ErrorReportCreator implements IErrorReportCreator {
 		this.beanFactory = beanFactory;
 	}
 
-	/**
-	 * @param applicationStateGenerator
-	 */
-	public void setApplicationStateGenerator(
-			final IApplicationStateGenerator applicationStateGenerator) {
-		this.applicationStateGenerator = applicationStateGenerator;
-	}
-
 	@Override
 	public IErrorReport createReport(final String descriptionError,
 			final Throwable throwable) {
 		IErrorReport result = new ErrorReport();
-		result.setBasicEnvironmentState(this.applicationStateGenerator
-				.generateState());
+		result.setBasicEnvironmentState(this.beanFactory.getBean(
+				IApplicationStateGenerator.class).generateState());
 		result.setThrowable(throwable);
 		result.setErrorDescription(descriptionError);
 
@@ -83,7 +64,8 @@ public class ErrorReportCreator implements IErrorReportCreator {
 			result.addJVMState(metric);
 		}
 
-		result.setRepositorySize(repositoryHandler.getNumberOfFiles());
+		result.setRepositorySize(this.beanFactory.getBean(
+				IRepositoryHandler.class).getNumberOfFiles());
 
 		return result;
 	}

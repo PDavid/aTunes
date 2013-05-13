@@ -20,16 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
-import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.ExceptionHandler;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IExceptionDialog;
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IOSManager;
@@ -109,13 +106,20 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 
 	private IStatePlayer statePlayer;
 
-	private IDialogFactory dialogFactory;
-
 	private PlaybackStateListeners playbackStateListeners;
 
 	private IWebServicesHandler webServicesHandler;
 
 	private IFileManager fileManager;
+
+	private ExceptionHandler exceptionHandler;
+
+	/**
+	 * @param exceptionHandler
+	 */
+	public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+		this.exceptionHandler = exceptionHandler;
+	}
 
 	/**
 	 * @param fileManager
@@ -142,13 +146,6 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	public void setPlaybackStateListeners(
 			final PlaybackStateListeners playbackStateListeners) {
 		this.playbackStateListeners = playbackStateListeners;
-	}
-
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(final IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
 	}
 
 	/**
@@ -412,30 +409,9 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	public final void handlePlayerEngineError(final Exception e) {
 		Logger.error(StringUtils.getString("Player Error: ", e));
 		Logger.error(e);
-		GuiUtils.callInEventDispatchThread(new Runnable() {
-			@Override
-			public void run() {
-				AbstractPlayerEngine.this.dialogFactory.newDialog(
-						IExceptionDialog.class).showExceptionDialog(e);
-			}
-		});
+		exceptionHandler.showErrorReport(e);
 		// Force a stop to finish all player engine processes
 		stopCurrentAudioObject(false);
-	}
-
-	/**
-	 * Shows message
-	 * 
-	 * @param message
-	 */
-	protected final void showMessage(final String message) {
-		GuiUtils.callInEventDispatchThread(new Runnable() {
-			@Override
-			public void run() {
-				AbstractPlayerEngine.this.dialogFactory.newDialog(
-						IMessageDialog.class).showMessage(message);
-			}
-		});
 	}
 
 	/**
