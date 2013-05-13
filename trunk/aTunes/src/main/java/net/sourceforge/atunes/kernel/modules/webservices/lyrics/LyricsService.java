@@ -27,150 +27,156 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyricsRetrieveOperation;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.INetworkHandler;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Service to retrieve lyrics
+ * 
  * @author alex
- *
+ * 
  */
 public final class LyricsService implements ILyricsService {
 
-    private List<LyricsEngineInfo> defaultLyricsEngines;
+	private List<LyricsEngineInfo> defaultLyricsEngines;
 
-    /** Cache */
-    private LyricsCache lyricsCache;
+	/** Cache */
+	private LyricsCache lyricsCache;
 
-    /** Contains a list of LyricsEngine to get lyrics. */
-    private List<AbstractLyricsEngine> lyricsEngines;
+	/** Contains a list of LyricsEngine to get lyrics. */
+	private List<AbstractLyricsEngine> lyricsEngines;
 
-    private IStateContext stateContext;
+	private IStateContext stateContext;
 
-    private INetworkHandler networkHandler;
-    
-    private IOSManager osManager;
-    
-    /**
-     * @param osManager
-     */
-    public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
+	private INetworkHandler networkHandler;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
-    
-    /**
-     * @param networkHandler
-     */
-    public void setNetworkHandler(INetworkHandler networkHandler) {
+
+	/**
+	 * @param networkHandler
+	 */
+	public void setNetworkHandler(INetworkHandler networkHandler) {
 		this.networkHandler = networkHandler;
 	}
 
-    /**
-     * @param stateContext
-     */
-    public void setStateContext(IStateContext stateContext) {
+	/**
+	 * @param stateContext
+	 */
+	public void setStateContext(IStateContext stateContext) {
 		this.stateContext = stateContext;
 	}
-    
-    @Override
+
+	@Override
 	public void updateService() {
-        this.lyricsEngines = loadEngines();
-    }
-    
-    protected LyricsCache getLyricsCache() {
-    	if (lyricsCache == null) {
-    		Logger.debug("Initializing LyricsCache");
-    		lyricsCache = new LyricsCache(osManager);
-    	}
-    	return lyricsCache;
-    }
+		this.lyricsEngines = loadEngines();
+	}
 
-    @Override
+	protected LyricsCache getLyricsCache() {
+		if (lyricsCache == null) {
+			Logger.debug("Initializing LyricsCache");
+			lyricsCache = beanFactory.getBean(LyricsCache.class);
+		}
+		return lyricsCache;
+	}
+
+	@Override
 	public ILyrics getLyrics(String artist, String song) {
-    	return getLyricsRetrieveOperation(artist, song).getLyrics();
-    }
-    
-    @Override
-    public ILyricsRetrieveOperation getLyricsRetrieveOperation(String artist, String song) {
-    	LyricsRetrieveOperation operation = new LyricsRetrieveOperation();
-    	operation.setArtist(artist);
-    	operation.setSong(song);
-    	operation.setLyricsCache(getLyricsCache());
-    	operation.setLyricsEngines(lyricsEngines);
-    	return operation;
-    }
-    
-    @Override
-	public Map<String, String> getUrlsForAddingNewLyrics(String artist, String title) {
-        Map<String, String> result = new HashMap<String, String>();
-        for (AbstractLyricsEngine lyricsEngine : lyricsEngines) {
-            String url = lyricsEngine.getUrlForAddingNewLyrics(artist, title);
-            if (url != null && !url.trim().equals("")) {
-                result.put(lyricsEngine.getLyricsProviderName(), url);
-            }
-        }
-        return result;
-    }
+		return getLyricsRetrieveOperation(artist, song).getLyrics();
+	}
 
-    /**
-     * Loads lyrics engines
-     * 
-     * @return the lyrics engines
-     */
-    private List<AbstractLyricsEngine> loadEngines() {
-        List<ILyricsEngineInfo> lyricsEnginesInfo = stateContext.getLyricsEnginesInfo();
-        boolean enginesModified = false;
+	@Override
+	public ILyricsRetrieveOperation getLyricsRetrieveOperation(String artist,
+			String song) {
+		LyricsRetrieveOperation operation = new LyricsRetrieveOperation();
+		operation.setArtist(artist);
+		operation.setSong(song);
+		operation.setLyricsCache(getLyricsCache());
+		operation.setLyricsEngines(lyricsEngines);
+		return operation;
+	}
 
-        boolean loadDefault = false;
-        if (lyricsEnginesInfo != null) {
-            for (ILyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
-                if (lyricsEngineInfo == null) {
-                    loadDefault = true;
-                    break;
-                }
-            }
-        } else {
-        	enginesModified = true;
-            loadDefault = true;
-        }
+	@Override
+	public Map<String, String> getUrlsForAddingNewLyrics(String artist,
+			String title) {
+		Map<String, String> result = new HashMap<String, String>();
+		for (AbstractLyricsEngine lyricsEngine : lyricsEngines) {
+			String url = lyricsEngine.getUrlForAddingNewLyrics(artist, title);
+			if (url != null && !url.trim().equals("")) {
+				result.put(lyricsEngine.getLyricsProviderName(), url);
+			}
+		}
+		return result;
+	}
 
-        if (loadDefault) {
-            lyricsEnginesInfo = new ArrayList<ILyricsEngineInfo>(defaultLyricsEngines);
-        } else {
-            lyricsEnginesInfo = new ArrayList<ILyricsEngineInfo>(lyricsEnginesInfo);
-            for (ILyricsEngineInfo defaultLyricsEngine : defaultLyricsEngines) {
-                if (!lyricsEnginesInfo.contains(defaultLyricsEngine)) {
-                	enginesModified = true;
-                    lyricsEnginesInfo.add(defaultLyricsEngine);
-                }
-            }
-        }
-        List<AbstractLyricsEngine> result = new ArrayList<AbstractLyricsEngine>();
-        // Get engines
-        // If some engine can't be loaded will be removed from settings
-        List<ILyricsEngineInfo> enginesToUnload = new ArrayList<ILyricsEngineInfo>();
-        for (ILyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
-            loadLyricEngine(result, enginesToUnload, lyricsEngineInfo);
-        }
+	/**
+	 * Loads lyrics engines
+	 * 
+	 * @return the lyrics engines
+	 */
+	private List<AbstractLyricsEngine> loadEngines() {
+		List<ILyricsEngineInfo> lyricsEnginesInfo = stateContext
+				.getLyricsEnginesInfo();
+		boolean enginesModified = false;
 
-        for (ILyricsEngineInfo engineToUnload : enginesToUnload) {
-        	enginesModified = true;
-        	lyricsEnginesInfo.remove(engineToUnload);
-        }
-        
-        if (enginesModified) {
-        	stateContext.setLyricsEnginesInfo(lyricsEnginesInfo);
-        }
-        
-        return result;
-    }
+		boolean loadDefault = false;
+		if (lyricsEnginesInfo != null) {
+			for (ILyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
+				if (lyricsEngineInfo == null) {
+					loadDefault = true;
+					break;
+				}
+			}
+		} else {
+			enginesModified = true;
+			loadDefault = true;
+		}
+
+		if (loadDefault) {
+			lyricsEnginesInfo = new ArrayList<ILyricsEngineInfo>(
+					defaultLyricsEngines);
+		} else {
+			lyricsEnginesInfo = new ArrayList<ILyricsEngineInfo>(
+					lyricsEnginesInfo);
+			for (ILyricsEngineInfo defaultLyricsEngine : defaultLyricsEngines) {
+				if (!lyricsEnginesInfo.contains(defaultLyricsEngine)) {
+					enginesModified = true;
+					lyricsEnginesInfo.add(defaultLyricsEngine);
+				}
+			}
+		}
+		List<AbstractLyricsEngine> result = new ArrayList<AbstractLyricsEngine>();
+		// Get engines
+		// If some engine can't be loaded will be removed from settings
+		List<ILyricsEngineInfo> enginesToUnload = new ArrayList<ILyricsEngineInfo>();
+		for (ILyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
+			loadLyricEngine(result, enginesToUnload, lyricsEngineInfo);
+		}
+
+		for (ILyricsEngineInfo engineToUnload : enginesToUnload) {
+			enginesModified = true;
+			lyricsEnginesInfo.remove(engineToUnload);
+		}
+
+		if (enginesModified) {
+			stateContext.setLyricsEnginesInfo(lyricsEnginesInfo);
+		}
+
+		return result;
+	}
 
 	/**
 	 * @param result
@@ -181,64 +187,69 @@ public final class LyricsService implements ILyricsService {
 			List<ILyricsEngineInfo> enginesToUnload,
 			ILyricsEngineInfo lyricsEngineInfo) {
 		if (lyricsEngineInfo.isEnabled()) {
-		    try {
-		        Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
-		        Constructor<?> constructor = clazz.getConstructor();
-		        AbstractLyricsEngine engine = (AbstractLyricsEngine) constructor.newInstance();
-		        engine.setNetworkHandler(networkHandler);
-		        result.add(engine);
-		    } catch (ClassNotFoundException e) {
-		    	enginesToUnload.add(lyricsEngineInfo);
-		    	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
-		    } catch (InstantiationException e) {
-		    	enginesToUnload.add(lyricsEngineInfo);
-		    	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
-		    } catch (IllegalAccessException e) {
-		    	enginesToUnload.add(lyricsEngineInfo);
-		    	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
-		    } catch (SecurityException e) {
-		    	enginesToUnload.add(lyricsEngineInfo);
-		    	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
-		    } catch (NoSuchMethodException e) {
-		    	enginesToUnload.add(lyricsEngineInfo);
-		    	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
-		    } catch (IllegalArgumentException e) {
-		    	enginesToUnload.add(lyricsEngineInfo);
-		    	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
-		    } catch (InvocationTargetException e) {
-		    	enginesToUnload.add(lyricsEngineInfo);
-		    	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
-		    }
+			try {
+				Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
+				Constructor<?> constructor = clazz.getConstructor();
+				AbstractLyricsEngine engine = (AbstractLyricsEngine) constructor
+						.newInstance();
+				engine.setNetworkHandler(networkHandler);
+				result.add(engine);
+			} catch (ClassNotFoundException e) {
+				enginesToUnload.add(lyricsEngineInfo);
+				logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
+			} catch (InstantiationException e) {
+				enginesToUnload.add(lyricsEngineInfo);
+				logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
+			} catch (IllegalAccessException e) {
+				enginesToUnload.add(lyricsEngineInfo);
+				logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
+			} catch (SecurityException e) {
+				enginesToUnload.add(lyricsEngineInfo);
+				logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
+			} catch (NoSuchMethodException e) {
+				enginesToUnload.add(lyricsEngineInfo);
+				logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
+			} catch (IllegalArgumentException e) {
+				enginesToUnload.add(lyricsEngineInfo);
+				logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
+			} catch (InvocationTargetException e) {
+				enginesToUnload.add(lyricsEngineInfo);
+				logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
+			}
 		}
 	}
-    
-    /**
-     * Logs an error loading a lyric engine
-     * @param lyricEngineClass
-     * @param e
-     */
-    private void logLyricEngineLoadError(String lyricEngineClass, Exception e) {
-    	Logger.error(StringUtils.getString("Error loading lyrics engine: ", lyricEngineClass));
-    	Logger.error(StringUtils.getString("Error was: ", e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
-    }
- 
-    @Override
-	public boolean clearCache() {
-        return getLyricsCache().clearCache();
-    }
 
-    @Override
+	/**
+	 * Logs an error loading a lyric engine
+	 * 
+	 * @param lyricEngineClass
+	 * @param e
+	 */
+	private void logLyricEngineLoadError(String lyricEngineClass, Exception e) {
+		Logger.error(StringUtils.getString("Error loading lyrics engine: ",
+				lyricEngineClass));
+		Logger.error(StringUtils.getString("Error was: ", e.getClass()
+				.getCanonicalName(), " (", e.getMessage(), ")"));
+	}
+
+	@Override
+	public boolean clearCache() {
+		return getLyricsCache().clearCache();
+	}
+
+	@Override
 	public void finishService() {
-    	if (lyricsCache != null) {
-    		Logger.debug("Finalizing LyricsCache");
-    		lyricsCache.shutdown();
-    	}
-    }
-    
-    /**
-     * @param defaultLyricsEngines
-     */
-    public void setDefaultLyricsEngines(List<LyricsEngineInfo> defaultLyricsEngines) {
+		if (lyricsCache != null) {
+			Logger.debug("Finalizing LyricsCache");
+			lyricsCache.shutdown();
+		}
+	}
+
+	/**
+	 * @param defaultLyricsEngines
+	 */
+	public void setDefaultLyricsEngines(
+			List<LyricsEngineInfo> defaultLyricsEngines) {
 		this.defaultLyricsEngines = defaultLyricsEngines;
 	}
 }

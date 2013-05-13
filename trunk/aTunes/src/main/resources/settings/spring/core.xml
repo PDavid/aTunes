@@ -39,8 +39,7 @@
 	
 	<bean id="preferenceHelper" class="net.sourceforge.atunes.kernel.modules.state.PreferenceHelper"/>
 	<bean id="stateStore" class="net.sourceforge.atunes.kernel.modules.state.PreferencesCache">
-		<constructor-arg ref="osManager"/>
-		<constructor-arg value="/settings/ehcache-preferences.xml" />
+		<property name="configFile" value="/settings/ehcache-preferences.xml"></property>
 	</bean>
 	
 	<bean id="localeBeanFactory" class="net.sourceforge.atunes.kernel.modules.state.LocaleBeanFactory"/>

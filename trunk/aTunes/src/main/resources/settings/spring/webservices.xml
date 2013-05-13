@@ -6,7 +6,7 @@
 	default-autowire="byName" default-lazy-init="true">
 
 	<bean id="lastFmCache" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmCache">
-		<constructor-arg ref="osManager"/>
+		<property name="configFile" value="/settings/ehcache-lastfm.xml"/>
 	</bean>
 	<bean id="lastFmService" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService" init-method="initialize"/>
 	<bean id="lastFmAPIKey" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmAPIKey"/>
@@ -19,6 +19,9 @@
 	<bean class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmitToLastFmRunnable" scope="prototype"/>
 	<bean id="lastFmSubmissionData" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmSubmissionData"/>
 
+	<bean id="lyricsCache" class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsCache">
+		<property name="configFile" value="/settings/ehcache-lyrics.xml"/>
+	</bean>
 	<bean id="lyricsService"
 		class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService">
 		

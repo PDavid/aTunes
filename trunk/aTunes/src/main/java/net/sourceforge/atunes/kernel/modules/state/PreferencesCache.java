@@ -23,121 +23,141 @@ package net.sourceforge.atunes.kernel.modules.state;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Element;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.AbstractCache;
 import net.sourceforge.atunes.utils.Logger;
 
 class PreferencesCache extends AbstractCache implements IStateStore {
 
-    private Cache cache;
-    
-    /**
-     * Creates a new preferences cache
-     * @param osManager
-     * @param configFile
-     */
-    protected PreferencesCache(IOSManager osManager, String configFile) {
-        super(osManager, PreferencesCache.class.getResource(configFile));
-    }
+	private Cache cache;
 
-    /* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateStore#clearCache()
 	 */
-    @Override
+	@Override
 	public synchronized boolean clearCache() {
-        boolean exception = false;
-        try {
-            getCache().removeAll();
-        } catch (IllegalStateException e) {
-            Logger.info("Could not delete all files from preferences cache");
-            exception = true;
-        } catch (CacheException e) {
-            Logger.info("Could not delete all files from preferences cache");
-            exception = true;
-        }
-        return exception;
-    }
+		boolean exception = false;
+		try {
+			getCache().removeAll();
+		} catch (IllegalStateException e) {
+			Logger.info("Could not delete all files from preferences cache");
+			exception = true;
+		} catch (CacheException e) {
+			Logger.info("Could not delete all files from preferences cache");
+			exception = true;
+		}
+		return exception;
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IStateStore#retrievePreference(net.sourceforge.atunes.kernel.modules.state.Preferences, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sourceforge.atunes.kernel.modules.state.IStateStore#retrievePreference
+	 * (net.sourceforge.atunes.kernel.modules.state.Preferences,
+	 * java.lang.Object)
 	 */
-    @Override
-	public Object retrievePreference(Preferences preferenceId, Object defaultValue) {
-        
-    	if (getCache()== null) {
-        	return defaultValue;
-        }
-    	Element element = getCache().get(preferenceId.toString());
-        if (element == null) {
-            return defaultValue;
-        } else {
-        	Preference preference = (Preference) element.getValue();
-            return preference != null ? preference.getValue() : null;
-        }
-    }
+	@Override
+	public Object retrievePreference(Preferences preferenceId,
+			Object defaultValue) {
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IStateStore#storePreference(net.sourceforge.atunes.kernel.modules.state.Preferences, java.lang.Object)
-	 */
-    @Override
-	public synchronized void storePreference(final Preferences preferenceId, final Object value) {
-        if (preferenceId == null) {
-            return;
-        }
+		if (getCache() == null) {
+			return defaultValue;
+		}
+		Element element = getCache().get(preferenceId.toString());
+		if (element == null) {
+			return defaultValue;
+		} else {
+			Preference preference = (Preference) element.getValue();
+			return preference != null ? preference.getValue() : null;
+		}
+	}
 
-        // Store same preferences even if value is equal, otherwise could cause problems with collections (where equals is always true)
-        Preference pref = null;
-        if (value != null) {
-        	pref = new Preference();
-        	pref.setValue(value);
-        }
-        Element element = new Element(preferenceId.toString(), pref);
-        getCache().put(element);
-        getCache().flush();
-        Logger.debug("Stored Preference: ", preferenceId, " Value: ", value != null ? value.toString() : null);
-    }
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IStateStore#retrievePasswordPreference(net.sourceforge.atunes.kernel.modules.state.Preferences)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.sourceforge.atunes.kernel.modules.state.IStateStore#storePreference
+	 * (net.sourceforge.atunes.kernel.modules.state.Preferences,
+	 * java.lang.Object)
 	 */
-    @Override
+	@Override
+	public synchronized void storePreference(final Preferences preferenceId,
+			final Object value) {
+		if (preferenceId == null) {
+			return;
+		}
+
+		// Store same preferences even if value is equal, otherwise could cause
+		// problems with collections (where equals is always true)
+		Preference pref = null;
+		if (value != null) {
+			pref = new Preference();
+			pref.setValue(value);
+		}
+		Element element = new Element(preferenceId.toString(), pref);
+		getCache().put(element);
+		getCache().flush();
+		Logger.debug("Stored Preference: ", preferenceId, " Value: ",
+				value != null ? value.toString() : null);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateStore#
+	 * retrievePasswordPreference
+	 * (net.sourceforge.atunes.kernel.modules.state.Preferences)
+	 */
+	@Override
 	public String retrievePasswordPreference(Preferences preferenceId) {
-    	Element element = getCache().get(preferenceId.toString());
-    	if (element == null) {
-    		return null;
-    	} else {
-    		PasswordPreference preferences = (PasswordPreference) element.getValue();
-    		return preferences.getPassword();
-    	}
-    }
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IStateStore#storePasswordPreference(net.sourceforge.atunes.kernel.modules.state.Preferences, java.lang.String)
+		Element element = getCache().get(preferenceId.toString());
+		if (element == null) {
+			return null;
+		} else {
+			PasswordPreference preferences = (PasswordPreference) element
+					.getValue();
+			return preferences.getPassword();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateStore#
+	 * storePasswordPreference
+	 * (net.sourceforge.atunes.kernel.modules.state.Preferences,
+	 * java.lang.String)
 	 */
-    @Override
-	public synchronized void storePasswordPreference(Preferences preferenceId, String value) {
-        if (preferenceId == null) {
-            return;
-        }
+	@Override
+	public synchronized void storePasswordPreference(Preferences preferenceId,
+			String value) {
+		if (preferenceId == null) {
+			return;
+		}
 
-        Element element = new Element(preferenceId.toString(), value != null ? new PasswordPreference(value) : null);
-        getCache().put(element);
-        getCache().flush();
-        Logger.debug("Stored Password Preference: ", preferenceId);
-    }
+		Element element = new Element(preferenceId.toString(),
+				value != null ? new PasswordPreference(value) : null);
+		getCache().put(element);
+		getCache().flush();
+		Logger.debug("Stored Password Preference: ", preferenceId);
+	}
 
-    private Cache getCache() {
-    	if (cache == null) {
-    		cache = getCache("preferences"); 
-    	}
-        return cache;
-    }
+	private Cache getCache() {
+		if (cache == null) {
+			cache = getCache("preferences");
+		}
+		return cache;
+	}
 
-    /* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateStore#shutdown()
 	 */
-    @Override
+	@Override
 	public void shutdown() {
-        getCache().dispose();
-    }
+		getCache().dispose();
+	}
 }
