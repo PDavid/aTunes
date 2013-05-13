@@ -27,6 +27,7 @@ import java.util.Map;
 import net.sourceforge.atunes.model.IErrorReport;
 import net.sourceforge.atunes.model.IErrorReporter;
 import net.sourceforge.atunes.model.INetworkHandler;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -44,7 +45,16 @@ public class MailErrorReporter implements IErrorReporter, Runnable {
 
 	private IErrorReport report;
 
+	private IStateCore stateCore;
+
 	private String url;
+
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
 
 	/**
 	 * @param url
@@ -68,8 +78,10 @@ public class MailErrorReporter implements IErrorReporter, Runnable {
 	}
 
 	@Override
-	public void reportError(final IErrorReport errorReport) {
+	public void reportError(String mail, final IErrorReport errorReport) {
+		this.stateCore.setErrorReportsResponseMail(mail);
 		this.report = errorReport;
+		this.report.setResponseMail(mail);
 		taskService.submitNow("Report Error", this);
 	}
 

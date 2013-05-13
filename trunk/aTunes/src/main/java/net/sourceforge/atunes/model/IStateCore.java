@@ -8,14 +8,14 @@
  * http://sourceforge.net/projects/atunes
  *
  * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
+ * modify it under the terms of the GNU General License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU General License for more details.
  */
 
 package net.sourceforge.atunes.model;
@@ -33,139 +33,149 @@ public interface IStateCore extends IState {
 	 * 
 	 * @return
 	 */
-	public ILocaleBean getLocale();
+	ILocaleBean getLocale();
 
 	/**
 	 * Locale
 	 * 
 	 * @param locale
 	 */
-	public void setLocale(ILocaleBean locale);
+	void setLocale(ILocaleBean locale);
 
 	/**
 	 * Previous locale
 	 * 
 	 * @return
 	 */
-	public ILocaleBean getOldLocale();
+	ILocaleBean getOldLocale();
 
 	/**
 	 * Previous locale
 	 * 
 	 * @param oldLocale
 	 */
-	public void setOldLocale(ILocaleBean oldLocale);
+	void setOldLocale(ILocaleBean oldLocale);
 
 	/**
 	 * Search engine used
 	 * 
 	 * @return
 	 */
-	public String getDefaultSearch();
+	String getDefaultSearch();
 
 	/**
 	 * Search engine used
 	 * 
 	 * @param defaultSearch
 	 */
-	public void setDefaultSearch(String defaultSearch);
+	void setDefaultSearch(String defaultSearch);
 
 	/**
 	 * Proxy used
 	 * 
 	 * @return
 	 */
-	public IProxyBean getProxy();
+	IProxyBean getProxy();
 
 	/**
 	 * Proxy used
 	 * 
 	 * @param proxy
 	 */
-	public void setProxy(IProxyBean proxy);
+	void setProxy(IProxyBean proxy);
 
 	/**
 	 * Enable advanced search
 	 * 
 	 * @return
 	 */
-	public boolean isEnableAdvancedSearch();
+	boolean isEnableAdvancedSearch();
 
 	/**
 	 * Enable advanced search
 	 * 
 	 * @param enableAdvancedSearch
 	 */
-	public void setEnableAdvancedSearch(boolean enableAdvancedSearch);
+	void setEnableAdvancedSearch(boolean enableAdvancedSearch);
 
 	/**
 	 * Use hotkeys
 	 * 
 	 * @return
 	 */
-	public boolean isEnableHotkeys();
+	boolean isEnableHotkeys();
 
 	/**
 	 * Use hotkeys
 	 * 
 	 * @param enableHotkeys
 	 */
-	public void setEnableHotkeys(boolean enableHotkeys);
+	void setEnableHotkeys(boolean enableHotkeys);
 
 	/**
 	 * Hotkeys
 	 * 
 	 * @return
 	 */
-	public IHotkeysConfig getHotkeysConfig();
+	IHotkeysConfig getHotkeysConfig();
 
 	/**
 	 * Hotkeys
 	 * 
 	 * @param hotkeysConfig
 	 */
-	public void setHotkeysConfig(IHotkeysConfig hotkeysConfig);
+	void setHotkeysConfig(IHotkeysConfig hotkeysConfig);
 
 	/**
 	 * Notification engine
 	 * 
 	 * @return
 	 */
-	public String getNotificationEngine();
+	String getNotificationEngine();
 
 	/**
 	 * Notification engine
 	 * 
 	 * @param notificationEngine
 	 */
-	public void setNotificationEngine(String notificationEngine);
+	void setNotificationEngine(String notificationEngine);
 
 	/**
 	 * Albums columns
 	 * 
 	 * @return
 	 */
-	public Map<String, ColumnBean> getAlbumsColumns();
+	Map<String, ColumnBean> getAlbumsColumns();
 
 	/**
 	 * Albums columns
 	 * 
 	 * @param columnsConfiguration
 	 */
-	public void setAlbumColumns(Map<String, ColumnBean> columnsConfiguration);
+	void setAlbumColumns(Map<String, ColumnBean> columnsConfiguration);
 
 	/**
 	 * Plugins enabled
 	 * 
 	 * @param pluginsEnabled
 	 */
-	public void setPluginsEnabled(boolean pluginsEnabled);
+	void setPluginsEnabled(boolean pluginsEnabled);
 
 	/**
 	 * Plugins enabled
 	 * 
 	 * @return
 	 */
-	public boolean isPluginsEnabled();
+	boolean isPluginsEnabled();
+
+	/**
+	 * @param responseMail
+	 */
+	void setErrorReportsResponseMail(String responseMail);
+
+	/**
+	 * @return response mail for error reports
+	 */
+	String getErrorReportsResponseMail();
 
 }

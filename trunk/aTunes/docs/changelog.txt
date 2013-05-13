@@ -14,6 +14,7 @@ aTunes 3.1.0
 - Added option to stop playback after current track
 - Show favorite songs and current song in artist top tracks
 - Improvements in seek function
+- User can provide an email when reporting an error
 - FIX: LyricsDirectoryEngine review when no lyric found
 - FIX: Mute not working while fade away
 

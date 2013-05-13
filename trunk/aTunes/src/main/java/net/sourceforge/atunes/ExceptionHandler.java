@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.IErrorReport;
 import net.sourceforge.atunes.model.IErrorReportCreator;
 import net.sourceforge.atunes.model.IErrorReportDialog;
 import net.sourceforge.atunes.model.IErrorReporter;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -47,6 +48,15 @@ public final class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 	private List<KnownException> knownExceptions;
 
 	private IBeanFactory beanFactory;
+
+	private IStateCore stateCore;
+
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
 
 	/**
 	 * @param beanFactory
@@ -107,7 +117,8 @@ public final class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 						IErrorReportCreator.class).createReport(
 						errorDescription, e);
 				ExceptionHandler.this.dialogFactory.newDialog(
-						IErrorReportDialog.class).showErrorReport(report,
+						IErrorReportDialog.class).showErrorReport(
+						stateCore.getErrorReportsResponseMail(), report,
 						beanFactory.getBean(IErrorReporter.class));
 			}
 		});

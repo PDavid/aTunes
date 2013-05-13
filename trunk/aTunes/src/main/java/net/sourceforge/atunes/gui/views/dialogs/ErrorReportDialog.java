@@ -33,6 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
@@ -73,8 +74,8 @@ public class ErrorReportDialog extends AbstractCustomDialog implements
 	}
 
 	@Override
-	public void showErrorReport(final IErrorReport report,
-			final IErrorReporter errorReporter) {
+	public void showErrorReport(final String responseMail,
+			final IErrorReport report, final IErrorReporter errorReporter) {
 		JPanel panel = new JPanel(new GridBagLayout());
 		panel.setBorder(BorderFactory.createEmptyBorder(BORDER, BORDER, BORDER,
 				BORDER));
@@ -86,6 +87,17 @@ public class ErrorReportDialog extends AbstractCustomDialog implements
 		messageLabel.setWrapStyleWord(true);
 		messageLabel.setOpaque(false);
 		messageLabel.setLineWrap(true);
+
+		JTextArea mailLabel = getControlsBuilder().createTextArea();
+		mailLabel.setText(I18nUtils.getString("ERROR_TO_REPORT_MAIL"));
+		mailLabel.setEditable(false);
+		mailLabel.setEnabled(false);
+		mailLabel.setWrapStyleWord(true);
+		mailLabel.setOpaque(false);
+		mailLabel.setLineWrap(true);
+
+		final JTextField mail = getControlsBuilder().createTextField();
+		mail.setText(responseMail);
 
 		JButton sendButton = new JButton(I18nUtils.getString("SEND"));
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
@@ -117,17 +129,21 @@ public class ErrorReportDialog extends AbstractCustomDialog implements
 		panel.add(scrollPane, c);
 		c.gridx = 1;
 		c.gridy = 2;
-		c.fill = GridBagConstraints.NONE;
 		c.gridwidth = 1;
 		c.weighty = 0;
+		panel.add(mailLabel, c);
+		c.gridy = 3;
+		panel.add(mail, c);
+		c.gridy = 4;
 		c.anchor = GridBagConstraints.EAST;
+		c.fill = GridBagConstraints.NONE;
 		panel.add(buttonsPanel, c);
 
 		sendButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				errorReporter.reportError(report);
+				errorReporter.reportError(mail.getText(), report);
 				ErrorReportDialog.this.setVisible(false);
 			}
 		});

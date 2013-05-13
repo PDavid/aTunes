@@ -170,6 +170,18 @@ public class ApplicationStateCore implements IStateCore {
 	}
 
 	@Override
+	public String getErrorReportsResponseMail() {
+		return this.preferenceHelper.getPreference(
+				Preferences.ERROR_REPORTS_MAIL, String.class, null);
+	}
+
+	@Override
+	public void setErrorReportsResponseMail(String responseMail) {
+		this.preferenceHelper.setPreference(Preferences.ERROR_REPORTS_MAIL,
+				responseMail);
+	}
+
+	@Override
 	public Map<String, String> describeState() {
 		return ReflectionUtils.describe(this);
 	}
