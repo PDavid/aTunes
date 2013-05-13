@@ -39,9 +39,8 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IErrorReport;
-import net.sourceforge.atunes.model.IErrorReportCreator;
+import net.sourceforge.atunes.model.IErrorReportDialog;
 import net.sourceforge.atunes.model.IErrorReporter;
-import net.sourceforge.atunes.model.IExceptionDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -51,8 +50,8 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class ExceptionDialog extends AbstractCustomDialog implements
-		IExceptionDialog {
+public class ErrorReportDialog extends AbstractCustomDialog implements
+		IErrorReportDialog {
 
 	private static final int BORDER = 10;
 
@@ -62,53 +61,20 @@ public class ExceptionDialog extends AbstractCustomDialog implements
 
 	private static final long serialVersionUID = -2528275301092742608L;
 
-	private IErrorReportCreator errorReportCreator;
-
-	private IErrorReporter errorReporter;
-
-	/**
-	 * @param errorReportCreator
-	 */
-	public void setErrorReportCreator(
-			final IErrorReportCreator errorReportCreator) {
-		this.errorReportCreator = errorReportCreator;
-	}
-
-	/**
-	 * @param errorReporter
-	 */
-	public void setErrorReporter(final IErrorReporter errorReporter) {
-		this.errorReporter = errorReporter;
-	}
-
 	/**
 	 * Default constructor
 	 * 
 	 * @param frame
 	 * @param controlsBuilder
 	 */
-	public ExceptionDialog(final IFrame frame,
+	public ErrorReportDialog(final IFrame frame,
 			final IControlsBuilder controlsBuilder) {
 		super(frame, WIDTH, HEIGHT, false, CloseAction.DISPOSE, controlsBuilder);
 	}
 
 	@Override
-	public void showExceptionDialog(final Throwable throwable) {
-		showDialog(this.errorReportCreator.createReport(null, throwable));
-	}
-
-	@Override
-	public void showExceptionDialog(final String descriptionError,
-			final Throwable t) {
-		showDialog(this.errorReportCreator.createReport(descriptionError, t));
-	}
-
-	/**
-	 * Shows a exception report dialog
-	 * 
-	 * @param t
-	 */
-	private void showDialog(final IErrorReport errorReport) {
+	public void showErrorReport(final IErrorReport report,
+			final IErrorReporter errorReporter) {
 		JPanel panel = new JPanel(new GridBagLayout());
 		panel.setBorder(BorderFactory.createEmptyBorder(BORDER, BORDER, BORDER,
 				BORDER));
@@ -161,8 +127,8 @@ public class ExceptionDialog extends AbstractCustomDialog implements
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				ExceptionDialog.this.errorReporter.reportError(errorReport);
-				ExceptionDialog.this.setVisible(false);
+				errorReporter.reportError(report);
+				ErrorReportDialog.this.setVisible(false);
 			}
 		});
 
@@ -170,14 +136,14 @@ public class ExceptionDialog extends AbstractCustomDialog implements
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				ExceptionDialog.this.setVisible(false);
+				ErrorReportDialog.this.setVisible(false);
 			}
 		});
 
 		add(panel);
 		super.setTitle(I18nUtils.getString("ERROR"));
 
-		textArea.setText(errorReport.toString());
+		textArea.setText(report.toString());
 		textArea.setCaretPosition(0);
 
 		setVisible(true);

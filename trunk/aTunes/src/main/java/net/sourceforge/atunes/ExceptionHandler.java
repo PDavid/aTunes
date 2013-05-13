@@ -24,24 +24,36 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IExceptionDialog;
+import net.sourceforge.atunes.model.IErrorReport;
+import net.sourceforge.atunes.model.IErrorReportCreator;
+import net.sourceforge.atunes.model.IErrorReportDialog;
+import net.sourceforge.atunes.model.IErrorReporter;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * Captures unknown exceptions
+ * Captures exceptions
  * 
  * @author alex
  * 
  */
-public final class UncaughtExceptionHandler implements
-		Thread.UncaughtExceptionHandler {
+public final class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
 	private IDialogFactory dialogFactory;
 
 	private List<KnownException> knownExceptions;
+
+	private IBeanFactory beanFactory;
+
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
 	/**
 	 * @param knownExceptions
@@ -66,16 +78,39 @@ public final class UncaughtExceptionHandler implements
 			if (e instanceof InvocationTargetException
 					&& ((InvocationTargetException) e).getCause() != null) {
 				uncaughtException(t, ((InvocationTargetException) e).getCause());
+			} else {
+				showErrorReport(e);
 			}
-
-			GuiUtils.callInEventDispatchThread(new Runnable() {
-				@Override
-				public void run() {
-					UncaughtExceptionHandler.this.dialogFactory.newDialog(
-							IExceptionDialog.class).showExceptionDialog(e);
-				}
-			});
 		}
+	}
+
+	/**
+	 * Shows error report and allows user to send a report
+	 * 
+	 * @param e
+	 */
+	public void showErrorReport(final Throwable e) {
+		showErrorReport(null, e);
+	}
+
+	/**
+	 * Shows error report and allows user to send a report
+	 * 
+	 * @param errorDescription
+	 * @param e
+	 */
+	public void showErrorReport(final String errorDescription, final Throwable e) {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				IErrorReport report = beanFactory.getBean(
+						IErrorReportCreator.class).createReport(
+						errorDescription, e);
+				ExceptionHandler.this.dialogFactory.newDialog(
+						IErrorReportDialog.class).showErrorReport(report,
+						beanFactory.getBean(IErrorReporter.class));
+			}
+		});
 	}
 
 	private boolean isKnownException(final Throwable e) {

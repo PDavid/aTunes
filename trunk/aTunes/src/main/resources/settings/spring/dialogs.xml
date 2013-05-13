@@ -55,7 +55,7 @@
 		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 	<bean id="errorDialog" class="net.sourceforge.atunes.gui.views.dialogs.ErrorDialog" scope="prototype"/>
-	<bean id="exceptionDialog" class="net.sourceforge.atunes.gui.views.dialogs.ExceptionDialog" scope="prototype">
+	<bean id="exceptionDialog" class="net.sourceforge.atunes.gui.views.dialogs.ErrorReportDialog" scope="prototype">
 			<constructor-arg ref="frame"/>
 		<constructor-arg ref="controlsBuilder"/>
 	</bean>
