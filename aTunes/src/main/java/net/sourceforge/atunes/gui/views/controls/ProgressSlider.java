@@ -27,6 +27,7 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
@@ -106,7 +107,10 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 					// this is where we jump to absolute value of click
 					@Override
 					public void mouseClicked(final java.awt.event.MouseEvent e) {
-						setValue(ui.valueForXPosition(e.getPoint().x));
+						Point point = e.getPoint();
+						if (point != null) {
+							setValue(ui.valueForXPosition(point.x));
+						}
 					}
 
 					// disable check that will invoke scrollDueToClickInTrack
