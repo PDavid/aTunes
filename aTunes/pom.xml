@@ -442,7 +442,7 @@
 		<dependency>
 			<groupId>com.melloware</groupId>
 			<artifactId>jintellitype</artifactId>
-			<version>1.3.4</version>
+			<version>1.3.7</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jhlabs</groupId>
@@ -634,6 +634,12 @@
 	</reporting>
 
 	<repositories>
+		<repository>
+			<id>atunes-dependencies-not-in-central-repo</id>
+			<name>atunes-dependencies-not-in-central-repo</name>
+			<url>http://gimlet.is.inf.uni-due.de:8081/nexus/content/repositories/atunes-dependencies/
+			</url>
+		</repository>
 		<repository>
 			<id>ehcache-core</id>
 			<name>ehcache-core</name>
