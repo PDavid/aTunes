@@ -7,6 +7,7 @@
 
 	<bean id="lastFmCache" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmCache">
 		<property name="configFile" value="/settings/ehcache-lastfm.xml"/>
+		<property name="cacheName" value="cache"></property>
 	</bean>
 	<bean id="lastFmService" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService" init-method="initialize"/>
 	<bean id="lastFmAPIKey" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmAPIKey"/>
@@ -21,6 +22,7 @@
 
 	<bean id="lyricsCache" class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsCache">
 		<property name="configFile" value="/settings/ehcache-lyrics.xml"/>
+		<property name="cacheName" value="lyrics"/>
 	</bean>
 	<bean id="lyricsService"
 		class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService">

@@ -20,10 +20,13 @@
 
 package net.sourceforge.atunes.utils;
 
+import java.io.Serializable;
 import java.net.URL;
 
 import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IOSManager;
 
@@ -39,19 +42,30 @@ public abstract class AbstractCache {
 
 	private String configFile;
 
+	private String cacheName;
+
 	private CacheManager cacheManager;
+
+	private Cache cache;
+
+	/**
+	 * @param cacheName
+	 */
+	public void setCacheName(final String cacheName) {
+		this.cacheName = cacheName;
+	}
 
 	/**
 	 * @param osManager
 	 */
-	public void setOsManager(IOSManager osManager) {
+	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
 	/**
 	 * @param configFile
 	 */
-	public void setConfigFile(String configFile) {
+	public void setConfigFile(final String configFile) {
 		this.configFile = configFile;
 	}
 
@@ -62,14 +76,51 @@ public abstract class AbstractCache {
 		this.cacheManager = new CacheManager(settings);
 	}
 
-	protected Cache getCache(final String name) {
-		return getCacheManager().getCache(name);
+	private synchronized Cache getCache() {
+		if (this.cache == null) {
+			return getCacheManager().getCache(this.cacheName);
+		}
+		return this.cache;
 	}
 
 	private synchronized CacheManager getCacheManager() {
-		if (cacheManager == null) {
-			init(osManager, AbstractCache.class.getResource(configFile));
+		if (this.cacheManager == null) {
+			Logger.debug("Initializing cache from file: ", this.configFile);
+			init(this.osManager,
+					AbstractCache.class.getResource(this.configFile));
 		}
-		return cacheManager;
+		return this.cacheManager;
+	}
+
+	protected void dispose() {
+		getCache().dispose();
+	}
+
+	protected void flush() {
+		getCache().flush();
+	}
+
+	protected void put(final Element element) {
+		getCache().put(element);
+	}
+
+	protected Element get(final Serializable key) {
+		return getCache().get(key);
+	}
+
+	protected boolean removeAll() {
+		boolean exception = false;
+		try {
+			removeAll();
+		} catch (IllegalStateException e) {
+			Logger.info("Could not delete all files from ", this.cacheName,
+					" cache");
+			exception = true;
+		} catch (CacheException e) {
+			Logger.info("Could not delete all files from ", this.cacheName,
+					" cache");
+			exception = true;
+		}
+		return exception;
 	}
 }

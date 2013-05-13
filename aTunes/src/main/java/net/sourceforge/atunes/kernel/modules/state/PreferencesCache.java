@@ -20,52 +20,16 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Element;
 import net.sourceforge.atunes.utils.AbstractCache;
 import net.sourceforge.atunes.utils.Logger;
 
 class PreferencesCache extends AbstractCache implements IStateStore {
 
-	private Cache cache;
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sourceforge.atunes.kernel.modules.state.IStateStore#clearCache()
-	 */
 	@Override
-	public synchronized boolean clearCache() {
-		boolean exception = false;
-		try {
-			getCache().removeAll();
-		} catch (IllegalStateException e) {
-			Logger.info("Could not delete all files from preferences cache");
-			exception = true;
-		} catch (CacheException e) {
-			Logger.info("Could not delete all files from preferences cache");
-			exception = true;
-		}
-		return exception;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sourceforge.atunes.kernel.modules.state.IStateStore#retrievePreference
-	 * (net.sourceforge.atunes.kernel.modules.state.Preferences,
-	 * java.lang.Object)
-	 */
-	@Override
-	public Object retrievePreference(Preferences preferenceId,
-			Object defaultValue) {
-
-		if (getCache() == null) {
-			return defaultValue;
-		}
-		Element element = getCache().get(preferenceId.toString());
+	public Object retrievePreference(final Preferences preferenceId,
+			final Object defaultValue) {
+		Element element = get(preferenceId.toString());
 		if (element == null) {
 			return defaultValue;
 		} else {
@@ -74,14 +38,6 @@ class PreferencesCache extends AbstractCache implements IStateStore {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * net.sourceforge.atunes.kernel.modules.state.IStateStore#storePreference
-	 * (net.sourceforge.atunes.kernel.modules.state.Preferences,
-	 * java.lang.Object)
-	 */
 	@Override
 	public synchronized void storePreference(final Preferences preferenceId,
 			final Object value) {
@@ -97,22 +53,15 @@ class PreferencesCache extends AbstractCache implements IStateStore {
 			pref.setValue(value);
 		}
 		Element element = new Element(preferenceId.toString(), pref);
-		getCache().put(element);
-		getCache().flush();
+		put(element);
+		flush();
 		Logger.debug("Stored Preference: ", preferenceId, " Value: ",
 				value != null ? value.toString() : null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sourceforge.atunes.kernel.modules.state.IStateStore#
-	 * retrievePasswordPreference
-	 * (net.sourceforge.atunes.kernel.modules.state.Preferences)
-	 */
 	@Override
-	public String retrievePasswordPreference(Preferences preferenceId) {
-		Element element = getCache().get(preferenceId.toString());
+	public String retrievePasswordPreference(final Preferences preferenceId) {
+		Element element = get(preferenceId.toString());
 		if (element == null) {
 			return null;
 		} else {
@@ -122,42 +71,22 @@ class PreferencesCache extends AbstractCache implements IStateStore {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sourceforge.atunes.kernel.modules.state.IStateStore#
-	 * storePasswordPreference
-	 * (net.sourceforge.atunes.kernel.modules.state.Preferences,
-	 * java.lang.String)
-	 */
 	@Override
-	public synchronized void storePasswordPreference(Preferences preferenceId,
-			String value) {
+	public synchronized void storePasswordPreference(
+			final Preferences preferenceId, final String value) {
 		if (preferenceId == null) {
 			return;
 		}
 
 		Element element = new Element(preferenceId.toString(),
 				value != null ? new PasswordPreference(value) : null);
-		getCache().put(element);
-		getCache().flush();
+		put(element);
+		flush();
 		Logger.debug("Stored Password Preference: ", preferenceId);
 	}
 
-	private Cache getCache() {
-		if (cache == null) {
-			cache = getCache("preferences");
-		}
-		return cache;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sourceforge.atunes.kernel.modules.state.IStateStore#shutdown()
-	 */
 	@Override
 	public void shutdown() {
-		getCache().dispose();
+		dispose();
 	}
 }
