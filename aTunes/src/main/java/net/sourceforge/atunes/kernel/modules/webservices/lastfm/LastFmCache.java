@@ -357,6 +357,6 @@ public class LastFmCache extends AbstractCache {
 	@Override
 	public void flush() {
 		Logger.debug("Flushing last.fm cache");
-		flush();
+		super.flush();
 	}
 }
