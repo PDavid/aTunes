@@ -24,8 +24,6 @@ import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Element;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
@@ -62,8 +60,6 @@ public class LastFmCache extends AbstractCache {
 
 	private static final String ALBUM_COVER = "ALBUM_COVER";
 
-	private static final String COULD_NOT_DELETE_ALL_FILES_FROM_CACHE = "Could not delete all files from cache: ";
-
 	private IStateContext stateContext;
 
 	/**
@@ -73,40 +69,14 @@ public class LastFmCache extends AbstractCache {
 		this.stateContext = stateContext;
 	}
 
-	private Cache getCache() {
-		return getCache("cache");
-	}
-
-	/**
-	 * Clears the cache.
-	 * 
-	 * @return If an Exception happens during clearing
-	 */
-	public synchronized boolean clearCache() {
-		boolean exception = false;
-		if (clearCache(getCache())) {
-			exception = true;
-		}
-		return exception;
-	}
-
 	/**
 	 * Clears a cache, returning true if some error happened
 	 * 
 	 * @param cache
 	 * @return
 	 */
-	private boolean clearCache(final Cache cache) {
-		try {
-			cache.removeAll();
-		} catch (IllegalStateException e) {
-			Logger.info(COULD_NOT_DELETE_ALL_FILES_FROM_CACHE, cache.getName());
-			return true;
-		} catch (CacheException e) {
-			Logger.info(COULD_NOT_DELETE_ALL_FILES_FROM_CACHE, cache.getName());
-			return true;
-		}
-		return false;
+	public boolean clearCache() {
+		return removeAll();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -115,7 +85,7 @@ public class LastFmCache extends AbstractCache {
 			Logger.debug("Last.fm cache is disabled");
 			return null;
 		}
-		Element element = getCache().get(new CacheKey(cacheId, key));
+		Element element = get(new CacheKey(cacheId, key));
 		if (element == null) {
 			return null;
 		} else {
@@ -133,7 +103,7 @@ public class LastFmCache extends AbstractCache {
 		if (cacheId == null || key == null || value == null) {
 			return;
 		}
-		getCache().put(new Element(new CacheKey(cacheId, key), value));
+		put(new Element(new CacheKey(cacheId, key), value));
 	}
 
 	/**
@@ -378,14 +348,15 @@ public class LastFmCache extends AbstractCache {
 	 * Shutdowns cache
 	 */
 	public void shutdown() {
-		getCache().dispose();
+		dispose();
 	}
 
 	/**
 	 * Flushes cache
 	 */
+	@Override
 	public void flush() {
 		Logger.debug("Flushing last.fm cache");
-		getCache().flush();
+		flush();
 	}
 }

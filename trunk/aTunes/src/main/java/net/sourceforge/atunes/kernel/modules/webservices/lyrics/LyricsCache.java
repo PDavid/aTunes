@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lyrics;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Element;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.utils.AbstractCache;
@@ -35,25 +33,13 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class LyricsCache extends AbstractCache {
 
-	private static final String LYRICS = "lyrics";
-
 	/**
 	 * Clears the cache.
 	 * 
 	 * @return If an Exception occurred during clearing
 	 */
 	public synchronized boolean clearCache() {
-		try {
-			getCache().removeAll();
-			getCache().flush();
-		} catch (IllegalStateException e) {
-			Logger.info("Could not delete all files from lyrics cache");
-			return true;
-		} catch (CacheException e) {
-			Logger.info("Could not delete all files from lyrics cache");
-			return true;
-		}
-		return false;
+		return removeAll();
 	}
 
 	/**
@@ -68,7 +54,7 @@ public class LyricsCache extends AbstractCache {
 	 */
 	public synchronized ILyrics retrieveLyric(final String artist,
 			final String title) {
-		Element element = getCache().get(id(artist, title));
+		Element element = get(id(artist, title));
 		if (element != null) {
 			return (ILyrics) element.getValue();
 		} else {
@@ -92,7 +78,7 @@ public class LyricsCache extends AbstractCache {
 			return;
 		}
 		Element element = new Element(id(artist, title), lyric);
-		getCache().put(element);
+		put(element);
 		Logger.debug("Stored lyric for ", title);
 	}
 
@@ -100,14 +86,10 @@ public class LyricsCache extends AbstractCache {
 		return artist + title;
 	}
 
-	private Cache getCache() {
-		return getCache(LYRICS);
-	}
-
 	/**
 	 * Shutdown cache
 	 */
 	public void shutdown() {
-		getCache().dispose();
+		dispose();
 	}
 }
