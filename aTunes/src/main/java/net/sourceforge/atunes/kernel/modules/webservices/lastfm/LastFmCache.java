@@ -31,7 +31,6 @@ import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.AbstractCache;
@@ -66,15 +65,6 @@ public class LastFmCache extends AbstractCache {
 	private static final String COULD_NOT_DELETE_ALL_FILES_FROM_CACHE = "Could not delete all files from cache: ";
 
 	private IStateContext stateContext;
-
-	/**
-	 * @param osManager
-	 */
-	public LastFmCache(final IOSManager osManager) {
-		super(osManager, LastFmCache.class
-				.getResource("/settings/ehcache-lastfm.xml"));
-		Logger.debug("Initializing LastFmCache");
-	}
 
 	/**
 	 * @param stateContext
