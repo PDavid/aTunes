@@ -28,8 +28,9 @@ package net.sourceforge.atunes.model;
  */
 public interface IErrorReporter {
 
-    /**
-     * @param t
-     */
-    void reportError(IErrorReport t);
+	/**
+	 * @param mail
+	 * @param t
+	 */
+	void reportError(String mail, IErrorReport t);
 }

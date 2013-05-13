@@ -31,9 +31,10 @@ public interface IErrorReportDialog extends IDialog {
 	/**
 	 * Shows an error report to user
 	 * 
+	 * @param responseMail
 	 * @param report
 	 * @param errorReporter
 	 */
-	public void showErrorReport(IErrorReport report,
+	public void showErrorReport(String responseMail, IErrorReport report,
 			IErrorReporter errorReporter);
 }

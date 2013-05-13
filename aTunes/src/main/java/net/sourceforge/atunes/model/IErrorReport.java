@@ -31,56 +31,66 @@ import java.util.Map;
 public interface IErrorReport {
 
 	/**
+	 * @param mail
+	 * @return
+	 */
+	void setResponseMail(String mail);
+
+	/**
+	 * @return response mail
+	 */
+	String getResponseMail();
+
+	/**
 	 * @return the errorDescrition
 	 */
-	public String getErrorDescrition();
+	String getErrorDescrition();
 
 	/**
 	 * @param errorDescription
 	 */
-	public void setErrorDescription(String errorDescription);
+	void setErrorDescription(String errorDescription);
 
 	/**
 	 * @return the throwable
 	 */
-	public Throwable getThrowable();
+	Throwable getThrowable();
 
 	/**
 	 * @param throwable
 	 *            the throwable to set
 	 */
-	public void setThrowable(Throwable throwable);
+	void setThrowable(Throwable throwable);
 
 	/**
 	 * @return the state
 	 */
-	public Map<String, String> getState();
+	Map<String, String> getState();
 
 	/**
 	 * @param state
 	 *            the state to set
 	 */
-	public void setBasicEnvironmentState(Map<String, String> state);
+	void setBasicEnvironmentState(Map<String, String> state);
 
 	/**
 	 * @param state
 	 * @param description
 	 */
-	public void addStateDescription(String state,
-			Map<String, String> description);
+	void addStateDescription(String state, Map<String, String> description);
 
 	/**
 	 * Add a JVM metric
 	 * 
 	 * @param metric
 	 */
-	public void addJVMState(IJavaVirtualMachineStatistic metric);
+	void addJVMState(IJavaVirtualMachineStatistic metric);
 
 	/**
 	 * Set number of files
 	 * 
 	 * @param numberOfFiles
 	 */
-	public void setRepositorySize(int numberOfFiles);
+	void setRepositorySize(int numberOfFiles);
 
 }

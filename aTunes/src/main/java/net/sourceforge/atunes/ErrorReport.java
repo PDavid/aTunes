@@ -38,6 +38,8 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class ErrorReport implements IErrorReport {
 
+	private String responseMail;
+
 	private String errorDescription;
 
 	private Throwable throwable;
@@ -104,6 +106,8 @@ public class ErrorReport implements IErrorReport {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("ERROR REPORT\n");
+		sb.append("\n---------------------------------------------\n");
+		sb.append(StringUtils.getString("RESPONSE MAIL: ", responseMail, "\n"));
 		sb.append("\n---------------------------------------------\n");
 		sb.append(StringUtils.getString("Message: ", StringUtils
 				.isEmpty(this.errorDescription) ? "Unknown error"
@@ -200,5 +204,15 @@ public class ErrorReport implements IErrorReport {
 	@Override
 	public void setRepositorySize(int numberOfFiles) {
 		this.repositorySize = numberOfFiles;
+	}
+
+	@Override
+	public void setResponseMail(String mail) {
+		this.responseMail = mail;
+	}
+
+	@Override
+	public String getResponseMail() {
+		return this.responseMail;
 	}
 }
