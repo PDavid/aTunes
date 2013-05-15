@@ -163,7 +163,7 @@ public abstract class OperatingSystemAdapter {
 	 * @param filePathAndName
 	 * @return
 	 */
-	public String getShortPathName(String filePathAndName) {
+	public String getShortPathName(final String filePathAndName) {
 		return filePathAndName; // default implementation returns the same file
 								// path and name
 	}

@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,10 +27,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IBeanFactory;
-import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.ILocaleBeanFactory;
@@ -40,7 +36,6 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITaskService;
-import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -194,26 +189,7 @@ public final class Kernel implements IKernel {
 
 	@Override
 	public void finish() {
-		Timer finishTimer = new Timer();
-		try {
-			finishTimer.start();
-			Logger.info(StringUtils.getString("Closing ", Constants.APP_NAME,
-					" ", Constants.VERSION.toString()));
-			this.beanFactory.getBean(ITemporalDiskStorage.class).removeAll();
-
-			this.beanFactory.getBean(ApplicationLifeCycleListeners.class)
-					.applicationFinish();
-
-			this.beanFactory.getBean("taskService", ITaskService.class)
-					.shutdownService();
-
-		} finally {
-			Logger.info(StringUtils.getString("Application finished (",
-					StringUtils.toString(finishTimer.stop(), 3), " seconds)"));
-			Logger.info("Goodbye!!");
-			// Exit normally
-			System.exit(0);
-		}
+		this.beanFactory.getBean(Finisher.class).finish();
 	}
 
 	/**
@@ -254,45 +230,7 @@ public final class Kernel implements IKernel {
 
 	@Override
 	public void restart() {
-		try {
-			// Store all configuration and finish all active modules
-			this.beanFactory.getBean(ApplicationLifeCycleListeners.class)
-					.applicationFinish();
-
-			IOSManager osManager = this.beanFactory.getBean(IOSManager.class);
-
-			// Build a process builder with OS-specific command and saved
-			// arguments
-			String parameters = osManager.getLaunchParameters();
-			ProcessBuilder pb = null;
-			if (parameters != null && !parameters.trim().isEmpty()) {
-				pb = new ProcessBuilder(
-						osManager.getLaunchCommand(),
-						parameters,
-						this.beanFactory
-								.getBean(IApplicationArguments.class)
-								.getSavedArguments(
-										this.beanFactory
-												.getBean(ICommandHandler.class)));
-			} else {
-				pb = new ProcessBuilder(
-						osManager.getLaunchCommand(),
-						this.beanFactory
-								.getBean(IApplicationArguments.class)
-								.getSavedArguments(
-										this.beanFactory
-												.getBean(ICommandHandler.class)));
-			}
-
-			// Start new application instance
-			pb.start();
-
-		} catch (IOException e) {
-			Logger.error(e);
-		} finally {
-			// Exit normally
-			System.exit(0);
-		}
+		this.beanFactory.getBean(Finisher.class).restart();
 	}
 
 	@Override

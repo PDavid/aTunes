@@ -301,7 +301,7 @@ public class OsManager implements IOSManager {
 	 * @param name
 	 * @return if OS and name (optional) match
 	 */
-	private boolean checkOS(OperatingSystem os, String name) {
+	private boolean checkOS(final OperatingSystem os, final String name) {
 		return this.beanFactory.getBean("osType", OperatingSystem.class)
 				.equals(os)
 				&& (name == null || System.getProperty("os.name").toLowerCase()
@@ -381,7 +381,7 @@ public class OsManager implements IOSManager {
 	}
 
 	@Override
-	public String getFileNormalized(String filePathAndName) {
+	public String getFileNormalized(final String filePathAndName) {
 		if (this.adapter.usesShortPathNames()) {
 			return this.adapter.getShortPathName(filePathAndName);
 		}
@@ -389,7 +389,7 @@ public class OsManager implements IOSManager {
 	}
 
 	@Override
-	public File getFileNormalized(File file) {
+	public File getFileNormalized(final File file) {
 		return new File(getFileNormalized(FileUtils.getPath(file)));
 	}
 }
