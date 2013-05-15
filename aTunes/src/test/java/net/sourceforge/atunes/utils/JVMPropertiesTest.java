@@ -26,45 +26,45 @@ import org.junit.Test;
 
 public class JVMPropertiesTest {
 
-	private JVMProperties sut = new JVMProperties();
-	
+	private final JVMProperties sut = new JVMProperties();
+
 	@Test
 	public void test0() {
-		Assert.assertTrue(sut.isJava6Update10OrLater("2.0.0_0"));
+		Assert.assertTrue(this.sut.isJava6Update10OrLater("2.0.0_0"));
 	}
 
 	@Test
 	public void test1() {
-		Assert.assertTrue(sut.isJava6Update10OrLater("1.7.0_0"));
+		Assert.assertTrue(this.sut.isJava6Update10OrLater("1.7.0_0"));
 	}
-	
+
 	@Test
 	public void test2() {
-		Assert.assertTrue(sut.isJava6Update10OrLater("1.6.0_26"));
+		Assert.assertTrue(this.sut.isJava6Update10OrLater("1.6.0_26"));
 	}
-	
+
 	@Test
 	public void test3() {
-		Assert.assertTrue(sut.isJava6Update10OrLater("1.6.0_10"));
+		Assert.assertTrue(this.sut.isJava6Update10OrLater("1.6.0_10"));
 	}
-	
+
 	@Test
 	public void test4() {
-		Assert.assertFalse(sut.isJava6Update10OrLater("1.6.0_9"));
+		Assert.assertFalse(this.sut.isJava6Update10OrLater("1.6.0_9"));
 	}
-	
+
 	@Test
 	public void test5() {
-		Assert.assertFalse(sut.isJava6Update10OrLater("1.5.0_11"));
+		Assert.assertFalse(this.sut.isJava6Update10OrLater("1.5.0_11"));
 	}
-	
+
 	@Test
 	public void test6() {
-		Assert.assertFalse(sut.isJava6Update10OrLater("1.5"));
+		Assert.assertFalse(this.sut.isJava6Update10OrLater("1.5"));
 	}
-	
+
 	@Test
 	public void test7() {
-		Assert.assertFalse(sut.isJava6Update10OrLater(null));
+		Assert.assertFalse(this.sut.isJava6Update10OrLater(null));
 	}
 }

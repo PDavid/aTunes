@@ -28,61 +28,98 @@ import java.util.regex.Pattern;
  */
 public final class JVMProperties {
 
-    /**
-     * Checks if java 6 update 10 or later is used.
-     * 
-     * @return true, if java 6 update 10 or later is used
-     */
-    public boolean isJava6Update10OrLater() {
-        return isJava6Update10OrLater(System.getProperty("java.version"));
-    }
-    
-    /**
-     * Checks if java 6 update 10 or later is used.
-     * @param javaVersion
-     * @return
-     */
-    public boolean isJava6Update10OrLater(String javaVersion) {
-    	if (javaVersion != null) {
-    		Pattern pattern = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)_(\\d+).*");
-    		Matcher matcher = pattern.matcher(javaVersion);
-    		if (matcher.find()) {
-    			try {
-    				int v1 = Integer.parseInt(matcher.group(1));
-    				int v2 = Integer.parseInt(matcher.group(2));
-    				int v3 = Integer.parseInt(matcher.group(3));
-    				int update = Integer.parseInt(matcher.group(4));
-    				return isVersionEqualOrLater(v1, v2, v3, update);
-    			} catch (NumberFormatException e) {
-    				return false;
-    			}
-    		}
-    	}
-    	return false;
-    }
+	/**
+	 * Checks if java 6 update 10 or later is used.
+	 * 
+	 * @return true, if java 6 update 10 or later is used
+	 */
+	public boolean isJava6Update10OrLater() {
+		return isJava6Update10OrLater(System.getProperty("java.version"));
+	}
 
 	/**
-	 * Returns if version is equal or later to 1.6.0_10
+	 * Checks if java 6 update 10 or later is used.
+	 * 
+	 * @param version
+	 * @return
+	 */
+	boolean isJava6Update10OrLater(final String version) {
+		return isVersionEqualOrLaterTo(version, 1, 6, 0, 10);
+	}
+
+	/**
+	 * Checks if java 7 or later is used.
+	 * 
+	 * @return true, if java 7 or later is used
+	 */
+	public boolean isJava7OrLater() {
+		return isVersionEqualOrLaterTo(System.getProperty("java.version"), 1,
+				7, 0, 0);
+	}
+
+	/**
+	 * Checks if java version is equal or later to a given version
+	 * 
+	 * @param javaVersion
+	 * @param v1Compare
+	 * @param v2Compare
+	 * @param v3Compare
+	 * @param updateCompare
+	 * @return
+	 */
+	private boolean isVersionEqualOrLaterTo(final String javaVersion,
+			final int v1Compare, final int v2Compare, final int v3Compare,
+			final int updateCompare) {
+		if (javaVersion != null) {
+			Pattern pattern = Pattern
+					.compile("(\\d+)\\.(\\d+)\\.(\\d+)_(\\d+).*");
+			Matcher matcher = pattern.matcher(javaVersion);
+			if (matcher.find()) {
+				try {
+					int v1 = Integer.parseInt(matcher.group(1));
+					int v2 = Integer.parseInt(matcher.group(2));
+					int v3 = Integer.parseInt(matcher.group(3));
+					int update = Integer.parseInt(matcher.group(4));
+					return isVersionEqualOrLaterTo(v1, v2, v3, update,
+							v1Compare, v2Compare, v3Compare, updateCompare);
+				} catch (NumberFormatException e) {
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Returns if version is equal or later to a version
+	 * 
 	 * @param v1
 	 * @param v2
 	 * @param v3
 	 * @param update
+	 * @param v1Compare
+	 * @param v2Compare
+	 * @param v3Compare
+	 * @param updateCompare
 	 * @return
 	 */
-	private boolean isVersionEqualOrLater(int v1, int v2, int v3, int update) {
-		if (v1 >= 2) {
+	private boolean isVersionEqualOrLaterTo(final int v1, final int v2,
+			final int v3, final int update, final int v1Compare,
+			final int v2Compare, final int v3Compare, final int updateCompare) {
+		if (v1 > v1Compare) {
 			return true;
-		} else if (v1 == 1) {
-			if (v2 > 6) {
+		} else if (v1 == v1Compare) {
+			if (v2 > v2Compare) {
 				return true;
-			} else if (v2 == 6) {
-				if (v3 > 0) {
+			} else if (v2 == v2Compare) {
+				if (v3 > v3Compare) {
 					return true;
-				} else if (v3 == 0 && update >= 10) {
+				} else if (v3 == v3Compare && update >= updateCompare) {
 					return true;
 				}
 			}
 		}
 		return false;
 	}
+
 }

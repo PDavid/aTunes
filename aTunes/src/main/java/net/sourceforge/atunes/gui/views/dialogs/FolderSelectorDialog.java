@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.IFolderSelectorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.FileUtils;
+import net.sourceforge.atunes.utils.JVMProperties;
 
 /**
  * Dialog to select folder
@@ -103,7 +104,9 @@ public class FolderSelectorDialog implements IFolderSelectorDialog {
 	@Override
 	public File selectFolder(final String path) {
 		File file = null;
-		if (this.osManager.isMacOsX()) {
+		if (this.osManager.isMacOsX() && !new JVMProperties().isJava7OrLater()) {
+			// TODO: native folder chooser not working with java 7
+			// http://mail.openjdk.java.net/pipermail/macosx-port-dev/2012-May/004295.html
 			file = selectFolderWithFileChooser(path);
 		} else {
 			file = selectFolderWithJFileChooser(path);
