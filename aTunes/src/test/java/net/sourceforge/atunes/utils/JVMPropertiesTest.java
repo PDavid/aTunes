@@ -67,4 +67,9 @@ public class JVMPropertiesTest {
 	public void test7() {
 		Assert.assertFalse(this.sut.isJava6Update10OrLater(null));
 	}
+
+	@Test
+	public void test8() {
+		Assert.assertFalse(this.sut.isJava6Update10OrLater("1.6.0_03-p4"));
+	}
 }
