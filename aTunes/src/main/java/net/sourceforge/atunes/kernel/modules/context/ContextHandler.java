@@ -85,11 +85,6 @@ public final class ContextHandler extends AbstractHandler implements
 
 	private IStatePlaylist statePlaylist;
 
-	/**
-	 * Task Service
-	 */
-	private ITaskService contextTaskService;
-
 	private IFileManager fileManager;
 
 	/**
@@ -97,13 +92,6 @@ public final class ContextHandler extends AbstractHandler implements
 	 */
 	public void setFileManager(final IFileManager fileManager) {
 		this.fileManager = fileManager;
-	}
-
-	/**
-	 * @param contextTaskService
-	 */
-	public void setContextTaskService(final ITaskService contextTaskService) {
-		this.contextTaskService = contextTaskService;
 	}
 
 	/**
@@ -331,11 +319,12 @@ public final class ContextHandler extends AbstractHandler implements
 
 	@Override
 	public void audioObjectsAdded(
-			List<IPlayListAudioObject> playListAudioObjects) {
+			final List<IPlayListAudioObject> playListAudioObjects) {
 	}
 
 	@Override
-	public void audioObjectsRemoved(List<IPlayListAudioObject> audioObjectList) {
+	public void audioObjectsRemoved(
+			final List<IPlayListAudioObject> audioObjectList) {
 	}
 
 	/*
@@ -431,10 +420,5 @@ public final class ContextHandler extends AbstractHandler implements
 				ContextHandler.this.webServicesHandler.consolidateWebContent();
 			}
 		});
-	}
-
-	@Override
-	public void applicationFinish() {
-		this.contextTaskService.shutdownService();
 	}
 }

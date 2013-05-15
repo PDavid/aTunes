@@ -26,6 +26,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import net.sourceforge.atunes.model.IApplicationLifeCycleListener;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 
@@ -38,15 +39,16 @@ import org.apache.commons.io.FilenameUtils;
  * @author alex
  * 
  */
-public class TempFolder implements ITemporalDiskStorage {
+public class TempFolder implements ITemporalDiskStorage,
+		IApplicationLifeCycleListener {
 
 	private IOSManager osManager;
 
 	@Override
 	public File addFile(final File srcFile) {
-		File destFile = new File(StringUtils.getString(
-				osManager.getTempFolder(), osManager.getFileSeparator(),
-				srcFile.getAbsolutePath().hashCode()));
+		File destFile = new File(StringUtils.getString(this.osManager
+				.getTempFolder(), this.osManager.getFileSeparator(), srcFile
+				.getAbsolutePath().hashCode()));
 		try {
 			FileUtils.copyFile(srcFile, destFile);
 		} catch (IOException e) {
@@ -56,10 +58,11 @@ public class TempFolder implements ITemporalDiskStorage {
 	}
 
 	@Override
-	public File addFile(final File srcFile, String name) {
+	public File addFile(final File srcFile, final String name) {
 		File destFile = new File(StringUtils.getString(
-				osManager.getTempFolder(), osManager.getFileSeparator(), name,
-				".", FilenameUtils.getExtension(srcFile.getName())));
+				this.osManager.getTempFolder(),
+				this.osManager.getFileSeparator(), name, ".",
+				FilenameUtils.getExtension(srcFile.getName())));
 		try {
 			FileUtils.copyFile(srcFile, destFile);
 		} catch (IOException e) {
@@ -71,7 +74,7 @@ public class TempFolder implements ITemporalDiskStorage {
 	@Override
 	public File addImage(final RenderedImage image, final String fileName) {
 		try {
-			File file = new File(osManager.getTempFolder(), fileName);
+			File file = new File(this.osManager.getTempFolder(), fileName);
 			ImageIO.write(image, "png", file);
 			return file;
 		} catch (IOException e) {
@@ -86,7 +89,7 @@ public class TempFolder implements ITemporalDiskStorage {
 
 	@Override
 	public void removeAll() {
-		File tempFolder = new File(osManager.getTempFolder());
+		File tempFolder = new File(this.osManager.getTempFolder());
 		File[] files = tempFolder.listFiles();
 		for (File f : files) {
 			if (f.delete()) {
@@ -102,5 +105,22 @@ public class TempFolder implements ITemporalDiskStorage {
 	 */
 	public void setOsManager(final IOSManager osManager) {
 		this.osManager = osManager;
+	}
+
+	@Override
+	public void allHandlersInitialized() {
+	}
+
+	@Override
+	public void applicationFinish() {
+		removeAll();
+	}
+
+	@Override
+	public void applicationStarted() {
+	}
+
+	@Override
+	public void deferredInitialization() {
 	}
 }

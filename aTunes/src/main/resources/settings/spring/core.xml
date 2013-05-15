@@ -15,6 +15,7 @@
 	<bean id="applicationArgumentsSender" class="net.sourceforge.atunes.ApplicationArgumentsSender" scope="prototype"/>
 
 	<bean id="kernel" class="net.sourceforge.atunes.kernel.Kernel"/>
+	<bean id="restarter" class="net.sourceforge.atunes.kernel.Finisher" scope="prototype"/>
 
 	<bean id="applicationArguments" class="net.sourceforge.atunes.ApplicationArguments"/>
 	

@@ -332,5 +332,4 @@ public interface IOSManager {
 	 * @return
 	 */
 	File getFileNormalized(File file);
-
 }

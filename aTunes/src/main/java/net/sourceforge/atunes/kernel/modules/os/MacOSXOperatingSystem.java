@@ -41,11 +41,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 
-	/**
-	 * Name of the MacOsX command
-	 */
-	private static final String COMMAND_MACOSX = "/usr/bin/open";
-
 	protected static final String MPLAYER_COMMAND = "mplayer.command";
 
 	private IDialogFactory dialogFactory;
@@ -75,13 +70,14 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 
 	@Override
 	public String getLaunchCommand() {
-		return COMMAND_MACOSX;
+		// -n to allow start another instance
+		return "/usr/bin/open -n";
 	}
 
 	@Override
 	public String getLaunchParameters() {
-		return System.getProperty("atunes.package"); // This property is set in
-		// Info.plist
+		// This property is set in Info.plist
+		return System.getProperty("atunes.package");
 	}
 
 	@Override

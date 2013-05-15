@@ -28,6 +28,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import net.sourceforge.atunes.model.IApplicationLifeCycleListener;
 import net.sourceforge.atunes.model.ITaskService;
 
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
@@ -43,7 +44,7 @@ import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
  * @author alex
  * 
  */
-public class TaskService implements ITaskService {
+public class TaskService implements ITaskService, IApplicationLifeCycleListener {
 
 	/**
 	 * Service used for scheduled or delayed tasks
@@ -83,52 +84,54 @@ public class TaskService implements ITaskService {
 	/**
 	 * @param threadPoolCoreSize
 	 */
-	public void setThreadPoolCoreSize(int threadPoolCoreSize) {
+	public void setThreadPoolCoreSize(final int threadPoolCoreSize) {
 		this.threadPoolCoreSize = threadPoolCoreSize;
 	}
 
 	/**
 	 * @param threadPoolMaximumSize
 	 */
-	public void setThreadPoolMaximumSize(int threadPoolMaximumSize) {
+	public void setThreadPoolMaximumSize(final int threadPoolMaximumSize) {
 		this.threadPoolMaximumSize = threadPoolMaximumSize;
 	}
 
 	/**
 	 * @param threadPoolSuffix
 	 */
-	public void setThreadPoolSuffix(String threadPoolSuffix) {
+	public void setThreadPoolSuffix(final String threadPoolSuffix) {
 		this.threadPoolSuffix = threadPoolSuffix;
 	}
 
 	/**
 	 * @param scheduledThreadPoolSize
 	 */
-	public void setScheduledThreadPoolSize(int scheduledThreadPoolSize) {
+	public void setScheduledThreadPoolSize(final int scheduledThreadPoolSize) {
 		this.scheduledThreadPoolSize = scheduledThreadPoolSize;
 	}
 
 	/**
 	 * @param scheduledThreadPoolSuffix
 	 */
-	public void setScheduledThreadPoolSuffix(String scheduledThreadPoolSuffix) {
+	public void setScheduledThreadPoolSuffix(
+			final String scheduledThreadPoolSuffix) {
 		this.scheduledThreadPoolSuffix = scheduledThreadPoolSuffix;
 	}
 
 	@Override
-	public Future<?> submitNow(String name, Runnable task) {
+	public Future<?> submitNow(final String name, final Runnable task) {
 		return getPoolService().submit(createRunnable(name, task));
 	}
 
 	@Override
-	public ScheduledFuture<?> submitOnce(String name, long delay, Runnable task) {
+	public ScheduledFuture<?> submitOnce(final String name, final long delay,
+			final Runnable task) {
 		return getScheduledService().schedule(createRunnable(name, task),
 				delay, TimeUnit.SECONDS);
 	}
 
 	@Override
-	public ScheduledFuture<?> submitPeriodically(String name,
-			long initialDelay, long delay, Runnable task) {
+	public ScheduledFuture<?> submitPeriodically(final String name,
+			final long initialDelay, final long delay, final Runnable task) {
 		return getScheduledService().scheduleWithFixedDelay(
 				createRunnable(name, task), initialDelay, delay,
 				TimeUnit.SECONDS);
@@ -136,34 +139,52 @@ public class TaskService implements ITaskService {
 
 	@Override
 	public void shutdownService() {
-		if (scheduledService != null) {
-			scheduledService.shutdown();
+		if (this.scheduledService != null) {
+			this.scheduledService.shutdown();
 		}
-		if (poolService != null) {
-			poolService.shutdown();
+		if (this.poolService != null) {
+			this.poolService.shutdown();
 		}
 	}
 
 	private ScheduledExecutorService getScheduledService() {
-		if (scheduledService == null) {
-			scheduledService = Executors.newScheduledThreadPool(
-					scheduledThreadPoolSize, new CustomizableThreadFactory(
-							scheduledThreadPoolSuffix));
+		if (this.scheduledService == null) {
+			this.scheduledService = Executors.newScheduledThreadPool(
+					this.scheduledThreadPoolSize,
+					new CustomizableThreadFactory(
+							this.scheduledThreadPoolSuffix));
 		}
-		return scheduledService;
+		return this.scheduledService;
 	}
 
 	private ThreadPoolExecutor getPoolService() {
-		if (poolService == null) {
-			poolService = new ThreadPoolExecutor(threadPoolCoreSize,
-					threadPoolMaximumSize, 5, TimeUnit.SECONDS,
+		if (this.poolService == null) {
+			this.poolService = new ThreadPoolExecutor(this.threadPoolCoreSize,
+					this.threadPoolMaximumSize, 5, TimeUnit.SECONDS,
 					new LinkedBlockingDeque<Runnable>(),
-					new CustomizableThreadFactory(threadPoolSuffix));
+					new CustomizableThreadFactory(this.threadPoolSuffix));
 		}
-		return poolService;
+		return this.poolService;
 	}
 
 	private Runnable createRunnable(final String name, final Runnable task) {
 		return new TaskServiceRunnable(name, task);
+	}
+
+	@Override
+	public void allHandlersInitialized() {
+	}
+
+	@Override
+	public void applicationFinish() {
+		shutdownService();
+	}
+
+	@Override
+	public void applicationStarted() {
+	}
+
+	@Override
+	public void deferredInitialization() {
 	}
 }
