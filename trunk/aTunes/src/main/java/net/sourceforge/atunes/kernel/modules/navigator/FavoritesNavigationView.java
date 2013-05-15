@@ -22,8 +22,10 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JPopupMenu;
 
@@ -165,16 +167,12 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 	public List<IAudioObject> getAudioObjectForTreeNode(final ITreeNode node,
 			final ViewMode viewMode, final String treeFilter,
 			final String tableFilter) {
-		List<IAudioObject> songs = new ArrayList<IAudioObject>();
+		Set<IAudioObject> songs = new HashSet<IAudioObject>();
 
 		if (node.isRoot()) {
-			songs.addAll(this.repositoryHandler
-					.getAudioFilesForArtists(this.favoritesHandler
-							.getFavoriteArtists()));
-			songs.addAll(this.repositoryHandler
-					.getAudioFilesForAlbums(this.favoritesHandler
-							.getFavoriteAlbums()));
-			songs.addAll(this.favoritesHandler.getFavoriteSongs());
+			addArtistAudioObjects(songs);
+			addAlbumAudioObjects(songs);
+			addAudioObjects(songs);
 		} else {
 			if (node.getUserObject() instanceof ITreeObject) {
 				songs.addAll(((ITreeObject<ILocalAudioObject>) node
@@ -182,20 +180,32 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 			} else {
 				if (node.getUserObject().toString()
 						.equals(I18nUtils.getString(ARTISTS))) {
-					songs.addAll(this.repositoryHandler
-							.getAudioFilesForArtists(this.favoritesHandler
-									.getFavoriteArtists()));
+					addArtistAudioObjects(songs);
 				} else if (node.getUserObject().toString()
 						.equals(I18nUtils.getString(ALBUMS))) {
-					songs.addAll(this.repositoryHandler
-							.getAudioFilesForAlbums(this.favoritesHandler
-									.getFavoriteAlbums()));
+					addAlbumAudioObjects(songs);
 				} else {
-					songs.addAll(this.favoritesHandler.getFavoriteSongs());
+					addAudioObjects(songs);
 				}
 			}
 		}
-		return songs;
+		return new ArrayList<IAudioObject>(songs);
+	}
+
+	private void addArtistAudioObjects(final Set<IAudioObject> songs) {
+		songs.addAll(this.repositoryHandler
+				.getAudioFilesForArtists(this.favoritesHandler
+						.getFavoriteArtists()));
+	}
+
+	private void addAlbumAudioObjects(final Set<IAudioObject> songs) {
+		songs.addAll(this.repositoryHandler
+				.getAudioFilesForAlbums(this.favoritesHandler
+						.getFavoriteAlbums()));
+	}
+
+	private void addAudioObjects(final Set<IAudioObject> songs) {
+		songs.addAll(this.favoritesHandler.getFavoriteSongs());
 	}
 
 	@Override
