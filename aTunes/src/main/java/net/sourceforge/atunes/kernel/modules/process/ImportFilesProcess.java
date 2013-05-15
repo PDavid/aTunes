@@ -115,7 +115,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 		// Get base folder or the first folder if there is any error
 		File baseFolder = null;
 		for (File folder : this.folders) {
-			String filePath = getFileManager().getPath(song);
+			String filePath = getFileManager().getFolderPath(song);
 			String folderParentPath = folder.getParentFile() != null ? FileUtils
 					.getPath(folder.getParentFile()) : null;
 			if (filePath != null && folderParentPath != null
@@ -128,10 +128,10 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 			baseFolder = this.folders.get(0);
 		}
 
-		String songPath = this.getFileManager().getPath(song);
-		String songRelativePath = songPath.replaceFirst(
-				FileUtils.getPath(baseFolder).replace("\\", "\\\\")
-						.replace("$", "\\$"), "");
+		String songPath = this.getFileManager().getFolderPath(song);
+		String songRelativePath = songPath.replace(FileUtils
+				.getPath(baseFolder).replace("\\", "\\\\").replace("$", "\\$"),
+				"");
 		if (getStateRepository().getImportFolderPathPattern() != null) {
 			songRelativePath = FileNameUtils
 					.getValidFolderName(
