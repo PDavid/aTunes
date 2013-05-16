@@ -98,13 +98,12 @@ public class SavePlayListAction extends CustomAbstractAction {
 	 * Default constructor
 	 */
 	public SavePlayListAction() {
-		super(StringUtils.getString(I18nUtils.getString("SAVE"), "..."));
+		super(StringUtils.getString(
+				I18nUtils.getString("EXPORT_SAVE_PLAYLIST"), "..."));
 	}
 
 	@Override
 	protected void initialize() {
-		putValue(SHORT_DESCRIPTION,
-				I18nUtils.getString("SAVE_PLAYLIST_TOOLTIP"));
 		putValue(
 				ACCELERATOR_KEY,
 				KeyStroke.getKeyStroke(KeyEvent.VK_S,

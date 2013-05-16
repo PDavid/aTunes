@@ -15,6 +15,7 @@ aTunes 3.1.0
 - Show favorite songs and current song in artist top tracks
 - Improvements in seek function
 - User can provide an email when reporting an error
+- New options to save play list selection
 - FIX: LyricsDirectoryEngine review when no lyric found
 - FIX: Mute not working while fade away
 - FIX: Duplicate favorites in navigation view when a song is favorite and its artist or album too
