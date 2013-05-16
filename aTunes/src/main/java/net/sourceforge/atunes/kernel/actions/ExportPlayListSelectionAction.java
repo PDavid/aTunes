@@ -58,7 +58,7 @@ public class ExportPlayListSelectionAction extends CustomAbstractAction {
 	 */
 	public ExportPlayListSelectionAction() {
 		super(StringUtils.getString(
-				I18nUtils.getString("EXPORT_PLAYLIST_SELECTION"), "..."));
+				I18nUtils.getString("EXPORT_SAVE_PLAYLIST_SELECTION"), "..."));
 	}
 
 	/**

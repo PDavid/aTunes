@@ -249,6 +249,19 @@ public final class PlayListIO implements IPlayListIOService {
 	}
 
 	@Override
+	public boolean write(final List<IAudioObject> audioObjects, final File file) {
+		return this.beanFactory.getBean(PlayListWriter.class).write(
+				audioObjects, file);
+	}
+
+	@Override
+	public boolean writeM3U(final List<IAudioObject> audioObjects,
+			final File file) {
+		return this.beanFactory.getBean(M3UPlayListWriter.class).writeM3U(
+				audioObjects, file);
+	}
+
+	@Override
 	public FilenameFilter getAllAcceptedPlaylistsFileFilter() {
 		return new AllAcceptedPlaylistsFileFilter();
 	}

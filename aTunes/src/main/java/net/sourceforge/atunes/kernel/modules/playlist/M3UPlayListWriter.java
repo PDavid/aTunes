@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFileManager;
@@ -70,6 +71,17 @@ public class M3UPlayListWriter {
 	 * @return
 	 */
 	boolean writeM3U(final IPlayList playlist, final File file) {
+		return writeM3U(playlist.getAudioObjectsList(), file);
+	}
+
+	/**
+	 * Writes a list of audio objects to a file in M3U format
+	 * 
+	 * @param audioObjects
+	 * @param file
+	 * @return
+	 */
+	boolean writeM3U(final List<IAudioObject> audioObjects, final File file) {
 		FileWriter writer = null;
 		try {
 			if (file.exists() && !file.delete()) {
@@ -78,8 +90,7 @@ public class M3UPlayListWriter {
 			writer = new FileWriter(file);
 			writer.append(StringUtils.getString(M3U_HEADER,
 					this.osManager.getLineTerminator()));
-			for (int i = 0; i < playlist.size(); i++) {
-				IAudioObject f = playlist.get(i);
+			for (IAudioObject f : audioObjects) {
 				if (f instanceof ILocalAudioObject) {
 					writer.append(StringUtils.getString(this.fileManager
 							.getSystemPath((ILocalAudioObject) f),

@@ -24,16 +24,17 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.List;
 
-
 /**
  * Includes services to manage play list files (for example m3u files)
+ * 
  * @author alex
- *
+ * 
  */
 public interface IPlayListIOService {
 
 	/**
 	 * Returns a list of files contained in a list of file names.
+	 * 
 	 * @param fileNames
 	 * @return
 	 */
@@ -42,6 +43,7 @@ public interface IPlayListIOService {
 	/**
 	 * Returns an AudioObject given a resource name or instantiates it if does
 	 * not exist. A resource can be a file or URL at this moment
+	 * 
 	 * @param resourceName
 	 * @return
 	 */
@@ -49,6 +51,7 @@ public interface IPlayListIOService {
 
 	/**
 	 * Returns a list of files contained in a play list file.
+	 * 
 	 * @param file
 	 * @return
 	 */
@@ -56,10 +59,11 @@ public interface IPlayListIOService {
 
 	/**
 	 * File filter to accept all possible play list formats
+	 * 
 	 * @return
 	 */
 	FilenameFilter getAllAcceptedPlaylistsFileFilter();
-	
+
 	/**
 	 * FileFilter to be used when loading and saving a play list file.
 	 * 
@@ -123,23 +127,40 @@ public interface IPlayListIOService {
 	 * 
 	 * @param playlist
 	 * @param file
-	 * @param osManager
 	 * @return
 	 */
 	boolean write(IPlayList playlist, File file);
+
+	/**
+	 * Writes a list of audio objects to a file.
+	 * 
+	 * @param audioObjects
+	 * @param file
+	 * @return
+	 */
+	boolean write(List<IAudioObject> audioObjects, File file);
 
 	/**
 	 * Writes a play list to a M3U file
 	 * 
 	 * @param playlist
 	 * @param file
-	 * @param osManager
 	 * @return
 	 */
 	boolean writeM3U(IPlayList playlist, File file);
 
 	/**
+	 * Writes a list of audio objects to a M3U file
+	 * 
+	 * @param audioObjects
+	 * @param file
+	 * @return
+	 */
+	boolean writeM3U(List<IAudioObject> audioObjects, File file);
+
+	/**
 	 * Checks file name is a valid play list file (checks extension)
+	 * 
 	 * @param file
 	 * @return file checked
 	 */
@@ -147,6 +168,7 @@ public interface IPlayListIOService {
 
 	/**
 	 * Checks file name is a valid M3U play list file (checks extension)
+	 * 
 	 * @param file
 	 * @return file checked
 	 */

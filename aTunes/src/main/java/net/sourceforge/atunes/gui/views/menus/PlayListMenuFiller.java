@@ -50,7 +50,9 @@ import net.sourceforge.atunes.kernel.actions.OpenFolderAction;
 import net.sourceforge.atunes.kernel.actions.RemoveDuplicatesFromPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RemoveFromPlayListAction;
 import net.sourceforge.atunes.kernel.actions.SaveM3UPlayListAction;
+import net.sourceforge.atunes.kernel.actions.SaveM3UPlayListSelectionAction;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
+import net.sourceforge.atunes.kernel.actions.SavePlayListSelectionAction;
 import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteAlbumAction;
 import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteArtistAction;
 import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteSongAction;
@@ -155,8 +157,8 @@ public final class PlayListMenuFiller {
 		objects.add(this.beanFactory.getBean(ClearPlayListAction.class));
 		objects.add(new JSeparator());
 		objects.add(getExportMenu());
-		objects.add(this.beanFactory.getBean(SavePlayListAction.class));
-		objects.add(this.beanFactory.getBean(SaveM3UPlayListAction.class));
+		objects.add(getSaveMenu());
+		objects.add(getSaveM3UMenu());
 		objects.add(this.beanFactory.getBean(LoadPlayListAction.class));
 		objects.add(new JSeparator());
 		objects.add(getSmartPlayListMenu());
@@ -267,6 +269,20 @@ public final class PlayListMenuFiller {
 		export.add(this.beanFactory
 				.getBean(ExportPlayListSelectionAction.class));
 		return export;
+	}
+
+	private JMenu getSaveMenu() {
+		JMenu save = new JMenu(I18nUtils.getString("SAVE"));
+		save.add(this.beanFactory.getBean(SavePlayListAction.class));
+		save.add(this.beanFactory.getBean(SavePlayListSelectionAction.class));
+		return save;
+	}
+
+	private JMenu getSaveM3UMenu() {
+		JMenu save = new JMenu(I18nUtils.getString("SAVE_M3U"));
+		save.add(this.beanFactory.getBean(SaveM3UPlayListAction.class));
+		save.add(this.beanFactory.getBean(SaveM3UPlayListSelectionAction.class));
+		return save;
 	}
 
 	/**

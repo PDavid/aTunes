@@ -68,6 +68,18 @@ public class PlayListWriter {
 	 * @return
 	 */
 	boolean write(final IPlayList playlist, final File file) {
+		return write(playlist.getAudioObjectsList(), file);
+	}
+
+	/**
+	 * Writes a list of audio objects to a file using paths relative to
+	 * repository
+	 * 
+	 * @param audioObjects
+	 * @param file
+	 * @return
+	 */
+	boolean write(final List<IAudioObject> audioObjects, final File file) {
 		FileWriter writer = null;
 		try {
 			if (file.exists() && !file.delete()) {
@@ -75,8 +87,7 @@ public class PlayListWriter {
 			}
 			writer = new FileWriter(file);
 			List<File> repositoryFolders = this.repositoryHandler.getFolders();
-			for (int i = 0; i < playlist.size(); i++) {
-				IAudioObject f = playlist.get(i);
+			for (IAudioObject f : audioObjects) {
 				writer.append(StringUtils.getString(
 						getRelativePath(repositoryFolders, f),
 						this.osManager.getLineTerminator()));
