@@ -506,7 +506,8 @@ public final class RepositoryHandler extends AbstractHandler implements
 	@Override
 	public boolean addFolderToRepository() {
 		this.currentRepositoryReader = getBean(RepositoryReader.class);
-		return this.currentRepositoryReader.addFolderToRepository();
+		return this.currentRepositoryReader
+				.addFolderToRepository(this.repository);
 	}
 
 	@Override

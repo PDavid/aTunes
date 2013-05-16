@@ -180,7 +180,8 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 * 
 	 * @return true, if successful
 	 */
-	boolean addFolderToRepository() {
+	boolean addFolderToRepository(final IRepository repository) {
+		this.repository = repository;
 		IFolderSelectorDialog dialog = this.dialogFactory
 				.newDialog(IFolderSelectorDialog.class);
 		dialog.setTitle(I18nUtils.getString("ADD_FOLDER_TO_REPOSITORY"));
