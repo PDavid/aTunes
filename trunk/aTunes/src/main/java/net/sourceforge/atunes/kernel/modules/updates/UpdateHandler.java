@@ -22,14 +22,18 @@ package net.sourceforge.atunes.kernel.modules.updates;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Properties;
 
+import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IApplicationArguments;
+import net.sourceforge.atunes.model.IApplicationUpdatedListener;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.PropertiesUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
@@ -51,6 +55,24 @@ public final class UpdateHandler extends AbstractHandler implements
 	private ITaskService taskService;
 
 	private INetworkHandler networkHandler;
+
+	private String versionFile;
+
+	private String versionProperty;
+
+	/**
+	 * @param versionProperty
+	 */
+	public void setVersionProperty(final String versionProperty) {
+		this.versionProperty = versionProperty;
+	}
+
+	/**
+	 * @param versionFile
+	 */
+	public void setVersionFile(final String versionFile) {
+		this.versionFile = versionFile;
+	}
 
 	/**
 	 * @param networkHandler
@@ -91,6 +113,33 @@ public final class UpdateHandler extends AbstractHandler implements
 				}
 			});
 		}
+		checkIfVersionChanged();
+	}
+
+	private void checkIfVersionChanged() {
+		Properties versionProperties = PropertiesUtils
+				.readProperties(getVersionFilePath());
+		String oldVersion = versionProperties.getProperty(this.versionProperty);
+		oldVersion = oldVersion != null ? oldVersion : "";
+		String newVersion = Constants.VERSION.toString();
+		if (!newVersion.equals(oldVersion)) {
+			for (IApplicationUpdatedListener listener : getBeanFactory()
+					.getBeans(IApplicationUpdatedListener.class)) {
+				listener.versionChanged(oldVersion, newVersion);
+			}
+			versionProperties.put(this.versionProperty, newVersion);
+			try {
+				PropertiesUtils.writeProperties(getVersionFilePath(),
+						versionProperties);
+			} catch (IOException e) {
+				Logger.error(e);
+			}
+		}
+	}
+
+	private String getVersionFilePath() {
+		return StringUtils.getString(getOsManager().getUserConfigFolder(),
+				getOsManager().getFileSeparator(), this.versionFile);
 	}
 
 	/**

@@ -20,18 +20,16 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
 import javax.swing.Action;
 
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IApplicationUpdatedListener;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.PropertiesUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -40,7 +38,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author alex
  * 
  */
-public final class StartCounter {
+public final class StartCounter implements IApplicationUpdatedListener {
 
 	private IOSManager osManager;
 
@@ -103,7 +101,22 @@ public final class StartCounter {
 	public void addOne() {
 		Properties properties = getProperties();
 		Logger.info("Start count: ", addOneToCounter(properties));
-		writeProperties(properties);
+		try {
+			PropertiesUtils.writeProperties(getCounterFilePath(), properties);
+		} catch (IOException e) {
+			Logger.error(e);
+		}
+	}
+
+	private void reset() {
+		Properties properties = getProperties();
+		properties.put(this.counterProperty, String.valueOf(1));
+		properties.put(this.dontFireActionProperty, Boolean.toString(false));
+		try {
+			PropertiesUtils.writeProperties(getCounterFilePath(), properties);
+		} catch (IOException e) {
+			Logger.error(e);
+		}
 	}
 
 	/**
@@ -111,22 +124,6 @@ public final class StartCounter {
 	 */
 	public int getCounter() {
 		return readCounter(getProperties());
-	}
-
-	/**
-	 * @param properties
-	 */
-	private void writeProperties(final Properties properties) {
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(getCounterFilePath());
-			properties.store(fos, null);
-			fos.flush();
-		} catch (IOException e) {
-			Logger.error(e);
-		} finally {
-			ClosingUtils.close(fos);
-		}
 	}
 
 	/**
@@ -169,19 +166,7 @@ public final class StartCounter {
 	 * loads properties where counter is defined
 	 */
 	private Properties getProperties() {
-		Properties properties = new Properties();
-		FileReader fr = null;
-		try {
-			fr = new FileReader(getCounterFilePath());
-			properties.load(fr);
-		} catch (FileNotFoundException e) {
-			Logger.info("Counter file not found");
-		} catch (IOException e) {
-			Logger.error(e);
-		} finally {
-			ClosingUtils.close(fr);
-		}
-		return properties;
+		return PropertiesUtils.readProperties(getCounterFilePath());
 	}
 
 	/**
@@ -229,6 +214,17 @@ public final class StartCounter {
 	public void dontFireActionAgain() {
 		Properties properties = getProperties();
 		dontFireActionAgain(properties);
-		writeProperties(properties);
+		try {
+			PropertiesUtils.writeProperties(getCounterFilePath(), properties);
+		} catch (IOException e) {
+			Logger.error(e);
+		}
+	}
+
+	@Override
+	public void versionChanged(final String oldVersion, final String newVersion) {
+		Logger.info(String.format("Version changed from '%s' to '%s'",
+				oldVersion, newVersion));
+		reset();
 	}
 }
