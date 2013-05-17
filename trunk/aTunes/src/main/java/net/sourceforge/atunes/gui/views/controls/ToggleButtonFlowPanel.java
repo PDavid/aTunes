@@ -190,18 +190,21 @@ public class ToggleButtonFlowPanel extends JPanel implements
 		c.weightx = 0;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.VERTICAL;
+		c.insets = new Insets(0, 0, 0, 1);
 		add(this.leftButton, c);
 
 		c.gridx = 1;
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(0, 0, 0, 0);
 		add(this.scrollPane, c);
 
 		c.gridx = 2;
 		c.weightx = 0;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.VERTICAL;
+		c.insets = new Insets(0, 1, 0, 0);
 		add(this.rightButton, c);
 	}
 

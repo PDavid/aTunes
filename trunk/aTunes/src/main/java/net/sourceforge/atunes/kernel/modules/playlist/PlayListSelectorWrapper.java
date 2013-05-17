@@ -43,6 +43,7 @@ import net.sourceforge.atunes.model.IStatePlaylist;
  */
 public class PlayListSelectorWrapper {
 
+	@SuppressWarnings("rawtypes")
 	private JComboBox playListCombo;
 
 	private IButtonPanel playListButtonFlowPanel;
@@ -77,6 +78,7 @@ public class PlayListSelectorWrapper {
 	/**
 	 * Creates both type of selectors
 	 */
+	@SuppressWarnings("rawtypes")
 	public void initialize() {
 		this.playListCombo = new JComboBox();
 		this.playListCombo.setMaximumRowCount(30);
@@ -97,7 +99,7 @@ public class PlayListSelectorWrapper {
 
 		c.weighty = 1;
 		c.fill = GridBagConstraints.VERTICAL;
-		c.insets = new Insets(1, 0, 1, 0);
+		c.insets = new Insets(1, 0, 0, 1);
 		selectorPanel.add(selectorPanel.getOptions().getSwingComponent(), c);
 
 		c.gridx = 1;
@@ -108,14 +110,14 @@ public class PlayListSelectorWrapper {
 			selectorPanel.add(this.playListCombo, c);
 		} else {
 			c.fill = GridBagConstraints.BOTH;
-			c.insets = new Insets(1, 0, 1, 10);
+			c.insets = new Insets(1, 0, 0, 10);
 			selectorPanel.add((JComponent) this.playListButtonFlowPanel, c);
 		}
 
 		c.gridx = 2;
 		c.weightx = 0;
 		c.anchor = GridBagConstraints.EAST;
-		c.insets = new Insets(0, 0, 0, 5);
+		c.insets = new Insets(1, 0, 1, 5);
 		selectorPanel.add(selectorPanel.getPlayListFilterPanel()
 				.getSwingComponent(), c);
 	}
@@ -125,6 +127,7 @@ public class PlayListSelectorWrapper {
 	 * 
 	 * @param l
 	 */
+	@SuppressWarnings("unchecked")
 	void addBindings(final PlayListTabListener l) {
 		this.playListCombo.addItemListener(l);
 		this.playListCombo.setModel(PlayListComboModel.getNewComboModel());
