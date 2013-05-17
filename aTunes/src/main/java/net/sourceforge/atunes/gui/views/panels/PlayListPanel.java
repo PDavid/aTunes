@@ -29,7 +29,6 @@ import javax.swing.JScrollPane;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
 import net.sourceforge.atunes.model.IControlsBuilder;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -52,8 +51,6 @@ public final class PlayListPanel extends JPanel implements IPlayListPanel {
 	/** The play list table scroll. */
 	private JScrollPane playListTableScroll;
 
-	private ILookAndFeelManager lookAndFeelManager;
-
 	private PlayListTableTransferHandler playListTableTransferHandler;
 
 	private PlayListToDeviceDragAndDropListener playListToDeviceDragAndDropListener;
@@ -64,7 +61,7 @@ public final class PlayListPanel extends JPanel implements IPlayListPanel {
 	 * Instantiates a new play list panel.
 	 */
 	public PlayListPanel() {
-		super(new BorderLayout());
+		super(new BorderLayout(0, 1));
 	}
 
 	/**
@@ -88,14 +85,6 @@ public final class PlayListPanel extends JPanel implements IPlayListPanel {
 	public void setPlayListTableTransferHandler(
 			final PlayListTableTransferHandler playListTableTransferHandler) {
 		this.playListTableTransferHandler = playListTableTransferHandler;
-	}
-
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(
-			final ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
 	/**
