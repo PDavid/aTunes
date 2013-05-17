@@ -21,14 +21,17 @@
 package net.sourceforge.atunes.gui.views.menus;
 
 import javax.swing.JMenu;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * "Playlist" application menu
+ * 
  * @author alex
- *
+ * 
  */
 public class PlayListMenu extends JMenu {
 
@@ -50,11 +53,26 @@ public class PlayListMenu extends JMenu {
 		super(I18nUtils.getString(i18nKey));
 	}
 
-
 	/**
 	 * Initializes menu
 	 */
 	public void initialize() {
 		beanFactory.getBean(PlayListMenuFiller.class).fillMenu(this);
+		addMenuListener(new MenuListener() {
+
+			@Override
+			public void menuSelected(MenuEvent e) {
+				PlayListMenu.this.beanFactory.getBean(PlayListMenuFiller.class)
+						.updatePlayListMenuItems();
+			}
+
+			@Override
+			public void menuDeselected(MenuEvent e) {
+			}
+
+			@Override
+			public void menuCanceled(MenuEvent e) {
+			}
+		});
 	}
 }

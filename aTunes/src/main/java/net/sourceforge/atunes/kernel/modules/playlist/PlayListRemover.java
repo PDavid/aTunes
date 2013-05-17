@@ -23,9 +23,6 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
-import net.sourceforge.atunes.kernel.actions.SaveM3UPlayListAction;
-import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
-import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -277,12 +274,6 @@ public class PlayListRemover {
 		}
 
 		playListController.refreshPlayList();
-
-		if (currentPlayList.isEmpty()) {
-			beanFactory.getBean(SavePlayListAction.class).setEnabled(false);
-			beanFactory.getBean(SaveM3UPlayListAction.class).setEnabled(false);
-			beanFactory.getBean(ShufflePlayListAction.class).setEnabled(false);
-		}
 		playListInformationInStatusBar.showPlayListInformation(currentPlayList);
 		Logger.info(StringUtils.getString(rows.length,
 				" objects removed from play list"));
@@ -352,11 +343,6 @@ public class PlayListRemover {
 
 			// Set first audio object as current
 			playList.setCurrentAudioObjectIndex(0);
-
-			// Disable actions
-			beanFactory.getBean(SavePlayListAction.class).setEnabled(false);
-			beanFactory.getBean(SaveM3UPlayListAction.class).setEnabled(false);
-			beanFactory.getBean(ShufflePlayListAction.class).setEnabled(false);
 
 			// Update audio object number
 			playListInformationInStatusBar.showPlayListInformation(playList);

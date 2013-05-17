@@ -21,6 +21,8 @@
 package net.sourceforge.atunes.gui.views.menus;
 
 import javax.swing.JPopupMenu;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
@@ -51,5 +53,21 @@ public class PlayListPopupMenu extends JPopupMenu {
 		this.beanFactory.getBean(PlayListMenuFiller.class).fillPopUpMenu(this);
 		this.beanFactory.getBean(IControlsBuilder.class)
 				.applyComponentOrientation(this);
+		addPopupMenuListener(new PopupMenuListener() {
+
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				PlayListPopupMenu.this.beanFactory.getBean(
+						PlayListMenuFiller.class).updatePlayListMenuItems();
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+			}
+		});
 	}
 }
