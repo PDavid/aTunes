@@ -23,8 +23,7 @@ package net.sourceforge.atunes.kernel.modules.process;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
-
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
@@ -32,76 +31,88 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Adds to play list a list of local audio objects given their files
+ * 
  * @author alex
- *
+ * 
  */
 public class LoadPlayListProcess extends AbstractProcess<Void> {
 
-    private List<String> filenamesToLoad;
-    
-    private String playListName;
-    
-    private IPlayListHandler playListHandler;
-    
-    private IPlayListIOService playListIOService;
-    
-    /**
-     * @param playListIOService
-     */
-    public void setPlayListIOService(IPlayListIOService playListIOService) {
+	private List<String> filenamesToLoad;
+
+	private String playListName;
+
+	private IPlayListHandler playListHandler;
+
+	private IPlayListIOService playListIOService;
+
+	private boolean replacePlayList;
+
+	/**
+	 * @param playListIOService
+	 */
+	public void setPlayListIOService(IPlayListIOService playListIOService) {
 		this.playListIOService = playListIOService;
 	}
-    
-    /**
-     * @param filenamesToLoad
-     */
-    public void setFilenamesToLoad(List<String> filenamesToLoad) {
+
+	/**
+	 * @param filenamesToLoad
+	 */
+	public void setFilenamesToLoad(List<String> filenamesToLoad) {
 		this.filenamesToLoad = filenamesToLoad;
 	}
-    
-    /**
-     * @param playListName
-     */
-    public void setPlayListName(String playListName) {
+
+	/**
+	 * @param playListName
+	 */
+	public void setPlayListName(String playListName) {
 		this.playListName = playListName;
 	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
 
-    @Override
-    protected long getProcessSize() {
-        return this.filenamesToLoad.size();
-    }
+	@Override
+	protected long getProcessSize() {
+		return this.filenamesToLoad.size();
+	}
 
-    @Override
-    protected String getProgressDialogTitle() {
-        return I18nUtils.getString("LOADING");
-    }
+	@Override
+	protected String getProgressDialogTitle() {
+		return I18nUtils.getString("LOADING");
+	}
 
-    @Override
-    protected void runCancel() {
-        // Nothing to do
-    }
+	@Override
+	protected void runCancel() {
+		// Nothing to do
+	}
 
-    @Override
-    protected boolean runProcess() {
-        final List<IAudioObject> songsLoaded = new ArrayList<IAudioObject>();
-        for (int i = 0; i < filenamesToLoad.size() && !isCanceled(); i++) {
-            songsLoaded.add(playListIOService.getAudioObjectOrCreate(filenamesToLoad.get(i)));
-            setCurrentProgress(i + 1);
-        }
-        // If canceled loaded files are added anyway
-        SwingUtilities.invokeLater(new AddToPlayListRunnable(songsLoaded, playListHandler, playListName));
-        return true;
-    }
-    
-    @Override
-    protected Void getProcessResult() {
-    	return null;
-    }
+	@Override
+	protected boolean runProcess() {
+		final List<IAudioObject> songsLoaded = new ArrayList<IAudioObject>();
+		for (int i = 0; i < filenamesToLoad.size() && !isCanceled(); i++) {
+			songsLoaded.add(playListIOService
+					.getAudioObjectOrCreate(filenamesToLoad.get(i)));
+			setCurrentProgress(i + 1);
+		}
+		// If canceled loaded files are added anyway
+		GuiUtils.callInEventDispatchThreadLater(new AddToPlayListRunnable(
+				songsLoaded, playListHandler, playListName, replacePlayList));
+		return true;
+	}
+
+	@Override
+	protected Void getProcessResult() {
+		return null;
+	}
+
+	/**
+	 * @param replacePlayList
+	 */
+	public void setReplacePlayList(boolean replacePlayList) {
+		this.replacePlayList = replacePlayList;
+	}
 }

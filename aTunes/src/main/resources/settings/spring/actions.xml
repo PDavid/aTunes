@@ -160,7 +160,8 @@
 	<bean id="goToWikiAction" class="net.sourceforge.atunes.kernel.actions.GoToWikiAction"/>
 	<bean id="importLovedTracksFromLastFMAction" class="net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction"/>
 	<bean id="importToRepositoryAction" class="net.sourceforge.atunes.kernel.actions.ImportToRepositoryAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.LoadPlayListAction"/>
+	<bean id="loadPlayListAction" class="net.sourceforge.atunes.kernel.actions.LoadPlayListAction"/>
+	<bean id="loadNewPlayListAction" class="net.sourceforge.atunes.kernel.actions.LoadNewPlayListAction"/>
 	<bean id="makeDonationAction" class="net.sourceforge.atunes.kernel.actions.MakeDonationAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MarkPodcastEntryListenedAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MarkPodcastListenedAction"/>

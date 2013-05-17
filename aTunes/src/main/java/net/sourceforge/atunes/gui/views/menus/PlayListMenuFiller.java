@@ -40,6 +40,7 @@ import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedAlbumsAct
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedArtistsAction;
 import net.sourceforge.atunes.kernel.actions.ExportPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ExportPlayListSelectionAction;
+import net.sourceforge.atunes.kernel.actions.LoadNewPlayListAction;
 import net.sourceforge.atunes.kernel.actions.LoadPlayListAction;
 import net.sourceforge.atunes.kernel.actions.MoveAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.MoveDownAction;
@@ -159,7 +160,7 @@ public final class PlayListMenuFiller {
 		objects.add(getExportMenu());
 		objects.add(getSaveMenu());
 		objects.add(getSaveM3UMenu());
-		objects.add(this.beanFactory.getBean(LoadPlayListAction.class));
+		objects.add(getLoadMenu());
 		objects.add(new JSeparator());
 		objects.add(getSmartPlayListMenu());
 		objects.add(new JSeparator());
@@ -283,6 +284,13 @@ public final class PlayListMenuFiller {
 		save.add(this.beanFactory.getBean(SaveM3UPlayListAction.class));
 		save.add(this.beanFactory.getBean(SaveM3UPlayListSelectionAction.class));
 		return save;
+	}
+
+	private JMenu getLoadMenu() {
+		JMenu load = new JMenu(I18nUtils.getString("LOAD"));
+		load.add(this.beanFactory.getBean(LoadPlayListAction.class));
+		load.add(this.beanFactory.getBean(LoadNewPlayListAction.class));
+		return load;
 	}
 
 	/**

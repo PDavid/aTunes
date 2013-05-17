@@ -20,14 +20,19 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.List;
 
+import javax.swing.KeyStroke;
+
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.modules.process.LoadPlayListProcess;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFileSelectorDialog;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IStatePlaylist;
@@ -38,12 +43,12 @@ import net.sourceforge.atunes.utils.StringUtils;
 import org.apache.commons.io.FilenameUtils;
 
 /**
- * This action loads a play list replacing the current one
+ * This action loads a play list
  * 
  * @author fleax
  * 
  */
-public class LoadPlayListAction extends CustomAbstractAction {
+public class LoadNewPlayListAction extends CustomAbstractAction {
 
 	private static final long serialVersionUID = 3409230917351152853L;
 
@@ -55,15 +60,32 @@ public class LoadPlayListAction extends CustomAbstractAction {
 
 	private IDialogFactory dialogFactory;
 
+	private IOSManager osManager;
+
 	private boolean replacePlayList;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(final IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
 	/**
 	 * Default constructor
 	 */
-	public LoadPlayListAction() {
-		super(StringUtils.getString(I18nUtils.getString("REPLACE_PLAYLIST"),
-				"..."));
-		this.replacePlayList = true;
+	public LoadNewPlayListAction() {
+		super(StringUtils.getString(
+				I18nUtils.getString("LOAD_AS_NEW_PLAYLIST"), "..."));
+		this.replacePlayList = false;
+	}
+
+	@Override
+	protected void initialize() {
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_L,
+						GuiUtils.getCtrlOrMetaActionEventMask(this.osManager)));
 	}
 
 	/**

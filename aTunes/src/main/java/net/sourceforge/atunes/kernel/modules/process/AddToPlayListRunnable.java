@@ -27,29 +27,39 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 
 class AddToPlayListRunnable implements Runnable {
 
-    private List<IAudioObject> songsLoaded;
-    
-    private IPlayListHandler playListHandler;
-    
-    private String playListName;
+	private List<IAudioObject> songsLoaded;
 
-    /**
-     * @param songsLoaded
-     * @param playListHandler
-     * @param playListName
-     */
-    public AddToPlayListRunnable(List<IAudioObject> songsLoaded, IPlayListHandler playListHandler, String playListName) {
-        this.songsLoaded = songsLoaded;
-        this.playListHandler = playListHandler;
-        this.playListName = playListName;
-    }
+	private IPlayListHandler playListHandler;
 
-    @Override
-    public void run() {
-        if (songsLoaded.size() >= 1) {
-        	playListHandler.clearPlayList();
-        	playListHandler.addToVisiblePlayList(songsLoaded);
-        	playListHandler.renameCurrentVisiblePlayList(playListName);
-        }
-    }
+	private String playListName;
+
+	private boolean replacePlayList;
+
+	/**
+	 * @param songsLoaded
+	 * @param playListHandler
+	 * @param playListName
+	 * @param replacePlayList
+	 */
+	public AddToPlayListRunnable(List<IAudioObject> songsLoaded,
+			IPlayListHandler playListHandler, String playListName,
+			boolean replacePlayList) {
+		this.songsLoaded = songsLoaded;
+		this.playListHandler = playListHandler;
+		this.playListName = playListName;
+		this.replacePlayList = replacePlayList;
+	}
+
+	@Override
+	public void run() {
+		if (songsLoaded.size() >= 1) {
+			if (this.replacePlayList) {
+				playListHandler.clearPlayList();
+				playListHandler.addToVisiblePlayList(songsLoaded);
+				playListHandler.renameCurrentVisiblePlayList(playListName);
+			} else {
+				playListHandler.newPlayList(playListName, songsLoaded);
+			}
+		}
+	}
 }
