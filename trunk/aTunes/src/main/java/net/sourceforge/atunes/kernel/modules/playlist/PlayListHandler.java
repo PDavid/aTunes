@@ -27,9 +27,6 @@ import java.util.List;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
-import net.sourceforge.atunes.kernel.actions.SaveM3UPlayListAction;
-import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
-import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
@@ -338,12 +335,6 @@ public final class PlayListHandler extends AbstractHandler implements
 				// Set selection interval to none
 				PlayListHandler.this.playListController.clearSelection();
 
-				getBean(SavePlayListAction.class).setEnabled(
-						!getVisiblePlayList().isEmpty());
-				getBean(SaveM3UPlayListAction.class).setEnabled(
-						!getVisiblePlayList().isEmpty());
-				getBean(ShufflePlayListAction.class).setEnabled(
-						!getVisiblePlayList().isEmpty());
 				PlayListHandler.this.playListInformationInStatusBar
 						.showPlayListInformation(playList);
 
@@ -440,12 +431,7 @@ public final class PlayListHandler extends AbstractHandler implements
 
 		setSelectedItemAfterAddToPlayList(audioObjects, playList);
 
-		getBean(SavePlayListAction.class).setEnabled(
-				!getVisiblePlayList().isEmpty());
-		getBean(SaveM3UPlayListAction.class).setEnabled(
-				!getVisiblePlayList().isEmpty());
-		getBean(ShufflePlayListAction.class).setEnabled(
-				!getVisiblePlayList().isEmpty());
+		// callVisiblePlayListListeners();
 
 		// Update play list number in status bar
 		this.playListInformationInStatusBar.showPlayListInformation(playList);
