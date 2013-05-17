@@ -20,19 +20,14 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.List;
 
-import javax.swing.KeyStroke;
-
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.modules.process.LoadPlayListProcess;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFileSelectorDialog;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IStatePlaylist;
@@ -43,7 +38,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 import org.apache.commons.io.FilenameUtils;
 
 /**
- * This action loads a play list
+ * This action loads a play list replacing the current one
  * 
  * @author fleax
  * 
@@ -60,30 +55,15 @@ public class LoadPlayListAction extends CustomAbstractAction {
 
 	private IDialogFactory dialogFactory;
 
-	private IOSManager osManager;
-
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(final IOSManager osManager) {
-		this.osManager = osManager;
-	}
+	private boolean replacePlayList;
 
 	/**
 	 * Default constructor
 	 */
 	public LoadPlayListAction() {
-		super(StringUtils.getString(I18nUtils.getString("LOAD"), "..."));
-	}
-
-	@Override
-	protected void initialize() {
-		putValue(SHORT_DESCRIPTION,
-				I18nUtils.getString("LOAD_PLAYLIST_TOOLTIP"));
-		putValue(
-				ACCELERATOR_KEY,
-				KeyStroke.getKeyStroke(KeyEvent.VK_L,
-						GuiUtils.getCtrlOrMetaActionEventMask(this.osManager)));
+		super(StringUtils.getString(I18nUtils.getString("REPLACE_PLAYLIST"),
+				"..."));
+		this.replacePlayList = true;
 	}
 
 	/**
@@ -134,6 +114,7 @@ public class LoadPlayListAction extends CustomAbstractAction {
 					LoadPlayListProcess process = (LoadPlayListProcess) this.processFactory
 							.getProcessByName("loadPlayListProcess");
 					process.setFilenamesToLoad(filesToLoad);
+					process.setReplacePlayList(replacePlayList);
 					process.setPlayListName(FilenameUtils.getBaseName(file
 							.getName()));
 					process.execute();
