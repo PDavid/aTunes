@@ -20,7 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +40,6 @@ import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.EditRadioAction;
 import net.sourceforge.atunes.kernel.actions.PlayNowAction;
-import net.sourceforge.atunes.kernel.actions.RefreshRadioAction;
 import net.sourceforge.atunes.kernel.actions.RemoveRadioAction;
 import net.sourceforge.atunes.kernel.actions.RenameRadioLabelAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
@@ -51,7 +52,6 @@ import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.INavigationTree;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
-import net.sourceforge.atunes.model.IStateRadio;
 import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
@@ -81,9 +81,16 @@ public final class RadioNavigationView extends AbstractNavigationView {
 
 	private IIconFactory radioSmallIcon;
 
-	private IStateRadio stateRadio;
-
 	private IBeanFactory beanFactory;
+
+	private Collator collator;
+
+	/**
+	 * @param collator
+	 */
+	public void setCollator(final Collator collator) {
+		this.collator = collator;
+	}
 
 	/**
 	 * @param beanFactory
@@ -91,13 +98,6 @@ public final class RadioNavigationView extends AbstractNavigationView {
 	@Override
 	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
-	}
-
-	/**
-	 * @param stateRadio
-	 */
-	public void setStateRadio(final IStateRadio stateRadio) {
-		this.stateRadio = stateRadio;
 	}
 
 	/**
@@ -135,8 +135,6 @@ public final class RadioNavigationView extends AbstractNavigationView {
 		if (this.radioTree == null) {
 			this.radioTree = new NavigationTree(I18nUtils.getString("RADIO"),
 					getTreeRenderer());
-			this.radioTree.setToolTipText(I18nUtils
-					.getString("RADIO_VIEW_TOOLTIP"));
 		}
 		return this.radioTree;
 	}
@@ -160,8 +158,6 @@ public final class RadioNavigationView extends AbstractNavigationView {
 			this.radioTreeMenu.add(new JSeparator());
 			this.radioTreeMenu.add(this.beanFactory
 					.getBean(AddRadioAction.class));
-			this.radioTreeMenu.add(this.beanFactory
-					.getBean(RefreshRadioAction.class));
 			AbstractActionOverSelectedObjects<IRadio> addFavoriteRadioAction = this.beanFactory
 					.getBean(AddFavoriteRadioAction.class);
 			addFavoriteRadioAction.setAudioObjectsSource(this);
@@ -233,9 +229,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
 	@Override
 	protected Map<String, ?> getViewData(final ViewMode viewMode) {
 		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("SHOW_ALL_STATIONS", this.stateRadio.isShowAllRadioStations());
 		data.put("RADIOS", this.radioHandler.getRadios());
-		data.put("PRESET_RADIOS", this.radioHandler.getRadioPresets());
 		return data;
 	}
 
@@ -261,8 +255,8 @@ public final class RadioNavigationView extends AbstractNavigationView {
 
 		addRadioNodes((List<IRadio>) data.get("RADIOS"),
 				(List<IRadio>) data.get("PRESET_RADIOS"), getTree(),
-				treeFilter, (Boolean) data.get("SHOW_ALL_STATIONS"),
-				objectsExpanded, objectsSelected, nodesToExpand, nodesToSelect);
+				treeFilter, objectsExpanded, objectsSelected, nodesToExpand,
+				nodesToSelect);
 
 		// Reload the tree to refresh content
 		getTree().reload();
@@ -318,7 +312,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
 	 */
 	private void addRadioNodes(final List<IRadio> radios,
 			final List<IRadio> presetRadios, final INavigationTree tree,
-			final String currentFilter, final boolean showAllStations,
+			final String currentFilter,
 			final List<ITreeObject<? extends IAudioObject>> objectsExpanded,
 			final List<ITreeObject<? extends IAudioObject>> objectsSelected,
 			final List<ITreeNode> nodesToExpand,
@@ -336,15 +330,9 @@ public final class RadioNavigationView extends AbstractNavigationView {
 				objectsSelected, nodesToExpand, nodesToSelect, radioGroups,
 				radioGroupNoLabel);
 
-		// Add presets
-		if (showAllStations) {
-			addRadioNodes(presetRadios, null, currentFilter, objectsExpanded,
-					objectsSelected, nodesToExpand, nodesToSelect, radioGroups,
-					radioGroupNoLabel);
-		}
-
 		// Sort and add labels
-		List<String> radioLabels = this.radioHandler.sortRadioLabels();
+		List<String> radioLabels = this.radioHandler.getRadioLabels();
+		Collections.sort(radioLabels, new DefaultComparator(this.collator));
 		for (String label : radioLabels) {
 			for (ITreeNode labelNode : radioGroups.values()) {
 				if (labelNode.getUserObject().equals(label)) {

@@ -70,14 +70,6 @@ public interface IStateService {
 	public void persistRadioCache(List<IRadio> radios);
 
 	/**
-	 * Persist preset radio cache.
-	 * 
-	 * @param radios
-	 *            the radios
-	 */
-	public void persistPresetRadioCache(List<IRadio> radios);
-
-	/**
 	 * Stores repository cache.
 	 * 
 	 * @param repository
@@ -128,13 +120,6 @@ public interface IStateService {
 	 * @return The retrieved radios
 	 */
 	public List<IRadio> retrieveRadioCache();
-
-	/**
-	 * Reads radio cache. Preset stations. This file is not meant to be edited.
-	 * 
-	 * @return The retrieved radios
-	 */
-	public List<IRadio> retrieveRadioPreset();
 
 	/**
 	 * Reads repository cache.

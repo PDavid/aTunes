@@ -29,20 +29,6 @@ package net.sourceforge.atunes.model;
 public interface IStateRadio extends IState {
 
 	/**
-	 * Show all radio stations or just the ones defined by user
-	 * 
-	 * @return
-	 */
-	public boolean isShowAllRadioStations();
-
-	/**
-	 * Show all radio stations or just the ones defined by user
-	 * 
-	 * @param showAllRadioStations
-	 */
-	public void setShowAllRadioStations(boolean showAllRadioStations);
-
-	/**
 	 * Read metadata information from radios
 	 * 
 	 * @return

@@ -28,7 +28,6 @@
 	<bean id="validateAndProcessPreferencesBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.state.ValidateAndProcessPreferencesBackgroundWorker" scope="prototype"/>
 	<bean id="refreshSearchIndexTask" class="net.sourceforge.atunes.kernel.modules.search.RefreshSearchIndexTask" scope="prototype"/>
 	<bean id="retrieveRadioBrowserDataBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.radio.RetrieveRadioBrowserDataBackgroundWorker" scope="prototype"/>
-	<bean id="retrieveRadiosBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.radio.RetrieveRadiosBackgroundWorker" scope="prototype"/>
 	<bean id="deleteDownloadedPodcastFeedBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.podcast.DeleteDownloadedPodcastFeedBackgroundWorker" scope="prototype"/>
 	<bean id="generateAndShowAlbumPanelsBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.covernavigator.GenerateAndShowAlbumPanelsBackgroundWorker" scope="prototype"/>
 	<bean id="podcastFeedEntryDownloader" class="net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntryDownloader" scope="prototype"/>

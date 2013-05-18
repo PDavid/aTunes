@@ -136,9 +136,6 @@ public final class Constants {
 	/** File where radios are stored. */
 	public static final String RADIO_CACHE = "radios.xml";
 
-	/** File where preset radios are stored. */
-	public static final String PRESET_RADIO_CACHE = "preset_radios.xml";
-
 	/** File where podcast feeds are stored. */
 	public static final String PODCAST_FEED_CACHE = "podcastFeeds.dat";
 
