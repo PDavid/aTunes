@@ -44,8 +44,8 @@ import net.sourceforge.atunes.kernel.actions.RemoveRadioAction;
 import net.sourceforge.atunes.kernel.actions.RenameRadioLabelAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
+import net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IIconFactory;
@@ -81,8 +81,6 @@ public final class RadioNavigationView extends AbstractNavigationView {
 
 	private IIconFactory radioSmallIcon;
 
-	private IBeanFactory beanFactory;
-
 	private Collator collator;
 
 	/**
@@ -90,14 +88,6 @@ public final class RadioNavigationView extends AbstractNavigationView {
 	 */
 	public void setCollator(final Collator collator) {
 		this.collator = collator;
-	}
-
-	/**
-	 * @param beanFactory
-	 */
-	@Override
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
 	}
 
 	/**
@@ -143,36 +133,36 @@ public final class RadioNavigationView extends AbstractNavigationView {
 	public JPopupMenu getTreePopupMenu() {
 		if (this.radioTreeMenu == null) {
 			this.radioTreeMenu = new JPopupMenu();
-			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = this.beanFactory
+			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = getBeanFactory()
 					.getBean("addToPlayListFromRadioNavigationView",
 							AddToPlayListAction.class);
 			addToPlayListAction.setAudioObjectsSource(this);
 			this.radioTreeMenu.add(addToPlayListAction);
 
-			SetAsPlayListAction setAsPlayListAction = this.beanFactory.getBean(
+			SetAsPlayListAction setAsPlayListAction = getBeanFactory().getBean(
 					"setAsPlaylistFromRadioNavigationView",
 					SetAsPlayListAction.class);
 			setAsPlayListAction.setAudioObjectsSource(this);
 			this.radioTreeMenu.add(setAsPlayListAction);
 
 			this.radioTreeMenu.add(new JSeparator());
-			this.radioTreeMenu.add(this.beanFactory
-					.getBean(AddRadioAction.class));
-			AbstractActionOverSelectedObjects<IRadio> addFavoriteRadioAction = this.beanFactory
+			this.radioTreeMenu.add(getBeanFactory().getBean(
+					AddRadioAction.class));
+			AbstractActionOverSelectedObjects<IRadio> addFavoriteRadioAction = getBeanFactory()
 					.getBean(AddFavoriteRadioAction.class);
 			addFavoriteRadioAction.setAudioObjectsSource(this);
 			this.radioTreeMenu.add(addFavoriteRadioAction);
 
-			EditRadioAction editRadioAction = this.beanFactory
-					.getBean(EditRadioAction.class);
+			EditRadioAction editRadioAction = getBeanFactory().getBean(
+					EditRadioAction.class);
 			editRadioAction.setAudioObjectsSource(this);
 			this.radioTreeMenu.add(editRadioAction);
 
-			this.radioTreeMenu.add(this.beanFactory
-					.getBean(RenameRadioLabelAction.class));
+			this.radioTreeMenu.add(getBeanFactory().getBean(
+					RenameRadioLabelAction.class));
 
-			RemoveRadioAction removeRadioAction = this.beanFactory
-					.getBean(RemoveRadioAction.class);
+			RemoveRadioAction removeRadioAction = getBeanFactory().getBean(
+					RemoveRadioAction.class);
 			removeRadioAction.setAudioObjectsSource(this);
 			this.radioTreeMenu.add(removeRadioAction);
 		}
@@ -183,12 +173,12 @@ public final class RadioNavigationView extends AbstractNavigationView {
 	public JPopupMenu getTablePopupMenu() {
 		if (this.radioTableMenu == null) {
 			this.radioTableMenu = new JPopupMenu();
-			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = this.beanFactory
+			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = getBeanFactory()
 					.getBean("addToPlayListFromRadioNavigationView",
 							AddToPlayListAction.class);
 			addToPlayListAction.setAudioObjectsSource(this);
 			this.radioTableMenu.add(addToPlayListAction);
-			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = this.beanFactory
+			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = getBeanFactory()
 					.getBean(
 							"addToPlayListAfterCurrentAudioObjectFromRadioNavigationView",
 							AddToPlayListAfterCurrentAudioObjectAction.class);
@@ -196,30 +186,30 @@ public final class RadioNavigationView extends AbstractNavigationView {
 					.setAudioObjectsSource(this);
 			this.radioTableMenu.add(addToPlayListAfterCurrentAudioObjectAction);
 
-			SetAsPlayListAction setAsPlayListAction = this.beanFactory.getBean(
+			SetAsPlayListAction setAsPlayListAction = getBeanFactory().getBean(
 					"setAsPlaylistFromRadioNavigationView",
 					SetAsPlayListAction.class);
 			setAsPlayListAction.setAudioObjectsSource(this);
 			this.radioTableMenu.add(setAsPlayListAction);
 
-			this.radioTableMenu.add(this.beanFactory
-					.getBean(PlayNowAction.class));
+			this.radioTableMenu.add(getBeanFactory().getBean(
+					PlayNowAction.class));
 			this.radioTableMenu.add(new JSeparator());
-			this.radioTableMenu.add(new JMenuItem(this.beanFactory
-					.getBean(ShowNavigatorTableItemInfoAction.class)));
+			this.radioTableMenu.add(new JMenuItem(getBeanFactory().getBean(
+					ShowNavigatorTableItemInfoAction.class)));
 			this.radioTableMenu.add(new JSeparator());
-			AbstractActionOverSelectedObjects<IRadio> addFavoriteRadioAction = this.beanFactory
+			AbstractActionOverSelectedObjects<IRadio> addFavoriteRadioAction = getBeanFactory()
 					.getBean(AddFavoriteRadioAction.class);
 			addFavoriteRadioAction.setAudioObjectsSource(this);
 			this.radioTableMenu.add(addFavoriteRadioAction);
 
-			EditRadioAction editRadioAction = this.beanFactory
-					.getBean(EditRadioAction.class);
+			EditRadioAction editRadioAction = getBeanFactory().getBean(
+					EditRadioAction.class);
 			editRadioAction.setAudioObjectsSource(this);
 			this.radioTableMenu.add(editRadioAction);
 
-			RemoveRadioAction removeRadioAction = this.beanFactory
-					.getBean(RemoveRadioAction.class);
+			RemoveRadioAction removeRadioAction = getBeanFactory().getBean(
+					RemoveRadioAction.class);
 			removeRadioAction.setAudioObjectsSource(this);
 			this.radioTableMenu.add(removeRadioAction);
 		}
@@ -477,17 +467,16 @@ public final class RadioNavigationView extends AbstractNavigationView {
 
 	@Override
 	public boolean overlayNeedsToBeVisible() {
-		return false;
+		return this.radioHandler.getRadios().isEmpty();
 	}
 
 	@Override
 	public Action getOverlayAction() {
-		return null;
+		return getBeanFactory().getBean(ShowRadioBrowserAction.class);
 	}
 
 	@Override
 	public String getOverlayText() {
-		return null;
+		return I18nUtils.getString("NO_RADIOS_INFORMATION");
 	}
-
 }
