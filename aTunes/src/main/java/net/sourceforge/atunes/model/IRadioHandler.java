@@ -31,130 +31,118 @@ import java.util.List;
  */
 public interface IRadioHandler extends IHandler {
 
-    /**
-     * Creates a new IRadio object
-     * 
-     * @param name
-     * @param url
-     * @param label
-     * @return
-     */
-    public IRadio createRadio(String name, String url, String label);
+	/**
+	 * Creates a new IRadio object
+	 * 
+	 * @param name
+	 * @param url
+	 * @param label
+	 * @return
+	 */
+	public IRadio createRadio(String name, String url, String label);
 
-    /**
-     * Add the radio station from the add radio dialog.
-     */
-    public void addRadio();
+	/**
+	 * Add the radio station from the add radio dialog.
+	 */
+	public void addRadio();
 
-    /**
-     * Add a radio station to the list.
-     * 
-     * @param radio
-     *            Station
-     */
-    public void addRadio(IRadio radio);
+	/**
+	 * Add a radio station to the list.
+	 * 
+	 * @param radio
+	 *            Station
+	 */
+	public void addRadio(IRadio radio);
 
-    /**
-     * Gets the radios.
-     * 
-     * Radio cache is read on demand
-     * 
-     * @return the radios
-     */
-    public List<IRadio> getRadios();
+	/**
+	 * Gets the radios.
+	 * 
+	 * Radio cache is read on demand
+	 * 
+	 * @return the radios
+	 */
+	public List<IRadio> getRadios();
 
-    /**
-     * Gets the radio presets.
-     * 
-     * @return the preset radios, minus user maintained radio stations.
-     */
-    public List<IRadio> getRadioPresets();
+	/**
+	 * Gets the radios.
+	 * 
+	 * @param label
+	 *            the label
+	 * 
+	 * @return the radios
+	 */
+	public List<IRadio> getRadios(String label);
 
-    /**
-     * Gets the radios.
-     * 
-     * @param label
-     *            the label
-     * 
-     * @return the radios
-     */
-    public List<IRadio> getRadios(String label);
+	/**
+	 * Sorts the labels alphabetically
+	 * 
+	 * @return Sorted label list
+	 */
+	public List<String> getRadioLabels();
 
-    /**
-     * Sorts the labels alphabetically
-     * 
-     * @return Sorted label list
-     */
-    public List<String> sortRadioLabels();
+	/**
+	 * Remove stations from the list. Preset stations are not really removed but
+	 * are marked so they not show up in the navigator
+	 * 
+	 * @param radios
+	 */
+	public void removeRadios(List<IRadio> radios);
 
-    /**
-     * Remove stations from the list. Preset stations are not really removed but
-     * are marked so they not show up in the navigator
-     * 
-     * @param radios
-     */
-    public void removeRadios(List<IRadio> radios);
+	/**
+	 * Convenience method to remove a single radio
+	 * 
+	 * @param radio
+	 */
+	public void removeRadio(IRadio radio);
 
-    /**
-     * Convenience method to remove a single radio
-     * 
-     * @param radio
-     */
-    public void removeRadio(IRadio radio);
+	/**
+	 * Retrieve radios for browser.
+	 * 
+	 * @return the list< radio>
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public List<IRadio> retrieveRadiosForBrowser() throws IOException;
 
-    /**
-     * Retrieve radios for browser.
-     * 
-     * @return the list< radio>
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    public List<IRadio> retrieveRadiosForBrowser() throws IOException;
+	/**
+	 * Change label of radio.
+	 * 
+	 * @param radioList
+	 *            List of radios for which the label should be changed
+	 * @param label
+	 *            New label
+	 */
+	public void setLabel(List<IRadio> radioList, String label);
 
-    /**
-     * Retrieve radios. Get radios from the internet (update preset list)
-     */
-    public void retrieveRadios();
+	/**
+	 * Change radio attributes
+	 * 
+	 * @param radio
+	 * @param newRadio
+	 */
+	public void replace(IRadio radio, IRadio newRadio);
 
-    /**
-     * Change label of radio.
-     * 
-     * @param radioList
-     *            List of radios for which the label should be changed
-     * @param label
-     *            New label
-     */
-    public void setLabel(List<IRadio> radioList, String label);
+	/**
+	 * Returns a Radio object for the given url or null if a Radio object is not
+	 * available for that url
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public IRadio getRadioIfLoaded(String url);
 
-    /**
-     * Change radio attributes
-     * 
-     * @param radio
-     * @param newRadio
-     */
-    public void replace(IRadio radio, IRadio newRadio);
+	/**
+	 * Shows radio browser
+	 */
+	public void showRadioBrowser();
 
-    /**
-     * Returns a Radio object for the given url or null if a Radio object is not
-     * available for that url
-     * 
-     * @param url
-     * @return
-     */
-    public IRadio getRadioIfLoaded(String url);
-
-    /**
-     * Shows radio browser
-     */
-    public void showRadioBrowser();
-
-    /**
-     * Changes attributes of radio
-     * 
-     * @param radio
-     * @return
-     */
-    public IRadio editRadio(IRadio radio);
+	/**
+	 * Changes attributes of radio
+	 * 
+	 * @param radio
+	 * @return
+	 */
+	public IRadio editRadio(IRadio radio);
 
 }

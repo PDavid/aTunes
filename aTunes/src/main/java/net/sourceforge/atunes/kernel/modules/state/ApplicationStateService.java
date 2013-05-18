@@ -36,7 +36,6 @@ import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.IStatistics;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLSerializerService;
 
 /**
@@ -165,18 +164,6 @@ public final class ApplicationStateService implements IStateService {
 	}
 
 	@Override
-	public void persistPresetRadioCache(final List<IRadio> radios) {
-		try {
-			this.xmlSerializerService.writeObjectToFile(radios, this.osManager
-					.getFilePath(getUserConfigFolder(),
-							Constants.PRESET_RADIO_CACHE));
-		} catch (IOException e) {
-			Logger.error("Could not persist radios");
-			Logger.debug(e);
-		}
-	}
-
-	@Override
 	public void persistRepositoryCache(final IRepository repository) {
 		this.repositoryObjectDataStore.write(repository);
 	}
@@ -218,30 +205,6 @@ public final class ApplicationStateService implements IStateService {
 			Logger.info(e.getMessage());
 		} catch (IOException e) {
 			Logger.error(e);
-		}
-		return null;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<IRadio> retrieveRadioPreset() {
-		try {
-			// First try user settings folder
-			return (List<IRadio>) this.xmlSerializerService
-					.readObjectFromFile(this.osManager
-							.getFilePath(getUserConfigFolder(),
-									Constants.PRESET_RADIO_CACHE));
-		} catch (IOException e) {
-			try {
-				// Otherwise use list in application folder
-				return (List<IRadio>) this.xmlSerializerService
-						.readObjectFromFile(ApplicationStateService.class
-								.getResourceAsStream(StringUtils.getString(
-										"/settings/",
-										Constants.PRESET_RADIO_CACHE)));
-			} catch (IOException e2) {
-				Logger.error(e2);
-			}
 		}
 		return null;
 	}

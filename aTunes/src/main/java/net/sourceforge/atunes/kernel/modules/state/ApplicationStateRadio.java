@@ -44,18 +44,6 @@ public class ApplicationStateRadio implements IStateRadio {
 	}
 
 	@Override
-	public boolean isShowAllRadioStations() {
-		return this.preferenceHelper.getPreference(
-				Preferences.SHOW_ALL_RADIO_STATIONS, Boolean.class, true);
-	}
-
-	@Override
-	public void setShowAllRadioStations(final boolean showAllRadioStations) {
-		this.preferenceHelper.setPreference(
-				Preferences.SHOW_ALL_RADIO_STATIONS, showAllRadioStations);
-	}
-
-	@Override
 	public boolean isReadInfoFromRadioStream() {
 		return this.preferenceHelper.getPreference(
 				Preferences.READ_INFO_FROM_RADIO_STREAM, Boolean.class, true);

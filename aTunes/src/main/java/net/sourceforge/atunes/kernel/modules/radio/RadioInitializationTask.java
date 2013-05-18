@@ -38,28 +38,17 @@ import net.sourceforge.atunes.model.IStateService;
 public class RadioInitializationTask extends AbstractStateRetrieveTask {
 
 	private List<IRadio> radios;
-	private List<IRadio> presetRadios;
 
 	@Override
 	public void retrieveData(final IStateService stateService,
 			final IBeanFactory beanFactory) {
-		/*
-		 * Read radio stations lists. We use different files, one for presets
-		 * which is not modified by the user and a second one for all the user
-		 * modifications.
-		 */
 		this.radios = stateService.retrieveRadioCache();
-		this.presetRadios = stateService.retrieveRadioPreset();
 	}
 
 	@Override
 	public void setData(final IBeanFactory beanFactory) {
 		if (this.radios != null) {
 			beanFactory.getBean(RadioHandler.class).setRadios(this.radios);
-		}
-		if (this.presetRadios != null) {
-			beanFactory.getBean(RadioHandler.class).setPresetRadios(
-					this.presetRadios);
 		}
 		beanFactory.getBean(INavigationHandler.class).refreshView(
 				beanFactory.getBean("radioNavigationView",

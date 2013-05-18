@@ -32,87 +32,70 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public final class RadioPanel extends AbstractPreferencesPanel {
 
-    private static final long serialVersionUID = 4489293347321979288L;
+	private static final long serialVersionUID = 4489293347321979288L;
 
-    /** The read info from radio stream. */
-    private JCheckBox readInfoFromRadioStream;
+	/** The read info from radio stream. */
+	private final JCheckBox readInfoFromRadioStream;
 
-    /** The show all radio stations. */
-    private JCheckBox showAllRadioStations;
-    
-    private IStateRadio stateRadio;
-    
-    /**
-     * @param stateRadio
-     */
-    public void setStateRadio(IStateRadio stateRadio) {
+	private IStateRadio stateRadio;
+
+	/**
+	 * @param stateRadio
+	 */
+	public void setStateRadio(final IStateRadio stateRadio) {
 		this.stateRadio = stateRadio;
 	}
 
-    /**
-     * Instantiates a new radio panel.
-     */
-    public RadioPanel() {
-        super(I18nUtils.getString("RADIO"));
-        readInfoFromRadioStream = new JCheckBox(I18nUtils.getString("READ_INFO_FROM_RADIO_STREAM"));
-        showAllRadioStations = new JCheckBox(I18nUtils.getString("SHOW_ALL_RADIO_STATIONS"));
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 1;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.weighty = 0;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
-        add(readInfoFromRadioStream, c);
-        c.gridy = 1;
-        c.weighty = 1;
-        add(showAllRadioStations, c);
-    }
+	/**
+	 * Instantiates a new radio panel.
+	 */
+	public RadioPanel() {
+		super(I18nUtils.getString("RADIO"));
+		this.readInfoFromRadioStream = new JCheckBox(
+				I18nUtils.getString("READ_INFO_FROM_RADIO_STREAM"));
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		add(this.readInfoFromRadioStream, c);
+	}
 
-    @Override
-    public boolean applyPreferences() {
-        stateRadio.setReadInfoFromRadioStream(readInfoFromRadioStream.isSelected());
-        stateRadio.setShowAllRadioStations(showAllRadioStations.isSelected());
-        return false;
-    }
+	@Override
+	public boolean applyPreferences() {
+		this.stateRadio.setReadInfoFromRadioStream(this.readInfoFromRadioStream
+				.isSelected());
+		return false;
+	}
 
-    /**
-     * Sets the read info from radio stream.
-     * 
-     * @param animate
-     *            the new read info from radio stream
-     */
-    private void setReadInfoFromRadioStream(boolean animate) {
-        readInfoFromRadioStream.setSelected(animate);
-    }
+	/**
+	 * Sets the read info from radio stream.
+	 * 
+	 * @param animate
+	 *            the new read info from radio stream
+	 */
+	private void setReadInfoFromRadioStream(final boolean animate) {
+		this.readInfoFromRadioStream.setSelected(animate);
+	}
 
-    /**
-     * Sets the show all radio stations.
-     * 
-     * @param showAll
-     *            the new show all radio stations
-     */
-    private void setShowAllRadioStations(boolean showAll) {
-        showAllRadioStations.setSelected(showAll);
-    }
+	@Override
+	public void updatePanel() {
+		setReadInfoFromRadioStream(this.stateRadio.isReadInfoFromRadioStream());
+	}
 
-    @Override
-    public void updatePanel() {
-        setReadInfoFromRadioStream(stateRadio.isReadInfoFromRadioStream());
-        setShowAllRadioStations(stateRadio.isShowAllRadioStations());
-    }
+	@Override
+	public void resetImmediateChanges() {
+		// Do nothing
+	}
 
-    @Override
-    public void resetImmediateChanges() {
-        // Do nothing
-    }
+	@Override
+	public void validatePanel() throws PreferencesValidationException {
+	}
 
-    @Override
-    public void validatePanel() throws PreferencesValidationException {
-    }
-
-    @Override
-    public void dialogVisibilityChanged(boolean visible) {
-        // Do nothing
-    }
+	@Override
+	public void dialogVisibilityChanged(final boolean visible) {
+		// Do nothing
+	}
 
 }
