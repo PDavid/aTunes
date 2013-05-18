@@ -125,10 +125,6 @@ public class FavoritesAlbumsManagerTest {
 	public void testCheckFavoriteAlbums() {
 		IAlbum album1 = RepositoryTestMockUtils.createMockAlbum("Album 1");
 		IAlbum album2 = RepositoryTestMockUtils.createMockAlbum("Album 2");
-		IArtist artist1 = RepositoryTestMockUtils.createMockArtist("Artist 1",
-				album1);
-		IArtist artist2 = RepositoryTestMockUtils.createMockArtist("Artist 2",
-				album2);
 		IFavorites favorites = mock(IFavorites.class);
 		when(favorites.getFavoriteAlbums()).thenReturn(
 				CollectionUtils.fillCollectionWithElements(

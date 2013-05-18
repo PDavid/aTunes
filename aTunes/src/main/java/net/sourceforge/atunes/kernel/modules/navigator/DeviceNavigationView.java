@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.Action;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
@@ -81,8 +80,6 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 	private IIconFactory deviceIcon;
 
 	private IColumnSet navigatorColumnSet;
-
-	private JPanel overlayContent;
 
 	/**
 	 * @param navigatorColumnSet
