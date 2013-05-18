@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.Action;
 import javax.swing.JPopupMenu;
 
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
@@ -229,5 +230,20 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 	 */
 	public void setFavoritesHandler(final IFavoritesHandler favoritesHandler) {
 		this.favoritesHandler = favoritesHandler;
+	}
+
+	@Override
+	public boolean overlayNeedsToBeVisible() {
+		return this.favoritesHandler.getAllFavoriteSongs().isEmpty();
+	}
+
+	@Override
+	public Action getOverlayAction() {
+		return null;
+	}
+
+	@Override
+	public String getOverlayText() {
+		return I18nUtils.getString("NO_FAVORITES_INFORMATION");
 	}
 }

@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
@@ -87,6 +88,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
 	/**
 	 * @param beanFactory
 	 */
+	@Override
 	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
@@ -115,7 +117,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
 
 	@Override
 	public IColorMutableImageIcon getIcon() {
-		return radioSmallIcon.getColorMutableIcon();
+		return this.radioSmallIcon.getColorMutableIcon();
 	}
 
 	@Override
@@ -130,106 +132,110 @@ public final class RadioNavigationView extends AbstractNavigationView {
 
 	@Override
 	public NavigationTree getTree() {
-		if (radioTree == null) {
-			radioTree = new NavigationTree(I18nUtils.getString("RADIO"),
+		if (this.radioTree == null) {
+			this.radioTree = new NavigationTree(I18nUtils.getString("RADIO"),
 					getTreeRenderer());
-			radioTree.setToolTipText(I18nUtils.getString("RADIO_VIEW_TOOLTIP"));
+			this.radioTree.setToolTipText(I18nUtils
+					.getString("RADIO_VIEW_TOOLTIP"));
 		}
-		return radioTree;
+		return this.radioTree;
 	}
 
 	@Override
 	public JPopupMenu getTreePopupMenu() {
-		if (radioTreeMenu == null) {
-			radioTreeMenu = new JPopupMenu();
-			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = beanFactory
+		if (this.radioTreeMenu == null) {
+			this.radioTreeMenu = new JPopupMenu();
+			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = this.beanFactory
 					.getBean("addToPlayListFromRadioNavigationView",
 							AddToPlayListAction.class);
 			addToPlayListAction.setAudioObjectsSource(this);
-			radioTreeMenu.add(addToPlayListAction);
+			this.radioTreeMenu.add(addToPlayListAction);
 
-			SetAsPlayListAction setAsPlayListAction = beanFactory.getBean(
+			SetAsPlayListAction setAsPlayListAction = this.beanFactory.getBean(
 					"setAsPlaylistFromRadioNavigationView",
 					SetAsPlayListAction.class);
 			setAsPlayListAction.setAudioObjectsSource(this);
-			radioTreeMenu.add(setAsPlayListAction);
+			this.radioTreeMenu.add(setAsPlayListAction);
 
-			radioTreeMenu.add(new JSeparator());
-			radioTreeMenu.add(beanFactory.getBean(AddRadioAction.class));
-			radioTreeMenu.add(beanFactory.getBean(RefreshRadioAction.class));
-			AbstractActionOverSelectedObjects<IRadio> addFavoriteRadioAction = beanFactory
+			this.radioTreeMenu.add(new JSeparator());
+			this.radioTreeMenu.add(this.beanFactory
+					.getBean(AddRadioAction.class));
+			this.radioTreeMenu.add(this.beanFactory
+					.getBean(RefreshRadioAction.class));
+			AbstractActionOverSelectedObjects<IRadio> addFavoriteRadioAction = this.beanFactory
 					.getBean(AddFavoriteRadioAction.class);
 			addFavoriteRadioAction.setAudioObjectsSource(this);
-			radioTreeMenu.add(addFavoriteRadioAction);
+			this.radioTreeMenu.add(addFavoriteRadioAction);
 
-			EditRadioAction editRadioAction = beanFactory
+			EditRadioAction editRadioAction = this.beanFactory
 					.getBean(EditRadioAction.class);
 			editRadioAction.setAudioObjectsSource(this);
-			radioTreeMenu.add(editRadioAction);
+			this.radioTreeMenu.add(editRadioAction);
 
-			radioTreeMenu
-					.add(beanFactory.getBean(RenameRadioLabelAction.class));
+			this.radioTreeMenu.add(this.beanFactory
+					.getBean(RenameRadioLabelAction.class));
 
-			RemoveRadioAction removeRadioAction = beanFactory
+			RemoveRadioAction removeRadioAction = this.beanFactory
 					.getBean(RemoveRadioAction.class);
 			removeRadioAction.setAudioObjectsSource(this);
-			radioTreeMenu.add(removeRadioAction);
+			this.radioTreeMenu.add(removeRadioAction);
 		}
-		return radioTreeMenu;
+		return this.radioTreeMenu;
 	}
 
 	@Override
 	public JPopupMenu getTablePopupMenu() {
-		if (radioTableMenu == null) {
-			radioTableMenu = new JPopupMenu();
-			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = beanFactory
+		if (this.radioTableMenu == null) {
+			this.radioTableMenu = new JPopupMenu();
+			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = this.beanFactory
 					.getBean("addToPlayListFromRadioNavigationView",
 							AddToPlayListAction.class);
 			addToPlayListAction.setAudioObjectsSource(this);
-			radioTableMenu.add(addToPlayListAction);
-			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = beanFactory
+			this.radioTableMenu.add(addToPlayListAction);
+			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = this.beanFactory
 					.getBean(
 							"addToPlayListAfterCurrentAudioObjectFromRadioNavigationView",
 							AddToPlayListAfterCurrentAudioObjectAction.class);
 			addToPlayListAfterCurrentAudioObjectAction
 					.setAudioObjectsSource(this);
-			radioTableMenu.add(addToPlayListAfterCurrentAudioObjectAction);
+			this.radioTableMenu.add(addToPlayListAfterCurrentAudioObjectAction);
 
-			SetAsPlayListAction setAsPlayListAction = beanFactory.getBean(
+			SetAsPlayListAction setAsPlayListAction = this.beanFactory.getBean(
 					"setAsPlaylistFromRadioNavigationView",
 					SetAsPlayListAction.class);
 			setAsPlayListAction.setAudioObjectsSource(this);
-			radioTableMenu.add(setAsPlayListAction);
+			this.radioTableMenu.add(setAsPlayListAction);
 
-			radioTableMenu.add(beanFactory.getBean(PlayNowAction.class));
-			radioTableMenu.add(new JSeparator());
-			radioTableMenu.add(new JMenuItem(beanFactory
+			this.radioTableMenu.add(this.beanFactory
+					.getBean(PlayNowAction.class));
+			this.radioTableMenu.add(new JSeparator());
+			this.radioTableMenu.add(new JMenuItem(this.beanFactory
 					.getBean(ShowNavigatorTableItemInfoAction.class)));
-			radioTableMenu.add(new JSeparator());
-			AbstractActionOverSelectedObjects<IRadio> addFavoriteRadioAction = beanFactory
+			this.radioTableMenu.add(new JSeparator());
+			AbstractActionOverSelectedObjects<IRadio> addFavoriteRadioAction = this.beanFactory
 					.getBean(AddFavoriteRadioAction.class);
 			addFavoriteRadioAction.setAudioObjectsSource(this);
-			radioTableMenu.add(addFavoriteRadioAction);
+			this.radioTableMenu.add(addFavoriteRadioAction);
 
-			EditRadioAction editRadioAction = beanFactory
+			EditRadioAction editRadioAction = this.beanFactory
 					.getBean(EditRadioAction.class);
 			editRadioAction.setAudioObjectsSource(this);
-			radioTableMenu.add(editRadioAction);
+			this.radioTableMenu.add(editRadioAction);
 
-			RemoveRadioAction removeRadioAction = beanFactory
+			RemoveRadioAction removeRadioAction = this.beanFactory
 					.getBean(RemoveRadioAction.class);
 			removeRadioAction.setAudioObjectsSource(this);
-			radioTableMenu.add(removeRadioAction);
+			this.radioTableMenu.add(removeRadioAction);
 		}
-		return radioTableMenu;
+		return this.radioTableMenu;
 	}
 
 	@Override
 	protected Map<String, ?> getViewData(final ViewMode viewMode) {
 		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("SHOW_ALL_STATIONS", stateRadio.isShowAllRadioStations());
-		data.put("RADIOS", radioHandler.getRadios());
-		data.put("PRESET_RADIOS", radioHandler.getRadioPresets());
+		data.put("SHOW_ALL_STATIONS", this.stateRadio.isShowAllRadioStations());
+		data.put("RADIOS", this.radioHandler.getRadios());
+		data.put("PRESET_RADIOS", this.radioHandler.getRadioPresets());
 		return data;
 	}
 
@@ -270,7 +276,8 @@ public final class RadioNavigationView extends AbstractNavigationView {
 
 	@Override
 	public List<IAudioObject> getAudioObjectForTreeNode(final ITreeNode node,
-			final ViewMode viewMode, final String treeFilter, String tableFilter) {
+			final ViewMode viewMode, final String treeFilter,
+			final String tableFilter) {
 		List<IAudioObject> songs = new ArrayList<IAudioObject>();
 		if (node.isRoot()) {
 			// Add all radios in child nodes
@@ -337,7 +344,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
 		}
 
 		// Sort and add labels
-		List<String> radioLabels = radioHandler.sortRadioLabels();
+		List<String> radioLabels = this.radioHandler.sortRadioLabels();
 		for (String label : radioLabels) {
 			for (ITreeNode labelNode : radioGroups.values()) {
 				if (labelNode.getUserObject().equals(label)) {
@@ -408,7 +415,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
 					presetRadios.remove(r);
 				}
 			} else {
-				radioHandler.removeRadio(r);
+				this.radioHandler.removeRadio(r);
 			}
 		} else {
 			if (r.getLabel() == null || r.getLabel().trim().equals("")) {
@@ -465,7 +472,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
 
 	@Override
 	public IColumnSet getCustomColumnSet() {
-		return radioNavigationColumnSet;
+		return this.radioNavigationColumnSet;
 	}
 
 	@Override
@@ -479,4 +486,20 @@ public final class RadioNavigationView extends AbstractNavigationView {
 	public void setRadioHandler(final IRadioHandler radioHandler) {
 		this.radioHandler = radioHandler;
 	}
+
+	@Override
+	public boolean overlayNeedsToBeVisible() {
+		return false;
+	}
+
+	@Override
+	public Action getOverlayAction() {
+		return null;
+	}
+
+	@Override
+	public String getOverlayText() {
+		return null;
+	}
+
 }

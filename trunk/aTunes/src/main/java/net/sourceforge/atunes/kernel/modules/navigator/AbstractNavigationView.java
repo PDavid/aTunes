@@ -22,17 +22,25 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 import javax.swing.tree.TreeCellRenderer;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
@@ -93,6 +101,17 @@ public abstract class AbstractNavigationView implements INavigationView {
 
 	private IBeanFactory beanFactory;
 
+	private JPanel overlayPanel;
+
+	private Dimension navigationMinimumSize;
+
+	/**
+	 * @param navigationMinimumSize
+	 */
+	public void setNavigationMinimumSize(final Dimension navigationMinimumSize) {
+		this.navigationMinimumSize = navigationMinimumSize;
+	}
+
 	/**
 	 * @param beanFactory
 	 */
@@ -104,7 +123,7 @@ public abstract class AbstractNavigationView implements INavigationView {
 	 * @return bean factory
 	 */
 	protected IBeanFactory getBeanFactory() {
-		return beanFactory;
+		return this.beanFactory;
 	}
 
 	/**
@@ -186,6 +205,35 @@ public abstract class AbstractNavigationView implements INavigationView {
 		return this.scrollPane;
 	}
 
+	@Override
+	public final JPanel getOverlayPanel() {
+		if (this.overlayPanel == null) {
+			this.overlayPanel = new JPanel();
+			this.overlayPanel.setLayout(new GridBagLayout());
+			JTextPane text = getControlsBuilder().createReadOnlyTextPane(
+					getOverlayText());
+			GridBagConstraints c = new GridBagConstraints();
+			c.insets = new Insets(10, 10, 0, 10);
+			c.gridx = 0;
+			c.gridy = 0;
+			c.weightx = 1;
+			c.weighty = 1;
+			c.fill = GridBagConstraints.BOTH;
+			this.overlayPanel.add(text, c);
+			Action action = getOverlayAction();
+			if (action != null) {
+				c.gridy = 1;
+				c.weightx = 0;
+				c.weighty = 0;
+				c.fill = GridBagConstraints.NONE;
+				c.insets = new Insets(0, 10, 10, 10);
+				this.overlayPanel.add(new JButton(action), c);
+			}
+			setupOverlayPanel(this.overlayPanel);
+		}
+		return this.overlayPanel;
+	}
+
 	/**
 	 * Returns the data to be shown in the view. It depends on the view mode
 	 * 
@@ -195,7 +243,8 @@ public abstract class AbstractNavigationView implements INavigationView {
 	protected abstract Map<String, ?> getViewData(ViewMode viewMode);
 
 	@Override
-	public void refreshView(final ViewMode viewMode, final String treeFilter) {
+	public final void refreshView(final ViewMode viewMode,
+			final String treeFilter) {
 		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
 			public void run() {
@@ -220,8 +269,24 @@ public abstract class AbstractNavigationView implements INavigationView {
 										indexOfAudioObject);
 					}
 				}
+
+				// Update overlay state to show or hide
+				updateOverlayState();
 			}
 		});
+	}
+
+	private void updateOverlayState() {
+		// Hide temporarily until adjusting visibility to avoid glitches of
+		// overlay layout
+		getOverlayPanel().setVisible(false);
+
+		boolean needsToBeVisible = overlayNeedsToBeVisible();
+		if (!getOverlayPanel().isVisible() && needsToBeVisible) {
+		}
+		getOverlayPanel().setVisible(needsToBeVisible);
+		getOverlayPanel().invalidate();
+		getOverlayPanel().repaint();
 	}
 
 	/**
@@ -459,5 +524,24 @@ public abstract class AbstractNavigationView implements INavigationView {
 
 	@Override
 	public void selectArtist(final ViewMode currentViewMode, final String artist) {
+	}
+
+	private final JPanel setupOverlayPanel(final JPanel panel) {
+		// Limit overlay size to not be larger than navigator tree
+		Dimension size = new Dimension(
+				((int) this.navigationMinimumSize.getWidth()) - 75,
+				((int) this.navigationMinimumSize.getHeight()) - 75);
+		panel.setPreferredSize(size);
+		panel.setMaximumSize(size);
+		panel.setMinimumSize(size);
+
+		panel.setBorder(BorderFactory.createLineBorder(GuiUtils
+				.getBorderColor()));
+
+		return panel;
+	}
+
+	protected final IControlsBuilder getControlsBuilder() {
+		return this.controlsBuilder;
 	}
 }

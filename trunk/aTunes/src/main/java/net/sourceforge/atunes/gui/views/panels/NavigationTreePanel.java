@@ -23,8 +23,11 @@ package net.sourceforge.atunes.gui.views.panels;
 import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.LayoutManager;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.OverlayLayout;
 import javax.swing.TransferHandler;
 
 import net.sourceforge.atunes.model.IControlsBuilder;
@@ -107,8 +110,20 @@ public final class NavigationTreePanel extends JPanel implements
 		this.treePanel.removeAll();
 
 		for (INavigationView view : this.navigationHandler.getNavigationViews()) {
-			this.treePanel.add(view.getClass().getName(),
-					view.getTreeScrollPane());
+			JPanel panelWithOverlay = new JPanel();
+			LayoutManager overlay = new OverlayLayout(panelWithOverlay);
+			panelWithOverlay.setLayout(overlay);
+			JScrollPane scrollPane = view.getTreeScrollPane();
+
+			JPanel viewOverlayPanel = view.getOverlayPanel();
+			viewOverlayPanel.setAlignmentX(0.5f);
+			viewOverlayPanel.setAlignmentY(0.5f);
+			panelWithOverlay.add(viewOverlayPanel);
+			panelWithOverlay.add(scrollPane);
+			// Overlay is invisible by default
+			viewOverlayPanel.setVisible(false);
+
+			this.treePanel.add(view.getClass().getName(), panelWithOverlay);
 		}
 	}
 

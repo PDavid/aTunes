@@ -24,6 +24,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.Action;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
@@ -77,6 +78,11 @@ public interface INavigationView extends IAudioObjectsSource,
 	 * @return
 	 */
 	public JScrollPane getTreeScrollPane();
+
+	/**
+	 * @return panel to be placed over tree and shown in some situations
+	 */
+	public JPanel getOverlayPanel();
 
 	/**
 	 * Refreshes view
@@ -168,4 +174,19 @@ public interface INavigationView extends IAudioObjectsSource,
 	 * @param artist
 	 */
 	public void selectArtist(ViewMode currentViewMode, String artist);
+
+	/**
+	 * @return true if this view needs to show overlay information
+	 */
+	public boolean overlayNeedsToBeVisible();
+
+	/**
+	 * @return text to show in overlay
+	 */
+	public String getOverlayText();
+
+	/**
+	 * @return action of overlay
+	 */
+	public Action getOverlayAction();
 }

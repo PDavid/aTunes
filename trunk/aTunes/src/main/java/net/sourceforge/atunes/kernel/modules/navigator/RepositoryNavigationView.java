@@ -23,10 +23,12 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.Action;
 import javax.swing.JPopupMenu;
 import javax.swing.ToolTipManager;
 
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
+import net.sourceforge.atunes.kernel.actions.AddFolderToRepositoryAction;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -62,7 +64,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 	/**
 	 * @param navigatorColumnSet
 	 */
-	public void setNavigatorColumnSet(IColumnSet navigatorColumnSet) {
+	public void setNavigatorColumnSet(final IColumnSet navigatorColumnSet) {
 		this.navigatorColumnSet = navigatorColumnSet;
 	}
 
@@ -91,7 +93,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 
 	@Override
 	public IColorMutableImageIcon getIcon() {
-		return audioFileSmallIcon.getColorMutableIcon();
+		return this.audioFileSmallIcon.getColorMutableIcon();
 	}
 
 	@Override
@@ -106,27 +108,27 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 
 	@Override
 	public NavigationTree getTree() {
-		if (tree == null) {
-			tree = new NavigationTree(I18nUtils.getString(REPOSITORY),
+		if (this.tree == null) {
+			this.tree = new NavigationTree(I18nUtils.getString(REPOSITORY),
 					getTreeRenderer());
-			ToolTipManager.sharedInstance().registerComponent(tree);
+			ToolTipManager.sharedInstance().registerComponent(this.tree);
 		}
-		return tree;
+		return this.tree;
 	}
 
 	@Override
 	public JPopupMenu getTreePopupMenu() {
-		return repositoryNavigationViewTreePopupMenu;
+		return this.repositoryNavigationViewTreePopupMenu;
 	}
 
 	@Override
 	public JPopupMenu getTablePopupMenu() {
-		return repositoryNavigationViewTablePopupMenu;
+		return this.repositoryNavigationViewTablePopupMenu;
 	}
 
 	@Override
 	protected Map<String, ?> getViewData(final ViewMode viewMode) {
-		return repositoryHandler.getDataForView(viewMode);
+		return this.repositoryHandler.getDataForView(viewMode);
 	}
 
 	@Override
@@ -147,7 +149,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 		// Get objects selected before refreshing tree
 		List<ITreeObject<? extends IAudioObject>> objectsSelected = getSelectedTreeObjects();
 		// Get objects expanded before refreshing tree
-		List<ITreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(tree);
+		List<ITreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(this.tree);
 
 		// Build tree
 		getTreeGeneratorFactory().getTreeGenerator(viewMode).buildTree(
@@ -159,10 +161,11 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 
 	@Override
 	public List<IAudioObject> getAudioObjectForTreeNode(final ITreeNode node,
-			final ViewMode viewMode, final String treeFilter, String tableFilter) {
+			final ViewMode viewMode, final String treeFilter,
+			final String tableFilter) {
 		return new RepositoryAudioObjectsHelper().getAudioObjectForTreeNode(
-				repositoryHandler.getAudioFilesList(), node, viewMode,
-				treeFilter, tableFilter, navigatorColumnSet);
+				this.repositoryHandler.getAudioFilesList(), node, viewMode,
+				treeFilter, tableFilter, this.navigatorColumnSet);
 	}
 
 	@Override
@@ -187,4 +190,20 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
+
+	@Override
+	public boolean overlayNeedsToBeVisible() {
+		return this.repositoryHandler.getFolders().isEmpty();
+	}
+
+	@Override
+	public Action getOverlayAction() {
+		return getBeanFactory().getBean(AddFolderToRepositoryAction.class);
+	}
+
+	@Override
+	public String getOverlayText() {
+		return I18nUtils.getString("NO_REPOSITORY_INFORMATION");
+	}
+
 }

@@ -27,7 +27,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import net.sourceforge.atunes.gui.GuiUtils;
-import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IKernel;
@@ -117,13 +116,6 @@ public class RepositoryFromCacheProcessor {
 					I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
 			this.beanFactory.getBean(RepositoryReader.class)
 					.newRepositoryWithFoldersReloaded(foldersToRead);
-		} else {
-			RepositorySelectionInfoDialog dialog = this.dialogFactory
-					.newDialog(RepositorySelectionInfoDialog.class);
-			dialog.setVisible(true);
-			if (dialog.userAccepted()) {
-				this.repositoryHandler.addFolderToRepository();
-			}
 		}
 	}
 
