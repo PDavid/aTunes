@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.Action;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
@@ -33,6 +35,7 @@ import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedTreeObjects;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
+import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.CopyToRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.EditTitlesAction;
 import net.sourceforge.atunes.kernel.actions.ExtractPictureAction;
@@ -79,10 +82,12 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 
 	private IColumnSet navigatorColumnSet;
 
+	private JPanel overlayContent;
+
 	/**
 	 * @param navigatorColumnSet
 	 */
-	public void setNavigatorColumnSet(IColumnSet navigatorColumnSet) {
+	public void setNavigatorColumnSet(final IColumnSet navigatorColumnSet) {
 		this.navigatorColumnSet = navigatorColumnSet;
 	}
 
@@ -102,7 +107,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 
 	@Override
 	public IColorMutableImageIcon getIcon() {
-		return deviceIcon.getColorMutableIcon();
+		return this.deviceIcon.getColorMutableIcon();
 	}
 
 	@Override
@@ -117,123 +122,127 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 
 	@Override
 	public NavigationTree getTree() {
-		if (deviceTree == null) {
-			deviceTree = new NavigationTree(I18nUtils.getString("DEVICE"),
+		if (this.deviceTree == null) {
+			this.deviceTree = new NavigationTree(I18nUtils.getString("DEVICE"),
 					getTreeRenderer());
 		}
-		return deviceTree;
+		return this.deviceTree;
 	}
 
 	@Override
 	public JPopupMenu getTreePopupMenu() {
-		if (deviceTreeMenu == null) {
-			deviceTreeMenu = new JPopupMenu();
+		if (this.deviceTreeMenu == null) {
+			this.deviceTreeMenu = new JPopupMenu();
 			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = getBeanFactory()
 					.getBean("addToPlayListFromDeviceNavigationView",
 							AddToPlayListAction.class);
 			addToPlayListAction.setAudioObjectsSource(this);
-			deviceTreeMenu.add(addToPlayListAction);
+			this.deviceTreeMenu.add(addToPlayListAction);
 
 			SetAsPlayListAction setAsPlayListAction = getBeanFactory().getBean(
 					"setAsPlaylistFromDeviceNavigationView",
 					SetAsPlayListAction.class);
 			setAsPlayListAction.setAudioObjectsSource(this);
-			deviceTreeMenu.add(setAsPlayListAction);
+			this.deviceTreeMenu.add(setAsPlayListAction);
 
-			deviceTreeMenu.add(new JSeparator());
+			this.deviceTreeMenu.add(new JSeparator());
 
 			AbstractActionOverSelectedTreeObjects<IFolder> openFolder = getBeanFactory()
 					.getBean("openFolderFromDeviceNavigationTree",
 							OpenFolderFromNavigatorTreeAction.class);
 			openFolder.setTreeObjectsSource(this);
-			deviceTreeMenu.add(openFolder);
+			this.deviceTreeMenu.add(openFolder);
 
-			deviceTreeMenu.add(new JSeparator());
-			deviceTreeMenu.add(new EditTagMenu(false, this, getBeanFactory()));
+			this.deviceTreeMenu.add(new JSeparator());
+			this.deviceTreeMenu.add(new EditTagMenu(false, this,
+					getBeanFactory()));
 
 			AbstractActionOverSelectedTreeObjects<IAlbum> editTitles = getBeanFactory()
 					.getBean("editTitlesFromDeviceViewAction",
 							EditTitlesAction.class);
 			editTitles.setTreeObjectsSource(this);
-			deviceTreeMenu.add(editTitles);
-			deviceTreeMenu.add(new JSeparator());
-			deviceTreeMenu.add(getBeanFactory().getBean(
+			this.deviceTreeMenu.add(editTitles);
+			this.deviceTreeMenu.add(new JSeparator());
+			this.deviceTreeMenu.add(getBeanFactory().getBean(
 					RemoveFromDiskAction.class));
-			deviceTreeMenu.add(new JSeparator());
+			this.deviceTreeMenu.add(new JSeparator());
 
 			CopyToRepositoryAction copyToRepositoryAction = getBeanFactory()
 					.getBean(CopyToRepositoryAction.class);
 			copyToRepositoryAction.setAudioObjectsSource(this);
-			deviceTreeMenu.add(copyToRepositoryAction);
+			this.deviceTreeMenu.add(copyToRepositoryAction);
 
-			deviceTreeMenu.add(getBeanFactory().getBean(
+			this.deviceTreeMenu.add(getBeanFactory().getBean(
 					FillDeviceWithRandomSongsAction.class));
-			deviceTreeMenu.add(new JSeparator());
-			deviceTreeMenu.add(getBeanFactory().getBean(
+			this.deviceTreeMenu.add(new JSeparator());
+			this.deviceTreeMenu.add(getBeanFactory().getBean(
 					SearchArtistAction.class));
-			deviceTreeMenu.add(getBeanFactory().getBean(
+			this.deviceTreeMenu.add(getBeanFactory().getBean(
 					SearchArtistAtAction.class));
 		}
-		return deviceTreeMenu;
+		return this.deviceTreeMenu;
 	}
 
 	@Override
 	public JPopupMenu getTablePopupMenu() {
-		if (deviceTableMenu == null) {
-			deviceTableMenu = new JPopupMenu();
+		if (this.deviceTableMenu == null) {
+			this.deviceTableMenu = new JPopupMenu();
 			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = getBeanFactory()
 					.getBean("addToPlayListFromDeviceNavigationView",
 							AddToPlayListAction.class);
 			addToPlayListAction.setAudioObjectsSource(this);
-			deviceTableMenu.add(addToPlayListAction);
+			this.deviceTableMenu.add(addToPlayListAction);
 			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = getBeanFactory()
 					.getBean(
 							"addToPlayListAfterCurrentAudioObjectFromDeviceNavigationView",
 							AddToPlayListAfterCurrentAudioObjectAction.class);
 			addToPlayListAfterCurrentAudioObjectAction
 					.setAudioObjectsSource(this);
-			deviceTableMenu.add(addToPlayListAfterCurrentAudioObjectAction);
+			this.deviceTableMenu
+					.add(addToPlayListAfterCurrentAudioObjectAction);
 
 			SetAsPlayListAction setAsPlayListAction = getBeanFactory().getBean(
 					"setAsPlaylistFromDeviceNavigationView",
 					SetAsPlayListAction.class);
 			setAsPlayListAction.setAudioObjectsSource(this);
-			deviceTableMenu.add(setAsPlayListAction);
+			this.deviceTableMenu.add(setAsPlayListAction);
 
-			deviceTableMenu.add(getBeanFactory().getBean(PlayNowAction.class));
-			deviceTableMenu.add(new JSeparator());
+			this.deviceTableMenu.add(getBeanFactory().getBean(
+					PlayNowAction.class));
+			this.deviceTableMenu.add(new JSeparator());
 
 			OpenFolderFromNavigatorTableAction openFolderFromNavigatorAction = getBeanFactory()
 					.getBean("openFolderFromDeviceNavigationTable",
 							OpenFolderFromNavigatorTableAction.class);
 			openFolderFromNavigatorAction.setAudioObjectsSource(this);
-			deviceTableMenu.add(openFolderFromNavigatorAction);
+			this.deviceTableMenu.add(openFolderFromNavigatorAction);
 
-			deviceTableMenu.add(new JSeparator());
-			deviceTableMenu.add(new EditTagMenu(false, this, getBeanFactory()));
+			this.deviceTableMenu.add(new JSeparator());
+			this.deviceTableMenu.add(new EditTagMenu(false, this,
+					getBeanFactory()));
 
 			ExtractPictureAction extractPictureAction = getBeanFactory()
 					.getBean("extractPictureFromDeviceNavigationView",
 							ExtractPictureAction.class);
 			extractPictureAction.setAudioObjectsSource(this);
-			deviceTableMenu.add(extractPictureAction);
+			this.deviceTableMenu.add(extractPictureAction);
 
-			deviceTableMenu.add(new JSeparator());
-			deviceTableMenu.add(getBeanFactory().getBean(
+			this.deviceTableMenu.add(new JSeparator());
+			this.deviceTableMenu.add(getBeanFactory().getBean(
 					RemoveFromDiskAction.class));
-			deviceTableMenu.add(new JSeparator());
+			this.deviceTableMenu.add(new JSeparator());
 
 			CopyToRepositoryAction copyToRepositoryAction = getBeanFactory()
 					.getBean(CopyToRepositoryAction.class);
 			copyToRepositoryAction.setAudioObjectsSource(this);
-			deviceTableMenu.add(copyToRepositoryAction);
+			this.deviceTableMenu.add(copyToRepositoryAction);
 		}
-		return deviceTableMenu;
+		return this.deviceTableMenu;
 	}
 
 	@Override
 	protected Map<String, ?> getViewData(final ViewMode viewMode) {
-		return deviceHandler.getDataForView(viewMode);
+		return this.deviceHandler.getDataForView(viewMode);
 	}
 
 	@Override
@@ -262,10 +271,11 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 
 	@Override
 	public List<IAudioObject> getAudioObjectForTreeNode(final ITreeNode node,
-			final ViewMode viewMode, final String treeFilter, String tableFilter) {
+			final ViewMode viewMode, final String treeFilter,
+			final String tableFilter) {
 		return new RepositoryAudioObjectsHelper().getAudioObjectForTreeNode(
-				deviceHandler.getAudioFilesList(), node, viewMode, treeFilter,
-				tableFilter, navigatorColumnSet);
+				this.deviceHandler.getAudioFilesList(), node, viewMode,
+				treeFilter, tableFilter, this.navigatorColumnSet);
 	}
 
 	@Override
@@ -281,5 +291,20 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 	@Override
 	public boolean isViewModeSupported() {
 		return true;
+	}
+
+	@Override
+	public boolean overlayNeedsToBeVisible() {
+		return !this.deviceHandler.isDeviceConnected();
+	}
+
+	@Override
+	public Action getOverlayAction() {
+		return getBeanFactory().getBean(ConnectDeviceAction.class);
+	}
+
+	@Override
+	public String getOverlayText() {
+		return I18nUtils.getString("NO_DEVICE_INFORMATION");
 	}
 }

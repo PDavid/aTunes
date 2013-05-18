@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.Action;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.tree.TreeSelectionModel;
@@ -48,7 +49,6 @@ import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IIconFactory;
@@ -82,15 +82,6 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 
 	private IIconFactory rssSmallIcon;
 
-	private IBeanFactory beanFactory;
-
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
-
 	/**
 	 * @param rssSmallIcon
 	 */
@@ -116,7 +107,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 
 	@Override
 	public IColorMutableImageIcon getIcon() {
-		return rssSmallIcon.getColorMutableIcon();
+		return this.rssSmallIcon.getColorMutableIcon();
 	}
 
 	@Override
@@ -131,112 +122,113 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 
 	@Override
 	public NavigationTree getTree() {
-		if (podcastFeedTree == null) {
-			podcastFeedTree = new NavigationTree(
+		if (this.podcastFeedTree == null) {
+			this.podcastFeedTree = new NavigationTree(
 					I18nUtils.getString("PODCAST_FEEDS"), getTreeRenderer());
-			podcastFeedTree.getSelectionModel().setSelectionMode(
+			this.podcastFeedTree.getSelectionModel().setSelectionMode(
 					TreeSelectionModel.SINGLE_TREE_SELECTION);
 		}
-		return podcastFeedTree;
+		return this.podcastFeedTree;
 	}
 
 	@Override
 	public JPopupMenu getTreePopupMenu() {
-		if (podcastFeedTreeMenu == null) {
-			podcastFeedTreeMenu = new JPopupMenu();
-			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = beanFactory
+		if (this.podcastFeedTreeMenu == null) {
+			this.podcastFeedTreeMenu = new JPopupMenu();
+			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = getBeanFactory()
 					.getBean("addToPlayListFromPodcastNavigationView",
 							AddToPlayListAction.class);
 			addToPlayListAction.setAudioObjectsSource(this);
-			podcastFeedTreeMenu.add(addToPlayListAction);
+			this.podcastFeedTreeMenu.add(addToPlayListAction);
 
-			SetAsPlayListAction setAsPlayListAction = beanFactory.getBean(
+			SetAsPlayListAction setAsPlayListAction = getBeanFactory().getBean(
 					"setAsPlaylistFromPodcastNavigationView",
 					SetAsPlayListAction.class);
 			setAsPlayListAction.setAudioObjectsSource(this);
-			podcastFeedTreeMenu.add(setAsPlayListAction);
+			this.podcastFeedTreeMenu.add(setAsPlayListAction);
 
-			podcastFeedTreeMenu.add(new JSeparator());
-			podcastFeedTreeMenu.add(beanFactory
-					.getBean(AddPodcastFeedAction.class));
-			podcastFeedTreeMenu.add(beanFactory
-					.getBean(RenamePodcastFeedAction.class));
-			AbstractActionOverSelectedTreeObjects<IPodcastFeed> markListened = beanFactory
+			this.podcastFeedTreeMenu.add(new JSeparator());
+			this.podcastFeedTreeMenu.add(getBeanFactory().getBean(
+					AddPodcastFeedAction.class));
+			this.podcastFeedTreeMenu.add(getBeanFactory().getBean(
+					RenamePodcastFeedAction.class));
+			AbstractActionOverSelectedTreeObjects<IPodcastFeed> markListened = getBeanFactory()
 					.getBean(MarkPodcastListenedAction.class);
 			markListened.setTreeObjectsSource(this);
-			podcastFeedTreeMenu.add(markListened);
-			podcastFeedTreeMenu.add(beanFactory
-					.getBean(RemovePodcastFeedAction.class));
+			this.podcastFeedTreeMenu.add(markListened);
+			this.podcastFeedTreeMenu.add(getBeanFactory().getBean(
+					RemovePodcastFeedAction.class));
 		}
-		return podcastFeedTreeMenu;
+		return this.podcastFeedTreeMenu;
 	}
 
 	@Override
 	public JPopupMenu getTablePopupMenu() {
-		if (podcastFeedTableMenu == null) {
-			podcastFeedTableMenu = new JPopupMenu();
+		if (this.podcastFeedTableMenu == null) {
+			this.podcastFeedTableMenu = new JPopupMenu();
 
-			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = beanFactory
+			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = getBeanFactory()
 					.getBean("addToPlayListFromPodcastNavigationView",
 							AddToPlayListAction.class);
 			addToPlayListAction.setAudioObjectsSource(this);
-			podcastFeedTableMenu.add(addToPlayListAction);
+			this.podcastFeedTableMenu.add(addToPlayListAction);
 
-			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = beanFactory
+			AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = getBeanFactory()
 					.getBean(
 							"addToPlayListAfterCurrentAudioObjectFromPodcastNavigationView",
 							AddToPlayListAfterCurrentAudioObjectAction.class);
 			addToPlayListAfterCurrentAudioObjectAction
 					.setAudioObjectsSource(this);
-			podcastFeedTableMenu
+			this.podcastFeedTableMenu
 					.add(addToPlayListAfterCurrentAudioObjectAction);
 
-			SetAsPlayListAction setAsPlayListAction = beanFactory.getBean(
+			SetAsPlayListAction setAsPlayListAction = getBeanFactory().getBean(
 					"setAsPlaylistFromPodcastNavigationView",
 					SetAsPlayListAction.class);
 			setAsPlayListAction.setAudioObjectsSource(this);
-			podcastFeedTableMenu.add(setAsPlayListAction);
+			this.podcastFeedTableMenu.add(setAsPlayListAction);
 
-			podcastFeedTableMenu.add(beanFactory.getBean(PlayNowAction.class));
-			podcastFeedTableMenu.add(new JSeparator());
-			podcastFeedTableMenu.add(beanFactory
-					.getBean(ShowNavigatorTableItemInfoAction.class));
-			podcastFeedTableMenu.add(new JSeparator());
+			this.podcastFeedTableMenu.add(getBeanFactory().getBean(
+					PlayNowAction.class));
+			this.podcastFeedTableMenu.add(new JSeparator());
+			this.podcastFeedTableMenu.add(getBeanFactory().getBean(
+					ShowNavigatorTableItemInfoAction.class));
+			this.podcastFeedTableMenu.add(new JSeparator());
 
-			AbstractActionOverSelectedObjects<IPodcastFeedEntry> downloadPodcastEntryAction = beanFactory
+			AbstractActionOverSelectedObjects<IPodcastFeedEntry> downloadPodcastEntryAction = getBeanFactory()
 					.getBean(DownloadPodcastEntryAction.class);
 			downloadPodcastEntryAction.setAudioObjectsSource(this);
-			podcastFeedTableMenu.add(downloadPodcastEntryAction);
+			this.podcastFeedTableMenu.add(downloadPodcastEntryAction);
 
-			RemoveOldPodcastEntryAction removeOldPodcastEntryAction = beanFactory
+			RemoveOldPodcastEntryAction removeOldPodcastEntryAction = getBeanFactory()
 					.getBean(RemoveOldPodcastEntryAction.class);
 			removeOldPodcastEntryAction.setAudioObjectsSource(this);
-			podcastFeedTableMenu.add(removeOldPodcastEntryAction);
+			this.podcastFeedTableMenu.add(removeOldPodcastEntryAction);
 
-			MarkPodcastEntryListenedAction markPodcastEntryListenedAction = beanFactory
+			MarkPodcastEntryListenedAction markPodcastEntryListenedAction = getBeanFactory()
 					.getBean(MarkPodcastEntryListenedAction.class);
 			markPodcastEntryListenedAction.setAudioObjectsSource(this);
-			podcastFeedTableMenu.add(markPodcastEntryListenedAction);
+			this.podcastFeedTableMenu.add(markPodcastEntryListenedAction);
 
-			podcastFeedTableMenu.add(new JSeparator());
+			this.podcastFeedTableMenu.add(new JSeparator());
 
-			AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceAction = beanFactory
+			AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceAction = getBeanFactory()
 					.getBean("copyToDeviceFromPodcastNavigationView",
 							CopyToDeviceAction.class);
 			copyToDeviceAction.setAudioObjectsSource(this);
-			podcastFeedTableMenu.add(copyToDeviceAction);
+			this.podcastFeedTableMenu.add(copyToDeviceAction);
 
-			podcastFeedTableMenu.add(new JSeparator());
-			podcastFeedTableMenu.add(beanFactory
-					.getBean(RemoveFromDiskAction.class));
+			this.podcastFeedTableMenu.add(new JSeparator());
+			this.podcastFeedTableMenu.add(getBeanFactory().getBean(
+					RemoveFromDiskAction.class));
 		}
-		return podcastFeedTableMenu;
+		return this.podcastFeedTableMenu;
 	}
 
 	@Override
 	protected Map<String, ?> getViewData(final ViewMode viewMode) {
 		Map<String, List<IPodcastFeed>> data = new HashMap<String, List<IPodcastFeed>>();
-		data.put("PODCASTS", podcastFeedHandler.getPodcastFeeds());
+		data.put("PODCASTS", this.podcastFeedHandler.getPodcastFeeds());
 		return data;
 	}
 
@@ -274,11 +266,12 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 
 	@Override
 	public List<IAudioObject> getAudioObjectForTreeNode(final ITreeNode node,
-			final ViewMode viewMode, final String treeFilter, String tableFilter) {
+			final ViewMode viewMode, final String treeFilter,
+			final String tableFilter) {
 		List<IAudioObject> songs = new ArrayList<IAudioObject>();
 		if (node.isRoot()) {
 			if (treeFilter == null) {
-				List<IPodcastFeed> podcastFeeds = podcastFeedHandler
+				List<IPodcastFeed> podcastFeeds = this.podcastFeedHandler
 						.getPodcastFeeds();
 				for (IPodcastFeed pf : podcastFeeds) {
 					songs.addAll(pf.getAudioObjects());
@@ -327,11 +320,26 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 
 	@Override
 	public IColumnSet getCustomColumnSet() {
-		return podcastNavigationColumnSet;
+		return this.podcastNavigationColumnSet;
 	}
 
 	@Override
 	public boolean isViewModeSupported() {
 		return false;
+	}
+
+	@Override
+	public boolean overlayNeedsToBeVisible() {
+		return this.podcastFeedHandler.getPodcastFeeds().isEmpty();
+	}
+
+	@Override
+	public Action getOverlayAction() {
+		return getBeanFactory().getBean(AddPodcastFeedAction.class);
+	}
+
+	@Override
+	public String getOverlayText() {
+		return I18nUtils.getString("NO_PODCASTS_INFORMATION");
 	}
 }

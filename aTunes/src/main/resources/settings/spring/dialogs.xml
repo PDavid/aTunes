@@ -153,11 +153,6 @@
 		<constructor-arg ref="controlsBuilder"/>
 	</bean>
 
-	<bean class="net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog" scope="prototype">
-		<constructor-arg ref="frame"/>
-		<constructor-arg ref="controlsBuilder"/>
-	</bean>
-
 	<bean class="net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="controlsBuilder"/>
