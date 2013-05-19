@@ -233,5 +233,7 @@
 
 	<bean id="lookAndFeelTableHeaderCellRenderer" class="net.sourceforge.atunes.gui.lookandfeel.LookAndFeelTableHeaderCellRenderer" scope="prototype"/>
 	<bean id="substanceLookAndFeelTableHeaderCellRenderer" class="net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeelTableHeaderCellRenderer" scope="prototype"/>
+
+	<bean id="radioBrowserController" class="net.sourceforge.atunes.kernel.modules.radio.RadioBrowserDialogController" init-method="initialize" scope="prototype"/>
 	
 </beans>

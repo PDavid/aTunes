@@ -42,6 +42,11 @@ import javax.swing.tree.TreeCellRenderer;
 public interface IControlsBuilder {
 
 	/**
+	 * @return table
+	 */
+	JTable createTable();
+
+	/**
 	 * @return text area
 	 */
 	JTextArea createTextArea();

@@ -29,7 +29,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
@@ -38,8 +40,6 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-import org.jdesktop.swingx.JXTreeTable;
-
 /**
  * The Class RadioBrowserDialog.
  */
@@ -47,8 +47,10 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
 
 	private static final long serialVersionUID = 8523236886848649698L;
 
-	/** The table. */
-	private JXTreeTable treeTable;
+	@SuppressWarnings("rawtypes")
+	private JList list;
+
+	private JTable table;
 
 	private IIconFactory radioMediumIcon;
 
@@ -61,6 +63,7 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
 	public RadioBrowserDialog(final IFrame frame,
 			final IControlsBuilder controlsBuilder) {
 		super(frame, 800, 600, controlsBuilder);
+		setResizable(false);
 	}
 
 	/**
@@ -89,16 +92,21 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
 	/**
 	 * Sets the content.
 	 */
+	@SuppressWarnings("rawtypes")
 	private void setContent() {
 		JPanel panel = new JPanel(new GridBagLayout());
-		this.treeTable = new JXTreeTable();
-		this.treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.list = new JList();
+		this.list.getSelectionModel().setSelectionMode(
+				ListSelectionModel.SINGLE_SELECTION);
+		this.table = getControlsBuilder().createTable();
+		this.table.getSelectionModel().setSelectionMode(
+				ListSelectionModel.SINGLE_SELECTION);
 		JPanel topPanel = new JPanel(new BorderLayout(10, 0));
 		JLabel radioIcon = new JLabel(
 				this.radioMediumIcon.getIcon(getLookAndFeel()
 						.getPaintForSpecialControls()));
 		JLabel browserInstructions = new JLabel(
-				I18nUtils.getString("RADIO_BROWSER_INSTRUCTIONS"));
+				I18nUtils.getString("RADIO_BROWSER_TEXT"));
 		JButton closeButton = new JButton(I18nUtils.getString("CLOSE"));
 		closeButton.addActionListener(new ActionListener() {
 			@Override
@@ -113,15 +121,23 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.WEST;
 		c.insets = new Insets(10, 20, 10, 20);
+		c.gridwidth = 2;
 		panel.add(topPanel, c);
 		c.gridy = 1;
-		c.weightx = 1;
+		c.weightx = 0.3;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		panel.add(getControlsBuilder().createScrollPane(this.treeTable), c);
+		c.gridwidth = 1;
+		c.insets = new Insets(0, 10, 10, 10);
+		panel.add(getControlsBuilder().createScrollPane(this.list), c);
+		c.gridx = 1;
+		c.weightx = 0.7;
+		panel.add(getControlsBuilder().createScrollPane(this.table), c);
+		c.gridx = 0;
 		c.gridy = 2;
 		c.weightx = 0;
 		c.weighty = 0;
+		c.gridwidth = 2;
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.CENTER;
 		panel.add(closeButton, c);
@@ -129,12 +145,17 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
 	}
 
 	/**
-	 * Gets the table.
-	 * 
-	 * @return the table
+	 * @return list
 	 */
-	public JXTreeTable getTreeTable() {
-		return this.treeTable;
+	@SuppressWarnings("rawtypes")
+	protected JList getList() {
+		return this.list;
 	}
 
+	/**
+	 * @return table
+	 */
+	public JTable getTable() {
+		return this.table;
+	}
 }

@@ -18,29 +18,36 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.navigator;
+package net.sourceforge.atunes.utils;
 
 import java.io.Serializable;
 import java.text.Collator;
 import java.util.Comparator;
 
-final class DefaultComparator implements Comparator<String>, Serializable {
-	
+/**
+ * Comparator for strings using collator
+ * 
+ * @author alex
+ * 
+ */
+public final class DefaultComparator implements Comparator<String>,
+		Serializable {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7737153282909609592L;
-	private Collator collator;
-	
+	private final Collator collator;
+
 	/**
 	 * @param collator
 	 */
-	public DefaultComparator(Collator collator) {
+	public DefaultComparator(final Collator collator) {
 		this.collator = collator;
 	}
 
 	@Override
-	public int compare(String s1, String s2) {
-	    return this.collator.compare(s1.toLowerCase(), s2.toLowerCase());
+	public int compare(final String s1, final String s2) {
+		return this.collator.compare(s1.toLowerCase(), s2.toLowerCase());
 	}
 }

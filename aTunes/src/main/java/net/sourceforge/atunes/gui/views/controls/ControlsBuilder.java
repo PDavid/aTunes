@@ -304,7 +304,8 @@ public class ControlsBuilder implements IControlsBuilder {
 
 	@Override
 	public IColumnSetPopupMenu createColumnSetPopupMenu(final JTable table,
-			final IColumnModel columnModel, IColumnSetTableModel tableModel) {
+			final IColumnModel columnModel,
+			final IColumnSetTableModel tableModel) {
 		ColumnSetPopupMenu popup = this.beanFactory
 				.getBean(ColumnSetPopupMenu.class);
 		popup.bindTo(table, columnModel, tableModel);
@@ -362,6 +363,13 @@ public class ControlsBuilder implements IControlsBuilder {
 			final ITreeCellRendererCode<?, ?> code) {
 		return this.lookAndFeelManager.getCurrentLookAndFeel()
 				.getTreeCellRenderer(code);
+	}
+
+	@Override
+	public JTable createTable() {
+		JTable table = new JTable();
+		this.lookAndFeelManager.getCurrentLookAndFeel().decorateTable(table);
+		return table;
 	}
 
 	private static class CustomFileChooser extends JFileChooser {

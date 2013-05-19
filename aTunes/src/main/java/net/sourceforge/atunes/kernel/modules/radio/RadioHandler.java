@@ -20,23 +20,19 @@
 
 package net.sourceforge.atunes.kernel.modules.radio;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioDialog;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.XMLSerializerService;
 
 /**
  * The Class RadioHandler.
@@ -48,11 +44,7 @@ public final class RadioHandler extends AbstractHandler implements
 
 	private List<IRadio> radios = new ArrayList<IRadio>();
 
-	private INetworkHandler networkHandler;
-
 	private INavigationView radioNavigationView;
-
-	private XMLSerializerService xmlSerializerService;
 
 	private IDialogFactory dialogFactory;
 
@@ -64,25 +56,10 @@ public final class RadioHandler extends AbstractHandler implements
 	}
 
 	/**
-	 * @param xmlSerializerService
-	 */
-	public void setXmlSerializerService(
-			final XMLSerializerService xmlSerializerService) {
-		this.xmlSerializerService = xmlSerializerService;
-	}
-
-	/**
 	 * @param radioNavigationView
 	 */
 	public void setRadioNavigationView(final INavigationView radioNavigationView) {
 		this.radioNavigationView = radioNavigationView;
-	}
-
-	/**
-	 * @param networkHandler
-	 */
-	public void setNetworkHandler(final INetworkHandler networkHandler) {
-		this.networkHandler = networkHandler;
 	}
 
 	@Override
@@ -154,23 +131,6 @@ public final class RadioHandler extends AbstractHandler implements
 		removeRadios(Collections.singletonList(radio));
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<IRadio> retrieveRadiosForBrowser() throws IOException {
-		try {
-			String xml = this.networkHandler
-					.readURL(this.networkHandler
-							.getConnection(Constants.RADIO_LIST_DOWNLOAD_COMMON_JUKEBOX));
-			return (List<IRadio>) this.xmlSerializerService
-					.readObjectFromString(xml);
-		} catch (IOException e) {
-			String xml = this.networkHandler.readURL(this.networkHandler
-					.getConnection(Constants.RADIO_LIST_DOWNLOAD));
-			return (List<IRadio>) this.xmlSerializerService
-					.readObjectFromString(xml);
-		}
-	}
-
 	@Override
 	public void setLabel(final List<IRadio> radioList, final String label) {
 		for (IRadio r : radioList) {
@@ -198,9 +158,7 @@ public final class RadioHandler extends AbstractHandler implements
 
 	@Override
 	public void showRadioBrowser() {
-		new RadioBrowserDialogController(
-				this.dialogFactory.newDialog(RadioBrowserDialog.class), this,
-				getBeanFactory()).showRadioBrowser();
+		getBean(RadioBrowserDialogController.class).showRadioBrowser();
 	}
 
 	@Override
