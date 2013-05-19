@@ -55,6 +55,7 @@ import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
+import net.sourceforge.atunes.utils.DefaultComparator;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**

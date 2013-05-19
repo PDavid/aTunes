@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.INavigationViewSorter;
 import net.sourceforge.atunes.model.IStateNavigation;
+import net.sourceforge.atunes.utils.DefaultComparator;
 
 /**
  * Sorts navigation table by artist

@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.model.INavigationViewSorter;
+import net.sourceforge.atunes.utils.DefaultComparator;
 
 /**
  * Sorts navigation tree by genre

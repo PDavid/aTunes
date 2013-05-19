@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -94,16 +93,6 @@ public interface IRadioHandler extends IHandler {
 	 * @param radio
 	 */
 	public void removeRadio(IRadio radio);
-
-	/**
-	 * Retrieve radios for browser.
-	 * 
-	 * @return the list< radio>
-	 * 
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	public List<IRadio> retrieveRadiosForBrowser() throws IOException;
 
 	/**
 	 * Change label of radio.

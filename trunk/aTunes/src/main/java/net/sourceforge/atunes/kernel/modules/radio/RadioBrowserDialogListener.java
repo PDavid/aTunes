@@ -23,13 +23,8 @@ package net.sourceforge.atunes.kernel.modules.radio;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.tree.TreePath;
-
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
-
-import org.jdesktop.swingx.JXTreeTable;
-import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 
 /**
  * The listener interface for receiving radioBrowserDialog events.
@@ -55,18 +50,18 @@ final class RadioBrowserDialogListener extends MouseAdapter {
 
 	@Override
 	public void mousePressed(final MouseEvent e) {
-		if (e.getSource() == this.radioBrowserDialog.getTreeTable()) {
-			JXTreeTable treeTable = this.radioBrowserDialog.getTreeTable();
+		if (e.getSource() == this.radioBrowserDialog.getList()) {
+			String label = (String) this.radioBrowserDialog.getList()
+					.getSelectedValue();
+			((RadioBrowserTableModel) this.radioBrowserDialog.getTable()
+					.getModel()).setSelectedLabel(label);
+		} else if (e.getSource() == this.radioBrowserDialog.getTable()) {
 			if (e.getClickCount() == 2) {
-				TreePath path = treeTable
-						.getPathForLocation(e.getX(), e.getY());
-				if (path != null) {
-					Object objectSelected = ((DefaultMutableTreeTableNode) path
-							.getLastPathComponent()).getUserObject();
-					if (objectSelected instanceof IRadio) {
-						// User selected a radio (not a label node or row)
-						this.radioHandler.addRadio((IRadio) objectSelected);
-					}
+				int row = this.radioBrowserDialog.getTable().getSelectedRow();
+				if (row != -1) {
+					IRadio radio = ((RadioBrowserTableModel) this.radioBrowserDialog
+							.getTable().getModel()).getRadioAt(row);
+					this.radioHandler.addRadio(radio);
 				}
 			}
 		}

@@ -20,31 +20,67 @@
 
 package net.sourceforge.atunes.kernel.modules.radio;
 
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.swing.DefaultListModel;
+
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
+import net.sourceforge.atunes.utils.DefaultComparator;
 
-final class RadioBrowserDialogController extends
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.Multimaps;
+
+/**
+ * Controller for radio browser
+ * 
+ * @author alex
+ * 
+ */
+public final class RadioBrowserDialogController extends
 		AbstractSimpleController<RadioBrowserDialog> {
 
-	private final IRadioHandler radioHandler;
+	private IRadioHandler radioHandler;
 
-	private final IBeanFactory beanFactory;
+	private IBeanFactory beanFactory;
+
+	private Collator collator;
 
 	/**
-	 * Instantiates a new radio browser dialog controller.
-	 * 
-	 * @param frameControlled
+	 * Initializes controller
+	 */
+	public void initialize() {
+		setComponentControlled(this.beanFactory.getBean(IDialogFactory.class)
+				.newDialog(RadioBrowserDialog.class));
+		addBindings();
+	}
+
+	/**
 	 * @param radioHandler
+	 */
+	public void setRadioHandler(final IRadioHandler radioHandler) {
+		this.radioHandler = radioHandler;
+	}
+
+	/**
 	 * @param beanFactory
 	 */
-	RadioBrowserDialogController(final RadioBrowserDialog frameControlled,
-			final IRadioHandler radioHandler, final IBeanFactory beanFactory) {
-		super(frameControlled);
-		this.radioHandler = radioHandler;
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
-		addBindings();
-		addStateBindings();
+	}
+
+	/**
+	 * @param collator
+	 */
+	public void setCollator(final Collator collator) {
+		this.collator = collator;
 	}
 
 	/**
@@ -60,13 +96,35 @@ final class RadioBrowserDialogController extends
 	private void retrieveData() {
 		this.beanFactory
 				.getBean(RetrieveRadioBrowserDataBackgroundWorker.class)
-				.retrieve(getComponentControlled());
+				.retrieve(this);
 	}
 
 	@Override
 	public void addBindings() {
 		RadioBrowserDialogListener listener = new RadioBrowserDialogListener(
 				getComponentControlled(), this.radioHandler);
-		getComponentControlled().getTreeTable().addMouseListener(listener);
+		getComponentControlled().getList().addMouseListener(listener);
+		getComponentControlled().getTable().addMouseListener(listener);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void show(final List<IRadio> radios) {
+		ImmutableListMultimap<String, IRadio> labelsAndRadios = Multimaps
+				.index(radios, new Function<IRadio, String>() {
+					@Override
+					public String apply(final IRadio input) {
+						return input.getLabel();
+					}
+				});
+		List<String> labels = new ArrayList<String>(labelsAndRadios.keySet());
+		Collections.sort(labels, new DefaultComparator(this.collator));
+		DefaultListModel<String> listModel = new DefaultListModel<String>();
+		for (String label : labels) {
+			listModel.addElement(label);
+		}
+		getComponentControlled().getList().setModel(listModel);
+		getComponentControlled().getTable().setModel(
+				new RadioBrowserTableModel(labelsAndRadios));
+		getComponentControlled().setVisible(true);
 	}
 }

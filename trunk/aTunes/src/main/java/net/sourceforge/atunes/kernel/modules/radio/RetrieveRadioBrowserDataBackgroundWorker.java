@@ -24,11 +24,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.RadioBrowserTreeTableModel;
+import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.BackgroundWorker;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IRadioHandler;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.XMLSerializerService;
 
 /**
  * Retrieves radios to show in browser
@@ -39,47 +43,87 @@ import net.sourceforge.atunes.utils.Logger;
 public final class RetrieveRadioBrowserDataBackgroundWorker extends
 		BackgroundWorker<List<IRadio>, Void> {
 
-	private IRadioHandler radioHandler;
+	private INetworkHandler networkHandler;
 
-	private RadioBrowserDialog radioBrowserDialog;
+	private XMLSerializerService xmlSerializerService;
+
+	private RadioBrowserDialogController controller;
+
+	private IDialogFactory dialogFactory;
+
+	private IIndeterminateProgressDialog dialog;
 
 	/**
-	 * @param radioHandler
+	 * @param dialogFactory
 	 */
-	public void setRadioHandler(final IRadioHandler radioHandler) {
-		this.radioHandler = radioHandler;
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
 
 	/**
-	 * @param dialog
+	 * @param networkHandler
 	 */
-	void retrieve(final RadioBrowserDialog dialog) {
-		this.radioBrowserDialog = dialog;
+	public void setNetworkHandler(final INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
+
+	/**
+	 * @param xmlSerializerService
+	 */
+	public void setXmlSerializerService(
+			final XMLSerializerService xmlSerializerService) {
+		this.xmlSerializerService = xmlSerializerService;
+	}
+
+	/**
+	 * @param controller
+	 */
+	void retrieve(final RadioBrowserDialogController controller) {
+		this.controller = controller;
 		execute();
 	}
 
 	@Override
 	protected void before() {
+		this.dialog = this.dialogFactory
+				.newDialog(IIndeterminateProgressDialog.class);
+		this.dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
+		this.dialog.showDialog();
 	}
 
 	@Override
-	protected void whileWorking(List<Void> chunks) {
+	protected void whileWorking(final List<Void> chunks) {
 	}
 
 	@Override
 	protected List<IRadio> doInBackground() {
 		try {
-			return this.radioHandler.retrieveRadiosForBrowser();
+			return retrieveRadiosForBrowser();
 		} catch (IOException e) {
 			Logger.error(e);
 		}
 		return new ArrayList<IRadio>();
 	}
 
+	@SuppressWarnings("unchecked")
+	private List<IRadio> retrieveRadiosForBrowser() throws IOException {
+		try {
+			String xml = this.networkHandler
+					.readURL(this.networkHandler
+							.getConnection(Constants.RADIO_LIST_DOWNLOAD_COMMON_JUKEBOX));
+			return (List<IRadio>) this.xmlSerializerService
+					.readObjectFromString(xml);
+		} catch (IOException e) {
+			String xml = this.networkHandler.readURL(this.networkHandler
+					.getConnection(Constants.RADIO_LIST_DOWNLOAD));
+			return (List<IRadio>) this.xmlSerializerService
+					.readObjectFromString(xml);
+		}
+	}
+
 	@Override
 	protected void done(final List<IRadio> result) {
-		this.radioBrowserDialog.getTreeTable().setTreeTableModel(
-				new RadioBrowserTreeTableModel(result));
-		this.radioBrowserDialog.setVisible(true);
+		this.dialog.hideDialog();
+		this.controller.show(result);
 	}
 }
