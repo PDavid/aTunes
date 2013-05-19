@@ -370,4 +370,9 @@ public interface IRepositoryHandler extends IHandler,
 	 */
 	public boolean existsFile(ILocalAudioObject ao);
 
+	/**
+	 * @return true when repository is initialized
+	 */
+	public boolean isRepositoryNotSelected();
+
 }

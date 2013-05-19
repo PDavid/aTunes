@@ -32,7 +32,6 @@ import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IRepository;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -49,7 +48,7 @@ public class RepositoryFromCacheProcessor {
 
 	private IDialogFactory dialogFactory;
 
-	private IRepositoryHandler repositoryHandler;
+	private RepositoryHandler repositoryHandler;
 
 	private IBeanFactory beanFactory;
 
@@ -65,7 +64,7 @@ public class RepositoryFromCacheProcessor {
 	/**
 	 * @param repositoryHandler
 	 */
-	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
+	public void setRepositoryHandler(final RepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
 
@@ -88,7 +87,10 @@ public class RepositoryFromCacheProcessor {
 			GuiUtils.callInEventDispatchThread(new Runnable() {
 				@Override
 				public void run() {
-					reloadExistingRepository();
+					if (!reloadExistingRepository()) {
+						RepositoryFromCacheProcessor.this.repositoryHandler
+								.setRepositoryNotSelected(true);
+					}
 				}
 			});
 		} else {
@@ -104,7 +106,7 @@ public class RepositoryFromCacheProcessor {
 	/**
 	 * If any repository was loaded previously, try to reload folders
 	 */
-	private void reloadExistingRepository() {
+	private boolean reloadExistingRepository() {
 		List<String> lastRepositoryFolders = this.stateRepository
 				.getLastRepositoryFolders();
 		if (lastRepositoryFolders != null && !lastRepositoryFolders.isEmpty()) {
@@ -116,6 +118,9 @@ public class RepositoryFromCacheProcessor {
 					I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
 			this.beanFactory.getBean(RepositoryReader.class)
 					.newRepositoryWithFoldersReloaded(foldersToRead);
+			return true;
+		} else {
+			return false;
 		}
 	}
 

@@ -193,7 +193,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 
 	@Override
 	public boolean overlayNeedsToBeVisible() {
-		return this.repositoryHandler.getFolders().isEmpty();
+		return this.repositoryHandler.isRepositoryNotSelected();
 	}
 
 	@Override
