@@ -103,6 +103,8 @@ public final class RepositoryHandler extends AbstractHandler implements
 
 	private ITaskService taskService;
 
+	private boolean repositoryNotSelected;
+
 	/**
 	 * @param taskService
 	 */
@@ -152,6 +154,8 @@ public final class RepositoryHandler extends AbstractHandler implements
 	 */
 	void setRepository(final IRepository repository) {
 		this.repository = repository;
+		setRepositoryNotSelected(repository == null
+				|| (repository instanceof VoidRepository));
 	}
 
 	/**
@@ -751,5 +755,17 @@ public final class RepositoryHandler extends AbstractHandler implements
 	@Override
 	public boolean existsFile(final ILocalAudioObject ao) {
 		return getFileIfLoaded(ao.getUrl()) != null;
+	}
+
+	@Override
+	public boolean isRepositoryNotSelected() {
+		return this.repositoryNotSelected;
+	}
+
+	protected void setRepositoryNotSelected(final boolean notSelected) {
+		this.repositoryNotSelected = notSelected;
+		// Force navigation view refresh to show information about repository
+		// not selected
+		this.navigationHandler.refreshCurrentView();
 	}
 }
