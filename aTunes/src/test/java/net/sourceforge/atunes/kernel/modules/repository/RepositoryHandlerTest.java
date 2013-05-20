@@ -31,6 +31,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.ITrackInfo;
 
@@ -43,7 +44,8 @@ public class RepositoryHandlerTest {
 
 	@Before
 	public void init() {
-		sut = new RepositoryHandler();
+		this.sut = new RepositoryHandler();
+		this.sut.setNavigationHandler(mock(INavigationHandler.class));
 
 		// Repository
 		IRepository repository = mock(IRepository.class);
@@ -79,28 +81,28 @@ public class RepositoryHandlerTest {
 		when(repository.getArtist("Artist 1")).thenReturn(artist1);
 		when(repository.getArtist("Artist 2")).thenReturn(artist2);
 
-		sut.setRepository(repository);
+		this.sut.setRepository(repository);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testGetAudioObjectsByTitle1() {
-		sut.getAudioObjectsByTitle(null, new ArrayList<String>());
+		this.sut.getAudioObjectsByTitle(null, new ArrayList<String>());
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testGetAudioObjectsByTitle2() {
-		sut.getAudioObjectsByTitle("", new ArrayList<String>());
+		this.sut.getAudioObjectsByTitle("", new ArrayList<String>());
 	}
 
 	@Test
 	public void testGetAudioObjectsByTitle3() {
-		assertTrue(sut.getAudioObjectsByTitle("Artist", null).isEmpty());
+		assertTrue(this.sut.getAudioObjectsByTitle("Artist", null).isEmpty());
 	}
 
 	@Test
 	public void testGetAudioObjectsByTitle4() {
 		// non existent artist
-		assertTrue(sut.getAudioObjectsByTitle("Artist", null).isEmpty());
+		assertTrue(this.sut.getAudioObjectsByTitle("Artist", null).isEmpty());
 	}
 
 	@Test
@@ -111,7 +113,8 @@ public class RepositoryHandlerTest {
 		titles.add("AOS1");
 
 		// Match of artist
-		List<ILocalAudioObject> result = sut.getAudioObjectsByTitle("Artist 1", titles);
+		List<ILocalAudioObject> result = this.sut.getAudioObjectsByTitle(
+				"Artist 1", titles);
 		assertEquals(2, result.size());
 	}
 
@@ -123,7 +126,8 @@ public class RepositoryHandlerTest {
 		titles.add("AOS1");
 
 		// Match of artist
-		List<ILocalAudioObject> result = sut.getAudioObjectsByTitle("Artist 2", titles);
+		List<ILocalAudioObject> result = this.sut.getAudioObjectsByTitle(
+				"Artist 2", titles);
 		assertTrue(result.isEmpty());
 	}
 
@@ -138,7 +142,7 @@ public class RepositoryHandlerTest {
 		tracks.add(t1);
 		tracks.add(t2);
 
-		sut.checkAvailability("Artist 1", tracks);
+		this.sut.checkAvailability("Artist 1", tracks);
 
 		verify(t1).setAvailable(true);
 		verify(t2).setAvailable(false);
