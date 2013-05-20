@@ -73,5 +73,8 @@ public class MakeDonationAction extends CustomAbstractAction {
 		if (dialog.isDontShowAgain()) {
 			startCounter.dontFireActionAgain();
 		}
+		if (dialog.isUserDonated()) {
+			startCounter.userDonated();
+		}
 	}
 }

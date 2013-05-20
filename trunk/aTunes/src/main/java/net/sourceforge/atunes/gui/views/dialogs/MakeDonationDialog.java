@@ -58,6 +58,8 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 
 	private boolean showOptionToNotShowAgain;
 
+	private boolean userDonated;
+
 	/**
 	 * Instantiates a new repository selection info dialog.
 	 * 
@@ -127,6 +129,7 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 			public void actionPerformed(final ActionEvent e) {
 				MakeDonationDialog.this.desktop
 						.openURL(MakeDonationDialog.this.donationUrl);
+				MakeDonationDialog.this.userDonated = true;
 				MakeDonationDialog.this.hideDialog();
 			}
 		});
@@ -183,6 +186,13 @@ public final class MakeDonationDialog extends AbstractCustomDialog {
 		add(panel);
 
 		dontShowAgain.setVisible(this.showOptionToNotShowAgain);
+	}
+
+	/**
+	 * @return if user donated
+	 */
+	public boolean isUserDonated() {
+		return this.userDonated;
 	}
 
 	/**
