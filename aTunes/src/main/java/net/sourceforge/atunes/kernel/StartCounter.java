@@ -50,7 +50,16 @@ public final class StartCounter implements IApplicationUpdatedListener {
 
 	private String dontFireActionProperty;
 
+	private String userDonatedProperty;
+
 	private Action actionToFire;
+
+	/**
+	 * @param userDonatedProperty
+	 */
+	public void setUserDonatedProperty(final String userDonatedProperty) {
+		this.userDonatedProperty = userDonatedProperty;
+	}
 
 	/**
 	 * @param dontFireActionProperty
@@ -110,12 +119,18 @@ public final class StartCounter implements IApplicationUpdatedListener {
 
 	private void reset() {
 		Properties properties = getProperties();
-		properties.put(this.counterProperty, String.valueOf(1));
-		properties.put(this.dontFireActionProperty, Boolean.toString(false));
-		try {
-			PropertiesUtils.writeProperties(getCounterFilePath(), properties);
-		} catch (IOException e) {
-			Logger.error(e);
+		if (!isUserDonated()) {
+			// Reset only if user has not donated yet
+			properties.put(this.counterProperty, String.valueOf(1));
+			properties
+					.put(this.dontFireActionProperty, Boolean.toString(false));
+
+			try {
+				PropertiesUtils.writeProperties(getCounterFilePath(),
+						properties);
+			} catch (IOException e) {
+				Logger.error(e);
+			}
 		}
 	}
 
@@ -163,6 +178,19 @@ public final class StartCounter implements IApplicationUpdatedListener {
 	}
 
 	/**
+	 * Called when user makes a donation so action will not be fired again
+	 */
+	public void userDonated() {
+		Properties properties = getProperties();
+		properties.put(this.userDonatedProperty, Boolean.toString(true));
+		try {
+			PropertiesUtils.writeProperties(getCounterFilePath(), properties);
+		} catch (IOException e) {
+			Logger.error(e);
+		}
+	}
+
+	/**
 	 * loads properties where counter is defined
 	 */
 	private Properties getProperties() {
@@ -181,7 +209,7 @@ public final class StartCounter implements IApplicationUpdatedListener {
 	 * Checks counter value
 	 */
 	public void checkCounter() {
-		if (!isDontFireActionAgain()) {
+		if (!isDontFireActionAgain() && !isUserDonated()) {
 			if (getCounter() >= this.counterLevelNeededToFireAction) {
 				GuiUtils.callInEventDispatchThread(new Runnable() {
 					@Override
@@ -205,6 +233,14 @@ public final class StartCounter implements IApplicationUpdatedListener {
 	 */
 	private boolean isDontFireActionAgain() {
 		Object property = getProperties().get(this.dontFireActionProperty);
+		return property != null ? Boolean.valueOf((String) property) : false;
+	}
+
+	/**
+	 * @return
+	 */
+	private boolean isUserDonated() {
+		Object property = getProperties().get(this.userDonatedProperty);
 		return property != null ? Boolean.valueOf((String) property) : false;
 	}
 

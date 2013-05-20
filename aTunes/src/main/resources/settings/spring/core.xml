@@ -104,6 +104,7 @@
 		<property name="counterLevelNeededToFireAction" value="2"/>
 		<property name="actionToFire" ref="makeDonationAction"/>
 		<property name="dontFireActionProperty" value="dontFireActionAgain"/>
+		<property name="userDonatedProperty" value="userDonated"/>
 	</bean>
 
 	<bean id="searchAttributesList" class="net.sourceforge.atunes.kernel.modules.search.AttributesList"/>	
