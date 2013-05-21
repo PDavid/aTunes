@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.network;
 
 import java.awt.Image;
+import java.awt.color.CMMException;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -191,6 +192,10 @@ public class NetworkHandler extends AbstractHandler implements INetworkHandler {
 		try {
 			input = connection.getInputStream();
 			return ImageIO.read(input);
+		} catch (CMMException e) {
+			// Exception reading image format
+			Logger.error(e.getMessage());
+			return null;
 		} finally {
 			ClosingUtils.close(input);
 		}
