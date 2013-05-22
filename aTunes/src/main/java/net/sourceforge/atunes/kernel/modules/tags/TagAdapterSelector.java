@@ -39,17 +39,27 @@ public class TagAdapterSelector {
 
 	private List<ITagAdapter> tagAdapters;
 
+	private ITagAdapter propertiesFileTagAdapter;
+
+	/**
+	 * @param propertiesFileTagAdapter
+	 */
+	public void setPropertiesFileTagAdapter(
+			final ITagAdapter propertiesFileTagAdapter) {
+		this.propertiesFileTagAdapter = propertiesFileTagAdapter;
+	}
+
 	/**
 	 * @param stateRepository
 	 */
-	public void setStateRepository(IStateRepository stateRepository) {
+	public void setStateRepository(final IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
 	}
 
 	/**
 	 * @param tagAdapters
 	 */
-	public void setTagAdapters(List<ITagAdapter> tagAdapters) {
+	public void setTagAdapters(final List<ITagAdapter> tagAdapters) {
 		this.tagAdapters = tagAdapters;
 	}
 
@@ -60,7 +70,7 @@ public class TagAdapterSelector {
 	 * @return
 	 */
 	ITagAdapter selectAdapter(final ILocalAudioObject audioObject) {
-		for (ITagAdapter tagAdapter : tagAdapters) {
+		for (ITagAdapter tagAdapter : this.tagAdapters) {
 			if (tagAdapter.isFormatSupported(audioObject)) {
 				return tagAdapter;
 			}
@@ -76,23 +86,25 @@ public class TagAdapterSelector {
 	 * @return
 	 */
 	ITagAdapter selectAdapterForRating(final ILocalAudioObject audioObject) {
-		for (ITagAdapter tagAdapter : tagAdapters) {
+		for (ITagAdapter tagAdapter : this.tagAdapters) {
 			if (tagAdapter.isFormatSupported(audioObject)
 					&& isAdapterSuitableForRatingRead(tagAdapter)) {
 				return tagAdapter;
 			}
 		}
-		throw new IllegalStateException(StringUtils.getString(
-				"No tag adapter for rating, audio object: ",
-				audioObject.getUrl()));
+		// Use properties file adapter as default
+		// This will write rating in properties if format does not support
+		// internal rating
+		// and option to use internal rating is enabled
+		return this.propertiesFileTagAdapter;
 	}
 
 	/**
 	 * @param adapter
 	 * @return true if adapter supports rating read with current settings
 	 */
-	boolean isAdapterSuitableForRatingRead(ITagAdapter adapter) {
-		return adapter.isStoreRatingInFile() == stateRepository
+	boolean isAdapterSuitableForRatingRead(final ITagAdapter adapter) {
+		return adapter.isStoreRatingInFile() == this.stateRepository
 				.isStoreRatingInFile();
 	}
 }
