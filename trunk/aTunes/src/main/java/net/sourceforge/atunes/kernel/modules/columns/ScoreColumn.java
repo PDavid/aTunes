@@ -53,8 +53,9 @@ public class ScoreColumn extends AbstractColumn<Integer> {
 
 		@Override
 		public JComponent getComponent(final JLabel superComponent,
-				final JList list, final Integer value, final int index,
-				final boolean isSelected, final boolean cellHasFocus) {
+				@SuppressWarnings("rawtypes") final JList list,
+				final Integer value, final int index, final boolean isSelected,
+				final boolean cellHasFocus) {
 			setLabel(superComponent, value);
 			return superComponent;
 		}
@@ -79,7 +80,7 @@ public class ScoreColumn extends AbstractColumn<Integer> {
 	/**
 	 * @param processFactory
 	 */
-	public void setProcessFactory(IProcessFactory processFactory) {
+	public void setProcessFactory(final IProcessFactory processFactory) {
 		this.processFactory = processFactory;
 	}
 
@@ -136,6 +137,7 @@ public class ScoreColumn extends AbstractColumn<Integer> {
 		setEditable(true);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public TableCellEditor getCellEditor() {
 		JComboBox comboBox = new JComboBox(STARS);
