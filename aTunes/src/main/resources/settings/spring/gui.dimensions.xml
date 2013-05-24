@@ -28,7 +28,7 @@
 	
 	<bean id="navigationMinimumSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
 		<constructor-arg value="0.15"/>
-		<constructor-arg value="0.15"/>
+		<constructor-arg value="0.2"/>
 	</bean>
 	<bean id="navigationPreferredSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
 		<constructor-arg value="0.2"/>
