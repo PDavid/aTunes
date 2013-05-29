@@ -215,12 +215,18 @@
 		<!-- Remove created DMG which is wrong -->
 		<delete file="${basedir}/target/atunes-${version}.dmg"/>
 		
+		<!-- Remove app.zip which is wrong too -->
+		<delete file="${basedir}/target/atunes-${version}-app.zip"/>
+		
 		<!-- Remove xattr com.apple.FinderInfo which causes app bundle to being copied when executing it -->
 		<exec executable="xattr">
 			<arg value="-d"/>
 			<arg value="com.apple.FinderInfo"/>
 			<arg value="${basedir}/target/atunes-${version}/aTunes.app"/>
 		</exec>
+		
+		<!-- Be sure JavaApplicationStub has execution permissions -->
+		<chmod file="${basedir}/target/atunes-${version}/aTunes.app/Contents/MacOS/JavaApplicationStub" perm="555"/>
 		
 		<!-- Create DMG again -->
 		<exec executable="${basedir}/build_tools/macos_createdmg.sh">
@@ -229,6 +235,17 @@
 			<arg value="${basedir}/target/atunes-${version}_temp.dmg"/>
 			<arg value="${basedir}/target/atunes-${version}.dmg"/>
 		</exec>		
+		
+		<!-- Create TAR.GZ instead of ZIP, to keep right permissions -->
+		<tar compression="gzip" destfile="${basedir}/target/atunes-${version}-app.tar.gz">
+			<tarfileset mode="755" dir="${basedir}/target/atunes-${version}">
+			    <include name="**/JavaApplicationStub"/>
+			</tarfileset>
+			<tarfileset dir="${basedir}/target/atunes-${version}">
+			    <include name="**/*"/>
+			    <exclude name="**/JavaApplicationStub"/>
+			</tarfileset>
+		</tar>
 	</target>
 
 	<!-- Uploads files to Sourceforge -->
