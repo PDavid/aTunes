@@ -129,12 +129,16 @@ public final class EditTagDialogActionListener implements ActionListener {
 						Constants.DIALOG_LARGE_IMAGE_WIDTH,
 						Constants.DIALOG_LARGE_IMAGE_HEIGHT);
 
-				// Write as PNG
-				this.controller.setNewCover(Sanselan.writeImageToBytes(bi,
-						ImageFormat.IMAGE_FORMAT_PNG, null));
-				this.dialog.getCover().setIcon(
-						new ImageIcon(Sanselan.writeImageToBytes(bi2,
-								ImageFormat.IMAGE_FORMAT_PNG, null)));
+				// Write as PNG if all is ok
+				if (bi != null) {
+					this.controller.setNewCover(Sanselan.writeImageToBytes(bi,
+							ImageFormat.IMAGE_FORMAT_PNG, null));
+				}
+				if (bi2 != null) {
+					this.dialog.getCover().setIcon(
+							new ImageIcon(Sanselan.writeImageToBytes(bi2,
+									ImageFormat.IMAGE_FORMAT_PNG, null)));
+				}
 				this.controller.setCoverEdited(true);
 			} catch (ImageWriteException ex) {
 				this.controller.setNewCover(null);
@@ -176,7 +180,7 @@ public final class EditTagDialogActionListener implements ActionListener {
 		// radio stream
 		while (!validAudioFile) {
 			this.playListHandler
-					.changeSelectedAudioObjectToIndex(--currentSelectedSongIndex);
+			.changeSelectedAudioObjectToIndex(--currentSelectedSongIndex);
 			selectedFiles.clear();
 			selectedFiles.add(this.playListHandler.getSelectedAudioObjects()
 					.get(0));
@@ -224,7 +228,7 @@ public final class EditTagDialogActionListener implements ActionListener {
 				break;
 			}
 			this.playListHandler
-					.changeSelectedAudioObjectToIndex(++currentSelectedSongIndex);
+			.changeSelectedAudioObjectToIndex(++currentSelectedSongIndex);
 			selectedFiles.clear();
 			selectedFiles.add(this.playListHandler.getSelectedAudioObjects()
 					.get(0));
