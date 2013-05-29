@@ -95,6 +95,9 @@ class LyricsEnginesTableModel implements TableModel {
 	 * @param columnPos
 	 */
 	public void moveDown(final int columnPos) {
+		if (columnPos < 0) {
+			throw new IllegalArgumentException("columnPos < 0");
+		}
 		Collections.swap(this.lyricsEnginesInfo, columnPos, columnPos + 1);
 
 		TableModelEvent event;
@@ -113,6 +116,9 @@ class LyricsEnginesTableModel implements TableModel {
 	 * @param columnPos
 	 */
 	public void moveUp(final int columnPos) {
+		if (columnPos <= 0) {
+			throw new IllegalArgumentException("columnPos <= 0");
+		}
 
 		Collections.swap(this.lyricsEnginesInfo, columnPos, columnPos - 1);
 

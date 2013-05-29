@@ -191,7 +191,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
 			public void actionPerformed(final ActionEvent e) {
 				int selectedRow = ContextPanel.this.enginesTable
 						.getSelectedRow();
-				if (selectedRow < ContextPanel.this.enginesTable.getModel()
+				if (selectedRow > 0 && selectedRow < ContextPanel.this.enginesTable.getModel()
 						.getRowCount() - 1) {
 					model.moveDown(selectedRow);
 				}
