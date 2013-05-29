@@ -143,11 +143,13 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 	}
 
 	private void fromOtherViews(final IRepositoryHandler repositoryHandler) {
-		this.beanFactory.getBean(DeleteFilesTask.class).execute(
+		DeleteFilesTask task = this.beanFactory.getBean(DeleteFilesTask.class);
+		task.setFiles(
 				this.beanFactory.getBean(ILocalAudioObjectFilter.class)
 						.getLocalAudioObjects(
 								this.navigationHandler
 										.getFilesSelectedInNavigator()));
+		task.execute();
 	}
 
 	private void fromRepositoryOrDeviceView(
