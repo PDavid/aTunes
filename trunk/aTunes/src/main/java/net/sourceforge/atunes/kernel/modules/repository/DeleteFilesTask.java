@@ -22,16 +22,13 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
-import net.sourceforge.atunes.model.IBackgroundWorker;
-import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.kernel.BackgroundWorker;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -40,7 +37,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public final class DeleteFilesTask {
+public final class DeleteFilesTask extends BackgroundWorker<Void, Void> {
 
 	private IDialogFactory dialogFactory;
 
@@ -49,16 +46,14 @@ public final class DeleteFilesTask {
 	private IIndeterminateProgressDialog dialog;
 
 	private IFileManager fileManager;
-
-	private IBackgroundWorkerFactory backgroundWorkerFactory;
-
-	private ITaskService taskService;
-
+	
+	private List<ILocalAudioObject> files;
+	
 	/**
-	 * @param taskService
+	 * @param files
 	 */
-	public void setTaskService(final ITaskService taskService) {
-		this.taskService = taskService;
+	public void setFiles(List<ILocalAudioObject> files) {
+		this.files = files;
 	}
 
 	/**
@@ -82,57 +77,33 @@ public final class DeleteFilesTask {
 		this.fileManager = fileManager;
 	}
 
-	/**
-	 * @param backgroundWorkerFactory
-	 */
-	public void setBackgroundWorkerFactory(
-			final IBackgroundWorkerFactory backgroundWorkerFactory) {
-		this.backgroundWorkerFactory = backgroundWorkerFactory;
-	}
-
-	/**
-	 * Deletes files
-	 * 
-	 * @param files
-	 */
-	public void execute(final List<ILocalAudioObject> files) {
-		IBackgroundWorker<Void, Void> worker = this.backgroundWorkerFactory
-				.getWorker();
-		worker.setActionsBeforeBackgroundStarts(new Runnable() {
-
-			@Override
-			public void run() {
-				showDialog();
-			}
-		});
-		worker.setBackgroundActions(new Callable<Void>() {
-
-			@Override
-			public Void call() {
-				List<ILocalAudioObject> filesDeleted = new ArrayList<ILocalAudioObject>();
-				for (ILocalAudioObject audioFile : files) {
-					if (DeleteFilesTask.this.fileManager.delete(audioFile)) {
-						filesDeleted.add(audioFile);
-					}
-				}
-				DeleteFilesTask.this.repositoryHandler.remove(filesDeleted);
-				return null;
-			}
-		});
-		worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
-
-			@Override
-			public void call(final Void result) {
-				DeleteFilesTask.this.dialog.hideDialog();
-			}
-		});
-		worker.execute(this.taskService);
-	}
-
-	private void showDialog() {
+	@Override
+	protected void before() {
 		this.dialog = this.dialogFactory
 				.newDialog(IIndeterminateProgressDialog.class);
 		this.dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
 		this.dialog.showDialog();
 	}
+	
+	@Override
+	protected Void doInBackground() {
+		List<ILocalAudioObject> filesDeleted = new ArrayList<ILocalAudioObject>();
+		for (ILocalAudioObject audioFile : files) {
+			if (DeleteFilesTask.this.fileManager.delete(audioFile)) {
+				filesDeleted.add(audioFile);
+			}
+		}
+		DeleteFilesTask.this.repositoryHandler.remove(filesDeleted);
+		return null;
+	}
+
+	@Override
+	protected void whileWorking(List<Void> chunks) {
+	}
+
+	@Override
+	protected void done(Void result) {
+		this.dialog.hideDialog();
+	}
+	
 }
