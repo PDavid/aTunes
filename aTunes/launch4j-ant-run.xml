@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<project name="atunes" basedir=".">
+	
+	<!-- Creates the exe file for Windows -->
+	<target name="create_aTunes_exe">
+		<exec command="${launch4j.path}/launch4j ${build_tools}/launch4j.xml"/>
+	</target>
+
+	<!-- Creates the exe for installer -->
+	<target name="create_installer_exe">
+		<copy file="${target}/aTunes_${version}_installer.jar" tofile="${target}/aTunes_installer.jar"/>
+		<exec command="${launch4j.path}/launch4j ${build_tools}/launch4j_installer.xml"/>
+		<rename dest="${target}/aTunes_${version}_installer.exe" src="${target}/aTunes_installer.exe"/>
+		<delete file="${target}/aTunes_installer.jar"/>
+	</target>
+</project>

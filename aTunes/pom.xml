@@ -196,6 +196,7 @@
 						<configuration>
 							<tasks>
 								<property name="version" value="${project.version}" />
+								<property name="launch4j.path" value="${launch4j.path}"/>
 								<ant antfile="${basedir}/mvn-ant-run.xml">
 									<target name="create_aTunes.exe" />
 								</ant>
@@ -215,6 +216,7 @@
 							<tasks>
 								<property name="build.compiler" value="extJavac" />
 								<property name="version" value="${project.version}" />
+								<property name="launch4j.path" value="${launch4j.path}"/>
 								<ant antfile="${basedir}/mvn-ant-run.xml">
 									<target name="create_installer" />
 								</ant>
