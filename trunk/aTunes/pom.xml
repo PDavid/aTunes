@@ -568,10 +568,6 @@
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-aop</artifactId>
 				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-expressions</artifactId>
-				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
