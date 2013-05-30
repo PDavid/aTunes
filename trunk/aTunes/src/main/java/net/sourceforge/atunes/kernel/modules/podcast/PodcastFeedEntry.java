@@ -347,7 +347,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
 	@Override
 	public boolean isSeekable() {
-		return this.downloaded;
+		return true;
 	}
 
 	@Override
