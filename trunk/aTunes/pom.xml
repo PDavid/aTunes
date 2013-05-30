@@ -196,7 +196,7 @@
 						<configuration>
 							<tasks>
 								<property name="version" value="${project.version}" />
-								<property name="launch4j.path" value="${launch4j.path}"/>
+								<property name="launch4j.path" value="${launch4j.path}" />
 								<ant antfile="${basedir}/mvn-ant-run.xml">
 									<target name="create_aTunes.exe" />
 								</ant>
@@ -216,7 +216,7 @@
 							<tasks>
 								<property name="build.compiler" value="extJavac" />
 								<property name="version" value="${project.version}" />
-								<property name="launch4j.path" value="${launch4j.path}"/>
+								<property name="launch4j.path" value="${launch4j.path}" />
 								<ant antfile="${basedir}/mvn-ant-run.xml">
 									<target name="create_installer" />
 								</ant>
@@ -286,47 +286,47 @@
 			</plugin>
 		</plugins>
 
-	<pluginManagement>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.m2e</groupId>
-				<artifactId>lifecycle-mapping</artifactId>
-				<version>1.0.0</version>
-				<configuration>
-					<lifecycleMappingMetadata>
-						<pluginExecutions>
-							<pluginExecution>
-								<pluginExecutionFilter>
-									<groupId>org.apache.maven.plugins</groupId>
-									<artifactId>maven-dependency-plugin</artifactId>
-									<versionRange>[2.0,)</versionRange>
-									<goals>
-										<goal>copy-dependencies</goal>
-									</goals>
-								</pluginExecutionFilter>
-								<action>
-									<execute />
-								</action>
-							</pluginExecution>
-							<pluginExecution>
-								<pluginExecutionFilter>
-									<groupId>org.apache.maven.plugins</groupId>
-									<artifactId>maven-antrun-plugin</artifactId>
-									<versionRange>[1.3,)</versionRange>
-									<goals>
-										<goal>run</goal>
-									</goals>
-								</pluginExecutionFilter>
-								<action>
-									<execute />
-								</action>
-							</pluginExecution>
-						</pluginExecutions>
-					</lifecycleMappingMetadata>
-				</configuration>
-			</plugin>
-		</plugins>
-	</pluginManagement>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-dependency-plugin</artifactId>
+										<versionRange>[2.0,)</versionRange>
+										<goals>
+											<goal>copy-dependencies</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-antrun-plugin</artifactId>
+										<versionRange>[1.3,)</versionRange>
+										<goals>
+											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<!-- Need separate profiles for mac and unix to create mac package, as in 
@@ -463,7 +463,7 @@
 			<artifactId>jfreechart</artifactId>
 			<version>1.0.12</version>
 		</dependency>
-		<dependency>
+ 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
 			<version>1.3.1</version>
@@ -487,11 +487,6 @@
 			<groupId>com.melloware</groupId>
 			<artifactId>jintellitype</artifactId>
 			<version>1.3.7</version>
-		</dependency>
-		<dependency>
-			<groupId>com.jhlabs</groupId>
-			<artifactId>filters</artifactId>
-			<version>2.0.235</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
@@ -555,7 +550,7 @@
 			<artifactId>jna</artifactId>
 			<version>3.5.1</version>
 		</dependency>
-		<dependency>
+ 		<dependency>
 			<groupId>common-jukebox</groupId>
 			<artifactId>plugin-system</artifactId>
 			<version>1.11</version>
@@ -564,6 +559,16 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>3.0.6.RELEASE</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-aop</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-expressions</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>
