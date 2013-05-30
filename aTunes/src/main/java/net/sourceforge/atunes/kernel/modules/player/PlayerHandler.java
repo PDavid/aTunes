@@ -20,12 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
-import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.kernel.actions.StopAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
@@ -34,10 +32,8 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IPlayListEventListener;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.IStatisticsHandler;
@@ -46,18 +42,12 @@ import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 import net.sourceforge.atunes.model.SubmissionState;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.StringUtils;
-
-import org.commonjukebox.plugins.exceptions.PluginSystemException;
-import org.commonjukebox.plugins.model.Plugin;
-import org.commonjukebox.plugins.model.PluginInfo;
-import org.commonjukebox.plugins.model.PluginListener;
 
 /**
  * This class is responsible for handling the player engine.
  */
 public final class PlayerHandler extends AbstractHandler implements
-		PluginListener, IPlayerHandler, IPlayListEventListener {
+		IPlayerHandler, IPlayListEventListener {
 
 	/**
 	 * The player engine
@@ -331,29 +321,6 @@ public final class PlayerHandler extends AbstractHandler implements
 			}
 
 		}));
-	}
-
-	@Override
-	public void pluginActivated(final PluginInfo plugin) {
-		try {
-			IPlaybackStateListener listener = (IPlaybackStateListener) getBean(
-					IPluginsHandler.class).getNewInstance(plugin);
-			getBean(PlaybackStateListeners.class).addPlaybackStateListener(
-					listener);
-		} catch (PluginSystemException e) {
-			Logger.error(e);
-		}
-	}
-
-	@Override
-	public void pluginDeactivated(final PluginInfo plugin,
-			final Collection<Plugin> createdInstances) {
-		Logger.info(StringUtils.getString("Plugin deactivated: ",
-				plugin.getName(), " (", plugin.getClassName(), ")"));
-		for (Plugin createdInstance : createdInstances) {
-			getBean(PlaybackStateListeners.class).removePlaybackStateListener(
-					(IPlaybackStateListener) createdInstance);
-		}
 	}
 
 	@Override

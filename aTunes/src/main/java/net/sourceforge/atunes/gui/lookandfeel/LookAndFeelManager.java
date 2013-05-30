@@ -24,7 +24,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Window;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -42,16 +41,10 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.LookAndFeelBean;
 import net.sourceforge.atunes.utils.Logger;
-
-import org.commonjukebox.plugins.exceptions.PluginSystemException;
-import org.commonjukebox.plugins.model.Plugin;
-import org.commonjukebox.plugins.model.PluginInfo;
-import org.commonjukebox.plugins.model.PluginListener;
 
 /**
  * Responsible of change and manage look and feel
@@ -59,7 +52,7 @@ import org.commonjukebox.plugins.model.PluginListener;
  * @author alex
  * 
  */
-public final class LookAndFeelManager implements PluginListener,
+public final class LookAndFeelManager implements 
 		ILookAndFeelManager {
 
 	private static final boolean USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE = false;
@@ -119,25 +112,6 @@ public final class LookAndFeelManager implements PluginListener,
 	public void setApplicationArguments(
 			final IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
-	}
-
-	@Override
-	public void pluginActivated(final PluginInfo plugin) {
-		try {
-			ILookAndFeel laf = (ILookAndFeel) this.beanFactory.getBean(
-					IPluginsHandler.class).getNewInstance(plugin);
-			this.lookAndFeels.put(laf.getName(), laf.getClass());
-		} catch (PluginSystemException e) {
-			Logger.error(e);
-		}
-	}
-
-	@Override
-	public void pluginDeactivated(final PluginInfo arg0,
-			final Collection<Plugin> instances) {
-		for (Plugin instance : instances) {
-			this.lookAndFeels.remove(((ILookAndFeel) instance).getName());
-		}
 	}
 
 	@Override

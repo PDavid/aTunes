@@ -35,16 +35,13 @@ import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.Logger;
-
-import org.commonjukebox.plugins.model.PluginApi;
-
 import de.umass.lastfm.Caller;
 import de.umass.lastfm.Event;
 
 /**
  * This class is responsible of retrieve information from Last.fm web services.
  */
-@PluginApi
+
 public final class LastFmService {
 
 	private LastFmCache lastFmCache;

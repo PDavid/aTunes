@@ -32,14 +32,12 @@ import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.utils.CollectionUtils;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 /**
  * A set of columns used in a component
  * 
  * @author fleax
  */
-@PluginApi
+
 @SuppressWarnings("rawtypes")
 public abstract class AbstractColumnSet implements IColumnSet {
 

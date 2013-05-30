@@ -31,12 +31,10 @@ import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ISearch;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 /**
  * Desktop utility methods
  */
-@PluginApi
+
 public final class DesktopUtils implements IDesktop {
 
 	private IBeanFactory beanFactory;

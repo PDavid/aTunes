@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
@@ -35,18 +34,11 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IPlayListEventListener;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
-import net.sourceforge.atunes.utils.Logger;
-
-import org.commonjukebox.plugins.exceptions.PluginSystemException;
-import org.commonjukebox.plugins.model.Plugin;
-import org.commonjukebox.plugins.model.PluginInfo;
-import org.commonjukebox.plugins.model.PluginListener;
 
 /**
  * Responsible of showing context information
@@ -55,7 +47,7 @@ import org.commonjukebox.plugins.model.PluginListener;
  * 
  */
 public final class ContextHandler extends AbstractHandler implements
-		PluginListener, IContextHandler, IPlayListEventListener {
+		IContextHandler, IPlayListEventListener {
 
 	/**
 	 * The current audio object used to retrieve information
@@ -277,26 +269,6 @@ public final class ContextHandler extends AbstractHandler implements
 	@Override
 	public IAudioObject getCurrentAudioObject() {
 		return this.currentAudioObject;
-	}
-
-	@Override
-	public void pluginActivated(final PluginInfo plugin) {
-		try {
-			IContextPanel newPanel = (IContextPanel) getBean(
-					IPluginsHandler.class).getNewInstance(plugin);
-			this.contextPanels.add(newPanel);
-		} catch (PluginSystemException e) {
-			Logger.error(e);
-		}
-	}
-
-	@Override
-	public void pluginDeactivated(final PluginInfo plugin,
-			final Collection<Plugin> createdInstances) {
-		for (Plugin instance : createdInstances) {
-			this.contextPanels.remove(instance);
-			removeContextPanel((IContextPanel) instance);
-		}
 	}
 
 	@Override

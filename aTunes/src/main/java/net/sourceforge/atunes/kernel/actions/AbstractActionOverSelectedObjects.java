@@ -32,8 +32,6 @@ import net.sourceforge.atunes.model.IAudioObjectsSource;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.Logger;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 /**
  * An action called after selecting audio objects which are parameters of action
  * 
@@ -41,7 +39,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * 
  * @param <T>
  */
-@PluginApi
+
 public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject>
 		extends CustomAbstractAction {
 

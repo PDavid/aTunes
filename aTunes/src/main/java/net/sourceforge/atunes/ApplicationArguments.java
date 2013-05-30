@@ -27,12 +27,10 @@ import java.util.List;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.ICommandHandler;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 /**
  * This class defines accepted arguments by application.
  */
-@PluginApi
+
 public final class ApplicationArguments implements Serializable,
 		IApplicationArguments {
 

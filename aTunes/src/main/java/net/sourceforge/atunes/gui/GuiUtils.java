@@ -48,12 +48,10 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.Logger;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 /**
  * GUI related utility methods.
  */
-@PluginApi
+
 public final class GuiUtils {
 
 	private static final String OPAQUE_WINDOWS_NOT_SUPPORTED = "opaque windows not supported: ";

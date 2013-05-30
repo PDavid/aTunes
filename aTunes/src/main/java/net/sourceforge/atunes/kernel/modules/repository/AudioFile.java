@@ -30,7 +30,6 @@ import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.TimeUtils;
 
 import org.apache.commons.io.FilenameUtils;
-import org.commonjukebox.plugins.model.PluginApi;
 import org.joda.time.base.BaseDateTime;
 
 /**
@@ -40,7 +39,6 @@ import org.joda.time.base.BaseDateTime;
  * 
  * @author fleax
  */
-@PluginApi
 public final class AudioFile implements ILocalAudioObject, Serializable {
 
 	private static final long serialVersionUID = -1139001443603556703L;

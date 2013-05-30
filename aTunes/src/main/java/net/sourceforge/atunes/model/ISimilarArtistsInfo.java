@@ -23,14 +23,12 @@ package net.sourceforge.atunes.model;
 import java.io.Serializable;
 import java.util.List;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 /**
  * Represents artists similar to another one
  * @author alex
  *
  */
-@PluginApi
+
 public interface ISimilarArtistsInfo extends Serializable {
 
     /**

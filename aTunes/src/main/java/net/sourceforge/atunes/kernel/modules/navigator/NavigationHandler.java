@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,19 +33,12 @@ import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTree;
 import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.model.ViewMode;
-import net.sourceforge.atunes.utils.Logger;
-
-import org.commonjukebox.plugins.exceptions.PluginSystemException;
-import org.commonjukebox.plugins.model.Plugin;
-import org.commonjukebox.plugins.model.PluginInfo;
-import org.commonjukebox.plugins.model.PluginListener;
 
 /**
  * Responsible of manage navigator
@@ -55,7 +47,7 @@ import org.commonjukebox.plugins.model.PluginListener;
  * 
  */
 public final class NavigationHandler extends AbstractHandler implements
-		PluginListener, INavigationHandler {
+		INavigationHandler {
 
 	private List<INavigationView> navigationViews;
 
@@ -174,28 +166,6 @@ public final class NavigationHandler extends AbstractHandler implements
 		// If class is not found (maybe the view was a plugin and has been
 		// removed, return default view)
 		return RepositoryNavigationView.class;
-	}
-
-	@Override
-	public void pluginActivated(final PluginInfo plugin) {
-		try {
-			getNavigationViews().add(
-					(INavigationView) getBean(IPluginsHandler.class)
-							.getNewInstance(plugin));
-			// Set tress
-			getNavigationController().getNavigationTreePanel().updateTrees();
-		} catch (PluginSystemException e) {
-			Logger.error(e);
-		}
-	}
-
-	@Override
-	public void pluginDeactivated(final PluginInfo plugin,
-			final Collection<Plugin> views) {
-		// Remove all views
-		for (Plugin view : views) {
-			getNavigationViews().remove(view);
-		}
 	}
 
 	@Override

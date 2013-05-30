@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * Called when play back changes
@@ -28,7 +27,6 @@ import org.commonjukebox.plugins.model.PluginApi;
  * @author alex
  * 
  */
-@PluginApi
 public interface IPlaybackStateListener {
 
     /**

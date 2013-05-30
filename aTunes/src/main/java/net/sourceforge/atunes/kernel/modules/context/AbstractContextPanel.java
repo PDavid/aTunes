@@ -49,8 +49,6 @@ import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.Logger;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 /**
  * This class represents a context panel shown in a context tab. Context panel
  * shows information related to the current audio object active in the
@@ -58,7 +56,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * 
  * @author fleax
  */
-@PluginApi
+
 public abstract class AbstractContextPanel implements IContextPanel {
 
 	private static final long serialVersionUID = 7870512266932745272L;

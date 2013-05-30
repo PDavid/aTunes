@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * This enum defined all possible states of player
@@ -28,7 +27,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * @author fleax
  * 
  */
-@PluginApi
+
 public enum PlaybackState {
 
     /**

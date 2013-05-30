@@ -29,14 +29,12 @@ import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 /**
  * This class represents an artist, with a name, and a list of albums.
  * 
  * @author fleax
  */
-@PluginApi
+
 public class Artist implements IArtist {
 
     /**

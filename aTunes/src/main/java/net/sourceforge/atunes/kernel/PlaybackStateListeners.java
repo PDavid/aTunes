@@ -58,7 +58,6 @@ public class PlaybackStateListeners {
 	 * Initialization
 	 */
 	public void initialize() {
-		// Clone listeners as list can be modified when adding plugins
 		this.listeners = new ArrayList<IPlaybackStateListener>(beanFactory.getBeans(IPlaybackStateListener.class));
 	}
 	

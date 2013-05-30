@@ -15,7 +15,6 @@
 				<ref bean="fullScreenHandler" />
 				<ref bean="tagHandler" />
 				<ref bean="webServicesHandler" />
-				<ref bean="generalPurposePluginsHandler" />
 				<ref bean="systemTrayHandler" />
 				<ref bean="statisticsHandler" />
 				<ref bean="smartPlayListHandler" />
@@ -34,7 +33,6 @@
 				<ref bean="multipleInstancesHandler" />
 				<ref bean="notificationsHandler" />
 				<ref bean="filterHandler" />
-				<ref bean="pluginsHandler" />
 				<ref bean="networkHandler" />
 				<ref bean="advancedPlayingModeHandler" />
 			</list>
@@ -55,8 +53,6 @@
 	<bean id="tagHandler" class="net.sourceforge.atunes.kernel.modules.tags.TagHandler" />
 	<bean id="webServicesHandler"
 		class="net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler" />
-	<bean id="generalPurposePluginsHandler"
-		class="net.sourceforge.atunes.kernel.modules.plugins.GeneralPurposePluginsHandler" />
 	<bean id="systemTrayHandler"
 		class="net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler" />
 	<bean id="statisticsHandler"
@@ -94,8 +90,6 @@
 		class="net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler" />
 	<bean id="filterHandler"
 		class="net.sourceforge.atunes.kernel.modules.filter.FilterHandler" />
-	<bean id="pluginsHandler"
-		class="net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler" />
 	<bean id="networkHandler"
 		class="net.sourceforge.atunes.kernel.modules.network.NetworkHandler">
 		<property name="connectTimeoutInSeconds" value="5" />

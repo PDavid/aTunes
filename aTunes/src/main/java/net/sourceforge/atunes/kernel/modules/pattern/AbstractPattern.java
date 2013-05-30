@@ -26,15 +26,12 @@ import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 /**
  * Defines patterns based on LocalAudioObject properties to get strings to be used in
  * file or folder names
  * 
  * @author fleax
  */
-@PluginApi
 public abstract class AbstractPattern {
 
 	static final char PATTERN_NAME_FIRST_CHAR = '%';

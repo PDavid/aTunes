@@ -26,13 +26,12 @@ import java.util.List;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
-import org.commonjukebox.plugins.model.PluginApi;
 import org.joda.time.base.BaseDateTime;
 
 /**
  * A radio station.
  */
-@PluginApi
+
 public final class Radio implements IRadio {
 
 	private static final long serialVersionUID = 3295941106814718559L;
