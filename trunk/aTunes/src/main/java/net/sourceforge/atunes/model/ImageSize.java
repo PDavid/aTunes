@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * Image sizes
@@ -28,7 +27,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * @author alex
  * 
  */
-@PluginApi
+
 public enum ImageSize {
 
     /**

@@ -19,8 +19,6 @@
 		</constructor-arg>
 	</bean>
 	
-	<bean id="columnSetsPluginListener" class="net.sourceforge.atunes.kernel.modules.columns.ColumnSetsPluginListener"/>
-	
 	<bean id="navigatorColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet">
 		<property name="allowedColumns" ref="noPlaylistColumnSetColumns"/>
 	</bean>

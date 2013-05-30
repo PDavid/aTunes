@@ -22,15 +22,13 @@ package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 /**
  * @author alex
  * All objects that can be shown in Navigator tree must implement this
  * interface.
  * @param <T>
  */
-@PluginApi
+
 public interface ITreeObject<T extends IAudioObject> {
 
 	/**

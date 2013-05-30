@@ -49,15 +49,13 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITableCellRendererCode;
 import net.sourceforge.atunes.model.ITreeCellRendererCode;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 /**
  * Defines look and feel
  * 
  * @author alex
  * 
  */
-@PluginApi
+
 public abstract class AbstractLookAndFeel implements ILookAndFeel {
 
 	/**

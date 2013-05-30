@@ -34,8 +34,6 @@ import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 /**
  * This class represents a little graphic component used in a context panel to
  * show information about an audio object Information shown is retrieved from a
@@ -44,7 +42,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * @author alex
  * @param <T>
  */
-@PluginApi
+
 public abstract class AbstractContextPanelContent<T extends IContextInformationSource>
 		implements IContextPanelContent<T> {
 

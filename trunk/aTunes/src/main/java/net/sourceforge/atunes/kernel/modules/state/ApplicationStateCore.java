@@ -157,19 +157,6 @@ public class ApplicationStateCore implements IStateCore {
 	}
 
 	@Override
-	public void setPluginsEnabled(final boolean pluginsEnabled) {
-		this.preferenceHelper.setPreference(Preferences.PLUGINS_ENABLED,
-				pluginsEnabled);
-
-	}
-
-	@Override
-	public boolean isPluginsEnabled() {
-		return this.preferenceHelper.getPreference(Preferences.PLUGINS_ENABLED,
-				Boolean.class, false);
-	}
-
-	@Override
 	public String getErrorReportsResponseMail() {
 		return this.preferenceHelper.getPreference(
 				Preferences.ERROR_REPORTS_MAIL, String.class, null);

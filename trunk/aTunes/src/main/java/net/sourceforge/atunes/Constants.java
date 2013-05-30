@@ -205,9 +205,6 @@ public final class Constants {
 	/** VLC config file */
 	public static final String VLC_CONFIG_FILE = "/settings/vlc.properties";
 
-	/** Plugins dir */
-	public static final String PLUGINS_DIR = "plugins";
-
 	/**
 	 * Default player engine
 	 */

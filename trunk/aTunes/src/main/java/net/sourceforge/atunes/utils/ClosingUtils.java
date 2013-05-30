@@ -28,12 +28,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.zip.ZipFile;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 /**
  * Utility methods for closing streams, sockets, ...
  */
-@PluginApi
+
 public final class ClosingUtils {
 
     private ClosingUtils() {

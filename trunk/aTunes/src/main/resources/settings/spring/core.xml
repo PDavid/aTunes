@@ -91,7 +91,6 @@
 	<bean id="podcastFeedPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.PodcastFeedPanel" scope="prototype" init-method="initialize"/>
 	<bean id="importPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.ImportPanel" scope="prototype" init-method="initialize"/>
 	<bean id="exportPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.ExportPanel" scope="prototype" init-method="initialize"/>
-	<bean id="pluginsPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.PluginsPanel" scope="prototype" init-method="initialize"/>
 	
 	<bean id="editPreferencesDialogController" class="net.sourceforge.atunes.kernel.modules.state.EditPreferencesDialogController" scope="prototype" init-method="initialize">
 		<constructor-arg ref="editPreferencesDialog"/>

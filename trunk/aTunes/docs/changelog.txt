@@ -20,6 +20,7 @@ aTunes 3.1.0
 - FIX: LyricsDirectoryEngine review when no lyric found
 - FIX: Mute not working while fade away
 - FIX: Duplicate favorites in navigation view when a song is favorite and its artist or album too
+- Plugins finally discontinued
 
 aTunes 3.0.9
 ------------

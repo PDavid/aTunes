@@ -31,13 +31,12 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import org.apache.sanselan.ImageWriteException;
-import org.commonjukebox.plugins.model.PluginApi;
 import org.jdesktop.swingx.util.GraphicsUtilities;
 
 /**
  * The Class ImageUtils.
  */
-@PluginApi
+
 public final class ImageUtils {
 
 	/** The Constant FILES_EXTENSION. */

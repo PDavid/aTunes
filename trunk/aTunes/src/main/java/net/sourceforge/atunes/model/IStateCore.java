@@ -155,20 +155,6 @@ public interface IStateCore extends IState {
 	void setAlbumColumns(Map<String, ColumnBean> columnsConfiguration);
 
 	/**
-	 * Plugins enabled
-	 * 
-	 * @param pluginsEnabled
-	 */
-	void setPluginsEnabled(boolean pluginsEnabled);
-
-	/**
-	 * Plugins enabled
-	 * 
-	 * @return
-	 */
-	boolean isPluginsEnabled();
-
-	/**
 	 * @param responseMail
 	 */
 	void setErrorReportsResponseMail(String responseMail);
