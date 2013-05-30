@@ -8,6 +8,7 @@
   <customProcName>true</customProcName>
   <stayAlive>false</stayAlive>
   <icon>../build_resources/aTunes.ico</icon>
+  <outfile>../target/aTunes/aTunes.exe</outfile>
   <jre>
     <path></path>
     <minVersion>1.6.0</minVersion>

@@ -7,7 +7,6 @@
 	<property name="build_tools" location="${basedir}/build_tools" />
 	<property name="lib_build" location="${build_tools}/lib" />
 	<property name="lib" location="${basedir}/lib" />
-	<property name="launch4j.dir" location="${lib_build}/launch4j" />
 	<property name="win_tools" location="${basedir}/win_tools" />
 	<property name="translations" location="${basedir}/src/main/resources/translations" />
 	<property name="settings" location="${basedir}/src/main/resources/settings" />
@@ -17,10 +16,7 @@
 
 	<!-- Allows us to use the IzPack Ant task -->
 	<taskdef name="izpack" classpath="${lib_build}/standalone-compiler.jar" classname="com.izforge.izpack.ant.IzPackTask" />
-	
-	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${lib_build}/launch4j/launch4j.jar:${lib_build}/launch4j/xstream.jar" />
-	<taskdef name="launch4j_mac" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${lib_build}/launch4j_macosx/launch4j.jar:${lib_build}/launch4j_macosx/xstream.jar" />
-	
+
 	<!-- Creates a Linux desktop entry-->
 	<taskdef name="desktopEntry" classpath="${lib_build}/ant-deb.jar" classname="com.googlecode.ant_deb_task.DesktopEntry" />
 	<!-- Creates an deb package-->
@@ -52,18 +48,8 @@
 	
 	<!-- Creates the exe file for Windows -->
 	<target name="create_aTunes.exe" depends="prepare">
-		<antcall target="create_aTunes.exe_not_mac"/>
-		<antcall target="create_aTunes.exe_mac"/>
+		<ant antfile="launch4j-ant-run.xml" target="create_aTunes_exe"/>
 	</target>
-
-	<target name="create_aTunes.exe_mac" if="isMac">
-		<launch4j_mac configFile="${build_tools}/launch4j.xml" outfile="${deploy_folder}/aTunes.exe" />
-	</target>
-
-	<target name="create_aTunes.exe_not_mac" unless="isMac">
-		<launch4j configFile="${build_tools}/launch4j.xml" outfile="${deploy_folder}/aTunes.exe" />
-	</target>
-
 	
 
 	<!-- Prepares the directory structure -->
@@ -133,16 +119,7 @@
 		<echo message="Makes the installer using IzPack" />
 		<izpack input="${build_tools}/izPack_build.xml" output="${target}/aTunes_${version}_installer.jar" installerType="standard" basedir="${deploy_folder}" />
 
-		<antcall target="create_installer_not_mac"/>
-		<antcall target="create_installer_mac"/>
-	</target>
-
-	<target name="create_installer_not_mac" unless="isMac">
-		<launch4j configFile="${build_tools}/launch4j_installer.xml" jar="${target}/aTunes_${version}_installer.jar" outfile="${target}/aTunes_${version}_installer.exe" />
-	</target>
-
-	<target name="create_installer_mac" if="isMac">
-		<launch4j_mac configFile="${build_tools}/launch4j_installer.xml" jar="${target}/aTunes_${version}_installer.jar" outfile="${target}/aTunes_${version}_installer.exe" />
+		<ant antfile="launch4j-ant-run.xml" target="create_installer_exe"/>
 	</target>
 
 	
