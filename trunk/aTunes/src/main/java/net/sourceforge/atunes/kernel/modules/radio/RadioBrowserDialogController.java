@@ -118,7 +118,7 @@ public final class RadioBrowserDialogController extends
 				});
 		List<String> labels = new ArrayList<String>(labelsAndRadios.keySet());
 		Collections.sort(labels, new DefaultComparator(this.collator));
-		DefaultListModel<String> listModel = new DefaultListModel<String>();
+		DefaultListModel listModel = new DefaultListModel();
 		for (String label : labels) {
 			listModel.addElement(label);
 		}
