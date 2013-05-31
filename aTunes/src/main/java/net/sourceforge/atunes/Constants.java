@@ -39,7 +39,7 @@ public final class Constants {
 	 * Version of application
 	 */
 	public static final ApplicationVersion VERSION = new ApplicationVersion("",
-			3, 1, 0, VersionType.RELEASE_CANDIDATE, "",
+			3, 1, 0, VersionType.FINAL, "",
 			"http://www.atunes.org/update.php", "", "");
 
 	/** File containing log4j properties. */
