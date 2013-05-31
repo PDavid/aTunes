@@ -233,7 +233,7 @@
 						<id>upload</id>
 						<!-- Use ant task to upload instead of maven deploy plugin to control 
 							what files are uploaded and path -->
-						<phase>verify</phase>
+						<phase>install</phase>
 						<configuration>
 							<tasks>
 								<property name="version" value="${project.version}" />

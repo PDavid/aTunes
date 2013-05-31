@@ -238,7 +238,6 @@
 		      <include name="*.dmg"/>
 		      <include name="*.deb"/>
 		      <include name="*.tar.gz"/>
-		      <include name="*.zip"/>
 		    </fileset>
 		  </scp>
 		
