@@ -227,6 +227,7 @@ public final class Logger {
 	public static void loadInitProperties(final boolean debug) {
 		Properties props = new Properties();
 		// Load default debug log4j properties
+		props.put("log4j.logger.org.springframework", "WARN");
 		props.put("log4j.rootLogger", debug ? "DEBUG, A" : "INFO, A");
 		props.put("log4j.appender.A", "org.apache.log4j.ConsoleAppender");
 		props.put("log4j.appender.A.layout", "org.apache.log4j.PatternLayout");
