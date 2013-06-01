@@ -192,9 +192,6 @@
 		<!-- Remove created DMG which is wrong -->
 		<delete file="${basedir}/target/atunes-${version}.dmg"/>
 		
-		<!-- Remove app.zip which is wrong too -->
-		<delete file="${basedir}/target/atunes-${version}-app.zip"/>
-		
 		<!-- Remove xattr com.apple.FinderInfo which causes app bundle to being copied when executing it -->
 		<exec executable="xattr">
 			<arg value="-d"/>
