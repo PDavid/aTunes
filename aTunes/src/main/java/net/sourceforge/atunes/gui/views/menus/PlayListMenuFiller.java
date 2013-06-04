@@ -34,8 +34,11 @@ import javax.swing.JSeparator;
 
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AddAlbumWithSelectedArtistsAction;
+import net.sourceforge.atunes.kernel.actions.ArrangePlayListColumnsAction;
 import net.sourceforge.atunes.kernel.actions.AutoScrollPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ClearPlayListAction;
+import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
+import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedAlbumsAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedArtistsAction;
 import net.sourceforge.atunes.kernel.actions.ExportPlayListAction;
@@ -47,9 +50,11 @@ import net.sourceforge.atunes.kernel.actions.MoveDownAction;
 import net.sourceforge.atunes.kernel.actions.MoveToBottomAction;
 import net.sourceforge.atunes.kernel.actions.MoveToTopAction;
 import net.sourceforge.atunes.kernel.actions.MoveUpAction;
+import net.sourceforge.atunes.kernel.actions.NewPlayListAction;
 import net.sourceforge.atunes.kernel.actions.OpenFolderAction;
 import net.sourceforge.atunes.kernel.actions.RemoveDuplicatesFromPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RemoveFromPlayListAction;
+import net.sourceforge.atunes.kernel.actions.RenamePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.SaveM3UPlayListAction;
 import net.sourceforge.atunes.kernel.actions.SaveM3UPlayListSelectionAction;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
@@ -134,6 +139,16 @@ public final class PlayListMenuFiller {
 	private List<Object> getComponents() {
 		IPlayListTable table = this.beanFactory.getBean(IPlayListTable.class);
 		List<Object> objects = new ArrayList<Object>();
+
+		objects.add(this.beanFactory.getBean(NewPlayListAction.class));
+		objects.add(this.beanFactory.getBean(RenamePlaylistAction.class));
+		objects.add(this.beanFactory.getBean(ClosePlaylistAction.class));
+		objects.add(this.beanFactory.getBean(CloseOtherPlaylistsAction.class));
+		objects.add(new JSeparator());
+		objects.add(this.beanFactory
+				.getBean(ArrangePlayListColumnsAction.class));
+
+		objects.add(new JSeparator());
 
 		objects.add(this.beanFactory.getBean(ShowPlayListItemInfoAction.class));
 

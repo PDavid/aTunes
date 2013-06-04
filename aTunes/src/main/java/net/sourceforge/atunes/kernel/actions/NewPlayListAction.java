@@ -20,6 +20,13 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.util.List;
+
+import javax.swing.KeyStroke;
+
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -31,31 +38,38 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class NewPlayListAction extends CustomAbstractAction {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 3866441529401824151L;
+	private static final long serialVersionUID = 3866441529401824151L;
 
-    private IPlayListHandler playListHandler;
+	private IPlayListHandler playListHandler;
 
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(final IPlayListHandler playListHandler) {
-	this.playListHandler = playListHandler;
-    }
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
 
-    /**
-     * Default constructor
-     */
-    public NewPlayListAction() {
-	super(I18nUtils.getString("NEW_PLAYLIST"));
-    }
+	/**
+	 * Default constructor
+	 */
+	public NewPlayListAction() {
+		super(I18nUtils.getString("NEW_PLAYLIST"));
+		putValue(ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_MASK));
+	}
 
-    @Override
-    protected void executeAction() {
-	// Create a new empty play list
-	playListHandler.newPlayList(null);
-    }
+	@Override
+	protected void executeAction() {
+		// Create a new empty play list
+		playListHandler.newPlayList(null);
+	}
+
+	@Override
+	public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
+		return true;
+	}
 
 }

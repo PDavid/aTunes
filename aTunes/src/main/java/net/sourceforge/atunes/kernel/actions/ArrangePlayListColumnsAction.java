@@ -20,7 +20,10 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.util.List;
+
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumnSelectorDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -34,46 +37,53 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ArrangePlayListColumnsAction extends CustomAbstractAction {
 
-    /**
+	/**
      * 
      */
-    private static final long serialVersionUID = 3866441529401824151L;
+	private static final long serialVersionUID = 3866441529401824151L;
 
-    private IDialogFactory dialogFactory;
-    
-    private IPlayListTable playListTable;
+	private IDialogFactory dialogFactory;
 
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(IDialogFactory dialogFactory) {
+	private IPlayListTable playListTable;
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
-    
-    /**
-     * @param playListTable
-     */
-    public void setPlayListTable(IPlayListTable playListTable) {
+
+	/**
+	 * @param playListTable
+	 */
+	public void setPlayListTable(IPlayListTable playListTable) {
 		this.playListTable = playListTable;
 	}
-    
-    /**
-     * Default constructor
-     */
-    public ArrangePlayListColumnsAction() {
-        super(I18nUtils.getString("ARRANGE_COLUMNS"));
-    }
-    
-    @Override
-    protected void executeAction() {
-    	AbstractCommonColumnModel model = (AbstractCommonColumnModel) playListTable.getColumnModel();
-    	
-        // Show column selector
-    	IColumnSelectorDialog selector = dialogFactory.newDialog(IColumnSelectorDialog.class);
-        selector.setColumnSetToSelect(model.getColumnSet());
-        selector.showDialog();
 
-        // Apply changes
-        model.arrangeColumns(true);
-    }
+	/**
+	 * Default constructor
+	 */
+	public ArrangePlayListColumnsAction() {
+		super(I18nUtils.getString("ARRANGE_COLUMNS"));
+	}
+
+	@Override
+	protected void executeAction() {
+		AbstractCommonColumnModel model = (AbstractCommonColumnModel) playListTable
+				.getColumnModel();
+
+		// Show column selector
+		IColumnSelectorDialog selector = dialogFactory
+				.newDialog(IColumnSelectorDialog.class);
+		selector.setColumnSetToSelect(model.getColumnSet());
+		selector.showDialog();
+
+		// Apply changes
+		model.arrangeColumns(true);
+	}
+
+	@Override
+	public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
+		return true;
+	}
 }

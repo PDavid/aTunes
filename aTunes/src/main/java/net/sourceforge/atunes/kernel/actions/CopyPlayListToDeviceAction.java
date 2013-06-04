@@ -34,45 +34,45 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class CopyPlayListToDeviceAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 5899793232403738425L;
+	private static final long serialVersionUID = 5899793232403738425L;
 
-    private IDeviceHandler deviceHandler;
+	private IDeviceHandler deviceHandler;
 
-    private IPlayListHandler playListHandler;
+	private IPlayListHandler playListHandler;
 
-    private IPlayListObjectFilter<ILocalAudioObject> playListObjectFilter;
+	private IPlayListObjectFilter<ILocalAudioObject> playListObjectFilter;
 
-    CopyPlayListToDeviceAction() {
-	super(I18nUtils.getString("COPY_PLAYLIST_TO_DEVICE"));
-	setEnabled(false);
-    }
+	CopyPlayListToDeviceAction() {
+		super(I18nUtils.getString("COPY_PLAYLIST_TO_DEVICE"));
+		setEnabled(false);
+	}
 
-    /**
-     * @param deviceHandler
-     */
-    public void setDeviceHandler(final IDeviceHandler deviceHandler) {
-	this.deviceHandler = deviceHandler;
-    }
+	/**
+	 * @param deviceHandler
+	 */
+	public void setDeviceHandler(final IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
 
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(final IPlayListHandler playListHandler) {
-	this.playListHandler = playListHandler;
-    }
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
 
-    /**
-     * @param playListObjectFilter
-     */
-    public void setPlayListObjectFilter(
-	    final IPlayListObjectFilter<ILocalAudioObject> playListObjectFilter) {
-	this.playListObjectFilter = playListObjectFilter;
-    }
+	/**
+	 * @param playListObjectFilter
+	 */
+	public void setPlayListObjectFilter(
+			final IPlayListObjectFilter<ILocalAudioObject> playListObjectFilter) {
+		this.playListObjectFilter = playListObjectFilter;
+	}
 
-    @Override
-    protected void executeAction() {
-	// Copy only LocalAudioObject objects
-	deviceHandler.copyFilesToDevice(playListObjectFilter
-		.getObjects(playListHandler.getVisiblePlayList()));
-    }
+	@Override
+	protected void executeAction() {
+		// Copy only LocalAudioObject objects
+		deviceHandler.copyFilesToDevice(playListObjectFilter
+				.getObjects(playListHandler.getVisiblePlayList()));
+	}
 }

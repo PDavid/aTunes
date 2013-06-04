@@ -25,28 +25,15 @@ import java.util.List;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.model.IBeanFactory;
-import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
 
 class PlayListTabController extends
 		AbstractSimpleController<PlayListSelectorPanel> implements
 		IPlayListTabController {
 
-	private IPlayListHandler playListHandler;
-
 	private IPlayListSelectorPanel playListSelectorPanel;
 
 	private PlayListSelectorWrapper playListSelectorWrapper;
-
-	private IBeanFactory beanFactory;
-
-	/**
-	 * @param beanFactory
-	 */
-	public void setBeanFactory(final IBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
 
 	/**
 	 * @param playListSelectorWrapper
@@ -65,13 +52,6 @@ class PlayListTabController extends
 	}
 
 	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(final IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-
-	/**
 	 * Initializes controller
 	 */
 	public void initialize() {
@@ -85,10 +65,8 @@ class PlayListTabController extends
 
 	@Override
 	public void addBindings() {
-		PlayListTabListener l = new PlayListTabListener(this.playListHandler,
-				this.playListSelectorWrapper, this.beanFactory);
-		getComponentControlled().getOptions().addActionListener(l);
-
+		PlayListTabListener l = new PlayListTabListener(
+				this.playListSelectorWrapper);
 		this.playListSelectorWrapper.addBindings(l);
 	}
 

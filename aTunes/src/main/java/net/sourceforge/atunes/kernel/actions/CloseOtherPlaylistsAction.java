@@ -20,6 +20,13 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.util.List;
+
+import javax.swing.KeyStroke;
+
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -31,23 +38,32 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class CloseOtherPlaylistsAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 902195930910854889L;
+	private static final long serialVersionUID = 902195930910854889L;
 
-    private IPlayListHandler playListHandler;
+	private IPlayListHandler playListHandler;
 
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(final IPlayListHandler playListHandler) {
-	this.playListHandler = playListHandler;
-    }
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
 
-    CloseOtherPlaylistsAction() {
-	super(I18nUtils.getString("CLOSE_OTHER_PLAYLISTS"));
-    }
+	CloseOtherPlaylistsAction() {
+		super(I18nUtils.getString("CLOSE_OTHER_PLAYLISTS"));
+		putValue(
+				ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.ALT_MASK
+						+ InputEvent.SHIFT_MASK));
+	}
 
-    @Override
-    protected void executeAction() {
-	playListHandler.closeOtherPlaylists();
-    }
+	@Override
+	protected void executeAction() {
+		playListHandler.closeOtherPlaylists();
+	}
+
+	@Override
+	public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
+		return this.playListHandler.getPlayListCount() > 1;
+	}
 }

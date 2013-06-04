@@ -22,21 +22,17 @@ package net.sourceforge.atunes.model;
 
 import java.awt.Component;
 
-
 /**
  * A panel to select play lists
+ * 
  * @author alex
- *
+ * 
  */
 public interface IPlayListSelectorPanel {
 
 	/**
-	 * @return the options
-	 */
-	public IPopUpButton getOptions();
-
-	/**
 	 * Returns Swing component
+	 * 
 	 * @return
 	 */
 	public Component getSwingComponent();

@@ -20,55 +20,29 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-
-import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
-import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
-import net.sourceforge.atunes.model.IBeanFactory;
-import net.sourceforge.atunes.model.IPlayListHandler;
 
 /**
  * The listener interface for receiving playListTab events.
  */
-final class PlayListTabListener implements ActionListener, ItemListener {
+final class PlayListTabListener implements ItemListener {
 
-    private final IPlayListHandler playListHandler;
+	private final PlayListSelectorWrapper playListSelectorWrapper;
 
-    private final PlayListSelectorWrapper playListSelectorWrapper;
+	/**
+	 * Instantiates a new play list tab listener.
+	 * 
+	 * @param playListSelectorWrapper
+	 */
+	public PlayListTabListener(
+			final PlayListSelectorWrapper playListSelectorWrapper) {
+		this.playListSelectorWrapper = playListSelectorWrapper;
+	}
 
-    private final IBeanFactory beanFactory;
-
-    /**
-     * Instantiates a new play list tab listener.
-     * 
-     * @param playListHandler
-     * @param playListSelectorWrapper
-     * @param beanFactory
-     */
-    public PlayListTabListener(final IPlayListHandler playListHandler,
-	    final PlayListSelectorWrapper playListSelectorWrapper,
-	    final IBeanFactory beanFactory) {
-	this.playListHandler = playListHandler;
-	this.playListSelectorWrapper = playListSelectorWrapper;
-	this.beanFactory = beanFactory;
-    }
-
-    @Override
-    public void itemStateChanged(final ItemEvent e) {
-	playListSelectorWrapper.switchToPlaylist(playListSelectorWrapper
-		.getSelectedPlayListIndex());
-    }
-
-    @Override
-    public void actionPerformed(final ActionEvent e) {
-	boolean moreThanOnePlayList = playListHandler.getPlayListCount() > 1;
-	beanFactory.getBean(ClosePlaylistAction.class).setEnabled(
-		moreThanOnePlayList);
-	beanFactory.getBean(CloseOtherPlaylistsAction.class).setEnabled(
-		moreThanOnePlayList);
-    }
-
+	@Override
+	public void itemStateChanged(final ItemEvent e) {
+		playListSelectorWrapper.switchToPlaylist(playListSelectorWrapper
+				.getSelectedPlayListIndex());
+	}
 }
