@@ -20,6 +20,11 @@
 
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+
+import net.sourceforge.atunes.utils.Logger;
+
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
 import org.pushingpixels.substance.api.ColorSchemeTransform;
@@ -53,9 +58,18 @@ public class SubstanceATunesNewSkin extends SubstanceSkin {
 	 * Creates a new skin.
 	 */
 	public SubstanceATunesNewSkin() {
-		SubstanceSkin.ColorSchemes schemes = SubstanceSkin
-				.getColorSchemes("net/sourceforge/atunes/gui/lookandfeel/substance/atunes.colorschemes");
+		SubstanceSkin.ColorSchemes schemes = null;
+		try {
+			schemes = SubstanceSkin.getColorSchemes(this.getClass()
+					.getResource("/settings/atunes.colorschemes").toURI()
+					.toURL());
+		} catch (MalformedURLException e) {
+			Logger.error(e);
+		} catch (URISyntaxException e) {
+			Logger.error(e);
+		}
 
+		// If schemes are not loaded then let it fail...
 		SubstanceColorScheme selectedDisabledScheme = schemes
 				.get("Graphite Selected Disabled");
 		SubstanceColorScheme disabledScheme = schemes.get("Graphite Disabled");
@@ -91,8 +105,8 @@ public class SubstanceATunesNewSkin extends SubstanceSkin {
 		// border schemes
 		SubstanceColorScheme borderScheme = schemes.get("Graphite Border");
 		defaultSchemeBundle.registerColorScheme(highlightScheme,
-				ColorSchemeAssociationKind.HIGHLIGHT_BORDER, ComponentState
-						.getActiveStates());
+				ColorSchemeAssociationKind.HIGHLIGHT_BORDER,
+				ComponentState.getActiveStates());
 		defaultSchemeBundle.registerColorScheme(borderScheme,
 				ColorSchemeAssociationKind.BORDER);
 		defaultSchemeBundle.registerColorScheme(borderScheme,
