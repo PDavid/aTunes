@@ -6,6 +6,10 @@ aTunes 3.2.0
 - Added keyboard shortcuts for play list actions
 - New actions to move to next and previous playlist
 
+aTunes 3.1.1
+------------
+- FIX: Seek not working after changing look and feel
+
 aTunes 3.1.0
 ------------
 - Store metadata even with files without internal tags (wav for example)

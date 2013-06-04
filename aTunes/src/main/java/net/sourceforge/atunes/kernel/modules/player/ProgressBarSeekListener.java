@@ -50,6 +50,7 @@ public class ProgressBarSeekListener extends MouseAdapter {
 	 */
 	public void bindToProgressBar(final IProgressSlider progressBar) {
 		this.progressBar = progressBar;
+		progressBar.addMouseListener(this);
 	}
 
 	@Override
