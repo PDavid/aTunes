@@ -171,6 +171,9 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 		result.put(
 				"aTunes Gray",
 				"net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceATunesGrayLookAndFeel");
+		result.put(
+				"aTunes New",
+				"net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceATunesNewLookAndFeel");
 
 		return result;
 	}
