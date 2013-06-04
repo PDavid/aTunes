@@ -97,16 +97,13 @@ public class PlayListSelectorWrapper {
 	public void arrangeComponents(final PlayListSelectorPanel selectorPanel) {
 		GridBagConstraints c = new GridBagConstraints();
 
-		c.weighty = 1;
-		c.fill = GridBagConstraints.VERTICAL;
-		c.insets = new Insets(1, 0, 0, 1);
-		selectorPanel.add(selectorPanel.getOptions().getSwingComponent(), c);
-
 		c.gridx = 1;
 		c.weightx = 1;
+		c.weighty = 1;
 		c.anchor = GridBagConstraints.WEST;
 		if (this.statePlaylist.isShowPlayListSelectorComboBox()) {
 			c.fill = GridBagConstraints.VERTICAL;
+			c.insets = new Insets(1, 0, 0, 1);
 			selectorPanel.add(this.playListCombo, c);
 		} else {
 			c.fill = GridBagConstraints.BOTH;

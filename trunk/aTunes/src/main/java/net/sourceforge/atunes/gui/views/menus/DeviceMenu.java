@@ -22,13 +22,15 @@ package net.sourceforge.atunes.gui.views.menus;
 
 import javax.swing.Action;
 import javax.swing.JMenu;
+import javax.swing.JSeparator;
 
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Device menu
+ * 
  * @author alex
- *
+ * 
  */
 public class DeviceMenu extends JMenu {
 
@@ -37,12 +39,29 @@ public class DeviceMenu extends JMenu {
 	private Action connectDeviceAction;
 	private Action refreshDeviceAction;
 	private Action disconnectDeviceAction;
+	private Action copyPlayListToDeviceAction;
+	private Action syncDeviceWithPlayListAction;
 
 	/**
 	 * @param i18nKey
 	 */
 	public DeviceMenu(final String i18nKey) {
 		super(I18nUtils.getString(i18nKey));
+	}
+
+	/**
+	 * @param copyPlayListToDeviceAction
+	 */
+	public void setCopyPlayListToDeviceAction(Action copyPlayListToDeviceAction) {
+		this.copyPlayListToDeviceAction = copyPlayListToDeviceAction;
+	}
+
+	/**
+	 * @param syncDeviceWithPlayListAction
+	 */
+	public void setSyncDeviceWithPlayListAction(
+			Action syncDeviceWithPlayListAction) {
+		this.syncDeviceWithPlayListAction = syncDeviceWithPlayListAction;
 	}
 
 	/**
@@ -73,5 +92,8 @@ public class DeviceMenu extends JMenu {
 		add(connectDeviceAction);
 		add(refreshDeviceAction);
 		add(disconnectDeviceAction);
+		add(new JSeparator());
+		add(copyPlayListToDeviceAction);
+		add(syncDeviceWithPlayListAction);
 	}
 }
