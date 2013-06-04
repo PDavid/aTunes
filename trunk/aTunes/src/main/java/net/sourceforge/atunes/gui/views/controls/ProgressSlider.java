@@ -31,6 +31,8 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -41,6 +43,8 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicSliderUI;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IProgressSlider;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -65,6 +69,18 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 
 	private boolean paintIconAllowed;
 
+	private ILookAndFeelManager lookAndFeelManager;
+
+	private final List<MouseListener> mouseListeners = new ArrayList<MouseListener>();
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
 	/**
 	 * @param paintIconAllowed
 	 */
@@ -88,45 +104,10 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 		// Need enough space to show time for long audio objects
 		this.time.setPreferredSize(new Dimension(100, 0));
 
-		this.progressBar = new JSlider() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -1159531192746462016L;
-
-			// Remove listeners that make slider to move across major ticks so
-			// knob is positioned immediately
-			// Code from
-			// http://stackoverflow.com/questions/518471/jslider-question-position-after-leftclick
-			{
-				for (MouseListener l : getMouseListeners()) {
-					removeMouseListener(l); // remove UI-installed TrackListener
-				}
-				final BasicSliderUI ui = (BasicSliderUI) getUI();
-				BasicSliderUI.TrackListener tl = ui.new TrackListener() {
-					// this is where we jump to absolute value of click
-					@Override
-					public void mouseClicked(final java.awt.event.MouseEvent e) {
-						Point point = e.getPoint();
-						if (point != null) {
-							setValue(ui.valueForXPosition(point.x));
-						}
-					}
-
-					// disable check that will invoke scrollDueToClickInTrack
-					@Override
-					public boolean shouldScroll(final int dir) {
-						return false;
-					}
-				};
-				addMouseListener(tl);
-			}
-		};
-		this.progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
-		this.progressBar.setMinimum(0);
-		this.progressBar.setValue(0);
-		this.progressBar.setFocusable(false);
+		this.progressBar = createSlider();
 		this.progressBar.setVisible(false);
+		this.lookAndFeelManager
+				.addLookAndFeelChangeListener((ILookAndFeelChangeListener) this.progressBar);
 
 		this.indeterminateProgressBar = new JProgressBar();
 		this.indeterminateProgressBar.setIndeterminate(true);
@@ -140,6 +121,15 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 		this.remainingTime.setPreferredSize(new Dimension(100, 0));
 
 		setLayout();
+	}
+
+	private CustomSlider createSlider() {
+		CustomSlider progressBar = new CustomSlider();
+		progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
+		progressBar.setMinimum(0);
+		progressBar.setValue(0);
+		progressBar.setFocusable(false);
+		return progressBar;
 	}
 
 	/**
@@ -332,6 +322,7 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 
 	@Override
 	public synchronized void addMouseListener(final MouseListener l) {
+		this.mouseListeners.add(l);
 		this.progressBar.addMouseListener(l);
 	}
 
@@ -379,6 +370,54 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 			graphics.drawImage(icon.getImage(), width / 2 - icon.getIconWidth()
 					/ 2, 2, null);
 		}
+	}
 
+	private class CustomSlider extends JSlider implements
+			ILookAndFeelChangeListener {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1159531192746462016L;
+
+		// Remove listeners that make slider to move across major ticks so
+		// knob is positioned immediately
+		// Code from
+		// http://stackoverflow.com/questions/518471/jslider-question-position-after-leftclick
+		{
+			reinstallTrackListeners();
+		}
+
+		@Override
+		public void lookAndFeelChanged() {
+			reinstallTrackListeners();
+		}
+
+		private void reinstallTrackListeners() {
+			for (MouseListener l : getMouseListeners()) {
+				removeMouseListener(l); // remove UI-installed TrackListener
+			}
+			BasicSliderUI.TrackListener tl = ((BasicSliderUI) getUI()).new TrackListener() {
+				// this is where we jump to absolute value of click
+				@Override
+				public void mouseClicked(final java.awt.event.MouseEvent e) {
+					Point point = e.getPoint();
+					if (point != null) {
+						setValue(((BasicSliderUI) getUI())
+								.valueForXPosition(point.x));
+					}
+				}
+
+				// disable check that will invoke scrollDueToClickInTrack
+				@Override
+				public boolean shouldScroll(final int dir) {
+					return false;
+				}
+			};
+			addMouseListener(tl);
+			// Reinstall mouse listeners
+			for (MouseListener l : ProgressSlider.this.mouseListeners) {
+				addMouseListener(l);
+			}
+		}
 	}
 }

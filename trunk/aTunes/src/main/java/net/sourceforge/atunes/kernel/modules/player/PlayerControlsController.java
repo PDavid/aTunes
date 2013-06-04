@@ -89,8 +89,6 @@ final class PlayerControlsController extends
 				.getBean(ProgressBarSeekListener.class);
 		seekListener.bindToProgressBar(getComponentControlled()
 				.getProgressSlider());
-		getComponentControlled().getProgressSlider().addMouseListener(
-				seekListener);
 		// Add volume behavior
 		this.volumeSlider.addMouseWheelListener(this.beanFactory
 				.getBean(VolumeSliderMouseWheelListener.class));
