@@ -296,6 +296,26 @@ public final class PlayListHandler extends AbstractHandler implements
 	}
 
 	@Override
+	public void nextPlayList() {
+		int currentIndex = this.playListsContainer.getVisiblePlayListIndex();
+		if (currentIndex < (getPlayListCount() - 1)) {
+			this.playListTabController.forceSwitchTo(currentIndex + 1);
+		} else {
+			this.playListTabController.forceSwitchTo(0);
+		}
+	}
+
+	@Override
+	public void previousPlayList() {
+		int currentIndex = this.playListsContainer.getVisiblePlayListIndex();
+		if (currentIndex == 0) {
+			this.playListTabController.forceSwitchTo(getPlayListCount() - 1);
+		} else {
+			this.playListTabController.forceSwitchTo(currentIndex - 1);
+		}
+	}
+
+	@Override
 	public void switchToPlaylist(final int index) {
 		// If play list is the same, do nothing, except if this method is called
 		// when deleting a play list

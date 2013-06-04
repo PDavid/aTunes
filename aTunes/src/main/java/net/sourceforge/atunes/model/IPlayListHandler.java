@@ -383,4 +383,14 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler {
 	 */
 	void addToPlayListAndPlay(List<IAudioObject> audioObjects);
 
+	/**
+	 * Switches to next play list
+	 */
+	void nextPlayList();
+
+	/**
+	 * Switches to previous play list
+	 */
+	public void previousPlayList();
+
 }

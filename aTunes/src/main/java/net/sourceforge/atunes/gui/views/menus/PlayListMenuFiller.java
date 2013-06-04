@@ -51,7 +51,9 @@ import net.sourceforge.atunes.kernel.actions.MoveToBottomAction;
 import net.sourceforge.atunes.kernel.actions.MoveToTopAction;
 import net.sourceforge.atunes.kernel.actions.MoveUpAction;
 import net.sourceforge.atunes.kernel.actions.NewPlayListAction;
+import net.sourceforge.atunes.kernel.actions.NextPlayListAction;
 import net.sourceforge.atunes.kernel.actions.OpenFolderAction;
+import net.sourceforge.atunes.kernel.actions.PreviousPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RemoveDuplicatesFromPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RemoveFromPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RenamePlaylistAction;
@@ -142,6 +144,8 @@ public final class PlayListMenuFiller {
 
 		objects.add(this.beanFactory.getBean(NewPlayListAction.class));
 		objects.add(this.beanFactory.getBean(RenamePlaylistAction.class));
+		objects.add(this.beanFactory.getBean(NextPlayListAction.class));
+		objects.add(this.beanFactory.getBean(PreviousPlayListAction.class));
 		objects.add(this.beanFactory.getBean(ClosePlaylistAction.class));
 		objects.add(this.beanFactory.getBean(CloseOtherPlaylistsAction.class));
 		objects.add(new JSeparator());
