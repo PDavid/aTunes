@@ -173,6 +173,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveUpAction"/>
 	<bean id="muteAction" class="net.sourceforge.atunes.kernel.actions.MuteAction"/>
 	<bean id="newPlayListAction" class="net.sourceforge.atunes.kernel.actions.NewPlayListAction"/>
+	<bean id="nextPlayListAction" class="net.sourceforge.atunes.kernel.actions.NextPlayListAction"/>
 	<bean id="normalizeModeAction" class="net.sourceforge.atunes.kernel.actions.NormalizeModeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.OpenFolderAction"/>
 	
@@ -187,6 +188,7 @@
 	<bean id="nextAction" class="net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction"/>
 	<bean id="playNowAction" class="net.sourceforge.atunes.kernel.actions.PlayNowAction"/>
 	<bean id="previousAction" class="net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction"/>
+	<bean id="previousPlayListAction" class="net.sourceforge.atunes.kernel.actions.PreviousPlayListAction"/>
 	<bean id="refreshDeviceAction" class="net.sourceforge.atunes.kernel.actions.RefreshDeviceAction"/>
 	<bean id="refreshFolderFromNavigatorAction" class="net.sourceforge.atunes.kernel.actions.RefreshFolderFromNavigatorAction"/>
 	<bean id="refreshRepositoryAction" class="net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction"/>
