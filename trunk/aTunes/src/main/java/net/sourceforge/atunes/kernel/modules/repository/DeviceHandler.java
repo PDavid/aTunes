@@ -647,6 +647,8 @@ public final class DeviceHandler extends AbstractHandler implements
 					this.stateRepository);
 			this.currentLoader = this.beanFactory
 					.getBean(RepositoryRefreshLoader.class);
+			((RepositoryRefreshLoader) this.currentLoader)
+					.setDisableRepositoryActions(false);
 			this.currentLoader.setRepositoryLoaderListener(this);
 			this.currentLoader.start(new RepositoryTransaction(
 					this.deviceRepository, null), oldDeviceRepository

@@ -378,6 +378,8 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 				this.stateRepository);
 		this.currentLoader = this.beanFactory
 				.getBean(RepositoryRefreshLoader.class);
+		((RepositoryRefreshLoader) this.currentLoader)
+				.setDisableRepositoryActions(true);
 		this.currentLoader.setRepositoryLoaderListener(this);
 		this.currentLoader.start(new RepositoryTransaction(this.repository,
 				this.repositoryHandler), oldRepository.getRepositoryFolders(),

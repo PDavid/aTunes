@@ -47,6 +47,15 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 
 	private ITaskService taskService;
 
+	private boolean disableRepositoryActions;
+
+	/**
+	 * @param disableRepositoryActions
+	 */
+	public void setDisableRepositoryActions(boolean disableRepositoryActions) {
+		this.disableRepositoryActions = disableRepositoryActions;
+	}
+
 	/**
 	 * @param taskService
 	 */
@@ -87,9 +96,11 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 				String text = StringUtils.getString(
 						I18nUtils.getString("REFRESHING"), "...");
 				RepositoryRefreshLoader.this.frame.showProgressBar(true, text);
-				RepositoryRefreshLoader.this.beanFactory.getBean(
-						RepositoryActionsHelper.class)
-						.disableAllRepositoryActions();
+				if (disableRepositoryActions) {
+					RepositoryRefreshLoader.this.beanFactory.getBean(
+							RepositoryActionsHelper.class)
+							.disableAllRepositoryActions();
+				}
 			}
 		});
 		worker.setBackgroundActions(new Callable<Void>() {
