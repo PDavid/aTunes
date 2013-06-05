@@ -24,10 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.BackgroundWorker;
+import net.sourceforge.atunes.kernel.BackgroundWorkerWithIndeterminateProgress;
 import net.sourceforge.atunes.model.IDeviceHandler;
-import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFilter;
 import net.sourceforge.atunes.model.IPlayList;
@@ -42,7 +40,8 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public class CalculateSynchronizationBetweenDeviceAndPlayListBackgroundWorker
-		extends BackgroundWorker<Map<String, List<ILocalAudioObject>>, Void> {
+		extends
+		BackgroundWorkerWithIndeterminateProgress<Map<String, List<ILocalAudioObject>>, Void> {
 
 	private IStateDevice stateDevice;
 
@@ -50,24 +49,13 @@ public class CalculateSynchronizationBetweenDeviceAndPlayListBackgroundWorker
 
 	private IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter;
 
-	private IDialogFactory dialogFactory;
-
 	private IPlayList playList;
-
-	private IIndeterminateProgressDialog dialog;
 
 	/**
 	 * @param deviceHandler
 	 */
 	public void setDeviceHandler(final IDeviceHandler deviceHandler) {
 		this.deviceHandler = deviceHandler;
-	}
-
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(final IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
 	}
 
 	/**
@@ -93,11 +81,8 @@ public class CalculateSynchronizationBetweenDeviceAndPlayListBackgroundWorker
 	}
 
 	@Override
-	protected void before() {
-		this.dialog = this.dialogFactory
-				.newDialog(IIndeterminateProgressDialog.class);
-		this.dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
-		this.dialog.showDialog();
+	protected String getDialogTitle() {
+		return I18nUtils.getString("PLEASE_WAIT");
 	}
 
 	@Override
@@ -142,7 +127,7 @@ public class CalculateSynchronizationBetweenDeviceAndPlayListBackgroundWorker
 	}
 
 	@Override
-	protected void done(final Map<String, List<ILocalAudioObject>> files) {
-		this.dialog.hideDialog();
+	protected void doneAndDialogClosed(
+			Map<String, List<ILocalAudioObject>> result) {
 	}
 }

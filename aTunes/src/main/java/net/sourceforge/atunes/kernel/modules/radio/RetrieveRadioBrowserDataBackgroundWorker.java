@@ -25,9 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.BackgroundWorker;
-import net.sourceforge.atunes.model.IDialogFactory;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
+import net.sourceforge.atunes.kernel.BackgroundWorkerWithIndeterminateProgress;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -41,24 +39,13 @@ import net.sourceforge.atunes.utils.XMLSerializerService;
  * 
  */
 public final class RetrieveRadioBrowserDataBackgroundWorker extends
-		BackgroundWorker<List<IRadio>, Void> {
+		BackgroundWorkerWithIndeterminateProgress<List<IRadio>, Void> {
 
 	private INetworkHandler networkHandler;
 
 	private XMLSerializerService xmlSerializerService;
 
 	private RadioBrowserDialogController controller;
-
-	private IDialogFactory dialogFactory;
-
-	private IIndeterminateProgressDialog dialog;
-
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(final IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
 
 	/**
 	 * @param networkHandler
@@ -84,11 +71,8 @@ public final class RetrieveRadioBrowserDataBackgroundWorker extends
 	}
 
 	@Override
-	protected void before() {
-		this.dialog = this.dialogFactory
-				.newDialog(IIndeterminateProgressDialog.class);
-		this.dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
-		this.dialog.showDialog();
+	protected String getDialogTitle() {
+		return I18nUtils.getString("PLEASE_WAIT");
 	}
 
 	@Override
@@ -122,8 +106,7 @@ public final class RetrieveRadioBrowserDataBackgroundWorker extends
 	}
 
 	@Override
-	protected void done(final List<IRadio> result) {
-		this.dialog.hideDialog();
+	protected void doneAndDialogClosed(List<IRadio> result) {
 		this.controller.show(result);
 	}
 }

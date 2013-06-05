@@ -23,10 +23,8 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.BackgroundWorker;
-import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.kernel.BackgroundWorkerWithIndeterminateProgress;
 import net.sourceforge.atunes.model.IFileManager;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -37,30 +35,20 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public final class DeleteFilesTask extends BackgroundWorker<Void, Void> {
-
-	private IDialogFactory dialogFactory;
+public final class DeleteFilesTask extends
+		BackgroundWorkerWithIndeterminateProgress<Void, Void> {
 
 	private IRepositoryHandler repositoryHandler;
 
-	private IIndeterminateProgressDialog dialog;
-
 	private IFileManager fileManager;
-	
+
 	private List<ILocalAudioObject> files;
-	
+
 	/**
 	 * @param files
 	 */
 	public void setFiles(List<ILocalAudioObject> files) {
 		this.files = files;
-	}
-
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(final IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
 	}
 
 	/**
@@ -78,13 +66,10 @@ public final class DeleteFilesTask extends BackgroundWorker<Void, Void> {
 	}
 
 	@Override
-	protected void before() {
-		this.dialog = this.dialogFactory
-				.newDialog(IIndeterminateProgressDialog.class);
-		this.dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
-		this.dialog.showDialog();
+	protected String getDialogTitle() {
+		return I18nUtils.getString("PLEASE_WAIT");
 	}
-	
+
 	@Override
 	protected Void doInBackground() {
 		List<ILocalAudioObject> filesDeleted = new ArrayList<ILocalAudioObject>();
@@ -93,7 +78,7 @@ public final class DeleteFilesTask extends BackgroundWorker<Void, Void> {
 				filesDeleted.add(audioFile);
 			}
 		}
-		DeleteFilesTask.this.repositoryHandler.remove(filesDeleted);
+		this.repositoryHandler.remove(filesDeleted);
 		return null;
 	}
 
@@ -102,8 +87,6 @@ public final class DeleteFilesTask extends BackgroundWorker<Void, Void> {
 	}
 
 	@Override
-	protected void done(Void result) {
-		this.dialog.hideDialog();
+	protected void doneAndDialogClosed(Void result) {
 	}
-	
 }
