@@ -23,10 +23,8 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.IOException;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.BackgroundWorker;
-import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.kernel.BackgroundWorkerWithIndeterminateProgress;
 import net.sourceforge.atunes.model.IFolder;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -41,13 +39,9 @@ import org.apache.commons.io.FileUtils;
  * 
  */
 public class RemoveFoldersFromDiskBackgroundWorker extends
-		BackgroundWorker<Void, Void> {
+		BackgroundWorkerWithIndeterminateProgress<Void, Void> {
 
 	private IOSManager osManager;
-
-	private IDialogFactory dialogFactory;
-
-	private IIndeterminateProgressDialog dialog;
 
 	private List<IFolder> foldersToRemove;
 
@@ -65,19 +59,9 @@ public class RemoveFoldersFromDiskBackgroundWorker extends
 		this.osManager = osManager;
 	}
 
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(final IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
-
 	@Override
-	protected void before() {
-		this.dialog = this.dialogFactory
-				.newDialog(IIndeterminateProgressDialog.class);
-		this.dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
-		this.dialog.showDialog();
+	protected String getDialogTitle() {
+		return I18nUtils.getString("PLEASE_WAIT");
 	}
 
 	@Override
@@ -99,7 +83,6 @@ public class RemoveFoldersFromDiskBackgroundWorker extends
 	}
 
 	@Override
-	protected void done(final Void result) {
-		this.dialog.hideDialog();
+	protected void doneAndDialogClosed(Void result) {
 	}
 }

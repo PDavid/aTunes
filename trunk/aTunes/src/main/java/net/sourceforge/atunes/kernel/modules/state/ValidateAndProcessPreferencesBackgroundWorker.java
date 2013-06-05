@@ -22,33 +22,21 @@ package net.sourceforge.atunes.kernel.modules.state;
 
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.BackgroundWorker;
+import net.sourceforge.atunes.kernel.BackgroundWorkerWithIndeterminateProgress;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
 import net.sourceforge.atunes.model.IConfirmationDialog;
-import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
-public class ValidateAndProcessPreferencesBackgroundWorker extends
-		BackgroundWorker<PreferencesValidationResult, Void> {
-
-	private IDialogFactory dialogFactory;
-
-	private IIndeterminateProgressDialog dialog;
+public class ValidateAndProcessPreferencesBackgroundWorker
+		extends
+		BackgroundWorkerWithIndeterminateProgress<PreferencesValidationResult, Void> {
 
 	private List<AbstractPreferencesPanel> panels;
 
 	private EditPreferencesDialog preferencesDialog;
-
-	/**
-	 * @param dialogFactory
-	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
-		this.dialogFactory = dialogFactory;
-	}
 
 	/**
 	 * Validates panels and process preferences if valid
@@ -64,11 +52,8 @@ public class ValidateAndProcessPreferencesBackgroundWorker extends
 	}
 
 	@Override
-	protected void before() {
-		this.dialog = dialogFactory
-				.newDialog(IIndeterminateProgressDialog.class);
-		this.dialog.setTitle(I18nUtils.getString("VALIDATING_PREFERENCES"));
-		this.dialog.showDialog();
+	protected String getDialogTitle() {
+		return I18nUtils.getString("VALIDATING_PREFERENCES");
 	}
 
 	@Override
@@ -92,16 +77,15 @@ public class ValidateAndProcessPreferencesBackgroundWorker extends
 	}
 
 	@Override
-	protected void done(PreferencesValidationResult result) {
-		dialog.hideDialog();
+	protected void doneAndDialogClosed(PreferencesValidationResult result) {
 		if (!result.hasError()) {
 			preferencesDialog.setVisible(false);
 			getBeanFactory().getBean(StateChangeListeners.class)
 					.notifyApplicationStateChanged();
 			// Let user decide if want to restart
 			if (result.isNeedsRestart()) {
-				IConfirmationDialog dialog = dialogFactory
-						.newDialog(IConfirmationDialog.class);
+				IConfirmationDialog dialog = getDialogFactory().newDialog(
+						IConfirmationDialog.class);
 				dialog.setMessage(I18nUtils
 						.getString("APPLICATION_NEEDS_RESTART"));
 				dialog.showDialog();
@@ -110,7 +94,7 @@ public class ValidateAndProcessPreferencesBackgroundWorker extends
 				}
 			}
 		} else {
-			dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(
+			getDialogFactory().newDialog(IErrorDialog.class).showErrorDialog(
 					result.getError().getMessage(), preferencesDialog);
 		}
 	}
