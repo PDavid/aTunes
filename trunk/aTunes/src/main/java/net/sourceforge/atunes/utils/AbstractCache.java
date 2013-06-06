@@ -111,7 +111,7 @@ public abstract class AbstractCache {
 	protected boolean removeAll() {
 		boolean exception = false;
 		try {
-			removeAll();
+			getCache().removeAll();
 		} catch (IllegalStateException e) {
 			Logger.info("Could not delete all files from ", this.cacheName,
 					" cache");
