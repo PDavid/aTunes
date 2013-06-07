@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IEvent;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.ILyrics;
@@ -235,5 +236,10 @@ public class WebServicesHandler extends AbstractHandler implements
 	@Override
 	public void consolidateWebContent() {
 		getLastFmService().flush();
+	}
+
+	@Override
+	public List<IEvent> getArtistEvents(String artist) {
+		return getLastFmService().getArtistEvents(artist);
 	}
 }

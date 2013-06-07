@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,9 +30,11 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmArtistTopTracks;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmEvent;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmSimilarArtists;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
+import net.sourceforge.atunes.model.IEvent;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.IStateCore;
@@ -421,9 +424,28 @@ public class LastFmArtistServices {
 	 * @param artist
 	 * @return
 	 */
-	Collection<Event> getArtistEvents(final String artist) {
-		return Artist.getEvents(artist, this.lastFmAPIKey.getApiKey())
-				.getPageResults();
+	List<IEvent> getArtistEvents(final String artist) {
+		List<IEvent> result = new ArrayList<IEvent>();
+		Collection<Event> events = Artist.getEvents(artist,
+				this.lastFmAPIKey.getApiKey()).getPageResults();
+		if (events != null) {
+			for (Event event : events) {
+				IEvent e = LastFmEvent.getEvent(event, artist);
+				Image image = null;
+				try {
+					image = networkHandler.getImage(networkHandler
+							.getConnection(e.getImageUrl()));
+				} catch (IOException e1) {
+					Logger.error(e1);
+				}
+				if (image != null) {
+					e.setImage(ImageUtils.scaleImageBicubic(image,
+							Constants.THUMB_IMAGE_WIDTH,
+							Constants.THUMB_IMAGE_HEIGHT));
+				}
+				result.add(e);
+			}
+		}
+		return result;
 	}
-
 }

@@ -20,6 +20,7 @@
 				<ref bean="artistContextPanel" />
 				<ref bean="similarArtistsContextPanel" />
 				<ref bean="youtubeContextPanel" />
+				<ref bean="eventsContextPanel" />
 			</list>
 		</constructor-arg>
 	</bean>
@@ -83,6 +84,13 @@
 			</list>
 		</property>
 	</bean>
+	<bean id="eventsContextPanel" class="net.sourceforge.atunes.kernel.modules.context.event.EventsContextPanel" parent="contextPanel">
+		<property name="contents">
+			<list>
+				<ref bean="eventsContent"/>
+			</list>
+		</property>
+	</bean>
 
 
 	<!-- DATA SOURCES -->
@@ -103,6 +111,8 @@
 		class="net.sourceforge.atunes.kernel.modules.context.similar.SimilarArtistsDataSource" />
 	<bean id="youtubeDataSource"
 		class="net.sourceforge.atunes.kernel.modules.context.youtube.YoutubeDataSource" />
+	<bean id="eventsDataSource"
+		class="net.sourceforge.atunes.kernel.modules.context.event.EventsDataSource" />
 
 
 	<!-- CONTEXT PANEL CONTENTS -->
@@ -165,6 +175,12 @@
 		<property name="dataSource" ref="youtubeDataSource" />
 	</bean>
 	
+	<bean id="eventsContent"
+	    class="net.sourceforge.atunes.kernel.modules.context.event.EventsContent"
+	    parent="contextPanelContent">
+	    <property name="dataSource" ref="eventsDataSource" />
+	</bean>
+	
 	<bean id="contextArtistTracksTableModel" class="net.sourceforge.atunes.kernel.modules.context.artist.ContextArtistTracksTableModel" scope="prototype"/>
 	
 	<!-- ACTIONS -->
@@ -174,7 +190,8 @@
 	<bean class="net.sourceforge.atunes.kernel.modules.context.similar.SearchArtistContextTableAction" parent="contextTableAction" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.context.similar.AddAlbumArtistToPlayListContextTableAction" parent="contextTableAction" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.context.artist.OpenAlbumUrlAction" parent="contextTableAction" scope="prototype"/>
-	<bean class="net.sourceforge.atunes.kernel.modules.context.youtube.OpenYoutubeVideoAction" parent="contextTableAction" scope="prototype"/>
+	<bean id="openYoutubeVideoAction" class="net.sourceforge.atunes.kernel.modules.context.youtube.OpenYoutubeVideoAction" parent="contextTableAction" scope="prototype"/>
+	<bean id="openEventAction" class="net.sourceforge.atunes.kernel.modules.context.event.OpenEventAction" parent="contextTableAction" scope="prototype"/>
 
 
     <!-- SEARCH FOR SIMILAR ARTISTS -->
