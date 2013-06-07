@@ -28,6 +28,7 @@
 	<bean id="deviceIcon" class="net.sourceforge.atunes.gui.images.DeviceImageIcon"/>
 	<bean id="downloadIcon" class="net.sourceforge.atunes.gui.images.DownloadImageIcon"/>
 	<bean id="equalizerIcon" class="net.sourceforge.atunes.gui.images.EqualizerImageIcon"/>
+	<bean id="eventIcon" class="net.sourceforge.atunes.gui.images.EventImageIcon"/>
 	<bean id="favoriteIcon" class="net.sourceforge.atunes.gui.images.FavoriteImageIcon"/>
 	<bean id="filterIcon" class="net.sourceforge.atunes.gui.images.FilterImageIcon"/>
 	<bean id="folderIcon" class="net.sourceforge.atunes.gui.images.FolderImageIcon"/>

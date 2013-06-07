@@ -5,6 +5,7 @@ aTunes 3.2.0
 - Play list and device actions moved to device menu
 - Added keyboard shortcuts for play list actions
 - New actions to move to next and previous playlist
+- New context panel showing current artist events
 
 aTunes 3.1.1
 ------------

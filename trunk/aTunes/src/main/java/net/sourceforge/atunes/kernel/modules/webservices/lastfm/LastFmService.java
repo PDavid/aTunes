@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -30,13 +29,13 @@ import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IEvent;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.Logger;
 import de.umass.lastfm.Caller;
-import de.umass.lastfm.Event;
 
 /**
  * This class is responsible of retrieve information from Last.fm web services.
@@ -396,14 +395,12 @@ public final class LastFmService {
 	}
 
 	/**
-	 * Returns events of an artist. This is a convenience method to allow
-	 * plugins access last fm services without opening access to api key outside
-	 * this class
+	 * Returns events of an artist
 	 * 
 	 * @param artist
 	 * @return
 	 */
-	public Collection<Event> getArtistEvents(final String artist) {
+	public List<IEvent> getArtistEvents(final String artist) {
 		return this.lastFmArtistServices.getArtistEvents(artist);
 	}
 
