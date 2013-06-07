@@ -120,7 +120,7 @@ public class ContextTableRowPanel<T> extends JPanel {
 		c.gridx = 1;
 		c.weightx = 1;
 		c.weighty = 1;
-		c.fill = GridBagConstraints.BOTH;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.insets = new Insets(0, (imageMaxWidth + 20)
 				/ 2
 				- (this.imageLabel.getIcon() != null ? this.imageLabel
