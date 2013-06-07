@@ -91,7 +91,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 	private final Map<String, String> skins = setMapOfSkins();
 
 	/** The default skin */
-	private static final String DEFAULT_SKIN = "aTunes Blue";
+	private static final String DEFAULT_SKIN = "aTunes New";
 
 	private Dimension playButtonSize;
 

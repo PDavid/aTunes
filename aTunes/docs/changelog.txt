@@ -1,6 +1,6 @@
 aTunes 3.2.0
 ------------
-- New custom Substance theme (aTunes New)
+- New custom Substance theme (aTunes New) as default
 - Play list actions moved to play list menu
 - Play list and device actions moved to device menu
 - Added keyboard shortcuts for play list actions
