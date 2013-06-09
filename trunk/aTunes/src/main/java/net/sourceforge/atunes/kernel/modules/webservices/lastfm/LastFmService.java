@@ -421,4 +421,11 @@ public final class LastFmService {
 	public boolean testLogin(final String user, final String password) {
 		return this.lastFmLogin.testLogin(user, password);
 	}
+
+	/**
+	 * @return recommended events for current user
+	 */
+	public List<IEvent> getRecommendedEvents() {
+		return this.lastFmUserServices.getRecommendedEvents();
+	}
 }

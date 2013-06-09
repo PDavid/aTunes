@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lastfm.data;
 
+import java.util.Collection;
+
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.IEvent;
@@ -41,15 +43,21 @@ public class LastFmEvent implements IEvent {
 
 	private String artist;
 
+	private Collection<String> artists;
+
 	private DateTime startDate;
 
 	private String url;
+
+	private String venue;
 
 	private String city;
 
 	private String country;
 
-	private String imageUrl;
+	private String smallImageUrl;
+
+	private String originalImageUrl;
 
 	private ImageIcon image;
 
@@ -62,13 +70,16 @@ public class LastFmEvent implements IEvent {
 		LastFmEvent result = new LastFmEvent();
 		result.setTitle(event.getTitle());
 		result.setArtist(artist);
+		result.setArtists(event.getArtists());
 		result.setStartDate(new DateTime(event.getStartDate()));
 		result.setUrl(event.getUrl());
 		if (event.getVenue() != null) {
+			result.setVenue(event.getVenue().getName());
 			result.setCity(event.getVenue().getCity());
 			result.setCountry(event.getVenue().getCountry());
 		}
-		result.setImageUrl(event.getImageURL(ImageSize.MEDIUM));
+		result.setSmallImageUrl(event.getImageURL(ImageSize.MEDIUM));
+		result.setOriginalImageUrl(event.getImageURL(ImageSize.EXTRALARGE));
 		return result;
 	}
 
@@ -133,13 +144,23 @@ public class LastFmEvent implements IEvent {
 	}
 
 	@Override
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
+	public void setSmallImageUrl(String imageUrl) {
+		this.smallImageUrl = imageUrl;
 	}
 
 	@Override
-	public String getImageUrl() {
-		return this.imageUrl;
+	public String getSmallImageUrl() {
+		return this.smallImageUrl;
+	}
+
+	@Override
+	public void setOriginalImageUrl(String imageUrl) {
+		this.originalImageUrl = imageUrl;
+	}
+
+	@Override
+	public String getOriginalImageUrl() {
+		return this.originalImageUrl;
 	}
 
 	@Override
@@ -150,5 +171,25 @@ public class LastFmEvent implements IEvent {
 	@Override
 	public ImageIcon getImage() {
 		return image;
+	}
+
+	@Override
+	public void setArtists(Collection<String> artists) {
+		this.artists = artists;
+	}
+
+	@Override
+	public Collection<String> getArtists() {
+		return artists;
+	}
+
+	@Override
+	public void setVenue(String venue) {
+		this.venue = venue;
+	}
+
+	@Override
+	public String getVenue() {
+		return venue;
 	}
 }

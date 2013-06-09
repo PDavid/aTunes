@@ -20,23 +20,31 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 
+import java.awt.Image;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmEvent;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IEvent;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILovedTrack;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
+import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import de.umass.lastfm.Event;
 import de.umass.lastfm.PaginatedResult;
 import de.umass.lastfm.Result;
 import de.umass.lastfm.Result.Status;
@@ -66,6 +74,15 @@ public class LastFmUserServices implements ApplicationContextAware {
 	private ApplicationContext context;
 
 	private LastFmSubmissionData lastFmSubmissionData;
+
+	private INetworkHandler networkHandler;
+
+	/**
+	 * @param networkHandler
+	 */
+	public void setNetworkHandler(INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
 
 	/**
 	 * @param lastFmSubmissionData
@@ -441,5 +458,42 @@ public class LastFmUserServices implements ApplicationContextAware {
 			runnable.setAudioFile(audioFile);
 			taskService.submitNow("Submit Now Playing to Last.fm", runnable);
 		}
+	}
+
+	/**
+	 * @return recommended events
+	 */
+	public List<IEvent> getRecommendedEvents() {
+		List<IEvent> events = new ArrayList<IEvent>();
+		int page = 1;
+		PaginatedResult<Event> paginatedResult = null;
+		do {
+			paginatedResult = User.getRecommendedEvents(this.lastFmLogin
+					.getSession());
+			if (paginatedResult != null
+					&& paginatedResult.getPageResults() != null) {
+				for (Event e : paginatedResult.getPageResults()) {
+					IEvent event = LastFmEvent.getEvent(e, null);
+					if (!StringUtils.isEmpty(event.getSmallImageUrl())) {
+						Image image = null;
+						try {
+							image = networkHandler.getImage(networkHandler
+									.getConnection(event.getSmallImageUrl()));
+						} catch (IOException e1) {
+							Logger.error(e1);
+						}
+						if (image != null) {
+							event.setImage(ImageUtils.scaleImageBicubic(image,
+									Constants.THUMB_IMAGE_WIDTH,
+									Constants.THUMB_IMAGE_HEIGHT));
+						}
+					}
+					events.add(event);
+				}
+			}
+			page++;
+		} while (paginatedResult != null
+				&& page <= paginatedResult.getTotalPages());
+		return events;
 	}
 }

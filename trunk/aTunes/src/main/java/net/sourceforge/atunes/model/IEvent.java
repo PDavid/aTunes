@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.Collection;
+
 import javax.swing.ImageIcon;
 
 import org.joda.time.DateTime;
@@ -46,13 +48,28 @@ public interface IEvent {
 
 	/**
 	 * @param artist
+	 *            whose search returned this event or null if searched
+	 *            recommended events
 	 */
 	void setArtist(String artist);
 
 	/**
-	 * @return artist whose search returned this event
+	 * @return artist whose search returned this event or null if searched
+	 *         recommended events
 	 */
 	String getArtist();
+
+	/**
+	 * Artists participating in this event
+	 * 
+	 * @param artists
+	 */
+	void setArtists(Collection<String> artists);
+
+	/**
+	 * @return artists participating in this event
+	 */
+	Collection<String> getArtists();
 
 	/**
 	 * @param startDate
@@ -100,12 +117,22 @@ public interface IEvent {
 	/**
 	 * @param imageUrl
 	 */
-	void setImageUrl(String imageUrl);
+	void setSmallImageUrl(String imageUrl);
 
 	/**
 	 * @return
 	 */
-	String getImageUrl();
+	String getSmallImageUrl();
+
+	/**
+	 * @param imageUrl
+	 */
+	void setOriginalImageUrl(String imageUrl);
+
+	/**
+	 * @return
+	 */
+	String getOriginalImageUrl();
 
 	/**
 	 * @param image
@@ -116,4 +143,14 @@ public interface IEvent {
 	 * @return image
 	 */
 	ImageIcon getImage();
+
+	/**
+	 * @param venue
+	 */
+	void setVenue(String venue);
+
+	/**
+	 * @return venue of event
+	 */
+	String getVenue();
 }

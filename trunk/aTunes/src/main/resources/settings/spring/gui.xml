@@ -236,4 +236,6 @@
 
 	<bean id="radioBrowserController" class="net.sourceforge.atunes.kernel.modules.radio.RadioBrowserDialogController" init-method="initialize" scope="prototype"/>
 	
+	<bean id="remoteImage" class="net.sourceforge.atunes.gui.views.controls.RemoteImage" scope="prototype" init-method="initialize"/>
+	
 </beans>

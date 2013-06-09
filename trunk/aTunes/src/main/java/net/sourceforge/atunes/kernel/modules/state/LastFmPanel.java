@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction;
+import net.sourceforge.atunes.kernel.actions.ShowRecommendedEventsFromLastFMAction;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IStateContext;
@@ -202,6 +203,8 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 		this.beanFactory.getBean(AddBannedSongInLastFMAction.class).setEnabled(
 				this.stateContext.isLastFmEnabled());
 		this.beanFactory.getBean(ImportLovedTracksFromLastFMAction.class)
+				.setEnabled(this.stateContext.isLastFmEnabled());
+		this.beanFactory.getBean(ShowRecommendedEventsFromLastFMAction.class)
 				.setEnabled(this.stateContext.isLastFmEnabled());
 		this.stateContext.setCacheLastFmContent(this.cacheContent.isSelected());
 		return false;
