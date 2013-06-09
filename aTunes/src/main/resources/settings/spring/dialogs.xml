@@ -170,4 +170,10 @@
 		<constructor-arg ref="controlsBuilder"/>
 		<property name="donationUrl" value="http://sourceforge.net/donate/index.php?group_id=161929"/>
 	</bean>
+	
+	<bean id="recommendedEventsDialog" class="net.sourceforge.atunes.gui.views.dialogs.RecommendedEventsDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+		<constructor-arg ref="controlsBuilder"/>
+	</bean>
+	
 </beans>

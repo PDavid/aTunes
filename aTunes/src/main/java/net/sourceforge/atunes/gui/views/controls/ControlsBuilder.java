@@ -33,6 +33,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
@@ -370,6 +371,19 @@ public class ControlsBuilder implements IControlsBuilder {
 		JTable table = new JTable();
 		this.lookAndFeelManager.getCurrentLookAndFeel().decorateTable(table);
 		return table;
+	}
+
+	@Override
+	public RemoteImage createRemoteImage() {
+		return beanFactory.getBean(RemoteImage.class);
+	}
+
+	@Override
+	public JProgressBar createIndeterminateProgressBar() {
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setBorder(BorderFactory.createEmptyBorder());
+		progressBar.setIndeterminate(true);
+		return progressBar;
 	}
 
 	private static class CustomFileChooser extends JFileChooser {

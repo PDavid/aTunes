@@ -431,17 +431,19 @@ public class LastFmArtistServices {
 		if (events != null) {
 			for (Event event : events) {
 				IEvent e = LastFmEvent.getEvent(event, artist);
-				Image image = null;
-				try {
-					image = networkHandler.getImage(networkHandler
-							.getConnection(e.getImageUrl()));
-				} catch (IOException e1) {
-					Logger.error(e1);
-				}
-				if (image != null) {
-					e.setImage(ImageUtils.scaleImageBicubic(image,
-							Constants.THUMB_IMAGE_WIDTH,
-							Constants.THUMB_IMAGE_HEIGHT));
+				if (!StringUtils.isEmpty(e.getSmallImageUrl())) {
+					Image image = null;
+					try {
+						image = networkHandler.getImage(networkHandler
+								.getConnection(e.getSmallImageUrl()));
+					} catch (IOException e1) {
+						Logger.error(e1);
+					}
+					if (image != null) {
+						e.setImage(ImageUtils.scaleImageBicubic(image,
+								Constants.THUMB_IMAGE_WIDTH,
+								Constants.THUMB_IMAGE_HEIGHT));
+					}
 				}
 				result.add(e);
 			}

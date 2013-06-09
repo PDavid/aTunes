@@ -226,4 +226,9 @@ public interface IWebServicesHandler extends IHandler {
 	 */
 	public List<IEvent> getArtistEvents(String artist);
 
+	/**
+	 * @return recommended events
+	 */
+	public List<IEvent> getRecommendedEvents();
+
 }

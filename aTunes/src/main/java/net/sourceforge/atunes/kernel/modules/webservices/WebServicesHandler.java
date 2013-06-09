@@ -242,4 +242,9 @@ public class WebServicesHandler extends AbstractHandler implements
 	public List<IEvent> getArtistEvents(String artist) {
 		return getLastFmService().getArtistEvents(artist);
 	}
+
+	@Override
+	public List<IEvent> getRecommendedEvents() {
+		return getLastFmService().getRecommendedEvents();
+	}
 }

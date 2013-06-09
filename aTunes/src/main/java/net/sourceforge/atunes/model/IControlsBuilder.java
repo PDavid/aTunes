@@ -25,6 +25,7 @@ import java.awt.ComponentOrientation;
 import java.awt.Container;
 
 import javax.swing.JFileChooser;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
@@ -32,6 +33,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.tree.TreeCellRenderer;
+
+import net.sourceforge.atunes.gui.views.controls.RemoteImage;
 
 /**
  * Interface to build UI components
@@ -187,4 +190,13 @@ public interface IControlsBuilder {
 	 */
 	TreeCellRenderer getTreeCellRenderer(final ITreeCellRendererCode<?, ?> code);
 
+	/**
+	 * @return a new remote image
+	 */
+	RemoteImage createRemoteImage();
+
+	/**
+	 * @return indeterminate progress bar
+	 */
+	JProgressBar createIndeterminateProgressBar();
 }

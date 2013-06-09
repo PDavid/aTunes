@@ -25,7 +25,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -73,9 +72,8 @@ public final class IndeterminateProgressDialog extends AbstractCustomDialog
 				I18nUtils.getString("PLEASE_WAIT"), "..."));
 		Font f = label.getFont().deriveFont(Font.PLAIN);
 		label.setFont(f);
-		JProgressBar progressBar = new JProgressBar();
-		progressBar.setBorder(BorderFactory.createEmptyBorder());
-		progressBar.setIndeterminate(true);
+		JProgressBar progressBar = getControlsBuilder()
+				.createIndeterminateProgressBar();
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;

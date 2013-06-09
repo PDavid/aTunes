@@ -247,6 +247,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction"/>
 	<bean id="showOSDAction" class="net.sourceforge.atunes.kernel.actions.ShowOSDAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowPlayListItemInfoAction"/>
+	<bean id="showRecommendedEventsFromLastFMAction" class="net.sourceforge.atunes.kernel.actions.ShowRecommendedEventsFromLastFMAction"/>
 	<bean id="showRadioBrowserAction" class="net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction"/>
 	<bean id="showStatsAction" class="net.sourceforge.atunes.kernel.actions.ShowStatsAction"/>
 	<bean id="showStatusBarAction" class="net.sourceforge.atunes.kernel.actions.ShowStatusBarAction"/>
