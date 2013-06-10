@@ -410,7 +410,6 @@ public final class PlayerHandler extends AbstractHandler implements
 
 	@Override
 	public void selectedAudioObjectChanged(final IAudioObject audioObject) {
-		this.playerControlsController.updatePlayerControls(audioObject);
 	}
 
 	@Override
