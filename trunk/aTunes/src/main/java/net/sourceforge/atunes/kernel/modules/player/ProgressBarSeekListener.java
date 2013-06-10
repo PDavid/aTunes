@@ -56,10 +56,13 @@ public class ProgressBarSeekListener extends MouseAdapter {
 	@Override
 	public void mouseClicked(final MouseEvent e) {
 		if (this.progressBar.isEnabled()) {
+			// Calculate percentage as the position of mouse relative to
+			// progress bar width
 			// Round to next integer
-			this.playerHandler.seekCurrentAudioObject((int) Math
-					.ceil((float) this.progressBar.getValue()
-							/ this.progressBar.getMaximum() * 100));
+			this.playerHandler.seekCurrentAudioObject((int) Math.ceil((float) e
+					.getPoint().x
+					/ this.progressBar.getProgressBarWidth()
+					* 100));
 		}
 	}
 }

@@ -24,11 +24,8 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
-import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IStatePodcast;
 
 final class PlayerControlsController extends
 		AbstractSimpleController<PlayerControlsPanel> {
@@ -37,8 +34,6 @@ final class PlayerControlsController extends
 
 	private VolumeSlider volumeSlider;
 
-	private IStatePodcast statePodcast;
-
 	private IBeanFactory beanFactory;
 
 	/**
@@ -46,13 +41,6 @@ final class PlayerControlsController extends
 	 */
 	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
-	}
-
-	/**
-	 * @param statePodcast
-	 */
-	public void setStatePodcast(final IStatePodcast statePodcast) {
-		this.statePodcast = statePodcast;
 	}
 
 	/**
@@ -123,16 +111,6 @@ final class PlayerControlsController extends
 	}
 
 	/**
-	 * Sets the slidable.
-	 * 
-	 * @param slidable
-	 *            the new slidable
-	 */
-	void setSlidable(final boolean slidable) {
-		getComponentControlled().getProgressSlider().setEnabled(slidable);
-	}
-
-	/**
 	 * Sets the time.
 	 * 
 	 * @param timePlayed
@@ -171,19 +149,5 @@ final class PlayerControlsController extends
 				getComponentControlled().setVolume(value);
 			}
 		});
-	}
-
-	/**
-	 * Updates controls when playing given audio object
-	 * 
-	 * @param audioObject
-	 */
-	void updatePlayerControls(final IAudioObject audioObject) {
-		// Disable slider if audio object is a radio or podcast feed entry
-		boolean b = audioObject.isSeekable();
-		if (b && audioObject instanceof IPodcastFeedEntry) {
-			b = this.statePodcast.isUseDownloadedPodcastFeedEntries();
-		}
-		setSlidable(b);
 	}
 }
