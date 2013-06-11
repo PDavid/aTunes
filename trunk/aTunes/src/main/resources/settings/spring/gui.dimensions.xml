@@ -86,8 +86,8 @@
 	
 	<bean id="volumeSliderSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableWidthDimension">
 		<constructor-arg value="0.035"/>
-		<constructor-arg value="70"/>
-		<constructor-arg value="20"/>
+		<constructor-arg value="50"/>
+		<constructor-arg value="0"/><!--  not used -->
 	</bean>
 
 	<bean id="playButtonSize" class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getPlayButtonSize">

@@ -22,15 +22,16 @@ package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.Dimension;
 
-import javax.swing.JSlider;
+import javax.swing.BorderFactory;
+import javax.swing.JProgressBar;
 
 /**
- * Slider to control volume
+ * Slider to control volume, implemented with a progress bar
  * 
  * @author alex
  * 
  */
-public final class VolumeSlider extends JSlider {
+public final class VolumeSlider extends JProgressBar {
 
 	private static final long serialVersionUID = -7802263658163323018L;
 
@@ -38,8 +39,8 @@ public final class VolumeSlider extends JSlider {
 	 * @param volumeSliderSize
 	 */
 	public void setVolumeSliderSize(final Dimension volumeSliderSize) {
-		setMinimumSize(volumeSliderSize);
-		setPreferredSize(volumeSliderSize);
+		setPreferredSize(new Dimension(volumeSliderSize.width,
+				getPreferredSize().height));
 	}
 
 	/**
@@ -55,5 +56,6 @@ public final class VolumeSlider extends JSlider {
 		setMaximum(100);
 		setValue(50);
 		setFocusable(false);
+		setBorder(BorderFactory.createEmptyBorder());
 	}
 }

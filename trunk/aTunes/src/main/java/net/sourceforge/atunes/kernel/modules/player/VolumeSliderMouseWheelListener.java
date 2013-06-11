@@ -33,33 +33,33 @@ import net.sourceforge.atunes.gui.views.controls.VolumeSlider;
  */
 public final class VolumeSliderMouseWheelListener implements MouseWheelListener {
 
-    private VolumeSlider volumeSlider;
+	private VolumeSlider volumeSlider;
 
-    private Volume volumeController;
+	private Volume volumeController;
 
-    /**
-     * @param volumeController
-     */
-    public void setVolumeController(final Volume volumeController) {
-	this.volumeController = volumeController;
-    }
-
-    /**
-     * @param volumeSlider
-     */
-    public void setVolumeSlider(final VolumeSlider volumeSlider) {
-	this.volumeSlider = volumeSlider;
-    }
-
-    @Override
-    public void mouseWheelMoved(final MouseWheelEvent e) {
-	int notches = e.getWheelRotation();
-	if (notches < 0) {
-	    volumeSlider.setValue(volumeSlider.getValue() + 5);
-	} else {
-	    volumeSlider.setValue(volumeSlider.getValue() - 5);
+	/**
+	 * @param volumeController
+	 */
+	public void setVolumeController(final Volume volumeController) {
+		this.volumeController = volumeController;
 	}
 
-	volumeController.setVolume(volumeSlider.getValue());
-    }
+	/**
+	 * @param volumeSlider
+	 */
+	public void setVolumeSlider(final VolumeSlider volumeSlider) {
+		this.volumeSlider = volumeSlider;
+	}
+
+	@Override
+	public void mouseWheelMoved(final MouseWheelEvent e) {
+		int notches = e.getWheelRotation();
+		if (notches < 0) {
+			volumeSlider.setValue(volumeSlider.getValue() + 5);
+		} else {
+			volumeSlider.setValue(volumeSlider.getValue() - 5);
+		}
+
+		volumeController.setVolume(volumeSlider.getValue());
+	}
 }

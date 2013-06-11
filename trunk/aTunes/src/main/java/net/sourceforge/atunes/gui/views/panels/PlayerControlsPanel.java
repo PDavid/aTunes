@@ -30,7 +30,6 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 
 import net.sourceforge.atunes.gui.views.controls.MuteButton;
@@ -273,7 +272,7 @@ public final class PlayerControlsPanel extends JPanel implements
 	private JPanel getPanelWithPlayerControls(final StopButton stopButton,
 			final PreviousButton previousButton,
 			final PlayPauseButton playButton, final NextButton nextButton,
-			final MuteButton volumeButton, final JSlider volumeSlider,
+			final MuteButton volumeButton, final VolumeSlider volumeSlider,
 			final ILookAndFeelManager lookAndFeelManager) {
 		if (lookAndFeelManager.getCurrentLookAndFeel()
 				.isCustomPlayerControlsSupported()) {
