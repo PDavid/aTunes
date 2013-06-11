@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import net.sourceforge.atunes.gui.views.controls.VolumeSlider;
 
@@ -31,28 +31,29 @@ import net.sourceforge.atunes.gui.views.controls.VolumeSlider;
  * @author alex
  * 
  */
-public final class VolumeSliderChangeListener implements ChangeListener {
+public final class VolumeSliderChangeListener extends MouseAdapter {
 
-    private VolumeSlider volumeSlider;
+	private VolumeSlider volumeSlider;
 
-    private Volume volumeController;
+	private Volume volumeController;
 
-    /**
-     * @param volumeController
-     */
-    public void setVolumeController(final Volume volumeController) {
-	this.volumeController = volumeController;
-    }
+	/**
+	 * @param volumeController
+	 */
+	public void setVolumeController(final Volume volumeController) {
+		this.volumeController = volumeController;
+	}
 
-    /**
-     * @param volumeSlider
-     */
-    public void setVolumeSlider(final VolumeSlider volumeSlider) {
-	this.volumeSlider = volumeSlider;
-    }
+	/**
+	 * @param volumeSlider
+	 */
+	public void setVolumeSlider(final VolumeSlider volumeSlider) {
+		this.volumeSlider = volumeSlider;
+	}
 
-    @Override
-    public void stateChanged(final ChangeEvent e) {
-	volumeController.setVolume(volumeSlider.getValue());
-    }
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		volumeController.setVolume((int) Math.ceil((float) e.getPoint().x
+				/ this.volumeSlider.getWidth() * 100));
+	}
 }

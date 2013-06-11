@@ -80,7 +80,7 @@ final class PlayerControlsController extends
 		// Add volume behavior
 		this.volumeSlider.addMouseWheelListener(this.beanFactory
 				.getBean(VolumeSliderMouseWheelListener.class));
-		this.volumeSlider.addChangeListener(this.beanFactory
+		this.volumeSlider.addMouseListener(this.beanFactory
 				.getBean(VolumeSliderChangeListener.class));
 	}
 
