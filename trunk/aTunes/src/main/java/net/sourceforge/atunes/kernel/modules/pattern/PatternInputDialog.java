@@ -40,6 +40,7 @@ import java.util.Map.Entry;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -120,6 +121,9 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 
 	private static final long serialVersionUID = -5789081662254435503L;
 
+	/** Shows string of file or folder to help user select pattern **/
+	private JLabel firstElementLabel;
+
 	/** The combo box used to enter or select pattern */
 	private JComboBox patternComboBox;
 
@@ -180,7 +184,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 	public PatternInputDialog(final IFrame frame,
 			final boolean massiveRecognition,
 			final IControlsBuilder controlsBuilder) {
-		super(frame, 550, 350, controlsBuilder);
+		super(frame, 700, 450, controlsBuilder);
 		this.massiveRecognition = massiveRecognition;
 	}
 
@@ -198,6 +202,8 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 		textArea.setOpaque(false);
+
+		this.firstElementLabel = new JLabel();
 
 		// Combo box used to enter pattern
 		List<String> previousPatterns = null;
@@ -319,9 +325,11 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 		panel.add(textArea, c);
 		c.gridy = 1;
 		c.insets = new Insets(5, 30, 5, 30);
+		panel.add(this.firstElementLabel, c);
+		c.gridy = 2;
 		panel.add(this.patternComboBox, c);
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = 3;
 		c.weightx = 0.7;
 		c.weighty = 1;
 		c.gridwidth = 1;
@@ -332,7 +340,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 		c.weightx = 0.3;
 		panel.add(availablePatternsPanel, c);
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 4;
 		c.gridwidth = 2;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.NONE;
@@ -385,6 +393,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 			final String previewString) {
 		this.previewString = previewString;
 		this.patternComboBox.setSelectedIndex(-1);
+		this.firstElementLabel.setText(previewString);
 
 		String[][] patternsMatrix = new String[availablePatterns.size()][2];
 		int i = 0;

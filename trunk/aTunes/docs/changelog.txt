@@ -8,6 +8,7 @@ aTunes 3.2.0
 - New context panel showing current artist events
 - New action to show recommended events from Last.fm
 - UI improvement: use JProgressBar instead of JSlider to show and seek current audio object progress
+- Show first element file or folder to help user select a pattern when editing tag
 
 aTunes 3.1.1
 ------------
