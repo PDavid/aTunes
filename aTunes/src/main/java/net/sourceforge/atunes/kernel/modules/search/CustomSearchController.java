@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -145,7 +143,6 @@ final class CustomSearchController extends
 			// Get attributes
 			List<String> attributes = this.attributesList
 					.getSearchableAttributes();
-			attributes.add(0, ISearchHandler.DEFAULT_INDEX);
 
 			// Translate attributes to locale
 			List<String> translatedAttributesList = new ArrayList<String>();
@@ -157,8 +154,10 @@ final class CustomSearchController extends
 			}
 
 			// Set attributes list
-			getComponentControlled().getSimpleRulesList().setListData(
-					translatedAttributesList.toArray());
+			getComponentControlled().getSimpleRulesList()
+					.setModel(
+							new DefaultComboBoxModel(translatedAttributesList
+									.toArray()));
 		}
 	}
 
@@ -168,7 +167,7 @@ final class CustomSearchController extends
 	void createSimpleRule() {
 		// Get simple rule data: attribute, operator and value
 		String attribute = (String) getComponentControlled()
-				.getSimpleRulesList().getSelectedValue();
+				.getSimpleRulesList().getSelectedItem();
 		String operator = (String) getComponentControlled()
 				.getSimpleRulesComboBox().getSelectedItem();
 		String value = getComponentControlled().getSimpleRulesTextField()
@@ -517,19 +516,6 @@ final class CustomSearchController extends
 				new CancelButtonActionListener());
 		getComponentControlled().getAdvancedSearchTextField()
 				.addActionListener(new SearchButtonActionListener());
-
-		getComponentControlled().getSimpleRulesList().addListSelectionListener(
-				new ListSelectionListener() {
-
-					@Override
-					public void valueChanged(final ListSelectionEvent lse) {
-						getComponentControlled().getSimpleRulesAddButton()
-								.setEnabled(
-										getComponentControlled()
-												.getSimpleRulesList()
-												.getSelectedIndex() != -1);
-					}
-				});
 	}
 
 	private final class CancelButtonActionListener implements ActionListener {

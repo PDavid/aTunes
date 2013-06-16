@@ -28,12 +28,10 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
-import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IControlsBuilder;
@@ -56,14 +54,8 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	/** The search at combo box. */
 	private JComboBox searchAtComboBox;
 
-	/** The simple rules panel. */
-	private JPanel simpleRulesPanel;
-
-	/** The simple rules scroll pane. */
-	private JScrollPane simpleRulesScrollPane;
-
-	/** The simple rules list. */
-	private JList simpleRulesList;
+	/** The simple rules combo. */
+	private JComboBox simpleRulesList;
 
 	/** The simple rules combo box. */
 	private JComboBox simpleRulesComboBox;
@@ -121,7 +113,7 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	 */
 	public CustomSearchDialog(final IFrame frame,
 			final IControlsBuilder controlsBuilder) {
-		super(frame, 600, 500, controlsBuilder);
+		super(frame, 700, 600, controlsBuilder);
 	}
 
 	@Override
@@ -156,30 +148,23 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 		c.gridy = 0;
 		c.weightx = 1;
 		c.weighty = 0;
-		c.gridwidth = 2;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(getSearchAtPanel(), c);
 
 		c.gridy = 1;
-		c.weightx = 0.5;
 		c.weighty = 1;
-		c.gridwidth = 1;
 		c.fill = GridBagConstraints.BOTH;
-		panel.add(getSimpleRulesPanel(), c);
-
-		c.gridx = 1;
 		panel.add(getComplexRulesPanel(), c);
 
-		c.gridx = 0;
-		c.gridwidth = 2;
 		c.gridy = 2;
+		panel.add(getSimpleRulesPanel(), c);
+
+		c.gridy = 3;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(getAdvancedSearchPanel(), c);
 
-		c.gridx = 1;
-		c.gridy = 3;
-		c.gridwidth = 1;
+		c.gridy = 4;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.EAST;
@@ -209,50 +194,35 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	 * @return the simple rules panel
 	 */
 	@SuppressWarnings("rawtypes")
-	public JPanel getSimpleRulesPanel() {
-		if (this.simpleRulesPanel == null) {
-			this.simpleRulesPanel = new JPanel(new GridBagLayout());
-			this.simpleRulesList = getLookAndFeel().getList();
-			this.simpleRulesList
-					.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			this.simpleRulesScrollPane = getControlsBuilder().createScrollPane(
-					this.simpleRulesList);
-			this.simpleRulesComboBox = new JComboBox();
-			this.simpleRulesTextField = getControlsBuilder().createTextField();
-			this.simpleRulesAddButton = new JButton(I18nUtils.getString("ADD"));
+	private JPanel getSimpleRulesPanel() {
+		JPanel simpleRulesPanel = new JPanel(new GridBagLayout());
+		this.simpleRulesList = new JComboBox();
+		this.simpleRulesComboBox = new JComboBox();
+		this.simpleRulesTextField = getControlsBuilder().createTextField();
+		this.simpleRulesAddButton = new JButton(I18nUtils.getString("ADD"));
 
-			GridBagConstraints c = new GridBagConstraints();
-			c.insets = new Insets(5, 5, 5, 5);
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(5, 10, 5, 10);
 
-			c.gridx = 0;
-			c.gridy = 0;
-			c.weightx = 1;
-			c.weighty = 1;
-			c.gridwidth = 2;
-			c.fill = GridBagConstraints.BOTH;
-			this.simpleRulesPanel.add(this.simpleRulesScrollPane, c);
+		c.gridx = 0;
+		c.gridy = 0;
+		simpleRulesPanel.add(this.simpleRulesList, c);
 
-			c.gridx = 0;
-			c.gridy = 1;
-			c.weightx = 0.3;
-			c.weighty = 0;
-			c.gridwidth = 1;
-			c.fill = GridBagConstraints.HORIZONTAL;
-			this.simpleRulesPanel.add(this.simpleRulesComboBox, c);
+		c.gridx = 1;
+		c.weightx = 0.3;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		simpleRulesPanel.add(this.simpleRulesComboBox, c);
 
-			c.gridx = 1;
-			c.gridy = 1;
-			c.weightx = 0.7;
-			this.simpleRulesPanel.add(this.simpleRulesTextField, c);
+		c.gridx = 2;
+		c.weightx = 0.7;
+		simpleRulesPanel.add(this.simpleRulesTextField, c);
 
-			c.gridx = 0;
-			c.gridy = 2;
-			c.gridwidth = 2;
-			c.weightx = 0;
-			c.fill = GridBagConstraints.NONE;
-			this.simpleRulesPanel.add(this.simpleRulesAddButton, c);
-		}
-		return this.simpleRulesPanel;
+		c.gridx = 3;
+		c.weightx = 0;
+		c.fill = GridBagConstraints.NONE;
+		simpleRulesPanel.add(this.simpleRulesAddButton, c);
+
+		return simpleRulesPanel;
 	}
 
 	/**
@@ -359,7 +329,7 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	 * 
 	 * @return the simpleRulesList
 	 */
-	public JList getSimpleRulesList() {
+	public JComboBox getSimpleRulesList() {
 		return this.simpleRulesList;
 	}
 
