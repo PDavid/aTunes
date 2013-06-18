@@ -39,8 +39,8 @@ public final class Constants {
 	 * Version of application
 	 */
 	public static final ApplicationVersion VERSION = new ApplicationVersion("",
-			3, 2, 0, VersionType.BETA, "",
-			"http://www.atunes.org/update.php", "", "");
+			3, 2, 0, VersionType.BETA, "", "http://www.atunes.org/update.php",
+			"", "");
 
 	/** File containing log4j properties. */
 	public static final String LOG4J_FILE = "/settings/log4j.properties";
@@ -153,23 +153,6 @@ public final class Constants {
 
 	/** Last.fm artist submission cache dir. */
 	public static final String LAST_FM_SUBMISSION_CACHE_DIR = "submission";
-
-	/** Lucene index dir. */
-	public static final String LUCENE_INDEX_DIR = "index";
-
-	/** Repository index dir. */
-	public static final String REPOSITORY_INDEX_DIR = LUCENE_INDEX_DIR
-			+ "/repository";
-
-	/** Device index dir. */
-	public static final String DEVICE_INDEX_DIR = LUCENE_INDEX_DIR + "/device";
-
-	/** Favorites index dir. */
-	public static final String FAVORITES_INDEX_DIR = LUCENE_INDEX_DIR
-			+ "/favorites";
-
-	/** Radio index dir. */
-	public static final String RADIO_INDEX_DIR = LUCENE_INDEX_DIR + "/radio";
 
 	/** Default podcast download dir. */
 	public static final String DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR = "/podcasts";

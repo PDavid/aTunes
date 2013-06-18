@@ -94,18 +94,6 @@ public class ApplicationStateCore implements IStateCore {
 	}
 
 	@Override
-	public boolean isEnableAdvancedSearch() {
-		return this.preferenceHelper.getPreference(
-				Preferences.ENABLE_ADVANCED_SEARCH, Boolean.class, false);
-	}
-
-	@Override
-	public void setEnableAdvancedSearch(final boolean enableAdvancedSearch) {
-		this.preferenceHelper.setPreference(Preferences.ENABLE_ADVANCED_SEARCH,
-				enableAdvancedSearch);
-	}
-
-	@Override
 	public boolean isEnableHotkeys() {
 		return this.preferenceHelper.getPreference(Preferences.ENABLE_HOTKEYS,
 				Boolean.class, false);
@@ -163,7 +151,7 @@ public class ApplicationStateCore implements IStateCore {
 	}
 
 	@Override
-	public void setErrorReportsResponseMail(String responseMail) {
+	public void setErrorReportsResponseMail(final String responseMail) {
 		this.preferenceHelper.setPreference(Preferences.ERROR_REPORTS_MAIL,
 				responseMail);
 	}

@@ -22,16 +22,16 @@ package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 
-
 /**
  * 
  * This class represents a genre, with a name, and a set of artist of this
  * genre.
  * 
  * @author alex
- *
+ * 
  */
-public interface IGenre extends ITreeObject<ILocalAudioObject>, Serializable {
+public interface IGenre extends ITreeObject<ILocalAudioObject>, Serializable,
+		Comparable<IGenre> {
 
 	/**
 	 * Adds an audio file

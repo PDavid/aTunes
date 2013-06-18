@@ -85,20 +85,6 @@ public interface IStateCore extends IState {
 	void setProxy(IProxyBean proxy);
 
 	/**
-	 * Enable advanced search
-	 * 
-	 * @return
-	 */
-	boolean isEnableAdvancedSearch();
-
-	/**
-	 * Enable advanced search
-	 * 
-	 * @param enableAdvancedSearch
-	 */
-	void setEnableAdvancedSearch(boolean enableAdvancedSearch);
-
-	/**
 	 * Use hotkeys
 	 * 
 	 * @return

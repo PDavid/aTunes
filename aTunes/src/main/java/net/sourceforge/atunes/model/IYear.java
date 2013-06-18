@@ -22,13 +22,14 @@ package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 
-
 /**
  * Represents a year with audio objects
+ * 
  * @author alex
- *
+ * 
  */
-public interface IYear extends Serializable, ITreeObject<ILocalAudioObject> {
+public interface IYear extends Serializable, ITreeObject<ILocalAudioObject>,
+		Comparable<IYear> {
 
 	/**
 	 * Adds an audio file
@@ -40,6 +41,7 @@ public interface IYear extends Serializable, ITreeObject<ILocalAudioObject> {
 
 	/**
 	 * Returns the year as a string.
+	 * 
 	 * @param unknownObjectChecker
 	 * @return the year
 	 */

@@ -386,6 +386,15 @@ public class ControlsBuilder implements IControlsBuilder {
 		return progressBar;
 	}
 
+	@Override
+	public JTree createTree(boolean nodeIcons) {
+		JTree tree = new JTree();
+		if (!nodeIcons) {
+			this.lookAndFeelManager.getCurrentLookAndFeel().hideNodeIcons(tree);
+		}
+		return tree;
+	}
+
 	private static class CustomFileChooser extends JFileChooser {
 		/**
 		 * 

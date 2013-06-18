@@ -32,8 +32,6 @@ import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.ISearchHandler;
-import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
@@ -52,8 +50,6 @@ public final class FavoritesHandler extends AbstractHandler implements
 	/** The favorites. */
 	private IFavorites favorites = new Favorites();
 
-	private ISearchableObject favoritesSearchableObject;
-
 	private IUnknownObjectChecker unknownObjectChecker;
 
 	/**
@@ -62,14 +58,6 @@ public final class FavoritesHandler extends AbstractHandler implements
 	public void setUnknownObjectChecker(
 			final IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
-	}
-
-	/**
-	 * @param favoritesSearchableObject
-	 */
-	public void setFavoritesSearchableObject(
-			final ISearchableObject favoritesSearchableObject) {
-		this.favoritesSearchableObject = favoritesSearchableObject;
 	}
 
 	/**
@@ -89,12 +77,6 @@ public final class FavoritesHandler extends AbstractHandler implements
 	@Override
 	protected void initHandler() {
 		this.repositoryHandler.addAudioFilesRemovedListener(this);
-	}
-
-	@Override
-	public void deferredInitialization() {
-		getBean(ISearchHandler.class).registerSearchableObject(
-				this.favoritesSearchableObject);
 	}
 
 	@Override

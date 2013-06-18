@@ -37,6 +37,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
@@ -325,4 +326,11 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
 	@Override
 	public void customizeStatusBar(final CustomStatusBar customStatusBar) {
 	}
+
+	@Override
+	public void hideNodeIcons(JTree tree) {
+		((BasicTreeUI) tree.getUI()).setCollapsedIcon(null);
+		((BasicTreeUI) tree.getUI()).setExpandedIcon(null);
+	}
+
 }

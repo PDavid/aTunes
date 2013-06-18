@@ -127,4 +127,9 @@ public class Genre implements IGenre {
 	public int size() {
 		return audioFiles.size();
 	}
+
+	@Override
+	public int compareTo(final IGenre o) {
+		return this.name.compareToIgnoreCase(o.getName());
+	}
 }

@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.search;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,7 +43,6 @@ import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.ISearchableObject;
 
 /**
  * Controller for the search result dialog.
@@ -82,26 +82,24 @@ final class SearchResultsController extends
 	/**
 	 * Shows dialog with search results.
 	 * 
-	 * @param searchableObject
-	 *            the searchable object
 	 * @param resultsList
 	 *            the results
 	 */
-	public void showSearchResults(final ISearchableObject searchableObject,
-			final List<IAudioObject> resultsList) {
-		this.results = resultsList;
+	public void showSearchResults(final Collection<IAudioObject> resultsList) {
+		this.results = new ArrayList<IAudioObject>(resultsList);
 
 		SearchResultTableModel tableModel = (SearchResultTableModel) getComponentControlled()
 				.getSearchResultsTable().getModel();
 
 		IColumn<?> sortedColumn = this.columnSet.getSortedColumn();
 		if (sortedColumn != null) {
-			Collections.sort(resultsList, sortedColumn.getComparator());
+			Collections.sort(results, sortedColumn.getComparator());
 		} else {
-			beanFactory.getBean(IAudioObjectComparator.class).sort(resultsList);
+			this.beanFactory.getBean(IAudioObjectComparator.class)
+					.sort(results);
 		}
 
-		tableModel.setResults(resultsList);
+		tableModel.setResults(results);
 		tableModel.refresh(TableModelEvent.UPDATE);
 		getComponentControlled().setVisible(true);
 	}

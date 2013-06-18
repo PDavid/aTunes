@@ -8,6 +8,4 @@
 		<property name="delayInSeconds" value="15"/>
 	</bean>
 	
-	<bean id="deviceSearchableObject" class="net.sourceforge.atunes.kernel.modules.search.DeviceSearchableObject"/>
-
 </beans>

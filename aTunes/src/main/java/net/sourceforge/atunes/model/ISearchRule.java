@@ -18,23 +18,33 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.search;
+package net.sourceforge.atunes.model;
 
-import java.io.Serializable;
-import java.util.Comparator;
 
-class TranslatedAttributesList implements
-		Comparator<String>, Serializable {
+/**
+ * A simple search rule
+ * 
+ * @author alex
+ * 
+ */
+public interface ISearchRule {
 
 	/**
-	 * 
+	 * @return field
 	 */
-	private static final long serialVersionUID = 8925031888751216736L;
+	ISearchField getField();
 
-	@Override
-	public int compare(final String o1, final String o2) {
-		return -Integer.valueOf(o1.length()).compareTo(
-				Integer.valueOf(o2.length()));
-	}
+	/**
+	 * Gets the operator.
+	 * 
+	 * @return the operator
+	 */
+	ISearchOperator getOperator();
 
+	/**
+	 * Gets the value.
+	 * 
+	 * @return the value
+	 */
+	String getValue();
 }
