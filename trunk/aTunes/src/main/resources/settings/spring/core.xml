@@ -106,10 +106,6 @@
 		<property name="userDonatedProperty" value="userDonated"/>
 	</bean>
 
-	<bean id="searchAttributesList" class="net.sourceforge.atunes.kernel.modules.search.AttributesList"/>	
-	<bean id="audioObjectIndexCreator" class="net.sourceforge.atunes.kernel.modules.search.AudioObjectIndexCreator" scope="prototype"/>
-
-
 	<bean id="notificationEngine" class="net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine" abstract="true"/>
 	<bean id="defaultNotificationEngine" class="net.sourceforge.atunes.kernel.modules.notify.DefaultNotifications" parent="notificationEngine"/>
 	<bean id="growlNotificationEngine" class="net.sourceforge.atunes.kernel.modules.notify.GrowlNotificationEngine" parent="notificationEngine"/>

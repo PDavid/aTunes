@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.utils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -72,4 +73,14 @@ public final class CollectionUtils {
 		}
 		return list;
 	}
+
+	/**
+	 * @param <T>
+	 * @param elements
+	 * @return list with all these elements
+	 */
+	public static <T> List<T> listWith(final T... elements) {
+		return fillCollectionWithElements(new ArrayList<T>(), elements);
+	}
+
 }

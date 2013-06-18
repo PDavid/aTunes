@@ -297,6 +297,22 @@ public final class RepositoryHandler extends AbstractHandler implements
 	}
 
 	@Override
+	public List<IGenre> getGenres() {
+		List<IGenre> result = new ArrayList<IGenre>();
+		result.addAll(this.repository.getGenres());
+		Collections.sort(result);
+		return result;
+	}
+
+	@Override
+	public List<IYear> getYears() {
+		List<IYear> result = new ArrayList<IYear>();
+		result.addAll(this.repository.getYears());
+		Collections.sort(result);
+		return result;
+	}
+
+	@Override
 	public IArtist getArtist(final String name) {
 		return this.repository.getArtist(name);
 	}

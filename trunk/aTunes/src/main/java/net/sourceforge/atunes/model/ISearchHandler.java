@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.model;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Responsible of searching in collections
@@ -30,62 +30,28 @@ import java.util.List;
  */
 public interface ISearchHandler extends IHandler {
 
-    /** Default lucene field. */
-    public static final String DEFAULT_INDEX = "any";
+	/**
+	 * Starts a search by updating indexes and showing search dialog.
+	 */
+	public void startSearch();
 
-    /**
-     * Method to register a searchable object. All searchable objects must call
-     * this method to initialize searches
-     * 
-     * @param so
-     *            the so
-     */
-    public void registerSearchableObject(ISearchableObject so);
+	/**
+	 * Executes a query to find audio objects
+	 * 
+	 * @param query
+	 * @return results
+	 */
+	public Collection<IAudioObject> search(ISearchNode query);
 
-    /**
-     * Method to unregister a searchable object. After this method is called,
-     * searchable object is not searchable, and must be registered again
-     * 
-     * @param so
-     */
-    public void unregisterSearchableObject(ISearchableObject so);
+	/**
+	 * Refreshes search results
+	 */
+	public void refreshSearchResultColumns();
 
-    /**
-     * Starts a search by updating indexes and showing search dialog.
-     */
-    public void startSearch();
-
-    /**
-     * Evaluates a search query and returns a result list of audio objects and
-     * scores (0 <= score <= 1).
-     * 
-     * @param queryStr
-     *            The search query
-     * @param searchableObject
-     *            the searchable object
-     * 
-     * @return The search result
-     * 
-     * @throws SearchIndexNotAvailableException
-     *             If no search index was found
-     * @throws SearchQuerySyntaxException
-     *             If the search query has invalid syntax
-     */
-    public List<IAudioObject> search(ISearchableObject searchableObject,
-	    String queryStr) throws SearchIndexNotAvailableException,
-	    SearchQuerySyntaxException;
-
-    /**
-     * Refreshes search results
-     */
-    public void refreshSearchResultColumns();
-
-    /**
-     * Shows search results to user
-     * 
-     * @param searchableObject
-     * @param result
-     */
-    public void showSearchResults(ISearchableObject searchableObject,
-	    List<IAudioObject> result);
+	/**
+	 * Shows search results to user
+	 * 
+	 * @param result
+	 */
+	public void showSearchResults(Collection<IAudioObject> result);
 }

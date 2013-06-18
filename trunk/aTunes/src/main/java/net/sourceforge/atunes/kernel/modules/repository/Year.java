@@ -48,6 +48,7 @@ public class Year implements IYear {
 
 	/**
 	 * Constructor.
+	 * 
 	 * @param year
 	 */
 	public Year(final String year) {
@@ -117,5 +118,15 @@ public class Year implements IYear {
 	@Override
 	public int size() {
 		return audioFiles.size();
+	}
+
+	@Override
+	public int compareTo(final IYear o) {
+		try {
+			return Integer.valueOf(this.getName(null)).compareTo(
+					Integer.valueOf(o.getName(null)));
+		} catch (NumberFormatException e) {
+			return this.getName(null).compareTo(o.getName(null));
+		}
 	}
 }

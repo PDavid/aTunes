@@ -25,7 +25,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -45,15 +44,6 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 
 	private static final long serialVersionUID = -7447583622785097610L;
 
-	/** The search at panel. */
-	private JPanel searchAtPanel;
-
-	/** The search at label. */
-	private JLabel searchAtLabel;
-
-	/** The search at combo box. */
-	private JComboBox searchAtComboBox;
-
 	/** The simple rules combo. */
 	private JComboBox simpleRulesList;
 
@@ -66,14 +56,8 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	/** The simple rules add button. */
 	private JButton simpleRulesAddButton;
 
-	/** The complex rules panel. */
-	private JPanel complexRulesPanel;
-
 	/** The complex rules tree. */
 	private JTree complexRulesTree;
-
-	/** The complex rules scroll pane. */
-	private JScrollPane complexRulesScrollPane;
 
 	/** The complex rules and button. */
 	private JButton complexRulesAndButton;
@@ -86,18 +70,6 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 
 	/** The complex rules remove button. */
 	private JButton complexRulesRemoveButton;
-
-	/** The advanced search panel. */
-	private JPanel advancedSearchPanel;
-
-	/** The advanced search check box. */
-	private JCheckBox advancedSearchCheckBox;
-
-	/** The advanced search text field. */
-	private JTextField advancedSearchTextField;
-
-	/** The buttons panel. */
-	private JPanel buttonsPanel;
 
 	/** The search button. */
 	private JButton searchButton;
@@ -113,7 +85,7 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	 */
 	public CustomSearchDialog(final IFrame frame,
 			final IControlsBuilder controlsBuilder) {
-		super(frame, 700, 600, controlsBuilder);
+		super(frame, 700, 400, controlsBuilder);
 	}
 
 	@Override
@@ -141,51 +113,33 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	private JPanel getContent() {
 		JPanel panel = new JPanel(new GridBagLayout());
 
+		JLabel searchHelp = new JLabel(I18nUtils.getString("SEARCH_HELP"));
+
 		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(5, 5, 5, 5);
+		c.insets = new Insets(10, 10, 10, 10);
 
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 1;
-		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		panel.add(getSearchAtPanel(), c);
+		panel.add(searchHelp, c);
 
-		c.gridy = 1;
+		c.insets = new Insets(5, 5, 5, 5);
+		c.gridy++;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
 		panel.add(getComplexRulesPanel(), c);
 
-		c.gridy = 2;
-		panel.add(getSimpleRulesPanel(), c);
-
-		c.gridy = 3;
+		c.gridy++;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		panel.add(getAdvancedSearchPanel(), c);
+		panel.add(getSimpleRulesPanel(), c);
 
-		c.gridy = 4;
-		c.weighty = 0;
-		c.fill = GridBagConstraints.NONE;
+		c.gridy++;
 		c.anchor = GridBagConstraints.EAST;
+		c.fill = GridBagConstraints.NONE;
 		panel.add(getButtonsPanel(), c);
 		return panel;
-	}
-
-	/**
-	 * Gets the search at panel.
-	 * 
-	 * @return the search at panel
-	 */
-	private JPanel getSearchAtPanel() {
-		if (this.searchAtPanel == null) {
-			this.searchAtPanel = new JPanel();
-			this.searchAtLabel = new JLabel(I18nUtils.getString("SEARCH_IN"));
-			this.searchAtComboBox = new JComboBox();
-			this.searchAtPanel.add(this.searchAtLabel);
-			this.searchAtPanel.add(this.searchAtComboBox);
-		}
-		return this.searchAtPanel;
 	}
 
 	/**
@@ -230,73 +184,47 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	 * 
 	 * @return the complex rules panel
 	 */
-	public JPanel getComplexRulesPanel() {
-		if (this.complexRulesPanel == null) {
-			this.complexRulesPanel = new JPanel(new GridBagLayout());
-			this.complexRulesTree = new JTree();
+	private JPanel getComplexRulesPanel() {
+		JPanel complexRulesPanel = new JPanel(new GridBagLayout());
 
-			this.complexRulesScrollPane = getControlsBuilder()
-					.createScrollPane(this.complexRulesTree);
-			this.complexRulesAndButton = new JButton(I18nUtils.getString("AND"));
-			this.complexRulesOrButton = new JButton(I18nUtils.getString("OR"));
-			this.complexRulesNotButton = new JButton(I18nUtils.getString("NOT"));
-			this.complexRulesRemoveButton = new JButton(
-					I18nUtils.getString("REMOVE_FIELD"));
+		this.complexRulesTree = getControlsBuilder().createTree(false);
+		this.complexRulesTree.setToggleClickCount(0);
 
-			GridBagConstraints c = new GridBagConstraints();
-			c.insets = new Insets(5, 5, 5, 5);
+		JScrollPane complexRulesScrollPane = getControlsBuilder()
+				.createScrollPane(this.complexRulesTree);
+		this.complexRulesAndButton = new JButton(I18nUtils.getString("AND"));
+		this.complexRulesOrButton = new JButton(I18nUtils.getString("OR"));
+		this.complexRulesNotButton = new JButton(I18nUtils.getString("NOT"));
+		this.complexRulesRemoveButton = new JButton(
+				I18nUtils.getString("REMOVE_FIELD"));
 
-			c.gridx = 0;
-			c.gridy = 0;
-			c.gridheight = 4;
-			c.weightx = 1;
-			c.weighty = 1;
-			c.fill = GridBagConstraints.BOTH;
-			this.complexRulesPanel.add(this.complexRulesScrollPane, c);
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(5, 5, 5, 5);
 
-			c.gridx = 1;
-			c.gridheight = 1;
-			c.weightx = 0;
-			c.weighty = 0;
-			c.fill = GridBagConstraints.HORIZONTAL;
-			this.complexRulesPanel.add(this.complexRulesAndButton, c);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridheight = 4;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		complexRulesPanel.add(complexRulesScrollPane, c);
 
-			c.gridy = 1;
-			this.complexRulesPanel.add(this.complexRulesOrButton, c);
+		c.gridx = 1;
+		c.gridheight = 1;
+		c.weightx = 0;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		complexRulesPanel.add(this.complexRulesAndButton, c);
 
-			c.gridy = 2;
-			this.complexRulesPanel.add(this.complexRulesNotButton, c);
+		c.gridy = 1;
+		complexRulesPanel.add(this.complexRulesOrButton, c);
 
-			c.gridy = 3;
-			this.complexRulesPanel.add(this.complexRulesRemoveButton, c);
+		c.gridy = 2;
+		complexRulesPanel.add(this.complexRulesNotButton, c);
 
-		}
-		return this.complexRulesPanel;
-	}
-
-	/**
-	 * Gets the advanced search panel.
-	 * 
-	 * @return the advanced search panel
-	 */
-	private JPanel getAdvancedSearchPanel() {
-		if (this.advancedSearchPanel == null) {
-			this.advancedSearchPanel = new JPanel(new GridBagLayout());
-			this.advancedSearchCheckBox = new JCheckBox(
-					I18nUtils.getString("ENABLE_ADVANCED_SEARCH"));
-			this.advancedSearchTextField = getControlsBuilder()
-					.createTextField();
-			GridBagConstraints c = new GridBagConstraints();
-			c.gridx = 0;
-			c.gridy = 0;
-			c.weightx = 1;
-			c.fill = GridBagConstraints.HORIZONTAL;
-			c.insets = new Insets(5, 5, 5, 5);
-			this.advancedSearchPanel.add(this.advancedSearchCheckBox, c);
-			c.gridy = 1;
-			this.advancedSearchPanel.add(this.advancedSearchTextField, c);
-		}
-		return this.advancedSearchPanel;
+		c.gridy = 3;
+		complexRulesPanel.add(this.complexRulesRemoveButton, c);
+		return complexRulesPanel;
 	}
 
 	/**
@@ -305,23 +233,12 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	 * @return the buttons panel
 	 */
 	private JPanel getButtonsPanel() {
-		if (this.buttonsPanel == null) {
-			this.buttonsPanel = new JPanel();
-			this.searchButton = new JButton(I18nUtils.getString("SEARCH"));
-			this.cancelButton = new JButton(I18nUtils.getString("CANCEL"));
-			this.buttonsPanel.add(this.searchButton);
-			this.buttonsPanel.add(this.cancelButton);
-		}
-		return this.buttonsPanel;
-	}
-
-	/**
-	 * Gets the search at combo box.
-	 * 
-	 * @return the searchAtComboBox
-	 */
-	public JComboBox getSearchAtComboBox() {
-		return this.searchAtComboBox;
+		JPanel buttonsPanel = new JPanel();
+		this.searchButton = new JButton(I18nUtils.getString("SEARCH"));
+		this.cancelButton = new JButton(I18nUtils.getString("CANCEL"));
+		buttonsPanel.add(this.searchButton);
+		buttonsPanel.add(this.cancelButton);
+		return buttonsPanel;
 	}
 
 	/**
@@ -406,30 +323,12 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	}
 
 	/**
-	 * Gets the advanced search text field.
-	 * 
-	 * @return the advancedSearchTextField
-	 */
-	public JTextField getAdvancedSearchTextField() {
-		return this.advancedSearchTextField;
-	}
-
-	/**
 	 * Gets the complex rules remove button.
 	 * 
 	 * @return the complexRulesRemoveButton
 	 */
 	public JButton getComplexRulesRemoveButton() {
 		return this.complexRulesRemoveButton;
-	}
-
-	/**
-	 * Gets the advanced search check box.
-	 * 
-	 * @return the advancedSearchCheckBox
-	 */
-	public JCheckBox getAdvancedSearchCheckBox() {
-		return this.advancedSearchCheckBox;
 	}
 
 	/**

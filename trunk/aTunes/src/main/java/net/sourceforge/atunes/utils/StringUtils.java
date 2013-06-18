@@ -293,4 +293,19 @@ public final class StringUtils {
 		return org.apache.commons.lang.StringUtils.getCommonPrefix(strings);
 	}
 
+	/**
+	 * @param string
+	 * @return true if string represents an integer number
+	 */
+	public static boolean isNumber(String string) {
+		if (!isEmpty(string)) {
+			try {
+				Integer.parseInt(string);
+				return true;
+			} catch (NumberFormatException e) {
+			}
+		}
+		return false;
+	}
+
 }

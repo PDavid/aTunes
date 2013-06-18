@@ -32,6 +32,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.JTree;
 import javax.swing.tree.TreeCellRenderer;
 
 import net.sourceforge.atunes.gui.views.controls.RemoteImage;
@@ -199,4 +200,12 @@ public interface IControlsBuilder {
 	 * @return indeterminate progress bar
 	 */
 	JProgressBar createIndeterminateProgressBar();
+
+	/**
+	 * Creates tree with or without node icons
+	 * 
+	 * @param nodeIcons
+	 * @return treee
+	 */
+	JTree createTree(boolean nodeIcons);
 }

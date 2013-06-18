@@ -27,7 +27,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
-import net.sourceforge.atunes.kernel.modules.search.SearchHandler.LogicalOperator;
+import net.sourceforge.atunes.model.ILogicalSearchOperator;
+import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * This class controls selection events in complex rules tree.
@@ -41,18 +42,18 @@ public final class ComplexTreeSelectionListener implements
 	/** Tree controlled. */
 	private final JTree tree;
 
+	private final ILogicalSearchOperator notLogicalSearchOperator;
+
 	/**
-	 * Constructor.
-	 * 
 	 * @param dialog
-	 *            the dialog
 	 * @param tree
-	 *            the tree
+	 * @param notLogicalSearchOperator
 	 */
 	public ComplexTreeSelectionListener(final CustomSearchDialog dialog,
-			final JTree tree) {
+			final JTree tree, ILogicalSearchOperator notLogicalSearchOperator) {
 		this.dialog = dialog;
 		this.tree = tree;
+		this.notLogicalSearchOperator = notLogicalSearchOperator;
 	}
 
 	@Override
@@ -68,18 +69,30 @@ public final class ComplexTreeSelectionListener implements
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) (path
 					.getLastPathComponent());
 
-			// If node is a NOT user can't add more simple rules, as one has
-			// been already added
-			if (node.getUserObject().equals(LogicalOperator.NOT)) {
-				this.dialog.getSimpleRulesAddButton().setEnabled(false);
-			} else {
-				// If it's not a NOT, user can add rules if node is any other
-				// logical operator or an empty rule
-				this.dialog.getSimpleRulesAddButton().setEnabled(
-						node.getUserObject() instanceof LogicalOperator
-								|| node.getUserObject() instanceof EmptyRule);
+			DefaultMutableTreeNode parent = null;
+			if (node.getParent() != null) {
+				parent = (DefaultMutableTreeNode) node.getParent();
 			}
+
+			boolean enabled = true;
+			// If node is a NOT user can't add more simple rules if it has
+			// already a child
+			if (node.getUserObject().equals(notLogicalSearchOperator)
+					&& !node.isLeaf()) {
+				enabled = false;
+			} else if (parent != null
+					&& parent.getUserObject().equals(notLogicalSearchOperator)) {
+				enabled = false;
+			}
+
+			this.dialog.getSimpleRulesTextField().setEnabled(enabled);
+			if (!enabled) {
+				this.dialog.getSimpleRulesTextField().setText("");
+			}
+			this.dialog.getSimpleRulesAddButton().setEnabled(
+					enabled
+							&& !StringUtils.isEmpty(this.dialog
+									.getSimpleRulesTextField().getText()));
 		}
 	}
-
 }

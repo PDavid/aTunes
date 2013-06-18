@@ -373,4 +373,11 @@ public interface ILookAndFeel {
 	 */
 	public Font getSuggestedFont();
 
+	/**
+	 * Hides node icons in a tree
+	 * 
+	 * @param tree
+	 */
+	public void hideNodeIcons(JTree tree);
+
 }

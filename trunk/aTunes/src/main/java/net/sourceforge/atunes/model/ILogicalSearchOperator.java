@@ -20,25 +20,27 @@
 
 package net.sourceforge.atunes.model;
 
-import java.util.Map;
+import java.util.Collection;
+import java.util.List;
 
 /**
- * A search result
+ * Logical operator to create complex rules
+ * 
  * @author alex
- *
+ * 
  */
-public interface ISearchResult {
-	
-	/**
-	 * Returns a map with properties of this search result
-	 * @return
-	 */
-	Map<String, String> getObject();
-	
-	/**
-	 * Quality of the search result, according to criteria by underlying search engine, from 0 to 1
-	 * @return
-	 */
-	float getScore();
+public interface ILogicalSearchOperator {
 
+	/**
+	 * @return description of operator
+	 */
+	String getDescription();
+
+	/**
+	 * Evaluates children nodes
+	 * 
+	 * @param childs
+	 * @return objects matching operation over children
+	 */
+	Collection<IAudioObject> evaluate(List<ISearchNode> children);
 }

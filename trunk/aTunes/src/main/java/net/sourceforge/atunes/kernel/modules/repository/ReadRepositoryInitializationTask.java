@@ -23,8 +23,6 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import net.sourceforge.atunes.kernel.AbstractStateRetrieveTask;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IRepository;
-import net.sourceforge.atunes.model.ISearchHandler;
-import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IStateService;
 
@@ -53,9 +51,6 @@ public final class ReadRepositoryInitializationTask extends
 	public void setData(final IBeanFactory beanFactory) {
 		beanFactory.getBean(RepositoryFromCacheProcessor.class).setRepository(
 				this.repository);
-		beanFactory.getBean(ISearchHandler.class).registerSearchableObject(
-				beanFactory.getBean("repositorySearchableObject",
-						ISearchableObject.class));
 		beanFactory.getBean(RepositoryAutoRefresher.class).start();
 	}
 }

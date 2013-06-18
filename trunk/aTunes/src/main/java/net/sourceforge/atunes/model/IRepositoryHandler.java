@@ -56,6 +56,16 @@ public interface IRepositoryHandler extends IHandler,
 	public List<IArtist> getArtists();
 
 	/**
+	 * @return the years
+	 */
+	public List<IYear> getYears();
+
+	/**
+	 * @return the genres
+	 */
+	public List<IGenre> getGenres();
+
+	/**
 	 * Returns artist with given name
 	 * 
 	 * @param name

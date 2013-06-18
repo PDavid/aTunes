@@ -20,21 +20,27 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
+import net.sourceforge.atunes.model.ISearchOperator;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * This class represents an empty simple rule.
+ * Search operator for "equals" operation for integers
+ * 
+ * @author alex
+ * 
  */
-public class EmptyRule {
+public class IntegerEqualsSearchOperator implements ISearchOperator<Integer> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return StringUtils.getString("<", I18nUtils.getString("EMPTY_RULE"), ">");
-    }
+	@Override
+	public String getDescription() {
+		return I18nUtils.getString("IS_EQUALS_TO");
+	}
+
+	@Override
+	public boolean evaluate(Integer o1, Integer o2) {
+		if (o1 == null || o2 == null) {
+			return false;
+		}
+		return o1.intValue() == o2.intValue();
+	}
 }
