@@ -70,7 +70,8 @@ public final class SearchHandler extends AbstractHandler implements
 				this.dialogFactory, getBean(IControlsBuilder.class),
 				getBean(ComplexRuleTreeBuilder.class), getBean(
 						"notLogicalSearchOperator",
-						ILogicalSearchOperator.class));
+						ILogicalSearchOperator.class),
+				getBean(ILookAndFeelManager.class));
 		return customSearchController;
 	}
 

@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -33,7 +32,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -48,7 +46,9 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IListCellRendererCode;
 import net.sourceforge.atunes.model.ILogicalSearchOperator;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.ISearchField;
 import net.sourceforge.atunes.model.ISearchHandler;
@@ -72,6 +72,8 @@ final class CustomSearchController extends
 
 	private final ILogicalSearchOperator notLogicalSearchOperator;
 
+	private final ILookAndFeelManager lookAndFeelManager;
+
 	/**
 	 * @param dialog
 	 * @param searchHandler
@@ -79,19 +81,22 @@ final class CustomSearchController extends
 	 * @param controlsBuilder
 	 * @param treeBuilder
 	 * @param notLogicalSearchOperator
+	 * @param lookAndFeelManager
 	 */
 	CustomSearchController(final CustomSearchDialog dialog,
 			final ISearchHandler searchHandler,
 			final IDialogFactory dialogFactory,
 			IControlsBuilder controlsBuilder,
 			ComplexRuleTreeBuilder treeBuilder,
-			ILogicalSearchOperator notLogicalSearchOperator) {
+			ILogicalSearchOperator notLogicalSearchOperator,
+			ILookAndFeelManager lookAndFeelManager) {
 		super(dialog);
 		this.searchHandler = searchHandler;
 		this.dialogFactory = dialogFactory;
 		this.controlsBuilder = controlsBuilder;
 		this.treeBuilder = treeBuilder;
 		this.notLogicalSearchOperator = notLogicalSearchOperator;
+		this.lookAndFeelManager = lookAndFeelManager;
 		addBindings();
 	}
 
@@ -185,43 +190,48 @@ final class CustomSearchController extends
 										return superComponent;
 									}
 								}));
-		getComponentControlled().getSimpleRulesList().setRenderer(
-				new DefaultListCellRenderer() {
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = -3292080447818613013L;
+		getComponentControlled()
+				.getSimpleRulesList()
+				.setRenderer(
+						this.lookAndFeelManager
+								.getCurrentLookAndFeel()
+								.getListCellRenderer(
+										new IListCellRendererCode<JComponent, ISearchField<?, ?>>() {
+											@Override
+											public JComponent getComponent(
+													JComponent superComponent,
+													JList list,
+													ISearchField<?, ?> value,
+													int index,
+													boolean isSelected,
+													boolean cellHasFocus) {
+												((JLabel) superComponent)
+														.setText(value
+																.getName());
+												return superComponent;
+											}
+										}));
 
-					@Override
-					public Component getListCellRendererComponent(JList list,
-							Object value, int index, boolean isSelected,
-							boolean cellHasFocus) {
-						Component c = super.getListCellRendererComponent(list,
-								value, index, isSelected, cellHasFocus);
-						((JLabel) c).setText(((ISearchField<?, ?>) value)
-								.getName());
-						return c;
-					}
-				});
-
-		getComponentControlled().getSimpleRulesComboBox().setRenderer(
-				new DefaultListCellRenderer() {
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = -3292080447818613013L;
-
-					@Override
-					public Component getListCellRendererComponent(JList list,
-							Object value, int index, boolean isSelected,
-							boolean cellHasFocus) {
-						Component c = super.getListCellRendererComponent(list,
-								value, index, isSelected, cellHasFocus);
-						((JLabel) c).setText(((ISearchOperator<?>) value)
-								.getDescription());
-						return c;
-					}
-				});
+		getComponentControlled()
+				.getSimpleRulesComboBox()
+				.setRenderer(
+						this.lookAndFeelManager
+								.getCurrentLookAndFeel()
+								.getListCellRenderer(
+										new IListCellRendererCode<JComponent, ISearchOperator<?>>() {
+											@Override
+											public JComponent getComponent(
+													JComponent superComponent,
+													JList list,
+													ISearchOperator<?> value,
+													int index,
+													boolean isSelected,
+													boolean cellHasFocus) {
+												((JLabel) superComponent).setText(value
+														.getDescription());
+												return superComponent;
+											}
+										}));
 		getComponentControlled().getComplexRulesTree().setModel(
 				new DefaultTreeModel(null));
 
