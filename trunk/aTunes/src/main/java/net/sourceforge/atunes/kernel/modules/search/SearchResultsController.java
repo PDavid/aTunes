@@ -39,44 +39,63 @@ import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColumn;
-import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IControlsBuilder;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 
 /**
  * Controller for the search result dialog.
  */
-final class SearchResultsController extends
+public final class SearchResultsController extends
 		AbstractSimpleController<SearchResultsDialog> {
 
 	private List<IAudioObject> results;
 
-	private final IColumnSet columnSet;
+	private SearchResultsColumnSet searchResultsColumnSet;
 
-	private final IPlayListHandler playListHandler;
+	private IPlayListHandler playListHandler;
 
-	private final ILookAndFeelManager lookAndFeelManager;
+	private ILookAndFeelManager lookAndFeelManager;
 
-	private final IBeanFactory beanFactory;
+	private IBeanFactory beanFactory;
+
+	/**
+	 * Initializes controller
+	 */
+	public void initialize() {
+		setComponentControlled(this.beanFactory.getBean(IDialogFactory.class)
+				.newDialog(SearchResultsDialog.class));
+		addBindings();
+	}
+
+	/**
+	 * @param searchResultsColumnSet
+	 */
+	public void setSearchResultsColumnSet(
+			SearchResultsColumnSet searchResultsColumnSet) {
+		this.searchResultsColumnSet = searchResultsColumnSet;
+	}
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
 
 	/**
 	 * @param beanFactory
-	 * @param dialog
-	 * @param playListHandler
-	 * @param lookAndFeelManager
 	 */
-	SearchResultsController(final IBeanFactory beanFactory,
-			final SearchResultsDialog dialog,
-			final IPlayListHandler playListHandler,
-			final ILookAndFeelManager lookAndFeelManager) {
-		super(dialog);
+	public void setBeanFactory(IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
-		this.columnSet = beanFactory.getBean("searchResultsColumnSet",
-				IColumnSet.class);
-		this.playListHandler = playListHandler;
-		this.lookAndFeelManager = lookAndFeelManager;
-		addBindings();
 	}
 
 	/**
@@ -91,7 +110,7 @@ final class SearchResultsController extends
 		SearchResultTableModel tableModel = (SearchResultTableModel) getComponentControlled()
 				.getSearchResultsTable().getModel();
 
-		IColumn<?> sortedColumn = this.columnSet.getSortedColumn();
+		IColumn<?> sortedColumn = this.searchResultsColumnSet.getSortedColumn();
 		if (sortedColumn != null) {
 			Collections.sort(results, sortedColumn.getComparator());
 		} else {
@@ -108,7 +127,7 @@ final class SearchResultsController extends
 	public void addBindings() {
 		JTable table = getComponentControlled().getSearchResultsTable();
 		SearchResultTableModel tableModel = new SearchResultTableModel();
-		tableModel.setColumnSet(this.columnSet);
+		tableModel.setColumnSet(this.searchResultsColumnSet);
 		table.setModel(tableModel);
 
 		// TODO: Created manually
@@ -116,8 +135,8 @@ final class SearchResultsController extends
 		columnModel.setTable(table);
 		columnModel.setModel(tableModel);
 		columnModel.setBeanFactory(this.beanFactory);
-		columnModel.setColumnSet(this.beanFactory
-				.getBean(SearchResultsColumnSet.class));
+		columnModel.setColumnSet(searchResultsColumnSet);
+		searchResultsColumnSet.setSearchResultColumnModel(columnModel);
 		columnModel.initialize();
 		table.setColumnModel(columnModel);
 

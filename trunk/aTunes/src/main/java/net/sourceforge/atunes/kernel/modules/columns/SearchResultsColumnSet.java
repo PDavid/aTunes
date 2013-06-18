@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import java.util.Map;
 
+import net.sourceforge.atunes.gui.SearchResultColumnModel;
 import net.sourceforge.atunes.model.ColumnBean;
-import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.IStateUI;
 
 /**
@@ -33,36 +33,38 @@ import net.sourceforge.atunes.model.IStateUI;
  */
 public final class SearchResultsColumnSet extends AbstractColumnSet {
 
-	private ISearchHandler searchHandler;
-	
 	private IStateUI stateUI;
-	
+
+	private SearchResultColumnModel searchResultColumnModel;
+
+	/**
+	 * @param searchResultColumnModel
+	 */
+	public void setSearchResultColumnModel(
+			SearchResultColumnModel searchResultColumnModel) {
+		this.searchResultColumnModel = searchResultColumnModel;
+	}
+
 	/**
 	 * @param stateUI
 	 */
 	public void setStateUI(IStateUI stateUI) {
 		this.stateUI = stateUI;
 	}
-	
-	/**
-	 * @param searchHandler
-	 */
-	public void setSearchHandler(ISearchHandler searchHandler) {
-		this.searchHandler = searchHandler;
+
+	@Override
+	protected Map<String, ColumnBean> getColumnsConfiguration() {
+		return stateUI.getSearchResultsColumns();
 	}
-	
-    @Override
-    protected Map<String, ColumnBean> getColumnsConfiguration() {
-        return stateUI.getSearchResultsColumns();
-    }
 
-    @Override
-    protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-    	stateUI.setSearchResultsColumns(columnsConfiguration);
-    }
+	@Override
+	protected void setColumnsConfiguration(
+			Map<String, ColumnBean> columnsConfiguration) {
+		stateUI.setSearchResultsColumns(columnsConfiguration);
+	}
 
-    @Override
-    protected void refreshColumns() {
-    	searchHandler.refreshSearchResultColumns();
-    }
+	@Override
+	protected void refreshColumns() {
+		searchResultColumnModel.arrangeColumns(false);
+	}
 }

@@ -44,11 +44,6 @@ public interface ISearchHandler extends IHandler {
 	public Collection<IAudioObject> search(ISearchNode query);
 
 	/**
-	 * Refreshes search results
-	 */
-	public void refreshSearchResultColumns();
-
-	/**
 	 * Shows search results to user
 	 * 
 	 * @param result

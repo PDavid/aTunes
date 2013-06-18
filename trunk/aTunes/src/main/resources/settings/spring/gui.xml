@@ -238,4 +238,7 @@
 	
 	<bean id="remoteImage" class="net.sourceforge.atunes.gui.views.controls.RemoteImage" scope="prototype" init-method="initialize"/>
 	
+	<bean id="customSearchController" class="net.sourceforge.atunes.kernel.modules.search.CustomSearchController" init-method="initialize" scope="prototype"/>
+	<bean id="searchResultsController" class="net.sourceforge.atunes.kernel.modules.search.SearchResultsController" init-method="initialize" scope="prototype"/>
+	
 </beans>
