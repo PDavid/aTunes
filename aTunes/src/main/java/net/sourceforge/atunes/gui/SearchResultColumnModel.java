@@ -24,8 +24,9 @@ import javax.swing.table.TableColumn;
 
 /**
  * Column model for search results
+ * 
  * @author alex
- *
+ * 
  */
 public class SearchResultColumnModel extends AbstractCommonColumnModel {
 

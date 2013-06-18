@@ -59,44 +59,77 @@ import net.sourceforge.atunes.model.ITreeCellRendererCode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-final class CustomSearchController extends
+/**
+ * Controller for custom search dialog
+ * 
+ * @author alex
+ * 
+ */
+public final class CustomSearchController extends
 		AbstractSimpleController<CustomSearchDialog> {
 
-	private final ISearchHandler searchHandler;
+	private ISearchHandler searchHandler;
 
-	private final IDialogFactory dialogFactory;
+	private IDialogFactory dialogFactory;
 
-	private final ComplexRuleTreeBuilder treeBuilder;
+	private ComplexRuleTreeBuilder complexRuleTreeBuilder;
 
-	private final IControlsBuilder controlsBuilder;
+	private IControlsBuilder controlsBuilder;
 
-	private final ILogicalSearchOperator notLogicalSearchOperator;
+	private ILogicalSearchOperator notLogicalSearchOperator;
 
-	private final ILookAndFeelManager lookAndFeelManager;
+	private ILookAndFeelManager lookAndFeelManager;
 
 	/**
-	 * @param dialog
 	 * @param searchHandler
+	 */
+	public void setSearchHandler(ISearchHandler searchHandler) {
+		this.searchHandler = searchHandler;
+	}
+
+	/**
 	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
+
+	/**
+	 * @param complexRuleTreeBuilder
+	 */
+	public void setComplexRuleTreeBuilder(
+			ComplexRuleTreeBuilder complexRuleTreeBuilder) {
+		this.complexRuleTreeBuilder = complexRuleTreeBuilder;
+	}
+
+	/**
 	 * @param controlsBuilder
-	 * @param treeBuilder
+	 */
+	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+		this.controlsBuilder = controlsBuilder;
+	}
+
+	/**
 	 * @param notLogicalSearchOperator
+	 */
+	public void setNotLogicalSearchOperator(
+			ILogicalSearchOperator notLogicalSearchOperator) {
+		this.notLogicalSearchOperator = notLogicalSearchOperator;
+	}
+
+	/**
 	 * @param lookAndFeelManager
 	 */
-	CustomSearchController(final CustomSearchDialog dialog,
-			final ISearchHandler searchHandler,
-			final IDialogFactory dialogFactory,
-			IControlsBuilder controlsBuilder,
-			ComplexRuleTreeBuilder treeBuilder,
-			ILogicalSearchOperator notLogicalSearchOperator,
-			ILookAndFeelManager lookAndFeelManager) {
-		super(dialog);
-		this.searchHandler = searchHandler;
-		this.dialogFactory = dialogFactory;
-		this.controlsBuilder = controlsBuilder;
-		this.treeBuilder = treeBuilder;
-		this.notLogicalSearchOperator = notLogicalSearchOperator;
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+	/**
+	 * Initializes controller
+	 */
+	public void initialize() {
+		setComponentControlled(this.dialogFactory
+				.newDialog(CustomSearchDialog.class));
 		addBindings();
 	}
 
@@ -132,7 +165,7 @@ final class CustomSearchController extends
 	 */
 	void search() {
 		try {
-			ISearchNode query = this.treeBuilder
+			ISearchNode query = this.complexRuleTreeBuilder
 					.getSearchTree(getComponentControlled());
 			Collection<IAudioObject> result = this.searchHandler.search(query);
 			// If no matches found show a message
@@ -262,7 +295,7 @@ final class CustomSearchController extends
 						if (!StringUtils.isEmpty(getComponentControlled()
 								.getSimpleRulesTextField().getText())) {
 							// Pressed Add button
-							treeBuilder
+							complexRuleTreeBuilder
 									.createSimpleRule(getComponentControlled());
 						}
 					}
@@ -273,7 +306,8 @@ final class CustomSearchController extends
 					@Override
 					public void actionPerformed(ActionEvent event) {
 						// Pressed Add button
-						treeBuilder.createSimpleRule(getComponentControlled());
+						complexRuleTreeBuilder
+								.createSimpleRule(getComponentControlled());
 					}
 				});
 
@@ -283,7 +317,8 @@ final class CustomSearchController extends
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						// Pressed AND button
-						treeBuilder.addAndOperator(getComponentControlled());
+						complexRuleTreeBuilder
+								.addAndOperator(getComponentControlled());
 					}
 				});
 
@@ -293,7 +328,8 @@ final class CustomSearchController extends
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// Pressed OR button
-						treeBuilder.addOrOperator(getComponentControlled());
+						complexRuleTreeBuilder
+								.addOrOperator(getComponentControlled());
 					}
 				});
 
@@ -303,7 +339,8 @@ final class CustomSearchController extends
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// Pressed NOT button
-						treeBuilder.addNotOperator(getComponentControlled());
+						complexRuleTreeBuilder
+								.addNotOperator(getComponentControlled());
 					}
 				});
 
@@ -313,7 +350,8 @@ final class CustomSearchController extends
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// Pressed Remove button
-						treeBuilder.removeRuleNode(getComponentControlled());
+						complexRuleTreeBuilder
+								.removeRuleNode(getComponentControlled());
 					}
 				});
 

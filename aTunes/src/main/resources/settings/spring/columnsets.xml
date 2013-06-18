@@ -31,7 +31,7 @@
 		<property name="allowedColumns" ref="albumColumnSetColumns"/>
 	</bean>
 	
-	<bean id="searchResultsColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet">
+	<bean id="searchResultsColumnSet" parent="abstractColumnSet" class="net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet" scope="prototype">
 		<property name="allowedColumns" ref="noPlaylistColumnSetColumns"/>
 	</bean>
 
