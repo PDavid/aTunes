@@ -26,6 +26,8 @@ import java.util.List;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.ISearchOperator;
+import net.sourceforge.atunes.model.ISearchUnaryOperator;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -38,11 +40,28 @@ public class AlbumSearchField extends StringSearchField<IAlbum> {
 
 	private IRepositoryHandler repositoryHandler;
 
+	private ISearchUnaryOperator<IAlbum> albumFavoriteSearchOperator;
+
+	/**
+	 * @param albumFavoriteSearchOperator
+	 */
+	public void setAlbumFavoriteSearchOperator(
+			ISearchUnaryOperator<IAlbum> albumFavoriteSearchOperator) {
+		this.albumFavoriteSearchOperator = albumFavoriteSearchOperator;
+	}
+
 	/**
 	 * @param repositoryHandler
 	 */
 	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
+	}
+
+	@Override
+	public List<ISearchOperator> getOperators() {
+		List<ISearchOperator> operators = super.getOperators();
+		operators.add(albumFavoriteSearchOperator);
+		return operators;
 	}
 
 	@Override

@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
-import net.sourceforge.atunes.model.ISearchOperator;
+import net.sourceforge.atunes.model.ISearchBinaryOperator;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -29,7 +29,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class IntegerEqualsSearchOperator implements ISearchOperator<Integer> {
+public class IntegerEqualsSearchOperator implements ISearchBinaryOperator<Integer> {
 
 	@Override
 	public String getDescription() {

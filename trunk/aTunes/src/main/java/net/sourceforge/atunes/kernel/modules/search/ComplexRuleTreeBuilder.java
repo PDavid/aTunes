@@ -107,8 +107,8 @@ public class ComplexRuleTreeBuilder {
 	 * Creates a simple rule.
 	 */
 	void createSimpleRule(CustomSearchDialog dialog) {
-		ISearchField field = (ISearchField) dialog.getSimpleRulesList()
-				.getSelectedItem();
+		ISearchField<?, ?> field = (ISearchField<?, ?>) dialog
+				.getSimpleRulesList().getSelectedItem();
 		ISearchOperator operator = (ISearchOperator) dialog
 				.getSimpleRulesComboBox().getSelectedItem();
 		String value = dialog.getSimpleRulesTextField().getText();

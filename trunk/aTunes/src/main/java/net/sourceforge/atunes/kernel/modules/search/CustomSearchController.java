@@ -50,6 +50,7 @@ import net.sourceforge.atunes.model.IListCellRendererCode;
 import net.sourceforge.atunes.model.ILogicalSearchOperator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialog;
+import net.sourceforge.atunes.model.ISearchBinaryOperator;
 import net.sourceforge.atunes.model.ISearchField;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchNode;
@@ -251,12 +252,12 @@ public final class CustomSearchController extends
 						this.lookAndFeelManager
 								.getCurrentLookAndFeel()
 								.getListCellRenderer(
-										new IListCellRendererCode<JComponent, ISearchOperator<?>>() {
+										new IListCellRendererCode<JComponent, ISearchOperator>() {
 											@Override
 											public JComponent getComponent(
 													JComponent superComponent,
 													JList list,
-													ISearchOperator<?> value,
+													ISearchOperator value,
 													int index,
 													boolean isSelected,
 													boolean cellHasFocus) {
@@ -265,6 +266,33 @@ public final class CustomSearchController extends
 												return superComponent;
 											}
 										}));
+
+		getComponentControlled().getSimpleRulesComboBox().addItemListener(
+				new ItemListener() {
+
+					@Override
+					public void itemStateChanged(ItemEvent event) {
+						if (event.getStateChange() == ItemEvent.SELECTED) {
+							// Only allow text field for binary operators
+							boolean isBinary = event.getItem() instanceof ISearchBinaryOperator;
+							getComponentControlled().getSimpleRulesTextField()
+									.setEnabled(isBinary);
+							if (!isBinary) {
+								getComponentControlled()
+										.getSimpleRulesTextField().setText("");
+							}
+							getComponentControlled()
+									.getSimpleRulesAddButton()
+									.setEnabled(
+											!isBinary
+													|| !StringUtils
+															.isEmpty(getComponentControlled()
+																	.getSimpleRulesTextField()
+																	.getText()));
+						}
+					}
+				});
+
 		getComponentControlled().getComplexRulesTree().setModel(
 				new DefaultTreeModel(null));
 
@@ -395,6 +423,24 @@ public final class CustomSearchController extends
 											new DefaultComboBoxModel(
 													searchField.getOperators()
 															.toArray()));
+
+							// Only allow text field for binary operators
+							boolean isBinary = searchField.getOperators()
+									.get(0) instanceof ISearchBinaryOperator;
+							getComponentControlled().getSimpleRulesTextField()
+									.setEnabled(isBinary);
+							if (!isBinary) {
+								getComponentControlled()
+										.getSimpleRulesTextField().setText("");
+							}
+							getComponentControlled()
+									.getSimpleRulesAddButton()
+									.setEnabled(
+											!isBinary
+													|| !StringUtils
+															.isEmpty(getComponentControlled()
+																	.getSimpleRulesTextField()
+																	.getText()));
 						}
 					}
 				});

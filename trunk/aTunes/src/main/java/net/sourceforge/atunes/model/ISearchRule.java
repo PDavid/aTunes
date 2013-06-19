@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-
 /**
  * A simple search rule
  * 
@@ -32,7 +31,7 @@ public interface ISearchRule {
 	/**
 	 * @return field
 	 */
-	ISearchField getField();
+	ISearchField<?, ?> getField();
 
 	/**
 	 * Gets the operator.

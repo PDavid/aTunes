@@ -39,7 +39,7 @@ public interface ISearchField<O, F> {
 	/**
 	 * @return operators that can be used with this field
 	 */
-	List<ISearchOperator<F>> getOperators();
+	List<ISearchOperator> getOperators();
 
 	/**
 	 * Transforms original string value entered by user to internal data type
@@ -55,8 +55,7 @@ public interface ISearchField<O, F> {
 	 * @param originalValue
 	 * @return list of objects matching value with given operator
 	 */
-	List<IAudioObject> evaluate(ISearchOperator<F> operator,
-			String originalValue);
+	List<IAudioObject> evaluate(ISearchOperator operator, String originalValue);
 
 	/**
 	 * @param object

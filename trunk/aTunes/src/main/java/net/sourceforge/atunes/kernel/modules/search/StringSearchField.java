@@ -20,23 +20,25 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.model.ISearchBinaryOperator;
 import net.sourceforge.atunes.model.ISearchOperator;
 import net.sourceforge.atunes.utils.CollectionUtils;
 
 public abstract class StringSearchField<O> extends
 		GenericSearchField<O, String> {
 
-	private ISearchOperator<String> stringEqualsSearchOperator;
+	private ISearchBinaryOperator<String> stringEqualsSearchOperator;
 
-	private ISearchOperator<String> stringContainsSearchOperator;
+	private ISearchBinaryOperator<String> stringContainsSearchOperator;
 
 	/**
 	 * @param stringContainsSearchOperator
 	 */
 	public void setStringContainsSearchOperator(
-			ISearchOperator<String> stringContainsSearchOperator) {
+			ISearchBinaryOperator<String> stringContainsSearchOperator) {
 		this.stringContainsSearchOperator = stringContainsSearchOperator;
 	}
 
@@ -44,14 +46,14 @@ public abstract class StringSearchField<O> extends
 	 * @param stringEqualsSearchOperator
 	 */
 	public void setStringEqualsSearchOperator(
-			ISearchOperator<String> stringEqualsSearchOperator) {
+			ISearchBinaryOperator<String> stringEqualsSearchOperator) {
 		this.stringEqualsSearchOperator = stringEqualsSearchOperator;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<ISearchOperator<String>> getOperators() {
-		return CollectionUtils.listWith(stringEqualsSearchOperator,
+	public List<ISearchOperator> getOperators() {
+		return CollectionUtils.fillCollectionWithElements(
+				new ArrayList<ISearchOperator>(), stringEqualsSearchOperator,
 				stringContainsSearchOperator);
 	}
 

@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
-import net.sourceforge.atunes.model.ISearchOperator;
+import net.sourceforge.atunes.model.ISearchBinaryOperator;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -30,7 +30,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public class IntegerGreaterThanSearchOperator implements
-		ISearchOperator<Integer> {
+		ISearchBinaryOperator<Integer> {
 
 	@Override
 	public String getDescription() {

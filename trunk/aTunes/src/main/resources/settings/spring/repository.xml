@@ -114,7 +114,11 @@
 
     <bean id="longGreaterThanSearchOperator" class="net.sourceforge.atunes.kernel.modules.search.LongGreaterThanSearchOperator" scope="prototype"/>	
     <bean id="longLessThanSearchOperator" class="net.sourceforge.atunes.kernel.modules.search.LongLessThanSearchOperator" scope="prototype"/>
-    <bean id="longEqualsSearchOperator" class="net.sourceforge.atunes.kernel.modules.search.LongEqualsSearchOperator" scope="prototype"/>	
+    <bean id="longEqualsSearchOperator" class="net.sourceforge.atunes.kernel.modules.search.LongEqualsSearchOperator" scope="prototype"/>
+    
+    <bean id="albumFavoriteSearchOperator" class="net.sourceforge.atunes.kernel.modules.search.AlbumFavoriteSearchOperator" scope="prototype"/>	
+    <bean id="artistFavoriteSearchOperator" class="net.sourceforge.atunes.kernel.modules.search.ArtistFavoriteSearchOperator" scope="prototype"/>	
+    <bean id="localAudioObjectFavoriteSearchOperator" class="net.sourceforge.atunes.kernel.modules.search.LocalAudioObjectFavoriteSearchOperator" scope="prototype"/>
 	
 	<bean id="genericSearchField" class="net.sourceforge.atunes.kernel.modules.search.GenericSearchField" abstract="true" scope="prototype"/>
 	<bean id="stringSearchField" class="net.sourceforge.atunes.kernel.modules.search.StringSearchField" parent="genericSearchField" abstract="true" scope="prototype"/>
@@ -130,6 +134,7 @@
 	<bean id="fileNameSearchField" class="net.sourceforge.atunes.kernel.modules.search.FileNameSearchField" parent="stringSearchField" scope="prototype"/>		
 	<bean id="frequencySearchField" class="net.sourceforge.atunes.kernel.modules.search.FrequencySearchField" parent="integerSearchField" scope="prototype"/>		
 	<bean id="genreSearchField" class="net.sourceforge.atunes.kernel.modules.search.GenreSearchField" parent="stringSearchField" scope="prototype"/>
+	<bean id="localAudioObjectSearchField" class="net.sourceforge.atunes.kernel.modules.search.LocalAudioObjectSearchField" parent="genericSearchField" scope="prototype"/>
 	<bean id="lyricsSearchField" class="net.sourceforge.atunes.kernel.modules.search.LyricsSearchField" parent="stringSearchField" scope="prototype"/>
 	<bean id="titleSearchField" class="net.sourceforge.atunes.kernel.modules.search.TitleSearchField" parent="stringSearchField" scope="prototype"/>
 	<bean id="trackSearchField" class="net.sourceforge.atunes.kernel.modules.search.TrackSearchField" parent="integerSearchField" scope="prototype"/>
