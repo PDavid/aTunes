@@ -20,30 +20,36 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
-import net.sourceforge.atunes.model.ISearchBinaryOperator;
+import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IFavoritesHandler;
+import net.sourceforge.atunes.model.ISearchUnaryOperator;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * Search operator for "equals" operation of strings
+ * Operator to check if element is favorite
  * 
  * @author alex
  * 
  */
-public final class StringEqualsSearchOperator implements
-		ISearchBinaryOperator<String> {
+public class ArtistFavoriteSearchOperator implements
+		ISearchUnaryOperator<IArtist> {
 
-	@Override
-	public String getDescription() {
-		return I18nUtils.getString("IS_EQUALS_TO");
+	private IFavoritesHandler favoritesHandler;
+
+	/**
+	 * @param favoritesHandler
+	 */
+	public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
+		this.favoritesHandler = favoritesHandler;
 	}
 
 	@Override
-	public boolean evaluate(String s1, String s2) {
-		if (s1 == null && s2 == null) {
-			return true;
-		} else if (s1 != null && s2 != null) {
-			return s1.equalsIgnoreCase(s2);
-		}
-		return false;
+	public String getDescription() {
+		return I18nUtils.getString("IS_IN_FAVORITES");
+	}
+
+	@Override
+	public boolean evaluate(IArtist artist) {
+		return this.favoritesHandler.isArtistFavorite(artist);
 	}
 }

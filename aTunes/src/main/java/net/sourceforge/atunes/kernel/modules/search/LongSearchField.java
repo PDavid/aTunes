@@ -20,24 +20,26 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.model.ISearchBinaryOperator;
 import net.sourceforge.atunes.model.ISearchOperator;
 import net.sourceforge.atunes.utils.CollectionUtils;
 
 public abstract class LongSearchField<O> extends GenericSearchField<O, Long> {
 
-	private ISearchOperator<Long> longEqualsSearchOperator;
+	private ISearchBinaryOperator<Long> longEqualsSearchOperator;
 
-	private ISearchOperator<Long> longGreaterThanSearchOperator;
+	private ISearchBinaryOperator<Long> longGreaterThanSearchOperator;
 
-	private ISearchOperator<Long> longLessThanSearchOperator;
+	private ISearchBinaryOperator<Long> longLessThanSearchOperator;
 
 	/**
 	 * @param longEqualsSearchOperator
 	 */
 	public void setLongEqualsSearchOperator(
-			ISearchOperator<Long> longEqualsSearchOperator) {
+			ISearchBinaryOperator<Long> longEqualsSearchOperator) {
 		this.longEqualsSearchOperator = longEqualsSearchOperator;
 	}
 
@@ -45,7 +47,7 @@ public abstract class LongSearchField<O> extends GenericSearchField<O, Long> {
 	 * @param longGreaterThanSearchOperator
 	 */
 	public void setLongGreaterThanSearchOperator(
-			ISearchOperator<Long> longGreaterThanSearchOperator) {
+			ISearchBinaryOperator<Long> longGreaterThanSearchOperator) {
 		this.longGreaterThanSearchOperator = longGreaterThanSearchOperator;
 	}
 
@@ -53,14 +55,14 @@ public abstract class LongSearchField<O> extends GenericSearchField<O, Long> {
 	 * @param longLessThanSearchOperator
 	 */
 	public void setLongLessThanSearchOperator(
-			ISearchOperator<Long> longLessThanSearchOperator) {
+			ISearchBinaryOperator<Long> longLessThanSearchOperator) {
 		this.longLessThanSearchOperator = longLessThanSearchOperator;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<ISearchOperator<Long>> getOperators() {
-		return CollectionUtils.listWith(longEqualsSearchOperator,
+	public List<ISearchOperator> getOperators() {
+		return CollectionUtils.fillCollectionWithElements(
+				new ArrayList<ISearchOperator>(), longEqualsSearchOperator,
 				longLessThanSearchOperator, longGreaterThanSearchOperator);
 	}
 

@@ -23,31 +23,34 @@ package net.sourceforge.atunes.kernel.modules.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearchOperator;
 import net.sourceforge.atunes.model.ISearchUnaryOperator;
+import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * Album Search field
+ * Artist Search field
  * 
  * @author alex
  * 
  */
-public class AlbumSearchField extends StringSearchField<IAlbum> {
+public class LocalAudioObjectSearchField extends
+		GenericSearchField<ILocalAudioObject, ILocalAudioObject> {
 
 	private IRepositoryHandler repositoryHandler;
 
-	private ISearchUnaryOperator<IAlbum> albumFavoriteSearchOperator;
+	private ISearchUnaryOperator<IArtist> localAudioObjectFavoriteSearchOperator;
 
 	/**
-	 * @param albumFavoriteSearchOperator
+	 * @param localAudioObjectFavoriteSearchOperator
 	 */
-	public void setAlbumFavoriteSearchOperator(
-			ISearchUnaryOperator<IAlbum> albumFavoriteSearchOperator) {
-		this.albumFavoriteSearchOperator = albumFavoriteSearchOperator;
+	public void setLocalAudioObjectFavoriteSearchOperator(
+			ISearchUnaryOperator<IArtist> localAudioObjectFavoriteSearchOperator) {
+		this.localAudioObjectFavoriteSearchOperator = localAudioObjectFavoriteSearchOperator;
 	}
 
 	/**
@@ -59,28 +62,35 @@ public class AlbumSearchField extends StringSearchField<IAlbum> {
 
 	@Override
 	public List<ISearchOperator> getOperators() {
-		List<ISearchOperator> operators = super.getOperators();
-		operators.add(albumFavoriteSearchOperator);
-		return operators;
+		return CollectionUtils.fillCollectionWithElements(
+				new ArrayList<ISearchOperator>(),
+				localAudioObjectFavoriteSearchOperator);
 	}
 
 	@Override
 	public String getName() {
-		return I18nUtils.getString("ALBUM");
+		return I18nUtils.getString("SONG");
 	}
 
 	@Override
-	public List<IAudioObject> getAudioObjects(IAlbum album) {
-		return new ArrayList<IAudioObject>(album.getAudioObjects());
+	public List<IAudioObject> getAudioObjects(ILocalAudioObject ao) {
+		return CollectionUtils.fillCollectionWithElements(
+				new ArrayList<IAudioObject>(), ao);
 	}
 
 	@Override
-	public List<IAlbum> getObjectsForEvaluation() {
-		return this.repositoryHandler.getAlbums();
+	public List<ILocalAudioObject> getObjectsForEvaluation() {
+		return new ArrayList<ILocalAudioObject>(
+				this.repositoryHandler.getAudioFilesList());
 	}
 
 	@Override
-	public String getValueForEvaluation(IAlbum album) {
-		return album.getName();
+	public ILocalAudioObject getValueForEvaluation(ILocalAudioObject object) {
+		return object;
+	}
+
+	@Override
+	public ILocalAudioObject transform(String originalValue) {
+		return null;
 	}
 }

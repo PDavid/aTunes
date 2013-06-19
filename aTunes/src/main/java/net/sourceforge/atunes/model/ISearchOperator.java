@@ -26,20 +26,10 @@ package net.sourceforge.atunes.model;
  * @author alex
  * 
  */
-public interface ISearchOperator<T> {
+public interface ISearchOperator {
 
 	/**
 	 * @return description of operator
 	 */
 	String getDescription();
-
-	/**
-	 * Evaluates operator with given data
-	 * 
-	 * @param o1
-	 * @param o2
-	 * @return
-	 */
-	boolean evaluate(T o1, T o2);
-
 }

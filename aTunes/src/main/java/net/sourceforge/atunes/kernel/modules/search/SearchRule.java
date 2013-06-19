@@ -38,7 +38,7 @@ public final class SearchRule implements ISearchRule, ISearchNode {
 	private ISearchField<?, ?> field;
 
 	/** The operator. */
-	private ISearchOperator<?> operator;
+	private ISearchOperator operator;
 
 	/** The value. */
 	private String value;
@@ -49,7 +49,7 @@ public final class SearchRule implements ISearchRule, ISearchNode {
 	 * @param value
 	 */
 	public SearchRule(final ISearchField<?, ?> field,
-			final ISearchOperator<?> operator, final String value) {
+			final ISearchOperator operator, final String value) {
 		this.field = field;
 		this.operator = operator;
 		this.value = value;
@@ -68,7 +68,7 @@ public final class SearchRule implements ISearchRule, ISearchNode {
 	}
 
 	@Override
-	public ISearchOperator<?> getOperator() {
+	public ISearchOperator getOperator() {
 		return this.operator;
 	}
 
@@ -78,7 +78,7 @@ public final class SearchRule implements ISearchRule, ISearchNode {
 	 * @param operator
 	 *            the operator to set
 	 */
-	public void setOperator(final ISearchOperator<?> operator) {
+	public void setOperator(final ISearchOperator operator) {
 		this.operator = operator;
 	}
 
@@ -97,10 +97,9 @@ public final class SearchRule implements ISearchRule, ISearchNode {
 		this.value = value;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public final List<IAudioObject> evaluate() {
-		return field.evaluate((ISearchOperator) operator, value);
+		return field.evaluate(operator, value);
 	}
 
 	@Override

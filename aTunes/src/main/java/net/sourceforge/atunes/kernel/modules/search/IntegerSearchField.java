@@ -20,25 +20,27 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.model.ISearchBinaryOperator;
 import net.sourceforge.atunes.model.ISearchOperator;
 import net.sourceforge.atunes.utils.CollectionUtils;
 
 public abstract class IntegerSearchField<O> extends
 		GenericSearchField<O, Integer> {
 
-	private ISearchOperator<Integer> integerEqualsSearchOperator;
+	private ISearchBinaryOperator<Integer> integerEqualsSearchOperator;
 
-	private ISearchOperator<Integer> integerGreaterThanSearchOperator;
+	private ISearchBinaryOperator<Integer> integerGreaterThanSearchOperator;
 
-	private ISearchOperator<Integer> integerLessThanSearchOperator;
+	private ISearchBinaryOperator<Integer> integerLessThanSearchOperator;
 
 	/**
 	 * @param integerEqualsSearchOperator
 	 */
 	public void setIntegerEqualsSearchOperator(
-			ISearchOperator<Integer> integerEqualsSearchOperator) {
+			ISearchBinaryOperator<Integer> integerEqualsSearchOperator) {
 		this.integerEqualsSearchOperator = integerEqualsSearchOperator;
 	}
 
@@ -46,7 +48,7 @@ public abstract class IntegerSearchField<O> extends
 	 * @param integerGreaterThanSearchOperator
 	 */
 	public void setIntegerGreaterThanSearchOperator(
-			ISearchOperator<Integer> integerGreaterThanSearchOperator) {
+			ISearchBinaryOperator<Integer> integerGreaterThanSearchOperator) {
 		this.integerGreaterThanSearchOperator = integerGreaterThanSearchOperator;
 	}
 
@@ -54,15 +56,15 @@ public abstract class IntegerSearchField<O> extends
 	 * @param integerLessThanSearchOperator
 	 */
 	public void setIntegerLessThanSearchOperator(
-			ISearchOperator<Integer> integerLessThanSearchOperator) {
+			ISearchBinaryOperator<Integer> integerLessThanSearchOperator) {
 		this.integerLessThanSearchOperator = integerLessThanSearchOperator;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<ISearchOperator<Integer>> getOperators() {
+	public List<ISearchOperator> getOperators() {
 		return CollectionUtils
-				.listWith(integerEqualsSearchOperator,
+				.fillCollectionWithElements(new ArrayList<ISearchOperator>(),
+						integerEqualsSearchOperator,
 						integerLessThanSearchOperator,
 						integerGreaterThanSearchOperator);
 	}

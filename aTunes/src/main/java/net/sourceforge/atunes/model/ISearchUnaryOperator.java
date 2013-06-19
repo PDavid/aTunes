@@ -18,32 +18,21 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.search;
-
-import net.sourceforge.atunes.model.ISearchBinaryOperator;
-import net.sourceforge.atunes.utils.I18nUtils;
+package net.sourceforge.atunes.model;
 
 /**
- * Search operator for "equals" operation of strings
+ * Unary operator for searches
  * 
  * @author alex
  * 
  */
-public final class StringEqualsSearchOperator implements
-		ISearchBinaryOperator<String> {
+public interface ISearchUnaryOperator<T> extends ISearchOperator {
 
-	@Override
-	public String getDescription() {
-		return I18nUtils.getString("IS_EQUALS_TO");
-	}
-
-	@Override
-	public boolean evaluate(String s1, String s2) {
-		if (s1 == null && s2 == null) {
-			return true;
-		} else if (s1 != null && s2 != null) {
-			return s1.equalsIgnoreCase(s2);
-		}
-		return false;
-	}
+	/**
+	 * Evaluates operator with given data
+	 * 
+	 * @param o1
+	 * @return
+	 */
+	boolean evaluate(T o1);
 }
