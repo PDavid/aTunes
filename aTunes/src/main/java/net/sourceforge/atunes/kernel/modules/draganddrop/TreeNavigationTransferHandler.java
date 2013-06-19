@@ -40,119 +40,124 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class TreeNavigationTransferHandler extends TransferHandler {
 
-    private static final long serialVersionUID = 4589661138322620954L;
+	private static final long serialVersionUID = 4589661138322620954L;
 
-    /**
-     * Data flavor of a list of objects dragged from inside application
-     */
-    private DataFlavor internalDataFlavor;
+	/**
+	 * Data flavor of a list of objects dragged from inside application
+	 */
+	private DataFlavor internalDataFlavor;
 
-    private final INavigationHandler navigationHandler;
+	private final INavigationHandler navigationHandler;
 
-    /**
-     * Default constructor
-     * 
-     * @param navigationHandler
-     */
-    public TreeNavigationTransferHandler(
-	    final INavigationHandler navigationHandler) {
-	this.navigationHandler = navigationHandler;
-	try {
-	    internalDataFlavor = new DataFlavor(TransferableList.MIMETYPE);
-	} catch (ClassNotFoundException e) {
-	    Logger.error(e);
+	/**
+	 * Default constructor
+	 * 
+	 * @param navigationHandler
+	 */
+	public TreeNavigationTransferHandler(
+			final INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+		try {
+			internalDataFlavor = new DataFlavor(TransferableList.MIMETYPE);
+		} catch (ClassNotFoundException e) {
+			Logger.error(e);
+		}
 	}
-    }
 
-    @Override
-    public boolean canImport(final TransferSupport support) {
-	// Check if internal data flavor is supported
-	if (support.getTransferable().isDataFlavorSupported(internalDataFlavor)) {
-	    try {
-		List<?> listOfObjectsDragged = (List<?>) support
-			.getTransferable().getTransferData(internalDataFlavor);
-		if (listOfObjectsDragged == null
-			|| listOfObjectsDragged.isEmpty()) {
-		    return false;
+	@Override
+	public boolean canImport(final TransferSupport support) {
+		// Check if its a drap and drop operation
+		if (!support.isDrop()) {
+			return false;
 		}
 
-		// Drag is made from another component...
-		if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
-		    return true;
+		// Check if internal data flavor is supported
+		if (support.getTransferable().isDataFlavorSupported(internalDataFlavor)) {
+			try {
+				List<?> listOfObjectsDragged = (List<?>) support
+						.getTransferable().getTransferData(internalDataFlavor);
+				if (listOfObjectsDragged == null
+						|| listOfObjectsDragged.isEmpty()) {
+					return false;
+				}
+
+				// Drag is made from another component...
+				if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
+					return true;
+				}
+
+				return true;
+			} catch (Exception e) {
+				Logger.error(e);
+			}
+
+			support.setShowDropLocation(true);
+			return true;
 		}
 
-		return true;
-	    } catch (Exception e) {
-		Logger.error(e);
-	    }
-
-	    support.setShowDropLocation(true);
-	    return true;
-	}
-
-	return false;
-    }
-
-    @Override
-    public boolean importData(final TransferSupport support) {
-	if (!canImport(support)) {
-	    return false;
-	}
-
-	if (support.getTransferable().isDataFlavorSupported(internalDataFlavor)) {
-	    return processInternalImport(support);
-	}
-
-	return false;
-    }
-
-    /**
-     * Perform drop with data dragged from another component
-     * 
-     * @param support
-     * @return
-     */
-    private boolean processInternalImport(final TransferSupport support) {
-	try {
-	    List<?> listOfObjectsDragged = (List<?>) support.getTransferable()
-		    .getTransferData(internalDataFlavor);
-	    if (listOfObjectsDragged == null || listOfObjectsDragged.isEmpty()) {
 		return false;
-	    }
-
-	    // DRAG AND DROP OF AN ARTIST -> SELECT IN NAVIGATOR
-	    if (listOfObjectsDragged.get(0) instanceof DragableArtist) {
-		final DragableArtist draggedArtist = (DragableArtist) listOfObjectsDragged
-			.get(0);
-		GuiUtils.callInEventDispatchThread(new Runnable() {
-		    @Override
-		    public void run() {
-			navigationHandler.selectArtist(draggedArtist
-				.getArtistInfo().getName());
-		    }
-		});
-
-	    }
-
-	    // DRAG AND DROP OF A PLAY LIST ITEM -> SELECT IN NAVIGATOR
-	    if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
-		final PlayListDragableRow playlistRow = (PlayListDragableRow) listOfObjectsDragged
-			.get(0);
-		GuiUtils.callInEventDispatchThread(new Runnable() {
-		    @Override
-		    public void run() {
-			navigationHandler.selectAudioObject(playlistRow
-				.getRowContent());
-		    }
-		});
-
-	    }
-
-	} catch (Exception e) {
-	    Logger.error(e);
 	}
 
-	return false;
-    }
+	@Override
+	public boolean importData(final TransferSupport support) {
+		if (!canImport(support)) {
+			return false;
+		}
+
+		if (support.getTransferable().isDataFlavorSupported(internalDataFlavor)) {
+			return processInternalImport(support);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Perform drop with data dragged from another component
+	 * 
+	 * @param support
+	 * @return
+	 */
+	private boolean processInternalImport(final TransferSupport support) {
+		try {
+			List<?> listOfObjectsDragged = (List<?>) support.getTransferable()
+					.getTransferData(internalDataFlavor);
+			if (listOfObjectsDragged == null || listOfObjectsDragged.isEmpty()) {
+				return false;
+			}
+
+			// DRAG AND DROP OF AN ARTIST -> SELECT IN NAVIGATOR
+			if (listOfObjectsDragged.get(0) instanceof DragableArtist) {
+				final DragableArtist draggedArtist = (DragableArtist) listOfObjectsDragged
+						.get(0);
+				GuiUtils.callInEventDispatchThread(new Runnable() {
+					@Override
+					public void run() {
+						navigationHandler.selectArtist(draggedArtist
+								.getArtistInfo().getName());
+					}
+				});
+
+			}
+
+			// DRAG AND DROP OF A PLAY LIST ITEM -> SELECT IN NAVIGATOR
+			if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
+				final PlayListDragableRow playlistRow = (PlayListDragableRow) listOfObjectsDragged
+						.get(0);
+				GuiUtils.callInEventDispatchThread(new Runnable() {
+					@Override
+					public void run() {
+						navigationHandler.selectAudioObject(playlistRow
+								.getRowContent());
+					}
+				});
+
+			}
+
+		} catch (Exception e) {
+			Logger.error(e);
+		}
+
+		return false;
+	}
 
 }

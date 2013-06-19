@@ -16,6 +16,7 @@ aTunes 3.1.1
 - FIX: Seek not working after changing look and feel
 - FIX: Repository actions disabled after connecting device
 - FIX: Clear last.fm cache broken
+- FIX: Drag and drop not checking if it's a valid drop operation
 
 aTunes 3.1.0
 ------------

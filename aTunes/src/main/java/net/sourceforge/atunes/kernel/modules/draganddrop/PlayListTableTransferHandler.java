@@ -52,6 +52,11 @@ public class PlayListTableTransferHandler extends TransferHandler {
 
 	@Override
 	public boolean canImport(final TransferSupport support) {
+		// Check if it's a drag and drop operation
+		if (!support.isDrop()) {
+			return false;
+		}
+
 		// Check if internal data flavor is supported
 		if (support.getTransferable().isDataFlavorSupported(
 				DragAndDropHelper.getInternalDataFlavor())) {
