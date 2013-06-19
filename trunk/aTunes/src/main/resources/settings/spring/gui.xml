@@ -202,6 +202,7 @@
 	<!-- DRAG AND DROP PROCESSORS -->
 	<bean id="internalImportProcessor" class="net.sourceforge.atunes.kernel.modules.draganddrop.InternalImportProcessor" scope="prototype"/>
 	<bean id="externalImportProcessor" class="net.sourceforge.atunes.kernel.modules.draganddrop.ExternalImportProcessor" scope="prototype"/>
+	<bean id="externalDragAndDropDataExtractor" class="net.sourceforge.atunes.kernel.modules.draganddrop.ExternalDragAndDropDataExtractor" scope="prototype"/>
 	<bean id="navigatorToPlayListDragAndDropProcessor" class="net.sourceforge.atunes.kernel.modules.draganddrop.NavigatorToPlayListDragAndDropProcessor" scope="prototype"/>
 
 	<!-- COLORS -->
