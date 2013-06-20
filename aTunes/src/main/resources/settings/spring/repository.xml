@@ -136,6 +136,7 @@
 	<bean id="genreSearchField" class="net.sourceforge.atunes.kernel.modules.search.GenreSearchField" parent="stringSearchField" scope="prototype"/>
 	<bean id="localAudioObjectSearchField" class="net.sourceforge.atunes.kernel.modules.search.LocalAudioObjectSearchField" parent="genericSearchField" scope="prototype"/>
 	<bean id="lyricsSearchField" class="net.sourceforge.atunes.kernel.modules.search.LyricsSearchField" parent="stringSearchField" scope="prototype"/>
+	<bean id="ratingSearchField" class="net.sourceforge.atunes.kernel.modules.search.RatingSearchField" parent="integerSearchField" scope="prototype"/>
 	<bean id="titleSearchField" class="net.sourceforge.atunes.kernel.modules.search.TitleSearchField" parent="stringSearchField" scope="prototype"/>
 	<bean id="trackSearchField" class="net.sourceforge.atunes.kernel.modules.search.TrackSearchField" parent="integerSearchField" scope="prototype"/>
 	<bean id="urlSearchField" class="net.sourceforge.atunes.kernel.modules.search.URLSearchField" parent="stringSearchField" scope="prototype"/>
