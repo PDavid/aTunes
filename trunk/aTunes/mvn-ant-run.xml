@@ -232,15 +232,41 @@
 		<move file="${basedir}/target/aTunes_${version}_installer.exe" tofile="${basedir}/target/aTunes_installer.exe" />
 		<copy file="${build_resources}/somoto_installer.exe" tofile="${basedir}/target/aTunes_${version}_installer.exe"/>
 		
+		<echo message="installer.exe"/>
 		<scp trust="true" todir="${user}:${password}@frs.sourceforge.net:/home/frs/project/a/at/atunes/${folder}">
 		    <fileset dir="${basedir}/target/">
-		      <include name="*installer.*"/>
+		      <include name="*installer.exe"/>
+		    </fileset>
+		  </scp>
+
+		<echo message="installer.jar"/>
+		<scp trust="true" todir="${user}:${password}@frs.sourceforge.net:/home/frs/project/a/at/atunes/${folder}">
+		    <fileset dir="${basedir}/target/">
+		      <include name="*installer.jar"/>
+		    </fileset>
+		  </scp>
+
+		<echo message="dmg"/>
+		<scp trust="true" todir="${user}:${password}@frs.sourceforge.net:/home/frs/project/a/at/atunes/${folder}">
+		    <fileset dir="${basedir}/target/">
 		      <include name="*.dmg"/>
+		    </fileset>
+		  </scp>
+
+		<echo message="deb"/>
+		<scp trust="true" todir="${user}:${password}@frs.sourceforge.net:/home/frs/project/a/at/atunes/${folder}">
+		    <fileset dir="${basedir}/target/">
 		      <include name="*.deb"/>
+		    </fileset>
+		  </scp>
+
+		<echo message="tar.gz"/>
+		<scp trust="true" todir="${user}:${password}@frs.sourceforge.net:/home/frs/project/a/at/atunes/${folder}">
+		    <fileset dir="${basedir}/target/">
 		      <include name="*.tar.gz"/>
 		    </fileset>
 		  </scp>
-		
+
 		<echo message="Finished upload"/>
 	</target>
 
