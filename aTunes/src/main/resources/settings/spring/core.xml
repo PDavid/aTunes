@@ -168,7 +168,8 @@
 	
 
     <bean id="checkUpdatesBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.updates.CheckUpdatesBackgroundWorker" scope="prototype">
-    	<property name="downloadURLStart" value="http://sourceforge.net/projects/atunes"/>
+    	<property name="downloadURLStart1" value="http://sourceforge.net/projects/atunes"/>
+    	<property name="downloadURLStart2" value="http://www.atunes.org"/>
     </bean>
     <bean class="net.sourceforge.atunes.kernel.modules.updates.VersionXmlParser" scope="prototype"/>
     

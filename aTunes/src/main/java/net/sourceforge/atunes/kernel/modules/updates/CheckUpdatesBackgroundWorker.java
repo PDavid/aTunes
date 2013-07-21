@@ -49,13 +49,22 @@ public final class CheckUpdatesBackgroundWorker extends
 	private IFrame frame;
 	private IDialogFactory dialogFactory;
 
-	private String downloadURLStart;
+	private String downloadURLStart1;
+
+	private String downloadURLStart2;
 
 	/**
-	 * @param downloadURLStart
+	 * @param downloadURLStart1
 	 */
-	public void setDownloadURLStart(final String downloadURLStart) {
-		this.downloadURLStart = downloadURLStart;
+	public void setDownloadURLStart1(final String downloadURLStart1) {
+		this.downloadURLStart1 = downloadURLStart1;
+	}
+
+	/**
+	 * @param downloadURLStart2
+	 */
+	public void setDownloadURLStart2(final String downloadURLStart2) {
+		this.downloadURLStart2 = downloadURLStart2;
 	}
 
 	/**
@@ -140,6 +149,10 @@ public final class CheckUpdatesBackgroundWorker extends
 	}
 
 	private boolean downloadURLIsValid(final ApplicationVersion version) {
-		return version.getDownloadURL().startsWith(this.downloadURLStart);
+		return version.getDirectDownloadURL()
+				.startsWith(this.downloadURLStart1)
+				|| version.getDirectDownloadURL().startsWith(
+						this.downloadURLStart2);
+
 	}
 }
