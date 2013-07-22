@@ -61,8 +61,9 @@ public class ApplicationStateRepository implements IStateRepository {
 
 	@Override
 	public int getAutoRepositoryRefreshTime() {
+		// Disabled by default
 		return this.preferenceHelper.getPreference(
-				Preferences.AUTO_REPOSITORY_REFRESH_TIME, Integer.class, 60);
+				Preferences.AUTO_REPOSITORY_REFRESH_TIME, Integer.class, 0);
 	}
 
 	@Override
@@ -255,7 +256,7 @@ public class ApplicationStateRepository implements IStateRepository {
 	}
 
 	@Override
-	public void setStoreRatingInFile(boolean storeRatingInFile) {
+	public void setStoreRatingInFile(final boolean storeRatingInFile) {
 		this.preferenceHelper.setPreference(Preferences.STORE_RATING_IN_FILE,
 				storeRatingInFile);
 	}
