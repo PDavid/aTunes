@@ -249,5 +249,4 @@ public interface IPlayList extends Serializable, Cloneable {
 	 * @param playListMode
 	 */
 	void setMode(IPlayListMode playListMode);
-
 }
