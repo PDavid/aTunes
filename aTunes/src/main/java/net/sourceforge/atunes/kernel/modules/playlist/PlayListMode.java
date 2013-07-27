@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IPlayListMode;
 import net.sourceforge.atunes.model.IStatePlayer;
@@ -54,9 +55,15 @@ final class PlayListMode implements IPlayListMode {
 	 * @param statePlayer
 	 * @return
 	 */
-	protected static IPlayListMode getPlayListMode(final PlayList playList,
+	protected static IPlayListMode getPlayListMode(final IPlayList playList,
 			final IStatePlayer statePlayer) {
-		return new PlayListMode(playList, statePlayer);
+		if (playList instanceof PlayList) {
+			return new PlayListMode((PlayList) playList, statePlayer);
+		} else {
+			// TODO: Add more play list modes
+			return null;
+		}
+
 	}
 
 	private PlayListMode(final PlayList playList, final IStatePlayer statePlayer) {
