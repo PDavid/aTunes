@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
@@ -31,7 +30,9 @@ import javax.swing.JComponent;
 
 import net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel;
 import net.sourceforge.atunes.model.IButtonPanel;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IControlsBuilder;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IStatePlaylist;
 
@@ -53,6 +54,16 @@ public class PlayListSelectorWrapper {
 	private IPlayListHandler playListHandler;
 
 	private IControlsBuilder controlsBuilder;
+
+	private ILookAndFeelManager lookAndFeelManager;
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
 
 	/**
 	 * @param controlsBuilder
@@ -130,6 +141,10 @@ public class PlayListSelectorWrapper {
 		this.playListCombo.setModel(PlayListComboModel.getNewComboModel());
 
 		this.playListButtonFlowPanel.addItemListener(l);
+
+		this.playListCombo.setRenderer(this.lookAndFeelManager
+				.getCurrentLookAndFeel().getListCellRenderer(
+						new PlayListComboRenderer()));
 	}
 
 	void deletePlayList(final int index) {
@@ -147,10 +162,12 @@ public class PlayListSelectorWrapper {
 		this.playListButtonFlowPanel.setSelectedButton(index);
 	}
 
-	void newPlayList(final String name) {
-		((PlayListComboModel) this.playListCombo.getModel()).addItem(name);
+	void newPlayList(final String name, final IColorMutableImageIcon icon) {
+		((PlayListComboModel) this.playListCombo.getModel()).addItem(name, icon
+				.getIcon(this.lookAndFeelManager.getCurrentLookAndFeel()
+						.getPaintForSpecialControls()));
 
-		this.playListButtonFlowPanel.addButton(name, name, null,
+		this.playListButtonFlowPanel.addButton(name, name, icon,
 				new AbstractAction() {
 
 					private static final long serialVersionUID = -8487582617110724128L;
@@ -172,10 +189,6 @@ public class PlayListSelectorWrapper {
 		this.playListButtonFlowPanel.renameButton(index, newName);
 	}
 
-	List<String> getNamesOfPlayLists() {
-		return ((PlayListComboModel) this.playListCombo.getModel()).getItems();
-	}
-
 	int getSelectedPlayListIndex() {
 		return this.playListCombo.getSelectedIndex() != -1 ? this.playListCombo
 				.getSelectedIndex() : 0;
@@ -183,7 +196,7 @@ public class PlayListSelectorWrapper {
 
 	String getPlayListName(final int index) {
 		return ((PlayListComboModel) this.playListCombo.getModel())
-				.getElementAt(index);
+				.getElementAt(index).getName();
 	}
 
 	/**

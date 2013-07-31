@@ -46,6 +46,7 @@ import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IRepositoryListener;
 import net.sourceforge.atunes.model.IRepositoryTransaction;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IStateService;
@@ -569,7 +570,8 @@ public final class RepositoryHandler extends AbstractHandler implements
 	}
 
 	protected final void startTransaction() {
-		this.transaction = new RepositoryTransaction(this.repository, this);
+		this.transaction = new RepositoryTransaction(this.repository,
+				getBeanFactory().getBeans(IRepositoryListener.class));
 	}
 
 	protected final void endTransaction() {

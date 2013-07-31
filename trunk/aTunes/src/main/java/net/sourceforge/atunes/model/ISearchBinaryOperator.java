@@ -25,6 +25,7 @@ package net.sourceforge.atunes.model;
  * 
  * @author alex
  * 
+ * @param <T>
  */
 public interface ISearchBinaryOperator<T> extends ISearchOperator {
 

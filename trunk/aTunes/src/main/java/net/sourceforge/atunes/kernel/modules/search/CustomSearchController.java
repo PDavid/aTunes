@@ -84,14 +84,14 @@ public final class CustomSearchController extends
 	/**
 	 * @param searchHandler
 	 */
-	public void setSearchHandler(ISearchHandler searchHandler) {
+	public void setSearchHandler(final ISearchHandler searchHandler) {
 		this.searchHandler = searchHandler;
 	}
 
 	/**
 	 * @param dialogFactory
 	 */
-	public void setDialogFactory(IDialogFactory dialogFactory) {
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
 		this.dialogFactory = dialogFactory;
 	}
 
@@ -99,14 +99,14 @@ public final class CustomSearchController extends
 	 * @param complexRuleTreeBuilder
 	 */
 	public void setComplexRuleTreeBuilder(
-			ComplexRuleTreeBuilder complexRuleTreeBuilder) {
+			final ComplexRuleTreeBuilder complexRuleTreeBuilder) {
 		this.complexRuleTreeBuilder = complexRuleTreeBuilder;
 	}
 
 	/**
 	 * @param controlsBuilder
 	 */
-	public void setControlsBuilder(IControlsBuilder controlsBuilder) {
+	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
 
@@ -114,14 +114,15 @@ public final class CustomSearchController extends
 	 * @param notLogicalSearchOperator
 	 */
 	public void setNotLogicalSearchOperator(
-			ILogicalSearchOperator notLogicalSearchOperator) {
+			final ILogicalSearchOperator notLogicalSearchOperator) {
 		this.notLogicalSearchOperator = notLogicalSearchOperator;
 	}
 
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
@@ -138,7 +139,8 @@ public final class CustomSearchController extends
 		// sort search fields by name
 		Collections.sort(beans, new Comparator<ISearchField<?, ?>>() {
 			@Override
-			public int compare(ISearchField<?, ?> o1, ISearchField<?, ?> o2) {
+			public int compare(final ISearchField<?, ?> o1,
+					final ISearchField<?, ?> o2) {
 				return o1.getName().compareTo(o2.getName());
 			}
 		});
@@ -162,34 +164,58 @@ public final class CustomSearchController extends
 	}
 
 	/**
+	 * Shows dialog so user can create a query
+	 * 
+	 * @param title
+	 * @param text
+	 * @return query created or null if user canceled
+	 */
+	ISearchNode showSearchDialogForQueryCreation(final String title,
+			final String text) {
+		getComponentControlled().setQueryCreationOnly(title, text);
+		getComponentControlled().setVisible(true);
+		return this.complexRuleTreeBuilder
+				.getSearchTree(getComponentControlled());
+	}
+
+	/**
 	 * Invokes a search with rule defined in dialog.
 	 */
-	void search() {
-		try {
-			ISearchNode query = this.complexRuleTreeBuilder
-					.getSearchTree(getComponentControlled());
-			Collection<IAudioObject> result = this.searchHandler.search(query);
-			// If no matches found show a message
-			if (result.isEmpty()) {
-				this.dialogFactory.newDialog(IMessageDialog.class).showMessage(
-						I18nUtils.getString("NO_MATCHES_FOUND"));
-			} else {
+	private void search() {
+		if (!getComponentControlled().isQueryCreationOnly()) {
+			try {
+				ISearchNode query = this.complexRuleTreeBuilder
+						.getSearchTree(getComponentControlled());
+				Collection<IAudioObject> result = this.searchHandler
+						.search(query);
+				// If no matches found show a message
+				if (result.isEmpty()) {
+					this.dialogFactory.newDialog(IMessageDialog.class)
+							.showMessage(
+									I18nUtils.getString("NO_MATCHES_FOUND"));
+				}
 				// Hide search dialog
 				getComponentControlled().setVisible(false);
 				// Show result
-				this.searchHandler.showSearchResults(result);
+				this.searchHandler.showSearchResults(query, result);
+			} catch (IllegalArgumentException e) {
+				this.dialogFactory.newDialog(IErrorDialog.class)
+						.showErrorDialog(
+								I18nUtils.getString("INVALID_SEARCH_RULE"));
+			} catch (IllegalStateException e) {
+				this.dialogFactory.newDialog(IErrorDialog.class)
+						.showErrorDialog(
+								I18nUtils.getString("INVALID_SEARCH_RULE"));
 			}
-		} catch (IllegalArgumentException e) {
-			this.dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(
-					I18nUtils.getString("INVALID_SEARCH_RULE"));
-		} catch (IllegalStateException e) {
-			this.dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(
-					I18nUtils.getString("INVALID_SEARCH_RULE"));
+		} else {
+			// Hide search dialog
+			getComponentControlled().setVisible(false);
 		}
 	}
 
 	@Override
 	public void addBindings() {
+		getComponentControlled().getSearchButton().setEnabled(false);
 		getComponentControlled()
 				.getComplexRulesTree()
 				.setCellRenderer(
@@ -197,12 +223,13 @@ public final class CustomSearchController extends
 								.getTreeCellRenderer(new ITreeCellRendererCode<JComponent, DefaultMutableTreeNode>() {
 									@Override
 									public JComponent getComponent(
-											JComponent superComponent,
-											JTree tree,
-											DefaultMutableTreeNode value,
-											boolean isSelected,
-											boolean expanded, boolean leaf,
-											int row, boolean isHasFocus) {
+											final JComponent superComponent,
+											final JTree tree,
+											final DefaultMutableTreeNode value,
+											final boolean isSelected,
+											final boolean expanded,
+											final boolean leaf, final int row,
+											final boolean isHasFocus) {
 										if (value.getUserObject() instanceof ILogicalSearchOperator) {
 											((JLabel) superComponent)
 													.setText(((ILogicalSearchOperator) value
@@ -233,12 +260,12 @@ public final class CustomSearchController extends
 										new IListCellRendererCode<JComponent, ISearchField<?, ?>>() {
 											@Override
 											public JComponent getComponent(
-													JComponent superComponent,
-													JList list,
-													ISearchField<?, ?> value,
-													int index,
-													boolean isSelected,
-													boolean cellHasFocus) {
+													final JComponent superComponent,
+													final JList list,
+													final ISearchField<?, ?> value,
+													final int index,
+													final boolean isSelected,
+													final boolean cellHasFocus) {
 												((JLabel) superComponent)
 														.setText(value
 																.getName());
@@ -255,12 +282,12 @@ public final class CustomSearchController extends
 										new IListCellRendererCode<JComponent, ISearchOperator>() {
 											@Override
 											public JComponent getComponent(
-													JComponent superComponent,
-													JList list,
-													ISearchOperator value,
-													int index,
-													boolean isSelected,
-													boolean cellHasFocus) {
+													final JComponent superComponent,
+													final JList list,
+													final ISearchOperator value,
+													final int index,
+													final boolean isSelected,
+													final boolean cellHasFocus) {
 												((JLabel) superComponent).setText(value
 														.getDescription());
 												return superComponent;
@@ -271,7 +298,7 @@ public final class CustomSearchController extends
 				new ItemListener() {
 
 					@Override
-					public void itemStateChanged(ItemEvent event) {
+					public void itemStateChanged(final ItemEvent event) {
 						if (event.getStateChange() == ItemEvent.SELECTED) {
 							// Only allow text field for binary operators
 							boolean isBinary = event.getItem() instanceof ISearchBinaryOperator;
@@ -300,7 +327,7 @@ public final class CustomSearchController extends
 				new KeyAdapter() {
 
 					@Override
-					public void keyTyped(KeyEvent event) {
+					public void keyTyped(final KeyEvent event) {
 						GuiUtils.callInEventDispatchThreadLater(new Runnable() {
 							@Override
 							public void run() {
@@ -319,12 +346,13 @@ public final class CustomSearchController extends
 				new ActionListener() {
 
 					@Override
-					public void actionPerformed(ActionEvent event) {
+					public void actionPerformed(final ActionEvent event) {
 						if (!StringUtils.isEmpty(getComponentControlled()
 								.getSimpleRulesTextField().getText())) {
 							// Pressed Add button
-							complexRuleTreeBuilder
+							CustomSearchController.this.complexRuleTreeBuilder
 									.createSimpleRule(getComponentControlled());
+							checkEmptyRule();
 						}
 					}
 				});
@@ -332,10 +360,11 @@ public final class CustomSearchController extends
 				new ActionListener() {
 
 					@Override
-					public void actionPerformed(ActionEvent event) {
+					public void actionPerformed(final ActionEvent event) {
 						// Pressed Add button
-						complexRuleTreeBuilder
+						CustomSearchController.this.complexRuleTreeBuilder
 								.createSimpleRule(getComponentControlled());
+						checkEmptyRule();
 					}
 				});
 
@@ -343,10 +372,11 @@ public final class CustomSearchController extends
 				new ActionListener() {
 
 					@Override
-					public void actionPerformed(ActionEvent arg0) {
+					public void actionPerformed(final ActionEvent arg0) {
 						// Pressed AND button
-						complexRuleTreeBuilder
+						CustomSearchController.this.complexRuleTreeBuilder
 								.addAndOperator(getComponentControlled());
+						checkEmptyRule();
 					}
 				});
 
@@ -354,10 +384,11 @@ public final class CustomSearchController extends
 				new ActionListener() {
 
 					@Override
-					public void actionPerformed(ActionEvent e) {
+					public void actionPerformed(final ActionEvent e) {
 						// Pressed OR button
-						complexRuleTreeBuilder
+						CustomSearchController.this.complexRuleTreeBuilder
 								.addOrOperator(getComponentControlled());
+						checkEmptyRule();
 					}
 				});
 
@@ -365,10 +396,11 @@ public final class CustomSearchController extends
 				new ActionListener() {
 
 					@Override
-					public void actionPerformed(ActionEvent e) {
+					public void actionPerformed(final ActionEvent e) {
 						// Pressed NOT button
-						complexRuleTreeBuilder
+						CustomSearchController.this.complexRuleTreeBuilder
 								.addNotOperator(getComponentControlled());
+						checkEmptyRule();
 					}
 				});
 
@@ -376,10 +408,11 @@ public final class CustomSearchController extends
 				.addActionListener(new ActionListener() {
 
 					@Override
-					public void actionPerformed(ActionEvent e) {
+					public void actionPerformed(final ActionEvent e) {
 						// Pressed Remove button
-						complexRuleTreeBuilder
+						CustomSearchController.this.complexRuleTreeBuilder
 								.removeRuleNode(getComponentControlled());
+						checkEmptyRule();
 					}
 				});
 
@@ -387,7 +420,7 @@ public final class CustomSearchController extends
 				new ActionListener() {
 
 					@Override
-					public void actionPerformed(ActionEvent e) {
+					public void actionPerformed(final ActionEvent e) {
 						// Pressed Search button
 						search();
 					}
@@ -398,13 +431,13 @@ public final class CustomSearchController extends
 						new ComplexTreeSelectionListener(
 								getComponentControlled(),
 								getComponentControlled().getComplexRulesTree(),
-								notLogicalSearchOperator));
+								this.notLogicalSearchOperator));
 
 		getComponentControlled().getCancelButton().addActionListener(
 				new ActionListener() {
 
 					@Override
-					public void actionPerformed(ActionEvent e) {
+					public void actionPerformed(final ActionEvent e) {
 						// Pressed cancel button
 						getComponentControlled().setVisible(false);
 					}
@@ -444,5 +477,11 @@ public final class CustomSearchController extends
 						}
 					}
 				});
+	}
+
+	private void checkEmptyRule() {
+		DefaultMutableTreeNode root = (DefaultMutableTreeNode) getComponentControlled()
+				.getComplexRulesTree().getModel().getRoot();
+		getComponentControlled().getSearchButton().setEnabled(root != null);
 	}
 }

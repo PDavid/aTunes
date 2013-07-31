@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -28,7 +29,8 @@ import java.util.List;
  * @author alex
  * 
  */
-public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler {
+public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler,
+		IRepositoryListener {
 
 	/**
 	 * Returns the number of play lists handled
@@ -392,5 +394,15 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler {
 	 * Switches to previous play list
 	 */
 	public void previousPlayList();
+
+	/**
+	 * Creates a new dynamic play list with given initial audio objects and
+	 * query used to retrieve them
+	 * 
+	 * @param query
+	 * @param initialObjects
+	 */
+	public void newDynamicPlayList(ISearchNode query,
+			Collection<IAudioObject> initialObjects);
 
 }

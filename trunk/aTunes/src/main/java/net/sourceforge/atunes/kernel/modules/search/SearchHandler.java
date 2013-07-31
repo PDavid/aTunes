@@ -42,6 +42,29 @@ public final class SearchHandler extends AbstractHandler implements
 
 	@Override
 	public void startSearch() {
+		// Show dialog to start search
+		createController().showSearchDialog();
+	}
+
+	@Override
+	public ISearchNode createQuery(final String title, final String text) {
+		return createController().showSearchDialogForQueryCreation(title, text);
+	}
+
+	@Override
+	public void showSearchResults(final ISearchNode query,
+			final Collection<IAudioObject> result) {
+		// Open search results dialog
+		getBean(SearchResultsController.class).showSearchResults(query, result);
+	}
+
+	@Override
+	public Collection<IAudioObject> search(final ISearchNode query) {
+		Logger.debug("Executing query ", query);
+		return query.evaluate();
+	}
+
+	private CustomSearchController createController() {
 		CustomSearchController controller = getBean(CustomSearchController.class);
 		// Set list of search fields
 		List<ISearchField<?, ?>> fields = new ArrayList<ISearchField<?, ?>>();
@@ -50,20 +73,6 @@ public final class SearchHandler extends AbstractHandler implements
 			fields.add(field);
 		}
 		controller.setSearchFieldsList(fields);
-
-		// Show dialog to start search
-		controller.showSearchDialog();
-	}
-
-	@Override
-	public void showSearchResults(final Collection<IAudioObject> result) {
-		// Open search results dialog
-		getBean(SearchResultsController.class).showSearchResults(result);
-	}
-
-	@Override
-	public Collection<IAudioObject> search(ISearchNode query) {
-		Logger.debug("Executing query ", query);
-		return query.evaluate();
+		return controller;
 	}
 }

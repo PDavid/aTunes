@@ -77,6 +77,10 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	/** The cancel button. */
 	private JButton cancelButton;
 
+	private JLabel searchHelp;
+
+	private boolean queryCreationOnly;
+
 	/**
 	 * Instantiates a new custom search dialog.
 	 * 
@@ -113,7 +117,7 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	private JPanel getContent() {
 		JPanel panel = new JPanel(new GridBagLayout());
 
-		JLabel searchHelp = new JLabel(I18nUtils.getString("SEARCH_HELP"));
+		this.searchHelp = new JLabel(I18nUtils.getString("SEARCH_HELP"));
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(10, 10, 10, 10);
@@ -122,7 +126,7 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 		c.gridy = 0;
 		c.weightx = 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		panel.add(searchHelp, c);
+		panel.add(this.searchHelp, c);
 
 		c.insets = new Insets(5, 5, 5, 5);
 		c.gridy++;
@@ -147,7 +151,6 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	 * 
 	 * @return the simple rules panel
 	 */
-	@SuppressWarnings("rawtypes")
 	private JPanel getSimpleRulesPanel() {
 		JPanel simpleRulesPanel = new JPanel(new GridBagLayout());
 		this.simpleRulesList = new JComboBox();
@@ -351,6 +354,26 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 		getComplexRulesOrButton().setEnabled(enable && complexRuleSelected);
 		getComplexRulesNotButton().setEnabled(enable && complexRuleSelected);
 		getComplexRulesRemoveButton().setEnabled(enable && complexRuleSelected);
+	}
+
+	/**
+	 * Configures dialog to only create queries
+	 * 
+	 * @param title
+	 * @param text
+	 */
+	public void setQueryCreationOnly(final String title, final String text) {
+		this.queryCreationOnly = true;
+		setTitle(title);
+		this.searchHelp.setText(text);
+		this.searchButton.setText(I18nUtils.getString("OK"));
+	}
+
+	/**
+	 * @return if dialog is configured only for query creation
+	 */
+	public boolean isQueryCreationOnly() {
+		return this.queryCreationOnly;
 	}
 
 }

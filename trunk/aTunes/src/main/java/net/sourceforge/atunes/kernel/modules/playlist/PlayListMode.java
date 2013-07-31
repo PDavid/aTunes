@@ -46,7 +46,7 @@ final class PlayListMode implements IPlayListMode {
 	/**
 	 * Play list bound to this mode
 	 */
-	private final PlayList playList;
+	private final AbstractPlayList playList;
 
 	private final IStatePlayer statePlayer;
 
@@ -57,16 +57,15 @@ final class PlayListMode implements IPlayListMode {
 	 */
 	protected static IPlayListMode getPlayListMode(final IPlayList playList,
 			final IStatePlayer statePlayer) {
-		if (playList instanceof PlayList) {
-			return new PlayListMode((PlayList) playList, statePlayer);
+		if (playList instanceof AbstractPlayList) {
+			return new PlayListMode((AbstractPlayList) playList, statePlayer);
 		} else {
-			// TODO: Add more play list modes
-			return null;
+			throw new UnsupportedOperationException("Not implemented");
 		}
-
 	}
 
-	private PlayListMode(final PlayList playList, final IStatePlayer statePlayer) {
+	private PlayListMode(final AbstractPlayList playList,
+			final IStatePlayer statePlayer) {
 		// Initialize shuffle list
 		this.shufflePlayList = new ShufflePointedList(statePlayer);
 		this.statePlayer = statePlayer;
@@ -97,7 +96,7 @@ final class PlayListMode implements IPlayListMode {
 		if (previosulyPlayedObject != null) {
 			int index = this.playList.indexOf(previosulyPlayedObject);
 			// Update pointed object
-			this.playList.getPointedList().setPointer(index);
+			this.playList.getAudioObjectsPointedList().setPointer(index);
 			return previosulyPlayedObject;
 		}
 
@@ -112,7 +111,8 @@ final class PlayListMode implements IPlayListMode {
 			return this.playList.get(previousIndex);
 		}
 
-		return this.playList.getPointedList().moveToPreviousObject();
+		return this.playList.getAudioObjectsPointedList()
+				.moveToPreviousObject();
 	}
 
 	@Override
@@ -126,7 +126,7 @@ final class PlayListMode implements IPlayListMode {
 		if (nextPreviouslyPlayedObject != null) {
 			int index = this.playList.indexOf(nextPreviouslyPlayedObject);
 			// Update pointed object
-			this.playList.getPointedList().setPointer(index);
+			this.playList.getAudioObjectsPointedList().setPointer(index);
 			return nextPreviouslyPlayedObject;
 		}
 
@@ -141,7 +141,7 @@ final class PlayListMode implements IPlayListMode {
 			return this.playList.get(nextIndex);
 		}
 
-		return this.playList.getPointedList().moveToNextObject();
+		return this.playList.getAudioObjectsPointedList().moveToNextObject();
 	}
 
 	@Override
@@ -166,7 +166,8 @@ final class PlayListMode implements IPlayListMode {
 			return this.playList.get(previousIndex);
 		}
 
-		return this.playList.getPointedList().getPreviousObject(index);
+		return this.playList.getAudioObjectsPointedList().getPreviousObject(
+				index);
 	}
 
 	@Override
@@ -190,7 +191,7 @@ final class PlayListMode implements IPlayListMode {
 			return this.playList.get(nextIndex);
 		}
 
-		return this.playList.getPointedList().getNextObject(index);
+		return this.playList.getAudioObjectsPointedList().getNextObject(index);
 	}
 
 	@Override

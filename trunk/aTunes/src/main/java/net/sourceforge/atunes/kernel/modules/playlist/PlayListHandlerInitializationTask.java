@@ -49,12 +49,12 @@ public class PlayListHandlerInitializationTask extends
 			this.list = ListOfPlayLists.getEmptyPlayList(beanFactory
 					.getBean(IStatePlayer.class));
 		}
-		beanFactory.getBean(PlayListHandler.class)
-				.setPlayListsRetrievedFromCache(this.list);
+		PlayListHandler playListHandler = beanFactory
+				.getBean(PlayListHandler.class);
+		playListHandler.setPlayListsRetrievedFromCache(this.list);
 		// When calling this method it's necessary that repository has been
 		// already loaded
 		// to reuse audio objects
-		beanFactory.getBean(PlayListHandler.class)
-				.initializationTaskCompleted();
+		playListHandler.initializationTaskCompleted();
 	}
 }

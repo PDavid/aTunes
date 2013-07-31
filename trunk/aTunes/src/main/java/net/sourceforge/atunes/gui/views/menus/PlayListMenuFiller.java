@@ -50,6 +50,7 @@ import net.sourceforge.atunes.kernel.actions.MoveDownAction;
 import net.sourceforge.atunes.kernel.actions.MoveToBottomAction;
 import net.sourceforge.atunes.kernel.actions.MoveToTopAction;
 import net.sourceforge.atunes.kernel.actions.MoveUpAction;
+import net.sourceforge.atunes.kernel.actions.NewDynamicPlayListAction;
 import net.sourceforge.atunes.kernel.actions.NewPlayListAction;
 import net.sourceforge.atunes.kernel.actions.NextPlayListAction;
 import net.sourceforge.atunes.kernel.actions.OpenFolderAction;
@@ -143,6 +144,7 @@ public final class PlayListMenuFiller {
 		List<Object> objects = new ArrayList<Object>();
 
 		objects.add(this.beanFactory.getBean(NewPlayListAction.class));
+		objects.add(this.beanFactory.getBean(NewDynamicPlayListAction.class));
 		objects.add(this.beanFactory.getBean(RenamePlaylistAction.class));
 		objects.add(this.beanFactory.getBean(NextPlayListAction.class));
 		objects.add(this.beanFactory.getBean(PreviousPlayListAction.class));

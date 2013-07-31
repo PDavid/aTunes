@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
@@ -133,7 +134,7 @@ public interface IPlayList extends Serializable, Cloneable {
 	/**
 	 * Sorts play list with given column
 	 * 
-	 * @param comparator
+	 * @param column
 	 */
 	void sortByColumn(IColumn<?> column);
 
@@ -224,7 +225,7 @@ public interface IPlayList extends Serializable, Cloneable {
 	 * 
 	 * @param audioObjects
 	 */
-	void remove(List<? extends IAudioObject> audioObjects);
+	void remove(Collection<? extends IAudioObject> audioObjects);
 
 	/**
 	 * Returns a list with audio object contents
@@ -249,4 +250,16 @@ public interface IPlayList extends Serializable, Cloneable {
 	 * @param playListMode
 	 */
 	void setMode(IPlayListMode playListMode);
+
+	/**
+	 * @return true if user can add / remove / move elements, false if content
+	 *         is managed by application
+	 */
+	boolean canBeChangedByUser();
+
+	/**
+	 * Request play list implementation to save internal data (before writting
+	 * to disk)
+	 */
+	void saveInternalData();
 }

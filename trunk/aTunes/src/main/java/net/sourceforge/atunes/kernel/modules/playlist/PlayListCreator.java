@@ -21,12 +21,14 @@
 package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.ISearchNode;
 import net.sourceforge.atunes.model.IStatePlayer;
 
 /**
@@ -84,6 +86,28 @@ public class PlayListCreator {
 	}
 
 	/**
+	 * Returns a new dynamic play list without listeners bound
+	 * 
+	 * @param name
+	 * @param query
+	 * @param initialObjects
+	 * @return
+	 */
+	IPlayList getNewDynamicPlayList(final String name, final ISearchNode query,
+			final Collection<IAudioObject> initialObjects, final int pointer) {
+		IPlayList newPlayList;
+		if (initialObjects == null) {
+			newPlayList = new DynamicPlayList(this.statePlayer,
+					query.getRepresentation(), pointer);
+		} else {
+			newPlayList = new DynamicPlayList(initialObjects, this.statePlayer,
+					query.getRepresentation(), pointer);
+		}
+		newPlayList.setName(name);
+		return newPlayList;
+	}
+
+	/**
 	 * Returns a new play list with filtered audio objects from given play list
 	 * 
 	 * @param playList
@@ -105,7 +129,7 @@ public class PlayListCreator {
 	 * @param playlist
 	 * @return
 	 */
-	IPlayList replaceCachedLocalAudioObjects(final IPlayList playlist) {
+	IPlayList replaceAudioObjects(final IPlayList playlist) {
 		List<IAudioObject> list = new ArrayList<IAudioObject>();
 		for (IAudioObject ao : playlist.getAudioObjectsList()) {
 			list.add(this.repositoryHandler.getAudioObjectIfLoaded(ao));

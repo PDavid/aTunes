@@ -21,71 +21,84 @@
 package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.swing.ImageIcon;
+
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
-final class PlayListComboModel extends ListComboBoxModel<String> {
+final class PlayListComboModel extends
+		ListComboBoxModel<PlayListComboModelObject> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1833337893582691546L;
-	
-	private List<String> playLists;
-	
-	private PlayListComboModel(List<String> list) {
-		super(list);
-		this.playLists = list;
+
+	private final List<PlayListComboModelObject> objects;
+
+	private PlayListComboModel(final List<PlayListComboModelObject> objects) {
+		super(objects);
+		this.objects = objects;
 	}
-	
+
 	/**
 	 * Creates a new combo model
+	 * 
 	 * @return
 	 */
 	static PlayListComboModel getNewComboModel() {
-		return new PlayListComboModel(new ArrayList<String>());
+		return new PlayListComboModel(new ArrayList<PlayListComboModelObject>());
 	}
 
 	/**
 	 * Removes a play list
+	 * 
 	 * @param index
 	 */
-	void removeItemAt(int index) {
-		this.playLists.remove(index);
+	void removeItemAt(final int index) {
+		this.objects.remove(index);
 		// Need this to update combo box list
 		fireIntervalRemoved(this, index, index);
 	}
 
 	/**
 	 * Adds a play list
+	 * 
 	 * @param name
 	 */
-	void addItem(String name) {
-		this.playLists.add(name);
+	void addItem(final String name, final ImageIcon icon) {
+		this.objects.add(new PlayListComboModelObject(name, icon));
 		// Need this to update combo box list
-		fireIntervalAdded(this, this.playLists.size()-1, this.playLists.size()-1);
+		fireIntervalAdded(this, this.objects.size() - 1,
+				this.objects.size() - 1);
 	}
 
 	/**
 	 * Renames a play list at a given index
+	 * 
 	 * @param index
 	 * @param newName
 	 */
-	void rename(int index, String newName) {
-		this.playLists.remove(index);
-		this.playLists.add(index, newName);		
+	void rename(final int index, final String newName) {
+		PlayListComboModelObject o = this.objects.get(index);
+		this.objects.remove(index);
+		this.objects.add(index,
+				new PlayListComboModelObject(newName, o.getIcon()));
 		fireContentsChanged(this, index, index);
 	}
 
 	/**
 	 * Returns names of play lists
+	 * 
 	 * @return
 	 */
 	List<String> getItems() {
-		return Collections.unmodifiableList(this.playLists);
+		List<String> names = new ArrayList<String>();
+		for (PlayListComboModelObject o : this.objects) {
+			names.add(o.getName());
+		}
+		return names;
 	}
-	
-
 }

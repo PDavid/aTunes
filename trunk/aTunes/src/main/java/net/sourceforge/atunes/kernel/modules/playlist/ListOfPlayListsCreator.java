@@ -28,35 +28,40 @@ import net.sourceforge.atunes.model.IPlayList;
 
 class ListOfPlayListsCreator {
 
-    /**
-     * Gets the list of play lists.
-     * @param playLists
-     * @param filtered
-     * @param nonFilteredPlayList 
-     * @return the list of play lists
-     */
-    IListOfPlayLists getListOfPlayLists(IPlayListsContainer playLists) {
-    	if (playLists == null || playLists.getPlayListsCount() == 0) {
-    		throw new IllegalArgumentException("Playlists empty or null");
-    	}
-    	
-        ListOfPlayLists l = new ListOfPlayLists();
+	/**
+	 * Gets the list of play lists.
+	 * 
+	 * @param playLists
+	 * @param filtered
+	 * @param nonFilteredPlayList
+	 * @return the list of play lists
+	 */
+	IListOfPlayLists getListOfPlayLists(final IPlayListsContainer playLists) {
+		if (playLists == null || playLists.getPlayListsCount() == 0) {
+			throw new IllegalArgumentException("Playlists empty or null");
+		}
 
-        // Clone play lists to make changes in returned list if current play list is filtered
-        List<IPlayList> lists = new ArrayList<IPlayList>();
-        for (int i = 0; i < playLists.getPlayListsCount(); i++) {
-        	lists.add(playLists.getPlayListAt(i));
-        }
-        l.setPlayLists(lists);
-        l.setSelectedPlayList(playLists.getActivePlayListIndex());
+		ListOfPlayLists l = new ListOfPlayLists();
 
-        // If current play list is filtered return non-filtered play list
-        if (playLists.isFiltered()) {
-            l.getPlayLists().remove(playLists.getActivePlayListIndex());
-            l.getPlayLists().add(playLists.getActivePlayListIndex(), playLists.getNonFilteredPlayList());
-        }
+		// Clone play lists to make changes in returned list if current play
+		// list is filtered
+		List<IPlayList> lists = new ArrayList<IPlayList>();
+		for (int i = 0; i < playLists.getPlayListsCount(); i++) {
+			IPlayList pl = playLists.getPlayListAt(i);
+			pl.saveInternalData();
+			lists.add(pl);
+		}
+		l.setPlayLists(lists);
+		l.setSelectedPlayList(playLists.getActivePlayListIndex());
 
-        return l;
-    }
+		// If current play list is filtered return non-filtered play list
+		if (playLists.isFiltered()) {
+			l.getPlayLists().remove(playLists.getActivePlayListIndex());
+			l.getPlayLists().add(playLists.getActivePlayListIndex(),
+					playLists.getNonFilteredPlayList());
+		}
+
+		return l;
+	}
 
 }

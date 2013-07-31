@@ -172,6 +172,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveToTopAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveUpAction"/>
 	<bean id="muteAction" class="net.sourceforge.atunes.kernel.actions.MuteAction"/>
+	<bean id="newDynamicPlayListAction" class="net.sourceforge.atunes.kernel.actions.NewDynamicPlayListAction"/>
 	<bean id="newPlayListAction" class="net.sourceforge.atunes.kernel.actions.NewPlayListAction"/>
 	<bean id="nextPlayListAction" class="net.sourceforge.atunes.kernel.actions.NextPlayListAction"/>
 	<bean id="normalizeModeAction" class="net.sourceforge.atunes.kernel.actions.NormalizeModeAction"/>

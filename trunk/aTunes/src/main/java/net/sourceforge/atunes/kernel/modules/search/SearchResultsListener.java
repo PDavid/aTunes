@@ -30,34 +30,37 @@ import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
  */
 public final class SearchResultsListener implements ActionListener {
 
-    /** The controller. */
-    private SearchResultsController controller;
+	/** The controller. */
+	private final SearchResultsController controller;
 
-    /** The dialog. */
-    private SearchResultsDialog dialog;
+	/** The dialog. */
+	private final SearchResultsDialog dialog;
 
-    /**
-     * Instantiates a new search results listener.
-     * 
-     * @param controller
-     *            the controller
-     * @param dialog
-     *            the dialog
-     */
-    SearchResultsListener(SearchResultsController controller, SearchResultsDialog dialog) {
-        this.controller = controller;
-        this.dialog = dialog;
-    }
+	/**
+	 * Instantiates a new search results listener.
+	 * 
+	 * @param controller
+	 *            the controller
+	 * @param dialog
+	 *            the dialog
+	 */
+	SearchResultsListener(final SearchResultsController controller,
+			final SearchResultsDialog dialog) {
+		this.controller = controller;
+		this.dialog = dialog;
+	}
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(dialog.getShowElementInfo())) {
-            controller.showInfo();
-        } else if (e.getSource().equals(dialog.getAddToCurrentPlayList())) {
-            controller.addToPlayList();
-        } else if (e.getSource().equals(dialog.getAddToNewPlayList())) {
-            controller.addToNewPlayList();
-        }
-    }
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+		if (e.getSource().equals(this.dialog.getShowElementInfo())) {
+			this.controller.showInfo();
+		} else if (e.getSource().equals(this.dialog.getAddToCurrentPlayList())) {
+			this.controller.addToPlayList();
+		} else if (e.getSource().equals(this.dialog.getAddToNewPlayList())) {
+			this.controller.addToNewPlayList();
+		} else if (e.getSource().equals(this.dialog.getCreateDynamicPlayList())) {
+			this.controller.createDynamicPlayList();
+		}
+	}
 
 }

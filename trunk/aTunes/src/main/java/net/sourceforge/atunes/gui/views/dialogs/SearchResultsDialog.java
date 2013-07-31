@@ -53,6 +53,9 @@ public final class SearchResultsDialog extends AbstractCustomDialog {
 	/** Button to add selected results to a new play list. */
 	private JButton addToNewPlayList;
 
+	/** Button create a new dynamic play list */
+	private JButton createDynamicPlayList;
+
 	/**
 	 * Instantiates a new search results dialog.
 	 * 
@@ -114,6 +117,8 @@ public final class SearchResultsDialog extends AbstractCustomDialog {
 				I18nUtils.getString("ADD_TO_PLAYLIST"));
 		this.addToNewPlayList = new JButton(
 				I18nUtils.getString("ADD_TO_NEW_PLAYLIST"));
+		this.createDynamicPlayList = new JButton(
+				I18nUtils.getString("CREATE_DYNAMIC_PLAYLIST"));
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -125,6 +130,8 @@ public final class SearchResultsDialog extends AbstractCustomDialog {
 		buttonsPanel.add(this.addToCurrentPlayList, c);
 		c.gridx = 2;
 		buttonsPanel.add(this.addToNewPlayList, c);
+		c.gridx = 3;
+		buttonsPanel.add(this.createDynamicPlayList, c);
 		return buttonsPanel;
 	}
 
@@ -162,6 +169,13 @@ public final class SearchResultsDialog extends AbstractCustomDialog {
 	 */
 	public JButton getAddToNewPlayList() {
 		return this.addToNewPlayList;
+	}
+
+	/**
+	 * @return the createDynamicPlayList
+	 */
+	public JButton getCreateDynamicPlayList() {
+		return this.createDynamicPlayList;
 	}
 
 }

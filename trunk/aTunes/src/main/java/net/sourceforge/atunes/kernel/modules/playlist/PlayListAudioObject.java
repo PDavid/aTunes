@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
@@ -28,64 +29,66 @@ import net.sourceforge.atunes.model.IPlayListAudioObject;
 
 /**
  * An audio object in a position of play list
+ * 
  * @author alex
- *
+ * 
  */
 public class PlayListAudioObject implements IPlayListAudioObject {
 
-    private IAudioObject audioObject;
-    private int position;
+	private IAudioObject audioObject;
+	private int position;
 
-    /**
-     * @return the audioObject
-     */
-    @Override
+	/**
+	 * @return the audioObject
+	 */
+	@Override
 	public IAudioObject getAudioObject() {
-        return audioObject;
-    }
+		return this.audioObject;
+	}
 
-    /**
-     * @param audioObject
-     *            the audioObject to set
-     */
-    public void setAudioObject(IAudioObject audioObject) {
-        this.audioObject = audioObject;
-    }
+	/**
+	 * @param audioObject
+	 *            the audioObject to set
+	 */
+	public void setAudioObject(final IAudioObject audioObject) {
+		this.audioObject = audioObject;
+	}
 
-    /**
-     * @return the position
-     */
-    @Override
+	/**
+	 * @return the position
+	 */
+	@Override
 	public int getPosition() {
-        return position;
-    }
+		return this.position;
+	}
 
-    /**
-     * @param position
-     *            the position to set
-     */
-    public void setPosition(int position) {
-        this.position = position;
-    }
+	/**
+	 * @param position
+	 *            the position to set
+	 */
+	public void setPosition(final int position) {
+		this.position = position;
+	}
 
-    /**
-     * Return a list of objects from a list of audio objects and an initial
-     * position
-     * 
-     * @param startPosition
-     * @param audioObjects
-     * @return
-     */
-    static List<IPlayListAudioObject> getList(int startPosition, List<? extends IAudioObject> audioObjects) {
-        List<IPlayListAudioObject> result = new ArrayList<IPlayListAudioObject>();
-        int positionFromStart = 0;
-        for (IAudioObject ao : audioObjects) {
-            PlayListAudioObject plao = new PlayListAudioObject();
-            plao.setAudioObject(ao);
-            plao.setPosition(startPosition + positionFromStart);
-            result.add(plao);
-            positionFromStart++;
-        }
-        return result;
-    }
+	/**
+	 * Return a list of objects from a list of audio objects and an initial
+	 * position
+	 * 
+	 * @param startPosition
+	 * @param audioObjects
+	 * @return
+	 */
+	static List<IPlayListAudioObject> getList(final int startPosition,
+			final Collection<? extends IAudioObject> audioObjects) {
+		List<IPlayListAudioObject> result = new ArrayList<IPlayListAudioObject>();
+		int positionFromStart = 0;
+		for (IAudioObject ao : audioObjects) {
+			PlayListAudioObject plao = new PlayListAudioObject();
+			plao.setAudioObject(ao);
+			plao.setPosition(startPosition + positionFromStart);
+			result.add(plao);
+			positionFromStart++;
+		}
+		return result;
+	}
 }
