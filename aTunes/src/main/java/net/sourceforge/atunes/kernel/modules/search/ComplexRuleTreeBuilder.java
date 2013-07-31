@@ -53,7 +53,7 @@ public class ComplexRuleTreeBuilder {
 	 * @param andLogicalSearchOperator
 	 */
 	public void setAndLogicalSearchOperator(
-			ILogicalSearchOperator andLogicalSearchOperator) {
+			final ILogicalSearchOperator andLogicalSearchOperator) {
 		this.andLogicalSearchOperator = andLogicalSearchOperator;
 	}
 
@@ -61,7 +61,7 @@ public class ComplexRuleTreeBuilder {
 	 * @param orLogicalSearchOperator
 	 */
 	public void setOrLogicalSearchOperator(
-			ILogicalSearchOperator orLogicalSearchOperator) {
+			final ILogicalSearchOperator orLogicalSearchOperator) {
 		this.orLogicalSearchOperator = orLogicalSearchOperator;
 	}
 
@@ -69,7 +69,7 @@ public class ComplexRuleTreeBuilder {
 	 * @param notLogicalSearchOperator
 	 */
 	public void setNotLogicalSearchOperator(
-			ILogicalSearchOperator notLogicalSearchOperator) {
+			final ILogicalSearchOperator notLogicalSearchOperator) {
 		this.notLogicalSearchOperator = notLogicalSearchOperator;
 	}
 
@@ -79,8 +79,8 @@ public class ComplexRuleTreeBuilder {
 	 * @param dialog
 	 * @return
 	 */
-	DefaultMutableTreeNode addAndOperator(CustomSearchDialog dialog) {
-		return addLogicalOperator(dialog, andLogicalSearchOperator);
+	DefaultMutableTreeNode addAndOperator(final CustomSearchDialog dialog) {
+		return addLogicalOperator(dialog, this.andLogicalSearchOperator);
 	}
 
 	/**
@@ -89,8 +89,8 @@ public class ComplexRuleTreeBuilder {
 	 * @param dialog
 	 * @return
 	 */
-	DefaultMutableTreeNode addOrOperator(CustomSearchDialog dialog) {
-		return addLogicalOperator(dialog, orLogicalSearchOperator);
+	DefaultMutableTreeNode addOrOperator(final CustomSearchDialog dialog) {
+		return addLogicalOperator(dialog, this.orLogicalSearchOperator);
 	}
 
 	/**
@@ -99,14 +99,14 @@ public class ComplexRuleTreeBuilder {
 	 * @param dialog
 	 * @return
 	 */
-	DefaultMutableTreeNode addNotOperator(CustomSearchDialog dialog) {
-		return addLogicalOperator(dialog, notLogicalSearchOperator);
+	DefaultMutableTreeNode addNotOperator(final CustomSearchDialog dialog) {
+		return addLogicalOperator(dialog, this.notLogicalSearchOperator);
 	}
 
 	/**
 	 * Creates a simple rule.
 	 */
-	void createSimpleRule(CustomSearchDialog dialog) {
+	void createSimpleRule(final CustomSearchDialog dialog) {
 		ISearchField<?, ?> field = (ISearchField<?, ?>) dialog
 				.getSimpleRulesList().getSelectedItem();
 		ISearchOperator operator = (ISearchOperator) dialog
@@ -165,7 +165,8 @@ public class ComplexRuleTreeBuilder {
 	}
 
 	private DefaultMutableTreeNode createLogicalOperator(
-			CustomSearchDialog dialog, ISearchRule rule1, ISearchRule rule2) {
+			final CustomSearchDialog dialog, final ISearchRule rule1,
+			final ISearchRule rule2) {
 		if (rule1.getField().getClass().equals(rule2.getField().getClass())) {
 			// Same class -> return OR
 			return addOrOperator(dialog);
@@ -180,7 +181,7 @@ public class ComplexRuleTreeBuilder {
 	 * 
 	 * @param dialog
 	 */
-	void removeRuleNode(CustomSearchDialog dialog) {
+	void removeRuleNode(final CustomSearchDialog dialog) {
 		// Get selected node and parent
 		DefaultTreeModel model = ((DefaultTreeModel) dialog
 				.getComplexRulesTree().getModel());
@@ -213,7 +214,8 @@ public class ComplexRuleTreeBuilder {
 	 * @return node of logical operator
 	 */
 	private DefaultMutableTreeNode addLogicalOperator(
-			CustomSearchDialog dialog, final ILogicalSearchOperator operator) {
+			final CustomSearchDialog dialog,
+			final ILogicalSearchOperator operator) {
 		// Get selected node and parent
 		DefaultTreeModel model = ((DefaultTreeModel) dialog
 				.getComplexRulesTree().getModel());
@@ -261,14 +263,14 @@ public class ComplexRuleTreeBuilder {
 		return logicalNode;
 	}
 
-	ISearchNode getSearchTree(CustomSearchDialog dialog)
+	ISearchNode getSearchTree(final CustomSearchDialog dialog)
 			throws IllegalStateException {
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) dialog
 				.getComplexRulesTree().getModel().getRoot();
-		return createQuery(root);
+		return root != null ? createQuery(root) : null;
 	}
 
-	private ISearchNode createQuery(DefaultMutableTreeNode node)
+	private ISearchNode createQuery(final DefaultMutableTreeNode node)
 			throws IllegalStateException {
 		Object object = node.getUserObject();
 		if (object instanceof ILogicalSearchOperator) {

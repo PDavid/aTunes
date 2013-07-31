@@ -43,6 +43,7 @@ import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.ISearchNode;
 
 /**
  * Controller for the search result dialog.
@@ -57,6 +58,8 @@ public final class SearchResultsController extends
 	private IPlayListHandler playListHandler;
 
 	private ILookAndFeelManager lookAndFeelManager;
+
+	private ISearchNode query;
 
 	private IBeanFactory beanFactory;
 
@@ -73,38 +76,42 @@ public final class SearchResultsController extends
 	 * @param searchResultsColumnSet
 	 */
 	public void setSearchResultsColumnSet(
-			SearchResultsColumnSet searchResultsColumnSet) {
+			final SearchResultsColumnSet searchResultsColumnSet) {
 		this.searchResultsColumnSet = searchResultsColumnSet;
 	}
 
 	/**
 	 * @param playListHandler
 	 */
-	public void setPlayListHandler(IPlayListHandler playListHandler) {
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
 
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
 	/**
 	 * @param beanFactory
 	 */
-	public void setBeanFactory(IBeanFactory beanFactory) {
+	public void setBeanFactory(final IBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
 
 	/**
 	 * Shows dialog with search results.
 	 * 
+	 * @param query
 	 * @param resultsList
 	 *            the results
 	 */
-	public void showSearchResults(final Collection<IAudioObject> resultsList) {
+	public void showSearchResults(final ISearchNode query,
+			final Collection<IAudioObject> resultsList) {
+		this.query = query;
 		this.results = new ArrayList<IAudioObject>(resultsList);
 
 		SearchResultTableModel tableModel = (SearchResultTableModel) getComponentControlled()
@@ -112,13 +119,13 @@ public final class SearchResultsController extends
 
 		IColumn<?> sortedColumn = this.searchResultsColumnSet.getSortedColumn();
 		if (sortedColumn != null) {
-			Collections.sort(results, sortedColumn.getComparator());
+			Collections.sort(this.results, sortedColumn.getComparator());
 		} else {
-			this.beanFactory.getBean(IAudioObjectComparator.class)
-					.sort(results);
+			this.beanFactory.getBean(IAudioObjectComparator.class).sort(
+					this.results);
 		}
 
-		tableModel.setResults(results);
+		tableModel.setResults(this.results);
 		tableModel.refresh(TableModelEvent.UPDATE);
 		getComponentControlled().setVisible(true);
 	}
@@ -135,8 +142,8 @@ public final class SearchResultsController extends
 		columnModel.setTable(table);
 		columnModel.setModel(tableModel);
 		columnModel.setBeanFactory(this.beanFactory);
-		columnModel.setColumnSet(searchResultsColumnSet);
-		searchResultsColumnSet.setSearchResultColumnModel(columnModel);
+		columnModel.setColumnSet(this.searchResultsColumnSet);
+		this.searchResultsColumnSet.setSearchResultColumnModel(columnModel);
 		columnModel.initialize();
 		table.setColumnModel(columnModel);
 
@@ -162,6 +169,8 @@ public final class SearchResultsController extends
 		getComponentControlled().getAddToCurrentPlayList().addActionListener(
 				listener);
 		getComponentControlled().getAddToNewPlayList().addActionListener(
+				listener);
+		getComponentControlled().getCreateDynamicPlayList().addActionListener(
 				listener);
 
 	}
@@ -218,5 +227,9 @@ public final class SearchResultsController extends
 					.convertRowIndexToModel(row)));
 		}
 		return selectedResults;
+	}
+
+	protected void createDynamicPlayList() {
+		this.playListHandler.newDynamicPlayList(this.query, this.results);
 	}
 }

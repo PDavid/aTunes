@@ -35,4 +35,9 @@ public interface ISearchNode {
 	 */
 	Collection<IAudioObject> evaluate();
 
+	/**
+	 * @return representation to be serialized
+	 */
+	ISearchNodeRepresentation getRepresentation();
+
 }

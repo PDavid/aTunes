@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.GuiUtils;
@@ -43,7 +44,10 @@ import net.sourceforge.atunes.model.IPlayListEventListener;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.ISearchHandler;
+import net.sourceforge.atunes.model.ISearchNode;
 import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.utils.CollectionUtils;
@@ -95,6 +99,15 @@ public final class PlayListHandler extends AbstractHandler implements
 	private IContextHandler contextHandler;
 
 	private IDialogFactory dialogFactory;
+
+	private ISearchHandler searchHandler;
+
+	/**
+	 * @param searchHandler
+	 */
+	public void setSearchHandler(final ISearchHandler searchHandler) {
+		this.searchHandler = searchHandler;
+	}
 
 	/**
 	 * @param dialogFactory
@@ -266,16 +279,26 @@ public final class PlayListHandler extends AbstractHandler implements
 		playListsChanged();
 	}
 
+	@Override
+	public void newDynamicPlayList(final ISearchNode query,
+			final Collection<IAudioObject> initialObjects) {
+		String name = query.toString();
+		addNewPlayList(name, this.playListCreator.getNewDynamicPlayList(name,
+				query, initialObjects, 0));
+		playListsChanged();
+	}
+
 	private void addNewPlayList(final String name, final IPlayList playList) {
 		// Each play list added to container must have its listeners, state
 		// player and mode
 		playList.setStatePlayer(this.statePlayer);
-		playList.setMode(PlayListMode.getPlayListMode((PlayList) playList,
+		playList.setMode(PlayListMode.getPlayListMode(playList,
 				this.statePlayer));
 		playList.setPlayListEventListeners(this.playListEventListeners);
 
 		this.playListsContainer.addPlayList(playList);
-		this.playListTabController.newPlayList(name);
+		this.playListTabController.newPlayList(name,
+				getBean(PlayListIconSelector.class).getIcon(playList));
 	}
 
 	@Override
@@ -728,12 +751,6 @@ public final class PlayListHandler extends AbstractHandler implements
 	}
 
 	@Override
-	public void favoritesChanged() {
-		// Update playlist to remove favorite icon
-		refreshPlayList();
-	}
-
-	@Override
 	public void deviceDisconnected(final String location) {
 		getBean(PlayListRemoverFromDevice.class).removeAudioObjectsOfDevice(
 				getVisiblePlayList(), location);
@@ -837,10 +854,23 @@ public final class PlayListHandler extends AbstractHandler implements
 		// Add playlists
 		this.playListsContainer.clear();
 		for (IPlayList playlist : listOfPlayLists.getPlayLists()) {
-			addNewPlayList(this.playListNameCreator.getNameForPlaylist(
-					this.playListsContainer, playlist),
-					this.playListCreator
-							.replaceCachedLocalAudioObjects(playlist));
+			if (playlist instanceof DynamicPlayList) {
+				String name = this.playListNameCreator.getNameForPlaylist(
+						this.playListsContainer, playlist);
+				ISearchNode query = ((DynamicPlayList) playlist).getQuery()
+						.createSearchQuery(getBeanFactory());
+				Collection<IAudioObject> initialObjects = this.searchHandler
+						.search(query);
+				addNewPlayList(name,
+						this.playListCreator.getNewDynamicPlayList(name, query,
+								initialObjects,
+								((DynamicPlayList) playlist).getPointer()));
+
+			} else {
+				addNewPlayList(this.playListNameCreator.getNameForPlaylist(
+						this.playListsContainer, playlist),
+						this.playListCreator.replaceAudioObjects(playlist));
+			}
 		}
 		// Initially active play list and visible play list are the same
 		this.playListsContainer.setActivePlayListIndex(selected);
@@ -850,5 +880,34 @@ public final class PlayListHandler extends AbstractHandler implements
 		setPlayList(this.playListsContainer.getPlayListAt(selected));
 
 		this.playListsRetrievedFromCache = null;
+	}
+
+	@Override
+	public void favoritesChanged() {
+		// Recalculate dynamic play lists
+		for (int i = 0; i < this.playListsContainer.getPlayListsCount(); i++) {
+			if (this.playListsContainer.getPlayListAt(i) instanceof DynamicPlayList) {
+				recalculatePlayList((DynamicPlayList) this.playListsContainer
+						.getPlayListAt(i));
+			}
+		}
+		// Update playlist to remove favorite icon
+		refreshPlayList();
+	}
+
+	@Override
+	public void repositoryChanged(final IRepository repository) {
+		// Recalculate dynamic play lists
+		for (int i = 0; i < this.playListsContainer.getPlayListsCount(); i++) {
+			if (this.playListsContainer.getPlayListAt(i) instanceof DynamicPlayList) {
+				recalculatePlayList((DynamicPlayList) this.playListsContainer
+						.getPlayListAt(i));
+			}
+		}
+	}
+
+	private void recalculatePlayList(final DynamicPlayList playList) {
+		playList.replaceContent(this.searchHandler.search(playList.getQuery()
+				.createSearchQuery(getBeanFactory())));
 	}
 }

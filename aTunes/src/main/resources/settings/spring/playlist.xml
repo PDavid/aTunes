@@ -40,5 +40,6 @@
 	<bean class="net.sourceforge.atunes.kernel.modules.playlist.M3UPlayListWriter" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.playlist.PlayListWriter" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.playlist.PlayListReader" scope="prototype"/>
-	
+
+	<bean class="net.sourceforge.atunes.kernel.modules.playlist.PlayListIconSelector" scope="prototype"/>	
 </beans>

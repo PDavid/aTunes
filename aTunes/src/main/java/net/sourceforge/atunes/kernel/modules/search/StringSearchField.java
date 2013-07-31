@@ -27,6 +27,13 @@ import net.sourceforge.atunes.model.ISearchBinaryOperator;
 import net.sourceforge.atunes.model.ISearchOperator;
 import net.sourceforge.atunes.utils.CollectionUtils;
 
+/**
+ * Search field for string properties for objects of type O
+ * 
+ * @author alex
+ * 
+ * @param <O>
+ */
 public abstract class StringSearchField<O> extends
 		GenericSearchField<O, String> {
 
@@ -38,7 +45,7 @@ public abstract class StringSearchField<O> extends
 	 * @param stringContainsSearchOperator
 	 */
 	public void setStringContainsSearchOperator(
-			ISearchBinaryOperator<String> stringContainsSearchOperator) {
+			final ISearchBinaryOperator<String> stringContainsSearchOperator) {
 		this.stringContainsSearchOperator = stringContainsSearchOperator;
 	}
 
@@ -46,19 +53,20 @@ public abstract class StringSearchField<O> extends
 	 * @param stringEqualsSearchOperator
 	 */
 	public void setStringEqualsSearchOperator(
-			ISearchBinaryOperator<String> stringEqualsSearchOperator) {
+			final ISearchBinaryOperator<String> stringEqualsSearchOperator) {
 		this.stringEqualsSearchOperator = stringEqualsSearchOperator;
 	}
 
 	@Override
 	public List<ISearchOperator> getOperators() {
 		return CollectionUtils.fillCollectionWithElements(
-				new ArrayList<ISearchOperator>(), stringEqualsSearchOperator,
-				stringContainsSearchOperator);
+				new ArrayList<ISearchOperator>(),
+				this.stringEqualsSearchOperator,
+				this.stringContainsSearchOperator);
 	}
 
 	@Override
-	public String transform(String originalValue) {
+	public String transform(final String originalValue) {
 		return originalValue;
 	}
 }

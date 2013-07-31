@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
+import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
@@ -41,6 +42,11 @@ class VoidPlayList implements IPlayList {
 	 * 
 	 */
 	private static final long serialVersionUID = 3581989108482549526L;
+
+	@Override
+	public boolean canBeChangedByUser() {
+		return false;
+	}
 
 	@Override
 	public void moveRowTo(final int sourceRow, final int targetRow) {
@@ -163,7 +169,7 @@ class VoidPlayList implements IPlayList {
 	}
 
 	@Override
-	public void remove(final List<? extends IAudioObject> audioObjects) {
+	public void remove(final Collection<? extends IAudioObject> audioObjects) {
 	}
 
 	@Override
@@ -181,5 +187,9 @@ class VoidPlayList implements IPlayList {
 
 	@Override
 	public void setStatePlayer(final IStatePlayer statePlayer) {
+	}
+
+	@Override
+	public void saveInternalData() {
 	}
 }

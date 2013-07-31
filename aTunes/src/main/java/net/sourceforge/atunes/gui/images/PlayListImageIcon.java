@@ -18,22 +18,38 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.images;
+
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import javax.swing.ImageIcon;
 
 /**
- * Unary operator for searches
+ * Icon for play list
  * 
  * @author alex
  * 
- * @param <T>
  */
-public interface ISearchUnaryOperator<T> extends ISearchOperator {
+public class PlayListImageIcon extends CachedIconFactory {
 
 	/**
-	 * Evaluates operator with given data
 	 * 
-	 * @param o1
-	 * @return
 	 */
-	boolean evaluate(T o1);
+	private static final long serialVersionUID = -9026267553013591250L;
+
+	private static final int WIDTH = 16;
+	private static final int HEIGHT = 16;
+
+	@Override
+	protected ImageIcon createIcon(final Color color) {
+		int x = 2;
+		int widht = WIDTH - x * 2;
+		int height = 1;
+		Rectangle p1 = new Rectangle(x, 3, widht, height);
+		Rectangle p2 = new Rectangle(x, 6, widht, height);
+		Rectangle p3 = new Rectangle(x, 9, widht, height);
+		Rectangle p4 = new Rectangle(x, 12, widht, height);
+		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, p1, p2, p3, p4);
+	}
 }

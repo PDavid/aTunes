@@ -27,6 +27,13 @@ import net.sourceforge.atunes.model.ISearchBinaryOperator;
 import net.sourceforge.atunes.model.ISearchOperator;
 import net.sourceforge.atunes.utils.CollectionUtils;
 
+/**
+ * Search field for long properties for objects of type O
+ * 
+ * @author alex
+ * 
+ * @param <O>
+ */
 public abstract class LongSearchField<O> extends GenericSearchField<O, Long> {
 
 	private ISearchBinaryOperator<Long> longEqualsSearchOperator;
@@ -39,7 +46,7 @@ public abstract class LongSearchField<O> extends GenericSearchField<O, Long> {
 	 * @param longEqualsSearchOperator
 	 */
 	public void setLongEqualsSearchOperator(
-			ISearchBinaryOperator<Long> longEqualsSearchOperator) {
+			final ISearchBinaryOperator<Long> longEqualsSearchOperator) {
 		this.longEqualsSearchOperator = longEqualsSearchOperator;
 	}
 
@@ -47,7 +54,7 @@ public abstract class LongSearchField<O> extends GenericSearchField<O, Long> {
 	 * @param longGreaterThanSearchOperator
 	 */
 	public void setLongGreaterThanSearchOperator(
-			ISearchBinaryOperator<Long> longGreaterThanSearchOperator) {
+			final ISearchBinaryOperator<Long> longGreaterThanSearchOperator) {
 		this.longGreaterThanSearchOperator = longGreaterThanSearchOperator;
 	}
 
@@ -55,19 +62,20 @@ public abstract class LongSearchField<O> extends GenericSearchField<O, Long> {
 	 * @param longLessThanSearchOperator
 	 */
 	public void setLongLessThanSearchOperator(
-			ISearchBinaryOperator<Long> longLessThanSearchOperator) {
+			final ISearchBinaryOperator<Long> longLessThanSearchOperator) {
 		this.longLessThanSearchOperator = longLessThanSearchOperator;
 	}
 
 	@Override
 	public List<ISearchOperator> getOperators() {
 		return CollectionUtils.fillCollectionWithElements(
-				new ArrayList<ISearchOperator>(), longEqualsSearchOperator,
-				longLessThanSearchOperator, longGreaterThanSearchOperator);
+				new ArrayList<ISearchOperator>(),
+				this.longEqualsSearchOperator, this.longLessThanSearchOperator,
+				this.longGreaterThanSearchOperator);
 	}
 
 	@Override
-	public Long transform(String originalValue) {
+	public Long transform(final String originalValue) {
 		return Long.parseLong(originalValue);
 	}
 }

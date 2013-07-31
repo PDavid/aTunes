@@ -22,16 +22,17 @@ package net.sourceforge.atunes.model;
 
 import java.util.Collection;
 
-
 /**
  * Factory of beans (used to avoid direct references to Spring context)
+ * 
  * @author alex
- *
+ * 
  */
 public interface IBeanFactory {
 
 	/**
 	 * Get bean of given class
+	 * 
 	 * @param <T>
 	 * @param beanType
 	 * @return
@@ -40,6 +41,7 @@ public interface IBeanFactory {
 
 	/**
 	 * Returns all beans of a given type
+	 * 
 	 * @param <T>
 	 * @param beanType
 	 * @return
@@ -48,10 +50,22 @@ public interface IBeanFactory {
 
 	/**
 	 * Returns bean with given name and type
+	 * 
 	 * @param <T>
 	 * @param name
 	 * @param clazz
 	 * @return
 	 */
 	<T> T getBean(String name, Class<T> clazz);
+
+	/**
+	 * Returns bean with given class name and type
+	 * 
+	 * @param <T>
+	 * @param className
+	 * @param clazz
+	 * @return
+	 */
+	<T> T getBeanByClassName(String className, Class<T> clazz);
+
 }

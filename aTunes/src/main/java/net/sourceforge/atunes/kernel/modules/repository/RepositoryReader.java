@@ -41,6 +41,7 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepository;
+import net.sourceforge.atunes.model.IRepositoryListener;
 import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
@@ -244,7 +245,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 				.getBean(RepositoryReadLoader.class);
 		this.currentLoader.setRepositoryLoaderListener(this);
 		this.currentLoader.start(new RepositoryTransaction(this.repository,
-				this.repositoryHandler), folders,
+				this.beanFactory.getBeans(IRepositoryListener.class)), folders,
 				reload ? null : oldRepository, this.repository);
 	}
 
@@ -382,8 +383,9 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 				.setDisableRepositoryActions(true);
 		this.currentLoader.setRepositoryLoaderListener(this);
 		this.currentLoader.start(new RepositoryTransaction(this.repository,
-				this.repositoryHandler), oldRepository.getRepositoryFolders(),
-				oldRepository, this.repository);
+				this.beanFactory.getBeans(IRepositoryListener.class)),
+				oldRepository.getRepositoryFolders(), oldRepository,
+				this.repository);
 	}
 
 	@Override

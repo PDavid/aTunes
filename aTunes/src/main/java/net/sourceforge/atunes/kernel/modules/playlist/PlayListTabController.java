@@ -20,11 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.util.List;
-
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
 
 class PlayListTabController extends
@@ -107,12 +106,12 @@ class PlayListTabController extends
 	 * @param name
 	 *            the name
 	 */
-	void newPlayList(final String name) {
+	void newPlayList(final String name, final IColorMutableImageIcon icon) {
 		GuiUtils.callInEventDispatchThread(new Runnable() {
 			@Override
 			public void run() {
-				PlayListTabController.this.playListSelectorWrapper
-						.newPlayList(name);
+				PlayListTabController.this.playListSelectorWrapper.newPlayList(
+						name, icon);
 			}
 		});
 	}
@@ -127,15 +126,6 @@ class PlayListTabController extends
 	 */
 	void renamePlayList(final int index, final String newName) {
 		this.playListSelectorWrapper.renamePlayList(index, newName);
-	}
-
-	/**
-	 * Return names of play lists.
-	 * 
-	 * @return the names of play lists
-	 */
-	List<String> getNamesOfPlayLists() {
-		return this.playListSelectorWrapper.getNamesOfPlayLists();
 	}
 
 	/**

@@ -36,6 +36,15 @@ public interface ISearchHandler extends IHandler {
 	public void startSearch();
 
 	/**
+	 * Starts search dialog to create a query (search will not be executed)
+	 * 
+	 * @param title
+	 * @param text
+	 * @return created query
+	 */
+	public ISearchNode createQuery(String title, String text);
+
+	/**
 	 * Executes a query to find audio objects
 	 * 
 	 * @param query
@@ -46,7 +55,9 @@ public interface ISearchHandler extends IHandler {
 	/**
 	 * Shows search results to user
 	 * 
+	 * @param query
 	 * @param result
 	 */
-	public void showSearchResults(Collection<IAudioObject> result);
+	public void showSearchResults(ISearchNode query,
+			Collection<IAudioObject> result);
 }

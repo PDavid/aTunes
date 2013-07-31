@@ -25,6 +25,7 @@ import java.util.List;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ISearchField;
 import net.sourceforge.atunes.model.ISearchNode;
+import net.sourceforge.atunes.model.ISearchNodeRepresentation;
 import net.sourceforge.atunes.model.ISearchOperator;
 import net.sourceforge.atunes.model.ISearchRule;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -99,12 +100,17 @@ public final class SearchRule implements ISearchRule, ISearchNode {
 
 	@Override
 	public final List<IAudioObject> evaluate() {
-		return field.evaluate(operator, value);
+		return this.field.evaluate(this.operator, this.value);
 	}
 
 	@Override
 	public String toString() {
 		return StringUtils.getString("(", this.field.getName(), " ",
 				this.operator.getDescription(), " ", this.value, ")");
+	}
+
+	@Override
+	public ISearchNodeRepresentation getRepresentation() {
+		return new SearchRuleRepresentation(this);
 	}
 }

@@ -32,8 +32,9 @@ import org.springframework.context.ApplicationContextAware;
 
 /**
  * Access beans of application context
+ * 
  * @author alex
- *
+ * 
  */
 public class BeanFactory implements IBeanFactory, ApplicationContextAware {
 
@@ -44,7 +45,8 @@ public class BeanFactory implements IBeanFactory, ApplicationContextAware {
 	/**
 	 * @param applicationArguments
 	 */
-	public void setApplicationArguments(final IApplicationArguments applicationArguments) {
+	public void setApplicationArguments(
+			final IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
 
@@ -56,10 +58,10 @@ public class BeanFactory implements IBeanFactory, ApplicationContextAware {
 	@Override
 	public <T> T getBean(final Class<T> beanType) {
 		try {
-			return context.getBean(beanType);
+			return this.context.getBean(beanType);
 		} catch (BeansException e) {
-			if (applicationArguments.isDebug()) {
-				context.getBean(IKernel.class).terminateWithError(e);
+			if (this.applicationArguments.isDebug()) {
+				this.context.getBean(IKernel.class).terminateWithError(e);
 			}
 			throw e;
 		}
@@ -68,22 +70,41 @@ public class BeanFactory implements IBeanFactory, ApplicationContextAware {
 	@Override
 	public <T> T getBean(final String name, final Class<T> clazz) {
 		try {
-			return context.getBean(name, clazz);
+			return this.context.getBean(name, clazz);
 		} catch (BeansException e) {
-			if (applicationArguments.isDebug()) {
-				context.getBean(IKernel.class).terminateWithError(e);
+			if (this.applicationArguments.isDebug()) {
+				this.context.getBean(IKernel.class).terminateWithError(e);
 			}
 			throw e;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getBeanByClassName(final String className, final Class<T> clazz) {
+		try {
+			Class<?> classLoaded = Class.forName(className);
+			return (T) this.context.getBean(classLoaded);
+		} catch (BeansException e) {
+			if (this.applicationArguments.isDebug()) {
+				this.context.getBean(IKernel.class).terminateWithError(e);
+			}
+			throw e;
+		} catch (ClassNotFoundException e) {
+			if (this.applicationArguments.isDebug()) {
+				this.context.getBean(IKernel.class).terminateWithError(e);
+			}
+			return null;
 		}
 	}
 
 	@Override
 	public <T> Collection<T> getBeans(final Class<T> beanType) {
 		try {
-			return context.getBeansOfType(beanType).values();
+			return this.context.getBeansOfType(beanType).values();
 		} catch (BeansException e) {
-			if (applicationArguments.isDebug()) {
-				context.getBean(IKernel.class).terminateWithError(e);
+			if (this.applicationArguments.isDebug()) {
+				this.context.getBean(IKernel.class).terminateWithError(e);
 			}
 			throw e;
 		}

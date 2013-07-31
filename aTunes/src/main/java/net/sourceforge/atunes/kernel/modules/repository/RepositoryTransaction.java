@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
+import java.util.Collection;
+
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryListener;
 import net.sourceforge.atunes.model.IRepositoryTransaction;
@@ -29,41 +31,49 @@ import org.joda.time.DateTime;
 
 /**
  * A transaction to make changes in repository
+ * 
  * @author alex
- *
+ * 
  */
 final class RepositoryTransaction implements IRepositoryTransaction {
-	
-	private IRepository repository;
-	private IRepositoryListener listener;
+
+	private final IRepository repository;
+	private final Collection<IRepositoryListener> listeners;
 	private volatile boolean pending;
-	
+
 	/**
 	 * Creates and starts a new repository transaction
+	 * 
 	 * @param repository
-	 * @param listener
+	 * @param listeners
 	 */
-	public RepositoryTransaction(IRepository repository, IRepositoryListener listener) {
+	public RepositoryTransaction(final IRepository repository,
+			final Collection<IRepositoryListener> listeners) {
 		this.repository = repository;
-		this.listener = listener;
+		this.listeners = listeners;
 		this.pending = true;
-		Logger.debug("Creating new repository transaction: ", new DateTime().toString());
+		Logger.debug("Creating new repository transaction: ",
+				new DateTime().toString());
 	}
-	
+
 	/**
 	 * Called when transaction is finished
 	 */
 	@Override
 	public void finishTransaction() {
-		if (listener != null) {
-			listener.repositoryChanged(this.repository);
+		if (this.listeners != null) {
+			for (IRepositoryListener listener : this.listeners) {
+				listener.repositoryChanged(this.repository);
+			}
 		}
 		this.pending = false;
-		Logger.debug("Finished repository transaction: ", new DateTime().toString());
+		Logger.debug("Finished repository transaction: ",
+				new DateTime().toString());
 	}
-	
+
 	/**
 	 * Returns if transaction has finished (returns false) or not (returns true)
+	 * 
 	 * @return
 	 */
 	@Override

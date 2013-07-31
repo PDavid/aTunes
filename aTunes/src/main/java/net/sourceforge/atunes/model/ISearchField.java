@@ -28,6 +28,8 @@ import java.util.List;
  * 
  * @author alex
  * 
+ * @param <O>
+ * @param <F>
  */
 public interface ISearchField<O, F> {
 
@@ -73,5 +75,4 @@ public interface ISearchField<O, F> {
 	 * @return value for evaluation
 	 */
 	F getValueForEvaluation(O object);
-
 }

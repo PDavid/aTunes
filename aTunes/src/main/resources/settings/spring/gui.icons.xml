@@ -26,6 +26,7 @@
 	<bean id="audioFileSmallIcon" class="net.sourceforge.atunes.gui.images.AudioFileImageSmallIcon"/>
 	<bean id="dateIcon" class="net.sourceforge.atunes.gui.images.DateImageIcon"/>
 	<bean id="deviceIcon" class="net.sourceforge.atunes.gui.images.DeviceImageIcon"/>
+	<bean id="dynamicPlayListIcon" class="net.sourceforge.atunes.gui.images.DynamicPlayListIcon"/>
 	<bean id="downloadIcon" class="net.sourceforge.atunes.gui.images.DownloadImageIcon"/>
 	<bean id="equalizerIcon" class="net.sourceforge.atunes.gui.images.EqualizerImageIcon"/>
 	<bean id="eventIcon" class="net.sourceforge.atunes.gui.images.EventImageIcon"/>
@@ -46,6 +47,7 @@
 	<bean id="pauseIcon" class="net.sourceforge.atunes.gui.images.PauseImageIcon"/>
 	<bean id="pauseTrayIcon" class="net.sourceforge.atunes.gui.images.PauseTrayImageIcon"/>
 	<bean id="playIcon" class="net.sourceforge.atunes.gui.images.PlayImageIcon"/>
+	<bean id="playListIcon" class="net.sourceforge.atunes.gui.images.PlayListImageIcon"/>
 	<bean id="playTrayIcon" class="net.sourceforge.atunes.gui.images.PlayTrayImageIcon"/>
 	<bean id="playListPauseStateIcon" class="net.sourceforge.atunes.gui.images.PlayListPauseStateImageIcon"/>
 	<bean id="playListPlayStateIcon" class="net.sourceforge.atunes.gui.images.PlayListPlayStateImageIcon"/>

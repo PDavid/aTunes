@@ -27,7 +27,14 @@ import java.util.List;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILogicalSearchOperator;
 import net.sourceforge.atunes.model.ISearchNode;
+import net.sourceforge.atunes.model.ISearchNodeRepresentation;
 
+/**
+ * A logical operator to apply to operands
+ * 
+ * @author alex
+ * 
+ */
 public final class LogicalSearchNode implements ISearchNode {
 
 	private ILogicalSearchOperator operator;
@@ -37,19 +44,19 @@ public final class LogicalSearchNode implements ISearchNode {
 	/**
 	 * @param operator
 	 */
-	public void setOperator(ILogicalSearchOperator operator) {
+	public void setOperator(final ILogicalSearchOperator operator) {
 		this.operator = operator;
 	}
 
 	@Override
 	public final Collection<IAudioObject> evaluate() {
-		return operator.evaluate(children);
+		return this.operator.evaluate(this.children);
 	}
 
 	/**
 	 * @param node
 	 */
-	public void addChild(ISearchNode node) {
+	public void addChild(final ISearchNode node) {
 		this.children.add(node);
 	}
 
@@ -57,12 +64,31 @@ public final class LogicalSearchNode implements ISearchNode {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("(");
-		sb.append(operator.getDescription());
+		sb.append(this.operator.getDescription());
 		sb.append(" ");
-		for (ISearchNode child : children) {
+		for (ISearchNode child : this.children) {
 			sb.append(child);
 		}
 		sb.append(")");
 		return sb.toString();
+	}
+
+	@Override
+	public ISearchNodeRepresentation getRepresentation() {
+		return new LogicalSearchNodeRepresentation(this);
+	}
+
+	/**
+	 * @return children
+	 */
+	protected List<ISearchNode> getChildren() {
+		return this.children;
+	}
+
+	/**
+	 * @return operator
+	 */
+	protected ILogicalSearchOperator getOperator() {
+		return this.operator;
 	}
 }

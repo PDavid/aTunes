@@ -39,7 +39,7 @@ public interface ILogicalSearchOperator {
 	/**
 	 * Evaluates children nodes
 	 * 
-	 * @param childs
+	 * @param children
 	 * @return objects matching operation over children
 	 */
 	Collection<IAudioObject> evaluate(List<ISearchNode> children);

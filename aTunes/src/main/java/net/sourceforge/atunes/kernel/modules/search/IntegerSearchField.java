@@ -27,6 +27,13 @@ import net.sourceforge.atunes.model.ISearchBinaryOperator;
 import net.sourceforge.atunes.model.ISearchOperator;
 import net.sourceforge.atunes.utils.CollectionUtils;
 
+/**
+ * Search field for integer properties of objects of type O
+ * 
+ * @author alex
+ * 
+ * @param <O>
+ */
 public abstract class IntegerSearchField<O> extends
 		GenericSearchField<O, Integer> {
 
@@ -40,7 +47,7 @@ public abstract class IntegerSearchField<O> extends
 	 * @param integerEqualsSearchOperator
 	 */
 	public void setIntegerEqualsSearchOperator(
-			ISearchBinaryOperator<Integer> integerEqualsSearchOperator) {
+			final ISearchBinaryOperator<Integer> integerEqualsSearchOperator) {
 		this.integerEqualsSearchOperator = integerEqualsSearchOperator;
 	}
 
@@ -48,7 +55,7 @@ public abstract class IntegerSearchField<O> extends
 	 * @param integerGreaterThanSearchOperator
 	 */
 	public void setIntegerGreaterThanSearchOperator(
-			ISearchBinaryOperator<Integer> integerGreaterThanSearchOperator) {
+			final ISearchBinaryOperator<Integer> integerGreaterThanSearchOperator) {
 		this.integerGreaterThanSearchOperator = integerGreaterThanSearchOperator;
 	}
 
@@ -56,21 +63,21 @@ public abstract class IntegerSearchField<O> extends
 	 * @param integerLessThanSearchOperator
 	 */
 	public void setIntegerLessThanSearchOperator(
-			ISearchBinaryOperator<Integer> integerLessThanSearchOperator) {
+			final ISearchBinaryOperator<Integer> integerLessThanSearchOperator) {
 		this.integerLessThanSearchOperator = integerLessThanSearchOperator;
 	}
 
 	@Override
 	public List<ISearchOperator> getOperators() {
-		return CollectionUtils
-				.fillCollectionWithElements(new ArrayList<ISearchOperator>(),
-						integerEqualsSearchOperator,
-						integerLessThanSearchOperator,
-						integerGreaterThanSearchOperator);
+		return CollectionUtils.fillCollectionWithElements(
+				new ArrayList<ISearchOperator>(),
+				this.integerEqualsSearchOperator,
+				this.integerLessThanSearchOperator,
+				this.integerGreaterThanSearchOperator);
 	}
 
 	@Override
-	public Integer transform(String originalValue) {
+	public Integer transform(final String originalValue) {
 		return Integer.parseInt(originalValue);
 	}
 }
