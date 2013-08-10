@@ -49,98 +49,104 @@ import net.sourceforge.atunes.model.INavigationView;
  */
 public class RepositoryNavigationViewTablePopupMenu extends JPopupMenu {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 2696766030610743331L;
+	private static final long serialVersionUID = 2696766030610743331L;
 
-    private IBeanFactory beanFactory;
+	private IBeanFactory beanFactory;
 
-    private INavigationView repositoryNavigationView;
+	private INavigationView repositoryNavigationView;
 
-    /**
-     * Initializes menu
-     */
-    public void initialize() {
-	AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = beanFactory
-		.getBean("addToPlayListFromRepositoryNavigationView",
-			AddToPlayListAction.class);
-	addToPlayListAction.setAudioObjectsSource(repositoryNavigationView);
-	add(addToPlayListAction);
+	/**
+	 * 
+	 * Initializes menu
+	 */
+	public void initialize() {
+		AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = this.beanFactory
+				.getBean("addToPlayListFromRepositoryNavigationView",
+						AddToPlayListAction.class);
+		addToPlayListAction
+				.setAudioObjectsSource(this.repositoryNavigationView);
+		add(addToPlayListAction);
 
-	AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = beanFactory
-		.getBean(
-			"addToPlayListAfterCurrentAudioObjectFromRepositoryNavigationView",
-			AddToPlayListAfterCurrentAudioObjectAction.class);
-	addToPlayListAfterCurrentAudioObjectAction
-		.setAudioObjectsSource(repositoryNavigationView);
-	add(addToPlayListAfterCurrentAudioObjectAction);
+		AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = this.beanFactory
+				.getBean(
+						"addToPlayListAfterCurrentAudioObjectFromRepositoryNavigationView",
+						AddToPlayListAfterCurrentAudioObjectAction.class);
+		addToPlayListAfterCurrentAudioObjectAction
+				.setAudioObjectsSource(this.repositoryNavigationView);
+		add(addToPlayListAfterCurrentAudioObjectAction);
 
-	SetAsPlayListAction setAsPlayListAction = beanFactory.getBean(
-		"setAsPlaylistFromRepositoryNavigationView",
-		SetAsPlayListAction.class);
-	setAsPlayListAction.setAudioObjectsSource(repositoryNavigationView);
-	add(setAsPlayListAction);
+		SetAsPlayListAction setAsPlayListAction = this.beanFactory.getBean(
+				"setAsPlaylistFromRepositoryNavigationView",
+				SetAsPlayListAction.class);
+		setAsPlayListAction
+				.setAudioObjectsSource(this.repositoryNavigationView);
+		add(setAsPlayListAction);
 
-	add(beanFactory.getBean(PlayNowAction.class));
-	add(new JSeparator());
-	add(beanFactory.getBean(ShowNavigatorTableItemInfoAction.class));
-	add(new JSeparator());
+		add(this.beanFactory.getBean(PlayNowAction.class));
+		add(new JSeparator());
+		add(this.beanFactory.getBean(ShowNavigatorTableItemInfoAction.class));
+		add(new JSeparator());
 
-	OpenFolderFromNavigatorTableAction openFolderFromNavigatorAction = beanFactory
-		.getBean("openFolderFromRepositoryNavigationTable",
-			OpenFolderFromNavigatorTableAction.class);
-	openFolderFromNavigatorAction
-		.setAudioObjectsSource(repositoryNavigationView);
-	add(openFolderFromNavigatorAction);
+		OpenFolderFromNavigatorTableAction openFolderFromNavigatorAction = this.beanFactory
+				.getBean("openFolderFromRepositoryNavigationTable",
+						OpenFolderFromNavigatorTableAction.class);
+		openFolderFromNavigatorAction
+				.setAudioObjectsSource(this.repositoryNavigationView);
+		add(openFolderFromNavigatorAction);
 
-	add(new JSeparator());
-	add(new EditTagMenu(false, repositoryNavigationView, beanFactory));
+		add(new JSeparator());
+		add(new EditTagMenu(false, this.repositoryNavigationView,
+				this.beanFactory));
 
-	ExtractPictureAction extractPictureAction = beanFactory.getBean(
-		"extractPictureFromRepositoryNavigationView",
-		ExtractPictureAction.class);
-	extractPictureAction.setAudioObjectsSource(repositoryNavigationView);
-	add(extractPictureAction);
+		ExtractPictureAction extractPictureAction = this.beanFactory.getBean(
+				"extractPictureFromRepositoryNavigationView",
+				ExtractPictureAction.class);
+		extractPictureAction
+				.setAudioObjectsSource(this.repositoryNavigationView);
+		add(extractPictureAction);
 
-	add(new JSeparator());
-	add(beanFactory.getBean(RemoveFromDiskAction.class));
-	add(beanFactory.getBean(RenameAudioFileInNavigationTableAction.class));
-	add(new JSeparator());
+		add(new JSeparator());
+		add(this.beanFactory.getBean(RemoveFromDiskAction.class));
+		add(this.beanFactory
+				.getBean(RenameAudioFileInNavigationTableAction.class));
+		add(new JSeparator());
 
-	AbstractActionOverSelectedObjects<IAudioObject> exportAction = beanFactory
-		.getBean("exportNavigatorSelectionFromRepositoryViewAction",
-			ExportNavigatorSelectionAction.class);
-	exportAction.setAudioObjectsSource(repositoryNavigationView);
-	add(exportAction);
+		AbstractActionOverSelectedObjects<IAudioObject> exportAction = this.beanFactory
+				.getBean("exportNavigatorSelectionFromRepositoryViewAction",
+						ExportNavigatorSelectionAction.class);
+		exportAction.setAudioObjectsSource(this.repositoryNavigationView);
+		add(exportAction);
 
-	AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceAction = beanFactory
-		.getBean("copyToDeviceFromRepositoryNavigationView",
-			CopyToDeviceAction.class);
-	copyToDeviceAction.setAudioObjectsSource(repositoryNavigationView);
-	add(copyToDeviceAction);
+		AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceAction = this.beanFactory
+				.getBean("copyToDeviceFromRepositoryNavigationView",
+						CopyToDeviceAction.class);
+		copyToDeviceAction.setAudioObjectsSource(this.repositoryNavigationView);
+		add(copyToDeviceAction);
 
-	add(new JSeparator());
+		add(new JSeparator());
 
-	SetFavoriteSongFromNavigatorAction setFavoriteSongFromNavigatorAction = beanFactory
-		.getBean(SetFavoriteSongFromNavigatorAction.class);
-	setFavoriteSongFromNavigatorAction
-		.setAudioObjectsSource(repositoryNavigationView);
-	add(setFavoriteSongFromNavigatorAction);
-    }
+		SetFavoriteSongFromNavigatorAction setFavoriteSongFromNavigatorAction = this.beanFactory
+				.getBean(SetFavoriteSongFromNavigatorAction.class);
+		setFavoriteSongFromNavigatorAction
+				.setAudioObjectsSource(this.repositoryNavigationView);
+		add(setFavoriteSongFromNavigatorAction);
+	}
 
-    /**
-     * @param beanFactory
-     */
-    public void setBeanFactory(final IBeanFactory beanFactory) {
-	this.beanFactory = beanFactory;
-    }
+	/**
+	 * @param beanFactory
+	 */
+	public void setBeanFactory(final IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
 
-    /**
-     * @param repositoryNavigationView
-     */
-    public void setRepositoryNavigationView(
-	    final INavigationView repositoryNavigationView) {
-	this.repositoryNavigationView = repositoryNavigationView;
-    }
+	/**
+	 * @param repositoryNavigationView
+	 */
+	public void setRepositoryNavigationView(
+			final INavigationView repositoryNavigationView) {
+		this.repositoryNavigationView = repositoryNavigationView;
+	}
 }

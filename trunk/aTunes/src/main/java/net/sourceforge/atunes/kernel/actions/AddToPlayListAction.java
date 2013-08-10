@@ -34,40 +34,45 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public class AddToPlayListAction extends
-	AbstractActionOverSelectedObjects<IAudioObject> {
+		AbstractActionOverSelectedObjects<IAudioObject> {
 
-    private static final long serialVersionUID = 1625697867534974341L;
+	private static final long serialVersionUID = 1625697867534974341L;
 
-    private IPlayListHandler playListHandler;
+	private IPlayListHandler playListHandler;
 
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(final IPlayListHandler playListHandler) {
-	this.playListHandler = playListHandler;
-    }
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(final IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
 
-    /**
-     * Default constructor
-     */
-    public AddToPlayListAction() {
-	super(I18nUtils.getString("ADD_TO_PLAYLIST"));
-    }
+	/**
+	 * Default constructor
+	 */
+	public AddToPlayListAction() {
+		super(I18nUtils.getString("ADD_TO_PLAYLIST"));
+	}
 
-    @Override
-    protected void executeAction(final List<IAudioObject> objects) {
-	playListHandler.addToVisiblePlayList(objects);
-    }
+	@Override
+	protected void executeAction(final List<IAudioObject> objects) {
+		this.playListHandler.addToVisiblePlayList(objects);
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(
-	    final boolean rootSelected, final List<ITreeNode> selection) {
-	return !selection.isEmpty();
-    }
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(
+			final boolean rootSelected, final List<ITreeNode> selection) {
+		return !selection.isEmpty();
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(
-	    final List<IAudioObject> selection) {
-	return !selection.isEmpty();
-    }
+	@Override
+	public boolean isEnabledForNavigationTableSelection(
+			final List<IAudioObject> selection) {
+		return !selection.isEmpty();
+	}
+
+	@Override
+	public boolean isEnabledForDynamicPlayList() {
+		return false;
+	}
 }

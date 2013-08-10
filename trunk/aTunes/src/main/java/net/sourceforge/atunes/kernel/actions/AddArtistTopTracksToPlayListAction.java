@@ -221,4 +221,8 @@ public class AddArtistTopTracksToPlayListAction extends
 		}
 	}
 
+	@Override
+	public boolean isEnabledForDynamicPlayList() {
+		return false;
+	}
 }
