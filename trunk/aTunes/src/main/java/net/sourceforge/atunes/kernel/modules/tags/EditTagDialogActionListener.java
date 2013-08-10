@@ -25,7 +25,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -35,12 +34,9 @@ import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -56,8 +52,6 @@ public final class EditTagDialogActionListener implements ActionListener {
 
 	private final EditTagDialogController controller;
 	private final EditTagDialog dialog;
-	private final IPlayListHandler playListHandler;
-	private final ILocalAudioObjectValidator localAudioObjectValidator;
 	private final IControlsBuilder controlsBuilder;
 	private final IFileManager fileManager;
 
@@ -66,20 +60,15 @@ public final class EditTagDialogActionListener implements ActionListener {
 	 * 
 	 * @param controller
 	 * @param dialog
-	 * @param playListHandler
-	 * @param localAudioObjectValidator
 	 * @param controlsBuilder
 	 * @param fileManager
 	 */
 	public EditTagDialogActionListener(
 			final EditTagDialogController controller,
-			final EditTagDialog dialog, final IPlayListHandler playListHandler,
-			final ILocalAudioObjectValidator localAudioObjectValidator,
-			final IControlsBuilder controlsBuilder, IFileManager fileManager) {
+			final EditTagDialog dialog, final IControlsBuilder controlsBuilder,
+			final IFileManager fileManager) {
 		this.controller = controller;
 		this.dialog = dialog;
-		this.playListHandler = playListHandler;
-		this.localAudioObjectValidator = localAudioObjectValidator;
 		this.controlsBuilder = controlsBuilder;
 		this.fileManager = fileManager;
 	}
@@ -88,10 +77,6 @@ public final class EditTagDialogActionListener implements ActionListener {
 	public void actionPerformed(final ActionEvent e) {
 		if (e.getSource() == this.dialog.getOkButton()) {
 			processOkAction();
-		} else if (e.getSource() == this.dialog.getNextButton()) {
-			processNextAction();
-		} else if (e.getSource() == this.dialog.getPrevButton()) {
-			processPreviousAction();
 		} else if (e.getSource() == this.dialog.getCancelButton()) {
 			processCancelAction();
 		} else if (e.getSource() == this.dialog.getCoverButton()) {
@@ -163,87 +148,6 @@ public final class EditTagDialogActionListener implements ActionListener {
 	/**
 	 * 
 	 */
-	private void processPreviousAction() {
-		this.controller.editTag();
-		this.controller.clear();
-
-		// get the index of the first selected song in the play list
-		List<IAudioObject> selectedFiles = this.playListHandler
-				.getSelectedAudioObjects();
-		IAudioObject currentSelectedSong = selectedFiles.get(0);
-		int currentSelectedSongIndex = this.playListHandler
-				.getIndexOfAudioObject(currentSelectedSong);
-
-		List<ILocalAudioObject> prevFile = new ArrayList<ILocalAudioObject>();
-		boolean validAudioFile = false;
-		// Before moving down check if we need to jump an audio object like a
-		// radio stream
-		while (!validAudioFile) {
-			this.playListHandler
-			.changeSelectedAudioObjectToIndex(--currentSelectedSongIndex);
-			selectedFiles.clear();
-			selectedFiles.add(this.playListHandler.getSelectedAudioObjects()
-					.get(0));
-			validAudioFile = this.localAudioObjectValidator
-					.isValidAudioFile(selectedFiles.get(0).getUrl());
-			// Reaching the begin of the playlist
-			if (currentSelectedSongIndex == -1) {
-				// Set to false to make tag edit dialog disappear
-				validAudioFile = false;
-				break;
-			}
-		}
-		if (validAudioFile) {
-			prevFile.add((ILocalAudioObject) selectedFiles.get(0));
-			this.controller.editFiles(prevFile);
-		}
-	}
-
-	/**
-	 * 
-	 */
-	private void processNextAction() {
-		this.controller.editTag();
-		this.controller.clear();
-		// get the index of the first selected song in the play list
-		List<IAudioObject> selectedFiles = this.playListHandler
-				.getSelectedAudioObjects();
-		IAudioObject currentSelectedSong = selectedFiles.get(0);
-		int currentSelectedSongIndex = this.playListHandler
-				.getIndexOfAudioObject(currentSelectedSong);
-
-		// get the LocalAudioObject of the next song in the play list after the
-		// first selection
-		// nextFile.add((AudioFile)playListHandler.getAudioObjectAtIndexRelativeToCurrentlyPlaying(++currentSelectedSongIndex
-		// - playListHandler.getCurrentAudioObjectIndexInVisiblePlayList()));
-
-		List<ILocalAudioObject> nextFile = new ArrayList<ILocalAudioObject>();
-		boolean validAudioFile = false;
-		int length = this.playListHandler.getVisiblePlayList().size();
-		// Before moving down check if we need to jump an audio object like a
-		// radio stream
-		while (!validAudioFile) {
-			// Reaching the end of the playlist
-			if (length < currentSelectedSongIndex + 2) {
-				break;
-			}
-			this.playListHandler
-			.changeSelectedAudioObjectToIndex(++currentSelectedSongIndex);
-			selectedFiles.clear();
-			selectedFiles.add(this.playListHandler.getSelectedAudioObjects()
-					.get(0));
-			validAudioFile = this.localAudioObjectValidator
-					.isValidAudioFile(selectedFiles.get(0).getUrl());
-		}
-		if (validAudioFile) {
-			nextFile.add((ILocalAudioObject) selectedFiles.get(0));
-			this.controller.editFiles(nextFile);
-		}
-	}
-
-	/**
-	 * 
-	 */
 	private void processOkAction() {
 		this.controller.editTag();
 		this.controller.clear();
@@ -260,7 +164,7 @@ public final class EditTagDialogActionListener implements ActionListener {
 		List<ILocalAudioObject> audioFilesEditing = this.controller
 				.getAudioFilesEditing();
 		if (audioFilesEditing.size() == 1) {
-			return fileManager.getFolder(audioFilesEditing.get(0));
+			return this.fileManager.getFolder(audioFilesEditing.get(0));
 		} else {
 			return null;
 		}

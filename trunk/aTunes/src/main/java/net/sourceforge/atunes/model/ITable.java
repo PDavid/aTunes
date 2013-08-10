@@ -39,114 +39,105 @@ import javax.swing.table.TableModel;
  */
 public interface ITable extends IComponent<JTable> {
 
-    @Override
-    public void addKeyListener(KeyListener keyListener);
+	@Override
+	public void addKeyListener(KeyListener keyListener);
 
-    /**
-     * @return selection model
-     */
-    public ListSelectionModel getSelectionModel();
+	/**
+	 * @return selection model
+	 */
+	public ListSelectionModel getSelectionModel();
 
-    @Override
-    public void addMouseListener(MouseListener listener);
+	@Override
+	public void addMouseListener(MouseListener listener);
 
-    /**
-     * @return selected rows
-     */
-    public int[] getSelectedRows();
+	/**
+	 * @return selected rows
+	 */
+	public int[] getSelectedRows();
 
-    /**
-     * @return selected row
-     */
-    public int getSelectedRow();
+	/**
+	 * @return selected row
+	 */
+	public int getSelectedRow();
 
-    /**
-     * @return number of rows
-     */
-    public int getRowCount();
+	/**
+	 * @return number of rows
+	 */
+	public int getRowCount();
 
-    /**
-     * @return visible area
-     */
-    public Rectangle getVisibleRect();
+	/**
+	 * @return visible area
+	 */
+	public Rectangle getVisibleRect();
 
-    /**
-     * @param row
-     * @param column
-     * @param includeSpacing
-     * @return are of row
-     */
-    public Rectangle getCellRect(int row, int column, boolean includeSpacing);
+	/**
+	 * @param row
+	 * @param column
+	 * @param includeSpacing
+	 * @return are of row
+	 */
+	public Rectangle getCellRect(int row, int column, boolean includeSpacing);
 
-    /**
-     * Moves scroll to given area
-     * 
-     * @param visibleRect
-     */
-    public void scrollRectToVisible(Rectangle visibleRect);
+	/**
+	 * Moves scroll to given area
+	 * 
+	 * @param visibleRect
+	 */
+	public void scrollRectToVisible(Rectangle visibleRect);
 
-    /**
-     * @param model
-     */
-    public void setModel(TableModel model);
+	/**
+	 * @param model
+	 */
+	public void setModel(TableModel model);
 
-    /**
-     * @return model
-     */
-    public TableModel getModel();
+	/**
+	 * @return model
+	 */
+	public TableModel getModel();
 
-    /**
-     * Sets transfer handler for drag and drop
-     * 
-     * @param transferHandler
-     */
-    public void setTransferHandler(TransferHandler transferHandler);
+	/**
+	 * Sets transfer handler for drag and drop
+	 * 
+	 * @param transferHandler
+	 */
+	public void setTransferHandler(TransferHandler transferHandler);
 
-    /**
-     * @param rowIndex
-     * @param columnIndex
-     * @param toggle
-     * @param extend
-     */
-    public void changeSelection(int rowIndex, int columnIndex, boolean toggle,
-	    boolean extend);
+	/**
+	 * @param point
+	 * @return row at given point
+	 */
+	public int rowAtPoint(Point point);
 
-    /**
-     * @param point
-     * @return row at given point
-     */
-    public int rowAtPoint(Point point);
+	/**
+	 * @param columnModel
+	 */
+	public void setColumnModel(TableColumnModel columnModel);
 
-    /**
-     * @param columnModel
-     */
-    public void setColumnModel(TableColumnModel columnModel);
+	/**
+	 * @return column model
+	 */
+	public TableColumnModel getColumnModel();
 
-    /**
-     * @return column model
-     */
-    public TableColumnModel getColumnModel();
+	/**
+	 * Adds rows to selection
+	 * 
+	 * @param start
+	 * @param end
+	 */
+	public void addRowSelectionInterval(int start, int end);
 
-    /**
-     * Adds rows to selection
-     * 
-     * @param start
-     * @param end
-     */
-    public void addRowSelectionInterval(int start, int end);
+	/**
+	 * Repaints table
+	 */
+	public void repaint();
 
-    /**
-     * Repaints table
-     */
-    public void repaint();
+	/**
+	 * @param multipleIntervalSelection
+	 */
+	public void setSelectionMode(int multipleIntervalSelection);
 
-    /**
-     * @param multipleIntervalSelection
-     */
-    public void setSelectionMode(int multipleIntervalSelection);
-
-    /**
-     * @param autoResize
-     */
-    public void setAutoResizeMode(int autoResize);
+	/**
+	 * @param autoResize
+	 */
+	public void setAutoResizeMode(int autoResize);
 }

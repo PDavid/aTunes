@@ -35,7 +35,6 @@ import javax.swing.JTextPane;
 import javax.swing.text.StyleConstants;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -54,8 +53,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class LyricsContent extends
 		AbstractContextPanelContent<LyricsDataSource> {
-
-	private static final long serialVersionUID = 962229017133714396L;
 
 	private JTextPane lyricsContainer;
 
@@ -82,6 +79,7 @@ public class LyricsContent extends
 	/**
 	 * @param controlsBuilder
 	 */
+	@Override
 	public void setControlsBuilder(final IControlsBuilder controlsBuilder) {
 		this.controlsBuilder = controlsBuilder;
 	}
@@ -132,9 +130,8 @@ public class LyricsContent extends
 					getDesktop().openURL(LyricsContent.this.lyricsSourceUrl);
 				} else {
 					if (LyricsContent.this.audioObject instanceof ILocalAudioObject) {
-						LyricsContent.this.tagHandler.editFiles(
-								EditTagSources.NAVIGATOR,
-								Arrays.asList((ILocalAudioObject) LyricsContent.this.audioObject));
+						LyricsContent.this.tagHandler.editFiles(Arrays
+								.asList((ILocalAudioObject) LyricsContent.this.audioObject));
 					}
 				}
 			}

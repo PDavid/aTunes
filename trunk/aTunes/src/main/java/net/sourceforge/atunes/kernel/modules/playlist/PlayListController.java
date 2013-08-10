@@ -447,15 +447,6 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel>
 	}
 
 	/**
-	 * Changes selection to given index
-	 * 
-	 * @param index
-	 */
-	void changeSelectedAudioObjectToIndex(final int index) {
-		this.playListTable.changeSelection(index, 0, false, false);
-	}
-
-	/**
 	 * Return selected rows
 	 * 
 	 * @return

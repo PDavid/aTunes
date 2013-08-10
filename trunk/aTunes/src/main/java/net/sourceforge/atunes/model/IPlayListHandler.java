@@ -224,35 +224,6 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler,
 	public IAudioObject getPreviousAudioObject();
 
 	/**
-	 * Returns the index of an audio object in a play list.
-	 * 
-	 * @param aObject
-	 *            The audio object you need the index of
-	 * 
-	 * @return The index of the audio object
-	 */
-	public int getIndexOfAudioObject(IAudioObject aObject);
-
-	/**
-	 * Returns the audio object at the given index in the play list.
-	 * 
-	 * @param index
-	 *            The index of the audio object
-	 * 
-	 * @return The audio object
-	 */
-	public IAudioObject getAudioObjectAtIndex(int index);
-
-	/**
-	 * Moves the selected row in the play list to the position given in the
-	 * index
-	 * 
-	 * @param index
-	 *            The index to move to
-	 */
-	public void changeSelectedAudioObjectToIndex(int index);
-
-	/**
 	 * Gets the selected audio objects in current play list
 	 * 
 	 * @return the selected audio objects

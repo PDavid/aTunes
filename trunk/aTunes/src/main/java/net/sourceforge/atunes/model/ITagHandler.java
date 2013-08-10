@@ -35,12 +35,11 @@ import javax.swing.ImageIcon;
 public interface ITagHandler extends IHandler {
 
 	/**
-	 * Edits a list of local audio objects retrieved from a given source
+	 * Edits a list of local audio objects
 	 * 
-	 * @param source
 	 * @param list
 	 */
-	void editFiles(EditTagSources source, List<ILocalAudioObject> list);
+	void editFiles(List<ILocalAudioObject> list);
 
 	/**
 	 * Edits all elements of an album
