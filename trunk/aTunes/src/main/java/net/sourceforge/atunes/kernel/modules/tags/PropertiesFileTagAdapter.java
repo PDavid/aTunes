@@ -136,9 +136,11 @@ public class PropertiesFileTagAdapter implements ITagAdapter {
 
 	private void modifyField(final ILocalAudioObject file, final String field,
 			final Object value) {
-		Properties properties = getProperties(file);
-		properties.put(field, value);
-		setProperties(file, properties);
+		if (field != null && value != null) {
+			Properties properties = getProperties(file);
+			properties.put(field, value);
+			setProperties(file, properties);
+		}
 	}
 
 	@Override
