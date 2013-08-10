@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -34,8 +33,6 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -48,7 +45,6 @@ import net.sourceforge.atunes.gui.NavigationTableModel;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.decorators.NavigationViewTreeCellRendererCode;
 import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
-import net.sourceforge.atunes.kernel.actions.CustomAbstractAction;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBeanFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
@@ -310,87 +306,23 @@ public abstract class AbstractNavigationView implements INavigationView {
 
 	@Override
 	public final void updateTreePopupMenuWithTreeSelection(final MouseEvent e) {
-		List<ITreeNode> nodes = getTree().getSelectedNodes();
-		for (Component c : getTreePopupMenu().getComponents()) {
-			updateMenuComponent(getTree().isRowSelected(0), nodes, c);
-		}
+		this.beanFactory.getBean(NavigatorActionsStateController.class)
+				.updateTreePopupMenuWithTreeSelection(
+						getTree().isRowSelected(0),
+						getTreePopupMenu().getComponents(),
+						getTree().getSelectedNodes());
 	}
 
 	@Override
 	public final void updateTablePopupMenuWithTableSelection(
 			final ITable table, final MouseEvent e) {
-		List<IAudioObject> selection = ((NavigationTableModel) this.navigationTable
-				.getModel()).getAudioObjectsAt(table.getSelectedRows());
-		for (Component c : getTablePopupMenu().getComponents()) {
-			updateTableMenuComponent(getTree().isRowSelected(0), selection, c);
-		}
-	}
-
-	/**
-	 * @param rootSelected
-	 * @param selection
-	 * @param c
-	 */
-	private void updateMenuComponent(final boolean rootSelected,
-			final List<ITreeNode> selection, final Component c) {
-		if (c != null) {
-			if (c instanceof JMenu) {
-				for (int i = 0; i < ((JMenu) c).getItemCount(); i++) {
-					updateMenuComponent(rootSelected, selection,
-							((JMenu) c).getItem(i));
-				}
-			} else if (c instanceof JMenuItem) {
-				updateMenuItem(rootSelected, selection, (JMenuItem) c);
-			}
-		}
-	}
-
-	/**
-	 * @param rootSelected
-	 * @param selection
-	 * @param c
-	 */
-	private void updateTableMenuComponent(final boolean rootSelected,
-			final List<IAudioObject> selection, final Component c) {
-		if (c != null) {
-			if (c instanceof JMenu) {
-				for (int i = 0; i < ((JMenu) c).getItemCount(); i++) {
-					updateTableMenuComponent(rootSelected, selection,
-							((JMenu) c).getItem(i));
-				}
-			} else if (c instanceof JMenuItem) {
-				updateTableMenuItem(rootSelected, selection, (JMenuItem) c);
-			}
-		}
-	}
-
-	/**
-	 * @param rootSelected
-	 * @param selection
-	 * @param menuItem
-	 */
-	private void updateMenuItem(final boolean rootSelected,
-			final List<ITreeNode> selection, final JMenuItem menuItem) {
-		Action a = menuItem.getAction();
-		if (a instanceof CustomAbstractAction) {
-			a.setEnabled(((CustomAbstractAction) a)
-					.isEnabledForNavigationTreeSelection(rootSelected,
-							selection));
-		}
-	}
-
-	/**
-	 * @param rootSelected
-	 * @param selection
-	 * @param menuItem
-	 */
-	private void updateTableMenuItem(final boolean rootSelected,
-			final List<IAudioObject> selection, final JMenuItem menuItem) {
-		Action a = menuItem.getAction();
-		if (a instanceof CustomAbstractAction) {
-			a.setEnabled(((CustomAbstractAction) a)
-					.isEnabledForNavigationTableSelection(selection));
-		}
+		this.beanFactory
+				.getBean(NavigatorActionsStateController.class)
+				.updateTablePopupMenuWithTableSelection(
+						getTree().isRowSelected(0),
+						getTablePopupMenu().getComponents(),
+						((NavigationTableModel) this.navigationTable.getModel())
+								.getAudioObjectsAt(table.getSelectedRows()));
 	}
 
 	@Override

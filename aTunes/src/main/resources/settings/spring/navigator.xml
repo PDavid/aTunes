@@ -18,7 +18,7 @@
 	<bean id="extendedToolTipActionListener" class="net.sourceforge.atunes.kernel.modules.navigator.ExtendedToolTipActionListener"/>
 	<bean id="extendedToolTipGetAndSetImage" class="net.sourceforge.atunes.kernel.modules.navigator.ExtendedToolTipGetAndSetImageBackgroundWorker" scope="prototype"/>
 	
-	
+	<bean id="navigatorActionsStateController" class="net.sourceforge.atunes.kernel.modules.navigator.NavigatorActionsStateController" scope="prototype"/>
 	
 
 	<bean id="artistSorter" class="net.sourceforge.atunes.kernel.modules.navigator.ArtistSorter"/>
