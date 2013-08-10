@@ -27,10 +27,10 @@ import net.sourceforge.atunes.model.IColumn;
 
 class ColumnMoveListener extends MouseAdapter {
 
-	private AbstractCommonColumnModel model;
+	private final AbstractCommonColumnModel model;
 
 	public ColumnMoveListener(
-			AbstractCommonColumnModel abstractCommonColumnModel) {
+			final AbstractCommonColumnModel abstractCommonColumnModel) {
 		this.model = abstractCommonColumnModel;
 	}
 
@@ -45,7 +45,7 @@ class ColumnMoveListener extends MouseAdapter {
 		this.model.setColumnMovedTo(-1);
 	}
 
-	private void move(int columnBeingMoved, int columnMovedTo) {
+	private void move(final int columnBeingMoved, final int columnMovedTo) {
 		// Swap order in model
 		// Column moved to right
 		if (columnBeingMoved < columnMovedTo) {
@@ -58,34 +58,42 @@ class ColumnMoveListener extends MouseAdapter {
 		this.model.arrangeColumns(false);
 	}
 
-	private boolean columnsMoved(int columnBeingMoved, int columnMovedTo) {
+	private boolean columnsMoved(final int columnBeingMoved,
+			final int columnMovedTo) {
 		return columnBeingMoved != -1 && columnMovedTo != -1
 				&& columnBeingMoved != columnMovedTo;
 	}
 
-	private void movingToLeft(int columnBeingMoved, int columnMovedTo) {
+	private void movingToLeft(final int columnBeingMoved,
+			final int columnMovedTo) {
 		IColumn<?> destinyColumn = this.model.getColumnObject(columnMovedTo);
 		if (destinyColumn != null) {
 			int columnDestinyOrder = destinyColumn.getOrder();
 			for (int i = columnBeingMoved - 1; i >= columnMovedTo; i--) {
-				int order = this.model.getColumnObject(i).getOrder();
-				this.model.getColumnObject(i).setOrder(order + 1);
+				changeColumnOrder(i, +1);
 			}
 			this.model.getColumnObject(columnBeingMoved).setOrder(
 					columnDestinyOrder);
 		}
 	}
 
-	private void movingToRight(int columnBeingMoved, int columnMovedTo) {
+	private void movingToRight(final int columnBeingMoved,
+			final int columnMovedTo) {
 		IColumn<?> destinyColumn = this.model.getColumnObject(columnMovedTo);
 		if (destinyColumn != null) {
 			int columnDestinyOrder = destinyColumn.getOrder();
 			for (int i = columnBeingMoved + 1; i <= columnMovedTo; i++) {
-				int order = this.model.getColumnObject(i).getOrder();
-				this.model.getColumnObject(i).setOrder(order - 1);
+				changeColumnOrder(i, -1);
 			}
 			this.model.getColumnObject(columnBeingMoved).setOrder(
 					columnDestinyOrder);
+		}
+	}
+
+	private void changeColumnOrder(final int i, final int orderChange) {
+		IColumn<?> column = this.model.getColumnObject(i);
+		if (column != null) {
+			column.setOrder(column.getOrder() + orderChange);
 		}
 	}
 }
