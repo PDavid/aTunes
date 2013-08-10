@@ -82,9 +82,6 @@ public final class Constants {
 	public static final String APP_VERSION = StringUtils.getString("Version ",
 			VERSION.toString());
 
-	/** Author and year. */
-	public static final String APP_AUTHOR = "2006-2010 The aTunes Team";
-
 	/** File where repository information is stored. */
 	public static final String CACHE_REPOSITORY_NAME = "repository.dat";
 
