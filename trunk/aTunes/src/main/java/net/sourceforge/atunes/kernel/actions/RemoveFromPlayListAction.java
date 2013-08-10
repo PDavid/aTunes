@@ -60,12 +60,18 @@ public class RemoveFromPlayListAction extends CustomAbstractAction {
 
 	@Override
 	protected void executeAction() {
-		playListHandler.deleteSelection();
+		this.playListHandler.deleteSelection();
 	}
 
 	@Override
-	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
 		return selection != null && !selection.isEmpty();
+	}
+
+	@Override
+	public boolean isEnabledForDynamicPlayList() {
+		return false;
 	}
 
 }

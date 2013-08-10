@@ -41,6 +41,7 @@ import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
 import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedAlbumsAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedArtistsAction;
+import net.sourceforge.atunes.kernel.actions.CustomAbstractAction;
 import net.sourceforge.atunes.kernel.actions.ExportPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ExportPlayListSelectionAction;
 import net.sourceforge.atunes.kernel.actions.LoadNewPlayListAction;
@@ -347,9 +348,9 @@ public final class PlayListMenuFiller {
 			}
 
 			if (action instanceof net.sourceforge.atunes.kernel.actions.CustomAbstractAction) {
-				boolean enabled = ((net.sourceforge.atunes.kernel.actions.CustomAbstractAction) action)
-						.isEnabledForPlayListSelection(selection);
-				action.setEnabled(enabled);
+				updateCustomAction(
+						selection,
+						(net.sourceforge.atunes.kernel.actions.CustomAbstractAction) action);
 			}
 		}
 	}
@@ -373,11 +374,28 @@ public final class PlayListMenuFiller {
 				}
 
 				if (action instanceof net.sourceforge.atunes.kernel.actions.CustomAbstractAction) {
-					boolean enabled = ((net.sourceforge.atunes.kernel.actions.CustomAbstractAction) action)
-							.isEnabledForPlayListSelection(selection);
-					action.setEnabled(enabled);
+					updateCustomAction(
+							selection,
+							(net.sourceforge.atunes.kernel.actions.CustomAbstractAction) action);
 				}
 			}
+		}
+	}
+
+	/**
+	 * @param selection
+	 * @param customAction
+	 */
+	private void updateCustomAction(final List<IAudioObject> selection,
+			final CustomAbstractAction customAction) {
+		// Dynamic playlist and action can be enabled -> then check
+		// selection, otherwise disable without more checks
+		if (!this.playListHandler.getVisiblePlayList().canBeChangedByUser()
+				&& !customAction.isEnabledForDynamicPlayList()) {
+			customAction.setEnabled(false);
+		} else {
+			customAction.setEnabled(customAction
+					.isEnabledForPlayListSelection(selection));
 		}
 	}
 }

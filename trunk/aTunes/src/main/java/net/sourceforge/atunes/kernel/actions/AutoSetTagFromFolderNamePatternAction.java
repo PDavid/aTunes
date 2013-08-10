@@ -56,7 +56,7 @@ public class AutoSetTagFromFolderNamePatternAction extends
 	/**
 	 * @param fileManager
 	 */
-	public void setFileManager(IFileManager fileManager) {
+	public void setFileManager(final IFileManager fileManager) {
 		this.fileManager = fileManager;
 	}
 
@@ -93,15 +93,15 @@ public class AutoSetTagFromFolderNamePatternAction extends
 	@Override
 	protected void executeAction(final List<ILocalAudioObject> objects) {
 		// Show pattern input dialog
-		PatternInputDialog inputDialog = dialogFactory.newDialog(
+		PatternInputDialog inputDialog = this.dialogFactory.newDialog(
 				"nonMassivePatternInputDialog", PatternInputDialog.class);
-		inputDialog.show(patterns.getRecognitionPatterns(),
-				fileManager.getFolderPath(objects.get(0)));
+		inputDialog.show(this.patterns.getRecognitionPatterns(),
+				this.fileManager.getFolderPath(objects.get(0)));
 		String pattern = inputDialog.getResult();
 
 		// If user entered a pattern apply to files
 		if (pattern != null) {
-			EditTagFromFolderNamePatternProcess process = (EditTagFromFolderNamePatternProcess) processFactory
+			EditTagFromFolderNamePatternProcess process = (EditTagFromFolderNamePatternProcess) this.processFactory
 					.getProcessByName("editTagFromFolderNamePatternProcess");
 			process.setFilesToChange(objects);
 			process.setPattern(pattern);

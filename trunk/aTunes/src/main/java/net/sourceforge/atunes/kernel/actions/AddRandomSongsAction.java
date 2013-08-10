@@ -34,50 +34,56 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class AddRandomSongsAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 950514324011175113L;
+	private static final long serialVersionUID = 950514324011175113L;
 
-    private ISmartPlayListHandler smartPlayListHandler;
+	private ISmartPlayListHandler smartPlayListHandler;
 
-    private String i18nKey;
+	private String i18nKey;
 
-    private int songs;
+	private int songs;
 
-    /**
-     * @param i18nKey
-     */
-    public void setI18nKey(final String i18nKey) {
-	this.i18nKey = i18nKey;
-    }
+	/**
+	 * @param i18nKey
+	 */
+	public void setI18nKey(final String i18nKey) {
+		this.i18nKey = i18nKey;
+	}
 
-    /**
-     * @param songs
-     */
-    public void setSongs(final int songs) {
-	this.songs = songs;
-    }
+	/**
+	 * @param songs
+	 */
+	public void setSongs(final int songs) {
+		this.songs = songs;
+	}
 
-    /**
-     * @param smartPlayListHandler
-     */
-    public void setSmartPlayListHandler(
-	    final ISmartPlayListHandler smartPlayListHandler) {
-	this.smartPlayListHandler = smartPlayListHandler;
-    }
+	/**
+	 * @param smartPlayListHandler
+	 */
+	public void setSmartPlayListHandler(
+			final ISmartPlayListHandler smartPlayListHandler) {
+		this.smartPlayListHandler = smartPlayListHandler;
+	}
 
-    @Override
-    protected void initialize() {
-	super.initialize();
-	putValue(NAME, I18nUtils.getString(i18nKey));
-    }
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(NAME, I18nUtils.getString(this.i18nKey));
+	}
 
-    @Override
-    protected void executeAction() {
-	smartPlayListHandler.addRandomSongs(songs);
-    }
+	@Override
+	protected void executeAction() {
+		this.smartPlayListHandler.addRandomSongs(this.songs);
+	}
 
-    @Override
-    public boolean isEnabledForPlayListSelection(
-	    final List<IAudioObject> selection) {
-	return true;
-    }
+	@Override
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabledForDynamicPlayList() {
+		return false;
+	}
+
 }

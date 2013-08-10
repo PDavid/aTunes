@@ -55,17 +55,25 @@ public class MoveUpAction extends CustomAbstractAction {
 	public MoveUpAction() {
 		super(I18nUtils.getString("MOVE_UP"));
 		putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_UP_TOOLTIP"));
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_UP, ActionEvent.ALT_MASK));
+		putValue(ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_UP, ActionEvent.ALT_MASK));
 		setEnabled(false);
 	}
 
 	@Override
 	protected void executeAction() {
-		playListHandler.moveUp();
+		this.playListHandler.moveUp();
 	}
 
 	@Override
-	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
 		return selection != null && !selection.isEmpty();
 	}
+
+	@Override
+	public boolean isEnabledForDynamicPlayList() {
+		return false;
+	}
+
 }

@@ -34,51 +34,56 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class AddSongsMostPlayedAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -2036319858956733773L;
+	private static final long serialVersionUID = -2036319858956733773L;
 
-    private int songs;
+	private int songs;
 
-    private ISmartPlayListHandler smartPlayListHandler;
+	private ISmartPlayListHandler smartPlayListHandler;
 
-    private String i18nKey;
+	private String i18nKey;
 
-    /**
-     * @param songs
-     */
-    public void setSongs(final int songs) {
-	this.songs = songs;
-    }
+	/**
+	 * @param songs
+	 */
+	public void setSongs(final int songs) {
+		this.songs = songs;
+	}
 
-    /**
-     * @param smartPlayListHandler
-     */
-    public void setSmartPlayListHandler(
-	    final ISmartPlayListHandler smartPlayListHandler) {
-	this.smartPlayListHandler = smartPlayListHandler;
-    }
+	/**
+	 * @param smartPlayListHandler
+	 */
+	public void setSmartPlayListHandler(
+			final ISmartPlayListHandler smartPlayListHandler) {
+		this.smartPlayListHandler = smartPlayListHandler;
+	}
 
-    /**
-     * @param i18nKey
-     */
-    public void setI18nKey(final String i18nKey) {
-	this.i18nKey = i18nKey;
-    }
+	/**
+	 * @param i18nKey
+	 */
+	public void setI18nKey(final String i18nKey) {
+		this.i18nKey = i18nKey;
+	}
 
-    @Override
-    protected void initialize() {
-	super.initialize();
-	putValue(NAME, I18nUtils.getString(i18nKey));
-    }
+	@Override
+	protected void initialize() {
+		super.initialize();
+		putValue(NAME, I18nUtils.getString(this.i18nKey));
+	}
 
-    @Override
-    protected void executeAction() {
-	smartPlayListHandler.addSongsMostPlayed(songs);
-    }
+	@Override
+	protected void executeAction() {
+		this.smartPlayListHandler.addSongsMostPlayed(this.songs);
+	}
 
-    @Override
-    public boolean isEnabledForPlayListSelection(
-	    final List<IAudioObject> selection) {
-	return true;
-    }
+	@Override
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabledForDynamicPlayList() {
+		return false;
+	}
 
 }

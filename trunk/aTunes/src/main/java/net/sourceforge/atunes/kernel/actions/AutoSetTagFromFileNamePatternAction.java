@@ -40,74 +40,74 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  */
 public class AutoSetTagFromFileNamePatternAction extends
-	AbstractActionOverSelectedObjects<ILocalAudioObject> {
+		AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    private static final long serialVersionUID = -8458591967408812850L;
+	private static final long serialVersionUID = -8458591967408812850L;
 
-    private IProcessFactory processFactory;
+	private IProcessFactory processFactory;
 
-    private IDialogFactory dialogFactory;
+	private IDialogFactory dialogFactory;
 
-    private Patterns patterns;
+	private Patterns patterns;
 
-    /**
-     * @param patterns
-     */
-    public void setPatterns(final Patterns patterns) {
-	this.patterns = patterns;
-    }
-
-    /**
-     * @param dialogFactory
-     */
-    public void setDialogFactory(final IDialogFactory dialogFactory) {
-	this.dialogFactory = dialogFactory;
-    }
-
-    /**
-     * @param processFactory
-     */
-    public void setProcessFactory(final IProcessFactory processFactory) {
-	this.processFactory = processFactory;
-    }
-
-    /**
-     * Default constructor
-     */
-    public AutoSetTagFromFileNamePatternAction() {
-	super(StringUtils.getString(
-		I18nUtils.getString("AUTO_SET_TAG_FROM_FILE_NAME_PATTERN"),
-		"..."));
-    }
-
-    @Override
-    protected void executeAction(final List<ILocalAudioObject> objects) {
-	// Show pattern input dialog
-	PatternInputDialog inputDialog = dialogFactory.newDialog(
-		"nonMassivePatternInputDialog", PatternInputDialog.class);
-	inputDialog.show(patterns.getRecognitionPatterns(), objects.get(0)
-		.getNameWithoutExtension());
-	String pattern = inputDialog.getResult();
-
-	// If user entered a pattern apply to files
-	if (pattern != null) {
-	    EditTagFromFileNamePatternProcess process = (EditTagFromFileNamePatternProcess) processFactory
-		    .getProcessByName("editTagFromFileNamePatternProcess");
-	    process.setFilesToChange(objects);
-	    process.setPattern(pattern);
-	    process.execute();
+	/**
+	 * @param patterns
+	 */
+	public void setPatterns(final Patterns patterns) {
+		this.patterns = patterns;
 	}
-    }
 
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(
-	    final boolean rootSelected, final List<ITreeNode> selection) {
-	return !rootSelected && !selection.isEmpty();
-    }
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(final IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
-    @Override
-    public boolean isEnabledForNavigationTableSelection(
-	    final List<IAudioObject> selection) {
-	return !selection.isEmpty();
-    }
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(final IProcessFactory processFactory) {
+		this.processFactory = processFactory;
+	}
+
+	/**
+	 * Default constructor
+	 */
+	public AutoSetTagFromFileNamePatternAction() {
+		super(StringUtils.getString(
+				I18nUtils.getString("AUTO_SET_TAG_FROM_FILE_NAME_PATTERN"),
+				"..."));
+	}
+
+	@Override
+	protected void executeAction(final List<ILocalAudioObject> objects) {
+		// Show pattern input dialog
+		PatternInputDialog inputDialog = this.dialogFactory.newDialog(
+				"nonMassivePatternInputDialog", PatternInputDialog.class);
+		inputDialog.show(this.patterns.getRecognitionPatterns(), objects.get(0)
+				.getNameWithoutExtension());
+		String pattern = inputDialog.getResult();
+
+		// If user entered a pattern apply to files
+		if (pattern != null) {
+			EditTagFromFileNamePatternProcess process = (EditTagFromFileNamePatternProcess) this.processFactory
+					.getProcessByName("editTagFromFileNamePatternProcess");
+			process.setFilesToChange(objects);
+			process.setPattern(pattern);
+			process.execute();
+		}
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTreeSelection(
+			final boolean rootSelected, final List<ITreeNode> selection) {
+		return !rootSelected && !selection.isEmpty();
+	}
+
+	@Override
+	public boolean isEnabledForNavigationTableSelection(
+			final List<IAudioObject> selection) {
+		return !selection.isEmpty();
+	}
 }

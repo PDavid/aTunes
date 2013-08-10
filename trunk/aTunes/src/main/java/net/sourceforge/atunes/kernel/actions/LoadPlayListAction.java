@@ -55,7 +55,7 @@ public class LoadPlayListAction extends CustomAbstractAction {
 
 	private IDialogFactory dialogFactory;
 
-	private boolean replacePlayList;
+	private final boolean replacePlayList;
 
 	/**
 	 * Default constructor
@@ -114,7 +114,7 @@ public class LoadPlayListAction extends CustomAbstractAction {
 					LoadPlayListProcess process = (LoadPlayListProcess) this.processFactory
 							.getProcessByName("loadPlayListProcess");
 					process.setFilenamesToLoad(filesToLoad);
-					process.setReplacePlayList(replacePlayList);
+					process.setReplacePlayList(this.replacePlayList);
 					process.setPlayListName(FilenameUtils.getBaseName(file
 							.getName()));
 					process.execute();
@@ -131,4 +131,10 @@ public class LoadPlayListAction extends CustomAbstractAction {
 			final List<IAudioObject> selection) {
 		return true;
 	}
+
+	@Override
+	public boolean isEnabledForDynamicPlayList() {
+		return false;
+	}
+
 }
