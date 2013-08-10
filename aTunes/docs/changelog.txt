@@ -12,6 +12,10 @@ aTunes 3.2.0
 - Search redesigned
 - Disabled repository refresh by default
 
+aTunes 3.1.2
+------------
+- FIX: NPE updating tag in properties file
+
 aTunes 3.1.1
 ------------
 - FIX: Seek not working after changing look and feel
