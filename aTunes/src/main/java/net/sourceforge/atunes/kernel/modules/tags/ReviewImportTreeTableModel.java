@@ -43,8 +43,6 @@ import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
  */
 public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
 
-	private static final long serialVersionUID = 1997644065009669746L;
-
 	/** List of radio labels */
 	private final List<File> folders;
 

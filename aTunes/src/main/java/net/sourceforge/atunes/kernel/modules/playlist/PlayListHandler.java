@@ -606,21 +606,6 @@ public final class PlayListHandler extends AbstractHandler implements
 	}
 
 	@Override
-	public int getIndexOfAudioObject(final IAudioObject aObject) {
-		return getActivePlayList().indexOf(aObject);
-	}
-
-	@Override
-	public IAudioObject getAudioObjectAtIndex(final int index) {
-		return getActivePlayList().getNextAudioObject(index);
-	}
-
-	@Override
-	public void changeSelectedAudioObjectToIndex(final int index) {
-		this.playListController.changeSelectedAudioObjectToIndex(index);
-	}
-
-	@Override
 	public List<IAudioObject> getSelectedAudioObjects() {
 		List<IAudioObject> audioObjects = new ArrayList<IAudioObject>();
 		int[] selectedRows = this.playListController.getSelectedRows();

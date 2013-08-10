@@ -65,8 +65,6 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	private JButton removeCoverButton;
 	private JButton okButton;
 	private JButton cancelButton;
-	private JButton nextButton;
-	private JButton prevButton;
 	private final JTabbedPane tabbedPane = new JTabbedPane();
 
 	private final Map<TextTagAttribute, TagAttributeControls> controls = new HashMap<TextTagAttribute, TagAttributeControls>();
@@ -95,18 +93,10 @@ public final class EditTagDialog extends AbstractCustomDialog {
 		add(this.tabbedPane, BorderLayout.CENTER);
 		this.tabbedPane.addTab(I18nUtils.getString("TAGS"), getTagEditTab());
 		this.tabbedPane.addTab(I18nUtils.getString("COVER"), getCoverTab());
+		add(getOKAndCancelButtonPanel(), BorderLayout.SOUTH);
 	}
 
-	/**
-	 * @param arePrevNextButtonsShown
-	 */
-	public void setPrevNextButtonsShown(final boolean arePrevNextButtonsShown) {
-		add(getOKAndCancelButtonPanel(arePrevNextButtonsShown),
-				BorderLayout.SOUTH);
-	}
-
-	private JPanel getOKAndCancelButtonPanel(
-			final boolean arePrevNextButtonsShown) {
+	private JPanel getOKAndCancelButtonPanel() {
 		JPanel panel = new JPanel();
 		panel.setOpaque(false);
 
@@ -122,10 +112,6 @@ public final class EditTagDialog extends AbstractCustomDialog {
 		c.gridx = 0;
 		c.gridy = 1;
 		panel.add(this.cancelButton, c);
-		if (arePrevNextButtonsShown) {
-			panel.add(this.prevButton, c);
-			panel.add(this.nextButton, c);
-		}
 		return panel;
 	}
 
@@ -266,8 +252,6 @@ public final class EditTagDialog extends AbstractCustomDialog {
 
 		this.okButton = new JButton(I18nUtils.getString("OK"));
 		this.cancelButton = new JButton(I18nUtils.getString("CANCEL"));
-		this.nextButton = new JButton(I18nUtils.getString("NEXT"));
-		this.prevButton = new JButton(I18nUtils.getString("PREVIOUS"));
 
 		arrangePanel(panel);
 
@@ -370,24 +354,6 @@ public final class EditTagDialog extends AbstractCustomDialog {
 	 */
 	public JButton getOkButton() {
 		return this.okButton;
-	}
-
-	/**
-	 * Gets the previous (song) button.
-	 * 
-	 * @return the previous (song) button
-	 */
-	public JButton getPrevButton() {
-		return this.prevButton;
-	}
-
-	/**
-	 * Gets the next (song) button.
-	 * 
-	 * @return the next (song) button
-	 */
-	public JButton getNextButton() {
-		return this.nextButton;
 	}
 
 	/**

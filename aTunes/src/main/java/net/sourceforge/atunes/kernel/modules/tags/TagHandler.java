@@ -29,7 +29,6 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDialogFactory;
@@ -139,34 +138,18 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 		this.processFactory = processFactory;
 	}
 
-	/** The edit tag dialog controller. */
-	private Map<EditTagSources, EditTagDialogController> editTagDialogControllerMap;
-
 	/**
 	 * Gets the edits the tag dialog controller.
 	 * 
 	 * @return the edits the tag dialog controller
 	 */
-	private EditTagDialogController getEditTagDialogController(
-			final EditTagSources sourceOfEditTagDialog) {
-		if (this.editTagDialogControllerMap == null) {
-			this.editTagDialogControllerMap = new HashMap<EditTagSources, EditTagDialogController>();
-		}
-
-		if (!this.editTagDialogControllerMap.containsKey(sourceOfEditTagDialog)) {
-			EditTagDialogController controller = getBean(EditTagDialogController.class);
-			controller.getComponentControlled().setPrevNextButtonsShown(
-					sourceOfEditTagDialog != EditTagSources.NAVIGATOR);
-			this.editTagDialogControllerMap.put(sourceOfEditTagDialog,
-					controller);
-		}
-		return this.editTagDialogControllerMap.get(sourceOfEditTagDialog);
+	private EditTagDialogController getEditTagDialogController() {
+		return getBean(EditTagDialogController.class);
 	}
 
 	@Override
-	public void editFiles(final EditTagSources navigator,
-			final List<ILocalAudioObject> asList) {
-		getEditTagDialogController(navigator).editFiles(asList);
+	public void editFiles(final List<ILocalAudioObject> list) {
+		getEditTagDialogController().editFiles(list);
 	}
 
 	@Override

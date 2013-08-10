@@ -47,9 +47,7 @@ import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IFileManager;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectImageHandler;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITag;
@@ -73,11 +71,7 @@ public final class EditTagDialogController extends
 
 	private IOSManager osManager;
 
-	private IPlayListHandler playListHandler;
-
 	private IRepositoryHandler repositoryHandler;
-
-	private ILocalAudioObjectValidator localAudioObjectValidator;
 
 	private IProcessFactory processFactory;
 
@@ -152,25 +146,10 @@ public final class EditTagDialogController extends
 	}
 
 	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(final IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-
-	/**
 	 * @param repositoryHandler
 	 */
 	public void setRepositoryHandler(final IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
-	}
-
-	/**
-	 * @param localAudioObjectValidator
-	 */
-	public void setLocalAudioObjectValidator(
-			final ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
 	}
 
 	/**
@@ -192,17 +171,11 @@ public final class EditTagDialogController extends
 				.getComboBoxEditor(TextTagAttribute.GENRE));
 
 		EditTagDialogActionListener actionListener = new EditTagDialogActionListener(
-				this, getComponentControlled(), this.playListHandler,
-				this.localAudioObjectValidator, this.controlsBuilder,
+				this, getComponentControlled(), this.controlsBuilder,
 				this.fileManager);
 		getComponentControlled().getOkButton()
 				.addActionListener(actionListener);
 		getComponentControlled().getCancelButton().addActionListener(
-				actionListener);
-
-		getComponentControlled().getNextButton().addActionListener(
-				actionListener);
-		getComponentControlled().getPrevButton().addActionListener(
 				actionListener);
 
 		getComponentControlled().getCoverButton().addActionListener(

@@ -181,7 +181,6 @@ public final class LocalAudioObjectPropertiesDialog extends
 			public void actionPerformed(final ActionEvent evt) {
 				EditTagDialogController ctl = LocalAudioObjectPropertiesDialog.this.beanFactory
 						.getBean(EditTagDialogController.class);
-				ctl.getComponentControlled().setPrevNextButtonsShown(false);
 				ctl.editFiles(java.util.Collections
 						.singletonList(LocalAudioObjectPropertiesDialog.this.file));
 			}
