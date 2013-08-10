@@ -117,7 +117,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	/**
 	 * @param exceptionHandler
 	 */
-	public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+	public void setExceptionHandler(final ExceptionHandler exceptionHandler) {
 		this.exceptionHandler = exceptionHandler;
 	}
 
@@ -409,7 +409,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	public final void handlePlayerEngineError(final Exception e) {
 		Logger.error(StringUtils.getString("Player Error: ", e));
 		Logger.error(e);
-		exceptionHandler.showErrorReport(e);
+		this.exceptionHandler.showErrorReport(e);
 		// Force a stop to finish all player engine processes
 		stopCurrentAudioObject(false);
 	}
@@ -510,10 +510,14 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	}
 
 	private boolean exists(final IAudioObject ao) {
-		if (ao instanceof ILocalAudioObject) {
-			return this.fileManager.exists((ILocalAudioObject) ao);
+		if (ao == null) {
+			return false;
+		} else {
+			if (ao instanceof ILocalAudioObject) {
+				return this.fileManager.exists((ILocalAudioObject) ao);
+			}
+			return true;
 		}
-		return true;
 	}
 
 	/**

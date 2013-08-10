@@ -15,6 +15,7 @@ aTunes 3.2.0
 aTunes 3.1.2
 ------------
 - FIX: NPE updating tag in properties file
+- FIX: check audio object exists not controlling null references
 
 aTunes 3.1.1
 ------------
