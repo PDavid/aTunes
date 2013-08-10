@@ -229,9 +229,6 @@
 		<echo message="${folder}"/>
 		<echo message="Starting upload"/>
 		
-		<move file="${basedir}/target/aTunes_${version}_installer.exe" tofile="${basedir}/target/aTunes_installer.exe" />
-		<copy file="${build_resources}/somoto_installer.exe" tofile="${basedir}/target/aTunes_${version}_installer.exe"/>
-		
 		<echo message="installer.exe"/>
 		<scp trust="true" todir="${user}:${password}@frs.sourceforge.net:/home/frs/project/a/at/atunes/${folder}">
 		    <fileset dir="${basedir}/target/">
