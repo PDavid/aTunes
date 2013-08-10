@@ -55,18 +55,25 @@ public class MoveDownAction extends CustomAbstractAction {
 	public MoveDownAction() {
 		super(I18nUtils.getString("MOVE_DOWN"));
 		putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_DOWN_TOOLTIP"));
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, ActionEvent.ALT_MASK));
+		putValue(ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, ActionEvent.ALT_MASK));
 		setEnabled(false);
 	}
 
 	@Override
 	protected void executeAction() {
-		playListHandler.moveDown();
+		this.playListHandler.moveDown();
 	}
 
 	@Override
-	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
 		return selection != null && !selection.isEmpty();
+	}
+
+	@Override
+	public boolean isEnabledForDynamicPlayList() {
+		return false;
 	}
 
 }

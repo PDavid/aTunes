@@ -117,6 +117,16 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction {
 		return false;
 	}
 
+	/**
+	 * Indicates whether this action must be enabled or disabled when used in a
+	 * dynamic play list
+	 * 
+	 * @return
+	 */
+	public boolean isEnabledForDynamicPlayList() {
+		return true;
+	}
+
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		Logger.debug("Executing action: ", this.getClass().getName());

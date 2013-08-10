@@ -26,6 +26,7 @@ import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
 import net.sourceforge.atunes.model.IBeanFactory;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.Timer;
 
@@ -54,6 +55,13 @@ public class PlayListTableTransferHandler extends TransferHandler {
 	public boolean canImport(final TransferSupport support) {
 		// Check if it's a drag and drop operation
 		if (!support.isDrop()) {
+			return false;
+		}
+
+		// Check playlist is dynamic
+		if (!this.beanFactory.getBean(IPlayListHandler.class)
+				.getVisiblePlayList().canBeChangedByUser()) {
+			Logger.debug("Can't drop in a dynamic playlist");
 			return false;
 		}
 
@@ -109,14 +117,14 @@ public class PlayListTableTransferHandler extends TransferHandler {
 				DragAndDropHelper.getInternalDataFlavor())) {
 			Timer t = new Timer();
 			t.start();
-			boolean accepted = beanFactory.getBean(
+			boolean accepted = this.beanFactory.getBean(
 					InternalImportProcessor.class).processInternalImport(
 					support);
 			Logger.debug("Internal drag and drop to table took ", t.stop(),
 					" seconds");
 			return accepted;
 		} else {
-			return beanFactory.getBean(ExternalImportProcessor.class)
+			return this.beanFactory.getBean(ExternalImportProcessor.class)
 					.processExternalImport(support);
 		}
 	}

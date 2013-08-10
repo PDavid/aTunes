@@ -33,8 +33,8 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * Action to move the current selection in the active playlist
- * to a position immediately after the current song.
+ * Action to move the current selection in the active playlist to a position
+ * immediately after the current song.
  * 
  * @author deathgorepain
  */
@@ -59,27 +59,33 @@ public class MoveAfterCurrentAudioObjectAction extends CustomAbstractAction {
 	 */
 	public MoveAfterCurrentAudioObjectAction() {
 		super(I18nUtils.getString("MOVE_AFTER_CURRENT_SONG"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_AFTER_CURRENT_SONG_TOOLTIP"));
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.ALT_MASK));
+		putValue(SHORT_DESCRIPTION,
+				I18nUtils.getString("MOVE_AFTER_CURRENT_SONG_TOOLTIP"));
+		putValue(ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.ALT_MASK));
 		setEnabled(false);
 	}
 
 	@Override
 	protected void executeAction() {
-		IPlayList currentPlayList = playListHandler.getVisiblePlayList();
-		List<IAudioObject> selectedAudioObjects = playListHandler.getSelectedAudioObjects();
+		IPlayList currentPlayList = this.playListHandler.getVisiblePlayList();
+		List<IAudioObject> selectedAudioObjects = this.playListHandler
+				.getSelectedAudioObjects();
 
-		//Recurse backwards to move the elements to the correct position
+		// Recurse backwards to move the elements to the correct position
 		Collections.reverse(selectedAudioObjects);
 
-		int beginNewPosition = playListHandler.getCurrentAudioObjectIndexInVisiblePlayList();
-		int endNewPosition = playListHandler.getCurrentAudioObjectIndexInVisiblePlayList();
+		int beginNewPosition = this.playListHandler
+				.getCurrentAudioObjectIndexInVisiblePlayList();
+		int endNewPosition = this.playListHandler
+				.getCurrentAudioObjectIndexInVisiblePlayList();
 		for (int i = 0; i < selectedAudioObjects.size(); i++) {
 			IAudioObject o = selectedAudioObjects.get(i);
-			int currentIndex = playListHandler.getCurrentAudioObjectIndexInVisiblePlayList();
+			int currentIndex = this.playListHandler
+					.getCurrentAudioObjectIndexInVisiblePlayList();
 			int sourceIndex = currentPlayList.indexOf(o);
 
-			//Workaround otherwise file is put before current playing
+			// Workaround otherwise file is put before current playing
 			if (sourceIndex > currentIndex) {
 				currentIndex++;
 			}
@@ -90,21 +96,33 @@ public class MoveAfterCurrentAudioObjectAction extends CustomAbstractAction {
 			endNewPosition = Math.max(currentIndex, endNewPosition);
 		}
 
-		playListHandler.refreshPlayList();
+		this.playListHandler.refreshPlayList();
 
 		// Keep selected elements
-		playListHandler.setSelectionInterval(playListHandler.getCurrentAudioObjectIndexInVisiblePlayList() + 1, playListHandler.getCurrentAudioObjectIndexInVisiblePlayList() + selectedAudioObjects.size());
+		this.playListHandler.setSelectionInterval(
+				this.playListHandler
+						.getCurrentAudioObjectIndexInVisiblePlayList() + 1,
+				this.playListHandler
+						.getCurrentAudioObjectIndexInVisiblePlayList()
+						+ selectedAudioObjects.size());
 
 	}
 
 	@Override
-	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
-		//Don't allow moving songs from other playlists into active playlist
-		if (!playListHandler.isActivePlayListVisible() ||
-				playListHandler.isFiltered()) {
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
+		// Don't allow moving songs from other playlists into active playlist
+		if (!this.playListHandler.isActivePlayListVisible()
+				|| this.playListHandler.isFiltered()) {
 			return false;
 		}
 
 		return !selection.isEmpty();
 	}
+
+	@Override
+	public boolean isEnabledForDynamicPlayList() {
+		return false;
+	}
+
 }

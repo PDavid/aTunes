@@ -55,17 +55,25 @@ public class MoveToTopAction extends CustomAbstractAction {
 	public MoveToTopAction() {
 		super(I18nUtils.getString("MOVE_TO_TOP"));
 		putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_TO_TOP_TOOLTIP"));
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.ALT_MASK));
+		putValue(ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.ALT_MASK));
 		setEnabled(false);
 	}
 
 	@Override
 	protected void executeAction() {
-		playListHandler.moveToTop();
+		this.playListHandler.moveToTop();
 	}
 
 	@Override
-	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
 		return selection != null && !selection.isEmpty();
 	}
+
+	@Override
+	public boolean isEnabledForDynamicPlayList() {
+		return false;
+	}
+
 }

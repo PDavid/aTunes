@@ -55,17 +55,25 @@ public class MoveToBottomAction extends CustomAbstractAction {
 	public MoveToBottomAction() {
 		super(I18nUtils.getString("MOVE_TO_BOTTOM"));
 		putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_BOTTOM_TOOLTIP"));
-		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.ALT_MASK));
+		putValue(ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.ALT_MASK));
 		setEnabled(false);
 	}
 
 	@Override
 	protected void executeAction() {
-		playListHandler.moveToBottom();
+		this.playListHandler.moveToBottom();
 	}
 
 	@Override
-	public boolean isEnabledForPlayListSelection(final List<IAudioObject> selection) {
+	public boolean isEnabledForPlayListSelection(
+			final List<IAudioObject> selection) {
 		return selection != null && !selection.isEmpty();
 	}
+
+	@Override
+	public boolean isEnabledForDynamicPlayList() {
+		return false;
+	}
+
 }

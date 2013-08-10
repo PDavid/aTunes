@@ -101,4 +101,9 @@ public class ClearPlayListAction extends CustomAbstractAction {
 			final List<IAudioObject> selection) {
 		return true;
 	}
+
+	@Override
+	public boolean isEnabledForDynamicPlayList() {
+		return false;
+	}
 }
