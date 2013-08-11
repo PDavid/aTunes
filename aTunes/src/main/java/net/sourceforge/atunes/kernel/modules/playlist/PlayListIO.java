@@ -46,9 +46,14 @@ public final class PlayListIO implements IPlayListIOService {
 	public static final String PLAYLIST_M3U_FILE_EXTENSION = "m3u";
 
 	/**
-	 * Extension for playlists generated with aTunes
+	 * Extension for play lists generated with aTunes
 	 */
 	public static final String PLAYLIST_FILE_EXTENSION = "atu";
+
+	/**
+	 * Extension for dynamic play lists generated with aTunes
+	 */
+	public static final String DYNAMIC_PLAYLIST_FILE_EXTENSION = "datu";
 
 	private static final String HTTP_PREFIX = "http://";
 
@@ -163,18 +168,9 @@ public final class PlayListIO implements IPlayListIOService {
 		return new PlayListFileFilter();
 	}
 
-	/**
-	 * Checks if is valid play list.
-	 * 
-	 * @param playListFile
-	 *            the play list file
-	 * 
-	 * @return true, if is valid play list
-	 */
 	@Override
-	public boolean isValidPlayList(final String playListFile) {
-		File f = new File(playListFile);
-		return playListFile.endsWith(PLAYLIST_M3U_FILE_EXTENSION) && f.exists();
+	public FilenameFilter getDynamicPlaylistFileFilter() {
+		return new DynamicPlayListFileFilter();
 	}
 
 	/**
@@ -186,9 +182,11 @@ public final class PlayListIO implements IPlayListIOService {
 	 * @return true, if is valid play list
 	 */
 	@Override
-	public boolean isValidPlayList(final File playListFile) {
-		return playListFile.getName().endsWith(PLAYLIST_M3U_FILE_EXTENSION)
-				&& playListFile.exists();
+	public boolean isValidPlayList(final String playListFile) {
+		File f = new File(playListFile);
+		return (playListFile.endsWith(PLAYLIST_M3U_FILE_EXTENSION)
+				|| playListFile.endsWith(PLAYLIST_FILE_EXTENSION) || playListFile
+					.endsWith(DYNAMIC_PLAYLIST_FILE_EXTENSION)) && f.exists();
 	}
 
 	/**
@@ -228,6 +226,11 @@ public final class PlayListIO implements IPlayListIOService {
 		return checkPlayListExtension(file, PLAYLIST_M3U_FILE_EXTENSION);
 	}
 
+	@Override
+	public File checkDynamicPlayListFileName(final File file) {
+		return checkPlayListExtension(file, DYNAMIC_PLAYLIST_FILE_EXTENSION);
+	}
+
 	private File checkPlayListExtension(final File file, final String extension) {
 		if (!file.getName().toUpperCase()
 				.endsWith("." + extension.toUpperCase())) {
@@ -244,6 +247,10 @@ public final class PlayListIO implements IPlayListIOService {
 
 	@Override
 	public boolean write(final IPlayList playlist, final File file) {
+		if (playlist.isDynamic()) {
+			return this.beanFactory.getBean(DynamicPlayListWriter.class).write(
+					playlist, file);
+		}
 		return this.beanFactory.getBean(PlayListWriter.class).write(playlist,
 				file);
 	}

@@ -23,38 +23,18 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.io.File;
 import java.io.FilenameFilter;
 
-import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * A file filter for all supported play lists files
- * 
- * @author alex
- * 
- */
-final class AllAcceptedPlaylistsFileFilter implements FilenameFilter {
-
-	private final PlayListM3UFileFilter m3uFilter;
-	private final PlayListFileFilter filter;
-	private final DynamicPlayListFileFilter dynamicFilter;
-
-	/**
-	 * Default constructor
-	 */
-	public AllAcceptedPlaylistsFileFilter() {
-		this.m3uFilter = new PlayListM3UFileFilter();
-		this.filter = new PlayListFileFilter();
-		this.dynamicFilter = new DynamicPlayListFileFilter();
-	}
-
+final class DynamicPlayListFileFilter implements FilenameFilter {
 	@Override
 	public boolean accept(final File dir, final String name) {
-		return this.m3uFilter.accept(dir, name)
-				|| this.filter.accept(dir, name)
-				|| this.dynamicFilter.accept(dir, name);
+		return name.toLowerCase().endsWith(
+				PlayListIO.DYNAMIC_PLAYLIST_FILE_EXTENSION);
 	}
 
 	@Override
 	public String toString() {
-		return I18nUtils.getString("PLAYLIST");
+		return StringUtils.getString(".",
+				PlayListIO.DYNAMIC_PLAYLIST_FILE_EXTENSION);
 	}
 }

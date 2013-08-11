@@ -30,69 +30,77 @@ import com.esotericsoftware.kryo.io.Output;
 
 /**
  * Serialization service based on Kryo serialization
+ * 
  * @author alex
- *
+ * 
  * @param <T>
  */
 public class KryoSerializerService {
 
 	private KryoFactory kryoFactory;
-	
+
 	/**
 	 * @param kryoFactory
 	 */
-	public void setKryoFactory(KryoFactory kryoFactory) {
+	public void setKryoFactory(final KryoFactory kryoFactory) {
 		this.kryoFactory = kryoFactory;
 	}
-	
-    /**
-     * Reads an object from a file
-     * 
-     * @param filename
-     *            filename
-     * @param clazz
-     *            class of object 
-     * @return The object read or null
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    public Object readObjectFromFile(String filename, Class<?> clazz) throws IOException {
-        Input input = null;
-        Timer timer = new Timer();
-        try {
-            Logger.info("Reading serialized object: ", clazz.getName(), " from file: ", filename);
-            timer.start();
-        	input = new Input(new FileInputStream(filename));
-        	return kryoFactory.getKryo().readObject(input, clazz);
-        } catch (FileNotFoundException e) {
-        	Logger.info(e.getMessage());
-        } catch (Exception e) {
-        	Logger.error(e);
-        } finally {
-            Logger.info(StringUtils.getString("Reading ", clazz.getName(), " done (", timer.stop(), " seconds)"));
-            ClosingUtils.close(input);
-        }
-    	return null;
-    }
-    
-    /**
-     * Writes an object to a file
-     * @param filename
-     * @param object
-     */
-    public void writeObjectToFile(String filename, Object object) {
-        Output output = null;
-        try {
-        	output = new Output(new FileOutputStream(filename));
-        	kryoFactory.getKryo().writeObject(output, object);
-        	output.flush();
-        } catch (IOException e) {
-        	Logger.error(e);
-        } catch (ClassNotFoundException e) {
-        	Logger.error(e);
+
+	/**
+	 * Reads an object from a file
+	 * 
+	 * @param filename
+	 *            filename
+	 * @param clazz
+	 *            class of object
+	 * @return The object read or null
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public Object readObjectFromFile(final String filename, final Class<?> clazz)
+			throws IOException {
+		Input input = null;
+		Timer timer = new Timer();
+		try {
+			Logger.info("Reading serialized object: ", clazz.getName(),
+					" from file: ", filename);
+			timer.start();
+			input = new Input(new FileInputStream(filename));
+			return this.kryoFactory.getKryo().readObject(input, clazz);
+		} catch (FileNotFoundException e) {
+			Logger.info(e.getMessage());
+		} catch (Exception e) {
+			Logger.error(e);
 		} finally {
-        	ClosingUtils.close(output);
-        }
-    }
+			Logger.info(StringUtils.getString("Reading ", clazz.getName(),
+					" done (", timer.stop(), " seconds)"));
+			ClosingUtils.close(input);
+		}
+		return null;
+	}
+
+	/**
+	 * Writes an object to a file
+	 * 
+	 * @param filename
+	 * @param object
+	 * @return if write was successful
+	 */
+	public boolean writeObjectToFile(final String filename, final Object object) {
+		Output output = null;
+		try {
+			output = new Output(new FileOutputStream(filename));
+			this.kryoFactory.getKryo().writeObject(output, object);
+			output.flush();
+			return true;
+		} catch (IOException e) {
+			Logger.error(e);
+		} catch (ClassNotFoundException e) {
+			Logger.error(e);
+		} finally {
+			ClosingUtils.close(output);
+		}
+		return false;
+	}
 }
