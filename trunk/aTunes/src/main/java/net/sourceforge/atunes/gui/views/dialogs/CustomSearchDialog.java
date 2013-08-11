@@ -81,6 +81,8 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 
 	private boolean queryCreationOnly;
 
+	private boolean canceled;
+
 	/**
 	 * Instantiates a new custom search dialog.
 	 * 
@@ -90,6 +92,20 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 	public CustomSearchDialog(final IFrame frame,
 			final IControlsBuilder controlsBuilder) {
 		super(frame, 700, 400, controlsBuilder);
+	}
+
+	/**
+	 * @param canceled
+	 */
+	public void setCanceled(final boolean canceled) {
+		this.canceled = canceled;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isCanceled() {
+		return this.canceled;
 	}
 
 	@Override

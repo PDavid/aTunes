@@ -176,8 +176,8 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
 	}
 
 	@Override
-	public boolean isEnabledForDynamicPlayList() {
-		return false;
+	public boolean isEnabledForPlayList(final IPlayList playlist) {
+		return !playlist.isDynamic();
 	}
 
 }

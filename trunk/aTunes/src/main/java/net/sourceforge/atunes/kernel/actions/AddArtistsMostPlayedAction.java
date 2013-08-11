@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.ISmartPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -82,8 +83,8 @@ public class AddArtistsMostPlayedAction extends CustomAbstractAction {
 	}
 
 	@Override
-	public boolean isEnabledForDynamicPlayList() {
-		return false;
+	public boolean isEnabledForPlayList(final IPlayList playlist) {
+		return !playlist.isDynamic();
 	}
 
 }

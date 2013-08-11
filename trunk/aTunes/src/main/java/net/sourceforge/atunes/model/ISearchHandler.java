@@ -45,6 +45,16 @@ public interface ISearchHandler extends IHandler {
 	public ISearchNode createQuery(String title, String text);
 
 	/**
+	 * Starts search dialog to edit a query (search will not be executed)
+	 * 
+	 * @param query
+	 * @param title
+	 * @param text
+	 * @return query changed or null if user didn't change it
+	 */
+	public ISearchNode editQuery(ISearchNode query, String title, String text);
+
+	/**
 	 * Executes a query to find audio objects
 	 * 
 	 * @param query

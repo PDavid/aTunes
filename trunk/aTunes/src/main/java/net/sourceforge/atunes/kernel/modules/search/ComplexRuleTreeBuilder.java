@@ -116,6 +116,15 @@ public class ComplexRuleTreeBuilder {
 		// Create object
 		ISearchRule simpleRule = new SearchRule(field, operator, value);
 
+		createSimpleRule(dialog, simpleRule);
+	}
+
+	/**
+	 * @param dialog
+	 * @param simpleRule
+	 */
+	private void createSimpleRule(final CustomSearchDialog dialog,
+			final ISearchRule simpleRule) {
 		// Add simple rule to tree
 		DefaultTreeModel model = ((DefaultTreeModel) dialog
 				.getComplexRulesTree().getModel());
@@ -288,6 +297,45 @@ public class ComplexRuleTreeBuilder {
 			return logicalSearchNode;
 		} else {
 			return (ISearchNode) object;
+		}
+	}
+
+	/**
+	 * Recreates a query in dialog
+	 * 
+	 * @param query
+	 */
+	void setQuery(final ISearchNode node, final CustomSearchDialog dialog) {
+		setQuery(node, (DefaultTreeModel) dialog.getComplexRulesTree()
+				.getModel(), null);
+
+		// Reload model
+		((DefaultTreeModel) dialog.getComplexRulesTree().getModel()).reload();
+
+		// Expand complex rules tree to display full rule
+		GuiUtils.expandTree(dialog.getComplexRulesTree());
+	}
+
+	private void setQuery(final ISearchNode node, final DefaultTreeModel model,
+			final DefaultMutableTreeNode parent) {
+		if (node instanceof LogicalSearchNode) {
+			DefaultMutableTreeNode logicalNode = new DefaultMutableTreeNode(
+					((LogicalSearchNode) node).getOperator());
+			if (parent == null) {
+				model.setRoot(logicalNode);
+			} else {
+				parent.add(logicalNode);
+			}
+			for (ISearchNode child : ((LogicalSearchNode) node).getChildren()) {
+				setQuery(child, model, logicalNode);
+			}
+		} else {
+			DefaultMutableTreeNode searchNode = new DefaultMutableTreeNode(node);
+			if (parent == null) {
+				model.setRoot(searchNode);
+			} else {
+				parent.add(searchNode);
+			}
 		}
 	}
 }

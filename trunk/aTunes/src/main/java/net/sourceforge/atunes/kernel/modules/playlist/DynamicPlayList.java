@@ -128,6 +128,13 @@ public class DynamicPlayList extends AbstractPlayList {
 		return this.query;
 	}
 
+	/**
+	 * @param query
+	 */
+	protected void setQuery(final ISearchNodeRepresentation query) {
+		this.query = query;
+	}
+
 	// METHODS NOT IMPLEMENTED BY THIS TYPE OF PLAY LIST
 
 	@Override
@@ -223,7 +230,8 @@ public class DynamicPlayList extends AbstractPlayList {
 
 	@Override
 	public void saveInternalData() {
-		this.pointer = this.audioObjects != null ? this.audioObjects
+		this.pointer = this.audioObjects != null
+				&& this.audioObjects.getPointer() != null ? this.audioObjects
 				.getPointer() : 0;
 	}
 }

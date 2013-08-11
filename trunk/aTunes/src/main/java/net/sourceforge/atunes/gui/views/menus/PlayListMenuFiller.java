@@ -42,6 +42,7 @@ import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedAlbumsAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedArtistsAction;
 import net.sourceforge.atunes.kernel.actions.CustomAbstractAction;
+import net.sourceforge.atunes.kernel.actions.EditDynamicPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ExportPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ExportPlayListSelectionAction;
 import net.sourceforge.atunes.kernel.actions.LoadNewPlayListAction;
@@ -146,6 +147,7 @@ public final class PlayListMenuFiller {
 
 		objects.add(this.beanFactory.getBean(NewPlayListAction.class));
 		objects.add(this.beanFactory.getBean(NewDynamicPlayListAction.class));
+		objects.add(this.beanFactory.getBean(EditDynamicPlayListAction.class));
 		objects.add(this.beanFactory.getBean(RenamePlaylistAction.class));
 		objects.add(this.beanFactory.getBean(NextPlayListAction.class));
 		objects.add(this.beanFactory.getBean(PreviousPlayListAction.class));
@@ -388,10 +390,8 @@ public final class PlayListMenuFiller {
 	 */
 	private void updateCustomAction(final List<IAudioObject> selection,
 			final CustomAbstractAction customAction) {
-		// Dynamic playlist and action can be enabled -> then check
-		// selection, otherwise disable without more checks
-		if (this.playListHandler.getVisiblePlayList().isDynamic()
-				&& !customAction.isEnabledForDynamicPlayList()) {
+		if (!customAction.isEnabledForPlayList(this.playListHandler
+				.getVisiblePlayList())) {
 			customAction.setEnabled(false);
 		} else {
 			customAction.setEnabled(customAction

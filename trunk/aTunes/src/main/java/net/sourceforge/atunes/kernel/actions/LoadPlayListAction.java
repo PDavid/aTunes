@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFileSelectorDialog;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IStatePlaylist;
@@ -140,8 +141,8 @@ public class LoadPlayListAction extends CustomAbstractAction {
 	}
 
 	@Override
-	public boolean isEnabledForDynamicPlayList() {
-		return false;
+	public boolean isEnabledForPlayList(final IPlayList playlist) {
+		return !playlist.isDynamic();
 	}
 
 }

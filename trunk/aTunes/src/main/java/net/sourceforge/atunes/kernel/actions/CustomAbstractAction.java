@@ -26,6 +26,7 @@ import java.util.List;
 import javax.swing.Icon;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -119,11 +120,12 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction {
 
 	/**
 	 * Indicates whether this action must be enabled or disabled when used in a
-	 * dynamic play list
+	 * play list of the given type
 	 * 
+	 * @param playlist
 	 * @return
 	 */
-	public boolean isEnabledForDynamicPlayList() {
+	public boolean isEnabledForPlayList(final IPlayList playlist) {
 		return true;
 	}
 

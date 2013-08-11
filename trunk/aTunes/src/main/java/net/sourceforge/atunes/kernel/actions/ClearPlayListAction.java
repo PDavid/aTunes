@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -103,7 +104,7 @@ public class ClearPlayListAction extends CustomAbstractAction {
 	}
 
 	@Override
-	public boolean isEnabledForDynamicPlayList() {
-		return false;
+	public boolean isEnabledForPlayList(final IPlayList playlist) {
+		return !playlist.isDynamic();
 	}
 }

@@ -33,6 +33,7 @@ import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITaskService;
@@ -222,7 +223,7 @@ public class AddArtistTopTracksToPlayListAction extends
 	}
 
 	@Override
-	public boolean isEnabledForDynamicPlayList() {
-		return false;
+	public boolean isEnabledForPlayList(final IPlayList playlist) {
+		return !playlist.isDynamic();
 	}
 }

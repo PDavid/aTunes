@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
@@ -125,8 +126,8 @@ public class AddAlbumWithSelectedArtistsAction extends
 	}
 
 	@Override
-	public boolean isEnabledForDynamicPlayList() {
-		return false;
+	public boolean isEnabledForPlayList(final IPlayList playlist) {
+		return !playlist.isDynamic();
 	}
 
 }
