@@ -94,8 +94,8 @@ public class PlayList extends AbstractPlayList {
 	}
 
 	@Override
-	public boolean canBeChangedByUser() {
-		return true;
+	public boolean isDynamic() {
+		return false;
 	}
 
 	// ADD OPERATIONS

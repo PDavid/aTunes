@@ -390,7 +390,7 @@ public final class PlayListMenuFiller {
 			final CustomAbstractAction customAction) {
 		// Dynamic playlist and action can be enabled -> then check
 		// selection, otherwise disable without more checks
-		if (!this.playListHandler.getVisiblePlayList().canBeChangedByUser()
+		if (this.playListHandler.getVisiblePlayList().isDynamic()
 				&& !customAction.isEnabledForDynamicPlayList()) {
 			customAction.setEnabled(false);
 		} else {

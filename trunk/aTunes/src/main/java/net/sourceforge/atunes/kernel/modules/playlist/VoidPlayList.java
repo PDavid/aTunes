@@ -44,7 +44,7 @@ class VoidPlayList implements IPlayList {
 	private static final long serialVersionUID = 3581989108482549526L;
 
 	@Override
-	public boolean canBeChangedByUser() {
+	public boolean isDynamic() {
 		return false;
 	}
 
