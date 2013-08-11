@@ -189,6 +189,14 @@ public final class PlayListIO implements IPlayListIOService {
 					.endsWith(DYNAMIC_PLAYLIST_FILE_EXTENSION)) && f.exists();
 	}
 
+	@Override
+	public boolean isDynamicPlayList(final File file) {
+		return file != null
+				&& file.exists()
+				&& file.getAbsolutePath().endsWith(
+						DYNAMIC_PLAYLIST_FILE_EXTENSION);
+	}
+
 	/**
 	 * This function reads the filenames from the playlist file
 	 * 
@@ -201,6 +209,11 @@ public final class PlayListIO implements IPlayListIOService {
 			return this.beanFactory.getBean(PlayListReader.class).read(file);
 		}
 		return this.beanFactory.getBean(M3UPlayListReader.class).read(file);
+	}
+
+	@Override
+	public void readDynamicPlayList(final File file) {
+		this.beanFactory.getBean(DynamicPlayListReader.class).read(file);
 	}
 
 	/**

@@ -52,9 +52,11 @@ public class DynamicPlayListWriter {
 	 */
 	boolean write(final IPlayList playlist, final File file) {
 		if (playlist instanceof DynamicPlayList) {
+			DynamicPlayListData data = new DynamicPlayListData();
+			data.setQuery(((DynamicPlayList) playlist).getQuery());
+
 			return this.kryoSerializerService.writeObjectToFile(
-					file.getAbsolutePath(),
-					((DynamicPlayList) playlist).getQuery());
+					file.getAbsolutePath(), data);
 		} else {
 			throw new IllegalArgumentException("Not a DynamicPlayList");
 		}
