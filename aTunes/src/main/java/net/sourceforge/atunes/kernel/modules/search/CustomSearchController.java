@@ -179,6 +179,23 @@ public final class CustomSearchController extends
 	}
 
 	/**
+	 * Shows dialog so user can edit a query
+	 * 
+	 * @param query
+	 * @param title
+	 * @param text
+	 * @return
+	 */
+	ISearchNode showSearchDialogForQueryEdition(final ISearchNode query,
+			final String title, final String text) {
+		this.complexRuleTreeBuilder.setQuery(query, getComponentControlled());
+		getComponentControlled().setQueryCreationOnly(title, text);
+		getComponentControlled().setVisible(true);
+		return !getComponentControlled().isCanceled() ? this.complexRuleTreeBuilder
+				.getSearchTree(getComponentControlled()) : null;
+	}
+
+	/**
 	 * Invokes a search with rule defined in dialog.
 	 */
 	private void search() {
@@ -439,6 +456,7 @@ public final class CustomSearchController extends
 					@Override
 					public void actionPerformed(final ActionEvent e) {
 						// Pressed cancel button
+						getComponentControlled().setCanceled(true);
 						getComponentControlled().setVisible(false);
 					}
 				});

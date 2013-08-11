@@ -25,20 +25,20 @@ import java.util.List;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.ITreeNode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * Get a list of audio objects and add to play list, removing previous play list
- * content
+ * Edits a dynamic play list
  * 
- * @author alex
+ * @author fleax
  * 
  */
-public class SetAsPlayListAction extends
-		AbstractActionOverSelectedObjects<IAudioObject> {
+public class EditDynamicPlayListAction extends CustomAbstractAction {
 
-	private static final long serialVersionUID = -8993769615827375740L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3082284931181535129L;
 
 	private IPlayListHandler playListHandler;
 
@@ -52,31 +52,25 @@ public class SetAsPlayListAction extends
 	/**
 	 * Default constructor
 	 */
-	public SetAsPlayListAction() {
-		super(I18nUtils.getString("SET_AS_PLAYLIST"));
+	public EditDynamicPlayListAction() {
+		super(I18nUtils.getString("EDIT_DYNAMIC_PLAYLIST"));
 	}
 
 	@Override
-	protected void executeAction(final List<IAudioObject> objects) {
-		this.playListHandler.clearPlayList();
-		this.playListHandler.addToVisiblePlayList(objects);
+	protected void executeAction() {
+		this.playListHandler.editDynamicQuery(this.playListHandler
+				.getVisiblePlayList());
 	}
 
 	@Override
-	public boolean isEnabledForNavigationTreeSelection(
-			final boolean rootSelected, final List<ITreeNode> selection) {
-		return !selection.isEmpty();
-	}
-
-	@Override
-	public boolean isEnabledForNavigationTableSelection(
+	public boolean isEnabledForPlayListSelection(
 			final List<IAudioObject> selection) {
-		return !selection.isEmpty();
+		return true;
 	}
 
 	@Override
 	public boolean isEnabledForPlayList(final IPlayList playlist) {
-		return !playlist.isDynamic();
+		return playlist.isDynamic();
 	}
 
 }

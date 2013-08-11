@@ -376,4 +376,8 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler,
 	public void newDynamicPlayList(ISearchNode query,
 			Collection<IAudioObject> initialObjects);
 
+	/**
+	 * @param playList
+	 */
+	public void editDynamicQuery(IPlayList playList);
 }

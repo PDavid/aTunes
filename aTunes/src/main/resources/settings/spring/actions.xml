@@ -132,6 +132,7 @@
 	<bean id="customSearchAction" class="net.sourceforge.atunes.kernel.actions.CustomSearchAction"/>
 	<bean id="disconnectDeviceAction" class="net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.DownloadPodcastEntryAction"/>
+	<bean id="editDynamicPlayListAction" class="net.sourceforge.atunes.kernel.actions.EditDynamicPlayListAction"/>
 	<bean id="editPreferencesAction" class="net.sourceforge.atunes.kernel.actions.EditPreferencesAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.EditRadioAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.EditTagNavigatorAction" scope="prototype"/>

@@ -872,7 +872,7 @@ public final class PlayListHandler extends AbstractHandler implements
 		// Recalculate dynamic play lists
 		for (int i = 0; i < this.playListsContainer.getPlayListsCount(); i++) {
 			if (this.playListsContainer.getPlayListAt(i) instanceof DynamicPlayList) {
-				recalculatePlayList((DynamicPlayList) this.playListsContainer
+				recalculateDynamicPlayList((DynamicPlayList) this.playListsContainer
 						.getPlayListAt(i));
 			}
 		}
@@ -885,14 +885,37 @@ public final class PlayListHandler extends AbstractHandler implements
 		// Recalculate dynamic play lists
 		for (int i = 0; i < this.playListsContainer.getPlayListsCount(); i++) {
 			if (this.playListsContainer.getPlayListAt(i) instanceof DynamicPlayList) {
-				recalculatePlayList((DynamicPlayList) this.playListsContainer
+				recalculateDynamicPlayList((DynamicPlayList) this.playListsContainer
 						.getPlayListAt(i));
 			}
 		}
 	}
 
-	private void recalculatePlayList(final DynamicPlayList playList) {
-		playList.replaceContent(this.searchHandler.search(playList.getQuery()
-				.createSearchQuery(getBeanFactory())));
+	private void recalculateDynamicPlayList(final DynamicPlayList playList) {
+		if (playList.isDynamic()) {
+			playList.replaceContent(this.searchHandler.search(playList
+					.getQuery().createSearchQuery(getBeanFactory())));
+		}
+	}
+
+	@Override
+	public void editDynamicQuery(final IPlayList playList) {
+		if (playList.isDynamic()) {
+			// Edit query
+			ISearchNode query = this.searchHandler.editQuery(
+					((DynamicPlayList) playList).getQuery().createSearchQuery(
+							getBeanFactory()),
+					I18nUtils.getString("EDIT_DYNAMIC_PLAYLIST"),
+					I18nUtils.getString("EDIT_DYNAMIC_PLAYLIST_HELP"));
+			if (query != null) {
+				((DynamicPlayList) playList)
+						.setQuery(query.getRepresentation());
+				recalculateDynamicPlayList((DynamicPlayList) playList);
+				refreshPlayList();
+				playListsChanged();
+			}
+		} else {
+			throw new IllegalArgumentException("Not a dynamic playlist");
+		}
 	}
 }

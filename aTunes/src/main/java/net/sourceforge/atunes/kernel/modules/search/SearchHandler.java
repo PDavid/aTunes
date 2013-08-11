@@ -52,6 +52,13 @@ public final class SearchHandler extends AbstractHandler implements
 	}
 
 	@Override
+	public ISearchNode editQuery(final ISearchNode query, final String title,
+			final String text) {
+		return createController().showSearchDialogForQueryEdition(query, title,
+				text);
+	}
+
+	@Override
 	public void showSearchResults(final ISearchNode query,
 			final Collection<IAudioObject> result) {
 		// Open search results dialog

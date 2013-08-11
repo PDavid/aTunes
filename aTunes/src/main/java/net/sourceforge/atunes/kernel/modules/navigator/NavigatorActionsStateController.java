@@ -105,10 +105,8 @@ public class NavigatorActionsStateController {
 		Action a = menuItem.getAction();
 		if (a instanceof CustomAbstractAction) {
 			CustomAbstractAction customAction = (CustomAbstractAction) a;
-			// Dynamic playlist and action can be enabled -> then check
-			// selection, otherwise disable without more checks
-			if (this.playListHandler.getVisiblePlayList().isDynamic()
-					&& !customAction.isEnabledForDynamicPlayList()) {
+			if (!customAction.isEnabledForPlayList(this.playListHandler
+					.getVisiblePlayList())) {
 				customAction.setEnabled(false);
 			} else {
 				customAction.setEnabled(customAction
@@ -128,10 +126,8 @@ public class NavigatorActionsStateController {
 		Action a = menuItem.getAction();
 		if (a instanceof CustomAbstractAction) {
 			CustomAbstractAction customAction = (CustomAbstractAction) a;
-			// Dynamic playlist and action can be enabled -> then check
-			// selection, otherwise disable without more checks
-			if (this.playListHandler.getVisiblePlayList().isDynamic()
-					&& !customAction.isEnabledForDynamicPlayList()) {
+			if (!customAction.isEnabledForPlayList(this.playListHandler
+					.getVisiblePlayList())) {
 				customAction.setEnabled(false);
 			} else {
 				customAction.setEnabled(customAction
@@ -139,5 +135,4 @@ public class NavigatorActionsStateController {
 			}
 		}
 	}
-
 }
