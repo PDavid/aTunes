@@ -117,8 +117,8 @@ public class DynamicPlayList extends AbstractPlayList {
 	}
 
 	@Override
-	public boolean canBeChangedByUser() {
-		return false;
+	public boolean isDynamic() {
+		return true;
 	}
 
 	/**

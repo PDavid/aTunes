@@ -59,8 +59,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
 		}
 
 		// Check playlist is dynamic
-		if (!this.beanFactory.getBean(IPlayListHandler.class)
-				.getVisiblePlayList().canBeChangedByUser()) {
+		if (this.beanFactory.getBean(IPlayListHandler.class)
+				.getVisiblePlayList().isDynamic()) {
 			Logger.debug("Can't drop in a dynamic playlist");
 			return false;
 		}

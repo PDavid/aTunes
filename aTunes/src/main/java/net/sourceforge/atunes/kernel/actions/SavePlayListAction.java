@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * This action saves current play list to file as M3U
+ * This action saves current play list to file
  * 
  * @author fleax
  * 

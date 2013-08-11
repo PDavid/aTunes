@@ -107,7 +107,7 @@ public class NavigatorActionsStateController {
 			CustomAbstractAction customAction = (CustomAbstractAction) a;
 			// Dynamic playlist and action can be enabled -> then check
 			// selection, otherwise disable without more checks
-			if (!this.playListHandler.getVisiblePlayList().canBeChangedByUser()
+			if (this.playListHandler.getVisiblePlayList().isDynamic()
 					&& !customAction.isEnabledForDynamicPlayList()) {
 				customAction.setEnabled(false);
 			} else {
@@ -130,7 +130,7 @@ public class NavigatorActionsStateController {
 			CustomAbstractAction customAction = (CustomAbstractAction) a;
 			// Dynamic playlist and action can be enabled -> then check
 			// selection, otherwise disable without more checks
-			if (!this.playListHandler.getVisiblePlayList().canBeChangedByUser()
+			if (this.playListHandler.getVisiblePlayList().isDynamic()
 					&& !customAction.isEnabledForDynamicPlayList()) {
 				customAction.setEnabled(false);
 			} else {

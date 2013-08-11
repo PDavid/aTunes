@@ -252,10 +252,9 @@ public interface IPlayList extends Serializable, Cloneable {
 	void setMode(IPlayListMode playListMode);
 
 	/**
-	 * @return true if user can add / remove / move elements, false if content
-	 *         is managed by application
+	 * @return true if play list is dynamic, managed by application
 	 */
-	boolean canBeChangedByUser();
+	boolean isDynamic();
 
 	/**
 	 * Request play list implementation to save internal data (before writting
