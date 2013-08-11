@@ -106,18 +106,25 @@ public class LoadPlayListAction extends CustomAbstractAction {
 			if (file.exists()) {
 				this.statePlaylist.setLoadPlaylistPath(FileUtils.getPath(file
 						.getParentFile()));
-				// Read file names
-				List<String> filesToLoad = this.playListIOService.read(file);
-				// Background loading - but only when returned array is not null
-				// (Progress dialog hangs otherwise)
-				if (filesToLoad != null) {
-					LoadPlayListProcess process = (LoadPlayListProcess) this.processFactory
-							.getProcessByName("loadPlayListProcess");
-					process.setFilenamesToLoad(filesToLoad);
-					process.setReplacePlayList(this.replacePlayList);
-					process.setPlayListName(FilenameUtils.getBaseName(file
-							.getName()));
-					process.execute();
+
+				if (this.playListIOService.isDynamicPlayList(file)) {
+					this.playListIOService.readDynamicPlayList(file);
+				} else {
+					// Read file names
+					List<String> filesToLoad = this.playListIOService
+							.read(file);
+					// Background loading - but only when returned array is not
+					// null
+					// (Progress dialog hangs otherwise)
+					if (filesToLoad != null) {
+						LoadPlayListProcess process = (LoadPlayListProcess) this.processFactory
+								.getProcessByName("loadPlayListProcess");
+						process.setFilenamesToLoad(filesToLoad);
+						process.setReplacePlayList(this.replacePlayList);
+						process.setPlayListName(FilenameUtils.getBaseName(file
+								.getName()));
+						process.execute();
+					}
 				}
 			} else {
 				this.dialogFactory.newDialog(IErrorDialog.class)

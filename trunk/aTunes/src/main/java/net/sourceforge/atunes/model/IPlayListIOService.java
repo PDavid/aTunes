@@ -179,4 +179,17 @@ public interface IPlayListIOService {
 	 */
 	File checkM3UPlayListFileName(File file);
 
+	/**
+	 * @param file
+	 * @return true if file is a dynamic playlist
+	 */
+	boolean isDynamicPlayList(File file);
+
+	/**
+	 * Reads and loads a dynamic play list
+	 * 
+	 * @param file
+	 */
+	void readDynamicPlayList(File file);
+
 }
