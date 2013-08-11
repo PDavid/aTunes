@@ -72,6 +72,13 @@ public interface IPlayListIOService {
 	FilenameFilter getPlaylistFileFilter();
 
 	/**
+	 * FileFilter to be used when loading and saving a dynamic play list file
+	 * 
+	 * @return
+	 */
+	FilenameFilter getDynamicPlaylistFileFilter();
+
+	/**
 	 * FileFilter to be used when loading and saving a play list M3U file
 	 * 
 	 * @return the playlist file filter
@@ -87,16 +94,6 @@ public interface IPlayListIOService {
 	 * @return true, if is valid play list
 	 */
 	boolean isValidPlayList(String playListFile);
-
-	/**
-	 * Checks if is valid play list.
-	 * 
-	 * @param playListFile
-	 *            the play list file
-	 * 
-	 * @return true, if is valid play list
-	 */
-	boolean isValidPlayList(File playListFile);
 
 	/**
 	 * This function reads the filenames from the playlist file (m3u). It will
@@ -165,6 +162,14 @@ public interface IPlayListIOService {
 	 * @return file checked
 	 */
 	File checkPlayListFileName(File file);
+
+	/**
+	 * Checks file name is a valid dynamic play list file (checks extension)
+	 * 
+	 * @param file
+	 * @return file checked
+	 */
+	File checkDynamicPlayListFileName(File file);
 
 	/**
 	 * Checks file name is a valid M3U play list file (checks extension)

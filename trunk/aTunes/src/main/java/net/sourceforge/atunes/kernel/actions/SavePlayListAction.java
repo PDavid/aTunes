@@ -115,16 +115,30 @@ public class SavePlayListAction extends CustomAbstractAction {
 		IPlayList playListToSave = this.playListHandler.getVisiblePlayList();
 		IFileSelectorDialog dialog = this.dialogFactory
 				.newDialog(IFileSelectorDialog.class);
-		dialog.setFileFilter(this.playListIOService.getPlaylistFileFilter());
+
+		// Set file filter given playlist type
+		if (playListToSave.isDynamic()) {
+			dialog.setFileFilter(this.playListIOService
+					.getDynamicPlaylistFileFilter());
+		} else {
+			dialog.setFileFilter(this.playListIOService.getPlaylistFileFilter());
+		}
+
 		File file = dialog.saveFile(this.statePlaylist.getSavePlaylistPath(),
 				playListToSave.getName());
+
 		if (file != null) {
 
 			this.statePlaylist.setSavePlaylistPath(FileUtils.getPath(file
 					.getParentFile()));
 
 			// If filename have incorrect extension, add it
-			file = this.playListIOService.checkPlayListFileName(file);
+			if (playListToSave.isDynamic()) {
+				file = this.playListIOService
+						.checkDynamicPlayListFileName(file);
+			} else {
+				file = this.playListIOService.checkPlayListFileName(file);
+			}
 
 			this.playListIOService.write(playListToSave, file);
 		}
