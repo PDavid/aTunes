@@ -30,6 +30,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFilter;
@@ -283,8 +284,13 @@ public final class PlayListHandler extends AbstractHandler implements
 	public void newDynamicPlayList(final ISearchNode query,
 			final Collection<IAudioObject> initialObjects) {
 		String name = query.toString();
+
+		List<IAudioObject> sortedList = new ArrayList<IAudioObject>(
+				initialObjects);
+		getBean(IAudioObjectComparator.class).sort(sortedList);
+
 		addNewPlayList(name, this.playListCreator.getNewDynamicPlayList(name,
-				query, initialObjects, 0));
+				query, sortedList, 0));
 		playListsChanged();
 	}
 
