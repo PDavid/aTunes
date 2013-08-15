@@ -897,10 +897,11 @@ public final class PlayListHandler extends AbstractHandler implements
 		}
 	}
 
-	private void recalculateDynamicPlayList(final DynamicPlayList playList) {
+	void recalculateDynamicPlayList(final DynamicPlayList playList) {
 		if (playList.isDynamic()) {
 			playList.replaceContent(this.searchHandler.search(playList
-					.getQuery().createSearchQuery(getBeanFactory())));
+					.getQuery().createSearchQuery(getBeanFactory())),
+					getBean(IAudioObjectComparator.class));
 		}
 	}
 
@@ -916,9 +917,9 @@ public final class PlayListHandler extends AbstractHandler implements
 			if (query != null) {
 				((DynamicPlayList) playList)
 						.setQuery(query.getRepresentation());
-				recalculateDynamicPlayList((DynamicPlayList) playList);
-				refreshPlayList();
-				playListsChanged();
+
+				getBean(UpdateDynamicPlayListBackgroundWorker.class)
+						.setPlayList((DynamicPlayList) playList).execute();
 			}
 		} else {
 			throw new IllegalArgumentException("Not a dynamic playlist");

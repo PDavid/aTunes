@@ -114,7 +114,7 @@ public interface IBackgroundWorker<T, I> {
 	 * 
 	 * @author alex
 	 * 
-	 * @param <T>
+	 * @param <I>
 	 */
 	public interface IActionsWithIntermediateResult<I> {
 
