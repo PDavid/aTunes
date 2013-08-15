@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
@@ -60,6 +61,11 @@ public class DynamicPlayList extends AbstractPlayList {
 	 * store that value
 	 */
 	int pointer = 0;
+
+	/**
+	 * Column to use for sorting items
+	 */
+	IColumn<?> columnSorted;
 
 	/**
 	 * No args constructor for serialization
@@ -135,14 +141,17 @@ public class DynamicPlayList extends AbstractPlayList {
 		this.query = query;
 	}
 
+	@Override
+	public void sortByColumn(final IColumn<?> column) {
+		this.columnSorted = column;
+		this.audioObjects.sort(column.getComparator());
+		notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
+	}
+
 	// METHODS NOT IMPLEMENTED BY THIS TYPE OF PLAY LIST
 
 	@Override
 	public void moveRowTo(final int sourceRow, final int targetRow) {
-	}
-
-	@Override
-	public void sortByColumn(final IColumn<?> column) {
 	}
 
 	@Override
@@ -199,7 +208,8 @@ public class DynamicPlayList extends AbstractPlayList {
 	 * @param content
 	 */
 	@SuppressWarnings("unchecked")
-	protected void replaceContent(final Collection<IAudioObject> content) {
+	protected void replaceContent(final Collection<IAudioObject> content,
+			final IAudioObjectComparator comparator) {
 		if (this.audioObjects == null) {
 			this.audioObjects = new PointedList<IAudioObject>();
 			this.audioObjects.addAll(0, content);
@@ -213,6 +223,12 @@ public class DynamicPlayList extends AbstractPlayList {
 			remove(toRemove);
 			this.audioObjects.addAll(this.audioObjects.size(), toAdd);
 			notifyAudioObjectsAdded(this.audioObjects.size(), toAdd);
+		}
+
+		if (this.columnSorted != null) {
+			sortByColumn(this.columnSorted);
+		} else {
+			this.audioObjects.sort(comparator);
 		}
 	}
 
