@@ -45,5 +45,6 @@
 
 	<bean class="net.sourceforge.atunes.kernel.modules.playlist.PlayListIconSelector" scope="prototype"/>
 	
-	<bean id="updateDynamicPlayListWorker" class="net.sourceforge.atunes.kernel.modules.playlist.UpdateDynamicPlayListBackgroundWorker" scope="prototype"/>	
+	<bean id="updateDynamicPlayListWorker" class="net.sourceforge.atunes.kernel.modules.playlist.UpdateDynamicPlayListBackgroundWorker" scope="prototype"/>
+	<bean id="loadPlayListsBackgroundWorker" class="net.sourceforge.atunes.kernel.modules.playlist.LoadPlayListsBackgroundWorker" scope="prototype"/>	
 </beans>
