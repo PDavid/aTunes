@@ -22,9 +22,12 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectComparator;
+import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -44,6 +47,16 @@ public class PlayListCreator {
 	private IColumnSet playListColumnSet;
 
 	private IRepositoryHandler repositoryHandler;
+
+	private IAudioObjectComparator audioObjectComparator;
+
+	/**
+	 * @param audioObjectComparator
+	 */
+	public void setAudioObjectComparator(
+			final IAudioObjectComparator audioObjectComparator) {
+		this.audioObjectComparator = audioObjectComparator;
+	}
 
 	/**
 	 * @param repositoryHandler
@@ -91,16 +104,28 @@ public class PlayListCreator {
 	 * @param name
 	 * @param query
 	 * @param initialObjects
+	 * @param pointer
+	 * @param sortedColumn
 	 * @return
 	 */
 	IPlayList getNewDynamicPlayList(final String name, final ISearchNode query,
-			final Collection<IAudioObject> initialObjects, final int pointer) {
+			final Collection<IAudioObject> initialObjects, final int pointer,
+			final IColumn<?> columnSorted) {
 		IPlayList newPlayList;
 		if (initialObjects == null) {
 			newPlayList = new DynamicPlayList(this.statePlayer,
 					query.getRepresentation(), pointer);
 		} else {
-			newPlayList = new DynamicPlayList(initialObjects, this.statePlayer,
+			List<IAudioObject> sortedList = new ArrayList<IAudioObject>(
+					initialObjects);
+			if (columnSorted != null) {
+				Collections.sort(sortedList, columnSorted.getComparator());
+			} else {
+				this.audioObjectComparator.sort(sortedList);
+			}
+
+			this.audioObjectComparator.sort(sortedList);
+			newPlayList = new DynamicPlayList(sortedList, this.statePlayer,
 					query.getRepresentation(), pointer);
 		}
 		newPlayList.setName(name);

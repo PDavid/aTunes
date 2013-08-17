@@ -263,8 +263,8 @@ public final class PlayListHandler extends AbstractHandler implements
 	@Override
 	public void newPlayList(final String nameOfNewPlayList,
 			final List<? extends IAudioObject> audioObjects) {
-		addNewPlayList(nameOfNewPlayList, this.playListCreator.getNewPlayList(
-				nameOfNewPlayList, audioObjects));
+		addNewPlayList(this.playListCreator.getNewPlayList(nameOfNewPlayList,
+				audioObjects));
 		playListsChanged();
 	}
 
@@ -273,16 +273,12 @@ public final class PlayListHandler extends AbstractHandler implements
 			final Collection<IAudioObject> initialObjects) {
 		String name = query.toString();
 
-		List<IAudioObject> sortedList = new ArrayList<IAudioObject>(
-				initialObjects);
-		getBean(IAudioObjectComparator.class).sort(sortedList);
-
-		addNewPlayList(name, this.playListCreator.getNewDynamicPlayList(name,
-				query, sortedList, 0));
+		addNewPlayList(this.playListCreator.getNewDynamicPlayList(name, query,
+				initialObjects, 0, null));
 		playListsChanged();
 	}
 
-	void addNewPlayList(final String name, final IPlayList playList) {
+	void addNewPlayList(final IPlayList playList) {
 		// Each play list added to container must have its listeners, state
 		// player and mode
 		playList.setStatePlayer(this.statePlayer);
@@ -291,7 +287,8 @@ public final class PlayListHandler extends AbstractHandler implements
 		playList.setPlayListEventListeners(this.playListEventListeners);
 
 		this.playListsContainer.addPlayList(playList);
-		this.playListTabController.newPlayList(name,
+		this.playListTabController.newPlayList(this.playListNameCreator
+				.getNameForPlaylist(this.playListsContainer, playList),
 				getBean(PlayListIconSelector.class).getIcon(playList));
 	}
 
@@ -843,7 +840,7 @@ public final class PlayListHandler extends AbstractHandler implements
 		if (playList.isDynamic()) {
 			playList.replaceContent(this.searchHandler.search(playList
 					.getQuery().createSearchQuery(getBeanFactory())),
-					getBean(IAudioObjectComparator.class));
+					getBean(IAudioObjectComparator.class), getBeanFactory());
 		}
 	}
 
