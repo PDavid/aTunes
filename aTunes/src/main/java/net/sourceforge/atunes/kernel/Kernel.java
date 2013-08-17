@@ -96,8 +96,7 @@ public final class Kernel implements IKernel {
 		new LanguageSelector().setLanguage(this.stateCore,
 				this.localeBeanFactory);
 
-		ITaskService taskService = this.beanFactory.getBean("taskService",
-				ITaskService.class);
+		ITaskService taskService = this.beanFactory.getBean(ITaskService.class);
 		// Retrieve state in background
 		@SuppressWarnings("unchecked")
 		List<AbstractStateRetrieveTask> tasks = this.beanFactory.getBean(

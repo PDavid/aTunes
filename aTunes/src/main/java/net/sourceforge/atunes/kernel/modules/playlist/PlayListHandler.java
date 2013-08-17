@@ -36,7 +36,6 @@ import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IListMessageDialog;
-import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IPlayList;
@@ -61,9 +60,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PlayListHandler extends AbstractHandler implements
 		IPlayListHandler, IPlayListEventListener {
-
-	/** Play lists stored */
-	private IListOfPlayLists playListsRetrievedFromCache = new ListOfPlayLists();
 
 	/** The play list tab controller. */
 	private PlayListTabController playListTabController;
@@ -215,14 +211,6 @@ public final class PlayListHandler extends AbstractHandler implements
 	}
 
 	/**
-	 * @param playListsRetrievedFromCache
-	 */
-	public void setPlayListsRetrievedFromCache(
-			final IListOfPlayLists playListsRetrievedFromCache) {
-		this.playListsRetrievedFromCache = playListsRetrievedFromCache;
-	}
-
-	/**
 	 * @param playListEventListeners
 	 */
 	public void setPlayListEventListeners(
@@ -294,7 +282,7 @@ public final class PlayListHandler extends AbstractHandler implements
 		playListsChanged();
 	}
 
-	private void addNewPlayList(final String name, final IPlayList playList) {
+	void addNewPlayList(final String name, final IPlayList playList) {
 		// Each play list added to container must have its listeners, state
 		// player and mode
 		playList.setStatePlayer(this.statePlayer);
@@ -825,52 +813,6 @@ public final class PlayListHandler extends AbstractHandler implements
 				}
 			});
 		}
-	}
-
-	/**
-	 * Called after initialization task completed
-	 */
-	void initializationTaskCompleted() {
-		// Playlists need to be loaded before other handlers access them in
-		// allHandlersInitialized
-		// Get playlists from application cache
-		final IListOfPlayLists listOfPlayLists = this.playListsRetrievedFromCache;
-
-		// Set selected play list as default
-		int selected = listOfPlayLists.getSelectedPlayList();
-		if (selected < 0 || selected >= listOfPlayLists.getPlayLists().size()) {
-			selected = 0;
-		}
-
-		// Add playlists
-		this.playListsContainer.clear();
-		for (IPlayList playlist : listOfPlayLists.getPlayLists()) {
-			if (playlist instanceof DynamicPlayList) {
-				String name = this.playListNameCreator.getNameForPlaylist(
-						this.playListsContainer, playlist);
-				ISearchNode query = ((DynamicPlayList) playlist).getQuery()
-						.createSearchQuery(getBeanFactory());
-				Collection<IAudioObject> initialObjects = this.searchHandler
-						.search(query);
-				addNewPlayList(name,
-						this.playListCreator.getNewDynamicPlayList(name, query,
-								initialObjects,
-								((DynamicPlayList) playlist).getPointer()));
-
-			} else {
-				addNewPlayList(this.playListNameCreator.getNameForPlaylist(
-						this.playListsContainer, playlist),
-						this.playListCreator.replaceAudioObjects(playlist));
-			}
-		}
-		// Initially active play list and visible play list are the same
-		this.playListsContainer.setActivePlayListIndex(selected);
-		this.playListsContainer.setVisiblePlayListIndex(selected);
-		this.playListTabController.forceSwitchTo(selected);
-
-		setPlayList(this.playListsContainer.getPlayListAt(selected));
-
-		this.playListsRetrievedFromCache = null;
 	}
 
 	@Override
