@@ -32,11 +32,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.GuiUtils;
@@ -46,19 +43,13 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
-import net.sourceforge.atunes.model.IListCellRendererCode;
 import net.sourceforge.atunes.model.ILogicalSearchOperator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialog;
-import net.sourceforge.atunes.model.ISearchBinaryOperator;
 import net.sourceforge.atunes.model.ISearchField;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchNode;
-import net.sourceforge.atunes.model.ISearchOperator;
-import net.sourceforge.atunes.model.ISearchRule;
-import net.sourceforge.atunes.model.ITreeCellRendererCode;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Controller for custom search dialog
@@ -80,6 +71,8 @@ public final class CustomSearchController extends
 	private ILogicalSearchOperator notLogicalSearchOperator;
 
 	private ILookAndFeelManager lookAndFeelManager;
+
+	private SearchRuleCreatorLogic logic;
 
 	/**
 	 * @param searchHandler
@@ -132,6 +125,8 @@ public final class CustomSearchController extends
 	public void initialize() {
 		setComponentControlled(this.dialogFactory
 				.newDialog(CustomSearchDialog.class));
+		this.logic = new SearchRuleCreatorLogic(getComponentControlled(),
+				this.complexRuleTreeBuilder, this.notLogicalSearchOperator);
 		addBindings();
 	}
 
@@ -232,84 +227,19 @@ public final class CustomSearchController extends
 
 	@Override
 	public void addBindings() {
-		getComponentControlled().getSearchButton().setEnabled(false);
-		getComponentControlled()
-				.getComplexRulesTree()
-				.setCellRenderer(
-						this.controlsBuilder
-								.getTreeCellRenderer(new ITreeCellRendererCode<JComponent, DefaultMutableTreeNode>() {
-									@Override
-									public JComponent getComponent(
-											final JComponent superComponent,
-											final JTree tree,
-											final DefaultMutableTreeNode value,
-											final boolean isSelected,
-											final boolean expanded,
-											final boolean leaf, final int row,
-											final boolean isHasFocus) {
-										if (value.getUserObject() instanceof ILogicalSearchOperator) {
-											((JLabel) superComponent)
-													.setText(((ILogicalSearchOperator) value
-															.getUserObject())
-															.getDescription());
-										} else if (value.getUserObject() instanceof ISearchRule) {
-											ISearchRule rule = (ISearchRule) value
-													.getUserObject();
-											((JLabel) superComponent).setText(StringUtils
-													.getString(
-															rule.getField()
-																	.getName(),
-															" ",
-															rule.getOperator()
-																	.getDescription(),
-															" ", rule
-																	.getValue()));
-										}
-										return superComponent;
-									}
-								}));
-		getComponentControlled()
-				.getSimpleRulesList()
-				.setRenderer(
-						this.lookAndFeelManager
-								.getCurrentLookAndFeel()
-								.getListCellRenderer(
-										new IListCellRendererCode<JComponent, ISearchField<?, ?>>() {
-											@Override
-											public JComponent getComponent(
-													final JComponent superComponent,
-													final JList list,
-													final ISearchField<?, ?> value,
-													final int index,
-													final boolean isSelected,
-													final boolean cellHasFocus) {
-												((JLabel) superComponent)
-														.setText(value
-																.getName());
-												return superComponent;
-											}
-										}));
+		this.logic.disableSearch();
 
-		getComponentControlled()
-				.getSimpleRulesComboBox()
-				.setRenderer(
-						this.lookAndFeelManager
-								.getCurrentLookAndFeel()
-								.getListCellRenderer(
-										new IListCellRendererCode<JComponent, ISearchOperator>() {
-											@Override
-											public JComponent getComponent(
-													final JComponent superComponent,
-													final JList list,
-													final ISearchOperator value,
-													final int index,
-													final boolean isSelected,
-													final boolean cellHasFocus) {
-												((JLabel) superComponent).setText(value
-														.getDescription());
-												return superComponent;
-											}
-										}));
+		getComponentControlled().getComplexRulesTree().setCellRenderer(
+				this.controlsBuilder
+						.getTreeCellRenderer(new RuleTreeCellRenderer()));
+
+		getComponentControlled().getSimpleRulesList().setRenderer(
+				this.lookAndFeelManager.getCurrentLookAndFeel()
+						.getListCellRenderer(new RuleListCellRenderer()));
+
+		getComponentControlled().getSimpleRulesComboBox().setRenderer(
+				this.lookAndFeelManager.getCurrentLookAndFeel()
+						.getListCellRenderer(new RuleComboListCellRenderer()));
 
 		getComponentControlled().getSimpleRulesComboBox().addItemListener(
 				new ItemListener() {
@@ -317,22 +247,8 @@ public final class CustomSearchController extends
 					@Override
 					public void itemStateChanged(final ItemEvent event) {
 						if (event.getStateChange() == ItemEvent.SELECTED) {
-							// Only allow text field for binary operators
-							boolean isBinary = event.getItem() instanceof ISearchBinaryOperator;
-							getComponentControlled().getSimpleRulesTextField()
-									.setEnabled(isBinary);
-							if (!isBinary) {
-								getComponentControlled()
-										.getSimpleRulesTextField().setText("");
-							}
-							getComponentControlled()
-									.getSimpleRulesAddButton()
-									.setEnabled(
-											!isBinary
-													|| !StringUtils
-															.isEmpty(getComponentControlled()
-																	.getSimpleRulesTextField()
-																	.getText()));
+							CustomSearchController.this.logic
+									.adjustSearchRuleTextField(event);
 						}
 					}
 				});
@@ -348,13 +264,8 @@ public final class CustomSearchController extends
 						GuiUtils.callInEventDispatchThreadLater(new Runnable() {
 							@Override
 							public void run() {
-								getComponentControlled()
-										.getSimpleRulesAddButton()
-										.setEnabled(
-												!StringUtils
-														.isEmpty(getComponentControlled()
-																.getSimpleRulesTextField()
-																.getText()));
+								CustomSearchController.this.logic
+										.adjustAddButton();
 							}
 						});
 					}
@@ -364,13 +275,8 @@ public final class CustomSearchController extends
 
 					@Override
 					public void actionPerformed(final ActionEvent event) {
-						if (!StringUtils.isEmpty(getComponentControlled()
-								.getSimpleRulesTextField().getText())) {
-							// Pressed Add button
-							CustomSearchController.this.complexRuleTreeBuilder
-									.createSimpleRule(getComponentControlled());
-							checkEmptyRule();
-						}
+						CustomSearchController.this.logic
+								.pressRuleTextFieldEnter();
 					}
 				});
 		getComponentControlled().getSimpleRulesAddButton().addActionListener(
@@ -378,10 +284,7 @@ public final class CustomSearchController extends
 
 					@Override
 					public void actionPerformed(final ActionEvent event) {
-						// Pressed Add button
-						CustomSearchController.this.complexRuleTreeBuilder
-								.createSimpleRule(getComponentControlled());
-						checkEmptyRule();
+						CustomSearchController.this.logic.pressAddButton();
 					}
 				});
 
@@ -390,10 +293,7 @@ public final class CustomSearchController extends
 
 					@Override
 					public void actionPerformed(final ActionEvent arg0) {
-						// Pressed AND button
-						CustomSearchController.this.complexRuleTreeBuilder
-								.addAndOperator(getComponentControlled());
-						checkEmptyRule();
+						CustomSearchController.this.logic.pressAndButton();
 					}
 				});
 
@@ -402,10 +302,7 @@ public final class CustomSearchController extends
 
 					@Override
 					public void actionPerformed(final ActionEvent e) {
-						// Pressed OR button
-						CustomSearchController.this.complexRuleTreeBuilder
-								.addOrOperator(getComponentControlled());
-						checkEmptyRule();
+						CustomSearchController.this.logic.pressOrButton();
 					}
 				});
 
@@ -414,10 +311,7 @@ public final class CustomSearchController extends
 
 					@Override
 					public void actionPerformed(final ActionEvent e) {
-						// Pressed NOT button
-						CustomSearchController.this.complexRuleTreeBuilder
-								.addNotOperator(getComponentControlled());
-						checkEmptyRule();
+						CustomSearchController.this.logic.pressNotButton();
 					}
 				});
 
@@ -426,10 +320,7 @@ public final class CustomSearchController extends
 
 					@Override
 					public void actionPerformed(final ActionEvent e) {
-						// Pressed Remove button
-						CustomSearchController.this.complexRuleTreeBuilder
-								.removeRuleNode(getComponentControlled());
-						checkEmptyRule();
+						CustomSearchController.this.logic.pressRemoveButton();
 					}
 				});
 
@@ -444,11 +335,13 @@ public final class CustomSearchController extends
 				});
 
 		getComponentControlled().getComplexRulesTree()
-				.addTreeSelectionListener(
-						new ComplexTreeSelectionListener(
-								getComponentControlled(),
-								getComponentControlled().getComplexRulesTree(),
-								this.notLogicalSearchOperator));
+				.addTreeSelectionListener(new TreeSelectionListener() {
+
+					@Override
+					public void valueChanged(final TreeSelectionEvent e) {
+						CustomSearchController.this.logic.treeItemSelected();
+					}
+				});
 
 		getComponentControlled().getCancelButton().addActionListener(
 				new ActionListener() {
@@ -469,37 +362,10 @@ public final class CustomSearchController extends
 						if (event.getStateChange() == ItemEvent.SELECTED) {
 							ISearchField<?, ?> searchField = (ISearchField<?, ?>) event
 									.getItem();
-							getComponentControlled().getSimpleRulesComboBox()
-									.setModel(
-											new DefaultComboBoxModel(
-													searchField.getOperators()
-															.toArray()));
-
-							// Only allow text field for binary operators
-							boolean isBinary = searchField.getOperators()
-									.get(0) instanceof ISearchBinaryOperator;
-							getComponentControlled().getSimpleRulesTextField()
-									.setEnabled(isBinary);
-							if (!isBinary) {
-								getComponentControlled()
-										.getSimpleRulesTextField().setText("");
-							}
-							getComponentControlled()
-									.getSimpleRulesAddButton()
-									.setEnabled(
-											!isBinary
-													|| !StringUtils
-															.isEmpty(getComponentControlled()
-																	.getSimpleRulesTextField()
-																	.getText()));
+							CustomSearchController.this.logic
+									.ruleSelected(searchField);
 						}
 					}
 				});
-	}
-
-	private void checkEmptyRule() {
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode) getComponentControlled()
-				.getComplexRulesTree().getModel().getRoot();
-		getComponentControlled().getSearchButton().setEnabled(root != null);
 	}
 }
