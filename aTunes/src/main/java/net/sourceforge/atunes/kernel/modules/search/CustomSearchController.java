@@ -43,7 +43,6 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
-import net.sourceforge.atunes.model.ILogicalSearchOperator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.ISearchField;
@@ -67,8 +66,6 @@ public final class CustomSearchController extends
 	private ComplexRuleTreeBuilder complexRuleTreeBuilder;
 
 	private IControlsBuilder controlsBuilder;
-
-	private ILogicalSearchOperator notLogicalSearchOperator;
 
 	private ILookAndFeelManager lookAndFeelManager;
 
@@ -104,14 +101,6 @@ public final class CustomSearchController extends
 	}
 
 	/**
-	 * @param notLogicalSearchOperator
-	 */
-	public void setNotLogicalSearchOperator(
-			final ILogicalSearchOperator notLogicalSearchOperator) {
-		this.notLogicalSearchOperator = notLogicalSearchOperator;
-	}
-
-	/**
 	 * @param lookAndFeelManager
 	 */
 	public void setLookAndFeelManager(
@@ -126,7 +115,7 @@ public final class CustomSearchController extends
 		setComponentControlled(this.dialogFactory
 				.newDialog(CustomSearchDialog.class));
 		this.logic = new SearchRuleCreatorLogic(getComponentControlled(),
-				this.complexRuleTreeBuilder, this.notLogicalSearchOperator);
+				this.complexRuleTreeBuilder);
 		addBindings();
 	}
 
