@@ -26,6 +26,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
@@ -268,6 +269,10 @@ public class ComplexRuleTreeBuilder {
 
 		// Expand complex rules tree to display full rule
 		GuiUtils.expandTree(dialog.getComplexRulesTree());
+
+		// Select added node
+		dialog.getComplexRulesTree().setSelectionPath(
+				new TreePath(logicalNode.getPath()));
 
 		return logicalNode;
 	}

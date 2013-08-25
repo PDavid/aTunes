@@ -27,7 +27,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
-import net.sourceforge.atunes.model.ILogicalSearchOperator;
 import net.sourceforge.atunes.model.ISearchBinaryOperator;
 import net.sourceforge.atunes.model.ISearchField;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -44,19 +43,14 @@ class SearchRuleCreatorLogic {
 
 	private final ComplexRuleTreeBuilder complexRuleTreeBuilder;
 
-	private final ILogicalSearchOperator notLogicalSearchOperator;
-
 	/**
 	 * @param dialog
 	 * @param complexRuleTreeBuilder
-	 * @param notLogicalSearchOperator
 	 */
 	public SearchRuleCreatorLogic(final CustomSearchDialog dialog,
-			final ComplexRuleTreeBuilder complexRuleTreeBuilder,
-			final ILogicalSearchOperator notLogicalSearchOperator) {
+			final ComplexRuleTreeBuilder complexRuleTreeBuilder) {
 		this.dialog = dialog;
 		this.complexRuleTreeBuilder = complexRuleTreeBuilder;
-		this.notLogicalSearchOperator = notLogicalSearchOperator;
 	}
 
 	void disableSearch() {
@@ -102,6 +96,7 @@ class SearchRuleCreatorLogic {
 	void pressAddButton() {
 		this.complexRuleTreeBuilder.createSimpleRule(this.dialog);
 		checkEmptyRule();
+		enableSearchRuleAddControls(currentSelectedNodeAllowsAdd());
 	}
 
 	void pressAndButton() {
@@ -131,52 +126,57 @@ class SearchRuleCreatorLogic {
 		// Enable or disable AND, OR, NOT, REMOVE controls
 		this.dialog.enableComplexRuleButtons(path != null);
 
-		if (path != null) {
-			// Get node selected
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) (path
-					.getLastPathComponent());
-
-			DefaultMutableTreeNode parent = null;
-			if (node.getParent() != null) {
-				parent = (DefaultMutableTreeNode) node.getParent();
-			}
-
-			boolean enabled = true;
-			// If node is a NOT user can't add more simple rules if it has
-			// already a child
-			if (node.getUserObject().equals(this.notLogicalSearchOperator)
-					&& !node.isLeaf()) {
-				enabled = false;
-			} else if (parent != null
-					&& parent.getUserObject().equals(
-							this.notLogicalSearchOperator)) {
-				enabled = false;
-			}
-
-			this.dialog.getSimpleRulesTextField().setEnabled(enabled);
-			if (!enabled) {
-				this.dialog.getSimpleRulesTextField().setText("");
-			}
-			this.dialog.getSimpleRulesAddButton().setEnabled(
-					enabled
-							&& !StringUtils.isEmpty(this.dialog
-									.getSimpleRulesTextField().getText()));
-		}
+		enableSearchRuleAddControls(currentSelectedNodeAllowsAdd());
 	}
 
 	void ruleSelected(final ISearchField<?, ?> searchField) {
 		this.dialog.getSimpleRulesComboBox().setModel(
 				new DefaultComboBoxModel(searchField.getOperators().toArray()));
 
+		enableSearchRuleAddControls(currentSelectedNodeAllowsAdd());
+	}
+
+	private void enableSearchRuleAddControls(final boolean enable) {
 		// Only allow text field for binary operators
-		boolean isBinary = searchField.getOperators().get(0) instanceof ISearchBinaryOperator;
-		this.dialog.getSimpleRulesTextField().setEnabled(isBinary);
-		if (!isBinary) {
+		boolean isBinary = (this.dialog.getSimpleRulesComboBox()
+				.getSelectedObjects()[0]) instanceof ISearchBinaryOperator;
+
+		this.dialog.getSimpleRulesTextField().setEnabled(enable && isBinary);
+		if (!enable || !isBinary) {
 			this.dialog.getSimpleRulesTextField().setText("");
 		}
 		this.dialog.getSimpleRulesAddButton().setEnabled(
-				!isBinary
-						|| !StringUtils.isEmpty(this.dialog
-								.getSimpleRulesTextField().getText()));
+				(enable && !StringUtils.isEmpty(this.dialog
+						.getSimpleRulesTextField().getText()))
+						|| (enable && !isBinary));
+
+		this.dialog.getSimpleRulesComboBox().setEnabled(enable);
+		this.dialog.getSimpleRulesList().setEnabled(enable);
+	}
+
+	private boolean currentSelectedNodeAllowsAdd() {
+		// Get selected tree path
+		TreePath path = this.dialog.getComplexRulesTree().getSelectionPath();
+
+		if (path == null) {
+			// No node selected -> allow add first rule
+			return true;
+		} else {
+			// Get node selected
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) (path
+					.getLastPathComponent());
+
+			if (SearchRuleCreatorHelper.isSearchRule(node)) {
+				// Don't allow add node to a search rule, nodes
+				// must be added to logical nodes
+				return false;
+			} else if (node.getUserObject() instanceof NotLogicalSearchOperator
+					&& !node.isLeaf()) {
+				// If node is a NOT user can't add more simple rules if it has
+				// already a child
+				return false;
+			}
+		}
+		return true;
 	}
 }
