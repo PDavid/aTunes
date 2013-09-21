@@ -107,13 +107,15 @@ public final class RadioBrowserDialogController extends
 		getComponentControlled().getTable().addMouseListener(listener);
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void show(final List<IRadio> radios) {
 		ImmutableListMultimap<String, IRadio> labelsAndRadios = Multimaps
 				.index(radios, new Function<IRadio, String>() {
 					@Override
 					public String apply(final IRadio input) {
-						return input.getLabel();
+						if (input != null && input.getLabel() != null) {
+							return input.getLabel();
+						}
+						return "";
 					}
 				});
 		List<String> labels = new ArrayList<String>(labelsAndRadios.keySet());
