@@ -284,6 +284,15 @@ public class ComplexRuleTreeBuilder {
 		return root != null ? createQuery(root) : null;
 	}
 
+	boolean isValidRule(final CustomSearchDialog dialog) {
+		try {
+			ISearchNode node = getSearchTree(dialog);
+			return node != null;
+		} catch (IllegalStateException e) {
+			return false;
+		}
+	}
+
 	private ISearchNode createQuery(final DefaultMutableTreeNode node)
 			throws IllegalStateException {
 		Object object = node.getUserObject();
