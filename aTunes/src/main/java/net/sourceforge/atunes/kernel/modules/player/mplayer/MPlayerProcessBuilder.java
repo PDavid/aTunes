@@ -134,7 +134,7 @@ public class MPlayerProcessBuilder {
 	private boolean isRemoteAudio(final IAudioObject audioObject) {
 		return !(audioObject instanceof ILocalAudioObject || (audioObject instanceof IPodcastFeedEntry
 				&& this.statePodcast.isUseDownloadedPodcastFeedEntries() && ((IPodcastFeedEntry) audioObject)
-				.isDownloaded()));
+					.isDownloaded()));
 	}
 
 	/**
@@ -206,16 +206,18 @@ public class MPlayerProcessBuilder {
 	 */
 	private String getUrlToPlay(final IAudioObject audioObject,
 			final boolean isRemoteAudio) {
-		String url;
-		if (audioObject instanceof IPodcastFeedEntry && !isRemoteAudio) {
-			url = this.podcastFeedHandler
-					.getDownloadPath((IPodcastFeedEntry) audioObject);
-		} else {
-			url = audioObject.getUrl();
-			if (isRemoteAudio) {
-				// Normalize URLs adding http if necessary
-				if (url != null && !url.toLowerCase().startsWith("http")) {
-					url = StringUtils.getString("http://", url);
+		String url = null;
+		if (audioObject != null) {
+			if (audioObject instanceof IPodcastFeedEntry && !isRemoteAudio) {
+				url = this.podcastFeedHandler
+						.getDownloadPath((IPodcastFeedEntry) audioObject);
+			} else {
+				url = audioObject.getUrl();
+				if (isRemoteAudio) {
+					// Normalize URLs adding http if necessary
+					if (url != null && !url.toLowerCase().startsWith("http")) {
+						url = StringUtils.getString("http://", url);
+					}
 				}
 			}
 		}
