@@ -127,11 +127,14 @@ public class TagFactory {
 	 */
 	private void setRatingFromProperties(final Map<String, Object> editTagInfo,
 			final ITag oldTag, final ITag newTag) {
-		if (editTagInfo.containsKey(RATING) && editTagInfo.get(RATING) != null) {
-			newTag.setStars(this.ratingsToStars
-					.ratingToStars((String) editTagInfo.get(RATING)));
-		} else {
-			newTag.setStars(oldTag != null ? oldTag.getStars() : null);
+		if (newTag != null) {
+			if (editTagInfo.containsKey(RATING)
+					&& editTagInfo.get(RATING) != null) {
+				newTag.setStars(this.ratingsToStars
+						.ratingToStars((String) editTagInfo.get(RATING)));
+			} else {
+				newTag.setStars(oldTag != null ? oldTag.getStars() : null);
+			}
 		}
 	}
 
