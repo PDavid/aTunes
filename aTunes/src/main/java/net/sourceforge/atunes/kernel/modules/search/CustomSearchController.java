@@ -156,6 +156,7 @@ public final class CustomSearchController extends
 	 */
 	ISearchNode showSearchDialogForQueryCreation(final String title,
 			final String text) {
+		this.logic.disableSearch();
 		getComponentControlled().setQueryCreationOnly(title, text);
 		getComponentControlled().setVisible(true);
 		return this.complexRuleTreeBuilder
@@ -216,8 +217,6 @@ public final class CustomSearchController extends
 
 	@Override
 	public void addBindings() {
-		this.logic.disableSearch();
-
 		getComponentControlled().getComplexRulesTree().setCellRenderer(
 				this.controlsBuilder
 						.getTreeCellRenderer(new RuleTreeCellRenderer()));

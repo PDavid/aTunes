@@ -87,36 +87,35 @@ class SearchRuleCreatorLogic {
 		}
 	}
 
-	private void checkEmptyRule() {
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.dialog
-				.getComplexRulesTree().getModel().getRoot();
-		this.dialog.getSearchButton().setEnabled(root != null);
+	private void checkRule() {
+		this.dialog.getSearchButton().setEnabled(
+				this.complexRuleTreeBuilder.isValidRule(dialog));
 	}
 
 	void pressAddButton() {
 		this.complexRuleTreeBuilder.createSimpleRule(this.dialog);
-		checkEmptyRule();
+		checkRule();
 		enableSearchRuleAddControls(currentSelectedNodeAllowsAdd());
 	}
 
 	void pressAndButton() {
 		this.complexRuleTreeBuilder.addAndOperator(this.dialog);
-		checkEmptyRule();
+		checkRule();
 	}
 
 	public void pressOrButton() {
 		this.complexRuleTreeBuilder.addOrOperator(this.dialog);
-		checkEmptyRule();
+		checkRule();
 	}
 
 	void pressNotButton() {
 		this.complexRuleTreeBuilder.addNotOperator(this.dialog);
-		checkEmptyRule();
+		checkRule();
 	}
 
 	void pressRemoveButton() {
 		this.complexRuleTreeBuilder.removeRuleNode(this.dialog);
-		checkEmptyRule();
+		checkRule();
 	}
 
 	void treeItemSelected() {
