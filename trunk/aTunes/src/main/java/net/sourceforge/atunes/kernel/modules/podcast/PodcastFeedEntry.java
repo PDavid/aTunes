@@ -42,6 +42,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 	String author;
 	String url;
 	String description;
+  String folderName;
 	int duration;
 	BaseDateTime date;
 	IPodcastFeed podcastFeed;
@@ -57,7 +58,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param title
 	 *            the title of the podcast feed entry
 	 * @param author
@@ -89,10 +90,10 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
 	/**
 	 * Gets the podcast feed entries.
-	 * 
+	 *
 	 * @param audioObjects
 	 *            the audio objects
-	 * 
+	 *
 	 * @return the podcast feed entries
 	 */
 	public static List<IPodcastFeedEntry> getPodcastFeedEntries(
@@ -148,7 +149,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
 	/**
 	 * Gets the date.
-	 * 
+	 *
 	 * @return the date
 	 */
 	@Override
@@ -237,7 +238,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#isListened
 	 * ()
@@ -249,7 +250,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#isDownloaded
 	 * ()
@@ -261,7 +262,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#isOld()
 	 */
@@ -272,7 +273,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setDate
 	 * (org.joda.time.DateTime)
@@ -284,7 +285,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#
 	 * setDescription(java.lang.String)
 	 */
@@ -295,7 +296,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setDownloaded
 	 * (boolean)
@@ -307,7 +308,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setListened
 	 * (boolean)
@@ -319,7 +320,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#
 	 * setPodcastFeed(net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed)
 	 */
@@ -330,7 +331,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setUrl
 	 * (java.lang.String)

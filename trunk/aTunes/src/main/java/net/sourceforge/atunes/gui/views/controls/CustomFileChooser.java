@@ -51,9 +51,16 @@ public final class CustomFileChooser extends JPanel {
 	private final JTextField textField;
 	private String result;
 
-	/**
+  	public CustomFileChooser(final String title, final Component parent,
+			final int length, final int type, final IOSManager osManager,
+			final IBeanFactory beanFactory, IControlsBuilder controlsBuilder) {
+
+      this(title, parent, length, type, osManager, beanFactory, controlsBuilder, null);
+    }
+
+  /**
 	 * Instantiates a new custom file chooser.
-	 * 
+	 *
 	 * @param title
 	 * @param parent
 	 * @param length
@@ -61,17 +68,18 @@ public final class CustomFileChooser extends JPanel {
 	 * @param osManager
 	 * @param beanFactory
 	 * @param controlsBuilder
+   * @param folder path to a default(initial) folder, user's HOME is used when null
 	 */
 	public CustomFileChooser(final String title, final Component parent,
 			final int length, final int type, final IOSManager osManager,
-			final IBeanFactory beanFactory, IControlsBuilder controlsBuilder) {
+			final IBeanFactory beanFactory, IControlsBuilder controlsBuilder,
+      final String folder) {
 		super(new GridBagLayout());
 		// Use user home by default
-		final File defaultFolder = new File(osManager.getUserHome());
+		final File defaultFolder = new File( folder != null ? folder : osManager.getUserHome() );
 		textField = controlsBuilder.createTextField();
 		textField.setColumns(length);
-		textField.setText(net.sourceforge.atunes.utils.FileUtils
-				.getPath(defaultFolder));
+		textField.setText(net.sourceforge.atunes.utils.FileUtils.getPath(defaultFolder));
 		JButton button = new JButton("...");
 
 		button.addActionListener(new ActionListener() {
@@ -116,7 +124,7 @@ public final class CustomFileChooser extends JPanel {
 
 	/**
 	 * Gets the result.
-	 * 
+	 *
 	 * @return the result
 	 */
 	public String getResult() {
@@ -126,7 +134,7 @@ public final class CustomFileChooser extends JPanel {
 
 	/**
 	 * Sets the text.
-	 * 
+	 *
 	 * @param text
 	 *            the new text
 	 */
@@ -137,7 +145,7 @@ public final class CustomFileChooser extends JPanel {
 
 	/**
 	 * Adds a document listener to text field
-	 * 
+	 *
 	 * @param listener
 	 */
 	public void addDocumentListener(final DocumentListener listener) {

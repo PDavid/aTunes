@@ -22,52 +22,51 @@ package net.sourceforge.atunes.model;
 
 /**
  * State specific for podcasts
- * 
+ *
  * @author alex
- * 
+ *
  */
 public interface IStatePodcast extends IState {
 
 	/**
 	 * Podcast retrieval interval
-	 * 
+	 *
 	 * @return
 	 */
 	public long getPodcastFeedEntriesRetrievalInterval();
 
 	/**
 	 * Podcast retrieval interval
-	 * 
+	 *
 	 * @param podcastFeedEntriesRetrievalInterval
 	 */
 	public void setPodcastFeedEntriesRetrievalInterval(
 			long podcastFeedEntriesRetrievalInterval);
 
 	/**
-	 * Podcast download path
-	 * 
-	 * @return
+	 * Retrieves podcast download path.
+	 *
+	 * @return podcast's download path
 	 */
 	public String getPodcastFeedEntryDownloadPath();
 
 	/**
-	 * Podcast download path
-	 * 
+	 * sets podcast download path.
+	 *
 	 * @param podcastFeedEntryDownloadPath
 	 */
-	public void setPodcastFeedEntryDownloadPath(
-			String podcastFeedEntryDownloadPath);
+	public void setPodcastFeedEntryDownloadPath(String podcastFeedEntryDownloadPath);
 
 	/**
 	 * Use downloaded podcasts
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isUseDownloadedPodcastFeedEntries();
 
 	/**
 	 * Use downloaded podcasts
-	 * 
+	 *
 	 * @param useDownloadedPodcastFeedEntries
 	 */
 	public void setUseDownloadedPodcastFeedEntries(
@@ -75,14 +74,14 @@ public interface IStatePodcast extends IState {
 
 	/**
 	 * Remove podcast entries
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isRemovePodcastFeedEntriesRemovedFromPodcastFeed();
 
 	/**
 	 * Remove podcast entries
-	 * 
+	 *
 	 * @param removePodcastFeedEntriesRemovedFromPodcastFeed
 	 */
 	public void setRemovePodcastFeedEntriesRemovedFromPodcastFeed(

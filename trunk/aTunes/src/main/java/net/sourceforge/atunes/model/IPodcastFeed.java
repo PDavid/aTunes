@@ -33,42 +33,42 @@ public interface IPodcastFeed extends ITreeObject<IPodcastFeedEntry>, Serializab
 
 	/**
 	 * Gets the feed type.
-	 * 
+	 *
 	 * @return the feedType of the podcast feed
 	 */
 	public FeedType getFeedType();
 
 	/**
 	 * Gets the name.
-	 * 
+	 *
 	 * @return the name of the podcast feed
 	 */
 	public String getName();
 
 	/**
 	 * Gets the podcast feed entries.
-	 * 
+	 *
 	 * @return the podcast feed entries
 	 */
 	public List<IPodcastFeedEntry> getPodcastFeedEntries();
 
 	/**
 	 * Gets the url.
-	 * 
+	 *
 	 * @return the url of the podcast feed
 	 */
 	public String getUrl();
 
 	/**
 	 * Checks for new entries.
-	 * 
+	 *
 	 * @return if the podcast feed has new entries
 	 */
 	public boolean hasNewEntries();
 
 	/**
 	 * Returns if the name should be retrieved from the feed
-	 * 
+	 *
 	 * @return retrieveNameFromFeed if the name should be retrieved from the
 	 *         feed
 	 */
@@ -87,7 +87,7 @@ public interface IPodcastFeed extends ITreeObject<IPodcastFeedEntry>, Serializab
 	/**
 	 * Sets the entries of this podcast feed and removes old entries if
 	 * specified.
-	 * 
+	 *
 	 * @param entries
 	 *            The entries of this podcast feed
 	 * @param removeOld
@@ -98,7 +98,7 @@ public interface IPodcastFeed extends ITreeObject<IPodcastFeedEntry>, Serializab
 
 	/**
 	 * Removed Podcast feed entry from this Podcast feed.
-	 * 
+	 *
 	 * @param podcastFeedEntry
 	 *            The Podcast feed entr that should be removed
 	 */
@@ -106,7 +106,7 @@ public interface IPodcastFeed extends ITreeObject<IPodcastFeedEntry>, Serializab
 
 	/**
 	 * Sets the feed type.
-	 * 
+	 *
 	 * @param feedType
 	 *            the feedType of the podcast feed to set
 	 */
@@ -114,7 +114,7 @@ public interface IPodcastFeed extends ITreeObject<IPodcastFeedEntry>, Serializab
 
 	/**
 	 * Sets the name.
-	 * 
+	 *
 	 * @param name
 	 *            the name of the podcast feed to set
 	 */
@@ -122,7 +122,7 @@ public interface IPodcastFeed extends ITreeObject<IPodcastFeedEntry>, Serializab
 
 	/**
 	 * Sets the url.
-	 * 
+	 *
 	 * @param url
 	 *            the url of the podcast feed to set
 	 */
@@ -130,7 +130,7 @@ public interface IPodcastFeed extends ITreeObject<IPodcastFeedEntry>, Serializab
 
 	/**
 	 * Sets if the name should be retrieved from the feed
-	 * 
+	 *
 	 * @param retrieveNameFromFeed
 	 *            if the name should be retrieved from the feed
 	 */
@@ -138,9 +138,15 @@ public interface IPodcastFeed extends ITreeObject<IPodcastFeedEntry>, Serializab
 
 	/**
 	 * Returns number of new entries of this podcast
-	 * 
+	 *
 	 * @return
 	 */
 	public int getNewEntriesCount();
+
+  /** Gets a name of the podcast feed's folder */
+   public String getFolderName ();
+
+   /** Sets a name of the podcast feed's folder */
+   public void setFolderName (String folderName);
 
 }
