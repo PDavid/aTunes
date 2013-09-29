@@ -121,7 +121,7 @@ public class PodcastFeedEntryDownloader extends
 
 	/**
 	 * Downloads entry
-	 * 
+	 *
 	 * @param podcastFeedEntry
 	 * @param callback
 	 */
@@ -153,49 +153,53 @@ public class PodcastFeedEntryDownloader extends
 	protected Boolean doInBackground() {
 		Logger.info("Downloading PodcastEntry: ", podcastFeedEntry.getUrl());
 
-		InputStream in = null;
-
-		String podcastFeedEntryFileName = podcastFeedHandler
-				.getDownloadPath(podcastFeedEntry);
+		String podcastFeedEntryFileName = podcastFeedHandler.getDownloadPath(podcastFeedEntry);
 		Logger.info("Downloading to: ", podcastFeedEntryFileName);
 		File localFile = new File(podcastFeedEntryFileName);
 
-		ReadableByteChannel readChannel = null;
-		FileChannel writeChannel = null;
-		try {
-			writeChannel = new FileOutputStream(localFile).getChannel();
-			URLConnection conn = networkHandler.getConnection(podcastFeedEntry
-					.getUrl());
-			in = new BufferedInputStream(conn.getInputStream());
-			setTotalBytes(conn.getContentLength());
+    if (localFile.exists()) {
+      Logger.info("Target file '{}' already exists. Download cancelled.", podcastFeedEntryFileName);
+      podcastFeedEntry.setDownloaded(true);
+			navigationTable.repaint();
+      return true;
+    }
+    else {
+      ReadableByteChannel readChannel = null;
+      FileChannel writeChannel = null;
+      InputStream in = null;
+      try {
+        writeChannel = new FileOutputStream(localFile).getChannel();
+        URLConnection conn = networkHandler.getConnection(podcastFeedEntry.getUrl());
+        in = new BufferedInputStream(conn.getInputStream());
+        setTotalBytes(conn.getContentLength());
 
-			readChannel = Channels.newChannel(in);
+        readChannel = Channels.newChannel(in);
 
-			int iterations = 0;
-			long totalTransferred = 0;
-			while (readChannel.isOpen()) {
-				long transferred = writeChannel.transferFrom(readChannel,
-						totalTransferred, 4 * 4096);
-				totalTransferred += transferred;
-				if (iterations % 50 == 0) {
-					setByteProgress(totalTransferred);
-				}
-			}
+        int iterations = 0;
+        long totalTransferred = 0;
+        while (readChannel.isOpen()) {
+          long transferred = writeChannel.transferFrom(readChannel, totalTransferred, 4 * 4096);
+          totalTransferred += transferred;
+          if (iterations % 50 == 0) {
+            setByteProgress(totalTransferred);
+          }
+        }
 
-			return !isCancelled();
-		} catch (FileNotFoundException e) {
-			Logger.info("file not found");
-			setFailed(true);
-			return false;
-		} catch (IOException e) {
-			Logger.info("Connection to ", podcastFeedEntry.getUrl(), " failed");
-			setFailed(true);
-			return false;
-		} finally {
-			ClosingUtils.close(readChannel);
-			ClosingUtils.close(writeChannel);
-			ClosingUtils.close(in);
-		}
+        return !isCancelled();
+      } catch (FileNotFoundException e) {
+        Logger.info("file not found");
+        setFailed(true);
+        return false;
+      } catch (IOException e) {
+        Logger.info("Connection to ", podcastFeedEntry.getUrl(), " failed");
+        setFailed(true);
+        return false;
+      } finally {
+        ClosingUtils.close(readChannel);
+        ClosingUtils.close(writeChannel);
+        if (in != null) {  ClosingUtils.close(in); }
+      }
+    }
 	}
 
 	@Override
@@ -217,7 +221,7 @@ public class PodcastFeedEntryDownloader extends
 
 	/**
 	 * Sets the total bytes.
-	 * 
+	 *
 	 * @param totalBytes
 	 *            the new total bytes
 	 */
@@ -229,7 +233,7 @@ public class PodcastFeedEntryDownloader extends
 
 	/**
 	 * Sets the byte progress.
-	 * 
+	 *
 	 * @param byteProgress
 	 *            the new byte progress
 	 */
@@ -243,7 +247,7 @@ public class PodcastFeedEntryDownloader extends
 
 	/**
 	 * Sets the failed.
-	 * 
+	 *
 	 * @param failed
 	 *            the new failed
 	 */
@@ -260,7 +264,7 @@ public class PodcastFeedEntryDownloader extends
 
 	/**
 	 * Gets the total bytes.
-	 * 
+	 *
 	 * @return the total bytes
 	 */
 	public long getTotalBytes() {
@@ -270,8 +274,7 @@ public class PodcastFeedEntryDownloader extends
 	@Override
 	protected void done(final Boolean result) {
 		if (!isCancelled() && result) {
-			Logger.info("Download of " + podcastFeedEntry.getUrl()
-					+ " finished.");
+			Logger.info("Download of " + podcastFeedEntry.getUrl() + " finished.");
 			podcastFeedEntry.setDownloaded(true);
 			navigationTable.repaint();
 		}
@@ -279,7 +282,7 @@ public class PodcastFeedEntryDownloader extends
 
 	/**
 	 * Gets the podcast feed entry.
-	 * 
+	 *
 	 * @return the podcast feed entry
 	 */
 	public IPodcastFeedEntry getPodcastFeedEntry() {

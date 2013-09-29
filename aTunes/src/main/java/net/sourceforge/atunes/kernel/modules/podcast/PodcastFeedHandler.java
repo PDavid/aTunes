@@ -24,6 +24,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -48,6 +49,9 @@ import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import static net.sourceforge.atunes.utils.FileNameUtils.getValidFileName;
+import static net.sourceforge.atunes.utils.FileNameUtils.getValidFolderName;
 
 /**
  * The handler for podcast feeds.
@@ -148,7 +152,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	/**
 	 * Adds a Podcast Feed.
-	 * 
+	 *
 	 * @param podcastFeed
 	 *            A Podcast Feed that should be added
 	 */
@@ -254,7 +258,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	/**
 	 * Sets the Podcast Feed Entry retrieval interval.
-	 * 
+	 *
 	 * @param newRetrievalInterval
 	 *            The Podcast Feed Entry retrieval interval
 	 */
@@ -269,7 +273,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	/**
 	 * Schedules the PodcastFeedEntryRetriever with the given interval.
-	 * 
+	 *
 	 * @param newRetrievalInterval
 	 *            The Podcast Feed Entry retrieval interval
 	 */
@@ -322,7 +326,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	/**
 	 * Cancel downloading.
-	 * 
+	 *
 	 * @param podcastFeedEntry
 	 *            the podcast feed entry
 	 * @param d
@@ -367,7 +371,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#
 	 * getDownloadPath(net.sourceforge.atunes.model.IPodcastFeedEntry)
 	 */
@@ -384,11 +388,8 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 			return "";
 		}
 
-		// Check if subfolder exists and otherwise create
-		File podcastFeedDownloadFolder = new File(podcastFeedsDownloadFolder,
-				FileNameUtils.getValidFileName(
-						String.valueOf(podcastFeedEntry.getPodcastFeed()
-								.getName().hashCode()), getOsManager()));
+		// Check if sub-folder exists and otherwise create
+		File podcastFeedDownloadFolder = getPodcastFeedFolder(podcastFeedsDownloadFolder,podcastFeedEntry);
 
 		if (!createFolder(podcastFeedDownloadFolder)) {
 			return "";
@@ -401,14 +402,15 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 				String filename = elements[elements.length - 1];
 				int index = filename.lastIndexOf('.');
 				if (index != -1) {
-					filename = StringUtils.getString(filename.hashCode(), ".",
-							filename.substring(index, filename.length()));
+          // no way, why to replace a readable with hashcode ?
+          // StringUtils.getString(filename.hashCode(), ".", filename.substring(index, filename.length()));
 				} else {
+          // TODO: consider replacing hashcode with a date
 					filename = String.valueOf(filename.hashCode());
 				}
 				return StringUtils.getString(podcastFeedDownloadFolder
-						.toString(), "/", FileNameUtils.getValidFileName(
-						filename, getOsManager()));
+						.toString(), "/", getValidFileName(
+          filename, getOsManager()));
 			}
 		} catch (URISyntaxException e) {
 			Logger.error(e);
@@ -416,14 +418,47 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 		throw new IllegalArgumentException();
 	}
 
-	/**
-	 * @param podcastFeedsDownloadFolder
+  /** Provides name of a folder for a single podcast feed.
+   *
+   * @param podcastFeedEntry podcast feed entry to get the directory name from
+   *
+   * @return name of the folder
+   */
+  private File getPodcastFeedFolder (File podcastFeedsDownloadFolder, IPodcastFeedEntry podcastFeedEntry)
+  {
+     File folder;
+
+     String userSetFolderName = podcastFeedEntry.getPodcastFeed().getFolderName();
+     if (userSetFolderName != null && userSetFolderName.trim().length() != 0) {
+       // the user provided a name of a custom sub-folder
+       // first try if the folder already exists - keep folder name as is
+       folder = new File(podcastFeedsDownloadFolder, userSetFolderName);
+       if (!folder.exists()) {
+         // we'll be creating a new folder, sanitize the folder's name
+         folder = new File(podcastFeedsDownloadFolder,
+                           getValidFileName(userSetFolderName, getOsManager()));
+       }
+     }
+     else {
+       // use the old logic - using value of podcast's name hashcode as the folder name
+       String hashCodeBasedFolderName =
+         String.valueOf(podcastFeedEntry.getPodcastFeed().getName().hashCode());
+
+       folder = new File(podcastFeedsDownloadFolder,
+                         getValidFileName(hashCodeBasedFolderName, getOsManager()));
+     }
+
+     return folder;
+  }
+
+  /**
+   * @param podcastFeedsDownloadFolder
 	 */
 	private boolean createFolder(final File podcastFeedsDownloadFolder) {
 		// Check if podcast folder exists
 		if (!podcastFeedsDownloadFolder.exists()) {
-			boolean check = podcastFeedsDownloadFolder.mkdir();
-			if (!check) {
+			boolean folderCreated = podcastFeedsDownloadFolder.mkdir();
+			if (!folderCreated) {
 				Logger.error("Problem Creating file!");
 				return false;
 			}
@@ -445,7 +480,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#
 	 * isDownloaded(net.sourceforge.atunes.model.IPodcastFeedEntry)
 	 */
@@ -457,7 +492,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#
 	 * deleteDownloadedPodcastFeedEntry
 	 * (net.sourceforge.atunes.model.IPodcastFeedEntry)
@@ -472,7 +507,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#
 	 * isDownloading(net.sourceforge.atunes.model.IPodcastFeedEntry)
 	 */

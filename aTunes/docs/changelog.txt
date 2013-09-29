@@ -11,6 +11,7 @@ aTunes 3.2.0
 - Show first element file or folder to help user select a pattern when editing tag
 - Search redesigned
 - Disabled repository refresh by default
+- Store podcasts in custom folder (Rostislav Matl)
 
 aTunes 3.1.2
 ------------

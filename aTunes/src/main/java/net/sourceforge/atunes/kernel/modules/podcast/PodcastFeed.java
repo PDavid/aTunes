@@ -36,33 +36,67 @@ public class PodcastFeed implements IPodcastFeed {
 
 	String name;
 	String url;
+
+  /** name of the folder under StatePodcast.podcastFeedEntryDownloadPath */
+  String folderName;
+
 	FeedType feedType;
 	List<IPodcastFeedEntry> podcastFeedEntries;
 	boolean hasNewEntries;
+
 	/** If the name should be retrieved from the feed */
 	boolean retrieveNameFromFeed;
 
-	/**
-	 * No arg constructor for serialization
-	 */
+  final String DEFAULT_EMPTY_NAME = "";
+
+	/** No arg constructor for serialization */
 	PodcastFeed() {
 	}
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param name
-	 *            the name of the podcast feed
-	 * @param url
-	 *            the url of the podcast feed
+	 *
+	 * @param name the name of the podcast feed
+	 * @param url the url of the podcast feed
+   * @param folderName {@link #folderName name od the feed folder}
 	 */
-	public PodcastFeed(final String name, final String url) {
-		this.name = name;
-		this.url = url;
+	public PodcastFeed(final String name, final String url, final String folderName) {
+
+    if (isEmptyString(name)) {
+		  this.name = DEFAULT_EMPTY_NAME;
+      this.retrieveNameFromFeed = true;
+    }
+    else {
+      this.name = name;
+    }
+    if (!isEmptyString(folderName))  {
+      this.folderName = folderName;
+    }
+    this.url = url;
 		podcastFeedEntries = new ArrayList<IPodcastFeedEntry>();
 	}
 
-	@Override
+	public PodcastFeed(final String name, final String url) {
+    this(name,url,null);
+	}
+
+  /** gets {@link #folderName} */
+  @Override
+  public String getFolderName () {
+    return folderName;
+  }
+
+  /** Sets {@link #folderName} */
+  @Override
+  public void setFolderName (String folderName) {
+    this.folderName = folderName;
+  }
+
+  private boolean isEmptyString (String name) {
+    return (name == null || name.trim().isEmpty());
+  }
+
+  @Override
 	public synchronized boolean equals(final Object o) {
 		if (!(o instanceof PodcastFeed)) {
 			return false;
