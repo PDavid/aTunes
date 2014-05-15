@@ -181,7 +181,7 @@ public final class DateUtils {
 	}
 
 	/**
-	 * Returns a String with locale representation of Date, replacing / for -.
+	 * Returns a String with locale representation of Date, replacing / and : for -.
 	 * 
 	 * @param objDate
 	 *            the obj date
@@ -189,6 +189,6 @@ public final class DateUtils {
 	 * @return the string
 	 */
 	public static String toPathString(final DateTime objDate) {
-		return DateTimeFormat.shortDateTime().print(objDate).replace("/", "-");
+		return DateTimeFormat.shortDateTime().print(objDate).replaceAll("[/:]", ".");
 	}
 }
