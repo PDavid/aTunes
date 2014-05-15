@@ -135,7 +135,7 @@
 		</desktopEntry>
 
 
-		<deb todir="${target}" package="atunes" section="sound" depends="mplayer,java-runtime" recommends="cdda2wav,vorbis-tools,flac" suggests="icedax,lame,faac">
+		<deb todir="${target}" package="atunes" section="sound" depends="mplayer,java6-runtime" recommends="cdda2wav,vorbis-tools,flac" suggests="icedax,lame,faac">
 
 			<version upstream="${version}" />
 			<maintainer name="aTunes team" email="atunes-packages@lists.sourceforge.net" />
