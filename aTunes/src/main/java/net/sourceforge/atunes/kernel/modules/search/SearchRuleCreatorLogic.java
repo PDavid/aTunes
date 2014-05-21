@@ -64,10 +64,10 @@ class SearchRuleCreatorLogic {
 		if (!isBinary) {
 			this.dialog.getSimpleRulesTextField().setText("");
 		}
-		adjustAddButton(!isBinary || !isRuleTextFieldEmpty());
+		adjustAddButton(!isBinary && !isRuleTextFieldEmpty());
 	}
 
-	void adjustAddButton(final boolean enabled) {
+	private void adjustAddButton(final boolean enabled) {
 		this.dialog.getSimpleRulesAddButton().setEnabled(enabled);
 	}
 
@@ -145,8 +145,7 @@ class SearchRuleCreatorLogic {
 			this.dialog.getSimpleRulesTextField().setText("");
 		}
 		this.dialog.getSimpleRulesAddButton().setEnabled(
-				(enable && !StringUtils.isEmpty(this.dialog
-						.getSimpleRulesTextField().getText()))
+				(enable && !isRuleTextFieldEmpty())
 						|| (enable && !isBinary));
 
 		this.dialog.getSimpleRulesComboBox().setEnabled(enable);
