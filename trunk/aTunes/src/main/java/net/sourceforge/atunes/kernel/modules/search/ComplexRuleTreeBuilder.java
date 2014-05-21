@@ -204,7 +204,6 @@ public class ComplexRuleTreeBuilder {
 		// If it's root, remove it
 		if (selectedNode.isRoot()) {
 			model.setRoot(null);
-			dialog.getSimpleRulesAddButton().setEnabled(true);
 		} else {
 			parentNode.remove(selectedNode);
 		}

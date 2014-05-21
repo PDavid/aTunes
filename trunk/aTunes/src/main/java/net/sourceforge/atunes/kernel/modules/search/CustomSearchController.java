@@ -34,6 +34,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.gui.GuiUtils;
@@ -355,5 +356,16 @@ public final class CustomSearchController extends
 						}
 					}
 				});
+	}
+
+	DefaultMutableTreeNode getSelectedNode() {
+		return (DefaultMutableTreeNode) getComponentControlled()
+				.getComplexRulesTree().getSelectionPath()
+				.getLastPathComponent();
+	}
+	
+	DefaultTreeModel getModel() {
+		return ((DefaultTreeModel) getComponentControlled()
+				.getComplexRulesTree().getModel());
 	}
 }
