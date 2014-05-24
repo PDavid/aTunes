@@ -26,8 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.collections.list.SetUniqueList;
-
 import net.sourceforge.atunes.kernel.modules.webservices.AddLovedSongBackgroundWorker;
 import net.sourceforge.atunes.kernel.modules.webservices.RemoveLovedSongBackgroundWorker;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -38,6 +36,8 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.CollectionUtils;
+
+import org.apache.commons.collections.list.SetUniqueList;
 
 /**
  * Manages favorite songs

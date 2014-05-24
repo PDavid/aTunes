@@ -22,6 +22,12 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
+/**
+ * New look and feel for aTunes
+ * 
+ * @author alex
+ * 
+ */
 public class SubstanceATunesNewLookAndFeel extends SubstanceLookAndFeel {
 
 	/**
@@ -29,7 +35,11 @@ public class SubstanceATunesNewLookAndFeel extends SubstanceLookAndFeel {
 	 */
 	private static final long serialVersionUID = -6458880314635918922L;
 
+	/**
+	 * Default constructor
+	 */
 	public SubstanceATunesNewLookAndFeel() {
 		super(new SubstanceATunesNewSkin());
 	}
+
 }

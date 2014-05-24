@@ -23,12 +23,10 @@ package net.sourceforge.atunes.gui.views.controls;
 import java.awt.Dimension;
 
 import javax.swing.Action;
-import javax.swing.JButton;
 
 import net.sourceforge.atunes.model.IControlButton;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
  * Next button
@@ -36,14 +34,12 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
  * @author alex
  * 
  */
-public final class NextButton extends JButton implements
+public final class NextButton extends PlayerControlButton implements
 		ILookAndFeelChangeListener, IControlButton {
 
 	private static final long serialVersionUID = -4939372038840047335L;
 
 	private Dimension previousNextButtonSize;
-
-	private ILookAndFeelManager lookAndFeelManager;
 
 	private IIconFactory nextIcon;
 
@@ -52,14 +48,6 @@ public final class NextButton extends JButton implements
 	 */
 	public void setNextIcon(final IIconFactory nextIcon) {
 		this.nextIcon = nextIcon;
-	}
-
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(
-			final ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
 	/**
@@ -78,28 +66,13 @@ public final class NextButton extends JButton implements
 		super(nextAction);
 	}
 
-	/**
-	 * Initialize button
-	 */
-	public void initialize() {
-		setPreferredSize(this.previousNextButtonSize);
-		setMinimumSize(this.previousNextButtonSize);
-		setMaximumSize(this.previousNextButtonSize);
-		setFocusable(false);
-		setText(null);
-		updateIcon();
-		this.lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(
-				this);
-		this.lookAndFeelManager.addLookAndFeelChangeListener(this);
+	@Override
+	protected Dimension getButtonSize() {
+		return this.previousNextButtonSize;
 	}
 
 	@Override
-	public void lookAndFeelChanged() {
-		updateIcon();
-	}
-
-	private void updateIcon() {
-		setIcon(this.nextIcon.getIcon(this.lookAndFeelManager
-				.getCurrentLookAndFeel().getPaintForSpecialControls()));
+	public void setIcon() {
+		updateIcon(this.nextIcon);
 	}
 }

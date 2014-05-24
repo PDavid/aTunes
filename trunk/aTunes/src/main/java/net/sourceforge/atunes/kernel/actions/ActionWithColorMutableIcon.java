@@ -40,6 +40,8 @@ public abstract class ActionWithColorMutableIcon extends CustomAbstractAction
 
 	private ILookAndFeelManager lookAndFeelManager;
 
+	private IIconChangeHandler iconChangeHandler;
+
 	/**
 	 * Creates a new action
 	 * 
@@ -82,15 +84,23 @@ public abstract class ActionWithColorMutableIcon extends CustomAbstractAction
 
 	@Override
 	public final void lookAndFeelChanged() {
-		putValue(
-				SMALL_ICON,
-				getIcon(getLookAndFeel()).getIcon(
-						getLookAndFeel().getPaintForSpecialControls()));
+		if (this.iconChangeHandler != null) {
+			this.iconChangeHandler.updateIcon(getIcon(getLookAndFeel()));
+		} else {
+			putValue(
+					SMALL_ICON,
+					getIcon(getLookAndFeel()).getIcon(
+							getLookAndFeel().getPaintForSpecialControls()));
+		}
 	}
 
 	@Override
 	public final void actionPerformed(final ActionEvent e) {
 		super.actionPerformed(e);
+
+		if (this.iconChangeHandler != null) {
+			this.iconChangeHandler.updateIcon(getIcon(getLookAndFeel()));
+		}
 	}
 
 	/**
@@ -100,4 +110,27 @@ public abstract class ActionWithColorMutableIcon extends CustomAbstractAction
 	 * @return
 	 */
 	public abstract IColorMutableImageIcon getIcon(ILookAndFeel lookAndFeel);
+
+	/**
+	 * Register iconChangeHandler
+	 * 
+	 * @param changeHandler
+	 */
+	public void registerIconChangeHandler(final IIconChangeHandler changeHandler) {
+		this.iconChangeHandler = changeHandler;
+	}
+
+	/**
+	 * Responsible of updating icon
+	 * 
+	 * @author alex
+	 * 
+	 */
+	public static interface IIconChangeHandler {
+
+		/**
+		 * @param icon
+		 */
+		public void updateIcon(IColorMutableImageIcon icon);
+	}
 }

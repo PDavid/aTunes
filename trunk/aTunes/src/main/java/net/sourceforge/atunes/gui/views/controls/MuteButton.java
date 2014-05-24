@@ -22,9 +22,10 @@ package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.Dimension;
 
-import javax.swing.Action;
 import javax.swing.JToggleButton;
 
+import net.sourceforge.atunes.kernel.actions.MuteAction;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
@@ -41,14 +42,18 @@ public final class MuteButton extends JToggleButton implements
 
 	private VolumeIconCalculator volumeIconCalculator;
 
+	private ILookAndFeelManager lookAndFeelManager;
+
 	/**
 	 * Instantiates a new mute button.
 	 * 
 	 * @param size
 	 * @param muteAction
 	 */
-	public MuteButton(final Dimension size, final Action muteAction) {
+	public MuteButton(final Dimension size, final MuteAction muteAction) {
 		super(muteAction);
+
+		muteAction.registerButton(this);
 
 		// Force size
 		setPreferredSize(size);
@@ -62,6 +67,7 @@ public final class MuteButton extends JToggleButton implements
 	 */
 	public void setLookAndFeelManager(
 			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
 		lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
 		lookAndFeelManager.addLookAndFeelChangeListener(this);
 	}
@@ -85,6 +91,12 @@ public final class MuteButton extends JToggleButton implements
 	 * @param state
 	 */
 	public void updateIcon() {
-		setIcon(this.volumeIconCalculator.getVolumeIcon());
+		IIconFactory icon = this.volumeIconCalculator.getIcon();
+		setSelectedIcon(icon.getIcon(this.lookAndFeelManager
+				.getCurrentLookAndFeel().getPaintForSpecialControlsRollover()));
+		setRolloverIcon(icon.getIcon(this.lookAndFeelManager
+				.getCurrentLookAndFeel().getPaintForSpecialControlsRollover()));
+		setIcon(icon.getIcon(this.lookAndFeelManager.getCurrentLookAndFeel()
+				.getPaintForSpecialControls()));
 	}
 }

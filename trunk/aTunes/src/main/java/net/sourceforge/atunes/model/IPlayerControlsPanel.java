@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.model;
 
-import javax.swing.Action;
+import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
 
 /**
  * A panel with player controls
@@ -65,14 +65,14 @@ public interface IPlayerControlsPanel extends IPanel {
 	 * 
 	 * @param action
 	 */
-	public void addSecondaryControl(Action action);
+	public void addSecondaryControl(ActionWithColorMutableIcon action);
 
 	/**
 	 * Adds a secondary toggle control
 	 * 
 	 * @param action
 	 */
-	public void addSecondaryToggleControl(Action action);
+	public void addSecondaryToggleControl(ActionWithColorMutableIcon action);
 
 	/**
 	 * Hides or shows advanced controls

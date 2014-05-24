@@ -185,6 +185,13 @@ public interface ILookAndFeel {
 	public Color getPaintForSpecialControls();
 
 	/**
+	 * Returns paint to be used with certain controls (player controls)
+	 * 
+	 * @return
+	 */
+	public Color getPaintForSpecialControlsRollover();
+
+	/**
 	 * Returns paint to be used with certain controls (player controls) when
 	 * disabled
 	 * 

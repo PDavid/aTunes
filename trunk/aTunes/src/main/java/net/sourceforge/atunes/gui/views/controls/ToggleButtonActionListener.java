@@ -24,15 +24,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 final class ToggleButtonActionListener implements ActionListener {
-	
+
 	private final ToggleButtonOfFlowPanel button;
 
-	ToggleButtonActionListener(ToggleButtonOfFlowPanel button) {
+	ToggleButtonActionListener(final ToggleButtonOfFlowPanel button) {
 		this.button = button;
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		button.getAction().actionPerformed(e);
+	public void actionPerformed(final ActionEvent e) {
+		this.button.getAction().actionPerformed(e);
 	}
 }

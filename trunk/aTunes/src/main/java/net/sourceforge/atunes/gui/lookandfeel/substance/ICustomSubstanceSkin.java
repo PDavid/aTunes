@@ -23,26 +23,47 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 import java.awt.Color;
 import java.awt.Component;
 
+import javax.swing.JComponent;
+
 interface ICustomSubstanceSkin {
-	
+
 	/**
 	 * Defines custom colors for mutable icons
+	 * 
 	 * @param component
 	 * @param isSelected
 	 * @return
 	 */
-	public Color getPaintForColorMutableIcon(Component component, boolean isSelected);
-	
+	public Color getPaintForColorMutableIcon(Component component,
+			boolean isSelected);
+
 	/**
 	 * Returns paint to be used with certain controls (player controls)
+	 * 
 	 * @return
 	 */
 	public Color getPaintForSpecialControls();
 
 	/**
-	 * Returns paint to be used with certain controls (player controls) when disabled
+	 * Returns paint to be used with certain controls (player controls)
+	 * 
+	 * @return
+	 */
+	public Color getPaintForSpecialControlsRollover();
+
+	/**
+	 * Returns paint to be used with certain controls (player controls) when
+	 * disabled
+	 * 
 	 * @return
 	 */
 	public Color getPaintForDisabledSpecialControls();
+
+	/**
+	 * Defines custom configuration for component
+	 * 
+	 * @param c
+	 */
+	public void setupComponent(JComponent c);
 
 }

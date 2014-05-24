@@ -33,18 +33,20 @@ import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 
-
 /**
  * Common code for custom skins
+ * 
  * @author alex
- *
+ * 
  */
-abstract class CustomSubstanceSkin extends org.pushingpixels.substance.api.SubstanceSkin implements ICustomSubstanceSkin {
+abstract class CustomSubstanceSkin extends
+		org.pushingpixels.substance.api.SubstanceSkin implements
+		ICustomSubstanceSkin {
 
 	private Color highlightColor;
-	
+
 	private Color colorMutableIcon;
-	
+
 	private Color colorForDisabledSpecialControl;
 
 	/**
@@ -53,22 +55,31 @@ abstract class CustomSubstanceSkin extends org.pushingpixels.substance.api.Subst
 	 * @param disabledScheme
 	 * @param highlightScheme
 	 */
-	protected void initializeSkin(SubstanceColorScheme activeScheme, 
-						SubstanceColorScheme defaultScheme, 
-						SubstanceColorScheme disabledScheme,
-						SubstanceColorScheme highlightScheme) {
-		
+	protected void initializeSkin(final SubstanceColorScheme activeScheme,
+			final SubstanceColorScheme defaultScheme,
+			final SubstanceColorScheme disabledScheme,
+			final SubstanceColorScheme highlightScheme) {
+
 		// the default theme bundle
-		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(defaultScheme, defaultScheme, disabledScheme);
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f, ComponentState.ROLLOVER_UNSELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f, ComponentState.SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f, ComponentState.ROLLOVER_SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f, ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
-		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, DecorationAreaType.NONE);
+		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
+				defaultScheme, defaultScheme, disabledScheme);
+		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f,
+				ComponentState.ROLLOVER_UNSELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f,
+				ComponentState.SELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f,
+				ComponentState.ROLLOVER_SELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f,
+				ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
+		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
+				DecorationAreaType.NONE);
 
 		// the special theme bundle
-		SubstanceColorSchemeBundle specialSchemeBundle = new SubstanceColorSchemeBundle(activeScheme, activeScheme, disabledScheme);
-		this.registerDecorationAreaSchemeBundle(specialSchemeBundle, DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE);
+		SubstanceColorSchemeBundle specialSchemeBundle = new SubstanceColorSchemeBundle(
+				activeScheme, activeScheme, disabledScheme);
+		this.registerDecorationAreaSchemeBundle(specialSchemeBundle,
+				DecorationAreaType.PRIMARY_TITLE_PANE,
+				DecorationAreaType.SECONDARY_TITLE_PANE);
 
 		this.setSelectedTabFadeStart(1);
 		this.setSelectedTabFadeEnd(1);
@@ -78,34 +89,42 @@ abstract class CustomSubstanceSkin extends org.pushingpixels.substance.api.Subst
 		this.borderPainter = new ClassicBorderPainter();
 		this.decorationPainter = new MatteDecorationPainter();
 		this.highlightPainter = new ClassicHighlightPainter();
-		
+
 		this.highlightColor = highlightScheme.getLightColor();
 	}
-	
-    @Override
-	public Color getPaintForColorMutableIcon(Component component, boolean isSelected) {
-    	if (isSelected) {
-    		return component.getForeground();    		
-    	} else {
-    		if (colorMutableIcon == null) {
-        		Color c = highlightColor.darker();    		
-        		colorMutableIcon = new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
-    		}
-    		return colorMutableIcon;
-    	}
-	}
-	
-    @Override
-	public Color getPaintForSpecialControls() {
-		return highlightColor.darker();    		
+
+	@Override
+	public Color getPaintForColorMutableIcon(final Component component,
+			final boolean isSelected) {
+		if (isSelected) {
+			return component.getForeground();
+		} else {
+			if (this.colorMutableIcon == null) {
+				Color c = this.highlightColor.darker();
+				this.colorMutableIcon = new Color(c.getRed(), c.getGreen(),
+						c.getBlue(), 200);
+			}
+			return this.colorMutableIcon;
+		}
 	}
 
-    @Override
+	@Override
+	public Color getPaintForSpecialControls() {
+		return this.highlightColor.darker();
+	}
+
+	@Override
+	public Color getPaintForSpecialControlsRollover() {
+		return getPaintForSpecialControls();
+	}
+
+	@Override
 	public Color getPaintForDisabledSpecialControls() {
-    	if (colorForDisabledSpecialControl == null) {
-    		Color c = highlightColor.darker();    		
-    		colorForDisabledSpecialControl = new Color(c.getRed(), c.getGreen(), c.getBlue(), 140);
-    	}
-    	return colorForDisabledSpecialControl;
+		if (this.colorForDisabledSpecialControl == null) {
+			Color c = this.highlightColor.darker();
+			this.colorForDisabledSpecialControl = new Color(c.getRed(),
+					c.getGreen(), c.getBlue(), 140);
+		}
+		return this.colorForDisabledSpecialControl;
 	}
 }

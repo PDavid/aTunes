@@ -328,9 +328,13 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
 	}
 
 	@Override
-	public void hideNodeIcons(JTree tree) {
+	public void hideNodeIcons(final JTree tree) {
 		((BasicTreeUI) tree.getUI()).setCollapsedIcon(null);
 		((BasicTreeUI) tree.getUI()).setExpandedIcon(null);
 	}
 
+	@Override
+	public Color getPaintForSpecialControlsRollover() {
+		return getPaintForSpecialControls();
+	}
 }

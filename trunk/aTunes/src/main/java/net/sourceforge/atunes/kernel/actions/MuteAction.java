@@ -20,7 +20,9 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import net.sourceforge.atunes.gui.views.controls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.VolumeIconCalculator;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -40,6 +42,18 @@ public class MuteAction extends CustomAbstractAction {
 	private VolumeIconCalculator volumeIconCalculator;
 
 	private IStatePlayer statePlayer;
+
+	private ILookAndFeelManager lookAndFeelManager;
+
+	private MuteButton button;
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(
+			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
 
 	/**
 	 * @param statePlayer
@@ -97,6 +111,17 @@ public class MuteAction extends CustomAbstractAction {
 	 * Updates icon of mute
 	 */
 	private void updateIcon() {
-		putValue(SMALL_ICON, this.volumeIconCalculator.getVolumeIcon());
+		if (this.button != null) {
+			this.button.updateIcon();
+		}
+	}
+
+	/**
+	 * Register button to be called to update icon
+	 * 
+	 * @param muteButton
+	 */
+	public void registerButton(final MuteButton muteButton) {
+		this.button = muteButton;
 	}
 }

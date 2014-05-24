@@ -20,108 +20,90 @@
 
 package net.sourceforge.atunes.gui.views.controls;
 
-import javax.swing.ImageIcon;
-
 import net.sourceforge.atunes.model.IIconFactory;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IStatePlayer;
 
 /**
  * Returns volume icon according to volume level and look and feel
+ * 
  * @author alex
- *
+ * 
  */
 public class VolumeIconCalculator {
-	
-	private ILookAndFeelManager lookAndFeelManager;
-	
+
 	private IIconFactory volumeMuteIcon;
-	
+
 	private IIconFactory volumeMaxIcon;
-	
+
 	private IIconFactory volumeMedIcon;
-	
+
 	private IIconFactory volumeMinIcon;
-	
+
 	private IIconFactory volumeZeroIcon;
-	
+
 	private IStatePlayer statePlayer;
-	
+
 	/**
 	 * @param statePlayer
 	 */
-	public void setStatePlayer(IStatePlayer statePlayer) {
+	public void setStatePlayer(final IStatePlayer statePlayer) {
 		this.statePlayer = statePlayer;
 	}
-	
+
 	/**
 	 * @param volumeMaxIcon
 	 */
-	public void setVolumeMaxIcon(IIconFactory volumeMaxIcon) {
+	public void setVolumeMaxIcon(final IIconFactory volumeMaxIcon) {
 		this.volumeMaxIcon = volumeMaxIcon;
 	}
-	
+
 	/**
 	 * @param volumeMedIcon
 	 */
-	public void setVolumeMedIcon(IIconFactory volumeMedIcon) {
+	public void setVolumeMedIcon(final IIconFactory volumeMedIcon) {
 		this.volumeMedIcon = volumeMedIcon;
 	}
-	
+
 	/**
 	 * @param volumeMinIcon
 	 */
-	public void setVolumeMinIcon(IIconFactory volumeMinIcon) {
+	public void setVolumeMinIcon(final IIconFactory volumeMinIcon) {
 		this.volumeMinIcon = volumeMinIcon;
 	}
-	
+
 	/**
 	 * @param volumeMuteIcon
 	 */
-	public void setVolumeMuteIcon(IIconFactory volumeMuteIcon) {
+	public void setVolumeMuteIcon(final IIconFactory volumeMuteIcon) {
 		this.volumeMuteIcon = volumeMuteIcon;
 	}
-	
+
 	/**
 	 * @param volumeZeroIcon
 	 */
-	public void setVolumeZeroIcon(IIconFactory volumeZeroIcon) {
+	public void setVolumeZeroIcon(final IIconFactory volumeZeroIcon) {
 		this.volumeZeroIcon = volumeZeroIcon;
 	}
-	
+
 	/**
-	 * @param lookAndFeelManager
+	 * Returns icon to use depending on volume and mute state
+	 * 
+	 * @return
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
+	public IIconFactory getIcon() {
+		if (this.statePlayer.isMuteEnabled()) {
+			return this.volumeMuteIcon;
+		} else {
+			int volume = this.statePlayer.getVolume();
+			if (volume > 80) {
+				return this.volumeMaxIcon;
+			} else if (volume > 40) {
+				return this.volumeMedIcon;
+			} else if (volume > 5) {
+				return this.volumeMinIcon;
+			} else {
+				return this.volumeZeroIcon;
+			}
+		}
 	}
-	
-	/**
-     * Returns icon to use depending on volume and mute state
-     * @return
-     */
-    public ImageIcon getVolumeIcon() {
-    	return getIcon().getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
-    }
-    
-    /**
-     * Returns icon to use
-     * @return
-     */
-    private IIconFactory getIcon() {
-        if (statePlayer.isMuteEnabled()) {
-            return volumeMuteIcon;
-        } else {
-            int volume = statePlayer.getVolume();
-            if (volume > 80) {
-                return volumeMaxIcon;
-            } else if (volume > 40) {
-            	return volumeMedIcon;
-            } else if (volume > 5) {
-            	return volumeMinIcon;
-            } else {
-            	return volumeZeroIcon;
-            }
-        }
-    }
 }

@@ -20,9 +20,11 @@
 
 package net.sourceforge.atunes.gui.views.controls;
 
-import javax.swing.Action;
 import javax.swing.JToggleButton;
 
+import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
+import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon.IIconChangeHandler;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
@@ -31,21 +33,28 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
  * @author alex
  * 
  */
-public class SecondaryToggleControl extends JToggleButton {
+public class SecondaryToggleControl extends JToggleButton implements
+		IIconChangeHandler {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -124604413114002586L;
 
+	private ILookAndFeelManager lookAndFeelManager;
+
+	private final ActionWithColorMutableIcon action;
+
 	/**
 	 * @param a
 	 * @param preferredSize
 	 */
-	public SecondaryToggleControl(final Action a) {
+	public SecondaryToggleControl(final ActionWithColorMutableIcon a) {
 		super(a);
+		this.action = a;
 		setText(null);
 		setFocusable(false);
+		this.action.registerIconChangeHandler(this);
 	}
 
 	/**
@@ -53,6 +62,17 @@ public class SecondaryToggleControl extends JToggleButton {
 	 */
 	public void setLookAndFeelManager(
 			final ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
 		lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
+	}
+
+	@Override
+	public void updateIcon(final IColorMutableImageIcon icon) {
+		setIcon(icon.getIcon(this.lookAndFeelManager.getCurrentLookAndFeel()
+				.getPaintForSpecialControls()));
+		setRolloverIcon(icon.getIcon(this.lookAndFeelManager
+				.getCurrentLookAndFeel().getPaintForSpecialControlsRollover()));
+		setSelectedIcon(icon.getIcon(this.lookAndFeelManager
+				.getCurrentLookAndFeel().getPaintForSpecialControlsRollover()));
 	}
 }
