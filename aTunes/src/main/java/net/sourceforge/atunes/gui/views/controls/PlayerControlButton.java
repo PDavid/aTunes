@@ -20,41 +20,35 @@
 
 package net.sourceforge.atunes.gui.views.controls;
 
-import javax.swing.JToggleButton;
+import java.awt.Dimension;
 
-import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
-import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon.IIconChangeHandler;
-import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import javax.swing.Action;
+import javax.swing.JButton;
+
+import net.sourceforge.atunes.model.IIconFactory;
+import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
- * A player toggle control for secondary functions
+ * Player control button
  * 
  * @author alex
  * 
  */
-public class SecondaryToggleControl extends JToggleButton implements
-		IIconChangeHandler {
+public abstract class PlayerControlButton extends JButton implements
+		ILookAndFeelChangeListener {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -124604413114002586L;
-
+	private static final long serialVersionUID = 3249835769674931918L;
 	private ILookAndFeelManager lookAndFeelManager;
 
-	private final ActionWithColorMutableIcon action;
-
 	/**
-	 * @param a
-	 * @param preferredSize
+	 * @param action
 	 */
-	public SecondaryToggleControl(final ActionWithColorMutableIcon a) {
-		super(a);
-		this.action = a;
-		setText(null);
-		setFocusable(false);
-		this.action.registerIconChangeHandler(this);
+	public PlayerControlButton(final Action action) {
+		super(action);
 	}
 
 	/**
@@ -63,16 +57,39 @@ public class SecondaryToggleControl extends JToggleButton implements
 	public void setLookAndFeelManager(
 			final ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
-		lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
 	}
 
-	@Override
-	public void updateIcon(final IColorMutableImageIcon icon) {
+	protected void updateIcon(final IIconFactory icon) {
 		setIcon(icon.getIcon(this.lookAndFeelManager.getCurrentLookAndFeel()
 				.getPaintForSpecialControls()));
 		setRolloverIcon(icon.getIcon(this.lookAndFeelManager
 				.getCurrentLookAndFeel().getPaintForSpecialControlsRollover()));
-		setSelectedIcon(icon.getIcon(this.lookAndFeelManager
-				.getCurrentLookAndFeel().getPaintForSpecialControlsRollover()));
 	}
+
+	@Override
+	public void lookAndFeelChanged() {
+		setIcon();
+	}
+
+	/**
+	 * Initializes button
+	 */
+	public void initialize() {
+		// Force size of button
+		setPreferredSize(getButtonSize());
+		setMinimumSize(getButtonSize());
+		setMaximumSize(getButtonSize());
+		setFocusable(false);
+		setText(null);
+
+		setIcon();
+
+		this.lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(
+				this);
+		this.lookAndFeelManager.addLookAndFeelChangeListener(this);
+	}
+
+	protected abstract Dimension getButtonSize();
+
+	protected abstract void setIcon();
 }

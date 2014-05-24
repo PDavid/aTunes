@@ -23,6 +23,8 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 import java.awt.Color;
 import java.awt.Component;
 
+import javax.swing.JComponent;
+
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.skin.TwilightSkin;
 
@@ -33,43 +35,51 @@ import org.pushingpixels.substance.api.skin.TwilightSkin;
  * 
  */
 public class CustomTwilightSkin extends TwilightSkin implements
-	ICustomSubstanceSkin {
+		ICustomSubstanceSkin {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 4543287686553802647L;
+	private static final long serialVersionUID = 4543287686553802647L;
 
-    @Override
-    public Color getPaintForColorMutableIcon(final Component component,
-	    final boolean isSelected) {
-	if (isSelected) {
-	    return component.getForeground();
-	} else {
-	    Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel
-		    .getCurrentSkin()
-		    .getActiveColorScheme(DecorationAreaType.HEADER)
-		    .getUltraLightColor();
-	    return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
+	@Override
+	public Color getPaintForColorMutableIcon(final Component component,
+			final boolean isSelected) {
+		if (isSelected) {
+			return component.getForeground();
+		} else {
+			Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel
+					.getCurrentSkin()
+					.getActiveColorScheme(DecorationAreaType.HEADER)
+					.getUltraLightColor();
+			return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
+		}
 	}
-    }
 
-    @Override
-    public Color getPaintForSpecialControls() {
-	Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel
-		.getCurrentSkin()
-		.getActiveColorScheme(DecorationAreaType.HEADER)
-		.getUltraLightColor();
-	return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
-    }
+	@Override
+	public Color getPaintForSpecialControls() {
+		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel
+				.getCurrentSkin()
+				.getActiveColorScheme(DecorationAreaType.HEADER)
+				.getUltraLightColor();
+		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
+	}
 
-    @Override
-    public Color getPaintForDisabledSpecialControls() {
-	Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel
-		.getCurrentSkin()
-		.getActiveColorScheme(DecorationAreaType.HEADER)
-		.getUltraLightColor();
-	return new Color(c.getRed(), c.getGreen(), c.getBlue(), 150);
-    }
+	@Override
+	public Color getPaintForSpecialControlsRollover() {
+		return getPaintForSpecialControls();
+	}
 
+	@Override
+	public Color getPaintForDisabledSpecialControls() {
+		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel
+				.getCurrentSkin()
+				.getActiveColorScheme(DecorationAreaType.HEADER)
+				.getUltraLightColor();
+		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 150);
+	}
+
+	@Override
+	public void setupComponent(final JComponent c) {
+	}
 }

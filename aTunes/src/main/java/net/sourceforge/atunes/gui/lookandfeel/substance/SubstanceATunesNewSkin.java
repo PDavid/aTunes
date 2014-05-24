@@ -20,8 +20,14 @@
 
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JToggleButton;
 
 import net.sourceforge.atunes.utils.Logger;
 
@@ -48,11 +54,14 @@ import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
  * @author Kirill Grouchnikov
  * @since version 5.3
  */
-public class SubstanceATunesNewSkin extends SubstanceSkin {
+public class SubstanceATunesNewSkin extends SubstanceSkin implements
+		ICustomSubstanceSkin {
 	/**
 	 * Display name for <code>this</code> skin.
 	 */
 	public static final String NAME = "aTunes New";
+
+	private Color highlightColor;
 
 	/**
 	 * Creates a new skin.
@@ -132,6 +141,7 @@ public class SubstanceATunesNewSkin extends SubstanceSkin {
 
 		SubstanceColorScheme tabHighlightScheme = schemes
 				.get("Graphite Tab Highlight");
+		this.highlightColor = tabHighlightScheme.getLightColor();
 		defaultSchemeBundle.registerColorScheme(tabHighlightScheme,
 				ColorSchemeAssociationKind.TAB,
 				ComponentState.ROLLOVER_SELECTED);
@@ -165,8 +175,8 @@ public class SubstanceATunesNewSkin extends SubstanceSkin {
 						new ColorSchemeTransform() {
 							@Override
 							public SubstanceColorScheme transform(
-									SubstanceColorScheme scheme) {
-								return scheme.tint(0.25f);
+									final SubstanceColorScheme scheme) {
+								return scheme.tint(0.15f);
 							}
 						}));
 		this.highlightBorderPainter = new ClassicBorderPainter();
@@ -175,5 +185,43 @@ public class SubstanceATunesNewSkin extends SubstanceSkin {
 	@Override
 	public String getDisplayName() {
 		return NAME;
+	}
+
+	@Override
+	public Color getPaintForColorMutableIcon(final Component component,
+			final boolean isSelected) {
+		if (isSelected) {
+			return component.getForeground();
+		} else {
+			return component.getForeground().darker();
+		}
+	}
+
+	@Override
+	public Color getPaintForSpecialControls() {
+		return this.highlightColor.darker();
+	}
+
+	@Override
+	public Color getPaintForSpecialControlsRollover() {
+		return this.highlightColor.brighter();
+	}
+
+	@Override
+	public Color getPaintForDisabledSpecialControls() {
+		return this.highlightColor.darker();
+	}
+
+	@Override
+	public void setupComponent(final JComponent c) {
+		if (c instanceof JButton) {
+			((JButton) c).setOpaque(false);
+			((JButton) c).setContentAreaFilled(false);
+			((JButton) c).setBorderPainted(false);
+		} else if (c instanceof JToggleButton) {
+			((JToggleButton) c).setOpaque(false);
+			((JToggleButton) c).setContentAreaFilled(false);
+			((JToggleButton) c).setBorderPainted(false);
+		}
 	}
 }

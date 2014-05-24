@@ -22,6 +22,8 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 
 import java.awt.Color;
 
+import javax.swing.JComponent;
+
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 
 /**
@@ -70,5 +72,9 @@ public final class SubstanceATunesBlueSkin extends
 	@Override
 	public String getDisplayName() {
 		return "aTunes Blue skin";
+	}
+
+	@Override
+	public void setupComponent(final JComponent c) {
 	}
 }

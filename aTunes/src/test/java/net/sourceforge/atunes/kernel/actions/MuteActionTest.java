@@ -41,37 +41,37 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class MuteActionTest {
-	
+
 	private MuteAction sut;
-	
+
 	private IPlayerHandler playerHandler;
-	
+
 	private IStatePlayer state;
-	
+
 	@Before
 	public void init() {
-		sut = new MuteAction();
-		playerHandler = mock(IPlayerHandler.class);
+		this.sut = new MuteAction();
+		this.playerHandler = mock(IPlayerHandler.class);
 		ILookAndFeelManager lookAndFeelManager = mock(ILookAndFeelManager.class);
-		state = mock(IStatePlayer.class);
+		this.state = mock(IStatePlayer.class);
 		ILookAndFeel lookAndFeel = mock(ILookAndFeel.class);
 		when(lookAndFeel.getPaintForSpecialControls()).thenReturn(Color.red);
-		when(lookAndFeelManager.getCurrentLookAndFeel()).thenReturn(lookAndFeel);
-		sut.setPlayerHandler(playerHandler);
-		sut.setStatePlayer(state);
-		
+		when(lookAndFeelManager.getCurrentLookAndFeel())
+				.thenReturn(lookAndFeel);
+		this.sut.setPlayerHandler(this.playerHandler);
+		this.sut.setStatePlayer(this.state);
+
 		VolumeIconCalculator iconCalculator = new VolumeIconCalculator();
-		iconCalculator.setStatePlayer(state);
-		iconCalculator.setLookAndFeelManager(lookAndFeelManager);
+		iconCalculator.setStatePlayer(this.state);
 		CachedIconFactory iconFactory = new CachedIconFactory() {
-			
+
 			/**
 			 * 
 			 */
 			private static final long serialVersionUID = -239625553538406706L;
 
 			@Override
-			protected ImageIcon createIcon(Color color) {
+			protected ImageIcon createIcon(final Color color) {
 				return null;
 			}
 		};
@@ -81,28 +81,28 @@ public class MuteActionTest {
 		iconCalculator.setVolumeMinIcon(iconFactory);
 		iconCalculator.setVolumeMuteIcon(iconFactory);
 		iconCalculator.setVolumeZeroIcon(iconFactory);
-		
-		sut.setVolumeIconCalculator(iconCalculator);
+
+		this.sut.setVolumeIconCalculator(iconCalculator);
 	}
 
 	@Test
 	public void testMute() {
-		when(state.isMuteEnabled()).thenReturn(true);
-		sut.putValue(AbstractAction.SELECTED_KEY, true);
-		
-		sut.executeAction();
-		
-		verify(playerHandler).applyMuteState(true);
+		when(this.state.isMuteEnabled()).thenReturn(true);
+		this.sut.putValue(AbstractAction.SELECTED_KEY, true);
+
+		this.sut.executeAction();
+
+		verify(this.playerHandler).applyMuteState(true);
 	}
 
 	@Test
 	public void testNoMute() {
-		when(state.isMuteEnabled()).thenReturn(false);
-		sut.putValue(AbstractAction.SELECTED_KEY, false);
-		
-		sut.executeAction();
-		
-		verify(playerHandler).applyMuteState(false);
+		when(this.state.isMuteEnabled()).thenReturn(false);
+		this.sut.putValue(AbstractAction.SELECTED_KEY, false);
+
+		this.sut.executeAction();
+
+		verify(this.playerHandler).applyMuteState(false);
 	}
 
 }

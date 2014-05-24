@@ -115,6 +115,8 @@ public class PopUpButton extends JButton implements IPopUpButton {
 		this.topShape.addPoint(-4, 4);
 		this.topShape.addPoint(4, 4);
 		this.topShape.addPoint(0, -2);
+
+		this.lookAndFeel.putClientProperties(this);
 	}
 
 	/**
@@ -188,6 +190,7 @@ public class PopUpButton extends JButton implements IPopUpButton {
 	 * Sets the button.
 	 */
 	private void setButton() {
+		this.setFocusPainted(false);
 		this.menu = new JPopupMenu();
 		addMouseListener(new MouseAdapter() {
 			@Override

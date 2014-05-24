@@ -20,8 +20,7 @@
 
 package net.sourceforge.atunes.gui.views.controls;
 
-import javax.swing.Action;
-
+import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 
@@ -49,7 +48,7 @@ public final class NormalizationButton extends SecondaryToggleControl {
 	 * 
 	 * @param a
 	 */
-	public NormalizationButton(final Action a) {
+	public NormalizationButton(final ActionWithColorMutableIcon a) {
 		super(a);
 	}
 

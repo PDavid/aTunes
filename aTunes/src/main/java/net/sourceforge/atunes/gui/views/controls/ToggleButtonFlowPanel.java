@@ -44,12 +44,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import net.sourceforge.atunes.model.IButtonPanel;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * A panel with toggle buttons
@@ -138,6 +141,11 @@ public class ToggleButtonFlowPanel extends JPanel implements
 
 		this.leftButton = new JButton();
 		this.rightButton = new JButton();
+
+		this.lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(
+				this.leftButton);
+		this.lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(
+				this.rightButton);
 
 		setArrows();
 		arrangeComponents();
@@ -306,16 +314,49 @@ public class ToggleButtonFlowPanel extends JPanel implements
 
 	private void addButtonToPanel(final ToggleButtonOfFlowPanel button) {
 		JToggleButton toggle = new JToggleButton(this.iconOnly ? ""
-				: button.getButtonName());
+				: StringUtils.getFirstChars(button.getButtonName(), 30, true));
 		toggle.setToolTipText(button.getTooltip());
+		toggle.setFocusPainted(false);
+
+		this.lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(
+				toggle);
+
 		if (button.getIcon() != null) {
 			toggle.setIcon(button.getIcon().getIcon(
 					this.lookAndFeelManager.getCurrentLookAndFeel()
 							.getPaintForSpecialControls()));
+			toggle.setRolloverIcon(button.getIcon().getIcon(
+					this.lookAndFeelManager.getCurrentLookAndFeel()
+							.getPaintForSpecialControlsRollover()));
+			toggle.setSelectedIcon(button.getIcon().getIcon(
+					this.lookAndFeelManager.getCurrentLookAndFeel()
+							.getPaintForSpecialControlsRollover()));
 		}
 		// Use action listener to encapsulate action to avoid toggle button use
 		// text and icon from action object
 		toggle.addActionListener(new ToggleButtonActionListener(button));
+
+		if (!this.iconOnly) {
+			toggle.addChangeListener(new ChangeListener() {
+
+				@Override
+				public void stateChanged(final ChangeEvent evt) {
+					if (((JToggleButton) evt.getSource()).isSelected()) {
+						((JToggleButton) evt.getSource())
+								.setForeground(ToggleButtonFlowPanel.this.lookAndFeelManager
+										.getCurrentLookAndFeel()
+										.getPaintForSpecialControlsRollover());
+					} else {
+						((JToggleButton) evt.getSource())
+								.setForeground(ToggleButtonFlowPanel.this.lookAndFeelManager
+										.getCurrentLookAndFeel()
+										.getPaintForSpecialControls());
+
+					}
+				}
+			});
+		}
+
 		this.group.add(toggle);
 		this.toggles.put(button, toggle);
 

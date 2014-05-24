@@ -25,7 +25,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
 final class PlayListComboModel extends

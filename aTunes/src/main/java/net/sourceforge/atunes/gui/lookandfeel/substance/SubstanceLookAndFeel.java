@@ -328,6 +328,12 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 							: new LeftConcaveButtonShaper(
 									this.playButtonSize.height));
 		}
+
+		if (org.pushingpixels.substance.api.SubstanceLookAndFeel
+				.getCurrentSkin() instanceof ICustomSubstanceSkin) {
+			((ICustomSubstanceSkin) org.pushingpixels.substance.api.SubstanceLookAndFeel
+					.getCurrentSkin()).setupComponent(c);
+		}
 	}
 
 	@Override
@@ -392,6 +398,17 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 					isSelected);
 		} else {
 			return component.getForeground();
+		}
+	}
+
+	@Override
+	public Color getPaintForSpecialControlsRollover() {
+		if (org.pushingpixels.substance.api.SubstanceLookAndFeel
+				.getCurrentSkin() instanceof ICustomSubstanceSkin) {
+			return ((ICustomSubstanceSkin) org.pushingpixels.substance.api.SubstanceLookAndFeel
+					.getCurrentSkin()).getPaintForSpecialControlsRollover();
+		} else {
+			return super.getPaintForSpecialControlsRollover();
 		}
 	}
 

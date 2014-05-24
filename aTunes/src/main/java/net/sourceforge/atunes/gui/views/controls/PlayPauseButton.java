@@ -23,27 +23,22 @@ package net.sourceforge.atunes.gui.views.controls;
 import java.awt.Dimension;
 
 import javax.swing.Action;
-import javax.swing.JButton;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.images.PauseImageIcon;
 import net.sourceforge.atunes.gui.images.PlayImageIcon;
 import net.sourceforge.atunes.model.IControlButton;
-import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
  * @author alex
  * 
  */
-public final class PlayPauseButton extends JButton implements
-		ILookAndFeelChangeListener, IControlButton {
+public final class PlayPauseButton extends PlayerControlButton implements
+		IControlButton {
 
 	private static final long serialVersionUID = 4348041346542204394L;
 
 	private boolean playing;
-
-	private ILookAndFeelManager lookAndFeelManager;
 
 	private Dimension playButtonSize;
 
@@ -66,14 +61,6 @@ public final class PlayPauseButton extends JButton implements
 	}
 
 	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(
-			final ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-
-	/**
 	 * Instantiates a new play pause button.
 	 * 
 	 * @param playAction
@@ -89,22 +76,9 @@ public final class PlayPauseButton extends JButton implements
 		this.playButtonSize = playButtonSize;
 	}
 
-	/**
-	 * Initialize button
-	 */
-	public void initialize() {
-		// Force size of button
-		setPreferredSize(this.playButtonSize);
-		setMinimumSize(this.playButtonSize);
-		setMaximumSize(this.playButtonSize);
-		setFocusable(false);
-		setText(null);
-
-		setIcon();
-
-		this.lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(
-				this);
-		this.lookAndFeelManager.addLookAndFeelChangeListener(this);
+	@Override
+	protected Dimension getButtonSize() {
+		return this.playButtonSize;
 	}
 
 	/**
@@ -137,19 +111,13 @@ public final class PlayPauseButton extends JButton implements
 	}
 
 	@Override
-	public void lookAndFeelChanged() {
-		setIcon();
-	}
-
-	private void setIcon() {
+	protected void setIcon() {
 		if (this.playing) {
 			this.pauseIcon.setSize(this.playButtonSize);
-			setIcon(this.pauseIcon.getIcon(this.lookAndFeelManager
-					.getCurrentLookAndFeel().getPaintForSpecialControls()));
+			updateIcon(this.pauseIcon);
 		} else {
 			this.playIcon.setSize(this.playButtonSize);
-			setIcon(this.playIcon.getIcon(this.lookAndFeelManager
-					.getCurrentLookAndFeel().getPaintForSpecialControls()));
+			updateIcon(this.playIcon);
 		}
 	}
 }

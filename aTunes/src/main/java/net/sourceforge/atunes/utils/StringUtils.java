@@ -297,7 +297,7 @@ public final class StringUtils {
 	 * @param string
 	 * @return true if string represents an integer number
 	 */
-	public static boolean isNumber(String string) {
+	public static boolean isNumber(final String string) {
 		if (!isEmpty(string)) {
 			try {
 				Integer.parseInt(string);
@@ -308,4 +308,26 @@ public final class StringUtils {
 		return false;
 	}
 
+	/**
+	 * @param string
+	 * @param chars
+	 * @param ellipsis
+	 * @return first chars of string, including ellipsis optionally
+	 */
+	public static String getFirstChars(final String string, final int chars,
+			final boolean ellipsis) {
+		if (chars <= 0) {
+			throw new IllegalArgumentException("chars must be positive");
+		}
+		if (!isEmpty(string)) {
+			if (string.length() > chars) {
+				if (ellipsis) {
+					return getString(string.substring(0, chars), "...");
+				} else {
+					return string.substring(0, chars);
+				}
+			}
+		}
+		return string;
+	}
 }

@@ -26,7 +26,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -40,6 +39,7 @@ import net.sourceforge.atunes.gui.views.controls.SecondaryControl;
 import net.sourceforge.atunes.gui.views.controls.SecondaryToggleControl;
 import net.sourceforge.atunes.gui.views.controls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.VolumeSlider;
+import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
 import net.sourceforge.atunes.model.IControlsBuilder;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
@@ -300,7 +300,7 @@ public final class PlayerControlsPanel extends JPanel implements
 	 * @param button
 	 */
 	@Override
-	public void addSecondaryControl(final Action action) {
+	public void addSecondaryControl(final ActionWithColorMutableIcon action) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = getSecondaryControls().getComponentCount();
 		c.gridy = 0;
@@ -317,7 +317,8 @@ public final class PlayerControlsPanel extends JPanel implements
 	 * @param button
 	 */
 	@Override
-	public void addSecondaryToggleControl(final Action action) {
+	public void addSecondaryToggleControl(
+			final ActionWithColorMutableIcon action) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = getSecondaryControls().getComponentCount();
 		c.gridy = 0;

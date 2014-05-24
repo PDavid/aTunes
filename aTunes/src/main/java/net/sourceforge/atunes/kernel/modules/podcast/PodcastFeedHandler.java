@@ -20,11 +20,12 @@
 
 package net.sourceforge.atunes.kernel.modules.podcast;
 
+import static net.sourceforge.atunes.utils.FileNameUtils.getValidFileName;
+
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -46,12 +47,8 @@ import net.sourceforge.atunes.model.IStateService;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.CollectionUtils;
-import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
-
-import static net.sourceforge.atunes.utils.FileNameUtils.getValidFileName;
-import static net.sourceforge.atunes.utils.FileNameUtils.getValidFolderName;
 
 /**
  * The handler for podcast feeds.
