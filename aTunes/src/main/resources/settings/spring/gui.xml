@@ -214,6 +214,7 @@
 	
 	<bean id="controlsBuilder" class="net.sourceforge.atunes.gui.views.controls.ControlsBuilder"/>
 	<bean class="net.sourceforge.atunes.gui.views.controls.ToggleButtonFlowPanel" scope="prototype" init-method="initialize"/>
+	<bean id="toggleButtonOfFlowPanelCreator" class="net.sourceforge.atunes.gui.views.controls.ToggleButtonOfFlowPanelCreator" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.modules.context.ContextTable" scope="prototype" init-method="initialize"/>
 	
 	<bean id="columnSetPopupMenu" class="net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu" scope="prototype"/>
