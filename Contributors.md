@@ -1,0 +1,23 @@
+- Bertrand Florat -	Improvements on lyrics search and support for non-english mplayer versions
+- Andrej Herich -	Autodetection of locale with appropriate choice of language
+- James C. McPherson - Solaris support
+- Michael Rutter - Improvements on shuffle mode
+- Philip Heron - Download podcast feature
+- Roeland Maes - Support for CDParanoia on Mac OS X
+- Aekold Helbrass - UI improvements; support for Xine player
+- Pascal Gheeraert - UI improvements
+- Stefan Beckers - Improvements in tag edition
+- Tobias Melcher - New context tab to show videos from YouTube
+- Mingsky Z. - Cue sheet support
+- Ray Barlow - Mplayer priority handling in Windows
+- Marco Biscaro - Support for libnotify (Gnome)
+- Taylor Tang - New lyric engine using www.winampcn.com
+- Tobias Rapp - New year view in navigator / Date column for podcasts
+- Laurent Cathala - Repository validation at startup
+- cy6ergnOm - Swing improvements
+- deathgorepain - Column sorting, drag and drop and favorites improvements, allow truncate playlist when copying to device
+- Jan-Martin Ziem - Option for case-sensitive elements in navigator
+- Johannes Lerch - Hotkeys support for 64-bit Windows
+- Michal Pantucek - Swing improvements
+- Dave Badia - Repository improvements
+- Radovan - New remote commands to control application from a telnet session
