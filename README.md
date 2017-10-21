@@ -26,3 +26,5 @@ This project is licensed under the GNU General Public License version 2.0 (GPLv2
 * **Alex Aranda** - *Founder, developer, translator* - [fleax](https://github.com/fleax)
 * **Sylvain Gaudard** - *Developer, translator*
 * **Thomas Beckers** - *Developer, translator*
+
+See also the list of [contributors](https://github.com/PDavid/aTunes/blob/master/Contributors.md) who participated in this project.
