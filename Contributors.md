@@ -1,3 +1,7 @@
+# Contributors
+
+## Developers who have contributed
+
 - Bertrand Florat -	Improvements on lyrics search and support for non-english mplayer versions
 - Andrej Herich -	Autodetection of locale with appropriate choice of language
 - James C. McPherson - Solaris support
@@ -21,3 +25,32 @@
 - Michal Pantucek - Swing improvements
 - Dave Badia - Repository improvements
 - Radovan - New remote commands to control application from a telnet session
+
+## Translators
+
+- Arabic - Muhammad Bashir Al-Noimi
+- Catalan - Perru002
+- Simplified Chinese - Wutong Feng
+- Traditional Chinese - Wutong Feng
+- Croatian - Dominko Aždajić
+- Czech - Vladimír Slávik
+- Danish - David Rasmussen
+- Dutch - Kristof Bal
+- English - Alex Aranda, Sylvain Gaudard, Thomas Beckers
+- French - Sylvain Gaudard, Sandrine Monrocher-Zaffarano
+- Galician - Martín Pena
+- German - Sylvain Gaudard, Thomas Beckers
+- Greek - Pavlos Paraskeuopoulos
+- Hungarian - Attila Balázs, Paksy Dávid
+- Italian - Roberto Boriotti, Giuseppe Caliendo
+- Japanese - Hiroshi Masui
+- Norwegian - Arild Hansen
+- Polish - Pawel Baranik
+- Portuguese - Márcio Martins
+- Brazilian Portuguese - Flavio Mattos
+- Russian - Kostin Dmitry
+- Slovak - Andrej Herich
+- Spanish - Alex Aranda
+- Swedish - Tobias Järvelöv
+- Turkish - Serkan Aytin, Ramazan Utku
+- Ukrainian - Aekold Helbrass
