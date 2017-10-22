@@ -21,7 +21,8 @@ aTunes is a powerful, full-featured, cross-platform player and manager, with sup
 
 ## License
 
-This project is licensed under the GNU General Public License version 2.0 (GPLv2).
+This project is licensed under the GNU General Public License version 2.0 (GPLv2) - see the [LICENSE](LICENSE) file for details.
+
 
 ## Authors
 
